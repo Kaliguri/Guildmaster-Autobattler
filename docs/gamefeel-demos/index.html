@@ -787,58 +787,65 @@
       нет). Здесь — поглощающий барьер, <code>EffectTag.Shield</code>.
     </p>
 
+    <p class="dim">
+      Форма круглая, без углов — гранёные и стеклянно-фасетные варианты отклонены. В покое видно
+      <b>только силуэт</b>: тонкая линия контура. Подсветка приходит с ударом, пятном в точке контакта,
+      и расходится волной по поверхности.
+    </p>
+
     <div class="stands">
 
       <article class="stand">
-        <canvas id="b-facet" width="480" height="380" role="img"
-                aria-label="Барьер гранёным полигоном"></canvas>
+        <canvas id="b-ellipse" width="480" height="380" role="img"
+                aria-label="Барьер эллипсом"></canvas>
         <div class="stand-body">
           <p class="tag">вариант 1</p>
-          <h3>Грани и полигон</h3>
-          <p class="dim">Многоугольник с внутренними хордами. Удар зажигает те грани, что смотрят на
-            точку контакта.</p>
+          <h3>Эллипс</h3>
+          <p class="dim">Вытянутый по высоте сфероид, симметричный. Самая нейтральная из круглых
+            форм.</p>
           <ul class="facts">
-            <li><span>язык</span><span>цифра, как у подмены арены</span></li>
-            <li><span>трещины</span><span>идут по граням</span></li>
-            <li><span>пробитие</span><span>грани разлетаются</span></li>
+            <li><span>оси</span><span>0.30 H · 0.58 H</span></li>
+            <li><span>плюс</span><span>ни одного лишнего параметра</span></li>
+            <li><span>минус</span><span>пустой воздух над головой</span></li>
           </ul>
-          <p class="verdict">Разводит барьер с текучими огнём и ядом и даёт готовый язык разрушения.</p>
+          <p class="verdict">Читается сразу, но силуэт человека неоднороден: у головы форма шире, чем
+            нужно, а у ног — теснее.</p>
         </div>
       </article>
 
-      <article class="stand">
-        <canvas id="b-smooth" width="480" height="380" role="img"
-                aria-label="Барьер гладким свечением с каймой"></canvas>
+      <article class="stand accepted">
+        <canvas id="b-dome" width="480" height="380" role="img"
+                aria-label="Барьер куполом-овоидом"></canvas>
         <div class="stand-body">
-          <p class="tag">вариант 2</p>
-          <h3>Гладкое свечение</h3>
-          <p class="dim">Кайма по краю сферы, центр прозрачный. Удар даёт пятно в точке контакта и
-            подъём каймы.</p>
+          <p class="tag">вариант 2 · рекомендую</p>
+          <h3>Купол-овоид</h3>
+          <p class="dim">Тот же сфероид, но сужается к верху и подрезан линией земли. Обнимает силуэт
+            и стоит на арене.</p>
           <ul class="facts">
-            <li><span>язык</span><span>тот же, что у всего джуса</span></li>
-            <li><span>трещины</span><span>чужеродны гладкому</span></li>
-            <li><span>пробитие</span><span>вспышка и распад</span></li>
+            <li><span>сужение</span><span>к макушке на 26%</span></li>
+            <li><span>низ</span><span>обрезан землёй</span></li>
+            <li><span>объём</span><span>заливка почти нулевая</span></li>
           </ul>
-          <p class="verdict">Единый стиль без нового языка, но барьер перестаёт отличаться от аур и
-            свечения каста.</p>
+          <p class="verdict pick">Пустоты нет ни сверху, ни снизу, и купол не спорит с тенью — он
+            опирается на ту же землю, что и юнит.</p>
         </div>
       </article>
 
       <article class="stand">
-        <canvas id="b-glass" width="480" height="380" role="img"
-                aria-label="Барьер стеклянными фасетами"></canvas>
+        <canvas id="b-cocoon" width="480" height="380" role="img"
+                aria-label="Барьер коконом"></canvas>
         <div class="stand-body">
           <p class="tag">вариант 3</p>
-          <h3>Стеклянные фасеты</h3>
-          <p class="dim">Поверхность собрана из плоских пластин с разными бликами — витраж, а не
-            сетка.</p>
+          <h3>Кокон</h3>
+          <p class="dim">Суперэллипс: бока почти прямые, но углов нет ни одного. Облегает тело
+            плотнее всех.</p>
           <ul class="facts">
-            <li><span>язык</span><span>стекло: хрупкое по своей природе</span></li>
-            <li><span>трещины</span><span>роднее всего — стекло трескается</span></li>
-            <li><span>пробитие</span><span>осыпается осколками</span></li>
+            <li><span>показатель</span><span>2.7 вместо 2</span></li>
+            <li><span>плюс</span><span>меньше всего пустого места</span></li>
+            <li><span>минус</span><span>ближе к капсуле, чем к щиту</span></li>
           </ul>
-          <p class="verdict">Лучше всех оправдывает трещины, но пластин много: на 96 px это ближе всего
-            к шуму.</p>
+          <p class="verdict">Плотный и аккуратный, но прямые бока читаются как футляр, а не как
+            силовое поле.</p>
         </div>
       </article>
 
@@ -2802,6 +2809,38 @@
     }
   }
 
+  /* ---------- форма купола: круглая, без углов ---------- */
+
+  // Одна параметризация на все три формы: контур, узор трещин и осколки обязаны жить в одной
+  // геометрии, иначе трещины пойдут мимо поверхности.
+  // n — показатель суперэллипса (2 = эллипс, больше = прямее бока), taper — сужение к верху.
+  const DOME = {
+    ellipse: { n: 2.0,  taper: 0.00, label: "эллипс" },
+    dome:    { n: 2.15, taper: 0.26, label: "купол-овоид" },
+    cocoon:  { n: 2.7,  taper: 0.10, label: "кокон" }
+  };
+
+  function domePoint(kind, cx, cy, rx, ry, a, r) {
+    const d = DOME[kind] || DOME.dome;
+    if (r === undefined) r = 1;
+    const ca = Math.cos(a), sa = Math.sin(a);
+    // Суперэллипс: |x|^n + |y|^n = 1. При n=2 это обычный эллипс, без углов при любом n.
+    const k = Math.pow(Math.pow(Math.abs(ca), d.n) + Math.pow(Math.abs(sa), d.n), -1 / d.n);
+    let x = ca * k, y = sa * k;
+    x *= 1 - d.taper * Math.max(0, -y);              // сужение к верху: облегает голову
+    return { x: cx + x * rx * r, y: cy + y * ry * r };
+  }
+
+  function domePath(ctx, kind, cx, cy, rx, ry, r) {
+    ctx.beginPath();
+    const steps = 48;
+    for (let i = 0; i <= steps; i++) {
+      const p = domePoint(kind, cx, cy, rx, ry, (i / steps) * Math.PI * 2 - Math.PI / 2, r);
+      if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+    }
+    ctx.closePath();
+  }
+
   /* ---------- узор трещин: заготовлен целиком, проявляется частями ---------- */
 
   // Трещины барьера — НЕ счётные события (в отличие от порезов на теле): у барьера смысл «насколько
@@ -2849,7 +2888,8 @@
   /// Геометрия узора монотонна (история), яркость — текущая целостность: сеть широкая и бледная
   /// читается как «его сильно били, но сейчас он крепкий». Убирать проявленное нельзя — трещины не
   /// заживают; поэтому добавленный щит гасит узор, а не стирает.
-  function drawPattern(ctx, cx, cy, rx, ry, seed, shown, hitAngles, color, alpha) {
+  /// Узор живёт в геометрии купола (та же <see cref="domePoint"/>), иначе трещины поедут мимо поверхности.
+  function drawPattern(ctx, kind, cx, cy, rx, ry, seed, shown, hitAngles, color, alpha) {
     if (shown <= 0) return;
     const segs = crackPattern(seed);
     const order = crackOrder(segs, hitAngles.length ? hitAngles : [-90]);
@@ -2865,8 +2905,87 @@
       ctx.beginPath();
       for (let p = 0; p < s.pts.length; p++) {
         const pt = s.pts[p];
-        const px = cx + Math.cos(pt.a) * rx * pt.r, py = cy + Math.sin(pt.a) * ry * pt.r;
-        if (p === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        const q = domePoint(kind, cx, cy, rx, ry, pt.a, pt.r);
+        if (p === 0) ctx.moveTo(q.x, q.y); else ctx.lineTo(q.x, q.y);
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  /* ---------- поверхность купола: в покое силуэт, под удар волна ---------- */
+
+  // Яркость участка поверхности. В покое — почти ноль (силуэт). Под удар пятно в точке контакта
+  // расходится волной: чем слабее остаточная вспышка, тем шире фронт.
+  function domeGlow(angDeg, st, base) {
+    if (st.glow <= 0) return base;
+    if (st.hitAng === null) return base + st.glow * 0.42;          // урон эффектом: ровно по всей
+    const d = Math.abs(((angDeg - st.hitAng + 540) % 360) - 180);
+    const spread = 52 + (1 - Math.min(1, st.glow)) * 115;
+    const near = Math.max(0, 1 - d / spread);
+    return base + st.glow * (0.18 + 0.82 * near * near);
+  }
+
+  function domeSurface(ctx, kind, cx, cy, rx, ry, color, st, base, groundY) {
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    if (groundY !== undefined) {                                   // низ подрезан землёй: купол стоит
+      ctx.beginPath();
+      ctx.rect(cx - rx * 2.5, cy - ry * 2.5, rx * 5, groundY - (cy - ry * 2.5));
+      ctx.clip();
+    }
+
+    domePath(ctx, kind, cx, cy, rx, ry);                           // объём: едва-едва, тело важнее
+    ctx.fillStyle = "rgba(" + color + "," + (base * 0.55 + st.glow * 0.09).toFixed(3) + ")";
+    ctx.fill();
+
+    const steps = 64;                                              // контур сегментами, каждый со своей яркостью
+    ctx.lineWidth = 1.8;
+    for (let i = 0; i < steps; i++) {
+      const a0 = (i / steps) * Math.PI * 2 - Math.PI / 2;
+      const a1 = ((i + 1) / steps) * Math.PI * 2 - Math.PI / 2;
+      const mid = ((a0 + a1) / 2) * 180 / Math.PI;
+      const al = domeGlow(mid, st, base);
+      const p0 = domePoint(kind, cx, cy, rx, ry, a0);
+      const p1 = domePoint(kind, cx, cy, rx, ry, a1);
+      ctx.strokeStyle = "rgba(" + color + "," + Math.min(1, al * 2.4).toFixed(3) + ")";
+      ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
+    }
+
+    if (st.glow > 0 && st.hitAng !== null) {                       // само место контакта
+      const p = domePoint(kind, cx, cy, rx, ry, st.hitAng * Math.PI / 180);
+      const pr = rx * (0.3 + 0.4 * st.glow);
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, pr);
+      g.addColorStop(0, "rgba(236,250,255," + (0.7 * st.glow).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(" + color + ",0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(p.x, p.y, pr, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // Пробитие: скорлупа расходится дугами ПО УЗОРУ — узор задаёт линии разлома, поэтому осколки
+  // выглядят как куски именно этой поверхности, а не как случайные обломки.
+  function domeShards(ctx, kind, cx, cy, rx, ry, t, hitAng, color) {
+    const k = 1 - t;
+    const push = (hitAng + 180) * Math.PI / 180;
+    const pieces = 10;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.lineCap = "round";
+    ctx.lineWidth = 1.8;
+    for (let i = 0; i < pieces; i++) {
+      const a0 = (i / pieces) * Math.PI * 2 - Math.PI / 2;
+      const a1 = ((i + 1) / pieces) * Math.PI * 2 - Math.PI / 2;
+      const spin = (jag(i, 81) - 0.5) * 0.7;
+      const d = rx * 1.5 * t * (0.5 + jag(i, 82));
+      const ox = Math.cos(push + spin) * d;
+      const oy = Math.sin(push + spin) * d * (ry / rx) - ry * 0.22 * t;
+      ctx.strokeStyle = "rgba(" + color + "," + (0.85 * k).toFixed(3) + ")";
+      ctx.beginPath();
+      for (let s = 0; s <= 5; s++) {
+        const p = domePoint(kind, cx, cy, rx, ry, a0 + (a1 - a0) * (s / 5));
+        if (s === 0) ctx.moveTo(p.x + ox, p.y + oy); else ctx.lineTo(p.x + ox, p.y + oy);
       }
       ctx.stroke();
     }
@@ -3031,20 +3150,20 @@
         const f = 1 - (sh.fade || 0);
         if (f <= 0.02) continue;
         ctx.save(); ctx.globalAlpha = f;
-        shellSurface(ctx, cx, cy, rx * (1 + 0.1 * (1 - f)), ry * (1 + 0.1 * (1 - f)), color,
-                     { glow: 0, hitAng: null, dot: false }, base * f);
+        domeSurface(ctx, "dome", cx, cy, rx * (1 + 0.1 * (1 - f)), ry * (1 + 0.1 * (1 - f)), color,
+                    { glow: 0, hitAng: null, dot: false }, base * f, groundY + u * 0.8);
         ctx.restore();
         continue;
       }
       if (sh.broken >= 0) {
-        if (sh.broken < 1) shellShards(ctx, cx, cy, rx, ry, sh.broken, sh.lastAng || -90, color);
+        if (sh.broken < 1) domeShards(ctx, "dome", cx, cy, rx, ry, sh.broken, sh.lastAng || -90, color);
         continue;
       }
 
-      shellSurface(ctx, cx, cy, rx, ry, color, sh, base);
+      domeSurface(ctx, "dome", cx, cy, rx, ry, color, sh, base, groundY + u * 0.8);
       // Яркость узора = текущая целостность; геометрия — история. Широко и бледно = «били, но крепок».
       const integrity = sh.rest / Math.max(1e-4, sh.rest + sh.eaten);
-      drawPattern(ctx, cx, cy, rx, ry, sh.seed, sh.shown, sh.hits, color,
+      drawPattern(ctx, "dome", cx, cy, rx, ry, sh.seed, sh.shown, sh.hits, color,
                   0.12 + 0.5 * (1 - integrity) + sh.glow * 0.4);
     }
 
@@ -3076,45 +3195,9 @@
 
   function shellName(t) { return t === "plain" ? "обычный" : t === "phys" ? "физ" : "маг"; }
 
-  // Одна оболочка: гранёный полигон нужного цвета. Форма поверхности пока «грани» — вариант к вердикту.
-  function shellSurface(ctx, cx, cy, rx, ry, color, st, base) {
-    ctx.save();
-    ctx.globalCompositeOperation = "lighter";
-    for (let i = 0; i < FACETS; i++) {
-      const p0 = facetPoint(cx, cy, rx, ry, i, FACETS);
-      const p1 = facetPoint(cx, cy, rx, ry, i + 1, FACETS);
-      const mid = ((p0.a + p1.a) / 2) * 180 / Math.PI;
-      const a = facetGlow(mid, st, base);
-      ctx.strokeStyle = "rgba(" + color + "," + Math.min(1, a * 2.2).toFixed(3) + ")";
-      ctx.lineWidth = 1.8;
-      ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
-    }
-    ctx.restore();
-  }
-
-  function shellShards(ctx, cx, cy, rx, ry, t, hitAng, color) {
-    const k = 1 - t;
-    const push = (hitAng + 180) * Math.PI / 180;
-    ctx.save();
-    ctx.globalCompositeOperation = "lighter";
-    for (let i = 0; i < FACETS; i++) {
-      const p0 = facetPoint(cx, cy, rx, ry, i, FACETS);
-      const p1 = facetPoint(cx, cy, rx, ry, i + 1, FACETS);
-      const spin = (jag(i, 81) - 0.5) * 0.8;
-      const d = rx * 1.4 * t * (0.5 + jag(i, 82));
-      const ox = Math.cos(push + spin) * d, oy = Math.sin(push + spin) * d * (ry / rx) - ry * 0.2 * t;
-      ctx.strokeStyle = "rgba(" + color + "," + (0.85 * k).toFixed(3) + ")";
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      ctx.moveTo(p0.x + ox, p0.y + oy); ctx.lineTo(p1.x + ox, p1.y + oy); ctx.stroke();
-    }
-    ctx.restore();
-  }
-
   /* ---------- барьер: постоянный, но тихий; помнит удары трещинами ---------- */
 
   const SHIELD = "138,206,255";
-  const FACETS = 11;
 
   // Жизнь барьера одним циклом: пассив, слабый удар, тик DoT, два сильных, пробитие, пауза.
   // strength — доля поглощённого урона; dot бьёт «всюду», поэтому своей точки не имеет.
@@ -3154,74 +3237,6 @@
     return { x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry, a: a };
   }
 
-  // Насколько ярко светится участок поверхности: базовая почти-невидимость плюс подсветка от удара,
-  // спадающая по угловому расстоянию до точки контакта. DoT светит ровно по всей поверхности.
-  function facetGlow(angDeg, st, base) {
-    if (st.glow <= 0) return base;
-    if (st.hitAng === null) return base + st.glow * 0.5;          // dot: всюду, но слабее
-    let d = Math.abs(((angDeg - st.hitAng + 540) % 360) - 180);   // 0 в точке удара, 180 напротив
-    const near = Math.max(0, 1 - d / 95);
-    return base + st.glow * (0.28 + 0.72 * near * near);
-  }
-
-  function shieldSurface(ctx, cx, cy, rx, ry, kind, st, base) {
-    ctx.save();
-    ctx.globalCompositeOperation = "lighter";
-
-    if (kind === "smooth") {
-      const g = ctx.createRadialGradient(cx, cy, Math.min(rx, ry) * 0.45, cx, cy, Math.max(rx, ry));
-      g.addColorStop(0, "rgba(" + SHIELD + ",0)");
-      g.addColorStop(0.82, "rgba(" + SHIELD + "," + (base * 0.8 + st.glow * 0.10).toFixed(3) + ")");
-      g.addColorStop(1, "rgba(" + SHIELD + "," + (base * 2.6 + st.glow * 0.55).toFixed(3) + ")");
-      ctx.fillStyle = g;
-      ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2); ctx.fill();
-      if (st.glow > 0 && st.hitAng !== null) {                     // пятно в точке контакта
-        const ha = st.hitAng * Math.PI / 180;
-        const px = cx + Math.cos(ha) * rx, py = cy + Math.sin(ha) * ry;
-        const pr = rx * (0.35 + 0.35 * st.glow);
-        const gp = ctx.createRadialGradient(px, py, 0, px, py, pr);
-        gp.addColorStop(0, "rgba(230,248,255," + (0.75 * st.glow).toFixed(3) + ")");
-        gp.addColorStop(1, "rgba(" + SHIELD + ",0)");
-        ctx.fillStyle = gp;
-        ctx.beginPath(); ctx.arc(px, py, pr, 0, Math.PI * 2); ctx.fill();
-      }
-    } else if (kind === "glass") {
-      for (let i = 0; i < FACETS; i++) {                           // пластины-фасеты с разными бликами
-        const p0 = facetPoint(cx, cy, rx, ry, i, FACETS);
-        const p1 = facetPoint(cx, cy, rx, ry, i + 1, FACETS);
-        const mid = ((p0.a + p1.a) / 2) * 180 / Math.PI;
-        const a = facetGlow(mid, st, base) * (0.55 + 0.45 * jag(i, 61));
-        ctx.fillStyle = "rgba(" + SHIELD + "," + a.toFixed(3) + ")";
-        ctx.beginPath();
-        ctx.moveTo(cx, cy); ctx.lineTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y);
-        ctx.closePath(); ctx.fill();
-        ctx.strokeStyle = "rgba(" + SHIELD + "," + (a * 1.5).toFixed(3) + ")";
-        ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
-      }
-    } else {                                                       // facet: полигон плюс хорды
-      for (let i = 0; i < FACETS; i++) {
-        const p0 = facetPoint(cx, cy, rx, ry, i, FACETS);
-        const p1 = facetPoint(cx, cy, rx, ry, i + 1, FACETS);
-        const mid = ((p0.a + p1.a) / 2) * 180 / Math.PI;
-        const a = facetGlow(mid, st, base);
-        ctx.strokeStyle = "rgba(" + SHIELD + "," + Math.min(1, a * 2.2).toFixed(3) + ")";
-        ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
-      }
-      for (let i = 0; i < FACETS; i++) {                           // грани внутрь: объём без заливки
-        const p0 = facetPoint(cx, cy, rx, ry, i, FACETS);
-        const p1 = facetPoint(cx, cy, rx, ry, i + 3, FACETS);
-        const mid = ((p0.a + p1.a) / 2) * 180 / Math.PI;
-        const a = facetGlow(mid, st, base) * 0.45;
-        ctx.strokeStyle = "rgba(" + SHIELD + "," + a.toFixed(3) + ")";
-        ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
-      }
-    }
-    ctx.restore();
-  }
-
   function shieldReadout(ctx, W, H0, st, label) {
     ctx.font = "500 13px ui-monospace, Consolas, monospace";
     ctx.fillStyle = "rgba(147,128,94,.9)";
@@ -3252,34 +3267,16 @@
     const cx = x, cy = groundY - H * 0.5, rx = u * 4.9, ry = H * 0.63;
 
     if (st.broken < 0) {
-      shieldSurface(ctx, cx, cy, rx, ry, kind, st, SHIELD_BASE);
-      drawPattern(ctx, cx, cy, rx, ry, 31, st.shown, st.hits, SHIELD, 0.14 + st.shown * 0.5 + st.glow * 0.4);
+      domeSurface(ctx, kind, cx, cy, rx, ry, SHIELD, st, SHIELD_BASE, groundY + u * 0.8);
+      drawPattern(ctx, kind, cx, cy, rx, ry, 31, st.shown, st.hits, SHIELD,
+                  0.14 + st.shown * 0.5 + st.glow * 0.4);
     } else if (st.broken < 1) {
-      shieldShards(ctx, cx, cy, rx, ry, st.broken, SHIELD_EVENTS[SHIELD_EVENTS.length - 1].ang);
+      domeShards(ctx, kind, cx, cy, rx, ry, st.broken,
+                 SHIELD_EVENTS[SHIELD_EVENTS.length - 1].ang, SHIELD);
     }
 
     shieldReadout(ctx, W, H0, st, "состояние");
-    miniLabel(ctx, kind === "facet" ? "грани" : kind === "smooth" ? "гладкое" : "стекло");
-  }
-
-  // Разрушение: грани уходят ПО КАСАТЕЛЬНОЙ от последнего удара — у слома есть направление.
-  function shieldShards(ctx, cx, cy, rx, ry, t, hitAng) {
-    const k = 1 - t;
-    const push = (hitAng + 180) * Math.PI / 180;
-    ctx.save();
-    ctx.globalCompositeOperation = "lighter";
-    for (let i = 0; i < FACETS; i++) {
-      const p0 = facetPoint(cx, cy, rx, ry, i, FACETS);
-      const p1 = facetPoint(cx, cy, rx, ry, i + 1, FACETS);
-      const spin = (jag(i, 81) - 0.5) * 0.8;
-      const d = rx * 1.5 * t * (0.5 + jag(i, 82));
-      const ox = Math.cos(push + spin) * d, oy = Math.sin(push + spin) * d * (ry / rx) - ry * 0.25 * t;
-      ctx.strokeStyle = "rgba(" + SHIELD + "," + (0.85 * k).toFixed(3) + ")";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(p0.x + ox, p0.y + oy); ctx.lineTo(p1.x + ox, p1.y + oy); ctx.stroke();
-    }
-    ctx.restore();
+    miniLabel(ctx, (DOME[kind] || DOME.dome).label);
   }
 
   const BREAK_CYCLE = 96;
@@ -3295,10 +3292,10 @@
 
     if (c < 30) {                                   // целый, с трещинами от прошлых ударов
       const st = { glow: c > 24 ? (c - 24) / 6 : 0, hitAng: -64, cracks: 4, dot: false, broken: -1 };
-      shieldSurface(ctx, cx, cy, rx, ry, "facet", st, SHIELD_BASE);
-      drawPattern(ctx, cx, cy, rx, ry, 31, 0.95, [-64, -150, -20], SHIELD, 0.6 + st.glow * 0.4);
+      domeSurface(ctx, "dome", cx, cy, rx, ry, SHIELD, st, SHIELD_BASE, groundY + u * 0.8);
+      drawPattern(ctx, "dome", cx, cy, rx, ry, 31, 0.95, [-64, -150, -20], SHIELD, 0.6 + st.glow * 0.4);
     } else if (c < 56) {
-      shieldShards(ctx, cx, cy, rx, ry, (c - 30) / 26, -64);
+      domeShards(ctx, "dome", cx, cy, rx, ry, (c - 30) / 26, -64, SHIELD);
     }
 
     ctx.font = "500 13px ui-monospace, Consolas, monospace";
@@ -3324,8 +3321,9 @@
       ctx.save();
       ctx.globalAlpha = 1 - t;
       ctx.translate(0, -ry * 0.35 * t);
-      shieldSurface(ctx, cx, cy, rx, ry * (1 + 0.12 * t), "facet", st, SHIELD_BASE * (1 - t * 0.4));
-      drawPattern(ctx, cx, cy, rx, ry, 31, 0.35, [-150], SHIELD, 0.3 * (1 - t));
+      domeSurface(ctx, "dome", cx, cy, rx, ry * (1 + 0.12 * t), SHIELD, st,
+                  SHIELD_BASE * (1 - t * 0.4), groundY + u * 0.8);
+      drawPattern(ctx, "dome", cx, cy, rx, ry, 31, 0.35, [-150], SHIELD, 0.3 * (1 - t));
       ctx.restore();
     }
 
@@ -3353,7 +3351,7 @@
   const cTime = document.getElementById("c-timeline");
   const sChan = document.getElementById("s-channels");
   const sAbsurd = document.getElementById("s-absurd");
-  const SHIELD_STANDS = [["b-facet", "facet"], ["b-smooth", "smooth"], ["b-glass", "glass"]]
+  const SHIELD_STANDS = [["b-ellipse", "ellipse"], ["b-dome", "dome"], ["b-cocoon", "cocoon"]]
     .map(function (p) { return { el: document.getElementById(p[0]), kind: p[1] }; });
   const bBreak = document.getElementById("b-break");
   const bFade = document.getElementById("b-fade");
