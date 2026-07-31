@@ -35,17 +35,23 @@ namespace Guildmaster.Presentation.Body
         /// </summary>
         public readonly PartMask GlowParts;
 
+        /// <summary>
+        /// 0..1 — какая доля свечения ложится ровно, не считаясь с артом (<c>_GlowShapeKeep</c>). Ниже —
+        /// свет идёт по яркости пикселя, и форма светящейся части остаётся читаемой.
+        /// </summary>
+        public readonly float GlowFlatness;
+
         public BodyVisualState(Color tint, float flash, Color flashColor,
             float holo, Color holoColor, float holoAlpha, float holoScanScale, float holoScanAmount,
             float outline, Color outlineColor,
-            float glow, Color glowColor, PartMask glowParts)
+            float glow, Color glowColor, PartMask glowParts, float glowFlatness)
         {
             Tint = tint;
             Flash = flash; FlashColor = flashColor;
             Holo = holo; HoloColor = holoColor; HoloAlpha = holoAlpha;
             HoloScanScale = holoScanScale; HoloScanAmount = holoScanAmount;
             Outline = outline; OutlineColor = outlineColor;
-            Glow = glow; GlowColor = glowColor; GlowParts = glowParts;
+            Glow = glow; GlowColor = glowColor; GlowParts = glowParts; GlowFlatness = glowFlatness;
         }
 
         /// <summary>Светится ли хоть одна часть: сила выше нуля И маска не пуста.</summary>
@@ -62,7 +68,8 @@ namespace Guildmaster.Presentation.Body
             Mathf.Approximately(HoloScanScale, other.HoloScanScale) &&
             Mathf.Approximately(HoloScanAmount, other.HoloScanAmount) &&
             Mathf.Approximately(Outline, other.Outline) && OutlineColor == other.OutlineColor &&
-            Mathf.Approximately(Glow, other.Glow) && GlowColor == other.GlowColor && GlowParts == other.GlowParts;
+            Mathf.Approximately(Glow, other.Glow) && GlowColor == other.GlowColor &&
+            GlowParts == other.GlowParts && Mathf.Approximately(GlowFlatness, other.GlowFlatness);
 
         public override bool Equals(object obj) => obj is BodyVisualState s && Equals(s);
         public override int GetHashCode() => System.HashCode.Combine(Tint, Flash, FlashColor, Holo, Outline, OutlineColor, Glow, GlowParts);

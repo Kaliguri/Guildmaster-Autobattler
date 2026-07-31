@@ -26,6 +26,8 @@ MonoBehaviour:
   _enableFloatingTextArc: 1
   _enableHpBarPunch: 1
   _enableHealFlash: 1
+  _enableCastGlow: 1
+  _enableBlockGlow: 1
   _enableHitFlash: 1
   _enableHitSquash: 1
   _enableTelegraphFlash: 1
@@ -49,8 +51,37 @@ MonoBehaviour:
   _deathAnticipateShake: 0.06
   _numberArcGravity: 2.2
   _healFlashPeak: 1
-  _castOutlineDuration: 0.45
+  _castOutlineDuration: 0
   _castOutlineStrength: 0.9
+  _castGlowStrength: 1
+  _castGlowBloomIntensity: 2.5
+  _castGlowChargeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _castGlowRelease: 0.18
+  _castGlowPulseRise: 0.06
+  _castGlowFlatness: 0.35
   _lowHpThreshold: 0.25
   _lowHpPulsePeriod: 0.85
   _lowHpPulseAmount: 0.5

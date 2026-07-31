@@ -1296,7 +1296,8 @@ namespace Guildmaster.Presentation
                 _feel != null ? _feel.HologramScanScale  : 1f,
                 _feel != null ? _feel.HologramScanAmount : 0f,
                 _outlineAmount, _outlineColor,
-                _glowAmount, _glowColor, _glowParts);
+                _glowAmount, _glowColor, _glowParts,
+                _feel != null ? _feel.CastGlowFlatness : 1f);
 
             Body.Apply(state);
         }
@@ -1467,7 +1468,26 @@ namespace Guildmaster.Presentation
         /// <param name="chargeSeconds">Время заряда (cast-time из симуляции). 0 = сразу пик.</param>
         public void PlayCastGlow(Color glowColor, PartMask parts, float chargeSeconds)
         {
-            if (_feel == null || !_feel.EnableCastGlow || parts.IsEmpty) return;
+            if (_feel == null || !_feel.EnableCastGlow) return;
+            LightParts(glowColor, parts, chargeSeconds);
+        }
+
+        /// <summary>
+        /// Щит поглотил удар — вспыхивает сам щит: тот же свет, что у каста, но событие обратное
+        /// (не «сейчас ударю», а «принял на себя»), поэтому заряда нет — всполох с пика.
+        /// </summary>
+        /// <param name="glowColor">HDR-цвет защиты (резолвит презентер), не цвет юнита.</param>
+        /// <param name="parts">Части щита. Щита в руках нет — маска пуста, и ничего не светится.</param>
+        public void PlayBlockGlow(Color glowColor, PartMask parts)
+        {
+            if (_feel == null || !_feel.EnableBlockGlow) return;
+            LightParts(glowColor, parts, chargeSeconds: 0f);
+        }
+
+        // Общий механизм для обоих входов: у них одна кривая и один спад, разные только повод и цвет.
+        private void LightParts(Color glowColor, PartMask parts, float chargeSeconds)
+        {
+            if (parts.IsEmpty) return;
 
             _glowColor        = glowColor;
             _glowParts        = parts;

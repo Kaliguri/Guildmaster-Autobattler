@@ -36,6 +36,11 @@ Shader "Guildmaster/Sprite/HitFlash"
         _GlowAmount ("Glow Amount", Range(0, 1)) = 0
         [HDR] _GlowColor ("Glow Color", Color) = (1, 1, 1, 1)
 
+        // Сколько свечения ложится РОВНО, не считаясь с артом: 1 = плоская заливка (тёмные пиксели
+        // догоняют светлые, и клинок на пике превращается в однотонное пятно), 0 = свет строго по
+        // яркости пикселя, форма и грани читаются целиком. Между ними — сколько силуэта отдаём свету.
+        _GlowShapeKeep ("Glow Flatness", Range(0, 1)) = 0.35
+
         // Спрайтовая обвязка — SpriteRenderer прокидывает per-renderer, руками не трогать.
         [HideInInspector] _RendererColor ("RendererColor", Color) = (1, 1, 1, 1)
         [HideInInspector] _Flip ("Flip", Vector) = (1, 1, 1, 1)
@@ -107,6 +112,7 @@ Shader "Guildmaster/Sprite/HitFlash"
                 half   _Outline;
                 half4  _GlowColor;
                 half   _GlowAmount;
+                half   _GlowShapeKeep;
             CBUFFER_END
 
             /// Контур по краю силуэта: там, где рядом с пикселем пустота, — граница тела. Здесь он к месту
@@ -176,7 +182,14 @@ Shader "Guildmaster/Sprite/HitFlash"
                 mainTex.rgb = lerp(mainTex.rgb, _FlashColor.rgb, saturate(_FlashAmount));
                 // Свечение части: emission поверх, только по телу (умножаем на alpha, иначе засветится
                 // прозрачный квад). HDR _GlowColor уводит rgb за 1.0 — bloom подхватывает свет, не арт.
-                mainTex.rgb += _GlowColor.rgb * (saturate(_GlowAmount) * mainTex.a);
+                //
+                // Свет МОДУЛИРУЕТСЯ яркостью пикселя, а не заливает площадь ровно: ровная добавка
+                // поднимает тёмные места так же, как светлые, внутренние контрасты схлопываются, и
+                // светящийся клинок читается силуэтом без формы. _GlowShapeKeep задаёт, какую долю
+                // отдаём ровному свету, остальное идёт по арту.
+                half glowLum   = dot(mainTex.rgb, half3(0.299h, 0.587h, 0.114h));
+                half glowShape = lerp(glowLum, 1.0h, saturate(_GlowShapeKeep));
+                mainTex.rgb += _GlowColor.rgb * (saturate(_GlowAmount) * mainTex.a * glowShape);
                 return mainTex;
             }
             ENDHLSL
@@ -228,6 +241,7 @@ Shader "Guildmaster/Sprite/HitFlash"
                 half   _Outline;
                 half4  _GlowColor;
                 half   _GlowAmount;
+                half   _GlowShapeKeep;
             CBUFFER_END
 
             /// Контур по краю силуэта: там, где рядом с пикселем пустота, — граница тела. Здесь он к месту
@@ -291,7 +305,14 @@ Shader "Guildmaster/Sprite/HitFlash"
                 mainTex.rgb = lerp(mainTex.rgb, _FlashColor.rgb, saturate(_FlashAmount));
                 // Свечение части: emission поверх, только по телу (умножаем на alpha, иначе засветится
                 // прозрачный квад). HDR _GlowColor уводит rgb за 1.0 — bloom подхватывает свет, не арт.
-                mainTex.rgb += _GlowColor.rgb * (saturate(_GlowAmount) * mainTex.a);
+                //
+                // Свет МОДУЛИРУЕТСЯ яркостью пикселя, а не заливает площадь ровно: ровная добавка
+                // поднимает тёмные места так же, как светлые, внутренние контрасты схлопываются, и
+                // светящийся клинок читается силуэтом без формы. _GlowShapeKeep задаёт, какую долю
+                // отдаём ровному свету, остальное идёт по арту.
+                half glowLum   = dot(mainTex.rgb, half3(0.299h, 0.587h, 0.114h));
+                half glowShape = lerp(glowLum, 1.0h, saturate(_GlowShapeKeep));
+                mainTex.rgb += _GlowColor.rgb * (saturate(_GlowAmount) * mainTex.a * glowShape);
                 return mainTex;
             }
             ENDHLSL

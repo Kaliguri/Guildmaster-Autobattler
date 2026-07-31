@@ -52,6 +52,10 @@ namespace Guildmaster.Presentation.Design
                  "Выключено — телеграф каста остаётся на контуре силуэта.")]
         [SerializeField] private bool _enableCastGlow = true;
 
+        [Tooltip("Свечение ЩИТА в момент, когда он поглотил удар: та же вспышка света, что у каста, " +
+                 "но цветом защиты. Нет щита в руках — ничего не светится.")]
+        [SerializeField] private bool _enableBlockGlow = true;
+
         // Эти пять существовали БЕЗ тумблера: выключить их можно было только правкой кода, а «список
         // переключателей» без них отвечал на вопрос «всё ли включено» неправдой (заказ Макса 30.07).
         // Перепись входов держит FeelToggleCoverageTests — новый эффект без тумблера уронит тест.
@@ -146,6 +150,10 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Короткий подъём для МГНОВЕННОГО свечения (пассив без каста, пульс оружия у длительного " +
                  "баффа): всполох вместо наливающегося заряда.")]
         [SerializeField, Range(0.01f, 0.3f)] private float _castGlowPulseRise = 0.06f;
+        [Tooltip("Сколько свечения ложится РОВНО, не считаясь с артом (_GlowShapeKeep шейдера). 1 = плоская " +
+                 "заливка: на пике клинок теряет форму и читается силуэтом. 0 = свет строго по яркости " +
+                 "пикселя: форма и грани видны, но тёмный арт светится слабо.")]
+        [SerializeField, Range(0f, 1f)] private float _castGlowFlatness = 0.35f;
 
         [Header("Micro Feel — low HP pulse")]
         [Tooltip("Доля HP, ниже которой полоса тревожно дышит светом. 0 = пульса нет.")]
@@ -346,6 +354,7 @@ namespace Guildmaster.Presentation.Design
         public bool  EnableHpBarPunch        => _enableHpBarPunch;
         public bool  EnableHealFlash         => _enableHealFlash;
         public bool  EnableCastGlow          => _enableCastGlow;
+        public bool  EnableBlockGlow         => _enableBlockGlow;
         public bool  EnableHitFlash          => _enableHitFlash;
         public bool  EnableHitSquash         => _enableHitSquash;
         public bool  EnableTelegraphFlash    => _enableTelegraphFlash;
@@ -361,6 +370,7 @@ namespace Guildmaster.Presentation.Design
         public AnimationCurve CastGlowChargeCurve => _castGlowChargeCurve;
         public float CastGlowRelease     => _castGlowRelease;
         public float CastGlowPulseRise   => _castGlowPulseRise;
+        public float CastGlowFlatness    => _castGlowFlatness;
         public float LowHpThreshold      => _lowHpThreshold;
         public float LowHpPulsePeriod    => _lowHpPulsePeriod;
         public float LowHpPulseAmount    => _lowHpPulseAmount;

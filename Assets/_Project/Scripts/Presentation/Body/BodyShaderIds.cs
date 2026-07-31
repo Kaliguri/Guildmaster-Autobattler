@@ -20,6 +20,7 @@ namespace Guildmaster.Presentation.Body
         public static readonly int OutlineColor   = Shader.PropertyToID("_OutlineColor");
         public static readonly int GlowAmount     = Shader.PropertyToID("_GlowAmount");
         public static readonly int GlowColor      = Shader.PropertyToID("_GlowColor");
+        public static readonly int GlowFlatness   = Shader.PropertyToID("_GlowShapeKeep");
 
         /// <summary>
         /// Разложить состояние кадра в property block одной части. Шаг текселя считается по ТЕКСТУРЕ ЭТОЙ
@@ -39,7 +40,13 @@ namespace Guildmaster.Presentation.Body
             // явно — иначе оружие, засветившееся кадром раньше, осталось бы гореть, когда приём прошёл.
             float glow = partGlows && state.HasGlow ? state.Glow : 0f;
             mpb.SetFloat(GlowAmount, glow);
-            if (glow > 0.0001f) mpb.SetColor(GlowColor, state.GlowColor);
+            if (glow > 0.0001f)
+            {
+                mpb.SetColor(GlowColor, state.GlowColor);
+                // Плоскость свечения приходит из feel-конфига и живёт в состоянии кадра, а не в материале:
+                // материал один на всех юнитов, а ручка должна крутиться на лету при play-QA.
+                mpb.SetFloat(GlowFlatness, state.GlowFlatness);
+            }
 
             bool needsTexel = state.Outline > 0.0001f || state.Holo > 0.0001f;
             if (needsTexel)

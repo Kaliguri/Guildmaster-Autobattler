@@ -588,6 +588,14 @@ namespace Guildmaster.Presentation
                 // и завязка на полный блок прятала вспышку до самой активки (замер трассой 31.07.2026).
                 if (shieldAbsorbed && _colorPalette != null) flash = _colorPalette.BlockFlash;
 
+                // И сам щит вспыхивает светом — тем же, каким оружие светится на касте. Цвет берём
+                // защитный, а не юнита: блок читается как одно событие с золотой вспышкой тела.
+                // Щита в руках нет (барьер от эффекта, «Оплот») — маска пуста, и мы молчим: врать
+                // о том, чем принят удар, нельзя.
+                if (shieldAbsorbed && _colorPalette != null)
+                    view.PlayBlockGlow(GlowColorOf(_colorPalette.BlockFlash),
+                        view.GlowMaskFor(CastSource.Shield));
+
                 // Отброс тела — только тому, кто удар ПРИНЯЛ в HP. Съеденный щитом целиком не толкает: он
                 // для того щит и держал, а дёрнувшееся тело читалось бы как пробитие.
                 view.OnDamageReceived(flash, blocked ? Vector2.zero : nudgeDir);
@@ -747,9 +755,14 @@ namespace Guildmaster.Presentation
         /// Цвет свечения части при касте: цвет юнита, поднятый HDR-множителем под порог bloom (порог 1.0,
         /// LDR-цвет юнита сам не светится). Альфу не трогаем — шейдер тела читает её как прозрачность, не свет.
         /// </summary>
-        private Color GlowColorFor(int unitId)
+        private Color GlowColorFor(int unitId) => GlowColorOf(VfxColorFor(unitId));
+
+        /// <summary>
+        /// Поднять любой LDR-цвет под порог bloom тем же множителем, что и свечение каста: у блока свой
+        /// цвет (золото защиты), но светиться он обязан ровно так же, иначе это два разных языка света.
+        /// </summary>
+        private Color GlowColorOf(Color c)
         {
-            Color c = VfxColorFor(unitId);
             float k = _feel != null ? _feel.CastGlowBloomIntensity : 1f;
             return new Color(c.r * k, c.g * k, c.b * k, c.a);
         }
