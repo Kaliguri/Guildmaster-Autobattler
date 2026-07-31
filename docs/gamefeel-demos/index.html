@@ -547,7 +547,7 @@
                 aria-label="Накопление порезов на теле и их заживление хилом"></canvas>
         <p class="tag" style="text-align:center">порезы · накопление и заживление</p>
         <p class="dim">Каждый удар пишет порез с запасом, равным снятому HP. Хил гасит яркость
-          пропорционально: порез на 1000 при лечении на 400 тускнеет на 40%. Лимит на теле — 6.</p>
+          пропорционально: порез на 1000 при лечении на 400 тускнеет на 40%. Лимит на теле — 12.</p>
       </div>
     </div>
   </section>
@@ -1285,7 +1285,7 @@
 
   // Искры: два потока. Быстрые — цвет удара, прочь по вектору. Медленные — красные, вниз.
   function sparks(ctx, x, y, dirDeg, damageFrac, ageFrames, H, salt) {
-    const count = Math.min(24, Math.round(damageFrac * 60) + 3);   // потолок: кит не должен давать стену
+    const count = Math.min(48, Math.round(damageFrac * 120) + 6);  // потолок: кит не должен давать стену
     const fast = Math.round(count * 0.6);
     const dir = dirDeg * Math.PI / 180;
     for (let i = 0; i < count; i++) {
@@ -1309,7 +1309,7 @@
   }
 
   // Порезы — СОСТОЯНИЕ тела: место, угол, запас HP, текущая яркость.
-  const CUT_LIMIT = 6;
+  const CUT_LIMIT = 12;
   const cuts = [];
   function addCut(damageFrac, angleDeg, salt) {
     cuts.push({
