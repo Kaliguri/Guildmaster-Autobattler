@@ -17,9 +17,11 @@ namespace Guildmaster.Combat
     public sealed class RegenSystem
     {
         /// <summary>
-        /// Сколько ресурса капает в секунду — ОДИНАКОВО у всех (решение 2026-07-27). Публичное поле:
-        /// стартовое значение засевает боевой скоуп из <c>StatsConfig</c> (единственный источник), здесь —
-        /// код-дефолт для headless-конструирования без конфига.
+        /// БАЗОВАЯ скорость набора ресурса, единиц в секунду — одинаковая у всех (решение 2026-07-27).
+        /// Публичное поле: стартовое значение засевает боевой скоуп из <c>StatsConfig</c> (единственный
+        /// источник), здесь — код-дефолт для headless-конструирования без конфига.
+        /// <para>Итоговая скорость юнита — <c>(база + ResourceRegenFlat) × ResourceGainEff</c>, то есть
+        /// «одинаково у всех» с 2026-07-31 верно только про базу: эффекты могут её сдвигать плоско.</para>
         /// </summary>
         /// <remarks>
         /// Ресурс капает по времени, а не с попаданий: пока он набирался ударами, скорость атаки была
@@ -61,7 +63,14 @@ namespace Guildmaster.Combat
             if (maxResource <= 0f) return;              // кит без ресурса (Убийца) — копить нечего
             if (unit.CurrentResource >= maxResource) return;
 
-            float gain = ResourcePerSecond * unit.Stats.Get(StatType.ResourceGainEff) * dt;
+            // Плоская дельта складывается с базой ДО множителя и может утащить скорость в минус
+            // (мана-дрейн проказника: -4 из базовых 5). Отрицательный набор — это НЕ утечка уже
+            // накопленного: дебафф обещает «медленнее восстанавливается», а не «сосёт ману», поэтому
+            // ниже нуля скорость клампится, а не разворачивается.
+            float perSecond = ResourcePerSecond + unit.Stats.Get(StatType.ResourceRegenFlat);
+            if (perSecond <= 0f) return;
+
+            float gain = perSecond * unit.Stats.Get(StatType.ResourceGainEff) * dt;
             if (gain <= 0f) return;
 
             unit.CurrentResource = Mathf.Min(unit.CurrentResource + gain, maxResource);

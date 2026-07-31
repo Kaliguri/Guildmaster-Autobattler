@@ -851,9 +851,42 @@ namespace Guildmaster.Combat
                 case AbilityTargetMode.LowestHpAlly:
                     return LowestHpAlly(caster, units);
 
+                case AbilityTargetMode.NearestEnemyWithResource:
+                    return NearestEnemyWithResource(caster, units);
+
                 default:
                     return null;
             }
+        }
+
+        /// <summary>
+        /// Ближайший враг с непустым пулом ресурса; тай-брейк — <c>Id</c> (детерминизм). Никого с
+        /// ресурсом нет — <c>null</c>, и каст просто не состоится.
+        /// </summary>
+        /// <remarks>
+        /// Дальностью не ограничено, как и прочие режимы выбора: дотянется ли проказник до жертвы —
+        /// вопрос его дальности каста, а не выбора цели.
+        /// </remarks>
+        private static RuntimeUnit NearestEnemyWithResource(RuntimeUnit caster, IReadOnlyList<RuntimeUnit> units)
+        {
+            RuntimeUnit best   = null;
+            float       bestSq = float.MaxValue;
+
+            for (int i = 0; i < units.Count; i++)
+            {
+                RuntimeUnit other = units[i];
+                if (other.IsDead || other.Team == caster.Team) continue;
+                if (other.Stats.Get(StatType.MaxResource) <= 0f) continue;
+
+                float sq = (other.Position - caster.Position).sqrMagnitude;
+                if (sq < bestSq || (sq == bestSq && best != null && other.Id < best.Id))
+                {
+                    bestSq = sq;
+                    best   = other;
+                }
+            }
+
+            return best;
         }
 
         private static RuntimeUnit NearestAlly(RuntimeUnit caster, IReadOnlyList<RuntimeUnit> units)
