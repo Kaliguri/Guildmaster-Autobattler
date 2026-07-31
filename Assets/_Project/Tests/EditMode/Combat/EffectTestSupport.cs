@@ -67,6 +67,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             float areaRadius = 0f,
             float healFlat = 0f,
             float healPctTargetMissingHp = 0f,
+            EffectData healEffect = null,
             CastCondition castCondition = CastCondition.Immediately,
             int castConditionCount = 1,
             float castConditionRadius = 0f,
@@ -116,6 +117,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(a, "_areaRadius", areaRadius);
             Set(a, "_healFlat", healFlat);
             Set(a, "_healPctTargetMissingHp", healPctTargetMissingHp);
+            Set(a, "_healEffect", healEffect);
             Set(a, "_castCondition", castCondition);
             Set(a, "_castConditionCount", castConditionCount);
             Set(a, "_castConditionRadius", castConditionRadius);

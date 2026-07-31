@@ -372,5 +372,70 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(25, caster.AttackCooldownTicks,
                 "Очередь атаки не пропущена — умение её не касается");
         }
+
+        // ===================== HealEffect: кому достаётся нагрузка-эффект =====================
+
+        [Test]
+        public void HealEffect_LandsOnSingleTarget()
+        {
+            // Барьер гоблина-мага: щит раненому союзнику задан ЭФФЕКТОМ, а не плоским лечением.
+            var sys = new AbilitySystem();
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+            var caster = TestUnit.Make();
+            var ally = TestUnit.Make(team: 0);
+            ally.CurrentHP = ally.Stats.Get(StatType.MaxHP) * 0.3f;
+            EffectData ward = TestEffect.Make(baseDuration: 5f, polarity: EffectPolarity.Buff);
+            WithAbility(caster, TestAbility.Make(mode: AbilityTargetMode.LowestHpAlly, healEffect: ward));
+
+            bool cast = sys.TryCast(caster, 0, new List<RuntimeUnit> { caster, ally }, ctx);
+
+            Assert.IsTrue(cast, "Способность с одним HealEffect — валидная лечащая способность");
+            Assert.IsTrue(ally.ActiveEffects.Exists(e => e.Def == ward),
+                "Хил-эффект достался цели, а не потерялся между ветвями нагрузки");
+        }
+
+        [Test]
+        public void HealEffect_LandsOnEveryAllyInAura()
+        {
+            var sys = new AbilitySystem();
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+            var caster = TestUnit.Make();
+            var ally = TestUnit.Make(team: 0);
+            ctx.UnitsInWorld.Add(caster);
+            ctx.UnitsInWorld.Add(ally);
+            EffectData hot = TestEffect.Make(baseDuration: 8f, polarity: EffectPolarity.Buff);
+            WithAbility(caster, TestAbility.Make(
+                mode: AbilityTargetMode.AlliesInRadius, areaRadius: 5f, healEffect: hot));
+
+            sys.TryCast(caster, 0, new List<RuntimeUnit> { caster, ally }, ctx);
+
+            Assert.IsTrue(ally.ActiveEffects.Exists(e => e.Def == hot), "Союзник в радиусе получил эффект");
+            Assert.IsTrue(caster.ActiveEffects.Exists(e => e.Def == hot), "Кастующий сам себе союзник (§ApplyAllyAura)");
+        }
+
+        [Test]
+        public void HealEffect_DoesNotReachEnemies_OfACircleCast()
+        {
+            // Инвариант места правки: хил-эффект живёт рядом с ctx.Heal, а НЕ в общем проходе эффектов.
+            // Иначе круг, который адресует врагов, начал бы щитовать тех, по кому бьёт.
+            var sys = new AbilitySystem();
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+            var caster = WithAttackDamage(TestUnit.Make());
+            var enemy  = TestUnit.Make(team: 1);
+            ctx.UnitsInWorld.Add(caster);
+            ctx.UnitsInWorld.Add(enemy);
+            EffectData ward = TestEffect.Make(baseDuration: 5f, polarity: EffectPolarity.Buff);
+            WithAbility(caster, TestAbility.Make(
+                mode: AbilityTargetMode.NearestEnemy, damageMultiplier: 2f,
+                areaShape: AreaShape.Circle, areaRadius: 5f, healEffect: ward));
+
+            sys.TryCast(caster, 0, new List<RuntimeUnit> { caster, enemy }, ctx);
+
+            Assert.IsFalse(enemy.ActiveEffects.Exists(e => e.Def == ward),
+                "Враг под круговым кастом хил-эффекта не получает");
+        }
     }
 }
