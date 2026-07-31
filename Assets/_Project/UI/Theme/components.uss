@@ -1378,46 +1378,108 @@
 }
 
 /* ============================================================================
- * BOOT TITLE CARD: печать + Cormorant «Happy Guildmasters» до главного меню.
- * Полноэкранный ink; клик или авто-таймер (~2.2 с) закрывают карточку.
+ * BOOT / LOADING SCREEN (реф Ravenswatch, temp): лого-lockup по центру + тёплое свечение,
+ * ряд атрибуций внизу, «Загрузка» + вращающийся знак справа. Полноэкранный ink; ЛЮБАЯ
+ * клавиша/клик → плавный уход (переход в главное меню). Свечение — PNG (USS без radial).
  * ========================================================================== */
-.gm-screen--titlecard {
+.gm-boot {
     background-color: var(--gm-ink-900);
     justify-content: center;
     align-items: center;
+    transition-property: opacity;
+    transition-duration: 0.35s;
 }
 
-.gm-titlecard {
+.gm-boot--out {
+    opacity: 0;
+}
+
+.gm-boot__glow {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 26%;
+    height: 540px;
+    -unity-background-scale-mode: scale-to-fit;
+    background-image: url("../../Art/Brand/BootGlow.png");
+}
+
+.gm-boot__logo {
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
 }
 
-.gm-titlecard__seal {
-    width: 256px;
-    height: 256px;
-    margin-bottom: var(--gm-space-4);
+.gm-boot__seal {
+    width: 160px;
+    height: 160px;
+    margin-right: var(--gm-space-3);
     -unity-background-scale-mode: scale-to-fit;
 }
 
-.gm-titlecard__title {
-    font-size: var(--gm-font-lg);
-    color: var(--gm-brass-300);
-    -unity-text-align: middle-center;
-    margin-bottom: var(--gm-space-1);
+.gm-boot__title {
+    font-size: var(--gm-font-display);
+    color: var(--gm-color-display-accent);
+    -unity-text-align: middle-left;
 }
 
-.gm-titlecard__studio {
-    font-size: var(--gm-font-body);
+.gm-boot__hint {
+    font-size: var(--gm-font-sm);
     color: var(--gm-color-text-muted);
     -unity-text-align: middle-center;
-    margin-bottom: var(--gm-space-4);
+    margin-top: var(--gm-space-5);
+    opacity: 0.8;
+}
+
+.gm-boot__attrib {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--gm-space-5);
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.gm-boot__attrib-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: var(--gm-space-1);
+    -unity-background-scale-mode: scale-to-fit;
+    background-image: url("../../Art/Brand/CompanyLogo_Alebardium.png");
+}
+
+.gm-boot__attrib-item {
+    font-size: var(--gm-font-xs);
+    color: var(--gm-color-text-muted);
     letter-spacing: 2px;
 }
 
-.gm-titlecard__hint {
-    font-size: var(--gm-font-sm);
-    -unity-text-align: middle-center;
-    opacity: 0.7;
+.gm-boot__attrib-sep {
+    font-size: var(--gm-font-xs);
+    color: var(--gm-color-disabled-text);
+    margin-left: var(--gm-space-2);
+    margin-right: var(--gm-space-2);
+}
+
+.gm-boot__loading {
+    position: absolute;
+    right: var(--gm-space-5);
+    bottom: var(--gm-space-4);
+    flex-direction: row;
+    align-items: center;
+}
+
+.gm-boot__loading-label {
+    font-size: var(--gm-font-xs);
+    color: var(--gm-color-text-muted);
+    margin-right: var(--gm-space-1);
+}
+
+.gm-boot__spinner {
+    width: 34px;
+    height: 34px;
+    -unity-background-scale-mode: scale-to-fit;
+    background-image: url("../../Art/Brand/AppIcon_HappyGuildmasters.png");
 }
 
 /* ============================================================================
