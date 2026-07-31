@@ -898,7 +898,21 @@
       <article class="stand"><canvas id="k-addover" width="320" height="280" role="img" aria-label="Новый поверх треснувшего"></canvas>
         <div class="stand-body"><h3>Новый поверх битого</h3><p class="dim">Треснувший остаётся треснувшим, свежий
           приходит целым слоем снаружи. Трещины не «заживают».</p></div></article>
+      <article class="stand"><canvas id="k-block" width="320" height="280" role="img" aria-label="Блок щитом"></canvas>
+        <div class="stand-body"><h3>Блок щитом</h3><p class="dim">Тот же барьер, но живёт 0.4 с и приходит с жестом:
+          щит подставляется в точку удара. Узор проявиться не успевает — мигнул и всё.</p></div></article>
+      <article class="stand"><canvas id="k-backstab" width="320" height="280" role="img" aria-label="Удар со спины"></canvas>
+        <div class="stand-body"><h3>Удар со спины</h3><p class="dim">Барьер урон погасил, но жеста нет: сим блок
+          направлением не ограничивает, а «подставил щит» сзади было бы ложью про разворот.</p></div></article>
     </div>
+
+    <p class="note">
+      <b>Барьер не излишен при наличии блока — блок на нём и стоит.</b> <code>BlockComponent</code>
+      накладывает короткий щит-эффект, который гасит тот самый удар; барьер это механизм, блок — один из
+      способов его получить. Вард Антимага, водяной щит Монаха и щит от нехватки HP живут вообще без
+      жеста, а DoT будит барьер и не будит блок. Различитель в показе — <b>длительность и жест</b>:
+      мигнувшая оболочка читается как «отбил», висящая — как «под защитой».
+    </p>
 
     <div class="split">
       <div class="card">
@@ -2884,21 +2898,31 @@
     expire:  { cycle: 110, shells: [{ t: "plain", nom: 200 }],
                ev: [{ f: 22, dmg: 70, type: "phys", ang: -150 }, { f: 60, expire: "plain" }] },
     addover: { cycle: 120, shells: [{ t: "plain", nom: 100 }],
-               ev: [{ f: 20, dmg: 80, type: "phys", ang: -140 }, { f: 56, add: { t: "phys", nom: 200 } }] }
+               ev: [{ f: 20, dmg: 80, type: "phys", ang: -140 }, { f: 56, add: { t: "phys", nom: 200 } }] },
+
+    // Блок — тот же барьер, только на 0.4 с и с жестом: BlockComponent накладывает короткий щит,
+    // который гасит тот самый удар. Узор проявиться не успевает, и это и есть различитель.
+    block:    { cycle: 96, shells: [{ t: "plain", nom: 60, born: 22 }],
+                ev: [{ f: 24, dmg: 45, type: "phys", ang: -150, gesture: true }, { f: 36, expire: "plain" }] },
+    // Удар со спины: сим блок направлением не ограничивает, поэтому урон погашен, а жеста нет —
+    // рисовать «подставил щит» значило бы соврать про разворот.
+    backstab: { cycle: 96, shells: [{ t: "plain", nom: 200 }], note: "погашен · жеста нет: со спины",
+                ev: [{ f: 26, dmg: 60, type: "phys", ang: 25 }] }
   };
 
   function runCase(def, c) {
     const shells = def.shells.map(function (s, i) {
       return { t: s.t, nom: s.nom, rest: s.nom, eaten: 0, shown: 0, hits: [], glow: 0,
-               hitAng: null, dot: false, broken: -1, seed: 31 + i * 7, stacks: s.stacks || 1, gone: false };
+               hitAng: null, dot: false, broken: -1, seed: 31 + i * 7, stacks: s.stacks || 1,
+               gone: false, born: s.born || 0, unborn: c < (s.born || 0) };
     });
-    let bodyHit = -1, bodyAng = -90;
+    let bodyHit = -1, bodyAng = -90, gestureAge = -1, gestureAng = -90;
 
     function shellFor(type) {
       for (let i = 0; i < shells.length; i++)                    // школьная своего типа — первой
-        if (!shells[i].gone && shells[i].t === type && shells[i].rest > 0) return shells[i];
+        if (!shells[i].gone && !shells[i].unborn && shells[i].t === type && shells[i].rest > 0) return shells[i];
       for (let i = 0; i < shells.length; i++)
-        if (!shells[i].gone && shells[i].t === "plain" && shells[i].rest > 0) return shells[i];
+        if (!shells[i].gone && !shells[i].unborn && shells[i].t === "plain" && shells[i].rest > 0) return shells[i];
       return null;
     }
 
@@ -2928,6 +2952,8 @@
         continue;
       }
 
+      if (e.gesture && age < 16) { gestureAge = age; gestureAng = e.ang; }
+
       const sh = shellFor(e.type);
       if (!sh) { if (age < 20) { bodyHit = age; bodyAng = e.ang; } continue; }
 
@@ -2944,7 +2970,26 @@
       if (absorbed < e.dmg && age < 20) { bodyHit = age; bodyAng = e.ang; }   // остаток ушёл в тело
     }
 
-    return { shells: shells, bodyHit: bodyHit, bodyAng: bodyAng };
+    return { shells: shells, bodyHit: bodyHit, bodyAng: bodyAng,
+             gestureAge: gestureAge, gestureAng: gestureAng };
+  }
+
+  // Жест блока: пластина щита подставляется В ТОЧКУ удара — направление берётся оттуда же, откуда
+  // точка попадания. На скелетном юните это базовая поза плюс Aim части-щита, не отдельный клип.
+  function blockGesture(ctx, cx, cy, rx, ry, angDeg, age) {
+    const k = age < 4 ? age / 4 : 1 - (age - 4) / 12;            // быстро вышел, мягко ушёл
+    if (k <= 0) return;
+    const a = angDeg * Math.PI / 180;
+    const px = cx + Math.cos(a) * rx * 0.72, py = cy + Math.sin(a) * ry * 0.72;
+    ctx.save();
+    ctx.translate(px, py);
+    ctx.rotate(a);
+    ctx.fillStyle = "rgba(255,214,120," + (0.5 * k).toFixed(3) + ")";
+    ctx.fillRect(-2, -ry * 0.3, 4.5, ry * 0.6);                  // сама пластина
+    ctx.strokeStyle = "rgba(255,236,190," + (0.85 * k).toFixed(3) + ")";
+    ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.moveTo(2.5, -ry * 0.3); ctx.lineTo(2.5, ry * 0.3); ctx.stroke();
+    ctx.restore();
   }
 
   function drawShieldCase(canvas, key) {
@@ -2976,6 +3021,7 @@
 
     for (let i = 0; i < st.shells.length; i++) {
       const sh = st.shells[i];
+      if (sh.unborn) continue;                                   // блок: оболочки ещё нет, щит не поднят
       const depth = SHELL_DEPTH[sh.t] !== undefined ? SHELL_DEPTH[sh.t] : 0;
       const rx = rx0 * (1 + depth * 0.075), ry = ry0 * (1 + depth * 0.075);
       const color = SHELL_COLOR[sh.t];
@@ -3002,17 +3048,23 @@
                   0.12 + 0.5 * (1 - integrity) + sh.glow * 0.4);
     }
 
+    if (st.gestureAge >= 0) blockGesture(ctx, cx, cy, rx0 * 1.1, ry0 * 1.1, st.gestureAng, st.gestureAge);
+
     // Показания: что именно происходит в этом кадре — иначе кейсы не отличить друг от друга.
     ctx.font = "500 12px ui-monospace, Consolas, monospace";
-    const live = st.shells.filter(function (s) { return !s.gone && s.broken < 0; });
+    const live = st.shells.filter(function (s) { return !s.gone && !s.unborn && s.broken < 0; });
     const busy = live.filter(function (s) { return s.glow > 0.03; })[0];
     let line;
-    if (st.shells.some(function (s) { return s.broken >= 0 && s.broken < 1; })) line = "ПРОБИТ";
-    else if (st.shells.some(function (s) { return s.gone && (s.fade || 0) < 1; }))  line = "РАЗВЕЯЛСЯ";
+    if (st.gestureAge >= 0)                                                        line = "БЛОК · щит в точку удара";
+    else if (st.shells.some(function (s) { return s.broken >= 0 && s.broken < 1; })) line = "ПРОБИТ";
+    else if (st.shells.some(function (s) { return s.gone && (s.fade || 0) < 1; }))   line = "РАЗВЕЯЛСЯ";
+    else if (busy && def.note)                                                      line = def.note;
     else if (busy) line = busy.dot ? "тик эффекта · всюду слабее" : "поглощает · " + shellName(busy.t);
     else if (st.bodyHit >= 0) line = "урон дошёл до ТЕЛА";
+    else if (live.length === 0) line = "барьера нет";
     else line = live.length + (live.length === 1 ? " оболочка · покой" : " оболочки · покой");
-    ctx.fillStyle = line.indexOf("ПРОБИТ") === 0 ? "rgba(255,146,48,1)"
+    ctx.fillStyle = line.indexOf("БЛОК") === 0 ? "rgba(255,214,120,1)"
+                  : line.indexOf("ПРОБИТ") === 0 ? "rgba(255,146,48,1)"
                   : line.indexOf("РАЗВЕЯЛСЯ") === 0 ? "rgba(147,128,94,1)"
                   : busy ? "rgba(232,220,196,1)" : "rgba(147,128,94,.8)";
     ctx.fillText(line, 18, H0 - 28);
@@ -3306,7 +3358,7 @@
   const bBreak = document.getElementById("b-break");
   const bFade = document.getElementById("b-fade");
   const SHIELD_CASES_UI = ["calm", "weak", "strong", "dot", "two", "three", "wrong", "stack",
-                           "layer", "through", "expire", "addover"]
+                           "layer", "through", "expire", "addover", "block", "backstab"]
     .map(function (k) { return { el: document.getElementById("k-" + k), key: k }; });
   const EFFECT_PREVIEWS = ["stun", "sleep", "frozen", "knockup", "burn", "ember", "poison",
                            "frostbite", "bleed", "stealth", "mark", "empower", "hot", "antiheal",
