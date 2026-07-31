@@ -49,9 +49,10 @@ MonoBehaviour:
   - Stat: 3
     Op: 3
     Value: 20
-  _grantedEffects: []
+  _grantedEffects:
+  - {fileID: 11400000, guid: ec0a5253dca4e5940b1797cb32e9c8d6, type: 2}
   _abilities: []
-  _aiPreset: {fileID: 11400000, guid: 8bf6d684044ed704eb8561fc2894e318, type: 2}
+  _aiPreset: {fileID: 11400000, guid: a4c9ea71399663b4c97327bd41711347, type: 2}
   _ai:
     _autoAttackTargeting: 0
     _autoAttackMode: 0

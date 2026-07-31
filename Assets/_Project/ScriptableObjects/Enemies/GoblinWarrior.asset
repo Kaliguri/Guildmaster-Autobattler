@@ -24,10 +24,19 @@ MonoBehaviour:
   _vfxTone: 12
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
@@ -40,9 +49,10 @@ MonoBehaviour:
   - Stat: 3
     Op: 3
     Value: 12
-  _grantedEffects: []
+  _grantedEffects:
+  - {fileID: 11400000, guid: 70570d211ca686f4fa3cf8cb37e245ea, type: 2}
   _abilities: []
-  _aiPreset: {fileID: 11400000, guid: 262d3cc7dfd31dc4ab9cbce9705ac85d, type: 2}
+  _aiPreset: {fileID: 11400000, guid: ec9dc0936e1b93a4a8936de2182f9db3, type: 2}
   _ai:
     _autoAttackTargeting: 0
     _autoAttackMode: 0
