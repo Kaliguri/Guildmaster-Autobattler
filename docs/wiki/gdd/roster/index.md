@@ -21,5 +21,6 @@ updated: 2026-07-16
 | [[gdd/roster/tag-reference\|Roster - Tag Reference]] | **Нормативный** словарь YAML-полей и допустимых значений (rarity/position/`combat_class`/школы/affinity/creature_type/playstyle/mechanics/…) |
 | [[gdd/roster/unit-tag-glossary\|Roster - Unit Tag Glossary]] | Глоссарий доп-тегов: 4 оси `Role → DamageType → Playstyle → Mechanic`, EN-канон имён |
 | [[gdd/roster/relic-tag-assignments\|Roster - Relic Tag Assignments]] | Раскладка тегов по реликвиям ростера |
+| [[gdd/roster/roster-gaps\|Roster - Gaps]] | **Заявка на вердикт:** кого не хватает ростеру и сколько (только «кто», без механик) |
 
 > «Справочник тегов» — источник допустимых значений для всех карточек (реликвий и врагов); карточки врагов ссылаются на него из [[gdd/enemies/index|Enemies - Catalog]].
