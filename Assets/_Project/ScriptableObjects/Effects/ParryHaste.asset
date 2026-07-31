@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
-  m_Name: VortexMicroStun
+  m_Name: ParryHaste
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
-  _id: effect.vortex_micro_stun
-  _polarity: 1
-  _tags: 6
-  _baseDuration: 0.25
+  _id: effect.parry_haste
+  _polarity: 0
+  _tags: 1
+  _baseDuration: 1
   _stacking: 2
   _maxStacks: 1
-  _cleanseTier: 2
+  _stacksPerApplication: 1
+  _cleanseTier: 0
   _unremovable: 0
   _cleansePrice:
   - Flat: 0
@@ -28,16 +29,17 @@ MonoBehaviour:
   - Flat: 0
     Pct: 0
   _components:
-  - rid: 5615027308851102054
+  - rid: 5615027358498291895
   _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
   references:
     version: 2
     RefIds:
-    - rid: 5615027308851102054
-      type: {class: ControlComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+    - rid: 5615027358498291895
+      type: {class: StatModifierComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _preventAct: 1
-        _preventMove: 1
-        _preventCast: 1
+        _modifiers:
+        - Stat: 20
+          Op: 2
+          Value: 0.3
