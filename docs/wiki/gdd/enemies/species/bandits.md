@@ -5,7 +5,8 @@ kind: enemy_faction
 status: draft
 updated: 2026-07-29
 species: Разбойники
-impl: paper
+impl: engine
+asset: [species.bandits]
 ---
 
 # Разбойники

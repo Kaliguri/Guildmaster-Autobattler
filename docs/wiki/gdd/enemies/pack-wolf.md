@@ -19,7 +19,8 @@ affinity: []
 encounter_role: Стайное давление
 mechanics:
   - Бонус стаи
-impl: paper
+impl: partial
+asset: [enemy.pack_wolf]
 ---
 
 # Волк стаи

@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63d49fa19860d104c90671a3fd8bb1e6, type: 3}
+  m_Name: BanditWarlock
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
+  _id: enemy.bandit_warlock
+  _combatClass: 4
+  _autoAttackDamageType: 21
+  _creatureType: 0
+  _attackType: 1
+  _resourceType: 0
+  _visual: {fileID: 0}
+  _viewPrefab: {fileID: 0}
+  _bodyShade: 0
+  _vfxTone: 14
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
+  _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
+  _stats:
+  - Stat: 7
+    Op: 3
+    Value: 55
+  - Stat: 8
+    Op: 3
+    Value: 0.7
+  - Stat: 3
+    Op: 3
+    Value: 3
+  - Stat: 9
+    Op: 3
+    Value: 6
+  - Stat: 18
+    Op: 3
+    Value: 10
+  _grantedEffects: []
+  _abilities: []
+  _aiPreset: {fileID: 11400000, guid: 949baa9352f6b3a4f89501271f42034b, type: 2}
+  _ai:
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 0
+      FleeAtHpPct: 0.25
+      ReturnAtHpPct: 0.5
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags: []
+  _species: {fileID: 11400000, guid: ca91a2d05dd33b84c8860bfb3e9525a3, type: 2}
+  _subspecies: {fileID: 0}
+  _threatPoints: 5
+  _goldBounty: 10

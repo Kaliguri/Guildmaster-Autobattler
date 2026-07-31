@@ -24,7 +24,8 @@ mechanics:
   - Приоритет раненого союзника
   - Побег
   - Дополнительное золото
-impl: paper
+impl: partial
+asset: [enemy.bandit_warlock]
 ---
 
 # Разбойник-маг

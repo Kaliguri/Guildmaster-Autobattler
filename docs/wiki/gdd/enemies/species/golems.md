@@ -5,7 +5,8 @@ kind: enemy_faction
 status: draft
 updated: 2026-07-29
 species: Големы
-impl: paper
+impl: engine
+asset: [species.golems]
 ---
 
 # Големы
