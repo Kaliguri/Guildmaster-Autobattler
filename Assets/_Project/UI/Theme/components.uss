@@ -1483,7 +1483,7 @@
     color: var(--gm-color-brand-attrib);
     margin-top: var(--gm-space-1);
     -unity-text-align: middle-center;
-    opacity: 0.35;
+    opacity: 0.2;
 }
 
 .gm-boot__attrib-sep {
