@@ -79,8 +79,10 @@ namespace Guildmaster.Combat
                 // Канал держит юнита так же, как замах: поток льётся с места. «Стрельба на ходу» и здесь
                 // остаётся объявленным исключением кита — если однажды появится канальный кит, который
                 // умеет идти, он объявит это тем же полем, а не новой веткой.
-                bool firing            = unit.Phase == AttackPhase.Windup || unit.Phase == AttackPhase.Recovery
-                                                                          || unit.Phase == AttackPhase.Channel;
+                // Владелец правила один — RuntimeUnit.IsSwinging. Боевое ожидание (CombatIdle) сюда НЕ
+                // входит: между ударами юнит идёт на полной скорости, и это то самое окно, в котором цель
+                // успевает разорвать дистанцию со стрелком (2026-07-30/13).
+                bool firing            = unit.IsSwinging;
                 bool attackWhileMoving = unit.Unit != null && unit.Unit.CanAttackWhileMoving;
 
                 // Въездной замах ДОЕЗЖАЕТ сам себя. Гейт атаки начал его за границей досягаемости именно

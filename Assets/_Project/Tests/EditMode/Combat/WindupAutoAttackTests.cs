@@ -305,6 +305,105 @@ namespace Guildmaster.Tests.EditMode.Combat
             return (attacker, enemy, units, new StubContext());
         }
 
+        // --- Четвёртое состояние цикла: боевое ожидание (решение Макса 2026-07-30/10) ---
+
+        [Test]
+        public void BetweenSwings_WithTargetInReach_IsCombatIdle()
+        {
+            var (attacker, enemy, units, ctx) = SlowScene();
+            var sys = new AutoAttackSystem();
+
+            TickUntilNextDamage(sys, units, ctx, 0);
+            TickUntilRest(sys, units, ctx, attacker);
+
+            Assert.AreEqual(AttackPhase.CombatIdle, attacker.Phase,
+                "Удар отработан, цель под рукой — юнит ЖДЁТ своего окна, а не бездельничает вне боя");
+            Assert.IsFalse(attacker.IsSwinging, "Боевое ожидание — это не идущий удар");
+        }
+
+        [Test]
+        public void FastKit_HasNoWaitingWindow_AtAll()
+        {
+            // Обратная сторона того же правила (два режима темпа, 2026-07-30/15): у кита, чья анимация
+            // занимает ВЕСЬ интервал, ждать нечего — хвост кончается ровно тогда, когда обнуляется
+            // кулдаун, и следующий замах начинается тем же тиком. Боевого ожидания у него не существует,
+            // и это не дефект, а «непрекращающийся град».
+            var (attacker, enemy, units, ctx) = Scene();   // windup 21 + хвост 9 = интервал 30
+            var sys = new AutoAttackSystem();
+
+            TickUntilNextDamage(sys, units, ctx, 0);
+            TickUntilRest(sys, units, ctx, attacker);
+
+            Assert.AreEqual(AttackPhase.Windup, attacker.Phase,
+                "Свинг занимает весь интервал — юнит уходит из хвоста прямо в новый замах");
+        }
+
+        [Test]
+        public void BetweenSwings_WithoutTarget_IsIdle()
+        {
+            var (attacker, enemy, units, ctx) = SlowScene();
+            var sys = new AutoAttackSystem();
+
+            TickUntilNextDamage(sys, units, ctx, 0);
+            attacker.CurrentTarget = null;
+            TickUntilRest(sys, units, ctx, attacker);
+
+            Assert.AreEqual(AttackPhase.Idle, attacker.Phase, "Без цели юнит вне боя");
+        }
+
+        [Test]
+        public void TargetOutOfReach_IsIdle_NotCombatIdle()
+        {
+            var (attacker, enemy, units, ctx) = Scene();
+            var sys = new AutoAttackSystem();
+
+            // Цель выбрана, но до неё бежать: в цикл атаки юнит ещё не вошёл (уточнение Макса — граница
+            // проходит по досягаемости, а не по наличию цели).
+            enemy.Position = enemy.PreviousPosition = new Vector2(40f, 0f);
+            sys.Tick(units, ctx, 0f);
+
+            Assert.AreEqual(AttackPhase.Idle, attacker.Phase, "Бегущий к цели — вне боя");
+        }
+
+        [Test]
+        public void Stunned_WithTargetInReach_IsIdle()
+        {
+            var (attacker, enemy, units, ctx) = Scene();
+            var sys = new AutoAttackSystem();
+
+            TickUntilNextDamage(sys, units, ctx, 0);
+            attacker.CanAct = false;
+            sys.Tick(units, ctx, 0f);
+
+            Assert.AreEqual(AttackPhase.Idle, attacker.Phase,
+                "Оглушённый выпал из цикла атаки — боевого ожидания без дееспособности не бывает");
+        }
+
+        /// <summary>
+        /// Сцена с МЕДЛЕННЫМ бойцом: интервал 60 тиков при свинге в 30, то есть между ударами остаётся
+        /// настоящее окно ожидания. На быстром ките (<see cref="Scene"/>) его нет по построению —
+        /// анимация занимает весь интервал.
+        /// </summary>
+        private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx) SlowScene()
+        {
+            UnitVisual visual = TestVisual.Make(FrameCount, HitFrame);
+            RelicData relic = TestRelic.Make(visual: visual);
+
+            var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: relic, range: 5f, aad: 10f, atkSpeed: 0.5f);
+            var enemy    = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f));
+            attacker.CurrentTarget = enemy;
+
+            var units = new List<RuntimeUnit> { attacker, enemy };
+            return (attacker, enemy, units, new StubContext());
+        }
+
+        /// <summary>Тикает, пока юнит не выйдет из удара (замах/канал/хвост) в фазу покоя.</summary>
+        private static void TickUntilRest(AutoAttackSystem sys, List<RuntimeUnit> units, StubContext ctx,
+            RuntimeUnit unit)
+        {
+            for (int guard = 0; guard < 200 && unit.IsSwinging; guard++) sys.Tick(units, ctx, 0f);
+        }
+
         private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx) Scene()
         {
             UnitVisual visual = TestVisual.Make(FrameCount, HitFrame);
@@ -366,6 +465,12 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) { }
             // Срок, посчитанный по ходу боя, заглушке безразличен — она мерит факт наложения.
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+                => ApplyEffect(target, def, source);
+
+            // Наложение с величиной (порции кровотечения): заглушке величина безразлична —
+            // она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds,
+                float potency)
                 => ApplyEffect(target, def, source);
             public void ReportAreaHit(in AreaHit hit) { }
             public void Dispel(in DispelRequest req) { }

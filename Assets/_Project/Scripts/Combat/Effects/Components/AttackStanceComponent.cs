@@ -79,7 +79,10 @@ namespace Guildmaster.Combat.Effects.Components
             if (wanted == self.AttackStance) return;
 
             // Удар уже начат прежней формой — доигрываем его и переключимся в следующее окно покоя.
-            if (self.Phase != AttackPhase.Idle) return;
+            // Спрашиваем именно «идёт ли удар», а не «фаза равна Idle»: с появлением боевого ожидания
+            // (CombatIdle) юнит между ударами почти всегда стоит рядом с целью, и сравнение с Idle
+            // означало бы, что форма не меняется, пока враг не потерян — то есть никогда.
+            if (self.IsSwinging) return;
 
             Apply(self, wanted, in ctx);
         }

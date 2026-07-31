@@ -226,13 +226,27 @@ namespace Guildmaster.Combat
         public int AttackCooldownTicks;
 
         /// <summary>
-        /// Фаза боевого действия — единый источник истины «занятости» (Idle/Windup/Recovery). Пишет только
-        /// <c>AutoAttackSystem</c>; движение/презентация/способности читают. См. <see cref="AttackPhase"/>.
+        /// Фаза цикла атаки — единый источник истины «занятости». Пишет только <c>AutoAttackSystem</c>;
+        /// движение, презентация и способности читают. См. <see cref="AttackPhase"/>.
         /// </summary>
         public AttackPhase Phase;
 
         /// <summary>Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Производный алиас <see cref="Phase"/>.</summary>
         public bool IsWindingUp => Phase == AttackPhase.Windup;
+
+        /// <summary>
+        /// Удар идёт прямо сейчас: замах, поток канала или хвост-доигрыш. Это и есть «состояние атаки»
+        /// (2026-07-30/7) — от взмаха до конца восстановления, целиком.
+        /// </summary>
+        /// <remarks>
+        /// Владелец правила «чем считается идущий удар». До его появления три места перечисляли фазы
+        /// руками — рут движения, смена боевой формы и показ, — и добавление четвёртой фазы
+        /// (<see cref="AttackPhase.CombatIdle"/>) означало бы обойти каждое и не забыть ни одного.
+        /// Держит <c>WindupAutoAttackTests</c> (группа «боевое ожидание»).
+        /// </remarks>
+        public bool IsSwinging => Phase == AttackPhase.Windup
+                               || Phase == AttackPhase.Channel
+                               || Phase == AttackPhase.Recovery;
 
         /// <summary>Тиков замаха осталось до кадра контакта. Когда ≤ 0 — резолв удара.</summary>
         public int WindupRemaining;

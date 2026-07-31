@@ -116,6 +116,14 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Юнит в замахе — имя и смысл те же, что у одноимённого свойства живого юнита.</summary>
         public bool IsWindingUp => Phase == AttackPhase.Windup;
 
+        /// <summary>
+        /// Удар идёт: замах, канал или хвост. Зеркало <c>RuntimeUnit.IsSwinging</c> — показ обязан считать
+        /// «в ударе» ровно тем же правилом, что и симуляция, иначе клип и рут разъедутся на границе фаз.
+        /// </summary>
+        public bool IsSwinging => Phase == AttackPhase.Windup
+                               || Phase == AttackPhase.Channel
+                               || Phase == AttackPhase.Recovery;
+
         public UnitSnapshot(
             int id, int team, Vector2 position, Vector2 previousPosition,
             float currentHp, float maxHp, float currentShield, float currentResource, float maxResource,

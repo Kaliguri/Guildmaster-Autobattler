@@ -113,6 +113,13 @@ namespace Guildmaster.Combat
                     // отрабатывает, и именно этим контроль по нему и наказывает.
                     else if (unit.Phase == AttackPhase.Channel) BreakChannel(unit);
                     else if (unit.Phase == AttackPhase.Recovery) { unit.Phase = AttackPhase.Idle; unit.RecoveryRemaining = 0; }
+
+                    // Оглушённый ВЫПАЛ из цикла атаки — это и есть «вне боя» (2026-07-30/11: таймер Комбо
+                    // считает время именно вне лупа), поэтому боевое ожидание под станом не живёт.
+                    // Но хвост, назначенный оборванному каналу, здесь не отменяется: BreakChannel только
+                    // что перевёл юнита в Recovery намеренно — сворачивание потока он отрабатывает, и
+                    // именно этим контроль по нему и наказывает.
+                    else unit.Phase = AttackPhase.Idle;
                     continue; // оглушён/в полёте — кулдаун не тикает (как было)
                 }
 
@@ -148,23 +155,26 @@ namespace Guildmaster.Combat
                     unit.Phase = AttackPhase.Idle;
                 }
 
-                // Ещё на кулдауне — ждём.
-                if (unit.AttackCooldownTicks > 0) continue;
+                // Ещё на кулдауне — ждём своего окна. Это и есть боевое ожидание, если цель под рукой:
+                // юнит остаётся в цикле атаки, держит слот контакта и ловится парированием (07-30/10).
+                if (unit.AttackCooldownTicks > 0) { SetRestingPhase(unit, ctx); continue; }
 
                 // Каст занимает юнита целиком: новый замах не начинается, пока идёт подготовка или канал
                 // (M3). Уже занесённый замах каст не рвёт — умение его доигрывает (M18, гейт в AbilitySystem).
-                if (unit.IsCastBusy) continue;
+                // Кастующий не «ждёт своего удара», он занят другим — боевым ожиданием это не считается.
+                if (unit.IsCastBusy) { unit.Phase = AttackPhase.Idle; continue; }
 
                 // Кит без авто-атаки (Пожирательница снов, Барабанщик) в ритм ударов не входит вообще:
                 // ни замаха, ни хвоста. Гейт стоит ПОСЛЕ кулдауна намеренно — таймер продолжает тикать,
                 // чтобы включение режима на ходу (баф, улучшение) не давало мгновенного удара.
-                if (HasNoAutoAttack(unit)) continue;
+                // В боевое ожидание он тоже не входит: ждать ему нечего.
+                if (HasNoAutoAttack(unit)) { unit.Phase = AttackPhase.Idle; continue; }
 
                 // Готов к атаке: нужна валидная цель в радиусе. Для хил-режима «цель авто-атаки» —
                 // раненый союзник (AutoAttackTarget, пишет мозг), не враг: гейтим/снапшотим замах по нему,
                 // тогда Resolve лечит именно его (§9.2). CurrentTarget (враг) остаётся движению/отступлению.
                 RuntimeUnit target = IsHealMode(unit) ? unit.AutoAttackTarget : unit.CurrentTarget;
-                if (target == null || target.IsDead) continue;
+                if (target == null || target.IsDead) { unit.Phase = AttackPhase.Idle; continue; }
 
                 // Гейт старта замаха = базовый радиус (не расширяем захват) И предсказание «замах докрутит»
                 // (слой 2, вики «14»). Убегающую цель, которая за время замаха выйдет за reach + tolerance,
@@ -178,8 +188,14 @@ namespace Guildmaster.Combat
                 bool chargingIn = ChargesIntoReach(unit, target, windupTicks, ctx);
                 if (!chargingIn)
                 {
-                    if (!CombatPositioning.InAttackRange(unit, target, ctx.Tuning)) continue;
-                    if (!CombatPositioning.CanLandWindup(unit, target, windupTicks, ctx.Tuning)) continue;
+                    // Не дотягивается — он ещё бежит, то есть в цикл атаки не вошёл.
+                    if (!CombatPositioning.InAttackRange(unit, target, ctx.Tuning))
+                    { unit.Phase = AttackPhase.Idle; continue; }
+
+                    // Дотягивается, но цель успеет уйти за время замаха: удар не начинаем, а вот из боя
+                    // юнит не выпадал — он стоит над целью и ждёт момента. Это боевое ожидание.
+                    if (!CombatPositioning.CanLandWindup(unit, target, windupTicks, ctx.Tuning))
+                    { unit.Phase = AttackPhase.CombatIdle; continue; }
                 }
 
                 EnterWindup(unit, target, ctx, windupTicks, chargingIn);
@@ -591,6 +607,28 @@ namespace Guildmaster.Combat
                 unit.Phase = AttackPhase.Recovery;
                 unit.RecoveryRemaining = ticks;
             }
+        }
+
+        /// <summary>
+        /// Фаза покоя между ударами: <see cref="AttackPhase.CombatIdle"/>, если юнит остаётся в цикле
+        /// атаки (цель жива и в досягаемости), иначе <see cref="AttackPhase.Idle"/>.
+        /// </summary>
+        /// <remarks>
+        /// Граница проходит по <b>досягаемости</b>, а не по наличию цели: бегущий к выбранной цели ещё не
+        /// в бою (уточнение Макса 2026-07-30/10). Метрика та же, что у гейта атаки и у движения —
+        /// <see cref="CombatPositioning.InAttackRange"/>, — иначе «в бою» по одной формуле и «бью» по
+        /// другой разошлись бы на границе.
+        /// </remarks>
+        private static void SetRestingPhase(RuntimeUnit unit, ICombatContext ctx)
+        {
+            RuntimeUnit target = IsHealMode(unit) ? unit.AutoAttackTarget : unit.CurrentTarget;
+
+            bool inLoop = target != null
+                       && !target.IsDead
+                       && !HasNoAutoAttack(unit)
+                       && CombatPositioning.InAttackRange(unit, target, ctx.Tuning);
+
+            unit.Phase = inLoop ? AttackPhase.CombatIdle : AttackPhase.Idle;
         }
 
         /// <summary>Прерывание замаха: сброс + рефанд кулдауна (бьёт снова, как только сможет) + событие.</summary>
