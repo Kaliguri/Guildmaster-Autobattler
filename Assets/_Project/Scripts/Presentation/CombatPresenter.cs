@@ -6,6 +6,7 @@ using MessagePipe;
 using UnityEngine;
 using UnityEngine.Pool;
 using VContainer;
+using PartRole = Guildmaster.Presentation.Body.PartRole;
 
 namespace Guildmaster.Presentation
 {
@@ -60,6 +61,9 @@ namespace Guildmaster.Presentation
         private readonly Dictionary<int, ProjectileView> _projViews = new Dictionary<int, ProjectileView>();
         private readonly List<int>                       _deadProj  = new List<int>();
         private readonly HashSet<int>                    _seenProj  = new HashSet<int>();
+        // Кастеры, у которых свечение оружия сейчас в фазе ЗАРЯДА (была подготовка). По ним выпуск (Cast)
+        // не запускает всполох заново — заряд уже отыграл до пика.
+        private readonly HashSet<int>                    _glowCharging = new HashSet<int>();
 
         // Живые снаряды и направление последнего снаряда, летевшего в конкретную цель (по её id).
         // Импакт-фидбэк дальнобойного удара должен идти ОТКУДА ПРИЛЕТЕЛО, а вектор «стрелок → цель»
@@ -208,6 +212,7 @@ namespace Guildmaster.Presentation
             _projViews.Clear();
             _projById.Clear();
             _lastShotDir.Clear();   // id юнитов в новом бою свои — старое направление не про них
+            _glowCharging.Clear();  // заряды свечения прошлого боя — не про новых кастеров
 
             // Трупы прошлого боя (виды в секвенсе смерти, снятые из _views) — иначе висят в новом бою.
             for (int i = 0; i < _corpses.Count; i++)
@@ -389,6 +394,12 @@ namespace Guildmaster.Presentation
 
             if (_vfx != null && _feel != null && _feel.VfxCastBurst != null)
                 _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: VfxPaletteFor(casterId));
+
+            // Мгновенный приём (Cast пришёл без подготовки) — свечение оружия всполохом. Была подготовка —
+            // заряд уже дошёл до пика и сам идёт в спад, второй раз не трогаем (иначе оружие моргнёт с нуля).
+            // Роль всегда Weapon: событие каста не несёт части-источника (срез, различение Limb/бафф — позже).
+            if (_feel != null && !_glowCharging.Remove(casterId))
+                view.PlayCastGlow(GlowColorFor(casterId), PartRole.Weapon, _feel.CastGlowPulseRise);
         }
 
         /// <summary>
@@ -399,6 +410,13 @@ namespace Guildmaster.Presentation
         {
             if (!_views.TryGetValue(casterId, out var view) || view == null) return;
             view.PlayCastCharge(VfxColorFor(casterId), seconds);
+
+            // Свечение оружия наливается ВСЮ подготовку, пик к выпуску — заряд за cast-time.
+            if (_feel != null)
+            {
+                _glowCharging.Add(casterId);
+                view.PlayCastGlow(GlowColorFor(casterId), PartRole.Weapon, seconds);
+            }
         }
 
         /// <summary>Каст оборван — подводка гаснет: обещанного удара не будет, и врать об этом нельзя.</summary>
@@ -406,6 +424,8 @@ namespace Guildmaster.Presentation
         {
             if (!_views.TryGetValue(casterId, out var view) || view == null) return;
             view.CancelCastCharge();
+            _glowCharging.Remove(casterId);
+            view.CancelCastGlow();
         }
 
         /// <summary>
@@ -716,6 +736,17 @@ namespace Guildmaster.Presentation
             _colorPalette != null && _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
                 ? _colorPalette.UnitMain(id.Definition.VfxTone)
                 : Color.white;
+
+        /// <summary>
+        /// Цвет свечения части при касте: цвет юнита, поднятый HDR-множителем под порог bloom (порог 1.0,
+        /// LDR-цвет юнита сам не светится). Альфу не трогаем — шейдер тела читает её как прозрачность, не свет.
+        /// </summary>
+        private Color GlowColorFor(int unitId)
+        {
+            Color c = VfxColorFor(unitId);
+            float k = _feel != null ? _feel.CastGlowBloomIntensity : 1f;
+            return new Color(c.r * k, c.g * k, c.b * k, c.a);
+        }
 
         /// <summary>Contact-dust: пыль у ног при старте/стопе бега (VfxData → префаб, тумблер в feel-конфиге).</summary>
         private void OnUnitContactDust(UnitView view)
