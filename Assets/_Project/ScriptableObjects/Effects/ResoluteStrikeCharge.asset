@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
-  m_Name: StealthBuff
+  m_Name: ResoluteStrikeCharge
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
-  _id: effect.stealth_buff
+  _id: effect.resolute_strike_charge
   _polarity: 0
-  _tags: 1025
+  _tags: 16385
   _baseDuration: -1
   _stacking: 2
   _maxStacks: 1
@@ -29,40 +29,27 @@ MonoBehaviour:
   - Flat: 0
     Pct: 0
   _components:
-  - rid: 5615026876324511850
-  - rid: 5615027308851101872
+  - rid: 5615027358498291885
   _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
   references:
     version: 2
     RefIds:
-    - rid: 5615026876324511850
-      type: {class: StatModifierComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
-      data:
-        _modifiers:
-        - Stat: 5
-          Op: 2
-          Value: -0.4
-        - Stat: 20
-          Op: 2
-          Value: 0.3
-    - rid: 5615027308851101872
+    - rid: 5615027358498291885
       type: {class: EmpowerNextAttackComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _damageMult: 2
-        _flatPen: 20
-        _blinkBehind: 1
+        _flatPen: 0
+        _blinkBehind: 0
         _knockbackDistance: 0
         _consumeTag: 1024
-        _bonusOnHitEffects: []
+        _bonusOnHitEffects:
+        - {fileID: 11400000, guid: 5f8a731f13f522a4090cc75dfe269d47, type: 2}
+        - {fileID: 11400000, guid: 2d42622144fda1d44a4161e7148fc2c5, type: 2}
         _bonusOnHitCount: 1
         _recastImmediately: 1
         _recastWindupMult: 1
         _splitShare: 0
         _splitType: 0
-        _damageMultScalings:
-        - Source: 8
-          Form: 0
-          Baseline: 1
-          PerUnit: 0.5
+        _damageMultScalings: []

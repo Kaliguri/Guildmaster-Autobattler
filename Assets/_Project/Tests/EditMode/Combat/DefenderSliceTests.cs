@@ -216,27 +216,95 @@ namespace Guildmaster.Tests.EditMode.Combat
         // ===================== «Решительный удар» (актив) =====================
 
         [Test]
-        public void ResoluteStrike_StunsAndWeakens_CurrentTargetOnly()
+        public void ResoluteStrike_CastItself_AppliesNothingToTheTarget()
         {
+            // Активка — заявка на удар, а не удар. На касте цель не получает ничего: ни урона, ни стана,
+            // ни ослабления. Всё это придёт вместе с попаданием — или не придёт вовсе.
             var es  = new EffectSystem();
             var ctx = new MockCombatContext(effects: es);
 
-            var caster    = MakeUnit(0, team: 0, pos: Vector2.zero);
+            var caster     = MakeUnit(0, team: 0, pos: Vector2.zero);
             var mainThreat = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f));
-            var bystander  = MakeUnit(2, team: 1, pos: new Vector2(3f, 0f));
-            caster.CurrentTarget = mainThreat; // мозг (блок C/A) выбрал главную угрозу
+            caster.CurrentTarget = mainThreat;
 
             caster.Abilities.Add(new AbilityRuntime(ResoluteStrike()));
-            var units = new List<RuntimeUnit> { caster, mainThreat, bystander };
+            var units = new List<RuntimeUnit> { caster, mainThreat };
 
             bool cast = new AbilitySystem().TryCast(caster, 0, units, ctx);
-            // Закон видимости: наложенные удар-эффекты проявляются в конце тика.
             foreach (RuntimeUnit u in units) EffectSystem.CommitPending(u);
 
-            Assert.IsTrue(cast);
-            Assert.AreNotEqual(EffectTag.None, mainThreat.EffectTagMask & EffectTag.Control, "Цель оглушена");
-            Assert.AreEqual(0.7f, mainThreat.Stats.Get(StatType.DamageDealtEff), 1e-4f, "Урон цели снижен на 30%");
-            Assert.AreEqual(EffectTag.None, bystander.EffectTagMask & EffectTag.Control, "Соседа ульта не задевает");
+            Assert.IsTrue(cast, "Активка скастована");
+            Assert.AreEqual(EffectTag.None, mainThreat.EffectTagMask & EffectTag.Control,
+                "На касте цель НЕ оглушена — стан ложится при попадании");
+            Assert.AreEqual(1f, mainThreat.Stats.Get(StatType.DamageDealtEff), 1e-4f,
+                "На касте ослабления нет");
+            Assert.AreEqual(2f, caster.EmpowerDamageMult, 1e-4f, "Зато взведён уникальный удар ×2");
+            Assert.AreEqual(0, caster.AttackCooldownTicks, "И он выходит вне очереди: ожидание интервала снято");
+        }
+
+        [Test]
+        public void ResoluteStrike_StunAndWeaken_LandOnHit()
+        {
+            var sim = BuildSim(11UL);
+            var caster = MakeUnit(0, team: 0, pos: Vector2.zero, relic: DefenderRelic(PassiveTrigger.None),
+                aad: 10f, range: 3f);
+            var target = MakeUnit(1, team: 1, pos: new Vector2(1.5f, 0f), maxHp: 10000f, hp: 10000f);
+            caster.CurrentTarget = target;
+            caster.AutoAttackTarget = target;
+
+            sim.EnqueueUnitSpawn(caster);
+            sim.EnqueueUnitSpawn(target);
+            sim.Tick(SimConstants.TickDelta);
+
+            caster.Abilities.Add(new AbilityRuntime(ResoluteStrike()));
+            new AbilitySystem().TryCast(caster, 0, new List<RuntimeUnit> { caster, target }, sim);
+
+            // Ждём, пока взведённый удар дозреет и прилетит.
+            for (int i = 0; i < 60 && (target.EffectTagMask & EffectTag.Control) == 0; i++)
+                sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreNotEqual(EffectTag.None, target.EffectTagMask & EffectTag.Control,
+                "Стан пришёл вместе с ударом");
+            Assert.AreEqual(0.7f, target.Stats.Get(StatType.DamageDealtEff), 1e-4f,
+                "Ослабление пришло тем же ударом");
+            Assert.Less(target.CurrentHP, 10000f, "И урон нанесён самим ударом, а не активкой");
+        }
+
+        [Test]
+        public void ResoluteStrike_SwingInterrupted_AppliesNothing()
+        {
+            // Главное следствие модели: уникальный удар можно СБИТЬ. Контроль в замахе — и заявка ушла
+            // в никуда, ни стана, ни ослабления, ни урона.
+            var sim = BuildSim(12UL);
+            var caster = MakeUnit(0, team: 0, pos: Vector2.zero, relic: DefenderRelic(PassiveTrigger.None),
+                aad: 10f, range: 3f);
+            var target = MakeUnit(1, team: 1, pos: new Vector2(1.5f, 0f), maxHp: 10000f, hp: 10000f);
+            caster.CurrentTarget = target;
+            caster.AutoAttackTarget = target;
+
+            sim.EnqueueUnitSpawn(caster);
+            sim.EnqueueUnitSpawn(target);
+            sim.Tick(SimConstants.TickDelta);
+
+            caster.Abilities.Add(new AbilityRuntime(ResoluteStrike()));
+            new AbilitySystem().TryCast(caster, 0, new List<RuntimeUnit> { caster, target }, sim);
+
+            sim.Tick(SimConstants.TickDelta);          // заряженный замах пошёл
+
+            // Срываем НАСТОЯЩИМ станом, а не флагом: CanAct пересчитывается системой эффектов каждый
+            // тик, и присвоенное руками значение она затирает на следующем же проходе.
+            var stun = new ControlComponent().With("_preventAct", true);
+            sim.ApplyEffect(caster, TestEffect.Make(
+                baseDuration: 1f, polarity: EffectPolarity.Debuff,
+                tags: EffectTag.Control | EffectTag.Debuff, components: stun), caster);
+
+            for (int i = 0; i < 10; i++) sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(EffectTag.None, target.EffectTagMask & EffectTag.Control,
+                "Сорванный удар не оглушает");
+            Assert.AreEqual(1f, target.Stats.Get(StatType.DamageDealtEff), 1e-4f,
+                "И не ослабляет");
+            Assert.AreEqual(10000f, target.CurrentHP, 1e-4f, "И не наносит урона");
         }
 
         // ===================== S5 (влитый): детерминизм pre-damage =====================
@@ -301,8 +369,23 @@ namespace Guildmaster.Tests.EditMode.Combat
                 baseDuration: 3f, polarity: EffectPolarity.Debuff,
                 tags: EffectTag.Debuff, components: weaken);
 
+            // Модель Макса 2026-07-31: активка НЕ бьёт сама. Она взводит уникальный удар — ×2, вне
+            // очереди, — а стан и ослабление ложатся ПРИ ПОПАДАНИИ. Поэтому удар можно сбить контролем,
+            // от него можно уклониться, и он может уйти в промах, ничего не наложив.
+            var empower = new EmpowerNextAttackComponent()
+                .With("_damageMult", 2f)
+                .With("_recastImmediately", true)
+                .With("_recastWindupMult", 1f)
+                .With("_bonusOnHitEffects", new[] { stunEffect, weakenEffect })
+                .With("_bonusOnHitCount", 1)
+                .With("_consumeTag", EffectTag.Empowered);
+
+            EffectData charge = TestEffect.Make(
+                baseDuration: -1f, polarity: EffectPolarity.Neutral, tags: EffectTag.Empowered,
+                components: empower);
+
             return TestAbility.Make(
-                effects: new[] { stunEffect, weakenEffect },
+                selfEffects: new[] { charge },
                 cost: 0f, mode: AbilityTargetMode.NearestEnemy, castCondition: CastCondition.Immediately);
         }
 

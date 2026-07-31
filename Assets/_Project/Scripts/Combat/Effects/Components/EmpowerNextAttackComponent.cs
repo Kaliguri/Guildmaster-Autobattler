@@ -42,13 +42,24 @@ namespace Guildmaster.Combat.Effects.Components
                  "Empowered = обычный заряд, стелса не касается.")]
         [SerializeField] private EffectTag _consumeTag = EffectTag.Stealth;
 
-        [Tooltip("Эффект, который усиленный удар накладывает на цель СВЕРХ обычных on-hit (Драугр вгоняет " +
-                 "лишние стаки «Изморози»). Пусто = ничего.")]
-        [SerializeField] private EffectData _bonusOnHitEffect;
+        [Tooltip("Эффекты, которые усиленный удар накладывает на цель СВЕРХ обычных on-hit: Драугр вгоняет " +
+                 "лишние стаки «Изморози», «Решительный удар» — оглушение и ослабление. Пусто = ничего. " +
+                 "Ложатся ПРИ ПОПАДАНИИ: сорванный контролем или ушедший в промах удар не накладывает ничего.")]
+        [SerializeField] private EffectData[] _bonusOnHitEffects;
 
-        [Tooltip("Сколько раз наложить бонус-эффект (для стакающихся это и есть число лишних стаков).")]
+        [Tooltip("Сколько раз наложить КАЖДЫЙ бонус-эффект (для стакающихся это и есть число лишних стаков).")]
         [Min(0)]
         [SerializeField] private int _bonusOnHitCount = 1;
+
+        [Tooltip("Выпустить усиленный удар ВНЕ ОЧЕРЕДИ (рекаст): хвост текущей атаки обрезается, ожидание " +
+                 "интервала снимается. Так живут «Решительный удар», удар Монаха воды и выход из тени у " +
+                 "Убийцы. Выключено = заряд ждёт своей обычной атаки (Драугр: каждая третья).")]
+        [SerializeField] private bool _recastImmediately;
+
+        [Tooltip("Множитель замаха удара, вышедшего по рекасту: 1 = обычный, 0.5 = вдвое короче. " +
+                 "Работает только при включённом рекасте.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _recastWindupMult = 1f;
 
         [Tooltip("Доля усиленного удара, уходящая ДРУГИМ типом урона («Восходящий удар» Монаха воды: " +
                  "половина Дробящим, половина Льдом). 0 = удар идёт целиком типом автоатаки.")]
@@ -71,12 +82,17 @@ namespace Guildmaster.Combat.Effects.Components
             self.EmpowerDamageMult  = Data.Stats.StatConversion.ApplyAll(_damageMultScalings, _damageMult, self.Stats);
             self.EmpowerFlatPen     = _flatPen;
             self.EmpowerKnockback   = _knockbackDistance;
-            self.EmpowerConsumeTag  = _consumeTag;
-            self.EmpowerBonusEffect = _bonusOnHitEffect;
-            self.EmpowerBonusCount  = _bonusOnHitCount;
-            self.EmpowerSplitShare  = _splitType != DamageType.Undefined ? _splitShare : 0f;
-            self.EmpowerSplitType   = _splitType;
+            self.EmpowerConsumeTag   = _consumeTag;
+            self.EmpowerBonusEffects = _bonusOnHitEffects;
+            self.EmpowerBonusCount   = _bonusOnHitCount;
+            self.EmpowerSplitShare   = _splitType != DamageType.Undefined ? _splitShare : 0f;
+            self.EmpowerSplitType    = _splitType;
             if (_blinkBehind) self.BlinkBehindOnNextAttack = true;
+
+            // Рекаст — часть ОДНОГО намерения «следующий удар особый и выходит сейчас», поэтому живёт
+            // здесь, а не выводится из чужих полей. До 2026-07-31 его получала любая активка с уроном
+            // без канала, и он молча доставался залпу Арканиста и вихрю Копейщика, которым не нужен.
+            if (_recastImmediately) self.RecastAttack(recoveryMult: 0f, nextWindupMult: _recastWindupMult);
         }
 
         public void OnExpire(in EffectContext ctx)
@@ -87,8 +103,8 @@ namespace Guildmaster.Combat.Effects.Components
             self.EmpowerDamageMult = 0f;
             self.EmpowerFlatPen    = 0f;
             self.EmpowerKnockback  = 0f;
-            self.EmpowerBonusEffect = null;
-            self.EmpowerBonusCount  = 0;
+            self.EmpowerBonusEffects = null;
+            self.EmpowerBonusCount   = 0;
             self.EmpowerSplitShare  = 0f;
             self.EmpowerSplitType   = DamageType.Undefined;
             if (_blinkBehind) self.BlinkBehindOnNextAttack = false;

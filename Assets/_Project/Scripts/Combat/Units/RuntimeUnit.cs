@@ -146,12 +146,18 @@ namespace Guildmaster.Combat
         public float EmpowerKnockback;
 
         /// <summary>
-        /// Эффект, который усиленная авто-атака накладывает на цель ДОПОЛНИТЕЛЬНО к своим on-hit
-        /// («каждая третья» Драугра вгоняет три стака «Изморози» вместо одного). null = ничего.
+        /// Эффекты, которые усиленная авто-атака накладывает на цель ДОПОЛНИТЕЛЬНО к своим on-hit
+        /// («каждая третья» Драугра вгоняет лишние стаки «Изморози», «Решительный удар» — оглушение и
+        /// ослабление). <c>null</c> или пусто = ничего.
         /// </summary>
-        public Data.Definitions.EffectData EmpowerBonusEffect;
+        /// <remarks>
+        /// Список, а не одно поле: уникальный удар обычно несёт связку из нескольких состояний, и
+        /// «оглушение плюс ослабление» пришлось бы иначе слеплять в один эффект — то есть врать про их
+        /// длительности, теги и очистку.
+        /// </remarks>
+        public Data.Definitions.EffectData[] EmpowerBonusEffects;
 
-        /// <summary>Сколько раз наложить <see cref="EmpowerBonusEffect"/> (число стаков сверх обычного).</summary>
+        /// <summary>Сколько раз наложить КАЖДЫЙ из <see cref="EmpowerBonusEffects"/> (число стаков сверх обычного).</summary>
         public int EmpowerBonusCount;
 
         /// <summary>

@@ -18,6 +18,7 @@ MonoBehaviour:
   _baseDuration: -1
   _stacking: 2
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 0
   _unremovable: 0
   _cleansePrice:
@@ -43,8 +44,11 @@ MonoBehaviour:
         _blinkBehind: 0
         _knockbackDistance: 2
         _consumeTag: 16384
-        _bonusOnHitEffect: {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
+        _bonusOnHitEffects:
+        - {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
         _bonusOnHitCount: 2
+        _recastImmediately: 1
+        _recastWindupMult: 1
         _splitShare: 0.5
         _splitType: 11
         _damageMultScalings: []

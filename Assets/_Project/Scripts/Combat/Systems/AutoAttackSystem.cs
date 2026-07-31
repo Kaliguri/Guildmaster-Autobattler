@@ -47,9 +47,9 @@ namespace Guildmaster.Combat
             public readonly float Knockback;
 
             /// <summary>Эффект, который этот удар накладывает СВЕРХ обычных on-hit (взведён зарядом).</summary>
-            public readonly EffectData BonusEffect;
+            public readonly EffectData[] BonusEffects;
 
-            /// <summary>Сколько раз наложить <see cref="BonusEffect"/>.</summary>
+            /// <summary>Сколько раз наложить КАЖДЫЙ из <see cref="BonusEffects"/>.</summary>
             public readonly int BonusCount;
 
             /// <summary>Доля удара, уходящая <see cref="SplitType"/>; 0 = удар одночастный.</summary>
@@ -60,7 +60,7 @@ namespace Guildmaster.Combat
 
             public ResolvedHit(RuntimeUnit unit, RuntimeUnit target, float raw, float reach,
                 DamageType damageType, bool blink, float flatPen, float knockback,
-                EffectData bonusEffect, int bonusCount, float splitShare, DamageType splitType)
+                EffectData[] bonusEffects, int bonusCount, float splitShare, DamageType splitType)
             {
                 Unit       = unit;
                 Target     = target;
@@ -70,7 +70,7 @@ namespace Guildmaster.Combat
                 Blink     = blink;
                 FlatPen   = flatPen;
                 Knockback = knockback;
-                BonusEffect = bonusEffect;
+                BonusEffects = bonusEffects;
                 BonusCount  = bonusCount;
                 SplitShare  = splitShare;
                 SplitType   = splitType;
@@ -439,7 +439,7 @@ namespace Guildmaster.Combat
             // пробивание и снимаем баф стелса. Пробивание тратится тем же ударом, что и множитель.
             float flatPen = 0f;
             float knockback = 0f;
-            EffectData bonusEffect = null;
+            EffectData[] bonusEffects = null;
             int bonusCount = 0;
             float splitShare = 0f;
             DamageType splitType = DamageType.Undefined;
@@ -451,11 +451,11 @@ namespace Guildmaster.Combat
                 unit.EmpowerFlatPen = 0f;
                 knockback = unit.EmpowerKnockback;
                 unit.EmpowerKnockback = 0f;
-                bonusEffect = unit.EmpowerBonusEffect;
+                bonusEffects = unit.EmpowerBonusEffects;
                 bonusCount  = unit.EmpowerBonusCount;
                 splitShare  = unit.EmpowerSplitShare;
                 splitType   = unit.EmpowerSplitType;
-                unit.EmpowerBonusEffect = null;
+                unit.EmpowerBonusEffects = null;
                 unit.EmpowerBonusCount  = 0;
                 unit.EmpowerSplitShare  = 0f;
                 unit.EmpowerSplitType   = DamageType.Undefined;
@@ -471,7 +471,7 @@ namespace Guildmaster.Combat
             unit.BlinkBehindOnNextAttack = false;
 
             _hits.Add(new ResolvedHit(unit, target, raw, reach, damageType, blink, flatPen, knockback,
-                bonusEffect, bonusCount, splitShare, splitType));
+                bonusEffects, bonusCount, splitShare, splitType));
         }
 
         /// <summary>Прилёт снятого удара: урон/снаряд/хил и on-hit эффекты. Блинк уже отыгран (проход 2a).</summary>
@@ -584,10 +584,15 @@ namespace Guildmaster.Combat
         /// </summary>
         private static void ApplyEmpowerBonus(RuntimeUnit unit, RuntimeUnit target, in ResolvedHit hit, ICombatContext ctx)
         {
-            if (hit.BonusEffect == null || hit.BonusCount <= 0 || target.IsDead) return;
+            if (hit.BonusEffects == null || hit.BonusCount <= 0 || target.IsDead) return;
 
-            for (int i = 0; i < hit.BonusCount; i++)
-                ctx.ApplyEffect(target, hit.BonusEffect, unit);
+            for (int e = 0; e < hit.BonusEffects.Length; e++)
+            {
+                EffectData def = hit.BonusEffects[e];
+                if (def == null) continue;
+                for (int i = 0; i < hit.BonusCount; i++)
+                    ctx.ApplyEffect(target, def, unit);
+            }
         }
 
         private static void ApplyAutoAttackOnHit(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx)

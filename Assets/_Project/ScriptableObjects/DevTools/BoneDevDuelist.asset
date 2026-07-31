@@ -36,6 +36,7 @@ MonoBehaviour:
   _windupShare: 0
   _attackSwingTicks: 0
   _chargeAttackWindupMult: 1.3
+  _hitDamageShares: []
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
@@ -64,14 +65,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c585ce229a24f184cbb2d0431b508603, type: 2}
   _abilities:
   - _id: resolute_strike
-    _effects:
-    - {fileID: 11400000, guid: 5f8a731f13f522a4090cc75dfe269d47, type: 2}
-    - {fileID: 11400000, guid: 2d42622144fda1d44a4161e7148fc2c5, type: 2}
-    _selfEffects: []
+    _effects: []
+    _selfEffects:
+    - {fileID: 11400000, guid: 6e2f62909cc746c4187f8f3c7dece36a, type: 2}
     _baseCooldown: 0
     _resourceCost: 50
     _targetMode: 1
-    _damageMultiplier: 2
+    _damageMultiplier: 0
     _damageType: 2
     _areaShape: 0
     _areaRadius: 0
