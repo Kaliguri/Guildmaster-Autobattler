@@ -305,6 +305,94 @@ namespace Guildmaster.Tests.EditMode.Combat
             return (attacker, enemy, units, new StubContext());
         }
 
+        // --- Рекаст: атака вне очереди (модель Макса 2026-07-31) ---
+
+        [Test]
+        public void Recast_DuringWindup_DoesNotShortenTheSwingAlreadyRaised()
+        {
+            // Занесённый удар доигрывает ЦЕЛИКОМ — это условие честного телеграфа: иначе парирование и
+            // уклонение теряют окно, на которое рассчитывали.
+            var (attacker, enemy, units, ctx) = Scene();
+            var sys = new AutoAttackSystem();
+
+            sys.Tick(units, ctx, 0f);
+            int windupLeft = attacker.WindupRemaining;
+
+            attacker.RecastAttack();
+
+            Assert.AreEqual(windupLeft, attacker.WindupRemaining, "Замах текущей атаки рекаст не трогает");
+            Assert.AreEqual(21, attacker.WindupTicks, "Полная длина замаха тоже не меняется");
+        }
+
+        [Test]
+        public void Recast_CutsRecoveryOfCurrentAttack()
+        {
+            var (attacker, enemy, units, ctx) = SlowScene();
+            var sys = new AutoAttackSystem();
+
+            TickUntilNextDamage(sys, units, ctx, 0);
+            Assert.AreEqual(AttackPhase.Recovery, attacker.Phase, "Предусловие: после удара идёт хвост");
+            Assert.Greater(attacker.RecoveryRemaining, 0);
+
+            attacker.RecastAttack(recoveryMult: 0f);
+
+            Assert.AreEqual(0, attacker.RecoveryRemaining, "Хвост снят целиком");
+        }
+
+        [Test]
+        public void Recast_SkipsTheIntervalQueue()
+        {
+            // Без снятия очереди обрезанный хвост лишь удлиняет боевое ожидание — рекаст не даёт ничего.
+            var (attacker, enemy, units, ctx) = SlowScene();
+            var sys = new AutoAttackSystem();
+
+            TickUntilNextDamage(sys, units, ctx, 0);
+            Assert.Greater(attacker.AttackCooldownTicks, 0, "Предусловие: интервал ещё не вышел");
+
+            attacker.RecastAttack();
+
+            Assert.AreEqual(0, attacker.AttackCooldownTicks, "Ожидание интервала снято");
+        }
+
+        [Test]
+        public void Recast_ShortensWindupOfTheNextAttackOnly()
+        {
+            var (attacker, enemy, units, ctx) = SlowScene();
+            var sys = new AutoAttackSystem();
+
+            TickUntilNextDamage(sys, units, ctx, 0);
+            attacker.RecastAttack(recoveryMult: 0f, nextWindupMult: 0.5f);
+
+            // Хвост снят и очередь пропущена → следующий замах начнётся сразу, уже укороченным.
+            sys.Tick(units, ctx, 0f);
+            Assert.AreEqual(AttackPhase.Windup, attacker.Phase, "Новая атака вышла вне очереди");
+
+            var (plain, _, plainUnits, plainCtx) = SlowScene();
+            var plainSys = new AutoAttackSystem();
+            plainSys.Tick(plainUnits, plainCtx, 0f);
+
+            Assert.Less(attacker.WindupTicks, plain.WindupTicks,
+                "Замах атаки, вышедшей по рекасту, короче обычного");
+        }
+
+        [Test]
+        public void RecoveryCut_IsSpentByOneSwing()
+        {
+            // Множитель хвоста принадлежит одному свингу: следующая атака получает свой доигрыш целым,
+            // иначе рекаст незаметно стал бы постоянным режимом кита.
+            var (attacker, enemy, units, ctx) = SlowScene();
+            var sys = new AutoAttackSystem();
+
+            TickUntilNextDamage(sys, units, ctx, 0);
+            int fullTail = attacker.RecoveryRemaining;
+            attacker.RecastAttack(recoveryMult: 0f);
+            Assert.AreEqual(1f, attacker.SwingRecoveryMult, 0.001f,
+                "Множитель уже потрачен: хвост этого свинга обрезан на месте");
+
+            TickUntilNextDamage(sys, units, ctx, 0);   // следующая атака
+            Assert.AreEqual(fullTail, attacker.RecoveryRemaining, "У новой атаки хвост обычный");
+        }
+
         // --- Атака из нескольких Ударов (2026-07-30/6) ---
 
         [Test]

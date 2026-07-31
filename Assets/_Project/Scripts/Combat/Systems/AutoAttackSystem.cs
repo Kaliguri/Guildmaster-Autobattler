@@ -630,7 +630,14 @@ namespace Guildmaster.Combat
         /// доп. секунды, посчитано в <see cref="EnterWindup"/>), либо сразу Idle, если хвоста нет.</summary>
         private static void EnterRecovery(RuntimeUnit unit)
         {
-            int ticks = unit.RecoveryTicks;
+            // Рекаст, взведённый ещё в замахе, обрезает именно хвост: занесённый удар доигрывает целиком,
+            // а вот доигрыш после него укорачивается (модель Макса 2026-07-31). Множитель тратится вместе
+            // со свингом — следующая атака получает свой хвост нетронутым.
+            int ticks = unit.SwingRecoveryMult >= 1f
+                ? unit.RecoveryTicks
+                : (int)global::System.Math.Round(unit.RecoveryTicks * unit.SwingRecoveryMult,
+                    global::System.MidpointRounding.AwayFromZero);
+            unit.SwingRecoveryMult = 1f;
             if (ticks <= 0)
             {
                 unit.Phase = AttackPhase.Idle;

@@ -73,16 +73,10 @@ namespace Guildmaster.Combat.Effects.Components
             // замах. Ударить в стан, а не в убегающую спину, — ровно то, ради чего комбо и заведено.
             if (_microStun != null) ctx.Combat.ApplyEffect(victim, _microStun, monk);
 
-            // Вне очереди: таймер авто-атаки обнуляется, поэтому замах начнётся следующим же тиком, не
-            // дожидаясь интервала. Тот же приём, что у рекаста умений-ударов (M18).
-            monk.AttackCooldownTicks = 0;
-            if (monk.Phase == AttackPhase.Recovery)
-            {
-                monk.Phase = AttackPhase.Idle;
-                monk.RecoveryRemaining = 0;
-            }
-
-            if (_windupMult > 0f) monk.NextWindupMult = _windupMult;
+            // Вне очереди — общим примитивом рекаста: хвост текущей атаки снимается, очередь пропускается,
+            // а замах удара в спину идёт укороченным. Тот же жест, что у умений-ударов (M18), поэтому и
+            // владелец у него один — RuntimeUnit.RecastAttack.
+            monk.RecastAttack(recoveryMult: 0f, nextWindupMult: _windupMult > 0f ? _windupMult : 1f);
         }
     }
 }
