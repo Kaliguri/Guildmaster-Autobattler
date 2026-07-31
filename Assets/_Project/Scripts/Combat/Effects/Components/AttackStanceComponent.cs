@@ -160,7 +160,7 @@ namespace Guildmaster.Combat.Effects.Components
             public EffectData[] OnHitEffects;
 
             [Tooltip("Фокус авто-атаки в этой форме. Часть профиля формы, как и всё остальное: Десятина " +
-                     "вдали бьёт самого живучего (дольше кровоточит), в упор — самого бронированного.")]
+                     "вдали бьёт самого живучего (дольше кровоточит), в упор — ближайшего.")]
             public TargetingMode Targeting = TargetingMode.Nearest;
 
             [Tooltip("Статы формы: дальность, скорость атаки и прочее. Override задаёт значение, а не дельту.")]

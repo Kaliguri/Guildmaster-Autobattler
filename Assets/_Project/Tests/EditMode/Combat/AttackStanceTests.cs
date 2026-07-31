@@ -107,23 +107,26 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(TargetingMode.HighestHp, unit.StanceTargeting,
                 "Вдали кит ищет самого живучего — тот дольше кровоточит");
 
-            enemy.Position = new Vector2(2f, 0f);
-            TickEffects(effects, unit, ctx, seconds: 0.2f);
-            Assert.AreEqual(TargetingMode.HighestArmor, unit.StanceTargeting,
-                "В упор — самого бронированного, там окупается шред");
-
             // Профиль кита просит «ближайшего», но форма сильнее.
             var brain = new ProfileBrain(new AIProfile());
             RuntimeUnit near = MakeUnit(2, team: 1, pos: new Vector2(1f, 0f));
-            RuntimeUnit armored = MakeUnit(3, team: 1, pos: new Vector2(7f, 0f));
-            armored.Stats.AddModifiersFrom("armor", new[]
-            {
-                new StatModifier(StatType.PhysArmor, ModifierOp.Flat, 80f),
-            });
+            RuntimeUnit tough = MakeUnit(3, team: 1, pos: new Vector2(7f, 0f));
+            tough.CurrentHP = 5000f;
 
-            brain.Decide(unit, new FakeBattleView(unit, near, armored));
-            Assert.AreSame(armored, unit.CurrentTarget,
-                "Форма переписала фокус: выбран бронированный, а не ближний");
+            brain.Decide(unit, new FakeBattleView(unit, near, tough));
+            Assert.AreSame(tough, unit.CurrentTarget,
+                "Форма переписала фокус: выбран самый живучий, а не ближний");
+
+            // В упор форма возвращает выбор к ближайшему — в упор он оказывается не по выбору.
+            // Цель возвращаем руками: мозг только что увёл её на дальнего, а форму решает дистанция
+            // до ТЕКУЩЕЙ цели.
+            unit.CurrentTarget = enemy;
+            enemy.Position = new Vector2(2f, 0f);
+            TickEffects(effects, unit, ctx, seconds: 0.2f);
+            Assert.AreEqual(TargetingMode.Nearest, unit.StanceTargeting);
+
+            brain.Decide(unit, new FakeBattleView(unit, near, tough));
+            Assert.AreSame(near, unit.CurrentTarget, "Ближняя форма бьёт того, кто перед ним");
         }
 
         [Test]
@@ -195,7 +198,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             Delivery   = AttackType.Melee,
             DamageType = DamageType.Pierce,
-            Targeting  = TargetingMode.HighestArmor,
+            Targeting  = TargetingMode.Nearest,
             Channel    = AttackChannel.None,
             Stats = new[]
             {
