@@ -1131,19 +1131,19 @@
       <article class="stand"><canvas id="e-ember" width="260" height="220" role="img" aria-label="Угли"></canvas>
         <div class="stand-body"><h3>Угли</h3><p class="dim">Искры-точки ВНУТРИ силуэта, мерцают. Запас, который
           тратит детонация, — поэтому внутри, а не снаружи.</p></div></article>
-      <article class="stand"><canvas id="e-poison" width="260" height="220" role="img" aria-label="Яд"></canvas>
-        <div class="stand-body"><h3>Яд · Гниль · Споры</h3><p class="dim">Зелёный подтон в тенях и редкие пузыри
-          вверх. Одна семья на три эффекта: разница в числах.</p></div></article>
       <article class="stand"><canvas id="e-frostbite" width="260" height="220" role="img" aria-label="Изморозь"></canvas>
         <div class="stand-body"><h3>Изморозь</h3><p class="dim">Налёт снизу вверх, высота = стаки. Дошёл до
           макушки — приехала Заморозка.</p></div></article>
-      <article class="stand"><canvas id="e-bleed" width="260" height="220" role="img" aria-label="Кровотечение"></canvas>
-        <div class="stand-body"><h3>Кровотечение</h3><p class="dim">Капли вниз из накопленных порезов. Единственный
-          эффект, которому не нужен свой носитель.</p></div></article>
       <article class="stand"><canvas id="e-stealth" width="260" height="220" role="img" aria-label="Скрытность"></canvas>
         <div class="stand-body"><h3>Скрытность</h3><p class="dim">Прозрачность и десатурация, контур остаётся.
           Союзник должен видеть, где он.</p></div></article>
     </div>
+
+    <p class="dim" style="margin-top:.5rem">
+      <b>Яда и крови в этой сетке нет намеренно.</b> У яда нет состояния тела — только тик и дебафф,
+      поэтому постоянного знака ему не полагается; у крови ступени считаются по DPS, а не по стакам.
+      Оба разобраны отдельными блоками ниже.
+    </p>
 
     <p class="tag" style="margin-top:1.2rem">канал снаружи · «кто усилен, помечен, защищён»</p>
     <div class="stands">
@@ -1173,6 +1173,46 @@
       <article class="stand"><canvas id="e-root" width="260" height="220" role="img" aria-label="Корни"></canvas>
         <div class="stand-body"><h3>Корни</h3><p class="dim">То же место, форма схватывающая: дуги смыкаются к
           ногам, а не растекаются.</p></div></article>
+    </div>
+
+    <p class="tag" style="margin-top:1.2rem">кровь · четыре уровня по DPS</p>
+    <p class="dim" style="max-width:68ch">
+      У кровотечения нет ступеней в механике — есть N независимых порций с разными сроками. Поэтому
+      ступень считается не по стакам, а по <b>суммарному DPS в долях maxHP цели за секунду</b>: тогда
+      шкала одинаково работает на гоблине и на боссе и не устаревает с ростом чисел за забег.
+      Число текущих порезов при этом остаётся вторым фактом — сколько ран открыто.
+    </p>
+    <div class="stands">
+      <article class="stand"><canvas id="e-blood1" width="260" height="220" role="img" aria-label="Кровь: сочится"></canvas>
+        <div class="stand-body"><h3>1 · Сочится</h3><p class="dim">до 1% maxHP/с. Редкая капля из ближайшего
+          пореза, тело чистое.</p></div></article>
+      <article class="stand"><canvas id="e-blood2" width="260" height="220" role="img" aria-label="Кровь: капает"></canvas>
+        <div class="stand-body"><h3>2 · Капает</h3><p class="dim">1–3%. Капли идут постоянно, из нескольких
+          порезов сразу.</p></div></article>
+      <article class="stand"><canvas id="e-blood3" width="260" height="220" role="img" aria-label="Кровь: течёт"></canvas>
+        <div class="stand-body"><h3>3 · Течёт</h3><p class="dim">3–8%. По телу идут струйки, капли чаще и
+          крупнее.</p></div></article>
+      <article class="stand"><canvas id="e-blood4" width="260" height="220" role="img" aria-label="Кровь: хлещет"></canvas>
+        <div class="stand-body"><h3>4 · Хлещет</h3><p class="dim">выше 8% — смерть за десяток секунд от одной
+          крови. Лужа под ногами и след при движении.</p></div></article>
+    </div>
+
+    <p class="tag" style="margin-top:1.2rem">тик DoT · волна в цвете школы</p>
+    <p class="dim" style="max-width:68ch">
+      Постоянный знак получает только тот статус, у кого есть <b>состояние тела</b>. У яда его нет —
+      есть тик и дебафф. Поэтому сам факт «его точит» несёт мягкая волна по силуэту, а различаются яды
+      своей дебафф-частью, у которой визуал уже решён.
+    </p>
+    <div class="stands">
+      <article class="stand"><canvas id="e-wave-poison" width="260" height="220" role="img" aria-label="Волна яда"></canvas>
+        <div class="stand-body"><h3>Яд</h3><p class="dim">Зелёная волна на каждом тике. Постоянного знака нет
+          вовсе — и десять разных ядов выглядят одинаково, потому что делают одно.</p></div></article>
+      <article class="stand"><canvas id="e-wave-burn" width="260" height="220" role="img" aria-label="Волна горения"></canvas>
+        <div class="stand-body"><h3>Горение</h3><p class="dim">Волна плюс языки: у огня есть состояние тела,
+          поэтому знак остаётся.</p></div></article>
+      <article class="stand"><canvas id="e-wave-hit" width="260" height="220" role="img" aria-label="Вспышка удара для сравнения"></canvas>
+        <div class="stand-body"><h3>Для сравнения: удар</h3><p class="dim">Вспышка удара резкая, белая, три
+          кадра. Волна DoT мягкая, цветная и вдвое длиннее — их нельзя спутать.</p></div></article>
     </div>
 
     <p class="note">
@@ -2655,6 +2695,113 @@
     ctx.restore();
   }
 
+  /* ---------- кровь по DPS и волна тика DoT ---------- */
+
+  // Ступень крови считается по суммарному DPS в ДОЛЯХ maxHP цели за секунду: абсолютные числа
+  // устарели бы с ростом статов за забег и по-разному читались бы на гоблине и на боссе.
+  // Число порезов — второй факт: сколько ран открыто. Одно не заменяет другое.
+  const BLOOD_LEVELS = [
+    { cuts: 2, drip: 0.020, size: 1.7, streaks: 0, pool: 0 },
+    { cuts: 4, drip: 0.045, size: 2.0, streaks: 0, pool: 0 },
+    { cuts: 6, drip: 0.075, size: 2.4, streaks: 3, pool: 0 },
+    { cuts: 8, drip: 0.110, size: 2.9, streaks: 5, pool: 1 }
+  ];
+
+  function bloodLevel(ctx, x, groundY, H, level) {
+    const u = H / 16;
+    const cfg = BLOOD_LEVELS[level - 1];
+    const box = { x: x - u * 2.6, y: groundY - H + u * 4.5, w: u * 5.2, h: u * 6.5 };
+
+    if (cfg.pool > 0) {                                          // 4-я ступень: лужа под ногами
+      ctx.save();
+      ctx.globalCompositeOperation = "source-over";
+      const puddle = 0.75 + 0.25 * Math.sin(statusTick * 0.05);
+      ctx.fillStyle = "rgba(120,18,18,.55)";
+      ctx.beginPath();
+      ctx.ellipse(x, groundY + u * 0.7, u * (2.4 + 0.5 * puddle), u * 0.85, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = 0; i < cfg.cuts; i++) {
+      const cxp = box.x + box.w * (0.2 + jag(i, 161) * 0.6);
+      const cyp = box.y + box.h * (0.15 + jag(i, 162) * 0.7);
+      const ang = (-30 + jag(i, 163) * 60) * Math.PI / 180;
+      const half = H * 0.075;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "rgba(" + RED + ",.5)"; ctx.lineWidth = 3.2;
+      ctx.beginPath();
+      ctx.moveTo(cxp - Math.cos(ang) * half, cyp - Math.sin(ang) * half);
+      ctx.lineTo(cxp + Math.cos(ang) * half, cyp + Math.sin(ang) * half);
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(255,190,190,.85)"; ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(cxp - Math.cos(ang) * half, cyp - Math.sin(ang) * half);
+      ctx.lineTo(cxp + Math.cos(ang) * half, cyp + Math.sin(ang) * half);
+      ctx.stroke();
+
+      if (i < cfg.streaks) {                                     // струйка вниз по телу
+        const len = u * (2.5 + jag(i, 164) * 2.5);
+        const g = ctx.createLinearGradient(cxp, cyp, cxp, cyp + len);
+        g.addColorStop(0, "rgba(" + RED + ",.7)");
+        g.addColorStop(1, "rgba(" + RED + ",0)");
+        ctx.strokeStyle = g; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(cxp, cyp); ctx.lineTo(cxp + u * 0.2, cyp + len); ctx.stroke();
+      }
+
+      const ph = ((statusTick * cfg.drip + jag(i, 165)) % 1);    // капля: темп растёт со ступенью
+      if (ph < 0.92) {
+        ctx.fillStyle = "rgba(" + RED + "," + ((1 - ph) * 0.85).toFixed(3) + ")";
+        ctx.beginPath();
+        ctx.ellipse(cxp, cyp + (groundY - cyp) * ph, cfg.size * 0.7, cfg.size, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.restore();
+
+    ctx.font = "500 11px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = "rgba(147,128,94,.85)";
+    ctx.fillText("ран " + cfg.cuts, 16, PH - 24);
+  }
+
+  // Тик DoT: мягкая цветная волна ВВЕРХ по силуэту. Отличается от вспышки удара намеренно —
+  // та резкая, белая и живёт три кадра, эта мягкая, цветная и вдвое длиннее.
+  const DOT_WAVE = 10;
+  function dotWave(ctx, x, groundY, H, color, age) {
+    if (age < 0 || age > DOT_WAVE) return;
+    const t = age / DOT_WAVE;
+    const u = H / 16;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    unitPath(ctx, x, groundY, H);
+    ctx.clip();
+    const front = groundY - H * 1.15 * t;                        // фронт волны идёт снизу вверх
+    const g = ctx.createLinearGradient(0, front + u * 3, 0, front - u * 3);
+    g.addColorStop(0, "rgba(" + color + ",0)");
+    g.addColorStop(0.5, "rgba(" + color + "," + (0.55 * (1 - t * 0.5)).toFixed(3) + ")");
+    g.addColorStop(1, "rgba(" + color + ",0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(x - u * 4, front - u * 3, u * 8, u * 6);
+    ctx.restore();
+  }
+
+  // Вспышка удара — для сравнения: резкая, белая, три кадра.
+  function hitFlash(ctx, x, groundY, H, age) {
+    if (age < 0 || age > 3) return;
+    const k = 1 - age / 3;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    unitPath(ctx, x, groundY, H);
+    ctx.clip();
+    ctx.fillStyle = "rgba(255,255,255," + (0.8 * k).toFixed(3) + ")";
+    ctx.fillRect(x - H / 4, groundY - H, H / 2, H);
+    ctx.restore();
+  }
+
+  const DOT_PERIOD = 30;   // тик DoT раз в секунду
+
   function drawEffectPreview(canvas, key) {
     const ctx = stageMini(canvas, PW, PH);
     const x = PW / 2, groundY = PGY, H = PUH, u = H / 16;
@@ -2721,46 +2868,10 @@
         effHead(ctx, "угли");
         break;
       }
-      case "poison": {
-        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0.8, frostbite: 0 });
-        bubblesUp(ctx, bx, groundY, H, ST.poison, 0.012, 6, 2.1);
-        effHead(ctx, "яд · гниль · споры");
-        break;
-      }
       case "frostbite": {
         const fill = 0.35 + 0.3 * (0.5 + 0.5 * Math.sin(statusTick * 0.03));
         statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: fill });
         effHead(ctx, "изморозь · стаки растут");
-        break;
-      }
-      case "bleed": {
-        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
-        const box = { x: bx - u * 2.6, y: groundY - H + u * 4.5, w: u * 5.2, h: u * 6.5 };
-        ctx.save();
-        ctx.globalCompositeOperation = "lighter";
-        for (let i = 0; i < 4; i++) {                             // порезы: место, угол, яркость
-          const cxp = box.x + box.w * (0.25 + jag(i, 131) * 0.5);
-          const cyp = box.y + box.h * (0.2 + jag(i, 132) * 0.6);
-          const ang = (-25 + jag(i, 133) * 50) * Math.PI / 180;
-          const half = H * 0.09;
-          ctx.strokeStyle = "rgba(" + RED + ",.55)"; ctx.lineWidth = 3.4; ctx.lineCap = "round";
-          ctx.beginPath();
-          ctx.moveTo(cxp - Math.cos(ang) * half, cyp - Math.sin(ang) * half);
-          ctx.lineTo(cxp + Math.cos(ang) * half, cyp + Math.sin(ang) * half);
-          ctx.stroke();
-          ctx.strokeStyle = "rgba(255,190,190,.9)"; ctx.lineWidth = 1.3;
-          ctx.beginPath();
-          ctx.moveTo(cxp - Math.cos(ang) * half, cyp - Math.sin(ang) * half);
-          ctx.lineTo(cxp + Math.cos(ang) * half, cyp + Math.sin(ang) * half);
-          ctx.stroke();
-          const ph = ((statusTick * 0.03 + jag(i, 134)) % 1);     // капля вниз из этого пореза
-          ctx.fillStyle = "rgba(" + RED + "," + ((1 - ph) * 0.8).toFixed(3) + ")";
-          ctx.beginPath();
-          ctx.arc(cxp, cyp + (groundY - cyp) * ph, 1.8 * (1 - ph * 0.4), 0, Math.PI * 2);
-          ctx.fill();
-        }
-        ctx.restore();
-        effHead(ctx, "кровотечение · из порезов");
         break;
       }
       case "stealth": {
@@ -2833,6 +2944,38 @@
         ctx.fillRect(bx - u * 3, groundY - H, u * 6, H);
         ctx.restore();
         effHead(ctx, "ослабление");
+        break;
+      }
+      case "blood1": case "blood2": case "blood3": case "blood4": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        const lvl = Number(key.slice(-1));
+        bloodLevel(ctx, bx, groundY, H, lvl);
+        const wave = statusTick % DOT_PERIOD;
+        dotWave(ctx, bx, groundY, H, RED, wave < DOT_WAVE ? wave : -1);
+        effHead(ctx, "кровь · ступень " + lvl);
+        break;
+      }
+      case "wave-poison": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        const wave = statusTick % DOT_PERIOD;
+        dotWave(ctx, bx, groundY, H, ST.poison, wave < DOT_WAVE ? wave : -1);
+        effHead(ctx, wave < DOT_WAVE ? "тик яда" : "между тиками · чисто");
+        break;
+      }
+      case "wave-burn": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 2 / 3, poison: 0, frostbite: 0 });
+        burnFlames(ctx, bx, groundY, H, 2 / 3);
+        const wave = statusTick % DOT_PERIOD;
+        dotWave(ctx, bx, groundY, H, ST.burn, wave < DOT_WAVE ? wave : -1);
+        effHead(ctx, "языки держатся, волна на тике");
+        break;
+      }
+      case "wave-hit": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        const hit = statusTick % DOT_PERIOD;
+        hitFlash(ctx, bx, groundY, H, hit < 4 ? hit : -1);
+        if (hit < 6) sparks(ctx, bx, groundY - H * 0.55, -20, 0.12, hit, H, 7);
+        effHead(ctx, hit < 4 ? "ВСПЫШКА · 3 кадра" : "удар · для сравнения");
         break;
       }
       case "slow": {
@@ -3577,9 +3720,11 @@
   const SHIELD_CASES_UI = ["calm", "weak", "strong", "dot", "two", "three", "wrong", "stack",
                            "layer", "through", "expire", "addover", "block", "backstab"]
     .map(function (k) { return { el: document.getElementById("k-" + k), key: k }; });
-  const EFFECT_PREVIEWS = ["stun", "sleep", "frozen", "knockup", "burn", "ember", "poison",
-                           "frostbite", "bleed", "stealth", "mark", "empower", "hot", "antiheal",
-                           "weaken", "slow", "root"]
+  const EFFECT_PREVIEWS = ["stun", "sleep", "frozen", "knockup", "burn", "ember",
+                           "frostbite", "stealth", "mark", "empower", "hot", "antiheal",
+                           "weaken", "slow", "root",
+                           "blood1", "blood2", "blood3", "blood4",
+                           "wave-poison", "wave-burn", "wave-hit"]
     .map(function (k) { return { el: document.getElementById("e-" + k), key: k }; });
   const BURN_STANDS = [["s-steps", "steps"], ["s-cont", "cont"], ["s-binary", "binary"]]
     .map(function (p) { return { el: document.getElementById(p[0]), mode: p[1] }; });
