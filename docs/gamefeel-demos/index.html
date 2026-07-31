@@ -307,6 +307,7 @@
       <a href="#ranged">Дальний бой</a>
       <span class="toc-todo">Хил</span>
       <span class="toc-todo">Каст и всполохи</span>
+      <a href="#zones">Зоны</a>
       <a href="#shield">Барьер</a>
       <a href="#status">Статусы</a>
       <a href="#effects">Превью эффектов</a>
@@ -766,6 +767,46 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="zones">
+    <p class="eyebrow">раздел 9 · предложение к разбору 31.07.2026</p>
+    <h2 style="font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:300;margin-top:.4rem">
+      Зоны: круг, линия и то, что стоит на арене
+    </h2>
+    <p class="lede">
+      Акцент на <b>подводке</b>: контур растёт к моменту срабатывания. Игрок в автобое не уклоняется, но
+      растущий круг делает бой читаемым в момент, а не только в разборе — и наш лаг показа делает эту
+      подводку честной, потому что сим уже посчитал, а лента её держит.
+    </p>
+    <p class="dim">
+      <b>Контур несёт форму, заливка живёт на минимуме.</b> Зоны пересекаются, а аддитивные заливки
+      складываются: две дают пятно, три — кашу. Зона лежит в плоскости земли — с той же сплюснутостью,
+      что тень юнита и купол барьера.
+    </p>
+
+    <div class="stands">
+      <article class="stand"><canvas id="z-self" width="320" height="280" role="img" aria-label="Круг вокруг себя"></canvas>
+        <div class="stand-body"><h3>Круг вокруг себя</h3><p class="dim">«Стальной вихрь» Копейщика, радиус 2.5.
+          Подводка заполняется, срабатывание бьёт по контуру и внутрь, след гаснет.</p></div></article>
+      <article class="stand"><canvas id="z-target" width="320" height="280" role="img" aria-label="Круг вокруг цели"></canvas>
+        <div class="stand-body"><h3>Круг вокруг цели</h3><p class="dim">Ледяная зона Криоманта, радиус 3.0. Центр
+          не на кастующем — линия от него к зоне объясняет, кто это делает.</p></div></article>
+      <article class="stand"><canvas id="z-line" width="320" height="280" role="img" aria-label="Линия перед юнитом"></canvas>
+        <div class="stand-body"><h3>Линия</h3><p class="dim">Форма есть в данных, носителя ждёт. Прокол сквозь ряд:
+          подводка идёт от юнита к концу, а не от края к центру.</p></div></article>
+      <article class="stand"><canvas id="z-standing" width="320" height="280" role="img" aria-label="Стоячая зона"></canvas>
+        <div class="stand-body"><h3>Стоячая зона</h3><p class="dim">Облако спор. Подводки нет — её никто не
+          заряжает; контур держится всё время жизни, а тик виден <b>на телах</b>, не на земле.</p></div></article>
+      <article class="stand"><canvas id="z-overlap" width="320" height="280" role="img" aria-label="Пересечение зон"></canvas>
+        <div class="stand-body"><h3>Три зоны разом</h3><p class="dim">Проверка на кашу: контуры переживают
+          пересечение, заливки бы слиплись. Ровно поэтому заливка почти нулевая.</p></div></article>
+      <article class="stand"><canvas id="z-instant" width="320" height="280" role="img" aria-label="Мгновенный зональный каст"></canvas>
+        <div class="stand-body"><h3>Каст без cast-time</h3><p class="dim">Подводке негде жить: круг вспыхивает в
+          кадре урона. Отсюда требование — зональному касту нужно окно подготовки.</p></div></article>
     </div>
   </section>
 
@@ -2822,6 +2863,165 @@
     }
   }
 
+  /* ---------- зоны: подводка, срабатывание, след ---------- */
+
+  // Зона лежит в ПЛОСКОСТИ ЗЕМЛИ, поэтому круг рисуется эллипсом с той же сплюснутостью, что тень
+  // юнита и купол барьера. Один множитель на всё — иначе зона читается как сфера в воздухе.
+  const GROUND_SQUASH = 0.42;
+
+  // Контур зоны. fill01 — доля подводки (0 — только контур, 1 — заполнен), flash — вспышка
+  // срабатывания. Заливка держится на минимуме намеренно: зоны пересекаются, а аддитив слипается.
+  function zoneCircle(ctx, cx, cy, r, color, fill01, flash, dashed) {
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+
+    if (fill01 > 0 || flash > 0) {                       // заполнение подводки: сектор от 12 часов
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.ellipse(cx, cy, r, r * GROUND_SQUASH, 0, -Math.PI / 2,
+                  -Math.PI / 2 + Math.PI * 2 * Math.max(fill01, flash));
+      ctx.closePath();
+      ctx.fillStyle = "rgba(" + color + "," + (0.07 + 0.16 * flash).toFixed(3) + ")";
+      ctx.fill();
+    }
+
+    ctx.setLineDash(dashed ? [5, 5] : []);
+    ctx.strokeStyle = "rgba(" + color + "," + (0.4 + 0.55 * Math.max(fill01 * 0.5, flash)).toFixed(3) + ")";
+    ctx.lineWidth = 1.6 + 1.6 * flash;
+    ctx.beginPath(); ctx.ellipse(cx, cy, r, r * GROUND_SQUASH, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    if (flash > 0) {                                     // срабатывание: кромка вспыхивает белым
+      ctx.strokeStyle = "rgba(255,250,235," + (0.75 * flash).toFixed(3) + ")";
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, r * (1 + 0.06 * (1 - flash)), r * GROUND_SQUASH * (1 + 0.06 * (1 - flash)),
+                  0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  // Линия: подводка идёт ОТ ЮНИТА к концу, а не от края к центру — прокол имеет направление.
+  function zoneLine(ctx, x0, y0, len, halfWidth, color, fill01, flash) {
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    const hw = halfWidth * GROUND_SQUASH;
+    const filled = len * Math.max(fill01, flash);
+    ctx.fillStyle = "rgba(" + color + "," + (0.07 + 0.16 * flash).toFixed(3) + ")";
+    ctx.fillRect(x0, y0 - hw, filled, hw * 2);
+    ctx.strokeStyle = "rgba(" + color + "," + (0.4 + 0.55 * Math.max(fill01 * 0.5, flash)).toFixed(3) + ")";
+    ctx.lineWidth = 1.6 + 1.6 * flash;
+    ctx.beginPath(); ctx.rect(x0, y0 - hw, len, hw * 2); ctx.stroke();
+    if (flash > 0) {
+      ctx.strokeStyle = "rgba(255,250,235," + (0.75 * flash).toFixed(3) + ")";
+      ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(x0 + filled, y0 - hw * 1.3); ctx.lineTo(x0 + filled, y0 + hw * 1.3); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  // Кто это делает: линия от кастующего к зоне, если центр не на нём. Без неё круг «вокруг цели»
+  // выглядит бесхозным.
+  function zoneOrigin(ctx, x0, y0, cx, cy, color, k) {
+    if (k <= 0) return;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.strokeStyle = "rgba(" + color + "," + (0.3 * k).toFixed(3) + ")";
+    ctx.setLineDash([3, 5]); ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(cx, cy); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
+  const ZONE_CYCLE = 108;
+  const ZONE_CAST = 30;       // окно подводки: 1 с
+  const ZONE_HIT = 48;        // кадр срабатывания
+  const ZONE_TRAIL = 24;      // сколько живёт след
+
+  // Фаза зоны в цикле: подводка → срабатывание → след. instant = каста нет, подводке негде жить.
+  function zonePhase(c, instant) {
+    if (instant) {
+      const age = c - ZONE_HIT;
+      if (c < ZONE_HIT) return { fill: 0, flash: 0, trail: 0, label: "покой" };
+      if (age < 5) return { fill: 0, flash: 1 - age / 5, trail: 0, label: "СРАБОТАЛО без подводки" };
+      if (age < 5 + ZONE_TRAIL) return { fill: 0, flash: 0, trail: 1 - (age - 5) / ZONE_TRAIL, label: "след" };
+      return { fill: 0, flash: 0, trail: 0, label: "покой" };
+    }
+    if (c < ZONE_CAST) return { fill: 0, flash: 0, trail: 0, label: "покой" };
+    if (c < ZONE_HIT) return { fill: (c - ZONE_CAST) / (ZONE_HIT - ZONE_CAST), flash: 0, trail: 0,
+                               label: "подводка · " + Math.round(100 * (c - ZONE_CAST) / (ZONE_HIT - ZONE_CAST)) + "%" };
+    const age = c - ZONE_HIT;
+    if (age < 5) return { fill: 1, flash: 1 - age / 5, trail: 0, label: "СРАБОТАЛО" };
+    if (age < 5 + ZONE_TRAIL) return { fill: 0, flash: 0, trail: 1 - (age - 5) / ZONE_TRAIL, label: "след" };
+    return { fill: 0, flash: 0, trail: 0, label: "покой" };
+  }
+
+  const ZONE_COL = { frost: "138,206,255", steel: "196,206,214", spore: "132,214,92", fire: "255,146,48" };
+
+  function zoneLabel(ctx, W, H0, text, hot) {
+    ctx.font = "500 12px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = hot ? "rgba(255,250,235,1)" : "rgba(147,128,94,.85)";
+    ctx.fillText(text, 18, H0 - 26);
+  }
+
+  function drawZoneCase(canvas, kind) {
+    const W = 320, H0 = 280;
+    const ctx = stageMini(canvas, W, H0);
+    const groundY = H0 - 84, H = 108, u = H / 16;
+    const c = statusTick % ZONE_CYCLE;
+
+    if (kind === "self") {
+      const p = zonePhase(c, false);
+      const x = W / 2;
+      zoneCircle(ctx, x, groundY + u * 0.6, u * 7.5, ZONE_COL.steel, p.fill, p.flash, false);
+      if (p.trail > 0) zoneCircle(ctx, x, groundY + u * 0.6, u * 7.5, ZONE_COL.steel, 0, p.trail * 0.25, true);
+      statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+      zoneLabel(ctx, W, H0, p.label + " · вокруг себя", p.flash > 0);
+    } else if (kind === "target") {
+      const p = zonePhase(c, false);
+      const caster = W * 0.25, tx = W * 0.68;
+      zoneCircle(ctx, tx, groundY + u * 0.6, u * 8.5, ZONE_COL.frost, p.fill, p.flash, false);
+      if (p.trail > 0) zoneCircle(ctx, tx, groundY + u * 0.6, u * 8.5, ZONE_COL.frost, 0, p.trail * 0.25, true);
+      zoneOrigin(ctx, caster, groundY - H * 0.4, tx, groundY + u * 0.6, ZONE_COL.frost,
+                 Math.max(p.fill, p.flash));
+      statusBody(ctx, caster, groundY, H * 0.92, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+      statusBody(ctx, tx, groundY, H * 0.92, { stun: false, burn: 0, poison: 0, frostbite: p.trail * 0.5 });
+      zoneLabel(ctx, W, H0, p.label + " · вокруг цели", p.flash > 0);
+    } else if (kind === "line") {
+      const p = zonePhase(c, false);
+      const x = W * 0.22;
+      zoneLine(ctx, x, groundY + u * 0.6, u * 13, u * 2.6, ZONE_COL.steel, p.fill, p.flash);
+      statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+      statusBody(ctx, x + u * 8, groundY, H * 0.92, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+      zoneLabel(ctx, W, H0, p.label + " · линия", p.flash > 0);
+    } else if (kind === "standing") {
+      // Стоячая зона: подводки нет, контур держится всю жизнь, тик виден НА ТЕЛЕ.
+      const life = c / ZONE_CYCLE;
+      const tick = (c % 20) < 5 ? 1 - (c % 20) / 5 : 0;
+      const x = W / 2;
+      zoneCircle(ctx, x, groundY + u * 0.6, u * 8, ZONE_COL.spore, 0.14, 0, true);
+      statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0.5 + 0.4 * tick, frostbite: 0 });
+      if (tick > 0) bubblesUp(ctx, x, groundY, H, ZONE_COL.spore, 0.05, 4, 2);
+      zoneLabel(ctx, W, H0, tick > 0 ? "тик по стоящему внутри" : "стоит · " +
+                Math.round((1 - life) * 100) + "% жизни", tick > 0);
+    } else if (kind === "overlap") {
+      const p = zonePhase(c, false);
+      zoneCircle(ctx, W * 0.38, groundY + u * 0.6, u * 7, ZONE_COL.frost, p.fill, p.flash, false);
+      zoneCircle(ctx, W * 0.58, groundY + u * 1.2, u * 6, ZONE_COL.fire, p.fill * 0.7, p.flash * 0.7, false);
+      zoneCircle(ctx, W * 0.5, groundY - u * 0.8, u * 8.5, ZONE_COL.spore, 0.12, 0, true);
+      statusBody(ctx, W * 0.47, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+      zoneLabel(ctx, W, H0, "три зоны · контуры не слиплись", p.flash > 0);
+    } else {
+      const p = zonePhase(c, true);
+      const x = W / 2;
+      zoneCircle(ctx, x, groundY + u * 0.6, u * 7.5, ZONE_COL.fire, p.fill, p.flash, false);
+      if (p.trail > 0) zoneCircle(ctx, x, groundY + u * 0.6, u * 7.5, ZONE_COL.fire, 0, p.trail * 0.25, true);
+      statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+      zoneLabel(ctx, W, H0, p.label, p.flash > 0);
+    }
+  }
+
   /* ---------- форма купола: круглая, без углов ---------- */
 
   // Одна параметризация на все три формы: контур, узор трещин и осколки обязаны жить в одной
@@ -3370,6 +3570,8 @@
     .map(function (p) { return { el: document.getElementById(p[0]), kind: p[1] }; });
   const bBreak = document.getElementById("b-break");
   const bFade = document.getElementById("b-fade");
+  const ZONE_CASES = ["self", "target", "line", "standing", "overlap", "instant"]
+    .map(function (k) { return { el: document.getElementById("z-" + (k === "instant" ? "instant" : k)), key: k }; });
   const SHIELD_CASES_UI = ["calm", "weak", "strong", "dot", "two", "three", "wrong", "stack",
                            "layer", "through", "expire", "addover", "block", "backstab"]
     .map(function (k) { return { el: document.getElementById("k-" + k), key: k }; });
@@ -3404,6 +3606,7 @@
     for (let i = 0; i < SHIELD_STANDS.length; i++) drawShieldStand(SHIELD_STANDS[i].el, SHIELD_STANDS[i].kind);
     drawShieldBreak(bBreak);
     drawShieldFade(bFade);
+    for (let i = 0; i < ZONE_CASES.length; i++) drawZoneCase(ZONE_CASES[i].el, ZONE_CASES[i].key);
     for (let i = 0; i < SHIELD_CASES_UI.length; i++)
       drawShieldCase(SHIELD_CASES_UI[i].el, SHIELD_CASES_UI[i].key);
     for (let i = 0; i < EFFECT_PREVIEWS.length; i++)
@@ -3488,6 +3691,7 @@
     sChan._cw = 0; sAbsurd._cw = 0; bBreak._cw = 0; bFade._cw = 0;
     SHIELD_STANDS.forEach(function (s) { s.el._cw = 0; });
     SHIELD_CASES_UI.forEach(function (s) { s.el._cw = 0; });
+    ZONE_CASES.forEach(function (z) { z.el._cw = 0; });
     EFFECT_PREVIEWS.forEach(function (p) { p.el._cw = 0; });
     BURN_STANDS.forEach(function (b) { b.el._cw = 0; });
     render();
