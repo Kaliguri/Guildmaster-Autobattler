@@ -1665,6 +1665,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4048370084651677424}
+  - component: {fileID: 3569175090307939268}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -1688,6 +1689,20 @@ Transform:
   - {fileID: 1631694736778102514}
   m_Father: {fileID: 2454201697868888205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -40}
+--- !u!114 &3569175090307939268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4612981027478990413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d7098ec5f5ac04a8dfb71d86cd3801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Body.UnitHeldItem
+  _kind: 2
+  _twoHanded: 0
 --- !u!1 &4816720993215949973
 GameObject:
   m_ObjectHideFlags: 0
@@ -2575,6 +2590,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8932912927806761202}
+  - component: {fileID: 1460042909714094253}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -2598,6 +2614,20 @@ Transform:
   - {fileID: 2943272987204117313}
   m_Father: {fileID: 959332909848431557}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -89.39}
+--- !u!114 &1460042909714094253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7932199901781242444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d7098ec5f5ac04a8dfb71d86cd3801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Body.UnitHeldItem
+  _kind: 1
+  _twoHanded: 0
 --- !u!1 &7932504911367340898
 GameObject:
   m_ObjectHideFlags: 0
