@@ -788,46 +788,44 @@
     </p>
 
     <p class="dim">
-      Форма круглая, без углов — гранёные и стеклянно-фасетные варианты отклонены. В покое видно
-      <b>только силуэт</b>: тонкая линия контура. Подсветка приходит с ударом, пятном в точке контакта,
-      и расходится волной по поверхности.
+      Форма круглая, без углов — гранёные и стеклянно-фасетные варианты отклонены. Из трёх круглых
+      принят <b>эллипс</b>, с заметным зазором до тела: барьер окружает юнита, а не облегает его. В покое
+      видно <b>только силуэт</b> — тонкую линию контура; подсветка приходит с ударом, пятном в точке
+      контакта, и расходится волной по поверхности.
     </p>
 
     <div class="stands">
 
-      <article class="stand">
+      <article class="stand accepted">
         <canvas id="b-ellipse" width="480" height="380" role="img"
                 aria-label="Барьер эллипсом"></canvas>
         <div class="stand-body">
-          <p class="tag">вариант 1</p>
+          <p class="tag">принято 31.07.2026</p>
           <h3>Эллипс</h3>
-          <p class="dim">Вытянутый по высоте сфероид, симметричный. Самая нейтральная из круглых
-            форм.</p>
+          <p class="dim">Вытянутый по высоте сфероид, симметричный. Самая нейтральная из круглых форм —
+            и самая понятная как «силовое поле».</p>
           <ul class="facts">
-            <li><span>оси</span><span>0.30 H · 0.58 H</span></li>
-            <li><span>плюс</span><span>ни одного лишнего параметра</span></li>
-            <li><span>минус</span><span>пустой воздух над головой</span></li>
+            <li><span>полуоси</span><span>0.34 H · 0.68 H</span></li>
+            <li><span>центр</span><span>0.52 H от земли</span></li>
+            <li><span>низ</span><span>подрезан землёй</span></li>
           </ul>
-          <p class="verdict">Читается сразу, но силуэт человека неоднороден: у головы форма шире, чем
-            нужно, а у ног — теснее.</p>
+          <p class="verdict pick">Зазор до тела заметный — барьер читается как объём вокруг юнита, а не
+            как обводка по силуэту.</p>
         </div>
       </article>
 
-      <article class="stand accepted">
+      <article class="stand">
         <canvas id="b-dome" width="480" height="380" role="img"
                 aria-label="Барьер куполом-овоидом"></canvas>
         <div class="stand-body">
-          <p class="tag">вариант 2 · рекомендую</p>
+          <p class="tag">отклонено</p>
           <h3>Купол-овоид</h3>
-          <p class="dim">Тот же сфероид, но сужается к верху и подрезан линией земли. Обнимает силуэт
-            и стоит на арене.</p>
+          <p class="dim">Тот же сфероид, но сужается к верху. Обнимает силуэт плотнее — и именно
+            поэтому проиграл: барьеру полагается быть просторнее тела.</p>
           <ul class="facts">
             <li><span>сужение</span><span>к макушке на 26%</span></li>
-            <li><span>низ</span><span>обрезан землёй</span></li>
-            <li><span>объём</span><span>заливка почти нулевая</span></li>
+            <li><span>минус</span><span>облегает, а не окружает</span></li>
           </ul>
-          <p class="verdict pick">Пустоты нет ни сверху, ни снизу, и купол не спорит с тенью — он
-            опирается на ту же землю, что и юнит.</p>
         </div>
       </article>
 
@@ -835,17 +833,14 @@
         <canvas id="b-cocoon" width="480" height="380" role="img"
                 aria-label="Барьер коконом"></canvas>
         <div class="stand-body">
-          <p class="tag">вариант 3</p>
+          <p class="tag">отклонено</p>
           <h3>Кокон</h3>
-          <p class="dim">Суперэллипс: бока почти прямые, но углов нет ни одного. Облегает тело
-            плотнее всех.</p>
+          <p class="dim">Суперэллипс: бока почти прямые, углов нет ни одного. Плотный и аккуратный, но
+            читается как футляр, а не как силовое поле.</p>
           <ul class="facts">
             <li><span>показатель</span><span>2.7 вместо 2</span></li>
-            <li><span>плюс</span><span>меньше всего пустого места</span></li>
-            <li><span>минус</span><span>ближе к капсуле, чем к щиту</span></li>
+            <li><span>минус</span><span>прямые бока</span></li>
           </ul>
-          <p class="verdict">Плотный и аккуратный, но прямые бока читаются как футляр, а не как
-            силовое поле.</p>
         </div>
       </article>
 
@@ -3118,7 +3113,7 @@
     const c = statusTick % def.cycle;
     const st = runCase(def, c);
     const groundY = H0 - 76, H = 132, x = W / 2, u = H / 16;
-    const cx = x, cy = groundY - H * 0.5, rx0 = u * 4.4, ry0 = H * 0.6;
+    const cx = x, cy = groundY - H * 0.52, rx0 = u * 5.5, ry0 = H * 0.68;
 
     statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
 
@@ -3150,20 +3145,20 @@
         const f = 1 - (sh.fade || 0);
         if (f <= 0.02) continue;
         ctx.save(); ctx.globalAlpha = f;
-        domeSurface(ctx, "dome", cx, cy, rx * (1 + 0.1 * (1 - f)), ry * (1 + 0.1 * (1 - f)), color,
+        domeSurface(ctx, "ellipse", cx, cy, rx * (1 + 0.1 * (1 - f)), ry * (1 + 0.1 * (1 - f)), color,
                     { glow: 0, hitAng: null, dot: false }, base * f, groundY + u * 0.8);
         ctx.restore();
         continue;
       }
       if (sh.broken >= 0) {
-        if (sh.broken < 1) domeShards(ctx, "dome", cx, cy, rx, ry, sh.broken, sh.lastAng || -90, color);
+        if (sh.broken < 1) domeShards(ctx, "ellipse", cx, cy, rx, ry, sh.broken, sh.lastAng || -90, color);
         continue;
       }
 
-      domeSurface(ctx, "dome", cx, cy, rx, ry, color, sh, base, groundY + u * 0.8);
+      domeSurface(ctx, "ellipse", cx, cy, rx, ry, color, sh, base, groundY + u * 0.8);
       // Яркость узора = текущая целостность; геометрия — история. Широко и бледно = «били, но крепок».
       const integrity = sh.rest / Math.max(1e-4, sh.rest + sh.eaten);
-      drawPattern(ctx, "dome", cx, cy, rx, ry, sh.seed, sh.shown, sh.hits, color,
+      drawPattern(ctx, "ellipse", cx, cy, rx, ry, sh.seed, sh.shown, sh.hits, color,
                   0.12 + 0.5 * (1 - integrity) + sh.glow * 0.4);
     }
 
@@ -3264,7 +3259,7 @@
 
     statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
 
-    const cx = x, cy = groundY - H * 0.5, rx = u * 4.9, ry = H * 0.63;
+    const cx = x, cy = groundY - H * 0.52, rx = u * 5.5, ry = H * 0.68;
 
     if (st.broken < 0) {
       domeSurface(ctx, kind, cx, cy, rx, ry, SHIELD, st, SHIELD_BASE, groundY + u * 0.8);
@@ -3286,16 +3281,16 @@
     const groundY = H0 - 74, H = 150, x = 240;
     const u = H / 16;
     const c = statusTick % BREAK_CYCLE;
-    const cx = x, cy = groundY - H * 0.5, rx = u * 4.9, ry = H * 0.63;
+    const cx = x, cy = groundY - H * 0.52, rx = u * 5.5, ry = H * 0.68;
 
     statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
 
     if (c < 30) {                                   // целый, с трещинами от прошлых ударов
       const st = { glow: c > 24 ? (c - 24) / 6 : 0, hitAng: -64, cracks: 4, dot: false, broken: -1 };
-      domeSurface(ctx, "dome", cx, cy, rx, ry, SHIELD, st, SHIELD_BASE, groundY + u * 0.8);
-      drawPattern(ctx, "dome", cx, cy, rx, ry, 31, 0.95, [-64, -150, -20], SHIELD, 0.6 + st.glow * 0.4);
+      domeSurface(ctx, "ellipse", cx, cy, rx, ry, SHIELD, st, SHIELD_BASE, groundY + u * 0.8);
+      drawPattern(ctx, "ellipse", cx, cy, rx, ry, 31, 0.95, [-64, -150, -20], SHIELD, 0.6 + st.glow * 0.4);
     } else if (c < 56) {
-      domeShards(ctx, "dome", cx, cy, rx, ry, (c - 30) / 26, -64, SHIELD);
+      domeShards(ctx, "ellipse", cx, cy, rx, ry, (c - 30) / 26, -64, SHIELD);
     }
 
     ctx.font = "500 13px ui-monospace, Consolas, monospace";
@@ -3311,7 +3306,7 @@
     const groundY = H0 - 74, H = 150, x = 240;
     const u = H / 16;
     const c = statusTick % FADE_CYCLE;
-    const cx = x, cy = groundY - H * 0.5, rx = u * 4.9, ry = H * 0.63;
+    const cx = x, cy = groundY - H * 0.52, rx = u * 5.5, ry = H * 0.68;
 
     statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
 
@@ -3321,9 +3316,9 @@
       ctx.save();
       ctx.globalAlpha = 1 - t;
       ctx.translate(0, -ry * 0.35 * t);
-      domeSurface(ctx, "dome", cx, cy, rx, ry * (1 + 0.12 * t), SHIELD, st,
+      domeSurface(ctx, "ellipse", cx, cy, rx, ry * (1 + 0.12 * t), SHIELD, st,
                   SHIELD_BASE * (1 - t * 0.4), groundY + u * 0.8);
-      drawPattern(ctx, "dome", cx, cy, rx, ry, 31, 0.35, [-150], SHIELD, 0.3 * (1 - t));
+      drawPattern(ctx, "ellipse", cx, cy, rx, ry, 31, 0.35, [-150], SHIELD, 0.3 * (1 - t));
       ctx.restore();
     }
 
