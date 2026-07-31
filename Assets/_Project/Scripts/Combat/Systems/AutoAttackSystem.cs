@@ -494,7 +494,11 @@ namespace Guildmaster.Combat
                 // Снимаем ИМЕННО тот эффект, который заряд выдал (у Убийцы — стелс, у периодического
                 // заряда — свой тег): жёсткий Stealth здесь срывал бы скрытность любому, кто просто
                 // взвёл усиленный удар, и наоборот оставлял бы висеть чужой заряд.
-                ctx.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, unit.EmpowerConsumeTag, int.MaxValue, 0));
+                // Тег НЕ ЗАДАН — снимать нечего: диспел по None означает «по любому тегу» и сносит с
+                // носителя вообще всё. Замером 2026-07-31 так и вышло: заряд цикла голема стирал сам цикл
+                // и каменный оберег, из-за чего голем навсегда застревал на первом ударе.
+                if (unit.EmpowerConsumeTag != EffectTag.None)
+                    ctx.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, unit.EmpowerConsumeTag, int.MaxValue, 0));
             }
 
             // §10.5 блинк убийцы: телепорт за спину едет с ударом — он меняет позиции, а их читают
