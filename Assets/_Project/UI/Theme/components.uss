@@ -1461,6 +1461,32 @@
     margin-right: var(--gm-space-2);
 }
 
+/* Чужие бренды в ряду атрибуций идут КАРТИНКОЙ, а не латунным текстом, и это юридическое, а не
+   вкусовое: trademark-гайд Unity требует брать логотип «exactly as provided, without alterations»
+   и разрешает из цветов только чёрный / тёмно-серый / светло-серый / белый — латунь была бы
+   нарушением. FMOD single-color перекраску разрешает, но держим его в том же светло-сером: ряд
+   читается как одна система, латунь остаётся признаком НАШЕГО бренда (печать + ALEBARDIUM).
+   Приглушение — тинтом и прозрачностью, форма логотипов не трогается. */
+.gm-boot__attrib-logo {
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: rgb(190, 190, 190);
+    opacity: 0.75;
+}
+
+/* Размеры заданы по оптическому весу, а не по формуле: у «MADE WITH Unity» знак крупнее вордмарка,
+   у fmod вордмарк во всю высоту — при равной height fmod выглядел бы больше соседа. */
+.gm-boot__attrib-logo--unity {
+    width: 93px;
+    height: 22px;
+    background-image: url("../../Art/Brand/Logo_MadeWithUnity_White.png");
+}
+
+.gm-boot__attrib-logo--fmod {
+    width: 69px;
+    height: 18px;
+    background-image: url("../../Art/Brand/Logo_FMOD_White.png");
+}
+
 .gm-boot__loading {
     position: absolute;
     right: var(--gm-space-5);

@@ -13,9 +13,9 @@
             <ui:VisualElement class="gm-boot__attrib-icon" picking-mode="Ignore" />
             <ui:Label text="ALEBARDIUM" class="gm-boot__attrib-item" />
             <ui:Label text="·" class="gm-boot__attrib-sep" />
-            <ui:Label text="MADE WITH UNITY" class="gm-boot__attrib-item" />
+            <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--unity" picking-mode="Ignore" />
             <ui:Label text="·" class="gm-boot__attrib-sep" />
-            <ui:Label text="FMOD" class="gm-boot__attrib-item" />
+            <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--fmod" picking-mode="Ignore" />
         </ui:VisualElement>
 
         <ui:VisualElement name="boot-loading" class="gm-boot__loading" picking-mode="Ignore">
