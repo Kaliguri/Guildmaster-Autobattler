@@ -37,6 +37,8 @@ MonoBehaviour:
     Color: {r: 0.5411765, g: 0.37254903, b: 0.15686275, a: 1}
   - Token: --gm-color-border-subtle
     Color: {r: 0.49411765, g: 0.40784314, b: 0.2901961, a: 1}
+  - Token: --gm-color-combat-block-flash
+    Color: {r: 1, g: 0.9490196, b: 0.54901963, a: 1}
   - Token: --gm-color-combat-flash-dark
     Color: {r: 0.54901963, g: 0.34901962, b: 0.8509804, a: 1}
   - Token: --gm-color-combat-flash-light
@@ -62,7 +64,7 @@ MonoBehaviour:
   - Token: --gm-color-combat-overbright
     Color: {r: 0.94509804, g: 0.9529412, b: 1, a: 1}
   - Token: --gm-color-combat-shield
-    Color: {r: 1, g: 0.9490196, b: 0.54901963, a: 1}
+    Color: {r: 0.61960787, g: 0.85882354, b: 1, a: 1}
   - Token: --gm-color-danger
     Color: {r: 0.65882355, g: 0.3137255, b: 0.22745098, a: 1}
   - Token: --gm-color-disabled-text
