@@ -31,6 +31,7 @@ namespace Guildmaster.Game.Services
         private readonly ISaveService _save;
         private AudioVolumeSettings _audio01;
         private GameplaySettings _gameplay;
+        private string _language = string.Empty;   // пусто = игрок ещё не выбирал, язык возьмут у системы
 
         public SettingsService(IAudioService audio, GameConfig config, ISaveService save)
         {
@@ -43,6 +44,7 @@ namespace Guildmaster.Game.Services
 
         public AudioVolumeSettings Audio => _audio01;
         public GameplaySettings Gameplay => _gameplay;
+        public string LanguageCode => _language;
         public event Action Changed;
 
         void IStartable.Start() => Load();
@@ -94,6 +96,20 @@ namespace Guildmaster.Game.Services
             Changed?.Invoke();
         }
 
+        // Язык уходит на диск ТУТ ЖЕ, в отличие от остальных сеттеров. Причина: его пишет не экран
+        // настроек (его нет), а старт сессии, определивший язык системы. Не запиши мы сразу — «подобрали
+        // один раз» превратилось бы в «подбираем каждый запуск», и смена языка ОС молча меняла бы язык
+        // игры у человека, который его уже видел.
+        public void SetLanguage(string localeCode)
+        {
+            string code = string.IsNullOrWhiteSpace(localeCode) ? string.Empty : localeCode.Trim();
+            if (code == _language) return;
+
+            _language = code;
+            Save();
+            Changed?.Invoke();
+        }
+
         public void Load()
         {
             ReadFromDisk();
@@ -112,9 +128,15 @@ namespace Guildmaster.Game.Services
                 CardAttackAnimation    = _gameplay.CardAttackAnimation,
                 AlwaysDetailedTooltips = _gameplay.AlwaysDetailedTooltips,
                 FreeCombatCamera       = _gameplay.FreeCombatCamera,
+                // Невыбранный язык уходит в файл как отсутствие поля, а не как "": иначе пустая строка
+                // читалась бы как «выбор сделан» и старт перестал бы смотреть на язык системы.
+                Language               = string.IsNullOrEmpty(_language) ? null : _language,
             });
         }
 
+        // Язык здесь НЕ сбрасывается сознательно: «сбросить настройки» для игрока — про звук и
+        // презентацию, а не про то, на каком языке с ним говорят. Сброс языка выкинул бы его на язык
+        // системы посреди игры, где он, возможно, специально выбрал другой.
         public void ResetToDefaults()
         {
             _audio01 = Defaults();
@@ -154,6 +176,11 @@ namespace Guildmaster.Game.Services
                 model.CardAttackAnimation    ?? gameplayDefaults.CardAttackAnimation,
                 model.AlwaysDetailedTooltips ?? gameplayDefaults.AlwaysDetailedTooltips,
                 model.FreeCombatCamera       ?? gameplayDefaults.FreeCombatCamera);
+
+            // У языка дефолта НЕТ намеренно: «нет поля» здесь означает «выбора не было», и решение
+            // принимает LocaleStartup по языку системы. Подставь тут "en" — и русский игрок получил бы
+            // английский на первом запуске, а файл после первого Save заявил бы, что он его выбрал.
+            _language = string.IsNullOrWhiteSpace(model.Language) ? string.Empty : model.Language.Trim();
         }
 
         /// <summary>
@@ -172,6 +199,7 @@ namespace Guildmaster.Game.Services
             public bool?  CardAttackAnimation;
             public bool?  AlwaysDetailedTooltips;
             public bool?  FreeCombatCamera;
+            public string Language;
         }
 
         private void ApplyAll()

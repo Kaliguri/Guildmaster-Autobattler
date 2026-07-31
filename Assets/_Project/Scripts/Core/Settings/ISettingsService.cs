@@ -17,6 +17,13 @@ namespace Guildmaster.Core.Settings
         /// <summary>Текущие геймплей-настройки презентации (анимация карточек и т.п.).</summary>
         GameplaySettings Gameplay { get; }
 
+        /// <summary>
+        /// Код локали, выбранной игроком (<c>en</c> / <c>ru</c>), либо ПУСТАЯ строка — «ещё не выбирал».
+        /// Пустота обязана отличаться от кода: по ней первый запуск понимает, что язык надо взять у
+        /// системы, а не навязать дефолт проекта. После первого выбора здесь всегда код.
+        /// </summary>
+        string LanguageCode { get; }
+
         /// <summary>Поднимается при любом изменении значений (для биндинга UI).</summary>
         event Action Changed;
 
@@ -43,6 +50,14 @@ namespace Guildmaster.Core.Settings
         /// выбора нет — его пишет камера сразу после Tab, поэтому за сеттером тут же идёт <see cref="Save"/>.
         /// </summary>
         void SetFreeCombatCamera(bool free);
+
+        /// <summary>
+        /// Запомнить выбранный язык. Как и у камеры, экрана под этот выбор пока нет: его пишет старт
+        /// сессии, определив язык системы, — поэтому сеттер сам уходит на диск, чтобы «язык подобрали
+        /// один раз» не превращалось в «подбираем каждый запуск». Применяет локаль НЕ он, а
+        /// <c>LocaleStartup</c> по <see cref="Changed"/>: настройки не знают про Unity Localization.
+        /// </summary>
+        void SetLanguage(string localeCode);
 
         /// <summary>Загрузить с диска (ключ <c>prefs</c>) или взять дефолты GameConfig, затем применить в аудио.</summary>
         void Load();

@@ -134,6 +134,11 @@ namespace Guildmaster.Game
             // Локализация: сервис поверх String Tables (вики «13» §5). Потребители (UI) — Фаза 7.
             builder.Register<LocalizationService>(Lifetime.Singleton).As<ILocalizationService>();
 
+            // Кто выбирает язык на старте: сохранённый из prefs, а при первом запуске — язык системы.
+            // Сам LocalizationService этого не делает намеренно: он умеет отдать строку и переключить
+            // локаль, но не знает про настройки игрока и не должен решать за него.
+            builder.RegisterEntryPoint<LocaleStartup>(Lifetime.Singleton);
+
             // Персистентность: JSON-файл за швом ISaveService — наш собственный и единственный бэкенд
             // (реш. 2026-07-26).
             builder.Register<JsonFileSaveService>(Lifetime.Singleton).As<ISaveService>();
