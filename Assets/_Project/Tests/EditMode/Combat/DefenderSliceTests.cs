@@ -280,7 +280,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static EffectData BulwarkPassive()
         {
-            var bulwark = new BulwarkComponent()
+            var bulwark = new BlockComponent()
                 .With("_maxCharges", 2)
                 .With("_internalCooldownSeconds", 7f)
                 .With("_shieldEffect", BulwarkShield());
@@ -364,6 +364,12 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) => _effects.Apply(target, def, source, this);
             // Срок, посчитанный по ходу боя, заглушке безразличен — она мерит факт наложения.
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+                => ApplyEffect(target, def, source);
+
+            // Наложение с величиной (порции кровотечения): заглушке величина безразлична —
+            // она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds,
+                float potency)
                 => ApplyEffect(target, def, source);
             public void Dispel(in DispelRequest req) => _effects.Dispel(in req, this);
             // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.
