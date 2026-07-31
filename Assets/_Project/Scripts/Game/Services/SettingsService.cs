@@ -88,6 +88,12 @@ namespace Guildmaster.Game.Services
             Changed?.Invoke();
         }
 
+        public void SetFreeCombatCamera(bool free)
+        {
+            _gameplay.FreeCombatCamera = free;
+            Changed?.Invoke();
+        }
+
         public void Load()
         {
             ReadFromDisk();
@@ -105,6 +111,7 @@ namespace Guildmaster.Game.Services
                 CardAnimations         = _gameplay.CardAnimations,
                 CardAttackAnimation    = _gameplay.CardAttackAnimation,
                 AlwaysDetailedTooltips = _gameplay.AlwaysDetailedTooltips,
+                FreeCombatCamera       = _gameplay.FreeCombatCamera,
             });
         }
 
@@ -145,7 +152,8 @@ namespace Guildmaster.Game.Services
             _gameplay = new GameplaySettings(
                 model.CardAnimations         ?? gameplayDefaults.CardAnimations,
                 model.CardAttackAnimation    ?? gameplayDefaults.CardAttackAnimation,
-                model.AlwaysDetailedTooltips ?? gameplayDefaults.AlwaysDetailedTooltips);
+                model.AlwaysDetailedTooltips ?? gameplayDefaults.AlwaysDetailedTooltips,
+                model.FreeCombatCamera       ?? gameplayDefaults.FreeCombatCamera);
         }
 
         /// <summary>
@@ -163,6 +171,7 @@ namespace Guildmaster.Game.Services
             public bool?  CardAnimations;
             public bool?  CardAttackAnimation;
             public bool?  AlwaysDetailedTooltips;
+            public bool?  FreeCombatCamera;
         }
 
         private void ApplyAll()

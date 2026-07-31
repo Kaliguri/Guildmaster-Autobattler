@@ -19,7 +19,7 @@ namespace Guildmaster.Game.Input
         private readonly InputActionMap _cameraMap;
         private readonly InputActionMap _combatMap;
         private readonly InputActionMap _deploymentMap; // действия фазы расстановки (шаг 4)
-        private readonly InputActionMap _pointerMap; // указатель (позиция + ЛКМ) — общий для расстановки и карты
+        private readonly InputActionMap _pointerMap; // клик по миру (ЛКМ) — общий для расстановки и карты
         private readonly InputActionMap _uiMap; // seam под меню/навигацию (реализация — будущая фаза)
 
         private readonly InputAction _pan;
@@ -89,6 +89,12 @@ namespace Guildmaster.Game.Input
             _pointerDelta = _cameraMap.AddAction("PointerDelta", InputActionType.Value, "<Mouse>/delta");
             _cycleView = _cameraMap.AddAction("CycleView", InputActionType.Button, "<Keyboard>/tab");
 
+            // Позиция указателя живёт в карте КАМЕРЫ, а не «Pointer», хотя клик по миру — там. Причина:
+            // зум колесом держит точку под курсором на месте, и позиция нужна везде, где есть камера, — в
+            // том числе в бою, где карта «Pointer» выключена (кликать по миру в бою нечем). Пока она лежала
+            // рядом с кликом, в бою ReadValue отдавал ноль, и колесо утаскивало кадр в левый нижний угол.
+            _pointerPos = _cameraMap.AddAction("PointerPosition", InputActionType.Value, "<Mouse>/position");
+
             // --- Карта «Combat»: пауза (Space), смена скорости (.). Рестарт боя/сцены (R/F5) — dev (DevTools). ---
             _combatMap = new InputActionMap("Combat");
             _pauseToggle = _combatMap.AddAction("PauseToggle", InputActionType.Button, "<Keyboard>/space");
@@ -97,11 +103,11 @@ namespace Guildmaster.Game.Input
             // --- Карта «Deployment»: действия фазы расстановки (шаг 4). Указатель вынесен в «Pointer». ---
             _deploymentMap = new InputActionMap("Deployment");
 
-            // --- Карта «Pointer»: указатель мыши (позиция + ЛКМ). Общая для расстановки (перетаскивание
-            // юнитов) и карты акта (клик по узлу) — оба контекста тыкают в мир одной и той же мышью,
-            // и включать ради этого чужую карту «Deployment» было бы враньём по смыслу. ---
+            // --- Карта «Pointer»: КЛИК по миру (ЛКМ). Общая для расстановки (перетаскивание юнитов) и
+            // карты акта (клик по узлу) — оба контекста тыкают в мир одной и той же мышью, и включать ради
+            // этого чужую карту «Deployment» было бы враньём по смыслу. Позиция указателя лежит не здесь,
+            // а в карте камеры (см. выше): она нужна и там, где кликать нечем. ---
             _pointerMap = new InputActionMap("Pointer");
-            _pointerPos   = _pointerMap.AddAction("PointerPosition", InputActionType.Value, "<Mouse>/position");
             _pointerPress = _pointerMap.AddAction("PointerPress", InputActionType.Button, "<Mouse>/leftButton");
             _pointerPress.performed += OnPointerPressed;
             _pointerPress.canceled  += OnPointerReleased;

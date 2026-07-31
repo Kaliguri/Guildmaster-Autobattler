@@ -1374,7 +1374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBrain
   ShowDebugText: 0
   ShowCameraFrustum: 1
-  IgnoreTimeScale: 0
+  IgnoreTimeScale: 1
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
   UpdateMethod: 2
@@ -1384,7 +1384,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 1
-    Time: 2
+    Time: 0.7
     CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -18764,14 +18764,16 @@ MonoBehaviour:
   _overviewCam: {fileID: 587380979}
   _devCam: {fileID: 735157761}
   _mapCam: {fileID: 2124019629}
+  _brain: {fileID: 519420034}
   _cameraZ: -10
   _minZoom: 3
-  _zoomStep: 1.5
+  _zoomFactor: 1.15
+  _zoomDamping: 16
   _devMaxZoom: 40
   _mapFreedom: 0.5
   _mapDiveZoom: 0.45
-  _panSpeed: 12
-  _devPanSpeed: 24
+  _panScreens: 0.9
+  _devPanScreens: 1.8
   _actionZoomPadding: 4
   _actionZoomDamping: 3
   _actionZoomDeadzone: 0.4

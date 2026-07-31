@@ -48,7 +48,9 @@ namespace Guildmaster.Game
         private readonly IPublisher<TestZoneChangedEvent> _testZoneChangedPub; // Ф5: вещаем СОСТОЯНИЕ (единый источник)
         private readonly IPublisher<ArenaRevealRequest>   _arenaRevealPub;    // «яви место боя» — подача за презентером
         private readonly IBattleSession   _session;
-        private readonly CameraModeController _cameraModes; // свободная камера расстановки (QA #4); null в headless
+        // Камеры здесь НЕТ намеренно: какой вид показать, выводится из фазы боя (её слушает
+        // CameraModeController). Прежде расстановка сама ставила свободную камеру и кадрировала арену, а
+        // старт боя сам возвращал слежение — два владельца вида, и оба перебивали выбор игрока.
         private readonly Guildmaster.Guild.RunStateService _runStates; // durable-гильдия: сюда уезжают позиции и киты
         private readonly ProvingGroundsConfig _provingGrounds;         // состав Ристалища, когда своего отряда нет
         private readonly Core.Audio.IAudioService _audio;              // взял/поставил/отказ — звук расстановки
@@ -146,7 +148,6 @@ namespace Guildmaster.Game
             IPublisher<TestZoneChangedEvent> testZoneChangedPub,
             IPublisher<ArenaRevealRequest> arenaRevealPub,
             IBattleSession session,
-            CameraModeController cameraModes,
             Guildmaster.Guild.RunStateService runStates,
             Core.Audio.IAudioService audio,
             ProvingGroundsConfig provingGrounds)
@@ -169,7 +170,6 @@ namespace Guildmaster.Game
             _groundsSetupSub = groundsSetupSub;
             _testZoneChangedPub = testZoneChangedPub;
             _session       = session;
-            _cameraModes   = cameraModes;
         }
 
         public void Start()
@@ -310,8 +310,6 @@ namespace Guildmaster.Game
             // (сколько актов, дожидаться ли шторки) решает презентер арены: подача не дело боевого потока.
             // Облик пока один на все узлы; когда у узлов появятся свои — сюда придёт id из пресета.
             _arenaRevealPub?.Publish(new ArenaRevealRequest(null));
-
-            FrameCameraForDeployment(); // QA #4: свободная камера со стартовым боевым кадром (не отзум на всю зону)
         }
 
         // ── Расстановка без узла боя: Ристалище и построение ─────────────────
@@ -372,7 +370,7 @@ namespace Guildmaster.Game
             if (_venue != Venue.ProvingGrounds) return;
 
             _slots.Clear();
-            if (StageProvingGrounds()) FrameCameraForDeployment();
+            StageProvingGrounds();
         }
 
         // ── «К построению» (передышка между узлами) ──────────────────────────
@@ -409,7 +407,6 @@ namespace Guildmaster.Game
             _deploying = true;
             SetVenue(venue);
             _session.SetPhase(BattlePhase.Deployment); // фаза → навигатор ставит контекст Deployment (K8)
-            FrameCameraForDeployment();
         }
 
         /// <summary>
@@ -555,20 +552,12 @@ namespace Guildmaster.Game
             _dragged   = null;
             _relicDrag = null;
             _view?.SetActive(false);
-            _cameraModes?.ExitToActionView();
             // Возвращаем ТУ фазу, в которой место застали: вне забега — None (панель без «Начать»),
             // в передышке — Interlude (мир на экране, задник UI по-прежнему запрещён).
             BattlePhase back = _returnPhase;
             SetVenue(Venue.None); // цветная арена + снятие Sheet — по ребру внутри
             _session.SetPhase(back);
         }
-
-        // Стартовый кадр расстановки: центр и разброс ВСЕХ живых юнитов (свои + враги — видно противника).
-        // Считаем сами (не через focus-таймер) — детерминированно на входе, без гонки с LateUpdate камеры.
-        // Кадр расстановки — по АРЕНЕ, а не по юнитам. Прежний кадр считался от того, кто где стоит, и
-        // полигон (только свой отряд) встречал игрока не тем видом, что боевой узел (отряд плюс враги),
-        // хотя место одно. Источник правды теперь один — зона арены, и вход везде одинаковый.
-        private void FrameCameraForDeployment() => _cameraModes?.FrameArena();
 
         private void EnsureView()
         {
@@ -848,7 +837,7 @@ namespace Guildmaster.Game
             _dragged = null;
             _view?.SetActive(false);
             _sim.SetPaused(false);
-            _cameraModes?.ExitToActionView(); // QA #4: вернуть боевой вид (слежение) на старте боя
+            // Фаза Fighting — она же сигнал камере: сценарный вид включит она сама, если игрок его выбрал.
             _session.SetPhase(BattlePhase.Fighting); // центр панели = таймер боя; фаза → навигатор ставит контекст Combat (K8)
 
             // Места бой не меняет — поэтому серую арену тут никто не трогает. Гашение серой зоны читается

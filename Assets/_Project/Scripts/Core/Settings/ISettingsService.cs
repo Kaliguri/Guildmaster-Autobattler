@@ -38,6 +38,12 @@ namespace Guildmaster.Core.Settings
         /// <summary>Всегда показывать подробности в подсказках (Shift тогда временно даёт краткий вид, §II.10.4).</summary>
         void SetAlwaysDetailedTooltips(bool enabled);
 
+        /// <summary>
+        /// Запомнить, что бой игрок смотрит свободной камерой, а не сценарной. Экрана настроек у этого
+        /// выбора нет — его пишет камера сразу после Tab, поэтому за сеттером тут же идёт <see cref="Save"/>.
+        /// </summary>
+        void SetFreeCombatCamera(bool free);
+
         /// <summary>Загрузить с диска (ключ <c>prefs</c>) или взять дефолты GameConfig, затем применить в аудио.</summary>
         void Load();
 
