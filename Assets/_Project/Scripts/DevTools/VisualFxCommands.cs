@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text;
 using Guildmaster.Presentation.Effects;
-using QFSW.QC;
+using Guildmaster.Core.DevConsole;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -13,7 +13,21 @@ namespace Guildmaster.DevTools
     /// </summary>
     public static class VisualFxCommands
     {
-        [Command("gm_fx", "Список визуальных эффектов и их состояние")]
+        /// <summary>Положить команды эффектов в набор модуля (снимаются вместе с ним).</summary>
+        public static void Register(DevCommandSet set)
+        {
+            if (set == null) return;
+
+            set.Add("gm_fx", "Список визуальных эффектов и их состояние", _ => List());
+            set.Add("gm_fx_on", "Включить эффект по имени", a => On(a.GetString(0)),
+                new DevParam("id", DevParamType.String));
+            set.Add("gm_fx_off", "Выключить эффект по имени", a => Off(a.GetString(0)),
+                new DevParam("id", DevParamType.String));
+            set.Add("gm_fx_toggle", "Переключить эффект по имени", a => Toggle(a.GetString(0)),
+                new DevParam("id", DevParamType.String));
+            set.Add("gm_fx_all", "Вернуть все эффекты (как по умолчанию)", _ => All());
+        }
+
         public static string List()
         {
             VisualToggles toggles = Toggles();
@@ -26,13 +40,10 @@ namespace Guildmaster.DevTools
             return sb.ToString();
         }
 
-        [Command("gm_fx_on", "Включить эффект по имени")]
         public static string On(string id) => Apply(id, true);
 
-        [Command("gm_fx_off", "Выключить эффект по имени")]
         public static string Off(string id) => Apply(id, false);
 
-        [Command("gm_fx_toggle", "Переключить эффект по имени")]
         public static string Toggle(string id)
         {
             VisualToggles toggles = Toggles();
@@ -43,7 +54,6 @@ namespace Guildmaster.DevTools
             return $"{id}: {(now.Value ? "включён" : "выключен")}";
         }
 
-        [Command("gm_fx_all", "Вернуть все эффекты (как по умолчанию)")]
         public static string All()
         {
             VisualToggles toggles = Toggles();

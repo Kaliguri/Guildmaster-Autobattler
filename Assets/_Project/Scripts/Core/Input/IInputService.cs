@@ -99,6 +99,15 @@ namespace Guildmaster.Core.Input
         /// </summary>
         event Action MenuToggleRequested;
 
+        // --- Dev-консоль: дискретное событие ---
+
+        /// <summary>
+        /// Открыть/закрыть dev-консоль (<c>~</c>). Как и меню, живёт вне контекст-карт и НЕ глушится
+        /// <see cref="GameplaySuppressed"/> — иначе открытая консоль, которая сама же держит глушение
+        /// (<see cref="InputSuppressSource.DevConsole"/>), не закрывалась бы своей клавишей.
+        /// </summary>
+        event Action DevConsoleToggleRequested;
+
         // --- Подробности в подсказках: удержание (план §II.10.4) ---
 
         /// <summary>

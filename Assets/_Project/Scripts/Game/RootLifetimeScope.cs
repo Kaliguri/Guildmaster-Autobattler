@@ -1,4 +1,5 @@
 using Guildmaster.Core.Audio;
+using Guildmaster.Core.DevConsole;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
 using Guildmaster.Core.Persistence;
@@ -120,6 +121,14 @@ namespace Guildmaster.Game
 
             builder.Register<SettingsViewModel>(Lifetime.Singleton);
             builder.Register<LoadoutViewModel>(Lifetime.Singleton);
+
+            // Dev-консоль (Трек К): реестр и хвост логов живут в корне, потому что команды регистрируют
+            // модули из РАЗНЫХ скоупов (боевые — из боевого, мировые — из корневого), а консоль одна.
+            // Регистрируются всегда: пустой реестр ничего не стоит, а гейт «только в редакторе» стоит на
+            // подписке тогла — иначе билд-сборка ловила бы отсутствующую зависимость у своих же команд.
+            builder.Register<DevCommandRegistry>(Lifetime.Singleton);
+            builder.Register<DevConsoleLog>(Lifetime.Singleton);
+
             builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf();
             // Навигатор экранов (UI-реворк Ф1): единый владелец видимости/ввода. Пока СОЗДАётся, но не
             // подключён к роутеру — переезд MenuRouter на него в Ф2. Зависимости (IInputService, IBattleClock)

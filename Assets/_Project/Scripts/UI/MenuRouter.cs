@@ -8,6 +8,7 @@ using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Diagnostics;
 using Guildmaster.Guild;
+using Guildmaster.UI.DevConsole;
 using MessagePipe;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -30,6 +31,11 @@ namespace Guildmaster.UI
         private readonly ILocalizationService _loc;
         private readonly IRunControl _runControl; // QA #18: «В главное меню»/«Выход» из системного меню
 
+        // Dev-консоль (Трек К): реестр команд и хвост логов приходят из корневого скоупа — консоль одна на
+        // сессию, а команды в неё кладут модули из разных скоупов.
+        private readonly Core.DevConsole.DevCommandRegistry _registry;
+        private readonly Core.DevConsole.DevConsoleLog _log;
+
         // Палитра проекта — единственный владелец цвета. Роутер её не читает сам: он передаёт её ригу
         // карточек, чтобы тот красил тело той же ступенью приглушения, что бой.
         private readonly GuildmasterPalette _palette;
@@ -37,6 +43,10 @@ namespace Guildmaster.UI
         private VisualElement _root;
         private VisualTreeAsset _pauseUxml;
         private VisualTreeAsset _settingsUxml;
+        private VisualTreeAsset _devConsoleUxml;
+
+        // Один инстанс на всю сессию: экран носит историю команд, и пересоздание стирало бы её.
+        private DevConsoleScreen _devConsole;
         private VisualTreeAsset _loadoutUxml;
         private VisualTreeAsset _rewardUxml;
         private VisualTreeAsset _eventUxml;
@@ -59,8 +69,12 @@ namespace Guildmaster.UI
                           ILocalizationService loc, IRunControl runControl,
                           IPublisher<MainMenuVisibilityChangedEvent> mainMenuVisPub,
                           Core.Audio.IAudioService audio,
-                          GuildmasterPalette palette)
+                          GuildmasterPalette palette,
+                          Core.DevConsole.DevCommandRegistry registry,
+                          Core.DevConsole.DevConsoleLog devLog)
         {
+            _registry = registry;
+            _log = devLog;
             _audio = audio;
             _palette = palette;
             _input = input;
@@ -118,8 +132,10 @@ namespace Guildmaster.UI
             VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null,
             VisualTreeAsset loadoutInventoryUxml = null,
             VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null,
-            VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null)
+            VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null,
+            VisualTreeAsset devConsoleUxml = null)
         {
+            _devConsoleUxml = devConsoleUxml;
             _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
             _pauseUxml = pauseUxml;
             _settingsUxml = settingsUxml;
@@ -404,6 +420,48 @@ namespace Guildmaster.UI
             if (inMenu) _nav.Pop();                                          // уже в системном меню → назад/закрыть
             else PushScreen(BuildPauseScreen, ScreenKind.Modal, screenId: PauseId); // QA #19: меню ПОВЕРХ (Modal со scrim)
         }
+
+        /// <summary>
+        /// Открыть/закрыть dev-консоль (Трек К). Экран живёт ОДНИМ инстансом между показами: в нём история
+        /// команд, и пересоздание стирало бы её при каждом закрытии.
+        /// </summary>
+        /// <remarks>
+        /// Консоль не подчиняется правилу «в главном меню оверлеев нет» (в отличие от ESC-меню): её
+        /// открывают в том числе чтобы разобраться, почему игра не дошла дальше главного меню.
+        /// </remarks>
+        public void ToggleDevConsole()
+        {
+            if (_root == null)
+            {
+                Debug.LogError("[MenuRouter] - dev-консоль: нет корня UI (роутер не инициализирован)");
+                return;
+            }
+
+            if (_devConsoleUxml == null)
+            {
+                Debug.LogError("[MenuRouter] - dev-консоль: не разведён UXML (поле _devConsoleScreen в UiRootBootstrap)");
+                return;
+            }
+
+            if (_devConsole != null && _nav.AnyScreen(s => ReferenceEquals(s, _devConsole)))
+            {
+                _nav.Remove(_devConsole);
+                _log?.Detach();
+                DevConsoleVisibilityChanged?.Invoke(false);
+                return;
+            }
+
+            _devConsole ??= new DevConsoleScreen(_devConsoleUxml, _registry, _log);
+            _log?.Attach();   // слушаем лог Unity, только пока консоль на экране
+            _nav.Push(_devConsole);
+            DevConsoleVisibilityChanged?.Invoke(true);
+        }
+
+        /// <summary>
+        /// Консоль показана (<c>true</c>) или снята (<c>false</c>). Слушают те, кому мало глушения ввода:
+        /// dev-модуль ставит на это время паузу симуляции, иначе бой доигрывает за полкой невидимым.
+        /// </summary>
+        public event Action<bool> DevConsoleVisibilityChanged;
 
         // Закрыть все экраны и снять глушение (навигатор пересчитает suppress из фазы). Внутренний close-callback
         // текстового ивента (выбор без результата = снять стек). НЕ для завершения забега (то — единая отмена, K11).

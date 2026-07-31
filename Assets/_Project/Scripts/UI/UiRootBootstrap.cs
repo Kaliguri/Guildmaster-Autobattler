@@ -60,6 +60,9 @@ namespace Guildmaster.UI
         [Tooltip("Печать/seal для boot title card (PixelLab AppIcon).")]
         [SerializeField] private Sprite _titleCardSeal;
 
+        [Tooltip("UXML dev-консоли (Трек К): полка сверху, открывается на ~ в редакторе и dev-сборке.")]
+        [SerializeField] private VisualTreeAsset _devConsoleScreen;
+
         [Tooltip("UXML глобальной панели забега (app-shell): режимы-навигация + HP/золото/акт/таймер/меню.")]
         [SerializeField] private VisualTreeAsset _runModeBar;
 
@@ -226,8 +229,15 @@ namespace Guildmaster.UI
             // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
             // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
             _uiSound?.Attach(_doc.rootVisualElement);
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen);
             _input.MenuToggleRequested += OnMenuToggle;
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            // Тогл dev-консоли живёт только в редакторе и dev-сборке: в релизе клавиша ~ не должна
+            // открывать ничего. Гейт стоит здесь, на ПОДПИСКЕ, а не на регистрации реестра — команды
+            // регистрируют модули, и в релизной сборке им всё равно нужен адресат.
+            _input.DevConsoleToggleRequested += OnDevConsoleToggle;
+#endif
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
             // Открытие экрана награды после боя (A3) — запрос из GameFlow.
@@ -678,6 +688,9 @@ namespace Guildmaster.UI
         private void OnDestroy()
         {
             if (_input != null) _input.MenuToggleRequested -= OnMenuToggle;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (_input != null) _input.DevConsoleToggleRequested -= OnDevConsoleToggle;
+#endif
             if (_router != null) _router.Changed -= RefreshShell;     // Ф4
             if (_loc != null) _loc.LocaleChanged -= RebuildTopBar;    // шов II.9.2
             _testZoneChangedSubscription?.Dispose();                  // Ф5
@@ -707,6 +720,12 @@ namespace Guildmaster.UI
         // Семантика ESC (план II.4, КОНСТИТУЦИЯ): показан тултип → ESC гасит ЕГО и меню не трогает.
         // QA #32: сам ESC-вызов меню работает ТОЛЬКО в активном забеге (в главном меню/вне забега — no-op).
         // Внутри забега ToggleSystemMenu сам решает открыть/шаг-назад.
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        // Консоль открывается ИЗ ЛЮБОГО состояния, включая главное меню и отсутствие забега: её зовут
+        // как раз тогда, когда игра куда-то не дошла. Никаких проверок RunState здесь быть не должно.
+        private void OnDevConsoleToggle() => _router.ToggleDevConsole();
+#endif
+
         private void OnMenuToggle()
         {
             if (_tooltips != null && _tooltips.HideAll()) return;

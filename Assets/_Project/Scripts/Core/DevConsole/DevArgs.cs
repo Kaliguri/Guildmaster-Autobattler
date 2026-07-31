@@ -68,6 +68,16 @@ namespace Guildmaster.Core.DevConsole
 
         public int GetInt(int index, int fallback) => Has(index) ? GetInt(index) : fallback;
 
+        /// <summary>Беззнаковое 64-битное — сиды RNG. Отдельно от <see cref="GetInt"/>: сид не помещается в int.</summary>
+        public ulong GetULong(int index)
+        {
+            string raw = Raw(index);
+            if (raw == null) throw Missing(index, "целое число без знака");
+            if (!ulong.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out ulong value))
+                throw Bad(index, raw, "целое число без знака");
+            return value;
+        }
+
         public float GetFloat(int index)
         {
             string raw = Raw(index);

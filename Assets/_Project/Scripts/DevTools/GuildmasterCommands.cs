@@ -5,7 +5,7 @@ using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using Guildmaster.Presentation;
 using MessagePipe;
-using QFSW.QC;
+using Guildmaster.Core.DevConsole;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -31,7 +31,9 @@ namespace Guildmaster.DevTools
         private DevOverlayMode     _overlayMode; // общий режим dev-оверлеев: показ или живой сим
         private RuntimeUnitFactory _factory;
         private IInputService      _input;
-        private QuantumConsole     _console;
+        private Guildmaster.UI.MenuRouter _menuRouter; // владелец показа консоли: у него и спрашиваем видимость
+        private DevCommandRegistry _registry;          // куда кладём команды
+        private DevCommandSet _commands;               // свои команды + статические наборы; снимаются вместе с модулем
         private Guildmaster.Game.Flow.IBattleSession _session; // опц.: перезапуск боя забега на R (null в standalone-арене)
 
         // Ристалище: интент входа и состояние площадки. Живут ВЫШЕ боевого скоупа (Root), поэтому
@@ -97,6 +99,10 @@ namespace Guildmaster.DevTools
             resolver.TryResolve(out _provingGroundsPub);
             resolver.TryResolve(out _provingGroundsChangedSub);
             resolver.TryResolve(out _groundsSetupPub);
+            // Реестр и роутер живут в корне; в standalone dev-арене без Root их нет — команды тогда просто
+            // некуда класть, и это не ошибка (тот же случай, что и с сессией боя выше).
+            resolver.TryResolve(out _registry);
+            resolver.TryResolve(out _menuRouter);
             _provingGroundsSubscription = _provingGroundsChangedSub?.Subscribe(e => OnProvingGroundsChanged(e));
         }
 
@@ -104,11 +110,19 @@ namespace Guildmaster.DevTools
         // на виду (без этого бой проигрывается за полноэкранной консолью и заканчивается невидимым).
         private void Start()
         {
-            _console = FindAnyObjectByType<QuantumConsole>(FindObjectsInactive.Include);
-            if (_console != null)
+            if (_menuRouter != null) _menuRouter.DevConsoleVisibilityChanged += OnConsoleVisibilityChanged;
+
+            // Команды кладём ЗДЕСЬ, а не в Construct: реестр приходит инъекцией, но статические наборы
+            // (арена/карта/эффекты) тоже надо куда-то регистрировать, а своего объекта в сцене у них нет.
+            // Один набор на модуль — и снимается он одним Dispose, что важно после domain reload:
+            // повторная регистрация того же имени в реестре — исключение, а не тихая замена.
+            if (_registry != null)
             {
-                _console.OnActivate   += PauseForConsole;
-                _console.OnDeactivate += ResumeAfterConsole;
+                _commands = new DevCommandSet(_registry);
+                RegisterCommands(_commands);
+                ArenaDevCommands.Register(_commands);
+                MapDevCommands.Register(_commands);
+                VisualFxCommands.Register(_commands);
             }
         }
 
@@ -119,11 +133,15 @@ namespace Guildmaster.DevTools
         private void OnDestroy()
         {
             _provingGroundsSubscription?.Dispose();
-            if (_console != null)
-            {
-                _console.OnActivate   -= PauseForConsole;
-                _console.OnDeactivate -= ResumeAfterConsole;
-            }
+            if (_menuRouter != null) _menuRouter.DevConsoleVisibilityChanged -= OnConsoleVisibilityChanged;
+            _commands?.Dispose();
+        }
+
+        // Консоль показана/снята — тот же смысл, что раньше несли OnActivate/OnDeactivate у QFSW.
+        private void OnConsoleVisibilityChanged(bool visible)
+        {
+            if (visible) PauseForConsole();
+            else ResumeAfterConsole();
         }
 
         // Пауза сима, которая была ДО открытия консоли. Консоль паузой не владеет — она её одалживает:
@@ -173,15 +191,103 @@ namespace Guildmaster.DevTools
             }
         }
 
+        /// <summary>
+        /// Объявить команды модуля в наборе. Тела остаются обычными методами: реестр хранит делегат, а не
+        /// рефлексию, поэтому команда — это одна строка объявления рядом с методом, который она зовёт.
+        /// </summary>
+        /// <remarks>
+        /// Команды ничего не возвращают строкой: их отчёты идут через <c>Debug.Log</c>, а консоль слушает
+        /// лог — то есть вывод виден и в ней, и в Console редактора, без дублирования текста в двух местах.
+        /// </remarks>
+        private void RegisterCommands(DevCommandSet set)
+        {
+            set.Add("gm_rng_seed", "Зафиксировать сид боя (до старта симуляции)",
+                a => { SetRngSeed(a.GetULong(0)); return null; }, new DevParam("seed", DevParamType.Int));
+
+            set.Add("gm_spawn_battle", "Запустить тест-бой N юнитов за каждую сторону",
+                a => { SpawnBattle(a.GetInt(0, 2)); return null; }, new DevParam("countPerTeam", DevParamType.Int, true));
+
+            set.Add("gm_spawn_crowd", "Плотный клубок обеих команд для теста расталкивания",
+                a => { SpawnCrowd(a.GetInt(0, 8)); return null; }, new DevParam("perTeam", DevParamType.Int, true));
+
+            set.Add("gm_sep", "Показать параметры расталкивания (радиус/сила/итерации)",
+                _ => { SepInfo(); return null; });
+
+            set.Add("gm_sep_radius", "Радиус тела на единицу Size (live)",
+                a => { SepRadius(a.GetFloat(0)); return null; }, new DevParam("radiusPerSize", DevParamType.Float));
+
+            set.Add("gm_sep_strength", "Сила расталкивания за тик (live)",
+                a => { SepStrength(a.GetFloat(0)); return null; }, new DevParam("strength", DevParamType.Float));
+
+            set.Add("gm_sep_iters", "Проходов расталкивания за тик (live)",
+                a => { SepIters(a.GetInt(0)); return null; }, new DevParam("iterations", DevParamType.Int));
+
+            set.Add("gm_sep_ally", "Мягкость расталкивания своих (0..1, live)",
+                a => { SepAlly(a.GetFloat(0)); return null; }, new DevParam("scale", DevParamType.Float));
+
+            set.Add("gm_spawn_spearman", "Железный копейщик против кластера (срез шага 4)",
+                a => { SpawnSpearman(a.GetInt(0, 3)); return null; }, new DevParam("enemies", DevParamType.Int, true));
+
+            set.Add("gm_spawn_shepherd", "Светлый пастырь + раненые союзники (срез §10.1)",
+                a => { SpawnShepherd(a.GetInt(0, 2)); return null; }, new DevParam("allies", DevParamType.Int, true));
+
+            set.Add("gm_spawn_cryomancer", "Криомант против кластера болванчиков (срез §10.2)",
+                a => { SpawnCryomancer(a.GetInt(0, 3)); return null; }, new DevParam("enemies", DevParamType.Int, true));
+
+            set.Add("gm_spawn_defender", "Надёжный защитник против ударных болванчиков (срез §10.3)",
+                a => { SpawnDefender(a.GetInt(0, 3)); return null; }, new DevParam("enemies", DevParamType.Int, true));
+
+            set.Add("gm_spawn_ranger", "Лесной следопыт против кластера болванчиков (срез §10.4)",
+                a => { SpawnRanger(a.GetInt(0, 3)); return null; }, new DevParam("enemies", DevParamType.Int, true));
+
+            set.Add("gm_spawn_assassin", "Скрытный убийца против болванчиков (срез §10.5)",
+                a => { SpawnAssassin(a.GetInt(0, 3)); return null; }, new DevParam("enemies", DevParamType.Int, true));
+
+            set.Add("gm_spawn_monk", "Монах вихря против болванчиков (срез §10.6)",
+                a => { SpawnMonk(a.GetInt(0, 4)); return null; }, new DevParam("enemies", DevParamType.Int, true));
+
+            set.Add("gm_spawn_mirror", "Зеркальный отряд 4v4 из реальных китов",
+                _ => { SpawnMirror(); return null; });
+
+            set.Add("gm_spawn_bone_duel", "1×1 дуэль скелетных дев-бойцов (смоук UnitView)",
+                _ => { SpawnBoneDuel(); return null; });
+
+            set.Add("gm_set_hp", "Выставить HP юниту по ID",
+                a => { SetHp(a.GetInt(0), a.GetFloat(1)); return null; },
+                new DevParam("unitId", DevParamType.Int), new DevParam("hp", DevParamType.Float));
+
+            set.Add("gm_skip_battle", "Мгновенно завершить бой в пользу команды A",
+                _ => { SkipBattle(); return null; });
+
+            set.Add("gm_restart", "Перезапустить бой (перезагрузка сцены)",
+                _ => { Restart(); return null; });
+
+            set.Add("gm_restart_battle", "Перезапустить последний бой на месте",
+                _ => { RestartLastBattle(); return null; });
+
+            set.Add("gm_toggle_debug_draw", "Вкл/выкл debug-отрисовку боя",
+                _ => { ToggleDebugDraw(); return null; });
+
+            set.Add("gm_toggle_status", "Вкл/выкл dev-подсветку статусов юнитов (кольца)",
+                _ => { ToggleStatusOverlay(); return null; });
+
+            set.Add("gm_overlay_source", "Источник dev-оверлеев: показанный кадр / живой сим",
+                _ => { ToggleOverlaySource(); return null; });
+
+            set.Add("gm_tuning_rebake", "Пересобрать SimTuning из SO и применить к бою (бой TAINTED)",
+                _ => { TuningRebake(); return null; });
+
+            set.Add("gm_proving_grounds", "Уйти на Ристалище: свернуть забег и открыть площадку",
+                _ => { ProvingGrounds(); return null; });
+        }
+
         /// <summary>Зафиксировать сид боя для детерминизм-отладки (только до старта).</summary>
-        [Command("gm_rng_seed", "Зафиксировать сид боя (до старта симуляции)")]
         public void SetRngSeed(ulong seed)
         {
             Debug.Log($"[GuildmasterCommands] - gm_rng_seed {seed}: изменение сида поддерживается только через CombatLifetimeScope до запуска");
         }
 
         /// <summary>Поднять тест-бой N×M юнитов с заданными HP.</summary>
-        [Command("gm_spawn_battle", "Запустить тест-бой N юнитов за каждую сторону")]
         public void SpawnBattle(int countPerTeam = 2)
         {
             if (!SimReady()) return;
@@ -206,7 +312,6 @@ namespace Guildmaster.DevTools
         /// Крути на глаз <c>SimTuningConfig</c> (Strength / Iterations / BodyRadiusPerSize) или live gm_sep_*,
         /// перезапуск на месте — R. Параметр <paramref name="size"/> — «толщина» тел (Size-стат).
         /// </summary>
-        [Command("gm_spawn_crowd", "Плотный клубок обеих команд для теста коллизии/расталкивания")]
         public void SpawnCrowd(int perTeam = 8)
         {
             if (!SimReady()) return;
@@ -231,7 +336,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Показать текущие параметры расталкивания (SeparationSystem).</summary>
-        [Command("gm_sep", "Показать параметры расталкивания (радиус/сила/итерации)")]
         public void SepInfo()
         {
             if (!SimReady()) return;
@@ -240,7 +344,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Радиус тела на единицу Size (0.25 = ⌀0.5 при Size1). Крути под ширину спрайта.</summary>
-        [Command("gm_sep_radius", "Радиус тела на единицу Size (live)")]
         public void SepRadius(float radiusPerSize)
         {
             if (!SimReady()) return;
@@ -249,7 +352,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Сила расталкивания за тик (0..1; 1 = жёстко, мягче = плавнее). Live.</summary>
-        [Command("gm_sep_strength", "Сила расталкивания за тик (live)")]
         public void SepStrength(float strength)
         {
             if (!SimReady()) return;
@@ -258,7 +360,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Проходов расталкивания за тик (больше = жёстче/дороже). Live.</summary>
-        [Command("gm_sep_iters", "Проходов расталкивания за тик (live)")]
         public void SepIters(int iterations)
         {
             if (!SimReady()) return;
@@ -267,7 +368,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Множитель расталкивания СВОИХ (0..1): меньше = свои расступаются мягче, задние просачиваются к фронту. Live.</summary>
-        [Command("gm_sep_ally", "Мягкость расталкивания своих (0..1, live)")]
         public void SepAlly(float scale)
         {
             if (!SimReady()) return;
@@ -276,7 +376,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4.</summary>
-        [Command("gm_spawn_spearman", "Заспавнить Железного копейщика против кластера (срез шага 4)")]
         public void SpawnSpearman(int enemies = 3)
         {
             if (!SimReady()) return;
@@ -301,7 +400,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Заспавнить «Светлого пастыря» (team 0) + раненых союзников против болванчиков — срез §10.1.</summary>
-        [Command("gm_spawn_shepherd", "Заспавнить Светлого пастыря + раненых союзников против болванчиков (срез §10.1)")]
         public void SpawnShepherd(int allies = 2)
         {
             if (!SimReady()) return;
@@ -335,7 +433,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Заспавнить «Криоманта» (team 0) против кластера болванчиков (team 1) — срез §10.2.</summary>
-        [Command("gm_spawn_cryomancer", "Заспавнить Криоманта против кластера болванчиков (срез §10.2)")]
         public void SpawnCryomancer(int enemies = 3)
         {
             if (!SimReady()) return;
@@ -360,7 +457,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10.3.</summary>
-        [Command("gm_spawn_defender", "Заспавнить Надёжного защитника против ударных болванчиков (срез §10.3)")]
         public void SpawnDefender(int enemies = 3)
         {
             if (!SimReady()) return;
@@ -385,7 +481,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Заспавнить «Лесного следопыта» (team 0) против кластера болванчиков (team 1) — срез §10.4.</summary>
-        [Command("gm_spawn_ranger", "Заспавнить Лесного следопыта против кластера болванчиков (срез §10.4)")]
         public void SpawnRanger(int enemies = 3)
         {
             if (!SimReady()) return;
@@ -410,7 +505,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.</summary>
-        [Command("gm_spawn_assassin", "Заспавнить Скрытного убийцу против болванчиков (срез §10.5)")]
         public void SpawnAssassin(int enemies = 3)
         {
             if (!SimReady()) return;
@@ -436,7 +530,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10.6.</summary>
-        [Command("gm_spawn_monk", "Заспавнить Монаха вихря против болванчиков (срез §10.6)")]
         public void SpawnMonk(int enemies = 4)
         {
             if (!SimReady()) return;
@@ -468,7 +561,6 @@ namespace Guildmaster.DevTools
         private static float Frac(float v) => v - Mathf.Floor(v);
 
         /// <summary>Выставить HP юниту по ID.</summary>
-        [Command("gm_set_hp", "Выставить HP юниту по ID")]
         public void SetHp(int unitId, float hp)
         {
             if (_simulation == null) return;
@@ -488,7 +580,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Мгновенно завершить бой (убить всех из команды 1).</summary>
-        [Command("gm_skip_battle", "Мгновенно завершить бой в пользу команды A")]
         public void SkipBattle()
         {
             if (_simulation == null) return;
@@ -503,7 +594,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Перезагрузить боевую сцену для нового прогона (бой одноразовый: после конца loop останавливается).</summary>
-        [Command("gm_restart", "Перезапустить бой (перезагрузка сцены)")]
         public void Restart()
         {
             Scene active = SceneManager.GetActiveScene();
@@ -515,7 +605,6 @@ namespace Guildmaster.DevTools
         /// R: перезапустить ПОСЛЕДНИЙ бой НА МЕСТЕ — сброс сима (юниты/снаряды/исход) + повтор последнего сетапа.
         /// Сцену и камеру НЕ перезагружаем: заново начинается только бой (dev-итерация).
         /// </summary>
-        [Command("gm_restart_battle", "Перезапустить последний бой на месте (без перезагрузки сцены)")]
         public void RestartLastBattle()
         {
             if (_lastBattleSetup == null)
@@ -528,7 +617,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Включить/выключить Shapes debug-слой.</summary>
-        [Command("gm_toggle_debug_draw", "Вкл/выкл debug-отрисовку боя")]
         public void ToggleDebugDraw()
         {
             if (_debugDraw == null) { Debug.LogWarning("[GuildmasterCommands] - CombatDebugDraw не найден"); return; }
@@ -537,7 +625,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Включить/выключить dev-слой статус-колец (метка/стан/щит/заморозка/усиление).</summary>
-        [Command("gm_toggle_status", "Вкл/выкл dev-подсветку статусов юнитов (кольца)")]
         public void ToggleStatusOverlay()
         {
             var overlay = FindAnyObjectByType<CombatStatusOverlay>(FindObjectsInactive.Include);
@@ -551,7 +638,6 @@ namespace Guildmaster.DevTools
         /// картинки на окно опережения, поэтому в его режиме кольца и радиусы разъезжаются с боем —
         /// это правда модели, а не баг, и подпись на экране про это говорит.
         /// </summary>
-        [Command("gm_overlay_source", "Источник dev-оверлеев: показанный кадр / живой сим")]
         public void ToggleOverlaySource()
         {
             if (_overlayMode == null) { Debug.LogWarning("[GuildmasterCommands] - DevOverlayMode не найден (нет активного боевого скоупа)"); return; }
@@ -560,7 +646,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Пересобрать SimTuning из SO и применить к идущему бою (QC-тюнинг без рекомпиляции).</summary>
-        [Command("gm_tuning_rebake", "Пересобрать SimTuning из SO и применить к бою (бой становится TAINTED)")]
         public void TuningRebake()
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: нет активного боя"); return; }
@@ -597,7 +682,6 @@ namespace Guildmaster.DevTools
         /// принимает <c>DeploymentController</c>: если отряда нет (мы в меню), он ставит состав из
         /// <c>ProvingGroundsConfig</c>.
         /// </remarks>
-        [Command("gm_proving_grounds", "Уйти на Ристалище: свернуть забег и открыть площадку вне забега")]
         public void ProvingGrounds() => RequestProvingGrounds();
 
         /// <summary>
@@ -651,7 +735,6 @@ namespace Guildmaster.DevTools
         /// стороны. Составы, роли и позиции обеих команд отражены по оси X, поэтому честный исход —
         /// ничья: любой перевес означает, что порядок обработки решает бой за бойцов.
         /// </summary>
-        [Command("gm_spawn_mirror", "Зеркальный отряд 4v4 из реальных китов (проверка преимущества стороны)")]
         public void SpawnMirror()
         {
             // Тот же строй, что у командного бенча: фронт вплотную, тыл за спинами.
@@ -719,7 +802,6 @@ namespace Guildmaster.DevTools
         /// и пока подмена стояла, костяным становился каждый бой базовой реликвии.
         /// Тот же вход на Ристалище, что у <see cref="SpawnMirror"/>.
         /// </summary>
-        [Command("gm_spawn_bone_duel", "1×1 bone dev duelist mirror (skeletal UnitView smoke)")]
         public void SpawnBoneDuel()
         {
             if (_boneDuelist == null)

@@ -32,6 +32,7 @@ namespace Guildmaster.Game.Input
         private readonly InputAction _pointerPos;    // <Mouse>/position — screen→world при пикинге/drag
         private readonly InputAction _pointerPress;  // <Mouse>/leftButton — начало/конец протяжки
         private readonly InputAction _menuToggle; // Escape — оверлей системного меню, живёт вне контекст-карт (always-on)
+        private readonly InputAction _devConsoleToggle; // ~ — dev-консоль; always-on по той же причине, что и меню
         private readonly InputAction _detailsHold; // Shift — подробности в подсказках, тоже always-on
         private readonly InputAction _skipTransition; // Space — пропустить подачу; always-on, см. комментарий у создания
 
@@ -59,6 +60,7 @@ namespace Guildmaster.Game.Input
         public event Action SkipRequested;
         public event Action GameSpeedCycleRequested;
         public event Action MenuToggleRequested;
+        public event Action DevConsoleToggleRequested;
         public event Action PointerPressed;
         public event Action PointerReleased;
 
@@ -120,6 +122,12 @@ namespace Guildmaster.Game.Input
             _menuToggle = new InputAction("MenuToggle", InputActionType.Button, "<Keyboard>/escape");
             _menuToggle.performed += OnMenuToggle;
             _menuToggle.Enable();
+
+            // Dev-консоль (~): вне контекст-карт и БЕЗ проверки глушения. Открытая консоль сама держит
+            // InputSuppressSource.DevConsole, и гейт по GameplaySuppressed запер бы её изнутри.
+            _devConsoleToggle = new InputAction("DevConsoleToggle", InputActionType.Button, "<Keyboard>/backquote");
+            _devConsoleToggle.performed += OnDevConsoleToggle;
+            _devConsoleToggle.Enable();
 
             // Подробности в подсказках (Shift): как и меню — вне контекст-карт и без глушения. Тултип
             // может висеть над модальным экраном, и там Shift обязан работать так же, как в бою.
@@ -227,6 +235,8 @@ namespace Guildmaster.Game.Input
         // Escape НЕ гейтится GameplaySuppressed: меню должно закрываться, даже когда геймплейный ввод заглушён.
         private void OnMenuToggle(InputAction.CallbackContext _) => MenuToggleRequested?.Invoke();
 
+        private void OnDevConsoleToggle(InputAction.CallbackContext _) => DevConsoleToggleRequested?.Invoke();
+
         private void OnDetailsHeld(InputAction.CallbackContext _)     => SetDetailsHeld(true);
         private void OnDetailsReleased(InputAction.CallbackContext _) => SetDetailsHeld(false);
 
@@ -245,6 +255,7 @@ namespace Guildmaster.Game.Input
             _pointerPress.performed  -= OnPointerPressed;
             _pointerPress.canceled   -= OnPointerReleased;
             _menuToggle.performed    -= OnMenuToggle;
+            _devConsoleToggle.performed -= OnDevConsoleToggle;
             _detailsHold.performed   -= OnDetailsHeld;
             _detailsHold.canceled    -= OnDetailsReleased;
             _skipTransition.performed -= OnSkipRequested;
@@ -255,6 +266,7 @@ namespace Guildmaster.Game.Input
             _pointerMap.Dispose();
             _uiMap.Dispose();
             _menuToggle.Dispose();
+            _devConsoleToggle.Dispose();
             _detailsHold.Dispose();
             _skipTransition.Dispose();
         }
