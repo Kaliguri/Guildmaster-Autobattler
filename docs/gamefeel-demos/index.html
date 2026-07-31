@@ -307,7 +307,9 @@
       <a href="#ranged">Дальний бой</a>
       <span class="toc-todo">Хил</span>
       <span class="toc-todo">Каст и всполохи</span>
+      <a href="#shield">Барьер</a>
       <a href="#status">Статусы</a>
+      <a href="#effects">Превью эффектов</a>
       <span class="toc-todo">Время и камера</span>
     </nav>
   </header>
@@ -769,6 +771,99 @@
 
   <hr class="rule">
 
+  <section id="shield">
+    <p class="eyebrow">раздел 7 · вариант поверхности за Максом</p>
+    <h2 style="font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:300;margin-top:.4rem">
+      Барьер: щит, который помнит удары
+    </h2>
+    <p class="lede">
+      Барьер висит <b>постоянно</b>, но в покое почти невидим: пока по нему не бьют, он не имеет права
+      мутить тело под собой. Подсветка растёт от <b>поглощённого урона</b> и сильнее всего в точке
+      контакта; урон эффектом (DoT) вспыхивает по всей поверхности, но слабее — бьют не в место, а
+      всюду. Остаток барьера читается <b>трещинами</b>: та же логика, что у порезов на теле.
+    </p>
+    <p class="dim">
+      Это не блок щитом-предметом (тот решён 31.07: вспышка золотом, серп обрывается о щит, пореза
+      нет). Здесь — поглощающий барьер, <code>EffectTag.Shield</code>.
+    </p>
+
+    <div class="stands">
+
+      <article class="stand">
+        <canvas id="b-facet" width="480" height="380" role="img"
+                aria-label="Барьер гранёным полигоном"></canvas>
+        <div class="stand-body">
+          <p class="tag">вариант 1</p>
+          <h3>Грани и полигон</h3>
+          <p class="dim">Многоугольник с внутренними хордами. Удар зажигает те грани, что смотрят на
+            точку контакта.</p>
+          <ul class="facts">
+            <li><span>язык</span><span>цифра, как у подмены арены</span></li>
+            <li><span>трещины</span><span>идут по граням</span></li>
+            <li><span>пробитие</span><span>грани разлетаются</span></li>
+          </ul>
+          <p class="verdict">Разводит барьер с текучими огнём и ядом и даёт готовый язык разрушения.</p>
+        </div>
+      </article>
+
+      <article class="stand">
+        <canvas id="b-smooth" width="480" height="380" role="img"
+                aria-label="Барьер гладким свечением с каймой"></canvas>
+        <div class="stand-body">
+          <p class="tag">вариант 2</p>
+          <h3>Гладкое свечение</h3>
+          <p class="dim">Кайма по краю сферы, центр прозрачный. Удар даёт пятно в точке контакта и
+            подъём каймы.</p>
+          <ul class="facts">
+            <li><span>язык</span><span>тот же, что у всего джуса</span></li>
+            <li><span>трещины</span><span>чужеродны гладкому</span></li>
+            <li><span>пробитие</span><span>вспышка и распад</span></li>
+          </ul>
+          <p class="verdict">Единый стиль без нового языка, но барьер перестаёт отличаться от аур и
+            свечения каста.</p>
+        </div>
+      </article>
+
+      <article class="stand">
+        <canvas id="b-glass" width="480" height="380" role="img"
+                aria-label="Барьер стеклянными фасетами"></canvas>
+        <div class="stand-body">
+          <p class="tag">вариант 3</p>
+          <h3>Стеклянные фасеты</h3>
+          <p class="dim">Поверхность собрана из плоских пластин с разными бликами — витраж, а не
+            сетка.</p>
+          <ul class="facts">
+            <li><span>язык</span><span>стекло: хрупкое по своей природе</span></li>
+            <li><span>трещины</span><span>роднее всего — стекло трескается</span></li>
+            <li><span>пробитие</span><span>осыпается осколками</span></li>
+          </ul>
+          <p class="verdict">Лучше всех оправдывает трещины, но пластин много: на 96 px это ближе всего
+            к шуму.</p>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="split">
+      <div class="card">
+        <canvas id="b-break" width="480" height="330" role="img"
+                aria-label="Разрушение барьера: пробит ударом"></canvas>
+        <p class="tag">финал 1 · разрушение</p>
+        <p class="dim">Барьер <b>сломали</b>: трещины сходятся, поверхность разлетается по касательной
+          от последнего удара. Резко, с направлением — видно, кто добил.</p>
+      </div>
+      <div class="card">
+        <canvas id="b-fade" width="480" height="330" role="img"
+                aria-label="Развеивание барьера: истёк по времени"></canvas>
+        <p class="tag">финал 2 · развеивание</p>
+        <p class="dim">Барьер <b>истёк</b>: гаснет ровно, без осколков и без направления, тает вверх.
+          Два разных финала обязаны читаться по-разному — иначе «сняли» и «кончился» слипнутся.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
   <section id="status">
     <p class="eyebrow">раздел 6 · вопрос к вердикту 31.07.2026</p>
     <h2 style="font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:300;margin-top:.4rem">
@@ -882,6 +977,94 @@
 
     </div>
   </section>
+
+  <section id="effects">
+    <h2>Превью общих эффектов</h2>
+    <p class="lede">
+      Как я вижу каждый общий эффект — по каналам. Всё, что здесь, красится <b>статусом</b>, а не
+      палитрой бьющего: это язык боя, а не язык персонажа. Уникальные личные эффекты в сетку не входят
+      намеренно — они берут цвет юнита и живут по своим правилам.
+    </p>
+    <p class="dim">
+      Черновик к разбору: важно не «красиво ли», а спорят ли эффекты между собой и не путается ли пара
+      соседей. Барьер вынесен своим разделом выше.
+    </p>
+
+    <p class="tag" style="margin-top:.6rem">канал воля · «кто сейчас не играет»</p>
+    <div class="stands">
+      <article class="stand"><canvas id="e-stun" width="260" height="220" role="img" aria-label="Стан"></canvas>
+        <div class="stand-body"><h3>Стан</h3><p class="dim">Поза обвисла, тело дрожит, три штриха по орбите.
+          Читается как «выключен и мучается».</p></div></article>
+      <article class="stand"><canvas id="e-sleep" width="260" height="220" role="img" aria-label="Сон"></canvas>
+        <div class="stand-body"><h3>Сон</h3><p class="dim">Тело осело, медленный пульс, редкие точки вверх.
+          «Выключен, но цел» — и снимается чужим уроном.</p></div></article>
+      <article class="stand"><canvas id="e-frozen" width="260" height="220" role="img" aria-label="Заморозка"></canvas>
+        <div class="stand-body"><h3>Заморозка</h3><p class="dim">Абсолютный стоп-кадр плюс гранёный контур.
+          Отнятие движения, а не эффект поверх.</p></div></article>
+      <article class="stand"><canvas id="e-knockup" width="260" height="220" role="img" aria-label="Подкидывание"></canvas>
+        <div class="stand-body"><h3>Подкидывание</h3><p class="dim">Тело над землёй, тень поджалась, пыль осталась
+          внизу. Единственный статус, который меняет высоту.</p></div></article>
+    </div>
+
+    <p class="tag" style="margin-top:1.2rem">канал тело · «кто тает»</p>
+    <div class="stands">
+      <article class="stand"><canvas id="e-burn" width="260" height="220" role="img" aria-label="Горение"></canvas>
+        <div class="stand-body"><h3>Горение</h3><p class="dim">Языки от контура вверх, тёплый подтон внутри
+          силуэта. Три ступени по стакам.</p></div></article>
+      <article class="stand"><canvas id="e-ember" width="260" height="220" role="img" aria-label="Угли"></canvas>
+        <div class="stand-body"><h3>Угли</h3><p class="dim">Искры-точки ВНУТРИ силуэта, мерцают. Запас, который
+          тратит детонация, — поэтому внутри, а не снаружи.</p></div></article>
+      <article class="stand"><canvas id="e-poison" width="260" height="220" role="img" aria-label="Яд"></canvas>
+        <div class="stand-body"><h3>Яд · Гниль · Споры</h3><p class="dim">Зелёный подтон в тенях и редкие пузыри
+          вверх. Одна семья на три эффекта: разница в числах.</p></div></article>
+      <article class="stand"><canvas id="e-frostbite" width="260" height="220" role="img" aria-label="Изморозь"></canvas>
+        <div class="stand-body"><h3>Изморозь</h3><p class="dim">Налёт снизу вверх, высота = стаки. Дошёл до
+          макушки — приехала Заморозка.</p></div></article>
+      <article class="stand"><canvas id="e-bleed" width="260" height="220" role="img" aria-label="Кровотечение"></canvas>
+        <div class="stand-body"><h3>Кровотечение</h3><p class="dim">Капли вниз из накопленных порезов. Единственный
+          эффект, которому не нужен свой носитель.</p></div></article>
+      <article class="stand"><canvas id="e-stealth" width="260" height="220" role="img" aria-label="Скрытность"></canvas>
+        <div class="stand-body"><h3>Скрытность</h3><p class="dim">Прозрачность и десатурация, контур остаётся.
+          Союзник должен видеть, где он.</p></div></article>
+    </div>
+
+    <p class="tag" style="margin-top:1.2rem">канал снаружи · «кто усилен, помечен, защищён»</p>
+    <div class="stands">
+      <article class="stand"><canvas id="e-mark" width="260" height="220" role="img" aria-label="Метка"></canvas>
+        <div class="stand-body"><h3>Метка</h3><p class="dim">Один знак над головой, медленное вращение. Орбита
+          читается как «извне», а не «изнутри».</p></div></article>
+      <article class="stand"><canvas id="e-empower" width="260" height="220" role="img" aria-label="Усиление"></canvas>
+        <div class="stand-body"><h3>Усиление</h3><p class="dim">Восходящие штрихи и свечение части-носителя —
+          тот же язык, что у телеграфа каста.</p></div></article>
+      <article class="stand"><canvas id="e-hot" width="260" height="220" role="img" aria-label="Лечение во времени"></canvas>
+        <div class="stand-body"><h3>Лечение (HoT)</h3><p class="dim">Мягкие искры вверх и подсветка снизу. Порезы
+          при этом гаснут — процесс, а не сброс.</p></div></article>
+      <article class="stand"><canvas id="e-antiheal" width="260" height="220" role="img" aria-label="Антихил"></canvas>
+        <div class="stand-body"><h3>Антихил</h3><p class="dim">Те же искры лечения, но обрываются о границу и
+          падают. Читается как «не доходит».</p></div></article>
+      <article class="stand"><canvas id="e-weaken" width="260" height="220" role="img" aria-label="Ослабление"></canvas>
+        <div class="stand-body"><h3>Ослабление</h3><p class="dim">Зеркало усиления: штрихи идут вниз и тускло.
+          Пара «усилен / ослаблен» обязана читаться вектором.</p></div></article>
+    </div>
+
+    <p class="tag" style="margin-top:1.2rem">канал земля · «кто не дойдёт»</p>
+    <div class="stands">
+      <article class="stand"><canvas id="e-slow" width="260" height="220" role="img" aria-label="Замедление"></canvas>
+        <div class="stand-body"><h3>Замедление</h3><p class="dim">Вязкая клякса, тянется за юнитом. Работает и
+          когда он стоит на месте.</p></div></article>
+      <article class="stand"><canvas id="e-root" width="260" height="220" role="img" aria-label="Корни"></canvas>
+        <div class="stand-body"><h3>Корни</h3><p class="dim">То же место, форма схватывающая: дуги смыкаются к
+          ногам, а не растекаются.</p></div></article>
+    </div>
+
+    <p class="note">
+      Чего в сетке нет и почему: <b>барьер</b> — свой раздел выше; <b>ускорение</b> пока не отличается от
+      усиления ничем, кроме темпа собственных анимаций, и своего слоя может не требовать вовсе;
+      <b>парирование и уклонение</b> — событийные, а не постоянные, им место в словаре событий.
+    </p>
+  </section>
+
+  <hr class="rule">
 
   <section>
     <h2>Четвёртая ступень: пасхалка на сломе</h2>
@@ -2264,6 +2447,535 @@
     infoPanel(ctx, x, groundY, H, [["поджог x999", "беск.", "#FF9230"]]);
   }
 
+  /* ---------- превью общих эффектов ---------- */
+
+  const EFF = {
+    heal:    "126,222,160",
+    weaken:  "158,146,178",
+    empower: "214,150,255",
+    knock:   "255,232,160"
+  };
+
+  // Общая сцена превью: один размер на все, чтобы эффекты сравнивались, а не мерились рамками.
+  const PW = 260, PH = 220, PGY = 164, PUH = 100;
+
+  function effHead(ctx, name) {
+    ctx.font = "500 11px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = "rgba(147,128,94,.85)";
+    ctx.fillText(name, 16, 22);
+  }
+
+  // Восходящие или нисходящие штрихи — язык пары «усилен / ослаблен» и лечения.
+  function strokesFlow(ctx, x, groundY, H, color, up, speed, count, len, alpha) {
+    const u = H / 16;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.lineCap = "round";
+    for (let i = 0; i < count; i++) {
+      const ph = ((statusTick * speed + jag(i, 91)) % 1);
+      const px = x + (jag(i, 92) - 0.5) * u * 6;
+      const span = H * 1.05;
+      const py = up ? groundY - span * ph : groundY - span + span * ph;
+      const a = Math.sin(ph * Math.PI) * alpha;
+      ctx.strokeStyle = "rgba(" + color + "," + a.toFixed(3) + ")";
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(px, py + (up ? len * u : -len * u));
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function bubblesUp(ctx, x, groundY, H, color, speed, count, r) {
+    const u = H / 16;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = 0; i < count; i++) {
+      const ph = ((statusTick * speed + jag(i, 101)) % 1);
+      const px = x + (jag(i, 102) - 0.5) * u * 5 + Math.sin(ph * 6 + i) * u * 0.4;
+      const py = groundY - u * 2 - H * 0.95 * ph;
+      const a = Math.sin(ph * Math.PI) * 0.85;
+      ctx.fillStyle = "rgba(" + color + "," + a.toFixed(3) + ")";
+      ctx.beginPath(); ctx.arc(px, py, r * (0.6 + jag(i, 103) * 0.8), 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function facetOutline(ctx, cx, cy, rx, ry, color, alpha) {
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.strokeStyle = "rgba(" + color + "," + alpha + ")";
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    for (let i = 0; i <= 9; i++) {
+      const p = facetPoint(cx, cy, rx, ry, i, 9);
+      if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+    }
+    ctx.closePath(); ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawEffectPreview(canvas, key) {
+    const ctx = stageMini(canvas, PW, PH);
+    const x = PW / 2, groundY = PGY, H = PUH, u = H / 16;
+
+    switch (key) {
+      case "stun": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: true, burn: 0, poison: 0, frostbite: 0 });
+        stunMarks(ctx, bx, groundY, H);
+        effHead(ctx, "стан");
+        break;
+      }
+      case "sleep": {
+        const pulse = 0.5 + 0.5 * Math.sin(statusTick * 0.055);
+        ctx.save(); ctx.globalAlpha = 0.78 + 0.22 * pulse;
+        statusBody(ctx, x, groundY, H * 0.88, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        ctx.restore();
+        bubblesUp(ctx, x, groundY - H * 0.55, H * 0.5, "220,214,255", 0.010, 5, 1.7);
+        effHead(ctx, "сон");
+        break;
+      }
+      case "frozen": {
+        // Анимации нет намеренно: соседние превью шевелятся, и стоп-кадр читается сам.
+        statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 1 });
+        facetOutline(ctx, x, groundY - H * 0.5, u * 4.2, H * 0.58, ST.frost, ".55");
+        effHead(ctx, "заморозка · анимация стоп");
+        break;
+      }
+      case "knockup": {
+        const lift = u * (2.6 + Math.sin(statusTick * 0.09) * 0.5);
+        ctx.save(); ctx.translate(0, -lift);
+        statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        ctx.restore();
+        ctx.fillStyle = "rgba(0,0,0,.30)";                        // тень поджалась: юнит выше
+        ctx.beginPath(); ctx.ellipse(x, groundY + u * 0.6, u * 2.1, u * 0.65, 0, 0, Math.PI * 2); ctx.fill();
+        for (let i = 0; i < 7; i++) {                             // пыль осталась внизу
+          const ph = ((statusTick * 0.045 + jag(i, 111)) % 1);
+          const px = x + (jag(i, 112) - 0.5) * u * 6 * (0.4 + ph);
+          ctx.fillStyle = "rgba(" + EFF.knock + "," + ((1 - ph) * 0.4).toFixed(3) + ")";
+          ctx.beginPath(); ctx.arc(px, groundY - u * 0.3, 1.7 * (1 - ph * 0.6), 0, Math.PI * 2); ctx.fill();
+        }
+        effHead(ctx, "подкидывание");
+        break;
+      }
+      case "burn": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 2 / 3, poison: 0, frostbite: 0 });
+        burnFlames(ctx, bx, groundY, H, 2 / 3);
+        effHead(ctx, "горение · ступень 2");
+        break;
+      }
+      case "ember": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0.2, poison: 0, frostbite: 0 });
+        ctx.save();
+        unitPath(ctx, bx, groundY, H); ctx.clip();
+        ctx.globalCompositeOperation = "lighter";
+        for (let i = 0; i < 14; i++) {                            // запас ВНУТРИ тела: его тратит детонация
+          const t = statusTick * 0.06 + i * 1.7;
+          const a = 0.35 + 0.55 * (0.5 + 0.5 * Math.sin(t));
+          const px = bx + (jag(i, 121) - 0.5) * u * 4.6;
+          const py = groundY - u * (1.5 + jag(i, 122) * 12);
+          ctx.fillStyle = "rgba(255," + Math.round(180 + 50 * a) + ",120," + a.toFixed(3) + ")";
+          ctx.beginPath(); ctx.arc(px, py, 1.5, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.restore();
+        effHead(ctx, "угли");
+        break;
+      }
+      case "poison": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0.8, frostbite: 0 });
+        bubblesUp(ctx, bx, groundY, H, ST.poison, 0.012, 6, 2.1);
+        effHead(ctx, "яд · гниль · споры");
+        break;
+      }
+      case "frostbite": {
+        const fill = 0.35 + 0.3 * (0.5 + 0.5 * Math.sin(statusTick * 0.03));
+        statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: fill });
+        effHead(ctx, "изморозь · стаки растут");
+        break;
+      }
+      case "bleed": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        const box = { x: bx - u * 2.6, y: groundY - H + u * 4.5, w: u * 5.2, h: u * 6.5 };
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        for (let i = 0; i < 4; i++) {                             // порезы: место, угол, яркость
+          const cxp = box.x + box.w * (0.25 + jag(i, 131) * 0.5);
+          const cyp = box.y + box.h * (0.2 + jag(i, 132) * 0.6);
+          const ang = (-25 + jag(i, 133) * 50) * Math.PI / 180;
+          const half = H * 0.09;
+          ctx.strokeStyle = "rgba(" + RED + ",.55)"; ctx.lineWidth = 3.4; ctx.lineCap = "round";
+          ctx.beginPath();
+          ctx.moveTo(cxp - Math.cos(ang) * half, cyp - Math.sin(ang) * half);
+          ctx.lineTo(cxp + Math.cos(ang) * half, cyp + Math.sin(ang) * half);
+          ctx.stroke();
+          ctx.strokeStyle = "rgba(255,190,190,.9)"; ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.moveTo(cxp - Math.cos(ang) * half, cyp - Math.sin(ang) * half);
+          ctx.lineTo(cxp + Math.cos(ang) * half, cyp + Math.sin(ang) * half);
+          ctx.stroke();
+          const ph = ((statusTick * 0.03 + jag(i, 134)) % 1);     // капля вниз из этого пореза
+          ctx.fillStyle = "rgba(" + RED + "," + ((1 - ph) * 0.8).toFixed(3) + ")";
+          ctx.beginPath();
+          ctx.arc(cxp, cyp + (groundY - cyp) * ph, 1.8 * (1 - ph * 0.4), 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+        effHead(ctx, "кровотечение · из порезов");
+        break;
+      }
+      case "stealth": {
+        ctx.save(); ctx.globalAlpha = 0.3;
+        statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        ctx.restore();
+        ctx.save();                                               // контур: союзник должен видеть, где он
+        ctx.strokeStyle = "rgba(190,200,220,.55)"; ctx.lineWidth = 1.2;
+        unitPath(ctx, x, groundY, H); ctx.stroke();
+        ctx.restore();
+        effHead(ctx, "скрытность");
+        break;
+      }
+      case "mark": {
+        statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        markSign(ctx, x, groundY, H);
+        effHead(ctx, "метка");
+        break;
+      }
+      case "empower": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        strokesFlow(ctx, bx, groundY, H, EFF.empower, true, 0.020, 9, 1.6, 0.75);
+        ctx.save();                                               // свечение части-носителя приёма
+        ctx.globalCompositeOperation = "lighter";
+        unitPath(ctx, bx, groundY, H); ctx.clip();
+        const g = ctx.createLinearGradient(0, groundY - H, 0, groundY - H * 0.4);
+        g.addColorStop(0, "rgba(" + EFF.empower + ",.45)");
+        g.addColorStop(1, "rgba(" + EFF.empower + ",0)");
+        ctx.fillStyle = g; ctx.fillRect(bx - u * 3, groundY - H, u * 6, H);
+        ctx.restore();
+        effHead(ctx, "усиление");
+        break;
+      }
+      case "hot": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        const g = ctx.createRadialGradient(bx, groundY, u, bx, groundY, u * 5);
+        g.addColorStop(0, "rgba(" + EFF.heal + ",.35)");
+        g.addColorStop(1, "rgba(" + EFF.heal + ",0)");
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.ellipse(bx, groundY, u * 5, u * 2, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+        bubblesUp(ctx, bx, groundY, H, EFF.heal, 0.014, 7, 1.9);
+        effHead(ctx, "лечение во времени");
+        break;
+      }
+      case "antiheal": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        const ceil = groundY - H * 0.62;                          // граница, о которую лечение обрывается
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        for (let i = 0; i < 8; i++) {
+          const ph = ((statusTick * 0.016 + jag(i, 141)) % 1);
+          const px = bx + (jag(i, 142) - 0.5) * u * 5.4;
+          const rise = Math.min(ph, 0.55) / 0.55;                 // вверх, но не выше границы
+          const fall = ph > 0.55 ? (ph - 0.55) / 0.45 : 0;
+          const py = groundY - (groundY - ceil) * rise + (groundY - ceil) * 0.55 * fall * fall;
+          const a = (fall > 0 ? (1 - fall) * 0.5 : 0.8);
+          ctx.fillStyle = "rgba(" + EFF.heal + "," + a.toFixed(3) + ")";
+          ctx.beginPath(); ctx.arc(px, py, 1.9, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.strokeStyle = "rgba(" + EFF.weaken + ",.5)";
+        ctx.setLineDash([5, 5]); ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.moveTo(bx - u * 4, ceil); ctx.lineTo(bx + u * 4, ceil); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+        effHead(ctx, "антихил · не доходит");
+        break;
+      }
+      case "weaken": {
+        const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        strokesFlow(ctx, bx, groundY, H, EFF.weaken, false, 0.014, 8, 1.6, 0.55);
+        ctx.save();                                               // тело гаснет сверху: зеркало усиления
+        ctx.globalCompositeOperation = "multiply";
+        unitPath(ctx, bx, groundY, H); ctx.clip();
+        ctx.fillStyle = "rgba(120,116,132,.55)";
+        ctx.fillRect(bx - u * 3, groundY - H, u * 6, H);
+        ctx.restore();
+        effHead(ctx, "ослабление");
+        break;
+      }
+      case "slow": {
+        slowPuddle(ctx, x, groundY, H);
+        statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        effHead(ctx, "замедление");
+        break;
+      }
+      case "root": {
+        statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        const grip = 0.75 + 0.25 * Math.sin(statusTick * 0.05);   // дуги смыкаются, а не растекаются
+        for (let i = 0; i < 5; i++) {
+          const side = i % 2 === 0 ? -1 : 1;
+          const r = u * (1.4 + i * 0.55);
+          ctx.strokeStyle = "rgba(" + ST.slow + "," + (0.65 - i * 0.09).toFixed(3) + ")";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.ellipse(x + side * u * 0.5, groundY - u * 0.6 * grip, r, r * 0.85,
+                      side * 0.4, Math.PI * 0.95, Math.PI * 2.05);
+          ctx.stroke();
+        }
+        ctx.restore();
+        effHead(ctx, "корни");
+        break;
+      }
+    }
+  }
+
+  /* ---------- барьер: постоянный, но тихий; помнит удары трещинами ---------- */
+
+  const SHIELD = "138,206,255";
+  const FACETS = 11;
+
+  // Жизнь барьера одним циклом: пассив, слабый удар, тик DoT, два сильных, пробитие, пауза.
+  // strength — доля поглощённого урона; dot бьёт «всюду», поэтому своей точки не имеет.
+  const SHIELD_EVENTS = [
+    { f: 34,  str: 0.28, ang: -168 },
+    { f: 66,  str: 0.14, dot: true },
+    { f: 98,  str: 0.62, ang: -22  },
+    { f: 132, str: 0.55, ang: -142 },
+    { f: 166, str: 1.00, ang: -64, breaks: true }
+  ];
+  const SHIELD_CYCLE = 232;
+
+  function shieldState(cycleLen, events, allowBreak) {
+    const c = statusTick % cycleLen;
+    let glow = 0, hitAng = null, cracks = 0, dot = false, broken = -1;
+    for (let i = 0; i < events.length; i++) {
+      const e = events[i];
+      if (c < e.f) break;
+      const age = c - e.f;
+      if (!e.dot) cracks++;
+      if (age < 22) {
+        const k = Math.exp(-age / 5.5);
+        if (e.str * k > glow) { glow = e.str * k; hitAng = e.dot ? null : e.ang; dot = !!e.dot; }
+      }
+      if (e.breaks && allowBreak) broken = Math.min(1, age / 22);
+    }
+    return { glow: glow, hitAng: hitAng, cracks: cracks, dot: dot, broken: broken, cycle: c };
+  }
+
+  function facetPoint(cx, cy, rx, ry, i, n) {
+    const a = (i / n) * Math.PI * 2 - Math.PI / 2;
+    return { x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry, a: a };
+  }
+
+  // Насколько ярко светится участок поверхности: базовая почти-невидимость плюс подсветка от удара,
+  // спадающая по угловому расстоянию до точки контакта. DoT светит ровно по всей поверхности.
+  function facetGlow(angDeg, st, base) {
+    if (st.glow <= 0) return base;
+    if (st.hitAng === null) return base + st.glow * 0.5;          // dot: всюду, но слабее
+    let d = Math.abs(((angDeg - st.hitAng + 540) % 360) - 180);   // 0 в точке удара, 180 напротив
+    const near = Math.max(0, 1 - d / 95);
+    return base + st.glow * (0.28 + 0.72 * near * near);
+  }
+
+  // Трещина: ломаная от границы внутрь. Живёт как состояние барьера — как порез у тела.
+  function drawCracks(ctx, cx, cy, rx, ry, count, alpha, salt) {
+    if (count <= 0) return;
+    ctx.save();
+    ctx.lineCap = "round";
+    for (let k = 0; k < count; k++) {
+      const a0 = SHIELD_EVENTS[Math.min(k, SHIELD_EVENTS.length - 1)].ang;
+      const a = (a0 === undefined ? -90 : a0) * Math.PI / 180 + (jag(k, salt) - 0.5) * 0.3;
+      let x = cx + Math.cos(a) * rx, y = cy + Math.sin(a) * ry;
+      ctx.strokeStyle = "rgba(" + SHIELD + "," + (alpha * (0.55 + 0.45 * jag(k, salt + 5))).toFixed(3) + ")";
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      let dir = a + Math.PI;
+      for (let s = 0; s < 4; s++) {
+        dir += (jag(k * 7 + s, salt + 11) - 0.5) * 1.5;
+        const len = (rx * 0.24) * (0.7 + jag(k * 7 + s, salt + 17) * 0.7);
+        x += Math.cos(dir) * len; y += Math.sin(dir) * len * (ry / rx);
+        ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function shieldSurface(ctx, cx, cy, rx, ry, kind, st, base) {
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+
+    if (kind === "smooth") {
+      const g = ctx.createRadialGradient(cx, cy, Math.min(rx, ry) * 0.45, cx, cy, Math.max(rx, ry));
+      g.addColorStop(0, "rgba(" + SHIELD + ",0)");
+      g.addColorStop(0.82, "rgba(" + SHIELD + "," + (base * 0.8 + st.glow * 0.10).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(" + SHIELD + "," + (base * 2.6 + st.glow * 0.55).toFixed(3) + ")");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2); ctx.fill();
+      if (st.glow > 0 && st.hitAng !== null) {                     // пятно в точке контакта
+        const ha = st.hitAng * Math.PI / 180;
+        const px = cx + Math.cos(ha) * rx, py = cy + Math.sin(ha) * ry;
+        const pr = rx * (0.35 + 0.35 * st.glow);
+        const gp = ctx.createRadialGradient(px, py, 0, px, py, pr);
+        gp.addColorStop(0, "rgba(230,248,255," + (0.75 * st.glow).toFixed(3) + ")");
+        gp.addColorStop(1, "rgba(" + SHIELD + ",0)");
+        ctx.fillStyle = gp;
+        ctx.beginPath(); ctx.arc(px, py, pr, 0, Math.PI * 2); ctx.fill();
+      }
+    } else if (kind === "glass") {
+      for (let i = 0; i < FACETS; i++) {                           // пластины-фасеты с разными бликами
+        const p0 = facetPoint(cx, cy, rx, ry, i, FACETS);
+        const p1 = facetPoint(cx, cy, rx, ry, i + 1, FACETS);
+        const mid = ((p0.a + p1.a) / 2) * 180 / Math.PI;
+        const a = facetGlow(mid, st, base) * (0.55 + 0.45 * jag(i, 61));
+        ctx.fillStyle = "rgba(" + SHIELD + "," + a.toFixed(3) + ")";
+        ctx.beginPath();
+        ctx.moveTo(cx, cy); ctx.lineTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y);
+        ctx.closePath(); ctx.fill();
+        ctx.strokeStyle = "rgba(" + SHIELD + "," + (a * 1.5).toFixed(3) + ")";
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
+      }
+    } else {                                                       // facet: полигон плюс хорды
+      for (let i = 0; i < FACETS; i++) {
+        const p0 = facetPoint(cx, cy, rx, ry, i, FACETS);
+        const p1 = facetPoint(cx, cy, rx, ry, i + 1, FACETS);
+        const mid = ((p0.a + p1.a) / 2) * 180 / Math.PI;
+        const a = facetGlow(mid, st, base);
+        ctx.strokeStyle = "rgba(" + SHIELD + "," + Math.min(1, a * 2.2).toFixed(3) + ")";
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
+      }
+      for (let i = 0; i < FACETS; i++) {                           // грани внутрь: объём без заливки
+        const p0 = facetPoint(cx, cy, rx, ry, i, FACETS);
+        const p1 = facetPoint(cx, cy, rx, ry, i + 3, FACETS);
+        const mid = ((p0.a + p1.a) / 2) * 180 / Math.PI;
+        const a = facetGlow(mid, st, base) * 0.45;
+        ctx.strokeStyle = "rgba(" + SHIELD + "," + a.toFixed(3) + ")";
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
+  function shieldReadout(ctx, W, H0, st, label) {
+    ctx.font = "500 13px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = "rgba(147,128,94,.9)";
+    ctx.fillText(label, 26, H0 - 34);
+    const state = st.broken >= 0 ? "пробит"
+                : st.glow > 0.4 ? "сильный удар"
+                : st.dot && st.glow > 0 ? "тик эффекта"
+                : st.glow > 0 ? "слабый удар" : "покой";
+    ctx.fillStyle = st.broken >= 0 ? "rgba(255,146,48,1)"
+                  : st.glow > 0.4 ? "rgba(230,248,255,1)"
+                  : st.glow > 0 ? "rgba(" + SHIELD + ",1)" : "rgba(147,128,94,.75)";
+    ctx.fillText(state, 150, H0 - 34);
+    ctx.fillStyle = "rgba(147,128,94,.9)";
+    ctx.fillText("трещин " + Math.min(st.cracks, SHIELD_EVENTS.length), 300, H0 - 34);
+  }
+
+  const SHIELD_BASE = 0.055;   // «очень-очень незаметный» в покое: барьер не мутит тело под собой
+
+  function drawShieldStand(canvas, kind) {
+    const W = 480, H0 = 380;
+    const ctx = stageMini(canvas, W, H0);
+    const groundY = H0 - 92, H = 168, x = 240;
+    const u = H / 16;
+    const st = shieldState(SHIELD_CYCLE, SHIELD_EVENTS, true);
+
+    statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+
+    const cx = x, cy = groundY - H * 0.5, rx = u * 4.9, ry = H * 0.63;
+
+    if (st.broken < 0) {
+      shieldSurface(ctx, cx, cy, rx, ry, kind, st, SHIELD_BASE);
+      drawCracks(ctx, cx, cy, rx, ry, st.cracks, SHIELD_BASE * 3 + st.glow * 0.4, 71);
+    } else if (st.broken < 1) {
+      shieldShards(ctx, cx, cy, rx, ry, st.broken, SHIELD_EVENTS[SHIELD_EVENTS.length - 1].ang);
+    }
+
+    shieldReadout(ctx, W, H0, st, "состояние");
+    miniLabel(ctx, kind === "facet" ? "грани" : kind === "smooth" ? "гладкое" : "стекло");
+  }
+
+  // Разрушение: грани уходят ПО КАСАТЕЛЬНОЙ от последнего удара — у слома есть направление.
+  function shieldShards(ctx, cx, cy, rx, ry, t, hitAng) {
+    const k = 1 - t;
+    const push = (hitAng + 180) * Math.PI / 180;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = 0; i < FACETS; i++) {
+      const p0 = facetPoint(cx, cy, rx, ry, i, FACETS);
+      const p1 = facetPoint(cx, cy, rx, ry, i + 1, FACETS);
+      const spin = (jag(i, 81) - 0.5) * 0.8;
+      const d = rx * 1.5 * t * (0.5 + jag(i, 82));
+      const ox = Math.cos(push + spin) * d, oy = Math.sin(push + spin) * d * (ry / rx) - ry * 0.25 * t;
+      ctx.strokeStyle = "rgba(" + SHIELD + "," + (0.85 * k).toFixed(3) + ")";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(p0.x + ox, p0.y + oy); ctx.lineTo(p1.x + ox, p1.y + oy); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  const BREAK_CYCLE = 96;
+  function drawShieldBreak(canvas) {
+    const W = 480, H0 = 330;
+    const ctx = stageMini(canvas, W, H0);
+    const groundY = H0 - 74, H = 150, x = 240;
+    const u = H / 16;
+    const c = statusTick % BREAK_CYCLE;
+    const cx = x, cy = groundY - H * 0.5, rx = u * 4.9, ry = H * 0.63;
+
+    statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+
+    if (c < 30) {                                   // целый, с трещинами от прошлых ударов
+      const st = { glow: c > 24 ? (c - 24) / 6 : 0, hitAng: -64, cracks: 4, dot: false, broken: -1 };
+      shieldSurface(ctx, cx, cy, rx, ry, "facet", st, SHIELD_BASE);
+      drawCracks(ctx, cx, cy, rx, ry, 4, SHIELD_BASE * 3 + st.glow * 0.5, 71);
+    } else if (c < 56) {
+      shieldShards(ctx, cx, cy, rx, ry, (c - 30) / 26, -64);
+    }
+
+    ctx.font = "500 13px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = c >= 30 && c < 56 ? "rgba(255,146,48,1)" : "rgba(147,128,94,.9)";
+    ctx.fillText(c < 30 ? "трещин 4 · держится" : c < 56 ? "ПРОБИТ · осколки по касательной" : "барьера нет",
+                 26, H0 - 34);
+  }
+
+  const FADE_CYCLE = 96;
+  function drawShieldFade(canvas) {
+    const W = 480, H0 = 330;
+    const ctx = stageMini(canvas, W, H0);
+    const groundY = H0 - 74, H = 150, x = 240;
+    const u = H / 16;
+    const c = statusTick % FADE_CYCLE;
+    const cx = x, cy = groundY - H * 0.5, rx = u * 4.9, ry = H * 0.63;
+
+    statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+
+    if (c < 60) {
+      const t = c < 30 ? 0 : (c - 30) / 30;         // развеивание: ровно, без направления, вверх
+      const st = { glow: 0, hitAng: null, cracks: 2, dot: false, broken: -1 };
+      ctx.save();
+      ctx.globalAlpha = 1 - t;
+      ctx.translate(0, -ry * 0.35 * t);
+      shieldSurface(ctx, cx, cy, rx, ry * (1 + 0.12 * t), "facet", st, SHIELD_BASE * (1 - t * 0.4));
+      drawCracks(ctx, cx, cy, rx, ry, 2, SHIELD_BASE * 3 * (1 - t), 71);
+      ctx.restore();
+    }
+
+    ctx.font = "500 13px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = "rgba(147,128,94,.9)";
+    ctx.fillText(c < 30 ? "трещин 2 · время идёт" : c < 60 ? "РАЗВЕЯЛСЯ · ровно, вверх, без осколков" : "барьера нет",
+                 26, H0 - 34);
+  }
+
   /* ---------- цикл ---------- */
   const cTrail = document.getElementById("c-trail");
   const cSwept = document.getElementById("c-swept");
@@ -2282,6 +2994,14 @@
   const cTime = document.getElementById("c-timeline");
   const sChan = document.getElementById("s-channels");
   const sAbsurd = document.getElementById("s-absurd");
+  const SHIELD_STANDS = [["b-facet", "facet"], ["b-smooth", "smooth"], ["b-glass", "glass"]]
+    .map(function (p) { return { el: document.getElementById(p[0]), kind: p[1] }; });
+  const bBreak = document.getElementById("b-break");
+  const bFade = document.getElementById("b-fade");
+  const EFFECT_PREVIEWS = ["stun", "sleep", "frozen", "knockup", "burn", "ember", "poison",
+                           "frostbite", "bleed", "stealth", "mark", "empower", "hot", "antiheal",
+                           "weaken", "slow", "root"]
+    .map(function (k) { return { el: document.getElementById("e-" + k), key: k }; });
   const BURN_STANDS = [["s-steps", "steps"], ["s-cont", "cont"], ["s-binary", "binary"]]
     .map(function (p) { return { el: document.getElementById(p[0]), mode: p[1] }; });
 
@@ -2306,6 +3026,11 @@
     drawChannels(sChan);
     for (let i = 0; i < BURN_STANDS.length; i++) drawBurnStand(BURN_STANDS[i].el, BURN_STANDS[i].mode);
     drawAbsurdStand(sAbsurd);
+    for (let i = 0; i < SHIELD_STANDS.length; i++) drawShieldStand(SHIELD_STANDS[i].el, SHIELD_STANDS[i].kind);
+    drawShieldBreak(bBreak);
+    drawShieldFade(bFade);
+    for (let i = 0; i < EFFECT_PREVIEWS.length; i++)
+      drawEffectPreview(EFFECT_PREVIEWS[i].el, EFFECT_PREVIEWS[i].key);
     outFrame.textContent = String(frame).padStart(2, "0");
     const ph = phaseOf(frame);
     outPhase.textContent = ph;
@@ -2383,7 +3108,9 @@
     cSlash._cw = 0; cPierce._cw = 0; cBlunt._cw = 0;
     rLine._cw = 0; hFull._cw = 0; hSparks._cw = 0; hCuts._cw = 0;
     HYBRID.forEach(function (h) { h.el._cw = 0; });
-    sChan._cw = 0; sAbsurd._cw = 0;
+    sChan._cw = 0; sAbsurd._cw = 0; bBreak._cw = 0; bFade._cw = 0;
+    SHIELD_STANDS.forEach(function (s) { s.el._cw = 0; });
+    EFFECT_PREVIEWS.forEach(function (p) { p.el._cw = 0; });
     BURN_STANDS.forEach(function (b) { b.el._cw = 0; });
     render();
   });
