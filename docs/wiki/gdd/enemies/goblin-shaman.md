@@ -23,7 +23,7 @@ mechanics:
   - AOE
   - Щит
   - Барьер
-impl: partial
+impl: engine
 asset: [enemy.goblin_shaman]
 ---
 
