@@ -1197,6 +1197,26 @@
           крови. Лужа под ногами и след при движении.</p></div></article>
     </div>
 
+    <p class="tag" style="margin-top:1.2rem">кровь · четыре ПОДХОДА к показу стадий</p>
+    <p class="dim" style="max-width:68ch">
+      Один и тот же счётчик стадий (1→4 по кругу), четыре разных языка показа. Вопрос не «какие числа»,
+      а <b>чем именно</b> стадия читается: количеством, цветом тела, светом ран или ритмом.
+    </p>
+    <div class="stands">
+      <article class="stand"><canvas id="e-bl-drip" width="260" height="220" role="img" aria-label="Подход: капли и струйки"></canvas>
+        <div class="stand-body"><h3>A · Капли и струйки</h3><p class="dim">Растёт темп капания, потом добавляются
+          подтёки, на четвёртой — лужа под ногами.</p></div></article>
+      <article class="stand"><canvas id="e-bl-soak" width="260" height="220" role="img" aria-label="Подход: пропитывание"></canvas>
+        <div class="stand-body"><h3>B · Пропитывание</h3><p class="dim">Тело краснеет снизу вверх — он буквально
+          залит своей кровью. Капель мало, работает площадь.</p></div></article>
+      <article class="stand"><canvas id="e-bl-glow" width="260" height="220" role="img" aria-label="Подход: свечение ран"></canvas>
+        <div class="stand-body"><h3>C · Свечение ран</h3><p class="dim">Число ран не меняется — разгораются сами
+          порезы, от тусклых до раскалённых.</p></div></article>
+      <article class="stand"><canvas id="e-bl-pulse" width="260" height="220" role="img" aria-label="Подход: пульс"></canvas>
+        <div class="stand-body"><h3>D · Пульс</h3><p class="dim">Тело толчками отдаёт красным в такт сердцу:
+          чем выше стадия, тем чаще и глубже.</p></div></article>
+    </div>
+
     <p class="tag" style="margin-top:1.2rem">тик DoT · волна в цвете школы</p>
     <p class="dim" style="max-width:68ch">
       Постоянный знак получает только тот статус, у кого есть <b>состояние тела</b>. У яда его нет —
@@ -2766,6 +2786,135 @@
     ctx.fillText("ран " + cfg.cuts, 16, PH - 24);
   }
 
+  /* ---------- четыре ПОДХОДА к показу стадий крови ---------- */
+
+  // Общий счётчик стадий для всех подходов: один и тот же 1→4 по кругу, чтобы сравнивались языки
+  // показа, а не тайминги.
+  const BL_HOLD = 40;
+  function bloodStage() { return 1 + Math.floor(statusTick / BL_HOLD) % 4; }
+
+  // Порезы у всех подходов одни и те же — меняется только то, ЧЕМ читается стадия.
+  function bloodCuts(ctx, x, groundY, H, count, bright, width) {
+    const u = H / 16;
+    const box = { x: x - u * 2.6, y: groundY - H + u * 4.5, w: u * 5.2, h: u * 6.5 };
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.lineCap = "round";
+    for (let i = 0; i < count; i++) {
+      const cxp = box.x + box.w * (0.2 + jag(i, 161) * 0.6);
+      const cyp = box.y + box.h * (0.15 + jag(i, 162) * 0.7);
+      const ang = (-30 + jag(i, 163) * 60) * Math.PI / 180;
+      const half = H * 0.075;
+      ctx.strokeStyle = "rgba(" + RED + "," + (0.5 * bright).toFixed(3) + ")";
+      ctx.lineWidth = 3.2 * width;
+      ctx.beginPath();
+      ctx.moveTo(cxp - Math.cos(ang) * half, cyp - Math.sin(ang) * half);
+      ctx.lineTo(cxp + Math.cos(ang) * half, cyp + Math.sin(ang) * half);
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(255," + Math.round(150 + 60 * bright) + "," + Math.round(150 + 60 * bright) + "," + (0.9 * bright).toFixed(3) + ")";
+      ctx.lineWidth = 1.2 * width;
+      ctx.beginPath();
+      ctx.moveTo(cxp - Math.cos(ang) * half, cyp - Math.sin(ang) * half);
+      ctx.lineTo(cxp + Math.cos(ang) * half, cyp + Math.sin(ang) * half);
+      ctx.stroke();
+    }
+    ctx.restore();
+    return box;
+  }
+
+  function bloodStageLabel(ctx, stage, note) {
+    ctx.font = "500 12px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = stage === 4 ? "rgba(255,120,120,1)" : "rgba(147,128,94,.9)";
+    ctx.fillText("стадия " + stage + " · " + note, 16, PH - 24);
+  }
+
+  function drawBloodApproach(canvas, mode) {
+    const ctx = stageMini(canvas, PW, PH);
+    const x = PW / 2, groundY = PGY, H = PUH, u = H / 16;
+    const st = bloodStage();
+    const k = (st - 1) / 3;                                      // 0 на первой стадии, 1 на четвёртой
+
+    if (mode === "drip") {
+      if (st === 4) {                                           // лужа появляется только наверху шкалы
+        ctx.save();
+        ctx.fillStyle = "rgba(120,18,18,.5)";
+        ctx.beginPath();
+        ctx.ellipse(x, groundY + u * 0.7, u * (2.2 + 0.4 * Math.sin(statusTick * 0.06)), u * 0.8, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+      statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+      const box = bloodCuts(ctx, x, groundY, H, 3 + st, 1, 1);
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      for (let i = 0; i < 3 + st; i++) {
+        const cxp = box.x + box.w * (0.2 + jag(i, 161) * 0.6);
+        const cyp = box.y + box.h * (0.15 + jag(i, 162) * 0.7);
+        if (st >= 3 && i < st) {                                // подтёки со третьей стадии
+          const len = u * (2 + jag(i, 164) * 2.5);
+          const g = ctx.createLinearGradient(cxp, cyp, cxp, cyp + len);
+          g.addColorStop(0, "rgba(" + RED + ",.7)");
+          g.addColorStop(1, "rgba(" + RED + ",0)");
+          ctx.strokeStyle = g; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(cxp, cyp); ctx.lineTo(cxp + u * 0.2, cyp + len); ctx.stroke();
+        }
+        const ph = ((statusTick * (0.02 + 0.03 * k) + jag(i, 165)) % 1);
+        if (ph < 0.92) {
+          ctx.fillStyle = "rgba(" + RED + "," + ((1 - ph) * 0.85).toFixed(3) + ")";
+          ctx.beginPath();
+          ctx.ellipse(cxp, cyp + (groundY - cyp) * ph, 1.4 + k * 1.2, 1.8 + k * 1.4, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+      bloodStageLabel(ctx, st, ["редкие капли", "капает", "подтёки", "лужа"][st - 1]);
+
+    } else if (mode === "soak") {
+      statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+      ctx.save();                                               // тело краснеет снизу вверх
+      ctx.globalCompositeOperation = "source-over";
+      unitPath(ctx, x, groundY, H); ctx.clip();
+      const top = groundY - H * (0.15 + 0.72 * k);
+      const g = ctx.createLinearGradient(0, groundY, 0, top);
+      g.addColorStop(0, "rgba(140,20,20,.85)");
+      g.addColorStop(1, "rgba(140,20,20,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(x - u * 4, top, u * 8, groundY - top + u);
+      ctx.restore();
+      bloodCuts(ctx, x, groundY, H, 4, 0.9, 1);
+      bloodStageLabel(ctx, st, ["низ намок", "до пояса", "почти весь", "залит целиком"][st - 1]);
+
+    } else if (mode === "glow") {
+      statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+      const breath = 0.85 + 0.15 * Math.sin(statusTick * 0.12);
+      bloodCuts(ctx, x, groundY, H, 5, (0.35 + 0.65 * k) * breath, 0.8 + 0.9 * k);
+      if (st >= 3) {                                            // ореол вокруг ран на верхних стадиях
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        unitPath(ctx, x, groundY, H); ctx.clip();
+        const gg = ctx.createRadialGradient(x, groundY - H * 0.55, u, x, groundY - H * 0.55, u * 5);
+        gg.addColorStop(0, "rgba(255,60,60," + (0.22 * k).toFixed(3) + ")");
+        gg.addColorStop(1, "rgba(255,60,60,0)");
+        ctx.fillStyle = gg; ctx.fillRect(x - u * 4, groundY - H, u * 8, H);
+        ctx.restore();
+      }
+      bloodStageLabel(ctx, st, ["тусклые", "заметные", "горят", "раскалены"][st - 1]);
+
+    } else {
+      const speed = 0.06 + 0.10 * k;                            // пульс: чаще и глубже со стадией
+      const pulse = Math.pow(Math.max(0, Math.sin(statusTick * speed)), 6);
+      statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      unitPath(ctx, x, groundY, H); ctx.clip();
+      ctx.fillStyle = "rgba(200,30,30," + ((0.12 + 0.5 * k) * pulse).toFixed(3) + ")";
+      ctx.fillRect(x - u * 4, groundY - H, u * 8, H);
+      ctx.restore();
+      bloodCuts(ctx, x, groundY, H, 4, 0.8 + 0.2 * pulse, 1);
+      bloodStageLabel(ctx, st, ["редкий толчок", "ровный ритм", "частый", "колотится"][st - 1]);
+    }
+  }
+
   // Тик DoT: мягкая цветная волна ВВЕРХ по силуэту. Отличается от вспышки удара намеренно —
   // та резкая, белая и живёт три кадра, эта мягкая, цветная и вдвое длиннее.
   const DOT_WAVE = 10;
@@ -3720,6 +3869,10 @@
   const SHIELD_CASES_UI = ["calm", "weak", "strong", "dot", "two", "three", "wrong", "stack",
                            "layer", "through", "expire", "addover", "block", "backstab"]
     .map(function (k) { return { el: document.getElementById("k-" + k), key: k }; });
+  const BLOOD_APPROACHES = [["e-bl-drip", "drip"], ["e-bl-soak", "soak"],
+                            ["e-bl-glow", "glow"], ["e-bl-pulse", "pulse"]]
+    .map(function (p) { return { el: document.getElementById(p[0]), mode: p[1] }; });
+
   const EFFECT_PREVIEWS = ["stun", "sleep", "frozen", "knockup", "burn", "ember",
                            "frostbite", "stealth", "mark", "empower", "hot", "antiheal",
                            "weaken", "slow", "root",
@@ -3758,6 +3911,8 @@
       drawShieldCase(SHIELD_CASES_UI[i].el, SHIELD_CASES_UI[i].key);
     for (let i = 0; i < EFFECT_PREVIEWS.length; i++)
       drawEffectPreview(EFFECT_PREVIEWS[i].el, EFFECT_PREVIEWS[i].key);
+    for (let i = 0; i < BLOOD_APPROACHES.length; i++)
+      drawBloodApproach(BLOOD_APPROACHES[i].el, BLOOD_APPROACHES[i].mode);
     outFrame.textContent = String(frame).padStart(2, "0");
     const ph = phaseOf(frame);
     outPhase.textContent = ph;
@@ -3840,6 +3995,7 @@
     SHIELD_CASES_UI.forEach(function (s) { s.el._cw = 0; });
     ZONE_CASES.forEach(function (z) { z.el._cw = 0; });
     EFFECT_PREVIEWS.forEach(function (p) { p.el._cw = 0; });
+    BLOOD_APPROACHES.forEach(function (b) { b.el._cw = 0; });
     BURN_STANDS.forEach(function (b) { b.el._cw = 0; });
     render();
   });
