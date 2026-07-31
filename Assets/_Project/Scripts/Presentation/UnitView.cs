@@ -62,10 +62,6 @@ namespace Guildmaster.Presentation
                  "0 = клипа разбега у юнита нет (покадровый бестиарий), темп берётся от бега.")]
         [SerializeField] private float _sprintUnitsPerSecond;
 
-        [Tooltip("Клип атаки — ИСТОЧНИК МАРКЕРА контакта для скелетных юнитов, у которых нет UnitVisual. " +
-                 "Покадровым не нужен: у них клип берётся из данных юнита.")]
-        [SerializeField] private AnimationClip _attackClip;
-
         [Header("Feel Hooks (пустой шов под точечный MMF_Player в Inspector)")]
         [SerializeField] private UnityEvent _onHitFeedback;
         [SerializeField] private UnityEvent _onDeathFeedback;
@@ -475,18 +471,24 @@ namespace Guildmaster.Presentation
 
         /// <summary>
         /// Найти долю клипа атаки до кадра контакта. По ней скрабится замах, поэтому промах здесь двигает
-        /// видимый удар мимо сим-тика урона. Источника два: <see cref="UnitVisual"/> (покадровые юниты, те
-        /// же данные читает сим) и явный <see cref="_attackClip"/> (скелетные — у них UnitVisual нет).
-        /// Клип без маркера — не «настройка по умолчанию», а неразведённые данные: молчать нельзя, иначе
-        /// удар уезжает в конец клипа и это ищется глазами по всему бою.
+        /// видимый удар мимо сим-тика урона. Источник **один** — <see cref="UnitVisual"/> из данных юнита,
+        /// тот же, из которого симуляция берёт кадр контакта. Клип без маркера — не «настройка по
+        /// умолчанию», а неразведённые данные: молчать нельзя, иначе удар уезжает в конец клипа и это
+        /// ищется глазами по всему бою.
         /// </summary>
+        /// <remarks>
+        /// Прежде источников было два: у скелетных юнитов <c>UnitVisual</c> не заводили, и клип брался
+        /// отдельным полем с префаба вида. Тогда позиция контакта жила в двух местах — в клипе для показа
+        /// и долей <c>WindupShare</c> в данных для сима, — а второй владелец того же факта у нас считается
+        /// дефектом. Скелетный риг получил свой <c>UnitVisual</c> (2026-07-31), и путь стал общим для всех.
+        /// </remarks>
         private void ResolveAttackMarker()
         {
-            AnimationClip attack = _visual != null && _visual.AttackClip != null ? _visual.AttackClip : _attackClip;
+            AnimationClip attack = _visual != null ? _visual.AttackClip : null;
 
             if (attack == null)
             {
-                Debug.LogError($"[UnitView] {name}: нет клипа атаки ни в UnitVisual, ни в _attackClip — " +
+                Debug.LogError($"[UnitView] {name}: у юнита нет UnitVisual с клипом атаки — " +
                                "удар не привязан к тику урона.", this);
                 _attackMarkerNormalized = 1f;
                 return;
@@ -1269,6 +1271,11 @@ namespace Guildmaster.Presentation
         /// </summary>
         /// <param name="flashColor">Цвет вспышки (резолвит презентер из feel-конфига по школе/сродству).</param>
         /// <param name="nudgeDir">Мировое направление отъезда (обычно от атакующего); zero = без nudge.</param>
+        /// <remarks>
+        /// «Ярче обычного» задаётся ЦВЕТОМ, а не силой: <c>PlayHitFlash</c> клампит peak к единице, и
+        /// обычное попадание уже бьёт в этот потолок. Сверкание блока приходит HDR-цветом из палитры
+        /// (<c>CombatColorPalette.ShieldFlare</c>) — за порогом bloom он и даёт вспышку.
+        /// </remarks>
         public void OnDamageReceived(Color flashColor, Vector2 nudgeDir)
         {
             _onHitFeedback?.Invoke();
