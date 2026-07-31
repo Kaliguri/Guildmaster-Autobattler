@@ -375,6 +375,18 @@ namespace Guildmaster.Combat
             DealDamageCore(in req);
         }
 
+        /// <inheritdoc/>
+        public bool ResolveAttackMiss(RuntimeUnit attacker) =>
+            _effectSystem.ResolveAttackMiss(attacker, this);
+
+        /// <summary>
+        /// Промах слепого подаётся тем же сигналом, что уклонение: для игрока это одна и та же цифра
+        /// «мимо» над целью, и второй канал показа означал бы вторую подачу одного факта. Разница «кто
+        /// виноват» показу сегодня недоступна — расхождение помечено в статусе врагов.
+        /// </summary>
+        public void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target) =>
+            OnAttackEvaded?.Invoke(target);
+
         /// <summary>
         /// Домножить удар на прибавки, которые даёт носителю его собственные эффекты за состояние цели.
         /// Возвращает исходный запрос без копии, когда прибавок нет — это горячий путь каждого удара.

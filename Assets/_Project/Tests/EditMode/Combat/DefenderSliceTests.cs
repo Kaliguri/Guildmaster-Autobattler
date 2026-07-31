@@ -454,6 +454,9 @@ namespace Guildmaster.Tests.EditMode.Combat
                 float potency)
                 => ApplyEffect(target, def, source);
             public void Dispel(in DispelRequest req) => _effects.Dispel(in req, this);
+            // Слепота стабу не нужна: промах проверяют свои тесты, здесь удар всегда доходит.
+            public bool ResolveAttackMiss(RuntimeUnit attacker) => false;
+            public void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target) { }
             // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.
             public void ReportAbilityCast(RuntimeUnit caster) { }
             public void Displace(in DisplaceRequest req) { }

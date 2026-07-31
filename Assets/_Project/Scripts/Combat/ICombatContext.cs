@@ -81,6 +81,18 @@ namespace Guildmaster.Combat
         void Dispel(in Effects.DispelRequest req);
 
         /// <summary>
+        /// Уходит ли следующая авто-атака <paramref name="attacker"/> мимо (слепота). Спрашивается на
+        /// снятии цифр удара — до заявки урона, чтобы промахнувшийся не накладывал и своих on-hit.
+        /// </summary>
+        bool ResolveAttackMiss(RuntimeUnit attacker);
+
+        /// <summary>
+        /// Сообщить показу, что удар <paramref name="attacker"/> ушёл мимо по вине слепоты. Симуляцию не
+        /// трогает: удар уже разрешён как промах.
+        /// </summary>
+        void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target);
+
+        /// <summary>
         /// Объявить, что <paramref name="caster"/> применил активную способность: событие
         /// <see cref="Effects.CombatEvent.AbilityCast"/> уходит всем его живым ВРАГАМ. На него реагирует
         /// «Отражающий налёт» Антимага — он копит щит за каждое вражеское заклинание.

@@ -195,13 +195,20 @@ namespace Guildmaster.Combat.Effects
         /// <paramref name="ticks"/> СИМ-тиков. Перевод «весь урон» → «урон в секунду» живёт здесь,
         /// потому что автор порции думает «кровь несёт урон одного удара», а периодика бьёт rate-ом.
         /// </summary>
+        /// <remarks>
+        /// <b>Порция без силы законна</b> (слепота, 2026-07-31): её вклад — не цифры, а СТАК, и глубина
+        /// эффекта выводится из числа порций. Раньше здесь стоял гейт <c>totalDamage &lt;= 0</c>, и
+        /// порционный эффект без урона не копился вовсе: два наложения слепоты читались как одно.
+        /// </remarks>
         public void AddPortion(float totalDamage, int ticks)
         {
-            if (totalDamage <= 0f || ticks <= 0) return;
+            if (ticks <= 0) return;
 
             // Делим на СЕКУНДЫ жизни порции, не на тики: сим-тиков в секунде тридцать, и деление на них
             // дало бы силу в тридцать раз меньше задуманной.
-            float rate = totalDamage * Core.Simulation.SimConstants.TickRate / ticks;
+            float rate = totalDamage > 0f
+                ? totalDamage * Core.Simulation.SimConstants.TickRate / ticks
+                : 0f;
             _portions.Add((rate, ticks));
 
             // Срок эффекта = срок самой долгой живой порции: эффект висит, пока хоть одна не иссякла.

@@ -184,6 +184,21 @@ namespace Guildmaster.Combat.Effects
     }
 
     /// <summary>
+    /// Опциональный шов: эффект на НОСИТЕЛЕ способен отправить его собственную атаку в молоко (слепота).
+    /// Спрашивается один раз на снятии цифр удара; <c>true</c> — удар уходит мимо.
+    /// </summary>
+    /// <remarks>
+    /// Зеркало pre-damage-негейта («Изворотливость» гасит удар со стороны ЦЕЛИ) — только со стороны
+    /// атакующего, и потому отдельный шов: у цели решение тратит её заряды и щиты, а здесь ничего не
+    /// расходуется, кроме самой атаки. Ответ обязан быть детерминированным (правило нулевого выходного
+    /// рандома): счёт идёт по <see cref="RuntimeUnit.AttacksMade"/>, а не по броску.
+    /// </remarks>
+    public interface IAttackMissComponent : IRuntimeEffectComponent
+    {
+        bool MissesAttack(RuntimeUnit attacker, in EffectContext ctx);
+    }
+
+    /// <summary>
     /// Опциональный шов: компонент объявляет масштабируемую потенцию. EffectSystem резолвит её
     /// из статов источника один раз при наложении и кладёт снимок в <see cref="RuntimeEffect.ScaledPotency"/>
     /// (per-second rate для DoT/HoT — НЕ запечённый total, вики «11» §5.1).

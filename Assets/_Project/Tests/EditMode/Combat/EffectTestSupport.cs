@@ -314,6 +314,9 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void ReportAreaHit(in AreaHit hit) { }
 
         public void Dispel(in DispelRequest req) => _effects?.Dispel(in req, this);
+        // Слепота стабу не нужна: промах проверяют свои тесты, здесь удар всегда доходит.
+        public bool ResolveAttackMiss(RuntimeUnit attacker) => false;
+        public void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target) { }
         // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.
         public void ReportAbilityCast(RuntimeUnit caster) { }
         /// <summary>Заявки на смещение: заглушка их не исполняет, но помнит — по ним и проверяется толчок.</summary>

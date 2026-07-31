@@ -369,6 +369,32 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
+        /// Уходит ли ЭТА атака носителя мимо (слепота). Спрашивается один раз на снятии цифр удара;
+        /// первый же компонент, ответивший «мимо», решает дело — промах не бывает сильнее промаха.
+        /// </summary>
+        public bool ResolveAttackMiss(RuntimeUnit attacker, ICombatContext combat)
+        {
+            if (attacker == null || attacker.ActiveEffects.Count == 0) return false;
+
+            List<RuntimeEffect> effects = attacker.ActiveEffects;
+            for (int e = 0; e < effects.Count; e++)
+            {
+                RuntimeEffect eff = effects[e];
+                IEffectComponent[] comps = eff.Def.Components;
+                if (comps == null) continue;
+
+                for (int i = 0; i < comps.Length; i++)
+                {
+                    if (comps[i] is not IAttackMissComponent blinder) continue;
+
+                    EffectContext ctx = MakeContext(attacker, eff.Source, combat, eff, i, 0f);
+                    if (blinder.MissesAttack(attacker, in ctx)) return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Доставить боевое событие реактивным компонентам носителя (вампиризм/шипы). Вызывается
         /// из <see cref="CombatSimulation"/> при дренаже event-queue. Итерация по копии — реакция
         /// может добавить/снять эффекты (вики «12» §3.4).
@@ -798,6 +824,12 @@ namespace Guildmaster.Combat
                     return;   // порция одна на наложение: она принадлежит эффекту, а не компоненту
                 }
             }
+
+            // Эффект без своей силы тоже копится порциями: у слепоты вклад не в цифрах, а в глубине —
+            // порция несёт только СРОК, и её вклад нулевой. Без этой строки наложения таких эффектов
+            // исчезали бы бесследно (порционная модель без порции — эффект без стаков), и «два стака на
+            // три секунды» читалось бы как один.
+            effect.AddPortion(0f, ticks);
         }
 
         private static bool TryAddStack(RuntimeEffect effect, EffectData def)

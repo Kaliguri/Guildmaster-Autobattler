@@ -378,8 +378,17 @@ namespace Guildmaster.Tests.EditMode.Combat
             // Срок, посчитанный по ходу боя, заглушке безразличен — она мерит факт наложения.
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
                 => ApplyEffect(target, def, source);
+
+            // Наложение с величиной (порции кровотечения): заглушке величина безразлична —
+            // она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds,
+                float potency)
+                => ApplyEffect(target, def, source);
             public void ReportAreaHit(in AreaHit hit) { }
             public void Dispel(in DispelRequest req) { }
+            // Слепота стабу не нужна: промах проверяют свои тесты, здесь удар всегда доходит.
+            public bool ResolveAttackMiss(RuntimeUnit attacker) => false;
+            public void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target) { }
             // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.
             public void ReportAbilityCast(RuntimeUnit caster) { }
             public readonly List<DisplaceRequest> Displaces = new List<DisplaceRequest>();

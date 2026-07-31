@@ -64,10 +64,13 @@ namespace Guildmaster.Combat
             /// <summary>Радиус задевания соседей цели (взведён зарядом); 0 = удар только по цели.</summary>
             public readonly float SplashRadius;
 
+            /// <summary>Удар уходит мимо (слепота): цифры сняты, но ни урона, ни on-hit не будет.</summary>
+            public readonly bool Missed;
+
             public ResolvedHit(RuntimeUnit unit, RuntimeUnit target, float raw, float reach,
                 DamageType damageType, bool blink, float flatPen, float knockback,
                 EffectData[] bonusEffects, int bonusCount, float splitShare, DamageType splitType,
-                float splashRadius)
+                float splashRadius, bool missed)
             {
                 Unit       = unit;
                 Target     = target;
@@ -82,6 +85,7 @@ namespace Guildmaster.Combat
                 SplitShare  = splitShare;
                 SplitType   = splitType;
                 SplashRadius = splashRadius;
+                Missed      = missed;
             }
         }
 
@@ -498,8 +502,14 @@ namespace Guildmaster.Combat
             bool blink = unit.BlinkBehindOnNextAttack;
             unit.BlinkBehindOnNextAttack = false;
 
+            // Атака считается ДО опроса слепоты и независимо от её исхода: «каждая X-я мимо» отмеряет
+            // взмахи носителя, а не попадания. Иначе слепота, отняв удар, сдвигала бы собственный счёт и
+            // период поехал бы (первый промах отодвигал бы следующий на четыре УДАЧНЫХ удара).
+            unit.AttacksMade++;
+            bool missed = ctx.ResolveAttackMiss(unit);
+
             _hits.Add(new ResolvedHit(unit, target, raw, reach, damageType, blink, flatPen, knockback,
-                bonusEffects, bonusCount, splitShare, splitType, splashRadius));
+                bonusEffects, bonusCount, splitShare, splitType, splashRadius, missed));
         }
 
         /// <summary>Прилёт снятого удара: урон/снаряд/хил и on-hit эффекты. Блинк уже отыгран (проход 2a).</summary>
@@ -508,6 +518,15 @@ namespace Guildmaster.Combat
             RuntimeUnit unit = hit.Unit, target = hit.Target;
             // Между снятием цифр и прилётом обоих могли добить ударом того же тика.
             if (unit.IsDead || target.IsDead) return;
+
+            // Слепой промахнулся: взмах состоялся (кулдаун списан, счётчик атак сдвинут, показ увидел
+            // удар), но ни урона, ни on-hit, ни толчка нет. Заряд усиления при этом уже потрачен — он
+            // снимается вместе с цифрами, и «промазал заряженным» честнее, чем бесплатная перезарядка.
+            if (hit.Missed)
+            {
+                ctx.ReportAttackMissed(unit, target);
+                return;
+            }
 
             float raw = hit.Raw;
 
