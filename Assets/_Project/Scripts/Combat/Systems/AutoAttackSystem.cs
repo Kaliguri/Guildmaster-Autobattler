@@ -22,6 +22,9 @@ namespace Guildmaster.Combat
         // Переиспользуемый буфер целей линейной авто-атаки — без аллокаций на горячем пути.
         private readonly List<RuntimeUnit> _lineTargets = new List<RuntimeUnit>();
 
+        /// <summary>Буфер соседей цели для заряженного удара по площади (см. <see cref="SplashIfEmpowered"/>).</summary>
+        private readonly List<RuntimeUnit> _splashTargets = new List<RuntimeUnit>();
+
         // Удары, дозревшие на этом тике: цифры сняты, но ещё никому не прилетело (см. Tick).
         private readonly List<ResolvedHit> _hits = new List<ResolvedHit>();
 
@@ -58,9 +61,13 @@ namespace Guildmaster.Combat
             /// <summary>Тип отщеплённой половины (Лёд у «Восходящего удара»).</summary>
             public readonly DamageType SplitType;
 
+            /// <summary>Радиус задевания соседей цели (взведён зарядом); 0 = удар только по цели.</summary>
+            public readonly float SplashRadius;
+
             public ResolvedHit(RuntimeUnit unit, RuntimeUnit target, float raw, float reach,
                 DamageType damageType, bool blink, float flatPen, float knockback,
-                EffectData[] bonusEffects, int bonusCount, float splitShare, DamageType splitType)
+                EffectData[] bonusEffects, int bonusCount, float splitShare, DamageType splitType,
+                float splashRadius)
             {
                 Unit       = unit;
                 Target     = target;
@@ -74,6 +81,7 @@ namespace Guildmaster.Combat
                 BonusCount  = bonusCount;
                 SplitShare  = splitShare;
                 SplitType   = splitType;
+                SplashRadius = splashRadius;
             }
         }
 
@@ -460,6 +468,7 @@ namespace Guildmaster.Combat
             int bonusCount = 0;
             float splitShare = 0f;
             DamageType splitType = DamageType.Undefined;
+            float splashRadius = 0f;
             if (unit.EmpowerDamageMult > 0f)
             {
                 raw *= unit.EmpowerDamageMult;
@@ -476,6 +485,8 @@ namespace Guildmaster.Combat
                 unit.EmpowerBonusCount  = 0;
                 unit.EmpowerSplitShare  = 0f;
                 unit.EmpowerSplitType   = DamageType.Undefined;
+                splashRadius = unit.EmpowerSplashRadius;
+                unit.EmpowerSplashRadius = 0f;
                 // Снимаем ИМЕННО тот эффект, который заряд выдал (у Убийцы — стелс, у периодического
                 // заряда — свой тег): жёсткий Stealth здесь срывал бы скрытность любому, кто просто
                 // взвёл усиленный удар, и наоборот оставлял бы висеть чужой заряд.
@@ -488,7 +499,7 @@ namespace Guildmaster.Combat
             unit.BlinkBehindOnNextAttack = false;
 
             _hits.Add(new ResolvedHit(unit, target, raw, reach, damageType, blink, flatPen, knockback,
-                bonusEffects, bonusCount, splitShare, splitType));
+                bonusEffects, bonusCount, splitShare, splitType, splashRadius));
         }
 
         /// <summary>Прилёт снятого удара: урон/снаряд/хил и on-hit эффекты. Блинк уже отыгран (проход 2a).</summary>
@@ -548,6 +559,7 @@ namespace Guildmaster.Combat
                     ApplyAutoAttackOnHit(unit, target, ctx); // §9.1 (мили single)
                     ApplyEmpowerBonus(unit, target, in hit, ctx);
                     PushIfEmpowered(unit, target, in hit, ctx);
+                    SplashIfEmpowered(unit, target, in hit, ctx);
                 }
             }
             else
@@ -592,6 +604,39 @@ namespace Guildmaster.Combat
             ctx.Displace(new DisplaceRequest(
                 target, unit, away.normalized, hit.Knockback,
                 cannonball: false, damage: 0f, damageType: hit.DamageType, width: 0f));
+        }
+
+        /// <summary>
+        /// Заряженный удар по площади: соседи цели в <see cref="ResolvedHit.SplashRadius"/> получают тот же
+        /// урон, что и она (огненная сфера гоблина-мага, размашистый удар земляного голема).
+        /// </summary>
+        /// <remarks>
+        /// <b>Центр — цель, а не носитель.</b> Это взмах, накрывающий строй вокруг того, кого ударили;
+        /// круг вокруг себя — другая форма, и она уже есть у способностей (<c>AreaShape.Circle</c>).
+        /// <para><b>Соседям достаётся урон, но не on-hit эффекты и не расщепление.</b> On-hit — свойство
+        /// удара по ЦЕЛИ (иначе яд с клинка размазывался бы по всем задетым в обход своей стоимости), а
+        /// расщепление снято под конкретную цель. Соседи получают одну цифру одним типом.</para>
+        /// <para>Только для ближнего single-удара — там же, где живут толчок и бонусные наложения: у линии
+        /// цель не одна, а снаряд прилетает позже и без снятых цифр этого удара.</para>
+        /// </remarks>
+        private void SplashIfEmpowered(RuntimeUnit unit, RuntimeUnit target, in ResolvedHit hit, ICombatContext ctx)
+        {
+            if (hit.SplashRadius <= 0f) return;
+
+            _splashTargets.Clear();
+            ctx.QueryUnitsInRadius(target.Position, hit.SplashRadius, _splashTargets,
+                TargetFilter.Enemies, unit.Team);
+
+            for (int i = 0; i < _splashTargets.Count; i++)
+            {
+                RuntimeUnit other = _splashTargets[i];
+                // Саму цель пропускаем: её удар уже нанесён выше, и второй заход был бы двойным.
+                if (other == null || other == target || other.IsDead) continue;
+
+                ctx.DealDamage(new DamageRequest(unit, other, hit.Raw, hit.DamageType, ctx.ArmorK,
+                    sourceKind: DamageSourceKind.AutoAttack, bonusFlatPen: hit.FlatPen));
+            }
+            _splashTargets.Clear();
         }
 
         /// <summary>

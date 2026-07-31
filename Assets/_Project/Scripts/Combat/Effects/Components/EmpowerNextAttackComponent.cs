@@ -38,6 +38,11 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("На сколько усиленный удар отбрасывает цель, мировых единиц (Монах воды = 2). 0 = не толкает.")]
         [SerializeField] private float _knockbackDistance;
 
+        [Tooltip("Радиус, в котором усиленный удар задевает СОСЕДЕЙ цели, мировых единиц (гоблин-маг с " +
+                 "огненной сферой, размашистый удар голема). 0 = удар только по цели.")]
+        [Min(0f)]
+        [SerializeField] private float _splashRadius;
+
         [Tooltip("Тег, по которому удар снимает взведший эффект. Stealth = удар выводит из тени (Убийца); " +
                  "Empowered = обычный заряд, стелса не касается.")]
         [SerializeField] private EffectTag _consumeTag = EffectTag.Stealth;
@@ -78,6 +83,7 @@ namespace Guildmaster.Combat.Effects.Components
             self.EmpowerDamageMult  = Data.Stats.StatConversion.ApplyAll(_damageMultScalings, _damageMult, self.Stats);
             self.EmpowerFlatPen     = _flatPen;
             self.EmpowerKnockback   = _knockbackDistance;
+            self.EmpowerSplashRadius = _splashRadius;
             self.EmpowerConsumeTag   = _consumeTag;
             self.EmpowerBonusEffects = _bonusOnHitEffects;
             self.EmpowerBonusCount   = _bonusOnHitCount;
