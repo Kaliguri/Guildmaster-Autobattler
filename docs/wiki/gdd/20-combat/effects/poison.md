@@ -2,9 +2,9 @@
 title: "Effect - Poison"
 order: 120
 status: draft
-updated: 2026-07-29
-impl: partial
-impl_note: "тег и урон есть, идентичность яда (анти-хил) в коде отсутствует"
+updated: 2026-07-31
+impl: engine
+impl_note: "тег, периодический урон и анти-хил (шкала 30/50/75/100%) — всё в движке"
 ---
 
 # Отравление (Poison)
