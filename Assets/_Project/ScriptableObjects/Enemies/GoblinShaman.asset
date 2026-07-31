@@ -56,7 +56,50 @@ MonoBehaviour:
     Op: 3
     Value: 8
   _grantedEffects: []
-  _abilities: []
+  _abilities:
+  - _id: shaman_ward
+    _effects: []
+    _selfEffects: []
+    _baseCooldown: 8
+    _resourceCost: 0
+    _targetMode: 3
+    _damageMultiplier: 0
+    _damageType: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 11400000, guid: 84be24e676ba0f34e8b473ea1895abf6, type: 2}
+    _selfHealFraction: 1
+    _castCondition: 2
+    _castConditionCount: 1
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.7
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 0
+    _canMoveWhileCasting: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 0
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 0
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 0
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
+    _displaces: 0
+    _displaceDistance: 0
+    _displaceDamageMult: 0
+    _displaceWidth: 0
+    _visualSlot: 0
+    _infoTags: []
   _aiPreset: {fileID: 11400000, guid: 5d0886f638c6d6b40b88e7aefce6bd28, type: 2}
   _ai:
     _autoAttackTargeting: 0

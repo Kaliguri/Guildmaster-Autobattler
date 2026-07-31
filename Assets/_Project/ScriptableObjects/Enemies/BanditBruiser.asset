@@ -50,7 +50,51 @@ MonoBehaviour:
     Op: 3
     Value: 8
   _grantedEffects: []
-  _abilities: []
+  _abilities:
+  - _id: bandit_hammer_stun
+    _effects:
+    - {fileID: 11400000, guid: aed3e703de631f5498d795422c85cf98, type: 2}
+    _selfEffects: []
+    _baseCooldown: 6
+    _resourceCost: 0
+    _targetMode: 1
+    _damageMultiplier: 0
+    _damageType: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
+    _castCondition: 0
+    _castConditionCount: 1
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 0
+    _canMoveWhileCasting: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 0
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 0
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 0
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
+    _displaces: 0
+    _displaceDistance: 0
+    _displaceDamageMult: 0
+    _displaceWidth: 0
+    _visualSlot: 0
+    _infoTags: []
   _aiPreset: {fileID: 11400000, guid: 8bf6d684044ed704eb8561fc2894e318, type: 2}
   _ai:
     _autoAttackTargeting: 0

@@ -49,8 +49,53 @@ MonoBehaviour:
   - Stat: 3
     Op: 3
     Value: 10
-  _grantedEffects: []
-  _abilities: []
+  _grantedEffects:
+  - {fileID: 11400000, guid: 4b954f618451de44f87a7881b5805328, type: 2}
+  _abilities:
+  - _id: goblin_warcry
+    _effects:
+    - {fileID: 11400000, guid: 57fbc357b33b7bd43aac8dd1cb575b93, type: 2}
+    _selfEffects: []
+    _baseCooldown: 10
+    _resourceCost: 0
+    _targetMode: 5
+    _damageMultiplier: 0
+    _damageType: 0
+    _areaShape: 0
+    _areaRadius: 4
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
+    _castCondition: 1
+    _castConditionCount: 1
+    _castConditionRadius: 6
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 0
+    _canMoveWhileCasting: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 0
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 0
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 0
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
+    _displaces: 0
+    _displaceDistance: 0
+    _displaceDamageMult: 0
+    _displaceWidth: 0
+    _visualSlot: 0
+    _infoTags: []
   _aiPreset: {fileID: 11400000, guid: 262d3cc7dfd31dc4ab9cbce9705ac85d, type: 2}
   _ai:
     _autoAttackTargeting: 0
