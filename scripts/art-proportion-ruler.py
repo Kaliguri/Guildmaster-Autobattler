@@ -32,7 +32,8 @@ GRID_DOC = "docs/view-angle-progress.md"
 OUT_DIR = "docs/art-refs/view-angle/drawing/rulers"
 
 # Кисть врисована в предплечье, отдельной строки в таблице частей нет ---
-# число взято из прозы раздела. Ключ --- рост фигуры тира.
+# числа объявлены прозой раздела ("Кисть по тирам --- 4 · 6 · 8"). Разбирать
+# прозу регуляркой хрупко, поэтому здесь осознанный дубль трёх чисел.
 HAND_LENGTH = {64: 4, 96: 6, 128: 8}
 
 # Пояс уже плеч на четверть --- правило сетки, сформулированное словами
@@ -132,7 +133,7 @@ def read_grid(repo: Path) -> dict[int, dict]:
     # поэтому сегменты ищем по именам колонок, а не по их порядку.
     header = [c.lower() for c in heights[0]]
     segments = {}
-    for name in ("голова", "торс", "бедро", "голень", "стопа", "сумма"):
+    for name in ("голова", "шея", "торс", "бедро", "голень", "стопа", "сумма"):
         index = next((i for i, cell in enumerate(header) if cell.startswith(name)), None)
         if index is None:
             raise GridError(f"в вертикальном разборе нет колонки {name!r}")
@@ -150,7 +151,7 @@ def read_grid(repo: Path) -> dict[int, dict]:
         grid[tier] = dict(
             figure=figure,
             foot=seg["стопа"], shin=seg["голень"], thigh=seg["бедро"],
-            torso=seg["торс"], head=seg["голова"],
+            torso=seg["торс"], neck=seg["шея"], head=seg["голова"],
         )
 
     parts_col = _tier_columns(parts[0])
@@ -167,9 +168,12 @@ def read_grid(repo: Path) -> dict[int, dict]:
 
         # Таблица частей и вертикальный разбор описывают одно и то же тело ---
         # расхождение значит, что одну из них правили в отрыве от другой.
-        if h_head != t["head"] or h_torso != t["torso"]:
-            raise GridError(f"тир {tier}: голова/торс в таблице частей ({h_head}/{h_torso}) "
-                            f"не совпали с разбором роста ({t['head']}/{t['torso']})")
+        # Спрайт головы несёт и шею, поэтому он выше сегмента головы ровно на неё.
+        if h_head != t["head"] + t["neck"] or h_torso != t["torso"]:
+            raise GridError(
+                f"тир {tier}: части говорят голова+шея {h_head} и торс {h_torso}, "
+                f"разбор роста — {t['head']}+{t['neck']}={t['head'] + t['neck']} "
+                f"и торс {t['torso']}")
         if tier not in HAND_LENGTH:
             raise GridError(f"тир {tier}: длина кисти не объявлена в HAND_LENGTH")
 
@@ -199,7 +203,8 @@ def levels(t: dict) -> list[tuple[int, str, tuple[int, int, int, int], bool]]:
     knee = ankle + t["shin"]
     hip = knee + t["thigh"]
     shoulders = hip + t["torso"]
-    crown = shoulders + t["head"]
+    chin = shoulders + t["neck"]
+    crown = chin + t["head"]
 
     upper, fore, hand = t["arm"]
     elbow = shoulders - upper
@@ -214,7 +219,8 @@ def levels(t: dict) -> list[tuple[int, str, tuple[int, int, int, int], bool]]:
         (wrist, "запястье", COLOR_ARM, False),
         (hip, "таз и пах, середина роста", COLOR_KEY, True),
         (elbow, "локоть", COLOR_ARM, False),
-        (shoulders, "линия плеч и подбородок", COLOR_KEY, True),
+        (shoulders, "линия плеч, основание шеи", COLOR_KEY, True),
+        (chin, "подбородок, верх шеи", COLOR_SEG, False),
         (crown, "верх головы", COLOR_KEY, True),
     ]
 
@@ -304,7 +310,9 @@ def render_legend(t: dict, zoom: int = 6) -> Image.Image:
 
     footer = (f"Сегменты снизу вверх: стопа {t['foot']}, голень {t['shin']}, "
               f"бедро {t['thigh']},",
-              f"торс {t['torso']}, голова {t['head']}.",
+              f"торс {t['torso']}, шея {t['neck']}, голова {t['head']}.",
+              f"Шея — сегмент роста, но часть спрайта головы: он {t['w_head']}x"
+              f"{t['head'] + t['neck']}.",
               f"Рука: плечо-локоть {t['arm'][0]}, предплечье {t['arm'][1]}, "
               f"кисть {t['arm'][2]}.",
               f"Перекрытие у сустава {t['overlap']} px, дальняя сторона уже "
