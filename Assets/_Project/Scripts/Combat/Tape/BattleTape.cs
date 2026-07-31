@@ -41,6 +41,10 @@ namespace Guildmaster.Combat.Tape
         // Определения эффектов — ССЫЛКИ на ассеты, а не состояние: они неизменны, тащить их копией незачем.
         private readonly List<Data.Definitions.EffectData> _effectDefs = new List<Data.Definitions.EffectData>(64);
 
+        // Определения способностей — по той же причине ссылками. Показу нужен не только факт каста, но и
+        // чем он исполнен (CastSource): без определения телеграф светит всем одним и тем же.
+        private readonly List<Data.Definitions.AbilityData> _abilityDefs = new List<Data.Definitions.AbilityData>(64);
+
         private int _frontTick = NoTick;
 
         /// <param name="windowTicks">Глубина окна снимков в тиках: опережение плюс запас на подводки.</param>
@@ -74,6 +78,13 @@ namespace Guildmaster.Combat.Tape
 
         /// <summary>Определение эффекта для <c>EffectApplied</c> / <c>EffectEnded</c>.</summary>
         public Data.Definitions.EffectData GetEffect(int payloadIndex) => _effectDefs[payloadIndex];
+
+        /// <summary>
+        /// Определение способности для <c>AbilityCast</c> / <c>AbilityCastStarted</c>, или <c>null</c>,
+        /// если событие записано без него (<paramref name="payloadIndex"/> = -1).
+        /// </summary>
+        public Data.Definitions.AbilityData GetAbility(int payloadIndex) =>
+            payloadIndex >= 0 && payloadIndex < _abilityDefs.Count ? _abilityDefs[payloadIndex] : null;
 
         /// <summary>
         /// Записать состояние тика. Зовётся ровно раз за тик, после того как тик досчитан — иначе в
@@ -157,6 +168,17 @@ namespace Guildmaster.Combat.Tape
         }
 
         /// <summary>
+        /// Записать каст с его определением: <paramref name="amount"/> несёт длительность подготовки для
+        /// <c>AbilityCastStarted</c> и не используется мгновенным <c>AbilityCast</c>.
+        /// </summary>
+        public void RecordAbility(int tick, TapeEventKind kind, int casterId,
+            Data.Definitions.AbilityData def, float amount = 0f)
+        {
+            _abilityDefs.Add(def);
+            _events.Add(new TapeEvent(kind, tick, casterId, amount: amount, payloadIndex: _abilityDefs.Count - 1));
+        }
+
+        /// <summary>
         /// Индекс первого события с тиком не меньше <paramref name="tick"/>, или <see cref="EventCount"/>,
         /// если таких нет. События пишутся в порядке тиков, поэтому поиск двоичный.
         /// </summary>
@@ -204,6 +226,7 @@ namespace Guildmaster.Combat.Tape
             _areaHits.Clear();
             _outcomes.Clear();
             _effectDefs.Clear();
+            _abilityDefs.Clear();
             _frontTick = NoTick;
         }
 

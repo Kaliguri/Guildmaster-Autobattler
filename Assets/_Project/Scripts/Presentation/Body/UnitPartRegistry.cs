@@ -181,16 +181,18 @@ namespace Guildmaster.Presentation.Body
 
         public bool TryGetStrikeSource(HandSlot slot, out UnitPart part)
         {
-            // Порядок важен: сначала то, чем эта рука вооружена, потом сама рука, и только потом чужая.
-            // Иначе боец со щитом слева и мечом справа «ударил бы левой» мечом из другой руки.
+            // Строго ЭТА рука: чем она занята, тем и бьёт — щит в ней означает щитовой приём, а не повод
+            // взять меч из другой. Подстановка чужой руки светила бы не тем, что назвал навык.
             if (slot != HandSlot.None)
             {
-                if (TryGetWeaponIn(slot, out part)) return true;
+                if (TryGetHeld(slot, out part)) return true;
                 if (TryGetHand(SideOf(slot), out part)) return true;
             }
-
-            if (TryGetHeld(HeldKind.Weapon, out part)) return true;
-            if (TryGetHand(BodySide.None, out part)) return true;
+            else
+            {
+                if (TryGetHeld(HeldKind.Weapon, out part)) return true;
+                if (TryGetHand(BodySide.None, out part)) return true;
+            }
 
             // Тело из одного спрайта: у него нет ни костей, ни хватов, и источник удара у него он сам.
             if (_parts.Length == 1)
@@ -199,20 +201,6 @@ namespace Guildmaster.Presentation.Body
                 return true;
             }
 
-            part = default;
-            return false;
-        }
-
-        private bool TryGetWeaponIn(HandSlot slot, out UnitPart part)
-        {
-            for (int i = 0; i < _parts.Length; i++)
-            {
-                if (_parts[i].Kind == HeldKind.Weapon && (_parts[i].Slot & slot) != 0)
-                {
-                    part = _parts[i];
-                    return true;
-                }
-            }
             part = default;
             return false;
         }

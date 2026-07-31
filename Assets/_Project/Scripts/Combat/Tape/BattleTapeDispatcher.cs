@@ -53,11 +53,14 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Dev-рестарт: показ прошлого боя оборван.</summary>
         public event Action BattleReset;
 
-        /// <summary>Каст показан: id кастера.</summary>
-        public event Action<int> AbilityCast;
+        /// <summary>Каст показан: id кастера и определение способности (чем исполнен приём).</summary>
+        public event Action<int, Data.Definitions.AbilityData> AbilityCast;
 
-        /// <summary>Началась подготовка (показано): id кастера и её длительность в секундах.</summary>
-        public event Action<int, float> AbilityCastStarted;
+        /// <summary>
+        /// Началась подготовка (показано): id кастера, её длительность в секундах и определение
+        /// способности — показ по нему выбирает, что зажечь на подводке.
+        /// </summary>
+        public event Action<int, float, Data.Definitions.AbilityData> AbilityCastStarted;
 
         /// <summary>Каст оборван (показано): id кастера. Подводка гаснет здесь.</summary>
         public event Action<int> AbilityCastInterrupted;
@@ -139,11 +142,11 @@ namespace Guildmaster.Combat.Tape
                     BattleReset?.Invoke();
                     break;
                 case TapeEventKind.AbilityCast:
-                    AbilityCast?.Invoke(ev.SourceId);
+                    AbilityCast?.Invoke(ev.SourceId, _tape.GetAbility(ev.PayloadIndex));
                     break;
 
                 case TapeEventKind.AbilityCastStarted:
-                    AbilityCastStarted?.Invoke(ev.SourceId, ev.Amount);
+                    AbilityCastStarted?.Invoke(ev.SourceId, ev.Amount, _tape.GetAbility(ev.PayloadIndex));
                     break;
 
                 case TapeEventKind.AbilityCastInterrupted:

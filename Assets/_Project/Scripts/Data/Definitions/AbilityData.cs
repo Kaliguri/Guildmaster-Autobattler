@@ -118,6 +118,12 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Кастовать и держать канал НА ХОДУ (по образцу «Стрельбы на ходу» Рейнджера). Выкл = каст держит на месте, как авто-атака. Барабанщик марширует.")]
         [SerializeField] private bool _canMoveWhileCasting;
 
+        [Header("Presentation")]
+        [Tooltip("Чем юнит исполняет приём — что светится на телеграфе каста. Auto = чем бьёт обычно " +
+                 "(оружие ведущей руки, у безоружного кулак). OffHand — вторая рука, Shield — щит, " +
+                 "BothHands — оба клинка, WholeBody — длительные баффы и марши, None — не светится вовсе.")]
+        [SerializeField] private CastSource _castSource = CastSource.Auto;
+
         [Header("Stat conversions (M4) — Убийца, Маг молний")]
         [Tooltip("Правила «стат юнита → параметр способности»: ускорение каста и кулдауна от скорости атаки, прибавка к множителю удара. Пусто = параметры берутся ровно из полей выше.")]
         [SerializeField] private AbilityStatScaling[] _statScalings;
@@ -276,6 +282,13 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Способность занимает время: есть подготовка или канал (иначе применяется в тот же тик).</summary>
         public bool TakesTime => _castSeconds > 0f || _channelSeconds > 0f;
+
+        /// <summary>
+        /// Чем исполняется приём — что зажигает показ на телеграфе. Роль, а не узел рига: конкретную
+        /// часть находит реестр частей юнита, поэтому одно и то же значение верно и для дуалиста, и
+        /// для щитовика.
+        /// </summary>
+        public CastSource CastSource => _castSource;
 
         /// <summary>Правила конвертации статов в параметры этой способности (M4).</summary>
         public AbilityStatScaling[] StatScalings => _statScalings;

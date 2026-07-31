@@ -19,59 +19,34 @@ namespace Guildmaster.Tests.EditMode.Presentation
     /// </summary>
     public class UnitPartRegistryTests
     {
+        TestRigBuilder _rig;
         readonly List<GameObject> _spawned = new List<GameObject>();
 
         [TearDown]
         public void TearDown()
         {
+            _rig?.Dispose();
+            _rig = null;
             foreach (var go in _spawned)
                 if (go != null) Object.DestroyImmediate(go);
             _spawned.Clear();
         }
 
-        // --- Rig construction -----------------------------------------------------------------------
-
+        // Риг собирается общим билдером (TestRigBuilder): те же три уровня, что требует конвенция.
         GameObject NewRoot()
         {
-            var root = new GameObject("Body");
-            _spawned.Add(root);
-            return root;
+            _rig = new TestRigBuilder();
+            return _rig.Root;
         }
 
-        static Transform Child(Transform parent, string name)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(parent, worldPositionStays: false);
-            return go.transform;
-        }
+        static SpriteRenderer Bone(Transform parent, string boneName) => TestRigBuilder.Bone(parent, boneName);
 
-        /// <summary>Bone plus its art container plus the sprite node — the three levels the rig demands.</summary>
-        static SpriteRenderer Bone(Transform parent, string boneName)
-        {
-            Transform bone = Child(parent, boneName);
-            Transform container = Child(bone, RigNaming.ContainerName(boneName));
-            return Child(container, boneName).gameObject.AddComponent<SpriteRenderer>();
-        }
+        static Transform Child(Transform parent, string name) => TestRigBuilder.Child(parent, name);
 
-        /// <summary>An arm that can hold something: limb (side) -> elbow -> hand -> grip.</summary>
-        static Transform Arm(Transform root, BodySide side, out SpriteRenderer hand)
-        {
-            Transform limb = Child(root, side == BodySide.Left ? "Arm (Left)" : "Arm (Right)");
-            Transform elbow = Child(limb, RigNaming.JointPrefix + "Elbow)");
-            hand = Bone(elbow, "Arm_Down");
-            return Child(hand.transform.parent.parent, RigNaming.JointPrefix + RigNaming.GripLabel + ")");
-        }
+        Transform Arm(Transform root, BodySide side, out SpriteRenderer hand) => _rig.Arm(side, out hand);
 
-        static SpriteRenderer Held(Transform grip, string boneName, HeldKind kind, bool twoHanded = false)
-        {
-            SpriteRenderer renderer = Bone(grip, boneName);
-            var mark = renderer.transform.parent.parent.gameObject.AddComponent<UnitHeldItem>();
-            var so = new SerializedObject(mark);
-            so.FindProperty("_kind").enumValueIndex = (int)kind;
-            so.FindProperty("_twoHanded").boolValue = twoHanded;
-            so.ApplyModifiedPropertiesWithoutUndo();
-            return renderer;
-        }
+        static SpriteRenderer Held(Transform grip, string boneName, HeldKind kind, bool twoHanded = false) =>
+            TestRigBuilder.Held(grip, boneName, kind, twoHanded);
 
         // --- Held items -----------------------------------------------------------------------------
 
@@ -181,7 +156,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
             var registry = UnitPartRegistry.FromBody(new[] { rightHand, head }, root.transform);
 
             Assert.That(registry.TryGetStrikeSource(HandSlot.Right, out UnitPart source), Is.True);
-            Assert.That(source.Bone, Is.EqualTo("Arm_Down"));
+            Assert.That(source.Bone, Is.EqualTo("Arm_Down_R"));
             Assert.That(source.IsHand, Is.True);
         }
 

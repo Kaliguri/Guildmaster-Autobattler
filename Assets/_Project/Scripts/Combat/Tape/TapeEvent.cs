@@ -27,11 +27,13 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Dev-рестарт боя на месте. Лента при этом чистится целиком.</summary>
         BattleReset,
 
-        /// <summary>Способность скастована: <c>SourceId</c> — кастер.</summary>
+        /// <summary>Способность скастована: <c>SourceId</c> — кастер, определение — в
+        /// <c>GetAbility(PayloadIndex)</c> (по нему показ решает, чем светить).</summary>
         AbilityCast,
 
         /// <summary>Начата подготовка или канал: <c>SourceId</c> — кастер, <c>Amount</c> — секунды
-        /// подготовки. Показ держит подводку ровно это время, потому что удар придёт в её конце.</summary>
+        /// подготовки, определение — в <c>GetAbility(PayloadIndex)</c>. Показ держит подводку ровно это
+        /// время, потому что удар придёт в её конце.</summary>
         AbilityCastStarted,
 
         /// <summary>Каст оборван, не доиграв (контроль, полёт, потеря цели): <c>SourceId</c> — кастер.

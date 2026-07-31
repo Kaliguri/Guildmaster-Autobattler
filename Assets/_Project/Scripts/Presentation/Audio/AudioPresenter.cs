@@ -92,7 +92,10 @@ namespace Guildmaster.Presentation.Audio
 
         private void OnAttackStarted(int sourceId, int targetId) => PlayFor(sourceId, AudioAction.Attack);
 
-        private void OnAbilityCast(int casterId) => PlayFor(casterId, AudioAction.Cast);
+        // Определение каста звуку пока не нужно: ключ строится от юнита. Приходит оно ради показа
+        // (CastSource решает, что светится), и здесь просто игнорируется.
+        private void OnAbilityCast(int casterId, Data.Definitions.AbilityData _) =>
+            PlayFor(casterId, AudioAction.Cast);
 
         private void OnUnitSpawned(int unitId) => PlayKeyAt("combat.unit_spawn", AudioAction.Ui, unitId);
 

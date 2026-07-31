@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using PartMask = Guildmaster.Presentation.Body.PartMask;
 using UnitPart = Guildmaster.Presentation.Body.UnitPart;
 using HandSlot = Guildmaster.Presentation.Body.HandSlot;
+using CastGlowMask = Guildmaster.Presentation.Body.CastGlowMask;
 
 namespace Guildmaster.Presentation
 {
@@ -1448,15 +1449,12 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Чем этот юнит светит на касте по умолчанию: предмет в ведущей (правой) руке, а если руки пусты —
-        /// сама кисть. Пока событие каста несёт только id кастера, презентер берёт именно эту маску; когда
-        /// оно понесёт данные навыка, тот назовёт часть сам (щит, левый кинжал, нога), а тело найдёт её
-        /// тем же реестром.
+        /// Какие части зажечь под этот приём. Навык называет РОЛЬ (<see cref="CastSource"/>), а конкретную
+        /// часть находит реестр тела: <c>OffHand</c> у дуалиста это второй клинок, у щитовика — щит.
         /// </summary>
-        public PartMask StrikeGlowMask =>
-            Body != null && Body.Parts.TryGetStrikeSource(HandSlot.Right, out UnitPart source)
-                ? source.Mask
-                : PartMask.Empty;
+        /// <param name="source">Чем исполняется приём. Способность без определения светит как <c>Auto</c>.</param>
+        public PartMask GlowMaskFor(CastSource source) =>
+            Body != null ? CastGlowMask.Resolve(Body.Parts, source) : PartMask.Empty;
 
         /// <summary>
         /// Свечение части-источника на касте (реф SAO): часть в маске <paramref name="parts"/> наливается

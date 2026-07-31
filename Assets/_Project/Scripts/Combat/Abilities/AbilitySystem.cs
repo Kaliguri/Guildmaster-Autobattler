@@ -53,8 +53,12 @@ namespace Guildmaster.Combat
             }
         }
 
-        /// <summary>Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает).</summary>
-        public event System.Action<RuntimeUnit> OnAbilityCast;
+        /// <summary>
+        /// Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает).
+        /// Определение приходит вместе с кастующим: показу нужно знать, ЧЕМ исполнен приём
+        /// (<see cref="AbilityData.CastSource"/>), а по одному id юнита это не восстановить.
+        /// </summary>
+        public event System.Action<RuntimeUnit, AbilityData> OnAbilityCast;
 
         /// <summary>
         /// Начата подготовка или канал (<see cref="AbilityData.TakesTime"/>): кастующий и длительность
@@ -434,7 +438,7 @@ namespace Guildmaster.Combat
             // с включённым рекастом): «Решительный удар», удар Монаха воды, выход из тени у Убийцы. Список
             // стал явным и перестал пополняться сам собой при добавлении новой активки с уроном.
 
-            OnAbilityCast?.Invoke(caster); // презентация-сигнал «каст состоялся»
+            OnAbilityCast?.Invoke(caster, data); // презентация-сигнал «каст состоялся»
         }
 
         /// <summary>
@@ -669,7 +673,11 @@ namespace Guildmaster.Combat
         private static void ApplyAura(RuntimeUnit t, AbilityData data, RuntimeUnit caster, ICombatContext ctx)
         {
             if (t.IsDead) return;
-            if (data.IsHeal) ctx.Heal(t, HealAmount(t, data, caster), caster);
+            if (data.IsHeal)
+            {
+                ctx.Heal(t, HealAmount(t, data, caster), caster);
+                ApplyHealEffect(t, data, caster, ctx);
+            }
             ApplyEffects(t, data, caster, ctx);
         }
 
@@ -736,6 +744,7 @@ namespace Guildmaster.Combat
             {
                 // Сырое лечение (dealt/taken eff и кламп к MaxHP применяет ctx.Heal). «Длань жизни» = X + недостающее HP.
                 ctx.Heal(target, HealAmount(target, data, caster), caster);
+                ApplyHealEffect(target, data, caster, ctx);
             }
             else
             {
@@ -771,6 +780,25 @@ namespace Guildmaster.Combat
             if (data.DamageMultiplier <= 0f) return 0f;
 
             return data.ResolveDamageMultiplier(caster.Stats) * caster.Stats.Get(StatType.AutoAttackDamage);
+        }
+
+        /// <summary>
+        /// Нагрузка лечащей способности, заданная ЭФФЕКТОМ (<see cref="AbilityData.HealEffect"/>): щит
+        /// раненому союзнику у гоблина-мага, лечение отступающему разбойнику у их варлока, HoT Друида.
+        /// </summary>
+        /// <remarks>
+        /// Живёт рядом с <c>ctx.Heal</c>, а не в <see cref="ApplyEffects"/>, и это не дубль вызова: у
+        /// эффектов способности цель определяется формой (круг и масс-по-тегу адресуют ВРАГОВ), а хил-эффект
+        /// по контракту поля достаётся лечимому. Положи его в общий проход — и круговой каст с
+        /// <c>HealEffect</c> начал бы щитовать тех, по кому бьёт.
+        /// <para><b>Стаки здесь ровно один.</b> Множитель в стаки превращает только «Взрыв спор»
+        /// (<see cref="HealAlliesAround"/>): там число ядов на детонированной цели и есть множитель, и
+        /// стаки набиваются повторным наложением. Одиночный каст и аура множителя не имеют.</para>
+        /// </remarks>
+        private static void ApplyHealEffect(RuntimeUnit target, AbilityData data, RuntimeUnit caster, ICombatContext ctx)
+        {
+            if (data.HealEffect == null) return;
+            ctx.ApplyEffect(target, data.HealEffect, caster);
         }
 
         private static void ApplyEffects(RuntimeUnit target, AbilityData data, RuntimeUnit caster, ICombatContext ctx)

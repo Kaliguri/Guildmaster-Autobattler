@@ -385,7 +385,7 @@ namespace Guildmaster.Presentation
         /// как что-то прилетело, иначе эффект пересказывает уже случившееся.
         /// <para>Цвет — из <c>UnitData.ResolveVfxColor</c>: форма всплеска общая, а светит каждый своим.</para>
         /// </summary>
-        private void HandleAbilityCast(int casterId)
+        private void HandleAbilityCast(int casterId, AbilityData ability)
         {
             if (!_views.TryGetValue(casterId, out var view) || view == null) return;
 
@@ -394,28 +394,33 @@ namespace Guildmaster.Presentation
             if (_vfx != null && _feel != null && _feel.VfxCastBurst != null)
                 _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: VfxPaletteFor(casterId));
 
-            // Мгновенный приём (Cast пришёл без подготовки) — свечение оружия всполохом. Была подготовка —
+            // Мгновенный приём (Cast пришёл без подготовки) — свечение источника всполохом. Была подготовка —
             // заряд уже дошёл до пика и сам идёт в спад, второй раз не трогаем (иначе оружие моргнёт с нуля).
-            // Часть спрашиваем у самого вида: событие каста не несёт источника приёма (срез — до тех пор,
-            // пока оно не понесёт данные навыка, и тогда часть назовёт навык).
             if (_feel != null && !_glowCharging.Remove(casterId))
-                view.PlayCastGlow(GlowColorFor(casterId), view.StrikeGlowMask, _feel.CastGlowPulseRise);
+                view.PlayCastGlow(GlowColorFor(casterId), view.GlowMaskFor(SourceOf(ability)), _feel.CastGlowPulseRise);
         }
+
+        /// <summary>
+        /// Чем исполнен приём. Способность без определения (событие записано до того, как лента научилась
+        /// его возить) светит как обычный удар — это честный дефолт самого поля, а не подмена.
+        /// </summary>
+        private static CastSource SourceOf(AbilityData ability) =>
+            ability != null ? ability.CastSource : CastSource.Auto;
 
         /// <summary>
         /// Началась подготовка (M3): контур наливается ВСЮ подготовку, к моменту удара — на пике. Это
         /// подводка, а не пересказ: длительность объявляет симуляция, показ её только выдерживает.
         /// </summary>
-        private void HandleAbilityCastStarted(int casterId, float seconds)
+        private void HandleAbilityCastStarted(int casterId, float seconds, AbilityData ability)
         {
             if (!_views.TryGetValue(casterId, out var view) || view == null) return;
             view.PlayCastCharge(VfxColorFor(casterId), seconds);
 
-            // Свечение оружия наливается ВСЮ подготовку, пик к выпуску — заряд за cast-time.
+            // Свечение источника наливается ВСЮ подготовку, пик к выпуску — заряд за cast-time.
             if (_feel != null)
             {
                 _glowCharging.Add(casterId);
-                view.PlayCastGlow(GlowColorFor(casterId), view.StrikeGlowMask, seconds);
+                view.PlayCastGlow(GlowColorFor(casterId), view.GlowMaskFor(SourceOf(ability)), seconds);
             }
         }
 
