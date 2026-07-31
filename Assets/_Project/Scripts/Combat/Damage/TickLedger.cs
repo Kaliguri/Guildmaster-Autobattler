@@ -24,32 +24,30 @@ namespace Guildmaster.Combat
     ///   владелец, награды за неё не множатся.</item>
     /// </list>
     /// <para>
-    /// Расчёт урона (эффективности, броня, уязвимость) делает <see cref="DamagePipeline.Resolve"/> в момент
-    /// заявки — он чист и от порядка не зависит, потому что статы заморожены на тик законом видимости.
-    /// Реестр владеет только применением.
+    /// <b>Реестр хранит СЫРУЮ заявку, а не посчитанный урон</b> (2026-07-31). Считать в момент заявки было
+    /// нельзя: расчёт зовёт pre-damage цели, а тот не чист — тратит запас щита, копит
+    /// <see cref="RuntimeUnit.AbsorbedByWard"/>, жжёт заряды. Значит первый заявленный удар менял мир
+    /// посреди фазы решений, и тот, кто ходит в обходе позже, решал по другому состоянию: два Антимага,
+    /// обменявшись «Перегрузкой» в один тик, били по-разному. Теперь весь счёт идёт на коммите, через
+    /// <see cref="ITickLedgerSink.ResolveIncoming"/> — реестр по-прежнему владеет только применением, но
+    /// момент счёта у него один на всех.
     /// </para>
     /// </remarks>
     public sealed class TickLedger
     {
-        /// <summary>Заявка на урон: сколько дойдёт до цели (после брони) и с какими метаданными.</summary>
+        /// <summary>
+        /// Заявка на урон — СЫРАЯ: во сколько она обернётся, решает коммит. Здесь лежит ровно то, что
+        /// заявил источник, потому что счёт задевает состояние цели (см. <c>remarks</c> класса).
+        /// </summary>
         private readonly struct DamageEntry
         {
-            public readonly RuntimeUnit Source;
-            public readonly float Amount;
-            public readonly float Mitigated;
-            public readonly DamageSourceKind SourceKind;
-            public readonly DamageType Type;
-            public readonly float Vulnerability;
+            public readonly DamageRequest Req;
 
-            public DamageEntry(RuntimeUnit source, float amount, float mitigated, in DamageRequest req)
-            {
-                Source        = source;
-                Amount        = amount;
-                Mitigated     = mitigated;
-                SourceKind    = req.SourceKind;
-                Type          = req.Type;
-                Vulnerability = req.Vulnerability;
-            }
+            public RuntimeUnit      Source     => Req.Source;
+            public DamageSourceKind SourceKind => Req.SourceKind;
+            public DamageType       Type       => Req.Type;
+
+            public DamageEntry(in DamageRequest req) => Req = req;
         }
 
         /// <summary>Заявка на лечение: сырое значение уже с учётом обеих HealShield-эффективностей.</summary>
@@ -77,6 +75,10 @@ namespace Guildmaster.Combat
         private readonly Stack<List<DamageEntry>> _damagePool = new();
         private readonly Stack<List<HealEntry>>   _healPool   = new();
 
+        // Посчитанные заявки текущей цели, индекс к индексу с её списком заявок. Переиспользуется:
+        // Resolve идёт по одной цели за раз, поэтому один буфер на реестр.
+        private readonly List<DamageResolution> _resolved = new();
+
         /// <summary>
         /// Порог значимости заявки, единиц HP. Ниже него урон и лечение отбрасываются.
         /// </summary>
@@ -91,11 +93,13 @@ namespace Guildmaster.Combat
         /// <summary>Есть ли что применять.</summary>
         public bool HasPending => _order.Count > 0;
 
-        /// <summary>Заявить урон по цели: <paramref name="amount"/> — уже посчитанный эффективный урон,
-        /// <paramref name="mitigated"/> — сколько срезала защита (для разбора «чем боец не умер»).</summary>
-        public void AddDamage(RuntimeUnit target, float amount, float mitigated, in DamageRequest req)
+        /// <summary>
+        /// Заявить урон по цели. Заявка сырая: броня, уязвимости и щиты цели считаются на коммите, поэтому
+        /// порог значимости применяется тоже там — здесь ещё неизвестно, во что удар обернётся.
+        /// </summary>
+        public void AddDamage(RuntimeUnit target, in DamageRequest req)
         {
-            if (target == null || target.IsDead || amount < MinSignificantAmount) return;
+            if (target == null || target.IsDead || req.RawDamage <= 0f) return;
 
             if (!_damage.TryGetValue(target, out List<DamageEntry> list))
             {
@@ -104,7 +108,7 @@ namespace Guildmaster.Combat
                 Track(target);
             }
 
-            list.Add(new DamageEntry(req.Source, amount, mitigated, in req));
+            list.Add(new DamageEntry(in req));
         }
 
         /// <summary>Заявить лечение цели: <paramref name="amount"/> — уже с учётом HealShield-эффективностей.</summary>
@@ -155,8 +159,24 @@ namespace Guildmaster.Combat
             _damage.TryGetValue(target, out List<DamageEntry> hits);
             _heal.TryGetValue(target, out List<HealEntry> heals);
 
+            // Счёт всех заявок цели — здесь и только здесь. Внутри одной цели заявки идут в порядке
+            // добавления: он детерминирован и у зеркальных сторон эквивалентен (i-й враг бьёт i-го).
+            // Порог значимости — тоже здесь: до счёта неизвестно, что от удара останется после брони
+            // и щитов, а обрезать надо именно хвост отражения.
+            _resolved.Clear();
             float totalDamage = 0f;
-            if (hits != null) for (int i = 0; i < hits.Count; i++) totalDamage += hits[i].Amount;
+            if (hits != null)
+            {
+                for (int i = 0; i < hits.Count; i++)
+                {
+                    DamageEntry entry = hits[i];
+                    DamageResolution r = sink.ResolveIncoming(target, in entry.Req);
+                    if (r.Dealt < MinSignificantAmount) r = DamageResolution.None;
+
+                    _resolved.Add(r);
+                    totalDamage += r.Dealt;
+                }
+            }
 
             float totalHeal = 0f;
             if (heals != null) for (int i = 0; i < heals.Count; i++) totalHeal += heals[i].Amount;
@@ -180,17 +200,20 @@ namespace Guildmaster.Combat
             // 3. Урон по источникам — пропорционально вкладу.
             if (hits != null && totalDamage > 0f)
             {
-                RuntimeUnit killer = killed ? Killer(hits) : null;
+                RuntimeUnit killer = killed ? Killer(hits, _resolved) : null;
 
                 for (int i = 0; i < hits.Count; i++)
                 {
                     DamageEntry e = hits[i];
-                    float share = e.Amount / totalDamage;
+                    DamageResolution r = _resolved[i];
+                    if (r.Dealt <= 0f) continue;   // негейт или обрезанный хвост: события такой удар не поднимает
+
+                    float share = r.Dealt / totalDamage;
                     var result = new DamageResult(
                         hpDamage * share, shieldAbsorbed * share,
                         killed && ReferenceEquals(e.Source, killer),
-                        e.SourceKind, e.Type, e.Vulnerability,
-                        e.Mitigated);   // срезанное принадлежит своему удару целиком, делить его не надо
+                        e.SourceKind, e.Type, r.Vulnerability,
+                        r.Mitigated);   // срезанное принадлежит своему удару целиком, делить его не надо
 
                     sink.OnDamageResolved(e.Source, target, in result);
                 }
@@ -212,7 +235,7 @@ namespace Guildmaster.Combat
         /// <see cref="RuntimeUnit.Id"/>. Сравниваются только те, кто бил ОДНУ цель, поэтому зеркальные
         /// стороны получают зеркальный же ответ.
         /// </summary>
-        private static RuntimeUnit Killer(List<DamageEntry> hits)
+        private static RuntimeUnit Killer(List<DamageEntry> hits, List<DamageResolution> resolved)
         {
             RuntimeUnit best = null;
             float bestAmount = -1f;
@@ -222,7 +245,7 @@ namespace Guildmaster.Combat
                 RuntimeUnit source = hits[i].Source;
                 if (source == null) continue;
 
-                float amount = hits[i].Amount;
+                float amount = resolved[i].Dealt;
                 bool better = best == null
                               || amount > bestAmount
                               || (amount == bestAmount && source.Id < best.Id);
@@ -245,11 +268,44 @@ namespace Guildmaster.Combat
     }
 
     /// <summary>
+    /// Во что обернулась одна заявка после защит цели: сколько дошло, сколько срезано, каким множителем
+    /// цель усилила урон по себе. <see cref="None"/> — удар не дошёл вовсе (негейт или ничтожный хвост).
+    /// </summary>
+    public readonly struct DamageResolution
+    {
+        /// <summary>Эффективный урон, который дойдёт до щита и HP.</summary>
+        public readonly float Dealt;
+
+        /// <summary>Сколько срезала защита — для разбора «чем боец не умер».</summary>
+        public readonly float Mitigated;
+
+        /// <summary>Уязвимость цели, применённая к этому удару (1 = без изменений). Идёт в отчёты.</summary>
+        public readonly float Vulnerability;
+
+        public DamageResolution(float dealt, float mitigated, float vulnerability)
+        {
+            Dealt         = dealt;
+            Mitigated     = mitigated;
+            Vulnerability = vulnerability;
+        }
+
+        /// <summary>Удар не дошёл: ни урона, ни событий. Уязвимость нейтральная — отчётам делить нечего.</summary>
+        public static DamageResolution None => new DamageResolution(0f, 0f, 1f);
+    }
+
+    /// <summary>
     /// Куда реестр отдаёт разрешённые изменения: события наружу и внутренние события для реактивов.
     /// Реализует <c>CombatSimulation</c> — она и остаётся единственной точкой мутации мира.
     /// </summary>
     public interface ITickLedgerSink
     {
+        /// <summary>
+        /// Посчитать одну заявку по состоянию МОМЕНТА КОММИТА: pre-damage цели, уязвимости, овертайм,
+        /// броня. Зовётся реестром, потому что счёт задевает состояние цели (запас щита, накопитель
+        /// поглощённого, заряды) — делать это в момент заявки значило бы менять мир посреди фазы решений.
+        /// </summary>
+        DamageResolution ResolveIncoming(RuntimeUnit target, in DamageRequest req);
+
         /// <summary>Урон дошёл до цели: доля этого источника в общем ударе тика.</summary>
         void OnDamageResolved(RuntimeUnit source, RuntimeUnit target, in DamageResult result);
 

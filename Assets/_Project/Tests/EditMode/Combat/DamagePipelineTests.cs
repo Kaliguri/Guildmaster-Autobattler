@@ -52,26 +52,34 @@ namespace Guildmaster.Tests.EditMode.Combat
             => new DamageRequest(source, target, raw, type, armorK);
 
         /// <summary>
-        /// Весь путь урона: расчёт пайплайном + применение реестром. Пайплайн сам щит и HP больше не
-        /// трогает (он чист и считается заранее), поэтому тест проходит обе половины — иначе он проверял
-        /// бы формулу, но не то, что она доходит до бойца.
+        /// Весь путь урона: заявка + счёт пайплайном на коммите + применение реестром. Пайплайн сам щит и
+        /// HP не трогает, поэтому тест проходит обе половины — иначе он проверял бы формулу, но не то, что
+        /// она доходит до бойца.
         /// </summary>
         private static DamageResult Execute(in DamageRequest req)
         {
             var ledger = new TickLedger();
-            float dealt = DamagePipeline.Resolve(in req, out float mitigated);
-            ledger.AddDamage(req.Target, dealt, mitigated, in req);
+            ledger.AddDamage(req.Target, in req);
 
             var sink = new CapturingSink();
             ledger.Commit(sink);
             return sink.Damage;
         }
 
-        /// <summary>Ловушка исходов реестра: тесту нужен результат, а не события наружу.</summary>
+        /// <summary>
+        /// Ловушка исходов реестра: тесту нужен результат, а не события наружу. Считает голым пайплайном —
+        /// pre-damage цели здесь не при чём, его проверяют срезы китов.
+        /// </summary>
         private sealed class CapturingSink : ITickLedgerSink
         {
             public DamageResult Damage;
             public float Healed;
+
+            public DamageResolution ResolveIncoming(RuntimeUnit target, in DamageRequest req)
+            {
+                float dealt = DamagePipeline.Resolve(in req, out float mitigated);
+                return new DamageResolution(dealt, mitigated, req.Vulnerability);
+            }
 
             public void OnDamageResolved(RuntimeUnit source, RuntimeUnit target, in DamageResult result)
                 => Damage = result;

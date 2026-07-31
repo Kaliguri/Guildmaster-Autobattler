@@ -108,6 +108,16 @@ namespace Guildmaster.Balance.Tests
         /// </remarks>
         public static string FirstDifference(RuntimeUnit l, RuntimeUnit r)
         {
+            // Накопители — ПЕРВЫМИ. Они не видны ни в HP, ни в щите, но решают исход, когда их
+            // обналичат: «Перегрузка» Антимага бьёт долей поглощённого щитом-по-школе. Проверяй их
+            // после HP — и в отчёте будет следствие («HP»), а не причина.
+            if (!Mathf.Approximately(l.AbsorbedByWard, r.AbsorbedByWard))   return "поглощено щитом-по-школе";
+
+            for (int e = 0; e < l.ActiveEffects.Count && e < r.ActiveEffects.Count; e++)
+                if (!Mathf.Approximately(l.ActiveEffects[e].HeldShield, r.ActiveEffects[e].HeldShield))
+                    return $"запас щита эффекта «{(l.ActiveEffects[e].Def != null ? l.ActiveEffects[e].Def.Id : "?")}» " +
+                           $"({l.ActiveEffects[e].HeldShield:0.###} против {r.ActiveEffects[e].HeldShield:0.###})";
+
             if (!Mathf.Approximately(l.CurrentHP, r.CurrentHP))             return "HP";
             if (!Mathf.Approximately(l.Position.x, -r.Position.x))          return "позиция X (не отражена)";
             if (!Mathf.Approximately(l.Position.y, r.Position.y))           return "позиция Y";
@@ -115,6 +125,7 @@ namespace Guildmaster.Balance.Tests
             if (!Mathf.Approximately(l.CurrentResource, r.CurrentResource)) return "ресурс";
             if (l.AttackCooldownTicks != r.AttackCooldownTicks)             return "кулдаун атаки";
             if (l.WindupRemaining != r.WindupRemaining)                     return "остаток замаха";
+            if (l.RecoveryRemaining != r.RecoveryRemaining)                 return "остаток доигрыша";
             if (l.Phase != r.Phase)                                         return $"фаза свинга ({l.Phase} против {r.Phase})";
 
             for (int a = 0; a < l.Abilities.Count && a < r.Abilities.Count; a++)

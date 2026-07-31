@@ -80,6 +80,14 @@ namespace Guildmaster.Combat
         private readonly List<ICombatCommand> _commandQueue = new List<ICombatCommand>();
         private readonly Queue<CombatEventData> _eventQueue = new Queue<CombatEventData>();
 
+        // ЗАЯВЛЕНИЯ — отдельная очередь, и это не оптимизация, а порядок причин. «Каст объявлен» обязано
+        // дойти до наблюдателей РАНЬШЕ, чем применится урон этого же каста: щит «Отражающего налёта»
+        // встаёт до попадания (карточка [[the-aegis]], шаг 5 п.1). В общей FIFO-очереди это правило
+        // выразить нельзя — она дренится после коммита реестра, то есть щит приходил на удар, который
+        // уже прилетел. Последствия («по мне ударили», «я убил») остаются в _eventQueue: им, наоборот,
+        // нужен уже применённый урон.
+        private readonly Queue<CombatEventData> _announceQueue = new Queue<CombatEventData>();
+
         // Системный эффект-маркер «в полёте» (смещение — это ЭФФЕКТ, вики §4.4): вешается на цель смещения,
         // несёт жёсткий контроль + тег KnockUp, снимается в конце полёта → единый EffectExpired. Neutral →
         // длительность не скейлится ReceiveDebuffEff (единственное исключение смещения). Строится в коде,
@@ -386,12 +394,26 @@ namespace Guildmaster.Combat
         {
             if (req.Target.IsDead) return;
 
-            // Синхронный pre-damage перехват (§9.3): «Оплот» поднимает щит (поглотит этот же удар),
+            // Заявка и только заявка. Считать здесь нельзя: счёт зовёт pre-damage цели, а тот тратит запас
+            // щита и копит поглощённое — то есть менял бы мир посреди фазы решений, и тот, кто в обходе
+            // позже, решал бы по другому состоянию. Счёт живёт в ResolveIncoming, на коммите реестра.
+            _ledger.AddDamage(req.Target, in req);
+        }
+
+        /// <summary>
+        /// Посчитать одну заявку в момент коммита: pre-damage цели, её уязвимости, овертайм и броня.
+        /// Единственное место, где защиты цели тратятся, — поэтому все удары тика видят один и тот же мир.
+        /// </summary>
+        DamageResolution ITickLedgerSink.ResolveIncoming(RuntimeUnit target, in DamageRequest req)
+        {
+            if (target == null || target.IsDead) return DamageResolution.None;
+
+            // Pre-damage перехват (§9.3): «Оплот» поднимает щит (поглотит этот же удар),
             // «Изворотливость» может полностью отменить удар. Порядок детерминирован.
-            if (_effectSystem.RunPreDamage(req.Target, in req, this))
+            if (_effectSystem.RunPreDamage(target, in req, this))
             {
-                OnAttackEvaded?.Invoke(req.Target); // presentation-сигнал «evade», симуляцию не трогает
-                return; // удар негейтнут — ни урона, ни урон-событий
+                OnAttackEvaded?.Invoke(target); // presentation-сигнал «evade», симуляцию не трогает
+                return DamageResolution.None;   // удар негейтнут — ни урона, ни урон-событий
             }
 
             // Уязвимости цели, накопленные тем же проходом («Угли» усиливают огонь по подожжённому).
@@ -407,13 +429,11 @@ namespace Guildmaster.Combat
             float scale = vulnerability * overtime;
             DamageRequest effective = scale == 1f
                 ? req
-                : new DamageRequest(req.Source, req.Target, req.RawDamage * scale, req.Type,
+                : new DamageRequest(req.Source, target, req.RawDamage * scale, req.Type,
                                     req.ArmorK, req.SourceKind, vulnerability);
 
-            // Урон считается сразу (расчёт чист и от порядка не зависит — статы заморожены на тик),
-            // а применяется реестром, когда сложатся все удары раунда. См. TickLedger.
             float dealt = DamagePipeline.Resolve(effective, out float mitigated);
-            _ledger.AddDamage(req.Target, dealt, mitigated, in effective);
+            return new DamageResolution(dealt, mitigated, vulnerability);
         }
 
         /// <summary>
@@ -597,15 +617,19 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
-        /// Каст объявлен: событие уходит в общую очередь, а разослать его врагам — работа дренажа
-        /// (см. <see cref="DrainEventQueue"/>). Здесь оно ставится ОДНОЙ записью, потому что состав живых
+        /// Каст объявлен: событие уходит в очередь ЗАЯВЛЕНИЙ, а разослать его врагам — работа дренажа
+        /// (см. <see cref="DrainAnnouncements"/>). Здесь оно ставится ОДНОЙ записью, потому что состав живых
         /// врагов должен читаться в момент доставки, а не в момент заявки.
         /// </summary>
+        /// <remarks>
+        /// Именно заявлений, а не последствий: реакция на каст обязана успеть до того, как нагрузка этого
+        /// каста применится (см. <see cref="_announceQueue"/>).
+        /// </remarks>
         public void ReportAbilityCast(RuntimeUnit caster)
         {
             if (caster == null || caster.IsDead) return;
 
-            _eventQueue.Enqueue(new CombatEventData(CombatEvent.AbilityCast, caster, caster, 0f));
+            _announceQueue.Enqueue(new CombatEventData(CombatEvent.AbilityCast, caster, caster, 0f));
         }
 
         /// <summary>Заявка на переход за спину — применяется в конце раунда, см. <see cref="ApplyPendingTeleports"/>.</summary>
@@ -703,6 +727,7 @@ namespace Guildmaster.Combat
             _pendingAdd.Clear();
             _projectiles.Clear();
             _eventQueue.Clear();
+            _announceQueue.Clear();
             _commandQueue.Clear();
             _ledger.Clear();              // незакрытые заявки урона/лечения не должны пережить бой
             _pendingTeleports.Clear();    // как и незакрытые заявки на переход
@@ -858,10 +883,17 @@ namespace Guildmaster.Combat
         /// Разрешить весь урон и лечение тика — раундами, пока реактивы порождают новые заявки.
         /// </summary>
         /// <remarks>
-        /// Один раунд = «применить всё накопленное разом → доставить события». Ответка шипов и лечение
-        /// вампиризмом попадают в реестр во время доставки событий, поэтому уезжают в СЛЕДУЮЩИЙ раунд —
-        /// и там снова складываются со всем, что пришло вместе с ними. Так ответка остаётся мгновенной
-        /// (тот же тик), но ни один круг не зависит от порядка обхода: внутри круга всё одновременно.
+        /// Один раунд = «доставить заявления → применить всё накопленное разом → доставить последствия».
+        /// Ответка шипов и лечение вампиризмом попадают в реестр во время доставки последствий, поэтому
+        /// уезжают в СЛЕДУЮЩИЙ раунд — и там снова складываются со всем, что пришло вместе с ними. Так
+        /// ответка остаётся мгновенной (тот же тик), но ни один круг не зависит от порядка обхода: внутри
+        /// круга всё одновременно.
+        /// <para>
+        /// <b>Заявления идут ПЕРВЫМИ, и это правило, а не деталь:</b> реакция на объявленный каст обязана
+        /// встать до того, как нагрузка этого каста применится. Иначе щит «Отражающего налёта» приходит на
+        /// удар, который уже прилетел, — и карточка [[the-aegis]] («щит встаёт до попадания») перестаёт
+        /// исполняться. Порядок сломан был именно здесь: заявление лежало в одной очереди с последствиями.
+        /// </para>
         /// <para>
         /// Смерть при этом наступает только в конце тика (<c>DeathSystem</c>), поэтому древень, погибший
         /// в первом раунде, успевает уколоть в ответ во втором — взаимный размен возможен (решение
@@ -872,6 +904,8 @@ namespace Guildmaster.Combat
         {
             for (int round = 0; round < MaxCombatRounds; round++)
             {
+                DrainAnnouncements();
+
                 if (_ledger.HasPending) _ledger.Commit(this);
                 else if (_eventQueue.Count == 0) return;
 
@@ -881,7 +915,7 @@ namespace Guildmaster.Combat
                 // до того как следующий круг начнёт мерить дистанции.
                 if (ApplyPendingTeleports()) _spatialHash.Rebuild(_units);
 
-                if (!_ledger.HasPending) return;
+                if (!_ledger.HasPending && _announceQueue.Count == 0) return;
             }
 
             // Упёрлись в кап: заявки остались. Не обязательно баг — так выглядит контент с очень высокой
@@ -896,7 +930,37 @@ namespace Guildmaster.Combat
             }
         }
 
-        // FIFO-дренаж внутренних событий: реактивные компоненты могут породить новый урон → новые
+        /// <summary>
+        /// Разослать заявления круга: сейчас это только «каст объявлен». Идёт ДО коммита реестра, поэтому
+        /// поднятый в ответ щит успевает поглотить нагрузку того же каста.
+        /// </summary>
+        /// <remarks>
+        /// Реагирует не участник, а НАБЛЮДАТЕЛЬ, поэтому носителей столько, сколько подходящих юнитов.
+        /// Обход идёт по <c>_units</c> в порядке списка — он же порядок сборки боя, то есть
+        /// детерминированный и одинаковый у обеих сторон зеркала.
+        /// <para>Свой кап не нужен: заявление ставит только каст, а кастов за тик не больше, чем юнитов.
+        /// Породить новое заявление реакция не может — щит не кастует.</para>
+        /// </remarks>
+        private void DrainAnnouncements()
+        {
+            while (_announceQueue.Count > 0)
+            {
+                CombatEventData ev = _announceQueue.Dequeue();
+
+                // На чужой каст реагирует ПРОТИВНИК («Отражающий налёт» Антимага).
+                RuntimeUnit caster = ev.Source;
+                if (caster == null) continue;
+
+                for (int i = 0; i < _units.Count; i++)
+                {
+                    RuntimeUnit u = _units[i];
+                    if (u.IsDead || u.Team == caster.Team) continue;
+                    _effectSystem.Dispatch(u, in ev, this);
+                }
+            }
+        }
+
+        // FIFO-дренаж последствий: реактивные компоненты могут породить новый урон → новые
         // события → дренятся в той же очереди БЕЗ рекурсии. Кап ловит бесконечный пинг-понг.
         private void DrainEventQueue()
         {
@@ -904,24 +968,6 @@ namespace Guildmaster.Combat
             while (_eventQueue.Count > 0 && processed < MaxEventsPerDrain)
             {
                 CombatEventData ev = _eventQueue.Dequeue();
-
-                // Широковещательные события: реагирует не участник, а НАБЛЮДАТЕЛЬ, поэтому носителей
-                // столько, сколько подходящих юнитов. Обход идёт по _units в порядке списка — он же
-                // порядок сборки боя, то есть детерминированный и одинаковый у обеих сторон.
-                if (ev.Type == CombatEvent.AbilityCast)
-                {
-                    // На чужой каст реагирует ПРОТИВНИК («Отражающий налёт» Антимага).
-                    RuntimeUnit caster = ev.Source;
-                    for (int i = 0; i < _units.Count; i++)
-                    {
-                        RuntimeUnit u = _units[i];
-                        if (u.IsDead || caster == null || u.Team == caster.Team) continue;
-                        _effectSystem.Dispatch(u, in ev, this);
-                    }
-
-                    processed++;
-                    continue;
-                }
 
                 // Смерть слышит вся арена: на неё реагируют не только эффекты на трупе (перенос метки),
                 // но и наблюдатели — «Собиратель костей» Некроманта смотрит, не его ли скелет упал.

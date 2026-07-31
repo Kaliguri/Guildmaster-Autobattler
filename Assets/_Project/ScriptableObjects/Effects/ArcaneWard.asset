@@ -17,10 +17,10 @@ MonoBehaviour:
   _tags: 65
   _baseDuration: 6
   _stacking: 1
-  _maxStacks: 10
+  _maxStacks: 50
+  _stacksPerApplication: 1
   _cleanseTier: 1
   _unremovable: 0
-  _stacksPerApplication: 1
   _cleansePrice:
   - Flat: 0
     Pct: 0
