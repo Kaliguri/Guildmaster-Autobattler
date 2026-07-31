@@ -301,6 +301,7 @@
     </p>
     <nav class="toc" aria-label="Разделы">
       <a href="#melee">Удар мили</a>
+      <a href="#archetypes">Архетипы по типу урона</a>
       <span class="toc-todo">Хил</span>
       <span class="toc-todo">Каст и всполохи</span>
       <span class="toc-todo">Статусы</span>
@@ -446,6 +447,68 @@
           искр нет — а раньше он не выглядел никак, кроме слова «evade».</p>
       </div>
     </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="archetypes">
+    <p class="eyebrow">форма говорит, чем ударили</p>
+    <h2>Три архетипа — одна параметрическая семья</h2>
+    <p class="lede">Это не три эффекта, а один шейдер с разными числами: количество лучей,
+      кривизна, длина, толщина, разброс. Новый тип урона — новая комбинация параметров, а не новый
+      ассет.</p>
+
+    <div class="stands">
+      <article class="stand">
+        <canvas id="c-slash" width="560" height="440" role="img"
+                aria-label="Режущий: широкий изогнутый серп поперёк направления удара"></canvas>
+        <div class="stand-body">
+          <p class="tag">режущий</p>
+          <h3>Серп</h3>
+          <ul class="facts">
+            <li><span>лучей</span><span>1 широкий</span></li>
+            <li><span>кривизна</span><span>высокая</span></li>
+            <li><span>размер</span><span>1.2 H / 0.09 H</span></li>
+            <li><span>рандом</span><span>±10° угла</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="stand">
+        <canvas id="c-pierce" width="560" height="440" role="img"
+                aria-label="Колющий: узкое веретено вдоль вектора удара"></canvas>
+        <div class="stand-body">
+          <p class="tag">колющий</p>
+          <h3>Веретено</h3>
+          <ul class="facts">
+            <li><span>лучей</span><span>1 узкий</span></li>
+            <li><span>кривизна</span><span>ноль</span></li>
+            <li><span>размер</span><span>0.9 H / 0.03 H</span></li>
+            <li><span>рандом</span><span>±6° угла</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="stand">
+        <canvas id="c-blunt" width="560" height="440" role="img"
+                aria-label="Дробящий: звезда из неровных лучей, расходящихся как трещина в стекле"></canvas>
+        <div class="stand-body">
+          <p class="tag">дробящий</p>
+          <h3>Звезда-трещина</h3>
+          <ul class="facts">
+            <li><span>лучей</span><span>7–9 неровных</span></li>
+            <li><span>кривизна</span><span>радиально</span></li>
+            <li><span>размер</span><span>0.7 H, лучи разной длины</span></li>
+            <li><span>рандом</span><span>и есть характер</span></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <p class="note">
+      Магия мазка не получает ни в одном виде: у магического и светового урона нет клинка, которым
+      машут, и «след лезвия» для них враньё. Им нужна своя форма — кольцо, всплеск, луч.
+    </p>
   </section>
 
   <hr class="rule">
@@ -883,6 +946,118 @@
     label(ctx, "принято: мазок + дуга + ядро", COL.honey);
   }
 
+  /* ---------- три архетипа: одна семья параметров ---------- */
+  // Детерминированная «неровность» луча: индекс → множитель. Рандом у звезды и есть её характер,
+  // но он обязан быть воспроизводимым — в движке это IRngService, здесь просто хеш.
+  function jag(i, salt) {
+    const x = Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453;
+    return x - Math.floor(x);
+  }
+
+  function drawArchetype(canvas, kind) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cssW = canvas.clientWidth || 560;
+    const sc = cssW / 560;
+    if (canvas._cw !== cssW) {
+      canvas.style.height = (440 * sc) + "px";
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(440 * sc * dpr);
+      canvas._cw = cssW;
+    }
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(canvas.width / 560, 0, 0, canvas.width / 560, 0, 0);
+    ctx.clearRect(0, 0, 560, 440);
+
+    const groundY = 350, H = 210, cx = 300;
+    ctx.strokeStyle = "rgba(58,44,30,.75)";
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(40, groundY + 6); ctx.lineTo(520, groundY + 6); ctx.stroke();
+
+    drawUnit(ctx, cx, groundY, H, -1, false);
+
+    const px = cx - 14, py = groundY - H * 0.62;
+    const START = CONTACT - 2, END = CONTACT + 4;
+    if (frame < START || frame > END) { archetypeLabel(ctx, kind); return; }
+
+    const t = (frame - START) / (END - START);
+    const grow = Math.min(1, t / 0.3);
+    const fade = t < 0.3 ? 1 : 1 - (t - 0.3) / 0.7;
+
+    ctx.save();
+    ctx.translate(px, py);
+    ctx.globalCompositeOperation = "lighter";
+
+    if (kind === "slash") {
+      ctx.rotate(-38 * Math.PI / 180);
+      const len = H * 1.2 * grow, thick = H * 0.105 * grow, bow = thick * 2.6;
+      [[1.0, 0.42, "77,242,255"], [0.86, 0.55, "160,250,255"], [0.62, 0.9, "255,255,255"]]
+        .forEach(function (s) {
+          ctx.beginPath();
+          ctx.moveTo(-len / 2 * s[0], 0);
+          ctx.quadraticCurveTo(0, -bow * s[0] - thick * s[0], len / 2 * s[0], 0);
+          ctx.quadraticCurveTo(0, -bow * s[0] + thick * s[0], -len / 2 * s[0], 0);
+          ctx.closePath();
+          ctx.fillStyle = "rgba(" + s[2] + "," + (s[1] * fade).toFixed(3) + ")";
+          ctx.fill();
+        });
+    }
+
+    if (kind === "pierce") {
+      // Веретено идёт ВДОЛЬ вектора удара, а не поперёк: укол не заметает, он входит.
+      ctx.rotate(-8 * Math.PI / 180);
+      const len = H * 0.9 * grow;
+      [[1.0, 0.4, "77,242,255", H * 0.032], [0.7, 0.85, "255,255,255", H * 0.016]]
+        .forEach(function (s) {
+          const th = s[3] * grow;
+          ctx.beginPath();
+          ctx.moveTo(-len / 2 * s[0], 0);
+          ctx.quadraticCurveTo(0, -th, len / 2 * s[0], 0);
+          ctx.quadraticCurveTo(0, th, -len / 2 * s[0], 0);
+          ctx.closePath();
+          ctx.fillStyle = "rgba(" + s[2] + "," + (s[1] * fade).toFixed(3) + ")";
+          ctx.fill();
+        });
+    }
+
+    if (kind === "blunt") {
+      // Звезда-трещина: лучи неравной длины, внутренний радиус растёт — лучи «рвутся» от центра.
+      const RAYS = 8;
+      const outer = H * 0.7 * grow;
+      const inner = outer * (0.05 + 0.45 * t);
+      for (let i = 0; i < RAYS; i++) {
+        const a = (i / RAYS) * Math.PI * 2 + jag(i, 3) * 0.35 - 0.17;
+        const lenK = 0.45 + jag(i, 7) * 0.55;
+        const wid = (0.045 + jag(i, 11) * 0.05) * (1 - t * 0.4);
+        const r0 = inner, r1 = outer * lenK;
+        ctx.beginPath();
+        ctx.moveTo(Math.cos(a - wid) * r0, Math.sin(a - wid) * r0);
+        ctx.lineTo(Math.cos(a) * r1, Math.sin(a) * r1);
+        ctx.lineTo(Math.cos(a + wid) * r0, Math.sin(a + wid) * r0);
+        ctx.closePath();
+        ctx.fillStyle = "rgba(255,255,255," + (0.85 * fade).toFixed(3) + ")";
+        ctx.fill();
+      }
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, outer * 0.55);
+      g.addColorStop(0, "rgba(160,250,255," + (0.5 * fade).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(77,242,255,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(0, 0, outer * 0.55, 0, Math.PI * 2); ctx.fill();
+    }
+
+    ctx.globalCompositeOperation = "source-over";
+    ctx.restore();
+    archetypeLabel(ctx, kind);
+  }
+
+  function archetypeLabel(ctx, kind) {
+    const names = { slash: "РЕЖУЩИЙ · СЕРП", pierce: "КОЛЮЩИЙ · ВЕРЕТЕНО", blunt: "ДРОБЯЩИЙ · ЗВЕЗДА" };
+    ctx.font = "500 14px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = "rgba(147,128,94,.9)";
+    ctx.fillText(names[kind], 34, 38);
+    ctx.fillStyle = COL.honey;
+    ctx.fillRect(20, 28, 7, 7);
+  }
+
   function label(ctx, text, color) {
     ctx.font = "500 15px ui-monospace, Consolas, monospace";
     ctx.fillStyle = "rgba(147,128,94,.9)";
@@ -1049,6 +1224,9 @@
   const cSwept = document.getElementById("c-swept");
   const cCross = document.getElementById("c-cross");
   const cFinal = document.getElementById("c-final");
+  const cSlash = document.getElementById("c-slash");
+  const cPierce = document.getElementById("c-pierce");
+  const cBlunt = document.getElementById("c-blunt");
   const cZone = document.getElementById("c-zone");
   const cTime = document.getElementById("c-timeline");
 
@@ -1060,6 +1238,9 @@
     drawSwept(cSwept);
     drawCross(cCross);
     drawFinal(cFinal);
+    drawArchetype(cSlash, "slash");
+    drawArchetype(cPierce, "pierce");
+    drawArchetype(cBlunt, "blunt");
     drawZone(cZone);
     drawTimeline(cTime);
     outFrame.textContent = String(frame).padStart(2, "0");
@@ -1113,6 +1294,7 @@
   window.addEventListener("resize", function () {
     [cTrail, cSwept, cCross, cFinal].forEach(function (c) { c._cssW = 0; });
     cZone._cw = 0; cTime._cw = 0;
+    cSlash._cw = 0; cPierce._cw = 0; cBlunt._cw = 0;
     render();
   });
 
