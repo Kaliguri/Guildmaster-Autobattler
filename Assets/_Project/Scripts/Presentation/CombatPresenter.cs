@@ -619,7 +619,7 @@ namespace Guildmaster.Presentation
 
             // Цифры — в точку попадания (грудь) цели. Размер HP-цифры растёт с весом удара (тяжёлый = крупнее).
             Vector3 anchor  = AnchorFor(targetId, target.Position);
-            float   hpScale = Mathf.Lerp(1f, _feel.NumberMaxScale, Mathf.Clamp01(frac / Mathf.Max(1e-4f, _feel.NumberFullFrac)));
+            float   hpScale = _feel.EvaluateNumberScale(frac);   // кривая живёт в feel-конфиге, не здесь
 
             // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе. Только прямое попадание:
             // яд, горение и шипы брони бьют тиками и без стороны — искры на них читались бы как удары.

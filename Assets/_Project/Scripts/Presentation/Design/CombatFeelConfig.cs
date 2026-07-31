@@ -413,8 +413,21 @@ namespace Guildmaster.Presentation.Design
         public float HeavyShakeMin     => _heavyShakeMin;
         public float HeavyShakeMax     => _heavyShakeMax;
 
-        public float NumberMaxScale    => _numberMaxScale;
-        public float NumberFullFrac    => _numberFullFrac;
+        /// <summary>
+        /// Масштаб боевой цифры по доле HP-урона от MaxHP цели: 1 на царапине, <c>NumberMaxScale</c> на
+        /// ударе в <c>NumberFullFrac</c> и тяжелее. Кривая КОРНЕВАЯ, а не прямая: в бою почти все удары
+        /// лежат в нижней трети шкалы, и на прямой они выглядели бы одинаково мелкими — весь запас размера
+        /// доставался бы редкому киту. Корень отдаёт половину роста уже на четверти порога, так что разница
+        /// «поцарапал / врезал» читается там, где она реально происходит.
+        /// </summary>
+        public float EvaluateNumberScale(float hpDamageFrac)
+        {
+            float t = Mathf.Clamp01(hpDamageFrac / Mathf.Max(1e-4f, _numberFullFrac));
+            return Mathf.Lerp(1f, _numberMaxScale, Mathf.Sqrt(t));
+        }
+
+        /// <summary>Доля HP-урона, на которой цифра достигает максимума — точка насыщения кривой выше.</summary>
+        public float NumberFullFrac => _numberFullFrac;
 
         public float ShatterFlashIn    => _shatterFlashIn;
         public float ShatterDuration   => _shatterDuration;
