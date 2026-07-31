@@ -305,6 +305,101 @@ namespace Guildmaster.Tests.EditMode.Combat
             return (attacker, enemy, units, new StubContext());
         }
 
+        // --- Атака из нескольких Ударов (2026-07-30/6) ---
+
+        [Test]
+        public void TwoMarkers_MakeTwoHits_InOneAttack()
+        {
+            var (attacker, enemy, units, ctx) = DoubleHitScene();
+            var sys = new AutoAttackSystem();
+
+            // Один свинг целиком: до конца хвоста.
+            for (int i = 0; i < 40 && attacker.Phase != AttackPhase.Recovery; i++) sys.Tick(units, ctx, 0f);
+            sys.Tick(units, ctx, 0f);
+
+            Assert.AreEqual(2, ctx.Damage.Count, "Два маркера в клипе — два Удара в одной Атаке");
+            Assert.AreEqual(2, attacker.SwingHitIndex, "Оба контакта свинга разрешены");
+        }
+
+        [Test]
+        public void HitShares_ScaleEachHitSeparately()
+        {
+            // Монах: два Удара по половине силы. Доля задаётся КАЖДОМУ лично (вердикт Макса 2026-07-31),
+            // поэтому суммарный урон Атаки равен обычному, а не удвоенному.
+            var (attacker, enemy, units, ctx) = DoubleHitScene(new[] { 0.5f, 0.5f });
+            var sys = new AutoAttackSystem();
+
+            for (int i = 0; i < 40 && ctx.Damage.Count < 2; i++) sys.Tick(units, ctx, 0f);
+
+            Assert.AreEqual(2, ctx.Damage.Count);
+            Assert.AreEqual(5f, ctx.Damage[0].RawDamage, 0.001f, "Первый Удар — половина силы");
+            Assert.AreEqual(5f, ctx.Damage[1].RawDamage, 0.001f, "Второй Удар — половина силы");
+        }
+
+        [Test]
+        public void SeriesWithoutShares_HitsAtFullStrengthTwice()
+        {
+            // Дефолт — полная сила КАЖДОМУ Удару, а не «поровну»: движок не делит урон сам, силу серии
+            // объявляет автор кита.
+            var (attacker, enemy, units, ctx) = DoubleHitScene();
+            var sys = new AutoAttackSystem();
+
+            for (int i = 0; i < 40 && ctx.Damage.Count < 2; i++) sys.Tick(units, ctx, 0f);
+
+            Assert.AreEqual(10f, ctx.Damage[0].RawDamage, 0.001f);
+            Assert.AreEqual(10f, ctx.Damage[1].RawDamage, 0.001f);
+        }
+
+        [Test]
+        public void SeriesContacts_AreAtLeastOneTickApart()
+        {
+            var (attacker, enemy, units, ctx) = DoubleHitScene();
+            var sys = new AutoAttackSystem();
+            sys.Tick(units, ctx, 0f);   // вход в замах считает контакты
+
+            Assert.AreEqual(2, attacker.SwingContacts.Count);
+            Assert.Greater(attacker.SwingContacts[1], attacker.SwingContacts[0],
+                "Удары не сливаются в один тик — иначе второго не видно ни показу, ни игроку");
+        }
+
+        [Test]
+        public void Series_FirstContactPeriod_EqualsInterval()
+        {
+            // Якорь интервала — ПЕРВЫЙ контакт свинга: сколько бы Ударов ни было внутри, темп Атак не
+            // меняется.
+            var (attacker, enemy, units, ctx) = DoubleHitScene();
+            var sys = new AutoAttackSystem();
+            int interval = AttackTiming.IntervalTicks(1f);
+
+            int firstOfFirstAttack = TickUntilNextDamage(sys, units, ctx, 0);
+            int secondHit = TickUntilNextDamage(sys, units, ctx, firstOfFirstAttack);      // второй Удар той же Атаки
+            int firstOfSecondAttack = TickUntilNextDamage(sys, units, ctx, secondHit);     // первый Удар следующей
+
+            Assert.AreEqual(interval, firstOfSecondAttack - firstOfFirstAttack,
+                "Период «первый контакт → первый контакт следующей Атаки» равен интервалу");
+        }
+
+        [Test]
+        public void StunAfterFirstHitOfSeries_DoesNotRefundCooldown()
+        {
+            // Инвариант техдолга §3.9: рефанд положен только пустому свингу. Иначе спам микростанов
+            // ускорял бы жертву — каждый новый свинг начинался бы заново с первого контакта.
+            var (attacker, enemy, units, ctx) = DoubleHitScene();
+            var sys = new AutoAttackSystem();
+
+            TickUntilNextDamage(sys, units, ctx, 0);   // первый Удар серии прошёл
+            Assert.AreEqual(1, attacker.SwingHitIndex);
+
+            int cooldownBefore = attacker.AttackCooldownTicks;
+            attacker.CanAct = false;
+            sys.Tick(units, ctx, 0f);                  // контроль рвёт остаток серии
+
+            Assert.Greater(attacker.AttackCooldownTicks, 0,
+                "Свинг, нанёсший контакт, рефанда не получает");
+            Assert.AreEqual(cooldownBefore, attacker.AttackCooldownTicks,
+                "Кулдаун замирает на время стана, а не обнуляется");
+        }
+
         // --- Четвёртое состояние цикла: боевое ожидание (решение Макса 2026-07-30/10) ---
 
         [Test]
@@ -377,6 +472,24 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.AreEqual(AttackPhase.Idle, attacker.Phase,
                 "Оглушённый выпал из цикла атаки — боевого ожидания без дееспособности не бывает");
+        }
+
+        /// <summary>
+        /// Сцена с ДВУХУДАРНЫМ бойцом: в клипе два маркера (кадры 3 и 5 из 7), то есть его Атака состоит
+        /// из двух Ударов. Доли урона задаются отдельно — пусто означает полную силу каждому.
+        /// </summary>
+        private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx)
+            DoubleHitScene(float[] hitShares = null)
+        {
+            UnitVisual visual = TestVisual.Make(FrameCount, 3, HitFrame);
+            RelicData relic = TestRelic.Make(visual: visual, hitDamageShares: hitShares);
+
+            var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: relic, range: 5f, aad: 10f, atkSpeed: 1f);
+            var enemy    = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f), maxHp: 10000f);
+            attacker.CurrentTarget = enemy;
+
+            var units = new List<RuntimeUnit> { attacker, enemy };
+            return (attacker, enemy, units, new StubContext());
         }
 
         /// <summary>

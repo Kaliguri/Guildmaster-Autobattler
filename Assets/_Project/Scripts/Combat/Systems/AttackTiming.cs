@@ -143,6 +143,62 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
+        /// Тики ВСЕХ контактов свинга (от его старта), дописанные в <paramref name="result"/>.
+        /// Возвращает их число — оно же число Ударов в этой Атаке.
+        /// </summary>
+        /// <remarks>
+        /// <b>Один контакт — прежний путь без изменений:</b> ровно <see cref="WindupTicksFor"/>, со всеми
+        /// его множителями (разбег, взведённое комбо, канал). Так серия не может тихо сдвинуть тайминги
+        /// китов, у которых её нет.
+        /// <para><b>Серия висит на обычном замахе:</b> первый контакт там же, где был бы единственный, а
+        /// остальные отстоят от него на расстояние из клипа, умноженное на длительность свинга. Поэтому
+        /// ускорение атаки сжимает серию целиком, а ускоренный замах (разбег, комбо) двигает её как одно
+        /// целое — вместо того чтобы растягивать промежутки между ударами.</para>
+        /// <para><b>Два инварианта, оба обязательны:</b> соседние контакты отстоят минимум на тик (иначе
+        /// два удара сливаются в один момент и второй не виден ни показу, ни игроку), и последний контакт
+        /// не позже <c>интервал − 1</c> (удар не совпадает со стартом следующей Атаки). Из них следует
+        /// потолок скорости для многоударного кита: <c>атак/сек ≤ TickRate / N</c>. При нашем темпе
+        /// (0.55–1.0 атак/сек) три контакта влезают с десятикратным запасом; если кит когда-нибудь
+        /// упрётся, контакты сядут вплотную к границе — это случай для отчёта аудита анимаций, а не для
+        /// тихого отбрасывания: потерянный контакт — это потерянный стак.</para>
+        /// </remarks>
+        public static int ContactTicks(RuntimeUnit unit, System.Collections.Generic.List<int> result,
+            System.Collections.Generic.List<float> positionsBuffer)
+        {
+            if (result == null) return 0;
+            result.Clear();
+
+            int first = WindupTicksFor(unit);
+
+            UnitVisual visual = unit.Unit != null ? unit.Unit.Visual : null;
+            int count = visual != null && positionsBuffer != null ? visual.AttackHitPositions(positionsBuffer) : 0;
+
+            result.Add(first);
+            if (count <= 1) return 1;   // одиночный удар: прежний путь целиком
+
+            float attackSpeed   = unit.Stats.Get(StatType.AttackSpeed);
+            int   intervalTicks = IntervalTicks(attackSpeed);
+            int   maxAnimTicks  = unit.Unit != null ? unit.Unit.AttackSwingTicks : 0;
+            int   durationTicks = AttackDurationTicks(intervalTicks, maxAnimTicks);
+            int   lastAllowed   = intervalTicks > 1 ? intervalTicks - 1 : 1;
+
+            float basePos = positionsBuffer[0];
+            for (int i = 1; i < count; i++)
+            {
+                int offset = (int)Math.Round((positionsBuffer[i] - basePos) * durationTicks,
+                    MidpointRounding.AwayFromZero);
+
+                int tick = first + (offset > 0 ? offset : 0);
+                int minTick = result[i - 1] + 1;          // раздвижка: удары не сливаются
+                if (tick < minTick) tick = minTick;
+                if (tick > lastAllowed) tick = lastAllowed; // упор в границу интервала
+
+                result.Add(tick);
+            }
+            return result.Count;
+        }
+
+        /// <summary>
         /// Замах из ДОЛИ свинга (0..1) — путь для юнитов, у которых нет покадрового клипа. Кламп и
         /// множитель разбега те же, что у покадрового пути: границы у замаха одни, кем бы он ни был задан.
         /// </summary>

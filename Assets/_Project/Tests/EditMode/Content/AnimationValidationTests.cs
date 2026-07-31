@@ -19,6 +19,31 @@ namespace Guildmaster.Tests.EditMode.Content
                 .Select(g => AssetDatabase.LoadAssetAtPath<UnitVisual>(AssetDatabase.GUIDToAssetPath(g)))
                 .ToArray();
 
+        private static UnitData[] AllUnits() =>
+            AssetDatabase.FindAssets($"t:{nameof(UnitData)}")
+                .Select(g => AssetDatabase.LoadAssetAtPath<UnitData>(AssetDatabase.GUIDToAssetPath(g)))
+                .Where(u => u != null)
+                .ToArray();
+
+        [Test]
+        public void HitDamageShares_MatchMarkerCount()
+        {
+            // Доли урона задаются каждому Удару лично и читаются ПО ИНДЕКСУ контакта. Список короче
+            // разметки — часть Ударов молча уйдёт в полную силу; длиннее — лишние числа никогда не
+            // сыграют, и автор будет крутить их, не понимая, почему ничего не меняется. Обе ошибки
+            // не видны в игре, поэтому ловятся здесь.
+            foreach (UnitData unit in AllUnits())
+            {
+                float[] shares = unit.HitDamageShares;
+                if (shares == null || shares.Length == 0) continue;   // не задано = каждый Удар в полную силу
+
+                int contacts = unit.Visual != null ? unit.Visual.AttackHitCount : 0;
+                Assert.AreEqual(contacts, shares.Length,
+                    $"{unit.name}: долей урона {shares.Length}, а контактов в клипе атаки {contacts} " +
+                    $"({AssetDatabase.GetAssetPath(unit)}). Число долей обязано совпадать с числом маркеров.");
+            }
+        }
+
         [Test]
         public void Visuals_RequiredBaseSlotsFilled()
         {

@@ -10,14 +10,14 @@ namespace Guildmaster.Data.Definitions
     /// которые выводятся отсюда. <c>Animator.fireEvents=false</c> — маркеры никогда не колбэчат.
     /// </summary>
     /// <remarks>
-    /// <b>Читается только ПЕРВЫЙ маркер, остальные молча игнорируются</b> — весь класс написан под
-    /// «свинг = один контакт». Дизайн требует иного: несколько ударов в одной анимации (Макс,
-    /// 2026-07-30), и допущение зашито ещё в четырёх местах (<c>UnitVisual</c>, <c>AttackTiming</c>,
-    /// <c>AutoAttackSystem</c>, аудит клипов). Расширять начинать отсюда: список кадров вместо первого,
-    /// позиции — в нормированном времени × длительность свинга, с раздвижкой до зазора в один тик.
-    /// Реестр звеньев, четыре вердикта Макса и правило «рефанд только пустому свингу» — вики
-    /// <c>tech/00-meta/tech-debt</c> §3.9. Инвариант «стан не ускоряет атаку» держит
-    /// <c>WindupAutoAttackTests.Stun_AfterHit_DoesNotRushNextAttack</c>.
+    /// <b>Маркеров может быть несколько — это Атака из нескольких Ударов</b> (2026-07-30/6). Каждый
+    /// маркер = одно разрешение контакта: свой расчёт урона, своё попадание, свой on-hit. Позиции
+    /// считаются в нормированном времени клипа и умножаются на длительность свинга, поэтому серия
+    /// сжимается вместе с ним; раздвижку до зазора в тик и клампы делает <c>AttackTiming</c>, а не
+    /// авторинг — свинг сжимается рантайм-скоростью атаки, и валидатор клипа этого не увидел бы.
+    /// <para>Правила серии, которые держит уже не этот класс: рефанд кулдауна положен только свингу без
+    /// единого контакта, промах считается состоявшимся контактом, каст между контактами не втискивается
+    /// (<c>tech/00-meta/tech-debt</c> §3.9).</para>
     /// </remarks>
     public static class ClipMarkers
     {
@@ -31,6 +31,47 @@ namespace Guildmaster.Data.Definitions
             for (int i = 0; i < events.Length; i++)
                 if (events[i].functionName == MarkerFunction) return events[i].time;
             return -1f;
+        }
+
+        /// <summary>
+        /// Сколько контактов размечено в клипе. <c>0</c> = клипа или маркеров нет.
+        /// </summary>
+        public static int MarkerCount(AnimationClip clip)
+        {
+            if (clip == null) return 0;
+            AnimationEvent[] events = clip.events;
+            int n = 0;
+            for (int i = 0; i < events.Length; i++)
+                if (events[i].functionName == MarkerFunction) n++;
+            return n;
+        }
+
+        /// <summary>
+        /// Нормированные позиции ВСЕХ маркеров (0..1) по возрастанию времени, дописанные в
+        /// <paramref name="result"/>. Возвращает их число.
+        /// </summary>
+        /// <remarks>
+        /// Порядок событий в клипе Unity держит отсортированным по времени, но полагаться на это здесь
+        /// нельзя: маркеры расставляются и руками, и генератором Animation Lab, а порядок контактов —
+        /// это порядок ударов. Поэтому сортировка своя, вставкой: маркеров единицы.
+        /// </remarks>
+        public static int MarkerNormalizedAll(AnimationClip clip, System.Collections.Generic.List<float> result)
+        {
+            if (result == null) return 0;
+            result.Clear();
+            if (clip == null || clip.length <= 0f) return 0;
+
+            AnimationEvent[] events = clip.events;
+            for (int i = 0; i < events.Length; i++)
+            {
+                if (events[i].functionName != MarkerFunction) continue;
+
+                float t = Mathf.Clamp01(events[i].time / clip.length);
+                int at = result.Count;
+                while (at > 0 && result[at - 1] > t) at--;
+                result.Insert(at, t);
+            }
+            return result.Count;
         }
 
         /// <summary>Число кадров клипа = <c>round(length × frameRate)</c>. 0 если клип пуст.</summary>

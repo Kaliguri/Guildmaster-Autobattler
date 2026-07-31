@@ -154,7 +154,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             CreatureType creatureType = CreatureType.Living,
             UnitClass combatClass = UnitClass.Bruiser,
             AttackChannel channel = default,
-            float attackRecoverySeconds = 0f)
+            float attackRecoverySeconds = 0f,
+            float[] hitDamageShares = null)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
             Set(r, "_combatClass", combatClass);
@@ -174,6 +175,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(r, "_movingAttackSpeedPenaltyPct", movingAttackSpeedPenaltyPct);
             Set(r, "_channel", channel);
             Set(r, "_attackRecoverySeconds", attackRecoverySeconds);
+            Set(r, "_hitDamageShares", hitDamageShares);
             return r;
         }
 
@@ -194,15 +196,16 @@ namespace Guildmaster.Tests.EditMode.Combat
     {
         private const float Fps = 10f;
 
-        public static UnitVisual Make(int frameCount, int hitFrame)
+        public static UnitVisual Make(int frameCount, params int[] hitFrames)
         {
             var v = ScriptableObject.CreateInstance<UnitVisual>();
             FieldInfo attackClip = typeof(UnitVisual).GetField("_attackClip", BindingFlags.Instance | BindingFlags.NonPublic);
-            attackClip.SetValue(v, BuildAttackClip(frameCount, hitFrame));
+            attackClip.SetValue(v, BuildAttackClip(frameCount, hitFrames));
             return v;
         }
 
-        private static AnimationClip BuildAttackClip(int frameCount, int hitFrame)
+        /// <summary>Кадры контакта = маркеры клипа. Их может быть несколько — это Атака из нескольких Ударов.</summary>
+        private static AnimationClip BuildAttackClip(int frameCount, int[] hitFrames)
         {
             var clip = new AnimationClip { frameRate = Fps };
             if (frameCount > 0)
@@ -211,11 +214,15 @@ namespace Guildmaster.Tests.EditMode.Combat
                 clip.SetCurve("", typeof(Transform), "localPosition.x",
                     AnimationCurve.Linear(0f, 0f, frameCount / Fps, 0f));
             }
-            if (hitFrame > 0)
+            if (hitFrames == null || hitFrames.Length == 0) return clip;
+
+            var events = new System.Collections.Generic.List<AnimationEvent>(hitFrames.Length);
+            foreach (int frame in hitFrames)
             {
-                var ev = new AnimationEvent { functionName = ClipMarkers.MarkerFunction, time = hitFrame / Fps };
-                UnityEditor.AnimationUtility.SetAnimationEvents(clip, new[] { ev });
+                if (frame <= 0) continue;
+                events.Add(new AnimationEvent { functionName = ClipMarkers.MarkerFunction, time = frame / Fps });
             }
+            if (events.Count > 0) UnityEditor.AnimationUtility.SetAnimationEvents(clip, events.ToArray());
             return clip;
         }
     }
@@ -296,6 +303,11 @@ namespace Guildmaster.Tests.EditMode.Combat
         /// <summary>Наложение со сроком, посчитанным по ходу боя (обездвиживание холодной линии).</summary>
         public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
             => _effects?.Apply(target, def, source, this, durationSeconds);
+
+        /// <summary>Наложение с величиной от накладывающего (порция кровотечения).</summary>
+        public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds,
+            float potency)
+            => _effects?.Apply(target, def, source, this, durationSeconds, potency);
 
         public void ReportAreaHit(in AreaHit hit) { }
 

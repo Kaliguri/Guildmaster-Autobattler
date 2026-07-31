@@ -25,6 +25,9 @@ namespace Guildmaster.Combat
         // Удары, дозревшие на этом тике: цифры сняты, но ещё никому не прилетело (см. Tick).
         private readonly List<ResolvedHit> _hits = new List<ResolvedHit>();
 
+        /// <summary>Буфер нормированных позиций контактов: заполняется на входе в замах и тут же читается.</summary>
+        private readonly List<float> _hitPositions = new List<float>(4);
+
         /// <summary>Удар, у которого замах истёк: кто, по кому и с какими цифрами бьёт.</summary>
         private readonly struct ResolvedHit
         {
@@ -240,13 +243,23 @@ namespace Guildmaster.Combat
             int frameCount = visual != null ? visual.AttackFrameCount : 0;
             int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
 
+            // Контакты этого свинга: один у обычного кита, несколько у многоударного. Считаются здесь и
+            // не пересчитываются — занесённый удар живёт по тем цифрам, с которыми начался.
+            AttackTiming.ContactTicks(unit, unit.SwingContacts, _hitPositions);
+            unit.SwingHitIndex = 0;
+
             unit.WindupTicks = unit.WindupRemaining = windupTicks;
 
             // Хвост-занятость = доигрыш клипа после кадра контакта (авто-масштаб со скоростью атаки) +
             // опциональный доп.хвост в секундах (сознательный «оверкоммит» для отдельных китов). Считаем
             // здесь — на старте свинга, как и windup, — чтобы бафф скорости в полёте не «расклеил» тайминг.
+            // У серии доигрыш идёт от ПОСЛЕДНЕГО контакта: хвост — это то, что после удара, а последний
+            // удар серии приходит позже первого.
             int maxAnimTicks  = unit.Unit != null ? unit.Unit.AttackSwingTicks : 0; // 0 = глобальный потолок
-            int followThrough = AttackTiming.FollowThroughTicks(hitFrame, frameCount, intervalTicks, windupTicks,
+            int lastContact   = unit.SwingContacts.Count > 0
+                ? unit.SwingContacts[unit.SwingContacts.Count - 1]
+                : windupTicks;
+            int followThrough = AttackTiming.FollowThroughTicks(hitFrame, frameCount, intervalTicks, lastContact,
                 maxAnimTicks);
             // У канальной формы хвост свой — сворачивание потока, — и берётся из профиля канала: тот же
             // кит в ближней форме бьёт короткими выпадами, и общий хвост кита навязал бы им чужую цену.
@@ -287,6 +300,22 @@ namespace Guildmaster.Combat
         /// </summary>
         private void Resolve(RuntimeUnit unit, ICombatContext ctx)
         {
+            // Контакт разрешён — считаем его состоявшимся ДО расчёта урона. Это важно для промаха: он
+            // тоже контакт (техдолг §3.9), иначе кайт получал бы рефанд кулдауна и ускорял того, от кого
+            // убегает.
+            int hitIndex = unit.SwingHitIndex;
+            unit.SwingHitIndex++;
+
+            // Серия: следующий контакт этого же свинга. Фаза остаётся замахом — юнит занят одной Атакой
+            // от взмаха до конца доигрыша (2026-07-30/7), и рут, гейты и показ работают тем же законом.
+            bool hasNextContact = hitIndex + 1 < unit.SwingContacts.Count;
+            if (hasNextContact)
+            {
+                unit.WindupRemaining = unit.SwingContacts[hitIndex + 1] - unit.SwingContacts[hitIndex];
+                TryQueueHit(unit, unit.WindupTarget, ctx, hitIndex);
+                return;
+            }
+
             // Замах кончился → хвост-восстановление (или сразу Idle, если восстановления нет). Переход
             // выполняем ДО расчёта урона: юнит «занят» бэксвингом независимо от того, попал он или вхолостую.
             unit.WindupRemaining = 0;
@@ -301,7 +330,7 @@ namespace Guildmaster.Combat
             if (opensChannel) EnterChannel(unit, target);
             else EnterRecovery(unit);
 
-            TryQueueHit(unit, target, ctx);
+            TryQueueHit(unit, target, ctx, hitIndex);
         }
 
         /// <summary>
@@ -378,7 +407,7 @@ namespace Guildmaster.Combat
         /// <see cref="Tick"/>). Общий путь для одномоментного удара и для тика канала — у них нет ни одного
         /// различия в расчёте, и разведи я их, различие однажды появилось бы само.
         /// </summary>
-        private void TryQueueHit(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx)
+        private void TryQueueHit(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx, int hitIndex = 0)
         {
             // Цель пропала к удару (мертва / вне радиуса) → вхолостую, кулдаун уже потрачен на старте.
             if (target == null || target.IsDead) return;
@@ -396,6 +425,11 @@ namespace Guildmaster.Combat
             GainResourceOnHit(unit, ctx);
 
             float raw = unit.Stats.Get(StatType.AutoAttackDamage);
+
+            // Сила ЭТОГО Удара в серии: у одноударного кита множитель всегда 1, у Монаха — половина на
+            // каждый. Дефолт единица, а не «поровну»: число Ударов не должно молча делить урон кита
+            // (вердикт Макса 2026-07-31), силу серии объявляет автор.
+            if (unit.Unit != null) raw *= unit.Unit.HitDamageShare(hitIndex);
 
             // Тип урона снимается ВМЕСТЕ с цифрами и едет до прилёта: между замахом и попаданием кит
             // не меняется, но так удар и его тип заведомо не могут разойтись.
@@ -631,15 +665,29 @@ namespace Guildmaster.Combat
             unit.Phase = inLoop ? AttackPhase.CombatIdle : AttackPhase.Idle;
         }
 
-        /// <summary>Прерывание замаха: сброс + рефанд кулдауна (бьёт снова, как только сможет) + событие.</summary>
+        /// <summary>
+        /// Прерывание замаха: сброс и — только пустому свингу — рефанд кулдауна, плюс событие.
+        /// </summary>
+        /// <remarks>
+        /// <b>Рефанд положен лишь свингу, не нанёсшему ни одного контакта</b> (техдолг §3.9, журнал
+        /// «Refund Belongs Only To An Empty Swing»). Для одиночного удара это честно: не ударил — ничего
+        /// не потерял. Для серии рефанд был бы эксплойтом: первый Удар уже прошёл, микростан рвёт
+        /// остаток, кулдаун обнуляется — и новый свинг начинается снова с первого контакта, то есть
+        /// контроль УСКОРЯЛ бы жертву. Без рефанда период «первый контакт → первый контакт» равен
+        /// интервалу всегда, сколько бы хвоста серии ни съел контроль, а отнятые Удары и есть его цена.
+        /// <para>Промах засчитан контактом раньше, в <see cref="Resolve"/>, — иначе рефанд получал бы
+        /// кайт, и убегающий ускорял бы того, от кого убегает.</para>
+        /// </remarks>
         private static void Interrupt(RuntimeUnit unit, ICombatContext ctx)
         {
+            bool emptySwing = unit.SwingHitIndex == 0;
+
             unit.Phase = AttackPhase.Idle;
             unit.WindupRemaining = 0;
             unit.RecoveryRemaining = 0;
             unit.WindupTarget = null;
             unit.ChargingIn = false;
-            unit.AttackCooldownTicks = 0;
+            if (emptySwing) unit.AttackCooldownTicks = 0;
             ctx.NotifyAttackInterrupted(unit);
         }
 

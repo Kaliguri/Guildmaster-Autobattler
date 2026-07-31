@@ -102,6 +102,13 @@ namespace Guildmaster.Data.Definitions
                  "не может ни выйти за интервал атаки, ни опуститься ниже телеграф-пола.")]
         [SerializeField] private float _chargeAttackWindupMult = 1f;
 
+        [Tooltip("Сила КАЖДОГО Удара в Атаке, долей от урона авто-атаки: по числу на контакт, в порядке " +
+                 "ударов. Пусто = каждый Удар бьёт в полную силу (1.0), в том числе при нескольких " +
+                 "контактах — двухударный кит без настройки бьёт вдвое. Монах: 0.5 / 0.5 (два Удара по " +
+                 "половине). Ограничений сверху нет: 2 = удар вдвое сильнее обычного, годится для " +
+                 "финишера серии. Длина списка обязана совпадать с числом маркеров в клипе атаки.")]
+        [SerializeField] private float[] _hitDamageShares;
+
         [Header("Resource gain (Phase 3)")]
         [Tooltip("Ресурс (мана) за авто-атаку, × ResourceGainEff, клампится к MaxResource. 0 = не копит от ударов. Копейщик = 5.")]
         [SerializeField] private float _resourceOnHit;
@@ -180,6 +187,23 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Доля свинга до кадра контакта (0..1). 0 = считать из кадров <see cref="UnitVisual"/>.</summary>
         public float WindupShare => _windupShare;
+
+        /// <summary>Заданные доли урона по Ударам; <c>null</c>/пусто = каждый Удар в полную силу.</summary>
+        public float[] HitDamageShares => _hitDamageShares;
+
+        /// <summary>
+        /// Доля урона <paramref name="hitIndex"/>-го Удара Атаки. Не задана — <c>1</c>: полная сила.
+        /// </summary>
+        /// <remarks>
+        /// Дефолт именно единица, а не «поровну между контактами» (вердикт Макса 2026-07-31): два Удара
+        /// без настройки бьют вдвое, и это осознанно — сила серии задаётся автором кита, а не выводится
+        /// движком из числа маркеров. Половинки Монаха живут в его данных, а не в формуле.
+        /// </remarks>
+        public float HitDamageShare(int hitIndex)
+        {
+            if (_hitDamageShares == null || hitIndex < 0 || hitIndex >= _hitDamageShares.Length) return 1f;
+            return _hitDamageShares[hitIndex];
+        }
 
         /// <summary>
         /// Потолок длительности свинга этого юнита в сим-тиках. <c>0</c> = глобальный
