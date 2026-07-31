@@ -199,8 +199,9 @@ for ($i = 0; $i -lt $turns.Count; $i++) {
         $index[$w].Add($i)
     }
 }
-# .Count у хэш-таблицы врёт, если среди ключей есть слово «count» — а оно среди реплик есть.
-Write-Host ("Индекс: {0} слов`n" -f $index.Keys.Count) -ForegroundColor DarkGray
+# Свойства .Count и .Keys у хэш-таблицы разрешаются в ЗНАЧЕНИЯ, если такие ключи есть, —
+# а среди слов Макса есть и «count», и «keys». Правду отдаёт только явный метод.
+Write-Host ("Индекс: {0} слов`n" -f $index.get_Count()) -ForegroundColor DarkGray
 
 function Get-Candidates {
     param([string[]]$Words)
