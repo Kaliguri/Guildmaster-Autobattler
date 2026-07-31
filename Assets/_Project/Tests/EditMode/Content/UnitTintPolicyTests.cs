@@ -51,9 +51,9 @@ namespace Guildmaster.Tests.EditMode.Content
             if (prefab == null) return null;
 
             var skeletal = prefab.GetComponentInChildren<SkeletalBodyVisual>(true);
-            if (skeletal != null && skeletal.Parts.Count > 0)
+            if (skeletal != null && skeletal.Renderers.Count > 0)
             {
-                var keys = skeletal.Parts
+                var keys = skeletal.Renderers
                     .Where(p => p != null && p.sprite != null)
                     .Select(SpriteKey)
                     .OrderBy(s => s)

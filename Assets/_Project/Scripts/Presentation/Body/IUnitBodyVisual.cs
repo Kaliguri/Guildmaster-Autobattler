@@ -25,28 +25,31 @@ namespace Guildmaster.Presentation.Body
         public readonly float Outline;
         public readonly Color OutlineColor;
 
-        /// <summary>0..1 — сила свечения части-источника (<c>_GlowAmount</c>); применяется только к частям в <see cref="GlowRoles"/>.</summary>
+        /// <summary>0..1 — сила свечения части-источника (<c>_GlowAmount</c>); применяется только к частям в <see cref="GlowParts"/>.</summary>
         public readonly float Glow;
         /// <summary>HDR-цвет свечения (компоненты могут быть &gt;1): цвет юнита, поднятый под порог bloom.</summary>
         public readonly Color GlowColor;
-        /// <summary>Маска ролей, которые сейчас светятся: часть светится, если её <see cref="PartRole"/> пересекается с маской.</summary>
-        public readonly PartRole GlowRoles;
+        /// <summary>
+        /// Какие ИМЕННО части сейчас светятся. Не роль («любое оружие»), а адрес: у бойца с двумя кинжалами
+        /// приём может зажечь один из них, и роль такое не выражает.
+        /// </summary>
+        public readonly PartMask GlowParts;
 
         public BodyVisualState(Color tint, float flash, Color flashColor,
             float holo, Color holoColor, float holoAlpha, float holoScanScale, float holoScanAmount,
             float outline, Color outlineColor,
-            float glow, Color glowColor, PartRole glowRoles)
+            float glow, Color glowColor, PartMask glowParts)
         {
             Tint = tint;
             Flash = flash; FlashColor = flashColor;
             Holo = holo; HoloColor = holoColor; HoloAlpha = holoAlpha;
             HoloScanScale = holoScanScale; HoloScanAmount = holoScanAmount;
             Outline = outline; OutlineColor = outlineColor;
-            Glow = glow; GlowColor = glowColor; GlowRoles = glowRoles;
+            Glow = glow; GlowColor = glowColor; GlowParts = glowParts;
         }
 
-        /// <summary>Светится ли хоть одна часть: сила выше нуля И есть роль в маске.</summary>
-        public bool HasGlow => Glow > 0.0001f && GlowRoles != PartRole.None;
+        /// <summary>Светится ли хоть одна часть: сила выше нуля И маска не пуста.</summary>
+        public bool HasGlow => Glow > 0.0001f && !GlowParts.IsEmpty;
 
         /// <summary>Нужен ли вообще property block: всё по нулям — рендерер идёт обычным путём.</summary>
         public bool HasEffect => Flash > 0.0001f || Holo > 0.0001f || Outline > 0.0001f || HasGlow;
@@ -59,10 +62,10 @@ namespace Guildmaster.Presentation.Body
             Mathf.Approximately(HoloScanScale, other.HoloScanScale) &&
             Mathf.Approximately(HoloScanAmount, other.HoloScanAmount) &&
             Mathf.Approximately(Outline, other.Outline) && OutlineColor == other.OutlineColor &&
-            Mathf.Approximately(Glow, other.Glow) && GlowColor == other.GlowColor && GlowRoles == other.GlowRoles;
+            Mathf.Approximately(Glow, other.Glow) && GlowColor == other.GlowColor && GlowParts == other.GlowParts;
 
         public override bool Equals(object obj) => obj is BodyVisualState s && Equals(s);
-        public override int GetHashCode() => System.HashCode.Combine(Tint, Flash, FlashColor, Holo, Outline, OutlineColor, Glow, GlowRoles);
+        public override int GetHashCode() => System.HashCode.Combine(Tint, Flash, FlashColor, Holo, Outline, OutlineColor, Glow, GlowParts);
     }
 
     /// <summary>
@@ -81,6 +84,12 @@ namespace Guildmaster.Presentation.Body
     {
         /// <summary>Есть ли что показывать (спрайт назначен / части найдены). false — тело рисовать нечем.</summary>
         bool HasContent { get; }
+
+        /// <summary>
+        /// Части тела для адресных запросов: что в руке, где голова, чем ударит. Тело — единственный, кто
+        /// знает свою анатомию, поэтому реестр отдаёт оно, а не собирает каждый желающий по иерархии.
+        /// </summary>
+        IUnitPartLookup Parts { get; }
 
         /// <summary>
         /// Узел, в пространстве которого живёт арт тела: его масштабирует сплющивание, от него берётся

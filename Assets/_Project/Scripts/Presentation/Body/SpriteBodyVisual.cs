@@ -13,10 +13,17 @@ namespace Guildmaster.Presentation.Body
         private MaterialPropertyBlock _mpb;
         private BodyVisualState _lastState;
         private bool _effectApplied;   // держим ли сейчас блок с эффектом (чтобы вернуть в 0 РОВНО один раз)
+        private UnitPartRegistry _registry;
 
         public SpriteBodyVisual(SpriteRenderer sprite) => _sprite = sprite;
 
         public bool HasContent => _sprite != null && _sprite.sprite != null;
+
+        /// <summary>
+        /// Одна часть — она же и оружие, и кисть, и голова: у покадрового тела анатомии нет, всё нарисовано
+        /// в одном спрайте. Поэтому любой адресный запрос приводит к нему, и приём светит тело целиком.
+        /// </summary>
+        public IUnitPartLookup Parts => _registry ??= UnitPartRegistry.ForSingleSprite(_sprite);
 
         /// <summary>
         /// Родитель спрайта — узел «Sprite Visual» префаба. Именно он выше <see cref="Animator"/>, поэтому
@@ -59,9 +66,9 @@ namespace Guildmaster.Presentation.Body
 
             _mpb ??= new MaterialPropertyBlock();
             _sprite.GetPropertyBlock(_mpb);
-            // Покадровое тело — один спрайт без ролей частей: у него нет отдельного оружия, поэтому на касте
-            // светится целиком (partGlows = true; сама сила приходит из state.HasGlow внутри Write).
-            BodyShaderIds.Write(_mpb, state, _sprite.sprite, partGlows: true);
+            // Единственная часть тела стоит под индексом 0 — свечение доходит до неё, если приём адресовал
+            // хоть что-то: у покадрового юнита отдельного оружия нет, светиться может только тело целиком.
+            BodyShaderIds.Write(_mpb, state, _sprite.sprite, partGlows: state.GlowParts.Has(0));
             _sprite.SetPropertyBlock(_mpb);
 
             _effectApplied = active;

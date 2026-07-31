@@ -24,21 +24,15 @@ namespace Guildmaster.AnimationLab.Editor
     /// </summary>
     public static class RigVisualParts
     {
-        const string ContainerPrefix = "Visual Part";
+        // Сами имена и предикаты живут в рантайм-конвенции: их читает не только этот инструмент, но и
+        // реестр частей в игре, а конвенция с двумя копиями расходится молча.
+        public static string ContainerName(string boneName) => Presentation.Body.RigNaming.ContainerName(boneName);
 
-        public static string ContainerName(string boneName) => $"{ContainerPrefix} ({boneName})";
-
-        public static bool IsContainer(Transform node) =>
-            node != null && node.name.StartsWith(ContainerPrefix + " (", System.StringComparison.Ordinal);
+        public static bool IsContainer(Transform node) => Presentation.Body.RigNaming.IsContainer(node);
 
         /// <summary>"Visual Part (Head)" -> "Head".</summary>
-        public static string BoneNameFromContainer(string containerName)
-        {
-            int open = containerName.IndexOf('(');
-            int close = containerName.LastIndexOf(')');
-            if (open < 0 || close <= open + 1) return containerName;
-            return containerName.Substring(open + 1, close - open - 1).Trim();
-        }
+        public static string BoneNameFromContainer(string containerName) =>
+            Presentation.Body.RigNaming.BoneNameFromContainer(containerName);
 
         /// <summary>
         /// The renderer that draws THIS bone: the first one inside its own visual container, never a
@@ -87,37 +81,17 @@ namespace Guildmaster.AnimationLab.Editor
         /// node may be called "Head", "Hair" or "Armor Plate" — so rig code that recognises bones BY
         /// NAME has to stop at the container or it will invent joints out of artwork.
         /// </summary>
-        public static bool IsUnderContainer(Transform node)
-        {
-            for (var t = node; t != null; t = t.parent)
-                if (IsContainer(t)) return true;
-            return false;
-        }
+        public static bool IsUnderContainer(Transform node) => Presentation.Body.RigNaming.IsUnderContainer(node);
 
-        public static Transform FindContainer(Transform bone)
-        {
-            if (bone == null) return null;
-            for (int i = 0; i < bone.childCount; i++)
-            {
-                var child = bone.GetChild(i);
-                if (IsContainer(child)) return child;
-            }
-            return null;
-        }
+        public static Transform FindContainer(Transform bone) => Presentation.Body.RigNaming.FindContainer(bone);
 
         /// <summary>
         /// The bone a renderer draws for, walking back up through its container. Callers that address
         /// rig parts by bone name ("Body", "Head") must not start missing them once the artwork moved
         /// two levels down.
         /// </summary>
-        public static string BoneNameOf(Transform rendererNode)
-        {
-            if (rendererNode == null) return null;
-            for (var t = rendererNode; t != null; t = t.parent)
-                if (IsContainer(t))
-                    return t.parent != null ? t.parent.name : BoneNameFromContainer(t.name);
-            return rendererNode.name;
-        }
+        public static string BoneNameOf(Transform rendererNode) =>
+            Presentation.Body.RigNaming.BoneNameOf(rendererNode);
 
         public sealed class Report
         {

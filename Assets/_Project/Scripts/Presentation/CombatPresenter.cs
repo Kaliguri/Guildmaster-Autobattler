@@ -6,7 +6,6 @@ using MessagePipe;
 using UnityEngine;
 using UnityEngine.Pool;
 using VContainer;
-using PartRole = Guildmaster.Presentation.Body.PartRole;
 
 namespace Guildmaster.Presentation
 {
@@ -397,9 +396,10 @@ namespace Guildmaster.Presentation
 
             // Мгновенный приём (Cast пришёл без подготовки) — свечение оружия всполохом. Была подготовка —
             // заряд уже дошёл до пика и сам идёт в спад, второй раз не трогаем (иначе оружие моргнёт с нуля).
-            // Роль всегда Weapon: событие каста не несёт части-источника (срез, различение Limb/бафф — позже).
+            // Часть спрашиваем у самого вида: событие каста не несёт источника приёма (срез — до тех пор,
+            // пока оно не понесёт данные навыка, и тогда часть назовёт навык).
             if (_feel != null && !_glowCharging.Remove(casterId))
-                view.PlayCastGlow(GlowColorFor(casterId), PartRole.Weapon, _feel.CastGlowPulseRise);
+                view.PlayCastGlow(GlowColorFor(casterId), view.StrikeGlowMask, _feel.CastGlowPulseRise);
         }
 
         /// <summary>
@@ -415,7 +415,7 @@ namespace Guildmaster.Presentation
             if (_feel != null)
             {
                 _glowCharging.Add(casterId);
-                view.PlayCastGlow(GlowColorFor(casterId), PartRole.Weapon, seconds);
+                view.PlayCastGlow(GlowColorFor(casterId), view.StrikeGlowMask, seconds);
             }
         }
 
@@ -496,9 +496,10 @@ namespace Guildmaster.Presentation
             view.ApplyAudio(_audio);     // хруст разлёта: вид сам знает, когда начинается shatter
             view.SetContactDustHandler(OnUnitContactDust);
 
-            // Тинт тела: ступень приглушения различает тех, кто делит один спрайт. Плюс подпись над баром.
+            // Тинт тела: ступень приглушения различает тех, кто делит один спрайт.
+            // Подписи над юнитом нет и не будет (решение 2026-07-31/67): опознание идёт силуэтом,
+            // цветом бара и плашкой инфы, а не текстом 8-м кеглем в свалке.
             view.SetTint(TintFor(in identity));
-            view.SetLabel(NameFor(in identity));
 
             // «Свой» разброс цвета — осколкам смерти: роль в цвет превращает палитра, не вид.
             view.SetVfxSpread(VfxPaletteFor(snapshot.Id));
@@ -838,20 +839,6 @@ namespace Guildmaster.Presentation
         /// <summary>Та же проверка по номеру команды — для пути, где живого юнита нет.</summary>
         private bool IsAllyOfViewer(int team) =>
             team == (_localPlayer != null ? _localPlayer.Team : 0);
-
-        /// <summary>Подпись персонажа: имя реликвии (SO) либо «Ally/Enemy N» для болванчиков.</summary>
-        private string NameFor(RuntimeUnit unit)
-        {
-            if (unit.Unit != null) return unit.Unit.name;
-            return (IsAllyOfViewer(unit) ? "Ally " : "Enemy ") + unit.Id;
-        }
-
-        /// <summary>Та же подпись по паспорту.</summary>
-        private string NameFor(in UnitIdentity identity)
-        {
-            if (identity.Definition != null) return identity.Definition.name;
-            return (IsAllyOfViewer(identity.Team) ? "Ally " : "Enemy ") + identity.Id;
-        }
 
         private void HandleAttackStarted(int sourceId, int targetId)
         {

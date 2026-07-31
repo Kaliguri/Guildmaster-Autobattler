@@ -130,7 +130,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
             Assert.That(body, Is.Not.Null, "The rig carries the body seam — SkeletalBodyVisual is missing.");
 
             int lost = 0, spriteless = 0;
-            foreach (var part in body.Parts)
+            foreach (var part in body.Renderers)
             {
                 if (part == null) { lost++; continue; }
                 if (part.sprite == null) spriteless++;
@@ -141,12 +141,12 @@ namespace Guildmaster.Tests.EditMode.Presentation
                 if (renderer.sprite != null) inHierarchy++;
 
             Assert.That(lost, Is.Zero,
-                $"{lost} of {body.Parts.Count} body parts are lost references. Rebuild the list " +
+                $"{lost} of {body.Renderers.Count} body parts are lost references. Rebuild the list " +
                 "(SkeletalBodyVisual inspector, «Собрать заново») — until then the unit cannot be tinted, " +
                 "flashed or shattered.");
             Assert.That(spriteless, Is.Zero, $"{spriteless} wired body parts carry no sprite.");
-            Assert.That(body.Parts.Count, Is.EqualTo(inHierarchy),
-                $"The list holds {body.Parts.Count} parts while the rig draws {inHierarchy}. A part outside " +
+            Assert.That(body.Renderers.Count, Is.EqualTo(inHierarchy),
+                $"The list holds {body.Renderers.Count} parts while the rig draws {inHierarchy}. A part outside " +
                 "the list is a part that stays its own colour when the rest of the body flashes.");
         }
     }

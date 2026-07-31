@@ -4,9 +4,11 @@ using Guildmaster.Data.Definitions;
 using LitMotion;
 using UnityEngine;
 using UnityEngine.Events;
-// Псевдоним: `Body` — ещё и свойство вида (IUnitBodyVisual Body), поэтому `Body.PartRole` в выражении
-// резолвится в свойство, а не в неймспейс. Алиас снимает конфликт — пишем просто `PartRole`.
-using PartRole = Guildmaster.Presentation.Body.PartRole;
+// Псевдонимы: `Body` — ещё и свойство вида (IUnitBodyVisual Body), поэтому `Body.PartMask` в выражении
+// резолвится в свойство, а не в неймспейс. Алиасы снимают конфликт — пишем короткие имена.
+using PartMask = Guildmaster.Presentation.Body.PartMask;
+using UnitPart = Guildmaster.Presentation.Body.UnitPart;
+using HandSlot = Guildmaster.Presentation.Body.HandSlot;
 
 namespace Guildmaster.Presentation
 {
@@ -82,9 +84,9 @@ namespace Guildmaster.Presentation
         // раскладку по всем частям отвечает SkeletalBodyVisual и его валидатор.
         // Длительности/сила/цвет вспышки — из CombatFeelConfig (ApplyFeelConfig).
 
-        [Header("Identity label — подпись персонажа над HP-баром (TMP-ребёнок префаба)")]
-        [Tooltip("TMP-текст подписи. Позиция/размер/шрифт настраиваются на нём в префабе.")]
-        [SerializeField] private TMPro.TMP_Text _nameLabel;
+        // Подписи-имени над юнитом НЕТ и не планируется (решение 2026-07-31/67): ни один автобаттлер жанра
+        // не пишет имя над головой — опознание идёт силуэтом, цветом бара и плашкой инфы по наведению.
+        // Поле _nameLabel и метод SetLabel сняты здесь же; не возвращать без пересмотра решения.
 
         [Header("Attach points (сокеты) — GO под 'Sprite Visual', ставятся по арту")]
         [Tooltip("Ноги: точка касания земли (совпадает с позицией юнита в симе).")]
@@ -246,7 +248,7 @@ namespace Guildmaster.Presentation
         private float _glowReleaseTotal;   // длительность спада с пика, сек
         private bool  _glowInCharge;       // идёт заряд (растём к пику) vs спад
         private Color _glowColor = Color.white;              // HDR-цвет: цвет юнита × bloom-множитель
-        private PartRole _glowRoles = PartRole.None; // какие части светятся; None = не светимся
+        private PartMask _glowParts;       // какие ИМЕННО части светятся; пусто = не светимся
 
         private CanvasGroup _uiFadeGroup;  // контейнер world-UI: гаснет вместе с телом, а не щелчком
         private float _uiFadeLeft;
@@ -393,12 +395,6 @@ namespace Guildmaster.Presentation
         public void SetShieldColor(Color color)
         {
             if (_healthBar != null) _healthBar.SetShieldColor(color);
-        }
-
-        /// <summary>Подпись «что за персонаж» над HP-баром. Задаёт лишь текст — вид настраивается на TMP в префабе.</summary>
-        public void SetLabel(string text)
-        {
-            if (_nameLabel != null) _nameLabel.text = text;
         }
 
         /// <summary>
@@ -1299,7 +1295,7 @@ namespace Guildmaster.Presentation
                 _feel != null ? _feel.HologramScanScale  : 1f,
                 _feel != null ? _feel.HologramScanAmount : 0f,
                 _outlineAmount, _outlineColor,
-                _glowAmount, _glowColor, _glowRoles);
+                _glowAmount, _glowColor, _glowParts);
 
             Body.Apply(state);
         }
@@ -1452,20 +1448,31 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Свечение части-источника на касте (реф SAO): часть в маске <paramref name="roles"/> наливается
+        /// Чем этот юнит светит на касте по умолчанию: предмет в ведущей (правой) руке, а если руки пусты —
+        /// сама кисть. Пока событие каста несёт только id кастера, презентер берёт именно эту маску; когда
+        /// оно понесёт данные навыка, тот назовёт часть сам (щит, левый кинжал, нога), а тело найдёт её
+        /// тем же реестром.
+        /// </summary>
+        public PartMask StrikeGlowMask =>
+            Body != null && Body.Parts.TryGetStrikeSource(HandSlot.Right, out UnitPart source)
+                ? source.Mask
+                : PartMask.Empty;
+
+        /// <summary>
+        /// Свечение части-источника на касте (реф SAO): часть в маске <paramref name="parts"/> наливается
         /// светом за <paramref name="chargeSeconds"/> (заряд приёма) и гаснет за спад из конфига. Для
         /// МГНОВЕННОГО приёма (пассив без каста, пульс оружия у длительного баффа) вызывающий передаёт
         /// короткий заряд <c>CastGlowPulseRise</c> — получается всполох вместо наливающегося заряда.
         /// </summary>
         /// <param name="glowColor">HDR-цвет: цвет юнита, поднятый под порог bloom (резолвит презентер).</param>
-        /// <param name="roles">Какие роли частей светятся (обычно Weapon; Limb для пинка).</param>
+        /// <param name="parts">Какие ИМЕННО части светятся — обычно <see cref="StrikeGlowMask"/>.</param>
         /// <param name="chargeSeconds">Время заряда (cast-time из симуляции). 0 = сразу пик.</param>
-        public void PlayCastGlow(Color glowColor, PartRole roles, float chargeSeconds)
+        public void PlayCastGlow(Color glowColor, PartMask parts, float chargeSeconds)
         {
-            if (_feel == null || !_feel.EnableCastGlow || roles == PartRole.None) return;
+            if (_feel == null || !_feel.EnableCastGlow || parts.IsEmpty) return;
 
             _glowColor        = glowColor;
-            _glowRoles        = roles;
+            _glowParts        = parts;
             _glowChargeTotal  = Mathf.Max(0f, chargeSeconds);
             _glowReleaseTotal = Mathf.Max(0.0001f, _feel.CastGlowRelease);
             _glowInCharge     = _glowChargeTotal > 0.0001f;
@@ -1476,19 +1483,19 @@ namespace Guildmaster.Presentation
         /// <summary>Каст оборван: свечение части гаснет мгновенно — обещанного приёма не будет.</summary>
         public void CancelCastGlow()
         {
-            if (_glowRoles == PartRole.None) return;
+            if (_glowParts.IsEmpty) return;
 
-            _glowRoles    = PartRole.None;
+            _glowParts    = PartMask.Empty;
             _glowInCharge = false;
             _glowLeft     = 0f;
             _glowAmount   = 0f;
         }
 
         // Профиль свечения: заряд за cast-time (форма — кривая конфига, пик к концу) → спад с пика в ноль.
-        // Unscaled, как весь фидбэк каста. Погасли — роль сбрасывается в None, чтобы тело перестало писать glow.
+        // Unscaled, как весь фидбэк каста. Погасли — маска пустеет, чтобы тело перестало писать glow.
         private void TickCastGlow()
         {
-            if (_glowRoles == PartRole.None || _feel == null) return;
+            if (_glowParts.IsEmpty || _feel == null) return;
 
             _glowLeft -= Time.unscaledDeltaTime;
 
@@ -1506,7 +1513,7 @@ namespace Guildmaster.Presentation
 
             float r = Mathf.Clamp01(_glowLeft / Mathf.Max(0.0001f, _glowReleaseTotal)); // 1→0
             _glowAmount = r * _feel.CastGlowStrength;
-            if (_glowLeft <= 0f) { _glowAmount = 0f; _glowRoles = PartRole.None; }
+            if (_glowLeft <= 0f) { _glowAmount = 0f; _glowParts = PartMask.Empty; }
         }
 
         /// <summary>Заморозить анимацию этого вида на unscaled-окно (локальный hitstop участника удара).</summary>
@@ -1719,7 +1726,7 @@ namespace Guildmaster.Presentation
         {
             _onDeathFeedback?.Invoke();
 
-            // Убираем world-UI (бары + подпись) — над трупом он не нужен. Но НЕ щелчком: тело после этого
+            // Убираем world-UI (бары) — над трупом он не нужен. Но НЕ щелчком: тело после этого
             // ещё три стадии развоплощается, и полоса, выпрыгнувшая из кадра в первый же момент, читалась
             // как сбой. Гасим её ровно за ту стадию, пока тело истончается в голограмму.
             if (_worldUi != null)
@@ -1739,10 +1746,9 @@ namespace Guildmaster.Presentation
             }
             else
             {
-                // Фолбэк, если контейнер 'UI' не привязан: гасим бары и подпись поштучно.
+                // Фолбэк, если контейнер 'UI' не привязан: гасим бары поштучно.
                 if (_healthBar != null) _healthBar.gameObject.SetActive(false);
                 if (_manaBar   != null) _manaBar.gameObject.SetActive(false);
-                if (_nameLabel != null) _nameLabel.gameObject.SetActive(false);
             }
 
             _isDead     = true;

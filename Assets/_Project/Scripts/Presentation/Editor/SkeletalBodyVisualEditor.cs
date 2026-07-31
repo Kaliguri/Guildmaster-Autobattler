@@ -81,9 +81,9 @@ namespace Guildmaster.Presentation.Editor
 
         private static void ApplyOrder(SkeletalBodyVisual body)
         {
-            var targets = new List<Object>(body.Parts.Count);
-            for (int i = 0; i < body.Parts.Count; i++)
-                if (body.Parts[i] != null) targets.Add(body.Parts[i]);
+            var targets = new List<Object>(body.Renderers.Count);
+            for (int i = 0; i < body.Renderers.Count; i++)
+                if (body.Renderers[i] != null) targets.Add(body.Renderers[i]);
 
             Undo.RecordObjects(targets.ToArray(), "Применить порядок частей тела");
             body.ApplyOrder();
@@ -96,8 +96,8 @@ namespace Guildmaster.Presentation.Editor
             bool changed = body.RebuildParts();
             EditorUtility.SetDirty(body);
             Debug.Log(changed
-                ? $"[SkeletalBodyVisual] {body.name}: список пересобран — {body.Parts.Count} частей."
-                : $"[SkeletalBodyVisual] {body.name}: список уже совпадает с иерархией ({body.Parts.Count} частей).",
+                ? $"[SkeletalBodyVisual] {body.name}: список пересобран — {body.Renderers.Count} частей."
+                : $"[SkeletalBodyVisual] {body.name}: список уже совпадает с иерархией ({body.Renderers.Count} частей).",
                 body);
         }
 
@@ -114,9 +114,9 @@ namespace Guildmaster.Presentation.Editor
                 return;
             }
 
-            var targets = new List<Object>(body.Parts.Count);
-            for (int i = 0; i < body.Parts.Count; i++)
-                if (body.Parts[i] != null) targets.Add(body.Parts[i]);
+            var targets = new List<Object>(body.Renderers.Count);
+            for (int i = 0; i < body.Renderers.Count; i++)
+                if (body.Renderers[i] != null) targets.Add(body.Renderers[i]);
 
             Undo.RecordObjects(targets.ToArray(), "Поставить материал вспышки на части тела");
             int changed = 0;
@@ -155,9 +155,9 @@ namespace Guildmaster.Presentation.Editor
             SortingGroup group = EffectiveGroup(body);
             int layer = group != null ? group.sortingLayerID : int.MinValue;
 
-            for (int i = 0; i < body.Parts.Count; i++)
+            for (int i = 0; i < body.Renderers.Count; i++)
             {
-                SpriteRenderer part = body.Parts[i];
+                SpriteRenderer part = body.Renderers[i];
                 if (part == null) { nulls++; continue; }
                 if (!seen.Add(part)) dupes++;
 
@@ -171,7 +171,7 @@ namespace Guildmaster.Presentation.Editor
                 if (!seen.Contains(found[i])) missing++;
 
             var sb = new StringBuilder();
-            sb.AppendLine($"Частей в списке: {body.Parts.Count}, в иерархии: {found.Count}.");
+            sb.AppendLine($"Частей в списке: {body.Renderers.Count}, в иерархии: {found.Count}.");
             if (nulls > 0)      sb.AppendLine($"Потерянных ссылок: {nulls} — «Собрать заново».");
             if (dupes > 0)      sb.AppendLine($"Дублей: {dupes} — «Собрать заново».");
             if (missing > 0)    sb.AppendLine($"Не в списке: {missing} — эти части не красятся и не колются.");

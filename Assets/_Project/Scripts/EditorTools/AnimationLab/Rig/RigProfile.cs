@@ -128,7 +128,7 @@ namespace Guildmaster.AnimationLab.Editor
     public static class RigProfileBuilder
     {
         /// <summary>Nodes named like "Rotation Point (Elbow)" are joints; the word in brackets is the id.</summary>
-        public const string JointPrefix = "Rotation Point (";
+        public const string JointPrefix = Presentation.Body.RigNaming.JointPrefix;
 
         /// <summary>
         /// Bones that carry the body itself rather than a limb, so they never got a "Rotation Point" name:
@@ -278,7 +278,12 @@ namespace Guildmaster.AnimationLab.Editor
             var butt = item.TransformPoint(new Vector3(0f, -half, 0f));
             var tip = item.TransformPoint(new Vector3(0f, half, 0f));
 
-            string id = renderer.sprite.name.ToLowerInvariant().Contains("shield") ? "shield" : "weapon";
+            // Тип предмета объявляет метка на его кости, а не имя спрайта. Прежняя эвристика
+            // (`sprite.name.Contains("shield")`) держалась на том, что предметов ровно два и оба названы
+            // по-английски: факел, баклер или лук она бы молча записала в оружие, а рецепты анимации целятся
+            // по этому id (Aim("weapon")).
+            string id = HeldId(item);
+            if (id == null) return null;
             var measured = new RigProfile.HeldItem
             {
                 Id = id,
@@ -310,23 +315,30 @@ namespace Guildmaster.AnimationLab.Editor
         }
 
         /// <summary>"Rotation Point (Elbow)" -> "Elbow".</summary>
-        static string ExtractLabel(string nodeName)
-        {
-            int open = nodeName.IndexOf('(');
-            int close = nodeName.LastIndexOf(')');
-            if (open < 0 || close <= open + 1) return nodeName;
-            return nodeName.Substring(open + 1, close - open - 1).Trim();
-        }
+        static string ExtractLabel(string nodeName) => Presentation.Body.RigNaming.ExtractLabel(nodeName);
 
         /// <summary>Side comes from the limb above the joint, so joints keep one name across both sides.</summary>
-        static string SideSuffix(Transform node, Transform root)
+        static string SideSuffix(Transform node, Transform root) =>
+            Presentation.Body.RigNaming.SideSuffix(Presentation.Body.RigNaming.SideOf(node, root));
+
+        /// <summary>
+        /// The item's logical id, taken from the declaration on its bone (<c>UnitHeldItem</c>): weapon or
+        /// shield. No declaration means no entry — clip recipes aim by this id, and a guessed one would
+        /// disagree with the runtime part registry that reads the very same component.
+        /// </summary>
+        static string HeldId(Transform item)
         {
-            for (var t = node; t != null && t != root; t = t.parent)
+            var bone = Presentation.Body.RigNaming.BoneOf(item);
+            var mark = bone != null ? bone.GetComponent<Presentation.Body.UnitHeldItem>() : null;
+            if (mark == null || mark.Kind == Presentation.Body.HeldKind.None)
             {
-                if (t.name.Contains("(Left)")) return ".L";
-                if (t.name.Contains("(Right)")) return ".R";
+                Debug.LogError($"[RigProfile] предмет '{(bone != null ? bone.name : item.name)}' сидит в " +
+                               "хвате, но не объявлен: повесь на его кость UnitHeldItem (Weapon/Shield). " +
+                               "Без объявления предмет не попадёт в профиль, и рецепты Aim(\"weapon\") его " +
+                               "не найдут.");
+                return null;
             }
-            return "";
+            return mark.Kind == Presentation.Body.HeldKind.Shield ? "shield" : "weapon";
         }
 
         public static float NormalizeAngle(float degrees)

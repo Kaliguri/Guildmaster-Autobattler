@@ -35,11 +35,14 @@ namespace Guildmaster.Presentation.Body
         private BodyVisualState       _lastState;
         private bool                  _effectApplied;
         private Transform[]           _partTransforms;   // кэш: позы частей опрашиваются каждый кадр силуэтом/границами
-        private PartRole[]            _partRoles;        // кэш ролей частей (метка UnitPartRole на узле) — для адресного свечения
+        private UnitPartRegistry      _registry;         // кто из частей оружие, щит, кисть, голова — выведено из конвенции рига
         private bool                  _groupWarned;      // про отсутствие группы говорим один раз, а не каждый кадр
 
-        /// <summary>Части тела в порядке отрисовки (только чтение — владелец порядка это компонент).</summary>
-        public IReadOnlyList<SpriteRenderer> Parts => _parts;
+        /// <summary>Рендереры частей в порядке отрисовки (только чтение — владелец порядка это компонент).</summary>
+        public IReadOnlyList<SpriteRenderer> Renderers => _parts;
+
+        /// <summary>Части тела для адресных запросов — реестр по конвенции рига.</summary>
+        public IUnitPartLookup Parts => _registry ??= BuildRegistry();
 
         private void Awake()
         {
@@ -79,17 +82,19 @@ namespace Guildmaster.Presentation.Body
         private void CachePartTransforms()
         {
             _partTransforms = new Transform[_parts.Count];
-            _partRoles      = new PartRole[_parts.Count];
             for (int i = 0; i < _parts.Count; i++)
             {
                 SpriteRenderer part = _parts[i];
                 _partTransforms[i] = part != null ? part.transform : null;
-                // Метка роли лежит на том же узле, что рендерер части (ставится в префабе, фаза A). Нет
-                // метки — часть обычная (Body) и на касте не светится.
-                var tag = part != null ? part.GetComponent<UnitPartRole>() : null;
-                _partRoles[i] = tag != null ? tag.Role : PartRole.Body;
             }
+            _registry = null;   // состав частей сменился — анатомию пересобираем при первом запросе
         }
+
+        /// <summary>
+        /// Реестр частей строится ЛЕНИВО, а не в <c>Awake</c>: стенд анимаций и валидатор рига поднимают тело
+        /// без всякого боя, а обход иерархии с чтением меток им не нужен. Первый запрос делает это один раз.
+        /// </summary>
+        private UnitPartRegistry BuildRegistry() => UnitPartRegistry.FromBody(_parts, transform, this);
 
         public bool HasContent
         {
@@ -149,8 +154,8 @@ namespace Guildmaster.Presentation.Body
             {
                 SpriteRenderer part = _parts[i];
                 if (part == null) continue;
-                PartRole role = _partRoles != null && i < _partRoles.Length ? _partRoles[i] : PartRole.Body;
-                bool partGlows = (role & state.GlowRoles) != 0;
+                // Маска адресует части ПО ИНДЕКСУ в этом списке — том же, что несёт UnitPart.Index.
+                bool partGlows = state.GlowParts.Has(i);
                 part.GetPropertyBlock(_mpb);
                 BodyShaderIds.Write(_mpb, state, part.sprite, partGlows);
                 part.SetPropertyBlock(_mpb);
