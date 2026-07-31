@@ -62,6 +62,12 @@ namespace Guildmaster.Presentation
                  "0 = клипа разбега у юнита нет (покадровый бестиарий), темп берётся от бега.")]
         [SerializeField] private float _sprintUnitsPerSecond;
 
+        [Tooltip("Секунды блендинга между ПОЗНЫМИ стейтами (Idle / CombatIdle / Stun и переходы в/из них): " +
+                 "без него выход из стана и наведение цели щёлкали позу за кадр. Локомоция Run↔Sprint " +
+                 "блендится своим окном с переносом фазы шага; вход в свинг на базе покадровых — снапом, там " +
+                 "кадр сразу перехватывает скраб. 0 = мгновенный снап, как было.")]
+        [SerializeField] private float _poseBlendSeconds = 0.13f;
+
         [Header("Feel Hooks (пустой шов под точечный MMF_Player в Inspector)")]
         [SerializeField] private UnityEvent _onHitFeedback;
         [SerializeField] private UnityEvent _onDeathFeedback;
@@ -709,6 +715,17 @@ namespace Guildmaster.Presentation
                 int hash = ResolvedHash(next);
                 if (IsLocomotion(_state) && IsLocomotion(next))
                     _animator.CrossFade(hash, LocomotionBlend, 0, LocomotionPhase());
+                // Вход в свинг НА БАЗЕ (покадровый бестиарий) — снапом: DriveSwingScrub тем же кадром зовёт
+                // Play в нужную позицию и оборвал бы кроссфейд на полдороге. У скелетных свинг живёт слоем,
+                // база сюда с Attack не приходит вовсе, поэтому проверка бьёт ровно в покадровый случай.
+                else if (ScrubbedOnBase(next))
+                    _animator.Play(hash, 0, 0f);
+                // Всё прочее — позные стейты (Idle / CombatIdle / Stun) и переходы в/из локомоции. Раньше
+                // они щёлкали за кадр, и стан — самая свёрнутая поза — бросался в глаза сильнее всех.
+                // Фиксированные секунды, а не нормализованное окно: стейты разной длины (Stun 1.2с против
+                // Idle 2.6с), и одна доля дала бы разное реальное время перехода.
+                else if (_poseBlendSeconds > 0f)
+                    _animator.CrossFadeInFixedTime(hash, _poseBlendSeconds, 0, 0f);
                 else
                     _animator.Play(hash, 0, 0f);
 
@@ -726,6 +743,13 @@ namespace Guildmaster.Presentation
         // Шаг и разбег — одно движение с разной амплитудой; всё остальное меняется подменой позы.
         private static bool IsLocomotion(UnitAnimationState state)
             => state == UnitAnimationState.Run || state == UnitAnimationState.Sprint;
+
+        // Свинг, который DriveSwingScrub каждый кадр листает через Play в позицию по сим-тику. Кроссфейд в
+        // такой стейт оборвался бы сразу — поэтому вход в него идёт снапом. У скелетных со слоем действия
+        // Attack на базу не приходит (свинг уехал наверх), так что здесь остаётся ровно покадровый бестиарий.
+        private bool ScrubbedOnBase(UnitAnimationState state)
+            => !SwingIsOverlay &&
+               (state == UnitAnimationState.Attack || state == UnitAnimationState.AttackCharge);
 
         // Где нога внутри текущего цикла [0..1). Клипы локомоции написаны в одной фазе, поэтому эту долю
         // можно перенести в другой из них как есть.
