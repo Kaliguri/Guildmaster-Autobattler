@@ -39,3 +39,6 @@ MonoBehaviour:
   _sprintRampSeconds: 0.5
   _recastRecoverySpeed: 2
   _recastWindupSpeed: 2
+  _concealWeakRadius: 6
+  _concealMediumRadius: 4
+  _concealStrongRadius: 2

@@ -8,9 +8,14 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Combat
 {
     /// <summary>
-    /// Скрытность (§9.6, §10.5): скрытый юнит невидим для ВРАЖЕСКОГО таргетинга — мозг противника
-    /// не может выбрать его целью (враги не бегут к нему и не бьют), пока стелс не снят.
+    /// Маскировка: скрытый юнит невидим для ВРАЖЕСКОГО таргетинга — мозг противника не может выбрать
+    /// его целью (враги не бегут к нему и не бьют), пока его не заметили или он себя не выдал.
     /// </summary>
+    /// <remarks>
+    /// С 2026-07-31 «скрыт» — это состояние (<c>ConcealTier</c> плюс необнаруженность), а не тег
+    /// эффекта: у Маскировки четыре ступени, и висящий тег сам по себе больше не значит «не видно».
+    /// Кто именно скрыт, решает <c>ConcealmentSystem</c> по расстоянию — здесь оно задано напрямую.
+    /// </remarks>
     public sealed class ProfileBrainStealthTests
     {
         private sealed class FakeView : IBattleView
@@ -29,7 +34,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CurrentHP        = 100f,
                 Position         = new Vector2(x, 0f),
                 PreviousPosition = new Vector2(x, 0f),
-                EffectTagMask    = stealthed ? EffectTag.Stealth : EffectTag.None,
+                ConcealTier      = stealthed ? ConcealmentTier.Invisible : ConcealmentTier.None,
                 AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }

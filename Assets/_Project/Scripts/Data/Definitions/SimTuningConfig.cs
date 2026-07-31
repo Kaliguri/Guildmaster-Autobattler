@@ -101,6 +101,16 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Во сколько раз быстрее замах удара, вышедшего по рекасту (2 = вдвое). Сокращает ВЕСЬ свинг: контакт наступает раньше, доигрыш после него — обычной длины. Число отдельное от ускорения доигрыша намеренно — этим крутится читаемость телеграфа, и парированию нужно, чтобы окно осталось.")]
         [SerializeField] private float _recastWindupSpeed = SimTuning.Default.RecastWindupSpeed;
 
+        [TabGroup("Tuning", "Маскировка"), SuffixLabel("ед", overlay: true), LabelText("Радиус обнаружения: Слабая")]
+        [Tooltip("С какого расстояния враг замечает слабо замаскированного. Обнаружение КОМАНДНОЕ: увидел один — видит вся команда, отошли все — снова пропал.")]
+        [SerializeField] private float _concealWeakRadius = SimTuning.Default.ConcealWeakRadius;
+        [TabGroup("Tuning", "Маскировка"), SuffixLabel("ед", overlay: true), LabelText("Радиус обнаружения: Средняя")]
+        [Tooltip("То же для средней ступени.")]
+        [SerializeField] private float _concealMediumRadius = SimTuning.Default.ConcealMediumRadius;
+        [TabGroup("Tuning", "Маскировка"), SuffixLabel("ед", overlay: true), LabelText("Радиус обнаружения: Сильная")]
+        [Tooltip("То же для сильной. Держать НЕ больше досягаемости ближнего боя, иначе сильная маскировка ничем не отличается от инвиза: подошедший ударить всё равно её не снимет.")]
+        [SerializeField] private float _concealStrongRadius = SimTuning.Default.ConcealStrongRadius;
+
         /// <summary>Снять иммутабельный снапшот для бейка на старте боя.</summary>
         public SimTuning ToSnapshot() => new SimTuning(
             _bodyRadiusPerSize,
@@ -129,6 +139,9 @@ namespace Guildmaster.Data.Definitions
             _sprintWalkSeconds,
             _sprintRampSeconds,
             _recastRecoverySpeed,
-            _recastWindupSpeed);
+            _recastWindupSpeed,
+            _concealWeakRadius,
+            _concealMediumRadius,
+            _concealStrongRadius);
     }
 }

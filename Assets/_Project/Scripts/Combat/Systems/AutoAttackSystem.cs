@@ -434,6 +434,13 @@ namespace Guildmaster.Combat
             // Прирост ресурса — на момент реального удара (мана-реликвии).
             GainResourceOnHit(unit, ctx);
 
+            // Маскировка слетает от своего удара — «притаился перед нанесением удара» и есть её смысл
+            // (Макс 2026-07-31). Снимаем ДО расчёта: удар наносит уже видимый юнит, иначе один и тот же
+            // момент был бы и скрытым, и нет. У Убийцы это же состояние снимет ниже расход усиления —
+            // диспел идемпотентен, а вот кит БЕЗ усиления иначе остался бы скрытым навсегда.
+            if (unit.ConcealTier != Data.Definitions.ConcealmentTier.None)
+                ctx.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, EffectTag.Stealth, int.MaxValue, 0));
+
             float raw = unit.Stats.Get(StatType.AutoAttackDamage);
 
             // Сила ЭТОГО Удара в серии: у одноударного кита множитель всегда 1, у Монаха — половина на

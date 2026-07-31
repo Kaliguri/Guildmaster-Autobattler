@@ -81,6 +81,13 @@ namespace Guildmaster.Core.Simulation
         public readonly float RecastRecoverySpeed;  // во сколько раз быстрее доигрыш ОБОРВАННОЙ атаки
         public readonly float RecastWindupSpeed;    // во сколько раз быстрее замах удара, вышедшего по рекасту
 
+        // --- Маскировка (ГДД «Маскировка», числа Макса 2026-07-31) ---
+        // Радиус обнаружения по ступеням: подошёл ближе — увидел. Инвиза здесь нет намеренно: он не
+        // обнаруживается ни на каком расстоянии, и число для него было бы враньём.
+        public readonly float ConcealWeakRadius;    // Слабая — видно издалека
+        public readonly float ConcealMediumRadius;  // Средняя
+        public readonly float ConcealStrongRadius;  // Сильная — заметен вплотную
+
         public SimTuning(
             float bodyRadiusPerSize,
             float separationStrength,
@@ -108,7 +115,10 @@ namespace Guildmaster.Core.Simulation
             float sprintWalkSeconds,
             float sprintRampSeconds,
             float recastRecoverySpeed,
-            float recastWindupSpeed)
+            float recastWindupSpeed,
+            float concealWeakRadius,
+            float concealMediumRadius,
+            float concealStrongRadius)
         {
             BodyRadiusPerSize         = bodyRadiusPerSize;
             SeparationStrength        = separationStrength;
@@ -137,7 +147,11 @@ namespace Guildmaster.Core.Simulation
             SprintRampSeconds         = sprintRampSeconds;
             RecastRecoverySpeed       = recastRecoverySpeed;
             RecastWindupSpeed         = recastWindupSpeed;
+            ConcealWeakRadius         = concealWeakRadius;
+            ConcealMediumRadius       = concealMediumRadius;
+            ConcealStrongRadius       = concealStrongRadius;
         }
+
 
         /// <summary>
         /// Доля разгона [0..1] после <paramref name="wantTicks"/> тиков непрерывного намерения бежать:
@@ -221,6 +235,9 @@ namespace Guildmaster.Core.Simulation
             sprintWalkSeconds:         1f,
             sprintRampSeconds:         0.5f,
             recastRecoverySpeed:       2f,
-            recastWindupSpeed:         2f);
+            recastWindupSpeed:         2f,
+            concealWeakRadius:         6f,
+            concealMediumRadius:       4f,
+            concealStrongRadius:       2f);
     }
 }

@@ -1211,6 +1211,30 @@ MonoBehaviour:
     m_Key: effect.sinews.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 7344620445097984
+    m_Key: effect.parry.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7344621430759424
+    m_Key: effect.parry_window.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7344621854384128
+    m_Key: effect.parry_haste.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7344622257037312
+    m_Key: effect.riposte_charge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7344622659690496
+    m_Key: effect.micro_stun.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7345064839995392
+    m_Key: effect.resolute_strike_charge.name
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -324,6 +324,14 @@ namespace Guildmaster.Combat
             // чем в него попадут, — игрок обязан видеть причину прежде следствия (карточка the-aegis).
             ctx.ReportAbilityCast(caster);
 
+            // Каст выдаёт замаскированного (Макс 2026-07-31: маскировка слетает от атаки И каста) —
+            // в тот же момент, что и объявление каста врагам: невидимый источник видимого заклинания
+            // читался бы как баг. Каст на СЕБЯ исключения не делает: уход в тень активкой вернёт
+            // маскировку следующей же строкой нагрузки, а вот бафнуться из тени бесплатно нельзя.
+            if (caster.ConcealTier != Data.Definitions.ConcealmentTier.None)
+                ctx.Dispel(new Effects.DispelRequest(caster, DispelTargetPolarity.Any,
+                    EffectTag.Stealth, int.MaxValue, 0));
+
             if (!data.TakesTime)
             {
                 ApplyPayload(caster, ability, plan.Target, units, ctx);

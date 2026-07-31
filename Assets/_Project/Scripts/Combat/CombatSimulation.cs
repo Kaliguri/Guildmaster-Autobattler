@@ -69,6 +69,11 @@ namespace Guildmaster.Combat
         // тестов и бенчей) таскать её ради механики, которой в них нет. Осознанный компромисс.
         private readonly SummonSystem _summonSystem = new SummonSystem();
 
+        // Кто сейчас скрыт (Маскировка). Создаётся здесь по той же причине, что SummonSystem: без
+        // зависимостей и без состояния, а обязательный параметр конструктора заставил бы десятки
+        // существующих тестов таскать её ради механики, которой в них нет.
+        private readonly ConcealmentSystem _concealmentSystem = new ConcealmentSystem();
+
         // Фабрика призывов: подаётся снаружи (BindSummonFactory). null = в этом бою призывать нечем.
         private ISummonFactory _summonFactory;
         private readonly List<Projectile>   _projectiles = new List<Projectile>();
@@ -293,6 +298,10 @@ namespace Guildmaster.Combat
             // контроля, то есть меняется посреди тика, и реакция начинала зависеть от порядка юнитов в
             // списке (зеркальные команды расходились). См. RuntimeUnit.CanActAtTickStart.
             for (int i = 0; i < _units.Count; i++) _units[i].CanActAtTickStart = _units[i].CanAct;
+
+            // Кто скрыт — ДО выбора целей и по позициям начала тика: мозг обязан решать по тому же
+            // снимку мира, что и все остальные, иначе видимость зависела бы от места юнита в обходе.
+            _concealmentSystem.Tick(_units, in _tuning);
 
             _brainSystem.Tick(_units, this);
             _abilitySystem.Tick(_units, this, dt);

@@ -42,7 +42,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             sprintWalkSeconds:         SimTuning.Default.SprintWalkSeconds,
             sprintRampSeconds:         SimTuning.Default.SprintRampSeconds,
             recastRecoverySpeed:       SimTuning.Default.RecastRecoverySpeed,
-            recastWindupSpeed:         SimTuning.Default.RecastWindupSpeed);
+            recastWindupSpeed:         SimTuning.Default.RecastWindupSpeed,
+            concealWeakRadius:         SimTuning.Default.ConcealWeakRadius,
+            concealMediumRadius:       SimTuning.Default.ConcealMediumRadius,
+            concealStrongRadius:       SimTuning.Default.ConcealStrongRadius);
 
         [Test]
         public void BeforeThreshold_NoRamp()

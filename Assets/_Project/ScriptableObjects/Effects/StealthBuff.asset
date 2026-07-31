@@ -31,6 +31,7 @@ MonoBehaviour:
   _components:
   - rid: 5615026876324511850
   - rid: 5615027308851101872
+  - rid: 5615027358498291902
   _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
@@ -65,3 +66,7 @@ MonoBehaviour:
           Form: 0
           Baseline: 1
           PerUnit: 0.5
+    - rid: 5615027358498291902
+      type: {class: ConcealmentComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _tier: 4
