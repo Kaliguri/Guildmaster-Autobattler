@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
@@ -56,15 +57,22 @@ namespace Guildmaster.DevTools
 
         private void Start()
         {
-            if (_loader == null || _content == null)
-            {
-                // Самоинжект (DevTools знает Game, обратного нет) — как CombatUnitDebugView.
-                var scope = LifetimeScope.Find<Guildmaster.Game.CombatLifetimeScope>();
-                scope?.Container.Inject(this);
-            }
-
             _document = GetComponent<UIDocument>();
             if (_document == null) { Debug.LogWarning("[DevEncounterPanel] - нет UIDocument"); enabled = false; return; }
+
+            if (_loader == null || _content == null)
+            {
+                // Самоинжект (DevTools знает Game, обратного нет) — как CombatUnitDebugView. Ждём, пока
+                // скоуп ПОСТРОИТСЯ: его объект появляется в сцене раньше контейнера, и прямой
+                // scope.Container.Inject падал NRE в зависимости от порядка объектов в сцене.
+                // Список боёв строим уже после инъекции — до неё его не из чего собирать.
+                DevSelfInject.WhenScopeReady<Guildmaster.Game.CombatLifetimeScope>(this, () =>
+                {
+                    BuildUi();
+                    Apply();
+                }).Forget();
+                return;
+            }
 
             BuildUi();
             Apply(); // старт скрыт (DevView.None) — панель не мозолит глаз, пока не нажали F2/F1

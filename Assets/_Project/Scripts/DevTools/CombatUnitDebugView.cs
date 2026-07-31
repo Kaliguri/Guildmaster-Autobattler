@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Data.Stats;
@@ -23,8 +24,9 @@ namespace Guildmaster.DevTools
         {
             if (_simulation != null) return;
             // Fallback: самоинжекция через CombatLifetimeScope (DevTools знает Game, обратного нет).
-            var scope = VContainer.Unity.LifetimeScope.Find<Guildmaster.Game.CombatLifetimeScope>();
-            scope?.Container.Inject(this);
+            // Ждём построения скоупа: объект скоупа в сцене есть раньше, чем его контейнер, и прямой
+            // scope.Container.Inject падал NRE в зависимости от порядка объектов в сцене.
+            DevSelfInject.WhenScopeReady<Guildmaster.Game.CombatLifetimeScope>(this).Forget();
         }
 
         // ── Состояние симуляции ──────────────────────────────────────────────
