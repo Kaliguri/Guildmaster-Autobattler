@@ -43,6 +43,7 @@ $repo = Split-Path -Parent $PSScriptRoot
 $labDir = Join-Path $repo 'docs/lab'
 $wikiDir = Join-Path $repo 'docs/wiki'
 $themeDir = Join-Path $repo 'Assets/_Project/UI/Theme'
+$balanceData = Join-Path $repo 'BalanceReports/site/data.js'
 
 if (-not (Test-Path $labDir)) { throw "Не нашла docs/lab по пути $labDir" }
 
@@ -101,4 +102,4 @@ if (-not $NoBrowser) {
     } -ArgumentList $url | Out-Null
 }
 
-& $python.Source $server --port $Port --root $labDir --wiki $wikiDir --theme $themeDir
+& $python.Source $server --port $Port --root $labDir --wiki $wikiDir --theme $themeDir --balance $balanceData

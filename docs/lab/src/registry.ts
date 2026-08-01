@@ -91,13 +91,29 @@ export const PAGES: PageDef[] = [
   },
 
   {
-    id: "balance-reports",
+    id: "balance-runs",
     area: "balance",
-    title: "Отчёты SimBench",
-    blurb: "The Balance Desk: прогоны, дельты, реестр проблем. Пока отдельным приложением.",
+    title: "Прогоны",
+    blurb: "Замеры SimBench по режимам, дельты с прошлым прогоном, словарь метрик.",
+    load: () => import("./sections/balance-runs.js"),
+    icon: "⚖"
+  },
+  {
+    id: "balance-issues",
+    area: "balance",
+    title: "Реестр проблем",
+    blurb: "Что сломано, чем это видно, какие правки предложены и что решил Макс.",
+    load: () => import("./sections/balance-issues.js"),
+    icon: "!"
+  },
+  {
+    id: "balance-desk",
+    area: "balance",
+    title: "Прежний сайт",
+    blurb: "The Balance Desk целиком: тепловые карты, карточки китов, настройки показа.",
     load: null,
     href: "../../BalanceReports/site/index.html",
-    icon: "⚖"
+    icon: "↗"
   },
 
   {

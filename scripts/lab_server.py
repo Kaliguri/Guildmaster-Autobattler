@@ -81,6 +81,24 @@ def build_index(wiki: Path) -> dict:
     return {"root": root.as_posix(), "vault": root.name, "count": len(notes), "notes": notes}
 
 
+def read_balance(data_js: Path) -> dict:
+    """Данные балансных прогонов из BalanceReports/site/data.js.
+
+    Файл пишет scripts/balance-site.py из JSON-снимков SimBench, и МЫ ЕГО НЕ ТРОГАЕМ: генерация
+    остаётся как была, меняется только показ. Здесь снимается обёртка `window.BALANCE_DATA = …;`
+    и содержимое отдаётся как JSON — читать его тегом script значило бы тащить в сайт глобальную
+    переменную и терять контроль над тем, когда данные приехали.
+    """
+    if not data_js.exists():
+        return {"runs": [], "modeTitles": {}, "issues": [], "missing": data_js.as_posix()}
+    try:
+        text = data_js.read_text(encoding="utf-8", errors="replace")
+        body = text[text.index("=") + 1:].strip().rstrip(";")
+        return json.loads(body)
+    except (OSError, ValueError) as err:
+        return {"runs": [], "modeTitles": {}, "issues": [], "error": str(err)}
+
+
 def build_palette(theme: Path) -> dict:
     """Токены темы как они лежат в проекте.
 
@@ -110,9 +128,10 @@ def build_palette(theme: Path) -> dict:
 class LabHandler(SimpleHTTPRequestHandler):
     """Раздача сайта плюс собственные маршруты, отдающие снимки проекта."""
 
-    def __init__(self, *args, wiki: Path, theme: Path, **kwargs):
+    def __init__(self, *args, wiki: Path, theme: Path, balance: Path, **kwargs):
         self.wiki = wiki
         self.theme = theme
+        self.balance = balance
         super().__init__(*args, **kwargs)
 
     def do_GET(self):  # noqa: N802 — имя задано базовым классом
@@ -122,6 +141,9 @@ class LabHandler(SimpleHTTPRequestHandler):
             return
         if route == "/api/palette":
             self._json(build_palette(self.theme))
+            return
+        if route == "/api/balance":
+            self._json(read_balance(self.balance))
             return
         super().do_GET()
 
@@ -150,9 +172,16 @@ def main() -> None:
     parser.add_argument("--root", required=True, help="каталог сайта (docs/lab)")
     parser.add_argument("--wiki", required=True, help="каталог vault (docs/wiki)")
     parser.add_argument("--theme", required=True, help="каталог темы UI (Assets/_Project/UI/Theme)")
+    parser.add_argument("--balance", required=True, help="data.js балансных отчётов")
     args = parser.parse_args()
 
-    handler = partial(LabHandler, directory=args.root, wiki=Path(args.wiki), theme=Path(args.theme))
+    handler = partial(
+        LabHandler,
+        directory=args.root,
+        wiki=Path(args.wiki),
+        theme=Path(args.theme),
+        balance=Path(args.balance),
+    )
     with ThreadingHTTPServer(("127.0.0.1", args.port), handler) as httpd:
         try:
             httpd.serve_forever()
