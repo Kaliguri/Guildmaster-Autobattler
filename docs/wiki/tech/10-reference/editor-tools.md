@@ -58,6 +58,8 @@ rg 'MenuItem\("' Assets/_Project --type cs
 | `Alebardium/Data/Migrations/Phase 4 - Package 1` | 420 | Миграция id и раскладки | `Data/Editor/Migrations/` |
 | `Alebardium/Data/Migrations/Phase 4 - Package 3 (AI presets)` | 421 | Миграция AI-пресетов | там же |
 | `Alebardium/Data/Migrations/Phase 4 - Package 3 (StatsConfig)` | 422 | Миграция стат-конфига | там же |
+| `Alebardium/Animation/…` | 610–620 | Профиль рига, валидатор клипов, разделение частей | `EditorTools/AnimationLab/Rig/` |
+| `Alebardium/VFX/Post FX Lab` | 700 | Стенд пост-обработки: боевой профиль и карта живьём, A/B, снятие кадров | `Presentation/Editor/PostFxLabWindow.cs` |
 
 ### Как раздавать приоритеты новым пунктам
 
@@ -71,6 +73,8 @@ Unity рисует разделитель, когда соседние прио�
 | 200–299 | `UI Preview/` |
 | 300–399 | `Audio/` |
 | 400–499 | `Data/` |
+| 600–699 | `Animation/` |
+| 700–799 | `VFX/` |
 
 Новая группа — следующая свободная сотня.
 

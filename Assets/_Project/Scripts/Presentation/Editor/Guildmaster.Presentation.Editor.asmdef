@@ -2,7 +2,10 @@
   "name": "Guildmaster.Presentation.Editor",
   "rootNamespace": "Guildmaster.Presentation.Editor",
   "references": [
-    "Guildmaster.Presentation"
+    "Guildmaster.Presentation",
+    "Guildmaster.Data",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.Universal.Runtime"
   ],
   "includePlatforms": [
     "Editor"
