@@ -46,7 +46,7 @@ MonoBehaviour:
     MoveSpeedMult: 0.75
     ArmorBudget: 20
     DpsMult: 0.5
-    HealMult: 0.5
+    HealMult: 0
   - Class: 5
     HpMult: 0.65
     MoveSpeedMult: 0.75
