@@ -708,7 +708,15 @@ namespace Guildmaster.Presentation
             in Combat.Tape.UnitSnapshot target, DamageResult result, float hpDamageFrac, bool blocked)
         {
             bool ranged = IsRanged(sourceId);
-            Effects.HitFormKind kind = Effects.HitFormFactory.ResolveKind(result.Type, ranged);
+            if (!Effects.HitFormFactory.ResolveKind(result.Type, ranged, out Effects.HitFormKind kind))
+            {
+                // Дефект контента, а не «формы не бывает»: удар в ближнем бою обязан называть способ
+                // доставки. Молчать нельзя — иначе кит без формы выглядит как задумка.
+                Debug.LogError($"[CombatPresenter] у мили-удара юнита {sourceId} тип урона {result.Type} " +
+                               "не называет способ доставки — форму рисовать нечем. Задай физический тип " +
+                               "или объяви архетип явно.");
+                return;
+            }
 
             Vector3 b = AnchorFor(targetId, target.Position);
             _views.TryGetValue(sourceId, out UnitView sourceView);
