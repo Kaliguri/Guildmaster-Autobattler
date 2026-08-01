@@ -72,6 +72,10 @@ function build(): void {
     if (e.target === box) hide();
   });
   document.addEventListener("keydown", onKey);
+  // Размер кадра зависит от окна, поэтому пересчитывается вместе с ним.
+  window.addEventListener("resize", () => {
+    if (box && !box.hidden && index >= 0) show(index);
+  });
 }
 
 function onKey(e: KeyboardEvent): void {
@@ -109,10 +113,10 @@ function show(at: number): void {
 
 function showScene(item: Extract<Item, { kind: "scene" }>): void {
   if (!frame) return;
+  sizeFrame(item.w / item.h);
   const canvas = el("canvas");
   canvas.width = item.w;
   canvas.height = item.h;
-  canvas.style.aspectRatio = `${item.w} / ${item.h}`;
   frame.appendChild(canvas);
   frame.appendChild(caption(item.stand.title, item.stand.note ?? ""));
   liveCanvas = canvas;
@@ -121,8 +125,10 @@ function showScene(item: Extract<Item, { kind: "scene" }>): void {
 
 function showColor(item: Extract<Item, { kind: "color" }>): void {
   if (!frame) return;
+  sizeFrame(16 / 9);
   const field = el("div", "lightbox-color");
   field.style.background = item.css;
+  field.style.height = `${Math.round(frameWidth * 0.5)}px`;
   frame.appendChild(field);
 
   const cap = caption(item.token.name, item.token.note);
@@ -139,6 +145,19 @@ function showColor(item: Extract<Item, { kind: "color" }>): void {
   });
   cap.appendChild(value);
   frame.appendChild(cap);
+}
+
+/** Ширина кадра в пикселях: столько, чтобы картинка влезла и по ширине, и по высоте экрана.
+ *  Считается ЗДЕСЬ, а не в CSS, потому что зависит сразу от обеих сторон и от пропорций сцены. */
+let frameWidth = 0;
+
+function sizeFrame(ratio: number): void {
+  if (!frame) return;
+  const gutter = window.innerWidth < 720 ? 32 : 190; // место под круглые кнопки по бокам
+  const availW = window.innerWidth - gutter;
+  const availH = window.innerHeight - 190; // подпись, отступы и кнопка закрытия
+  frameWidth = Math.max(280, Math.min(availW, availH * ratio, 1600));
+  frame.style.width = `${Math.round(frameWidth)}px`;
 }
 
 function caption(title: string, note: string): HTMLElement {

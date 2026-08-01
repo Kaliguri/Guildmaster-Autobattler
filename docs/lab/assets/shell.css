@@ -426,12 +426,13 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
   padding: clamp(1rem, 4vw, 3rem);
 }
 .lightbox[hidden] { display: none; }
-.lightbox-frame { display: flex; flex-direction: column; gap: .8rem; max-width: min(1400px, 92vw); }
+/* Ширину кадра задаёт JS в пикселях — и это не прихоть. Если дать канвасу width:100%, а рамке
+   ширину по содержимому, получится петля: канвас меряется по рамке, рамка по канвасу, и каждый
+   кадр картинка становится меньше предыдущей. Поэтому размер вычисляется один раз при показе. */
+.lightbox-frame { display: flex; flex-direction: column; gap: .8rem; }
 .lightbox-frame canvas {
   display: block;
   width: 100%;
-  max-height: 78vh;
-  object-fit: contain;
   background: #0C0B09;
   border: 1px solid var(--edge);
   border-radius: var(--radius);
@@ -464,8 +465,7 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
 
 /* Поле цвета: крупно и без соседей — единственный способ сравнить два близких оттенка. */
 .lightbox-color {
-  width: min(70vw, 900px);
-  height: min(56vh, 460px);
+  width: 100%;
   border: 1px solid var(--edge);
   border-radius: var(--radius);
 }
