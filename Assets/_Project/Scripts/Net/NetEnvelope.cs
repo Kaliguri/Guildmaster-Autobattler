@@ -24,6 +24,9 @@ namespace Guildmaster.Net
 
         /// <summary>Команда забега.</summary>
         RunCommand = 4,
+
+        /// <summary>Управление боем: общая пауза и возобновление.</summary>
+        BattleControl = 5,
     }
 
     /// <summary>
@@ -80,6 +83,7 @@ namespace Guildmaster.Net
 
         private static bool IsKnown(byte raw) =>
             raw == (byte)NetChannel.TapeChunk  || raw == (byte)NetChannel.TapeResend ||
-            raw == (byte)NetChannel.Presence   || raw == (byte)NetChannel.RunCommand;
+            raw == (byte)NetChannel.Presence   || raw == (byte)NetChannel.RunCommand ||
+            raw == (byte)NetChannel.BattleControl;
     }
 }

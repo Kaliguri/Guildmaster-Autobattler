@@ -89,7 +89,7 @@ Deaths!*, страница которой осталась жива. Свой с
 | Поле владельца слота | `RunState.SlotOwner` (`int[]`, соло — все нули) | кооп-шов заложен заранее, «кого кто ведёт» уже есть куда писать |
 | Гейт готовности | `Game/Flow/RunFlowSeams.cs` — `IReadyGate` + `SoloReadyGate`, `IPlayerIntentSource.IsLocalAuthority` | шов есть, тела нет — сюда встаёт сетевая реализация |
 | Транспорт Steam | `Net/FacepunchTransportBootstrap.cs` | инициализация на AppId 480, больше ничего |
-| Релей команд | `Net/NetworkCommandRelay.cs` | **наполовину легаси**: broadcast «все применяют на одном тике» из lockstep-эпохи. Переписывается в фазе Б, смысл сужается до Pause/Resume |
+| ~~Релей команд~~ | `Net/BattleControlRelay.cs` | **переписан 02.08**: lockstep-broadcast удалён вместе с `NetworkCommandRelay`, осталась общая пауза как состояние показа |
 | Проба чек-сумм | `Net/_Parked/SimSyncProbe.cs` → `CombatSimulation.ComputeChecksum()` | запаркована; расконсервируется в фазе Г как dev-инструмент, ставкой не является |
 | Детерминизм | `Core/Random/IRngService`, `BattleBootstrap.ReseedForBattle` | есть; готча — `CombatLifetimeScope` регистрирует `new XorShiftRng(0UL)`, спасает пересев перед боем |
 | Реестр dev-команд | `Core/DevConsole/DevCommandRegistry` — явная регистрация, `Execute(line)`, `Unregister` | 35 команд уже идут через один вход; дев-команды становятся хост-авторитативными бесплатно, если пройдут через шину (§4.1) |
@@ -185,8 +185,13 @@ Simulation Testing, и половина метода у нас уже стоит
 > `TapeChunkReader.cs`), **раздача и склейка тоже** — `TapeStreamer` у хоста, `TapeIntake` у гостя,
 > конверт с байтом канала в `Net/NetEnvelope.cs`. Тесты — `TapeChunkCodecTests`, `TapeDeliveryTests`.
 > Решения и грабли — [[tech/00-meta/journal/2026-08-01-the-tape-is-handed-out-in-chunks-and-asked-back-by-number|Journal - The Tape Is Handed Out In Chunks]].
-> **Осталось в фазе Б:** переписать `NetworkCommandRelay` под Pause/Resume и провод к живой
-> симуляции (кто зовёт `Pump` и с каким тиком) — он встаёт вместе с сессией.
+> **Фаза Б закрыта 02.08.2026.** Провод к живой симуляции — `Net/Tape/BattleTapeBroadcast.cs`
+> (раздаёт по последний досчитанный тик, дожимает хвост на конце боя, обнуляется на `ResetBattle`).
+> `NetworkCommandRelay` **удалён**: на его месте `Net/BattleControlRelay.cs` — общая пауза как
+> состояние ПОКАЗА, поверх `INetTransport`, без NGO и сцены. Решения и грабли —
+> [[tech/00-meta/journal/2026-08-02-the-shared-pause-belongs-to-the-view-not-to-the-simulation|Journal - The Shared Pause Belongs To The View]].
+> **Остаётся регистрация в боевом скоупе** — она едет вместе с сессией (фаза Г), потому что до неё
+> транспорта в контейнере нет.
 
 Чанк — **append-only срез ленты по диапазону тиков**, с номером и тиковым штампом. Клиент складывает
 чанки в свою `BattleTape` и проигрывает её тем же `BattleTapePlayback`, которым играет соло.
@@ -332,7 +337,7 @@ rich presence.
 | Фаза | Что | Готово, когда |
 |---|---|---|
 | **А** | лог команд забега · `INetTransport` + loopback + UTP-профиль + chaos · handshake контента · Multiplayer Tools в манифест | соло целиком идёт через лог команд; тест «один лог → один `RunState`» зелёный; chaos воспроизводит потерю по сиду |
-| **Б** | кодек чанка ленты · раздача и склейка · переписать `NetworkCommandRelay` под Pause/Resume | роундтрип побайтово совпал; два клиента на loopback проиграли один бой одинаково |
+| **Б** — ЗАКРЫТА 02.08 | кодек чанка ленты · раздача и склейка · провод к живому бою · релей переписан под общую паузу | роундтрип побайтово совпал; два клиента на loopback проиграли один бой одинаково |
 | **В** | присутствие: курсоры | чужой курсор видно, механика его не читает (тест) |
 | **Г** | сессия: лобби, инвайт, дисконнект, «хост ушёл» · свой AppId · `SimSyncProbe` под флагом | **критерий приёмки §1** на двух машинах |
 
