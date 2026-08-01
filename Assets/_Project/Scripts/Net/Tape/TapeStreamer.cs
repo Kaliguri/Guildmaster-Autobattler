@@ -103,13 +103,39 @@ namespace Guildmaster.Net.Tape
         {
             int number = _writer.NextChunkNumber;
             ArraySegment<byte> bytes = _writer.Write(_tape, firstTick, tickCount);
-            _nextTick = firstTick + tickCount;
 
             // Пустой срез — это не ошибка: в диапазоне не оказалось ни одного записанного кадра
             // (бой ещё не начинался, лента чистилась). Номер чанка при этом НЕ тратится — писатель
             // увеличивает его только когда пишет, — поэтому у гостя не появляется вечная дыра.
-            if (bytes.Count == 0) return;
+            if (bytes.Count == 0)
+            {
+                _nextTick = firstTick + tickCount;
+                return;
+            }
 
+            // Предел спрашиваем у ТРАНСПОРТА, а не берём из своей константы: у Steam это 512 КБ, у UTP —
+            // MaximumFragmentedMessageSize, и он заметно меньше нашего потолка чанка. Сообщение сверх
+            // предела Steam роняет молча (транспорт не читает его отказ), так что проверить обязаны мы.
+            int limit = _transport.MaxReliableMessageBytes - NetEnvelope.HeaderBytes;
+            if (bytes.Count > limit)
+            {
+                _writer.DiscardLast();
+
+                // Один тик, который не влезает, — это уже не вопрос нарезки: на арене столько юнитов и
+                // событий, что кадр не пролезает в сеть целиком. Отказ громкий, потому что тихо здесь
+                // означало бы «у гостя просто нет куска боя».
+                if (tickCount <= 1)
+                    throw new InvalidOperationException(
+                        $"кадр тика {firstTick} весит {bytes.Count} Б при пределе {limit} Б — " +
+                        "делить дальше нечего");
+
+                int half = tickCount / 2;
+                SendChunk(firstTick, half);
+                SendChunk(firstTick + half, tickCount - half);
+                return;
+            }
+
+            _nextTick = firstTick + tickCount;
             Remember(number, bytes);
             _transport.SendToAll(NetEnvelope.Wrap(NetChannel.TapeChunk, bytes, ref _envelope), NetDelivery.Reliable);
             SentChunkCount++;

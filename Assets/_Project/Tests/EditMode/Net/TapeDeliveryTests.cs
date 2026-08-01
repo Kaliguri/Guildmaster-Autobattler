@@ -169,6 +169,33 @@ namespace Guildmaster.Tests.EditMode.Net
             Assert.AreEqual(2, intake.ResendRequestCount, "А после интервала — ушёл");
         }
 
+        // Предел надёжного сообщения у транспортов разный: у Steam 512 КБ, у UTP —
+        // MaximumFragmentedMessageSize, и он заметно меньше нашего потолка чанка. Сверх предела
+        // сообщение не уезжает вовсе (Steam возвращает отказ, которого транспорт не читает), поэтому
+        // чанк режется по тикам до тех пор, пока не влезет.
+        [Test]
+        public void ChunkTooBigForTheTransport_IsSplit_NotDropped()
+        {
+            var net   = new LoopbackNetwork();
+            var host  = new NarrowTransport(net.CreateNode(), limitBytes: 400);
+            var guest = net.CreateNode();
+
+            BattleTape source = HostTape(ticks: 60);
+            var streamer = new TapeStreamer(host, source, ticksPerChunk: 30);
+
+            var target = new BattleTape(windowTicks: 256);
+            var intake = new TapeIntake(guest, new TapeChunkReader(target, new FakeContent()));
+
+            streamer.Flush(readyThroughTick: 59);
+            net.PollAll();
+
+            Assert.Greater(streamer.SentChunkCount, 2, "Чанки поделились на куски помельче");
+            Assert.AreEqual(0, intake.MissingCount, "И нумерация осталась непрерывной — дыр нет");
+
+            for (int tick = 0; tick < 60; tick++)
+                Assert.IsTrue(target.TryGetFrame(tick, out _), $"Кадр тика {tick} всё равно доехал");
+        }
+
         [Test]
         public void ForeignChannel_IsIgnored_NotMisread()
         {
@@ -284,6 +311,66 @@ namespace Guildmaster.Tests.EditMode.Net
                 if (DropNextSends <= 0) return false;
                 DropNextSends--;
                 return true;
+            }
+        }
+
+        /// <summary>Транспорт с узким пределом надёжного сообщения — как UTP рядом со Steam.</summary>
+        private sealed class NarrowTransport : INetTransport
+        {
+            private readonly INetTransport _inner;
+            private readonly int           _limit;
+
+            public NarrowTransport(INetTransport inner, int limitBytes)
+            {
+                _inner = inner;
+                _limit = limitBytes;
+            }
+
+            public bool IsRunning               => _inner.IsRunning;
+            public int  LocalPeerId             => _inner.LocalPeerId;
+            public bool IsHost                  => _inner.IsHost;
+            public int  MaxReliableMessageBytes => _limit;
+
+            public event Action<int> PeerConnected
+            {
+                add    => _inner.PeerConnected += value;
+                remove => _inner.PeerConnected -= value;
+            }
+
+            public event Action<int> PeerDisconnected
+            {
+                add    => _inner.PeerDisconnected += value;
+                remove => _inner.PeerDisconnected -= value;
+            }
+
+            public event Action<int, ArraySegment<byte>> MessageReceived
+            {
+                add    => _inner.MessageReceived += value;
+                remove => _inner.MessageReceived -= value;
+            }
+
+            public void Send(int peerId, ArraySegment<byte> payload, NetDelivery delivery)
+            {
+                Guard(payload, delivery);
+                _inner.Send(peerId, payload, delivery);
+            }
+
+            public void SendToAll(ArraySegment<byte> payload, NetDelivery delivery)
+            {
+                Guard(payload, delivery);
+                _inner.SendToAll(payload, delivery);
+            }
+
+            public void Poll()     => _inner.Poll();
+            public void Shutdown() => _inner.Shutdown();
+
+            // Настоящий транспорт сверх предела молчит, а тест обязан кричать: тихая потеря выглядела бы
+            // как «у гостя просто нет куска боя», и искали бы её не здесь.
+            private void Guard(ArraySegment<byte> payload, NetDelivery delivery)
+            {
+                if (delivery == NetDelivery.Reliable && payload.Count > _limit)
+                    throw new InvalidOperationException(
+                        $"отправка {payload.Count} Б при пределе {_limit} Б — на релизе это тишина");
             }
         }
 

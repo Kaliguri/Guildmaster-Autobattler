@@ -6,6 +6,7 @@
     "Guildmaster.Data",
     "Guildmaster.Combat",
     "Unity.Netcode.Runtime",
+    "Unity.Collections",
     "VContainer"
   ],
   "includePlatforms": [],

@@ -8,6 +8,7 @@
     "Guildmaster.Guild",
     "Guildmaster.MiniGames",
     "Guildmaster.Net",
+    "Unity.Netcode.Runtime",
     "Guildmaster.Presentation",
     "Guildmaster.UI",
     "FMODUnity",

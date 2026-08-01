@@ -177,6 +177,25 @@ namespace Guildmaster.Game
 
             builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>();
 
+            // ── Кооп: транспорт, сессия, общая пауза ──────────────────────────────────────────
+            // Регистрируется всегда, даже в соло: транспорт без сессии не поднят, качать нечего, и
+            // ветвление «а вдруг мы одни» не нужно ни одному потребителю.
+            builder.RegisterComponentInHierarchy<Unity.Netcode.NetworkManager>();
+
+            // Отпечаток контента считается один раз на старте: он сверяется на рукопожатии, а к тому
+            // времени контент уже не меняется. Версия сборки — из настроек проекта.
+            builder.Register(c => Guildmaster.Data.ContentFingerprint.Compute(
+                    ScopeWiring.Require(_contentDatabase, nameof(RootLifetimeScope), nameof(_contentDatabase)),
+                    Application.version),
+                Lifetime.Singleton);
+
+            builder.Register<Guildmaster.Net.Transport.NgoTransport>(Lifetime.Singleton)
+                   .As<Guildmaster.Net.Transport.INetTransport>()
+                   .AsSelf();
+            builder.Register<Guildmaster.Net.Session.CoopSession>(Lifetime.Singleton);
+            builder.Register<Guildmaster.Net.BattleControlRelay>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<Guildmaster.Net.NetPump>(Lifetime.Singleton);
+
             // Флоу забега (план 11): рукопожатие в боевой скоуп + сетевые швы (соло-тела). BattleFlow создаётся
             // per-node внутри GameFlow, потому в DI не регистрируется.
             // Один инстанс под двумя ролями: IBattleSession (write-side, боевой скоуп) + IBattleClock
