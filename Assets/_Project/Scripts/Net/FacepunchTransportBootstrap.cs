@@ -11,8 +11,15 @@ namespace Guildmaster.Net
     /// </summary>
     public sealed class FacepunchTransportBootstrap : MonoBehaviour
     {
-        [Tooltip("Steam AppId для разработки (480 = Spacewar, тестовое приложение).")]
-        [SerializeField] private uint _appId = 480;
+        /// <remarks>
+        /// AppId нашего же неизданного проекта, а не Spacewar (480): у 480 владеют все, поэтому на нём
+        /// не проверить главное — что лобби и relay работают под приложением, которым владеет
+        /// ограниченный круг. Цена ровно в этом: **тестировать может только аккаунт с доступом**, так
+        /// что второй тестовый аккаунт нужно завести в Steamworks заранее. Свой слот покупается ближе к
+        /// демке (решение Макса 01.08.2026) — переезд стоит одного числа здесь.
+        /// </remarks>
+        [Tooltip("Steam AppId. 3259720 = Few Seconds - Many Deaths!, наш тестовый слот до покупки своего.")]
+        [SerializeField] private uint _appId = 3259720;
 
         private void Awake()
         {
