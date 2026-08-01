@@ -46,6 +46,22 @@ export function watch(canvas: HTMLCanvasElement, stand: StandDef, w: number, h: 
   io?.observe(canvas);
 }
 
+/** Сцена вне потока страницы: лайтбокс. Наблюдателем не проверяется — она заведомо на экране,
+ *  раз её открыли, и гасить её нечему. */
+export function register(canvas: HTMLCanvasElement, stand: StandDef, w: number, h: number): void {
+  const rec: Live = { canvas, stand, w, h, visible: true, failed: false, cssW: 0 };
+  records.set(canvas, rec);
+  live.push(rec);
+}
+
+export function unregister(canvas: HTMLCanvasElement): void {
+  const at = live.findIndex((rec) => rec.canvas === canvas);
+  if (at < 0) return;
+  io?.unobserve(canvas);
+  live.splice(at, 1);
+  records.delete(canvas);
+}
+
 /** Смена маршрута: старые сцены больше не существуют. */
 export function reset(): void {
   for (const rec of live) io?.unobserve(rec.canvas);

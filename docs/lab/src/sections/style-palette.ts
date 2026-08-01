@@ -1,80 +1,111 @@
 /* Палитра проекта: токены цвета такими, какие они в игре прямо сейчас.
 
    HARD-правило проекта: у цвета один владелец — `Assets/_Project/UI/Theme/tokens.*.uss`, мир читает
-   снимок. Поэтому раздел ничего не хардкодит: сервер парсит те самые файлы на лету. Если сайт
-   открыт без сервера, стенды честно скажут «нет данных» вместо того, чтобы показать старую копию. */
+   снимок. Поэтому раздел ничего не хардкодит: сервер парсит те самые файлы на лету.
+
+   Плитки — живой DOM, а не canvas. Цвет в канвасе нельзя ни выделить, ни скопировать, ни найти
+   поиском по странице, а именно это с палитрой и делают: берут значение и несут в код. Свечение
+   вспышек, наоборот, осталось на canvas — аддитивный цвет надо смотреть светом на тёмном, плиткой
+   он врёт. */
 
 import { drawFeedState, fetchPalette, type PaletteToken } from "../api.js";
+import { el } from "../dom.js";
 import type { DrawFn, SectionDef } from "../types.js";
 
 const palette = fetchPalette();
 
-/** Токен как цвет для canvas. USS пишет `rgb(184, 134, 59)` — это и так валидный CSS. */
+/** Токен как цвет для CSS. USS пишет `rgb(184, 134, 59)` — это и так валидное значение. */
 function cssOf(token: PaletteToken): string | null {
   const v = token.value.trim();
   return v.startsWith("rgb") || v.startsWith("#") ? v : null;
 }
 
-function tokensMatching(prefix: string): PaletteToken[] {
-  const groups = palette.data?.groups ?? [];
+function tokensMatching(...prefixes: string[]): PaletteToken[] {
   const out: PaletteToken[] = [];
-  for (const g of groups) {
+  for (const g of palette.data?.groups ?? []) {
     for (const t of g.tokens) {
-      if (t.name.startsWith(prefix) && cssOf(t)) out.push(t);
+      if (prefixes.some((p) => t.name.startsWith(p)) && cssOf(t)) out.push(t);
     }
   }
   return out;
 }
 
-/** Плитки токенов: имя, образец, пояснение из самого USS. */
-function drawSwatches(prefix: string, columns: number): DrawFn {
-  return (ctx, w, h) => {
-    if (drawFeedState(ctx, w, h, palette, "палитру")) return;
+/* ---------- плитки: живой DOM ---------- */
 
-    const list = tokensMatching(prefix);
-    if (list.length === 0) {
-      ctx.font = "500 13px ui-monospace, Consolas, monospace";
-      ctx.fillStyle = "rgba(147,128,94,.8)";
-      ctx.fillText(`токенов ${prefix}* в теме нет`, 22, h / 2);
-      return;
-    }
+/** Клик по плитке кладёт значение в буфер — палитрой пользуются именно так: берут и несут в код. */
+function swatch(token: PaletteToken): HTMLElement {
+  const css = cssOf(token) ?? "transparent";
+  const cell = el("button", "sw");
+  cell.type = "button";
+  cell.title = "Скопировать значение";
 
-    const pad = 16;
-    const gap = 8;
-    const cellW = (w - pad * 2 - gap * (columns - 1)) / columns;
-    const rows = Math.ceil(list.length / columns);
-    const cellH = Math.min(52, (h - pad * 2 - gap * (rows - 1)) / rows);
+  const chip = el("span", "sw-chip");
+  chip.style.background = css;
 
-    list.forEach((token, i) => {
-      const col = i % columns;
-      const row = Math.floor(i / columns);
-      const x = pad + col * (cellW + gap);
-      const y = pad + row * (cellH + gap);
-      const css = cssOf(token);
-      if (!css) return;
+  const text = el("span", "sw-text");
+  text.appendChild(el("b", null, token.name.replace("--gm-", "")));
+  text.appendChild(el("code", null, token.value.replace(/\s+/g, " ")));
+  if (token.note) text.appendChild(el("i", null, token.note));
 
-      ctx.fillStyle = css;
-      ctx.fillRect(x, y, cellH * 0.85, cellH * 0.85);
-      ctx.strokeStyle = "rgba(58,44,30,.9)";
-      ctx.lineWidth = 1;
-      ctx.strokeRect(x + 0.5, y + 0.5, cellH * 0.85, cellH * 0.85);
-
-      const textX = x + cellH * 0.85 + 8;
-      ctx.font = "500 11px ui-monospace, Consolas, monospace";
-      ctx.fillStyle = "rgba(232,220,196,.92)";
-      ctx.fillText(token.name.replace("--gm-", ""), textX, y + 14);
-      ctx.fillStyle = "rgba(147,128,94,.85)";
-      ctx.fillText(token.value.replace(/\s+/g, ""), textX, y + 28);
-      if (token.note) {
-        ctx.fillStyle = "rgba(147,128,94,.6)";
-        const note = token.note.length > 34 ? `${token.note.slice(0, 33)}…` : token.note;
-        ctx.fillText(note, textX, y + 41);
-      }
-    });
-  };
+  cell.append(chip, text);
+  cell.addEventListener("click", () => {
+    const done = (): void => {
+      cell.dataset["copied"] = "true";
+      setTimeout(() => cell.removeAttribute("data-copied"), 1200);
+    };
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(token.name).then(done, done);
+    else done();
+  });
+  return cell;
 }
 
-/** Вспышки на тёмном: они аддитивные, и проверять их надо не плиткой, а свечением. */
+function group(host: HTMLElement, title: string, note: string, prefixes: string[]): void {
+  const list = tokensMatching(...prefixes);
+  if (list.length === 0) return;
+
+  const box = el("section", "sw-group");
+  const head = el("h3", null, title);
+  head.appendChild(el("span", "sw-count", String(list.length)));
+  box.appendChild(head);
+  if (note) box.appendChild(el("p", "dim", note));
+
+  const grid = el("div", "sw-grid");
+  for (const token of list) grid.appendChild(swatch(token));
+  box.appendChild(grid);
+  host.appendChild(box);
+}
+
+function renderTokens(host: HTMLElement): void {
+  const status = el("p", "dim", "читаю палитру проекта…");
+  host.appendChild(status);
+
+  void palette.settled.then(() => {
+    if (!palette.data) {
+      status.textContent =
+        `Палитра недоступна: ${palette.error ?? "нет ответа"}. Страница читает тему проекта через ` +
+        "сервер — нужен ./scripts/lab-serve.ps1";
+      return;
+    }
+    host.replaceChildren();
+
+    const total = (palette.data.groups ?? []).reduce((n, g) => n + g.tokens.length, 0);
+    host.appendChild(el("p", "dim",
+      `${total} токенов прочитано с диска при открытии страницы. Клик по плитке копирует имя токена.`));
+
+    group(host, "Чернила", "Фон и контуры. Подпись у ink-100 — минимум, на котором контур ещё виден.",
+      ["--gm-ink-"]);
+    group(host, "Латунь", "Акцент интерфейса и рамки принятого.", ["--gm-brass-", "--gm-ember-"]);
+    group(host, "Пергамент", "Текст и светлые поверхности.", ["--gm-parchment-", "--gm-neutral-"]);
+    group(host, "Затемнение",
+      "Три оттенка нужны потому, что одно универсальное не читается на любом арте: холодное гасит " +
+      "тёплое, зеленца оставляет зелёный, жёлто-бурый работает на зелёных.", ["--gm-dim-"]);
+    group(host, "Сигналы", "Опасность, рост, буря, аркана.",
+      ["--gm-danger-", "--gm-moss-", "--gm-storm-", "--gm-wine-"]);
+  });
+}
+
+/* ---------- вспышки: только светом ---------- */
+
 const drawFlares: DrawFn = (ctx, w, h) => {
   if (drawFeedState(ctx, w, h, palette, "палитру")) return;
 
@@ -113,24 +144,13 @@ const drawFlares: DrawFn = (ctx, w, h) => {
   });
 };
 
-/** Сколько всего токенов и откуда они пришли — чтобы было видно, что это снимок, а не список. */
-const drawSummary: DrawFn = (ctx, w, h) => {
-  if (drawFeedState(ctx, w, h, palette, "палитру")) return;
-  const groups = palette.data?.groups ?? [];
-
-  ctx.font = "500 14px ui-monospace, Consolas, monospace";
-  let y = 40;
-  for (const g of groups) {
-    ctx.fillStyle = "rgba(198,154,75,.95)";
-    ctx.fillText(g.file, 24, y);
-    ctx.fillStyle = "rgba(147,128,94,.85)";
-    ctx.fillText(`${g.tokens.length} токенов`, w - 140, y);
-    y += 26;
-  }
-  ctx.fillStyle = "rgba(147,128,94,.7)";
-  ctx.font = "500 12px ui-monospace, Consolas, monospace";
-  ctx.fillText("прочитано с диска при открытии страницы", 24, y + 12);
-};
+/** Те же вспышки плиткой — чтобы значение можно было взять руками. */
+function renderFlareList(host: HTMLElement): void {
+  void palette.settled.then(() => {
+    if (!palette.data) return;
+    group(host, "Вспышки", "", ["--gm-flare-"]);
+  });
+}
 
 const section: SectionDef = {
   id: "palette",
@@ -146,50 +166,25 @@ const section: SectionDef = {
     {
       kind: "head", id: "flares", title: "Вспышки",
       lede:
-        "Аддитивные цвета удара и эффектов. Проверять их плиткой бессмысленно: они складываются со " +
-        "светом под собой, поэтому здесь показаны свечением на тёмном — так же, как лягут в бою."
+        "Аддитивные цвета удара и эффектов. Плиткой их проверять бессмысленно: они складываются со " +
+        "светом под собой, поэтому сверху они показаны свечением на тёмном — так же, как лягут в бою. " +
+        "Список под ними — те же токены, но значение можно взять руками."
     },
     {
       kind: "split",
       items: [
-        { id: "flare-grid", status: "note", tag: "снимок проекта", title: "Вспышки свечением",
+        { id: "flare-glow", status: "note", tag: "снимок проекта", title: "Как они лягут в бою",
           size: [740, 300], draw: drawFlares }
       ]
     },
+    { kind: "live", id: "flare-list", render: renderFlareList },
 
     {
-      kind: "head", id: "ink", title: "Чернила и латунь",
-      lede: "База интерфейса: фон, контуры, акцент. Пояснения приходят из комментариев самого USS."
+      kind: "head", id: "tokens", title: "Интерфейс, затемнение, сигналы",
+      lede: "Пояснения приходят из комментариев самого USS — их пишет тот же файл, что и цвета."
     },
-    {
-      kind: "stands",
-      items: [
-        { id: "ink", status: "note", tag: "--gm-ink-*", title: "Чернила", size: [420, 300],
-          draw: drawSwatches("--gm-ink-", 1) },
-        { id: "brass", status: "note", tag: "--gm-brass-*", title: "Латунь", size: [420, 300],
-          draw: drawSwatches("--gm-brass-", 1) },
-        { id: "parchment", status: "note", tag: "--gm-parchment-*", title: "Пергамент", size: [420, 300],
-          draw: drawSwatches("--gm-parchment-", 1) }
-      ]
-    },
+    { kind: "live", id: "token-list", render: renderTokens },
 
-    {
-      kind: "head", id: "dim", title: "Затемнение и сигналы",
-      lede:
-        "Три оттенка затемнения нужны потому, что одно универсальное не читается на любом арте: " +
-        "холодное гасит тёплое, зеленца оставляет зелёный, жёлто-бурый работает на зелёных артах."
-    },
-    {
-      kind: "stands",
-      items: [
-        { id: "dim", status: "note", tag: "--gm-dim-*", title: "Затемнение", size: [420, 220],
-          draw: drawSwatches("--gm-dim-", 1) },
-        { id: "signal", status: "note", tag: "--gm-danger / moss / storm / wine", title: "Сигналы", size: [420, 300],
-          draw: drawSwatches("--gm-d", 1) },
-        { id: "summary", status: "note", tag: "источник", title: "Откуда взято", size: [420, 220],
-          draw: drawSummary }
-      ]
-    },
     {
       kind: "note",
       html:

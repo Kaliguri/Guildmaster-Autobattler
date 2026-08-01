@@ -373,6 +373,89 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
 .gdd-note em.s-archive { color: #A5765E; }
 .gdd-note em.s-draft { color: var(--flare-holo); }
 
+/* --- плитки палитры: живой DOM, значение можно взять --- */
+.sw-group { display: flex; flex-direction: column; gap: .6rem; margin-top: 1.4rem; }
+.sw-group h3 { display: flex; align-items: baseline; gap: .6rem; color: var(--brass-lift); font-weight: 500; }
+.sw-count { font-family: var(--mono); font-size: .7rem; color: var(--edge); }
+.sw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: .5rem; }
+
+.sw {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .45rem .55rem;
+  background: var(--panel);
+  border: 1px solid var(--edge-soft);
+  border-radius: var(--radius);
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: var(--sans);
+  font-size: 1rem;
+  cursor: copy;
+}
+.sw:hover { border-color: var(--brass); }
+.sw[data-copied="true"] { border-color: var(--flare-mint); }
+.sw[data-copied="true"]::after { content: "скопировано"; font-family: var(--mono); font-size: .62rem; color: var(--flare-mint); margin-left: auto; }
+.sw-chip { width: 34px; height: 34px; flex: none; border-radius: 2px; border: 1px solid rgba(0,0,0,.5); }
+.sw-text { display: flex; flex-direction: column; gap: .1rem; min-width: 0; }
+.sw-text b { font-family: var(--mono); font-size: .76rem; font-weight: 600; color: var(--text); }
+.sw-text code { font-family: var(--mono); font-size: .68rem; color: var(--muted); }
+.sw-text i {
+  font-style: normal;
+  font-size: .68rem;
+  color: var(--edge);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- лайтбокс: сцена крупно --- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(6, 5, 4, .93);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+.lightbox[hidden] { display: none; }
+.lightbox-frame { display: flex; flex-direction: column; gap: .8rem; max-width: min(1400px, 92vw); }
+.lightbox-frame canvas {
+  display: block;
+  width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  background: #0C0B09;
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+}
+.lightbox-caption { display: flex; flex-direction: column; gap: .25rem; max-width: 78ch; }
+.lightbox-caption b { font-size: 1.1rem; font-weight: 500; color: var(--text); }
+.lightbox-caption span { color: var(--text-dim); font-size: .92rem; }
+.lightbox-caption i {
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--edge);
+}
+.lightbox-nav { font-size: 1.6rem; line-height: 1; padding: .4rem .8rem; flex: none; }
+.lightbox-close { position: absolute; top: 1.2rem; right: 1.4rem; }
+
+@media (max-width: 720px) {
+  .lightbox-nav { position: absolute; bottom: 1.2rem; }
+  .lightbox-nav.prev { left: 1.2rem; }
+  .lightbox-nav.next { right: 1.2rem; }
+}
+
+/* Сцена в сетке приглашает нажать: без этого канвас читается как картинка, а не как кнопка. */
+.stand canvas, .card-link canvas { cursor: zoom-in; }
+
 /* --- поиск --- */
 .search { position: fixed; inset: 0; z-index: 40; background: rgba(8, 7, 6, .78); display: grid; place-items: start center; padding-top: 12vh; }
 .search[hidden] { display: none; }

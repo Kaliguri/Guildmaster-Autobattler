@@ -5,6 +5,7 @@
 
 import { el, html } from "./dom.js";
 import { watch } from "./stage.js";
+import * as lightbox from "./lightbox.js";
 import * as toggles from "./toggles.js";
 import type { Block, PageDef, SectionDef, StandDef } from "./types.js";
 
@@ -42,6 +43,7 @@ export function hero(title: string, lede?: string, eyebrow = "Лаборатор
 /* ---------- витрина ---------- */
 
 export function renderIndex(view: HTMLElement, pages: PageDef[], loaded: Map<string, SectionDef>): void {
+  beginScenes();
   view.appendChild(
     hero(
       "Лаборатория",
@@ -62,6 +64,7 @@ export function renderIndex(view: HTMLElement, pages: PageDef[], loaded: Map<str
     shelf.appendChild(grid);
     view.appendChild(shelf);
   }
+  commitScenes();
 }
 
 function indexCard(page: PageDef, def: SectionDef | undefined): HTMLElement {
@@ -77,6 +80,7 @@ function indexCard(page: PageDef, def: SectionDef | undefined): HTMLElement {
     canvas.height = 200;
     card.appendChild(canvas);
     watch(canvas, cover, 320, 200);
+    scenes.push({ stand: cover, w: 320, h: 200 });
   } else if (page.icon) {
     card.appendChild(el("div", "card-mark", page.icon));
   }
@@ -131,6 +135,7 @@ function groupsOf(pages: PageDef[]): string[] {
 /* ---------- музей отклонённого ---------- */
 
 export function renderLegacy(view: HTMLElement, pages: PageDef[], loaded: Map<string, SectionDef>): void {
+  beginScenes();
   view.appendChild(
     hero(
       "Отклонённое",
@@ -162,11 +167,25 @@ export function renderLegacy(view: HTMLElement, pages: PageDef[], loaded: Map<st
   }
 
   if (!any) view.appendChild(el("p", "dim", "Пока ни один вариант не отклонён."));
+  commitScenes();
 }
 
 /* ---------- раздел ---------- */
 
+/** Сцены текущей страницы по порядку: их листает лайтбокс. Собирается тем же проходом, что и
+ *  разметка, поэтому разойтись с ней не может. */
+let scenes: Array<{ stand: StandDef; w: number; h: number }> = [];
+
+function beginScenes(): void {
+  scenes = [];
+}
+
+function commitScenes(): void {
+  lightbox.setEntries(scenes);
+}
+
 export function renderSection(view: HTMLElement, def: SectionDef): void {
+  beginScenes();
   view.appendChild(hero(def.title, def.lede, def.eyebrow));
 
   const toc = el("nav", "page-toc");
@@ -220,6 +239,7 @@ export function renderSection(view: HTMLElement, def: SectionDef): void {
 
   if (tocCount > 1) view.appendChild(toc);
   view.appendChild(body);
+  commitScenes();
 }
 
 function toggleRow(block: Extract<Block, { kind: "toggle" }>): HTMLElement {
@@ -285,8 +305,12 @@ function standCard(stand: StandDef, pageId: string, wide: boolean): HTMLElement 
     canvas.height = h;
     canvas.setAttribute("role", "img");
     canvas.setAttribute("aria-label", stand.title);
+    // Сцена в сетке мелкая — тонкую графику в ней не разглядеть, поэтому она открывается крупно.
+    canvas.title = "Открыть крупно";
+    canvas.addEventListener("click", () => lightbox.open(stand));
     card.appendChild(canvas);
     watch(canvas, stand, w, h);
+    scenes.push({ stand, w, h });
   }
 
   const body = el("div", "stand-body");
