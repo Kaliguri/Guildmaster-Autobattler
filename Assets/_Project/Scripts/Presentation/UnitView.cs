@@ -1495,10 +1495,15 @@ namespace Guildmaster.Presentation
         /// обычное попадание уже бьёт в этот потолок. Сверкание блока приходит HDR-цветом из палитры
         /// (<c>CombatColorPalette.ShieldFlare</c>) — за порогом bloom он и даёт вспышку.
         /// </remarks>
-        public void OnDamageReceived(Color flashColor, Vector2 nudgeDir)
+        /// <param name="flashBody">
+        /// Заливать ли тело вспышкой. <c>false</c> — удар принял ЩИТ и в тело не вошёл: тогда говорит
+        /// только сам щит (его свечение), а тело молчит. Вспыхнувшее тело читалось бы как пробитие
+        /// (решение Макса 01.08.2026, отменяет золотую вспышку тела из `2026-07-31/67`).
+        /// </param>
+        public void OnDamageReceived(Color flashColor, Vector2 nudgeDir, bool flashBody = true)
         {
             _onHitFeedback?.Invoke();
-            PlayHitFlash(flashColor);
+            if (flashBody) PlayHitFlash(flashColor);
             PlayHitSquash();
             PlayHitNudge(nudgeDir);
             if (_feel != null && _feel.EnableHpBarPunch && _healthBar != null)
