@@ -95,5 +95,5 @@ asset: [relic.iron_spearman]
 ---
 
 > Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
-> Неутверждённые числа и имена — [[gdd/00-meta/open|Meta - Open Questions]].
+> Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].
