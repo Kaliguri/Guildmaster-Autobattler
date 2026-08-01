@@ -42,6 +42,7 @@ $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
 $labDir = Join-Path $repo 'docs/lab'
 $wikiDir = Join-Path $repo 'docs/wiki'
+$themeDir = Join-Path $repo 'Assets/_Project/UI/Theme'
 
 if (-not (Test-Path $labDir)) { throw "Не нашла docs/lab по пути $labDir" }
 
@@ -100,4 +101,4 @@ if (-not $NoBrowser) {
     } -ArgumentList $url | Out-Null
 }
 
-& $python.Source $server --port $Port --root $labDir --wiki $wikiDir
+& $python.Source $server --port $Port --root $labDir --wiki $wikiDir --theme $themeDir

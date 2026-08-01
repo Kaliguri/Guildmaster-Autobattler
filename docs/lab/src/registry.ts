@@ -52,6 +52,33 @@ export const PAGES: PageDef[] = [
   },
 
   {
+    id: "palette",
+    group: "Стиль",
+    title: "Палитра",
+    blurb: "Токены цвета как они в игре сейчас: страница читает тему проекта с диска.",
+    load: () => import("./sections/style-palette.js")
+  },
+
+  {
+    id: "gdd",
+    group: "Карта",
+    title: "Указатель ГДД",
+    blurb: "Где что лежит в дизайн-документации: кластеры, статусы, объём. Текст остаётся в vault.",
+    load: () => import("./sections/gdd-index.js"),
+    icon: "§"
+  },
+
+  {
+    id: "balance",
+    group: "Карта",
+    title: "Отчёты баланса",
+    blurb: "The Balance Desk: прогоны SimBench, дельты между ними, реестр проблем.",
+    load: null,
+    href: "../../BalanceReports/site/index.html",
+    icon: "⚖"
+  },
+
+  {
     id: "legacy",
     group: "Архив",
     title: "Отклонённое",

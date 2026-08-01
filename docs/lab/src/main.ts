@@ -123,7 +123,8 @@ function syncNav(active: string): void {
     box.appendChild(el("span", "lab-nav-label", group));
     for (const page of PAGES.filter((p) => p.group === group)) {
       const a = el("a", null, page.title);
-      a.href = routeHref(page.id);
+      a.href = page.href ?? routeHref(page.id);
+      if (page.href) a.target = "_blank";
       if (page.id === active) a.setAttribute("aria-current", "page");
       box.appendChild(a);
     }

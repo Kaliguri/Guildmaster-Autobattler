@@ -49,7 +49,11 @@ export type Block =
   | { kind: "table"; head?: string[]; rows: string[][] }
   /** Сетка стендов (по три в ряд) либо пара крупных карточек. */
   | { kind: "stands"; items: StandDef[] }
-  | { kind: "split"; items: StandDef[] };
+  | { kind: "split"; items: StandDef[] }
+  /** Блок, который раздел строит сам. Для содержимого, приходящего из данных: список со ссылками
+   *  и фильтрами нельзя объявить литералом, а рисовать текст на canvas — терять и ссылки, и поиск
+   *  по странице. Каркас даёт контейнер и больше ни во что не вмешивается. */
+  | { kind: "live"; id: string; render: (host: HTMLElement) => void };
 
 export interface SectionDef {
   id: string;
@@ -73,4 +77,7 @@ export interface PageDef {
   load: (() => Promise<{ default: SectionDef }>) | null;
   /** Знак на карточке витрины, когда живого превью нет. */
   icon?: string;
+  /** Внешний адрес: раздел живёт отдельным приложением со своими данными и своим генератором.
+   *  Втягивать его внутрь нельзя — он перестанет собираться своим скриптом. */
+  href?: string;
 }

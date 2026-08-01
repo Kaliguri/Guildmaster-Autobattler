@@ -20,6 +20,12 @@ from pathlib import Path
 FRONTMATTER = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.S)
 H1 = re.compile(r"^#\s+(.+)$", re.M)
 
+# --gm-brass-500: rgb(184, 134, 59);   /* пояснение */
+TOKEN = re.compile(
+    r"^\s*(--[\w-]+)\s*:\s*([^;]+);(?:\s*/\*\s*(.*?)\s*\*/)?",
+    re.M,
+)
+
 
 def read_meta(path: Path) -> dict:
     """Заголовок, статус и теги заметки. Только метаданные — тело остаётся в vault."""
@@ -72,24 +78,58 @@ def build_index(wiki: Path) -> dict:
     return {"root": wiki.as_posix(), "count": len(notes), "notes": notes}
 
 
-class LabHandler(SimpleHTTPRequestHandler):
-    """Раздача сайта плюс единственный собственный маршрут."""
+def build_palette(theme: Path) -> dict:
+    """Токены темы как они лежат в проекте.
 
-    def __init__(self, *args, wiki: Path, **kwargs):
+    Палитра читается ИЗ ПРОЕКТА, а не копируется в сайт: у цвета один владелец, а мир читает
+    снимок. Скопированный список разошёлся бы с игрой на первой же правке — и врал бы молча,
+    потому что визуально «примерно тот же оттенок» проверить нечем.
+    """
+    groups = []
+    for name in ("tokens.primitives.uss", "tokens.semantic.uss"):
+        path = theme / name
+        if not path.exists():
+            continue
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+
+        tokens = []
+        for match in TOKEN.finditer(text):
+            key, value, note = match.group(1), match.group(2).strip(), match.group(3)
+            tokens.append({"name": key, "value": value, "note": note or ""})
+        groups.append({"file": name, "tokens": tokens})
+
+    return {"groups": groups}
+
+
+class LabHandler(SimpleHTTPRequestHandler):
+    """Раздача сайта плюс собственные маршруты, отдающие снимки проекта."""
+
+    def __init__(self, *args, wiki: Path, theme: Path, **kwargs):
         self.wiki = wiki
+        self.theme = theme
         super().__init__(*args, **kwargs)
 
     def do_GET(self):  # noqa: N802 — имя задано базовым классом
-        if self.path.split("?")[0] == "/api/gdd-index":
-            payload = json.dumps(build_index(self.wiki), ensure_ascii=False).encode("utf-8")
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json; charset=utf-8")
-            self.send_header("Content-Length", str(len(payload)))
-            self.send_header("Cache-Control", "no-store")
-            self.end_headers()
-            self.wfile.write(payload)
+        route = self.path.split("?")[0]
+        if route == "/api/gdd-index":
+            self._json(build_index(self.wiki))
+            return
+        if route == "/api/palette":
+            self._json(build_palette(self.theme))
             return
         super().do_GET()
+
+    def _json(self, data: dict) -> None:
+        payload = json.dumps(data, ensure_ascii=False).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(payload)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(payload)
 
     def end_headers(self):
         # Правки в разделах должны быть видны по F5, иначе отладка превращается в спор с кешем.
@@ -106,9 +146,10 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=7400)
     parser.add_argument("--root", required=True, help="каталог сайта (docs/lab)")
     parser.add_argument("--wiki", required=True, help="каталог vault (docs/wiki)")
+    parser.add_argument("--theme", required=True, help="каталог темы UI (Assets/_Project/UI/Theme)")
     args = parser.parse_args()
 
-    handler = partial(LabHandler, directory=args.root, wiki=Path(args.wiki))
+    handler = partial(LabHandler, directory=args.root, wiki=Path(args.wiki), theme=Path(args.theme))
     with ThreadingHTTPServer(("127.0.0.1", args.port), handler) as httpd:
         try:
             httpd.serve_forever()

@@ -66,7 +66,8 @@ export function renderIndex(view: HTMLElement, pages: PageDef[], loaded: Map<str
 
 function indexCard(page: PageDef, def: SectionDef | undefined): HTMLElement {
   const card = el("a", "card-link");
-  card.href = routeHref(page.id);
+  card.href = page.href ?? routeHref(page.id);
+  if (page.href) card.target = "_blank";
 
   // Живое превью, а не скриншот: список ссылок не говорит, что внутри, а снимок устаревает молча.
   const cover = def ? coverStand(def) : null;
@@ -83,15 +84,17 @@ function indexCard(page: PageDef, def: SectionDef | undefined): HTMLElement {
   const body = el("div", "card-text");
   body.appendChild(el("h3", null, page.title));
   body.appendChild(el("p", "dim", page.blurb));
-  if (def) {
+  if (page.href) {
+    body.appendChild(el("p", "tag", "отдельное приложение · откроется в новой вкладке"));
+  } else if (def) {
+    // Счётчик показываем ровно настолько, насколько ему есть что сказать: у раздела без развилок
+    // «принято 0» читалось бы как «ничего не решено», хотя решать там нечего.
     const t = tally(def);
-    body.appendChild(
-      el(
-        "p",
-        "tag",
-        `${t.total} стендов · принято ${t.accepted}${t.waiting ? ` · ждёт ${t.waiting}` : ""}`
-      )
-    );
+    const parts: string[] = [];
+    if (t.total > 0) parts.push(`${t.total} стендов`);
+    if (t.accepted > 0) parts.push(`принято ${t.accepted}`);
+    if (t.waiting > 0) parts.push(`ждёт ${t.waiting}`);
+    if (parts.length > 0) body.appendChild(el("p", "tag", parts.join(" · ")));
   }
   card.appendChild(body);
   return card;
@@ -205,6 +208,13 @@ export function renderSection(view: HTMLElement, def: SectionDef): void {
       case "split":
         body.appendChild(standsGrid(block, def.id));
         break;
+      case "live": {
+        const host = el("div", "live-block");
+        host.id = block.id;
+        block.render(host);
+        body.appendChild(host);
+        break;
+      }
     }
   }
 
