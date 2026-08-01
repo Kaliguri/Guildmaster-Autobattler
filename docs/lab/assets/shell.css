@@ -508,6 +508,7 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
 @keyframes lb-pop { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
 
 @media (max-width: 720px) {
+  .i-status, .i-body { margin-left: 0; }
   .lightbox-nav { position: absolute; bottom: 1.2rem; }
   .lightbox-nav.prev { left: 1.2rem; }
   .lightbox-nav.next { right: 1.2rem; }
@@ -670,6 +671,22 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
 .stat .v { text-align: right; font-variant-numeric: tabular-nums; }
 .stat .value { color: var(--text); }
 
+/* Заметка бенча: читаемая колонка и воздух между абзацами. Во всю ширину экрана такой текст
+   не читается — глаз теряет строку на возврате. */
+.bal-note { display: flex; flex-direction: column; gap: .8rem; }
+.bal-note .note {
+  max-width: 74ch;
+  border-top: 0;
+  padding-top: 0;
+  font-size: .9rem;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+.bal-note .note b { color: var(--text); font-weight: 600; }
+.bal-note-body { display: flex; flex-direction: column; gap: .7rem; padding-top: .7rem; }
+
+.bal-gloss dd { max-width: 62ch; }
+
 .issue-line { display: flex; gap: .7rem; align-items: baseline; padding: .3rem 0; border-bottom: 1px solid var(--edge-soft); font-size: .9rem; }
 .issue-line:last-child { border-bottom: 0; }
 .issue-line.closed { opacity: .6; }
@@ -700,17 +717,33 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
 .issue.st-closed { border-left-color: var(--edge); opacity: .78; }
 .issue.st-closed:hover { opacity: 1; }
 
-.i-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .7rem; }
-.i-code { font-family: var(--mono); font-size: .74rem; color: var(--brass); }
-.i-head h3 { flex: 1; min-width: 12rem; font-weight: 500; }
-.i-status { font-family: var(--mono); font-size: .66rem; letter-spacing: .08em; }
+.i-head { display: flex; align-items: baseline; gap: .8rem; }
+.i-code { font-family: var(--mono); font-size: .72rem; color: var(--brass); flex: none; }
+.i-head h3 { font-weight: 500; font-size: 1.05rem; line-height: 1.35; }
+
+/* Статус отдельной строкой: он бывает длиннее заголовка и несёт разметку. */
+.i-status {
+  margin-top: .35rem;
+  margin-left: 3.6rem;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .04em;
+  line-height: 1.5;
+  max-width: 70ch;
+}
 .i-status.good { color: #96A860; }
 .i-status.warn { color: var(--muted); }
+.i-status i { font-style: normal; color: var(--brass); }
+.i-status b { color: var(--text-dim); }
 
-.i-body { display: flex; flex-direction: column; gap: .5rem; margin-top: .6rem; }
+.issue { padding: 1.1rem 1.2rem 1.2rem; }
+.i-body { display: flex; flex-direction: column; gap: .6rem; margin-top: .8rem; margin-left: 3.6rem; }
+.i-body p { max-width: 72ch; font-size: .92rem; line-height: 1.6; color: var(--text-dim); }
+.i-body b { color: var(--text); }
+.i-body i { font-style: normal; color: var(--brass); }
 .i-body .lbl { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .i-body ol { margin: 0; padding-left: 1.3rem; display: flex; flex-direction: column; gap: .3rem; font-size: .92rem; color: var(--text-dim); }
-.i-verdict { border-left: 2px solid var(--brass); padding-left: .75rem; font-size: .92rem; color: var(--text); }
+.i-verdict { border-left: 2px solid var(--brass); padding-left: .8rem; margin-top: .3rem; font-size: .92rem; color: var(--text); }
 .i-verdict.waiting { border-left-color: var(--edge); color: var(--muted); }
 
 /* --- поиск --- */

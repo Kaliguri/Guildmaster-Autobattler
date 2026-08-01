@@ -151,6 +151,26 @@ function modeTable(run: Run, modeKey: string): HTMLElement {
   return wrap;
 }
 
+/** Заметка бенча приходит одним куском на пол-экрана. Первый абзац виден, остальное — под
+ *  сворачивалкой: читать простыню никто не будет, а первая фраза обычно и есть ответ.
+ *  Абзацы в исходнике не размечены, но каждый начинается с **жирного** после точки. */
+function notesBlock(text: string): HTMLElement {
+  const box = el("div", "bal-note");
+  const parts = String(text).split(/(?<=\.)\s+(?=\*\*)/).filter((p) => p.trim());
+  if (parts.length === 0) return box;
+
+  box.appendChild(html("p", rich(parts[0] ?? ""), "note"));
+  if (parts.length > 1) {
+    const fold = el("details", "bal-gloss");
+    fold.appendChild(el("summary", null, `подробности замера · ${parts.length - 1}`));
+    const body = el("div", "bal-note-body");
+    for (const part of parts.slice(1)) body.appendChild(html("p", rich(part), "note"));
+    fold.appendChild(body);
+    box.appendChild(fold);
+  }
+  return box;
+}
+
 /* ---------- страница ---------- */
 
 function render(host: HTMLElement): void {
@@ -198,7 +218,7 @@ function draw(host: HTMLElement): void {
   host.appendChild(modeTable(run, view.mode));
 
   const note = run.notes?.[view.mode];
-  if (note) host.appendChild(html("div", `<p class="note">${rich(note)}</p>`));
+  if (note) host.appendChild(notesBlock(note));
   if (run.normsNote) host.appendChild(html("p", rich(run.normsNote), "dim"));
 }
 

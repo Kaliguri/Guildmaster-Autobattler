@@ -27,9 +27,14 @@ function issueCard(issue: Issue): HTMLElement {
   const head = el("div", "i-head");
   head.appendChild(el("span", "i-code", issue.code));
   head.appendChild(el("h3", null, issue.title));
-  head.appendChild(el("span", `i-status ${status === "закрыта" || status === "отклонена" ? "good" : "warn"}`,
-    issue.status || "—"));
   box.appendChild(head);
+
+  // Статус — отдельной строкой под заголовком: он бывает длиннее самого заголовка и содержит
+  // markdown (ссылку на порождённую проблему, жирный), поэтому в шапку его втискивать нельзя.
+  if (issue.status) {
+    box.appendChild(html("p",
+      rich(issue.status), `i-status ${status === "закрыта" || status === "отклонена" ? "good" : "warn"}`));
+  }
 
   const body = el("div", "i-body");
   if (issue.symptom) body.appendChild(html("p", `<span class="lbl">Симптом. </span>${rich(issue.symptom)}`));

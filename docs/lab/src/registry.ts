@@ -130,15 +130,6 @@ export const PAGES: PageDef[] = [
     load: () => import("./sections/balance-issues.js"),
     icon: "!"
   },
-  {
-    id: "balance-desk",
-    area: "balance",
-    title: "Прежний сайт",
-    blurb: "The Balance Desk целиком: тепловые карты, карточки китов, настройки показа.",
-    load: null,
-    href: "../../BalanceReports/site/index.html",
-    icon: "↗"
-  },
 
   {
     id: "gdd",
