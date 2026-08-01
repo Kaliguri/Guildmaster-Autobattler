@@ -708,8 +708,7 @@ namespace Guildmaster.Presentation
             in Combat.Tape.UnitSnapshot target, DamageResult result, float hpDamageFrac, bool blocked)
         {
             bool ranged = IsRanged(sourceId);
-            if (!Effects.HitFormFactory.TryResolveKind(result.Type, ranged, out Effects.HitFormKind kind))
-                return;   // магии клинка не полагается — её знак это отдельная строка словаря событий
+            Effects.HitFormKind kind = Effects.HitFormFactory.ResolveKind(result.Type, ranged);
 
             Vector3 b = AnchorFor(targetId, target.Position);
             _views.TryGetValue(sourceId, out UnitView sourceView);

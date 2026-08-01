@@ -12,43 +12,38 @@ namespace Guildmaster.Presentation.Effects
     public static class HitFormFactory
     {
         /// <summary>
-        /// Какой архетип формы несёт этот удар.
+        /// Какой архетип формы несёт этот удар. Форма есть у КАЖДОЙ автоатаки — вопрос только в том, какая.
         /// </summary>
-        /// <param name="type">Тип урона источника — он же говорит, ЧЕМ ударили.</param>
+        /// <param name="type">Тип урона источника.</param>
         /// <param name="ranged">Удар пришёл снарядом.</param>
-        /// <param name="kind">Архетип формы.</param>
-        /// <returns>
-        /// <c>false</c> — формы у этого удара НЕТ, и это не пробел, а решение. У магии, света и тьмы нет
-        /// клинка, которым машут: «след лезвия» был бы для них враньём. Свой знак им положен —
-        /// кольцо, всплеск, луч, — но это отдельная строка словаря событий, и её ещё не написали.
-        /// </returns>
-        public static bool TryResolveKind(DamageType type, bool ranged, out HitFormKind kind)
+        /// <remarks>
+        /// <b>Архетип выбирает СПОСОБ ДОСТАВКИ, а не школа урона.</b> Тип урона участвует лишь постольку,
+        /// поскольку физические типы прямо называют способ: <see cref="DamageType.Slash"/> — рубанули,
+        /// <see cref="DamageType.Pierce"/> — укололи, <see cref="DamageType.Blunt"/> — ударили тяжёлым.
+        /// <para>
+        /// У остального в ближнем бою способ всё равно есть: криомант бьёт посохом, а не «льдом вообще».
+        /// Поэтому магический, световой, тёмный и ядовитый удар мили получают форму по умолчанию, а
+        /// элемент приходит ЦВЕТОМ юнита — «серп × оранжевый это огненный меч». Не рисовать им форму
+        /// значило бы завести второй язык там, где канон требует умножения: новый элемент стоит строки
+        /// палитры, а не нового эффекта.
+        /// </para>
+        /// <para>
+        /// Дефолт — режущий: клинком в ближнем бою машут чаще всего. Точное «чем именно бьёт вот этот
+        /// кит» — авторское знание юнита, и когда оно понадобится, его дом <c>UnitData</c>, а не догадка
+        /// показа по школе урона.
+        /// </para>
+        /// </remarks>
+        public static HitFormKind ResolveKind(DamageType type, bool ranged)
         {
             // Дальний бой отвечает раньше типа: у выстрела нет взмаха, поэтому серп ему не положен даже
             // тогда, когда стрела режущая. Форма говорит, КАК доставили.
-            if (ranged)
-            {
-                kind = HitFormKind.Bolt;
-                return true;
-            }
+            if (ranged) return HitFormKind.Bolt;
 
             switch (type)
             {
-                case DamageType.Slash:
-                    kind = HitFormKind.Slash;
-                    return true;
-
-                case DamageType.Pierce:
-                    kind = HitFormKind.Pierce;
-                    return true;
-
-                case DamageType.Blunt:
-                    kind = HitFormKind.Blunt;
-                    return true;
-
-                default:
-                    kind = HitFormKind.Slash;
-                    return false;
+                case DamageType.Pierce: return HitFormKind.Pierce;
+                case DamageType.Blunt:  return HitFormKind.Blunt;
+                default:                return HitFormKind.Slash;
             }
         }
 
