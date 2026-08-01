@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Лаборатория · Guildmaster</title>
+  <link rel="stylesheet" href="assets/shell.css">
+</head>
+<body>
+
+  <div class="wrap">
+    <main id="lab-view"></main>
+  </div>
+
+  <!-- Единственный тег скрипта на весь сайт: остальное каркас импортирует сам, а раздел
+       подгружается по маршруту через import(). Файлы в dist/ собирает tsc из src/ —
+       правишь TypeScript, а не это.  Сборка: npm run build (или npm run dev в фоне). -->
+  <script type="module" src="dist/main.js"></script>
+
+</body>
+</html>

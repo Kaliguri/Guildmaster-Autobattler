@@ -65,7 +65,18 @@ body {
   color: var(--muted);
 }
 
-.lab-nav { display: flex; flex-wrap: wrap; gap: .3rem; margin-left: auto; }
+/* Навигация группами: разделов уже десяток, плоский ряд перестал читаться.
+   Полка подписана мелким, ссылки внутри — обычным ритмом. */
+.lab-nav { display: flex; flex-wrap: wrap; gap: .25rem 1.1rem; margin-left: auto; align-items: center; }
+.lab-nav-group { display: flex; align-items: center; gap: .2rem; }
+.lab-nav-label {
+  font-family: var(--mono);
+  font-size: .58rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--edge);
+  margin-right: .2rem;
+}
 .lab-nav a {
   font-family: var(--mono);
   font-size: .68rem;
@@ -73,12 +84,29 @@ body {
   text-transform: uppercase;
   color: var(--muted);
   text-decoration: none;
-  padding: .35rem .6rem;
+  padding: .3rem .55rem;
   border: 1px solid transparent;
   border-radius: var(--radius);
+  white-space: nowrap;
 }
 .lab-nav a:hover { color: var(--brass-lift); border-color: var(--edge); }
 .lab-nav a[aria-current="page"] { color: var(--brass-lift); border-color: var(--brass); }
+
+.lab-find { margin-left: 1rem; display: flex; align-items: center; gap: .45rem; }
+.lab-find kbd {
+  font-family: var(--mono);
+  font-size: .62rem;
+  border: 1px solid var(--edge);
+  border-radius: 2px;
+  padding: 0 .25rem;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .lab-bar { height: auto; flex-wrap: wrap; padding-top: .6rem; padding-bottom: .6rem; }
+  .lab-nav { margin-left: 0; width: 100%; }
+  .lab-find { margin-left: auto; }
+}
 
 /* --- страница --- */
 .wrap {
@@ -241,4 +269,77 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
 }
 .to-top[data-visible="true"] { opacity: 1; pointer-events: auto; }
 
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+/* --- витрина --- */
+.page-head { display: flex; flex-direction: column; }
+.page-body { display: flex; flex-direction: column; gap: 1.3rem; }
+.page-body h2 { margin-top: 1.1rem; }
+
+.shelf { display: flex; flex-direction: column; gap: 1.1rem; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: var(--gap); }
+.card-link {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--edge-soft);
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 140ms ease;
+}
+.card-link:hover { border-color: var(--brass); }
+.card-link canvas { display: block; width: 100%; height: auto; background: #0C0B09; }
+.card-mark {
+  display: grid;
+  place-items: center;
+  height: 120px;
+  background: #0C0B09;
+  font-size: 2.6rem;
+  font-weight: 200;
+  color: var(--edge);
+}
+.card-text { padding: 1rem 1.05rem 1.15rem; display: flex; flex-direction: column; gap: .45rem; }
+.card-link:hover h3 { color: var(--brass-lift); }
+
+/* --- статус стенда: цветом, чтобы отклонённое не путалось с принятым --- */
+.st-accepted { color: var(--brass-lift); }
+.st-rejected { color: #A5765E; }
+.st-waiting { color: var(--flare-holo); opacity: .8; }
+.stand.rejected { opacity: .82; }
+.stand.rejected:hover { opacity: 1; }
+.decision { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; color: var(--edge); margin: 0; }
+.h-link { font-family: var(--mono); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-decoration: none; margin-left: .8rem; }
+.h-link:hover { color: var(--brass-lift); }
+
+/* Приехали по ссылке на стенд — он подсвечивается, иначе в сетке из двадцати карточек
+   непонятно, на какую именно тебя привели. */
+[data-flash="true"] { animation: flash 1.6s ease-out; }
+@keyframes flash {
+  0%, 40% { box-shadow: 0 0 0 2px var(--brass); }
+  100% { box-shadow: 0 0 0 2px transparent; }
+}
+
+/* --- поиск --- */
+.search { position: fixed; inset: 0; z-index: 40; background: rgba(8, 7, 6, .78); display: grid; place-items: start center; padding-top: 12vh; }
+.search[hidden] { display: none; }
+.search-card { width: min(620px, 92vw); background: var(--panel); border: 1px solid var(--edge); border-radius: var(--radius); overflow: hidden; }
+.search-card input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--edge-soft);
+  background: var(--panel-lift);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1rem;
+  padding: .85rem 1rem;
+}
+.search-card input:focus { outline: none; border-bottom-color: var(--brass); }
+.search-list { max-height: 56vh; overflow-y: auto; }
+.search-list a { display: flex; justify-content: space-between; gap: 1rem; padding: .6rem 1rem; text-decoration: none; border-bottom: 1px solid var(--edge-soft); }
+.search-list a b { color: var(--text); font-weight: 500; }
+.search-list a span { font-family: var(--mono); font-size: .7rem; color: var(--muted); white-space: nowrap; }
+.search-list a:hover { background: var(--panel-lift); }
+.search-list a:hover b { color: var(--brass-lift); }
+.search-list p { padding: 1rem; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

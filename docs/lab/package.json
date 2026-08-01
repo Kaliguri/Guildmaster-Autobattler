@@ -1,0 +1,15 @@
+{
+  "name": "guildmaster-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Локальная Лаборатория Guildmaster: всё, на что надо посмотреть, а не прочитать",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch --preserveWatchOutput",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
