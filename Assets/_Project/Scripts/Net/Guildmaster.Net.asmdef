@@ -3,6 +3,7 @@
   "rootNamespace": "Guildmaster.Net",
   "references": [
     "Guildmaster.Core",
+    "Guildmaster.Data",
     "Guildmaster.Combat",
     "Unity.Netcode.Runtime",
     "VContainer"

@@ -107,6 +107,31 @@ namespace Guildmaster.Combat.Tape
         }
 
         /// <summary>
+        /// Положить в ленту ГОТОВЫЕ снимки тика — вход для того, кто получил их со стороны, а не снял с
+        /// живого мира: клиент кооп-сессии, реплей с диска, стенд.
+        /// <para>Отдельно от <see cref="CaptureTick"/>, потому что тот снимает состояние с
+        /// <see cref="RuntimeUnit"/>, а у приёмника живых юнитов нет вовсе — у него есть только то, что
+        /// приехало. Один метод на два случая заставил бы клиента поднимать симуляцию, которую он не
+        /// считает.</para>
+        /// </summary>
+        public void CaptureSnapshots(
+            int tick, IReadOnlyList<UnitSnapshot> units, IReadOnlyList<ProjectileSnapshot> projectiles = null)
+        {
+            Frame frame = _ring[Slot(tick)];
+            frame.Tick = tick;
+
+            frame.Units.Clear();
+            if (units != null)
+                for (int i = 0; i < units.Count; i++) frame.Units.Add(units[i]);
+
+            frame.Projectiles.Clear();
+            if (projectiles != null)
+                for (int i = 0; i < projectiles.Count; i++) frame.Projectiles.Add(projectiles[i]);
+
+            if (tick > _frontTick) _frontTick = tick;
+        }
+
+        /// <summary>
         /// Кадр тика, если он ещё в окне. <c>false</c> — тик либо не записан, либо уже вытеснен
         /// (показ отстал больше, чем на окно: это не потеря кадров, а причина растить окно).
         /// </summary>
