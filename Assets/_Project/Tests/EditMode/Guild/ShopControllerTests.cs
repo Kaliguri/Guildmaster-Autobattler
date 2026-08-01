@@ -43,7 +43,12 @@ namespace Guildmaster.Tests.EditMode.Guild
             var rewards = new RewardService(content, rng);
             var pricer  = new RelicPricer(_config);
 
-            _shop = new ShopController(rewards, pricer, _runStates, content, rng, _config);
+            // Продажа пишет в забег через шину команд — она же держит лог (ТЗ кооп-вертикали §4.1).
+            var commands = new Guildmaster.Guild.Commands.RunCommandBus(
+                new Guildmaster.Guild.Commands.RunCommandApplier(_runStates),
+                new Guildmaster.Guild.Commands.RunCommandLog());
+
+            _shop = new ShopController(rewards, pricer, _runStates, commands, content, rng, _config);
             _shop.Open();
         }
 

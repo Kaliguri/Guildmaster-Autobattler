@@ -19,6 +19,9 @@ namespace Guildmaster.Game.Flow
         private readonly RewardService    _rewards;
         private readonly RelicPricer      _pricer;
         private readonly RunStateService  _runStates;
+        // Односторонние записи в забег (продажа: минус реликвия, плюс золото) идут через шину команд —
+        // иначе в коопе второй игрок увидит опустевшую полку без причины в логе.
+        private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
         private readonly IContentDatabase _content;
         private readonly IRngService      _rng;
         private readonly GameConfig       _config;
@@ -28,6 +31,7 @@ namespace Guildmaster.Game.Flow
         private int _shopSeed;
 
         public ShopController(RewardService rewards, RelicPricer pricer, RunStateService runStates,
+                              Guildmaster.Guild.Commands.IRunCommands commands,
                               IContentDatabase content, IRngService rng, GameConfig config,
                               Core.Audio.IAudioService audio = null)
         {
@@ -35,6 +39,7 @@ namespace Guildmaster.Game.Flow
             _rewards   = rewards;
             _pricer    = pricer;
             _runStates = runStates;
+            _commands  = commands;
             _content   = content;
             _rng       = rng;
             _config    = config;
@@ -105,8 +110,8 @@ namespace Guildmaster.Game.Flow
             if (relic == null || _runStates.Current == null) return false;
             if (Array.IndexOf(_runStates.Current.RelicInventory, relic.Id) < 0) return false;
 
-            _runStates.RemoveRelic(relic.Id);
-            _runStates.AddGold(SellValueOf(relic));
+            _commands.RemoveRelic(relic.Id);
+            _commands.AddGold(SellValueOf(relic));
             _runStates.Autosave();
             Changed?.Invoke();
             _audio?.Play("shop.sell.ui");

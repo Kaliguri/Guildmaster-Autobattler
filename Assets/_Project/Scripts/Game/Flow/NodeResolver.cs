@@ -31,6 +31,8 @@ namespace Guildmaster.Game.Flow
         private readonly ShopController     _shop;
         private readonly IRewardPresenter   _reward;
         private readonly RunStateService    _runStates;
+        // Передаётся боевому узлу: награду за победу он пишет в забег через шину команд.
+        private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
         private readonly IContinuePresenter _continue;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
         private readonly IPublisher<OpenShopRequest>      _openShopPub;
@@ -40,7 +42,9 @@ namespace Guildmaster.Game.Flow
 
         public NodeResolver(IContentDatabase content, IBattleSession session,
                             ILocalPlayer localPlayer, EventEffectApplier eventEffects, ShopController shop,
-                            IRewardPresenter reward, RunStateService runStates, IContinuePresenter continuePresenter,
+                            IRewardPresenter reward, RunStateService runStates,
+                            Guildmaster.Guild.Commands.IRunCommands commands,
+                            IContinuePresenter continuePresenter,
                             IPublisher<OpenTextEventRequest> openEventPub, IPublisher<OpenShopRequest> openShopPub,
                             IPublisher<OpenChestRequest> openChestPub, IPublisher<OpenCampRequest> openCampPub,
                             IPublisher<OpenNodeFarewellRequest> farewellPub)
@@ -54,6 +58,7 @@ namespace Guildmaster.Game.Flow
             _shop         = shop;
             _reward       = reward;
             _runStates    = runStates;
+            _commands     = commands;
             _continue     = continuePresenter;
             _openEventPub = openEventPub;
             _openShopPub  = openShopPub;
@@ -100,7 +105,8 @@ namespace Guildmaster.Game.Flow
                     int rewardCount = wantTier == EncounterTier.Elite ? 2 : 1;   // элитка — два выбора реликвии подряд (B5)
                     // Сессия + способ дождаться нового приговора: dev-R после конца боя откатывает узел
                     // к бою, снимая с него награду и мост к ней.
-                    return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, _continue, rewardCount,
+                    return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, _commands, _continue,
+                                              rewardCount,
                                               session: _session, awaitReplayOutcome: battle.AwaitReplayOutcome);
                 }
 

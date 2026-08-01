@@ -161,6 +161,16 @@ namespace Guildmaster.Game
             // Durable-состояние забега + правила вместимости реликов (план 11 §3.1, §5.4).
             builder.Register<RunStateService>(Lifetime.Singleton);
 
+            // Шина команд забега: снаружи сборки Guild в RunState пишут только через неё, и мутаторы
+            // internal держат это компилятором. Лог append-only даёт реплей, аудит «кто передвинул» и
+            // хвост для реконнекта; соло идёт этим же путём, иначе кооп нашёл бы обход первым же
+            // расхождением состояний (ТЗ кооп-вертикали §4.1).
+            builder.Register<Guildmaster.Guild.Commands.RunCommandLog>(Lifetime.Singleton);
+            builder.Register<Guildmaster.Guild.Commands.RunCommandApplier>(Lifetime.Singleton);
+            builder.Register<Guildmaster.Guild.Commands.RunCommandBus>(Lifetime.Singleton)
+                   .As<Guildmaster.Guild.Commands.IRunCommands>()
+                   .AsSelf();
+
             // За какую команду играет этот клиент. Единственный источник ответа «мы победили?» —
             // в бою есть команды, а не «сторона игрока» (шов под PvP).
             builder.Register<SoloLocalPlayer>(Lifetime.Singleton).As<ILocalPlayer>();

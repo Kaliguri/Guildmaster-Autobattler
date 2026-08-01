@@ -51,7 +51,10 @@ namespace Guildmaster.Game
         // Камеры здесь НЕТ намеренно: какой вид показать, выводится из фазы боя (её слушает
         // CameraModeController). Прежде расстановка сама ставила свободную камеру и кадрировала арену, а
         // старт боя сам возвращал слежение — два владельца вида, и оба перебивали выбор игрока.
-        private readonly Guildmaster.Guild.RunStateService _runStates; // durable-гильдия: сюда уезжают позиции и киты
+        private readonly Guildmaster.Guild.RunStateService _runStates; // durable-гильдия: читаем ростер
+        // Позиции и киты уезжают в забег ТОЛЬКО через шину команд: в коопе расстановку правят двое, и
+        // «кто передвинул юнита» обязано остаться в логе (ТЗ кооп-вертикали §4.1).
+        private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
         private readonly ProvingGroundsConfig _provingGrounds;         // состав Ристалища, когда своего отряда нет
         private readonly Core.Audio.IAudioService _audio;              // взял/поставил/отказ — звук расстановки
 
@@ -149,6 +152,7 @@ namespace Guildmaster.Game
             IPublisher<ArenaRevealRequest> arenaRevealPub,
             IBattleSession session,
             Guildmaster.Guild.RunStateService runStates,
+            Guildmaster.Guild.Commands.IRunCommands commands,
             Core.Audio.IAudioService audio,
             ProvingGroundsConfig provingGrounds)
         {
@@ -156,6 +160,7 @@ namespace Guildmaster.Game
             _arenaRevealPub = arenaRevealPub;
             _audio         = audio;
             _runStates     = runStates;
+            _commands      = commands;
             _loader        = loader;
             _sim           = sim;
             _deploy        = deploy;
@@ -805,7 +810,7 @@ namespace Guildmaster.Game
             if (slot == null) return;
             slot.Unit = relic;
             // Надетый прямо на поле кит — изменение ГИЛЬДИИ, а не превью боя (реш. Макса): переживает бой и сейв.
-            if (_runStates?.SetSlotRelic(slot.GuildIndex, relic.Id) == true) _rosterDirty = true;
+            if (_commands?.SetSlotRelic(slot.GuildIndex, relic.Id) == true) _rosterDirty = true;
             RebuildPreview();
         }
 
@@ -941,7 +946,7 @@ namespace Guildmaster.Game
             Slot s = FindSlot(unitId);
             if (s == null) return;
             s.Pos = pos;
-            if (_runStates?.SetSlotPosition(s.GuildIndex, pos) == true) _rosterDirty = true;
+            if (_commands?.SetSlotPosition(s.GuildIndex, pos) == true) _rosterDirty = true;
         }
 
         // Правки расстановки уезжают в durable-гильдию сразу, а на диск — на выходе из фазы (старт боя, выход
