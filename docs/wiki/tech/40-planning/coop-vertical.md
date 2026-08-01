@@ -102,7 +102,18 @@ Deaths!*, страница которой осталась жива. Свой с
 Два шва делаются первыми и **до** любого экрана коопа, потому что второе место записи в `RunState`
 и приросший к коду Steam-транспорт лечатся только переписыванием.
 
-### 4.1 Лог команд забега
+### 4.1 Лог команд забега — РЕАЛИЗОВАНО 01.08.2026
+
+> Код: `Guild/Commands/` (`RunCommand`, `RunCommandLog`, `RunCommandApplier`, `RunCommandBus`,
+> `IRunCommands`), барьер — `Guild/AssemblyInfo.cs` плюс `internal` у мутаторов. Тесты —
+> `RunCommandLogTests`. Решение и отвергнутые альтернативы —
+> [[tech/00-meta/journal/2026-08-01-an-assembly-boundary-guards-the-run-log|Journal - An Assembly Boundary Guards The Run Log]].
+>
+> **Через шину идут односторонние записи:** позиция и кит в расстановке, золото, снятие реликвии,
+> награда за победу. **Мимо лога пока пишут четыре транзакции** — `TrySpendGold`, `TryAddRelic`,
+> `TrySpendRestart`, `IncreaseCapacity`: они отвечают «вышло ли» синхронно, а это несовместимо с «хост
+> подтвердит». Их переезд = §10, транзакции. Граница закреплена тестом
+> `Transactions_DoNotGoThroughTheBusYet`, то есть заявлена, а не забыта.
 
 **Правило:** `RunState` мутируется **только** обработчиком команды. Прямой вызов `RunStateService`
 мимо шины после фазы А — дефект, а не срезка.
