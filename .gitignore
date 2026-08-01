@@ -151,3 +151,6 @@ scripts/audio/.venv-gen/
 # использование, поэтому в репозиторий он не едет ни при каких условиях. Скачивается вручную
 # с fmod.com/download#demos (вкладка Demos, нужен бесплатный аккаунт).
 fmodstudio20000celeste-project/
+
+# Лаборатория: сборка tsc из docs/lab/src, генерат в git не кладём
+docs/lab/dist/
