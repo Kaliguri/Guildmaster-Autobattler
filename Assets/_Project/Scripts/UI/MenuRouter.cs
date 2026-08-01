@@ -36,6 +36,10 @@ namespace Guildmaster.UI
         private readonly Core.DevConsole.DevCommandRegistry _registry;
         private readonly Core.DevConsole.DevConsoleLog _log;
 
+        // Кооп-сессия за швом Core: UI спрашивает состояние и просит поднять/войти/выйти, но про NGO и
+        // транспорт не знает ничего — иначе сетевой стек приехал бы в слой, который рисует кнопки.
+        private readonly Core.Net.ICoopSessionControl _coop;
+
         // Палитра проекта — единственный владелец цвета. Роутер её не читает сам: он передаёт её ригу
         // карточек, чтобы тот красил тело той же ступенью приглушения, что бой.
         private readonly GuildmasterPalette _palette;
@@ -58,6 +62,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _campUxml;
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
+        private VisualTreeAsset _coopUxml;
         private VisualTreeAsset _titleCardUxml;
         private Sprite _titleCardSeal;
         private VisualTreeAsset _loadoutInventoryUxml;
@@ -73,8 +78,10 @@ namespace Guildmaster.UI
                           Core.Audio.IAudioService audio,
                           GuildmasterPalette palette,
                           Core.DevConsole.DevCommandRegistry registry,
-                          Core.DevConsole.DevConsoleLog devLog)
+                          Core.DevConsole.DevConsoleLog devLog,
+                          Core.Net.ICoopSessionControl coop)
         {
+            _coop = coop;
             _registry = registry;
             _log = devLog;
             _audio = audio;
@@ -135,8 +142,10 @@ namespace Guildmaster.UI
             VisualTreeAsset loadoutInventoryUxml = null,
             VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null,
             VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null,
-            VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null)
+            VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null,
+            VisualTreeAsset coopUxml = null)
         {
+            _coopUxml = coopUxml;
             _devConsoleUxml = devConsoleUxml;
             _devLogUxml = devLogUxml;
             _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
@@ -575,6 +584,19 @@ namespace Guildmaster.UI
         {
             string v = _loc?.GetString(key);
             return string.IsNullOrEmpty(v) ? ru : v;
+        }
+
+        /// <summary>
+        /// Экран «Сетевая игра»: поднять сессию, войти по адресу, отключиться. Открывается поверх
+        /// главного меню и его не резолвит — подключение происходит ДО забега, а не вместо него.
+        /// </summary>
+        private VisualElement BuildCoopScreen()
+        {
+            if (CannotShow("Сетевая игра (_coopScreen)", _coopUxml)) return new VisualElement();
+
+            VisualElement screen = FillRoot(CoopScreenView.Build(
+                _coopUxml, _coop, key => _loc?.GetString(key), onBack: Pop));
+            return screen;
         }
 
         private VisualElement BuildSettingsScreen()
@@ -1076,6 +1098,15 @@ namespace Guildmaster.UI
                     onExit: () => { if (menuPanel != null) menuPanel.style.display = DisplayStyle.Flex; });
             }
 
+            // Сетевая игра ведёт себя как настройки: панель меню прячется, скрима нет — мы и так в меню.
+            void OpenCoopFromMainMenu()
+            {
+                VisualElement menuPanel = screen?.Root;
+                if (menuPanel != null) menuPanel.style.display = DisplayStyle.None;
+                PushScreen(BuildCoopScreen, ScreenKind.Modal, scrimless: true,
+                    onExit: () => { if (menuPanel != null) menuPanel.style.display = DisplayStyle.Flex; });
+            }
+
             screen = new RouterResultScreen<MainMenuChoice>(ScreenKind.Page, MainMenuChoice.Quit,
                 resolve =>
                 {
@@ -1088,7 +1119,8 @@ namespace Guildmaster.UI
                         onContinue: () => resolve(MainMenuChoice.Continue),
                         onSettings: OpenSettingsFromMainMenu,
                         onQuit:     () => resolve(MainMenuChoice.Quit),
-                        onProvingGrounds: () => resolve(MainMenuChoice.ProvingGrounds));
+                        onProvingGrounds: () => resolve(MainMenuChoice.ProvingGrounds),
+                        onCoop:     OpenCoopFromMainMenu);
                 });
 
             // Забег кончился — UI прошлого забега кончается вместе с ним (QA #51). Инвентарь, карта и тест-зона

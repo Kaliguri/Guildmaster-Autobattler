@@ -1,135 +1,87 @@
 using System;
-using System.Text;
+using Guildmaster.Core.Net;
 using Guildmaster.Data;
 using Guildmaster.Net.Transport;
-using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 
 namespace Guildmaster.Net.Session
 {
-    /// <summary>Где сейчас находится кооп-сессия.</summary>
-    public enum CoopSessionState
-    {
-        /// <summary>Играем одни.</summary>
-        Offline = 0,
-
-        /// <summary>Мы хост, ждём гостей.</summary>
-        Hosting,
-
-        /// <summary>Гость: соединение поднимается.</summary>
-        Connecting,
-
-        /// <summary>Гость: соединение установлено.</summary>
-        Connected,
-    }
-
-    /// <summary>Почему сессия кончилась. Игроку показывается текстом, поэтому причина именована.</summary>
-    public enum CoopEndReason
-    {
-        None = 0,
-
-        /// <summary>Сами вышли.</summary>
-        LocalRequest,
-
-        /// <summary>Хост ушёл — сессия кончается для всех (решение 01.08.2026).</summary>
-        HostLeft,
-
-        /// <summary>Хост отказал: другая версия сборки или другой контент.</summary>
-        Rejected,
-
-        /// <summary>Не достучались вовсе.</summary>
-        ConnectionFailed,
-    }
-
     /// <summary>
-    /// Кооп-сессия: поднять хост, войти гостем, пережить разрыв и честно кончиться, когда ушёл хост.
+    /// Кооп-сессия: создать игру одним кликом, позвать друга, пережить разрыв и честно кончиться, когда
+    /// ушёл хост.
     /// </summary>
     /// <remarks>
-    /// <b>Миграции хоста не существует.</b> Гильдия живёт у хоста (дизайн), поэтому его уход — конец
-    /// сессии, а не повод выбрать нового авторитета. Это осознанный отказ от самой дорогой и самой
-    /// багованной подсистемы сетевого кода: гости уносят открытия в свои профили и возвращаются к себе.
-    /// <para><b>Рукопожатие держит отпечаток контента, а не только версию сборки.</b> У нас data-driven
-    /// контент на строковых id и живой поток правок в SO; чанк ленты несёт эти id, и неизвестный id на
-    /// приёме роняет показ, а не «слегка расходит картинку». NGO сверяет свой <c>NetworkConfig</c> и про
-    /// наш контент не знает ничего.</para>
-    /// <para><b>Отказ приходит текстом.</b> Молчаливый разрыв на рукопожатии выглядит для игрока как
-    /// «не работает интернет», и разбираться в этом он будет не с патчем, а с отзывом.</para>
+    /// <b>Только Steam</b> (решение Макса 02.08.2026): создание — один клик без названия и настроек,
+    /// вход — исключительно по приглашению. Списка комнат и подключения по адресу не существует; лобби
+    /// у нас не комната, а адрес, по которому Steam ведёт приглашённого.
+    /// <para><b>Миграции хоста нет.</b> Гильдия живёт у хоста, поэтому его уход — конец сессии, а не
+    /// повод выбирать нового авторитета. Это осознанный отказ от самой дорогой и самой багованной
+    /// подсистемы сетевого кода: гости уносят открытия в свои профили и возвращаются к себе.</para>
+    /// <para><b>«Подключились» и «в сессии» — разные события.</b> Между ними рукопожатие: версия сборки
+    /// и отпечаток контента. Без проверки расхождение контента всплыло бы не отказом, а сломанным
+    /// показом боя — лента несёт строковые id, и неизвестный id роняет картинку.</para>
     /// </remarks>
-    public sealed class CoopSession : IDisposable
+    public sealed class CoopSession : ICoopSessionControl, IDisposable
     {
-        /// <summary>Порт по умолчанию для прямого подключения в dev-сборках.</summary>
-        public const ushort DefaultPort = 7777;
+        private readonly SteamNetTransport _transport;
+        private readonly SteamLobbyService _lobby;
+        private readonly CoopHandshake     _handshake;
 
-        private readonly NetworkManager     _manager;
-        private readonly ContentFingerprint _fingerprint;
-
-        public CoopSession(NetworkManager manager, ContentFingerprint fingerprint)
+        public CoopSession(SteamNetTransport transport, SteamLobbyService lobby, CoopHandshake handshake)
         {
-            _manager     = manager ?? throw new ArgumentNullException(nameof(manager));
-            _fingerprint = fingerprint;
+            _transport = transport ?? throw new ArgumentNullException(nameof(transport));
+            _lobby     = lobby;
+            _handshake = handshake;
 
-            _manager.OnClientDisconnectCallback += HandleDisconnect;
+            _transport.PeerConnected    += HandlePeerConnected;
+            _transport.PeerDisconnected += HandlePeerDisconnected;
+
+            if (_handshake != null)
+            {
+                _handshake.Approved += HandleApproved;
+                _handshake.Rejected += HandleRejected;
+            }
+
+            if (_lobby != null) _lobby.JoinRequested += HandleJoinRequested;
         }
 
-        /// <summary>Текущее состояние.</summary>
         public CoopSessionState State { get; private set; } = CoopSessionState.Offline;
 
-        /// <summary>Почему кончилась прошлая сессия.</summary>
         public CoopEndReason EndReason { get; private set; } = CoopEndReason.None;
 
-        /// <summary>Текст отказа для экрана. Пусто, если отказа не было.</summary>
         public string EndMessage { get; private set; } = string.Empty;
 
-        /// <summary>Состояние сменилось — экран перерисовывается по этому событию.</summary>
         public event Action<CoopSessionState> StateChanged;
 
-        /// <summary>Поднять хост. Возвращает false, если NGO не стартовал (порт занят, транспорт не настроен).</summary>
-        public bool StartHost(ushort port = DefaultPort)
+        /// <summary>
+        /// Есть ли кого звать: сессия поднята и лобби создано. Кнопка приглашения гаснет сама, если
+        /// Steam не запущен, — это внешний отказ, и прятать его нельзя.
+        /// </summary>
+        public bool CanInvite => State != CoopSessionState.Offline && (_lobby?.HasLobby ?? false);
+
+        /// <summary>Создать игру: relay-сокет плюс лобби, по которому придёт приглашённый.</summary>
+        public bool StartHost()
         {
             if (State != CoopSessionState.Offline) return false;
 
-            Configure("0.0.0.0", port, listenAll: true);
-
-            // Одобряет только хост, и обязательно ДО старта: NGO спрашивает колбэк уже на первом
-            // подключении, а поставленный позже он для него не существует.
-            _manager.NetworkConfig.ConnectionApproval = true;
-            _manager.ConnectionApprovalCallback       = Approve;
-
-            if (!_manager.StartHost())
+            if (!_transport.StartHost())
             {
-                Fail(CoopEndReason.ConnectionFailed, "Не удалось поднять сессию");
+                Fail(CoopEndReason.ConnectionFailed, "Не удалось поднять сессию — проверь, запущен ли Steam");
                 return false;
             }
 
-            EndReason = CoopEndReason.None;
+            EndReason  = CoopEndReason.None;
             EndMessage = string.Empty;
             Set(CoopSessionState.Hosting);
+
+            _lobby?.CreateLobby();
             return true;
         }
 
-        /// <summary>Войти к хосту по адресу.</summary>
-        public bool Join(string address, ushort port = DefaultPort)
-        {
-            if (State != CoopSessionState.Offline) return false;
+        /// <summary>Позвать друга оверлеем Steam — единственный вход для игрока.</summary>
+        public void InviteFriend() => _lobby?.OpenInviteOverlay();
 
-            Configure(address, port, listenAll: false);
-
-            _manager.NetworkConfig.ConnectionApproval = true;
-            _manager.NetworkConfig.ConnectionData     = Encode(_fingerprint);
-
-            if (!_manager.StartClient())
-            {
-                Fail(CoopEndReason.ConnectionFailed, "Не удалось подключиться");
-                return false;
-            }
-
-            Set(CoopSessionState.Connecting);
-            _manager.OnClientConnectedCallback += HandleConnected;
-            return true;
-        }
-
-        /// <summary>Выйти самому. У хоста это конец сессии для всех.</summary>
+        /// <summary>Выйти. У хоста это конец сессии для всех.</summary>
         public void Leave()
         {
             if (State == CoopSessionState.Offline) return;
@@ -141,111 +93,74 @@ namespace Guildmaster.Net.Session
 
         public void Dispose()
         {
-            _manager.OnClientDisconnectCallback -= HandleDisconnect;
-            _manager.OnClientConnectedCallback  -= HandleConnected;
+            _transport.PeerConnected    -= HandlePeerConnected;
+            _transport.PeerDisconnected -= HandlePeerDisconnected;
+
+            if (_handshake != null)
+            {
+                _handshake.Approved -= HandleApproved;
+                _handshake.Rejected -= HandleRejected;
+            }
+
+            if (_lobby != null) _lobby.JoinRequested -= HandleJoinRequested;
         }
 
-        // ── рукопожатие ──────────────────────────────────────────────────────────
+        // ── вход по приглашению ──────────────────────────────────────────────────
 
-        private void Approve(NetworkManager.ConnectionApprovalRequest request,
-                             NetworkManager.ConnectionApprovalResponse response)
+        // Steam зовёт нас в чужое лобби: у нас есть SteamId хозяина, а значит и адрес relay-сокета.
+        private void HandleJoinRequested(ulong lobbyId, ulong hostSteamId)
         {
-            // Себя хост одобряет без разговоров: свой контент с собой всегда совпадает, а гонять его
-            // через кодирование значило бы завести шанс отказать самому себе.
-            if (request.ClientNetworkId == _manager.LocalClientId)
+            if (State != CoopSessionState.Offline) Stop();
+
+            if (!_transport.Connect(hostSteamId))
             {
-                response.Approved = true;
+                Fail(CoopEndReason.ConnectionFailed, "Не удалось открыть соединение с хостом");
                 return;
             }
 
-            if (!TryDecode(request.Payload, out ContentFingerprint theirs))
-            {
-                response.Approved = false;
-                response.Reason   = "Непонятное рукопожатие: другая версия игры";
-                return;
-            }
-
-            if (!_fingerprint.Matches(theirs))
-            {
-                response.Approved = false;
-                response.Reason   = _fingerprint.DescribeMismatch(theirs);
-                return;
-            }
-
-            response.Approved       = true;
-            response.CreatePlayerObject = false; // игроков-объектов у нас нет: всё едет сообщениями
+            EndReason  = CoopEndReason.None;
+            EndMessage = string.Empty;
+            Set(CoopSessionState.Connecting);
         }
 
-        private static byte[] Encode(in ContentFingerprint print) =>
-            Encoding.UTF8.GetBytes(
-                $"{print.ContentHash}|{print.ContentCount}|{print.SchemaVersion}|{print.GameVersion}");
-
-        private static bool TryDecode(byte[] payload, out ContentFingerprint print)
+        private void HandlePeerConnected(int peerId)
         {
-            print = default;
-            if (payload == null || payload.Length == 0) return false;
-
-            string[] parts = Encoding.UTF8.GetString(payload).Split('|');
-            if (parts.Length != 4) return false;
-
-            if (!ulong.TryParse(parts[0], out ulong hash))   return false;
-            if (!int.TryParse(parts[1], out int count))      return false;
-            if (!int.TryParse(parts[2], out int schema))     return false;
-
-            print = new ContentFingerprint(hash, count, schema, parts[3]);
-            return true;
+            // Гость: соединение с хостом есть — представляемся. «В сессии» мы станем на его ответ.
+            if (!_transport.IsHost && peerId == NetPeer.HostPeerId) _handshake?.SayHello();
         }
 
-        // ── жизнь соединения ─────────────────────────────────────────────────────
-
-        private void HandleConnected(ulong clientId)
+        private void HandlePeerDisconnected(int peerId)
         {
-            if (clientId != _manager.LocalClientId) return;
+            // У хоста уход гостя сессию не кончает: он остаётся хостом, пусть и в одиночестве.
+            if (_transport.IsHost) return;
+            if (peerId != NetPeer.HostPeerId) return;
+
+            if (State == CoopSessionState.Connecting) Fail(CoopEndReason.ConnectionFailed, "Хост не ответил");
+            else                                      Fail(CoopEndReason.HostLeft, "Хост завершил игру");
+        }
+
+        private void HandleApproved(int myPeerId)
+        {
+            _transport.SetLocalPeerId(myPeerId);
             Set(CoopSessionState.Connected);
         }
 
-        private void HandleDisconnect(ulong clientId)
-        {
-            if (_manager.IsServer)
-            {
-                // У хоста уход гостя сессию не кончает: он остаётся хостом, пусть и в одиночестве.
-                return;
-            }
+        private void HandleRejected(string reason) => Fail(CoopEndReason.Rejected, reason);
 
-            if (clientId != _manager.LocalClientId) return;
-
-            // Причина отказа приходит от хоста строкой; пустая означает обычный разрыв или уход хоста.
-            string reason = _manager.DisconnectReason;
-            if (!string.IsNullOrEmpty(reason)) Fail(CoopEndReason.Rejected, reason);
-            else if (State == CoopSessionState.Connecting) Fail(CoopEndReason.ConnectionFailed, "Хост не ответил");
-            else Fail(CoopEndReason.HostLeft, "Хост завершил игру");
-        }
-
-        private void Configure(string address, ushort port, bool listenAll)
-        {
-            var utp = _manager.GetComponent<UnityTransport>();
-            if (utp == null)
-            {
-                Debug.LogError("[CoopSession] на NetworkManager нет UnityTransport — сессию не поднять");
-                return;
-            }
-
-            // Слушаем на всех интерфейсах у хоста и стучимся по адресу у гостя. Разводить это по двум
-            // полям обязательно: слушать по адресу гостя хост не может, а гость по 0.0.0.0 не достучится.
-            utp.SetConnectionData(listenAll ? "127.0.0.1" : address, port, listenAll ? "0.0.0.0" : null);
-        }
+        // ── общее ────────────────────────────────────────────────────────────────
 
         private void Fail(CoopEndReason reason, string message)
         {
             EndReason  = reason;
             EndMessage = message;
+            Debug.LogWarning($"[CoopSession] сессия кончилась: {reason} — {message}");
             Stop();
         }
 
         private void Stop()
         {
-            _manager.OnClientConnectedCallback -= HandleConnected;
-            if (_manager.IsListening) _manager.Shutdown();
+            _transport.Shutdown();
+            _lobby?.LeaveLobby();
             Set(CoopSessionState.Offline);
         }
 

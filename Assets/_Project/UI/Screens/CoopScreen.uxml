@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel gm-panel--dialog">
+            <ui:Label name="coop-title" text="Сетевая игра" class="gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+
+            <ui:VisualElement class="gm-panel__body">
+                <!-- Состояние сессии словами. Единственный способ отличить «поднимаемся» от «отказали»:
+                     молчаливый разрыв игрок читает как «не работает интернет». -->
+                <ui:Label name="coop-status" class="gm-text-muted" />
+
+                <!-- Создание — один клик: ни названия, ни настроек. Зовут напарника приглашением, а не
+                     списком комнат; входа по адресу не существует вовсе. -->
+                <ui:Button name="btn-host" text="Создать игру" class="gm-button gm-button--primary" />
+                <ui:Button name="btn-invite" text="Пригласить друга" class="gm-button" />
+                <ui:Button name="btn-leave" text="Отключиться" class="gm-button" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="gm-divider" />
+            <ui:Button name="btn-back" text="Назад" class="gm-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -15,7 +15,7 @@ impl_note: "есть стан (ControlComponent) и замедление (StatMo
 
 Все — Полярность `Debuff`, тег `Control`, тир снятия `T1` (если не указано иное); tenacity
 (`ReceiveDebuffEff`) сокращает длительность **без** diminishing returns; три ответа —
-снять / сократить / не пустить ([[tech/10-reference/combat-model|Combat Model §5.6]]).
+снять / сократить / не пустить (боевая модель (код `Assets/_Project/Scripts/Combat/`)).
 
 | Эффект (RU / EN) | Что делает | Стакинг | Заметки |
 |---|---|---|---|

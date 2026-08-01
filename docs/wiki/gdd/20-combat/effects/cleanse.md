@@ -25,7 +25,7 @@ impl_note: "DispelComponent"
 - **DispelPower 3** — привилегия редких уников (T3), напр. [[gdd/relics/the-paragon|The Paragon]].
 
 Порядок снятия при лимите — высший тир первым, тай — по наибольшей оставшейся длительности
-([[tech/10-reference/combat-model|Combat Model §5.4]]).
+(боевая модель (код `Assets/_Project/Scripts/Combat/`)).
 
 ## Снятие и контра
 

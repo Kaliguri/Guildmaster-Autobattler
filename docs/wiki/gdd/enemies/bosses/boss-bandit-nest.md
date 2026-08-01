@@ -38,5 +38,5 @@ impl: paper
 ---
 
 > Чего босс требует от движка — [[gdd/enemies/implementation-status|Enemies - Implementation Status]].
-> Открытые вопросы по нему — [[gdd/00-meta/open|Meta - Open Questions]].
+> Открытые вопросы по нему — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

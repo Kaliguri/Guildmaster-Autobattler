@@ -91,4 +91,4 @@ updated: 2026-07-18
 ## Связи
 
 - Экранные боевые эффекты (shockwave-дисторсия) — [[backlog-vfx-particles-shaders|VFX-бэклог]].
-- SAO-эстетика перехода как посев мета-нарратива — [[visual-direction|Visual Direction]] трек 4 + [[open|мета-нарратив]].
+- SAO-эстетика перехода как посев мета-нарратива — [[visual-direction|Visual Direction]] трек 4 + [[open-forks|мета-нарратив]].

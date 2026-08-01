@@ -11,8 +11,7 @@ updated: 2026-07-29
 кирпич глубины: киты реликвий и врагов собираются из producer→consumer связок вокруг
 эффектов ([[gdd/20-combat/effects|каталог эффектов]]).
 
-Технический движок (`EffectData`, `IEffectComponent[]`, диспел) — [[tech/10-reference/combat-model|Combat
-Model §5]]. Здесь — **дизайн и авторинг**.
+Технический движок (`EffectData`, `IEffectComponent[]`, диспел) — боевая модель (код `Assets/_Project/Scripts/Combat/`). Здесь — **дизайн и авторинг**.
 
 ---
 
@@ -93,7 +92,7 @@ Model §5]]. Здесь — **дизайн и авторинг**.
 
 - **Имя:** RU + **EN-канон** (Отравление / `Poison`, Поджог / `Burn`, Раскол / `Shatter`) —
   H1 карточки.
-- **id** (`effect.*`) живёт в `EffectData`-ассете (тех-слой, [[tech/10-reference/data-layer]])
+- **id** (`effect.*`) живёт в `EffectData`-ассете (тех-слой, дата-слой (код `Assets/_Project/Scripts/Data/`, правила — скилл `xgaida-x-nixi-data-authoring`))
   — в **дизайн-карточку не дублируем**. Связь дизайн↔данные — по EN-имени/ассету.
 - **Карточка эффекта = источник дизайн-правды; `EffectData` её реализует** (не наоборот).
 - Loc-ключи — забота тех-слоя (`{id}.name/.desc`, RU заполнен).

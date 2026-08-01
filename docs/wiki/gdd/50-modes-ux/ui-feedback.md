@@ -8,7 +8,7 @@ updated: 2026-07-20
 > Как интерфейс отвечает игроку: правила отклика, которые действуют **везде**, а не на отдельном
 > экране. Дом для решений про подачу состояний — доступно, недоступно, занято, выбрано.
 >
-> Связано: [[controls]], [[tech/10-reference/ui-navigation|Reference - UI Navigation]].
+> Связано: [[controls]], [[tech/00-meta/journal/2026-07-30-the-world-replicates-the-view-does-not|Journal - The World Replicates, The View Does Not]].
 
 ---
 

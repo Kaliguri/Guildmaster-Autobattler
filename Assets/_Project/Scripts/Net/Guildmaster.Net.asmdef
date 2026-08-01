@@ -5,7 +5,7 @@
     "Guildmaster.Core",
     "Guildmaster.Data",
     "Guildmaster.Combat",
-    "Unity.Netcode.Runtime",
+
     "Unity.Collections",
     "VContainer"
   ],

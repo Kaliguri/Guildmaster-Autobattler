@@ -27,6 +27,9 @@ namespace Guildmaster.Net
 
         /// <summary>Управление боем: общая пауза и возобновление.</summary>
         BattleControl = 5,
+
+        /// <summary>Рукопожатие: версия, отпечаток контента, назначенный номер пира.</summary>
+        Handshake = 6,
     }
 
     /// <summary>
@@ -84,6 +87,6 @@ namespace Guildmaster.Net
         private static bool IsKnown(byte raw) =>
             raw == (byte)NetChannel.TapeChunk  || raw == (byte)NetChannel.TapeResend ||
             raw == (byte)NetChannel.Presence   || raw == (byte)NetChannel.RunCommand ||
-            raw == (byte)NetChannel.BattleControl;
+            raw == (byte)NetChannel.BattleControl || raw == (byte)NetChannel.Handshake;
     }
 }

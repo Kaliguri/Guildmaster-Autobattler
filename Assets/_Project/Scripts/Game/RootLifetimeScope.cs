@@ -177,10 +177,9 @@ namespace Guildmaster.Game
 
             builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>();
 
-            // ── Кооп: транспорт, сессия, общая пауза ──────────────────────────────────────────
+            // ── Кооп: Steam напрямую, без высокоуровневого netcode ───────────────────────────
             // Регистрируется всегда, даже в соло: транспорт без сессии не поднят, качать нечего, и
             // ветвление «а вдруг мы одни» не нужно ни одному потребителю.
-            builder.RegisterComponentInHierarchy<Unity.Netcode.NetworkManager>();
 
             // Отпечаток контента считается один раз на старте: он сверяется на рукопожатии, а к тому
             // времени контент уже не меняется. Версия сборки — из настроек проекта.
@@ -189,10 +188,14 @@ namespace Guildmaster.Game
                     Application.version),
                 Lifetime.Singleton);
 
-            builder.Register<Guildmaster.Net.Transport.NgoTransport>(Lifetime.Singleton)
+            builder.Register<Guildmaster.Net.Transport.SteamNetTransport>(Lifetime.Singleton)
                    .As<Guildmaster.Net.Transport.INetTransport>()
                    .AsSelf();
-            builder.Register<Guildmaster.Net.Session.CoopSession>(Lifetime.Singleton);
+            builder.Register<Guildmaster.Net.Session.SteamLobbyService>(Lifetime.Singleton);
+            builder.Register<Guildmaster.Net.Session.CoopHandshake>(Lifetime.Singleton);
+            builder.Register<Guildmaster.Net.Session.CoopSession>(Lifetime.Singleton)
+                   .As<Guildmaster.Core.Net.ICoopSessionControl>()
+                   .AsSelf();
             builder.Register<Guildmaster.Net.BattleControlRelay>(Lifetime.Singleton);
             builder.RegisterEntryPoint<Guildmaster.Net.NetPump>(Lifetime.Singleton);
 

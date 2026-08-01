@@ -41,9 +41,9 @@ updated: 2026-07-26
 
 **Референс:** саммонерки из LoL в режиме «Арена».
 
-**Заложенный дата-слой** (тех, [[tech/10-reference/data-layer|Reference - Data Layer]]): поле `Spells: AbilityData[]` в `GuildmasterData` (реюз `AbilityData` — кулдаун/стоимость/таргетинг уже есть) + рантайм `GuildmasterController` (кастер со слотами, перезарядка по времени/по числу боёв).
+**Заложенный дата-слой** (тех, дата-слой (код `Assets/_Project/Scripts/Data/`, правила — скилл `xgaida-x-nixi-data-authoring`)): поле `Spells: AbilityData[]` в `GuildmasterData` (реюз `AbilityData` — кулдаун/стоимость/таргетинг уже есть) + рантайм `GuildmasterController` (кастер со слотами, перезарядка по времени/по числу боёв).
 
-**Смежная идея, снятая вместе с этим:** роль игрока **«Арканист»** (способности в бою) из наброска ролей — см. [[gdd/00-meta/open|Meta - Open Questions]].
+**Смежная идея, снятая вместе с этим:** роль игрока **«Арканист»** (способности в бою) из наброска ролей — см. [[gdd/00-meta/open-forks|Meta - Open Forks]].
 
 ### Почему снято
 

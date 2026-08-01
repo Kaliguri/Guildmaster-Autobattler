@@ -17,7 +17,8 @@ namespace Guildmaster.UI
             Action onContinue,
             Action onSettings,
             Action onQuit,
-            Action onProvingGrounds = null)
+            Action onProvingGrounds = null,
+            Action onCoop = null)
         {
             string L(string key, string fallback)
             {
@@ -61,6 +62,14 @@ namespace Guildmaster.UI
                 proving.text = L("ui.mainmenu.proving_grounds", "Ристалище");
                 proving.SetEnabled(false);
                 proving.clicked += () => onProvingGrounds?.Invoke();
+            }
+            // Сетевая игра открывается ПОВЕРХ меню и его не закрывает: сессия поднимается до забега, а
+            // «Начать забег» игрок жмёт уже подключённым — тот же путь, что у настроек.
+            var coop = root.Q<Button>("btn-coop");
+            if (coop != null)
+            {
+                coop.text = L("ui.mainmenu.coop", "Сетевая игра");
+                coop.clicked += () => onCoop?.Invoke();
             }
             if (settings != null) { settings.text = L("ui.mainmenu.settings", "Настройки"); settings.clicked += () => onSettings?.Invoke(); }
             if (quit != null)     { quit.text     = L("ui.mainmenu.quit", "Выход"); quit.clicked += () => onQuit?.Invoke(); }
