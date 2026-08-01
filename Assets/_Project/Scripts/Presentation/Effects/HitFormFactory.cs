@@ -107,7 +107,8 @@ namespace Guildmaster.Presentation.Effects
             return new HitFormParams(from, to, kind, endsAtHit,
                 length, halfThickness, arc, a.Roughness, starRadius, starRays,
                 seed & 0xFFFFu, core, rim,
-                feel.HitFormLife, feel.HitFormGrowShare, feel.HitFormCoreWidth, freezeSeconds);
+                feel.HitFormLife, feel.HitFormGrowShare, feel.HitFormTailLag, feel.HitFormCoreWidth,
+                freezeSeconds);
         }
 
         /// <summary>

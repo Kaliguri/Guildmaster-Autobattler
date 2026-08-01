@@ -370,8 +370,13 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Сколько живёт форма, сек. Канон: 4–5 кадров на 30 Гц, целиком ПОСЛЕ момента контакта.")]
         [SerializeField] private float _hitFormLife = 0.16f;
 
-        [Tooltip("За какую долю жизни форма прорастает от A к своему концу.")]
-        [SerializeField, Range(0.05f, 1f)] private float _hitFormGrowShare = 0.35f;
+        [Tooltip("За какую долю жизни ГОЛОВА росчерка проходит форму насквозь. Меньше — резче прочерк.")]
+        [SerializeField, Range(0.05f, 1f)] private float _hitFormGrowShare = 0.3f;
+
+        [Tooltip("На сколько (в долях жизни) ХВОСТ росчерка отстаёт от головы. Он и гасит форму, догоняя " +
+                 "её: удар выглядит движением «оттуда сюда», а не полосой, которая вспыхнула и растаяла. " +
+                 "Больше отставание — длиннее видимый росчерк.")]
+        [SerializeField, Range(0.05f, 1f)] private float _hitFormTailLag = 0.4f;
 
         [Tooltip("Какую долю толщины занимает белый пересвет ядра.")]
         [SerializeField, Range(0f, 1f)] private float _hitFormCoreWidth = 0.55f;
@@ -571,6 +576,7 @@ namespace Guildmaster.Presentation.Design
         public float   HitFormUnitHeight          => _hitFormUnitHeight;
         public float   HitFormLife                => _hitFormLife;
         public float   HitFormGrowShare           => _hitFormGrowShare;
+        public float   HitFormTailLag             => _hitFormTailLag;
         public float   HitFormCoreWidth           => _hitFormCoreWidth;
 
         /// <summary>Цвет пересвета в ядре формы — тот же холодный пересвет, что у осколков и смерти.</summary>

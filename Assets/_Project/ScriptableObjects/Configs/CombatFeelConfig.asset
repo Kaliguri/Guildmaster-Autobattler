@@ -87,9 +87,9 @@ MonoBehaviour:
   _lowHpPulseAmount: 0.5
   _hpBarPunchAmount: 0.08
   _hpBarPunchDuration: 0.12
-  _flashDuration: 0.25
+  _flashDuration: 0.1
   _squashAmount: 0.2
-  _squashDuration: 0.25
+  _squashDuration: 0.14
   _hitstopMin: 0.02
   _hitstopMax: 0.09
   _hitstopFullFrac: 0.25
@@ -204,7 +204,8 @@ MonoBehaviour:
   _vfxHitForm: {fileID: 11400000, guid: d82430ffaffd4a248a06944eb2963688, type: 2}
   _hitFormUnitHeight: 1
   _hitFormLife: 0.16
-  _hitFormGrowShare: 0.35
+  _hitFormGrowShare: 0.3
+  _hitFormTailLag: 0.4
   _hitFormCoreWidth: 0.55
   _hitFormCoreBrightness: 3.2
   _hitFormSizeMax: 1.35

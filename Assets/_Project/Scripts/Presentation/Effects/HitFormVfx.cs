@@ -74,8 +74,14 @@ namespace Guildmaster.Presentation.Effects
         /// <summary>Сколько форма живёт, сек.</summary>
         public readonly float Life;
 
-        /// <summary>Доля жизни, за которую форма прорастает от A к концу.</summary>
+        /// <summary>Доля жизни, за которую голова росчерка проходит форму насквозь.</summary>
         public readonly float GrowShare;
+
+        /// <summary>
+        /// На сколько (в долях жизни) хвост росчерка отстаёт от головы. Он и гасит форму, догоняя её:
+        /// удар выглядит движением, а не вспыхнувшей и растаявшей полосой.
+        /// </summary>
+        public readonly float TailLag;
 
         /// <summary>Доля толщины под ядро.</summary>
         public readonly float CoreWidth;
@@ -89,13 +95,15 @@ namespace Guildmaster.Presentation.Effects
         public HitFormParams(Vector3 from, Vector3 to, HitFormKind kind, bool endsAtHit,
             float length, float halfThickness,
             float arc, float roughness, float starRadius, int starRays, float seed,
-            Color core, Color rim, float life, float growShare, float coreWidth, float freezeSeconds)
+            Color core, Color rim, float life, float growShare, float tailLag, float coreWidth,
+            float freezeSeconds)
         {
             From = from; To = to; Kind = kind; EndsAtHit = endsAtHit;
             Length = length; HalfThickness = halfThickness; Arc = arc; Roughness = roughness;
             StarRadius = starRadius; StarRays = starRays; Seed = seed;
             Core = core; Rim = rim;
-            Life = life; GrowShare = growShare; CoreWidth = coreWidth; FreezeSeconds = freezeSeconds;
+            Life = life; GrowShare = growShare; TailLag = tailLag;
+            CoreWidth = coreWidth; FreezeSeconds = freezeSeconds;
         }
     }
 
@@ -135,6 +143,7 @@ namespace Guildmaster.Presentation.Effects
         private static readonly int StarRaysId   = Shader.PropertyToID("_StarRays");
         private static readonly int ProgressId   = Shader.PropertyToID("_Progress");
         private static readonly int GrowId       = Shader.PropertyToID("_Grow");
+        private static readonly int TailLagId    = Shader.PropertyToID("_TailLag");
 
         private Renderer _renderer;
         private MaterialPropertyBlock _block;
@@ -200,6 +209,7 @@ namespace Guildmaster.Presentation.Effects
             _block.SetFloat(StarRaysId, p.StarRays);
             _block.SetFloat(ProgressId, 0f);
             _block.SetFloat(GrowId, Mathf.Clamp(p.GrowShare, 0.05f, 1f));
+            _block.SetFloat(TailLagId, Mathf.Clamp(p.TailLag, 0.05f, 1f));
             _renderer.SetPropertyBlock(_block);
 
             _elapsed = 0f;
