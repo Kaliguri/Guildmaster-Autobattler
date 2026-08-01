@@ -81,7 +81,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _castGlowRelease: 0.18
   _castGlowPulseRise: 0.06
-  _castGlowFlatness: 0.35
+  _castGlowFlatness: 0
   _lowHpThreshold: 0.25
   _lowHpPulsePeriod: 0.85
   _lowHpPulseAmount: 0.5
