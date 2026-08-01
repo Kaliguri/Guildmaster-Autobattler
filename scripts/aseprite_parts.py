@@ -188,6 +188,22 @@ def islands(img: Image.Image) -> list[list[tuple[int, int]]]:
     return sorted(found, key=len, reverse=True)
 
 
+def joint_width(cel: dict) -> int:
+    """Ширина части в суставе — её верхняя непрозрачная кромка.
+
+    Именно она задаёт нужное перекрытие: у круглого среза с пивотом в центре
+    хватает радиуса, то есть половины этой ширины, и угол поворота роли не
+    играет. Максимальная ширина части здесь врёт — бедро шириной 21 сидит в
+    тазу кромкой 16, а предплечье шириной 9 висит на кромке 5.
+    """
+    img = cel["image"]
+    for y in range(img.height):
+        xs = [x for x in range(img.width) if img.getpixel((x, y))[3] > 0]
+        if xs:
+            return max(xs) - min(xs) + 1
+    return 0
+
+
 def vertical_span(cel: dict) -> tuple[int, int]:
     """Верх и низ непрозрачного содержимого цела в координатах канвы."""
     img, cy = cel["image"], cel["y"]
@@ -283,15 +299,16 @@ def cmd_check(args) -> int:
         print(f"тира {args.tier} в сетке нет, есть {sorted(grid)}", file=sys.stderr)
         return 1
     tier = grid[args.tier]
-    overlap_required = tier["overlap"]
+    hint = tier["overlap"]
 
     whole = doc.assemble(members)
     bbox = whole.getbbox()
     sole = args.sole if args.sole is not None else bbox[3]
     print(f"сборка {bbox[2]-bbox[0]}x{bbox[3]-bbox[1]}, подошва y={sole}, "
-          f"тир {args.tier}, перекрытие по сетке {overlap_required} px\n")
+          f"тир {args.tier}, ориентир сетки {hint} px "
+          f"(решает ширина в суставе)\n")
 
-    spans, problems = {}, []
+    spans, widths, problems = {}, {}, []
     print(f"{'часть':40} {'габарит':10} {'верх..низ':11} островов контур")
     for i in members:
         cel = doc.cels.get(i)
@@ -300,6 +317,7 @@ def cmd_check(args) -> int:
         label = doc.label(i)
         top, bottom = vertical_span(cel)
         spans[label] = (top, bottom)
+        widths[label] = joint_width(cel)
         isles = islands(cel["image"])
         junk = [x for x in isles[1:] if len(x) * 10 < len(isles[0])]
         top_dark, bottom_dark = edge_darkness(cel)
@@ -318,6 +336,7 @@ def cmd_check(args) -> int:
               f"{top_dark:.0%}/{bottom_dark:.0%}{note}")
 
     if args.chain:
+        same_bone = set(args.same_bone or [])
         print(f"\n{'родитель -> ребёнок':58} перекрытие")
         for pair in args.chain:
             parent, child = pair.split("->")
@@ -340,13 +359,22 @@ def cmd_check(args) -> int:
                 # Пересечение диапазонов: ветвление «кто ниже» врёт для
                 # наплечника, который сидит в ВЕРХНЕЙ части торса.
                 overlap = min(a[1], b[1]) - max(a[0], b[0]) + 1
-                verdict = "ок" if overlap >= overlap_required else (
+                if pair in same_bone:
+                    print(f"{a_label.split(' / ')[-1]:26} -> "
+                          f"{b_label.split(' / ')[-1]:26} {overlap:>4} px   "
+                          f"одна кость, расходиться нечему")
+                    continue
+                # Круглый срез с пивотом в центре: хватает радиуса, и угол
+                # поворота роли не играет.
+                need = max(1, -(-widths[b_label] // 2))
+                verdict = "ок" if overlap >= need else (
                     "МАЛО" if overlap > 0 else "ЩЕЛЬ")
                 if verdict != "ок":
                     problems.append(f"стык {a_label} -> {b_label}: {overlap} px, "
-                                    f"нужно {overlap_required}")
+                                    f"нужно {need} (ширина в суставе "
+                                    f"{widths[b_label]})")
                 print(f"{a_label.split(' / ')[-1]:26} -> {b_label.split(' / ')[-1]:26} "
-                      f"{overlap:>4} px   {verdict}")
+                      f"{overlap:>4} px  нужно {need:>2}  {verdict}")
 
     print()
     if problems:
@@ -548,6 +576,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--sole", type=int, help="y подошвы; по умолчанию низ сборки")
     p.add_argument("--chain", nargs="*", default=[],
                    help="пары «родитель->ребёнок» по концу имени, например \"Top->Down\"")
+    p.add_argument("--same-bone", nargs="*", default=[],
+                   help="пары из --chain, которые висят на ОДНОМ узле рига: "
+                        "им перекрытие не нужно, расходиться нечему")
     p.set_defaults(func=cmd_check)
 
     p = sub.add_parser("clean", help="убрать мусорные острова из цела (ПИШЕТ в файл)")
