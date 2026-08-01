@@ -85,9 +85,22 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Индекс тяжёлого payload'а в своём списке ленты, или <c>-1</c>.</summary>
         public readonly int PayloadIndex;
 
+        /// <summary>
+        /// Доля тика [0..1), внутри которой событие случилось на самом деле. <c>0</c> = на границе тика,
+        /// то есть доли у события нет — так едут все события, у которых нет своего момента внутри шага
+        /// (смерть, наложение эффекта, периодика).
+        /// <para><b>Это подача, а не правила.</b> В модели событие по-прежнему принадлежит тику
+        /// <see cref="Tick"/> целиком: доля считается при ЗАПИСИ из уже известных симуляции чисел и на
+        /// сам расчёт боя не влияет. Баланс, чек-суммы и зеркальные тесты её не видят.</para>
+        /// <para><b>Зачем:</b> без неё поза и позиция текут по кадрам (доля кадра есть у обоих), а
+        /// вспышка, цифра урона, звук и hitstop щёлкают на границе тика — разброс до 33 мс мимо кадра
+        /// контакта, в среднем ~16. Ощущается как вялый удар при идеально посчитанном уроне.</para>
+        /// </summary>
+        public readonly float SubTick;
+
         public TapeEvent(
             TapeEventKind kind, int tick, int sourceId = -1, int targetId = -1,
-            float amount = 0f, int flags = 0, int payloadIndex = -1)
+            float amount = 0f, int flags = 0, int payloadIndex = -1, float subTick = 0f)
         {
             Kind         = kind;
             Tick         = tick;
@@ -96,6 +109,7 @@ namespace Guildmaster.Combat.Tape
             Amount       = amount;
             Flags        = flags;
             PayloadIndex = payloadIndex;
+            SubTick      = subTick < 0f ? 0f : (subTick < 1f ? subTick : 0.999f);
         }
     }
 

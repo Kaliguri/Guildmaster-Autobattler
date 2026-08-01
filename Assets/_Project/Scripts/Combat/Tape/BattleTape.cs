@@ -133,21 +133,54 @@ namespace Guildmaster.Combat.Tape
             return false;
         }
 
-        public void Record(in TapeEvent ev) => _events.Add(ev);
-
-        /// <summary>Записать урон: подробности едут в свой список, событие — ссылкой на них.</summary>
-        public void RecordDamage(int tick, int sourceId, int targetId, in DamageResult result)
+        /// <summary>
+        /// Записать событие, держа ленту отсортированной по паре (тик, доля тика).
+        /// <para><b>Почему вставкой, а не просто <c>Add</c>:</b> подача идёт линейным курсором, и событие
+        /// с долей 0.9, попавшее в список раньше события с долей 0.1 того же тика, задержало бы второе до
+        /// своей доли — то есть sub-tick точность съела бы сама себя. Сортировка внутри тика делает
+        /// порядок подачи порядком МОМЕНТОВ, а не порядком обхода юнитов.</para>
+        /// <para>Цена почти нулевая: события приходят по возрастанию тика, поэтому сдвиг случается только
+        /// среди событий последнего тика — их единицы. Равные доли сохраняют порядок записи (вставка
+        /// стабильна), поэтому у событий без доли поведение прежнее.</para>
+        /// </summary>
+        public void Record(in TapeEvent ev)
         {
-            _damage.Add(new TapeDamage(in result));
-            _events.Add(new TapeEvent(
-                TapeEventKind.DamageDealt, tick, sourceId, targetId, payloadIndex: _damage.Count - 1));
+            int i = _events.Count;
+            while (i > 0)
+            {
+                TapeEvent prev = _events[i - 1];
+                if (prev.Tick < ev.Tick) break;
+                if (prev.Tick == ev.Tick && prev.SubTick <= ev.SubTick) break;
+                i--;
+            }
+
+            if (i == _events.Count) _events.Add(ev);
+            else                    _events.Insert(i, ev);
         }
 
-        /// <summary>Записать зону удара: геометрия в свой список, событие — ссылкой на неё.</summary>
-        public void RecordAreaHit(int tick, in AreaHit hit)
+        /// <summary>
+        /// Записать урон: подробности едут в свой список, событие — ссылкой на них.
+        /// <paramref name="subTick"/> — доля тика, в которую пришёлся контакт (0 = на границе тика).
+        /// </summary>
+        public void RecordDamage(int tick, int sourceId, int targetId, in DamageResult result,
+            float subTick = 0f)
+        {
+            _damage.Add(new TapeDamage(in result));
+            Record(new TapeEvent(
+                TapeEventKind.DamageDealt, tick, sourceId, targetId,
+                payloadIndex: _damage.Count - 1, subTick: subTick));
+        }
+
+        /// <summary>
+        /// Записать зону удара: геометрия в свой список, событие — ссылкой на неё.
+        /// <paramref name="subTick"/> — доля тика контакта: зона это удар, и её вспышка обязана попасть в
+        /// тот же кадр, что и цифры по накрытым целям.
+        /// </summary>
+        public void RecordAreaHit(int tick, in AreaHit hit, float subTick = 0f)
         {
             _areaHits.Add(hit);
-            _events.Add(new TapeEvent(TapeEventKind.AreaHit, tick, payloadIndex: _areaHits.Count - 1));
+            Record(new TapeEvent(
+                TapeEventKind.AreaHit, tick, payloadIndex: _areaHits.Count - 1, subTick: subTick));
         }
 
         /// <summary>
@@ -157,14 +190,14 @@ namespace Guildmaster.Combat.Tape
         public void RecordBattleEnded(int tick, in BattleOutcome outcome)
         {
             _outcomes.Add(outcome);
-            _events.Add(new TapeEvent(TapeEventKind.BattleEnded, tick, payloadIndex: _outcomes.Count - 1));
+            Record(new TapeEvent(TapeEventKind.BattleEnded, tick, payloadIndex: _outcomes.Count - 1));
         }
 
         /// <summary>Записать наложение или спад эффекта: определение едет ссылкой в свой список.</summary>
         public void RecordEffect(int tick, TapeEventKind kind, int targetId, Data.Definitions.EffectData def)
         {
             _effectDefs.Add(def);
-            _events.Add(new TapeEvent(kind, tick, targetId: targetId, payloadIndex: _effectDefs.Count - 1));
+            Record(new TapeEvent(kind, tick, targetId: targetId, payloadIndex: _effectDefs.Count - 1));
         }
 
         /// <summary>
@@ -175,7 +208,7 @@ namespace Guildmaster.Combat.Tape
             Data.Definitions.AbilityData def, float amount = 0f)
         {
             _abilityDefs.Add(def);
-            _events.Add(new TapeEvent(kind, tick, casterId, amount: amount, payloadIndex: _abilityDefs.Count - 1));
+            Record(new TapeEvent(kind, tick, casterId, amount: amount, payloadIndex: _abilityDefs.Count - 1));
         }
 
         /// <summary>

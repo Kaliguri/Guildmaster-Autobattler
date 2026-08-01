@@ -78,10 +78,18 @@ namespace Guildmaster.Combat.Tape
         public int DeliveredCount => _cursor;
 
         /// <summary>
-        /// Отдать всё, что случилось по тик <paramref name="viewTick"/> включительно. Зовётся раз за
-        /// кадр после продвижения показа; курсор гарантирует, что событие не отдаётся дважды.
+        /// Отдать всё, что случилось по момент показа (<paramref name="viewTick"/> плюс доля
+        /// <paramref name="alpha"/>) включительно. Зовётся раз за кадр после продвижения показа; курсор
+        /// гарантирует, что событие не отдаётся дважды.
         /// </summary>
-        public void PumpTo(int viewTick)
+        /// <param name="alpha">
+        /// Доля показываемого тика, уже отыгранная на экране (<c>BattleTapePlayback.Alpha</c>). Событие
+        /// внутри этого тика ждёт, пока показ дойдёт до его <see cref="TapeEvent.SubTick"/> — так вспышка,
+        /// цифра, звук и hitstop встают в кадр контакта, а не на границу тика (разброс был до 33 мс).
+        /// <para><b>Дефолт 1 = «тик показан целиком»</b>, то есть прежнее поведение: тому, кто долей не
+        /// пользуется (тесты, диагностика, догоняющая прокрутка), ничего знать о ней не нужно.</para>
+        /// </param>
+        public void PumpTo(int viewTick, float alpha = 1f)
         {
             if (viewTick == BattleTape.NoTick) return;
 
@@ -89,6 +97,10 @@ namespace Guildmaster.Combat.Tape
             {
                 TapeEvent ev = _tape.GetEvent(_cursor);
                 if (ev.Tick > viewTick) break;
+
+                // Событие показываемого тика ждёт своей доли. Прошлые тики отдаются всегда: их доля уже
+                // отыграна, а «догнать» надо целиком — иначе долгий кадр потерял бы события насовсем.
+                if (ev.Tick == viewTick && ev.SubTick > alpha) break;
 
                 _cursor++;
                 Raise(in ev);
