@@ -12,6 +12,11 @@ namespace Guildmaster.Presentation
         [Tooltip("Жёсткий потолок жизни, сек (0 = ждать ParticleSystem.IsAlive или 2с фолбэк).")]
         [SerializeField] private float _maxLifetime = 0f;
 
+        [Tooltip("Системы ПОТОКА ВСКРЫТОГО: медленные красные частицы, которые говорят, ЧТО вскрыли, а не " +
+                 "чем ударили. Свой цвет они держат сами (палитра бьющего их не красит), а на блоке не " +
+                 "эмитятся вовсе — щит принял удар, тело целое.")]
+        [SerializeField] private ParticleSystem[] _woundStreams;
+
         private ParticleSystem[] _particles;
         private ParticleSystem.Burst[][] _baseBursts;   // эталонные бёрсты префаба (см. CacheBaseBursts)
         private ParticleSystem.MinMaxGradient[] _baseColors; // эталонные цвета префаба (см. CacheBaseColors)
@@ -113,9 +118,17 @@ namespace Guildmaster.Presentation
         /// множитель силы удара). Не безразмерный коэффициент: сколько эффект займёт на экране, видно
         /// прямо здесь — 0.2 при юните ростом 1.6 это примерно пятнадцать пикселей в боевом кадре.
         /// </param>
+        /// <param name="lifeOverride">
+        /// Явная жизнь эффекта, сек. Нужна тем, у кого её нельзя вывести из частиц: у формы удара частиц
+        /// нет вовсе, а её срок вдобавок сдвигается заморозкой hitstop. 0 = как раньше, по префабу.
+        /// </param>
+        /// <param name="wound">
+        /// Показывать ли поток вскрытого (медленные красные). <c>false</c> — удар в тело не вошёл: щит его
+        /// принял, вскрывать нечего.
+        /// </param>
         public void Play(Vector3 worldPos, float sizeUnits, float dirDeg,
             int sortingLayerId, int baseSortingOrder, System.Action<PooledVfx> onComplete,
-            float countScale = 1f, Gradient tint = null)
+            float countScale = 1f, Gradient tint = null, float lifeOverride = 0f, bool wound = true)
         {
             Cache();
             _onComplete = onComplete;
@@ -127,7 +140,7 @@ namespace Guildmaster.Presentation
             transform.localScale = _baseScale * ResolveTransformScale(sizeUnits);
 
             ApplySorting(sortingLayerId, baseSortingOrder);
-            ApplyEmissionCount(countScale);
+            ApplyEmissionCount(countScale, wound);
             ApplyTint(tint);
 
             if (_particles != null)
@@ -141,7 +154,7 @@ namespace Guildmaster.Presentation
                 }
             }
 
-            _life = ResolveLife();
+            _life = lifeOverride > 0f ? lifeOverride : ResolveLife();
         }
 
         /// <summary>
@@ -149,7 +162,7 @@ namespace Guildmaster.Presentation
         /// проигрыше и остаются эталоном). Сила удара должна читаться частотой искр, а не их размером:
         /// крупная искра говорит «большой эффект», а частая — «сильный удар».
         /// </summary>
-        private void ApplyEmissionCount(float countScale)
+        private void ApplyEmissionCount(float countScale, bool wound)
         {
             if (_particles == null || _particles.Length == 0) return;
             CacheBaseBursts();
@@ -161,6 +174,12 @@ namespace Guildmaster.Presentation
                 ParticleSystem ps = _particles[i];
                 if (ps == null || _baseBursts[i] == null) continue;
 
+                // Поток вскрытого на блоке гасится в ноль, а не уменьшается: «половина красных» читалась бы
+                // как «немножко пробил», а щит либо принял удар, либо нет.
+                bool isWound = IsWoundStream(ps);
+                if (isWound && !wound) k = 0f;
+                else k = Mathf.Max(0.05f, countScale);
+
                 ParticleSystem.Burst[] bursts = _baseBursts[i];
                 if (bursts.Length == 0) continue;
 
@@ -169,8 +188,10 @@ namespace Guildmaster.Presentation
                 {
                     ParticleSystem.Burst burst = bursts[b];
                     ParticleSystem.MinMaxCurve count = burst.count;
-                    count.constantMin = Mathf.Max(1f, count.constantMin * k);
-                    count.constantMax = Mathf.Max(1f, count.constantMax * k);
+                    // Нижняя граница в одну частицу — чтобы слабый удар не остался вовсе без искр. При
+                    // нулевом множителе она НЕ действует: ноль здесь означает «этого потока не будет».
+                    count.constantMin = k <= 0f ? 0f : Mathf.Max(1f, count.constantMin * k);
+                    count.constantMax = k <= 0f ? 0f : Mathf.Max(1f, count.constantMax * k);
                     burst.count = count;
                     scaled[b] = burst;
                 }
@@ -178,6 +199,18 @@ namespace Guildmaster.Presentation
                 ParticleSystem.EmissionModule emission = ps.emission;
                 emission.SetBursts(scaled);
             }
+        }
+
+        /// <summary>
+        /// Эта система — поток вскрытого? Их различает не цвет, а РОЛЬ: красный поток говорит «что
+        /// вскрыли», остальные — «чем ударили», и живут они по-разному даже при близких оттенках.
+        /// </summary>
+        private bool IsWoundStream(ParticleSystem ps)
+        {
+            if (_woundStreams == null) return false;
+            for (int i = 0; i < _woundStreams.Length; i++)
+                if (_woundStreams[i] == ps) return true;
+            return false;
         }
 
         /// <summary>
@@ -198,7 +231,9 @@ namespace Guildmaster.Presentation
                 if (ps == null) continue;
 
                 ParticleSystem.MainModule main = ps.main;
-                if (palette == null) { main.startColor = _baseColors[i]; continue; }
+                // Поток вскрытого палитрой бьющего НЕ красится: внутренности красные у всех, кто бы ни
+                // ударил, — это факт о цели, а не об атакующем.
+                if (palette == null || IsWoundStream(ps)) { main.startColor = _baseColors[i]; continue; }
 
                 // Два конца палитры как границы рандома — Unity сама разбрасывает частицы между ними.
                 main.startColor = new ParticleSystem.MinMaxGradient(palette.Evaluate(0f), palette.Evaluate(1f));

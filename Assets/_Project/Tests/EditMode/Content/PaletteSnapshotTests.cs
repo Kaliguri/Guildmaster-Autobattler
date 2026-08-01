@@ -52,6 +52,7 @@ namespace Guildmaster.Tests.EditMode.Content
             "--gm-color-combat-shield",
             "--gm-color-combat-overbright",
             "--gm-color-combat-hologram",
+            "--gm-color-combat-cut",
         };
 
         private static GuildmasterPalette LoadAsset()

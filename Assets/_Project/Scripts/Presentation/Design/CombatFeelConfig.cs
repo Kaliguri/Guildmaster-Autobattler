@@ -331,14 +331,104 @@ namespace Guildmaster.Presentation.Design
         [SerializeField, Range(0.3f, 1f)] private float _vfxHitSizeMultMin = 0.7f;
         [Tooltip("Множитель РАЗМЕРА искр на тяжёлом ударе (доля ≥ HeavyHitFrac).")]
         [SerializeField, Range(0.3f, 2f)] private float _vfxHitSizeMultMax = 1f;
-        [Tooltip("Множитель КОЛИЧЕСТВА искр на лёгком ударе. Сила удара читается частотой, а не размером.")]
-        [SerializeField, Range(0.05f, 1f)] private float _vfxHitCountMin = 0.4f;
-        [Tooltip("Множитель количества искр на тяжёлом ударе (доля ≥ HeavyHitFrac).")]
-        [SerializeField, Range(0.5f, 4f)] private float _vfxHitCountMax = 2.2f;
+        [Tooltip("Сколько искр даёт удар, не снявший ни одного HP: нижняя граница формулы количества.")]
+        [SerializeField, Range(0f, 40f)] private int _hitSparkBase = 6;
+
+        [Tooltip("Сколько искр добавляет ПОЛНАЯ доля HP: количество идёт пропорцией урону. " +
+                 "Канон: 6 + доля_HP × 120.")]
+        [SerializeField, Range(10f, 300f)] private int _hitSparkPerHp = 120;
+
+        [Tooltip("ПОТОЛОК числа искр на удар. Обязателен: без него удар кита превратится в стену.")]
+        [SerializeField, Range(8f, 200f)] private int _hitSparkCap = 48;
+
+        [Tooltip("Сколько искр в бёрстах ПРЕФАБА — знаменатель, которым абсолютное количество переводится " +
+                 "в множитель. Врёт это число — врёт вся формула количества, поэтому оно живёт рядом с ней, " +
+                 "а не выводится из префаба на лету.")]
+        [SerializeField, Range(1f, 200f)] private int _hitSparkPrefabCount = 24;
 
         [Tooltip("Всплеск при касте способности за ману — «смотри, я сейчас выдам». Цвет берётся из палитры " +
                  "самого юнита (UnitData), поэтому один префаб служит всем.")]
         [SerializeField] private VfxData _vfxCastBurst;
+
+        // --- Форма удара: главный знак попадания (серп / веретено / звезда / линия-всполох) ---
+        [Header("VFX — форма удара")]
+        [Tooltip("Форма попадания: серп режущего, веретено колющего, звезда дробящего, линия-всполох выстрела. " +
+                 "Выключено — удар остаётся вспышкой, искрами и цифрой, как до 01.08.2026.")]
+        [SerializeField] private bool _enableHitForm = true;
+
+        [Tooltip("Заблокированный удар в тело не вошёл: форма ТОРМОЗИТ о щит вместо прохода насквозь. " +
+                 "Выключено — форма всегда проходит навылет. Оба поведения сравниваются в бою.")]
+        [SerializeField] private bool _enableHitFormBreakOnShield = true;
+
+        [Tooltip("Префаб формы (quad с шейдером Guildmaster/Vfx/HitForm).")]
+        [SerializeField] private VfxData _vfxHitForm;
+
+        [Tooltip("Рост юнита-человека (H) в мировых единицах — мера, в которой заданы все размеры формы. " +
+                 "Сменится сетка спрайтов — поменяется одно это число, а не четыре архетипа.")]
+        [SerializeField] private float _hitFormUnitHeight = 1f;
+
+        [Tooltip("Сколько живёт форма, сек. Канон: 4–5 кадров на 30 Гц, целиком ПОСЛЕ момента контакта.")]
+        [SerializeField] private float _hitFormLife = 0.16f;
+
+        [Tooltip("За какую долю жизни форма прорастает от A к своему концу.")]
+        [SerializeField, Range(0.05f, 1f)] private float _hitFormGrowShare = 0.35f;
+
+        [Tooltip("Какую долю толщины занимает белый пересвет ядра.")]
+        [SerializeField, Range(0f, 1f)] private float _hitFormCoreWidth = 0.55f;
+
+        [Tooltip("Яркость пересвета в ядре формы. Ядро — самое светлое место удара и потому пробивает " +
+                 "bloom сильнее каймы; красить его элементом нельзя, иначе оба цвета потухнут.")]
+        [SerializeField, Range(1f, 6f)] private float _hitFormCoreBrightness = 3.2f;
+
+        [Tooltip("Размер формы на ТЯЖЁЛОМ ударе (доля ≥ Heavy Hit Frac) — множитель к числам архетипа. " +
+                 "Потолок обязателен: без него удар кита выдал бы стену вместо эффекта.")]
+        [SerializeField, Range(1f, 3f)] private float _hitFormSizeMax = 1.35f;
+
+        [Tooltip("Размер формы на самом лёгком ударе — множитель к числам архетипа.")]
+        [SerializeField, Range(0.2f, 1f)] private float _hitFormSizeMin = 0.55f;
+
+        // --- Порезы: тело помнит бой ---
+        [Header("VFX — порезы на теле")]
+        [Tooltip("Каждое попадание оставляет светящуюся красную прореху; хил заживляет самые старые. " +
+                 "Выключено — тело о ранах не помнит, здоровье читается только полосой.")]
+        [SerializeField] private bool _enableBodyCuts = true;
+
+        [Tooltip("Полуширина линии пореза в мировых единицах. Порез гладкий, не пиксельный: тонкий " +
+                 "светящийся штрих читается там, где царапина в один пиксель потерялась бы.")]
+        [SerializeField] private float _cutWidthUnits = 0.012f;
+
+        [Tooltip("Длина пореза на самом лёгком ударе, доли H.")]
+        [SerializeField] private float _cutLengthMinH = 0.09f;
+
+        [Tooltip("Длина пореза на тяжёлом ударе (доля ≥ Heavy Hit Frac), доли H.")]
+        [SerializeField] private float _cutLengthMaxH = 0.2f;
+
+        [Tooltip("Яркость свечения пореза: во сколько раз цвет из палитры ярче базы. Порез светится " +
+                 "слабее удара — он состояние, а не событие, и звенеть ему не положено.")]
+        [SerializeField, Range(1f, 4f)] private float _cutBrightness = 1.6f;
+
+        [Header("VFX — дуга за клинком (первая стадия удара)")]
+        [Tooltip("Сектор от плеча, заметающий пройденный угол. Живёт на взмахе и рисуется ВСЕГДА, даже " +
+                 "на промахе: дуга говорит «клинок прошёл здесь», и это правда в любом исходе. " +
+                 "Выключено — взмах остаётся немым, форма на попадании работает.")]
+        [SerializeField] private bool _enableSwingArc = true;
+
+        [Tooltip("Префаб дуги (quad с шейдером Guildmaster/Vfx/SwingArc).")]
+        [SerializeField] private VfxData _vfxSwingArc;
+
+        [Tooltip("С какой доли радиуса начинается свечение: у самого плеча его нет — там рука, а не след.")]
+        [SerializeField, Range(0f, 0.9f)] private float _swingArcInnerShare = 0.4f;
+
+        [Tooltip("Насколько быстро гаснет хвост дуги. Больше — короче видимый след за клинком.")]
+        [SerializeField, Range(0.2f, 4f)] private float _swingArcTailBias = 1.6f;
+
+        [Tooltip("Сколько дуга догорает после конца взмаха, сек. Канон: около двух кадров.")]
+        [SerializeField] private float _swingArcFadeOut = 0.07f;
+
+        [SerializeField] private HitFormArchetypeConfig _hitFormSlash = HitFormArchetypeConfig.Slash();
+        [SerializeField] private HitFormArchetypeConfig _hitFormPierce = HitFormArchetypeConfig.Pierce();
+        [SerializeField] private HitFormArchetypeConfig _hitFormBlunt = HitFormArchetypeConfig.Blunt();
+        [SerializeField] private HitFormArchetypeConfig _hitFormBolt = HitFormArchetypeConfig.Bolt();
 
         // --- Getters ---
         public bool  EnableContactDust       => _enableContactDust;
@@ -475,6 +565,69 @@ namespace Guildmaster.Presentation.Design
 
         public VfxData VfxCastBurst   => _vfxCastBurst;
 
+        public bool    EnableHitForm              => _enableHitForm;
+        public bool    EnableHitFormBreakOnShield => _enableHitFormBreakOnShield;
+        public VfxData VfxHitForm                 => _vfxHitForm;
+        public float   HitFormUnitHeight          => _hitFormUnitHeight;
+        public float   HitFormLife                => _hitFormLife;
+        public float   HitFormGrowShare           => _hitFormGrowShare;
+        public float   HitFormCoreWidth           => _hitFormCoreWidth;
+
+        /// <summary>Цвет пересвета в ядре формы — тот же холодный пересвет, что у осколков и смерти.</summary>
+        public Color   HitFormCoreColor           => Overbright(_hitFormCoreBrightness);
+
+        public bool  EnableBodyCuts => _enableBodyCuts;
+        public float CutWidthUnits  => _cutWidthUnits;
+
+        /// <summary>
+        /// Цвет пореза: роль вскрытого из палитры, поднятая множителем яркости. HDR живёт здесь, а не в
+        /// токенах — там оттенок, тут сила свечения.
+        /// </summary>
+        public Color CutColor
+        {
+            get
+            {
+                Color basis = Role("--gm-color-combat-cut");
+                return new Color(basis.r * _cutBrightness, basis.g * _cutBrightness, basis.b * _cutBrightness, basis.a);
+            }
+        }
+
+        /// <summary>Длина пореза в мировых единицах по весу удара: тяжёлый вскрывает шире.</summary>
+        public float EvaluateCutLength(float hpDamageFrac)
+        {
+            float t = Mathf.Clamp01(hpDamageFrac / Mathf.Max(1e-4f, _heavyHitFrac));
+            return Mathf.Lerp(_cutLengthMinH, _cutLengthMaxH, t) * Mathf.Max(0.01f, _hitFormUnitHeight);
+        }
+
+        public bool    EnableSwingArc      => _enableSwingArc;
+        public VfxData VfxSwingArc         => _vfxSwingArc;
+        public float   SwingArcInnerShare  => _swingArcInnerShare;
+        public float   SwingArcTailBias    => _swingArcTailBias;
+        public float   SwingArcFadeOut     => _swingArcFadeOut;
+
+        /// <summary>
+        /// Правило генерации архетипа. Тотальна по построению: новый архетип, забытый здесь, вернёт
+        /// режущего — но добавить его молча не выйдет, потому что <c>HitFormKind</c> закрыт каноном
+        /// («форма говорит, КАК доставили»), и пятый архетип потребует решения Макса, а не строки в switch.
+        /// </summary>
+        public HitFormArchetypeConfig HitFormArchetype(Effects.HitFormKind kind) => kind switch
+        {
+            Effects.HitFormKind.Pierce => _hitFormPierce,
+            Effects.HitFormKind.Blunt  => _hitFormBlunt,
+            Effects.HitFormKind.Bolt   => _hitFormBolt,
+            _                          => _hitFormSlash,
+        };
+
+        /// <summary>
+        /// Множитель РАЗМЕРА формы по доле снятого HP. Непрерывная зависимость с потолком: категорий
+        /// «лёгкий» и «тяжёлый» у формы нет, но и стены на удар кита быть не должно.
+        /// </summary>
+        public float EvaluateHitFormSize(float hpDamageFrac)
+        {
+            float t = Mathf.Clamp01(hpDamageFrac / Mathf.Max(1e-4f, _heavyHitFrac));
+            return Mathf.Lerp(_hitFormSizeMin, _hitFormSizeMax, t);
+        }
+
         /// <summary>
         /// Множитель РАЗМЕРА hit-spark по доле HP-урона от MaxHP (HeavyHitFrac = полная сила).
         /// Единственный рантайм-множитель размера эффектов; база — <c>VfxData.SizeUnits</c>.
@@ -485,12 +638,26 @@ namespace Guildmaster.Presentation.Design
             return Mathf.Lerp(_vfxHitSizeMultMin, _vfxHitSizeMultMax, t);
         }
 
-        /// <summary>Множитель КОЛИЧЕСТВА искр по доле HP-урона: чем тяжелее удар, тем гуще осколки.</summary>
-        public float EvaluateHitVfxCount(float hpDamageFrac)
+        /// <summary>
+        /// Сколько искр даёт удар: <c>база + доля_HP × шаг</c>, но не больше потолка.
+        /// </summary>
+        /// <remarks>
+        /// Щедрость здесь осознанная (Макс, 31.07.2026): искры мелкие и живут доли секунды, поэтому их
+        /// должно быть много. Потолок при этом обязателен — без него удар кита на десять тысяч выдал бы
+        /// стену вместо эффекта.
+        /// </remarks>
+        public int EvaluateHitSparkCount(float hpDamageFrac)
         {
-            float t = Mathf.Clamp01(hpDamageFrac / Mathf.Max(1e-4f, _heavyHitFrac));
-            return Mathf.Lerp(_vfxHitCountMin, _vfxHitCountMax, t);
+            float raw = _hitSparkBase + Mathf.Clamp01(hpDamageFrac) * _hitSparkPerHp;
+            return Mathf.Clamp(Mathf.RoundToInt(raw), 0, _hitSparkCap);
         }
+
+        /// <summary>
+        /// Множитель бёрстов префаба, дающий нужное АБСОЛЮТНОЕ количество искр. Пропорцию между потоками
+        /// (быстрые к медленным) держит префаб, абсолют приходит отсюда — ровно как с размером.
+        /// </summary>
+        public float EvaluateHitVfxCount(float hpDamageFrac) =>
+            EvaluateHitSparkCount(hpDamageFrac) / (float)Mathf.Max(1, _hitSparkPrefabCount);
 
         public float KillSlowLeadSeconds => _killSlowLeadSeconds;
         public float KillSlowFactor    => _killSlowFactor;

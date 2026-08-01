@@ -10,6 +10,9 @@ using PartMask = Guildmaster.Presentation.Body.PartMask;
 using UnitPart = Guildmaster.Presentation.Body.UnitPart;
 using HandSlot = Guildmaster.Presentation.Body.HandSlot;
 using CastGlowMask = Guildmaster.Presentation.Body.CastGlowMask;
+using UnitPartGeometry = Guildmaster.Presentation.Body.UnitPartGeometry;
+using BodySide = Guildmaster.Presentation.Body.BodySide;
+using RigNaming = Guildmaster.Presentation.Body.RigNaming;
 
 namespace Guildmaster.Presentation
 {
@@ -29,7 +32,7 @@ namespace Guildmaster.Presentation
     /// доставалось одной части — вспыхивала грудь, разлетался торс.
     /// </para>
     /// </summary>
-    public sealed class UnitView : MonoBehaviour
+    public sealed class UnitView : MonoBehaviour, Effects.ISwingArcSource
     {
         private const float MoveEpsilonSq = 1e-6f;
         private const int   YSortPrecision = 100; // ордеров на 1 мировую ед. Y (0.01 Y = 1 ордер) — Y-сортировка тел
@@ -216,6 +219,7 @@ namespace Guildmaster.Presentation
         private int          _lastTargetId = int.MinValue;
         private float        _deathAnticipateLeft;       // remaining unscaled death-anticipation
         private System.Action<UnitView> _onContactDust;  // презентер спавнит VfxContactDust; null = нет VFX
+        private System.Action<UnitView> _onSwingStarted; // презентер спавнит дугу за клинком; null = нет VFX
 
         // --- Состояние анимации (рендер-сторона, не влияет на сим) ---
         // Своя фаза анимации атаки (НЕ путать с сим-AttackPhase на RuntimeUnit): охватывает ВЕСЬ цикл
@@ -278,6 +282,16 @@ namespace Guildmaster.Presentation
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
         private float _attackHitNormalized;  // 0..1 — доля клипа атаки до маркера контакта (Hit)
 
+        // --- Взмах: окно между маркерами StrikeStart и StrikeEnd ------------------------------------
+        // На нём живёт дуга за клинком, и с его начала берётся точка A формы удара. Клип без разметки
+        // взмаха просто не даёт ни того, ни другого: остальной удар (вспышка, искры, цифра) работает.
+        private bool  _hasStrikeWindow;      // клип атаки размечен обоими маркерами
+        private float _strikeFrom;           // 0..1 — нормированное начало взмаха
+        private float _strikeTo;             // 0..1 — нормированный конец взмаха
+        private float _swingClipTime = -1f;  // 0..1 — где скраб поставил клип свинга в этом кадре; -1 = свинг не играет
+        private bool  _hasStrikeOrigin;      // точка A снята с этого взмаха
+        private Vector3 _strikeOrigin;       // мировая позиция кончика оружия на кадре StrikeStart
+
         /// <summary>
         /// Тело юнита за швом. Резолвится лениво, а не в <c>Awake</c>, потому что силуэт для drag-призрака
         /// снимается ПРЯМО С АССЕТА префаба (юнита на поле ещё нет) — там ни один жизненный метод не звучал.
@@ -312,6 +326,7 @@ namespace Guildmaster.Presentation
 
             // Вид могли переиспользовать после чьей-то смерти — возвращаем полосу из погашенного состояния.
             _uiFadeLeft = 0f;
+            ClearBodyCuts();   // и раны прошлого жильца: они принадлежали его телу, а не этому виду
             if (_worldUi != null)
             {
                 _worldUi.SetActive(true);
@@ -385,6 +400,12 @@ namespace Guildmaster.Presentation
         /// Вызывается на старте/стопе бега, если тумблер в feel-конфиге включён.
         /// </summary>
         public void SetContactDustHandler(System.Action<UnitView> handler) => _onContactDust = handler;
+
+        /// <summary>
+        /// Хук начала взмаха: презентер берёт из пула дугу за клинком и отдаёт ей этот вид как источник.
+        /// Зовётся на кадре <c>StrikeStart</c> — том же, с которого снимается точка A.
+        /// </summary>
+        public void SetSwingStartHandler(System.Action<UnitView> handler) => _onSwingStarted = handler;
 
         /// <summary>Цвет HP-бара по принадлежности к смотрящему (из <c>CombatColorPalette</c>).</summary>
         public void SetHealthColor(Color color)
@@ -518,6 +539,147 @@ namespace Guildmaster.Presentation
             }
 
             _attackHitNormalized = ClipMarkers.HitNormalized(attack);
+
+            // Разметка взмаха необязательна: без неё удар теряет дугу и точку A, но не ломается. Молчать
+            // здесь можно ровно потому, что маркер контакта выше уже проверен — «клип не разведён вовсе»
+            // отловлен, а «взмах не размечен» это осознанное состояние покадрового бестиария.
+            _hasStrikeWindow = ClipMarkers.StrikeWindowNormalized(attack, out _strikeFrom, out _strikeTo);
+        }
+
+        // --- Взмах ------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Идёт ли сейчас взмах и насколько он прошёл (0..1) — окно между маркерами <c>StrikeStart</c> и
+        /// <c>StrikeEnd</c>. На нём живёт дуга за клинком: до начала клинок только собирается, после конца
+        /// возвращается, и рисовать там нечего.
+        /// </summary>
+        public bool TryGetSwingProgress(out float progress)
+        {
+            progress = 0f;
+            if (!_hasStrikeWindow || _swingClipTime < 0f) return false;
+            if (_swingClipTime < _strikeFrom || _swingClipTime > _strikeTo) return false;
+
+            progress = Mathf.InverseLerp(_strikeFrom, _strikeTo, _swingClipTime);
+            return true;
+        }
+
+        /// <summary>
+        /// Точка A текущего удара — где был кончик оружия, когда взмах начался. Снимается один раз за
+        /// свинг, на кадре <c>StrikeStart</c>, и живёт до конца цикла атаки.
+        /// </summary>
+        /// <remarks>
+        /// Снимок нужен именно потому, что форма рисуется ПОСЛЕ контакта: к этому моменту клинок уже ушёл
+        /// дальше, и спросить «откуда он пришёл» будет не у кого.
+        /// </remarks>
+        public bool TryGetStrikeOrigin(out Vector3 world)
+        {
+            world = _strikeOrigin;
+            return _hasStrikeOrigin;
+        }
+
+        /// <summary>
+        /// Отследить кадр начала взмаха и снять с него точку A. Зовётся из скраба свинга — там, где
+        /// известно, куда именно поставлен клип.
+        /// </summary>
+        private void TrackStrikeWindow(float clipTime)
+        {
+            _swingClipTime = clipTime;
+            if (!_hasStrikeWindow || _hasStrikeOrigin || clipTime < _strikeFrom) return;
+
+            // Кончиком считаем то, чем юнит бьёт: предмет в руке, а у безоружного — саму кисть. Нечем
+            // ударить (тела нет, части не разведены) — точки A не будет, и форма деградирует на вектор
+            // «атакующий → цель». Это фолбэк ВНЕШНЕГО отказа: у покадрового юнита частей не существует.
+            var body = Body;
+            if (body?.Parts == null) return;
+            if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source)) return;
+            if (!UnitPartGeometry.TryGetTip(source, out Vector3 tip)) return;
+
+            _strikeOrigin    = tip;
+            _hasStrikeOrigin = true;
+
+            // Взмах начался — дуге пора идти за клинком. Момент один и тот же с точкой A намеренно:
+            // два источника «когда начался взмах» разъехались бы, и дуга пошла бы не оттуда, откуда удар.
+            _onSwingStarted?.Invoke(this);
+        }
+
+        // --- Порезы: тело помнит бой ----------------------------------------------------------------
+
+        private readonly Body.BodyCutLedger _cuts = new Body.BodyCutLedger();
+
+        /// <summary>
+        /// Записать порез от состоявшегося удара: место в теле, направление вдоль удара, длина по весу.
+        /// </summary>
+        /// <param name="world">Точка попадания в мире.</param>
+        /// <param name="worldDir">Вектор удара — тот же, по которому построена форма.</param>
+        /// <param name="hpDamageFrac">Доля максимального HP, снятая ударом.</param>
+        /// <param name="hpDamage">Сколько HP снял удар — запас, по которому порез заживает.</param>
+        public void AddBodyCut(Vector3 world, Vector2 worldDir, float hpDamageFrac, float hpDamage)
+        {
+            if (_feel == null || !_feel.EnableBodyCuts || hpDamage <= 0f) return;
+
+            var body = Body;
+            if (body == null) return;
+
+            float length = _feel.EvaluateCutLength(hpDamageFrac);
+            if (!body.TryBuildCut(world, worldDir, length, hpDamage, out Body.BodyCut cut)) return;
+
+            _cuts.Add(in cut);
+            body.ApplyCuts(_cuts.Cuts, _feel.CutColor, _feel.CutWidthUnits);
+        }
+
+        /// <summary>
+        /// Залечить раны на <paramref name="amount"/> HP. Гаснут САМЫЕ СТАРЫЕ и пропорционально своему
+        /// запасу — тело чинится в том порядке, в каком его ломали, и это читается как процесс.
+        /// </summary>
+        public void HealBodyCuts(float amount)
+        {
+            if (_feel == null || !_feel.EnableBodyCuts) return;
+            if (!_cuts.Heal(amount)) return;
+
+            var body = Body;
+            if (body != null) body.ApplyCuts(_cuts.Cuts, _feel.CutColor, _feel.CutWidthUnits);
+        }
+
+        /// <summary>Стереть раны: вид переиспользуется под нового юнита, чужие порезы ему не положены.</summary>
+        private void ClearBodyCuts()
+        {
+            if (!_cuts.HasCuts) return;
+            _cuts.Clear();
+
+            var body = Body;
+            if (body != null && _feel != null) body.ApplyCuts(_cuts.Cuts, _feel.CutColor, _feel.CutWidthUnits);
+        }
+
+        /// <summary>
+        /// Геометрия текущего взмаха для дуги: вокруг чего он идёт (плечо бьющей руки), где сейчас
+        /// кончик оружия и насколько взмах прошёл.
+        /// </summary>
+        /// <returns><c>false</c> — взмаха сейчас нет либо тело не даёт ни плеча, ни ударной части.</returns>
+        public bool TryGetSwingArc(out Vector3 pivot, out Vector3 tip, out float progress)
+        {
+            pivot = default;
+            tip   = default;
+
+            if (!TryGetSwingProgress(out progress)) return false;
+
+            var body = Body;
+            if (body?.Parts == null) return false;
+            if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source)) return false;
+            if (!UnitPartGeometry.TryGetTip(source, out tip)) return false;
+
+            // Дуга идёт вокруг ПЛЕЧА, а не вокруг кисти: рука — жёсткий рычаг, и вращается вся плоскость
+            // удара. Взяв центром кисть, мы получили бы короткий веер вокруг запястья, которого в
+            // движении нет. Сторона — та же, что у бьющей руки: у бойца с двумя клинками левый взмах
+            // обязан идти от левого плеча.
+            BodySide side = source.Slot == HandSlot.Left ? BodySide.Left
+                          : source.Slot == HandSlot.Right ? BodySide.Right
+                          : source.Side;
+
+            if (!body.Parts.TryGetBone(RigNaming.ShoulderBone, side, out UnitPart shoulder)) return false;
+            if (shoulder.Renderer == null) return false;
+
+            pivot = shoulder.Renderer.transform.position;
+            return true;
         }
 
         /// <summary>
@@ -587,6 +749,13 @@ namespace Guildmaster.Presentation
         public Vector3 HitPoint => ResolveSocketFacing(_hitPoint);
 
         /// <summary>Слой сортировки тела — для размещения VFX относительно юнита.</summary>
+        /// <summary>
+        /// Id юнита, которого показывает этот вид, или <c>-1</c>, пока состояние не подано. Нужен хукам,
+        /// которые вид дёргает сам (пыль, дуга за клинком): презентер получает вид, а палитра и паспорт
+        /// у него разложены по id.
+        /// </summary>
+        public int UnitId => _hasState ? _snapshot.Id : -1;
+
         public int BodySortingLayerId => Body != null ? Body.SortingLayerId : 0;
 
         /// <summary>
@@ -842,7 +1011,13 @@ namespace Guildmaster.Presentation
                 // Признак разбега снимаем на ВХОДЕ и держим до конца цикла: он принадлежит одному свингу, а
                 // не мгновению. Перечитывать его каждый кадр значило бы дать клипу право смениться посреди
                 // замаха — удар с разбега превратился бы в обычный на полпути к контакту.
-                if (_attackPhase != AttackAnimPhase.Windup) _swingCharged = _snapshot.ChargedSwing;
+                if (_attackPhase != AttackAnimPhase.Windup)
+                {
+                    _swingCharged = _snapshot.ChargedSwing;
+                    // Точка A принадлежит ОДНОМУ взмаху: не сбросить её здесь значило бы рисовать второй
+                    // удар из места, откуда пришёл первый.
+                    _hasStrikeOrigin = false;
+                }
                 _attackPhase = AttackAnimPhase.Windup;
                 return;
             }
@@ -866,7 +1041,11 @@ namespace Guildmaster.Presentation
                     // и показывать это должно ожидание, а не бесконечно длинный возврат меча. У быстрого
                     // кита разницы нет: там доигрыш и занимает весь интервал, поэтому серия остаётся
                     // непрерывной сама собой.
-                    if (_snapshot.Phase != AttackPhase.Recovery) _attackPhase = AttackAnimPhase.None;
+                    if (_snapshot.Phase != AttackPhase.Recovery)
+                    {
+                        _attackPhase   = AttackAnimPhase.None;
+                        _swingClipTime = -1f;   // свинг не играет — взмаха на экране нет, и дуге не за чем идти
+                    }
                     break;
             }
         }
@@ -925,6 +1104,7 @@ namespace Guildmaster.Presentation
                     _frameAlpha);
                 if (ownsSpeed) _animator.speed = 0f;
                 _animator.Play(SwingHash(), layer, cycle);
+                TrackStrikeWindow(cycle);
                 return;
             }
 
@@ -934,7 +1114,9 @@ namespace Guildmaster.Presentation
                 // ровно на конец замаха = сим-тик урона.
                 float progress = TickScrubProgress(_snapshot.WindupRemaining, _snapshot.WindupTicks);
                 if (ownsSpeed) _animator.speed = 0f;
-                _animator.Play(SwingHash(), layer, progress * _attackHitNormalized);
+                float clipTime = progress * _attackHitNormalized;
+                _animator.Play(SwingHash(), layer, clipTime);
+                TrackStrikeWindow(clipTime);
             }
             else if (_attackPhase == AttackAnimPhase.Recovery && _hasState)
             {
@@ -948,6 +1130,7 @@ namespace Guildmaster.Presentation
                 float clipT = _attackHitNormalized + tail * (1f - _attackHitNormalized);
                 if (ownsSpeed) _animator.speed = 0f;
                 _animator.Play(SwingHash(), layer, clipT);
+                TrackStrikeWindow(clipT);
             }
             else if (ownsSpeed)
             {

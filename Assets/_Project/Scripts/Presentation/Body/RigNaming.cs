@@ -29,6 +29,13 @@ namespace Guildmaster.Presentation.Body
         /// <summary>Метка сустава-хвата: сустав, в котором висит предмет.</summary>
         public const string GripLabel = "Grip";
 
+        /// <summary>
+        /// Кость плеча. Единственное имя КОНКРЕТНОЙ кости в конвенции, и заведено оно не для красоты:
+        /// дуга за клинком идёт вокруг плеча, потому что рука — жёсткий рычаг и вращается вся плоскость
+        /// удара. Вокруг кисти получился бы веер у запястья, которого в движении нет.
+        /// </summary>
+        public const string ShoulderBone = "Arm_Shoulder";
+
         const string LeftMark  = "(Left)";
         const string RightMark = "(Right)";
 

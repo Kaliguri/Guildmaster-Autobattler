@@ -502,6 +502,7 @@ namespace Guildmaster.Presentation
             view.ApplyFeelConfig(_feel); // параметры вспышки/сплющивания — из design-конфига
             view.ApplyAudio(_audio);     // хруст разлёта: вид сам знает, когда начинается shatter
             view.SetContactDustHandler(OnUnitContactDust);
+            view.SetSwingStartHandler(OnUnitSwingStarted);
 
             // Тинт тела: ступень приглушения различает тех, кто делит один спрайт.
             // Подписи над юнитом нет и не будет (решение 2026-07-31/67): опознание идёт силуэтом,
@@ -633,7 +634,20 @@ namespace Guildmaster.Presentation
 
             // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе. Только прямое попадание:
             // яд, горение и шипы брони бьют тиками и без стороны — искры на них читались бы как удары.
-            // Блок искр не даёт вовсе: они рисуют удар, ВОШЕДШИЙ в тело, а этот в тело не вошёл.
+            //
+            // Блок искры ДАЁТ, но другие: половина цвета блокирующего, половина цвета атакующего, и ни
+            // одной красной — тело целое, вскрывать нечего. Так в одном событии видно обе стороны размена.
+            if (_vfx != null && _feel != null && view != null && result.IsDirectHit && blocked)
+            {
+                float? blockDir = nudgeDir.sqrMagnitude > 1e-8f
+                    ? Mathf.Atan2(nudgeDir.y, nudgeDir.x) * Mathf.Rad2Deg
+                    : (float?)null;
+
+                _vfx.Spawn(_feel.VfxHitSpark, AnchorFor(targetId, target.Position), blockDir,
+                           _feel.EvaluateHitVfxSizeMultiplier(frac), _feel.EvaluateHitVfxCount(frac),
+                           BlockSparkPalette(sourceId, targetId), wound: false);
+            }
+
             if (_vfx != null && _feel != null && view != null && result.IsDirectHit && !blocked)
             {
                 // Искры летят ПРОЧЬ ОТ УДАРА: у мили — от бьющего, у стрелка — по траектории снаряда.
@@ -648,6 +662,20 @@ namespace Guildmaster.Presentation
 
                 if (sourceIsMelee)
                     _vfx.Spawn(_feel.VfxImpactDust, view.FeetPoint);
+            }
+
+            // ФОРМА УДАРА — главный знак попадания. Спавнится ПОСЛЕ хита, на этом самом кадре: к моменту
+            // её старта результат уже наступил, поэтому промах ничего стирать не заставляет, а серп
+            // никогда не врёт о состоявшемся ударе.
+            if (_vfx != null && _feel != null && _feel.EnableHitForm && result.IsDirectHit)
+                SpawnHitForm(sourceId, targetId, in source, hasSource, in target, result, frac, blocked);
+
+            // ПОРЕЗ — то, что от удара осталось. Щит вскрытия не даёт: тело целое, значит и раны нет.
+            // Тики яда и шипы тоже не режут — у них нет ни стороны, ни момента, ни клинка.
+            if (view != null && result.IsDirectHit && !blocked && result.HpDamage > 0f
+                && nudgeDir.sqrMagnitude > 1e-8f)
+            {
+                view.AddBodyCut(AnchorFor(targetId, target.Position), nudgeDir, frac, result.HpDamage);
             }
 
             // Урон по щиту — синим «-N»; по HP — «-N» цветом урона. Если задет и щит, и HP —
@@ -665,6 +693,65 @@ namespace Guildmaster.Presentation
                 sourceId, targetId, target.Position, target.MaxHP, result));
         }
 
+        /// <summary>
+        /// Заспавнить форму состоявшегося удара по двум точкам: A — откуда удар пришёл, B — куда попал.
+        /// </summary>
+        /// <remarks>
+        /// <b>Точка A у каждого своя.</b> У мили это кончик оружия на кадре начала взмаха — вид снял его
+        /// сам и хранит до конца свинга. У стрелка — точка выстрела: «откуда прилетело» и есть работа
+        /// линии-всполоха. Клип без разметки взмаха (весь покадровый бестиарий) деградирует на вектор
+        /// «атакующий → цель»: направление удара он передаёт верно, теряется только то, с какой высоты
+        /// замахнулись.
+        /// </remarks>
+        private void SpawnHitForm(int sourceId, int targetId,
+            in Combat.Tape.UnitSnapshot source, bool hasSource,
+            in Combat.Tape.UnitSnapshot target, DamageResult result, float hpDamageFrac, bool blocked)
+        {
+            bool ranged = IsRanged(sourceId);
+            if (!Effects.HitFormFactory.TryResolveKind(result.Type, ranged, out Effects.HitFormKind kind))
+                return;   // магии клинка не полагается — её знак это отдельная строка словаря событий
+
+            Vector3 b = AnchorFor(targetId, target.Position);
+            _views.TryGetValue(sourceId, out UnitView sourceView);
+
+            Vector3 a;
+            if (ranged && sourceView != null)
+            {
+                a = sourceView.ShotPoint;
+            }
+            else if (!ranged && sourceView != null && sourceView.TryGetStrikeOrigin(out Vector3 tip))
+            {
+                a = tip;
+            }
+            else if (hasSource)
+            {
+                a = new Vector3(source.Position.x, source.Position.y, b.z);
+            }
+            else
+            {
+                return;   // источник неизвестен целиком (яд, шипы) — направления у формы нет и быть не может
+            }
+
+            // Форма кончается в цели у дробящего всегда, а у остальных — когда удар принял щит: он в тело
+            // не вошёл. Тумблер сравнивает это поведение с проходом насквозь прямо в бою.
+            bool endsAtHit = kind == Effects.HitFormKind.Blunt
+                             || (blocked && _feel.EnableHitFormBreakOnShield);
+
+            uint seed = Effects.HitFormFactory.SeedOf(sourceId, targetId, target.Position, result.HpDamage);
+
+            // Форма замирает вместе с hitstop той же пары: удар залипает в воздухе на кадр, и это работает
+            // в пользу веса. Окно берём то же самое, что получили тела, — второй расчёт разошёлся бы.
+            float freeze = _feel.EvaluateHitstopSeconds(hpDamageFrac);
+
+            Effects.HitFormParams form = Effects.HitFormFactory.Build(
+                _feel, kind, a, b, hpDamageFrac,
+                core: _feel.HitFormCoreColor,
+                rim: GlowColorFor(sourceId),   // кайма — палитра бьющего: цвет говорит, ЧЕМ ударили
+                seed, endsAtHit, freeze);
+
+            _vfx.SpawnForm(_feel.VfxHitForm, in form);
+        }
+
         private void HandleHealed(int sourceId, int targetId, float amount)
         {
             if (!TryGetShown(targetId, out Combat.Tape.UnitSnapshot target)) return;
@@ -678,6 +765,7 @@ namespace Guildmaster.Presentation
             if (_views.TryGetValue(targetId, out var tView) && tView != null)
             {
                 tView.OnHealed();                                    // тело отвечает на лечение, а не только цифра
+                tView.HealBodyCuts(amount);                          // и раны затягиваются — с самых старых
                 if (_vfx != null && _feel != null)
                     _vfx.Spawn(_feel.VfxHeal, tView.HitPoint, tint: VfxPaletteFor(sourceId));  // палитра лечащего
             }
@@ -748,6 +836,26 @@ namespace Guildmaster.Presentation
                 ? _colorPalette.UnitSpread(id.Definition.VfxTone)
                 : null;
 
+        /// <summary>
+        /// Палитра искр РАЗМЕНА: от цвета блокирующего к цвету атакующего. Пул раздаёт частицам случайные
+        /// оттенки между концами градиента, поэтому рой сам собой выходит пополам — половина говорит
+        /// «этим держал», половина «этим бил».
+        /// </summary>
+        /// <remarks>
+        /// Градиент ОДИН на все размены и переписывается на месте: пул читает его концы сразу, внутри
+        /// <c>Spawn</c>, и не держит ссылку. Новый экземпляр на каждый блок был бы мусором в бою.
+        /// </remarks>
+        private readonly Gradient _blockSparkPalette = new Gradient();
+
+        private Gradient BlockSparkPalette(int attackerId, int blockerId)
+        {
+            Gradient g = _blockSparkPalette;
+            g.SetKeys(
+                new[] { new GradientColorKey(VfxColorFor(blockerId), 0f), new GradientColorKey(VfxColorFor(attackerId), 1f) },
+                new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) });
+            return g;
+        }
+
         private Color VfxColorFor(int unitId) =>
             _colorPalette != null && _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
                 ? _colorPalette.UnitMain(id.Definition.VfxTone)
@@ -767,6 +875,19 @@ namespace Guildmaster.Presentation
         {
             float k = _feel != null ? _feel.CastGlowBloomIntensity : 1f;
             return new Color(c.r * k, c.g * k, c.b * k, c.a);
+        }
+
+        /// <summary>
+        /// Взмах начался — пускаем дугу за клинком. Она принадлежит ДВИЖЕНИЮ ОРУЖИЯ, а не удару, поэтому
+        /// заводится здесь, на старте взмаха, и ничего не знает о том, попадёт ли он.
+        /// </summary>
+        private void OnUnitSwingStarted(UnitView view)
+        {
+            if (_vfx == null || _feel == null || view == null) return;
+            if (!_feel.EnableSwingArc) return;
+
+            _vfx.SpawnArc(_feel.VfxSwingArc, view, GlowColorFor(view.UnitId),
+                          _feel.SwingArcInnerShare, _feel.SwingArcTailBias, _feel.SwingArcFadeOut);
         }
 
         /// <summary>Contact-dust: пыль у ног при старте/стопе бега (VfxData → префаб, тумблер в feel-конфиге).</summary>

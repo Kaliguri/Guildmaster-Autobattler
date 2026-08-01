@@ -165,6 +165,111 @@ namespace Guildmaster.Presentation.Body
             _lastState     = state;
         }
 
+        // Буферы порезов переиспользуются: раскладка идёт по всем частям на каждое попадание, и новый
+        // массив на часть означал бы полтора десятка аллокаций за удар.
+        private Vector4[] _cutBuffer;
+        private float[]   _cutGlow;
+        private bool      _cutsWritten;   // на теле сейчас есть хоть один нарисованный порез
+
+        public void ApplyCuts(IReadOnlyList<BodyCut> cuts, Color colour, float width)
+        {
+            bool any = cuts != null && cuts.Count > 0;
+            if (!any && !_cutsWritten) return;   // порезов не было и нет — трогать шестнадцать блоков не за чем
+
+            _mpb       ??= new MaterialPropertyBlock();
+            _cutBuffer ??= new Vector4[BodyShaderIds.MaxCutsPerPart];
+            _cutGlow   ??= new float[BodyShaderIds.MaxCutsPerPart];
+
+            for (int i = 0; i < _parts.Count; i++)
+            {
+                SpriteRenderer part = _parts[i];
+                if (part == null) continue;
+
+                int count = 0;
+                if (any)
+                {
+                    // Идём с КОНЦА: при переполнении части остаются свежие раны, а не первые попавшиеся.
+                    for (int c = cuts.Count - 1; c >= 0 && count < BodyShaderIds.MaxCutsPerPart; c--)
+                    {
+                        BodyCut cut = cuts[c];
+                        if (cut.PartIndex != i) continue;
+                        float bright = cut.Brightness;
+                        if (bright <= 1e-3f) continue;
+
+                        _cutBuffer[count] = new Vector4(cut.Local.x, cut.Local.y, cut.Angle, cut.Length);
+                        _cutGlow[count]   = bright;
+                        count++;
+                    }
+                }
+
+                // Ширина приходит в МИРОВЫХ единицах, а шейдер считает в локальных координатах части:
+                // у частей внутри рига свой масштаб, и без перевода рана на мече была бы толще, чем на теле.
+                float scale = part.transform.lossyScale.x;
+                float localWidth = width / Mathf.Max(1e-5f, Mathf.Abs(scale));
+
+                part.GetPropertyBlock(_mpb);
+                BodyShaderIds.WriteCuts(_mpb, _cutBuffer, _cutGlow, count, colour, localWidth);
+                part.SetPropertyBlock(_mpb);
+            }
+
+            _cutsWritten = any;
+        }
+
+        public bool TryBuildCut(Vector3 world, Vector2 worldDir, float worldLength, float budget, out BodyCut cut)
+        {
+            cut = default;
+
+            int partIndex = -1;
+            SpriteRenderer best = null;
+            float bestDistance = float.MaxValue;
+
+            for (int i = 0; i < _parts.Count; i++)
+            {
+                SpriteRenderer part = _parts[i];
+                if (part == null || part.sprite == null || !part.enabled) continue;
+
+                // Расстояние до габарита части: ноль значит «точка внутри». Первая накрывшая побеждает —
+                // список идёт сверху вниз, то есть от той части, которая рисуется поверх остальных.
+                float d = part.bounds.SqrDistance(world);
+                if (d < bestDistance)
+                {
+                    bestDistance = d;
+                    best = part;
+                    partIndex = i;
+                }
+                if (d <= 0f) break;
+            }
+
+            if (best == null) return false;
+
+            cut = BuildCutOn(best, partIndex, world, worldDir, worldLength, budget);
+            return true;
+        }
+
+        /// <summary>
+        /// Перевести мировой удар в порез на конкретной части. Место, направление и длина считаются
+        /// трансформом самой части, поэтому зеркало тела и поворот кости учтены сами собой.
+        /// </summary>
+        internal static BodyCut BuildCutOn(Renderer renderer, int partIndex,
+            Vector3 world, Vector2 worldDir, float worldLength, float budget)
+        {
+            Transform t = renderer.transform;
+
+            Vector3 localPoint = t.InverseTransformPoint(world);
+            Vector3 localDir   = t.InverseTransformDirection(new Vector3(worldDir.x, worldDir.y, 0f));
+
+            float angle = localDir.sqrMagnitude > 1e-8f
+                ? Mathf.Atan2(localDir.y, localDir.x)
+                : 0f;
+
+            // Во сколько локальных единиц части укладывается одна мировая: части сидят внутри рига со
+            // своим масштабом, и длина, заданная в долях роста, обязана его учесть.
+            float scale  = Mathf.Abs(t.lossyScale.x);
+            float length = worldLength / Mathf.Max(1e-5f, scale);
+
+            return new BodyCut(partIndex, new Vector2(localPoint.x, localPoint.y), angle, length, budget, budget);
+        }
+
         /// <summary>Ордер получает ГРУППА: внутри неё порядок частей остаётся нашим.</summary>
         public void SetSortingOrder(int order)
         {

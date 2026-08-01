@@ -114,6 +114,29 @@ namespace Guildmaster.Presentation.Body
         /// <summary>Применить состояние кадра. Реализация сама решает, писать ли — повтор того же не пишется.</summary>
         void Apply(in BodyVisualState state);
 
+        /// <summary>
+        /// Переписать порезы на теле. Отдельный вызов, а не поле в <see cref="BodyVisualState"/>: состояние
+        /// кадра подаётся каждый кадр и адресует тело ЦЕЛИКОМ, а порезы меняются редко (удар, лечение) и
+        /// адресуются каждый своей части — раскладывать список по шестнадцати частям шестьдесят раз в
+        /// секунду не за чем.
+        /// </summary>
+        /// <param name="cuts">Все раны тела в порядке нанесения. Пустой список стирает их с тела.</param>
+        /// <param name="colour">Цвет вскрытого — приходит из палитры через feel-конфиг, а не из тела.</param>
+        /// <param name="width">Полуширина светящейся линии, мировые единицы.</param>
+        void ApplyCuts(System.Collections.Generic.IReadOnlyList<BodyCut> cuts, Color colour, float width);
+
+        /// <summary>
+        /// Собрать порез из мирового удара: найти часть, на которую он лёг, и перевести место, направление
+        /// и длину в её координаты.
+        /// </summary>
+        /// <param name="world">Точка попадания в мире.</param>
+        /// <param name="worldDir">Направление удара в мире — порез идёт вдоль него, как и форма.</param>
+        /// <param name="worldLength">Длина пореза, мировые единицы.</param>
+        /// <param name="budget">Сколько HP снял удар: запас, по которому порез заживает.</param>
+        /// <param name="cut">Готовый порез в координатах своей части.</param>
+        /// <returns><c>false</c> — вскрывать нечего: тела нет либо у него нет ни одной живой части.</returns>
+        bool TryBuildCut(Vector3 world, Vector2 worldDir, float worldLength, float budget, out BodyCut cut);
+
         /// <summary>Порядок в слое сортировки. У скелета его получает группа целиком — см. <c>UnitView</c>.</summary>
         void SetSortingOrder(int order);
 

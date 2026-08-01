@@ -95,7 +95,21 @@ namespace Guildmaster.Tests.EditMode.Presentation
             new Entry("FloatingTextArc",     Switch.Toggle, nameof(CombatFeelConfig.EnableFloatingTextArc)),
             new Entry("HpBarPunch",          Switch.Toggle, nameof(CombatFeelConfig.EnableHpBarPunch)),
 
+            // Удар: две стадии и след, что от него остался
+            new Entry("AddBodyCut",      Switch.Toggle, nameof(CombatFeelConfig.EnableBodyCuts)),
+            new Entry("HealBodyCuts",    Switch.Toggle, nameof(CombatFeelConfig.EnableBodyCuts)),
+            new Entry("HitForm",         Switch.Toggle, nameof(CombatFeelConfig.EnableHitForm)),
+            new Entry("HitFormBreak",    Switch.Toggle, nameof(CombatFeelConfig.EnableHitFormBreakOnShield)),
+            new Entry("SwingArc",        Switch.Toggle, nameof(CombatFeelConfig.EnableSwingArc)),
+
+            // Взмах и его геометрия — ЗАПРОСЫ к виду, а не эффекты: отвечают «где клинок», ничего не рисуя.
+            new Entry("TryGetSwingArc",      Switch.NotAnEffect, "геометрия взмаха для дуги — запрос, не эффект"),
+            new Entry("TryGetSwingProgress", Switch.NotAnEffect, "насколько прошёл взмах — запрос, не эффект"),
+            new Entry("TryGetStrikeOrigin",  Switch.NotAnEffect, "точка A текущего удара — запрос, не эффект"),
+
             // VFX — выключаются пустой ссылкой на VfxData
+            new Entry("VfxHitForm",     Switch.Asset, "форма удара по A→B"),
+            new Entry("VfxSwingArc",    Switch.Asset, "дуга за клинком на взмахе"),
             new Entry("VfxHitSpark",    Switch.Asset, "искры попадания в HitPoint"),
             new Entry("VfxMuzzle",      Switch.Asset, "вспышка выстрела в ShotPoint"),
             new Entry("VfxImpactDust",  Switch.Asset, "пыль удара у ног"),

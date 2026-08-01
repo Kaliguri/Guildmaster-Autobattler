@@ -31,13 +31,25 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Имя маркера КОНТАКТА: один такой маркер = один разрешённый удар.</summary>
         public const string HitFunction = "Hit";
 
+        /// <summary>
+        /// Имя маркера НАЧАЛА ВЗМАХА — момент, с которого клинок пошёл на цель. Не контакт: урона здесь
+        /// нет и быть не может, поэтому имя обязано отличаться от <see cref="HitFunction"/>.
+        /// </summary>
+        public const string StrikeStartFunction = "StrikeStart";
+
+        /// <summary>Имя маркера КОНЦА ВЗМАХА — дальше идёт возврат, который ничего не сообщает.</summary>
+        public const string StrikeEndFunction = "StrikeEnd";
+
         /// <summary>Время первого контакта (сек) или <c>-1</c>, если маркера нет.</summary>
-        public static float FirstHitTime(AnimationClip clip)
+        public static float FirstHitTime(AnimationClip clip) => FirstTimeOf(clip, HitFunction);
+
+        /// <summary>Время первого маркера этого вида (сек) или <c>-1</c>, если такого в клипе нет.</summary>
+        public static float FirstTimeOf(AnimationClip clip, string functionName)
         {
             if (clip == null) return -1f;
             AnimationEvent[] events = clip.events;
             for (int i = 0; i < events.Length; i++)
-                if (events[i].functionName == HitFunction) return events[i].time;
+                if (events[i].functionName == functionName) return events[i].time;
             return -1f;
         }
 
@@ -98,6 +110,38 @@ namespace Guildmaster.Data.Definitions
         {
             float t = FirstHitTime(clip);
             return clip != null && t >= 0f && clip.length > 0f ? Mathf.Clamp01(t / clip.length) : 0f;
+        }
+
+        /// <summary>
+        /// Окно ВЗМАХА в нормированном времени клипа: от <see cref="StrikeStartFunction"/> до
+        /// <see cref="StrikeEndFunction"/>. На нём живёт дуга за клинком, и только на нём: до начала
+        /// клинок ещё собирается, после конца — возвращается.
+        /// </summary>
+        /// <param name="clip">Клип атаки.</param>
+        /// <param name="start">Нормированное начало взмаха.</param>
+        /// <param name="end">Нормированный конец взмаха.</param>
+        /// <returns>
+        /// <c>false</c>, если клип не размечен целиком (нет одного из маркеров) или окно вырождено.
+        /// Половина разметки — это не «часть данных», а неразмеченный клип: показывать взмах от маркера
+        /// до конца клипа значило бы врать про возврат.
+        /// </returns>
+        /// <remarks>
+        /// Границы взмаха размечаются по замеру скорости кончика оружия (<c>RigSweep</c>), а не на глаз:
+        /// в клипе <c>Attack</c> костяного рига это 0.333–0.567 с при контакте на 0.467 с.
+        /// </remarks>
+        public static bool StrikeWindowNormalized(AnimationClip clip, out float start, out float end)
+        {
+            start = 0f;
+            end   = 0f;
+            if (clip == null || clip.length <= 0f) return false;
+
+            float s = FirstTimeOf(clip, StrikeStartFunction);
+            float e = FirstTimeOf(clip, StrikeEndFunction);
+            if (s < 0f || e < 0f || e <= s) return false;
+
+            start = Mathf.Clamp01(s / clip.length);
+            end   = Mathf.Clamp01(e / clip.length);
+            return end > start;
         }
     }
 }

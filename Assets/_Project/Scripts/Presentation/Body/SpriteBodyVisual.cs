@@ -52,6 +52,59 @@ namespace Guildmaster.Presentation.Body
             _lastState     = default;
         }
 
+        private Vector4[] _cutBuffer;
+        private float[]   _cutGlow;
+        private bool      _cutsWritten;
+
+        /// <summary>
+        /// Порезы на теле из одного спрайта: часть ровно одна, поэтому раскладывать нечего — берём
+        /// последние <see cref="BodyShaderIds.MaxCutsPerPart"/> ран и рисуем их прямо на нём.
+        /// </summary>
+        public void ApplyCuts(System.Collections.Generic.IReadOnlyList<BodyCut> cuts, Color colour, float width)
+        {
+            if (_sprite == null) return;
+
+            bool any = cuts != null && cuts.Count > 0;
+            if (!any && !_cutsWritten) return;
+
+            _mpb       ??= new MaterialPropertyBlock();
+            _cutBuffer ??= new Vector4[BodyShaderIds.MaxCutsPerPart];
+            _cutGlow   ??= new float[BodyShaderIds.MaxCutsPerPart];
+
+            int count = 0;
+            if (any)
+            {
+                for (int c = cuts.Count - 1; c >= 0 && count < BodyShaderIds.MaxCutsPerPart; c--)
+                {
+                    BodyCut cut = cuts[c];
+                    float bright = cut.Brightness;
+                    if (bright <= 1e-3f) continue;
+
+                    _cutBuffer[count] = new Vector4(cut.Local.x, cut.Local.y, cut.Angle, cut.Length);
+                    _cutGlow[count]   = bright;
+                    count++;
+                }
+            }
+
+            float scale = Mathf.Abs(_sprite.transform.lossyScale.x);
+            float localWidth = width / Mathf.Max(1e-5f, scale);
+
+            _sprite.GetPropertyBlock(_mpb);
+            BodyShaderIds.WriteCuts(_mpb, _cutBuffer, _cutGlow, count, colour, localWidth);
+            _sprite.SetPropertyBlock(_mpb);
+            _cutsWritten = any;
+        }
+
+        public bool TryBuildCut(Vector3 world, Vector2 worldDir, float worldLength, float budget, out BodyCut cut)
+        {
+            cut = default;
+            if (_sprite == null || _sprite.sprite == null) return false;
+
+            // Часть ровно одна — она же и торс, и рука: у покадрового тела анатомии нет.
+            cut = SkeletalBodyVisual.BuildCutOn(_sprite, 0, world, worldDir, worldLength, budget);
+            return true;
+        }
+
         public void Apply(in BodyVisualState state)
         {
             if (_sprite == null) return;
