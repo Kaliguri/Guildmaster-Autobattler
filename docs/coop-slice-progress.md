@@ -556,3 +556,48 @@ Steam:
 идут через `DevCommandRegistry`, поэтому сценарий «двое, один жмёт, второй смотрит» скриптуется, а
 дев-команды, меняющие `RunState`, становятся хост-авторитативными бесплатно — если пойдут через шину
 команд из §4.1 ТЗ.
+
+---
+
+## 02.08.2026 — стек сузился до Steam, и что делать дальше
+
+**Вердикт Макса:** «Планирую только Steam» → «РЕЖЬ и давай самый чистый способ напрямую со Steam!».
+Высокоуровневого netcode в проекте больше нет. Разбор — журнал
+`2026-08-02-the-stack-shrinks-to-steam-and-the-high-level-netcode-goes`; ТЗ `40-planning/coop-vertical`
+поправлено сверху, но внутри ещё описывает NGO — читать как историю решения.
+
+**Удалено:** `NgoTransport`, `FacepunchTransportBootstrap`, запаркованный `SimSyncProbe`, объект
+`[Net]` из `CoreScene`, пакеты `netcode.gameobjects`, `multiplayer.tools`, `multiplayer.center`,
+`multiplayer.playmode`. Границу держит `NoHighLevelNetcodeTests` (код, манифест, сцены).
+
+**Написано и компилируется, но вживую НЕ проверено** (нужен второй Steam-аккаунт с доступом к AppId
+3259720 и вторая машина — один Steam-клиент на компьютер):
+
+| Что | Где |
+|---|---|
+| Транспорт Steam | `Net/Transport/SteamNetTransport.cs` — `CreateRelaySocket` / `ConnectRelay(SteamId)` |
+| Рукопожатие | `Net/Session/CoopHandshake.cs` — канал `Handshake`, версия + отпечаток, номер пира от хоста |
+| Лобби и приглашения | `Net/Session/SteamLobbyService.cs` — friends-only, оверлей, `OnGameLobbyJoinRequested` |
+| Сессия | `Net/Session/CoopSession.cs` — создать одним кликом, пригласить, «хост ушёл = конец» |
+| Шов для UI | `Core/Net/ICoopSessionControl.cs` |
+| Экран | `UI/Screens/CoopScreen.uxml` + `UI/CoopScreenView.cs`, стенд `Alebardium/UI Preview/Coop` |
+| Раздача ленты | `Net/Tape/TapeStreamer.cs`, `TapeIntake.cs`, `BattleTapeBroadcast.cs` |
+| Общая пауза | `Net/BattleControlRelay.cs` — пауза как свойство ПОКАЗА |
+
+### Следующий шаг — провод коопа в бой (заказан Максом 02.08)
+
+Всё перечисленное **в боевом скоупе не зарегистрировано** и потому в бою не участвует. Состав работы:
+
+1. **Регистрация в `CombatLifetimeScope`:** `TapeStreamer` (хост), `TapeIntake` (гость),
+   `BattleTapeBroadcast` как `ITickable`. Гейт по роли: у гостя стример не нужен и наоборот.
+2. **Ветка гостя:** он не тикает симуляцию вовсе — `CombatLoopService` у него не должен запускаться,
+   вместо этого `BattleTapePlayback` играет ленту, приходящую чанками. Сейчас цикл безусловный.
+3. **Пауза через релей** вместо локального `TimeScaleService`: подписка на `BattleControlRelay.PauseChanged`
+   и адаптер в `Game`, потому что `Net` про показ знать не должен.
+4. **`RequestMissing`** у гостя надо кому-то звать раз в кадр — тот же тик, что качает транспорт (`NetPump`).
+5. **Тест на стыке:** два узла на loopback, хост тикает бой, гость получает ленту и приходит к тому же
+   исходу. Это ближайший к «критерию приёмки» тест, который вообще возможен без Steam.
+
+**Готча, не потерять:** `BattleTapeBroadcast.Enabled` — гейт под ставки (пока раздача открыта всегда).
+И у гостя нет `CombatSimulation`, поэтому всё, что боевой скоуп собирает вокруг неё, придётся разводить
+по роли — это и есть главная работа шага.
