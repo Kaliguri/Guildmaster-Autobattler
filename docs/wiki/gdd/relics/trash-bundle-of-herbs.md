@@ -23,7 +23,7 @@ gender: Не определено
 themes: []
 needs_review: []
 impl: engine
-asset: [relic.trash.herbalist]
+asset: [relic.trash_herbalist]
 ---
 
 # Bundle of Herbs (Пучок трав)

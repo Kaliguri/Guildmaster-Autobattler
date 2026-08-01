@@ -22,7 +22,7 @@ gender: Не определено
 themes: []
 needs_review: []
 impl: engine
-asset: [relic.trash.shieldbearer]
+asset: [relic.trash_shieldbearer]
 ---
 
 # Cracked Shield (Треснувший щит)

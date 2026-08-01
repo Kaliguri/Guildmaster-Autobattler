@@ -22,7 +22,7 @@ gender: Не определено
 themes: []
 needs_review: []
 impl: engine
-asset: [relic.trash.brawler]
+asset: [relic.trash_brawler]
 ---
 
 # Notched Sword (Зазубренный меч)

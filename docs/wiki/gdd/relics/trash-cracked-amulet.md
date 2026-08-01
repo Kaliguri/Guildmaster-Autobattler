@@ -22,7 +22,7 @@ gender: Не определено
 themes: []
 needs_review: []
 impl: engine
-asset: [relic.trash.hexer]
+asset: [relic.trash_hexer]
 ---
 
 # Cracked Amulet (Треснувший амулет)

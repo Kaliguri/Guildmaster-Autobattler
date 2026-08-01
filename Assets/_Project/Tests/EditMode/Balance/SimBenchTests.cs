@@ -97,14 +97,16 @@ namespace Guildmaster.Balance.Tests
         public void ReferenceAlly_FollowsClassCorridor()
         {
             // Манекены — линейка командных форматов, и мерить ею можно только пока каждый честно
-            // изображает рядового бойца своего класса: коридор урона задан явно, остальное берётся из
-            // живого ClassBalanceConfig (здесь его нет, поэтому проверяем ту часть, что не от конфига).
-            AssertDps(UnitClass.Bruiser, 120f);
-            AssertDps(UnitClass.Tank, 60f);
-            AssertDps(UnitClass.Assassin, 144f);
-            AssertDps(UnitClass.Ranged, 120f);
-            AssertDps(UnitClass.Support, 60f);
-            AssertDps(UnitClass.Summoner, 60f);
+            // изображает рядового бойца своего класса. С 2026-08-01 классовая раскладка урона живёт
+            // ТОЛЬКО в ClassBalanceConfig (прежде стенд держал её второй копией у себя, и копии
+            // разошлись — см. ClassNormOwnershipTests). Здесь конфига нет, поэтому проверяется ровно
+            // то, что от него не зависит: единый фолбэк урона и роль-зависимая дальность.
+            AssertDps(UnitClass.Bruiser, 110f);
+            AssertDps(UnitClass.Tank, 110f);
+            AssertDps(UnitClass.Assassin, 110f);
+            AssertDps(UnitClass.Ranged, 110f);
+            AssertDps(UnitClass.Support, 110f);
+            AssertDps(UnitClass.Summoner, 110f);
 
             // Фронт бьёт вплотную, тыл — с восьмёрки: строй формата держится на этой разнице.
             Assert.AreEqual(1f, SyntheticUnits.ReferenceAlly(UnitClass.Tank, null, 0, Vector2.zero)
@@ -117,7 +119,8 @@ namespace Guildmaster.Balance.Tests
         {
             RuntimeUnit ally = SyntheticUnits.ReferenceAlly(unitClass, null, 0, Vector2.zero);
             float dps = ally.Stats.Get(StatType.AutoAttackDamage) * ally.Stats.Get(StatType.AttackSpeed);
-            Assert.AreEqual(expected, dps, 1e-3f, $"Манекен класса {unitClass} должен бить по классовому коридору");
+            Assert.AreEqual(expected, dps, 1e-3f,
+                $"Манекен класса {unitClass} без конфига норм должен брать единый фолбэк, а не свою таблицу");
         }
 
         [Test]

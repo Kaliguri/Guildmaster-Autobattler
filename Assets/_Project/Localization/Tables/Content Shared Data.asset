@@ -1235,62 +1235,6 @@ MonoBehaviour:
     m_Key: effect.resolute_strike_charge.name
     m_Metadata:
       m_Items: []
-  - m_Id: 7652003088162816
-    m_Key: relic.trash.archer.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652003125911552
-    m_Key: relic.trash.archer.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652003985743872
-    m_Key: relic.trash.bonecaller.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652003985743873
-    m_Key: relic.trash.bonecaller.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652004359036928
-    m_Key: relic.trash.brawler.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652004359036929
-    m_Key: relic.trash.brawler.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652004723941376
-    m_Key: relic.trash.cutthroat.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652004723941377
-    m_Key: relic.trash.cutthroat.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652005093040128
-    m_Key: relic.trash.herbalist.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652005093040129
-    m_Key: relic.trash.herbalist.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652005466333184
-    m_Key: relic.trash.hexer.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652005466333185
-    m_Key: relic.trash.hexer.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652005827043328
-    m_Key: relic.trash.shieldbearer.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7652005827043329
-    m_Key: relic.trash.shieldbearer.desc
-    m_Metadata:
-      m_Items: []
   - m_Id: 7652006191947776
     m_Key: effect.trash_cleanse.name
     m_Metadata:
@@ -1309,6 +1253,62 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 7652007664148480
     m_Key: effect.trash_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897044676608
+    m_Key: relic.trash_shieldbearer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897044676609
+    m_Key: relic.trash_shieldbearer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897409581056
+    m_Key: relic.trash_brawler.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897409581057
+    m_Key: relic.trash_brawler.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897774485504
+    m_Key: relic.trash_cutthroat.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897774485505
+    m_Key: relic.trash_cutthroat.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898143584256
+    m_Key: relic.trash_archer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898143584257
+    m_Key: relic.trash_archer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898512683008
+    m_Key: relic.trash_hexer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898512683009
+    m_Key: relic.trash_hexer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898873393152
+    m_Key: relic.trash_bonecaller.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898873393153
+    m_Key: relic.trash_bonecaller.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654899229908992
+    m_Key: relic.trash_herbalist.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654899229908993
+    m_Key: relic.trash_herbalist.desc
     m_Metadata:
       m_Items: []
   m_Metadata:

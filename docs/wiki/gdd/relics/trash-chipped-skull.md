@@ -22,7 +22,7 @@ gender: Не определено
 themes: []
 needs_review: []
 impl: engine
-asset: [relic.trash.bonecaller]
+asset: [relic.trash_bonecaller]
 ---
 
 # Chipped Skull (Щербатый череп)

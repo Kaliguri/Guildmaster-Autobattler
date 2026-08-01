@@ -22,7 +22,7 @@ gender: Не определено
 themes: []
 needs_review: []
 impl: engine
-asset: [relic.trash.cutthroat]
+asset: [relic.trash_cutthroat]
 ---
 
 # Worn Knife (Стёртый нож)

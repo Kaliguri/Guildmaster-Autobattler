@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d7cba09029dfbf4fb4a5fa3399a44f1, type: 3}
   m_Name: TrashHexer
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
-  _id: relic.trash.hexer
+  _id: relic.trash_hexer
   _combatClass: 4
   _autoAttackDamageType: 1
   _creatureType: 0

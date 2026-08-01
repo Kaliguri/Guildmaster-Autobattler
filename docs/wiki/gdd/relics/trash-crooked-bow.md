@@ -22,7 +22,7 @@ gender: Не определено
 themes: []
 needs_review: []
 impl: engine
-asset: [relic.trash.archer]
+asset: [relic.trash_archer]
 ---
 
 # Crooked Bow (Кривой лук)

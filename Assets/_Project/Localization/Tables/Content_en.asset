@@ -761,6 +761,63 @@ MonoBehaviour:
     m_Localized: Salve
     m_Metadata:
       m_Items: []
+  - m_Id: 7654897044676608
+    m_Localized: Cracked Shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897044676609
+    m_Localized: A piece of someone else's shield. It covers you until it falls apart.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897409581056
+    m_Localized: Notched Sword
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897409581057
+    m_Localized: Blunt, heavy, familiar. Good enough to turn aside a couple of blows.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897774485504
+    m_Localized: Worn Knife
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897774485505
+    m_Localized: A knife without a name. It strikes from below; it knows no other
+      way.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898143584256
+    m_Localized: Crooked Bow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898143584257
+    m_Localized: Hard to draw, slow to loose. But that one shot lands properly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898512683008
+    m_Localized: Cracked Amulet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898512683009
+    m_Localized: Someone else's charm. The hex is brief, but the enemy hits softer.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898873393152
+    m_Localized: Chipped Skull
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898873393153
+    m_Localized: It raises one skeleton. It cannot hear a second.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654899229908992
+    m_Localized: Bundle of Herbs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654899229908993
+    m_Localized: Smells of a cellar. Closes wounds and lifts a light curse.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
