@@ -43,6 +43,9 @@ export type Block =
   | { kind: "text"; html: string; cls?: string }
   | { kind: "note"; html: string }
   | { kind: "legend"; items: Array<{ color: string; text: string }> }
+  /** Переключатель, который читает рисовалка через toggles.isOn(id). Заводится тогда, когда
+   *  сам переключатель — предмет разбора (информационный слой по Z), а не удобство просмотра. */
+  | { kind: "toggle"; id: string; label: string; note?: string; initial?: boolean }
   | { kind: "table"; head?: string[]; rows: string[][] }
   /** Сетка стендов (по три в ряд) либо пара крупных карточек. */
   | { kind: "stands"; items: StandDef[] }

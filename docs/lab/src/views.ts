@@ -5,6 +5,7 @@
 
 import { el, html } from "./dom.js";
 import { watch } from "./stage.js";
+import * as toggles from "./toggles.js";
 import type { Block, PageDef, SectionDef, StandDef } from "./types.js";
 
 /** Как подписан статус на карточке. У "note" подписи нет: это не развилка, а иллюстрация. */
@@ -194,6 +195,9 @@ export function renderSection(view: HTMLElement, def: SectionDef): void {
       case "legend":
         body.appendChild(legend(block.items));
         break;
+      case "toggle":
+        body.appendChild(toggleRow(block));
+        break;
       case "table":
         body.appendChild(table(block));
         break;
@@ -206,6 +210,21 @@ export function renderSection(view: HTMLElement, def: SectionDef): void {
 
   if (tocCount > 1) view.appendChild(toc);
   view.appendChild(body);
+}
+
+function toggleRow(block: Extract<Block, { kind: "toggle" }>): HTMLElement {
+  if (block.initial !== undefined && !toggles.isOn(block.id)) toggles.setOn(block.id, block.initial);
+
+  const row = el("div", "toggle-row");
+  const btn = el("button", null, block.label);
+  btn.type = "button";
+  btn.dataset["active"] = String(toggles.isOn(block.id));
+  btn.addEventListener("click", () => {
+    btn.dataset["active"] = String(toggles.toggle(block.id));
+  });
+  row.appendChild(btn);
+  if (block.note) row.appendChild(html("span", block.note, "dim"));
+  return row;
 }
 
 function legend(items: Array<{ color: string; text: string }>): HTMLElement {

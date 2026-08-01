@@ -20,6 +20,30 @@ export const PAGES: PageDef[] = [
   },
 
   {
+    id: "status",
+    group: "Джус",
+    title: "Статусы",
+    blurb: "Постоянный слой на теле: четыре канала, ступени стака и пасхалка на сломе шкалы.",
+    load: () => import("./sections/gamefeel-status.js")
+  },
+
+  {
+    id: "effects",
+    group: "Джус",
+    title: "Эффекты",
+    blurb: "Словарь общих эффектов по каналам, кровь по DPS, жизнь эффекта от наложения до снятия.",
+    load: () => import("./sections/gamefeel-effects.js")
+  },
+
+  {
+    id: "zones",
+    group: "Джус",
+    title: "Зоны",
+    blurb: "Телеграф площади: подводка, срабатывание, след. Круг, линия и то, что стоит на арене.",
+    load: () => import("./sections/gamefeel-zones.js")
+  },
+
+  {
     id: "legacy",
     group: "Архив",
     title: "Отклонённое",
