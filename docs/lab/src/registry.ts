@@ -12,6 +12,14 @@ import type { PageDef } from "./types.js";
 
 export const PAGES: PageDef[] = [
   {
+    id: "hits",
+    group: "Джус",
+    title: "Удар",
+    blurb: "Взмах, три архетипа формы, слои попадания, гибриды двух стихий и дальний бой.",
+    load: () => import("./sections/gamefeel-hits.js")
+  },
+
+  {
     id: "barrier",
     group: "Джус",
     title: "Барьер",
