@@ -402,6 +402,9 @@ namespace Guildmaster.Tests.EditMode.Combat
                 => CombatPositioning.TeleportBehind(unit, target);
             public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => AttackStarted++;
             public void NotifyAttackInterrupted(RuntimeUnit unit) => AttackInterrupted++;
+            public void NotifyAttackCompleted(RuntimeUnit unit) { }
+            public void NotifyComboBroken(RuntimeUnit unit) { }
+            public void RemoveEffect(RuntimeUnit unit, EffectData def) { }
 
             public IRngService Rng => null;
             public int CurrentTick => 0;

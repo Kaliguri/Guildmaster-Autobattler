@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
@@ -15,7 +15,7 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// один стак промахивает одну атаку из четырёх, четыре стака — все.
     /// </summary>
     /// <remarks>
-    /// Инвариант живёт между тремя файлами: счётчик атак на юните (<c>RuntimeUnit.AttacksMade</c>), опрос
+    /// Инвариант живёт между тремя файлами: счётчик атак на юните (<c>RuntimeUnit.HitsMade</c>), опрос
     /// на снятии цифр (<c>AutoAttackSystem</c>) и сама лестница (<c>BlindComponent</c>). Проверяется здесь
     /// именно лестница и то, что промах не сдвигает собственный период — иначе первый же промах отодвигал
     /// бы следующий на четыре УДАЧНЫХ удара, и «каждая четвёртая» превращалась бы в «реже, чем обещано».
@@ -84,11 +84,11 @@ namespace Guildmaster.Tests.EditMode.Combat
             // поэтому счёт точен и не зависит от того, долетел ли удар: считаем только промахи первых
             // attacks взмахов, дальнейшие в счёт не идут.
             int missesSeen = 0;
-            sim.OnAttackEvaded += _ => { if (blinded.AttacksMade <= attacks) missesSeen++; };
+            sim.OnAttackEvaded += _ => { if (blinded.HitsMade <= attacks) missesSeen++; };
 
-            for (int t = 0; t < attacks * 90 && blinded.AttacksMade < attacks; t++)
+            for (int t = 0; t < attacks * 90 && blinded.HitsMade < attacks; t++)
                 sim.Tick(SimConstants.TickDelta);
-            Assert.AreEqual(attacks, blinded.AttacksMade, "Предусловие: носитель сделал ровно столько взмахов");
+            Assert.AreEqual(attacks, blinded.HitsMade, "Предусловие: носитель сделал ровно столько взмахов");
 
             // Хвост на разрешение последнего взмаха: цифры снимаются на замахе, а исход приходит позже.
             for (int t = 0; t < 20; t++) sim.Tick(SimConstants.TickDelta);

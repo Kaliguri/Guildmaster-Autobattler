@@ -21,7 +21,7 @@ namespace Guildmaster.Combat
         private readonly List<RuntimeEffect> _dispatchBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _dispelBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _preDamageBuffer = new List<RuntimeEffect>();
-        private readonly List<RuntimeEffect> _removeByTagBuffer = new List<RuntimeEffect>();
+        private readonly List<RuntimeEffect> _forcedRemoveBuffer = new List<RuntimeEffect>();
         private readonly PreDamageResult     _preDamageResult = new PreDamageResult();
 
         /// <summary>
@@ -599,13 +599,36 @@ namespace Guildmaster.Combat
         {
             if (unit == null || tag == Data.Definitions.EffectTag.None || unit.ActiveEffects.Count == 0) return;
 
-            _removeByTagBuffer.Clear();
+            _forcedRemoveBuffer.Clear();
             List<RuntimeEffect> effects = unit.ActiveEffects;
             for (int i = 0; i < effects.Count; i++)
-                if ((effects[i].Def.Tags & tag) != 0) _removeByTagBuffer.Add(effects[i]);
+                if ((effects[i].Def.Tags & tag) != 0) _forcedRemoveBuffer.Add(effects[i]);
 
-            if (_removeByTagBuffer.Count == 0) return;
-            for (int i = 0; i < _removeByTagBuffer.Count; i++) Expire(unit, _removeByTagBuffer[i], combat);
+            if (_forcedRemoveBuffer.Count == 0) return;
+            for (int i = 0; i < _forcedRemoveBuffer.Count; i++) Expire(unit, _forcedRemoveBuffer[i], combat);
+            RecomputeControl(unit);
+        }
+
+        /// <summary>
+        /// Принудительно снять с юнита эффект, выданный ИМЕННО этим определением (игнорируя
+        /// <see cref="Data.Definitions.EffectData.Unremovable"/> — это системное завершение, а не диспел).
+        /// Так владелец заканчивает состояние, которое сам же выдал: разрыв Комбо гасит заряд серии.
+        /// </summary>
+        /// <remarks>
+        /// По определению, а не по тегу: <see cref="RemoveByTag"/> снёс бы вместе с зарядом серии и заряд
+        /// активки — тег <c>Empowered</c> у них общий, а правила снятия разные (вердикт Макса 2026-08-01).
+        /// </remarks>
+        public void RemoveByDef(RuntimeUnit unit, Data.Definitions.EffectData def, ICombatContext combat)
+        {
+            if (unit == null || def == null || unit.ActiveEffects.Count == 0) return;
+
+            _forcedRemoveBuffer.Clear();
+            List<RuntimeEffect> effects = unit.ActiveEffects;
+            for (int i = 0; i < effects.Count; i++)
+                if (ReferenceEquals(effects[i].Def, def)) _forcedRemoveBuffer.Add(effects[i]);
+
+            if (_forcedRemoveBuffer.Count == 0) return;
+            for (int i = 0; i < _forcedRemoveBuffer.Count; i++) Expire(unit, _forcedRemoveBuffer[i], combat);
             RecomputeControl(unit);
         }
 

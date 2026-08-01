@@ -111,6 +111,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("То же для сильной. Держать НЕ больше досягаемости ближнего боя, иначе сильная маскировка ничем не отличается от инвиза: подошедший ударить всё равно её не снимет.")]
         [SerializeField] private float _concealStrongRadius = SimTuning.Default.ConcealStrongRadius;
 
+        [TabGroup("Tuning", "Комбо"), SuffixLabel("с", overlay: true), LabelText("Разрыв серии Атак")]
+        [Tooltip("Сколько боец должен пробыть ВНЕ атакующего лупа (нет цели, оглушён, бежит вне досягаемости), чтобы Комбо порвалось и началось заново. Боевое ожидание между ударами серию не рвёт. На этом держатся цикл ударов голема и «каждая третья» Драугра: порвалось — цикл начинается с обычного удара, взведённый заряд гаснет.")]
+        [SerializeField] private float _comboBreakSeconds = SimTuning.Default.ComboBreakSeconds;
+
         /// <summary>Снять иммутабельный снапшот для бейка на старте боя.</summary>
         public SimTuning ToSnapshot() => new SimTuning(
             _bodyRadiusPerSize,
@@ -142,6 +146,7 @@ namespace Guildmaster.Data.Definitions
             _recastWindupSpeed,
             _concealWeakRadius,
             _concealMediumRadius,
-            _concealStrongRadius);
+            _concealStrongRadius,
+            _comboBreakSeconds);
     }
 }

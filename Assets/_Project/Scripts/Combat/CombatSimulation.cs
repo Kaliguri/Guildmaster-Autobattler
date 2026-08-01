@@ -628,6 +628,30 @@ namespace Guildmaster.Combat
             _effectSystem.Dispel(in req, this);
         }
 
+        public void RemoveEffect(RuntimeUnit unit, EffectData def)
+        {
+            _effectSystem.RemoveByDef(unit, def, this);
+        }
+
+        /// <summary>
+        /// Атака завершена. Событие идёт в очередь ПОСЛЕДСТВИЙ, а не заявлений: заряд следующей Атаки
+        /// взводится после того, как всё случившееся в этой уже применилось.
+        /// </summary>
+        public void NotifyAttackCompleted(RuntimeUnit unit)
+        {
+            if (unit == null || unit.IsDead) return;
+
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.AttackCompleted, unit, unit, 0f));
+        }
+
+        /// <inheritdoc cref="ICombatContext.NotifyComboBroken"/>
+        public void NotifyComboBroken(RuntimeUnit unit)
+        {
+            if (unit == null || unit.IsDead) return;
+
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.ComboBroken, unit, unit, 0f));
+        }
+
         /// <summary>
         /// Каст объявлен: событие уходит в очередь ЗАЯВЛЕНИЙ, а разослать его врагам — работа дренажа
         /// (см. <see cref="DrainAnnouncements"/>). Здесь оно ставится ОДНОЙ записью, потому что состав живых

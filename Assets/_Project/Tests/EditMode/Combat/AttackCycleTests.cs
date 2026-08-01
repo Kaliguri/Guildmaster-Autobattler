@@ -28,10 +28,12 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
-        public void ChargeWithoutConsumeTag_DoesNotStripTheCarrier()
+        public void SpentCharge_TakesItselfAndNotTheCycle()
         {
-            // Ловушка: Dispel по EffectTag.None означает «по любому тегу». Заряд, которому нечего снимать,
-            // стирал с носителя ВСЁ — включая сам цикл, отчего голем навсегда застревал на первой фазе.
+            // Ловушка, стоившая дня: заряд снимается диспелом по своему тегу, а сам носитель цикла висит
+            // рядом. Промахнись тег мимо (или окажись он у обоих) — удар снёс бы вместе с зарядом и цикл,
+            // и голем навсегда застрял бы на первой фазе. Именно так это и выглядело при теге None:
+            // диспел по «любому тегу» обчищал носителя целиком.
             List<float> hits = HitsOf(attacks: 7, cycle: Cycle(HeavyPhaseCharge()));
 
             Assert.AreEqual(200f, hits[2], 1e-3f, "Третий удар тяжёлый — цикл на носителе выжил");
@@ -71,14 +73,18 @@ namespace Guildmaster.Tests.EditMode.Combat
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: comp);
         }
 
-        /// <summary>Тяжёлая фаза: вдвое больнее. Тег снятия НЕ задан — в этом и суть охраняемой ловушки.</summary>
+        /// <summary>
+        /// Тяжёлая фаза: вдвое больнее. Тег снятия — <see cref="EffectTag.Empowered"/>, и он же стоит на
+        /// самом заряде: удар снимает носителя заряда по этому тегу (контракт
+        /// <c>EmpowerChargeContractTests</c>). У носителя цикла тегов нет, поэтому диспел его не заденет.
+        /// </summary>
         private static EffectData HeavyPhaseCharge()
         {
             var comp = new EmpowerNextAttackComponent()
                 .With("_damageMult", 2f)
-                .With("_consumeTag", EffectTag.None);
+                .With("_consumeTag", EffectTag.Empowered);
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral,
-                stacking: StackRule.Refresh, components: comp);
+                tags: EffectTag.Empowered, stacking: StackRule.Refresh, components: comp);
         }
 
         private static CombatSimulation BuildSim() =>

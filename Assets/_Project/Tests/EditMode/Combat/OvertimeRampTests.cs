@@ -1,4 +1,4 @@
-using Guildmaster.Core.Simulation;
+﻿using Guildmaster.Core.Simulation;
 using NUnit.Framework;
 
 namespace Guildmaster.Tests.EditMode.Combat
@@ -45,7 +45,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             recastWindupSpeed:         SimTuning.Default.RecastWindupSpeed,
             concealWeakRadius:         SimTuning.Default.ConcealWeakRadius,
             concealMediumRadius:       SimTuning.Default.ConcealMediumRadius,
-            concealStrongRadius:       SimTuning.Default.ConcealStrongRadius);
+            concealStrongRadius:       SimTuning.Default.ConcealStrongRadius,
+            comboBreakSeconds:         SimTuning.Default.ComboBreakSeconds);
 
         [Test]
         public void BeforeThreshold_NoRamp()

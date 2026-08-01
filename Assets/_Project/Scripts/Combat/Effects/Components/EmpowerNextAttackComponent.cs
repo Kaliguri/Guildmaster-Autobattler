@@ -102,9 +102,13 @@ namespace Guildmaster.Combat.Effects.Components
             RuntimeUnit self = ctx.Target;
             if (self == null) return;
 
+            // Снимаем ВСЁ, что взвёл OnApply. Площадь тут забывали: заряд, снятый до удара (развеяли
+            // скрытность, порвалось Комбо), оставлял носителю радиус задевания — и следующий обычный удар
+            // кита-одиночки внезапно бил по площади.
             self.EmpowerDamageMult = 0f;
             self.EmpowerFlatPen    = 0f;
             self.EmpowerKnockback  = 0f;
+            self.EmpowerSplashRadius = 0f;
             self.EmpowerBonusEffects = null;
             self.EmpowerBonusCount   = 0;
             self.EmpowerSplitShare  = 0f;

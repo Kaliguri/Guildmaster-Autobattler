@@ -81,6 +81,18 @@ namespace Guildmaster.Combat
         void Dispel(in Effects.DispelRequest req);
 
         /// <summary>
+        /// Снять с юнита эффект, выданный именно этим определением — системно, мимо диспела и без оглядки
+        /// на <see cref="EffectData.Unremovable"/>. Нужно владельцу, который сам выдал состояние и сам его
+        /// заканчивает: разрыв Комбо гасит заряд, взведённый серией.
+        /// </summary>
+        /// <remarks>
+        /// По определению, а не по тегу: тег <c>Empowered</c> носят и заряды активок, а их разрыв серии
+        /// трогать не должен (вердикт Макса 2026-08-01) — «сбили» и «отошёл» это разные истории, и
+        /// карточка Скрытности прямо разрешает отбегать, сохраняя заряд.
+        /// </remarks>
+        void RemoveEffect(RuntimeUnit unit, EffectData def);
+
+        /// <summary>
         /// Уходит ли следующая авто-атака <paramref name="attacker"/> мимо (слепота). Спрашивается на
         /// снятии цифр удара — до заявки урона, чтобы промахнувшийся не накладывал и своих on-hit.
         /// </summary>
@@ -140,6 +152,20 @@ namespace Guildmaster.Combat
         /// Fire-and-forget — не мутирует симуляцию.
         /// </summary>
         void NotifyAttackInterrupted(RuntimeUnit unit);
+
+        /// <summary>
+        /// Юнит ЗАВЕРШИЛ Атаку — она дошла от замаха до конца рекавери. Ставит внутреннее событие
+        /// <see cref="Effects.CombatEvent.AttackCompleted"/> носителю: на нём взводятся «каждая N-я
+        /// Атака» и цикл фаз.
+        /// </summary>
+        void NotifyAttackCompleted(RuntimeUnit unit);
+
+        /// <summary>
+        /// Комбо юнита порвалось (он пробыл вне атакующего лупа дольше
+        /// <see cref="Core.Simulation.SimTuning.ComboBreakSeconds"/>). Ставит внутреннее событие
+        /// <see cref="Effects.CombatEvent.ComboBroken"/> носителю — тому, кто держит взведённый заряд серии.
+        /// </summary>
+        void NotifyComboBroken(RuntimeUnit unit);
 
         /// <summary>Генератор случайных чисел боя (детерминированный).</summary>
         IRngService Rng { get; }

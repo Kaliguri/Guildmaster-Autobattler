@@ -355,6 +355,26 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         public void NotifyAttackInterrupted(RuntimeUnit unit) => AttackInterrupted++;
 
+        /// <summary>Сколько Атак носитель довёл до конца и сколько раз рвалась его серия.</summary>
+        public int AttacksCompleted;
+        public int CombosBroken;
+
+        // Очереди событий у заглушки нет, поэтому носитель получает событие сразу — как и переход за
+        // спину выше. Для среза этого достаточно: проверяется реакция компонента, а не порядок раундов.
+        public void NotifyAttackCompleted(RuntimeUnit unit)
+        {
+            AttacksCompleted++;
+            _effects?.Dispatch(unit, new CombatEventData(CombatEvent.AttackCompleted, unit, unit, 0f), this);
+        }
+
+        public void NotifyComboBroken(RuntimeUnit unit)
+        {
+            CombosBroken++;
+            _effects?.Dispatch(unit, new CombatEventData(CombatEvent.ComboBroken, unit, unit, 0f), this);
+        }
+
+        public void RemoveEffect(RuntimeUnit unit, EffectData def) => _effects?.RemoveByDef(unit, def, this);
+
         public IRngService Rng => _rng;
         /// <summary>
         /// Тик боя. Подвижный, потому что снятие эффектов судит по состоянию НАЧАЛА тика: тест, который

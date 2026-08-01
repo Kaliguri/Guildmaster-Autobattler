@@ -88,6 +88,11 @@ namespace Guildmaster.Core.Simulation
         public readonly float ConcealMediumRadius;  // Средняя
         public readonly float ConcealStrongRadius;  // Сильная — заметен вплотную
 
+        // --- Комбо (серия Атак, ГДД: глоссарий 2026-07-30/11) ---
+        // Сколько боец должен пробыть ВНЕ атакующего лупа, чтобы серия порвалась и началась заново.
+        // Боевое ожидание сюда не считается: он в цикле атаки и держит цель, он просто ждёт интервала.
+        public readonly float ComboBreakSeconds;
+
         public SimTuning(
             float bodyRadiusPerSize,
             float separationStrength,
@@ -118,7 +123,8 @@ namespace Guildmaster.Core.Simulation
             float recastWindupSpeed,
             float concealWeakRadius,
             float concealMediumRadius,
-            float concealStrongRadius)
+            float concealStrongRadius,
+            float comboBreakSeconds)
         {
             BodyRadiusPerSize         = bodyRadiusPerSize;
             SeparationStrength        = separationStrength;
@@ -150,6 +156,21 @@ namespace Guildmaster.Core.Simulation
             ConcealWeakRadius         = concealWeakRadius;
             ConcealMediumRadius       = concealMediumRadius;
             ConcealStrongRadius       = concealStrongRadius;
+            ComboBreakSeconds         = comboBreakSeconds;
+        }
+
+        /// <summary>
+        /// Сколько тиков подряд вне атакующего лупа рвут Комбо. Пол в один тик: ручка, выставленная в
+        /// ноль, означала бы «серия рвётся мгновенно», то есть Комбо не существует — такое отключение
+        /// делается не тюнингом, а удалением механики.
+        /// </summary>
+        public int ComboBreakTicks
+        {
+            get
+            {
+                int ticks = Ticks(ComboBreakSeconds);
+                return ticks < 1 ? 1 : ticks;
+            }
         }
 
 
@@ -238,6 +259,7 @@ namespace Guildmaster.Core.Simulation
             recastWindupSpeed:         2f,
             concealWeakRadius:         6f,
             concealMediumRadius:       4f,
-            concealStrongRadius:       2f);
+            concealStrongRadius:       2f,
+            comboBreakSeconds:         1.5f);
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.golem_sweep
   _polarity: 2
-  _tags: 0
+  _tags: 16384
   _baseDuration: -1
   _stacking: 2
   _maxStacks: 1
@@ -44,7 +44,7 @@ MonoBehaviour:
         _blinkBehind: 0
         _knockbackDistance: 0
         _splashRadius: 2
-        _consumeTag: 0
+        _consumeTag: 16384
         _bonusOnHitEffects: []
         _bonusOnHitCount: 1
         _recastImmediately: 0

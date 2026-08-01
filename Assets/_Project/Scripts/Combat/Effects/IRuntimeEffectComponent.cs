@@ -1,4 +1,4 @@
-using Guildmaster.Data.Definitions;
+﻿using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 
 namespace Guildmaster.Combat.Effects
@@ -191,7 +191,7 @@ namespace Guildmaster.Combat.Effects
     /// Зеркало pre-damage-негейта («Изворотливость» гасит удар со стороны ЦЕЛИ) — только со стороны
     /// атакующего, и потому отдельный шов: у цели решение тратит её заряды и щиты, а здесь ничего не
     /// расходуется, кроме самой атаки. Ответ обязан быть детерминированным (правило нулевого выходного
-    /// рандома): счёт идёт по <see cref="RuntimeUnit.AttacksMade"/>, а не по броску.
+    /// рандома): счёт идёт по <see cref="RuntimeUnit.HitsMade"/>, а не по броску.
     /// </remarks>
     public interface IAttackMissComponent : IRuntimeEffectComponent
     {

@@ -417,6 +417,9 @@ namespace Guildmaster.Tests.EditMode.Combat
                 => CombatPositioning.TeleportBehind(unit, target);
             public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
             public void NotifyAttackInterrupted(RuntimeUnit unit) { }
+            public void NotifyAttackCompleted(RuntimeUnit unit) { }
+            public void NotifyComboBroken(RuntimeUnit unit) { }
+            public void RemoveEffect(RuntimeUnit unit, EffectData def) { }
 
             public IRngService Rng => null;
             /// <summary>Тик боя — подвижный: снятие судит по состоянию начала тика (см. MockCombatContext).</summary>

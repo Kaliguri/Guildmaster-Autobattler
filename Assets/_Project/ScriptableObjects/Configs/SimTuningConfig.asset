@@ -42,3 +42,4 @@ MonoBehaviour:
   _concealWeakRadius: 6
   _concealMediumRadius: 4
   _concealStrongRadius: 2
+  _comboBreakSeconds: 1.5

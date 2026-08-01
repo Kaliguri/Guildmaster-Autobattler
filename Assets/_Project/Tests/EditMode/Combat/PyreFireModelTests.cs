@@ -264,6 +264,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ReportAreaHit(in AreaHit hit) { }
             public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
             public void NotifyAttackInterrupted(RuntimeUnit unit) { }
+            public void NotifyAttackCompleted(RuntimeUnit unit) { }
+            public void NotifyComboBroken(RuntimeUnit unit) { }
+            public void RemoveEffect(RuntimeUnit unit, EffectData def) { }
             public int QueryUnitsInRadius(Vector2 c, float r, System.Collections.Generic.List<RuntimeUnit> res, TargetFilter f, int team) { res.Clear(); return 0; }
             public int QueryUnitsInLine(Vector2 o, Vector2 d, float len, float w, System.Collections.Generic.List<RuntimeUnit> res, TargetFilter f, int team) { res.Clear(); return 0; }
         }

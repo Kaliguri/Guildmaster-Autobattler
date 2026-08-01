@@ -118,6 +118,11 @@ namespace Guildmaster.Combat
         {
             _hits.Clear();
 
+            // --- Проход 0: Комбо. Считается по фазе, С КОТОРОЙ юнит вошёл в тик, и до того, как эту фазу
+            // начнут менять гейты ниже: иначе «вне лупа» у одного юнита мерилось бы состоянием прошлого
+            // тика, а у другого — уже нового, и разрыв серии зависел бы от места в списке. ---
+            for (int i = 0; i < units.Count; i++) UpdateCombo(units[i], ctx);
+
             // --- Проход 1: таймеры, гейты, снятие цифр. Мир не меняется. ---
             for (int i = 0; i < units.Count; i++)
             {
@@ -134,7 +139,7 @@ namespace Guildmaster.Combat
                     // значит атака состоялась частично — обнулить кулдаун значило бы отдать её бесплатно.
                     // Юнит доигрывает хвост, как после обычного удара: сворачивание потока он всё равно
                     // отрабатывает, и именно этим контроль по нему и наказывает.
-                    else if (unit.Phase == AttackPhase.Channel) BreakChannel(unit);
+                    else if (unit.Phase == AttackPhase.Channel) BreakChannel(unit, ctx);
                     else if (unit.Phase == AttackPhase.Recovery) { unit.Phase = AttackPhase.Idle; unit.RecoveryRemaining = 0; }
 
                     // Оглушённый ВЫПАЛ из цикла атаки — это и есть «вне боя» (2026-07-30/11: таймер Комбо
@@ -176,6 +181,8 @@ namespace Guildmaster.Combat
                     unit.RecoveryRemaining--;
                     if (unit.RecoveryRemaining > 0) continue;
                     unit.Phase = AttackPhase.Idle;
+                    // Хвост доигран — Атака прошла путь целиком, и только теперь она засчитана в серию.
+                    CompleteAttack(unit, ctx);
                 }
 
                 // Ещё на кулдауне — ждём своего окна. Это и есть боевое ожидание, если цель под рукой:
@@ -358,7 +365,7 @@ namespace Guildmaster.Combat
             // (цель мертва/ушла) канал не открывает: держать поток не в кого.
             bool opensChannel = HasChannel(unit) && CanHit(unit, target, ctx);
             if (opensChannel) EnterChannel(unit, target);
-            else EnterRecovery(unit);
+            else EnterRecovery(unit, ctx);
 
             TryQueueHit(unit, target, ctx, hitIndex);
         }
@@ -375,7 +382,7 @@ namespace Guildmaster.Combat
         private void TickChannel(RuntimeUnit unit, ICombatContext ctx)
         {
             RuntimeUnit target = unit.AttackChannelTarget;
-            if (!CanHit(unit, target, ctx)) { BreakChannel(unit); return; }
+            if (!CanHit(unit, target, ctx)) { BreakChannel(unit, ctx); return; }
 
             if (unit.AttackChannelTickRemaining > 0) unit.AttackChannelTickRemaining--;
             if (unit.AttackChannelTickRemaining <= 0)
@@ -385,7 +392,7 @@ namespace Guildmaster.Combat
             }
 
             unit.AttackChannelRemaining--;
-            if (unit.AttackChannelRemaining <= 0) BreakChannel(unit);
+            if (unit.AttackChannelRemaining <= 0) BreakChannel(unit, ctx);
         }
 
         /// <summary>Открыть канал: длительность и период тика — снимок на старте потока, как и замах.</summary>
@@ -400,12 +407,12 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>Погасить канал и уйти в хвост: рефанда кулдауна нет ни при разрыве, ни по времени.</summary>
-        private static void BreakChannel(RuntimeUnit unit)
+        private static void BreakChannel(RuntimeUnit unit, ICombatContext ctx)
         {
             unit.AttackChannelRemaining = 0;
             unit.AttackChannelTickRemaining = 0;
             unit.AttackChannelTarget = null;
-            EnterRecovery(unit);
+            EnterRecovery(unit, ctx);
         }
 
         /// <summary>
@@ -517,7 +524,7 @@ namespace Guildmaster.Combat
             // Атака считается ДО опроса слепоты и независимо от её исхода: «каждая X-я мимо» отмеряет
             // взмахи носителя, а не попадания. Иначе слепота, отняв удар, сдвигала бы собственный счёт и
             // период поехал бы (первый промах отодвигал бы следующий на четыре УДАЧНЫХ удара).
-            unit.AttacksMade++;
+            unit.HitsMade++;
             bool missed = ctx.ResolveAttackMiss(unit);
 
             // Доля тика — только у ПЕРВОГО контакта свинга: он один стоит там, где его посчитал замах.
@@ -747,9 +754,54 @@ namespace Guildmaster.Combat
         private static bool HasNoAutoAttack(RuntimeUnit unit) =>
             unit.Unit?.Ai != null && unit.Unit.Ai.AutoAttackMode == AutoAttackMode.None;
 
+        /// <summary>
+        /// Комбо носителя на этом тике: пробыл вне атакующего лупа дольше
+        /// <see cref="Core.Simulation.SimTuning.ComboBreakSeconds"/> — серия рвётся и начинается заново
+        /// (ГДД: глоссарий, 2026-07-30/11).
+        /// </summary>
+        /// <remarks>
+        /// «Вне лупа» = <see cref="AttackPhase.Idle"/>: бежит, стоит без цели, лежит в стане. Боевое
+        /// ожидание счётчик обнуляет — боец держит цель и ждёт своего интервала, серию это не рвёт.
+        /// <para>Событие шлётся ровно один раз на разрыв: условие смотрит на <c>ComboAttacks &gt; 0</c>, а
+        /// он тут же обнуляется. Иначе стоящий без цели юнит слал бы «серия порвалась» каждый тик, и
+        /// владельцы зарядов гасили бы уже погашенное.</para>
+        /// </remarks>
+        private static void UpdateCombo(RuntimeUnit unit, ICombatContext ctx)
+        {
+            if (unit.IsDead) return;
+
+            if (unit.Phase != AttackPhase.Idle)
+            {
+                unit.ComboIdleTicks = 0;
+                return;
+            }
+
+            unit.ComboIdleTicks++;
+            if (unit.ComboIdleTicks < ctx.Tuning.ComboBreakTicks || unit.ComboAttacks <= 0) return;
+
+            unit.ComboAttacks = 0;
+            ctx.NotifyComboBroken(unit);
+        }
+
+        /// <summary>
+        /// Атака дошла до конца пути (замах → канал → хвост) и засчитана в текущее Комбо. Промах её
+        /// засчитывает так же, как попадание: считается взмах, а не результат (вердикт Макса 2026-08-01).
+        /// </summary>
+        /// <remarks>
+        /// Прерванная контролем Атака сюда не попадает — ни из замаха (<see cref="Interrupt"/>), ни из
+        /// оборванного хвоста: и там, и там юнит уходит в <see cref="AttackPhase.Idle"/> мимо этой точки.
+        /// Оборванный контролем КАНАЛ хвост всё же доигрывает, и если стан к тому времени спал — Атака
+        /// засчитывается: она отработала свой путь до конца, просто короче задуманного.
+        /// </remarks>
+        private static void CompleteAttack(RuntimeUnit unit, ICombatContext ctx)
+        {
+            unit.ComboAttacks++;
+            ctx.NotifyAttackCompleted(unit);
+        }
+
         /// <summary>Хвост-восстановление после удара: Recovery на запланированные тики (доигрыш клипа +
         /// доп. секунды, посчитано в <see cref="EnterWindup"/>), либо сразу Idle, если хвоста нет.</summary>
-        private static void EnterRecovery(RuntimeUnit unit)
+        private static void EnterRecovery(RuntimeUnit unit, ICombatContext ctx)
         {
             // Рекаст, взведённый ещё в замахе, ускоряет именно хвост: занесённый удар доигрывает целиком,
             // а вот доигрыш после него идёт быстрее (модель Макса 2026-07-31). Скорость тратится вместе со
@@ -768,6 +820,8 @@ namespace Guildmaster.Combat
             {
                 unit.Phase = AttackPhase.Idle;
                 unit.RecoveryRemaining = 0;
+                // Хвоста нет вовсе — путь Атаки кончается здесь же, и засчитать её надо в том же тике.
+                CompleteAttack(unit, ctx);
             }
             else
             {

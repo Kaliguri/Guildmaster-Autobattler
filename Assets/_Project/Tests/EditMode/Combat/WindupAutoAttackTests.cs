@@ -760,6 +760,9 @@ namespace Guildmaster.Tests.EditMode.Combat
                 => CombatPositioning.TeleportBehind(unit, target);
             public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => AttackStarted++;
             public void NotifyAttackInterrupted(RuntimeUnit unit) => AttackInterrupted++;
+            public void NotifyAttackCompleted(RuntimeUnit unit) { }
+            public void NotifyComboBroken(RuntimeUnit unit) { }
+            public void RemoveEffect(RuntimeUnit unit, EffectData def) { }
 
             public int QueryUnitsInRadius(Vector2 c, float r, List<RuntimeUnit> res, TargetFilter f, int team) { res.Clear(); return 0; }
             public int QueryUnitsInLine(Vector2 o, Vector2 d, float l, float w, List<RuntimeUnit> res, TargetFilter f, int team) { res.Clear(); return 0; }
