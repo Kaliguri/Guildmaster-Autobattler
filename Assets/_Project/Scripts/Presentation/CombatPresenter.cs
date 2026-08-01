@@ -270,11 +270,13 @@ namespace Guildmaster.Presentation
                 SyncProjectilesToFrame(projectileFrame);
             }
 
-            // События отдаются ровно до показанного тика: цифра, звук и вспышка садятся на свой кадр.
-            _dispatcher.PumpTo(_playback.ViewTick);
-
             // Доля берётся у ПОКАЗА, а не у боевого луча: она отсчитывается от показанного тика.
             float alpha = _playback.Alpha;
+
+            // События отдаются до показанного МОМЕНТА — тика вместе с его отыгранной долей. Той же долей
+            // ниже течёт поза и позиция, поэтому цифра, звук, вспышка и hitstop садятся в тот самый кадр,
+            // где меч коснулся, а не на границу тика (было до 33 мс мимо, в среднем ~16).
+            _dispatcher.PumpTo(_playback.ViewTick, alpha);
 
             foreach (var kvp in _views)
             {

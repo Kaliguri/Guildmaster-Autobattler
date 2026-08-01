@@ -109,8 +109,13 @@ namespace Guildmaster.Combat.Tape
         private void HandleUnitDied(RuntimeUnit unit) =>
             _tape.Record(new TapeEvent(TapeEventKind.UnitDied, Tick, unit.Id));
 
+        // Доля тика снимается с носителя удара: её держит там AutoAttackSystem.Land на время нанесения.
+        // Событие урона одно на все источники (авто-атака, периодика, реактив, способность), поэтому вне
+        // удара поле равно нулю — и горение честно едет по границе тика, где его момент и находится.
         private void HandleDamageDealt(RuntimeUnit source, RuntimeUnit target, DamageResult result) =>
-            _tape.RecordDamage(Tick, source != null ? source.Id : -1, target != null ? target.Id : -1, in result);
+            _tape.RecordDamage(
+                Tick, source != null ? source.Id : -1, target != null ? target.Id : -1, in result,
+                subTick: source != null ? source.ContactSubTick : 0f);
 
         private void HandleHealed(RuntimeUnit source, RuntimeUnit target, float amount) =>
             _tape.Record(new TapeEvent(

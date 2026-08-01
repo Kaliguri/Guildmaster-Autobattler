@@ -67,10 +67,17 @@ namespace Guildmaster.Combat
             /// <summary>Удар уходит мимо (слепота): цифры сняты, но ни урона, ни on-hit не будет.</summary>
             public readonly bool Missed;
 
+            /// <summary>
+            /// Доля тика, в которую пришёлся кадр контакта (0 = момента внутри тика нет). Едет в заявке, а
+            /// не читается при прилёте, по той же причине, что тип урона и заряд: между снятием цифр и
+            /// прилётом кит не меняется, но так момент и удар заведомо не могут разойтись.
+            /// </summary>
+            public readonly float SubTick;
+
             public ResolvedHit(RuntimeUnit unit, RuntimeUnit target, float raw, float reach,
                 DamageType damageType, bool blink, float flatPen, float knockback,
                 EffectData[] bonusEffects, int bonusCount, float splitShare, DamageType splitType,
-                float splashRadius, bool missed)
+                float splashRadius, bool missed, float subTick = 0f)
             {
                 Unit       = unit;
                 Target     = target;
@@ -86,6 +93,7 @@ namespace Guildmaster.Combat
                 SplitType   = splitType;
                 SplashRadius = splashRadius;
                 Missed      = missed;
+                SubTick     = subTick;
             }
         }
 
@@ -512,12 +520,35 @@ namespace Guildmaster.Combat
             unit.AttacksMade++;
             bool missed = ctx.ResolveAttackMiss(unit);
 
+            // Доля тика — только у ПЕРВОГО контакта свинга: он один стоит там, где его посчитал замах.
+            // Остальные контакты серии раздвинуты своими инвариантами (минимум тик между ударами, упор в
+            // границу интервала), а тик канала вообще отмеряется периодом, а не кадром клипа — у них
+            // момента внутри тика нет, и придумывать его значило бы двигать вспышку в никуда.
+            // Фазу сравниваем с Channel, а не с Windup: к этому месту Resolve уже перевёл юнита в хвост
+            // (или в канал), и проверка «ещё в замахе» обнулила бы долю у обычного одноударного кита —
+            // то есть ровно у того, для кого она и считается.
+            float subTick = hitIndex == 0 && unit.Phase != AttackPhase.Channel
+                ? AttackTiming.ContactSubTick(unit, unit.WindupTicks)
+                : 0f;
+
             _hits.Add(new ResolvedHit(unit, target, raw, reach, damageType, blink, flatPen, knockback,
-                bonusEffects, bonusCount, splitShare, splitType, splashRadius, missed));
+                bonusEffects, bonusCount, splitShare, splitType, splashRadius, missed, subTick));
+        }
+
+        /// <summary>
+        /// Прилёт снятого удара. Оболочка держит долю тика на носителе ровно на время нанесения: её
+        /// читает запись в ленту, а всё, что бьёт вне удара — периодика, реактив, способность — обязано
+        /// видеть ноль. Ставить её на весь свинг нельзя: событие урона у всех источников одно.
+        /// </summary>
+        private void Land(in ResolvedHit hit, ICombatContext ctx)
+        {
+            hit.Unit.ContactSubTick = hit.SubTick;
+            LandResolved(in hit, ctx);
+            hit.Unit.ContactSubTick = 0f;
         }
 
         /// <summary>Прилёт снятого удара: урон/снаряд/хил и on-hit эффекты. Блинк уже отыгран (проход 2a).</summary>
-        private void Land(in ResolvedHit hit, ICombatContext ctx)
+        private void LandResolved(in ResolvedHit hit, ICombatContext ctx)
         {
             RuntimeUnit unit = hit.Unit, target = hit.Target;
             // Между снятием цифр и прилётом обоих могли добить ударом того же тика.

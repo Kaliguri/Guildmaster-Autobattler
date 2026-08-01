@@ -204,6 +204,63 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
+        /// Доля тика, в которую попадает кадр контакта, — остаток, который целочисленный
+        /// <see cref="WindupTicks"/> отбрасывает. Нужна ПОДАЧЕ: показ ставит вспышку, цифру, звук и
+        /// hitstop в тот кадр, где меч коснулся, вместо границы тика (разброс до 33 мс).
+        /// <para><b>Модель не меняется вовсе:</b> удар по-прежнему принадлежит тику
+        /// <paramref name="actualWindupTicks"/>. Здесь только дробь от того же деления, посчитанная
+        /// остатком (<c>%</c>), а не повторным делением во float — иначе у формулы тайминга появился бы
+        /// второй владелец, способный разойтись с первым на границах округления.</para>
+        /// <para><b>Возвращает 0 там, где точности нет</b>, и это не осторожность, а честность:</para>
+        /// <list type="bullet">
+        /// <item>нет покадрового клипа (скелетный риг, путь <see cref="WindupTicksFromShare"/>): момент
+        /// задан долей свинга и округляется к БЛИЖАЙШЕМУ тику, поэтому истинный момент бывает и раньше
+        /// тика модели — дробью [0..1) это не выразить;</item>
+        /// <item>замах склампился (телеграф-пол или потолок «интервал − 1») либо его сдвинул множитель
+        /// (разбег, взведённое комбо): момент уже сдвинут искусственно, и дробь от сдвинутого числа была
+        /// бы точностью, которой нет.</item>
+        /// </list>
+        /// </summary>
+        /// <param name="actualWindupTicks">
+        /// Длина замаха, с которой удар РЕАЛЬНО занесён (<see cref="WindupTicksFor"/>). Расхождение с
+        /// несклампленным покадровым расчётом и есть признак того, что момент сдвинут.
+        /// </param>
+        public static float ContactSubTick(RuntimeUnit unit, int actualWindupTicks)
+        {
+            if (unit?.Unit == null) return 0f;
+            if (unit.Unit.Channel.Exists && unit.Unit.Channel.WindupSeconds > 0f) return 0f;
+            if (unit.Unit.WindupShare > 0f) return 0f;   // путь доли — округление к ближайшему, см. выше
+
+            UnitVisual visual = unit.Unit.Visual;
+            if (visual == null) return 0f;
+
+            return ContactSubTick(
+                visual.AttackHitFrame, visual.AttackFrameCount,
+                IntervalTicks(unit.Stats.Get(StatType.AttackSpeed)),
+                actualWindupTicks, unit.Unit.AttackSwingTicks);
+        }
+
+        /// <summary>
+        /// Арифметика доли контакта из тех же чисел, что у <see cref="WindupTicks"/>. Отдельно от чтения
+        /// данных юнита, чтобы её можно было проверить тестом без ассетов: кадры клипа выводятся из
+        /// <c>AnimationClip</c>, и собрать их в EditMode дороже, чем стоит сама формула.
+        /// </summary>
+        /// <param name="actualWindupTicks">Длина замаха, с которой удар реально занесён.</param>
+        public static float ContactSubTick(int hitFrame, int frameCount, int intervalTicks,
+            int actualWindupTicks, int maxAnimTicks = 0)
+        {
+            if (frameCount <= 0 || hitFrame <= 0) return 0f;
+
+            int durationTicks = AttackDurationTicks(intervalTicks, maxAnimTicks);
+            int clampedHit    = hitFrame < frameCount ? hitFrame : frameCount;
+
+            int product = clampedHit * durationTicks;
+            if (product / frameCount != actualWindupTicks) return 0f;   // кламп или множитель сдвинули момент
+
+            return (product % frameCount) / (float)frameCount;
+        }
+
+        /// <summary>
         /// Замах из ДОЛИ свинга (0..1) — путь для юнитов, у которых нет покадрового клипа. Кламп и
         /// множитель разбега те же, что у покадрового пути: границы у замаха одни, кем бы он ни был задан.
         /// </summary>
