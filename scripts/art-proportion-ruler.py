@@ -7,10 +7,6 @@
 правила сетки) и падает, если разбор не сошёлся: молча нарисовать линейку по
 устаревшим числам --- худшее, что он может сделать с художником.
 
-Единственное исключение --- длина кисти: в таблицах её нет, она объявлена
-прозой раздела ("плечо 20 + предплечье 16 + кисть 6 при тире 96"), поэтому
-живёт в HAND_LENGTH ниже. Это осознанный дубль одной строки, а не забытый.
-
 Выход (docs/art-refs/view-angle/drawing/rulers/):
   ruler-<тир>-tight.png   слой ровно по высоте фигуры
   ruler-<тир>-canvas.png  слой по сборочному канвасу, фигура по центру
@@ -30,11 +26,6 @@ from PIL import Image, ImageDraw, ImageFont
 
 GRID_DOC = "docs/view-angle-progress.md"
 OUT_DIR = "docs/art-refs/view-angle/drawing/rulers"
-
-# Кисть врисована в предплечье, отдельной строки в таблице частей нет ---
-# числа объявлены прозой раздела ("Кисть по тирам --- 4 · 6 · 8"). Разбирать
-# прозу регуляркой хрупко, поэтому здесь осознанный дубль трёх чисел.
-HAND_LENGTH = {64: 4, 96: 6, 128: 8}
 
 # Пояс уже плеч на четверть --- правило сетки, сформулированное словами
 # ("пояс уже на 1/4"), отдельной строкой с числами оно не задано.
@@ -165,6 +156,7 @@ def read_grid(repo: Path) -> dict[int, dict]:
         w_shoulders, h_torso = _wh(_row(parts, "Торс")[pc])
         upper = _wh(_row(parts, "Плечо")[pc])[1]
         fore = _wh(_row(parts, "Предплечье")[pc])[1]
+        hand = _wh(_row(parts, "Кисть")[pc])[1]
 
         # Таблица частей и вертикальный разбор описывают одно и то же тело ---
         # расхождение значит, что одну из них правили в отрыве от другой.
@@ -174,11 +166,8 @@ def read_grid(repo: Path) -> dict[int, dict]:
                 f"тир {tier}: части говорят голова+шея {h_head} и торс {h_torso}, "
                 f"разбор роста — {t['head']}+{t['neck']}={t['head'] + t['neck']} "
                 f"и торс {t['torso']}")
-        if tier not in HAND_LENGTH:
-            raise GridError(f"тир {tier}: длина кисти не объявлена в HAND_LENGTH")
-
         t.update(
-            arm=(upper, fore, HAND_LENGTH[tier]),
+            arm=(upper, fore, hand),
             w_head=w_head, w_shoulders=w_shoulders,
             w_thigh=_wh(_row(parts, "Бедро")[pc])[0],
             w_shin=_wh(_row(parts, "Голень")[pc])[0],
