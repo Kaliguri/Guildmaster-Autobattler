@@ -394,7 +394,7 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
   font-size: 1rem;
   cursor: copy;
 }
-.sw:hover { border-color: var(--brass); }
+.sw:hover, .sw:focus-visible { border-color: var(--brass); }
 .sw[data-copied="true"] { border-color: var(--flare-mint); }
 .sw[data-copied="true"]::after { content: "скопировано"; font-family: var(--mono); font-size: .62rem; color: var(--flare-mint); margin-left: auto; }
 .sw-chip { width: 34px; height: 34px; flex: none; border-radius: 2px; border: 1px solid rgba(0,0,0,.5); }
@@ -409,6 +409,9 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* Карточка со сценой — кнопка целиком: нажать можно куда угодно, откроется крупно. */
+.stand.zoomable, .card-link canvas { cursor: zoom-in; }
 
 /* --- лайтбокс: сцена крупно --- */
 .lightbox {
@@ -444,17 +447,48 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
   text-transform: uppercase;
   color: var(--edge);
 }
-.lightbox-nav { font-size: 1.6rem; line-height: 1; padding: .4rem .8rem; flex: none; }
-.lightbox-close { position: absolute; top: 1.2rem; right: 1.4rem; }
+.lightbox-nav,
+.lightbox-close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.lightbox-close { position: absolute; top: 1.2rem; right: 1.4rem; font-size: 1.3rem; }
+.lightbox-nav[hidden] { display: none; }
+
+/* Поле цвета: крупно и без соседей — единственный способ сравнить два близких оттенка. */
+.lightbox-color {
+  width: min(70vw, 900px);
+  height: min(56vh, 460px);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+}
+
+.lightbox-copy {
+  align-self: flex-start;
+  margin-top: .3rem;
+  font-size: .72rem;
+  cursor: copy;
+}
+.lightbox-copy[data-copied="true"] { border-color: var(--flare-mint); color: var(--flare-mint); }
+
+/* Появление: подложка проявляется, кадр чуть подрастает — движение объясняет, откуда он взялся. */
+.lightbox { animation: lb-fade 160ms ease-out; }
+.lightbox-frame.pop { animation: lb-pop 200ms cubic-bezier(.2, .8, .3, 1); }
+@keyframes lb-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lb-pop { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
 
 @media (max-width: 720px) {
   .lightbox-nav { position: absolute; bottom: 1.2rem; }
   .lightbox-nav.prev { left: 1.2rem; }
   .lightbox-nav.next { right: 1.2rem; }
 }
-
-/* Сцена в сетке приглашает нажать: без этого канвас читается как картинка, а не как кнопка. */
-.stand canvas, .card-link canvas { cursor: zoom-in; }
 
 /* --- поиск --- */
 .search { position: fixed; inset: 0; z-index: 40; background: rgba(8, 7, 6, .78); display: grid; place-items: start center; padding-top: 12vh; }

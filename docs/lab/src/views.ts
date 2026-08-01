@@ -80,7 +80,7 @@ function indexCard(page: PageDef, def: SectionDef | undefined): HTMLElement {
     canvas.height = 200;
     card.appendChild(canvas);
     watch(canvas, cover, 320, 200);
-    scenes.push({ stand: cover, w: 320, h: 200 });
+    scenes.push({ kind: "scene", stand: cover, w: 320, h: 200 });
   } else if (page.icon) {
     card.appendChild(el("div", "card-mark", page.icon));
   }
@@ -172,16 +172,23 @@ export function renderLegacy(view: HTMLElement, pages: PageDef[], loaded: Map<st
 
 /* ---------- раздел ---------- */
 
-/** Сцены текущей страницы по порядку: их листает лайтбокс. Собирается тем же проходом, что и
- *  разметка, поэтому разойтись с ней не может. */
-let scenes: Array<{ stand: StandDef; w: number; h: number }> = [];
+/** Всё крупноувеличиваемое на текущей странице по порядку: его листает лайтбокс. Собирается тем же
+ *  проходом, что и разметка, поэтому разойтись с ней не может. Раздел может дописать сюда своё —
+ *  плитки цвета делают именно это. */
+let scenes: lightbox.Item[] = [];
 
 function beginScenes(): void {
   scenes = [];
 }
 
 function commitScenes(): void {
-  lightbox.setEntries(scenes);
+  lightbox.setItems(scenes);
+}
+
+/** Живой блок наполняется асинхронно и попадает в список позже остальных. */
+export function addLightboxItems(extra: lightbox.Item[]): void {
+  scenes = scenes.concat(extra);
+  lightbox.setItems(scenes);
 }
 
 export function renderSection(view: HTMLElement, def: SectionDef): void {
@@ -305,12 +312,9 @@ function standCard(stand: StandDef, pageId: string, wide: boolean): HTMLElement 
     canvas.height = h;
     canvas.setAttribute("role", "img");
     canvas.setAttribute("aria-label", stand.title);
-    // Сцена в сетке мелкая — тонкую графику в ней не разглядеть, поэтому она открывается крупно.
-    canvas.title = "Открыть крупно";
-    canvas.addEventListener("click", () => lightbox.open(stand));
     card.appendChild(canvas);
     watch(canvas, stand, w, h);
-    scenes.push({ stand, w, h });
+    scenes.push({ kind: "scene", stand, w, h });
   }
 
   const body = el("div", "stand-body");
@@ -342,6 +346,14 @@ function standCard(stand: StandDef, pageId: string, wide: boolean): HTMLElement 
   if (stand.decision) body.appendChild(el("p", "decision", `решение ${stand.decision}`));
 
   card.appendChild(body);
+
+  if (stand.draw) {
+    // Нажать можно куда угодно в карточке: искать глазами кликабельную область — лишняя работа.
+    // Кнопка-якорь внутри гасит своё событие сама, поэтому ссылку она по-прежнему копирует.
+    card.classList.add("zoomable");
+    card.title = "Открыть крупно";
+    card.addEventListener("click", () => lightbox.open(stand));
+  }
   return card;
 }
 

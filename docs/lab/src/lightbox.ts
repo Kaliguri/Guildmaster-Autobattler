@@ -1,35 +1,39 @@
-/* Лайтбокс: стенд крупно, поверх страницы.
+/* Лайтбокс: показать крупно то, на что смотрят.
 
-   Стенды в сетке маленькие — по три в ряд, — и разглядеть в них тонкую графику нельзя: подтон
-   пропитывания, узор трещин, ступень искр. Раньше это чинилось только тем, что стенду задавали
-   большой `size`, то есть страница раздувалась ради одной детали.
+   Всё визуальное в Лаборатории мелкое — сцены идут по три в ряд, плитки цвета размером с ноготь, —
+   и тонкую работу в них не разглядеть: подтон пропитывания, узор трещин, разницу двух соседних
+   оттенков латуни. Раньше это чинилось только тем, что стенду задавали большой размер, то есть
+   страница раздувалась ради одной детали.
 
-   Клик по сцене открывает её во весь экран, стрелки листают соседние сцены раздела, Escape
-   закрывает. Анимация продолжает идти: смотреть в замершую картинку смысла нет — вопрос почти
-   всегда в движении. */
+   Клик открывает во весь экран, стрелки листают соседей, Escape закрывает. Сцена продолжает
+   двигаться: смотреть в замерший кадр смысла нет, вопрос почти всегда в движении. */
 
 import { el } from "./dom.js";
 import { register, unregister } from "./stage.js";
+import type { PaletteToken } from "./api.js";
 import type { StandDef } from "./types.js";
 
-interface Entry {
-  stand: StandDef;
-  w: number;
-  h: number;
-}
+/** Крупно показываем два разных предмета, и они не сводятся друг к другу: сцена живая и её надо
+ *  тикать, образец цвета статичен и его надо мочь скопировать. */
+export type Item =
+  | { kind: "scene"; stand: StandDef; w: number; h: number }
+  | { kind: "color"; token: PaletteToken; css: string };
 
-let entries: Entry[] = [];
+let items: Item[] = [];
 let box: HTMLElement | null = null;
-let canvas: HTMLCanvasElement | null = null;
+let frame: HTMLElement | null = null;
 let index = -1;
+let liveCanvas: HTMLCanvasElement | null = null;
 
-/** Список сцен текущей страницы: по нему листают стрелки. Пересобирается при смене маршрута. */
-export function setEntries(list: Entry[]): void {
-  entries = list;
+/** Список того, что можно листать на текущей странице. Пересобирается при смене маршрута. */
+export function setItems(list: Item[]): void {
+  items = list;
 }
 
-export function open(stand: StandDef): void {
-  const at = entries.findIndex((e) => e.stand === stand);
+export function open(target: StandDef | PaletteToken): void {
+  const at = items.findIndex((it) =>
+    it.kind === "scene" ? it.stand === target : it.token === target
+  );
   if (at < 0) return;
   build();
   show(at);
@@ -42,29 +46,30 @@ function build(): void {
   }
 
   box = el("div", "lightbox");
-  const frame = el("div", "lightbox-frame");
-  canvas = el("canvas");
-  const caption = el("div", "lightbox-caption");
+  box.setAttribute("role", "dialog");
+  box.setAttribute("aria-modal", "true");
 
-  const close = el("button", "lightbox-close", "закрыть");
+  frame = el("div", "lightbox-frame");
+
+  const close = el("button", "lightbox-close", "×");
   close.type = "button";
+  close.setAttribute("aria-label", "Закрыть");
   const prev = el("button", "lightbox-nav prev", "‹");
   prev.type = "button";
-  prev.setAttribute("aria-label", "Предыдущая сцена");
+  prev.setAttribute("aria-label", "Предыдущее");
   const next = el("button", "lightbox-nav next", "›");
   next.type = "button";
-  next.setAttribute("aria-label", "Следующая сцена");
+  next.setAttribute("aria-label", "Следующее");
 
-  frame.append(canvas, caption);
   box.append(prev, frame, next, close);
   document.body.appendChild(box);
 
   close.addEventListener("click", hide);
   prev.addEventListener("click", () => step(-1));
   next.addEventListener("click", () => step(1));
-  box.addEventListener("click", (e) => {
-    // Клик мимо кадра закрывает: так же ведёт себя любой просмотрщик, и это ожидаемо.
-    if (e.target === box || e.target === frame) hide();
+  // Клик по подложке закрывает — так ведёт себя любой просмотрщик, и этого ждут.
+  box.addEventListener("mousedown", (e) => {
+    if (e.target === box) hide();
   });
   document.addEventListener("keydown", onKey);
 }
@@ -77,38 +82,86 @@ function onKey(e: KeyboardEvent): void {
 }
 
 function step(delta: number): void {
-  if (entries.length === 0) return;
-  show((index + delta + entries.length) % entries.length);
+  if (items.length === 0) return;
+  show((index + delta + items.length) % items.length);
 }
 
 function show(at: number): void {
-  if (!box || !canvas) return;
-  const entry = entries[at];
-  if (!entry) return;
+  if (!box || !frame) return;
+  const item = items[at];
+  if (!item) return;
 
-  if (index >= 0) unregister(canvas);
+  release();
   index = at;
   box.hidden = false;
+  frame.replaceChildren();
+  // Перезапуск анимации появления: без сброса класса второй показ подряд прошёл бы молча.
+  frame.classList.remove("pop");
+  void frame.offsetWidth;
+  frame.classList.add("pop");
 
-  canvas.width = entry.w;
-  canvas.height = entry.h;
-  // Кадр держит пропорции сцены и не вылезает за экран ни по одной стороне.
-  canvas.style.aspectRatio = `${entry.w} / ${entry.h}`;
+  if (item.kind === "scene") showScene(item);
+  else showColor(item);
 
-  const caption = box.querySelector(".lightbox-caption");
-  if (caption) {
-    caption.innerHTML =
-      `<b>${entry.stand.title}</b>` +
-      (entry.stand.note ? `<span>${entry.stand.note}</span>` : "") +
-      `<i>${at + 1} / ${entries.length} · стрелки листают, Esc закрывает</i>`;
+  const nav = box.querySelectorAll<HTMLElement>(".lightbox-nav");
+  nav.forEach((b) => { b.hidden = items.length < 2; });
+}
+
+function showScene(item: Extract<Item, { kind: "scene" }>): void {
+  if (!frame) return;
+  const canvas = el("canvas");
+  canvas.width = item.w;
+  canvas.height = item.h;
+  canvas.style.aspectRatio = `${item.w} / ${item.h}`;
+  frame.appendChild(canvas);
+  frame.appendChild(caption(item.stand.title, item.stand.note ?? ""));
+  liveCanvas = canvas;
+  register(canvas, item.stand, item.w, item.h);
+}
+
+function showColor(item: Extract<Item, { kind: "color" }>): void {
+  if (!frame) return;
+  const field = el("div", "lightbox-color");
+  field.style.background = item.css;
+  frame.appendChild(field);
+
+  const cap = caption(item.token.name, item.token.note);
+  const value = el("button", "lightbox-copy", item.token.value.replace(/\s+/g, " "));
+  value.type = "button";
+  value.title = "Скопировать имя токена";
+  value.addEventListener("click", () => {
+    const done = (): void => {
+      value.dataset["copied"] = "true";
+      setTimeout(() => value.removeAttribute("data-copied"), 1200);
+    };
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(item.token.name).then(done, done);
+    else done();
+  });
+  cap.appendChild(value);
+  frame.appendChild(cap);
+}
+
+function caption(title: string, note: string): HTMLElement {
+  const cap = el("div", "lightbox-caption");
+  cap.appendChild(el("b", null, title));
+  if (note) {
+    const span = el("span");
+    span.innerHTML = note;
+    cap.appendChild(span);
   }
+  cap.appendChild(el("i", null, `${index + 1} / ${items.length} · стрелки листают, Esc закрывает`));
+  return cap;
+}
 
-  register(canvas, entry.stand, entry.w, entry.h);
+/** Снять живую сцену с отрисовки: иначе она продолжит тикать за закрытым лайтбоксом. */
+function release(): void {
+  if (liveCanvas) unregister(liveCanvas);
+  liveCanvas = null;
 }
 
 function hide(): void {
-  if (!box || !canvas) return;
-  if (index >= 0) unregister(canvas);
+  if (!box) return;
+  release();
   index = -1;
   box.hidden = true;
 }

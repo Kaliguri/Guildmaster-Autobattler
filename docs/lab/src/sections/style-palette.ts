@@ -10,6 +10,8 @@
 
 import { drawFeedState, fetchPalette, type PaletteToken } from "../api.js";
 import { el } from "../dom.js";
+import * as lightbox from "../lightbox.js";
+import { addLightboxItems } from "../views.js";
 import type { DrawFn, SectionDef } from "../types.js";
 
 const palette = fetchPalette();
@@ -32,12 +34,14 @@ function tokensMatching(...prefixes: string[]): PaletteToken[] {
 
 /* ---------- плитки: живой DOM ---------- */
 
-/** Клик по плитке кладёт значение в буфер — палитрой пользуются именно так: берут и несут в код. */
+/** Клик по плитке открывает цвет во весь экран — на ноготь размером оттенки латуни неразличимы,
+ *  а именно их и надо сравнивать. Копирование имени переехало внутрь крупного показа: там оно
+ *  осознанное действие, а не случайный клик мимо. */
 function swatch(token: PaletteToken): HTMLElement {
   const css = cssOf(token) ?? "transparent";
   const cell = el("button", "sw");
   cell.type = "button";
-  cell.title = "Скопировать значение";
+  cell.title = "Открыть крупно";
 
   const chip = el("span", "sw-chip");
   chip.style.background = css;
@@ -48,20 +52,17 @@ function swatch(token: PaletteToken): HTMLElement {
   if (token.note) text.appendChild(el("i", null, token.note));
 
   cell.append(chip, text);
-  cell.addEventListener("click", () => {
-    const done = (): void => {
-      cell.dataset["copied"] = "true";
-      setTimeout(() => cell.removeAttribute("data-copied"), 1200);
-    };
-    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(token.name).then(done, done);
-    else done();
-  });
+  cell.addEventListener("click", () => lightbox.open(token));
   return cell;
 }
 
 function group(host: HTMLElement, title: string, note: string, prefixes: string[]): void {
   const list = tokensMatching(...prefixes);
   if (list.length === 0) return;
+
+  // Плитки дописываются в общий список лайтбокса: стрелками можно пройти всю палитру подряд,
+  // а это и есть способ сравнить два соседних оттенка.
+  addLightboxItems(list.map((t) => ({ kind: "color" as const, token: t, css: cssOf(t) ?? "#000" })));
 
   const box = el("section", "sw-group");
   const head = el("h3", null, title);
@@ -90,7 +91,7 @@ function renderTokens(host: HTMLElement): void {
 
     const total = (palette.data.groups ?? []).reduce((n, g) => n + g.tokens.length, 0);
     host.appendChild(el("p", "dim",
-      `${total} токенов прочитано с диска при открытии страницы. Клик по плитке копирует имя токена.`));
+      `${total} токенов прочитано с диска при открытии страницы. Клик по плитке открывает цвет во весь экран, стрелки листают всю палитру подряд.`));
 
     group(host, "Чернила", "Фон и контуры. Подпись у ink-100 — минимум, на котором контур ещё виден.",
       ["--gm-ink-"]);
