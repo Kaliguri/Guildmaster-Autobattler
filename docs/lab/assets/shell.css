@@ -1,0 +1,244 @@
+/* Каркас локальных инструментов Guildmaster: стенд джуса и (позже) сайт баланса.
+   Ноль внешних зависимостей — файл обязан открываться с диска через год.
+   Цвета скопированы из палитры проекта (UI/Theme/tokens.*.uss) руками: это копия,
+   и она вправе отстать. Сверяться при крупных правках палитры. */
+
+:root {
+  --ground: #12100D;
+  --panel: #1A130C;
+  --panel-lift: #221A11;
+  --edge: #3A2C1E;
+  --edge-soft: #2A2016;
+  --text: #E8DCC4;
+  --text-dim: #C4B393;
+  --muted: #93805E;
+  --brass: #B8863B;
+  --brass-lift: #C69A4B;
+
+  --flare-white: #FFFFFF;
+  --flare-holo: #4DF2FF;
+  --flare-honey: #FFCC33;
+  --flare-mint: #8CFFA6;
+
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", "Consolas", "Liberation Mono", monospace;
+  --sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+
+  --gap: 1.5rem;
+  --radius: 2px;
+  --bar-h: 3.25rem;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- шапка: одна на все страницы, рисуется shell.js --- */
+.lab-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  height: var(--bar-h);
+  padding: 0 clamp(1rem, 4vw, 2.5rem);
+  background: rgba(18, 16, 13, .92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--edge-soft);
+}
+
+.lab-brand { display: flex; flex-direction: column; text-decoration: none; line-height: 1.15; }
+.lab-brand b { color: var(--text); font-size: .95rem; font-weight: 600; letter-spacing: -.01em; }
+.lab-brand span {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lab-nav { display: flex; flex-wrap: wrap; gap: .3rem; margin-left: auto; }
+.lab-nav a {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  padding: .35rem .6rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+}
+.lab-nav a:hover { color: var(--brass-lift); border-color: var(--edge); }
+.lab-nav a[aria-current="page"] { color: var(--brass-lift); border-color: var(--brass); }
+
+/* --- страница --- */
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(1.6rem, 4vw, 3rem) clamp(1rem, 4vw, 2.5rem) 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.2rem, 4vw, 3.4rem);
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 5vw, 3.1rem);
+  font-weight: 300;
+  letter-spacing: -.02em;
+  line-height: 1.05;
+  margin: .6rem 0 0;
+  text-wrap: balance;
+}
+h2 { font-size: clamp(1.25rem, 2.6vw, 1.65rem); font-weight: 400; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+h3 { font-size: 1.02rem; font-weight: 600; letter-spacing: .01em; margin: 0; }
+
+p { margin: 0; max-width: 68ch; }
+.lede { color: var(--text-dim); font-size: 1.06rem; }
+.dim { color: var(--muted); font-size: .92rem; }
+
+section { display: flex; flex-direction: column; gap: 1.3rem; scroll-margin-top: calc(var(--bar-h) + 1rem); }
+
+.rule { height: 1px; background: linear-gradient(90deg, var(--edge) 0%, var(--edge-soft) 60%, transparent 100%); border: 0; margin: 0; }
+
+/* --- якорь у заголовка: клик кладёт ссылку на РАЗДЕЛ в буфер --- */
+.anchor {
+  margin-left: .5rem;
+  font-family: var(--mono);
+  font-size: .78em;
+  color: var(--edge);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 120ms ease, color 120ms ease;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0 .15rem;
+}
+h1:hover .anchor, h2:hover .anchor, h3:hover .anchor, .anchor:focus-visible { opacity: 1; }
+.anchor:hover { color: var(--brass-lift); }
+.anchor[data-copied="true"] { color: var(--flare-mint); opacity: 1; }
+
+/* --- транспорт показа --- */
+.transport {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .55rem 1.1rem;
+  padding: .8rem 1.05rem;
+  background: var(--panel);
+  border: 1px solid var(--edge-soft);
+  border-radius: var(--radius);
+  position: sticky;
+  top: var(--bar-h);
+  z-index: 10;
+}
+
+button {
+  font-family: var(--mono);
+  font-size: .74rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: var(--panel-lift);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  padding: .45rem .85rem;
+  cursor: pointer;
+  transition: border-color 120ms ease, color 120ms ease;
+}
+button:hover { border-color: var(--brass); color: var(--brass-lift); }
+button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+button[data-active="true"] { border-color: var(--brass); color: var(--brass-lift); }
+
+.readout {
+  font-family: var(--mono);
+  font-size: .78rem;
+  letter-spacing: .1em;
+  display: flex;
+  gap: 1.2rem;
+  align-items: baseline;
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+.readout b { color: var(--brass-lift); font-weight: 600; }
+
+input[type=range] { accent-color: var(--brass); width: 170px; }
+
+/* --- стенды --- */
+.stands { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--gap); }
+.stand { display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--edge-soft); border-radius: var(--radius); overflow: hidden; }
+.stand canvas { display: block; width: 100%; height: auto; background: #0C0B09; }
+.stand-body { padding: 1rem 1.05rem 1.2rem; display: flex; flex-direction: column; gap: .55rem; }
+.stand.accepted { border-color: var(--brass); }
+
+.tag { font-family: var(--mono); font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0; }
+
+.facts { display: flex; flex-direction: column; gap: .3rem; margin: .15rem 0 0; padding: 0; list-style: none; }
+.facts li { font-family: var(--mono); font-size: .76rem; letter-spacing: .02em; color: #B3A183; display: flex; gap: .55rem; }
+.facts li span:first-child { color: var(--muted); min-width: 6.5em; }
+
+.verdict { font-size: .92rem; color: var(--text-dim); border-left: 2px solid var(--edge); padding-left: .75rem; }
+.verdict.pick { border-left-color: var(--brass); color: var(--text); }
+
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--gap); align-items: start; }
+.card { background: var(--panel); border: 1px solid var(--edge-soft); border-radius: var(--radius); padding: 1.15rem 1.2rem 1.3rem; display: flex; flex-direction: column; gap: .7rem; }
+.card canvas { display: block; width: 100%; height: auto; background: #0C0B09; border: 1px solid var(--edge-soft); }
+
+.legend { display: flex; flex-wrap: wrap; gap: .45rem 1.1rem; }
+.legend span { font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: inline-flex; align-items: center; gap: .4rem; }
+.swatch { width: 10px; height: 10px; border-radius: 1px; display: inline-block; }
+
+table { border-collapse: collapse; width: 100%; font-size: .86rem; }
+.scroller { overflow-x: auto; }
+th, td { text-align: left; padding: .5rem .8rem .5rem 0; border-bottom: 1px solid var(--edge-soft); vertical-align: top; }
+th { font-family: var(--mono); font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass-lift); }
+
+.note { font-size: .88rem; color: var(--muted); border-top: 1px solid var(--edge-soft); padding-top: 1rem; }
+
+/* --- оглавление страницы: собирается shell.js из h2 --- */
+.page-toc { display: flex; flex-wrap: wrap; gap: .45rem .6rem; }
+.page-toc a {
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: .35rem .7rem;
+  border: 1px solid var(--brass);
+  border-radius: var(--radius);
+  color: var(--brass-lift);
+  text-decoration: none;
+}
+.page-toc a:hover { background: rgba(184, 134, 59, .12); }
+
+/* --- наверх --- */
+.to-top {
+  position: fixed;
+  right: 1.4rem;
+  bottom: 1.4rem;
+  z-index: 15;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+.to-top[data-visible="true"] { opacity: 1; pointer-events: auto; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

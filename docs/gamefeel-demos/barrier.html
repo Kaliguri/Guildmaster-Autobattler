@@ -1,0 +1,196 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Барьер · Guildmaster · Лаборатория</title>
+<link rel="stylesheet" href="../lab/assets/shell.css">
+<script>window.LAB_PAGE = { id: "barrier" };</script>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Лаборатория джуса · раздел</p>
+    <h1>Барьер</h1>
+    <p class="lede" style="margin-top:1rem">
+      Поглощающий барьер (<code>EffectTag.Shield</code>): форма купола, узор трещин, стопка оболочек по
+      типам, два финала и блок как режим. Не блок щитом-предметом — тот решён отдельно.
+    </p>
+    <nav data-toc aria-label="На этой странице"></nav>
+  </header>
+
+  <div data-transport></div>
+
+  <main>
+  <section id="shield">
+    <p class="eyebrow">раздел 7 · вариант поверхности за Максом</p>
+    <h2 style="font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:300;margin-top:.4rem">
+      Барьер: щит, который помнит удары
+    </h2>
+    <p class="lede">
+      Барьер висит <b>постоянно</b>, но в покое почти невидим: пока по нему не бьют, он не имеет права
+      мутить тело под собой. Подсветка растёт от <b>поглощённого урона</b> и сильнее всего в точке
+      контакта; урон эффектом (DoT) вспыхивает по всей поверхности, но слабее — бьют не в место, а
+      всюду. Остаток барьера читается <b>трещинами</b>: та же логика, что у порезов на теле.
+    </p>
+    <p class="dim">
+      Это не блок щитом-предметом (тот решён 31.07: вспышка золотом, серп обрывается о щит, пореза
+      нет). Здесь — поглощающий барьер, <code>EffectTag.Shield</code>.
+    </p>
+
+    <p class="dim">
+      Форма круглая, без углов — гранёные и стеклянно-фасетные варианты отклонены. Из трёх круглых
+      принят <b>эллипс</b>, с заметным зазором до тела: барьер окружает юнита, а не облегает его. В покое
+      видно <b>только силуэт</b> — тонкую линию контура; подсветка приходит с ударом, пятном в точке
+      контакта, и расходится волной по поверхности.
+    </p>
+
+    <div class="stands">
+
+      <article class="stand accepted">
+        <canvas id="b-ellipse" width="480" height="380" role="img"
+                aria-label="Барьер эллипсом"></canvas>
+        <div class="stand-body">
+          <p class="tag">принято 31.07.2026</p>
+          <h3>Эллипс</h3>
+          <p class="dim">Вытянутый по высоте сфероид, симметричный. Самая нейтральная из круглых форм —
+            и самая понятная как «силовое поле».</p>
+          <ul class="facts">
+            <li><span>полуоси</span><span>0.34 H · 0.68 H</span></li>
+            <li><span>центр</span><span>0.52 H от земли</span></li>
+            <li><span>низ</span><span>подрезан землёй</span></li>
+          </ul>
+          <p class="verdict pick">Зазор до тела заметный — барьер читается как объём вокруг юнита, а не
+            как обводка по силуэту.</p>
+        </div>
+      </article>
+
+      <article class="stand">
+        <canvas id="b-dome" width="480" height="380" role="img"
+                aria-label="Барьер куполом-овоидом"></canvas>
+        <div class="stand-body">
+          <p class="tag">отклонено</p>
+          <h3>Купол-овоид</h3>
+          <p class="dim">Тот же сфероид, но сужается к верху. Обнимает силуэт плотнее — и именно
+            поэтому проиграл: барьеру полагается быть просторнее тела.</p>
+          <ul class="facts">
+            <li><span>сужение</span><span>к макушке на 26%</span></li>
+            <li><span>минус</span><span>облегает, а не окружает</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="stand">
+        <canvas id="b-cocoon" width="480" height="380" role="img"
+                aria-label="Барьер коконом"></canvas>
+        <div class="stand-body">
+          <p class="tag">отклонено</p>
+          <h3>Кокон</h3>
+          <p class="dim">Суперэллипс: бока почти прямые, углов нет ни одного. Плотный и аккуратный, но
+            читается как футляр, а не как силовое поле.</p>
+          <ul class="facts">
+            <li><span>показатель</span><span>2.7 вместо 2</span></li>
+            <li><span>минус</span><span>прямые бока</span></li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+
+    <h2 style="margin-top:1.4rem">Стопка: типы, очередь, все ситуации</h2>
+    <p class="lede">
+      Оболочка — <b>на тип</b>, не на эффект: четыре налёта Антимага дают одну фиолетовую, потому что
+      игроку нужно «магией не пробить», а не «какой из четырёх сейчас тает». Значит оболочек максимум
+      три, и вложенность у них постоянная — <b>школьные снаружи, обычный ближе к телу</b>, потому что
+      именно так они и тратятся в симуляции.
+    </p>
+    <p class="dim">
+      Трещины есть только у оболочек, которые <b>реально ели урон</b>: пока внешняя цела, до внутренней
+      урон не доходил. Лимит восемь на оболочку, как дюжина у порезов.
+    </p>
+    <div class="legend" style="margin-top:.2rem">
+      <span><i class="swatch" style="background:#B0B6BE"></i> обычный · держит всё</span>
+      <span><i class="swatch" style="background:#FF963C"></i> физический · только физику</span>
+      <span><i class="swatch" style="background:#C47CFF"></i> магический · только магию</span>
+    </div>
+
+    <div class="stands">
+      <article class="stand"><canvas id="k-calm" width="320" height="280" role="img" aria-label="Покой"></canvas>
+        <div class="stand-body"><h3>Покой</h3><p class="dim">Барьер есть, но его почти не видно. Тело под ним
+          читается полностью — иначе канал «Тело» потерян.</p></div></article>
+      <article class="stand"><canvas id="k-weak" width="320" height="280" role="img" aria-label="Слабый удар"></canvas>
+        <div class="stand-body"><h3>Слабый удар</h3><p class="dim">Подсветка от поглощённого урона, пятно в точке
+          контакта. Одна трещина.</p></div></article>
+      <article class="stand"><canvas id="k-strong" width="320" height="280" role="img" aria-label="Сильный удар"></canvas>
+        <div class="stand-body"><h3>Сильный удар</h3><p class="dim">То же событие, больше урона — ярче и трещина
+          крупнее. Сила читается яркостью, а не формой.</p></div></article>
+      <article class="stand"><canvas id="k-dot" width="320" height="280" role="img" aria-label="Тик эффекта"></canvas>
+        <div class="stand-body"><h3>Тик эффекта</h3><p class="dim">Урон не в место, а всюду: вспышка по всей
+          поверхности, но слабее. Трещин не оставляет.</p></div></article>
+      <article class="stand"><canvas id="k-two" width="320" height="280" role="img" aria-label="Два типа"></canvas>
+        <div class="stand-body"><h3>Два типа</h3><p class="dim">Маг снаружи, обычный внутри. Магический удар ест
+          маговую — вспыхивает ровно она.</p></div></article>
+      <article class="stand"><canvas id="k-three" width="320" height="280" role="img" aria-label="Три типа"></canvas>
+        <div class="stand-body"><h3>Три типа</h3><p class="dim">Предел стопки. Физический удар проходит маговую
+          насквозь, не задев её: типы не конкурируют.</p></div></article>
+      <article class="stand"><canvas id="k-wrong" width="320" height="280" role="img" aria-label="Не тот тип"></canvas>
+        <div class="stand-body"><h3>Не тот тип</h3><p class="dim">Магощит против физического удара: не реагирует
+          вовсе. Молчание оболочки — тоже информация.</p></div></article>
+      <article class="stand"><canvas id="k-stack" width="320" height="280" role="img" aria-label="Четыре щита одного типа"></canvas>
+        <div class="stand-body"><h3>Четыре одного типа</h3><p class="dim">Одна оболочка, кайма толще по ступеням.
+          Четыре каймы были бы шумом без нового смысла.</p></div></article>
+      <article class="stand"><canvas id="k-layer" width="320" height="280" role="img" aria-label="Пробита внешняя"></canvas>
+        <div class="stand-body"><h3>Внешняя пробита</h3><p class="dim">Лопнула, осколки разлетелись прочь от юнита и погасли —
+          и открылась следующая. Дальше бьют её.</p></div></article>
+      <article class="stand"><canvas id="k-through" width="320" height="280" role="img" aria-label="Пробитие насквозь"></canvas>
+        <div class="stand-body"><h3>Насквозь</h3><p class="dim">Щита 20, удар 100: барьер лопнул, остаток ушёл в
+          тело. Форма НЕ обрывается, порез есть.</p></div></article>
+      <article class="stand"><canvas id="k-expire" width="320" height="280" role="img" aria-label="Развеивание"></canvas>
+        <div class="stand-body"><h3>Развеялся</h3><p class="dim">Истёк по времени: ровно, вверх, без осколков.
+          Трещины уходят вместе с ним.</p></div></article>
+      <article class="stand"><canvas id="k-addover" width="320" height="280" role="img" aria-label="Новый поверх треснувшего"></canvas>
+        <div class="stand-body"><h3>Новый поверх битого</h3><p class="dim">Треснувший остаётся треснувшим, свежий
+          приходит целым слоем снаружи. Трещины не «заживают».</p></div></article>
+      <article class="stand"><canvas id="k-block" width="320" height="280" role="img" aria-label="Блок щитом"></canvas>
+        <div class="stand-body"><h3>Блок щитом</h3><p class="dim">Тот же барьер, но живёт 0.4 с и приходит с жестом:
+          щит подставляется в точку удара. Узор проявиться не успевает — мигнул и всё.</p></div></article>
+      <article class="stand"><canvas id="k-backstab" width="320" height="280" role="img" aria-label="Блок со спины не срабатывает"></canvas>
+        <div class="stand-body"><h3>Блок со спины</h3><p class="dim">Блок стал направленным: удар в заднюю
+          полусферу его не будит вовсе. Оболочка не поднимается, урон идёт в тело — и жест честен всегда.</p></div></article>
+    </div>
+
+    <p class="note">
+      <b>Барьер не излишен при наличии блока — блок на нём и стоит.</b> <code>BlockComponent</code>
+      накладывает короткий щит-эффект, который гасит тот самый удар; барьер это механизм, блок — один из
+      способов его получить. Вард Антимага, водяной щит Монаха и щит от нехватки HP живут вообще без
+      жеста, а DoT будит барьер и не будит блок. Различитель в показе — <b>длительность и жест</b>:
+      мигнувшая оболочка читается как «отбил», висящая — как «под защитой».
+      <br><br>
+      <b>Блок направленный, барьер — нет.</b> Блок проверяет фронтальный сектор 180° (тем же правилом,
+      что парирование), поэтому со спины не срабатывает. Барьер направления не знает и гасит любой урон,
+      включая тик яда и удар в спину, — просто без жеста.
+    </p>
+
+    <div class="split">
+      <div class="card">
+        <canvas id="b-break" width="480" height="330" role="img"
+                aria-label="Разрушение барьера: пробит ударом"></canvas>
+        <p class="tag">финал 1 · разрушение</p>
+        <p class="dim">Барьер <b>сломали</b>: трещины сходятся, поверхность расходится кусками <b>наружу от
+          юнита</b> и быстро гаснет по прозрачности. Барьер лопается целиком, а не сдувается в сторону.</p>
+      </div>
+      <div class="card">
+        <canvas id="b-fade" width="480" height="330" role="img"
+                aria-label="Развеивание барьера: истёк по времени"></canvas>
+        <p class="tag">финал 2 · развеивание</p>
+        <p class="dim">Барьер <b>истёк</b>: гаснет ровно, без осколков и без направления, тает вверх.
+          Два разных финала обязаны читаться по-разному — иначе «сняли» и «кончился» слипнутся.</p>
+      </div>
+    </div>
+  </section>
+  </main>
+
+</div>
+
+<!-- Порядок обязателен: draw.js даёт рисовалки, shell.js создаёт Lab (время и транспорт),
+     и только потом раздел подписывается на отрисовку через Lab.onRender. -->
+<script src="../lab/assets/draw.js"></script>
+<script src="../lab/assets/shell.js"></script>
+<script src="barrier.js"></script>
