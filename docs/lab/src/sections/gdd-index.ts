@@ -94,8 +94,9 @@ function render(host: HTMLElement): void {
 
           for (const note of items) {
             const row = el("a", "gdd-note");
-            // obsidian:// открывает заметку в самом vault — читать текст полагается там.
-            row.href = `obsidian://open?path=${encodeURIComponent(note.path)}`;
+            // obsidian:// открывает заметку у владельца. Путь обязан быть АБСОЛЮТНЫМ: по
+            // относительному Obsidian отвечает «Vault not found» — он ищет хранилище, а не файл.
+            row.href = `obsidian://open?path=${encodeURIComponent(`${data.root}/${note.path}`)}`;
             row.title = note.path;
             row.innerHTML =
               `<span class="t">${note.title}</span>` +

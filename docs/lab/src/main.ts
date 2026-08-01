@@ -9,10 +9,10 @@
 
 import * as clock from "./clock.js";
 import { clear, el } from "./dom.js";
-import { PAGES } from "./registry.js";
+import { AREAS, PAGES, areaOf, pagesOf } from "./registry.js";
 import { invalidateSizes, paint, reset } from "./stage.js";
-import type { PageDef, SectionDef } from "./types.js";
-import { eachStand, hero, renderIndex, renderLegacy, renderSection, routeHref } from "./views.js";
+import type { AreaDef, PageDef, SectionDef } from "./types.js";
+import { eachStand, hero, renderArea, renderHome, renderLegacy, renderSection, routeHref } from "./views.js";
 
 const loaded = new Map<string, SectionDef>();
 const pending = new Map<string, Promise<SectionDef | null>>();
@@ -91,44 +91,65 @@ function loadAll(): Promise<Array<SectionDef | null>> {
 function buildBar(): void {
   const bar = el("header", "lab-bar");
 
+  const top = el("div", "lab-row lab-row-top");
   const brand = el("a", "lab-brand");
   brand.href = "#/";
   brand.innerHTML = "<b>Guildmaster &middot; Лаборатория</b><span>как мы это видим</span>";
-  bar.appendChild(brand);
+  top.appendChild(brand);
 
-  const nav = el("nav", "lab-nav");
-  nav.id = "lab-nav";
-  nav.setAttribute("aria-label", "Разделы");
-  bar.appendChild(nav);
+  // Верхний ряд: области. Он отвечает на вопрос «в какой части сайта я нахожусь».
+  const areas = el("nav", "lab-areas");
+  areas.setAttribute("aria-label", "Области");
+  areas.id = "lab-areas";
+  top.appendChild(areas);
 
   const find = el("button", "lab-find");
   find.type = "button";
   find.innerHTML = "поиск <kbd>K</kbd>";
   find.addEventListener("click", () => void openSearch());
-  bar.appendChild(find);
+  top.appendChild(find);
 
+  // Нижний ряд: разделы текущей области. Пустеет на главной — там выбирать ещё нечего.
+  const sections = el("nav", "lab-row lab-sections");
+  sections.setAttribute("aria-label", "Разделы");
+  sections.id = "lab-sections";
+
+  bar.append(top, sections);
   document.body.insertBefore(bar, document.body.firstChild);
 }
 
-function syncNav(active: string): void {
-  const nav = document.getElementById("lab-nav");
-  if (!nav) return;
-  clear(nav);
+function syncNav(routeId: string): void {
+  const area = areaOf(routeId);
+  const areasHost = document.getElementById("lab-areas");
+  const sectionsHost = document.getElementById("lab-sections");
+  if (!areasHost || !sectionsHost) return;
 
-  const groups: string[] = [];
-  for (const p of PAGES) if (!groups.includes(p.group)) groups.push(p.group);
+  clear(areasHost);
+  for (const a of AREAS) {
+    const link = el("a", null, a.title);
+    link.href = `#/${a.id}`;
+    if (a.id === area?.id) link.setAttribute("aria-current", "page");
+    areasHost.appendChild(link);
+  }
 
-  for (const group of groups) {
-    const box = el("div", "lab-nav-group");
-    box.appendChild(el("span", "lab-nav-label", group));
-    for (const page of PAGES.filter((p) => p.group === group)) {
-      const a = el("a", null, page.title);
-      a.href = page.href ?? routeHref(page.id);
-      if (page.href) a.target = "_blank";
-      if (page.id === active) a.setAttribute("aria-current", "page");
-      box.appendChild(a);
-    }
-    nav.appendChild(box);
+  clear(sectionsHost);
+  if (!area) {
+    sectionsHost.hidden = true;
+    return;
+  }
+  sectionsHost.hidden = false;
+
+  const overview = el("a", "lab-overview", area.title);
+  overview.href = `#/${area.id}`;
+  if (routeId === area.id) overview.setAttribute("aria-current", "page");
+  sectionsHost.appendChild(overview);
+
+  for (const page of pagesOf(area.id)) {
+    const link = el("a", null, page.title);
+    link.href = page.href ?? routeHref(page.id);
+    if (page.href) link.target = "_blank";
+    if (page.id === routeId) link.setAttribute("aria-current", "page");
+    sectionsHost.appendChild(link);
   }
 }
 
@@ -258,7 +279,9 @@ async function renderRoute(): Promise<void> {
   clear(view);
   syncNav(route.page);
 
-  const wholeSite = route.page === "index" || route.page === "legacy";
+  const area = AREAS.find((a) => a.id === route.page);
+  // Главной и обзору области нужны все разделы: они показывают живые превью и счётчики.
+  const wholeSite = route.page === "index" || route.page === "legacy" || area !== undefined;
   if (wholeSite) await loadAll();
   else await loadPage(route.page);
 
@@ -269,7 +292,9 @@ async function renderRoute(): Promise<void> {
   clear(view);
 
   if (route.page === "index") {
-    renderIndex(view, PAGES, loaded);
+    renderHome(view, AREAS, PAGES, loaded);
+  } else if (area) {
+    renderArea(view, area, pagesOf(area.id), loaded);
   } else if (route.page === "legacy") {
     renderLegacy(view, PAGES, loaded);
   } else {

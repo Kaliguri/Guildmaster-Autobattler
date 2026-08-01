@@ -7,7 +7,7 @@ import { el, html } from "./dom.js";
 import { watch } from "./stage.js";
 import * as lightbox from "./lightbox.js";
 import * as toggles from "./toggles.js";
-import type { Block, PageDef, SectionDef, StandDef } from "./types.js";
+import type { AreaDef, Block, PageDef, SectionDef, StandDef } from "./types.js";
 
 /** Как подписан статус на карточке. У "note" подписи нет: это не развилка, а иллюстрация. */
 const STATUS_LABEL: Record<StandDef["status"], string> = {
@@ -40,9 +40,11 @@ export function hero(title: string, lede?: string, eyebrow = "Лаборатор
   return head;
 }
 
-/* ---------- витрина ---------- */
+/* ---------- главная: области ---------- */
 
-export function renderIndex(view: HTMLElement, pages: PageDef[], loaded: Map<string, SectionDef>): void {
+export function renderHome(
+  view: HTMLElement, areas: AreaDef[], pages: PageDef[], loaded: Map<string, SectionDef>
+): void {
   beginScenes();
   view.appendChild(
     hero(
@@ -53,17 +55,48 @@ export function renderIndex(view: HTMLElement, pages: PageDef[], loaded: Map<str
     )
   );
 
-  for (const group of groupsOf(pages)) {
-    const shelf = el("section", "shelf");
-    shelf.appendChild(el("h2", null, group));
-    const grid = el("div", "cards");
+  const grid = el("div", "cards areas");
+  for (const area of areas) {
+    const inside = pages.filter((p) => p.area === area.id);
+    const card = el("a", "card-link");
+    card.href = `#/${area.id}`;
 
-    for (const page of pages.filter((p) => p.group === group)) {
-      grid.appendChild(indexCard(page, loaded.get(page.id)));
+    // Превью области — первая живая сцена любого её раздела: карточка обязана показывать, что внутри.
+    const cover = inside.map((p) => loaded.get(p.id)).find((d) => d && coverStand(d));
+    const stand = cover ? coverStand(cover) : null;
+    if (stand) {
+      const canvas = el("canvas");
+      canvas.width = 320;
+      canvas.height = 200;
+      card.appendChild(canvas);
+      watch(canvas, stand, 320, 200);
+      scenes.push({ kind: "scene", stand, w: 320, h: 200 });
+    } else if (area.icon) {
+      card.appendChild(el("div", "card-mark", area.icon));
     }
-    shelf.appendChild(grid);
-    view.appendChild(shelf);
+
+    const body = el("div", "card-text");
+    body.appendChild(el("h3", null, area.title));
+    body.appendChild(el("p", "dim", area.blurb));
+    body.appendChild(el("p", "tag", inside.map((p) => p.title).join(" · ")));
+    card.appendChild(body);
+    grid.appendChild(card);
   }
+  view.appendChild(grid);
+  commitScenes();
+}
+
+/* ---------- обзор области ---------- */
+
+export function renderArea(
+  view: HTMLElement, area: AreaDef, pages: PageDef[], loaded: Map<string, SectionDef>
+): void {
+  beginScenes();
+  view.appendChild(hero(area.title, area.blurb, "Лаборатория · область"));
+
+  const grid = el("div", "cards");
+  for (const page of pages) grid.appendChild(indexCard(page, loaded.get(page.id)));
+  view.appendChild(grid);
   commitScenes();
 }
 
@@ -124,12 +157,6 @@ function tally(def: SectionDef): { total: number; accepted: number; rejected: nu
     else if (s.status === "waiting") t.waiting++;
   });
   return t;
-}
-
-function groupsOf(pages: PageDef[]): string[] {
-  const seen: string[] = [];
-  for (const p of pages) if (!seen.includes(p.group)) seen.push(p.group);
-  return seen;
 }
 
 /* ---------- музей отклонённого ---------- */

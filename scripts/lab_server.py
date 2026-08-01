@@ -75,7 +75,10 @@ def build_index(wiki: Path) -> dict:
                 "words": meta.get("words", 0),
             }
         )
-    return {"root": wiki.as_posix(), "count": len(notes), "notes": notes}
+    # Абсолютный путь и имя vault: по относительному Obsidian свой vault не находит и отвечает
+    # «Vault not found». Клиент строит obsidian://open?path=<абсолютный файл>.
+    root = wiki.resolve()
+    return {"root": root.as_posix(), "vault": root.name, "count": len(notes), "notes": notes}
 
 
 def build_palette(theme: Path) -> dict:

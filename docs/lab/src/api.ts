@@ -15,6 +15,14 @@ export interface PaletteGroup {
   tokens: PaletteToken[];
 }
 
+export interface WikiIndex {
+  /** Абсолютный путь к vault: без него Obsidian не находит хранилище по ссылке. */
+  root: string;
+  vault: string;
+  count: number;
+  notes: WikiNote[];
+}
+
 export interface WikiNote {
   path: string;
   vault: string;
@@ -48,14 +56,14 @@ function feed<T>(url: string): Feed<T> {
 }
 
 let paletteFeed: Feed<{ groups: PaletteGroup[] }> | null = null;
-let wikiFeed: Feed<{ root: string; count: number; notes: WikiNote[] }> | null = null;
+let wikiFeed: Feed<WikiIndex> | null = null;
 
 export function fetchPalette(): Feed<{ groups: PaletteGroup[] }> {
   paletteFeed ??= feed("api/palette");
   return paletteFeed;
 }
 
-export function fetchWikiIndex(): Feed<{ root: string; count: number; notes: WikiNote[] }> {
+export function fetchWikiIndex(): Feed<WikiIndex> {
   wikiFeed ??= feed("api/gdd-index");
   return wikiFeed;
 }

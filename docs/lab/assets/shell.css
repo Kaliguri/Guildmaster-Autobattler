@@ -40,20 +40,27 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* --- шапка: одна на все страницы, рисуется shell.js --- */
+/* --- шапка: два ряда --------------------------------------------------------
+   Верхний отвечает «в какой части сайта я», нижний «в каком разделе». Один плоский ряд перестал
+   отвечать ни на то, ни на другое, когда разделов стало больше десятка. */
 .lab-bar {
   position: sticky;
   top: 0;
   z-index: 20;
   display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  height: var(--bar-h);
-  padding: 0 clamp(1rem, 4vw, 2.5rem);
-  background: rgba(18, 16, 13, .92);
+  flex-direction: column;
+  background: rgba(18, 16, 13, .94);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--edge-soft);
 }
+
+.lab-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0 clamp(1rem, 4vw, 2.5rem);
+}
+.lab-row-top { height: var(--bar-h); }
 
 .lab-brand { display: flex; flex-direction: column; text-decoration: none; line-height: 1.15; }
 .lab-brand b { color: var(--text); font-size: .95rem; font-weight: 600; letter-spacing: -.01em; }
@@ -65,19 +72,32 @@ body {
   color: var(--muted);
 }
 
-/* Навигация группами: разделов уже десяток, плоский ряд перестал читаться.
-   Полка подписана мелким, ссылки внутри — обычным ритмом. */
-.lab-nav { display: flex; flex-wrap: wrap; gap: .25rem 1.1rem; margin-left: auto; align-items: center; }
-.lab-nav-group { display: flex; align-items: center; gap: .2rem; }
-.lab-nav-label {
-  font-family: var(--mono);
-  font-size: .58rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--edge);
-  margin-right: .2rem;
+/* Области: крупнее и заметнее разделов — это верхний уровень выбора. */
+.lab-areas { display: flex; flex-wrap: wrap; gap: .3rem; margin-left: auto; }
+.lab-areas a {
+  font-size: .84rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: .4rem .8rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  white-space: nowrap;
 }
-.lab-nav a {
+.lab-areas a:hover { color: var(--text); background: var(--panel-lift); }
+.lab-areas a[aria-current="page"] { color: var(--brass-lift); border-color: var(--brass); }
+
+/* Разделы: тише, моноширинно — это уточнение внутри уже выбранной области. */
+.lab-sections {
+  gap: .25rem;
+  flex-wrap: wrap;
+  padding-top: .35rem;
+  padding-bottom: .45rem;
+  border-top: 1px solid var(--edge-soft);
+  background: rgba(26, 19, 12, .5);
+}
+.lab-sections[hidden] { display: none; }
+.lab-sections a {
   font-family: var(--mono);
   font-size: .68rem;
   letter-spacing: .12em;
@@ -89,10 +109,12 @@ body {
   border-radius: var(--radius);
   white-space: nowrap;
 }
-.lab-nav a:hover { color: var(--brass-lift); border-color: var(--edge); }
-.lab-nav a[aria-current="page"] { color: var(--brass-lift); border-color: var(--brass); }
+.lab-sections a:hover { color: var(--brass-lift); border-color: var(--edge); }
+.lab-sections a[aria-current="page"] { color: var(--brass-lift); border-color: var(--brass); }
+.lab-overview { color: var(--text-dim) !important; margin-right: .5rem; }
+.lab-overview::after { content: " ·"; color: var(--edge); }
 
-.lab-find { margin-left: 1rem; display: flex; align-items: center; gap: .45rem; }
+.lab-find { display: flex; align-items: center; gap: .45rem; }
 .lab-find kbd {
   font-family: var(--mono);
   font-size: .62rem;
@@ -103,9 +125,8 @@ body {
 }
 
 @media (max-width: 900px) {
-  .lab-bar { height: auto; flex-wrap: wrap; padding-top: .6rem; padding-bottom: .6rem; }
-  .lab-nav { margin-left: 0; width: 100%; }
-  .lab-find { margin-left: auto; }
+  .lab-row-top { height: auto; flex-wrap: wrap; padding-top: .6rem; padding-bottom: .6rem; }
+  .lab-areas { margin-left: 0; width: 100%; order: 3; }
 }
 
 /* --- страница --- */
@@ -298,6 +319,8 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
   font-weight: 200;
   color: var(--edge);
 }
+.areas { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+.areas .card-text h3 { font-size: 1.25rem; font-weight: 400; }
 .card-text { padding: 1rem 1.05rem 1.15rem; display: flex; flex-direction: column; gap: .45rem; }
 .card-link:hover h3 { color: var(--brass-lift); }
 
