@@ -1235,6 +1235,82 @@ MonoBehaviour:
     m_Key: effect.resolute_strike_charge.name
     m_Metadata:
       m_Items: []
+  - m_Id: 7652003088162816
+    m_Key: relic.trash.archer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652003125911552
+    m_Key: relic.trash.archer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652003985743872
+    m_Key: relic.trash.bonecaller.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652003985743873
+    m_Key: relic.trash.bonecaller.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004359036928
+    m_Key: relic.trash.brawler.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004359036929
+    m_Key: relic.trash.brawler.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004723941376
+    m_Key: relic.trash.cutthroat.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004723941377
+    m_Key: relic.trash.cutthroat.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005093040128
+    m_Key: relic.trash.herbalist.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005093040129
+    m_Key: relic.trash.herbalist.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005466333184
+    m_Key: relic.trash.hexer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005466333185
+    m_Key: relic.trash.hexer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005827043328
+    m_Key: relic.trash.shieldbearer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005827043329
+    m_Key: relic.trash.shieldbearer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006191947776
+    m_Key: effect.trash_cleanse.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006548463616
+    m_Key: effect.trash_hex.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006909173760
+    m_Key: effect.trash_parry_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652007295049728
+    m_Key: effect.trash_parry_stance.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652007664148480
+    m_Key: effect.trash_shield.name
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -684,6 +684,83 @@ MonoBehaviour:
     m_Localized: "\u2014"
     m_Metadata:
       m_Items: []
+  - m_Id: 7652005827043328
+    m_Localized: Cracked Shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005827043329
+    m_Localized: A piece of someone else's shield. It covers you until it falls apart.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004359036928
+    m_Localized: Notched Sword
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004359036929
+    m_Localized: Blunt, heavy, familiar. Good enough to turn aside a couple of blows.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004723941376
+    m_Localized: Worn Knife
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004723941377
+    m_Localized: A knife without a name. It strikes from below; it knows no other
+      way.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652003088162816
+    m_Localized: Crooked Bow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652003125911552
+    m_Localized: Hard to draw, slow to loose. But that one shot lands properly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005466333184
+    m_Localized: Cracked Amulet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005466333185
+    m_Localized: Someone else's charm. The hex is brief, but the enemy hits softer.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652003985743872
+    m_Localized: Chipped Skull
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652003985743873
+    m_Localized: It raises one skeleton. It cannot hear a second.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005093040128
+    m_Localized: Bundle of Herbs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005093040129
+    m_Localized: Smells of a cellar. Closes wounds and lifts a light curse.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652007664148480
+    m_Localized: Rusty Guard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006909173760
+    m_Localized: Deflection
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652007295049728
+    m_Localized: Deflecting Stance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006548463616
+    m_Localized: Hex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006191947776
+    m_Localized: Salve
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
