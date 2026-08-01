@@ -11,6 +11,7 @@
     "Guildmaster.Presentation",
     "Guildmaster.Game",
     "Guildmaster.Guild",
+    "Guildmaster.Net",
     "Guildmaster.UI",
     "Guildmaster.ContentHub.Editor",
     "Guildmaster.AnimationLab.Editor",
