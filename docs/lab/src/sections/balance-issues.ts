@@ -7,27 +7,10 @@
    вердиктом — разные состояния работы, и путать их дороже, чем показать лишнюю строку. */
 
 import { el, html } from "../dom.js";
-import type { Feed } from "../api.js";
 import type { SectionDef } from "../types.js";
+import { balance, rich, statusOf, type Issue } from "./balance-data.js";
 
-interface Issue {
-  code: string;
-  title: string;
-  section: string;
-  status: string;
-  symptom: string;
-  diagnosis: string;
-  options: string[];
-  verdict: string;
-}
-
-const feed: Feed<{ issues: Issue[] }> = { data: null, error: null, settled: Promise.resolve() };
-feed.settled = fetch("api/balance")
-  .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-  .then((json: { issues: Issue[] }) => { feed.data = json; })
-  .catch((err: unknown) => { feed.error = err instanceof Error ? err.message : String(err); });
-
-/** Статус пишется свободным текстом с уточнением после точки — берём первое слово. */
+/** Статус пишется свободным текстом с уточнением после точки — класс берём по первому слову. */
 const STATUS_CLASS: Record<string, string> = {
   "открыта": "st-open",
   "требует дизайна": "st-design",
@@ -36,20 +19,6 @@ const STATUS_CLASS: Record<string, string> = {
   "закрыта": "st-closed",
   "отклонена": "st-closed"
 };
-
-function statusOf(issue: Issue): string {
-  return String(issue.status || "").split("·")[0]?.trim().toLowerCase() ?? "";
-}
-
-/** Реестр пишется в markdown, поэтому в тексте живут **жирный**, `код` и [ссылки](…). */
-function rich(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
-    .replace(/`(.+?)`/g, "<code>$1</code>")
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "<i>$1</i>");
-}
 
 function issueCard(issue: Issue): HTMLElement {
   const status = statusOf(issue);
@@ -85,11 +54,11 @@ function render(host: HTMLElement): void {
   const status = el("p", "dim", "читаю реестр…");
   host.appendChild(status);
 
-  void feed.settled.then(() => {
-    const issues = feed.data?.issues ?? [];
+  void balance.settled.then(() => {
+    const issues = balance.data.issues;
     if (issues.length === 0) {
-      status.textContent = feed.error
-        ? `Реестр недоступен: ${feed.error}. Нужен ./scripts/lab-serve.ps1 -Watch`
+      status.textContent = balance.error
+        ? `Реестр недоступен: ${balance.error}. Нужен ./scripts/lab-serve.ps1 -Watch`
         : "В реестре пусто.";
       return;
     }

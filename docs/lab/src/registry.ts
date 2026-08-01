@@ -91,12 +91,36 @@ export const PAGES: PageDef[] = [
   },
 
   {
+    id: "balance-overview",
+    area: "balance",
+    title: "Обзор",
+    blurb: "Состояние ростера с одного взгляда: кто вне коридора, кто сильнее всех, что сдвинулось.",
+    load: () => import("./sections/balance-overview.js"),
+    icon: "⚖"
+  },
+  {
     id: "balance-runs",
     area: "balance",
     title: "Прогоны",
     blurb: "Замеры SimBench по режимам, дельты с прошлым прогоном, словарь метрик.",
     load: () => import("./sections/balance-runs.js"),
     icon: "⚖"
+  },
+  {
+    id: "balance-kits",
+    area: "balance",
+    title: "Киты",
+    blurb: "Кит целиком: роль, способности с числами, все замеры по корзинам и приметы к проверке.",
+    load: () => import("./sections/balance-kits.js"),
+    icon: "◆"
+  },
+  {
+    id: "balance-matrix",
+    area: "balance",
+    title: "Кто кого бьёт",
+    blurb: "Матрица исходов: строка встречает столбец. То, чего не видно в средних.",
+    load: () => import("./sections/balance-matrix.js"),
+    icon: "▦"
   },
   {
     id: "balance-issues",

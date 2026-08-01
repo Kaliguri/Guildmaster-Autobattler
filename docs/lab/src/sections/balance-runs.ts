@@ -1,150 +1,149 @@
-/* Отчёты SimBench: прогоны, режимы, дельты между прогонами.
+/* Замеры SimBench: таблицы по режимам, дельты с прошлым прогоном, отклонение от нормы роли.
 
-   Генерацию не трогаем — `BalanceReports/site/data.js` пишет тот же скрипт, что и раньше. Здесь
-   только показ, переехавший в общий стиль Лаборатории.
+   Генерация не тронута — `data.js` пишет прежний скрипт. Правило подачи сохранено, потому что оно
+   верное: число само по себе почти ничего не значит, рядом с ним либо дельта, либо норма. */
 
-   Правило подачи сохранено от прежнего сайта, потому что оно верное: число само по себе почти
-   ничего не значит — рядом с ним либо дельта с прошлым прогоном, либо отклонение от нормы.
-   Пояснения к колонкам живут В колонках (подсказка по наведению и словарь под таблицей), а не
-   полотном текста над ней. */
-
-import { drawFeedState, type Feed } from "../api.js";
-import { el } from "../dom.js";
+import { el, html } from "../dom.js";
 import type { SectionDef } from "../types.js";
-import { METRICS } from "./balance-metrics.js";
+import {
+  balance, deviation, displayName, fmt, fmtValue, isNum, meta, modeTitle, modesOf, outOfBand,
+  rich, runA, runB, setting, state, UNIT_COLUMNS, unitsOf, type Mode, type Run
+} from "./balance-data.js";
+import { balanceControls, redrawAll } from "./balance-ui.js";
 
-/* ---------- данные ---------- */
+const view = { mode: "", sort: null as { key: string; desc: boolean } | null };
 
-interface Mode {
-  title: string;
-  headers: string[];
-  units?: string[];
-  rows: Array<Array<string | number | null>>;
+/* ---------- ячейка ---------- */
+
+/** Дельта с прошлым прогоном. Цвет — по направлению метрики, а не по знаку: рост «Получено урона»
+ *  это ухудшение, и красить его зелёным значило бы соврать. */
+function deltaNode(mode: string, unit: string, key: string): HTMLElement | null {
+  const a = runA()?.modes[mode]?.units[unit]?.[key];
+  const b = runB()?.modes[mode]?.units[unit]?.[key];
+  if (!isNum(a) || !isNum(b)) return null;
+
+  const diff = a - b;
+  if (Math.abs(diff) < 1e-9) return el("span", "delta same", "=");
+
+  const dir = meta(key).dir;
+  const cls = dir === null ? "same" : (diff > 0) === dir ? "up" : "down";
+  return el("span", `delta ${cls}`, `${diff > 0 ? "▲" : "▼"}${fmt(Math.abs(diff))}`);
 }
 
-interface Run {
-  key: string;
-  title: string;
-  summary: string;
-  modes: Record<string, Mode>;
-  notes?: Record<string, string>;
-  normsNote?: string;
+/** Подпись коридора под числом и, если включено, полоска отклонения. */
+function normNodes(unit: string, key: string, value: unknown): HTMLElement[] {
+  const d = deviation(unit, key, value);
+  if (!d) return [];
+
+  const text = el("span", d.out ? "norm out-of-band" : "norm",
+    `норма ${fmt(d.norm)} · ${d.dev >= 0 ? "+" : "−"}${fmt(Math.abs(d.dev) * 100)}%`);
+  text.title = `Коридор роли ±${fmt(d.band * 100)}%`;
+  if (!setting("bal-bars")) return [text];
+
+  // Полоска: середина — норма, края — двойной коридор. Смещение читается за долю секунды.
+  const bar = el("span", `bar ${d.dev > 0 ? "over" : "under"}`);
+  const fill = el("i");
+  const half = Math.min(Math.abs(d.dev) / (d.band * 2), 0.5);
+  fill.style.left = d.dev >= 0 ? "50%" : `${(0.5 - half) * 100}%`;
+  fill.style.width = `${half * 100}%`;
+  bar.appendChild(fill);
+  return [text, bar];
 }
 
-interface BalanceData {
-  runs: Run[];
-  modeTitles: Record<string, string>;
-  issues: unknown[];
-  missing?: string;
-}
+/* ---------- таблица ---------- */
 
-const balance: Feed<BalanceData> = { data: null, error: null, settled: Promise.resolve() };
-
-balance.settled = fetch("api/balance")
-  .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-  .then((json: BalanceData) => { balance.data = json; })
-  .catch((err: unknown) => {
-    balance.error = err instanceof Error ? err.message : String(err);
+/** Колонки, где у всех китов пусто или ноль: прячем, пока не попросили показать нули. */
+function liveColumns(mode: Mode, names: string[]): string[] {
+  return mode.headers.filter((h) => {
+    if (setting("bal-zeros") || UNIT_COLUMNS.includes(h)) return true;
+    return names.some((n) => {
+      const v = mode.units[n]?.[h];
+      return v !== 0 && v !== "" && v !== null && v !== undefined;
+    });
   });
-
-/** Какой прогон показываем и с каким сравниваем. Ноль — самый свежий. */
-const state = { a: 0, b: 1, mode: "" };
-
-/* ---------- числа ---------- */
-
-function metricOf(key: string): { label: string; unit: string; note: string; dir: boolean | null } {
-  return METRICS[key] ?? { label: key, unit: "", note: "", dir: null };
 }
 
-/** Единица «доля→%» значит, что в данных лежит доля, а показывать надо проценты. */
-function format(value: string | number | null, unit: string): string {
-  if (value === null || value === undefined || value === "") return "—";
-  if (typeof value === "string") return value;
-  if (unit === "доля→%") return `${(value * 100).toFixed(0)}%`;
-  if (unit === "%") return `${value.toFixed(value < 10 ? 1 : 0)}%`;
-  if (unit === "с") return `${value.toFixed(1)} с`;
-  if (unit === "×") return `${value.toFixed(2)}×`;
-  if (Number.isInteger(value)) return String(value);
-  return value.toFixed(Math.abs(value) < 10 ? 2 : 1);
-}
-
-/** Строка кита в том же режиме прошлого прогона: без неё дельту не с чем считать. */
-function rowIn(run: Run | undefined, modeKey: string, unit: string): Array<string | number | null> | null {
-  const mode = run?.modes[modeKey];
-  if (!mode) return null;
-  const at = mode.rows.findIndex((r) => r[0] === unit);
-  return at < 0 ? null : (mode.rows[at] ?? null);
-}
-
-/** Дельта с прошлым прогоном. Цвет — по направлению метрики, а не по знаку числа. */
-function deltaNode(cur: unknown, prev: unknown, key: string): HTMLElement | null {
-  if (typeof cur !== "number" || typeof prev !== "number") return null;
-  const diff = cur - prev;
-  if (Math.abs(diff) < 1e-9) return null;
-
-  const dir = metricOf(key).dir;
-  const better = dir === null ? null : dir ? diff > 0 : diff < 0;
-  const node = el("span", `delta ${better === null ? "flat" : better ? "up" : "down"}`);
-  const rel = prev !== 0 ? ` (${diff > 0 ? "+" : ""}${((diff / Math.abs(prev)) * 100).toFixed(0)}%)` : "";
-  node.textContent = `${diff > 0 ? "+" : ""}${Math.abs(diff) < 10 ? diff.toFixed(2) : diff.toFixed(0)}${rel}`;
-  return node;
-}
-
-/* ---------- таблица режима ---------- */
-
-function modeTable(run: Run, prev: Run | undefined, modeKey: string): HTMLElement {
+function modeTable(run: Run, modeKey: string): HTMLElement {
   const mode = run.modes[modeKey];
   const wrap = el("div", "bal-mode");
   if (!mode) return wrap;
 
-  const head = el("h3", null, mode.title);
-  wrap.appendChild(head);
+  let names = Object.keys(mode.units);
+  if (setting("bal-band")) names = names.filter(outOfBand);
+  const columns = liveColumns(mode, names);
+
+  if (view.sort) {
+    const { key, desc } = view.sort;
+    names = names.slice().sort((x, y) => {
+      const a = mode.units[x]?.[key];
+      const b = mode.units[y]?.[key];
+      if (!isNum(a) || !isNum(b)) return String(a ?? "").localeCompare(String(b ?? ""));
+      return desc ? b - a : a - b;
+    });
+  }
 
   const scroller = el("div", "scroller");
-  const table = el("table", "bal-table");
+  const table = el("table", `bal-table${setting("bal-compact") ? " compact" : ""}`);
 
   const hr = el("tr");
-  for (const key of mode.headers) {
-    const m = metricOf(key);
-    const th = el("th", null, m.label);
-    if (m.unit && m.unit !== "доля→%") th.appendChild(el("span", "unit", ` ${m.unit}`));
-    if (m.note) th.title = m.note;
+  for (const key of columns) {
+    const m = meta(key);
+    const th = el("th");
+    const btn = el("button", "th-sort", m.label);
+    btn.type = "button";
+    btn.title = m.note || key;
+    btn.addEventListener("click", () => {
+      view.sort = view.sort?.key === key ? { key, desc: !view.sort.desc } : { key, desc: true };
+      redrawAll();
+    });
+    th.appendChild(btn);
+    if (setting("bal-keys")) th.appendChild(el("span", "unit", ` ${key}`));
+    else if (m.unit && m.unit !== "доля→%") th.appendChild(el("span", "unit", ` ${m.unit}`));
+    if (view.sort?.key === key) th.dataset["sorted"] = view.sort.desc ? "desc" : "asc";
     hr.appendChild(th);
   }
   table.appendChild(hr);
 
-  for (const row of mode.rows) {
+  for (const name of names) {
     const tr = el("tr");
-    const unit = String(row[0] ?? "");
-    const before = rowIn(prev, modeKey, unit);
-
-    row.forEach((cell, i) => {
-      const key = mode.headers[i] ?? "";
+    for (const key of columns) {
+      const value = mode.units[name]?.[key];
       const td = el("td");
-      if (i === 0) {
+
+      if (UNIT_COLUMNS.includes(key)) {
         td.className = "bal-unit";
-        td.textContent = String(cell ?? "");
-      } else {
-        td.appendChild(el("span", "value", format(cell, metricOf(key).unit)));
-        const delta = before ? deltaNode(cell, before[i], key) : null;
-        if (delta) td.appendChild(delta);
+        const link = el("a", null, displayName(name));
+        link.href = `#/balance-kits?kit=${encodeURIComponent(name)}`;
+        td.appendChild(link);
+        tr.appendChild(td);
+        continue;
       }
+
+      const main = el("span", "value", fmtValue(key, value));
+      const delta = deltaNode(modeKey, name, key);
+      if (delta) main.appendChild(delta);
+      td.appendChild(main);
+      for (const node of normNodes(name, key, value)) td.appendChild(node);
       tr.appendChild(td);
-    });
+    }
     table.appendChild(tr);
   }
 
   scroller.appendChild(table);
   wrap.appendChild(scroller);
 
+  if (names.length === 0) {
+    wrap.appendChild(el("p", "dim", "Под фильтр «только выпавшие из коридора» никто не попал."));
+  }
+
   // Словарь под таблицей: пояснение живёт рядом с колонкой, а не полотном текста над ней.
   const gloss = el("details", "bal-gloss");
   gloss.appendChild(el("summary", null, "что значат колонки"));
   const list = el("dl");
-  for (const key of mode.headers) {
-    const m = metricOf(key);
+  for (const key of columns) {
+    const m = meta(key);
     if (!m.note) continue;
-    list.appendChild(el("dt", null, m.label));
+    list.appendChild(el("dt", null, m.label + (m.unit && m.unit !== "доля→%" ? `, ${m.unit}` : "")));
     list.appendChild(el("dd", null, m.note));
   }
   gloss.appendChild(list);
@@ -159,77 +158,48 @@ function render(host: HTMLElement): void {
   host.appendChild(status);
 
   void balance.settled.then(() => {
-    const data = balance.data;
-    if (!data || data.runs.length === 0) {
-      status.textContent = data?.missing
-        ? `Отчётов ещё нет: ${data.missing} не найден. Прогон делается через scripts/balance-headless.ps1.`
+    if (balance.data.runs.length === 0) {
+      status.textContent = balance.data.missing
+        ? `Отчётов ещё нет: ${balance.data.missing} не найден. Прогон делается через scripts/balance-headless.ps1.`
         : `Отчёты недоступны: ${balance.error ?? "нет ответа"}. Нужен ./scripts/lab-serve.ps1 -Watch`;
       return;
     }
-    host.replaceChildren();
-    draw(host, data);
+    draw(host);
   });
 }
 
-function draw(host: HTMLElement, data: BalanceData): void {
+function draw(host: HTMLElement): void {
   host.replaceChildren();
+  const run = runA();
+  if (!run) return;
 
-  const runA = data.runs[state.a];
-  const runB = data.runs[state.b];
-  if (!runA) return;
-
-  // Выбор прогонов: сравнение — не украшение, а способ прочитать число, поэтому оно сверху.
-  const bar = el("div", "bal-bar");
-  bar.appendChild(picker("Прогон", data.runs, state.a, (i) => { state.a = i; draw(host, data); }));
-  bar.appendChild(picker("сравнить с", data.runs, state.b, (i) => { state.b = i; draw(host, data); }, true));
-  host.appendChild(bar);
+  host.appendChild(balanceControls(() => draw(host)));
 
   const info = el("div", "bal-run");
-  info.appendChild(el("h3", null, runA.title || runA.key));
-  if (runA.summary) info.appendChild(el("p", "dim", runA.summary));
-  if (runB && runB !== runA) {
-    info.appendChild(el("p", "tag", `дельты считаются против: ${runB.title || runB.key}`));
-  }
+  info.appendChild(el("h3", null, run.title || run.key));
+  if (run.summary) info.appendChild(el("p", "dim", run.summary));
+  const prev = runB();
+  if (prev && prev !== run) info.appendChild(el("p", "tag", `дельты против: ${prev.title || prev.key}`));
+  info.appendChild(el("p", "tag", `${unitsOf(run).length} китов · режимов ${modesOf(run).length}`));
   host.appendChild(info);
 
-  const keys = Object.keys(runA.modes);
-  if (!state.mode || !keys.includes(state.mode)) state.mode = keys[0] ?? "";
+  const keys = modesOf(run);
+  if (!view.mode || !keys.includes(view.mode)) view.mode = keys[0] ?? "";
 
   const tabs = el("div", "bal-tabs");
   for (const key of keys) {
-    const btn = el("button", null, data.modeTitles[key] ?? runA.modes[key]?.title ?? key);
+    const btn = el("button", null, modeTitle(key));
     btn.type = "button";
-    btn.dataset["active"] = String(key === state.mode);
-    btn.addEventListener("click", () => { state.mode = key; draw(host, data); });
+    btn.dataset["active"] = String(key === view.mode);
+    btn.addEventListener("click", () => { view.mode = key; view.sort = null; draw(host); });
     tabs.appendChild(btn);
   }
   host.appendChild(tabs);
-  host.appendChild(modeTable(runA, runB, state.mode));
+  host.appendChild(modeTable(run, view.mode));
 
-  const note = runA.notes?.[state.mode];
-  if (note) host.appendChild(el("p", "note", note));
-}
-
-function picker(
-  label: string, runs: Run[], active: number, onPick: (i: number) => void, allowNone = false
-): HTMLElement {
-  const box = el("label", "bal-picker");
-  box.appendChild(el("span", "tag", label));
-  const select = el("select");
-  if (allowNone) {
-    const none = el("option", null, "— не сравнивать —");
-    none.value = "-1";
-    select.appendChild(none);
-  }
-  runs.forEach((run, i) => {
-    const opt = el("option", null, run.title || run.key);
-    opt.value = String(i);
-    if (i === active) opt.selected = true;
-    select.appendChild(opt);
-  });
-  select.addEventListener("change", () => onPick(Number(select.value)));
-  box.appendChild(select);
-  return box;
+  const note = run.notes?.[view.mode];
+  if (note) host.appendChild(html("div", `<p class="note">${rich(note)}</p>`));
+  if (run.normsNote) host.appendChild(html("p", rich(run.normsNote), "dim"));
 }
 
 const section: SectionDef = {
@@ -238,25 +208,24 @@ const section: SectionDef = {
   eyebrow: "Лаборатория · баланс",
   transport: false,
   lede:
-    "Замеры SimBench: что кит показал в бою и как это изменилось с прошлого раза. Данные приходят " +
-    "из <code>BalanceReports/site/data.js</code> — их пишет прежний скрипт, и он не тронут: " +
-    "поменялся только показ.",
+    "Замеры SimBench: что кит показал в бою, как это изменилось с прошлого раза и насколько он ушёл " +
+    "от нормы своей роли. Данные пишет прежний скрипт — поменялся только показ.",
 
   blocks: [
     {
       kind: "head", id: "runs", title: "Замеры по режимам",
       lede:
         "Число само по себе почти ничего не значит: рядом с ним всегда либо дельта с прошлым " +
-        "прогоном, либо отклонение от классовой нормы. Направление «лучше» у каждой метрики своё — " +
-        "рост «Получено урона» красится как ухудшение, а не как успех."
+        "прогоном, либо отклонение от классовой нормы. Заголовок колонки сортирует, наведение " +
+        "объясняет, имя кита ведёт на его страницу."
     },
     { kind: "live", id: "runs-table", render },
     {
       kind: "note",
       html:
         "Прогон делается скриптом <code>./scripts/balance-headless.ps1</code>, он же обновляет " +
-        "<code>data.js</code>. Страница читает файл при каждом открытии, поэтому свежий прогон " +
-        "виден сразу после F5."
+        "<code>data.js</code>. Страница читает файл при каждом открытии, поэтому свежий прогон виден " +
+        "сразу после F5."
     }
   ]
 };
