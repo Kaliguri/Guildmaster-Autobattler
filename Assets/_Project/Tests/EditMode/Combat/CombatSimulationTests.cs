@@ -1,5 +1,4 @@
 ﻿using Guildmaster.Combat;
-using Guildmaster.Combat.Commands;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Stats;
@@ -96,35 +95,6 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.AreNotEqual(simA.ComputeChecksum(), simB.ComputeChecksum(),
                 "Checksum должен различать разные сиды (через снапшот состояния RNG)");
-        }
-
-        [Test]
-        public void PauseCommand_StopsTick()
-        {
-            var sim = BuildSim(Seed);
-            PopulateSim(sim);
-
-            sim.EnqueueCommand(new PauseCommand(targetTick: 5));
-
-            for (int t = 0; t < 30; t++) sim.Tick(SimConstants.TickDelta);
-
-            Assert.IsTrue(sim.IsPaused);
-            Assert.AreEqual(6, sim.CurrentTick, "Пауза на тике 5 → процессинг был на тиках 0–5");
-        }
-
-        [Test]
-        public void PauseAndResume_WorkCorrectly()
-        {
-            var sim = BuildSim(Seed);
-            PopulateSim(sim);
-
-            sim.EnqueueCommand(new PauseCommand (targetTick: 2));
-            sim.EnqueueCommand(new ResumeCommand(targetTick: 4));
-
-            for (int t = 0; t < 10; t++) sim.Tick(SimConstants.TickDelta);
-
-            Assert.IsFalse(sim.IsPaused);
-            Assert.Greater(sim.CurrentTick, 4);
         }
 
         [Test]

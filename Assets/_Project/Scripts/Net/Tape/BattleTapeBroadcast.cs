@@ -1,4 +1,4 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
 using Guildmaster.Core.Net;
 using VContainer.Unity;
 
@@ -38,16 +38,8 @@ namespace Guildmaster.Net.Tape
             _simulation.OnBattleReset += HandleBattleReset;
         }
 
-        /// <summary>
-        /// Раздача открыта. Гейт существует ради ставок: пока они открыты, лента не уходит игрокам даже
-        /// фрагментом (дизайн коопа). Закрывать её будет тот, кто ставками владеет, — здесь только ручка.
-        /// </summary>
-        public bool Enabled { get; set; } = true;
-
         public void Tick()
         {
-            if (!Enabled) return;
-
             // Раздаёт только хост. Соло-игрок иначе платил бы нарезкой чанков, которые некому принять,
             // а гость раздавал бы обратно ленту, которую ему же и прислали.
             if (_authority.Role != BattleRole.Host) return;

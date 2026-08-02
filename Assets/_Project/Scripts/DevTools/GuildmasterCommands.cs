@@ -1,5 +1,4 @@
 ﻿using Guildmaster.Combat;
-using Guildmaster.Combat.Commands;
 using Guildmaster.Core.Input;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;

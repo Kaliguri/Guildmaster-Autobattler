@@ -77,7 +77,6 @@ namespace Guildmaster.Combat
         // Фабрика призывов: подаётся снаружи (BindSummonFactory). null = в этом бою призывать нечем.
         private ISummonFactory _summonFactory;
         private readonly List<Projectile>   _projectiles = new List<Projectile>();
-        private readonly List<ICombatCommand> _commandQueue = new List<ICombatCommand>();
         private readonly Queue<CombatEventData> _eventQueue = new Queue<CombatEventData>();
 
         // ЗАЯВЛЕНИЯ — отдельная очередь, и это не оптимизация, а порядок причин. «Каст объявлен» обязано
@@ -287,19 +286,11 @@ namespace Guildmaster.Combat
 
             FlushPendingSpawns();
 
-            // Пауза, применённая ЭТИМ тиком, вступает в силу со следующего:
-            // текущий тик ещё досимулировывается. Поэтому фиксируем состояние ДО команд.
-            bool pausedBeforeCommands = _isPaused;
-            ApplyDueCommands();
-
-            if (_isPaused && pausedBeforeCommands)
-            {
-                // Системы стоят, но счётчик тиков продолжает идти, ПОКА в очереди есть
-                // команды — иначе ResumeCommand с будущим TargetTick никогда не наступит
-                // и бой залипнет в паузе навсегда.
-                if (_commandQueue.Count > 0) _currentTick++;
-                return;
-            }
+            // Пауза сценария («сим заморожен»): системы стоят, счётчик тиков не идёт. Раньше здесь
+            // разбиралась очередь команд на границе тика, и счётчик приходилось двигать вручную, чтобы
+            // отложенное «снять паузу» когда-нибудь наступило. Очереди больше нет — снимает паузу тот,
+            // кто её поставил, вызовом.
+            if (_isPaused) return;
 
             // Снимок дееспособности на начало тика: по нему гейтятся реактивы, которым нужно ДЕЙСТВИЕ
             // носителя. Живой CanAct для этого не годится — он пересчитывается синхронно при наложении
@@ -764,7 +755,6 @@ namespace Guildmaster.Combat
             _projectiles.Clear();
             _eventQueue.Clear();
             _announceQueue.Clear();
-            _commandQueue.Clear();
             _ledger.Clear();              // незакрытые заявки урона/лечения не должны пережить бой
             _pendingTeleports.Clear();    // как и незакрытые заявки на переход
             _displacementSystem.Clear();  // незавершённые полёты не должны держать ссылки на удалённых юнитов
@@ -799,23 +789,6 @@ namespace Guildmaster.Combat
 
             EnqueueUnitSpawn(summon);
             return summon;
-        }
-
-        // --- Очередь команд ---
-
-        /// <summary>Добавить команду в отсортированную очередь.</summary>
-        public void EnqueueCommand(ICombatCommand command)
-        {
-            int insertIdx = _commandQueue.Count;
-            for (int i = 0; i < _commandQueue.Count; i++)
-            {
-                if (_commandQueue[i].TargetTick > command.TargetTick)
-                {
-                    insertIdx = i;
-                    break;
-                }
-            }
-            _commandQueue.Insert(insertIdx, command);
         }
 
         // --- Расчёт checksum для SimSyncProbe ---
@@ -1047,16 +1020,6 @@ namespace Guildmaster.Combat
                     $"[CombatSimulation] Event-queue cap hit: dropped {_eventQueue.Count} events at tick {_currentTick} " +
                     $"(processed {MaxEventsPerDrain}). Возможен пинг-понг реактивных компонентов.");
                 _eventQueue.Clear();
-            }
-        }
-
-        private void ApplyDueCommands()
-        {
-            int i = 0;
-            while (i < _commandQueue.Count && _commandQueue[i].TargetTick <= _currentTick)
-            {
-                _commandQueue[i].Apply(this);
-                _commandQueue.RemoveAt(i);
             }
         }
 

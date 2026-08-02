@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Tape;
 using Guildmaster.Core.Random;
@@ -43,18 +43,6 @@ namespace Guildmaster.Tests.EditMode.Net
             f.Broadcast.Tick();
 
             Assert.AreEqual(0, f.Streamer.SentChunkCount, "Досчитанных тиков нет — раздавать нечего");
-        }
-
-        [Test]
-        public void ClosedGate_HoldsTheTape()
-        {
-            Fixture f = Build();
-            f.Broadcast.Enabled = false;
-
-            TickSim(f, 40);
-            f.Broadcast.Tick();
-
-            Assert.AreEqual(0, f.Streamer.SentChunkCount, "Пока раздача закрыта, лента не уходит фрагментом");
         }
 
         // Конец боя дожимается ровно один раз: арена живёт дальше (мир не выгружается), и Flush каждый
