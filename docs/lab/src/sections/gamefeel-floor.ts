@@ -488,6 +488,110 @@ function pillarProp(ctx: CanvasRenderingContext2D, x: number, y: number, h: numb
   ctx.stroke();
 }
 
+/** Замкнутая органическая клякса: радиус гуляет шумом по углу. Для ЛУЖИ это уместно (у воды нет
+ *  своей формы, она принимает форму углубления) — в отличие от участков земли, где клякса как раз
+ *  и читалась «непонятной фигурой». */
+function blobPath(ctx: CanvasRenderingContext2D, cx: number, cy: number, rx: number, ry: number, wobble: number, seed: number): void {
+  const steps = 44;
+  ctx.beginPath();
+  for (let i = 0; i <= steps; i++) {
+    const a = (i / steps) * Math.PI * 2;
+    const n = vnoise(Math.cos(a) * 2 + 4, Math.sin(a) * 2 + 4, seed) - 0.5;
+    const k = 1 + n * wobble;
+    const x = cx + Math.cos(a) * rx * k;
+    const y = cy + Math.sin(a) * ry * k;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+}
+
+/** ЛУЖА — проба к разговору «сможем ли повторить водный шейдер».
+ *
+ *  Здесь нарочно НЕ фотовода. Из полного водного шейдера (рефракция, каустика, волны Герстнера,
+ *  planar reflections через вторую камеру) нашему языку нужны четыре вещи, и все дешёвые:
+ *  плоское пятно цвета, светлая кайма, пара бегущих бликов и ОТРАЖЕНИЕ СИЛУЭТОМ.
+ *
+ *  Про отражение честно: при взгляде сверху в воде отражается небо, а не тот, кто рядом. Отражение
+ *  юнита — условность, и работает она именно как условность: силуэт, опрокинутый от точки касания,
+ *  сплющенный, размытый по краю и сдвигаемый рябью. Физику здесь изображать нечем и незачем.
+ *
+ *  В движке: маска лужи в стенсиль, силуэты юнитов рисуются вторым проходом с flip по Y, тинтом и
+ *  UV-сдвигом от шума по времени — то есть без второй камеры и без RenderTexture. */
+function puddleProp(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  r: number,
+  seed: number,
+  water: RGB,
+  reflect: Array<[number, number, number]> = []
+): void {
+  blobPath(ctx, cx, cy, r, r * 0.52, 0.3, seed);
+
+  ctx.save();
+  ctx.clip();
+
+  // 1. Тело: плоский цвет с лёгким уходом в глубину к центру.
+  const body = ctx.createRadialGradient(cx, cy, r * 0.1, cx, cy, r);
+  body.addColorStop(0, rgb(shade(water, 0.22)));
+  body.addColorStop(1, rgb(water));
+  ctx.fillStyle = body;
+  ctx.fillRect(cx - r * 1.4, cy - r, r * 2.8, r * 2);
+
+  // 2. Отражения силуэтов: опрокинуты вниз, сплющены, полупрозрачны. Обрезаются маской лужи —
+  //    поэтому отражение честно «влезает» только в воду.
+  for (const [ux, uh, tint] of reflect) {
+    ctx.save();
+    ctx.globalAlpha = 0.34;
+    ctx.translate(ux, cy);
+    ctx.scale(1, -0.55); // опрокинуть и сплющить: вода не зеркало, а лужа
+    ctx.fillStyle = `rgb(${(70 + tint * 40) | 0},${(60 + tint * 30) | 0},${(58 + tint * 26) | 0})`;
+    ctx.beginPath();
+    ctx.moveTo(-HUMAN_W * 0.5, 0);
+    ctx.lineTo(-HUMAN_W * 0.6, uh * 0.62);
+    ctx.quadraticCurveTo(0, uh * 0.78, HUMAN_W * 0.6, uh * 0.62);
+    ctx.lineTo(HUMAN_W * 0.5, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(0, uh * 0.82, HUMAN_W * 0.5, uh * 0.13, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // 3. Рябь: горизонтальные светлые полосы, разрывающие отражение. Именно они делают воду водой —
+  //    без них отражение читается второй фигурой, а не отражением.
+  ctx.globalAlpha = 0.5;
+  for (let i = 0; i < 7; i++) {
+    const ry = cy - r * 0.5 + (i / 7) * r;
+    const rw = r * (0.4 + jag(i, seed + 3) * 0.8);
+    const rx = cx + (jag(i, seed + 5) - 0.5) * r * 0.7;
+    ctx.strokeStyle = `rgba(${lighten(water, 0.55).map((v) => v | 0).join(",")},${(0.16 + jag(i, seed + 7) * 0.2).toFixed(2)})`;
+    ctx.lineWidth = Math.max(1, r * 0.035);
+    ctx.beginPath();
+    ctx.moveTo(rx - rw * 0.5, ry);
+    ctx.lineTo(rx + rw * 0.5, ry);
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+  ctx.restore();
+
+  // 4. Кайма: мокрый край темнее воды и земли. Без неё лужа выглядит наклейкой.
+  blobPath(ctx, cx, cy, r, r * 0.52, 0.3, seed);
+  ctx.strokeStyle = rgb(ink(water, 0.5));
+  ctx.lineWidth = LINE * 0.9;
+  ctx.lineJoin = "round";
+  ctx.stroke();
+
+  // 5. Блик по дальней кромке: единственное место, где вода ловит свет источника.
+  ctx.strokeStyle = `rgba(${lighten(water, 0.7).map((v) => v | 0).join(",")},.5)`;
+  ctx.lineWidth = LINE * 0.6;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, r * 0.86, r * 0.44, 0, Math.PI * 1.15, Math.PI * 1.75);
+  ctx.stroke();
+}
+
 /* ---------- сцена ---------- */
 
 interface SlabOpts {
@@ -1055,6 +1159,95 @@ const SHOWCASE_STANDS: StandDef[] = [
   }))
 ];
 
+/** Проба воды: лужа с отражениями и те же фигуры рядом. Стенд собран отдельно от slab, потому что
+ *  отражению нужно знать, ГДЕ стоят фигуры, — а в общей сборке они рисуются после земли. */
+function waterProbe(withReflection: boolean): DrawFn {
+  return (ctx, w, h) => {
+    const b = MEADOW;
+    ctx.fillStyle = rgb(b.ground);
+    ctx.fillRect(0, 0, w, h);
+
+    for (let m = 0; m < 2; m++) {
+      const tint = m === 0 ? lighten(b.ground, 0.09) : shade(b.ground, 0.11);
+      const g = ctx.createRadialGradient(w * (0.3 + m * 0.4), h * 0.4, w * 0.05, w * (0.3 + m * 0.4), h * 0.4, w * 0.5);
+      g.addColorStop(0, `rgba(${tint.map((v) => v | 0).join(",")},.8)`);
+      g.addColorStop(1, `rgba(${tint.map((v) => v | 0).join(",")},0)`);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+    }
+
+    const water: RGB = [72, 104, 116];
+    const cx = w * 0.5;
+    const cy = h * 0.62;
+    const r = w * 0.34;
+
+    // Фигуры стоят у ближней кромки — отражение уходит от их ног в воду.
+    const figs: Array<[number, number]> = [[cx - r * 0.45, HUMAN_H * 0.95], [cx + r * 0.42, HUMAN_H * 1.15]];
+
+    puddleProp(ctx, cx, cy, r, 3, water, withReflection ? figs.map(([x, hh], i) => [x, hh, i === 0 ? 1 : 0] as [number, number, number]) : []);
+
+    for (let i = 0; i < figs.length; i++) {
+      const [fx, fh] = figs[i]!;
+      ctx.save();
+      ctx.translate(0, 0);
+      const body: RGB = i === 0 ? [150, 116, 96] : [116, 92, 80];
+      ctx.beginPath();
+      ctx.moveTo(fx - HUMAN_W * 0.5, cy);
+      ctx.lineTo(fx - HUMAN_W * 0.6, cy - fh * 0.62);
+      ctx.quadraticCurveTo(fx, cy - fh * 0.78, fx + HUMAN_W * 0.6, cy - fh * 0.62);
+      ctx.lineTo(fx + HUMAN_W * 0.5, cy);
+      ctx.closePath();
+      ctx.fillStyle = rgb(body);
+      ctx.fill();
+      ctx.strokeStyle = rgb(ink(body, 0.45));
+      ctx.lineWidth = LINE * 0.8;
+      ctx.lineJoin = "round";
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(fx, cy - fh * 0.8, HUMAN_W * 0.5, fh * 0.13, 0, 0, Math.PI * 2);
+      ctx.fillStyle = rgb(lighten(body, 0.14));
+      ctx.fill();
+      ctx.strokeStyle = rgb(ink(body, 0.45));
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    const lg = ctx.createLinearGradient(0, 0, w * 0.9, h);
+    lg.addColorStop(0, "rgba(255,238,198,.14)");
+    lg.addColorStop(0.45, "rgba(255,238,198,0)");
+    lg.addColorStop(1, "rgba(24,26,54,.3)");
+    ctx.fillStyle = lg;
+    ctx.fillRect(0, 0, w, h);
+  };
+}
+
+const WATER_STANDS: StandDef[] = [
+  {
+    id: "water-flat",
+    status: "note",
+    title: "Лужа без отражения",
+    tag: "четыре дешёвых слоя",
+    note: "Плоское пятно, кайма, рябь, блик по дальней кромке.",
+    facts: [["слоёв", "4"], ["рефракции", "нет"], ["второй камеры", "нет"]],
+    verdict: "Уже читается водой. Всё, что здесь есть, — цвет, обводка и несколько линий.",
+    size: [480, 340],
+    draw: waterProbe(false)
+  },
+  {
+    id: "water-reflect",
+    status: "waiting",
+    title: "Лужа с отражением",
+    tag: "то, ради чего затевалось",
+    note: "Силуэт опрокинут от точки касания, сплющен, разорван рябью.",
+    facts: [["приём", "flip Y + сплющивание"], ["обрезка", "маской лужи"], ["рябь", "рвёт силуэт"]],
+    verdict:
+      "Условность, а не физика: сверху в воде отражается небо. Но именно как условность это читается — " +
+      "и рябь тут обязательна, без неё отражение выглядит второй фигурой, а не отражением.",
+    size: [480, 340],
+    draw: waterProbe(true)
+  }
+];
+
 /** Три сида, которые крутятся ВЕЗДЕ: и на поляне целиком, и в каждом биоме. Один сид не отличает
  *  удачную композицию от везения — а по трём сразу видно, держатся ли правила расстановки. */
 const SEEDS = [11, 27, 43];
@@ -1130,6 +1323,36 @@ const section: SectionDef = {
         "цифра у нас язык ПЕРЕХОДА, а не состояния, и по этой причине я её из борта убирала. Значит " +
         "либо край плиты получает исключение, либо формулировку канона надо править: развилка " +
         "открыта, до вердикта стоит вариант Макса."
+    },
+    {
+      kind: "head",
+      id: "water",
+      title: "Вода: сможем ли повторить",
+      lede: "Проба к разговору про водный шейдер. Из полного набора нам нужны четыре слоя из десятка."
+    },
+    { kind: "split", items: WATER_STANDS },
+    {
+      kind: "table",
+      head: ["Что делает «полный» водный ассет", "Нужно ли нам", "Почему"],
+      rows: [
+        ["Planar reflections через вторую камеру и RenderTexture", "нет", "силуэт с flip по Y дешевле и в плоском языке честнее"],
+        ["Рефракция / GrabPass", "нет", "под водой ничего нет — преломлять нечего"],
+        ["Каустика", "нет", "фотореализм, чужой нашему языку"],
+        ["Волны Герстнера", "нет", "это трёхмерная поверхность, у нас плоскость"],
+        ["Искажение по шуму со сдвигом во времени", "<b>да</b>", "рябь, которая рвёт отражение — обязательна"],
+        ["Пена и кромка по краю", "<b>да</b>", "мокрый край; без него лужа читается наклейкой"],
+        ["Бегущие блики", "<b>да</b>", "единственное место, где вода ловит свет"],
+        ["Интерактивные всплески от юнитов", "потом", "требует контакта с симуляцией"]
+      ]
+    },
+    {
+      kind: "note",
+      html:
+        "<b>Развилка, которую стоит держать в голове сразу.</b> Если вода получит игровой смысл " +
+        "(замедляет, проводит молнию, тушит горение), она перестаёт быть декором и уезжает в " +
+        "симуляцию — а значит расстановка луж становится <b>сим-рандомом</b> и обязана совпадать " +
+        "у всех клиентов коопа. Пока вода чисто визуальная, ей достаточно показ-рандома. Дешевле " +
+        "решить это до реализации, чем переносить генерацию потом."
     },
     {
       kind: "head",
