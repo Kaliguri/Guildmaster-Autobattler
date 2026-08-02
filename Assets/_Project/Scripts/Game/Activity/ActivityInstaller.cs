@@ -22,8 +22,17 @@ namespace Guildmaster.Game.Activity
     /// </remarks>
     public sealed class ActivityInstaller : IInstaller
     {
+        private readonly ActivitySetup _setup;
+
+        public ActivityInstaller(ActivitySetup setup) => _setup = setup;
+
         public void Install(IContainerBuilder builder)
         {
+            // С чем открыто мероприятие — доступно всем внутри, включая бой: ограничения площадки
+            // (скрыть чужой строй, расставлять только своих) исполняет расстановка, а не тот, кто
+            // мероприятие заказал.
+            builder.RegisterInstance(_setup);
+
             RegisterBattleSeam(builder);
             RegisterRunLoop(builder);
         }

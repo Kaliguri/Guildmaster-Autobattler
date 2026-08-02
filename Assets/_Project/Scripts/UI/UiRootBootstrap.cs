@@ -88,6 +88,10 @@ namespace Guildmaster.UI
         // Интерфейс переживает сеансы, поэтому забег он только ЧИТАЕТ и только через роутер: держатель
         // состояния живёт в скоупе сессии и умирает вместе с ней.
         private IRunStateView _runStates;
+
+        // «Где мы» — вопрос к мероприятию, а не вывод из наличия забега и состояния арены. Панель
+        // забега, панель площадки и кнопка «Начать» живут по этому ответу.
+        private IActivityView _activities;
         private GameConfig _config;
         private ILocalizationService _loc;
         private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
@@ -129,7 +133,6 @@ namespace Guildmaster.UI
         private Tooltips.TooltipSystem _tooltips; // Трек Т: показыватель тултипов, привязан к слою в Start
         private Tooltips.KeywordStyle _keywordStyle; // Трек Т: цвет терминов, читается с USS-доноров
         private UiSoundSystem _uiSound;           // звук интерфейса: один слушатель на корне панели
-        private bool _testZoneActive;        // серая зона включена (в забеге — полигон, вне забега — Ристалище)
         private bool _lastProvingGrounds;    // ребро вида панели: забег ↔ площадка
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
         private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4; источник — _router.IsInventoryOpen)
@@ -161,7 +164,8 @@ namespace Guildmaster.UI
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
-            IBattleClock clock, IRunStateView runStates, GameConfig config, ILocalizationService loc,
+            IBattleClock clock, IActivityView activities, IRunStateView runStates,
+            GameConfig config, ILocalizationService loc,
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
             ISubscriber<OpenTextEventRequest> openEventSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
@@ -191,6 +195,7 @@ namespace Guildmaster.UI
             _openTitleCardSub = openTitleCardSub;
             _mainMenuVisSub = mainMenuVisSub;
             _router = router;
+            _activities = activities;
             _mapSpaceSub = mapSpaceSub;
             _worldMapPub = worldMapPub;
             _relicDragPub = relicDragPub;
@@ -287,7 +292,8 @@ namespace Guildmaster.UI
             _testZoneChangedSubscription = _testZoneChangedSub?.Subscribe(e =>
             {
                 UiTrace.Log($"bootstrap: TestZoneChanged(Active={e.Active}) → {(e.Active ? "ShowTestZone" : "HideTestZone")}");
-                _testZoneActive = e.Active; // вне забега это же и есть «игрок на Ристалище» (см. Update)
+                // Флага «мы на Ристалище» здесь больше НЕТ: где мы, знает мероприятие. Это событие —
+                // только про экран боя, то есть про серую зону как таковую.
                 if (e.Active) _router.ShowTestZone();
                 else          _router.HideTestZone();
             });
@@ -403,16 +409,19 @@ namespace Guildmaster.UI
             ApplyDeviceProfile(); // II.12.9: переоценка профиля при смене разрешения (дёшево — сравнение int)
             if (_topBar == null || _clock == null) return;
 
-            // Глобальный топбар виден ВЕСЬ забег (реш. №65, STS-style); тело экранов под ним (padding-top).
-            // НО не под главным меню: RunState там ещё жив (сейв не сбрасывается, забег можно продолжить),
-            // и по одному лишь runActive панель с «Начать» оставалась висеть поверх меню (наход. Макса, п.9).
+            // Глобальный топбар виден ВСЁ мероприятие (реш. №65, STS-style); тело экранов под ним
+            // (padding-top). НО не под главным меню: мероприятие там может ещё идти (забег прерван, но
+            // не окончен), а панель с «Начать» поверх меню — баг (наход. Макса, п.9).
             RunState run = _runStates?.Current;
 
-            // Ристалище — это площадка ВНЕ забега, и панель ей тоже нужна: там живут те же табы и та же
-            // кнопка «Начать» (ГДД [[proving-grounds]], требование 2026-07-27). Признак площадки выводим,
-            // а не храним вторым флагом: серая зона активна, а забега нет — значит мы пришли из меню.
-            bool onProvingGrounds = run == null && _testZoneActive;
-            bool shellVisible = (run != null || onProvingGrounds) && !_mainMenuOpen;
+            // Ристалище — площадка ВНЕ забега, и панель ей тоже нужна: там живут те же табы и та же
+            // кнопка «Начать» (ГДД [[proving-grounds]], требование 2026-07-27). Где мы — СПРАШИВАЕМ у
+            // мероприятия. Прежде это выводилось из «забега нет && серая зона включена», а владелец
+            // второго признака живёт в боевом скоупе: как только бой стал рождаться по требованию,
+            // ответа не стало вовсе, и панель пропадала целиком (наход. Макса 02.08.2026).
+            ActivitySetup activity = _activities != null ? _activities.Current : default;
+            bool onProvingGrounds = activity.Kind == ActivityKind.ProvingGrounds;
+            bool shellVisible = activity.IsOpen && !_mainMenuOpen;
             _topBar.Root.style.display = shellVisible ? DisplayStyle.Flex : DisplayStyle.None;
 
             // Панель площадки переписана: слева «Ристалище», без акта и вехи, справа без золота и
@@ -741,10 +750,10 @@ namespace Guildmaster.UI
         private void OnMenuToggle()
         {
             if (_tooltips != null && _tooltips.HideAll()) return;
-            // Ристалище — тоже «внутри игры», хотя забега там нет: с площадки надо чем-то уходить, и
-            // уходят тем же системным меню. По одному лишь RunState ESC на ней был мёртв, и выйти
-            // было нельзя вовсе (наход. Макса 2026-07-27).
-            if (_runStates?.Current != null || _testZoneActive) _router.ToggleSystemMenu();
+            // «Внутри игры» = идёт мероприятие, любое. Ристалище тоже внутри, хотя забега там нет: с
+            // площадки надо чем-то уходить, и уходят тем же системным меню. По одному лишь RunState
+            // ESC на ней был мёртв, и выйти было нельзя вовсе (наход. Макса 2026-07-27).
+            if (_activities != null && _activities.Current.IsOpen) _router.ToggleSystemMenu();
         }
     }
 }

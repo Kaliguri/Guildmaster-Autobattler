@@ -131,6 +131,35 @@ namespace Guildmaster.Game.Flow
             _worldStage.PlaceParty();
         }
 
+        /// <summary>
+        /// Открыть арену БЕЗ пресета: скоуп боя есть, состава нет. Так живёт Ристалище — бойцов ему
+        /// приносит заказ состава, а не пресет энкаунтера.
+        /// </summary>
+        /// <remarks>
+        /// Дверь отдельная и явная, потому что пустой пресет в <see cref="Open"/> — это ошибка вызова
+        /// («бой заказали, а чем — не сказали»), а здесь пустота и есть смысл: площадка открывается
+        /// прежде, чем на ней кого-то расставили. Без этой двери владельца расстановки в момент входа
+        /// на площадку не существует, и площадка не отвечает ни на один интент.
+        /// </remarks>
+        public void OpenEmpty()
+        {
+            if (_battleScopePrefab?.Value == null)
+            {
+                Debug.LogError("[BattleHost] - не задан префаб боевого скоупа → арену открыть нечем. " +
+                               "Поле _battleScopePrefab у WorldLifetimeScope.");
+                return;
+            }
+
+            Close();
+
+            _lastPreset = null;
+            var parameters = new BattleScopeParams(null, DeterministicHash.Of("proving_grounds"));
+
+            _battle = _activity.CreateChildFromPrefab(_battleScopePrefab.Value,
+                builder => builder.RegisterInstance(parameters));
+            _battle.name = "[Battle] пустая арена";
+        }
+
         /// <summary>Перезапустить тот же бой (ретрай узла, dev-R): новый скоуп на тот же пресет.</summary>
         public void Restart()
         {

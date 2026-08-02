@@ -21,16 +21,24 @@ namespace Guildmaster.Game.Activity
     /// часы боя. Отдать контейнер значило бы разрешить кому угодно дотянуться до чего угодно в чужой
     /// жизни и получить ссылку, которая протухнет вместе с занятием.</para>
     /// </remarks>
-    public sealed class ActivityHost : IDisposable
+    public sealed class ActivityHost : IDisposable, IActivityView
     {
         private readonly Session.SessionHost _sessions;
 
         private LifetimeScope _activity;
+        private ActivitySetup _setup;
 
         public ActivityHost(Session.SessionHost sessions) => _sessions = sessions;
 
         /// <summary>Идёт ли мероприятие прямо сейчас.</summary>
         public bool IsOpen => _activity != null && _activity.Container != null;
+
+        /// <summary>
+        /// С чем открыто текущее мероприятие; вне мероприятия — <see cref="ActivityKind.None"/>. Это и
+        /// есть ответ интерфейса на вопрос «где мы»: не вывод из наличия забега и состояния арены, а
+        /// то, что назвали при входе.
+        /// </summary>
+        public ActivitySetup Current => IsOpen ? _setup : default;
 
         /// <summary>Раннер обхода акта текущего занятия; вне занятия — <c>null</c>.</summary>
         public ActRunner Runner => Resolve<ActRunner>();
@@ -45,12 +53,13 @@ namespace Guildmaster.Game.Activity
         public Flow.BattleHost Battle => Resolve<Flow.BattleHost>();
 
         /// <summary>
-        /// Открыть занятие, если его нет, и вернуть владельца боя. Для dev-срезов: «поставь мне
-        /// болванчиков» означает «мне нужна арена», а арена — это мероприятие, пусть и пустое.
+        /// Открыть Ристалище, если мероприятия нет, и вернуть владельца боя. Для dev-срезов: «поставь
+        /// мне болванчиков» означает «мне нужна площадка» — своей дев-арены у нас нет и не будет
+        /// (решение Макса 02.08.2026), тест-бои это прегены состава для Ристалища.
         /// </summary>
         public Flow.BattleHost EnsureBattleHost()
         {
-            if (!IsOpen) Open();
+            if (!IsOpen) Open(ActivitySetup.ProvingGrounds);
             return Battle;
         }
 
@@ -76,13 +85,21 @@ namespace Guildmaster.Game.Activity
         /// Открыть мероприятие. Прошлое закрывается: двух занятий одновременно не бывает — они
         /// взаимоисключающи по построению (двор, забег, Ристалище — это одна и та же арена).
         /// </summary>
-        public void Open()
+        public void Open(ActivitySetup setup)
         {
             Close();
 
+            _setup = setup;
+
             // Заготовку боевого скоупа не тащим сюда руками: она выбрана в мире, а мир — предок сессии,
             // значит внутри мероприятия она видна и так (её резолвит BattleHost).
-            _activity = _sessions.CreateChild(new ActivityInstaller(), "[Activity]");
+            _activity = _sessions.CreateChild(new ActivityInstaller(setup), $"[Activity] {setup.Kind}");
+
+            // Площадка открывается ВМЕСТЕ с ареной. Владелец расстановки живёт в боевом скоупе, и без
+            // него на Ристалище некому ответить ни на заказ состава, ни на «включи серую зону» — интент
+            // улетал бы в пустоту, а игрок видел бы пустой экран без панели (наход. Макса 02.08.2026).
+            // Забег арену не поднимает: там её заказывает узел, и до первого узла её быть не должно.
+            if (setup.Kind == ActivityKind.ProvingGrounds) Battle?.OpenEmpty();
         }
 
         /// <summary>
@@ -95,6 +112,7 @@ namespace Guildmaster.Game.Activity
 
             _activity.Dispose();
             _activity = null;
+            _setup    = default; // мероприятия нет — и вида нет; «где мы» не переживает своё место
         }
 
         public void Dispose() => Close();

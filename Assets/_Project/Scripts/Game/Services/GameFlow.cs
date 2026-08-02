@@ -113,7 +113,7 @@ namespace Guildmaster.Game.Services
                            ?? runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
             // Даже один бой — мероприятие: ему нужны рукопожатие боя и владелец боевого скоупа.
-            _activities.Open();
+            _activities.Open(ActivitySetup.Campaign);
             try
             {
                 var ctx  = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents);
@@ -208,11 +208,23 @@ namespace Guildmaster.Game.Services
                 return;
             }
 
-            var closed = new UniTaskCompletionSource();
-            using (_provingGroundsChangedSub.Subscribe(e => { if (!e.Active) closed.TrySetResult(); }))
+            // Площадка — это МЕРОПРИЯТИЕ, а не флаг на мире: с ним рождаются и арена, и владелец
+            // расстановки, которому адресован интент ниже. Пока площадку открывали одним интентом,
+            // отвечать на него было некому — боевой скоуп рождается по требованию, и в этот момент
+            // его ещё не существовало.
+            _activities.Open(Data.Definitions.ActivitySetup.ProvingGrounds);
+            try
             {
-                _provingGroundsPub.Publish(new Data.Definitions.SetTestZoneRequest(true));
-                await closed.Task;
+                var closed = new UniTaskCompletionSource();
+                using (_provingGroundsChangedSub.Subscribe(e => { if (!e.Active) closed.TrySetResult(); }))
+                {
+                    _provingGroundsPub.Publish(new Data.Definitions.SetTestZoneRequest(true));
+                    await closed.Task;
+                }
+            }
+            finally
+            {
+                _activities.Close();
             }
 
             Debug.Log("[GameFlow] - Ристалище закрыто → главное меню");
@@ -251,7 +263,7 @@ namespace Guildmaster.Game.Services
             // Токен отмены забега на время акта (QA #18): «В главное меню» → Cancel → OperationCanceledException.
             _runCts?.Dispose();
             _runCts = new CancellationTokenSource();
-            _activities.Open();
+            _activities.Open(ActivitySetup.Campaign);
             try
             {
                 var ctx = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents, _runCts.Token);
@@ -307,7 +319,7 @@ namespace Guildmaster.Game.Services
             RunState run = runStates.Current
                            ?? runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
-            _activities.Open();
+            _activities.Open(ActivitySetup.Campaign);
             var ctx  = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents);
             var flow = new TextEventFlow(ev, _openEventPub, _activities.EventEffects);
             return await flow.Run(ctx);
