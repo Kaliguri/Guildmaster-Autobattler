@@ -1,0 +1,137 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2319fd0ba0cab21419bd418011f922c7, type: 3}
+  m_Name: BoneUnit_Spear_RigProfile
+  m_EditorClassIdentifier: Guildmaster.AnimationLab.Editor::Guildmaster.AnimationLab.Editor.RigProfile
+  Rig: {fileID: 8653652762275240572, guid: 871d9c61ee87a1a4dba7d14b5ba807ec, type: 3}
+  Joints:
+  - Id: hips
+    Path: Hips
+    RestZ: 0
+    BoneAxisLocal: -2.6837769
+    BoneLength: 0.06407028
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: torso
+    Path: Hips/Torso
+    RestZ: 0
+    BoneAxisLocal: 4.5744815
+    BoneLength: 0.092307776
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: head
+    Path: Hips/Torso/Head
+    RestZ: 0
+    BoneAxisLocal: 90
+    BoneLength: 0.088308156
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: shoulder.L
+    Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)
+    RestZ: -20.519989
+    BoneAxisLocal: -85.941895
+    BoneLength: 0.13845928
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: elbow.L
+    Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)
+    RestZ: 0
+    BoneAxisLocal: -58.61151
+    BoneLength: 0.072338074
+    FlexSign: 1
+    FlexLimit: 120
+  - Id: grip.L
+    Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)
+    RestZ: 0
+    BoneAxisLocal: 0
+    BoneLength: 0
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: shoulder.R
+    Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)
+    RestZ: 10.000004
+    BoneAxisLocal: -88.51056
+    BoneLength: 0.13963611
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: elbow.R
+    Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)
+    RestZ: 0
+    BoneAxisLocal: -68.75818
+    BoneLength: 0.07901267
+    FlexSign: 1
+    FlexLimit: 120
+  - Id: grip.R
+    Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)
+    RestZ: 0
+    BoneAxisLocal: -0.66867065
+    BoneLength: 0.54561675
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: hip.L
+    Path: Hips/Leg (Left)/Rotation Point (Hip)
+    RestZ: 0
+    BoneAxisLocal: -110.654785
+    BoneLength: 0.18413165
+    FlexSign: 1
+    FlexLimit: 45
+  - Id: knee.L
+    Path: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)
+    RestZ: 0
+    BoneAxisLocal: -98.78772
+    BoneLength: 0.11683943
+    FlexSign: -1
+    FlexLimit: 60
+  - Id: ankle.L
+    Path: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation Point
+      (Ankle)
+    RestZ: 0
+    BoneAxisLocal: -94.83371
+    BoneLength: 0.045096356
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: hip.R
+    Path: Hips/Leg (Right)/Rotation Point (Hip)
+    RestZ: 0
+    BoneAxisLocal: -93.6402
+    BoneLength: 0.17561561
+    FlexSign: 1
+    FlexLimit: 45
+  - Id: knee.R
+    Path: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)
+    RestZ: 0
+    BoneAxisLocal: -87.008606
+    BoneLength: 0.10539187
+    FlexSign: -1
+    FlexLimit: 60
+  - Id: ankle.R
+    Path: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation Point
+      (Ankle)
+    RestZ: 0
+    BoneAxisLocal: -88.34027
+    BoneLength: 0.04661
+    FlexSign: 1
+    FlexLimit: 0
+  Held:
+  - Id: weapon
+    GripPath: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)
+    ItemPath: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)/Spear/Visual Part (Spear)/Spear
+    OrientationName: blade
+    OrientationLocal: 90
+    CalibrationZ: -89.390015
+    GripToButt: 0.17494331
+    GripToBoneEnd: 0.045000017
+    ItemLength: 0.72
