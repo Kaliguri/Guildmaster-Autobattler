@@ -5,7 +5,8 @@
     "Guildmaster.Presentation",
     "Guildmaster.Data",
     "Unity.RenderPipelines.Core.Runtime",
-    "Unity.RenderPipelines.Universal.Runtime"
+    "Unity.RenderPipelines.Universal.Runtime",
+    "MCPForUnity.Editor"
   ],
   "includePlatforms": [
     "Editor"
@@ -16,6 +17,12 @@
   "precompiledReferences": [],
   "autoReferenced": true,
   "defineConstraints": [],
-  "versionDefines": [],
+  "versionDefines": [
+    {
+      "name": "com.coplaydev.unity-mcp",
+      "expression": "",
+      "define": "MCP_FOR_UNITY"
+    }
+  ],
   "noEngineReferences": false
 }

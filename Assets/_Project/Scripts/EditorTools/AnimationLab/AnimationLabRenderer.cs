@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -214,13 +214,14 @@ namespace Guildmaster.AnimationLab.Editor
                 {
                     SampleComposed(unit, clip, times[i], options);
                     cam.Render();
-                    frames.Add(ReadBack(rt, cell));
+                    frames.Add(Presentation.Editor.FrameSheet.ReadBack(rt, cell, cell));
                 }
 
                 var eventFrames = FindEventFrames(clip, times);
+                var layout = ToSheetOptions(options);
                 var sheet = onionSkin
-                    ? ComposeOnionSkin(frames, cell, options)
-                    : ComposeContactSheet(frames, cell, options, eventFrames);
+                    ? Presentation.Editor.FrameSheet.ComposeOnionSkin(frames, cell, layout)
+                    : Presentation.Editor.FrameSheet.ComposeContactSheet(frames, cell, layout, eventFrames);
 
                 string path = ResolveOutputPath(options.OutputPath, clip, onionSkin);
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
@@ -270,18 +271,14 @@ namespace Guildmaster.AnimationLab.Editor
             return bounds;
         }
 
-        static Color[] ReadBack(RenderTexture rt, int cell)
+        /// <summary>Разметка листа лаборатории в терминах общей склейки.</summary>
+        static Presentation.Editor.FrameSheet.Options ToSheetOptions(Options options) => new()
         {
-            var previous = RenderTexture.active;
-            RenderTexture.active = rt;
-            var tex = new Texture2D(cell, cell, TextureFormat.RGBA32, false);
-            tex.ReadPixels(new Rect(0, 0, cell, cell), 0, 0);
-            tex.Apply();
-            RenderTexture.active = previous;
-            var pixels = tex.GetPixels();
-            Object.DestroyImmediate(tex);
-            return pixels;
-        }
+            Columns = options.Columns,
+            Background = options.Background,
+            Divider = options.Divider,
+            EventMarker = options.EventMarker
+        };
 
         static int[] FindEventFrames(AnimationClip clip, float[] times)
         {
@@ -303,78 +300,6 @@ namespace Guildmaster.AnimationLab.Editor
             return marked.ToArray();
         }
 
-        static Texture2D ComposeContactSheet(List<Color[]> frames, int cell, Options options, int[] eventFrames)
-        {
-            int columns = Mathf.Clamp(options.Columns, 1, Mathf.Max(1, frames.Count));
-            int rows = Mathf.CeilToInt(frames.Count / (float)columns);
-
-            var sheet = NewSheet(columns * cell, rows * cell, options.Background);
-
-            for (int i = 0; i < frames.Count; i++)
-            {
-                int column = i % columns;
-                int row = i / columns;
-                // Texture2D origin is bottom-left; rows should read top-down like a storyboard.
-                int x = column * cell;
-                int y = (rows - 1 - row) * cell;
-                sheet.SetPixels(x, y, cell, cell, frames[i]);
-
-                DrawVerticalLine(sheet, x, y, cell, options.Divider);
-                if (System.Array.IndexOf(eventFrames, i) >= 0)
-                    DrawHorizontalLine(sheet, x, y + cell - 3, cell, 3, options.EventMarker);
-            }
-
-            sheet.Apply();
-            return sheet;
-        }
-
-        static Texture2D ComposeOnionSkin(List<Color[]> frames, int cell, Options options)
-        {
-            var sheet = NewSheet(cell, cell, options.Background);
-            var canvas = sheet.GetPixels();
-            var background = options.Background;
-
-            for (int f = 0; f < frames.Count; f++)
-            {
-                // Older poses stay faint, the last one lands at full strength.
-                float weight = Mathf.Lerp(0.18f, 1f, frames.Count == 1 ? 1f : f / (float)(frames.Count - 1));
-                var frame = frames[f];
-                for (int p = 0; p < canvas.Length; p++)
-                {
-                    var c = frame[p];
-                    // The preview clears to Background, so anything that differs from it is the silhouette.
-                    float ink = Mathf.Max(Mathf.Abs(c.r - background.r), Mathf.Max(Mathf.Abs(c.g - background.g), Mathf.Abs(c.b - background.b)));
-                    if (ink < 0.02f) continue;
-                    canvas[p] = Color.Lerp(canvas[p], c, weight);
-                }
-            }
-
-            sheet.SetPixels(canvas);
-            sheet.Apply();
-            return sheet;
-        }
-
-        static Texture2D NewSheet(int width, int height, Color fill)
-        {
-            var tex = new Texture2D(width, height, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point };
-            var pixels = new Color[width * height];
-            for (int i = 0; i < pixels.Length; i++) pixels[i] = fill;
-            tex.SetPixels(pixels);
-            return tex;
-        }
-
-        static void DrawVerticalLine(Texture2D tex, int x, int y, int height, Color color)
-        {
-            if (x <= 0) return;
-            for (int i = 0; i < height; i++) tex.SetPixel(x, y + i, color);
-        }
-
-        static void DrawHorizontalLine(Texture2D tex, int x, int y, int width, int thickness, Color color)
-        {
-            for (int t = 0; t < thickness; t++)
-                for (int i = 0; i < width; i++)
-                    tex.SetPixel(x + i, y + t, color);
-        }
 
         static string ResolveOutputPath(string requested, AnimationClip clip, bool onionSkin)
         {

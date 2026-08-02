@@ -3,6 +3,7 @@
   "rootNamespace": "Guildmaster.AnimationLab.Editor",
   "references": [
     "Guildmaster.Presentation",
+    "Guildmaster.Presentation.Editor",
     "Guildmaster.Data"
   ],
   "includePlatforms": [
