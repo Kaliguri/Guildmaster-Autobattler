@@ -1,44 +1,81 @@
-/* Зоны влияния на карте — то, что делаем СЕЙЧАС.
+/* Зоны влияния — то, что делаем СЕЙЧАС.
 
-   Решение Макса 2026-08-02: местность не рисуем вовсе. Карта остаётся картой узлов и дорог, а
-   единственный территориальный слой на ней — зона влияния фракции. Рельеф продолжает жить как
-   МЕХАНИКА (форма области решает, как ходят дороги), но собственной картинки не имеет: его видно
-   по рисунку графа. Атласная земля и летающие острова отложены — раздел «Земля и страна».
+   Модель после уточнений Макса 2026-08-02:
 
-   Здесь два вопроса: чем рисовать саму зону (шесть вариантов) и как узел говорит о своей
-   принадлежности (три варианта). Плюс запланированные эффекты живьём. */
+   1. Местность не рисуем вовсе. Карта остаётся картой узлов и дорог; единственный территориальный
+      слой — зона влияния.
+   2. Зона — это не «фракция-государство», а УКАЗАТЕЛЬ СОСТАВА: какие враги ждут. Их много, и
+      одного вида может быть несколько сразу — «Взрывные Гоблины» рядом с «Проворными Гоблинами».
+   3. Узлы НЕ трогаем. Ни ободков, ни флажков: узел читается как принадлежащий зоне потому, что
+      лежит на её территории. Подробности игрок берёт наведением на НАЗВАНИЕ, как на страну.
+   4. Зоны ограничивают друг друга. Это РАЗДЕЛ карты, а не пятна с перекрытиями: у соседей общая
+      граница, и она рваная.
+
+   Как это считается. Плоскость делится по ближайшему узлу — это Вороной, а объединение ячеек узлов
+   одной зоны и есть её территория. Координаты перед замером гнутся фрактальным шумом, поэтому
+   граница рваная, а у соседей она ОДНА И ТА ЖЕ: обе стороны считают один и тот же критерий.
+   Дальше радиуса влияния земля ничейная. Reference: redblobgames (Вороной + релаксация Ллойда),
+   реф стиля — мод Spire Biomes для Slay the Spire. */
 
 import { tick } from "../clock.js";
 import { COL, jag } from "../draw.js";
 import type { DrawFn, SectionDef, StandDef } from "../types.js";
 
-const GOBLIN = "132,214,92";
-const BANDIT = "255,96,80";
-const CROWN = "120,168,255";
+/* ---------- палитра зон ---------- */
 
-/* ---------- общая сцена: узлы и дороги ---------- */
+interface ZoneDef {
+  /** Вид врага задаёт ЦВЕТ: гоблины зелёные, разбойники красные. */
+  hue: [number, number, number];
+  /** Полное имя на карте. */
+  name: string;
+  /** Оттеночный сдвиг: две зоны одного вида различаются светлотой, а не цветом. */
+  shade: number;
+}
+
+const ZONES: ZoneDef[] = [
+  { hue: [132, 214, 92], name: "Взрывные Гоблины", shade: 1 },
+  { hue: [132, 214, 92], name: "Проворные Гоблины", shade: 0.68 },
+  { hue: [255, 96, 80], name: "Жадные Разбойники", shade: 1 },
+  { hue: [120, 168, 255], name: "Дозор Короны", shade: 1 }
+];
+
+function rgb(z: ZoneDef, alpha: number): string {
+  const [r, g, b] = z.hue;
+  const k = z.shade;
+  return `rgba(${Math.round(r * k)},${Math.round(g * k)},${Math.round(b * k)},${alpha})`;
+}
+
+/* ---------- сцена ---------- */
 
 interface Dot {
   x: number;
   y: number;
-  zone: string;
+  zone: number;
 }
 
+/** Акт целиком в миниатюре: пять колонок, четыре зоны по 6–9 узлов, как в игре. */
 function scene(w: number, h: number): { dots: Dot[]; pairs: Array<[number, number]> } {
-  const cols = [2, 3, 3, 3, 2];
-  const left = w * 0.14;
-  const stepX = (w * 0.72) / (cols.length - 1);
+  const cols = [2, 4, 4, 4, 3, 2];
+  const left = w * 0.11;
+  const stepX = (w * 0.78) / (cols.length - 1);
   const dots: Dot[] = [];
   const starts: number[] = [];
 
   cols.forEach((rows, c) => {
     starts.push(dots.length);
-    for (let r = 0; r < rows; r++)
+    for (let r = 0; r < rows; r++) {
+      // Зоны нарезаны наискось: граница намеренно не совпадает со столбцом этажа.
+      let zone = 0;
+      if (c >= 1 && r >= rows - 2) zone = 1;
+      if (c >= 3) zone = 2;
+      if (c >= 3 && r === 0) zone = 3;
+      if (c >= 4 && r <= 1) zone = 3;
       dots.push({
-        x: left + c * stepX,
-        y: h * 0.47 + (r - (rows - 1) / 2) * (h * 0.2),
-        zone: c <= 1 ? GOBLIN : c === 2 && r === 0 ? GOBLIN : BANDIT
+        x: left + c * stepX + (jag(c * 9 + r, 5) - 0.5) * w * 0.02,
+        y: h * 0.5 + (r - (rows - 1) / 2) * (h * 0.21) + (jag(c * 7 + r, 3) - 0.5) * h * 0.04,
+        zone
       });
+    }
   });
 
   const pairs: Array<[number, number]> = [];
@@ -59,9 +96,154 @@ function scene(w: number, h: number): { dots: Dot[]; pairs: Array<[number, numbe
   return { dots, pairs };
 }
 
+/* ---------- шум ---------- */
+
+function hash2(x: number, y: number, salt: number): number {
+  return jag(x * 374761 + y * 668265, salt);
+}
+
+function vnoise(x: number, y: number, salt: number): number {
+  const xi = Math.floor(x);
+  const yi = Math.floor(y);
+  const xf = x - xi;
+  const yf = y - yi;
+  const u = xf * xf * (3 - 2 * xf);
+  const v = yf * yf * (3 - 2 * yf);
+  const a = hash2(xi, yi, salt);
+  const b = hash2(xi + 1, yi, salt);
+  const c = hash2(xi, yi + 1, salt);
+  const d = hash2(xi + 1, yi + 1, salt);
+  return (
+    (a + (b - a) * u) + ((c + (d - c) * u) - (a + (b - a) * u)) * v
+  );
+}
+
+function fbm(x: number, y: number, salt: number): number {
+  let sum = 0;
+  let amp = 0.5;
+  let freq = 1;
+  for (let o = 0; o < 3; o++) {
+    sum += (vnoise(x * freq, y * freq, salt + o * 17) - 0.5) * amp;
+    amp *= 0.5;
+    freq *= 2.1;
+  }
+  return sum;
+}
+
+/* ---------- раздел плоскости на зоны ---------- */
+
+interface PartOpts {
+  /** Сила рваности границы в пикселях. 0 — прямые рёбра Вороного. */
+  warp: number;
+  /** Радиус влияния узла: дальше него земля ничейная. */
+  reach: number;
+  /** Толщина яркой границы. */
+  edge: number;
+}
+
+/** Кто владеет точкой: индекс зоны и расстояние до её ближайшего узла. */
+function ownerAt(x: number, y: number, dots: Dot[], o: PartOpts): { zone: number; dist: number } {
+  let px = x;
+  let py = y;
+  if (o.warp > 0) {
+    px += fbm(x * 0.006, y * 0.006, 3) * o.warp + fbm(x * 0.03, y * 0.03, 11) * o.warp * 0.35;
+    py += fbm(x * 0.006 + 5.2, y * 0.006 + 1.7, 7) * o.warp + fbm(x * 0.03, y * 0.03, 19) * o.warp * 0.35;
+  }
+  let best = 1e9;
+  let zone = -1;
+  for (const d of dots) {
+    const dd = (d.x - px) * (d.x - px) + (d.y - py) * (d.y - py);
+    if (dd < best) {
+      best = dd;
+      zone = d.zone;
+    }
+  }
+  const dist = Math.sqrt(best);
+  return { zone: dist > o.reach ? -1 : zone, dist };
+}
+
+const cache = new Map<string, HTMLCanvasElement>();
+
+/** Заливка территорий и общая граница между соседями — одним проходом по пикселям. */
+function renderPartition(w: number, h: number, dots: Dot[], o: PartOpts): HTMLCanvasElement {
+  const key = `${Math.round(w)}x${Math.round(h)}|${o.warp}|${o.reach}|${o.edge}|${dots.length}|${dots[0]?.x.toFixed(1)}`;
+  const hit = cache.get(key);
+  if (hit) return hit;
+
+  const cv = document.createElement("canvas");
+  cv.width = Math.max(1, Math.round(w));
+  cv.height = Math.max(1, Math.round(h));
+  const c = cv.getContext("2d");
+  if (!c) return cv;
+
+  // Владелец каждого пикселя считается один раз и переиспользуется для границы.
+  const own = new Int16Array(cv.width * cv.height);
+  for (let y = 0; y < cv.height; y++)
+    for (let x = 0; x < cv.width; x++) own[y * cv.width + x] = ownerAt(x, y, dots, o).zone;
+
+  const img = c.createImageData(cv.width, cv.height);
+  const px = img.data;
+
+  for (let y = 0; y < cv.height; y++) {
+    for (let x = 0; x < cv.width; x++) {
+      const i = y * cv.width + x;
+      const z = own[i] ?? -1;
+      let r = 0;
+      let g = 0;
+      let b = 0;
+      let a = 0;
+
+      if (z >= 0) {
+        const def = ZONES[z];
+        if (def) {
+          const k = def.shade;
+          r = def.hue[0] * k;
+          g = def.hue[1] * k;
+          b = def.hue[2] * k;
+          a = 46;                       // бледная заливка: узлы и дороги остаются главными
+        }
+      }
+
+      // Граница: сосед принадлежит другому владельцу. Считается по ОДНОМУ критерию с обеих
+      // сторон, поэтому у соседних зон она общая, а не две линии рядом.
+      let border = false;
+      for (let d = 1; d <= o.edge && !border; d++) {
+        const right = x + d < cv.width ? own[i + d] ?? z : z;
+        const down = y + d < cv.height ? own[i + d * cv.width] ?? z : z;
+        const left = x - d >= 0 ? own[i - d] ?? z : z;
+        const up = y - d >= 0 ? own[i - d * cv.width] ?? z : z;
+        if (right !== z || down !== z || left !== z || up !== z) border = true;
+      }
+
+      if (border) {
+        const def = ZONES[z >= 0 ? z : 0];
+        if (z >= 0 && def) {
+          const k = def.shade;
+          r = def.hue[0] * k;
+          g = def.hue[1] * k;
+          b = def.hue[2] * k;
+          a = 235;                      // яркая кромка — то, чем зона себя ограничивает
+        }
+      }
+
+      px[i * 4] = r;
+      px[i * 4 + 1] = g;
+      px[i * 4 + 2] = b;
+      px[i * 4 + 3] = a;
+    }
+  }
+
+  c.putImageData(img, 0, 0);
+  cache.set(key, cv);
+  return cv;
+}
+
+/* ---------- узлы, дороги, печать ---------- */
+
 function roads(ctx: CanvasRenderingContext2D, dots: Dot[], pairs: Array<[number, number]>): void {
-  ctx.strokeStyle = "rgba(147,128,94,.5)";
+  ctx.strokeStyle = "rgba(120,104,76,.7)";
   ctx.lineWidth = 1.4;
+  ctx.setLineDash([3, 5]);
   for (const [a, b] of pairs) {
     const from = dots[a];
     const to = dots[b];
@@ -71,461 +253,290 @@ function roads(ctx: CanvasRenderingContext2D, dots: Dot[], pairs: Array<[number,
     ctx.lineTo(to.x, to.y);
     ctx.stroke();
   }
+  ctx.setLineDash([]);
 }
 
-type Belong = "ring" | "flag" | "halo" | "none";
-
-function nodes(ctx: CanvasRenderingContext2D, dots: Dot[], belong: Belong, r = 9): void {
+/** Узлы БЕЗ метки принадлежности: их вид не зависит от того, чья это земля. */
+function nodes(ctx: CanvasRenderingContext2D, dots: Dot[]): void {
   for (const d of dots) {
-    if (belong === "halo") {
-      const g = ctx.createRadialGradient(d.x, d.y, r, d.x, d.y, r * 2.6);
-      g.addColorStop(0, `rgba(${d.zone},.5)`);
-      g.addColorStop(1, `rgba(${d.zone},0)`);
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.arc(d.x, d.y, r * 2.6, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
     ctx.beginPath();
-    ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
+    ctx.arc(d.x, d.y, 8, 0, Math.PI * 2);
     ctx.fillStyle = COL.body;
     ctx.fill();
-    ctx.lineWidth = belong === "ring" ? 2.6 : 1.5;
-    ctx.strokeStyle = belong === "ring" ? `rgba(${d.zone},.95)` : "rgba(184,134,59,.7)";
+    ctx.lineWidth = 1.6;
+    ctx.strokeStyle = "rgba(184,134,59,.8)";
     ctx.stroke();
-
-    if (belong === "flag") {
-      ctx.beginPath();
-      ctx.arc(d.x + r * 0.9, d.y - r * 0.9, 3.4, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${d.zone},.95)`;
-      ctx.fill();
-    }
   }
 }
 
-/* ---------- поле зоны ----------
-   Метабол по узлам зоны: круги в одном path, координаты гнутся шумом. Форма считается один раз и
-   переиспользуется всеми вариантами — сравнивать надо ЗАЛИВКУ, а не разные пятна. */
-
-function zonePath(ctx: CanvasRenderingContext2D, dots: Dot[], zone: string, radius: number): void {
-  ctx.beginPath();
+function zoneCentre(dots: Dot[], zone: number): { x: number; y: number } {
   const own = dots.filter((d) => d.zone === zone);
-  own.forEach((d, i) => {
-    const r = radius * (0.85 + jag(i, 7) * 0.35);
-    ctx.moveTo(d.x + r, d.y);
-    ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
-  });
+  if (own.length === 0) return { x: 0, y: 0 };
+  return {
+    x: own.reduce((s, d) => s + d.x, 0) / own.length,
+    y: own.reduce((s, d) => s + d.y, 0) / own.length
+  };
 }
 
-/** Кромка ОБЪЕДИНЕНИЯ: заливка минус её же сжатая копия. Обводить каждый круг нельзя — внутренние
- *  дуги остаются видны, и территория читается как гроздь пузырей, а не как земля (проверено
- *  рендером: первая версия делала именно это). */
-function unionOutline(
+type Label = "seal" | "plate" | "plain" | "none";
+
+/** Печать зоны: знак вида + имя. Реф — Spire Biomes: бледная эмблема под текстом, не поверх. */
+function zoneLabel(
   ctx: CanvasRenderingContext2D,
-  w: number, h: number,
-  dots: Dot[], zone: string, radius: number, alpha: number, width = 2.5
+  z: ZoneDef,
+  cx: number,
+  cy: number,
+  kind: Label
 ): void {
-  const cv = document.createElement("canvas");
-  cv.width = Math.max(1, Math.round(w));
-  cv.height = Math.max(1, Math.round(h));
-  const c = cv.getContext("2d");
-  if (!c) return;
+  if (kind === "none") return;
 
-  zonePath(c, dots, zone, radius);
-  c.fillStyle = `rgba(${zone},${alpha})`;
-  c.fill();
-  c.globalCompositeOperation = "destination-out";
-  zonePath(c, dots, zone, radius - width);
-  c.fill();
-
-  ctx.drawImage(cv, 0, 0);
-}
-
-const R = 46;
-
-type Fill = "soft" | "outline" | "hatch" | "dither" | "stipple" | "full";
-
-function paintZone(ctx: CanvasRenderingContext2D, w: number, h: number, dots: Dot[], zone: string, fill: Fill): void {
-  ctx.save();
-
-  if (fill === "outline") {
-    unionOutline(ctx, w, h, dots, zone, R, 0.85);
-    ctx.restore();
-    return;
-  }
-
-  zonePath(ctx, dots, zone, R);
-  ctx.clip();
-
-  if (fill === "soft" || fill === "full") {
-    ctx.fillStyle = `rgba(${zone},.14)`;
-    ctx.fillRect(0, 0, w, h);
-  } else if (fill === "hatch") {
-    ctx.strokeStyle = `rgba(${zone},.4)`;
-    ctx.lineWidth = 1.2;
-    for (let i = -h; i < w; i += 9) {
+  if (kind === "seal") {
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+    ctx.strokeStyle = rgb(z, 0.9);
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(cx, cy - 16, 26, 0, Math.PI * 2);
+    ctx.stroke();
+    // зубцы печати
+    for (let i = 0; i < 16; i++) {
+      const a = (i / 16) * Math.PI * 2;
       ctx.beginPath();
-      ctx.moveTo(i, 0);
-      ctx.lineTo(i + h, h);
+      ctx.moveTo(cx + Math.cos(a) * 26, cy - 16 + Math.sin(a) * 26);
+      ctx.lineTo(cx + Math.cos(a) * 31, cy - 16 + Math.sin(a) * 31);
       ctx.stroke();
     }
-  } else if (fill === "dither") {
-    // Байер 4×4 — тот же язык, которым карта уже растворяет шторку и туман.
-    const bayer = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
-    ctx.fillStyle = `rgba(${zone},.30)`;   // ядовитая плотность проверена рендером и отвергнута
-    for (let y = 0; y < h; y += 3) {
-      for (let x = 0; x < w; x += 3) {
-        const v = bayer[(y / 3) % 4 * 4 + ((x / 3) % 4)] ?? 0;
-        if (v < 6) ctx.fillRect(x, y, 3, 3);
-      }
+    // знак вида: рожки для гоблинов, клинок для разбойников, корона для дозора
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    if (z.hue[0] === 132) {
+      ctx.moveTo(cx - 11, cy - 8);
+      ctx.lineTo(cx - 6, cy - 22);
+      ctx.lineTo(cx, cy - 10);
+      ctx.lineTo(cx + 6, cy - 22);
+      ctx.lineTo(cx + 11, cy - 8);
+    } else if (z.hue[0] === 255) {
+      ctx.moveTo(cx - 12, cy - 6);
+      ctx.lineTo(cx + 10, cy - 26);
+      ctx.moveTo(cx + 2, cy - 12);
+      ctx.lineTo(cx + 12, cy - 4);
+    } else {
+      ctx.moveTo(cx - 12, cy - 8);
+      ctx.lineTo(cx - 8, cy - 24);
+      ctx.lineTo(cx, cy - 12);
+      ctx.lineTo(cx + 8, cy - 24);
+      ctx.lineTo(cx + 12, cy - 8);
+      ctx.closePath();
     }
-  } else if (fill === "stipple") {
-    ctx.fillStyle = `rgba(${zone},.6)`;
-    for (let i = 0; i < 900; i++) {
-      const x = jag(i, 21) * w;
-      const y = jag(i, 22) * h;
-      let near = 1e9;
-      for (const d of dots) if (d.zone === zone) near = Math.min(near, Math.hypot(d.x - x, d.y - y));
-      const k = Math.min(1, Math.max(0, (near - R * 0.35) / (R * 0.7)));   // гуще к краю
-      if (jag(i, 23) < k * 0.9) {
-        ctx.beginPath();
-        ctx.arc(x, y, 1.1, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
+    ctx.stroke();
+    ctx.restore();
   }
 
-  ctx.restore();
+  ctx.font = "600 15px Georgia, 'Times New Roman', serif";
+  const wide = ctx.measureText(z.name).width;
 
-  if (fill === "full") {
-    unionOutline(ctx, w, h, dots, zone, R, 0.6);
+  if (kind === "plate") {
+    ctx.fillStyle = "rgba(26,20,14,.72)";
+    ctx.fillRect(cx - wide / 2 - 10, cy + 6, wide + 20, 24);
+    ctx.strokeStyle = rgb(z, 0.75);
+    ctx.lineWidth = 1.2;
+    ctx.strokeRect(cx - wide / 2 - 10, cy + 6, wide + 20, 24);
   }
+
+  // Тень под текстом: имя обязано читаться и на бледной заливке, и на границе.
+  ctx.fillStyle = "rgba(20,15,10,.55)";
+  ctx.fillText(z.name, cx - wide / 2 + 1, cy + 24);
+  ctx.fillStyle = rgb(z, 0.95);
+  ctx.fillText(z.name, cx - wide / 2, cy + 23);
 }
 
-/** Картуш: имя зоны на плашке. Заливка сама по себе не говорит, ЧТО это за земля. */
-function cartouche(
-  ctx: CanvasRenderingContext2D, text: string, cx: number, cy: number, zone: string, limit = 0
-): void {
-  ctx.font = "600 12px ui-monospace, Consolas, monospace";
-  const spaced = text.toUpperCase().split("").join(" ");
-  const wide = ctx.measureText(spaced).width;
-  if (limit > 0) cx = Math.max(wide / 2 + 14, Math.min(limit - wide / 2 - 14, cx));
-  ctx.fillStyle = "rgba(26,20,14,.72)";
-  ctx.fillRect(cx - wide / 2 - 9, cy - 11, wide + 18, 21);
-  ctx.strokeStyle = `rgba(${zone},.75)`;
-  ctx.lineWidth = 1.2;
-  ctx.strokeRect(cx - wide / 2 - 9, cy - 11, wide + 18, 21);
-  ctx.fillStyle = `rgba(${zone},.95)`;
-  ctx.fillText(spaced, cx - wide / 2, cy + 4);
-}
+/* ---------- стенды ---------- */
 
-function zoneStand(fill: Fill, belong: Belong, labels: boolean): DrawFn {
+function partitionStand(o: PartOpts, label: Label, only?: number[]): DrawFn {
   return (ctx, w, h) => {
     const { dots, pairs } = scene(w, h);
-    paintZone(ctx, w, h, dots, GOBLIN, fill);
-    paintZone(ctx, w, h, dots, BANDIT, fill);
+    const used = only ? dots.filter((d) => only.includes(d.zone)) : dots;
+    ctx.drawImage(renderPartition(w, h, used, o), 0, 0, w, h);
     roads(ctx, dots, pairs);
-    nodes(ctx, dots, belong);
-    if (labels) {
-      cartouche(ctx, "молниеносные гоблины", w * 0.29, h * 0.13, GOBLIN, w);
-      cartouche(ctx, "жадные разбойники", w * 0.72, h * 0.87, BANDIT, w);
+    nodes(ctx, dots);
+
+    const shown = only ?? [0, 1, 2, 3];
+    for (const zi of shown) {
+      const def = ZONES[zi];
+      if (!def) continue;
+      const c = zoneCentre(dots, zi);
+      zoneLabel(ctx, def, Math.max(90, Math.min(w - 90, c.x)), c.y, label);
     }
   };
 }
 
-/* ---------- запланированные эффекты ---------- */
+/** Наведение на имя зоны — единственный способ узнать состав. Узел молчит. */
+const drawHover: DrawFn = (ctx, w, h) => {
+  const { dots, pairs } = scene(w, h);
+  const o: PartOpts = { warp: 46, reach: 96, edge: 2 };
+  ctx.drawImage(renderPartition(w, h, dots, o), 0, 0, w, h);
+  roads(ctx, dots, pairs);
+  nodes(ctx, dots);
 
-/** Раскрытие зоны при входе: чернила расползаются от узла, за 0.6 с. */
+  const def = ZONES[0];
+  const c = zoneCentre(dots, 0);
+  if (def) zoneLabel(ctx, def, Math.max(90, Math.min(w - 90, c.x)), c.y, "seal");
+
+  const bx = Math.max(20, Math.min(w - 250, c.x - 40));
+  const by = c.y + 44;
+  ctx.fillStyle = "rgba(24,18,12,.93)";
+  ctx.fillRect(bx, by, 236, 96);
+  ctx.strokeStyle = rgb(ZONES[0] as ZoneDef, 0.8);
+  ctx.lineWidth = 1.4;
+  ctx.strokeRect(bx, by, 236, 96);
+
+  ctx.font = "600 13px Georgia, serif";
+  ctx.fillStyle = rgb(ZONES[0] as ZoneDef, 0.95);
+  ctx.fillText("Взрывные Гоблины", bx + 14, by + 24);
+  ctx.font = "500 11px ui-monospace, Consolas, monospace";
+  ctx.fillStyle = "rgba(200,186,150,.92)";
+  ctx.fillText("гоблины · 8 узлов", bx + 14, by + 44);
+  ctx.fillText("враги взрываются при смерти", bx + 14, by + 62);
+  ctx.fillStyle = "rgba(147,128,94,.85)";
+  ctx.fillText("наведи на имя — узел молчит", bx + 14, by + 82);
+
+  // курсор на имени
+  ctx.fillStyle = "rgba(232,214,178,.9)";
+  ctx.beginPath();
+  ctx.moveTo(c.x + 30, c.y + 16);
+  ctx.lineTo(c.x + 30, c.y + 30);
+  ctx.lineTo(c.x + 40, c.y + 26);
+  ctx.closePath();
+  ctx.fill();
+};
+
+/** Две зоны одного вида рядом: цвет один, различает светлота и имя. */
+const drawSameKind: DrawFn = (ctx, w, h) => {
+  const { dots, pairs } = scene(w, h);
+  const o: PartOpts = { warp: 46, reach: 96, edge: 2 };
+  const used = dots.filter((d) => d.zone === 0 || d.zone === 1);
+  ctx.drawImage(renderPartition(w, h, used, o), 0, 0, w, h);
+  roads(ctx, dots, pairs);
+  nodes(ctx, dots);
+  for (const zi of [0, 1]) {
+    const def = ZONES[zi];
+    if (!def) continue;
+    const c = zoneCentre(dots, zi);
+    zoneLabel(ctx, def, Math.max(90, Math.min(w - 90, c.x)), c.y, "plain");
+  }
+
+  ctx.font = "500 11px ui-monospace, Consolas, monospace";
+  ctx.fillStyle = "rgba(147,128,94,.9)";
+  ctx.fillText("один вид — один цвет; различают светлота и имя", 16, h - 12);
+};
+
+/** Раскрытие зоны при входе: кромка вспыхивает и заливка наливается. */
 const drawReveal: DrawFn = (ctx, w, h) => {
   const { dots, pairs } = scene(w, h);
-  const cycle = (tick % 90) / 90;
-  const grow = Math.min(1, cycle * 2.2);
+  const o: PartOpts = { warp: 46, reach: 96, edge: 2 };
+  const cycle = (tick % 120) / 120;
+  const grow = Math.min(1, cycle * 2.4);
 
-  const src = dots[6] ?? dots[0];
-  if (src) {
+  ctx.save();
+  ctx.globalAlpha = 0.35 + grow * 0.65;
+  ctx.drawImage(renderPartition(w, h, dots, o), 0, 0, w, h);
+  ctx.restore();
+
+  roads(ctx, dots, pairs);
+  nodes(ctx, dots);
+  const def = ZONES[2];
+  if (def) {
+    const c = zoneCentre(dots, 2);
     ctx.save();
-    ctx.beginPath();
-    ctx.arc(src.x, src.y, 26 + grow * (w * 0.42), 0, Math.PI * 2);
-    ctx.clip();
-    paintZone(ctx, w, h, dots, BANDIT, "soft");
-    unionOutline(ctx, w, h, dots, BANDIT, R, 0.5 * grow);
+    ctx.globalAlpha = grow;
+    zoneLabel(ctx, def, Math.max(90, Math.min(w - 90, c.x)), c.y, "seal");
     ctx.restore();
   }
-  paintZone(ctx, w, h, dots, GOBLIN, "soft");
-  roads(ctx, dots, pairs);
-  nodes(ctx, dots, "ring");
 
   ctx.font = "500 11px ui-monospace, Consolas, monospace";
   ctx.fillStyle = "rgba(147,128,94,.9)";
-  ctx.fillText("вошёл в землю — чернила расходятся от узла", 16, h - 12);
+  ctx.fillText("шаг в чужую землю: кромка наливается, печать проявляется", 16, h - 12);
 };
 
-/** Подсветка достижимого на один-два шага вперёд — вместо подсветки ряда. */
-const drawReach: DrawFn = (ctx, w, h) => {
-  const { dots, pairs } = scene(w, h);
-  const from = 2;                                    // «где стоит отряд»
-  const one = new Set<number>();
-  const two = new Set<number>();
-  for (const [a, b] of pairs) if (a === from) one.add(b);
-  for (const [a, b] of pairs) if (one.has(a)) two.add(b);
+const WIDE: [number, number] = [620, 340];
+const SIZE: [number, number] = [320, 270];
 
-  paintZone(ctx, w, h, dots, GOBLIN, "soft");
-  paintZone(ctx, w, h, dots, BANDIT, "soft");
-
-  ctx.strokeStyle = "rgba(147,128,94,.25)";
-  ctx.lineWidth = 1.4;
-  for (const [a, b] of pairs) {
-    const f = dots[a];
-    const t = dots[b];
-    if (!f || !t) continue;
-    const lit = a === from || (one.has(a) && two.has(b));
-    ctx.strokeStyle = lit ? "rgba(255,204,51,.75)" : "rgba(147,128,94,.22)";
-    ctx.lineWidth = lit ? 2 : 1.2;
-    ctx.beginPath();
-    ctx.moveTo(f.x, f.y);
-    ctx.lineTo(t.x, t.y);
-    ctx.stroke();
+const EDGES: StandDef[] = [
+  {
+    id: "edge-straight",
+    status: "rejected",
+    title: "Прямые рёбра",
+    tag: "warp 0",
+    note: "Чистый Вороной без шума: границы прямые и выдают алгоритм с первого взгляда.",
+    verdict: "Отклонено: карта сразу читается как схема раздела, а не как земля.",
+    size: SIZE,
+    draw: partitionStand({ warp: 0, reach: 96, edge: 2 }, "none")
+  },
+  {
+    id: "edge-soft",
+    status: "waiting",
+    title: "Умеренная рваность",
+    tag: "warp 28",
+    note: "Шум гнёт координаты перед замером. Граница живая, но силуэт зоны ещё узнаваем.",
+    size: SIZE,
+    draw: partitionStand({ warp: 28, reach: 96, edge: 2 }, "none")
+  },
+  {
+    id: "edge-wild",
+    status: "waiting",
+    title: "Сильная рваность",
+    tag: "warp 68",
+    note: "Красиво и дико, но у зоны появляются оторванные острова, а узел у границы может оказаться в чужой земле.",
+    size: SIZE,
+    draw: partitionStand({ warp: 68, reach: 96, edge: 2 }, "none")
   }
+];
 
-  dots.forEach((d, i) => {
-    const step = i === from ? 0 : one.has(i) ? 1 : two.has(i) ? 2 : 3;
-    const alpha = step === 0 ? 1 : step === 1 ? 0.95 : step === 2 ? 0.6 : 0.25;
-    ctx.beginPath();
-    ctx.arc(d.x, d.y, i === from ? 11 : 9, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(90,74,52,${alpha})`;
-    ctx.fill();
-    ctx.lineWidth = 2.4;
-    ctx.strokeStyle = `rgba(${d.zone},${alpha})`;
-    ctx.stroke();
-    if (i === from) {
-      ctx.fillStyle = COL.honey;
-      ctx.beginPath();
-      ctx.arc(d.x, d.y, 4, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  });
-
-  ctx.font = "500 11px ui-monospace, Consolas, monospace";
-  ctx.fillStyle = "rgba(147,128,94,.9)";
-  ctx.fillText("шаг — ярко, два — приглушённо, дальше — фон", 16, h - 12);
-};
-
-/** Счётчик шагов до босса: ответ на вопрос, ради которого хотели подсветку вех. */
-const drawSteps: DrawFn = (ctx, w, h) => {
-  const { dots, pairs } = scene(w, h);
-  paintZone(ctx, w, h, dots, GOBLIN, "soft");
-  paintZone(ctx, w, h, dots, BANDIT, "soft");
-  roads(ctx, dots, pairs);
-  nodes(ctx, dots, "ring");
-
-  // плашка у края листа
-  ctx.fillStyle = "rgba(26,20,14,.8)";
-  ctx.fillRect(w - 168, 18, 150, 40);
-  ctx.strokeStyle = "rgba(184,134,59,.6)";
-  ctx.lineWidth = 1.2;
-  ctx.strokeRect(w - 168, 18, 150, 40);
-  ctx.font = "600 13px ui-monospace, Consolas, monospace";
-  ctx.fillStyle = "rgba(232,214,178,.95)";
-  ctx.fillText("до босса: 9", w - 154, 44);
-
-  // и он же в тултипе узла
-  const d = dots[7];
-  if (d) {
-    ctx.fillStyle = "rgba(26,20,14,.86)";
-    ctx.fillRect(d.x + 14, d.y - 34, 172, 52);
-    ctx.strokeStyle = `rgba(${d.zone},.7)`;
-    ctx.strokeRect(d.x + 14, d.y - 34, 172, 52);
-    ctx.font = "600 11px ui-monospace, Consolas, monospace";
-    ctx.fillStyle = "rgba(232,214,178,.95)";
-    ctx.fillText("Жадные разбойники", d.x + 24, d.y - 16);
-    ctx.font = "500 11px ui-monospace, Consolas, monospace";
-    ctx.fillStyle = "rgba(147,128,94,.95)";
-    ctx.fillText("бой · 7 шагов до босса", d.x + 24, d.y + 2);
-  }
-
-  ctx.font = "500 11px ui-monospace, Consolas, monospace";
-  ctx.fillStyle = "rgba(147,128,94,.9)";
-  ctx.fillText("число, а не подсветка ряда", 16, h - 12);
-};
-
-/** Ambient-частицы под зону: воздух местности без единого пятна нового цвета. */
-const drawAmbient: DrawFn = (ctx, w, h) => {
-  const { dots, pairs } = scene(w, h);
-  paintZone(ctx, w, h, dots, GOBLIN, "soft");
-  paintZone(ctx, w, h, dots, BANDIT, "soft");
-  roads(ctx, dots, pairs);
-  nodes(ctx, dots, "ring");
-
-  ctx.save();
-  ctx.globalCompositeOperation = "lighter";
-  for (let i = 0; i < 46; i++) {
-    const own = i % 2 === 0 ? GOBLIN : BANDIT;
-    const host = dots.filter((d) => d.zone === own);
-    const anchor = host[i % host.length];
-    if (!anchor) continue;
-    const ph = (tick * 0.006 + jag(i, 31)) % 1;
-    const x = anchor.x + (jag(i, 32) - 0.5) * 90;
-    const y = anchor.y + (jag(i, 33) - 0.5) * 80 - ph * 26;
-    const a = Math.sin(ph * Math.PI) * 0.5;
-    ctx.fillStyle = `rgba(${own},${a.toFixed(3)})`;
-    ctx.beginPath();
-    ctx.arc(x, y, 1.6, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.restore();
-
-  ctx.font = "500 11px ui-monospace, Consolas, monospace";
-  ctx.fillStyle = "rgba(147,128,94,.9)";
-  ctx.fillText("споры у гоблинов, угли у разбойников — цвет зоны, не новый", 16, h - 12);
-};
-
-/** Грейдинг: карта целиком уходит в тон той земли, где стоит отряд. */
-const drawGrading: DrawFn = (ctx, w, h) => {
-  const { dots, pairs } = scene(w, h);
-  const k = 0.5 + 0.5 * Math.sin(tick * 0.03);
-
-  paintZone(ctx, w, h, dots, GOBLIN, "soft");
-  paintZone(ctx, w, h, dots, BANDIT, "soft");
-  roads(ctx, dots, pairs);
-  nodes(ctx, dots, "ring");
-
-  ctx.save();
-  ctx.globalCompositeOperation = "overlay";
-  ctx.fillStyle = `rgba(${BANDIT},${(0.05 + k * 0.10).toFixed(3)})`;
-  ctx.fillRect(0, 0, w, h);
-  ctx.restore();
-
-  ctx.font = "500 11px ui-monospace, Consolas, monospace";
-  ctx.fillStyle = "rgba(147,128,94,.9)";
-  ctx.fillText("весь лист чуть уходит в тон земли под ногами", 16, h - 12);
-};
-
-/* ---------- стенды ---------- */
-
-const SIZE: [number, number] = [320, 260];
-const WIDE: [number, number] = [620, 330];
-
-const FILLS: StandDef[] = [
+const LABELS: StandDef[] = [
   {
-    id: "fill-soft",
+    id: "label-seal",
     status: "waiting",
-    title: "Мягкая заливка",
-    note: "Метабол по узлам зоны, 14% непрозрачности. Самый спокойный вариант: пятно есть, но глаз за него не цепляется.",
-    size: SIZE,
-    draw: zoneStand("soft", "ring", false)
-  },
-  {
-    id: "fill-outline",
-    status: "waiting",
-    title: "Только контур",
-    note: "Заливки нет вовсе, есть рваная кромка. Карта остаётся чистой, но принадлежность читается лишь вблизи границы.",
-    size: SIZE,
-    draw: zoneStand("outline", "ring", false)
-  },
-  {
-    id: "fill-hatch",
-    status: "waiting",
-    title: "Штриховка",
-    note: "Диагональные линии цветом зоны — приём старых карт. Хорошо переносит наложение: две штриховки под разным углом не сливаются в кашу, в отличие от двух заливок.",
-    size: SIZE,
-    draw: zoneStand("hatch", "ring", false)
-  },
-  {
-    id: "fill-dither",
-    status: "waiting",
-    title: "Дизеринг",
-    note: "Байер 4×4 — тот же язык, которым карта уже растворяет шторку перехода и туман. Держит стиль лучше всех остальных.",
-    size: SIZE,
-    draw: zoneStand("dither", "ring", false)
-  },
-  {
-    id: "fill-stipple",
-    status: "waiting",
-    title: "Точечная отсыпка",
-    note: "Точки, густеющие к краю владения. Классика бумажных карт: центр земли чист, а граница видна плотностью.",
-    size: SIZE,
-    draw: zoneStand("stipple", "ring", false)
-  },
-  {
-    id: "fill-full",
-    status: "waiting",
-    title: "Заливка, кромка и картуш",
-    tag: "полный набор",
-    note: "Мягкая заливка + рваная кромка + имя зоны на плашке. Имя обязательно: заливка сама по себе говорит «чья-то земля», но не говорит чья.",
-    verdict: "Мой фаворит для игры; штриховка и дизеринг — сильные альтернативы, если пятна начнут спорить.",
+    title: "Печать и имя",
+    tag: "реф Spire Biomes",
+    note: "Бледная эмблема вида под названием. Имя читается издалека, эмблема даёт «чья земля» боковым зрением.",
+    verdict: "Ближе всего к рефу и к нашему листу-пергаменту.",
     size: WIDE,
-    draw: zoneStand("full", "ring", true)
+    draw: partitionStand({ warp: 46, reach: 96, edge: 2 }, "seal")
+  },
+  {
+    id: "label-plate",
+    status: "waiting",
+    title: "Имя на плашке",
+    note: "Читается всегда и на любом фоне, но плашка — предмет интерфейса, а не карты: на пергаменте выглядит наклейкой.",
+    size: WIDE,
+    draw: partitionStand({ warp: 46, reach: 96, edge: 2 }, "plate")
   }
 ];
 
-const BELONG: StandDef[] = [
+const CASES: StandDef[] = [
   {
-    id: "belong-ring",
+    id: "hover",
     status: "waiting",
-    title: "Ободок узла",
-    note: "Цвет зоны идёт по кромке узла. Виден при любом зуме, не мешает иконке типа внутри.",
-    size: SIZE,
-    draw: zoneStand("soft", "ring", false)
+    title: "Наведение на имя",
+    note: "Состав, число узлов и правило зоны показываются при наведении на НАЗВАНИЕ. Узлы молчат — они и так внутри территории.",
+    size: WIDE,
+    draw: drawHover
   },
   {
-    id: "belong-flag",
+    id: "same-kind",
     status: "waiting",
-    title: "Точка-флажок",
-    note: "Маленькая метка сбоку. Меньше шума, но на общем зуме теряется первой.",
-    size: SIZE,
-    draw: zoneStand("soft", "flag", false)
+    title: "Две зоны одного вида",
+    note: "«Взрывные Гоблины» рядом с «Проворными». Цвет у вида общий, различают светлота и имя — иначе граница между ними исчезнет.",
+    size: WIDE,
+    draw: drawSameKind
   },
-  {
-    id: "belong-halo",
-    status: "waiting",
-    title: "Свечение под узлом",
-    note: "Мягкое гало цвета зоны. Красиво, но спорит с морганием доступных узлов — два свечения на одном объекте.",
-    size: SIZE,
-    draw: zoneStand("soft", "halo", false)
-  }
-];
-
-const PLANNED: StandDef[] = [
   {
     id: "reveal",
     status: "waiting",
-    title: "Раскрытие зоны",
-    note: "Вошёл в чужую землю — заливка расползается чернилами от узла. Событие, которое объясняет, почему цвет вдруг появился.",
+    title: "Вход в зону",
+    note: "Кромка наливается, печать проявляется. Событие, объясняющее, почему земля вдруг стала чужой.",
     size: WIDE,
     draw: drawReveal
-  },
-  {
-    id: "reach",
-    status: "waiting",
-    title: "Достижимое на два шага",
-    note: "Вместо подсветки ряда: шаг — ярко, два — приглушённо, дальше — фон. Отвечает на вопрос, который игрок реально задаёт: «куда я могу пойти».",
-    size: WIDE,
-    draw: drawReach
-  },
-  {
-    id: "steps",
-    status: "waiting",
-    title: "Счётчик до босса",
-    note: "Число на плашке и в тултипе узла. Это и был настоящий вопрос за просьбой «подсвечивать вехи».",
-    size: WIDE,
-    draw: drawSteps
-  },
-  {
-    id: "ambient",
-    status: "waiting",
-    title: "Частицы зоны",
-    note: "Споры, угли, пыль — цветом самой зоны. Новых оттенков не заводим: иначе воздух начнёт спорить с принадлежностью.",
-    size: WIDE,
-    draw: drawAmbient
-  },
-  {
-    id: "grading",
-    status: "waiting",
-    title: "Грейдинг под землю",
-    note: "Весь лист чуть уходит в тон той земли, где стоит отряд. Самый дешёвый способ сказать «ты в чужих краях» без единого нового объекта.",
-    size: WIDE,
-    draw: drawGrading
   }
 ];
 
@@ -534,56 +545,56 @@ const section: SectionDef = {
   title: "Зоны влияния",
   eyebrow: "Карта акта",
   lede:
-    "Местность не рисуем: карта остаётся картой узлов и дорог. Единственный территориальный слой — " +
-    "зона влияния фракции. Здесь варианты того, чем её рисовать, и запланированные эффекты живьём.",
+    "Зоны делят карту между собой, как страны на политической карте: у соседей общая рваная " +
+    "граница, внутри — печать с именем. Узлы не трогаем вовсе.",
   blocks: [
     {
       kind: "note",
       html:
-        "<b>Решение Макса 2026-08-02:</b> местность не рисуем — «может это и не надо». Рельеф остаётся " +
-        "механикой (форма области решает, как ходят дороги), но собственной картинки не имеет: его " +
-        "видно по рисунку графа. Атласная земля и летающие острова — <b>отложены</b>, лежат в разделе " +
-        "«Земля и страна» с пометкой."
+        "<b>Модель после уточнений Макса:</b> зона — не государство, а <b>указатель состава</b>: какие " +
+        "враги ждут. Их много, и одного вида бывает несколько сразу — «Взрывные Гоблины» рядом с " +
+        "«Проворными». Одной зоне принадлежит 6–12 узлов. <b>Узлы не трогаем</b>: ни ободков, ни " +
+        "флажков — узел читается как чужой потому, что лежит на чужой земле, а подробности игрок " +
+        "берёт наведением на имя. Местность не рисуем, атласная земля отложена."
     },
     {
       kind: "head",
-      id: "fills",
-      title: "Чем рисовать зону",
-      lede: "Одна и та же сцена, шесть способов показать «это чья-то земля»."
+      id: "edges",
+      title: "Граница: чем рвём",
+      lede:
+        "Плоскость делится по ближайшему узлу — это Вороной, а объединение ячеек зоны и есть её " +
+        "территория. Координаты гнутся шумом до замера, поэтому граница рваная и у соседей ОДНА."
     },
-    { kind: "stands", items: FILLS.slice(0, 5) },
-    { kind: "split", items: [FILLS[5] as StandDef] },
+    { kind: "stands", items: EDGES },
     {
       kind: "note",
       html:
-        "<b>Про наложение:</b> зоны лежат поперёк областей и будут перекрываться. Две заливки в " +
-        "перекрытии дают третий, ложный цвет; две штриховки под разным углом и два дизеринга — нет. " +
-        "Это главный довод против самой красивой мягкой заливки, и проверять его надо на живой карте " +
-        "с тремя фракциями."
+        "Почему граница получается общей: обе стороны считают <b>один и тот же критерий</b> — кто " +
+        "ближе. Рисовать двум зонам по своему контуру нельзя, иначе на стыке появятся две линии и " +
+        "щель между ними."
     },
     {
       kind: "head",
-      id: "belong",
-      title: "Как узел говорит о принадлежности",
-      lede: "Пятно — атмосфера, правду носит узел. Три способа её носить."
+      id: "labels",
+      title: "Имя зоны",
+      lede: "Единственное место, где игрок узнаёт, чья это земля и что в ней водится."
     },
-    { kind: "stands", items: BELONG },
+    { kind: "split", items: LABELS },
     {
       kind: "head",
-      id: "planned",
-      title: "Запланированное — живьём",
-      lede: "То, что до сих пор было строкой в таблице."
+      id: "cases",
+      title: "Случаи, которые надо проверить",
+      lede: "Наведение, две зоны одного вида, вход на чужую территорию."
     },
-    { kind: "split", items: PLANNED },
+    { kind: "split", items: CASES },
     {
       kind: "table",
-      head: ["Не нарисовано здесь", "Где смотреть"],
+      head: ["Открытый вопрос", "Мой вариант"],
       rows: [
-        ["Grand Line и три ступени наград", "раздел «Формы областей»"],
-        ["Дыра подземелья и привратник", "раздел «Подача»"],
-        ["Виды дорог линией", "раздел «Формы областей»"],
-        ["Лист, стол, шторка, моргание, волна", "раздел «Подача» — они уже в игре"],
-        ["Звук карты", "нечего рисовать: шелест бумаги и перо"]
+        ["Ничейная земля бывает?", "да: дальше радиуса влияния узлов земля ничья — так тракт между владениями остаётся свободным"],
+        ["Сколько имён видно сразу", "все, но мелко; крупно — только та зона, где стоит отряд"],
+        ["Эмблема — арт или процедура", "процедурный знак вида (рожки, клинок, корона); арт дороже и не масштабируется на десяток зон"],
+        ["Что при перекрытии зон", "перекрытий нет по построению: это раздел, а не пятна"]
       ]
     }
   ]
