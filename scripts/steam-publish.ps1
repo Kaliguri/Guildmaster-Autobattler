@@ -42,7 +42,7 @@ param(
     [Parameter(Mandatory = $true)]
     [string] $Login,
 
-    [string] $Branch = 'dev_happy_guidmasters',
+    [string] $Branch = 'dev_happy_guildmasters',
 
     [string] $Version,
 
