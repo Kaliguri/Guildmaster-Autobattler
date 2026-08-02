@@ -99,14 +99,22 @@ jobs:
       - name: Free disk space
         run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost "$AGENT_TOOLSDIRECTORY"
 
-      # Своё пространство кэша: job'ы ci.yml пишут Library под своими ключами, и
-      # общий ключ гонял бы их друг об друга.
-      - name: Cache Library
-        uses: actions/cache@v4
+      # Кэш ТОЛЬКО читаем, и читаем чужой — тот, что пишут обычные сборки ci.yml.
+      #
+      # Своё пространство кэша (Library-steam-) стоило двенадцати минут на первом же
+      # прогоне: оно было пустым, хотя рядом лежал готовый Library от сборок. И оно
+      # добавляло третью копию по полтора гигабайта к квоте репозитория, которая на
+      # 02.08.2026 занята на 6.9 ГБ из 10 — то есть кэши начали бы вытеснять друг
+      # друга, и «холодный старт» стал бы случаться регулярно и необъяснимо.
+      #
+      # Писать нам нечего: выкладка идёт по кнопке, изредка, и греть ею кэш незачем —
+      # это делают сборки, которые случаются на каждом PR.
+      - name: Restore Library cache
+        uses: actions/cache/restore@v4
         with:
           path: Library
-          key: Library-steam-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: Library-steam-
+          key: Library-build-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: Library-build-
 
       - name: Build player
         uses: game-ci/unity-builder@v4
