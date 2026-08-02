@@ -144,11 +144,22 @@ function syncNav(routeId: string): void {
   if (routeId === area.id) overview.setAttribute("aria-current", "page");
   sectionsHost.appendChild(overview);
 
-  for (const page of pagesOf(area.id)) {
+  const pages = pagesOf(area.id);
+  for (const page of pages) {
     const link = el("a", null, page.title);
     link.href = page.href ?? routeHref(page.id);
     if (page.href) link.target = "_blank";
     if (page.id === routeId) link.setAttribute("aria-current", "page");
+    sectionsHost.appendChild(link);
+  }
+
+  // Музей общесайтовый: он собирает проигравшие варианты со ВСЕХ разделов, а объявлен внутри одной
+  // области. Без этой ссылки отклонённое из молодых областей выглядит потерянным — что и случилось
+  // с картой: мост и архипелаг лежали в музее, но дойти до него из «Карты» было нечем.
+  if (!pages.some((p) => p.id === "legacy")) {
+    const link = el("a", null, "Отклонённое");
+    link.href = routeHref("legacy");
+    if (routeId === "legacy") link.setAttribute("aria-current", "page");
     sectionsHost.appendChild(link);
   }
 }
