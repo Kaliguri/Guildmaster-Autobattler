@@ -219,6 +219,25 @@ function slabRockPath(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: 
 
 /** Пучок травы: тонкие дуги. Обводка тоньше, чем у предметов — трава не предмет, а деталь. */
 function grassTuft(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, seed: number, color: RGB): void {
+  // Каждый пятый пучок — ЛИСТ, а не метёлка. Один силуэт, повторённый полсотни раз, читается
+  // штампом; второй тип формы снимает это за десять строк.
+  if (jag(seed, 51) > 0.8) {
+    const lw = s * 0.85;
+    const lh = s * 1.15;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.quadraticCurveTo(x - lw, y - lh * 0.45, x - lw * 0.2, y - lh);
+    ctx.quadraticCurveTo(x + lw * 0.55, y - lh * 0.5, x, y);
+    ctx.closePath();
+    ctx.fillStyle = rgb(color);
+    ctx.fill();
+    ctx.strokeStyle = rgb(shade(color, 0.4));
+    ctx.lineWidth = Math.max(1, s * 0.11);
+    ctx.lineJoin = "round";
+    ctx.stroke();
+    return;
+  }
+
   const blades = 3 + Math.floor(jag(seed, 3) * 2);
   ctx.lineCap = "round";
   for (let pass = 0; pass < 2; pass++) {
@@ -491,6 +510,23 @@ function slab(o: SlabOpts): DrawFn {
       return;
     }
 
+    // 0. ТОНАЛЬНЫЕ МАССЫ — крупные плоскости чуть разного тона на всю плиту.
+    //    Приём фонов Samurai Jack: глубину даёт не количество деталей, а НЕСКОЛЬКО БОЛЬШИХ
+    //    плоскостей разной светлоты. Без них земля остаётся одной заливкой, по которой рассыпана
+    //    мелочь, и картинка читается пустой независимо от числа объектов.
+    for (let m = 0; m < 3; m++) {
+      const t = jag(m, o.seed + 71);
+      const cx = x0 + pw * (0.2 + jag(m * 3, o.seed + 73) * 0.65);
+      const cy = y0 + ph * (0.2 + jag(m * 3 + 1, o.seed + 75) * 0.6);
+      const r = pw * (0.3 + jag(m, o.seed + 77) * 0.32);
+      const mass = ctx.createRadialGradient(cx, cy, r * 0.15, cx, cy, r);
+      const tint = t > 0.5 ? lighten(b.ground, 0.1) : shade(b.ground, 0.13);
+      mass.addColorStop(0, `rgba(${tint.map((v) => v | 0).join(",")},.85)`);
+      mass.addColorStop(1, `rgba(${tint.map((v) => v | 0).join(",")},0)`);
+      ctx.fillStyle = mass;
+      ctx.fillRect(x0, y0, pw, ph);
+    }
+
     // 1. ТРОПА — узнаваемая форма вместо кляксы: лента поперёк поля, вдоль движения.
     trailPath(ctx, x0, y0, pw, ph, o.seed);
     ctx.fillStyle = rgb(b.trail);
@@ -539,6 +575,55 @@ function slab(o: SlabOpts): DrawFn {
       }
     }
 
+    // 2б. КРУПНЫЙ АКЦЕНТ — один валун на арену, у края. Композиции нужен ЯКОРЬ: когда всё
+    //     одного размера, глазу не за что зацепиться и поле читается шумом, сколько объектов в
+    //     него ни клади. Ставится у края, чтобы не спорить с боем в центре.
+    {
+      const ax = x0 + pw * (jag(o.seed, 81) > 0.5 ? 0.11 : 0.89);
+      const ay = y0 + ph * (0.24 + jag(o.seed, 83) * 0.55);
+      const ar = HUMAN_H * 0.85;
+      slabRockPath(ctx, ax + ar * 0.2, ay + ar * 0.24, ar, o.seed + 91);
+      ctx.fillStyle = "rgba(20,16,24,.34)";
+      ctx.fill();
+      slabRockPath(ctx, ax, ay, ar, o.seed + 91);
+      ctx.fillStyle = rgb(b.hard);
+      ctx.fill();
+      ctx.strokeStyle = rgb(ink(b.hard, 0.5));
+      ctx.lineWidth = LINE;
+      ctx.stroke();
+      ctx.save();
+      slabRockPath(ctx, ax, ay, ar, o.seed + 91);
+      ctx.clip();
+      ctx.fillStyle = `rgba(${lighten(b.hard, 0.3).map((v) => v | 0).join(",")},.92)`;
+      ctx.fillRect(ax - ar * 2, ay - ar * 2, ar * 4, ar * 2);
+      // Скол: одна линия внутри формы. Пустая заливка читается наклейкой, а трещина — камнем.
+      ctx.strokeStyle = rgb(ink(b.hard, 0.62));
+      ctx.lineWidth = LINE * 0.7;
+      ctx.beginPath();
+      ctx.moveTo(ax - ar * 0.7, ay - ar * 0.1);
+      ctx.lineTo(ax - ar * 0.05, ay + ar * 0.18);
+      ctx.lineTo(ax + ar * 0.6, ay - ar * 0.05);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // 2в. ЦВЕТОВОЙ АКЦЕНТ — одно пятно другого оттенка на всю арену (мох, лишайник, выцветшая
+    //     трава). Пять процентов площади, но именно оно снимает ощущение монохрома: приглушённая
+    //     гамма без единого чужого тона выглядит выцветшей, а не сдержанной.
+    {
+      const mx = x0 + pw * (0.3 + jag(o.seed, 95) * 0.45);
+      const my = y0 + ph * (0.3 + jag(o.seed, 97) * 0.42);
+      const mr = HUMAN_H * (1.1 + jag(o.seed, 99) * 0.7);
+      const accent: RGB = b.plantKind === "grass"
+        ? [118, 140, 78]
+        : b.plantKind === "shard" ? [96, 122, 150] : [138, 106, 74];
+      const g2 = ctx.createRadialGradient(mx, my, mr * 0.1, mx, my, mr);
+      g2.addColorStop(0, `rgba(${accent.join(",")},.5)`);
+      g2.addColorStop(1, `rgba(${accent.join(",")},0)`);
+      ctx.fillStyle = g2;
+      ctx.fillRect(x0, y0, pw, ph);
+    }
+
     // 3. РАСТИТЕЛЬНОСТЬ — скупо и по краям (выбор Макса): в центре дерутся.
     const count = Math.round(52 * dens);
     for (let i = 0; i < count; i++) {
@@ -575,6 +660,26 @@ function slab(o: SlabOpts): DrawFn {
     lg.addColorStop(1, "rgba(24,26,54,.34)");
     ctx.fillStyle = lg;
     ctx.fillRect(x0, y0, pw, ph);
+
+    // 6. ПРИТЕНЕНИЕ ПО ПЕРИМЕТРУ — узкая тёмная кайма ВДОЛЬ КРАЁВ ПЛИТЫ, а не круглая виньетка.
+    //    Плита обретает толщину: земля у обрыва темнее, потому что свет туда не заворачивает.
+    //    Круглое затемнение этого не даёт — оно говорит про кадр, а не про предмет.
+    const edgeW = HUMAN_H * 0.9;
+    const sides: Array<[number, number, number, number, number, number]> = [
+      [x0, y0, x0, y0 + edgeW, pw, edgeW],
+      [x0, y0 + ph, x0, y0 + ph - edgeW, pw, edgeW],
+      [x0, y0, x0 + edgeW, y0, edgeW, ph],
+      [x0 + pw, y0, x0 + pw - edgeW, y0, edgeW, ph]
+    ];
+    for (let i = 0; i < sides.length; i++) {
+      const [gx0, gy0, gx1, gy1] = sides[i] as [number, number, number, number, number, number];
+      const eg = ctx.createLinearGradient(gx0, gy0, gx1, gy1);
+      eg.addColorStop(0, "rgba(16,14,24,.34)");
+      eg.addColorStop(1, "rgba(16,14,24,0)");
+      ctx.fillStyle = eg;
+      if (i < 2) ctx.fillRect(x0, i === 0 ? y0 : y0 + ph - edgeW, pw, edgeW);
+      else ctx.fillRect(i === 2 ? x0 : x0 + pw - edgeW, y0, edgeW, ph);
+    }
 
     ctx.restore();
 
@@ -654,7 +759,7 @@ const RIM_STANDS: StandDef[] = [
     status: "accepted",
     title: "Пластина с цифровым краем",
     tag: "выбор Макса",
-    facts: [["борт", "1 ед"], ["ячейки", "по мировой единице"], ["слоёв", "7"]],
+    facts: [["борт", "1 ед"], ["свечение", "непрерывное, без секций"], ["ребро", "светится с ореолом"]],
     verdict: "Пластина в пустоте, и цифра проступает на её краю — плита читается сделанной, а не найденной.",
     size: FULL,
     draw: slab({ biome: MEADOW, rimU: 1, seed: 4, unit: true, digital: true })
@@ -669,6 +774,18 @@ const RIM_STANDS: StandDef[] = [
     draw: slab({ biome: MEADOW, rimU: 1.5, seed: 4, unit: true, digital: true })
   }
 ];
+
+/** Три сида одной поляны. Один сид ничего не доказывает: по нему не отличить удачную композицию
+ *  от везения, и не видно, держится ли правило «центр пуст, акцент у края» на любом заходе. */
+const SEED_STANDS: StandDef[] = [11, 27, 43].map((s, i) => ({
+  id: `seed-${s}`,
+  status: "waiting" as const,
+  title: `Сид ${s}`,
+  tag: i === 0 ? "тот же биом, другой сид" : undefined,
+  facts: [["биом", "поляна"], ["сид", String(s)]],
+  size: [520, 400] as [number, number],
+  draw: slab({ biome: MEADOW, rimU: 1, seed: s, unit: true, digital: true })
+}));
 
 const BIOME_STANDS: StandDef[] = [MEADOW, FOREST, CAVE, ASH].map((b) => ({
   id: b.id,
@@ -727,6 +844,20 @@ const section: SectionDef = {
         "цифра у нас язык ПЕРЕХОДА, а не состояния, и по этой причине я её из борта убирала. Значит " +
         "либо край плиты получает исключение, либо формулировку канона надо править: развилка " +
         "открыта, до вердикта стоит вариант Макса."
+    },
+    {
+      kind: "head",
+      id: "seeds",
+      title: "Три сида одной поляны",
+      lede: "По одному сиду не отличить удачную композицию от везения."
+    },
+    { kind: "stands", items: SEED_STANDS },
+    {
+      kind: "note",
+      html:
+        "<b>Что проверять глазами:</b> держится ли на каждом сиде правило «центр пуст, акцент у " +
+        "края». Если на каком-то заходе валун уехал в середину или тропа перерезала боевой " +
+        "коридор — виновата не картинка, а правила расстановки."
     },
     {
       kind: "head",
