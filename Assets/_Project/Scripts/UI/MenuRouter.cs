@@ -1149,10 +1149,16 @@ namespace Guildmaster.UI
         private async UniTaskVoid ShowOutcomeAsync(OpenOutcomeRequest req)
         {
             var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
-                resolve => OutcomeScreenView.Build(_outcomeUxml, req.Victory, key => _loc?.GetString(key), () => resolve(true)));
+                resolve => OutcomeScreenView.Build(_outcomeUxml, req.Victory, key => _loc?.GetString(key),
+                    onToMenu: () => resolve(true),
+                    // «Продолжить» закрывает экран своим результатом: закрытие крестиком и уход в меню — не
+                    // одно и то же, и слить их значило бы уводить в меню того, кто хотел переиграть.
+                    onContinue: req.OnContinue == null ? null : () => resolve(false)));
 
-            await _nav.ShowAsync(screen); // «В меню» и закрытие → OnToMenu
-            req.OnToMenu?.Invoke();
+            bool toMenu = await _nav.ShowAsync(screen);
+
+            if (toMenu) req.OnToMenu?.Invoke();
+            else        req.OnContinue?.Invoke();
         }
 
         // Главное меню — на UXML (MainMenuScreen.uxml). «Создать игру» открывает выбор режима ПОВЕРХ

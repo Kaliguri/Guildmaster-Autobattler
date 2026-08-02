@@ -164,6 +164,8 @@ namespace Guildmaster.Tests.EditMode.Run
             // начался», и поднимать ради этого весь брокер значило бы проверять не состав сеанса.
             builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>>(
                 new SilentPublisher());
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Core.Net.ReadyGateChangedEvent>>(
+                new SilentReadyPublisher());
 
             new SessionInstaller(role).Install(builder);
             return builder.Build();
@@ -184,6 +186,12 @@ namespace Guildmaster.Tests.EditMode.Run
         private sealed class SilentPublisher : MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>
         {
             public void Publish(Guildmaster.Game.Flow.RunPartyReadyEvent message) { }
+        }
+
+        private sealed class SilentReadyPublisher
+            : MessagePipe.IPublisher<Guildmaster.Core.Net.ReadyGateChangedEvent>
+        {
+            public void Publish(Guildmaster.Core.Net.ReadyGateChangedEvent message) { }
         }
 
         private sealed class SilentAudio : IAudioService

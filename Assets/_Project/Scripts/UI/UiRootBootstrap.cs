@@ -152,6 +152,10 @@ namespace Guildmaster.UI
         private IDisposable _testZoneChangedSubscription;
         private ISubscriber<WorldMapSpaceChangedEvent> _mapSpaceSub; // фаза D: СОСТОЯНИЕ world-карты → Sheet-экран
         private IDisposable _mapSpaceSubscription;
+        // Счёт согласившихся на «Начать». Приходит сообщением, а не подпиской на сам гейт: гейт живёт в
+        // сеансе и умирает вместе с ним, а топбар переживает несколько сеансов подряд.
+        private ISubscriber<Core.Net.ReadyGateChangedEvent> _readySub;
+        private IDisposable _readySubscription;
         private IPublisher<SetWorldMapRequest> _worldMapPub; // фаза D: радио-табы → показать/скрыть карту в мире
         private ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> _mainMenuVisSub; // за меню виден мировой стол
         private IDisposable _mainMenuVisSubscription;
@@ -185,6 +189,7 @@ namespace Guildmaster.UI
             IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
             ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub,
+            ISubscriber<Core.Net.ReadyGateChangedEvent> readySub,
             ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> mainMenuVisSub,
             IPublisher<Core.Flow.ScreenBackdropChangedEvent> screenBackdropPub,
             ISubscriber<Core.Flow.ScreenFadeChangedEvent> screenFadeSub,
@@ -207,6 +212,7 @@ namespace Guildmaster.UI
             _router = router;
             _activities = activities;
             _mapSpaceSub = mapSpaceSub;
+            _readySub    = readySub;
             _worldMapPub = worldMapPub;
             _relicDragPub = relicDragPub;
             _testZonePub = testZonePub;
@@ -315,6 +321,9 @@ namespace Guildmaster.UI
                 if (e.Active) _router.ShowMapSpace();
                 else          _router.HideMapSpace();
             });
+            // Скольких ещё ждёт «Начать». В соло счёт не рисуется — топбар решает это сам.
+            _readySubscription = _readySub?.Subscribe(e => _topBar?.SetReadyCount(e.Ready, e.Required, e.LocallyReady));
+
             // Шторка перехода (QA #47): плотность считает тот, кто ведёт переход (карта акта), UI её рисует.
             _screenFadeSubscription = _screenFadeSub?.Subscribe(e => ApplyScreenFade(e.Progress, e.Center, e.Seed));
 
@@ -724,6 +733,7 @@ namespace Guildmaster.UI
             if (_loc != null) _loc.LocaleChanged -= RebuildTopBar;    // шов II.9.2
             _testZoneChangedSubscription?.Dispose();                  // Ф5
             _mapSpaceSubscription?.Dispose();                         // фаза D
+            _readySubscription?.Dispose();
             _mainMenuVisSubscription?.Dispose();                      // фон за главным меню
             _screenFadeSubscription?.Dispose();                       // QA #47: шторка перехода
             _openFarewellSubscription?.Dispose();                     // QA #48/#49: прощание узла

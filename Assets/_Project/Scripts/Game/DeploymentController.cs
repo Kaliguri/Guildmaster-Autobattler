@@ -28,6 +28,12 @@ namespace Guildmaster.Game
     /// </summary>
     public sealed class DeploymentController : IStartable, ITickable, IDisposable
     {
+        /// <summary>Что подтверждают все игроки, прежде чем бой начнётся.</summary>
+        private const string ReadyKeyStart = "battle.start";
+
+        /// <summary>…и прежде чем вернуться с итогов боя обратно в расстановку.</summary>
+        private const string ReadyKeyContinue = "battle.continue";
+
         private const float DoubleClickWindow = 0.30f;
         private const float DragMinDelta       = 0.05f; // мир-единицы: меньше = «клик», больше = «drag»
         private const float PickRadiusScale    = 1.3f;  // круг-опора × это = «ближняя» зона хватания (у ног)
@@ -60,6 +66,17 @@ namespace Guildmaster.Game
         // С чем открыто мероприятие: вид площадки и заказанный при входе состав. Приходит параметром, а
         // не событием, — см. ActivitySetup.Roster.
         private readonly ActivitySetup _activity;
+        // Расклад площадки по умолчанию. Может быть null: без ассета площадка просто встаёт пустой, и это
+        // не отказ, а «состав не собран».
+        private readonly ProvingGroundsConfig _groundsConfig;
+        // Общее согласие: «Начать» — это «я готов», а бой начинается, когда готовы все. В соло участник
+        // один, и гейт пропускает в тот же кадр, поэтому ветки «а мы одни?» здесь нет.
+        private readonly Core.Net.IReadyGate _ready;
+        // Исход боя и выход с площадки: экран «Продолжить / В меню» показывает тот же, кто площадкой и
+        // владеет. Отдельного презентера нет намеренно — состав, с которым продолжают, живёт здесь.
+        private readonly ISubscriber<BattleEndedEvent> _battleEndedSub;
+        private readonly IPublisher<Guildmaster.Guild.OpenOutcomeRequest> _outcomePub;
+        private readonly Core.Flow.IRunControl _runControl;
         private readonly Core.Audio.IAudioService _audio;              // взял/поставил/отказ — звук расстановки
 
         // Редактируемый ростер игрока в этой фазе (позиции/релики меняются перетаскиванием и loadout'ом).
@@ -73,6 +90,12 @@ namespace Guildmaster.Game
             public UnitData Unit; public VesselData Vessel; public Vector2 Pos;
             public int LiveUnitId = -1;
             public int GuildIndex = -1;
+
+            /// <summary>
+            /// Чья это сторона. На Ристалище слоты есть у ОБЕИХ команд: там противник — такие же киты, и
+            /// расставляет их тот же игрок. В забеге сторона всегда своя — врагов приносит энкаунтер.
+            /// </summary>
+            public int Team;
 
             /// <summary>Кит слота, если это реликвия: лоадаут и гильдия забега работают только с ними.</summary>
             public RelicData Relic => Unit as RelicData;
@@ -124,6 +147,9 @@ namespace Guildmaster.Game
         // Расклад площадки: с чем игрок ушёл в последний бой Ристалища. Держит расстановку внутри захода —
         // после боя бойцы встают туда же, куда их поставил игрок, но целыми.
         private readonly List<PlayerSpawn> _provingSquad = new List<PlayerSpawn>();
+        // Противник этого захода — рядом со своими и по той же причине: после боя площадка обязана
+        // встать тем же составом, иначе «Продолжить» подсунуло бы игроку чужой бой.
+        private readonly List<PlayerSpawn> _provingOpponents = new List<PlayerSpawn>();
         private RuntimeUnit _dragged;
         private Vector2 _dragStartWorld;
         // Схваченная точка фигурки: сим-позиция юнита минус курсор в момент захвата. Юнит НЕ прыгает центром
@@ -158,9 +184,19 @@ namespace Guildmaster.Game
             Guildmaster.Guild.IRunStateView runStates,
             Guildmaster.Guild.Commands.IRunCommands commands,
             Core.Audio.IAudioService audio,
-            ActivitySetup activity)
+            ActivitySetup activity,
+            ProvingGroundsConfig groundsConfig,
+            Core.Net.IReadyGate ready,
+            ISubscriber<BattleEndedEvent> battleEndedSub,
+            IPublisher<Guildmaster.Guild.OpenOutcomeRequest> outcomePub,
+            Core.Flow.IRunControl runControl)
         {
+            _battleEndedSub = battleEndedSub;
+            _outcomePub     = outcomePub;
+            _runControl     = runControl;
             _activity = activity;
+            _groundsConfig = groundsConfig;
+            _ready         = ready;
             _arenaRevealPub = arenaRevealPub;
             _audio         = audio;
             _runStates     = runStates;
@@ -219,6 +255,10 @@ namespace Guildmaster.Game
             // узлами врагов не имеет, и там кнопка по-прежнему ни во что не ведёт.
             _session.BindStart(TryStartFromButton);
 
+            // Что именно подтверждают. Ключ живёт здесь, а не в гейте: гейт не знает, чего ждут, — он
+            // знает только, что ждут все.
+            _ready?.Bind(ReadyKeyStart, StartCombat);
+
             // Мир могут сбросить и мимо нас: «В меню» из системного меню рвёт забег через IRunControl, и
             // до нас доходит только смена фазы. Без этой подписки расстановка (и тест-зона вместе с ней)
             // оставалась взведённой — в главном меню и в следующей сессии полигон продолжал висеть.
@@ -241,8 +281,30 @@ namespace Guildmaster.Game
                 Guildmaster.Diagnostics.UiTrace.Log("ctrl «Начать»: на арене нет противника (построение между узлами) — бой не начинается");
                 return;
             }
-            StartCombat();
+
+            // Не «начать бой», а «я готов». В соло разницы нет — гейт пропускает сразу; вдвоём бой ждёт
+            // второго, и кнопка сама говорит, скольких ждёт.
+            _ready?.ToggleLocal();
+            if (_ready == null) StartCombat();
         }
+
+        /// <summary>
+        /// Распоряжаюсь ли я этой стороной: можно ли брать её бойцов и двигать.
+        /// </summary>
+        /// <remarks>
+        /// <b>Ристалище и PvP отличаются РОВНО этим</b>, и разница описана флагом мероприятия
+        /// (<c>ActivitySetup.OwnUnitsOnly</c>), а не двумя ветками кода — решение Макса 02.08.2026, по
+        /// которому PvP не заводится отдельным видом. До 03.08.2026 флаг не читал никто: расстановка
+        /// жёстко знала «команда 0» в семи местах, и на площадке нельзя было тронуть противника, хотя
+        /// он там — такой же кит игрока.
+        /// <para>Сторона арены выводится отсюда же: своя половина у команды 0, вражеская у всех
+        /// остальных. Без этого перетаскивание противника проверялось бы по чужой зоне и запрещалось
+        /// всегда.</para>
+        /// </remarks>
+        private bool CanCommand(int team) => !_activity.OwnUnitsOnly || team == 0;
+
+        private static DeploymentSide SideOf(int team) =>
+            team == 0 ? DeploymentSide.Player : DeploymentSide.Enemy;
 
         // Есть ли на арене живой противник. Дешевле и честнее флага «это боевой узел»: полигон построения
         // и площадка отличаются друг от друга ровно этим, а не тем, кто их открыл.
@@ -279,12 +341,45 @@ namespace Guildmaster.Game
                 return;
             }
 
+            // Бой на площадке кончился. Прежде расстановка возвращалась молча и сразу — игрок оказывался
+            // над тем же строем, не увидев даже, чем кончилось. Теперь возврат — это ВЫБОР: продолжить тем
+            // же составом или уйти в меню (наход. Макса 03.08.2026).
             if (_session.Phase == BattlePhase.Interlude && !_deploying && _venue == Venue.ProvingGrounds)
-            {
-                _foldingUp = true;             // EnterVenue ставит Deployment — тот же приём против рекурсии
-                try { EnterVenue(Venue.ProvingGrounds); }
-                finally { _foldingUp = false; }
-            }
+                ShowGroundsOutcome();
+        }
+
+        /// <summary>
+        /// Предложить итог боя на площадке: продолжить тем же составом или вернуться в главное меню.
+        /// </summary>
+        /// <remarks>
+        /// <b>«Продолжить» тоже проходит через общее согласие</b>: вдвоём переигрывать бой по нажатию
+        /// одного значило бы, что второй ещё смотрит на поле, а его уже вернули в расстановку.
+        /// <para>Победу определяем по тому, кто остался: у площадки нет ни забега, ни петли акта, которые
+        /// в бою за нас считают исход, — есть только арена.</para>
+        /// </remarks>
+        private void ShowGroundsOutcome()
+        {
+            bool victory = !HasOpponents();
+
+            _ready?.Bind(ReadyKeyContinue, ReturnToDeployment);
+
+            if (_outcomePub == null) { ReturnToDeployment(); return; } // некому показать экран — не запираем игрока
+
+            _outcomePub.Publish(new Guildmaster.Guild.OpenOutcomeRequest(
+                victory,
+                onToMenu:   () => _runControl?.RequestReturnToMainMenu(),
+                onContinue: () => { if (_ready != null) _ready.ToggleLocal(); else ReturnToDeployment(); }));
+        }
+
+        private void ReturnToDeployment()
+        {
+            if (_venue != Venue.ProvingGrounds || _deploying) return;
+
+            _foldingUp = true;             // EnterVenue ставит Deployment — тот же приём против рекурсии
+            try { EnterVenue(Venue.ProvingGrounds); }
+            finally { _foldingUp = false; }
+
+            _ready?.Bind(ReadyKeyStart, StartCombat); // снова ждём согласия НА БОЙ, а не на возврат
         }
 
         public void Dispose()
@@ -299,6 +394,7 @@ namespace Guildmaster.Game
             _formationSubscription?.Dispose();
             _groundsSetupSubscription?.Dispose();
             _session.UnbindStart();
+            _ready?.Unbind(ReadyKeyStart);
             _session.UnbindClock(); // сбрасывает фазу в None → панель скрывается между боями
             if (_view != null) UnityEngine.Object.Destroy(_view.gameObject);
         }
@@ -387,6 +483,7 @@ namespace Guildmaster.Game
             // Заказ отменяет расклад ПРОШЛОГО захода: иначе площадка встала бы теми, с кем игрок дрался в
             // прошлый раз, и заказ читался бы как проигнорированный.
             _provingSquad.Clear();
+            _provingOpponents.Clear();
 
             Guildmaster.Diagnostics.UiTrace.Log($"ctrl: заказан состав площадки от «{req.Source}» " +
                 $"(свои {_groundsSquadOrder.Count}, противник {_groundsOpponentOrder.Count})");
@@ -448,6 +545,7 @@ namespace Guildmaster.Game
             if (wasGray)
             {
                 _provingSquad.Clear(); // расклад принадлежит одному заходу на площадку, не следующему
+                _provingOpponents.Clear();
                 // Заказанный состав — тоже принадлежность захода: следующий вход обычной кнопкой обязан
                 // встречать штатный расклад, а не дев-срез, который кто-то заказал полчаса назад.
                 _hasGroundsOrder = false;
@@ -500,38 +598,102 @@ namespace Guildmaster.Game
             // расклад ЭТОГО захода, если игрок уже переставлял бойцов и дрался. Иначе площадка ПУСТА.
             // Между заходами расклад не сохраняется — ГДД [[proving-grounds]], «Отложено».
             var side = new List<PlayerSpawn>();
-            if (_hasGroundsOrder)      side.AddRange(_groundsSquadOrder);
-            else if (_provingSquad.Count > 0) side.AddRange(_provingSquad);
-
-            // Пустой вход — норма и единственный честный ответ. Прежде площадка вставала раскладом из
-            // ассета, и игрок, вошедший на Ристалище, получал готовый бой 4×4, которого не заказывал
-            // (наход. Макса 02.08.2026). Ассет был заглушкой на время, пока нет экрана сборки состава,
-            // но заглушка стала вторым владельцем состава — и побеждала, потому что срабатывала первой.
-            for (int i = 0; i < side.Count; i++)
-                _slots.Add(new Slot { Unit = side[i].Unit, Vessel = side[i].Vessel, Pos = side[i].Position, LiveUnitId = -1, GuildIndex = -1 });
-
-            // Противник — такие же киты, поэтому обе стороны задаются списком, а не энкаунтером. Без
-            // заказа противника нет вовсе: драться на площадке не с кем, пока состав не собрали, и
-            // кнопка «Начать» это честно покажет — она смотрит на наличие врага, а не на место.
             _opponents.Clear();
-            if (_hasGroundsOrder) _opponents.AddRange(_groundsOpponentOrder);
+
+            if (_hasGroundsOrder)
+            {
+                side.AddRange(_groundsSquadOrder);
+                _opponents.AddRange(_groundsOpponentOrder);
+            }
+            else if (_provingSquad.Count > 0)
+            {
+                side.AddRange(_provingSquad);
+                _opponents.AddRange(_provingOpponents);
+            }
+            else
+            {
+                // Просто зашли, ничего не заказав, — площадка встаёт раскладом из ассета (сегодня это
+                // базовые киты 4×4). Ассет стоит ПОСЛЕДНИМ, и это принципиально: 02.08.2026 его убрали
+                // не за сам расклад, а за то, что он срабатывал ПЕРВЫМ и перебивал заказанный состав —
+                // игрок получал бой, которого не просил. Порядок «заказ → расклад этого захода → ассет»
+                // сохраняет оба требования: дев-срез по-прежнему главнее, а голый вход больше не пуст
+                // (наход. Макса 03.08.2026).
+                StageFromConfig(side, _opponents);
+            }
+
+            for (int i = 0; i < side.Count; i++)
+                _slots.Add(new Slot { Unit = side[i].Unit, Vessel = side[i].Vessel, Pos = side[i].Position,
+                                      LiveUnitId = -1, GuildIndex = -1, Team = 0 });
+
+            // Противник — такие же киты, поэтому обе стороны задаются списком, а не энкаунтером. И слоты
+            // ему заводятся такие же: на площадке игрок расставляет обе стороны, а в PvP команду 1 держит
+            // второй игрок — но держит она ровно тот же слот.
+            for (int i = 0; i < _opponents.Count; i++)
+                _slots.Add(new Slot { Unit = _opponents[i].Unit, Vessel = _opponents[i].Vessel, Pos = _opponents[i].Position,
+                                      LiveUnitId = -1, GuildIndex = -1, Team = 1 });
 
             _loader.LoadSides(side, _opponents);
             _sim.FlushSpawns();
 
             // Слоты знают о живых юнитах по Id — раздаём их после материализации, иначе перетаскивание
-            // на площадке не найдёт, кого двигать.
-            IReadOnlyList<RuntimeUnit> spawned = _sim.Units;
-            int slotIndex = _slots.Count - side.Count;
-            for (int i = 0; i < spawned.Count && slotIndex < _slots.Count; i++)
-            {
-                if (spawned[i].Team != 0) continue;
-                _slots[slotIndex].LiveUnitId = spawned[i].Id;
-                slotIndex++;
-            }
+            // на площадке не найдёт, кого двигать. Раздаём по КОМАНДАМ: спавн идёт в порядке ростера
+            // внутри стороны, но стороны в общем списке чередоваться не обязаны.
+            BindLiveUnits();
 
             Guildmaster.Diagnostics.UiTrace.Log($"ctrl: Ристалище — поставлены обе стороны (своих {side.Count}, противник {_opponents.Count})");
             return true;
+        }
+
+        /// <summary>
+        /// Расклад площадки по умолчанию — из ассета. Пустой ассет оставляет площадку пустой: это
+        /// честный ответ «состав не собран», а не отказ.
+        /// </summary>
+        private void StageFromConfig(List<PlayerSpawn> squad, List<PlayerSpawn> opponents)
+        {
+            if (_groundsConfig == null) return;
+
+            for (int i = 0; i < _groundsConfig.SquadCount; i++)
+            {
+                RelicData relic = _groundsConfig.SquadAt(i);
+                if (relic != null) squad.Add(new PlayerSpawn(relic, null, _groundsConfig.SquadPositionAt(i)));
+            }
+            for (int i = 0; i < _groundsConfig.OpponentCount; i++)
+            {
+                RelicData relic = _groundsConfig.OpponentAt(i);
+                if (relic != null) opponents.Add(new PlayerSpawn(relic, null, _groundsConfig.OpponentPositionAt(i)));
+            }
+        }
+
+        /// <summary>
+        /// Раздать слотам id живых юнитов — по каждой команде отдельно, в порядке спавна.
+        /// </summary>
+        /// <remarks>
+        /// Раньше сопоставление шло одним счётчиком по команде 0 и молча ломалось бы, как только у
+        /// противника появились свои слоты: слот второй стороны так и остался бы без живого юнита, а
+        /// перетаскивание не нашло бы, кого двигать.
+        /// </remarks>
+        private void BindLiveUnits()
+        {
+            IReadOnlyList<RuntimeUnit> spawned = _sim.Units;
+            for (int team = 0; team <= 1; team++)
+            {
+                int slotIndex = -1;
+                for (int i = 0; i < spawned.Count; i++)
+                {
+                    if (spawned[i].Team != team) continue;
+
+                    slotIndex = NextSlotOfTeam(team, slotIndex);
+                    if (slotIndex < 0) break;
+                    _slots[slotIndex].LiveUnitId = spawned[i].Id;
+                }
+            }
+        }
+
+        private int NextSlotOfTeam(int team, int after)
+        {
+            for (int i = after + 1; i < _slots.Count; i++)
+                if (_slots[i].Team == team) return i;
+            return -1;
         }
 
         /// <summary>
@@ -614,7 +776,9 @@ namespace Guildmaster.Game
             {
                 if ((world - _dragStartWorld).sqrMagnitude > DragMinDelta * DragMinDelta) _dragMoved = true;
                 dragTarget = DragTarget(world); // куда встанет юнит, если отпустить здесь (с учётом точки захвата)
-                dragValid = _deploy.CanPlace(dragTarget, DeploymentSide.Player, CanUseExtended(_dragged))
+                // Сторона зоны — по КОМАНДЕ бойца, а не «всегда своя»: противника на площадке двигают в
+                // его половину, и жёсткая Player запрещала бы любой его сдвиг.
+                dragValid = _deploy.CanPlace(dragTarget, SideOf(_dragged.Team), CanUseExtended(_dragged))
                             && !Overlaps(dragTarget, _dragged);
                 ShowDragGhost(dragTarget, dragValid); // призрак-силуэт у целевых ног (QA #9)
             }
@@ -640,7 +804,7 @@ namespace Guildmaster.Game
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit u = units[i];
-                if (u.Team != 0 || u.IsDead) continue;
+                if (!CanCommand(u.Team) || u.IsDead) continue;
 
                 bool isDragged = dragging && _dragged != null && u.Id == _dragged.Id;
                 DeploymentView.RingState st = isDragged || u.Id == hoverId
@@ -812,8 +976,29 @@ namespace Guildmaster.Game
         // Пересобрать превью боя из редактируемого ростера (респавн через штатный путь — виды перестраиваются).
         private void RebuildPreview()
         {
+            // Слоты обеих сторон разбираются ПО КОМАНДАМ. Слить их в один список нельзя: на площадке у
+            // противника теперь тоже есть слоты, и общий список отправил бы его бойцов в команду 0 —
+            // перетаскивание врага пересобирало бы бой в восемь своих.
             var side = new List<PlayerSpawn>(_slots.Count);
-            foreach (Slot s in _slots) side.Add(new PlayerSpawn(s.Unit, s.Vessel, s.Pos));
+            var foes = new List<PlayerSpawn>();
+            foreach (Slot s in _slots)
+            {
+                var spawn = new PlayerSpawn(s.Unit, s.Vessel, s.Pos);
+                if (s.Team == 0) side.Add(spawn);
+                else             foes.Add(spawn);
+            }
+
+            // На площадке слоты второй стороны и есть источник правды о ней — список _opponents только
+            // отражает их. В забеге слотов у врага нет, и там правду по-прежнему держит энкаунтер.
+            if (_encounter == null && foes.Count > 0)
+            {
+                _opponents.Clear();
+                _opponents.AddRange(foes);
+            }
+
+            // Состав или расстановка изменились — прежние «готов» относились к тому, чего больше нет.
+            // Без этого второй игрок подтвердил бы один строй, а в бой ушёл бы другой.
+            _ready?.Reset("расстановка изменилась");
 
             // ResetBattle + enqueue (сбрасывает паузу). На полигоне энкаунтера нет — противник задан
             // списком, и пересобирать надо ОБЕ стороны: иначе перетаскивание своего бойца стирало бы врага.
@@ -821,7 +1006,7 @@ namespace Guildmaster.Game
             else _loader.LoadSides(side, _opponents);
             _sim.SetPaused(true);
             _sim.FlushSpawns();
-            RemapLiveUnits();
+            BindLiveUnits();
 
             _dragged = null;
             _dragMoved = false;
@@ -858,10 +1043,18 @@ namespace Guildmaster.Game
             if (_venue != Venue.ProvingGrounds) return;
 
             _provingSquad.Clear();
+            _provingOpponents.Clear();
             for (int i = 0; i < _slots.Count; i++)
             {
                 Slot s = _slots[i];
-                if (s.Unit != null) _provingSquad.Add(new PlayerSpawn(s.Unit, s.Vessel, s.Pos));
+                if (s.Unit == null) continue;
+
+                // Обе стороны, каждая в свой список: после боя площадка встаёт ровно тем, с чем в него
+                // ушли. Запоминать одних своих значило бы, что «Продолжить» возвращает игрока к его
+                // расстановке и к раскладу противника ИЗ АССЕТА — то есть к чужому бою.
+                var spawn = new PlayerSpawn(s.Unit, s.Vessel, s.Pos);
+                if (s.Team == 0) _provingSquad.Add(spawn);
+                else             _provingOpponents.Add(spawn);
             }
         }
 
@@ -879,7 +1072,7 @@ namespace Guildmaster.Game
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit u = units[i];
-                if (u.Team != 0 || u.IsDead) continue;
+                if (!CanCommand(u.Team) || u.IsDead) continue;
 
                 float r  = BodyRadius(u) * PickRadiusScale;
                 float sq = (world - FeetOf(u)).sqrMagnitude;

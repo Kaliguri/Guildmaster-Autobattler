@@ -61,6 +61,11 @@ namespace Guildmaster.Game.Session
             builder.Register<Guildmaster.Guild.Commands.RunCommandApplier>(Lifetime.Singleton);
             builder.Register<Guildmaster.Guild.Commands.RunCommandBus>(Lifetime.Singleton)
                    .AsSelf().As<Guildmaster.Guild.Commands.ISessionRunCommands>();
+
+            // Общее согласие считает владелец — он единственный знает, кто в сессии. В соло участник один,
+            // и гейт пропускает действие в тот же кадр: ветки «а мы одни?» у вызывающих нет.
+            builder.RegisterEntryPoint<Net.HostReadyGate>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Net.IReadyGate>();
         }
 
         /// <summary>
@@ -86,6 +91,11 @@ namespace Guildmaster.Game.Session
             // Отряд на арене — вслед за снимком. Без этого гость видел бы пустое поле до самого первого
             // боя: тела кладёт петля акта, а её у гостя нет.
             builder.RegisterEntryPoint<Net.GuestPartyFollower>(Lifetime.Singleton).AsSelf();
+
+            // Своё согласие гость отправляет, счёт получает. Решать, все ли готовы, ему нечем: кто в
+            // сессии, знает хост.
+            builder.RegisterEntryPoint<Net.GuestReadyGate>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Net.IReadyGate>();
         }
     }
 }

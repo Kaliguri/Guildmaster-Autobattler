@@ -39,6 +39,11 @@ namespace Guildmaster.Net
 
         /// <summary>Где идёт игра: вид мероприятия и границы боя. Хост → гости.</summary>
         ActivityState = 9,
+
+        /// <summary>
+        /// Общее согласие на действие: гость шлёт «я готов», хост в ответ — сколько готовы и сколько нужно.
+        /// </summary>
+        ReadyGate = 10,
     }
 
     /// <summary>
