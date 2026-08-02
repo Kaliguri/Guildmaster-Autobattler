@@ -1,4 +1,4 @@
-using Guildmaster.Core.Audio;
+﻿using Guildmaster.Core.Audio;
 using Guildmaster.Core.DevConsole;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
@@ -186,6 +186,16 @@ namespace Guildmaster.Game
 
             builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>();
 
+            // Владелец жизненного цикла Занятия (забег, Ристалище, PvP, дев-арена): всё, что кончается
+            // вместе с мероприятием, живёт в его скоупе, а не здесь. Верхняя петля игры открывает
+            // занятие и закрывает — конец мероприятия это смерть скоупа, а не набор ручных сбросов.
+            builder.Register<Activity.ActivityHost>(Lifetime.Singleton).AsSelf();
+
+            // Часы боя для тех, кто переживает мероприятия (панель забега, навигатор, звук): роутер
+            // делегирует часам текущего занятия, а вне занятия отвечает «боя нет». Прямая ссылка
+            // означала бы фазу мероприятия, которое давно кончилось.
+            builder.Register<Activity.ActivityClockRouter>(Lifetime.Singleton).As<IBattleClock>();
+
             // ── Кооп: Steam напрямую, без высокоуровневого netcode ───────────────────────────
             // Регистрируется всегда, даже в соло: транспорт без сессии не поднят, качать нечего, и
             // ветвление «а вдруг мы одни» не нужно ни одному потребителю.
@@ -213,22 +223,6 @@ namespace Guildmaster.Game
                    .As<Guildmaster.Core.Net.IBattleAuthority>();
             builder.RegisterEntryPoint<Guildmaster.Net.NetPump>(Lifetime.Singleton);
 
-            // Флоу забега (план 11): рукопожатие в боевой скоуп + сетевые швы (соло-тела). BattleFlow создаётся
-            // per-node внутри GameFlow, потому в DI не регистрируется.
-            // Один инстанс под двумя ролями: IBattleSession (write-side, боевой скоуп) + IBattleClock
-            // (read-side, верхняя панель в UI-слое, план 12 Фаза 2).
-            builder.Register<BattleSession>(Lifetime.Singleton).As<IBattleSession>().As<IBattleClock>();
-            builder.Register<SoloReadyGate>(Lifetime.Singleton).As<IReadyGate>();
-            builder.Register<SoloPlayerIntentSource>(Lifetime.Singleton).As<IPlayerIntentSource>();
-
-            // Витрина наград после боя (A3): катит 1-из-3 реликов из контент-БД (детерминирован через RNG).
-            builder.Register<RewardService>(Lifetime.Singleton);
-            // Ценообразование реликвий (B1): цена по KitPower + разброс на сиде витрины.
-            builder.Register<RelicPricer>(Lifetime.Singleton);
-            // Показ награды (вынесен из GameFlow — переиспользуют петля акта и legacy-вход одного боя).
-            builder.Register<RewardPresenter>(Lifetime.Singleton).As<IRewardPresenter>();
-            // Кнопки бита (A4): гейт «бой добит → к награде» и передышка между узлами.
-            builder.Register<ContinuePresenter>(Lifetime.Singleton).As<IContinuePresenter>();
             // Экран исхода забега (C2) — победа/поражение после акта.
             builder.Register<OutcomePresenter>(Lifetime.Singleton).As<IOutcomePresenter>();
             // Boot title card — один раз до главного меню.
@@ -236,15 +230,6 @@ namespace Guildmaster.Game
             // Главное меню (D1) — верхний цикл игры.
             builder.Register<MainMenuPresenter>(Lifetime.Singleton).As<IMainMenuPresenter>();
 
-            // Применение последствий текстовых ивентов к RunState (план 11 §5.1).
-            builder.Register<EventEffectApplier>(Lifetime.Singleton);
-
-            // Магазин (B2): логика витрины/покупки/продажи за IShopController; UI биндится к экземпляру из запроса.
-            builder.Register<ShopController>(Lifetime.Singleton);
-
-            // Петля акта (план act-map-run-loop §3.2): резолвер узлов + выбор узла через экран карты (A3) + раннер.
-            // AutoFirstNodeChooser остаётся для headless/тестов; в игре узел выбирает игрок кликом по MapScreen.
-            builder.Register<NodeResolver>(Lifetime.Singleton).As<INodeResolver>();
 
             // Линк к world-слою карты: держим ЗДЕСЬ (в корне), потому что петля акта живёт здесь, а сам слой —
             // компонент persist-мира из дочернего скоупа, которого корень напрямую не видит. Слой привязывает
@@ -272,14 +257,6 @@ namespace Guildmaster.Game
             // позже — настройки игры, там часть из них станет доступностью).
             builder.Register<Presentation.Effects.VisualToggles>(Lifetime.Singleton).AsSelf();
 
-            // Выбор узла — world-карта (узлы в мире, камера как в бою). UITK-карта снесена после приёмки:
-            // держать второй путь к той же карте значило чинить каждый баг дважды.
-            // AutoFirstNodeChooser остаётся для headless/тестов.
-            builder.Register<WorldMapNodeChooser>(Lifetime.Singleton).As<IMapNodeChooser>();
-
-            // Стыки узлов: возврат мира после узла + передышка с кнопками «Продолжить»/«К построению».
-            builder.Register<RunBeatStage>(Lifetime.Singleton).As<IRunBeatStage>();
-            builder.Register<ActRunner>(Lifetime.Singleton);
 
             // GameFlow ведёт верхний цикл + реализует IRunControl (QA #18): системное меню прерывает забег.
             builder.Register<GameFlow>(Lifetime.Singleton).AsSelf().As<Guildmaster.Core.Flow.IRunControl>();

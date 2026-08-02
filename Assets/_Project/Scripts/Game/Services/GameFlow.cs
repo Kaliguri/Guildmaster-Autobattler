@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
@@ -30,18 +30,16 @@ namespace Guildmaster.Game.Services
         // прерывает висящие await'ы петли (выбор узла/«Продолжить»/исход боя) → возврат в главное меню.
         private CancellationTokenSource _runCts;
 
-        private readonly IBattleSession      _session;
+        // Участники ЗАНЯТИЯ (рукопожатие боя, раннер акта, награды, последствия ивентов, гейты) живут
+        // в его скоупе и умирают вместе с ним, поэтому берутся у хоста в момент использования, а не
+        // инъекцией на всю жизнь верхней петли.
+        private readonly Activity.ActivityHost _activities;
         private readonly RunStateService     _runStates;
-        private readonly IRewardPresenter    _rewardPresenter;
         private readonly IOutcomePresenter   _outcomePresenter;
         private readonly ITitleCardPresenter _titleCardPresenter;
         private readonly IMainMenuPresenter  _mainMenuPresenter;
-        private readonly ActRunner           _actRunner;
         private readonly ActConfig           _actConfig;
-        private readonly EventEffectApplier  _eventEffects;
         private readonly IRngService         _rng;
-        private readonly IReadyGate          _readyGate;
-        private readonly IPlayerIntentSource _intents;
         private readonly ILocalPlayer        _localPlayer;
         private readonly IScreenTransition   _transition;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
@@ -52,18 +50,13 @@ namespace Guildmaster.Game.Services
         private readonly ISubscriber<Data.Definitions.TestZoneChangedEvent> _provingGroundsChangedSub;
 
         public GameFlow(
-            IBattleSession      session,
+            Activity.ActivityHost activities,
             RunStateService     runStates,
-            IRewardPresenter    rewardPresenter,
             IOutcomePresenter   outcomePresenter,
             ITitleCardPresenter titleCardPresenter,
             IMainMenuPresenter  mainMenuPresenter,
-            ActRunner           actRunner,
             ActConfig           actConfig,
-            EventEffectApplier  eventEffects,
             IRngService         rng,
-            IReadyGate          readyGate,
-            IPlayerIntentSource intents,
             ILocalPlayer        localPlayer,
             IScreenTransition   transition,
             IPublisher<OpenTextEventRequest> openEventPub,
@@ -73,18 +66,13 @@ namespace Guildmaster.Game.Services
         {
             _provingGroundsPub = provingGroundsPub;
             _provingGroundsChangedSub = provingGroundsChangedSub;
-            _session         = session;
+            _activities      = activities;
             _runStates        = runStates;
-            _rewardPresenter  = rewardPresenter;
             _outcomePresenter = outcomePresenter;
             _titleCardPresenter = titleCardPresenter;
             _mainMenuPresenter = mainMenuPresenter;
-            _actRunner       = actRunner;
             _actConfig       = actConfig;
-            _eventEffects    = eventEffects;
             _rng             = rng;
-            _readyGate       = readyGate;
-            _intents         = intents;
             _localPlayer     = localPlayer;
             _transition      = transition;
             _openEventPub    = openEventPub;
@@ -103,22 +91,28 @@ namespace Guildmaster.Game.Services
             RunState run = _runStates.Current
                            ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
-            var ctx  = new RunContext(run, _rng, _readyGate, _intents);
-            var flow = new BattleFlow(preset, _session, _localPlayer);
+            // Даже один бой — мероприятие: ему нужны рукопожатие боя и владелец боевого скоупа.
+            _activities.Open();
+            try
+            {
+                var ctx  = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents);
+                var flow = new BattleFlow(preset, _activities.Battles, _localPlayer);
 
-            EventResult result = await flow.Run(ctx);
-            _runStates.Autosave(); // точка автосейва после узла (вики «7» §5)
+                EventResult result = await flow.Run(ctx);
+                _runStates.Autosave(); // точка автосейва после узла (вики «7» §5)
 
-            // Победа → награда (A3): витрина 1-из-3, выбор пишется в RunState (enforce вместимости — §5.4).
-            if (presentReward && result.Outcome == EventOutcome.Completed)
-                await _rewardPresenter.PresentAsync(tier);
+                // Победа → награда (A3): витрина 1-из-3, выбор пишется в RunState (enforce вместимости — §5.4).
+                if (presentReward && result.Outcome == EventOutcome.Completed)
+                    await _activities.Rewards.PresentAsync(tier);
 
-            // Арена живёт всё время после боя (фаза Interlude) и возвращается в мир на стыке узлов — в петле акта
-            // это делает RunBeatStage; здесь (dev-разрез одного боя) петли нет, поэтому возвращаем сами.
-            _session.RequestReset();
-            _session.SetPhase(BattlePhase.None);
-
-            return result;
+                return result;
+            }
+            finally
+            {
+                // Арену в мир не возвращаем руками: занятие уходит вместе с боем, и мир снова показывает
+                // свой отряд сам (BattleHost.Close → WorldStageController.PlaceParty).
+                _activities.Close();
+            }
         }
 
         /// <summary>
@@ -230,10 +224,11 @@ namespace Guildmaster.Game.Services
             // Токен отмены забега на время акта (QA #18): «В главное меню» → Cancel → OperationCanceledException.
             _runCts?.Dispose();
             _runCts = new CancellationTokenSource();
+            _activities.Open();
             try
             {
-                var ctx = new RunContext(run, _rng, _readyGate, _intents, _runCts.Token);
-                EventResult result = await _actRunner.RunActAsync(ctx);
+                var ctx = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents, _runCts.Token);
+                EventResult result = await _activities.Runner.RunActAsync(ctx);
                 _runStates.Autosave();
                 Debug.Log($"[GameFlow] - акт завершён: {result.Outcome}");
 
@@ -253,8 +248,12 @@ namespace Guildmaster.Game.Services
                 // оставляло чернила на экране, потому что вести их было уже некому (аудит 2026-07-26,
                 // волна 2 — ровно тот вызов, который Cancel() описывает в своём докстринге).
                 _transition?.Cancel();
-                _session.RequestReset();
-                _session.SetPhase(BattlePhase.None);
+
+                // Ни сброса арены, ни сброса фазы здесь больше нет: забег кончился — кончилось и
+                // занятие, а вместе с ним ушли бой, его скоуп и часы. Раньше эти две строки были
+                // единственным, что отделяло один забег от другого, и любая забытая делала следующий
+                // забег чужим.
+                _activities.Close();
                 _runCts.Dispose();
                 _runCts = null;
             }
@@ -278,8 +277,9 @@ namespace Guildmaster.Game.Services
             RunState run = _runStates.Current
                            ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
-            var ctx  = new RunContext(run, _rng, _readyGate, _intents);
-            var flow = new TextEventFlow(ev, _openEventPub, _eventEffects);
+            _activities.Open();
+            var ctx  = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents);
+            var flow = new TextEventFlow(ev, _openEventPub, _activities.EventEffects);
             return await flow.Run(ctx);
         }
     }
