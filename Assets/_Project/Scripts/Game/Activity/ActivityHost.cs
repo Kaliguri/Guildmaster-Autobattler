@@ -24,12 +24,19 @@ namespace Guildmaster.Game.Activity
     public sealed class ActivityHost : IDisposable, IActivityView
     {
         private readonly Session.SessionHost _sessions;
+        // Показу нужен МОМЕНТ смены места, а не факт: арену являют и хоронят по разу.
+        private readonly MessagePipe.IPublisher<ActivityChangedEvent> _changedPub;
 
         private LifetimeScope _activity;
         private ActivitySetup _setup;
         private ProvingGroundsSetupRequest? _pendingRoster;
 
-        public ActivityHost(Session.SessionHost sessions) => _sessions = sessions;
+        public ActivityHost(Session.SessionHost sessions,
+                            MessagePipe.IPublisher<ActivityChangedEvent> changedPub)
+        {
+            _sessions   = sessions;
+            _changedPub = changedPub;
+        }
 
         /// <summary>Идёт ли мероприятие прямо сейчас.</summary>
         public bool IsOpen => _activity != null && _activity.Container != null;
@@ -117,6 +124,8 @@ namespace Guildmaster.Game.Activity
             // улетал бы в пустоту, а игрок видел бы пустой экран без панели (наход. Макса 02.08.2026).
             // Забег арену не поднимает: там её заказывает узел, и до первого узла её быть не должно.
             if (setup.Kind == ActivityKind.ProvingGrounds) Battle?.OpenEmpty();
+
+            _changedPub?.Publish(new ActivityChangedEvent(setup));
         }
 
         /// <summary>
@@ -130,6 +139,10 @@ namespace Guildmaster.Game.Activity
             _activity.Dispose();
             _activity = null;
             _setup    = default; // мероприятия нет — и вида нет; «где мы» не переживает своё место
+
+            // Место кончилось. Показ обязан узнать об этом, иначе он запомнит арену как «уже собранную»
+            // и второй заход на ту же площадку пройдёт без единого перехода.
+            _changedPub?.Publish(new ActivityChangedEvent(default));
         }
 
         public void Dispose() => Close();

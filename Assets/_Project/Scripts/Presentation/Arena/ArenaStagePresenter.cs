@@ -36,6 +36,12 @@ namespace Guildmaster.Presentation.Arena
         private ISubscriber<TestZoneChangedEvent> _testZoneSub;
         private ISubscriber<BattleEndedEvent> _battleEndedSub;
         private IDisposable _battleEndedSubscription;
+        private ISubscriber<ActivityChangedEvent> _activitySub;
+        private IDisposable _activitySubscription;
+
+        // Родной облик арены: запоминаем ДО первой пряталки, потому что прячем мы её тем же свопером —
+        // и после этого спросить «а какой был настоящий» уже не у кого.
+        private string _homeSkin;
         private Guildmaster.Core.Input.IInputService _input;
         private IDisposable _revealSubscription;
         private IDisposable _fadeSubscription;
@@ -58,12 +64,14 @@ namespace Guildmaster.Presentation.Arena
                               ISubscriber<ScreenFadeChangedEvent> fadeSub,
                               ISubscriber<TestZoneChangedEvent> testZoneSub,
                               ISubscriber<BattleEndedEvent> battleEndedSub,
+                              ISubscriber<ActivityChangedEvent> activitySub,
                               Guildmaster.Core.Input.IInputService input)
         {
             _revealSub       = revealSub;
             _fadeSub         = fadeSub;
             _testZoneSub     = testZoneSub;
             _battleEndedSub  = battleEndedSub;
+            _activitySub     = activitySub;
             _input           = input;
         }
 
@@ -79,10 +87,15 @@ namespace Guildmaster.Presentation.Arena
             // Бой кончился — полигон, в который вернётся игрок, уже другое место (та самая арена, где всё
             // произошло). Возврат туда достоин перехода, в отличие от простого щелчка табом.
             _battleEndedSubscription = _battleEndedSub?.Subscribe(_ => _placeChanged = true);
+            _activitySubscription = _activitySub?.Subscribe(OnActivityChanged);
 
             if (_input != null) _input.SkipRequested += OnSkip;
 
-            _desaturation?.SetGrey(false); // старт — настоящая арена в своём цвете
+            // Вне мероприятия арены НЕТ. Прежде мир стартовал с готовой цветной ареной, и игрок видел её
+            // мельком ещё в главном меню — место без повода (наход. Макса 02.08.2026). Место появляется
+            // тогда, когда во что-то играют, и появляется на глазах.
+            _homeSkin = _swapper != null ? _swapper.CurrentSkinId : null;
+            HideArena();
         }
 
         private void OnDestroy()
@@ -91,7 +104,57 @@ namespace Guildmaster.Presentation.Arena
             _fadeSubscription?.Dispose();
             _testZoneSubscription?.Dispose();
             _battleEndedSubscription?.Dispose();
+            _activitySubscription?.Dispose();
             if (_input != null) _input.SkipRequested -= OnSkip;
+        }
+
+        /// <summary>
+        /// Мероприятие сменилось. Место принадлежит МЕРОПРИЯТИЮ, а не миру: кончилось оно — кончилось и
+        /// место, вместе со всем, что показ о нём помнил.
+        /// </summary>
+        /// <remarks>
+        /// Из-за того, что «арена уже собрана» жило в компоненте persist-мира и не сбрасывалось никогда,
+        /// второй заход на Ристалище проходил молча: сборка играется только первый раз за жизнь мира, а
+        /// мир у нас один на всю сессию (наход. Макса 02.08.2026).
+        /// <para>Забег получает место сразу и без подачи: переход там играет вход в узел, которому есть
+        /// что рассказать. Площадка являет себя сама, когда встаёт серая зона.</para>
+        /// </remarks>
+        private void OnActivityChanged(ActivityChangedEvent e)
+        {
+            if (!e.IsOpen)
+            {
+                _spawned      = false;
+                _placeChanged = false;
+                _pending      = false;
+                HideArena();
+                return;
+            }
+
+            if (e.Setup.Kind == ActivityKind.Campaign)
+            {
+                if (!string.IsNullOrEmpty(_homeSkin)) _swapper?.ApplyInstant(_homeSkin);
+                _desaturation?.SetGrey(false);
+            }
+        }
+
+        /// <summary>Убрать место с экрана: пустой облик и никаких тайлов. Не «серая арена», а ничего.</summary>
+        private void HideArena()
+        {
+            if (_swapper == null) return;
+
+            EnsureEmptySkin();
+            _swapper.ApplyInstant(EmptySkinId);
+        }
+
+        /// <summary>Зарегистрировать пустой облик (все слои без тайлов), если его ещё нет.</summary>
+        private void EnsureEmptySkin()
+        {
+            var empty = new System.Collections.Generic.Dictionary<string,
+                System.Collections.Generic.Dictionary<Vector3Int, UnityEngine.Tilemaps.TileBase>>();
+            foreach (string layer in _swapper.LayerNames)
+                empty[layer] = new System.Collections.Generic.Dictionary<Vector3Int, UnityEngine.Tilemaps.TileBase>();
+
+            _swapper.RegisterSkin(EmptySkinId, empty);
         }
 
         /// <summary>
@@ -160,14 +223,11 @@ namespace Guildmaster.Presentation.Arena
         {
             if (_swapper == null) { _desaturation?.SetGrey(true); return; }
 
-            string home = _swapper.CurrentSkinId;
+            // Домой возвращаемся к ЗАПОМНЕННОМУ облику, а не к текущему: текущий сейчас пустой — мы сами
+            // его таким сделали, пока мероприятия не было.
+            string home = !string.IsNullOrEmpty(_homeSkin) ? _homeSkin : _swapper.CurrentSkinId;
 
-            var empty = new System.Collections.Generic.Dictionary<string,
-                System.Collections.Generic.Dictionary<Vector3Int, UnityEngine.Tilemaps.TileBase>>();
-            foreach (string layer in _swapper.LayerNames)
-                empty[layer] = new System.Collections.Generic.Dictionary<Vector3Int, UnityEngine.Tilemaps.TileBase>();
-
-            _swapper.RegisterSkin(EmptySkinId, empty);
+            EnsureEmptySkin();
 
             _desaturation.SetGrey(true);            // цвет полигона ставим сразу: собираться должна уже серая
             if (_digital != null) _digital.OutlineFromTarget = true; // чертёж места стоит с первого кадра

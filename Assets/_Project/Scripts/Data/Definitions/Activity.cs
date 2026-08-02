@@ -80,6 +80,25 @@ namespace Guildmaster.Data.Definitions
     }
 
     /// <summary>
+    /// Мероприятие открылось или закрылось. Событие, а не только опрос: показу нужно знать МОМЕНТ, а
+    /// не факт, — место являют и хоронят один раз, а не каждый кадр.
+    /// </summary>
+    /// <remarks>
+    /// Закрытие мероприятия — это конец МЕСТА. Всё, что показ помнит про арену («уже собрана», «место
+    /// сменилось»), обязано умереть вместе с ним, иначе второй заход на ту же площадку пройдёт молча:
+    /// показ будет уверен, что всё это игрок уже видел (наход. Макса 02.08.2026).
+    /// </remarks>
+    public readonly struct ActivityChangedEvent
+    {
+        public readonly ActivitySetup Setup;
+
+        public ActivityChangedEvent(ActivitySetup setup) => Setup = setup;
+
+        /// <summary>Мероприятие идёт (иначе — только что кончилось).</summary>
+        public bool IsOpen => Setup.IsOpen;
+    }
+
+    /// <summary>
     /// Чтение «какое мероприятие идёт» для тех, кто мероприятия переживает: верхняя панель, навигатор,
     /// звук. Живёт в Data по той же причине, что <see cref="IBattleClock"/>: <c>Guildmaster.UI</c> не
     /// ссылается на <c>Guildmaster.Game</c> — обратная ссылка дала бы цикл.

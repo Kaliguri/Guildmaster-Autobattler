@@ -19,7 +19,8 @@ namespace Guildmaster.Tests.EditMode.Run
         [Test]
         public void Host_HasNoKindUntilSomethingIsOpened()
         {
-            var host = new ActivityHost(new Guildmaster.Game.Session.SessionHost());
+            // Паблишер не нужен: мероприятия нет, а значит и говорить о его смене нечего.
+            var host = new ActivityHost(new Guildmaster.Game.Session.SessionHost(), null);
 
             Assert.IsFalse(host.IsOpen);
             Assert.AreEqual(ActivityKind.None, host.Current.Kind);
