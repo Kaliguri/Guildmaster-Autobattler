@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Guildmaster.Net;
 using Guildmaster.Net.Presence;
 using Guildmaster.Net.Tape;
 using NUnit.Framework;
@@ -86,7 +87,7 @@ namespace Guildmaster.Tests.EditMode.Net
                 new PresenceState(1, 9,  new Vector2(4.75f, -3f),   new Vector2(0f, -2f), heldId: 42),
             };
 
-            var writer = new TapeByteWriter(64);
+            var writer = new NetByteWriter(64);
             PresenceCodec.Write(writer, states);
 
             var got = new List<PresenceState>();
@@ -107,7 +108,7 @@ namespace Guildmaster.Tests.EditMode.Net
             for (int i = 0; i < PresenceCodec.MaxPlayersPerPacket; i++)
                 states.Add(new PresenceState(i, 1, Vector2.one, Vector2.zero));
 
-            var writer = new TapeByteWriter(256);
+            var writer = new NetByteWriter(256);
             PresenceCodec.Write(writer, states);
 
             Assert.Less(writer.Length, 1200,
@@ -118,7 +119,7 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void ForeignVersion_IsIgnored_NotCrashed()
         {
-            var writer = new TapeByteWriter(32);
+            var writer = new NetByteWriter(32);
             PresenceCodec.Write(writer, new List<PresenceState> { new PresenceState(0, 1, Vector2.zero, Vector2.zero) });
 
             byte[] packet = new byte[writer.Length];

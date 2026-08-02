@@ -33,7 +33,7 @@ namespace Guildmaster.Net.Tape
         private readonly IContentDatabase   _content;
         private readonly IBattleAuthority   _authority;
 
-        private readonly TapeByteWriter _writer = new TapeByteWriter(64);
+        private readonly NetByteWriter _writer = new NetByteWriter(64);
         private byte[] _envelope;
 
         public BattleRosterRelay(INetTransport transport, CombatSimulation simulation,
@@ -83,7 +83,7 @@ namespace Guildmaster.Net.Tape
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
             if (channel != NetChannel.BattleRoster) return;
 
-            var bytes = new TapeByteReader(payload);
+            var bytes = new NetByteReader(payload);
 
             int    id        = bytes.ReadInt();
             int    team      = bytes.ReadByte();

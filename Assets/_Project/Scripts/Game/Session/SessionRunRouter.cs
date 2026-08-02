@@ -20,6 +20,6 @@ namespace Guildmaster.Game.Session
 
         public SessionRunRouter(SessionHost sessions) => _sessions = sessions;
 
-        public RunState Current => _sessions.Run?.Current;
+        public RunState Current => _sessions.RunView?.Current;
     }
 }

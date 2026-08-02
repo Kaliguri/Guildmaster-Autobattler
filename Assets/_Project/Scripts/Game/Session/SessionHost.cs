@@ -39,12 +39,21 @@ namespace Guildmaster.Game.Session
         public Guildmaster.Guild.RunStateService Run => Resolve<Guildmaster.Guild.RunStateService>();
 
         /// <summary>
-        /// Шина команд текущего сеанса; вне сессии владельца — <c>null</c>. Спрашиваем именно шину, а не
-        /// интерфейс <c>IRunCommands</c>: интерфейс в контейнере занят роутером, который стоит в корне и
-        /// сам ходит сюда, — резолв интерфейса ушёл бы вверх и вернулся бы к роутеру же.
+        /// Что в забеге сейчас — у обеих ролей. У владельца отвечает держатель, у гостя — приёмник
+        /// снимков; спрашивающему разница не видна.
         /// </summary>
-        public Guildmaster.Guild.Commands.RunCommandBus Commands
-            => Resolve<Guildmaster.Guild.Commands.RunCommandBus>();
+        public Guildmaster.Guild.ISessionRunState RunView => Resolve<Guildmaster.Guild.ISessionRunState>();
+
+        /// <summary>
+        /// Команды забега текущего сеанса; вне сессии — <c>null</c>. У владельца это локальная шина, у
+        /// гостя — отправка интента хосту; спрашивающему разница не видна и не нужна.
+        /// </summary>
+        /// <remarks>
+        /// Спрашиваем <c>ISessionRunCommands</c>, а не <c>IRunCommands</c>: последний в корне занят
+        /// роутером, который сам ходит сюда, — резолв ушёл бы вверх по контейнеру и вернулся к роутеру же.
+        /// </remarks>
+        public Guildmaster.Guild.Commands.ISessionRunCommands Commands
+            => Resolve<Guildmaster.Guild.Commands.ISessionRunCommands>();
 
         /// <summary>
         /// Открыть сеанс с указанной ролью. Прошлый закрывается: два владельца состояния одновременно —

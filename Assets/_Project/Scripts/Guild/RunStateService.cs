@@ -17,7 +17,7 @@ namespace Guildmaster.Guild
     /// <c>SessionInstaller</c>). Тем, кто переживает сеанс, видна только читающая половина —
     /// <see cref="IRunStateView"/> через роутер.
     /// </remarks>
-    public sealed class RunStateService : IRunStateView
+    public sealed class RunStateService : ISessionRunState
     {
         private readonly ISaveService    _save;
         private readonly GameConfig      _config;
@@ -26,6 +26,18 @@ namespace Guildmaster.Guild
         private readonly Core.Audio.IAudioService _audio;
 
         public RunState Current { get; private set; }
+
+        /// <summary>
+        /// Состояние забега целое и зафиксировано: начат новый забег, загружен сохранённый или сделан
+        /// автосейв. Не «что-то поменялось» — именно те точки, на которых состояние считается готовым к
+        /// отправке наружу.
+        /// </summary>
+        /// <remarks>
+        /// Существует ради коопа: гость играет в присланном состоянии, и точки его обновления обязаны
+        /// совпадать с точками сохранения — гость получает ровно то же, что диск. Разъедься они, и
+        /// «у меня не так, как у него» отличалось бы от «у меня не так, как в сейве».
+        /// </remarks>
+        public event Action<RunState> Committed;
 
         public RunStateService(ISaveService save, GameConfig config, IProfileService profiles,
             Core.Audio.IAudioService audio = null)
@@ -67,6 +79,7 @@ namespace Guildmaster.Guild
                 Guild         = guild,
                 SlotOwner     = new int[guild.Length], // соло: все 0
             };
+            Committed?.Invoke(Current);
             return Current;
         }
 
@@ -122,7 +135,11 @@ namespace Guildmaster.Guild
             if (string.IsNullOrEmpty(key)) return SaveLoadResult<RunState>.Missing();
 
             SaveLoadResult<RunState> result = _save.TryLoad<RunState>(key);
-            if (result.IsOk) Current = result.Value;
+            if (result.IsOk)
+            {
+                Current = result.Value;
+                Committed?.Invoke(Current);
+            }
             return result;
         }
 
@@ -217,6 +234,7 @@ namespace Guildmaster.Guild
             }
 
             _save.Save(key, Current);
+            Committed?.Invoke(Current);
         }
 
         /// <summary>Удалить автосейв (конец/сброс забега).</summary>

@@ -97,7 +97,7 @@ namespace Guildmaster.Net.Tape
 
         private TapeChunkStatus ReadInner(ArraySegment<byte> chunk)
         {
-            var bytes = new TapeByteReader(chunk);
+            var bytes = new NetByteReader(chunk);
 
             byte version = bytes.ReadByte();
             if (version != TapeChunkFormat.Version)
@@ -140,7 +140,7 @@ namespace Guildmaster.Net.Tape
             return TapeChunkStatus.Ok;
         }
 
-        private UnitSnapshot ReadUnit(TapeByteReader bytes)
+        private UnitSnapshot ReadUnit(NetByteReader bytes)
         {
             int  id   = bytes.ReadShort();
             uint mask = bytes.ReadUInt();
@@ -223,7 +223,7 @@ namespace Guildmaster.Net.Tape
             return snapshot;
         }
 
-        private static ProjectileSnapshot ReadProjectile(TapeByteReader bytes)
+        private static ProjectileSnapshot ReadProjectile(NetByteReader bytes)
         {
             int id       = bytes.ReadShort();
             int sourceId = bytes.ReadShort();
@@ -244,7 +244,7 @@ namespace Guildmaster.Net.Tape
             return new ProjectileSnapshot(id, sourceId, position, previous, velocity, targetId, isHeal);
         }
 
-        private TapeChunkStatus ReadEvent(TapeByteReader bytes, int firstTick)
+        private TapeChunkStatus ReadEvent(NetByteReader bytes, int firstTick)
         {
             var  kind       = (TapeEventKind)bytes.ReadByte();
             int  tick       = firstTick + bytes.ReadByte();
@@ -351,10 +351,10 @@ namespace Guildmaster.Net.Tape
             return false;
         }
 
-        private static float Read(TapeByteReader bytes, uint mask, uint field, float fallback) =>
+        private static float Read(NetByteReader bytes, uint mask, uint field, float fallback) =>
             (mask & field) != 0 ? TapeQuantization.UnpackScalar(bytes.ReadUShort()) : fallback;
 
-        private static int ReadTicks(TapeByteReader bytes, uint mask, uint field, int fallback) =>
+        private static int ReadTicks(NetByteReader bytes, uint mask, uint field, int fallback) =>
             (mask & field) != 0 ? bytes.ReadUShort() : fallback;
     }
 }

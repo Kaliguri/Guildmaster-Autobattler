@@ -1,6 +1,6 @@
 using System;
 
-namespace Guildmaster.Net.Tape
+namespace Guildmaster.Net
 {
     /// <summary>
     /// Минимальный писатель байтов с растущим буфером, который переиспользуется между чанками.
@@ -9,12 +9,12 @@ namespace Guildmaster.Net.Tape
     /// одним куском (<c>WrittenSegment</c>), поэтому переезд на <c>FastBufferWriter</c> в момент
     /// подключения named messages не тронет ни формат, ни тесты.</para>
     /// </summary>
-    public sealed class TapeByteWriter
+    public sealed class NetByteWriter
     {
         private byte[] _buffer;
         private int    _length;
 
-        public TapeByteWriter(int capacity = 4096) => _buffer = new byte[capacity < 64 ? 64 : capacity];
+        public NetByteWriter(int capacity = 4096) => _buffer = new byte[capacity < 64 ? 64 : capacity];
 
         /// <summary>Сколько байт записано.</summary>
         public int Length => _length;
@@ -55,6 +55,13 @@ namespace Guildmaster.Net.Tape
 
         public void WriteFloat(float value) => WriteUInt(unchecked((uint)BitConverter.SingleToInt32Bits(value)));
 
+        /// <summary>Восемь байт, младшая половина первой — тем же порядком, что и всё остальное.</summary>
+        public void WriteLong(long value)
+        {
+            WriteUInt(unchecked((uint)(value & 0xFFFFFFFF)));
+            WriteUInt(unchecked((uint)((value >> 32) & 0xFFFFFFFF)));
+        }
+
         /// <summary>
         /// Строка как длина + UTF-8. Пустая и <c>null</c> пишутся одинаково — нулевой длиной: у
         /// контентного id разницы между «нет» и «пусто» не бывает.
@@ -85,13 +92,13 @@ namespace Guildmaster.Net.Tape
     }
 
     /// <summary>Читатель того же формата. Порядок чтения обязан повторять порядок записи — это и есть контракт.</summary>
-    public sealed class TapeByteReader
+    public sealed class NetByteReader
     {
         private readonly byte[] _buffer;
         private readonly int    _end;
         private int             _position;
 
-        public TapeByteReader(ArraySegment<byte> segment)
+        public NetByteReader(ArraySegment<byte> segment)
         {
             _buffer   = segment.Array;
             _position = segment.Offset;
@@ -130,6 +137,13 @@ namespace Guildmaster.Net.Tape
         public int ReadInt() => unchecked((int)ReadUInt());
 
         public float ReadFloat() => BitConverter.Int32BitsToSingle(unchecked((int)ReadUInt()));
+
+        public long ReadLong()
+        {
+            ulong low  = ReadUInt();
+            ulong high = ReadUInt();
+            return unchecked((long)(low | (high << 32)));
+        }
 
         public string ReadString()
         {

@@ -14,7 +14,7 @@ namespace Guildmaster.Guild.Commands
     /// <para><b>Счётчик номеров — свой у игрока</b> и живёт столько же, сколько забег: у нового забега
     /// номера начинаются заново вместе с очищенным логом, иначе его первые команды сошли бы за дубли.</para>
     /// </remarks>
-    public sealed class RunCommandBus : IRunCommands
+    public sealed class RunCommandBus : ISessionRunCommands
     {
         private readonly RunCommandApplier _applier;
         private readonly RunCommandLog     _log;
@@ -33,6 +33,18 @@ namespace Guildmaster.Guild.Commands
         public RunCommandLog Log => _log;
 
         /// <summary>
+        /// Команда применена и состояние забега изменилось. Поднимается ОДИН раз на успешное применение
+        /// — дубли и пустые команды до сюда не доходят.
+        /// </summary>
+        /// <remarks>
+        /// Существует ради коопа: гость держит присланное состояние и своих изменений не считает, поэтому
+        /// хосту нужен момент «теперь у меня новое — раздай». Событие живёт на шине, а не у держателя
+        /// состояния, потому что шина — единственная дорога записи, и подписчик здесь не может пропустить
+        /// изменение, прошедшее мимо него.
+        /// </remarks>
+        public event Action<RunCommand> Applied;
+
+        /// <summary>
         /// Применить готовую команду. Вход для теста и для будущей сети: у команды, приехавшей от другого
         /// игрока, уже есть и номер, и его собственное время — переприсваивать их значило бы потерять
         /// ровно то, ради чего они существуют.
@@ -48,6 +60,7 @@ namespace Guildmaster.Guild.Commands
             if (!_applier.Apply(in command)) return false;
 
             _log.Append(in command);
+            Applied?.Invoke(command);
             return true;
         }
 

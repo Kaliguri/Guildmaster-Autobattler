@@ -35,7 +35,7 @@ namespace Guildmaster.Net.Presence
         /// <summary>Байт на один курсор в пакете — считаем явно, чтобы рост формата был заметен.</summary>
         public const int BytesPerPlayer = 1 + 2 + 4 + 4 + 2 + 2;
 
-        public static void Write(TapeByteWriter bytes, IReadOnlyList<PresenceState> states)
+        public static void Write(NetByteWriter bytes, IReadOnlyList<PresenceState> states)
         {
             if (bytes == null) throw new ArgumentNullException(nameof(bytes));
 
@@ -70,7 +70,7 @@ namespace Guildmaster.Net.Presence
 
             try
             {
-                var bytes = new TapeByteReader(packet);
+                var bytes = new NetByteReader(packet);
 
                 if (bytes.ReadByte() != Version) return false;
                 int count = bytes.ReadByte();

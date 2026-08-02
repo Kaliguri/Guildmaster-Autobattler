@@ -29,17 +29,22 @@ namespace Guildmaster.Game.Session
         {
             builder.RegisterInstance(new SessionContext(_role));
 
-            if (_role == SessionRole.Owner)
-                InstallOwner(builder);
+            if (_role == SessionRole.Owner) InstallOwner(builder);
+            else                            InstallGuest(builder);
         }
 
-        /// <summary>Владелец сейва: держит забег сам и сам его пишет.</summary>
+        /// <summary>Владелец сейва: держит забег сам, сам его пишет и сам раздаёт гостям.</summary>
         private static void InstallOwner(IContainerBuilder builder)
         {
             // Durable-состояние забега + правила вместимости реликов (план 11 §3.1, §5.4). Читателям
-            // снаружи сессии оно видно только через IRunStateView — писать в обход шины команд нельзя.
+            // снаружи сессии оно видно только через роутер — писать в обход шины команд нельзя.
             builder.Register<Guildmaster.Guild.RunStateService>(Lifetime.Singleton)
-                   .AsSelf().As<Guildmaster.Guild.IRunStateView>();
+                   .AsSelf().As<Guildmaster.Guild.ISessionRunState>();
+
+            // Раздача состояния гостям и приём их интентов. Регистрируется и в соло: транспорт не поднят,
+            // и вся работа сводится к одному ветвлению в тике — а ветка «а вдруг мы одни» не нужна ни
+            // одному потребителю.
+            builder.RegisterEntryPoint<Net.RunStateBroadcast>(Lifetime.Singleton).AsSelf();
 
             // Шина команд забега: снаружи сборки Guild в RunState пишут только через неё, и мутаторы
             // internal держат это компилятором. Лог append-only даёт реплей, аудит «кто передвинул» и
@@ -50,7 +55,25 @@ namespace Guildmaster.Game.Session
             // и «писать некуда» перестало бы работать одинаково для всех.
             builder.Register<Guildmaster.Guild.Commands.RunCommandLog>(Lifetime.Singleton);
             builder.Register<Guildmaster.Guild.Commands.RunCommandApplier>(Lifetime.Singleton);
-            builder.Register<Guildmaster.Guild.Commands.RunCommandBus>(Lifetime.Singleton).AsSelf();
+            builder.Register<Guildmaster.Guild.Commands.RunCommandBus>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Guild.Commands.ISessionRunCommands>();
+        }
+
+        /// <summary>
+        /// Гость: состояние приходит по сети и только читается, изменения уезжают интентом хосту.
+        /// </summary>
+        /// <remarks>
+        /// Держателя забега здесь нет, и это главное в ветке: у гостя нет ни объекта, который умеет
+        /// менять чужой забег, ни сервиса, который умеет его записать. Лога команд тоже нет — гость
+        /// ничего не применяет, он получает результат (см. <see cref="Net.GuestRunState"/>).
+        /// </remarks>
+        private static void InstallGuest(IContainerBuilder builder)
+        {
+            builder.Register<Net.GuestRunState>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Guild.ISessionRunState>();
+
+            builder.Register<Net.RemoteRunCommands>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Guild.Commands.ISessionRunCommands>();
         }
     }
 }

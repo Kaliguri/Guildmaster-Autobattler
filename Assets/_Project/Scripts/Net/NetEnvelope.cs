@@ -33,6 +33,12 @@ namespace Guildmaster.Net
 
         /// <summary>Состав боя: кто вышел на арену. Хост → гости, по одному паспорту на спавн.</summary>
         BattleRoster = 7,
+
+        /// <summary>Снимок забега целиком: хост → гости. Гость не считает состояние, он его получает.</summary>
+        RunSnapshot = 8,
+
+        /// <summary>Где идёт игра: вид мероприятия и границы боя. Хост → гости.</summary>
+        ActivityState = 9,
     }
 
     /// <summary>

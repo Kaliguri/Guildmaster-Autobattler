@@ -24,7 +24,7 @@ namespace Guildmaster.Net.Tape
     /// </summary>
     public sealed class TapeChunkWriter
     {
-        private readonly TapeByteWriter _bytes = new TapeByteWriter(8192);
+        private readonly NetByteWriter _bytes = new NetByteWriter(8192);
 
         // Последний записанный снимок каждого юнита В ЭТОМ чанке — база для дельты. Очищается на каждом
         // чанке: самодостаточность важнее пары процентов трафика.
