@@ -34,6 +34,22 @@ namespace Guildmaster.Game.Activity
         public Flow.IBattleSession Battles => Resolve<Flow.IBattleSession>();
 
         /// <summary>
+        /// Владелец боевого скоупа текущего занятия; вне занятия — <c>null</c>. Нужен dev-инструментам:
+        /// они живут дольше мероприятий, а работают с боем того, что идёт сейчас.
+        /// </summary>
+        public Flow.BattleHost Battle => Resolve<Flow.BattleHost>();
+
+        /// <summary>
+        /// Открыть занятие, если его нет, и вернуть владельца боя. Для dev-срезов: «поставь мне
+        /// болванчиков» означает «мне нужна арена», а арена — это мероприятие, пусть и пустое.
+        /// </summary>
+        public Flow.BattleHost EnsureBattleHost()
+        {
+            if (!IsOpen) Open();
+            return Battle;
+        }
+
+        /// <summary>
         /// Часы и фаза боя текущего занятия; вне занятия — <c>null</c>. Именно так UI и узнаёт, что
         /// показывать верхнюю панель нечему: не по фазе <c>None</c> у вечного объекта, а по отсутствию
         /// самого мероприятия.

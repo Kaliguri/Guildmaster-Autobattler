@@ -28,10 +28,23 @@ namespace Guildmaster.DevTools
         private CombatDebugDraw    _debugDraw;
         private IInputService      _input;
 
-        // Владелец жизненного цикла боя (мир). Боевых ссылок консоль больше НЕ держит: скоуп боя
-        // рождается и умирает, а этот объект живёт всю сессию — запомненная симуляция протухла бы на
-        // первом же переходе между узлами. Спрашиваем текущий бой в момент команды.
-        private Guildmaster.Game.Flow.BattleHost _host;
+        // Владелец жизненного цикла МЕРОПРИЯТИЯ (корень). Ни боя, ни занятия консоль не запоминает:
+        // и то и другое рождается и умирает, а этот объект живёт всю игру — запомненная ссылка
+        // протухла бы на первом же переходе. Спрашиваем текущее в момент команды.
+        private Guildmaster.Game.Activity.ActivityHost _activities;
+
+        /// <summary>Рукопожатие боя идущего мероприятия или null. Живёт в занятии, поэтому не запоминается.</summary>
+        private Guildmaster.Game.Flow.IBattleSession Session => _activities != null ? _activities.Battles : null;
+
+        /// <summary>Владелец боя ИДУЩЕГО мероприятия или null (мероприятия нет).</summary>
+        private Guildmaster.Game.Flow.BattleHost HostOrNull => _activities != null ? _activities.Battle : null;
+
+        /// <summary>
+        /// Он же, но с открытием дев-арены при нужде: команда боя вне мероприятия и означает «заведи мне
+        /// арену». Пустое занятие — законное мероприятие (план: дев-арена стоит рядом с забегом).
+        /// </summary>
+        private Guildmaster.Game.Flow.BattleHost HostEnsured
+            => _activities != null ? _activities.EnsureBattleHost() : null;
         [Tooltip("UXML витрины боёв (F3): поиск по энкаунтерам, пресетам и срезам китов.")]
         [SerializeField] private UnityEngine.UIElements.VisualTreeAsset _battleBrowserUxml;
 
@@ -40,7 +53,6 @@ namespace Guildmaster.DevTools
         private DevBattleBrowserScreen _battleBrowser;
         private DevCommandRegistry _registry;          // куда кладём команды
         private DevCommandSet _commands;               // свои команды + статические наборы; снимаются вместе с модулем
-        private Guildmaster.Game.Flow.IBattleSession _session; // опц.: перезапуск боя забега на R (null в standalone-арене)
 
         // Ристалище: интент входа и состояние площадки. Живут ВЫШЕ боевого скоупа (Root), поэтому
         // резолвятся опционально — в standalone-арене без Root их нет, и команда честно об этом скажет.
@@ -86,10 +98,10 @@ namespace Guildmaster.DevTools
         public static void SetLastBattle(System.Action<GuildmasterCommands> setup) => _lastBattleSetup = setup;
 
         /// <summary>Симуляция ИДУЩЕГО боя или null. Для того, что боя не открывает: пауза, статус, отчёты.</summary>
-        private CombatSimulation SimOrNull => _host != null ? _host.Resolve<CombatSimulation>() : null;
+        private CombatSimulation SimOrNull => HostOrNull != null ? HostOrNull.Resolve<CombatSimulation>() : null;
 
         /// <summary>Режим dev-оверлеев идущего боя или null (вне боя оверлеям нечего показывать).</summary>
-        private DevOverlayMode OverlayModeOrNull => _host != null ? _host.Resolve<DevOverlayMode>() : null;
+        private DevOverlayMode OverlayModeOrNull => HostOrNull != null ? HostOrNull.Resolve<DevOverlayMode>() : null;
 
         /// <summary>
         /// Арена, на которой работает дев-срез. Боя нет — открываем пустой дев-бой: команда «поставь мне
@@ -102,13 +114,14 @@ namespace Guildmaster.DevTools
             {
                 CombatSimulation live = SimOrNull;
                 if (live != null) return live;
-                if (_host == null)
+                Guildmaster.Game.Flow.BattleHost host = HostEnsured;
+                if (host == null)
                 {
-                    Debug.LogWarning("[GuildmasterCommands] - мира нет → бой открывать некому");
+                    Debug.LogWarning("[GuildmasterCommands] - мира нет → арену открывать некому");
                     return null;
                 }
 
-                _host.Open(DevArenaPreset());
+                host.Open(DevArenaPreset());
                 return SimOrNull;
             }
         }
@@ -119,7 +132,7 @@ namespace Guildmaster.DevTools
             get
             {
                 if (Sim == null) return null;
-                return _host.Resolve<RuntimeUnitFactory>();
+                return HostOrNull?.Resolve<RuntimeUnitFactory>();
             }
         }
 
@@ -144,8 +157,7 @@ namespace Guildmaster.DevTools
             contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
             contentDatabase.TryGet("enemy.bone_dev", out _boneDuelist);
             // Сессия боя живёт в RootScope: в реальном забеге резолвится, в standalone dev-арене (без Root) — null.
-            resolver.TryResolve(out _host);
-            resolver.TryResolve(out _session);
+            resolver.TryResolve(out _activities);
             resolver.TryResolve(out _runControl);
             resolver.TryResolve(out _provingGroundsPub);
             resolver.TryResolve(out _provingGroundsChangedSub);
@@ -271,7 +283,7 @@ namespace Guildmaster.DevTools
             // по определению, и бой начинает кнопка «Начать», а не закрытая консоль. Фазу спрашиваем, а не
             // помним: команда могла увести игрока в расстановку уже ПОСЛЕ открытия консоли — ровно так и
             // делает gm_proving_grounds.
-            bool deploying = _session != null && _session.Phase == Data.Definitions.BattlePhase.Deployment;
+            bool deploying = Session != null && Session.Phase == Data.Definitions.BattlePhase.Deployment;
             SimOrNull?.SetPaused(deploying || _pausedBeforeConsole);
             if (_input != null) _input.SetSuppressed(Core.Input.InputSuppressSource.DevConsole, false);
         }
@@ -291,7 +303,7 @@ namespace Guildmaster.DevTools
             if (!_consoleOpen && kb.rKey.wasPressedThisFrame)
             {
                 if (_lastBattleSetup != null) RestartLastBattle();
-                else if (_session == null || !_session.RestartInPlace()) RestartLastBattle(); // варнинг «нет боя»
+                else if (Session == null || !Session.RestartInPlace()) RestartLastBattle(); // варнинг «нет боя»
             }
         }
 
@@ -398,7 +410,8 @@ namespace Guildmaster.DevTools
             if (!_content.TryGet(id, out Data.Definitions.EncounterData enc) || enc == null)
                 return $"нет энкаунтера «{id}». Список — battles";
 
-            if (_host == null) return "мира нет — бой открывать некому";
+            Guildmaster.Game.Flow.BattleHost host = HostEnsured;
+            if (host == null) return "мира нет — бой открывать некому";
 
             // Голый энкаунтер — это превью врагов без своей стороны. Заворачиваем в транзиентный пресет:
             // бой рождается ровно одной дорогой, и у неё на входе всегда пресет.
@@ -406,8 +419,8 @@ namespace Guildmaster.DevTools
                 encounter: enc, roster: System.Array.Empty<Data.Definitions.PlayerSlot>(),
                 mode: Data.Definitions.DeploymentMode.Fixed, partyItems: null, id: $"battle.dev.{id}");
 
-            _host.Open(preset);
-            SetLastBattle(c => c._host?.Open(preset));
+            host.Open(preset);
+            SetLastBattle(c => c.HostEnsured?.Open(preset));
             return $"энкаунтер «{id}» запущен";
         }
 
@@ -418,10 +431,11 @@ namespace Guildmaster.DevTools
             if (!_content.TryGet(id, out Data.Definitions.BattlePresetData preset) || preset == null)
                 return $"нет пресета «{id}». Список — battles";
 
-            if (_host == null) return "мира нет — бой открывать некому";
+            Guildmaster.Game.Flow.BattleHost host = HostEnsured;
+            if (host == null) return "мира нет — бой открывать некому";
 
-            _host.Open(preset);
-            SetLastBattle(c => c._host?.Open(preset));
+            host.Open(preset);
+            SetLastBattle(c => c.HostEnsured?.Open(preset));
             return $"пресет «{id}» запущен";
         }
 
@@ -446,7 +460,7 @@ namespace Guildmaster.DevTools
         // Загрузчик берём у ЖИВОГО боевого скоупа на каждый вызов, а не кэшируем: после F5 старый скоуп
         // мёртв, и захваченная ссылка грузила бы бой в несуществующую арену.
         /// <summary>Загрузчик ИДУЩЕГО боя или null. Пере-спавн состава внутри уже открытого боя.</summary>
-        private EncounterLoader LiveLoader() => _host != null ? _host.Resolve<EncounterLoader>() : null;
+        private EncounterLoader LiveLoader() => HostOrNull?.Resolve<EncounterLoader>();
 
         /// <summary>Кит для одиночного среза — аргумент команды <c>kit</c>.</summary>
         /// <remarks>

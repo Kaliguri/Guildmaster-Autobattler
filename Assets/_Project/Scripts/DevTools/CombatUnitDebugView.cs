@@ -19,16 +19,27 @@ namespace Guildmaster.DevTools
     /// </remarks>
     public sealed class CombatUnitDebugView : MonoBehaviour
     {
-        private Guildmaster.Game.Flow.BattleHost _host;
+        // Владельца боя запоминать нельзя: он живёт в МЕРОПРИЯТИИ, а панель — в персист-сцене, и
+        // между забегами меняется и бой, и его хозяин. Держим корневой ActivityHost и спрашиваем цепочку
+        // «мероприятие → бой → симуляция» при каждом чтении.
+        private Guildmaster.Game.Activity.ActivityHost _activities;
 
-        private CombatSimulation _simulation => _host != null ? _host.Resolve<CombatSimulation>() : null;
+        private CombatSimulation _simulation
+        {
+            get
+            {
+                Guildmaster.Game.Flow.BattleHost battle = _activities != null ? _activities.Battle : null;
+                return battle != null ? battle.Resolve<CombatSimulation>() : null;
+            }
+        }
 
-        // Мир поднимается раньше сцены с дев-панелями, поэтому к Awake он уже построен. Нет мира —
+        // Корень поднят раньше любой аддитивной сцены, поэтому к Awake он уже построен. Нет корня —
         // панель просто ничего не показывает (standalone-сцена без бута).
         private void Awake()
         {
-            var world = LifetimeScope.Find<Guildmaster.Game.WorldLifetimeScope>();
-            if (world != null && world.Container != null) _host = world.Container.Resolve<Guildmaster.Game.Flow.BattleHost>();
+            var root = LifetimeScope.Find<Guildmaster.Game.RootLifetimeScope>();
+            if (root != null && root.Container != null)
+                root.Container.TryResolve(out _activities);
         }
 
         // ── Состояние симуляции ──────────────────────────────────────────────
