@@ -252,5 +252,5 @@ function Show-UnityLogTail {
     }
 
     Write-Host "--- хвост лога ($LogFile) ---" -ForegroundColor DarkGray
-    Get-Content $LogFile -Tail $Lines | ForEach-Object { Write-Host $_ }
+    Get-Content $LogFile -Tail $Lines -Encoding UTF8 | ForEach-Object { Write-Host $_ }
 }

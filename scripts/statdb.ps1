@@ -72,7 +72,7 @@ function Get-Assets { Get-ChildItem -Path $dirs -Filter *.asset -File | Sort-Obj
 function Get-BaseDefaults {
     $d = @{}
     if (Test-Path $cfgPath) {
-        $cfg = Get-Content -Raw $cfgPath
+        $cfg = Get-Content -Raw -Encoding UTF8 $cfgPath
         foreach ($m in [regex]::Matches($cfg, '- Stat: (\d+)\s*\r?\n\s*Value: (-?[0-9.eE+]+)')) {
             $d[[int]$m.Groups[1].Value] = [double]$m.Groups[2].Value
         }
@@ -123,7 +123,7 @@ switch ($Command) {
         $cols = if ($Stats) { $Stats } else { @('MaxHP', 'AutoAttackDamage', 'AttackSpeed', 'AttackRange', 'PhysArmor', 'MoveSpeed', 'MaxResource') }
         $ids = $cols | ForEach-Object { Resolve-StatId $_ }
         $rows = foreach ($a in Get-Assets) {
-            $t = Get-Content -Raw $a.FullName
+            $t = Get-Content -Raw -Encoding UTF8 $a.FullName
             $o = [ordered]@{ Asset = $a.BaseName }
             for ($i = 0; $i -lt $cols.Count; $i++) {
                 $v = Read-Effective $t $ids[$i] $defaults
@@ -140,7 +140,7 @@ switch ($Command) {
         $defaults = Get-BaseDefaults
         $id = Resolve-StatId $A2
         foreach ($a in Get-Assets | Where-Object { $_.BaseName -like "*$A1*" }) {
-            $t = Get-Content -Raw $a.FullName
+            $t = Get-Content -Raw -Encoding UTF8 $a.FullName
             $e = Read-StatEntry $t $id
             $eff = Read-Effective $t $id $defaults
             $raw = if ($null -eq $e) { "(from base)" } else { "op=$($e.Op) val=$($e.Value)" }
@@ -153,7 +153,7 @@ switch ($Command) {
         $id = Resolve-StatId $A2
         $val = [double]$A3
         foreach ($a in Get-Assets | Where-Object { $_.BaseName -like "*$A1*" }) {
-            $t = Get-Content -Raw $a.FullName
+            $t = Get-Content -Raw -Encoding UTF8 $a.FullName
             $e = Read-StatEntry $t $id
             if ($null -eq $e) { Write-Host ("{0,-16} {1}: absent (add it in the SO first)" -f $a.BaseName, $A2) -ForegroundColor Yellow; continue }
             # Force op to Override (3) and set value.
@@ -169,7 +169,7 @@ switch ($Command) {
         $factor = [double]$A2
         foreach ($a in Get-Assets) {
             if (-not (Match-Filter $a.BaseName $Only)) { continue }
-            $t = Get-Content -Raw $a.FullName
+            $t = Get-Content -Raw -Encoding UTF8 $a.FullName
             $e = Read-StatEntry $t $id
             if ($null -eq $e) { continue }
             $new = [math]::Round($e.Value * $factor, 4)
@@ -187,7 +187,7 @@ switch ($Command) {
         $blockRx = '(?m)^  _stats:\r?\n((?:  - Stat: \d+\r?\n    Op: \d+\r?\n    Value: -?[0-9.eE+]+\r?\n)+)'
         foreach ($a in Get-Assets) {
             if (-not (Match-Filter $a.BaseName $Only)) { continue }
-            $t = Get-Content -Raw $a.FullName
+            $t = Get-Content -Raw -Encoding UTF8 $a.FullName
             $mm = [regex]::Match($t, $blockRx)
             if (-not $mm.Success) { Write-Host ("{0,-16} no stats list, skipped" -f $a.BaseName) -ForegroundColor DarkGray; continue }
             $eol = Get-Eol $t

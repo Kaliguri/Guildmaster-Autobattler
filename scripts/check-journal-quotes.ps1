@@ -286,7 +286,9 @@ $exact = 0
 $problems = [System.Collections.Generic.List[object]]::new()
 
 foreach ($src in $sources) {
-    $text = Get-Content $src.FullName -Raw
+    # -Encoding UTF8: в 5.1 без него записи журнала читаются как ANSI, и цитаты Макса — то самое,
+    # что этот гейт и сверяет, — превращаются в мусор.
+    $text = Get-Content $src.FullName -Raw -Encoding UTF8
     $rel = ($src.FullName.Substring($repo.Length).TrimStart('\') -replace '\\', '/')
 
     # Ограничение по дате: у tech-журнала дата в имени файла, у ADR — в заголовке секции.

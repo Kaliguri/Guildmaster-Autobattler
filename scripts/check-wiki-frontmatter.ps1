@@ -83,7 +83,8 @@ $files = Get-ChildItem -Path $vaultRoot -Recurse -File -Filter *.md |
 
 foreach ($f in $files) {
     $rel = $f.FullName.Substring($vaultRoot.Length).TrimStart('\', '/').Replace('\', '/')
-    $raw = Get-Content -LiteralPath $f.FullName -Raw
+    # -Encoding UTF8: в 5.1 без него .md читается как ANSI и кириллица во frontmatter бьётся.
+    $raw = Get-Content -LiteralPath $f.FullName -Raw -Encoding UTF8
     if ([string]::IsNullOrWhiteSpace($raw)) {
         Add-Issue $rel '(файл)' 'пустой файл'
         continue

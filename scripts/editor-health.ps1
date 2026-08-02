@@ -31,7 +31,7 @@ $logPath = Join-Path $env:LOCALAPPDATA "Unity/Editor/$logName"
 
 if (-not (Test-Path $logPath)) { throw "Лог редактора не найден: $logPath" }
 
-$lines = Get-Content -LiteralPath $logPath
+$lines = Get-Content -LiteralPath $logPath -Encoding UTF8
 $reloads = @()
 $lastIndex = -1
 

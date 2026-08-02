@@ -278,7 +278,7 @@ function Invoke-AssemblyCompile {
             Reason = "нет $Name.rsp — сборка незнакома редактору (новый asmdef или новый пакет). Открой Unity один раз." }
     }
 
-    $lines = Get-Content -LiteralPath $rsp
+    $lines = Get-Content -LiteralPath $rsp -Encoding UTF8
     $options = [System.Collections.Generic.List[string]]::new()
 
     foreach ($line in $lines) {

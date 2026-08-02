@@ -60,7 +60,9 @@ function Get-TestRunCounts {
     if (-not (Test-Path $ResultsFile)) { return $empty }
 
     try {
-        [xml]$xml = Get-Content $ResultsFile -Raw
+        # -Encoding UTF8: имена наших тестов написаны по-русски, и в 5.1 без него отчёт читается
+        # как ANSI — падает уже разбор XML, то есть прогон выглядит несостоявшимся.
+        [xml]$xml = Get-Content $ResultsFile -Raw -Encoding UTF8
         $run = $xml.'test-run'
         return [pscustomobject]@{
             Total  = [int]$run.total
