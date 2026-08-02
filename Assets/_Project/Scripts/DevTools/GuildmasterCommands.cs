@@ -47,7 +47,12 @@ namespace Guildmaster.DevTools
         private Guildmaster.Game.Flow.BattleHost HostEnsured
             => _activities != null ? _activities.EnsureBattleHost() : null;
 
+        [Tooltip("UXML витрины боёв (F3): список того, что можно запустить прямо сейчас.")]
+        [SerializeField] private UnityEngine.UIElements.VisualTreeAsset _battleBrowserUxml;
+
         private Guildmaster.UI.MenuRouter _menuRouter; // владелец показа консоли: у него и спрашиваем видимость
+        private Guildmaster.UI.UiNavigator _navigator; // витрину боёв показываем сами: UI-слою о боях знать незачем
+        private DevBattleBrowserScreen _battleBrowser;
         private DevCommandRegistry _registry;          // куда кладём команды
         private DevCommandSet _commands;               // свои команды + статические наборы; снимаются вместе с модулем
 
@@ -163,6 +168,7 @@ namespace Guildmaster.DevTools
             // некуда класть, и это не ошибка (тот же случай, что и с сессией боя выше).
             resolver.TryResolve(out _registry);
             resolver.TryResolve(out _menuRouter);
+            resolver.TryResolve(out _navigator);
             _provingGroundsSubscription = _provingGroundsChangedSub?.Subscribe(e => OnProvingGroundsChanged(e));
         }
 
@@ -189,6 +195,7 @@ namespace Guildmaster.DevTools
         private void Start()
         {
             if (_menuRouter != null) _menuRouter.DevConsoleVisibilityChanged += OnConsoleVisibilityChanged;
+            if (_input != null) _input.DevBattlesToggleRequested += ToggleBattleBrowser;
 
             // Команды кладём ЗДЕСЬ, а не в Construct: реестр приходит инъекцией, но статические наборы
             // (арена/карта/эффекты) тоже надо куда-то регистрировать, а своего объекта в сцене у них нет.
@@ -212,7 +219,40 @@ namespace Guildmaster.DevTools
         {
             _provingGroundsSubscription?.Dispose();
             if (_menuRouter != null) _menuRouter.DevConsoleVisibilityChanged -= OnConsoleVisibilityChanged;
+            if (_input != null) _input.DevBattlesToggleRequested -= ToggleBattleBrowser;
             _commands?.Dispose();
+        }
+
+        /// <summary>
+        /// Показать/снять витрину боёв (F3). Экран живёт одним инстансом: в нём набранный запрос и выбор,
+        /// и пересоздание сбрасывало бы их при каждом закрытии.
+        /// </summary>
+        private void ToggleBattleBrowser()
+        {
+            if (_navigator == null || _registry == null) return;
+
+            if (_battleBrowserUxml == null)
+            {
+                Debug.LogError("[GuildmasterCommands] - витрина боёв: не разведён UXML " +
+                               "(поле _battleBrowserUxml на объекте dev-команд)", this);
+                return;
+            }
+
+            if (_battleBrowser != null && _navigator.AnyScreen(s => ReferenceEquals(s, _battleBrowser)))
+            {
+                _navigator.Remove(_battleBrowser);
+                return;
+            }
+
+            // Полки взаимоисключающи: открытая консоль уходит, иначе две простыни лягут внахлёст.
+            _menuRouter?.CloseDevOverlays();
+
+            if (_battleBrowser == null)
+                _battleBrowser = new DevBattleBrowserScreen(_battleBrowserUxml, _registry, _content);
+            else
+                _battleBrowser.Refresh();   // список мог измениться, пока витрина была закрыта
+
+            _navigator.Push(_battleBrowser);
         }
 
         // Консоль показана/снята — тот же смысл, что раньше несли OnActivate/OnDeactivate у QFSW.

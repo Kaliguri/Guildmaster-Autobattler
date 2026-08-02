@@ -34,6 +34,7 @@ namespace Guildmaster.Game.Input
         private readonly InputAction _menuToggle; // Escape — оверлей системного меню, живёт вне контекст-карт (always-on)
         private readonly InputAction _devConsoleToggle; // F1 — командная dev-консоль; always-on по той же причине, что и меню
         private readonly InputAction _devLogToggle;     // F2 — лог-консоль
+        private readonly InputAction _devBattlesToggle; // F3 — витрина боёв
         private readonly InputAction _detailsHold; // Shift — подробности в подсказках, тоже always-on
         private readonly InputAction _skipTransition; // Space — пропустить подачу; always-on, см. комментарий у создания
 
@@ -63,6 +64,7 @@ namespace Guildmaster.Game.Input
         public event Action MenuToggleRequested;
         public event Action DevConsoleToggleRequested;
         public event Action DevLogToggleRequested;
+        public event Action DevBattlesToggleRequested;
         public event Action PointerPressed;
         public event Action PointerReleased;
 
@@ -139,6 +141,10 @@ namespace Guildmaster.Game.Input
             _devLogToggle = new InputAction("DevLogToggle", InputActionType.Button, "<Keyboard>/f2");
             _devLogToggle.performed += OnDevLogToggle;
             _devLogToggle.Enable();
+
+            _devBattlesToggle = new InputAction("DevBattlesToggle", InputActionType.Button, "<Keyboard>/f3");
+            _devBattlesToggle.performed += OnDevBattlesToggle;
+            _devBattlesToggle.Enable();
 
             // Подробности в подсказках (Shift): как и меню — вне контекст-карт и без глушения. Тултип
             // может висеть над модальным экраном, и там Shift обязан работать так же, как в бою.
@@ -250,6 +256,8 @@ namespace Guildmaster.Game.Input
 
         private void OnDevLogToggle(InputAction.CallbackContext _) => DevLogToggleRequested?.Invoke();
 
+        private void OnDevBattlesToggle(InputAction.CallbackContext _) => DevBattlesToggleRequested?.Invoke();
+
         private void OnDetailsHeld(InputAction.CallbackContext _)     => SetDetailsHeld(true);
         private void OnDetailsReleased(InputAction.CallbackContext _) => SetDetailsHeld(false);
 
@@ -270,6 +278,7 @@ namespace Guildmaster.Game.Input
             _menuToggle.performed    -= OnMenuToggle;
             _devConsoleToggle.performed -= OnDevConsoleToggle;
             _devLogToggle.performed  -= OnDevLogToggle;
+            _devBattlesToggle.performed -= OnDevBattlesToggle;
             _detailsHold.performed   -= OnDetailsHeld;
             _detailsHold.canceled    -= OnDetailsReleased;
             _skipTransition.performed -= OnSkipRequested;
@@ -282,6 +291,7 @@ namespace Guildmaster.Game.Input
             _menuToggle.Dispose();
             _devConsoleToggle.Dispose();
             _devLogToggle.Dispose();
+            _devBattlesToggle.Dispose();
             _detailsHold.Dispose();
             _skipTransition.Dispose();
         }

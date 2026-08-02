@@ -115,6 +115,12 @@ namespace Guildmaster.Core.Input
         /// </summary>
         event Action DevLogToggleRequested;
 
+        /// <summary>
+        /// Открыть/закрыть витрину боёв (<c>F3</c>): список того, что можно запустить прямо сейчас.
+        /// Живёт рядом с консолями по той же причине — это дев-инструмент поверх любого экрана.
+        /// </summary>
+        event Action DevBattlesToggleRequested;
+
         // --- Подробности в подсказках: удержание (план §II.10.4) ---
 
         /// <summary>
