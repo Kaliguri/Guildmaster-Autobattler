@@ -295,48 +295,67 @@ function cloudLobes(cx: number, cy: number, r: number, seed: number): Array<[num
   return out;
 }
 
-/** Силуэт массы: доли сверху, ПЛОСКИЙ НИЗ. Плоское дно — там, где восходящий воздух доходит до
- *  уровня конденсации; глаз знает это правило, даже не зная физики. */
-/** Рваная дуга: та же окружность, но радиус гуляет шумом по углу. Идеальная дуга — третья примета
- *  нарисованной ваты: у настоящего облака край клубится на всех масштабах сразу. */
-function raggedArc(
-  ctx: CanvasRenderingContext2D,
-  lx: number,
-  ly: number,
-  lr: number,
-  from: number,
-  to: number,
-  seed: number,
-  amp = 0.13
-): void {
-  // Шагов немного и шум ДЕШЁВЫЙ: первая версия считала vnoise на каждую точку каждой ступени
-  // каждой доли, и страница со стендами просто вставала. Рваность — деталь второго плана,
-  // платить за неё интерполированным шумом незачем.
-  const steps = Math.max(5, Math.round((to - from) * 3.5));
-  for (let i = 0; i <= steps; i++) {
-    const a = from + ((to - from) * i) / steps;
-    const n = (jag(i * 3, seed) - 0.5) * 2;
-    const fine = (jag(i * 7 + 1, seed + 3) - 0.5);
-    const rr = lr * (1 + n * amp + fine * amp * 0.5);
-    const x = lx + Math.cos(a) * rr;
-    const y = ly + Math.sin(a) * rr;
-    if (i === 0) ctx.lineTo(x, y);
-    else ctx.lineTo(x, y);
+/** ВНЕШНЯЯ КРОМКА массы: верхняя огибающая объединения долей плюс плоское дно.
+ *
+ *  Огибающая, а не дуги долей подряд, и это принципиально. Путь из дуг самопересекается: каждая
+ *  доля обводится целиком, включая ту часть, которая утоплена в соседнюю. Заливке всё равно
+ *  (nonzero склеивает), а вот обводка такого пути рисует ШВЫ МЕЖДУ ДОЛЯМИ — облако выходит
+ *  расчерченным изнутри. Контур обязан идти вокруг массы и только вокруг.
+ *
+ *  Считается по столбцам: для каждого x берётся самая высокая точка среди долей, которые этот x
+ *  накрывают. Дно плоское — там, где восходящий воздух доходит до уровня конденсации; глаз знает
+ *  это правило, даже не зная физики. */
+function cloudSilhouette(cx: number, cy: number, r: number, seed: number): Array<[number, number]> {
+  const lobes = cloudLobes(cx, cy, r, seed);
+  let left = cx;
+  let right = cx;
+  for (const [lx, , lr] of lobes) {
+    if (lx - lr < left) left = lx - lr;
+    if (lx + lr > right) right = lx + lr;
   }
+  const steps = Math.max(20, Math.min(64, Math.round(r * 0.7)));
+  const pts: Array<[number, number]> = [];
+  for (let i = 0; i <= steps; i++) {
+    const x = left + ((right - left) * i) / steps;
+    let y = cy;
+    for (const [lx, ly, lr] of lobes) {
+      const dx = x - lx;
+      if (Math.abs(dx) >= lr) continue;
+      const top = ly - Math.sqrt(lr * lr - dx * dx);
+      if (top < y) y = top;
+    }
+    // Рваность кромки — шумом по X, а не по углу: у настоящего облака край клубится на всех
+    // масштабах. Шум гасится у самого дна, иначе плоский низ начинает бахромиться.
+    if (y < cy) {
+      const n = (jag(i * 3, seed) - 0.5) + (jag(i * 7 + 1, seed + 3) - 0.5) * 0.5;
+      const grip = Math.min(1, (cy - y) / (r * 0.4));
+      y += n * r * 0.05 * grip;
+    }
+    pts.push([x, y]);
+  }
+  return pts;
 }
 
-/** Силуэт массы: доли сверху, ПЛОСКИЙ НИЗ. Плоское дно — там, где восходящий воздух доходит до
- *  уровня конденсации; глаз знает это правило, даже не зная физики. */
+/** Тот же силуэт путём в контексте: под заливку, под клип и под обводку — один и тот же контур.
+ *
+ *  Кромка идёт КРИВЫМИ через середины отрезков, а не ломаной по точкам. Ломаная из полусотни
+ *  столбцов под обводкой читается пилой — зубцы одинакового шага выдают расчёт, а клубящийся край
+ *  обязан быть скруглённым. Приём стандартный: точка становится управляющей, а линия проходит
+ *  через середины соседних отрезков. */
 function cloudMass(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, seed: number): void {
-  const lobes = cloudLobes(cx, cy, r, seed);
-  const halfW = r * 1.5;
+  const pts = cloudSilhouette(cx, cy, r, seed);
+  const first = pts[0]!;
+  const last = pts[pts.length - 1]!;
   ctx.beginPath();
-  ctx.moveTo(cx - halfW, cy);
-  for (let i = 0; i < lobes.length; i++) {
-    const [lx, ly, lr] = lobes[i]!;
-    raggedArc(ctx, lx, ly, lr, Math.PI * 0.98, Math.PI * 2.02, seed + i * 13);
+  ctx.moveTo(first[0], cy);
+  ctx.lineTo(first[0], first[1]);
+  for (let i = 1; i < pts.length - 1; i++) {
+    const p = pts[i]!;
+    const q = pts[i + 1]!;
+    ctx.quadraticCurveTo(p[0], p[1], (p[0] + q[0]) / 2, (p[1] + q[1]) / 2);
   }
-  ctx.lineTo(cx + halfW, cy);
+  ctx.lineTo(last[0], last[1]);
+  ctx.lineTo(last[0], cy);
   ctx.closePath();
 }
 
@@ -1558,7 +1577,7 @@ const OUTLINE_STANDS: StandDef[] = [
       "за внимание. Воздушная перспектива держится на том, что дальнее теряет чёткость, а контур " +
       "возвращает её насильно.",
     size: [430, 300] as [number, number],
-    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: CLOUDY, crop: false })
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: NORMAL, crop: false })
   },
   {
     id: "cloud-tint-outline",
@@ -1569,7 +1588,7 @@ const OUTLINE_STANDS: StandDef[] = [
       "Компромисс: силуэт читается жёстче, но воздух ещё жив. Если брать контур вообще — то этот " +
       "и только на ближних облаках.",
     size: [430, 300] as [number, number],
-    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: CLOUDY, cloudOutline: "tint" })
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: NORMAL, cloudOutline: "tint" })
   },
   {
     id: "cloud-ink-outline",
@@ -1580,7 +1599,7 @@ const OUTLINE_STANDS: StandDef[] = [
       "Максимальная графичность и минимум воздуха: небо превращается в наклейку у самого носа. " +
       "Плюс чёрный душит цветной свет заката — то, ради чего вечер и затевался.",
     size: [430, 300] as [number, number],
-    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: CLOUDY, cloudOutline: "ink" })
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: NORMAL, cloudOutline: "ink" })
   }
 ];
 
