@@ -50,7 +50,6 @@ namespace Guildmaster.Game.Services
         private readonly IPublisher<RunPartyReadyEvent>   _partyReadyPub;
 
         // Ристалище: интент входа и состояние площадки — цикл открывает её и ждёт, пока игрок не выйдет.
-        private readonly IPublisher<Data.Definitions.SetTestZoneRequest>    _provingGroundsPub;
         private readonly ISubscriber<Data.Definitions.TestZoneChangedEvent> _provingGroundsChangedSub;
 
         public GameFlow(
@@ -65,10 +64,8 @@ namespace Guildmaster.Game.Services
             IScreenTransition   transition,
             IPublisher<OpenTextEventRequest> openEventPub,
             IPublisher<RunPartyReadyEvent>   partyReadyPub,
-            IPublisher<Data.Definitions.SetTestZoneRequest>    provingGroundsPub,
             ISubscriber<Data.Definitions.TestZoneChangedEvent> provingGroundsChangedSub)
         {
-            _provingGroundsPub = provingGroundsPub;
             _provingGroundsChangedSub = provingGroundsChangedSub;
             _activities      = activities;
             _sessions         = sessions;
@@ -202,7 +199,7 @@ namespace Guildmaster.Game.Services
         /// </remarks>
         private async UniTask ShowProvingGroundsAsync()
         {
-            if (_provingGroundsPub == null || _provingGroundsChangedSub == null)
+            if (_provingGroundsChangedSub == null)
             {
                 Debug.LogWarning("[GameFlow] - Ристалище не разведено (нет интента или состояния) → назад в меню");
                 return;
@@ -215,12 +212,12 @@ namespace Guildmaster.Game.Services
             _activities.Open(Data.Definitions.ActivitySetup.ProvingGrounds);
             try
             {
+                // Интента «включи площадку» здесь НЕТ намеренно: площадка встаёт сама, по виду
+                // мероприятия. Интент, посланный отсюда, не доходил — расстановка рождается вместе с
+                // площадкой и подписывается позже, чем он уходит.
                 var closed = new UniTaskCompletionSource();
                 using (_provingGroundsChangedSub.Subscribe(e => { if (!e.Active) closed.TrySetResult(); }))
-                {
-                    _provingGroundsPub.Publish(new Data.Definitions.SetTestZoneRequest(true));
                     await closed.Task;
-                }
             }
             finally
             {
