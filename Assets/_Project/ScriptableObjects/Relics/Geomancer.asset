@@ -18,9 +18,9 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 1
   _resourceType: 0
-  _visual: {fileID: 0}
-  _viewPrefab: {fileID: 0}
-  _bodyShade: 0
+  _visual: {fileID: 11400000, guid: 1726394c3d16f6b46b32737288e71402, type: 2}
+  _viewPrefab: {fileID: 4080731667428238973, guid: f1d5abc2956524d42b185654a918f37f, type: 3}
+  _bodyShade: 2
   _vfxTone: 12
   _autoAttackShape: 0
   _autoAttackWidth: 1
@@ -36,6 +36,7 @@ MonoBehaviour:
   _windupShare: 0.4
   _attackSwingTicks: 0
   _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:

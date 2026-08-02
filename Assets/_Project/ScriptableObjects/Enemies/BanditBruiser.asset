@@ -18,9 +18,9 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 0
   _resourceType: 0
-  _visual: {fileID: 0}
-  _viewPrefab: {fileID: 0}
-  _bodyShade: 0
+  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
+  _viewPrefab: {fileID: 3560619905337088494, guid: b878aa196bd029646a3f3d292a658691, type: 3}
+  _bodyShade: 2
   _vfxTone: 14
   _autoAttackShape: 0
   _autoAttackWidth: 1
@@ -77,6 +77,7 @@ MonoBehaviour:
     _channelSeconds: 0
     _channelTickSeconds: 0
     _canMoveWhileCasting: 0
+    _castSource: 0
     _statScalings: []
     _summonUnit: {fileID: 0}
     _summonCount: 0

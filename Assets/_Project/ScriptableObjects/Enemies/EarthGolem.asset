@@ -18,9 +18,9 @@ MonoBehaviour:
   _creatureType: 2
   _attackType: 0
   _resourceType: 0
-  _visual: {fileID: 0}
-  _viewPrefab: {fileID: 0}
-  _bodyShade: 0
+  _visual: {fileID: 11400000, guid: a4d7ac06ec4199f45b32b0e4fe7452ac, type: 2}
+  _viewPrefab: {fileID: 4284165950888649411, guid: 596b0e53e267a4643b70c724d56f25d8, type: 3}
+  _bodyShade: 2
   _vfxTone: 14
   _autoAttackShape: 0
   _autoAttackWidth: 1

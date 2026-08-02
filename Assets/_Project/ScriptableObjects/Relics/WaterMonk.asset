@@ -18,19 +18,25 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 0
   _resourceType: 1
-  _visual: {fileID: 0}
-  _viewPrefab: {fileID: 0}
-  _bodyShade: 0
+  _visual: {fileID: 11400000, guid: 6d5122680e4104e44b5ab581a2fa0291, type: 2}
+  _viewPrefab: {fileID: 5174956930701221052, guid: 42fb5ce6fa7b3ab45ae12042c071db11, type: 3}
+  _bodyShade: 2
   _vfxTone: 6
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackLengthMult: 1
   _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
   _windupShare: 0.4
+  _attackSwingTicks: 0
   _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
@@ -81,14 +87,19 @@ MonoBehaviour:
     _channelSeconds: 0
     _channelTickSeconds: 1
     _canMoveWhileCasting: 0
+    _castSource: 0
     _statScalings: []
     _summonUnit: {fileID: 0}
     _summonCount: 1
+    _summonCountGrowth: 0
+    _summonCountCap: 0
     _summonLimit: 3
     _summonLifetimeSeconds: 0
     _summonDiesWithSummoner: 0
     _payloadRepeats: 1
     _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
     _displaces: 0
     _displaceDistance: 4
     _displaceDamageMult: 1
