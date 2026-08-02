@@ -319,19 +319,11 @@ namespace Guildmaster.DevTools
         {
             // --- Бой: запустить, закончить, повторить ---
 
-            set.Add("spawn", "Тест-бой: N юнитов за каждую сторону",
-                a => { SpawnBattle(a.GetInt(0, 2)); return null; }, new DevParam("perTeam", DevParamType.Int, true));
-
-            set.Add("crowd", "Плотный клубок обеих команд — проверка расталкивания",
-                a => { SpawnCrowd(a.GetInt(0, 8)); return null; }, new DevParam("perTeam", DevParamType.Int, true));
-
-            set.Add("kit", "Срез одного кита против болванчиков",
-                a => { SpawnKitSlice(a.GetEnum<KitSlice>(0), a.GetInt(1, 0)); return null; },
-                new DevParam("kit", DevParamType.Enum), new DevParam("enemies", DevParamType.Int, true));
-
-            set.Add("mirror", "Зеркальный отряд 4v4 из реальных китов",
-                _ => { SpawnMirror(); return null; });
-
+            // Команд запуска боя осталась ОДНА (решение Макса 02.08.2026). Снесены spawn, crowd, kit,
+            // mirror, battle, preset, battles: все они ставили бой в обход мероприятия — спавнили состав
+            // мимо расстановки, которая площадкой владеет. Работали они, пока боевой скоуп был вечным;
+            // с рождением боя по требованию каждая стала гонкой «заказ раньше владельца». Балансные
+            // прогоны (mirror, crowd) живут в SimBench, где им и место — там не нужен ни показ, ни арена.
             set.Add("bones", "1×1 дуэль скелетных дев-бойцов (смоук вида юнита)",
                 _ => { SpawnBoneDuel(); return null; });
 
@@ -346,19 +338,6 @@ namespace Guildmaster.DevTools
 
             set.Add("grounds", "Уйти на Ристалище: свернуть забег и открыть площадку",
                 _ => { ProvingGrounds(); return null; });
-
-            // --- Готовые бои из контент-БД ---
-            // Витрина на F3 не грузит бои сама, а зовёт ЭТИ команды: один путь запуска, и новый бой
-            // появляется в витрине оттого, что появился в базе, а не оттого, что кто-то её дописал.
-
-            set.Add("battle", "Запустить энкаунтер по id (только враги)",
-                a => LoadEncounter(a.GetString(0)), new DevParam("encounterId", DevParamType.String));
-
-            set.Add("preset", "Запустить боевой пресет по id (враги + свой ростер)",
-                a => LoadPreset(a.GetString(0)), new DevParam("presetId", DevParamType.String));
-
-            set.Add("battles", "Список доступных боёв: энкаунтеры и пресеты",
-                _ => ListBattles());
 
             // --- Правка состояния ---
 
@@ -908,10 +887,21 @@ namespace Guildmaster.DevTools
         {
             if (_groundsSetupPub == null || _provingGroundsPub == null) return false;
 
-            _groundsSetupPub.Publish(new Data.Definitions.ProvingGroundsSetupRequest(mine, theirs, what));
+            var order = new Data.Definitions.ProvingGroundsSetupRequest(mine, theirs, what);
 
-            // Уже на площадке — заказ применён её владельцем сразу, входить некуда.
-            if (!_onProvingGrounds) RequestProvingGrounds();
+            // Уже на площадке — слушатель заказа существует, шлём событием.
+            if (_onProvingGrounds)
+            {
+                _groundsSetupPub.Publish(order);
+                return true;
+            }
+
+            // Площадки нет — событие слать НЕКОМУ: расстановка родится вместе с ней. Поэтому заказ
+            // кладём мероприятию как параметр входа, а сам вход просим у верхнего цикла: ему ещё меню
+            // закрывать. Прежде заказ публиковался до входа и терялся молча — команда «работала», а
+            // игрок получал пустую площадку (наход. Макса 02.08.2026).
+            _activities?.OrderGroundsRoster(order);
+            RequestProvingGrounds();
             return true;
         }
 

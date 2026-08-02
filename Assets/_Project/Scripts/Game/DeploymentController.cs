@@ -58,6 +58,9 @@ namespace Guildmaster.Game
         // «кто передвинул юнита» обязано остаться в логе (ТЗ кооп-вертикали §4.1).
         private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
         private readonly ProvingGroundsConfig _provingGrounds;         // состав Ристалища, когда своего отряда нет
+        // С чем открыто мероприятие: вид площадки и заказанный при входе состав. Приходит параметром, а
+        // не событием, — см. ActivitySetup.Roster.
+        private readonly ActivitySetup _activity;
         private readonly Core.Audio.IAudioService _audio;              // взял/поставил/отказ — звук расстановки
 
         // Редактируемый ростер игрока в этой фазе (позиции/релики меняются перетаскиванием и loadout'ом).
@@ -156,8 +159,10 @@ namespace Guildmaster.Game
             Guildmaster.Guild.IRunStateView runStates,
             Guildmaster.Guild.Commands.IRunCommands commands,
             Core.Audio.IAudioService audio,
-            ProvingGroundsConfig provingGrounds)
+            ProvingGroundsConfig provingGrounds,
+            ActivitySetup activity)
         {
+            _activity = activity;
             _provingGrounds = provingGrounds;
             _arenaRevealPub = arenaRevealPub;
             _audio         = audio;
@@ -189,6 +194,11 @@ namespace Guildmaster.Game
             _testZoneSubscription = _testZoneSub?.Subscribe(OnSetTestZone);
             _formationSubscription = _formationSub?.Subscribe(OnSetFormation);
             _groundsSetupSubscription = _groundsSetupSub?.Subscribe(OnProvingGroundsSetup);
+
+            // Состав, заказанный ПРИ ВХОДЕ на площадку, применяем тем же обработчиком, что и заказ на
+            // живой площадке: дорога одна, разница только в моменте. Через событие такой заказ не
+            // доходил вовсе — его публиковали раньше, чем нас создали.
+            if (_activity.Roster.HasValue) OnProvingGroundsSetup(_activity.Roster.Value);
 
             // Верхняя панель забега (план 12): часы боя + кнопка «Начать».
             // Persist-мир: скоуп живёт всю сессию, поэтому фазу НЕ выставляем на Start (иначе вне боя

@@ -38,12 +38,32 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Расставлять можно только своих (PvP: чужой строй — не наше дело).</summary>
         public readonly bool OwnUnitsOnly;
 
-        public ActivitySetup(ActivityKind kind, bool hideOpponent = false, bool ownUnitsOnly = false)
+        /// <summary>
+        /// С каким составом открыта площадка; <c>null</c> — составом из ассета. Едет ПАРАМЕТРОМ входа, а
+        /// не событием.
+        /// </summary>
+        /// <remarks>
+        /// Событие тут не работает по устройству: расстановка, которая состав ставит, живёт в боевом
+        /// скоупе и рождается ВМЕСТЕ с площадкой. Заказ, опубликованный до входа, слушать некому, а
+        /// опубликованный после — приходит раньше, чем энтрипоинты успели подписаться (VContainer
+        /// диспатчит <c>IStartable</c> отдельной фазой, а не синхронно). Параметр входа не зависит от
+        /// момента вовсе. Событие осталось для смены состава на УЖЕ открытой площадке — там слушатель
+        /// заведомо есть.
+        /// </remarks>
+        public readonly ProvingGroundsSetupRequest? Roster;
+
+        public ActivitySetup(ActivityKind kind, bool hideOpponent = false, bool ownUnitsOnly = false,
+            ProvingGroundsSetupRequest? roster = null)
         {
             Kind         = kind;
             HideOpponent = hideOpponent;
             OwnUnitsOnly = ownUnitsOnly;
+            Roster       = roster;
         }
+
+        /// <summary>Площадка с заказанным составом: дев-срез, а позже — сборка боя игроком.</summary>
+        public static ActivitySetup GroundsWith(ProvingGroundsSetupRequest roster) =>
+            new(ActivityKind.ProvingGrounds, roster: roster);
 
         /// <summary>Идёт ли мероприятие вообще.</summary>
         public bool IsOpen => Kind != ActivityKind.None;

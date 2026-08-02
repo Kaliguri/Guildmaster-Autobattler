@@ -27,6 +27,7 @@ namespace Guildmaster.Game.Activity
 
         private LifetimeScope _activity;
         private ActivitySetup _setup;
+        private ProvingGroundsSetupRequest? _pendingRoster;
 
         public ActivityHost(Session.SessionHost sessions) => _sessions = sessions;
 
@@ -85,9 +86,25 @@ namespace Guildmaster.Game.Activity
         /// Открыть мероприятие. Прошлое закрывается: двух занятий одновременно не бывает — они
         /// взаимоисключающи по построению (двор, забег, Ристалище — это одна и та же арена).
         /// </summary>
+        /// <summary>
+        /// Заказать состав для БЛИЖАЙШЕГО входа на площадку. Нужен тем, кто хочет площадку с готовым
+        /// составом, но входом не владеет: дев-команда просит, а открывает площадку верхний цикл игры —
+        /// ему ещё меню закрывать.
+        /// </summary>
+        /// <remarks>
+        /// Заказ одноразовый и снимается тем входом, которому достался: следующая площадка встаёт своим
+        /// раскладом, а не тем, что кто-то заказал полчаса назад.
+        /// </remarks>
+        public void OrderGroundsRoster(ProvingGroundsSetupRequest roster) => _pendingRoster = roster;
+
         public void Open(ActivitySetup setup)
         {
             Close();
+
+            // Заказ, сделанный до входа, применяем здесь и тут же забываем.
+            if (setup.Kind == ActivityKind.ProvingGrounds && setup.Roster == null && _pendingRoster != null)
+                setup = ActivitySetup.GroundsWith(_pendingRoster.Value);
+            _pendingRoster = null;
 
             _setup = setup;
 

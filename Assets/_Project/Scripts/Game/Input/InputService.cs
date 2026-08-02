@@ -129,9 +129,12 @@ namespace Guildmaster.Game.Input
 
             // Dev-консоли: вне контекст-карт и БЕЗ проверки глушения. Открытая консоль сама держит
             // InputSuppressSource.DevConsole, и гейт по GameplaySuppressed запер бы её изнутри.
-            // F1 — командная, F2 — лог. Тильда снята: ОС печатает её литеру в поле первым же символом,
-            // и на функциональных клавишах этой болезни нет вовсе.
+            // F1 — командная, F2 — лог. Тильда возвращена вторым биндингом по просьбе Макса (02.08.2026):
+            // это привычная клавиша консоли, и ходить к ней рука тянется первой. Готча, из-за которой её
+            // однажды сняли, никуда не делась — ОС печатает литеру в поле ввода первым же символом, —
+            // поэтому её гасит сама консоль при открытии, а не отсутствие биндинга.
             _devConsoleToggle = new InputAction("DevConsoleToggle", InputActionType.Button, "<Keyboard>/f1");
+            _devConsoleToggle.AddBinding("<Keyboard>/backquote");
             _devConsoleToggle.performed += OnDevConsoleToggle;
             _devConsoleToggle.Enable();
 
