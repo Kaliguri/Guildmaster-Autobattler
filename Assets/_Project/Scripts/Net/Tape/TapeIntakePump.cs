@@ -1,4 +1,3 @@
-using Guildmaster.Core.Net;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -14,24 +13,15 @@ namespace Guildmaster.Net.Tape
     /// кто-то снаружи, и в игре это здесь.
     /// <para><b>Время НЕмасштабированное:</b> пауза останавливает показ, но не сеть. На паузе дыра в
     /// ленте должна закрываться так же, как в бою, иначе снятие паузы упрётся в недоехавший чанк.</para>
+    /// <para><b>Собирается только у гостя</b> (см. <c>CombatLifetimeScope</c>): у владельца дыр в
+    /// собственной ленте не бывает и просить нечего.</para>
     /// </remarks>
     public sealed class TapeIntakePump : ITickable
     {
-        private readonly TapeIntake      _intake;
-        private readonly IBattleAuthority _authority;
+        private readonly TapeIntake _intake;
 
-        public TapeIntakePump(TapeIntake intake, IBattleAuthority authority)
-        {
-            _intake    = intake;
-            _authority = authority;
-        }
+        public TapeIntakePump(TapeIntake intake) => _intake = intake;
 
-        public void Tick()
-        {
-            // Соло и хост чанков не принимают: дыр у них нет и просить нечего.
-            if (_authority.Role != BattleRole.Guest) return;
-
-            _intake.RequestMissing(Time.unscaledTime);
-        }
+        public void Tick() => _intake.RequestMissing(Time.unscaledTime);
     }
 }

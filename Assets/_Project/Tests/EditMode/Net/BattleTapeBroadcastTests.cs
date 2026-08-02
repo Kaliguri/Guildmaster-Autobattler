@@ -108,25 +108,18 @@ namespace Guildmaster.Tests.EditMode.Net
 
             var tape     = new BattleTape(windowTicks: 512);
             var recorder = new BattleTapeRecorder(sim, tape, abilities: null, effects: null);
-            var streamer = new TapeStreamer(new LoopbackNetwork().CreateNode(), tape, ticksPerChunk: 30);
+            // Соединение живое: этот класс тестов про ПРАВИЛА раздачи, а не про то, кто раздаёт
+            // (это CoopBattleWiringTests). Без живого транспорта вещатель молчал бы весь тест.
+            var transport = new LoopbackNetwork().CreateNode();
+            var streamer  = new TapeStreamer(transport, tape, ticksPerChunk: 30);
 
             return new Fixture
             {
                 Sim       = sim,
                 Recorder  = recorder,
                 Streamer  = streamer,
-                Broadcast = new BattleTapeBroadcast(sim, streamer, HostRole),
+                Broadcast = new BattleTapeBroadcast(sim, streamer, transport),
             };
-        }
-
-        // Раздача — обязанность хоста; роль здесь фиксирована, потому что этот класс тестов про
-        // ПРАВИЛА раздачи, а не про то, кто раздаёт (это CoopBattleWiringTests).
-        private static readonly Guildmaster.Core.Net.IBattleAuthority HostRole = new AlwaysHost();
-
-        private sealed class AlwaysHost : Guildmaster.Core.Net.IBattleAuthority
-        {
-            public Guildmaster.Core.Net.BattleRole Role => Guildmaster.Core.Net.BattleRole.Host;
-            public bool SimulatesLocally => true;
         }
 
         // Тикаем так же, как боевой цикл: кадр ленты снимается сразу за тиком — иначе у чанка не будет

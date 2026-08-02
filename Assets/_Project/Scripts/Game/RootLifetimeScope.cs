@@ -224,12 +224,8 @@ namespace Guildmaster.Game
                    .AsSelf();
             builder.Register<Guildmaster.Net.BattleControlRelay>(Lifetime.Singleton);
 
-            // Роль узла в бою (соло / хост / гость) выводится из транспорта и спрашивается каждый кадр.
-            // Причина, по которой так было сделано, отпала 02.08.2026: боевой скоуп больше не поднимается
-            // на буте, а рождается по требованию ВНУТРИ сессии, у которой роль уже известна (SessionRole).
-            // Сам снос этих ветвлений — отдельный заход, он трогает весь Net-слой (tech-debt.md).
-            builder.Register<Guildmaster.Net.NetBattleAuthority>(Lifetime.Singleton)
-                   .As<Guildmaster.Core.Net.IBattleAuthority>();
+            // Роли узла в бою здесь больше нет: 02.08.2026 её сменил СОСТАВ боевого скоупа, который
+            // рождается внутри сеанса и роль сеанса уже знает (см. CombatLifetimeScope.RegisterCoop).
             builder.RegisterEntryPoint<Guildmaster.Net.NetPump>(Lifetime.Singleton);
 
             // Экран исхода забега (C2) — победа/поражение после акта.

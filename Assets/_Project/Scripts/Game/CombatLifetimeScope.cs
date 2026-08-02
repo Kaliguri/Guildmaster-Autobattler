@@ -203,25 +203,45 @@ namespace Guildmaster.Game
             // Dev-диагностика ленты: без неё «сим впереди, показ с лагом» ломается молча.
             builder.RegisterEntryPoint<BattleTapeDiagnostics>(Lifetime.Scoped);
 
-            // Петля гонит сим и пишет ленту. Долю интерполяции она больше не отдаёт: её отсчитывает
-            // момент ПОКАЗА (BattleTapePlayback), потому что показ живёт на своём тике, а не на симовом.
-            builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped);
-
+            // Петля тика (CombatLoopService) регистрируется не здесь, а в составе ВЛАДЕЛЬЦА: гость бой
+            // не считает вовсе. Долю интерполяции она больше не отдаёт — её отсчитывает момент ПОКАЗА
+            // (BattleTapePlayback), потому что показ живёт на своём тике, а не на симовом.
             RegisterCoop(builder);
         }
 
         /// <summary>
-        /// Сетевые половины боя. Регистрируются <b>обе и всегда</b>: скоуп поднимается на буте, когда
-        /// роль ещё неизвестна, поэтому расходятся узлы в рантайме — каждый потребитель спрашивает
-        /// <see cref="Core.Net.IBattleAuthority"/> сам. В соло это стоит двух объектов, которые молчат.
+        /// Сетевые половины боя — <b>по роли сеанса, а не обе сразу</b>: владелец считает бой и раздаёт
+        /// его лентой, гость свою симуляцию не тикает и живёт присланной.
         /// </summary>
+        /// <remarks>
+        /// <b>Что здесь изменилось 02.08.2026.</b> Раньше регистрировались обе половины и каждый
+        /// потребитель спрашивал роль сам, каждый кадр (<c>IBattleAuthority</c>) — потому что скоуп
+        /// поднимался на буте, в главном меню, когда сети ещё не было. Причина отпала: бой рождается по
+        /// требованию ВНУТРИ сеанса, и роль известна в момент сборки. Вместе с ней ушли пять ветвлений
+        /// и сам интерфейс.
+        /// <para><b>Соло — это владелец без поднятого транспорта.</b> Отдельной роли под него нет
+        /// намеренно: разница между «играю один» и «играю хостом» вся в том, есть ли кому слать, а это
+        /// вопрос к соединению, а не к составу. Иначе включение лобби посреди забега требовало бы
+        /// переоткрыть сеанс.</para>
+        /// <para><b>Роль спрашивается у предка</b>, а не приезжает параметром боя: она свойство сеанса,
+        /// и бой её только читает. Сеанса нет вовсе (одиночная боевая сцена, dev-арена) — собираем
+        /// владельческий состав: там некому быть хостом и нечего принимать.</para>
+        /// </remarks>
         private void RegisterCoop(IContainerBuilder builder)
         {
-            // Приёмная сторона: читает чанки в ТУ ЖЕ BattleTape, которую в соло пишет рекордер. Значит
-            // весь показ ниже (презентер, телеграфы, диспетчер) у гостя работает без единой правки —
-            // он не знает и не должен знать, кто наполнил ленту.
-            builder.Register<Net.Tape.TapeChunkReader>(Lifetime.Scoped);
-            builder.Register<Net.Tape.TapeIntake>(Lifetime.Scoped);
+            if (IsGuestSession()) RegisterGuestBattle(builder);
+            else                  RegisterOwnerBattle(builder);
+
+            // Пауза: сеть объявляет, показ применяет. Мост нужен обеим ролям и в соло — путь применения
+            // паузы один на все режимы (см. его докстринг).
+            builder.RegisterEntryPoint<Services.NetPauseBridge>(Lifetime.Scoped);
+        }
+
+        /// <summary>Владелец: тикает бой сам и раздаёт его гостям.</summary>
+        private static void RegisterOwnerBattle(IContainerBuilder builder)
+        {
+            // Петля гонит сим и пишет ленту.
+            builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped);
 
             // Стример регистрируется фабрикой: у его конструктора есть параметры со значениями по
             // умолчанию (нарезка и глубина истории), а VContainer на таком ctor роняет всю ветку.
@@ -231,15 +251,39 @@ namespace Guildmaster.Game
                 Lifetime.Scoped);
 
             builder.RegisterEntryPoint<Net.Tape.BattleTapeBroadcast>(Lifetime.Scoped).AsSelf();
-            builder.RegisterEntryPoint<Net.Tape.TapeIntakePump>(Lifetime.Scoped);
 
             // Состав боя: в снимках его нет (за бой не меняется), а показу он нужен — кто это, какой
-            // арт, чья команда. В соло эту роль играет событие спавна, у гостя его неоткуда взять.
-            builder.RegisterEntryPoint<Net.Tape.BattleRosterRelay>(Lifetime.Scoped);
+            // арт, чья команда.
+            builder.RegisterEntryPoint<Net.Tape.BattleRosterAnnouncer>(Lifetime.Scoped);
+        }
 
-            // Пауза: сеть объявляет, показ применяет. Мост нужен и в соло — путь применения паузы один
-            // на все режимы (см. его докстринг).
-            builder.RegisterEntryPoint<Services.NetPauseBridge>(Lifetime.Scoped);
+        /// <summary>Гость: своей симуляции нет, есть присланная лента и состав к ней.</summary>
+        private static void RegisterGuestBattle(IContainerBuilder builder)
+        {
+            // Приёмная сторона читает чанки в ТУ ЖЕ BattleTape, которую у владельца пишет рекордер.
+            // Значит весь показ ниже (презентер, телеграфы, диспетчер) у гостя работает без единой
+            // правки — он не знает и не должен знать, кто наполнил ленту.
+            builder.Register<Net.Tape.TapeChunkReader>(Lifetime.Scoped);
+            builder.Register<Net.Tape.TapeIntake>(Lifetime.Scoped);
+            builder.RegisterEntryPoint<Net.Tape.TapeIntakePump>(Lifetime.Scoped);
+
+            // Кто на арене: у владельца это событие спавна собственной симуляции, у гостя её нет.
+            builder.RegisterEntryPoint<Net.Tape.BattleRosterIntake>(Lifetime.Scoped);
+
+            // Вместо тикового цикла — одно требование к отставанию показа.
+            builder.RegisterEntryPoint<Services.GuestPlaybackLoop>(Lifetime.Scoped);
+        }
+
+        /// <summary>
+        /// Играем ли мы в чужом сеансе. Спрашиваем предка напрямую: <c>Configure</c> резолвера ещё не
+        /// имеет, а <c>Parent</c> к этому моменту уже заполнен (проверено по исходнику VContainer 1.18).
+        /// </summary>
+        private bool IsGuestSession()
+        {
+            if (Parent == null || Parent.Container == null) return false;
+
+            return Parent.Container.TryResolve(out Session.SessionContext session)
+                   && session.Role == Session.SessionRole.Guest;
         }
 
         private void RegisterPresentation(IContainerBuilder builder)

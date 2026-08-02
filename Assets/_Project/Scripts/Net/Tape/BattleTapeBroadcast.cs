@@ -1,5 +1,5 @@
 ﻿using Guildmaster.Combat;
-using Guildmaster.Core.Net;
+using Guildmaster.Net.Transport;
 using VContainer.Unity;
 
 namespace Guildmaster.Net.Tape
@@ -19,30 +19,33 @@ namespace Guildmaster.Net.Tape
     /// <para><b>Гость от этого не увидит будущее.</b> Хост уезжает вперёд на окно опережения, но у
     /// гостя свой <c>BattleTapePlayback</c> с тем же лагом: он копит ленту и показывает её позже. Это и
     /// есть «сим впереди, показ с лагом», просто половины разнесены по машинам.</para>
+    /// <para><b>Собирается только у владельца сеанса</b> (см. <c>CombatLifetimeScope</c>): гость
+    /// раздавал бы обратно ленту, которую ему же и прислали. Соло — тот же владелец, только без
+    /// поднятого транспорта, и нарезки чанков он не платит: раздача выходит первой строкой тика.</para>
     /// </remarks>
     public sealed class BattleTapeBroadcast : ITickable, System.IDisposable
     {
         private readonly CombatSimulation _simulation;
         private readonly TapeStreamer     _streamer;
-        private readonly IBattleAuthority _authority;
+        private readonly INetTransport    _transport;
 
         private bool _flushed;
 
         public BattleTapeBroadcast(CombatSimulation simulation, TapeStreamer streamer,
-                                   IBattleAuthority authority)
+                                   INetTransport transport)
         {
             _simulation = simulation;
             _streamer   = streamer;
-            _authority  = authority;
+            _transport  = transport;
 
             _simulation.OnBattleReset += HandleBattleReset;
         }
 
         public void Tick()
         {
-            // Раздаёт только хост. Соло-игрок иначе платил бы нарезкой чанков, которые некому принять,
-            // а гость раздавал бы обратно ленту, которую ему же и прислали.
-            if (_authority.Role != BattleRole.Host) return;
+            // Соединения нет — раздавать некому. Это и есть соло: одно ветвление вместо нарезки чанков,
+            // которые никто не примет.
+            if (!_transport.IsRunning) return;
 
             int readyThrough = _simulation.CurrentTick - 1;
             if (readyThrough < 0) return;

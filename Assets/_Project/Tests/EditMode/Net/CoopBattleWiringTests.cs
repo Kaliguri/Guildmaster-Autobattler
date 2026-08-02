@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Tape;
-using Guildmaster.Core.Net;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -19,13 +18,15 @@ namespace Guildmaster.Tests.EditMode.Net
     /// приходит к тому же исходу.
     /// </summary>
     /// <remarks>
-    /// <b>Почему тест, а не «проверим на двух машинах».</b> Роль решается в рантайме (боевой скоуп
-    /// поднимается на буте, когда сети ещё нет), и ошибка разводки выглядит не отказом, а тихой
-    /// разницей в картинке у второго игрока — самой дорогой поломкой из возможных: воспроизводится
-    /// она только вдвоём и только иногда.
-    /// <para>Здесь же держится и обратная сторона: соло-игрок и гость <b>не раздают</b>. Гость,
-    /// раздающий ленту, которую ему прислали, — это петля, а соло-игрок платил бы нарезкой чанков в
-    /// пустоту каждый кадр.</para>
+    /// <b>Почему тест, а не «проверим на двух машинах».</b> Ошибка разводки выглядит не отказом, а
+    /// тихой разницей в картинке у второго игрока — самой дорогой поломкой из возможных:
+    /// воспроизводится она только вдвоём и только иногда.
+    /// <para><b>Что здесь изменилось 02.08.2026.</b> Раньше роль спрашивалась в рантайме, и «гость не
+    /// раздаёт» было проверкой внутри вещателя — значит и тестом. Теперь роль выбирает СОСТАВ боевого
+    /// скоупа: у гостя вещателя нет как объекта, и проверять там нечего (правило живёт в
+    /// <c>CombatLifetimeScope.RegisterCoop</c>). Осталась вторая половина того же правила, которая
+    /// составом не решается: <b>соло — это тот же владелец, просто без соединения</b>, и платить
+    /// нарезкой чанков в пустоту он не должен.</para>
     /// </remarks>
     public sealed class CoopBattleWiringTests
     {
@@ -36,7 +37,7 @@ namespace Guildmaster.Tests.EditMode.Net
             var host  = net.CreateNode();
             var guest = net.CreateNode();
 
-            Host h = BuildHost(host, BattleRole.Host);
+            Host h = BuildHost(host);
 
             var guestTape = new BattleTape(windowTicks: 512);
             var intake    = new TapeIntake(guest, new TapeChunkReader(guestTape, new FakeContent()));
@@ -74,11 +75,18 @@ namespace Guildmaster.Tests.EditMode.Net
             Assert.AreEqual(2, units.Count, "С обоими юнитами");
         }
 
+        /// <summary>
+        /// Соло — тот же владельческий состав, но без соединения. Раздача обязана выйти первой строкой:
+        /// нарезка чанков в пустоту это работа каждый кадр ни за что.
+        /// </summary>
         [Test]
         public void Solo_HandsOutNothing()
         {
             var net  = new LoopbackNetwork();
-            Host h   = BuildHost(net.CreateNode(), BattleRole.Solo);
+            INetTransport offline = net.CreateNode();
+            offline.Shutdown();                   // соединения нет — это и есть одиночная игра
+
+            Host h = BuildHost(offline);
 
             for (int frame = 0; frame < 40; frame++) Frame(h, net);
 
@@ -86,21 +94,10 @@ namespace Guildmaster.Tests.EditMode.Net
                 "В соло раздавать некому: нарезка чанков в пустоту — это работа каждый кадр ни за что");
         }
 
+        // Повтор просит тот, у кого дыры, — а дыры бывают только у принимающего. Что просит именно
+        // гость, держит теперь состав скоупа: приёмник и его насос собираются только в гостевой ветке.
         [Test]
-        public void Guest_DoesNotHandOutTheTapeItReceived()
-        {
-            var net = new LoopbackNetwork();
-            Host h  = BuildHost(net.CreateNode(), BattleRole.Guest);
-
-            for (int frame = 0; frame < 40; frame++) Frame(h, net);
-
-            Assert.AreEqual(0, h.Streamer.SentChunkCount, "Гость ленту не раздаёт — иначе она пошла бы по кругу");
-        }
-
-        // Повтор просит тот, у кого дыры, а дыры бывают только у принимающего. Хост, спрашивающий
-        // повтор у самого себя, — это лишний трафик и путаница в метриках канала.
-        [Test]
-        public void OnlyTheGuest_AsksForMissingChunks()
+        public void Intake_AsksToRepeatTheChunkThatDidNotArrive()
         {
             var net   = new LoopbackNetwork();
             var host  = new DroppingNode(net.CreateNode());
@@ -110,8 +107,7 @@ namespace Guildmaster.Tests.EditMode.Net
             var streamer = new TapeStreamer(host, source, ticksPerChunk: 30);
 
             var intake = new TapeIntake(guest, new TapeChunkReader(new BattleTape(256), new FakeContent()));
-            var role   = new FakeAuthority { Role = BattleRole.Host };
-            var pump   = new TapeIntakePump(intake, role);
+            var pump   = new TapeIntakePump(intake);
 
             host.DropNextSends = 1;               // первый чанк не доедет — дыра появилась
             streamer.Flush(readyThroughTick: 59);
@@ -119,15 +115,7 @@ namespace Guildmaster.Tests.EditMode.Net
             Assert.AreEqual(1, intake.MissingCount, "Дыра у приёмника есть");
 
             pump.Tick();
-            Assert.AreEqual(0, intake.ResendRequestCount, "Хост повтора не просит");
-
-            role.Role = BattleRole.Solo;
-            pump.Tick();
-            Assert.AreEqual(0, intake.ResendRequestCount, "И соло-игрок тоже");
-
-            role.Role = BattleRole.Guest;
-            pump.Tick();
-            Assert.AreEqual(1, intake.ResendRequestCount, "А гость — просит");
+            Assert.AreEqual(1, intake.ResendRequestCount, "И он просит её закрыть");
         }
 
         // Состав боя в снимках не едет — он за бой не меняется. Значит гость, у которого нет спавнов,
@@ -140,14 +128,12 @@ namespace Guildmaster.Tests.EditMode.Net
             var guest = net.CreateNode();
 
             CombatSimulation hostSim = NewSim();
-            var hostRoster = new BattleRosterRelay(host, hostSim, new BattleUnitRegistry(hostSim),
-                new FakeContent(), new FakeAuthority { Role = BattleRole.Host });
-            hostRoster.Start();
+            var announcer = new BattleRosterAnnouncer(host, hostSim);
+            announcer.Start();
 
             CombatSimulation guestSim = NewSim();
             var guestRegistry = new BattleUnitRegistry(guestSim);
-            var guestRoster = new BattleRosterRelay(guest, guestSim, guestRegistry,
-                new FakeContent(), new FakeAuthority { Role = BattleRole.Guest });
+            var guestRoster = new BattleRosterIntake(guest, guestRegistry, new FakeContent());
             guestRoster.Start();
 
             hostSim.EnqueueUnitSpawn(Unit(team: 0, x: -3f, id: 1));
@@ -155,8 +141,8 @@ namespace Guildmaster.Tests.EditMode.Net
             hostSim.Tick(SimConstants.TickDelta);
             net.PollAll();
 
-            Assert.AreEqual(2, hostRoster.AnnouncedCount, "Хост объявил обоих");
-            Assert.AreEqual(2, guestRoster.AnnouncedCount, "И оба доехали до гостя");
+            Assert.AreEqual(2, announcer.AnnouncedCount,  "Хост объявил обоих");
+            Assert.AreEqual(2, guestRoster.ReceivedCount, "И оба доехали до гостя");
 
             foreach (RuntimeUnit unit in hostSim.Units)
             {
@@ -182,7 +168,7 @@ namespace Guildmaster.Tests.EditMode.Net
                 new BrainSystem(), new AbilitySystem(), new MovementSystem(), new AutoAttackSystem(),
                 new ProjectileSystem(), new DeathSystem(), new EffectSystem(), new RegenSystem());
 
-        private static Host BuildHost(INetTransport transport, BattleRole role)
+        private static Host BuildHost(INetTransport transport)
         {
             CombatSimulation sim = NewSim();
 
@@ -198,7 +184,7 @@ namespace Guildmaster.Tests.EditMode.Net
                 Sim       = sim,
                 Recorder  = recorder,
                 Streamer  = streamer,
-                Broadcast = new BattleTapeBroadcast(sim, streamer, new FakeAuthority { Role = role }),
+                Broadcast = new BattleTapeBroadcast(sim, streamer, transport),
             };
         }
 
@@ -267,12 +253,6 @@ namespace Guildmaster.Tests.EditMode.Net
                 PreviousPosition     = new Vector2(x, 0f),
                 AutoAttackDamageType = DamageType.Slash,
             };
-        }
-
-        private sealed class FakeAuthority : IBattleAuthority
-        {
-            public BattleRole Role { get; set; } = BattleRole.Solo;
-            public bool SimulatesLocally => Role != BattleRole.Guest;
         }
 
         /// <summary>Узел, глотающий заданное число ближайших отправок: канал с потерей на разрыве.</summary>
