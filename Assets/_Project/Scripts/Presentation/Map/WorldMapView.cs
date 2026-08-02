@@ -68,6 +68,7 @@ namespace Guildmaster.Presentation.Map
             public MapNodeVisualState State;
             public float PickRadius;
             public bool Selectable;
+            public float AppearAt;   // интро: когда до узла дорастает путь (секунды от начала роста)
         }
         private readonly List<NodeHit> _hits = new List<NodeHit>(48);
 
@@ -77,11 +78,32 @@ namespace Guildmaster.Presentation.Map
             public Disc Shape;
             public float Along;   // расстояние от начала пути
             public bool Flowing;  // путь к доступному узлу — по нему бежит волна
+            public int Edge;      // какому ребру принадлежит — по нему интро берёт скорость роста
+            public float AppearAt;
         }
         private readonly List<PathDot> _dots = new List<PathDot>(256);
 
         private readonly List<MapNodeView> _nodePool = new List<MapNodeView>(48);
         private readonly List<Disc> _dotPool = new List<Disc>(256);
+
+        // Интро: карта прорастает из стартового узла, пока камера съезжает с общего плана. Играется ровно
+        // один раз за забег — вместе с первым кадром камеры (её же ответ и решает, первый он или нет).
+        // Ввод игрока отменяет ТОЛЬКО проезд камеры: рост дорожек доигрывает сам (решение Макса) —
+        // иначе перехват руля обрывал бы карту на полуслове и она бы «доросла» рывком.
+        private readonly List<MapIntroTiming.Edge> _introEdges = new List<MapIntroTiming.Edge>(64);
+        private readonly List<(string From, string To)> _introEdgeKeys = new List<(string, string)>(64);
+        private float[] _introEdgeSpeeds = Array.Empty<float>();
+        private float[] _introNodeTimes  = Array.Empty<float>();
+        private bool  _introOn = true;   // тумблер map.intro
+        private bool  _introPlaying;
+        private float _introT;
+        private float _introEnds;
+
+        // Порядок проявления узлов — чтобы звук снимался с готовой очереди, а не искался перебором
+        // каждый кадр. Тот же приём, что у плана подмены тайлов в арене.
+        private readonly List<int> _introOrder = new List<int>(48);
+        private int   _introSoundHead;
+        private float _introLastSound;
 
         private Transform _nodeRoot;
         private Transform _edgeRoot;
@@ -186,6 +208,9 @@ namespace Guildmaster.Presentation.Map
             _toggles.Register("map.pathflow", "Бегущая волна по дорожкам",
                 on => _pathFlowOn = on);
 
+            _toggles.Register("map.intro", "Интро при первом показе карты (рост дорожек + отъезд камеры)",
+                on => { _introOn = on; if (!on) StopIntro(); });
+
             // Выключен по умолчанию: шаг по карте идёт шторкой. Поездка не удалена намеренно — Макс
             // оставил её про запас, включается одной командой.
             _toggles.Register("map.travel", "Поездка фишки по дорожке (выкл = переход затемнением)",
@@ -218,6 +243,7 @@ namespace Guildmaster.Presentation.Map
             Dictionary<string, Vector2> local = layout.Resolve(nodes, seed);
 
             var byId = new Dictionary<string, Vector2>(nodes.Count);
+            var indexOf = new Dictionary<string, int>(nodes.Count); // для интро: рёбра ходят по индексам
             var radiusOf = new Dictionary<string, float>(nodes.Count);
             float minX = float.MaxValue, maxX = float.MinValue, minY = float.MaxValue, maxY = float.MinValue;
             Vector2 focus = Vector2.zero;
@@ -230,6 +256,7 @@ namespace Guildmaster.Presentation.Map
                 // положением этого объекта в сцене — зона карты разнесена от арены наглядно, видно в Scene view.
                 Vector2 pos = transform.TransformPoint(local[n.Id]);
                 byId[n.Id] = pos;
+                indexOf[n.Id] = i;
 
                 MapNodeView view = RentNode();
                 if (view != null)
@@ -257,7 +284,7 @@ namespace Guildmaster.Presentation.Map
                 if (pos.y > maxY) maxY = pos.y;
             }
 
-            if (edges != null) BuildPaths(edges, byId, radiusOf, nodes);
+            if (edges != null) BuildPaths(edges, byId, indexOf, radiusOf, nodes);
             PlacePawn(hasFocus ? focus : new Vector2(minX, (minY + maxY) * 0.5f));
 
             const float padding = 2f;
@@ -273,7 +300,14 @@ namespace Guildmaster.Presentation.Map
             SetLayerActive(true);
 
             // Кадр и границы клампа: смотрим КРУПНО на текущий узел, а не на весь акт сразу.
-            _cameraModes?.EnterMap(Bounds, hasFocus ? focus : center, _style.FloorsInView * layout.StepX);
+            bool firstFrame = _cameraModes != null &&
+                              _cameraModes.EnterMap(Bounds, hasFocus ? focus : center,
+                                                    _style.FloorsInView * layout.StepX);
+
+            // Первый показ карты в забеге — единственный, где акт видно целиком: он разворачивается перед
+            // игроком, прорастая из точки, где стоит отряд, и лишь потом камера съезжает к рабочему кадру.
+            if (firstFrame && _introOn) BeginIntro();
+            else StopIntro();
         }
 
         /// <inheritdoc/>
@@ -281,6 +315,7 @@ namespace Guildmaster.Presentation.Map
         {
             _shown = false;
             _travelling = false;
+            StopIntro(); // карту закрыли посреди роста — следующий показ не должен застать её недоросшей
             _hits.Clear();
             SetLayerActive(false);
             _cameraModes?.ExitMap(); // вернуть взгляд туда, откуда пришли (карту могли открыть посреди боя)
@@ -292,10 +327,13 @@ namespace Guildmaster.Presentation.Map
         // что фишка отряда: дорожка и тот, кто по ней идёт, выглядят как одно целое.
         private void BuildPaths(IReadOnlyList<(string From, string To)> edges,
                                 Dictionary<string, Vector2> byId,
+                                Dictionary<string, int> indexOf,
                                 Dictionary<string, float> radiusOf,
                                 IReadOnlyList<MapNodeVisual> nodes)
         {
             HashSet<string> travelled = TravelledRoute(nodes);
+            _introEdges.Clear();
+            _introEdgeKeys.Clear();
 
             var stateOf = new Dictionary<string, MapNodeVisualState>(nodes.Count);
             for (int i = 0; i < nodes.Count; i++) stateOf[nodes[i].Id] = nodes[i].State;
@@ -324,7 +362,16 @@ namespace Guildmaster.Presentation.Map
                 radiusOf.TryGetValue(edges[i].From, out float ra);
                 radiusOf.TryGetValue(edges[i].To,   out float rb);
 
-                ScatterDots(a, ctrl, b, MarginFor(ra), MarginFor(rb), color, isOpen);
+                // Ребро заводим ДО раскладки точек: точке нужен его номер, а ребру — фактическая длина
+                // дуги, которую та же раскладка и меряет. Индексы узлов берём здесь же: интро считает
+                // по графу, а не по картинке.
+                indexOf.TryGetValue(edges[i].From, out int ia);
+                indexOf.TryGetValue(edges[i].To,   out int ib);
+                int edgeIndex = _introEdges.Count;
+                _introEdgeKeys.Add(edges[i]);
+
+                float arc = ScatterDots(a, ctrl, b, MarginFor(ra), MarginFor(rb), color, isOpen, edgeIndex);
+                _introEdges.Add(new MapIntroTiming.Edge(ia, ib, arc));
             }
         }
 
@@ -335,8 +382,10 @@ namespace Guildmaster.Presentation.Map
 
         // Точки ставим по РАВНОЙ длине дуги: идём мелким шагом по параметру, копим пройденное расстояние
         // и роняем точку каждые DotSpacing метров. Равномерный шаг по t дал бы сгущение на изгибе.
-        private void ScatterDots(Vector2 a, Vector2 ctrl, Vector2 b,
-                                 float marginStart, float marginEnd, Color color, bool flowing)
+        /// <returns>Полная длина дуги — по ней интро считает, за сколько фронт проходит это ребро.</returns>
+        private float ScatterDots(Vector2 a, Vector2 ctrl, Vector2 b,
+                                  float marginStart, float marginEnd, Color color, bool flowing,
+                                  int edgeIndex)
         {
             const int walk = 64;
 
@@ -351,7 +400,7 @@ namespace Guildmaster.Presentation.Map
             }
 
             float stopAt = total - marginEnd;
-            if (stopAt <= marginStart) return; // узлы слишком близко — дорожке между ними места нет
+            if (stopAt <= marginStart) return total; // узлы слишком близко — дорожке между ними места нет
 
             float spacing = Mathf.Max(0.01f, _style.DotSpacing);
             float travelled = 0f;
@@ -369,12 +418,12 @@ namespace Guildmaster.Presentation.Map
                     Vector2 at = Vector2.Lerp(prev, point, t);
 
                     Disc dot = RentDot();
-                    if (dot == null) return; // нет префаба точки — дорожек не будет, но карта живёт
+                    if (dot == null) return total; // нет префаба точки — дорожек не будет, но карта живёт
 
                     dot.transform.position = new Vector3(at.x, at.y, EdgeZ);
                     dot.Radius = _style.DotRadius;
                     dot.Color  = color;
-                    _dots.Add(new PathDot { Shape = dot, Along = nextDrop, Flowing = flowing });
+                    _dots.Add(new PathDot { Shape = dot, Along = nextDrop, Flowing = flowing, Edge = edgeIndex });
 
                     nextDrop += spacing;
                 }
@@ -382,6 +431,8 @@ namespace Guildmaster.Presentation.Map
                 travelled += step;
                 prev = point;
             }
+
+            return total;
         }
 
         // Пройденный маршрут выводится из данных, а не хранится: игрок проходит ровно один узел на этаж,
@@ -726,6 +777,7 @@ namespace Guildmaster.Presentation.Map
             {
                 float r = _hits[i].PickRadius * _style.PickRadiusScale;
                 if (r <= 0f) continue;
+                if (_introPlaying && IntroScale(i) < 0.5f) continue; // ещё не выросший узел не ловит мышь
                 float ratio = (_hits[i].Pos - world).sqrMagnitude / (r * r);
                 if (ratio <= bestRatio) { bestRatio = ratio; best = i; }
             }
@@ -746,6 +798,8 @@ namespace Guildmaster.Presentation.Map
                 if (_hoverIndex >= 0) _audio?.Play("map.node_hover.ui");
             }
             float now = Time.unscaledTime;
+
+            if (_introPlaying) TickIntro();
 
             AnimateNodes(now);
             AnimateDots(now);
@@ -798,7 +852,9 @@ namespace Guildmaster.Presentation.Map
                     else _nudgeIndex = -1;
                 }
 
-                _hits[i].View.SetVisualScale(scale);
+                // Рост — множителем поверх отклика: пока фронт не дошёл, узла нет вовсе, а дальше он
+                // выскакивает, продолжая жить обычной жизнью (дыхание, hover) с первого же кадра.
+                _hits[i].View.SetVisualScale(scale * IntroScale(i));
 
                 // Яркость замирает вместе с размером — но на ПОЛНОЙ, а не на случайной точке дыхания:
                 // узел под курсором должен быть самым ярким на карте, иначе наведение читается как затухание.
@@ -830,6 +886,152 @@ namespace Guildmaster.Presentation.Map
                 float glow  = Mathf.Clamp01(1f - phase / length);
                 dot.Shape.Color = Color.Lerp(_style.PathIdle, _style.PathAvailable, 0.35f + glow * 0.65f);
             }
+        }
+
+        // ── Интро: карта прорастает из точки, где стоит отряд ──────────────────────────────────────
+
+        /// <summary>
+        /// Запустить прорастание. Времена считаются ОДИН раз на показ: фронт выходит из узла отряда и
+        /// разбегается по дорожкам, каждая ветка со своей скоростью. Дальше кадр только читает готовое —
+        /// пересчитывать граф каждый кадр значило бы гонять Дейкстру на сорока узлах шестьдесят раз в секунду.
+        /// </summary>
+        private void BeginIntro()
+        {
+            if (_style == null || _hits.Count == 0 || _style.IntroCameraSeconds <= 0f) { StopIntro(); return; }
+
+            int start = 0;
+            for (int i = 0; i < _hits.Count; i++)
+                if (_hits[i].State == MapNodeVisualState.Current) { start = i; break; }
+
+            if (_introEdgeSpeeds.Length < _introEdges.Count)
+                _introEdgeSpeeds = new float[Mathf.Max(16, _introEdges.Count)];
+            if (_introNodeTimes.Length < _hits.Count)
+                _introNodeTimes = new float[Mathf.Max(16, _hits.Count)];
+
+            MapIntroTiming.Resolve(_introEdges, _introEdgeKeys, _hits.Count, start,
+                                   _style.IntroGrowSpeed, _style.IntroSpeedScatter,
+                                   _introEdgeSpeeds, _introNodeTimes);
+
+            float delay = Mathf.Max(0f, _style.IntroStartDelay);
+            float last  = 0f;
+
+            for (int i = 0; i < _hits.Count; i++)
+            {
+                NodeHit hit = _hits[i];
+                hit.AppearAt = delay + _introNodeTimes[i];
+                _hits[i] = hit;
+                if (hit.AppearAt > last) last = hit.AppearAt;
+            }
+
+            for (int i = 0; i < _dots.Count; i++)
+            {
+                PathDot dot = _dots[i];
+                dot.AppearAt = delay + DotGrowTime(dot);
+                _dots[i] = dot;
+                if (dot.AppearAt > last) last = dot.AppearAt;
+            }
+
+            _introOrder.Clear();
+            for (int i = 0; i < _hits.Count; i++) _introOrder.Add(i);
+            _introOrder.Sort((x, y) => _hits[x].AppearAt.CompareTo(_hits[y].AppearAt));
+
+            _introT         = 0f;
+            _introSoundHead = 0;
+            _introLastSound = float.NegativeInfinity;
+            _introEnds      = last + Mathf.Max(_style.IntroNodePop, _style.IntroDotPop);
+            _introPlaying   = true;
+
+            // Прячем всё ПРЯМО СЕЙЧАС, не дожидаясь своего Update: порядок выполнения скриптов не задан,
+            // и один кадр с уже готовой картой убил бы весь смысл роста.
+            ApplyIntroVisuals();
+
+            _cameraModes?.PlayMapIntro(_style.IntroCameraSeconds);
+        }
+
+        // Точка прорастает с того конца, откуда фронт добрался быстрее: ребро растёт с обеих сторон, если
+        // открыты оба его узла. Иначе дорожки, к которым фронт пришёл «с дальнего конца», стояли бы пустыми
+        // до самого прихода волны с ближнего.
+        private float DotGrowTime(in PathDot dot)
+        {
+            if (dot.Edge < 0 || dot.Edge >= _introEdges.Count || dot.Edge >= _introEdgeSpeeds.Length) return 0f;
+
+            MapIntroTiming.Edge edge = _introEdges[dot.Edge];
+            float speed = Mathf.Max(0.05f, _introEdgeSpeeds[dot.Edge]);
+
+            float fromStart = NodeTime(edge.From) + dot.Along / speed;
+            float fromEnd   = NodeTime(edge.To)   + Mathf.Max(0f, edge.Length - dot.Along) / speed;
+            return Mathf.Min(fromStart, fromEnd);
+        }
+
+        private float NodeTime(int index) =>
+            index >= 0 && index < _introNodeTimes.Length ? _introNodeTimes[index] : 0f;
+
+        private void TickIntro()
+        {
+            _introT += Time.unscaledDeltaTime;
+            ApplyIntroVisuals();
+            SoundAppearedNodes();
+            if (_introT >= _introEnds) StopIntro();
+        }
+
+        // Тихий бумажный тюк на проступивший узел. С порогом по времени: узлы проявляются пачками (в один
+        // кадр их может открыться сразу несколько), и без ограничителя карта проявлялась бы с треском.
+        // Пропущенные узлы просто молчат — догонять их отложенными щелчками было бы хуже тишины.
+        private void SoundAppearedNodes()
+        {
+            float gap = Mathf.Max(0f, _style.IntroNodeSoundGap);
+
+            while (_introSoundHead < _introOrder.Count &&
+                   _hits[_introOrder[_introSoundHead]].AppearAt <= _introT)
+            {
+                _introSoundHead++;
+                if (_introT - _introLastSound < gap) continue;
+
+                _introLastSound = _introT;
+                _audio?.Play("map.node_appear.ui");
+            }
+        }
+
+        // Радиусы точек по времени. Узлы здесь не трогаем: их масштаб — общий с откликом и дыханием,
+        // и владеет им AnimateNodes (два писателя в один localScale однажды подрались бы).
+        private void ApplyIntroVisuals()
+        {
+            float pop  = Mathf.Max(0.01f, _style.IntroDotPop);
+            float full = _style.DotRadius;
+
+            for (int i = 0; i < _dots.Count; i++)
+            {
+                Disc shape = _dots[i].Shape;
+                if (shape == null) continue;
+                shape.Radius = full * Mathf.Clamp01((_introT - _dots[i].AppearAt) / pop);
+            }
+        }
+
+        /// <summary>
+        /// Оборвать интро и показать карту целиком. Зовётся и по концу роста, и при повторном показе, и
+        /// тумблером: недоросшая карта не должна пережить отмену подачи.
+        /// </summary>
+        private void StopIntro()
+        {
+            if (!_introPlaying) return;
+            _introPlaying = false;
+
+            if (_style == null) return;
+            for (int i = 0; i < _dots.Count; i++)
+                if (_dots[i].Shape != null) _dots[i].Shape.Radius = _style.DotRadius;
+        }
+
+        // Насколько узел «вырос». Ноль — фронт до него ещё не дошёл; на выходе лёгкий перелёт, чтобы узел
+        // выскакивал, а не надувался.
+        private float IntroScale(int index)
+        {
+            if (!_introPlaying) return 1f;
+
+            float appear = _hits[index].AppearAt;
+            if (_introT < appear) return 0f;
+
+            float p = Mathf.Clamp01((_introT - appear) / Mathf.Max(0.01f, _style.IntroNodePop));
+            return (1f - Mathf.Pow(1f - p, 3f)) * (1f + Mathf.Sin(p * Mathf.PI) * 0.22f);
         }
 
         private void TickTravel()

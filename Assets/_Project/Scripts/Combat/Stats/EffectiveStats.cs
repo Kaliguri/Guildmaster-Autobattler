@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 
@@ -21,6 +22,19 @@ namespace Guildmaster.Combat
         /// надо подавать, иначе они разойдутся с боем.
         /// </summary>
         public static Stats Build(UnitData data, StatsConfig config, ClassBalanceConfig classConfig)
+            => Build(data, vessel: null, items: null, config, classConfig);
+
+        /// <summary>
+        /// Тот же каскад плюс два слоя, которые есть у собранного игроком кита: Судьба сосуда и
+        /// статовые моды надетых предметов (включая баннеры команды).
+        /// </summary>
+        /// <remarks>
+        /// Порядок групп значим и повторяет боевую сборку: класс и вид ложатся первыми, затем персона,
+        /// затем Судьба, затем предметы. Перестановка меняет результат — <c>Override</c> побеждает
+        /// последний, а <c>PercentMult</c> множит уже накопленное.
+        /// </remarks>
+        public static Stats Build(UnitData data, VesselData vessel, IReadOnlyList<ItemData> items,
+                                  StatsConfig config, ClassBalanceConfig classConfig)
         {
             var stats = new Stats(config);
 
@@ -29,6 +43,18 @@ namespace Guildmaster.Combat
 
             if (data != null && data.Stats != null && data.Stats.Length > 0)
                 stats.AddModifiersFrom(data, data.Stats);
+
+            // Судьба авторского «Сосуда» (у процедурных её нет — они приходят без ассета).
+            if (vessel != null && vessel.FateModifiers != null && vessel.FateModifiers.Length > 0)
+                stats.AddModifiersFrom(vessel, vessel.FateModifiers);
+
+            if (items != null)
+                for (int i = 0; i < items.Count; i++)
+                {
+                    ItemData item = items[i];
+                    if (item != null && item.Mods != null && item.Mods.Length > 0)
+                        stats.AddModifiersFrom(item, item.Mods);
+                }
 
             return stats;
         }

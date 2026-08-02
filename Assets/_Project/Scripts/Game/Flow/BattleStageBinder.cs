@@ -19,14 +19,19 @@ namespace Guildmaster.Game.Flow
     {
         private readonly StageFrameRouter    _router;
         private readonly BattleTapePlayback  _playback;
+        private readonly BattleUnitRegistry  _registry;
 
-        public BattleStageBinder(StageFrameRouter router, BattleTapePlayback playback)
+        public BattleStageBinder(StageFrameRouter router, BattleTapePlayback playback,
+                                 BattleUnitRegistry registry)
         {
             _router   = router;
             _playback = playback;
+            _registry = registry;
         }
 
-        public void Start() => _router.Bind(_playback);
+        // Кадр и паспорта подключаются одним движением: показ обязан спрашивать «что с ними» и «кто
+        // они» у одного и того же боя, иначе на границе он смешает два состава.
+        public void Start() => _router.Bind(_playback, _registry);
 
         public void Dispose() => _router.Unbind(_playback);
     }

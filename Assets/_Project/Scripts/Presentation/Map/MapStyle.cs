@@ -138,6 +138,36 @@ namespace Guildmaster.Presentation.Map
                  "в ритме дыхания узлов; 0.5 было вдвое быстрее и читалось как суета.")]
         [SerializeField] private float _flowDivision = 1f;
 
+        [Header("Интро карты (первый показ в забеге)")]
+        [Tooltip("Сколько камера едет от вида «вся карта целиком» к рабочему кадру у текущего узла " +
+                 "(секунды). ПРЕРЫВАЕТСЯ любым движением камеры игроком — колесо, WASD, перетаскивание.")]
+        [SerializeField] private float _introCameraSeconds = 1.7f;
+
+        [Tooltip("Пауза перед началом роста (секунды): игрок должен успеть увидеть пустой лист, прежде " +
+                 "чем по нему побегут дорожки.")]
+        [SerializeField] private float _introStartDelay = 0.2f;
+
+        [Tooltip("Базовая скорость роста дорожек (мировых единиц в секунду). Фронт идёт ПО ПУТЯМ от " +
+                 "стартового узла и ветвится на развилках сам.")]
+        [SerializeField] private float _introGrowSpeed = 62f;
+
+        [Tooltip("Разброс скоростей веток (0 — все растут ровно, 0.6 — вдвое быстрее/медленнее друг друга). " +
+                 "Разброс детерминирован парой id узлов: карта прорастает одинаково при каждом показе " +
+                 "одного и того же акта, но ветки обгоняют друг друга — рост читается живым, а не циркулем.")]
+        [SerializeField, Range(0f, 0.9f)] private float _introSpeedScatter = 0.45f;
+
+        [Tooltip("За сколько узел выскакивает, когда до него дорос путь (секунды).")]
+        [SerializeField] private float _introNodePop = 0.22f;
+
+        [Tooltip("За сколько раздаётся до полного радиуса точка дорожки (секунды). Коротко: точка должна " +
+                 "прорастать, а не всплывать.")]
+        [SerializeField] private float _introDotPop = 0.12f;
+
+        [Tooltip("Не чаще чем раз в столько секунд звучит появление узла. Узлов на акте четыре десятка, " +
+                 "и часть их проступает в один кадр — без этого порога проявление карты звучит как треск, " +
+                 "а не как проступающие метки. Ноль — звучит каждый узел.")]
+        [SerializeField] private float _introNodeSoundGap = 0.07f;
+
         [Header("Туман (атмосфера, НЕ механика)")]
         [Tooltip("Материал слоя тумана (шейдер Guildmaster/Map/Fog). Пусто — тумана нет. " +
                  "ВАЖНО: туман ничего не скрывает и ни на что не влияет — узлы видны и кликаются сквозь него. " +
@@ -194,6 +224,21 @@ namespace Guildmaster.Presentation.Map
         public float PulseAmount => _pulseAmount;
         /// <inheritdoc cref="_flowDivision"/>
         public float FlowDivision => _flowDivision;
+
+        /// <inheritdoc cref="_introCameraSeconds"/>
+        public float IntroCameraSeconds => _introCameraSeconds;
+        /// <inheritdoc cref="_introStartDelay"/>
+        public float IntroStartDelay => _introStartDelay;
+        /// <inheritdoc cref="_introGrowSpeed"/>
+        public float IntroGrowSpeed => _introGrowSpeed;
+        /// <inheritdoc cref="_introSpeedScatter"/>
+        public float IntroSpeedScatter => _introSpeedScatter;
+        /// <inheritdoc cref="_introNodePop"/>
+        public float IntroNodePop => _introNodePop;
+        /// <inheritdoc cref="_introDotPop"/>
+        public float IntroDotPop => _introDotPop;
+        /// <inheritdoc cref="_introNodeSoundGap"/>
+        public float IntroNodeSoundGap => _introNodeSoundGap;
 
         /// <inheritdoc cref="_fogMaterial"/>
         public Material FogMaterial => _fogMaterial;

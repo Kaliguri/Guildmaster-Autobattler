@@ -24,7 +24,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var world  = new WorldBodyStage();
             var router = new StageFrameRouter(world);
 
-            world.Set(new List<UnitSnapshot> { Body(1), Body(2) });
+            world.Set(new List<WorldBody> { Standing(1), Standing(2) });
 
             Assert.IsFalse(router.ShowingBattle, "Боя нет");
             Assert.IsTrue(router.TryGetFrame(out IReadOnlyList<UnitSnapshot> units, out var projectiles));
@@ -45,10 +45,10 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             var world  = new WorldBodyStage();
             var router = new StageFrameRouter(world);
-            world.Set(new List<UnitSnapshot> { Body(1) });
+            world.Set(new List<WorldBody> { Standing(1) });
 
             var battle = new FakeSource(Body(7), Body(8), Body(9));
-            router.Bind(battle);
+            router.Bind(battle, battle);
 
             Assert.IsTrue(router.ShowingBattle);
             Assert.IsTrue(router.TryGetFrame(out IReadOnlyList<UnitSnapshot> inBattle, out _));
@@ -71,8 +71,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             var previous = new FakeSource(Body(1));
             var current  = new FakeSource(Body(2), Body(3));
 
-            router.Bind(previous);
-            router.Bind(current);
+            router.Bind(previous, previous);
+            router.Bind(current, current);
             router.Unbind(previous);   // опоздавший Dispose прошлого боя
 
             Assert.IsTrue(router.ShowingBattle, "Текущий бой остался подключён");
@@ -90,9 +90,32 @@ namespace Guildmaster.Tests.EditMode.Combat
             router.Advance(0.5f);
             Assert.AreEqual(0f, battle.Advanced, 1e-6f, "Отключённый источник времени не получает");
 
-            router.Bind(battle);
+            router.Bind(battle, battle);
             router.Advance(0.5f);
             Assert.AreEqual(0.5f, battle.Advanced, 1e-6f);
+        }
+
+        // Паспорта переключаются ВМЕСТЕ с кадром: иначе показ рисует бой людьми из двора гильдии.
+        [Test]
+        public void Directory_FollowsTheFrameSource()
+        {
+            var world  = new WorldBodyStage();
+            var router = new StageFrameRouter(world);
+            world.Set(new List<WorldBody> { Standing(1) });
+
+            Assert.IsTrue(router.TryGet(1, out UnitIdentity inWorld), "Вне боя паспорта держит мир");
+            Assert.AreEqual(0, inWorld.Team);
+
+            var battle = new FakeSource(Body(7));
+            battle.Announce(new UnitIdentity(null, team: 1, id: 7));
+            router.Bind(battle, battle);
+
+            Assert.IsFalse(router.TryGet(1, out _), "Тело мира в бою не значится");
+            Assert.IsTrue(router.TryGet(7, out UnitIdentity inBattle));
+            Assert.AreEqual(1, inBattle.Team);
+
+            router.Unbind(battle);
+            Assert.IsTrue(router.TryGet(1, out _), "После боя паспорта снова мировые");
         }
 
         // ── помощники ────────────────────────────────────────────────────────────
@@ -105,10 +128,15 @@ namespace Guildmaster.Tests.EditMode.Combat
                 attackCooldownTicks: 0, targetId: -1, effectTagMask: EffectTag.None, isDead: false,
                 attackRange: 1.5f, canAct: true);
 
-        private sealed class FakeSource : IStageFrameSource
+        /// <summary>Тело мира: снимок плюс паспорт, как их кладёт сборщик тел.</summary>
+        private static WorldBody Standing(int id) =>
+            new WorldBody(Body(id), new UnitIdentity(null, team: 0, id));
+
+        private sealed class FakeSource : IStageFrameSource, IUnitDirectory
         {
             private readonly List<UnitSnapshot>       _units = new List<UnitSnapshot>();
             private readonly List<ProjectileSnapshot> _projectiles = new List<ProjectileSnapshot>();
+            private readonly Dictionary<int, UnitIdentity> _who = new Dictionary<int, UnitIdentity>();
 
             public FakeSource(params UnitSnapshot[] units) => _units.AddRange(units);
 
@@ -116,6 +144,12 @@ namespace Guildmaster.Tests.EditMode.Combat
             public float Alpha => 0.25f;
 
             public void Advance(float deltaTime) => Advanced += deltaTime;
+
+            public void Announce(in UnitIdentity identity) => _who[identity.Id] = identity;
+
+            public bool TryGet(int unitId, out UnitIdentity identity) => _who.TryGetValue(unitId, out identity);
+
+            public int Count => _who.Count;
 
             public bool TryGetFrame(out IReadOnlyList<UnitSnapshot> units,
                                     out IReadOnlyList<ProjectileSnapshot> projectiles)

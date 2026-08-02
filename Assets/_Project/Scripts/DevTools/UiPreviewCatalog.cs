@@ -461,7 +461,7 @@ namespace Guildmaster.DevTools
             var btnRow = Row();
             Button Btn(string txt, bool primary, bool enabled)
             {
-                var b = new Button { text = txt };
+                var b = new Guildmaster.UI.Components.PlateButton { text = txt };
                 b.AddToClassList("gm-button");
                 if (primary) b.AddToClassList("gm-button--primary");
                 b.SetEnabled(enabled);

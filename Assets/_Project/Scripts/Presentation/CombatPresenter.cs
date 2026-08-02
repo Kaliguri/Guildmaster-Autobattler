@@ -95,6 +95,9 @@ namespace Guildmaster.Presentation
         // Кадр сцены берётся ОТСЮДА, а не прямо у ленты: вне боя ленты не существует, а тела на арене
         // стоять обязаны (двор, Ристалище, строй между забегами). Роутер знает, кто сейчас поставщик,
         // и это единственный владелец факта «что сейчас на арене».
+        // Оттуда же приходят ПАСПОРТА («кто это, какой арт»): своего словаря презентер не держит с
+        // 02.08.2026. Пока держал — наполнял его событием спавна симуляции, и любой показ без своей
+        // симуляции (гость в коопе, тела мира вне боя) оставался без паспортов, а значит без видов.
         private Combat.Tape.StageFrameRouter _stage;
 
         // События приходят отсюда — то есть тогда, когда их ПОКАЗАЛИ, а не когда посчитал сим.
@@ -102,11 +105,6 @@ namespace Guildmaster.Presentation
 
         // Режим dev-оверлеев: презентер только раздаёт его тому, что создаёт сам (статус-кольца).
         private DevOverlayMode _overlayMode;
-
-        // Паспорт юнита: то, что за бой не меняется. Заводится по событию спавна (оно приходит заранее —
-        // это регистрация, а не показ), потому что вид создаётся много позже, когда до юнита дойдёт показ,
-        // и живого юнита к тому моменту может уже не быть в списке.
-        private readonly Dictionary<int, UnitIdentity> _identities = new Dictionary<int, UnitIdentity>();
 
         // Индекс кадра показа id→снимок: собирается раз в кадр, нужен для поиска снимка ЦЕЛИ.
         private readonly Dictionary<int, Combat.Tape.UnitSnapshot> _frameIndex =
@@ -154,16 +152,13 @@ namespace Guildmaster.Presentation
         /// <summary>Сколько видов юнитов сейчас на экране. Только для dev-диагностики ленты.</summary>
         public int ViewCount => _views.Count;
 
-        /// <summary>Сколько паспортов юнитов зарегистрировано. Только для dev-диагностики ленты.</summary>
-        public int IdentityCount => _identities.Count;
+        /// <summary>Сколько паспортов юнитов известно показу. Только для dev-диагностики ленты.</summary>
+        public int IdentityCount => _stage.Count;
 
         private void OnEnable()
         {
             if (_simulation == null) return;
 
-            // Спавн — единственное, что слушаем у СИМА, и не ради показа: нужен паспорт юнита, пока
-            // живой юнит ещё под рукой. Всё остальное приходит с ленты, когда его показали.
-            _simulation.OnUnitSpawned += HandleUnitSpawned;
             // Рестарт — служебное событие, а не показ: лента уже очищена, и ждать «показа рестарта»
             // некому. Отсюда же сбрасываются момент показа и курсор диспетчера.
             _simulation.OnBattleReset += HandleBattleReset;
@@ -185,7 +180,6 @@ namespace Guildmaster.Presentation
         {
             if (_simulation == null) return;
 
-            _simulation.OnUnitSpawned -= HandleUnitSpawned;
             _simulation.OnBattleReset -= HandleBattleReset;
 
             _dispatcher.DamageDealt       -= HandleDamageDealt;
@@ -206,7 +200,6 @@ namespace Guildmaster.Presentation
             // сочтутся уже показанными.
             _playback.Reset();
             _dispatcher.Reset();
-            _identities.Clear();
             _frameIndex.Clear();
 
             foreach (var kvp in _views)
@@ -444,16 +437,6 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Спавн в СИМУЛЯЦИИ — это ещё не выход на экран: показ дойдёт до этого тика через окно
-        /// опережения. Поэтому здесь только запоминаем паспорт юнита (определение и команду), а вид
-        /// создаётся из кадра показа в <see cref="SyncViewsToFrame"/>.
-        /// </summary>
-        private void HandleUnitSpawned(RuntimeUnit unit)
-        {
-            _identities[unit.Id] = new UnitIdentity(unit.Unit, unit.Team, unit.Id);
-        }
-
-        /// <summary>
         /// Привести состав видов к кадру показа: кто появился — создать, кому пора умереть — похоронить,
         /// остальным положить состояние их тика.
         /// </summary>
@@ -490,7 +473,7 @@ namespace Guildmaster.Presentation
 
         private UnitView CreateView(in Combat.Tape.UnitSnapshot snapshot)
         {
-            if (!_identities.TryGetValue(snapshot.Id, out UnitIdentity identity)) return null;
+            if (!_stage.TryGet(snapshot.Id, out Combat.Tape.UnitIdentity identity)) return null;
 
             // Свой префаб персонажа (визуал/анимация/размер настроены ПРЯМО в нём); фолбэк — дефолтный
             // из презентера. Никакой рантайм-подмены визуала — префаб самодостаточен.
@@ -842,16 +825,16 @@ namespace Guildmaster.Presentation
         }
 
         private bool IsMelee(int unitId) =>
-            _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
+            _stage.TryGet(unitId, out Combat.Tape.UnitIdentity id) && id.Definition != null
             && id.Definition.AttackType == AttackType.Melee;
 
         private bool IsRanged(int unitId) =>
-            _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
+            _stage.TryGet(unitId, out Combat.Tape.UnitIdentity id) && id.Definition != null
             && id.Definition.AttackType == AttackType.Ranged;
 
         /// <summary>Палитра эффектов по id — из паспорта, потому что живого юнита здесь уже нет.</summary>
         private Gradient VfxPaletteFor(int unitId) =>
-            _colorPalette != null && _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
+            _colorPalette != null && _stage.TryGet(unitId, out Combat.Tape.UnitIdentity id) && id.Definition != null
                 ? _colorPalette.UnitSpread(id.Definition.VfxTone)
                 : null;
 
@@ -876,7 +859,7 @@ namespace Guildmaster.Presentation
         }
 
         private Color VfxColorFor(int unitId) =>
-            _colorPalette != null && _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
+            _colorPalette != null && _stage.TryGet(unitId, out Combat.Tape.UnitIdentity id) && id.Definition != null
                 ? _colorPalette.UnitMain(id.Definition.VfxTone)
                 : Color.white;
 
@@ -935,25 +918,6 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Паспорт юнита: неизменная за бой часть — определение, команда, id. Вид создаётся из кадра
-        /// показа, когда живого юнита уже может не быть под рукой, поэтому «кто это» запоминается
-        /// отдельно от «что с ним сейчас».
-        /// </summary>
-        private readonly struct UnitIdentity
-        {
-            public readonly Data.Definitions.UnitData Definition;
-            public readonly int Team;
-            public readonly int Id;
-
-            public UnitIdentity(Data.Definitions.UnitData definition, int team, int id)
-            {
-                Definition = definition;
-                Team       = team;
-                Id         = id;
-            }
-        }
-
-        /// <summary>
         /// Тинт тела по персонажу: ступень приглушения из данных, цвет — из палитры проекта (тот же путь,
         /// которым красится карточка инвентаря). У болванчиков без данных — по стороне смотрящего: это
         /// дев-стенд без контента, там различить своих и чужих больше нечем.
@@ -964,7 +928,7 @@ namespace Guildmaster.Presentation
                 : (IsAllyOfViewer(unit) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
 
         /// <summary>То же, но по паспорту: так вид красится, когда создаётся из кадра показа.</summary>
-        private Color TintFor(in UnitIdentity identity) =>
+        private Color TintFor(in Combat.Tape.UnitIdentity identity) =>
             identity.Definition != null
                 ? BodyTintOf(identity.Definition)
                 : (IsAllyOfViewer(identity.Team) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));

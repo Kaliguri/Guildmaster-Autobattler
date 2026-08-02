@@ -160,7 +160,7 @@ namespace Guildmaster.Tests.EditMode.Net
 
             foreach (RuntimeUnit unit in hostSim.Units)
             {
-                Assert.IsTrue(guestRegistry.TryGet(unit.Id, out BattleUnitRegistry.Entry entry),
+                Assert.IsTrue(guestRegistry.TryGet(unit.Id, out UnitIdentity entry),
                     $"Паспорт юнита {unit.Id} доехал");
                 Assert.AreEqual(unit.Team, entry.Team, "И команда та же — по ней показ красит юнита");
             }

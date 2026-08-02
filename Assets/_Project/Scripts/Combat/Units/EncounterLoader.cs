@@ -127,8 +127,12 @@ namespace Guildmaster.Combat
             return side;
         }
 
-        // Предметы слота (Vessel) + баннеры команды (Party) в один список для сборки юнита. null, если оба пусты.
-        private static IReadOnlyList<ItemData> CombineItems(IReadOnlyList<ItemData> vesselItems,
+        /// <summary>
+        /// Предметы слота (Vessel) + баннеры команды (Party) в один список для сборки юнита. null, если
+        /// оба пусты. Публичный, потому что ровно тот же состав нужен телам мира вне боя: расходиться
+        /// «что надето в бою» и «что надето во дворе» не имеют права.
+        /// </summary>
+        public static IReadOnlyList<ItemData> CombineItems(IReadOnlyList<ItemData> vesselItems,
                                                             IReadOnlyList<ItemData> partyItems)
         {
             bool hasVessel = vesselItems != null && vesselItems.Count > 0;

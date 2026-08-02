@@ -16,17 +16,24 @@ namespace Guildmaster.Combat.Tape
     /// показ возвращается к телам мира. Отвязка проверяет, что отвязывают именно текущий источник:
     /// иначе умирающий скоуп мог бы сбросить чужую привязку и погасить арену следующего боя.</para>
     /// </remarks>
-    public sealed class StageFrameRouter : IStageFrameSource
+    public sealed class StageFrameRouter : IStageFrameSource, IUnitDirectory
     {
         private readonly WorldBodyStage _world;
 
         private IStageFrameSource _battle;
+        private IUnitDirectory    _battleWho;
 
         public StageFrameRouter(WorldBodyStage world)
             => _world = world ?? throw new ArgumentNullException(nameof(world));
 
         /// <summary>Кто сейчас поставляет кадр.</summary>
         public IStageFrameSource Active => _battle ?? (IStageFrameSource)_world;
+
+        /// <summary>
+        /// Кто сейчас отвечает, что за юниты в кадре. Переключается вместе с источником кадра и только
+        /// вместе с ним: кадр от боя с паспортами мира нарисовал бы двор гильдии вместо врагов.
+        /// </summary>
+        public IUnitDirectory ActiveDirectory => _battleWho ?? (IUnitDirectory)_world;
 
         /// <summary>Идёт ли показ боя (в противовес статичной сцене мира).</summary>
         public bool ShowingBattle => _battle != null;
@@ -39,18 +46,30 @@ namespace Guildmaster.Combat.Tape
                                 out IReadOnlyList<ProjectileSnapshot> projectiles)
             => Active.TryGetFrame(out units, out projectiles);
 
-        /// <summary>Подключить источник боя. Зовёт боевой скоуп при рождении.</summary>
-        public void Bind(IStageFrameSource battle)
-            => _battle = battle ?? throw new ArgumentNullException(nameof(battle));
+        public bool TryGet(int unitId, out UnitIdentity identity)
+            => ActiveDirectory.TryGet(unitId, out identity);
+
+        public int Count => ActiveDirectory.Count;
 
         /// <summary>
-        /// Отключить источник боя и вернуться к телам мира. Чужую привязку не трогает — умерший бой
+        /// Подключить бой: его кадр и его паспорта. Зовёт боевой скоуп при рождении. Оба аргумента
+        /// обязательны — источник кадра без директории даёт показу тела, которых он не умеет опознать.
+        /// </summary>
+        public void Bind(IStageFrameSource battle, IUnitDirectory who)
+        {
+            _battle    = battle ?? throw new ArgumentNullException(nameof(battle));
+            _battleWho = who    ?? throw new ArgumentNullException(nameof(who));
+        }
+
+        /// <summary>
+        /// Отключить бой и вернуться к телам мира. Чужую привязку не трогает — умерший бой
         /// не должен гасить арену того, кто уже начался.
         /// </summary>
         public void Unbind(IStageFrameSource battle)
         {
             if (!ReferenceEquals(_battle, battle)) return;
-            _battle = null;
+            _battle    = null;
+            _battleWho = null;
         }
     }
 }

@@ -38,6 +38,11 @@ namespace Guildmaster.Game
             builder.Register<Combat.Tape.WorldBodyStage>(Lifetime.Singleton);
             builder.Register<Combat.Tape.StageFrameRouter>(Lifetime.Singleton);
 
+            // Кто ставит отряд на арену вне боя. Живёт здесь, а не в боевом скоупе: отряд стоит во
+            // дворе и между боями, когда боя — и его скоупа — не существует. Сборщик тел приходит из
+            // корня (там же, где стат-конфиги), симуляция ему не нужна.
+            builder.RegisterEntryPoint<Flow.WorldStageController>(Lifetime.Singleton);
+
             // Вне боя камера ни за кем не следует (пустой источник точек фокуса). На входе в бой
             // боевой скоуп переключит источник через CombatFocusTarget.SetSource(живые юниты).
             builder.RegisterInstance<Presentation.IFocusPointSource>(Presentation.EmptyFocusPointSource.Instance);

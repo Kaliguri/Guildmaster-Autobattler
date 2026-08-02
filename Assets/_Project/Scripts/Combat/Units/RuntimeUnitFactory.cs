@@ -72,30 +72,11 @@ namespace Guildmaster.Combat
         public RuntimeUnit Create(UnitData data, VesselData vessel, int team, Vector2 spawnPosition,
                                   IReadOnlyList<ItemData> items = null)
         {
-            var stats = new Stats(_config);
-
-            // Классовая база (2-й уровень каскада) — ПЕРВОЙ группой, до персоны: «последний Override
-            // побеждает» даёт каскад Класс → Персона → Vessel, дельты персоны копятся поверх.
-            ClassBaseline.Apply(stats, data, _classBalance);
-
-            // Видовые/подвидовые скейлы врага (уровни 3–4) — после класса, до персоны (перемножаются поверх базы).
-            EnemyScalers.Apply(stats, data);
-
-            if (data?.Stats != null && data.Stats.Length > 0)
-                stats.AddModifiersFrom(data, data.Stats);
-
-            // Судьба авторского «Сосуда» (у процедурных её нет — они приходят без ассета).
-            if (vessel?.FateModifiers != null && vessel.FateModifiers.Length > 0)
-                stats.AddModifiersFrom(vessel, vessel.FateModifiers);
-
-            // Предметы/баннеры: статовые моды (источник — сам предмет) до HP-init, наравне с Судьбой сосуда.
-            if (items != null)
-                for (int i = 0; i < items.Count; i++)
-                {
-                    ItemData item = items[i];
-                    if (item?.Mods != null && item.Mods.Length > 0)
-                        stats.AddModifiersFrom(item, item.Mods);
-                }
+            // Каскад целиком — у EffectiveStats: дефолты конфига → класс → вид → персона → Судьба
+            // сосуда → предметы. Своей копии здесь нет намеренно: она уже расходилась с показанными
+            // игроку числами (аудит 2026-07-26), а теперь по тому же каскаду собираются ещё и тела
+            // мира вне боя — три переписи одного порядка разъехались бы молча.
+            Stats stats = EffectiveStats.Build(data, vessel, items, _config, _classBalance);
 
             int id = _nextId++;
 

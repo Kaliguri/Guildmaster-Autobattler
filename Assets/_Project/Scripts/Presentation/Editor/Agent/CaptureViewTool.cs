@@ -131,6 +131,11 @@ namespace Guildmaster.Presentation.Editor.Agent
 
         private static object CaptureSceneFrame(int size, string output)
         {
+            // Пустой кадр — самый дорогой из возможных ответов: агент читает чёрный PNG как «игра
+            // рисует чёрное» и уходит чинить то, что не сломано. Поэтому подменная камера и камера,
+            // которой нечего рисовать, называются вслух, а не молча дают снимок пустоты.
+            string warning = null;
+
             Camera cam = Camera.main;
             if (cam == null)
             {
@@ -139,7 +144,14 @@ namespace Guildmaster.Presentation.Editor.Agent
                     return new ErrorResponse("no_camera: в открытой сцене нет ни одной камеры — " +
                                              "снимать нечем.");
                 cam = all[0];
+                warning = $"no_main_camera: камеры с тегом MainCamera нет, снято через «{cam.name}».";
             }
+
+            if (cam.cullingMask == 0)
+                warning = (warning == null ? "" : warning + " ") +
+                          $"empty_culling_mask: «{cam.name}» не рендерит ни одного слоя — кадр будет " +
+                          "пустым. Вне play mode боевые сцены собираются в рантайме: входи в play mode " +
+                          "(manage_editor) или открывай сцену с готовым содержимым.";
 
             RenderTexture rt = null;
             RenderTexture previousTarget = cam.targetTexture;
@@ -157,7 +169,8 @@ namespace Guildmaster.Presentation.Editor.Agent
                 string path = Write(tex, output, "frame");
                 UnityEngine.Object.DestroyImmediate(tex);
 
-                return new SuccessResponse("Кадр снят.", new { path, camera = cam.name, size });
+                return new SuccessResponse(warning == null ? "Кадр снят." : "Кадр снят, но смотри warning.",
+                                           new { path, camera = cam.name, size, warning });
             }
             catch (Exception e)
             {

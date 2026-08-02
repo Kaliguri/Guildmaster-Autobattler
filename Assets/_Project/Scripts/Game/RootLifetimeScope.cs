@@ -99,6 +99,15 @@ namespace Guildmaster.Game
                     ScopeWiring.Require(gameConfig.ClassBalance, nameof(GameConfig), nameof(GameConfig.ClassBalance))),
                 Lifetime.Singleton);
 
+            // Сборщик тел для арены вне боя: тот же каскад статов, что у панели выше и у боя, только
+            // на выходе снимки для показа. Живёт в корне по той же причине — стат-конфиги выбраны
+            // здесь, а тела стоят и тогда, когда боевого скоупа нет.
+            builder.Register<Combat.WorldBodyBuilder>(
+                _ => new Combat.WorldBodyBuilder(
+                    ScopeWiring.Require(gameConfig.Stats, nameof(GameConfig), nameof(GameConfig.Stats)),
+                    ScopeWiring.Require(gameConfig.ClassBalance, nameof(GameConfig), nameof(GameConfig.ClassBalance))),
+                Lifetime.Singleton);
+
             // Слой описаний (Трек Д-о, план §II.10.1): единственная дорога, по которой число попадает
             // игроку на глаза. Тултипы, карточки и (позже) панель юнита берут текст и величины отсюда,
             // а не считают у себя — иначе на первом же ребалансе экраны разойдутся с боем.

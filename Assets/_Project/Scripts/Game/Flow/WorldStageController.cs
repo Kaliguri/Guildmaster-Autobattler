@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Guildmaster.Combat;
+using Guildmaster.Combat.Tape;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
 using MessagePipe;
@@ -9,30 +11,37 @@ using VContainer.Unity;
 namespace Guildmaster.Game.Flow
 {
     /// <summary>
-    /// Persist-мир (план 12 Ф2): ставит отряд игрока (team 0) на тест-арену ВНЕ боя. Слушает
-    /// <see cref="RunPartyReadyEvent"/> (публикует <c>GameFlow</c> после <c>BeginAct</c>), резолвит гильдию
-    /// забега (<c>RunState.Guild</c>) в боевой ростер через <see cref="GuildRoster.Resolve"/> и ставит отряд
-    /// замороженным (пауза) на сохранённые позиции. Врагов НЕ спавнит — их доспавнит вход в бой
-    /// (<c>BattleFlow</c> → launch). Живёт в боевом скоупе как EntryPoint (скоуп persist — переживает бои).
+    /// Persist-мир: ставит отряд игрока (team 0) на арену ВНЕ боя. Слушает <see cref="RunPartyReadyEvent"/>
+    /// (публикует <c>GameFlow</c> после <c>BeginAct</c>), резолвит гильдию забега (<c>RunState.Guild</c>) в
+    /// ростер через <see cref="GuildRoster.Resolve"/> и кладёт тела в <see cref="WorldBodyStage"/>.
     /// </summary>
+    /// <remarks>
+    /// <b>Врагов не ставит и не должен:</b> вне боя их нет вовсе — их приносит вход в бой вместе с
+    /// боевым скоупом.
+    /// <para><b>Раньше отряд ставился спавном в боевую симуляцию</b>, которую тут же морозили паузой:
+    /// вечная симуляция была единственным, что умело держать тела. Из-за этого у боя не было границы
+    /// в жизненном цикле — её объявляли вручную сбросами. Теперь тела держит мир, и пауза здесь ни при
+    /// чём: стоящему телу нечего тикать (решение 02.08.2026, журнал «The Simulation Belongs To The
+    /// Battle»).</para>
+    /// </remarks>
     public sealed class WorldStageController : IStartable, IDisposable
     {
         private readonly ISubscriber<RunPartyReadyEvent> _partyReadySub;
         private readonly RunStateService  _runStates;
         private readonly IContentDatabase _content;
-        private readonly EncounterLoader  _loader;
-        private readonly CombatSimulation _sim;
+        private readonly WorldBodyBuilder _bodies;
+        private readonly WorldBodyStage   _stage;
 
         private IDisposable _subscription;
 
         public WorldStageController(ISubscriber<RunPartyReadyEvent> partyReadySub, RunStateService runStates,
-                                    IContentDatabase content, EncounterLoader loader, CombatSimulation sim)
+                                    IContentDatabase content, WorldBodyBuilder bodies, WorldBodyStage stage)
         {
             _partyReadySub = partyReadySub;
             _runStates     = runStates;
             _content       = content;
-            _loader        = loader;
-            _sim           = sim;
+            _bodies        = bodies;
+            _stage         = stage;
         }
 
         public void Start() => _subscription = _partyReadySub.Subscribe(OnPartyReady);
@@ -48,9 +57,11 @@ namespace Guildmaster.Game.Flow
                 return;
             }
 
-            RosterDeployer.Deploy(_loader, run, _content);
-            _sim.FlushSpawns();   // материализовать очередь спавна (юниты присутствуют)
-            _sim.SetPaused(true); // отряд стоит замороженным на тест-арене, пока не начался бой
+            PlayerSlot[] roster = GuildRoster.Resolve(run, _content);
+            ItemData[]   party  = GuildRoster.ResolveItems(run.PartyItemIds, _content);
+
+            List<WorldBody> bodies = _bodies.Build(roster, party);
+            _stage.Set(bodies);
         }
     }
 }
