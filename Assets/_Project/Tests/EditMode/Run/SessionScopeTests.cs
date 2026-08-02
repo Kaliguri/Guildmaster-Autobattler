@@ -154,8 +154,36 @@ namespace Guildmaster.Tests.EditMode.Run
                 new Guildmaster.Net.Transport.LoopbackNetwork().CreateNode());
             builder.RegisterInstance(new Guildmaster.Game.Activity.ActivityHost(new SessionHost(), null));
 
+            // Показ мира — тоже из предков, и приходит он двумя УЗКИМИ швами. Это и есть причина, по
+            // которой швы завелись: без них сеанс требовал бы здесь весь показ карты и сборщик тел со
+            // сценой мира, то есть состав сеанса нельзя было бы проверить в EditMode вовсе.
+            builder.RegisterInstance<Guildmaster.Game.Flow.IPartyStage>(new SilentStage());
+            builder.RegisterInstance<Guildmaster.Game.Flow.IActMapPresence>(new SilentMap());
+
+            // Шина корня. Заглушкой, а не настоящим MessagePipe: сеанс только ПУБЛИКУЕТ «забег
+            // начался», и поднимать ради этого весь брокер значило бы проверять не состав сеанса.
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>>(
+                new SilentPublisher());
+
             new SessionInstaller(role).Install(builder);
             return builder.Build();
+        }
+
+        private sealed class SilentStage : Guildmaster.Game.Flow.IPartyStage
+        {
+            public void PlaceParty() { }
+        }
+
+        private sealed class SilentMap : Guildmaster.Game.Flow.IActMapPresence
+        {
+            public bool IsShown => false;
+            public void SetVisible(bool visible) { }
+            public void Refresh() { }
+        }
+
+        private sealed class SilentPublisher : MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>
+        {
+            public void Publish(Guildmaster.Game.Flow.RunPartyReadyEvent message) { }
         }
 
         private sealed class SilentAudio : IAudioService

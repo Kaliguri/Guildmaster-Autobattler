@@ -253,7 +253,10 @@ namespace Guildmaster.Game
 
             // Владелец показа карты в мире: и просмотр по табу «Карта» (в т.ч. посреди боя), и ожидание
             // выбора узла петлёй — через него одного.
-            builder.RegisterEntryPoint<WorldMapController>(Lifetime.Singleton).AsSelf();
+            // Под интерфейсом — тоже: сеанс объявляет гостю, показана ли карта, но знать про показ
+            // карты целиком ему незачем (см. IActMapPresence).
+            builder.RegisterEntryPoint<WorldMapController>(Lifetime.Singleton)
+                   .AsSelf().As<IActMapPresence>();
 
             // Владелец «моргания» между кадрами (QA #53). Держим в КОРНЕ, а не рядом с картой: переход
             // переживает и уход заказчика, и смену сцены под шторкой — карта, заказав его, тут же уходит

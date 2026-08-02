@@ -24,7 +24,7 @@ namespace Guildmaster.Game.Flow
     /// чём: стоящему телу нечего тикать (решение 02.08.2026, журнал «The Simulation Belongs To The
     /// Battle»).</para>
     /// </remarks>
-    public sealed class WorldStageController : IStartable, IDisposable
+    public sealed class WorldStageController : IPartyStage, IStartable, IDisposable
     {
         private readonly ISubscriber<RunPartyReadyEvent> _partyReadySub;
         // Мир переживает сеансы, поэтому забег он только ЧИТАЕТ — и через роутер, а не прямой ссылкой

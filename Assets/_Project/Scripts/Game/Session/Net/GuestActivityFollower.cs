@@ -27,14 +27,17 @@ namespace Guildmaster.Game.Session.Net
     {
         private readonly INetTransport _transport;
         private readonly ActivityHost  _activities;
+        // Карта живёт в мире, а не в мероприятии, но для гостя это часть одного ответа «где мы».
+        private readonly IActMapPresence _map;
 
         private ActivityState _applied = ActivityState.Nowhere;
         private byte[]        _envelope;
 
-        public GuestActivityFollower(INetTransport transport, ActivityHost activities)
+        public GuestActivityFollower(INetTransport transport, ActivityHost activities, IActMapPresence map)
         {
             _transport  = transport  ?? throw new ArgumentNullException(nameof(transport));
             _activities = activities ?? throw new ArgumentNullException(nameof(activities));
+            _map        = map;
         }
 
         /// <summary>Что применено последним — видно в dev-панели.</summary>
@@ -83,6 +86,7 @@ namespace Guildmaster.Game.Session.Net
             ApplyActivity(in state);
             ApplyBattle(in state);
             ApplyPhase(in state);
+            ApplyMap(in state);
 
             _applied = state;
         }
@@ -117,6 +121,21 @@ namespace Guildmaster.Game.Session.Net
             // Фазу у гостя вести нечем: её ведёт флоу забега, а забег ведёт хост. Без этой строки
             // боевой UI у гостя молчал бы весь бой — панель скрыта, потому что фаза None.
             session.SetPhase(state.Phase);
+        }
+
+        /// <summary>
+        /// Открыть или закрыть карту вслед за хостом.
+        /// </summary>
+        /// <remarks>
+        /// Карту открывает петля акта в момент выбора узла, а петли у гостя нет — до этой строки он
+        /// заходил в чужую кампанию и оставался в пустом мире (наход. Макса 03.08.2026).
+        /// <para>Данных для отрисовки в этот момент может ещё не быть: забег едет своим каналом, и
+        /// порядок между каналами не гарантирован. Показ это переживает — просьба остаётся в силе, а
+        /// нарисуется карта, как только доедет снимок (<see cref="WorldMapController.Refresh"/>).</para>
+        /// </remarks>
+        private void ApplyMap(in ActivityState state)
+        {
+            _map?.SetVisible(state.MapOpen);
         }
     }
 }

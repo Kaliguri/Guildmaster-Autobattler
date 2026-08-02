@@ -82,6 +82,10 @@ namespace Guildmaster.Game.Session
             // Мероприятие и арена открываются вслед за хостом: гость идёт туда же, где играют, а не
             // решает сам, где играть.
             builder.RegisterEntryPoint<Net.GuestActivityFollower>(Lifetime.Singleton).AsSelf();
+
+            // Отряд на арене — вслед за снимком. Без этого гость видел бы пустое поле до самого первого
+            // боя: тела кладёт петля акта, а её у гостя нет.
+            builder.RegisterEntryPoint<Net.GuestPartyFollower>(Lifetime.Singleton).AsSelf();
         }
     }
 }

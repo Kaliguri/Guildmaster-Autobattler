@@ -28,14 +28,25 @@ namespace Guildmaster.Game.Session.Net
         /// <summary>Фаза боя у хоста. Без неё боевой UI у гостя молчал бы весь бой.</summary>
         public readonly BattlePhase Phase;
 
+        /// <summary>
+        /// Показана ли карта акта. Гость открывает и закрывает её вслед за хостом.
+        /// </summary>
+        /// <remarks>
+        /// Карта — тоже «где мы», хотя и не мероприятие: её открывает петля акта в момент выбора узла,
+        /// а петли у гостя нет. Пока этого поля не было, гость при входе в чужую кампанию оставался в
+        /// пустом мире и мог найти карту только сам, табом (наход. Макса 03.08.2026).
+        /// </remarks>
+        public readonly bool MapOpen;
+
         public ActivityState(ActivityKind kind, bool hideOpponent, bool ownUnitsOnly,
-                             bool battleOpen, BattlePhase phase)
+                             bool battleOpen, BattlePhase phase, bool mapOpen = false)
         {
             Kind         = kind;
             HideOpponent = hideOpponent;
             OwnUnitsOnly = ownUnitsOnly;
             BattleOpen   = battleOpen;
             Phase        = phase;
+            MapOpen      = mapOpen;
         }
 
         /// <summary>Как это выглядит у того, кто нигде: ни мероприятия, ни арены.</summary>
@@ -47,21 +58,29 @@ namespace Guildmaster.Game.Session.Net
 
         public bool Equals(ActivityState other) =>
             Kind == other.Kind && HideOpponent == other.HideOpponent &&
-            OwnUnitsOnly == other.OwnUnitsOnly && BattleOpen == other.BattleOpen && Phase == other.Phase;
+            OwnUnitsOnly == other.OwnUnitsOnly && BattleOpen == other.BattleOpen &&
+            Phase == other.Phase && MapOpen == other.MapOpen;
 
         public override bool Equals(object obj) => obj is ActivityState other && Equals(other);
 
         public override int GetHashCode() =>
             ((int)Kind << 8) ^ ((int)Phase << 3) ^ (HideOpponent ? 1 : 0) ^
-            (OwnUnitsOnly ? 2 : 0) ^ (BattleOpen ? 4 : 0);
+            (OwnUnitsOnly ? 2 : 0) ^ (BattleOpen ? 4 : 0) ^ (MapOpen ? 8 : 0);
 
         public override string ToString() =>
-            $"{Kind}(бой {(BattleOpen ? "открыт" : "закрыт")}, фаза {Phase})";
+            $"{Kind}(бой {(BattleOpen ? "открыт" : "закрыт")}, фаза {Phase}, " +
+            $"карта {(MapOpen ? "открыта" : "закрыта")})";
     }
 
-    /// <summary>Состояние мероприятия в байтах и обратно. Пять полей, все примитивные.</summary>
+    /// <summary>Состояние мероприятия в байтах и обратно. Шесть полей, все примитивные.</summary>
     public static class ActivityStateCodec
     {
+        /// <summary>
+        /// Сколько байт занимает состояние. Разбор сверяется с этим числом, а не с «хватило бы»:
+        /// пакет короче — это сборка постарше, и вставать «примерно там же» нельзя.
+        /// </summary>
+        private const int Size = 6;
+
         public static ArraySegment<byte> Write(in ActivityState state, NetByteWriter writer)
         {
             writer.Reset();
@@ -70,6 +89,7 @@ namespace Guildmaster.Game.Session.Net
             writer.WriteBool(state.OwnUnitsOnly);
             writer.WriteBool(state.BattleOpen);
             writer.WriteByte((byte)state.Phase);
+            writer.WriteBool(state.MapOpen);
             return writer.WrittenSegment;
         }
 
@@ -80,7 +100,7 @@ namespace Guildmaster.Game.Session.Net
         public static bool TryRead(ArraySegment<byte> payload, out ActivityState state)
         {
             state = ActivityState.Nowhere;
-            if (payload.Count < 5) return false;
+            if (payload.Count < Size) return false;
 
             var bytes = new NetByteReader(payload);
 
@@ -89,6 +109,7 @@ namespace Guildmaster.Game.Session.Net
             bool own   = bytes.ReadBool();
             bool open  = bytes.ReadBool();
             byte phase = bytes.ReadByte();
+            bool map   = bytes.ReadBool();
 
             // Приводим к ОСНОВЕ перечисления, а не к типу поля в пакете: Enum.IsDefined сверяет типы
             // строго и бросает на несовпадении. Оба этих перечисления целочисленные, хотя по проводу
@@ -96,7 +117,7 @@ namespace Guildmaster.Game.Session.Net
             if (!Enum.IsDefined(typeof(ActivityKind), (int)kind))  return false;
             if (!Enum.IsDefined(typeof(BattlePhase), (int)phase)) return false;
 
-            state = new ActivityState((ActivityKind)kind, hide, own, open, (BattlePhase)phase);
+            state = new ActivityState((ActivityKind)kind, hide, own, open, (BattlePhase)phase, map);
             return true;
         }
     }
