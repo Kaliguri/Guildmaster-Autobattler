@@ -54,5 +54,29 @@ namespace Guildmaster.Balance.Editor
 
         public static List<RelicData> LoadRelics() => LoadAll<RelicData>();
         public static List<EnemyData> LoadEnemies() => LoadAll<EnemyData>();
+
+        /// <summary>
+        /// Ассет по имени среди тех типов, из которых трейс умеет собрать бой (реликвия, энкаунтер,
+        /// сценарий). Регистр имени не важен; не найдено — <c>null</c>.
+        /// </summary>
+        /// <remarks>
+        /// Живёт здесь, а не у вызывающего, потому что потребителей у резолва двое и они не видят друг
+        /// друга: командная строка (<see cref="BalanceCli.Trace"/>) и агентский тул. Копия разошлась бы
+        /// молча — например, добавили тип боя в одном месте и не добавили в другом, — и разошлась бы
+        /// именно там, где её никто не проверяет глазами.
+        /// </remarks>
+        public static UnityEngine.Object ResolveTraceAsset(string name)
+        {
+            foreach (RelicData r in LoadRelics())
+                if (string.Equals(r.name, name, System.StringComparison.OrdinalIgnoreCase)) return r;
+
+            foreach (EncounterData e in LoadAll<EncounterData>())
+                if (string.Equals(e.name, name, System.StringComparison.OrdinalIgnoreCase)) return e;
+
+            foreach (BalanceScenarioData s in LoadAll<BalanceScenarioData>())
+                if (string.Equals(s.name, name, System.StringComparison.OrdinalIgnoreCase)) return s;
+
+            return null;
+        }
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Guildmaster.Data.Definitions;
 using UnityEditor;
 using UnityEngine;
 
@@ -96,7 +95,7 @@ namespace Guildmaster.Balance.Editor
                 string name = raw.Trim();
                 if (name.Length == 0) continue;
 
-                UnityEngine.Object asset = Resolve(name);
+                UnityEngine.Object asset = BalanceAssets.ResolveTraceAsset(name);
                 if (asset == null)
                 {
                     Debug.LogError($"[BalanceCli] Не найден ассет «{name}» (искали среди реликвий, " +
@@ -121,21 +120,6 @@ namespace Guildmaster.Balance.Editor
                 Debug.LogError($"[BalanceCli] Трейс боя — ошибка: {e}");
                 EditorApplication.Exit(1);
             }
-        }
-
-        /// <summary>Ассет по имени среди тех типов, из которых трейс умеет собрать бой.</summary>
-        private static UnityEngine.Object Resolve(string name)
-        {
-            foreach (RelicData r in BalanceAssets.LoadRelics())
-                if (string.Equals(r.name, name, StringComparison.OrdinalIgnoreCase)) return r;
-
-            foreach (EncounterData e in BalanceAssets.LoadAll<EncounterData>())
-                if (string.Equals(e.name, name, StringComparison.OrdinalIgnoreCase)) return e;
-
-            foreach (BalanceScenarioData s in BalanceAssets.LoadAll<BalanceScenarioData>())
-                if (string.Equals(s.name, name, StringComparison.OrdinalIgnoreCase)) return s;
-
-            return null;
         }
 
         /// <summary>Значение аргумента командной строки («-benches dps,duel») или null, если не задан.</summary>
