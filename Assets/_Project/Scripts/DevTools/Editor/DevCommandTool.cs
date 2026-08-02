@@ -112,11 +112,18 @@ namespace Guildmaster.DevTools.Editor
             foreach (LifetimeScope scope in scopes)
             {
                 if (scope == null || scope.Container == null) continue;
-                if (scope.Container.TryResolve(out DevCommandRegistry found) && found != null)
-                {
-                    registry = found;
-                    return true;
-                }
+
+                // Resolve в try, а НЕ TryResolve: перегрузка TryResolve в этой версии VContainer требует
+                // ключ, и обобщённого варианта без него нет (та же готча описана в MapDevCommands).
+                // Промах регистрации здесь не ошибка — просто скоуп оказался не тот.
+                DevCommandRegistry found;
+                try { found = scope.Container.Resolve(typeof(DevCommandRegistry)) as DevCommandRegistry; }
+                catch { continue; }
+
+                if (found == null) continue;
+
+                registry = found;
+                return true;
             }
 
             failure = $"no_registry: DevCommandRegistry не нашёлся ни в одном из {scopes.Count} " +
