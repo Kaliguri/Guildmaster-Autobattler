@@ -47,6 +47,18 @@ namespace Guildmaster.DevTools
         private Guildmaster.Game.Flow.BattleHost HostEnsured
             => _activities != null ? _activities.EnsureBattleHost() : null;
 
+        /// <summary>
+        /// Стоим ли мы сейчас на Ристалище. СПРАШИВАЕМ у мероприятия, а не помним по событиям.
+        /// </summary>
+        /// <remarks>
+        /// Прежде здесь жил флаг, поднимавшийся по <c>TestZoneChangedEvent</c>. Он залипал: площадка
+        /// уходит вместе со скоупом боя, а сказать об этом уже некому — событие о выходе приходит только
+        /// когда игрок покидает место сам. После пары переходов флаг оставался поднятым, и `bones`
+        /// молча слала заказ в пустоту вместо того, чтобы открыть площадку (наход. Макса 02.08.2026).
+        /// </remarks>
+        private bool OnProvingGrounds
+            => _activities != null && _activities.Current.Kind == ActivityKind.ProvingGrounds;
+
         [Tooltip("UXML витрины боёв (F3): список того, что можно запустить прямо сейчас.")]
         [SerializeField] private UnityEngine.UIElements.VisualTreeAsset _battleBrowserUxml;
 
@@ -60,13 +72,10 @@ namespace Guildmaster.DevTools
         // резолвятся опционально — в standalone-арене без Root их нет, и команда честно об этом скажет.
         private Core.Flow.IRunControl _runControl;
         private MessagePipe.IPublisher<Core.Flow.OpenProvingGroundsRequest> _provingGroundsPub;
-        private MessagePipe.ISubscriber<Data.Definitions.TestZoneChangedEvent> _provingGroundsChangedSub;
 
         // Заказ состава площадки: на Ристалище бойцов ставит расстановка, а команда только говорит, каких.
         // Спавнить их самим нельзя — см. StageOnProvingGrounds.
         private MessagePipe.IPublisher<Data.Definitions.ProvingGroundsSetupRequest> _groundsSetupPub;
-        private System.IDisposable _provingGroundsSubscription;
-        private bool _onProvingGrounds; // площадка открыта прямо сейчас — повторный запрос не нужен
 
         // Дамми-болванчики оформлены как полноценный юнит (EnemyData «enemy.training_dummy»): свой SO,
         // визуал MedievalWarrior (→ анимации). Резолвится из контент-БД, поэтому не нужен serialized-ref в сцене.
@@ -162,14 +171,12 @@ namespace Guildmaster.DevTools
             resolver.TryResolve(out _activities);
             resolver.TryResolve(out _runControl);
             resolver.TryResolve(out _provingGroundsPub);
-            resolver.TryResolve(out _provingGroundsChangedSub);
             resolver.TryResolve(out _groundsSetupPub);
             // Реестр и роутер живут в корне; в standalone dev-арене без Root их нет — команды тогда просто
             // некуда класть, и это не ошибка (тот же случай, что и с сессией боя выше).
             resolver.TryResolve(out _registry);
             resolver.TryResolve(out _menuRouter);
             resolver.TryResolve(out _navigator);
-            _provingGroundsSubscription = _provingGroundsChangedSub?.Subscribe(e => OnProvingGroundsChanged(e));
         }
 
         /// <summary>
@@ -213,11 +220,9 @@ namespace Guildmaster.DevTools
 
         // Состояние площадки: открыта ли она прямо сейчас. Ставить по этому событию бой больше нечего —
         // состав площадки заказывается ДО входа и применяется её собственным владельцем (см. StageOnProvingGrounds).
-        private void OnProvingGroundsChanged(Data.Definitions.TestZoneChangedEvent e) => _onProvingGrounds = e.Active;
 
         private void OnDestroy()
         {
-            _provingGroundsSubscription?.Dispose();
             if (_menuRouter != null) _menuRouter.DevConsoleVisibilityChanged -= OnConsoleVisibilityChanged;
             if (_input != null) _input.DevBattlesToggleRequested -= ToggleBattleBrowser;
             _commands?.Dispose();
@@ -575,7 +580,7 @@ namespace Guildmaster.DevTools
             var order = new Data.Definitions.ProvingGroundsSetupRequest(mine, theirs, what);
 
             // Уже на площадке — слушатель заказа существует, шлём событием.
-            if (_onProvingGrounds)
+            if (OnProvingGrounds)
             {
                 _groundsSetupPub.Publish(order);
                 return true;
