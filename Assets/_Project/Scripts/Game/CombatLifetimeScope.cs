@@ -47,15 +47,10 @@ namespace Guildmaster.Game
 
         protected override void Configure(IContainerBuilder builder)
         {
-            // Арену печём из авторинга в сцене (если он есть); иначе — бесконечное поле.
-            // prefab-per-arena через Addressables — будущий свап (вики «15» §4-5): тогда снапшот
-            // придёт из загруженного префаба, а не из поиска по сцене.
-            ArenaLayoutData layout = BuildArenaLayout();
-
-            RegisterArena(builder, layout);
+            RegisterArena(builder);
             RegisterRng(builder);
             RegisterCombatSystems(builder);
-            RegisterSimulation(builder, layout);
+            RegisterSimulation(builder);
             RegisterPresentation(builder);
 
             // Конфиг «сочности»: без ассета джус выключен целиком, а не «примерно такой» — потребители
@@ -93,21 +88,27 @@ namespace Guildmaster.Game
             builder.RegisterEntryPoint<Flow.BattleBootstrap>(Lifetime.Scoped);
         }
 
-        private ArenaLayoutData BuildArenaLayout()
+        /// <summary>
+        /// Арена принадлежит МИРУ и резолвится из него: своей копии боевой скоуп не держит.
+        /// </summary>
+        /// <remarks>
+        /// До 02.08.2026 он строил из авторинга вторую и регистрировал её же — при том что
+        /// комментарий в <see cref="WorldLifetimeScope"/> утверждал обратное («бой берёт тот же layout
+        /// из предка»). Дефект был невидим, потому что VContainer отдаёт ближайшую регистрацию, а
+        /// значения совпадали: оба скоупа искали один и тот же объект в загруженных сценах.
+        /// <para><b>Одиночная боевая сцена</b> (dev-арена без мира) — законный режим запуска, и в нём
+        /// брать layout неоткуда: родителя нет. Тогда регистрируем бесконечное поле явно и говорим об
+        /// этом вслух — это не фолбэк на отказ, а другой состав сцены.</para>
+        /// </remarks>
+        private void RegisterArena(IContainerBuilder builder)
         {
-            var authoring = FindAnyObjectByType<ArenaLayoutAuthoring>();
-            if (authoring == null)
+            if (Parent == null)
             {
-                Debug.LogWarning("[CombatLifetimeScope] - ArenaLayoutAuthoring не найден в сцене → " +
-                                 "бесконечное поле без зон (движение не клампится).");
-                return ArenaLayoutData.Unbounded;
+                Debug.LogWarning("[CombatLifetimeScope] - боевая сцена поднята без мира → бесконечное " +
+                                 "поле без зон (движение не клампится). В игре арену держит WorldLifetimeScope.");
+                builder.RegisterInstance(ArenaLayoutData.Unbounded);
             }
-            return authoring.BuildLayout();
-        }
 
-        private void RegisterArena(IContainerBuilder builder, ArenaLayoutData layout)
-        {
-            builder.RegisterInstance(layout);
             builder.Register<DeploymentService>(Lifetime.Scoped);
         }
 
@@ -145,18 +146,21 @@ namespace Guildmaster.Game
             ScopeWiring.Require(_gameConfig, nameof(CombatLifetimeScope), nameof(_gameConfig)).Stats,
             nameof(GameConfig), nameof(GameConfig.Stats));
 
-        private void RegisterSimulation(IContainerBuilder builder, ArenaLayoutData layout)
+        private void RegisterSimulation(IContainerBuilder builder)
         {
             // VContainer сам разрешит зависимости конструктора (RNG, SpatialHash, все системы) —
             // вручную перечислять Resolve не нужно. Не-инъектируемые параметры передаём через
             // WithParameter по имени: float armorK (единственный источник — StatsConfig.ArmorConstantK,
             // вики «13» §4.2 п.1) и границы поля arena (ArenaBounds? — значение, не сервис). Добавил
             // систему в ctor — ничего тут править не надо, лишь бы она была зарегистрирована.
+            // Границы поля и зона камеры приходят из АРЕНЫ МИРА, и берутся они лямбдой от резолвера, а
+            // не значением: значение потребовало бы держать layout здесь, то есть заводить его второго
+            // владельца. Лямбда резолвит его в момент создания симуляции — из предка, где он и живёт.
             builder.Register<CombatSimulation>(Lifetime.Scoped)
                    .WithParameter("armorK", Stats().ArmorConstantK)
-                   .WithParameter("arena", (ArenaBounds?)layout.Bounds)
+                   .WithParameter("arena", r => (ArenaBounds?)r.Resolve<ArenaLayoutData>().Bounds)
                    .WithParameter("tuning", (SimTuning?)ScopeWiring.Require(_simTuningConfig, nameof(CombatLifetimeScope), nameof(_simTuningConfig)).ToSnapshot())
-                   .WithParameter("cameraZone", (Rect2D?)layout.CameraZone);
+                   .WithParameter("cameraZone", r => (Rect2D?)r.Resolve<ArenaLayoutData>().CameraZone);
 
             StatsConfig cfg = Stats();
             ClassBalanceConfig classCfg = ScopeWiring.Require(
