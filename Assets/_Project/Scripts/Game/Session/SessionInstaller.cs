@@ -46,6 +46,10 @@ namespace Guildmaster.Game.Session
             // одному потребителю.
             builder.RegisterEntryPoint<Net.RunStateBroadcast>(Lifetime.Singleton).AsSelf();
 
+            // «Где мы»: вид мероприятия, границы арены и фаза боя. Живёт в сеансе, а не в корне, потому
+            // что это обязанность роли — владелец объявляет, гость следует.
+            builder.RegisterEntryPoint<Net.ActivityBroadcast>(Lifetime.Singleton).AsSelf();
+
             // Шина команд забега: снаружи сборки Guild в RunState пишут только через неё, и мутаторы
             // internal держат это компилятором. Лог append-only даёт реплей, аудит «кто передвинул» и
             // хвост для реконнекта; соло идёт этим же путём, иначе кооп нашёл бы обход первым же
@@ -69,11 +73,15 @@ namespace Guildmaster.Game.Session
         /// </remarks>
         private static void InstallGuest(IContainerBuilder builder)
         {
-            builder.Register<Net.GuestRunState>(Lifetime.Singleton)
+            builder.RegisterEntryPoint<Net.GuestRunState>(Lifetime.Singleton)
                    .AsSelf().As<Guildmaster.Guild.ISessionRunState>();
 
             builder.Register<Net.RemoteRunCommands>(Lifetime.Singleton)
                    .AsSelf().As<Guildmaster.Guild.Commands.ISessionRunCommands>();
+
+            // Мероприятие и арена открываются вслед за хостом: гость идёт туда же, где играют, а не
+            // решает сам, где играть.
+            builder.RegisterEntryPoint<Net.GuestActivityFollower>(Lifetime.Singleton).AsSelf();
         }
     }
 }

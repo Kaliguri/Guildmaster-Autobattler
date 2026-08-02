@@ -2,7 +2,6 @@ using System;
 using Guildmaster.Guild;
 using Guildmaster.Guild.Commands;
 using Guildmaster.Net;
-using Guildmaster.Net.Session;
 using Guildmaster.Net.Transport;
 using UnityEngine;
 using VContainer.Unity;
@@ -21,6 +20,10 @@ namespace Guildmaster.Game.Session.Net
     /// <para><b>Снимок за кадр, а не за команду.</b> Серия правок в одном кадре (расстановка отряда)
     /// даёт один снимок: состояние идемпотентно, промежуточные никому не нужны, а платить за них
     /// пришлось бы трафиком.</para>
+    /// <para><b>Первый снимок гость просит сам,</b> а не получает на рукопожатии. Разница не
+    /// косметическая: приёмник у гостя рождается позже — сеанс открывается, когда игрок уже принят, —
+    /// и посланное «навстречу» ушло бы в пустоту. Тот же класс дефекта, что «работает со второго
+    /// раза»: заказ отправлен раньше, чем родился адресат.</para>
     /// <para><b>Интент гостя идёт в ту же шину, что и свой</b> — с его номером и его временем. Ради
     /// этого у шины есть вход для готовой команды: переприсвоить номер значило бы потерять
     /// идемпотентность, а вместе с ней и защиту от дублей после реконнекта.</para>
@@ -30,26 +33,20 @@ namespace Guildmaster.Game.Session.Net
         private readonly INetTransport   _transport;
         private readonly RunCommandBus   _bus;
         private readonly RunStateService _run;
-        private readonly CoopHandshake   _handshake;
 
         private byte[] _envelope;
         private bool   _dirty;
 
-        // Ни одного аргумента со значением по умолчанию: VContainer на таком ctor ищет регистрацию под
-        // тип параметра и роняет всю ветку разрешения зависимостей.
-        public RunStateBroadcast(INetTransport transport, RunCommandBus bus, RunStateService run,
-                                 CoopHandshake handshake)
+        public RunStateBroadcast(INetTransport transport, RunCommandBus bus, RunStateService run)
         {
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
             _bus       = bus       ?? throw new ArgumentNullException(nameof(bus));
             _run       = run       ?? throw new ArgumentNullException(nameof(run));
-            _handshake = handshake ?? throw new ArgumentNullException(nameof(handshake));
 
             _bus.Applied   += HandleApplied;
             _run.Committed += HandleCommitted;
 
             _transport.MessageReceived += HandleMessage;
-            _handshake.GuestApproved   += HandleGuestApproved;
         }
 
         /// <summary>Сколько снимков разослано и сколько чужих интентов принято. Видно в dev-панели.</summary>
@@ -73,23 +70,24 @@ namespace Guildmaster.Game.Session.Net
             _run.Committed -= HandleCommitted;
 
             _transport.MessageReceived -= HandleMessage;
-            _handshake.GuestApproved   -= HandleGuestApproved;
         }
 
         private void HandleApplied(RunCommand command) => _dirty = true;
 
         private void HandleCommitted(RunState state) => _dirty = true;
 
-        // Новый гость: ждать ближайшего изменения нельзя — до него он сидел бы без забега вовсе.
-        private void HandleGuestApproved(int peerId)
-        {
-            if (!_transport.IsRunning) return;
-            SendSnapshot(peerId);
-        }
-
         private void HandleMessage(int from, ArraySegment<byte> message)
         {
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
+
+            // Пустое сообщение на канале снимка — просьба гостя «пришли, как есть». Отвечаем ему одному:
+            // спросил он, а не все.
+            if (channel == NetChannel.RunSnapshot && payload.Count == 0)
+            {
+                SendSnapshot(from);
+                return;
+            }
+
             if (channel != NetChannel.RunCommand) return;
 
             if (!RunCommandCodec.TryRead(payload, out RunCommand command))

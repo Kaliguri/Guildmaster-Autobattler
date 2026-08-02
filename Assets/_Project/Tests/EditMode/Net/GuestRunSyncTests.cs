@@ -42,7 +42,7 @@ namespace Guildmaster.Tests.EditMode.Net
             _hostRun.NewDefaultRun(1L);
 
             _hostBus   = new RunCommandBus(new RunCommandApplier(_hostRun), new RunCommandLog());
-            _broadcast = new RunStateBroadcast(_hostNode, _hostBus, _hostRun, Handshake(_hostNode));
+            _broadcast = new RunStateBroadcast(_hostNode, _hostBus, _hostRun);
 
             _guestRun      = new GuestRunState(_guestNode);
             _guestCommands = new RemoteRunCommands(_guestNode);
@@ -202,8 +202,31 @@ namespace Guildmaster.Tests.EditMode.Net
                 "Позиция сосуда пережила дорогу");
         }
 
-        private static Guildmaster.Net.Session.CoopHandshake Handshake(INetTransport node) =>
-            new Guildmaster.Net.Session.CoopHandshake(
-                node, new ContentFingerprint(1UL, 1, 1, "test"));
+        /// <summary>
+        /// Гость входит и просит забег сам — объявление, посланное ему навстречу, ушло бы в пустоту:
+        /// его приёмник рождается позже рукопожатия. Это тот же класс дефекта, что «работает со второго
+        /// раза», и держится он именно здесь.
+        /// </summary>
+        [Test]
+        public void GuestAsksForTheRun_AndGetsItWithoutWaitingForAChange()
+        {
+            _hostBus.AddGold(200);
+            _broadcast.Tick();
+            _net.PollAll();          // всё, что было до входа гостя
+
+            var latecomer = new GuestRunState(_net.CreateNode());
+            try
+            {
+                latecomer.Start();   // вход: подписался и спросил
+                _net.PollAll();      // просьба дошла до хоста, снимок вернулся
+
+                Assert.IsNotNull(latecomer.Current, "Опоздавший гость получил забег, ничего не дожидаясь");
+                Assert.AreEqual(_hostRun.Current.Gold, latecomer.Current.Gold);
+            }
+            finally
+            {
+                latecomer.Dispose();
+            }
+        }
     }
 }

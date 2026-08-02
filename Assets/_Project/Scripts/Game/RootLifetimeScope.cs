@@ -228,6 +228,11 @@ namespace Guildmaster.Game
             // рождается внутри сеанса и роль сеанса уже знает (см. CombatLifetimeScope.RegisterCoop).
             builder.RegisterEntryPoint<Guildmaster.Net.NetPump>(Lifetime.Singleton);
 
+            // Приглашение может доехать когда угодно — в меню, на заставке, между забегами, — поэтому
+            // мост «нас приняли → уходим из меню» живёт в корне, а не в сеансе: сеанса в этот момент
+            // ещё нет, его откроет верхний цикл игры.
+            builder.RegisterEntryPoint<Session.Net.CoopGuestEntry>(Lifetime.Singleton);
+
             // Экран исхода забега (C2) — победа/поражение после акта.
             builder.Register<OutcomePresenter>(Lifetime.Singleton).As<IOutcomePresenter>();
             // Boot title card — один раз до главного меню.

@@ -60,9 +60,13 @@ namespace Guildmaster.Game.Services
         // Ристалище: интент входа и состояние площадки — цикл открывает её и ждёт, пока игрок не выйдет.
         private readonly ISubscriber<Data.Definitions.TestZoneChangedEvent> _provingGroundsChangedSub;
 
+        // Кооп-сессия: цикл спрашивает её только об одном — жива ли ещё чужая игра, в которой мы гостим.
+        private readonly Core.Net.ICoopSessionControl _coop;
+
         public GameFlow(
             Activity.ActivityHost activities,
             Session.SessionHost sessions,
+            Core.Net.ICoopSessionControl coop,
             Core.Persistence.ISaveService    save,
             Core.Persistence.IProfileService profiles,
             IOutcomePresenter   outcomePresenter,
@@ -79,6 +83,7 @@ namespace Guildmaster.Game.Services
             _provingGroundsChangedSub = provingGroundsChangedSub;
             _activities      = activities;
             _sessions         = sessions;
+            _coop             = coop;
             _save             = save;
             _profiles         = profiles;
             _outcomePresenter = outcomePresenter;
@@ -178,6 +183,13 @@ namespace Guildmaster.Game.Services
                     continue;
                 }
 
+                // Приглашение доехало до рукопожатия: играем в чужом сеансе, пока он не кончится.
+                if (choice == MainMenuChoice.JoinCoop)
+                {
+                    await PlayAsGuestAsync();
+                    continue;
+                }
+
                 // Кампания: с этого мгновения у состояния есть владелец — мы. Роль выбирается здесь,
                 // одним разом на весь сеанс; гостевой сеанс откроет вход по приглашению (кооп-вертикаль).
                 RunStateService runStates = RequireRun();
@@ -263,6 +275,50 @@ namespace Guildmaster.Game.Services
             }
 
             Debug.Log("[GameFlow] - Ристалище закрыто → главное меню");
+        }
+
+        /// <summary>
+        /// Играть гостем: открыть чужой сеанс и держать цикл здесь, пока сессия жива.
+        /// </summary>
+        /// <remarks>
+        /// <b>Гость ничего не ведёт.</b> Куда идти, что покупать и когда начинать бой — решает владелец
+        /// забега; гостю приезжает состояние снимком, а место — объявлением. Поэтому здесь нет ни петли
+        /// акта, ни узлов: только жизнь сеанса от рукопожатия до разрыва.
+        /// <para><b>Конец сессии — это конец гостевой игры,</b> и другого исхода у неё нет: гильдия
+        /// живёт у хоста, миграции авторитета мы не пишем (решение 01.08.2026). Ушёл хост — гость
+        /// возвращается в своё меню, унося открытия в свой профиль.</para>
+        /// </remarks>
+        private async UniTask PlayAsGuestAsync()
+        {
+            if (_coop == null)
+            {
+                Debug.LogError("[GameFlow] - гостевой вход без кооп-сессии: разводка разъехалась");
+                return;
+            }
+
+            _sessions.Open(Session.SessionRole.Guest);
+
+            var ended = new UniTaskCompletionSource();
+            void OnState(Core.Net.CoopSessionState state)
+            {
+                if (state == Core.Net.CoopSessionState.Offline) ended.TrySetResult();
+            }
+
+            _coop.StateChanged += OnState;
+            try
+            {
+                // Проверяем ПОСЛЕ подписки: сессия могла оборваться, пока меню закрывалось, и тогда
+                // ждать было бы нечего — гость завис бы в чужой игре, которой уже нет.
+                if (_coop.State == Core.Net.CoopSessionState.Offline) ended.TrySetResult();
+                await ended.Task;
+            }
+            finally
+            {
+                _coop.StateChanged -= OnState;
+                _sessions.Close();
+            }
+
+            Debug.Log($"[GameFlow] - гостевая сессия кончилась ({_coop.EndReason}) → главное меню");
         }
 
         private static void QuitGame()

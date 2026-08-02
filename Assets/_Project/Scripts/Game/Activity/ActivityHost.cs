@@ -117,7 +117,10 @@ namespace Guildmaster.Game.Activity
 
             // Заготовку боевого скоупа не тащим сюда руками: она выбрана в мире, а мир — предок сессии,
             // значит внутри мероприятия она видна и так (её резолвит BattleHost).
-            _activity = _sessions.CreateChild(new ActivityInstaller(setup), $"[Activity] {setup.Kind}");
+            // Роль сеанса выбирает состав мероприятия: у гостя нет ведения акта — акт ведёт владелец.
+            // Сеанса нет вовсе — CreateChild скажет об этом сам и вернёт null.
+            Session.SessionRole role = _sessions.Context?.Role ?? Session.SessionRole.Owner;
+            _activity = _sessions.CreateChild(new ActivityInstaller(setup, role), $"[Activity] {setup.Kind}");
 
             // Площадка открывается ВМЕСТЕ с ареной. Владелец расстановки живёт в боевом скоупе, и без
             // него на Ристалище некому ответить ни на заказ состава, ни на «включи серую зону» — интент

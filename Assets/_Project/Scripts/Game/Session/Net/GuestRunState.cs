@@ -2,6 +2,7 @@ using System;
 using Guildmaster.Guild;
 using Guildmaster.Net;
 using Guildmaster.Net.Transport;
+using VContainer.Unity;
 
 namespace Guildmaster.Game.Session.Net
 {
@@ -22,14 +23,29 @@ namespace Guildmaster.Game.Session.Net
     /// забег» проходит доля секунды, и <c>null</c> здесь значит ровно то же, что вне забега у владельца.
     /// Читатели это уже умеют.</para>
     /// </remarks>
-    public sealed class GuestRunState : ISessionRunState, IDisposable
+    public sealed class GuestRunState : ISessionRunState, IStartable, IDisposable
     {
         private readonly INetTransport _transport;
+
+        private byte[] _envelope;
 
         public GuestRunState(INetTransport transport)
         {
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
             _transport.MessageReceived += HandleMessage;
+        }
+
+        /// <summary>
+        /// Попросить хоста прислать забег. Просим сами и в момент готовности: посланное нам «навстречу»,
+        /// до рождения этого приёмника, ушло бы в пустоту.
+        /// </summary>
+        public void Start()
+        {
+            if (!_transport.IsRunning) return;
+
+            _transport.Send(NetPeer.HostPeerId,
+                NetEnvelope.Wrap(NetChannel.RunSnapshot, default, ref _envelope),
+                NetDelivery.Reliable);
         }
 
         /// <summary>Последнее состояние, присланное хостом. <c>null</c> — снимок ещё не доехал.</summary>

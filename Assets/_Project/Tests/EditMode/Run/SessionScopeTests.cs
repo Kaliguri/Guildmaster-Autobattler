@@ -30,6 +30,12 @@ namespace Guildmaster.Tests.EditMode.Run
             Assert.IsTrue(session.TryResolve(out RunCommandBus _), "у владельца нет шины команд забега");
             Assert.AreEqual(SessionRole.Owner, session.Resolve<SessionContext>().Role);
             Assert.IsTrue(session.Resolve<SessionContext>().IsOwner);
+
+            // Наружу сеанс отдаёт себя через два узких имени — по ним его спрашивают роутеры.
+            Assert.IsInstanceOf<RunStateService>(session.Resolve<ISessionRunState>(),
+                "у владельца забег держит он сам");
+            Assert.IsInstanceOf<RunCommandBus>(session.Resolve<ISessionRunCommands>(),
+                "и команды применяет локально");
         }
 
         /// <summary>
@@ -46,8 +52,17 @@ namespace Guildmaster.Tests.EditMode.Run
                 "гость получил держателя забега — он умеет писать чужой сейв");
             Assert.IsFalse(session.TryResolve(out RunCommandBus _),
                 "гость получил шину команд — он применяет их у себя вместо хоста");
+            Assert.IsFalse(session.TryResolve(out RunCommandLog _),
+                "гость получил лог команд — значит где-то предполагается, что он их применяет");
             Assert.AreEqual(SessionRole.Guest, session.Resolve<SessionContext>().Role);
             Assert.IsFalse(session.Resolve<SessionContext>().IsOwner);
+
+            // Читать забег и просить изменения он всё же умеет — иначе играть было бы нечем. Разница в
+            // том, ЧЕМ он это делает: приёмником снимков и отправителем интентов.
+            Assert.IsInstanceOf<Guildmaster.Game.Session.Net.GuestRunState>(
+                session.Resolve<ISessionRunState>(), "гостю забег приезжает снимком");
+            Assert.IsInstanceOf<Guildmaster.Game.Session.Net.RemoteRunCommands>(
+                session.Resolve<ISessionRunCommands>(), "а изменения он просит сделать хоста");
         }
 
         /// <summary>
@@ -132,6 +147,12 @@ namespace Guildmaster.Tests.EditMode.Run
             builder.RegisterInstance<IProfileService>(new FixedProfileService());
             builder.RegisterInstance(ScriptableObject.CreateInstance<GameConfig>());
             builder.RegisterInstance<IAudioService>(new SilentAudio());
+
+            // Транспорт и владелец мероприятий приходят из предков: раздача состояния и объявление
+            // «где мы» живут в сеансе, потому что это обязанность роли.
+            builder.RegisterInstance<Guildmaster.Net.Transport.INetTransport>(
+                new Guildmaster.Net.Transport.LoopbackNetwork().CreateNode());
+            builder.RegisterInstance(new Guildmaster.Game.Activity.ActivityHost(new SessionHost(), null));
 
             new SessionInstaller(role).Install(builder);
             return builder.Build();

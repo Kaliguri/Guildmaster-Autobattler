@@ -22,9 +22,14 @@ namespace Guildmaster.Game.Activity
     /// </remarks>
     public sealed class ActivityInstaller : IInstaller
     {
-        private readonly ActivitySetup _setup;
+        private readonly ActivitySetup       _setup;
+        private readonly Session.SessionRole _role;
 
-        public ActivityInstaller(ActivitySetup setup) => _setup = setup;
+        public ActivityInstaller(ActivitySetup setup, Session.SessionRole role)
+        {
+            _setup = setup;
+            _role  = role;
+        }
 
         public void Install(IContainerBuilder builder)
         {
@@ -34,18 +39,32 @@ namespace Guildmaster.Game.Activity
             builder.RegisterInstance(_setup);
 
             RegisterBattleSeam(builder);
-            RegisterRunLoop(builder);
+
+            // Ведение акта — обязанность владельца забега. Гость подключается к ЧУЖОМУ мероприятию:
+            // куда идти по карте, какая награда выпала и что стоит в лавке, решает хост, а гостю
+            // приезжает результат снимком состояния. Вторая петля акта на его стороне не «дублировала
+            // бы работу», а расходилась бы с первой — на первом же ролле награды.
+            if (_role == Session.SessionRole.Owner) RegisterRunLoop(builder);
         }
 
         /// <summary>Шов «мероприятие заказывает бой» и владелец боевого скоупа.</summary>
-        private static void RegisterBattleSeam(IContainerBuilder builder)
+        private void RegisterBattleSeam(IContainerBuilder builder)
         {
             // Один инстанс под двумя ролями: IBattleSession (write-side, боевой скоуп) + IBattleClock
             // (read-side, верхняя панель). Живёт ровно столько, сколько мероприятие: вне его ни фазы,
             // ни часов боя не существует, и это честнее, чем фаза None у объекта-долгожителя.
+            // У гостя фазу в него проставляет GuestActivityFollower — вести её ему нечем.
             builder.Register<BattleSession>(Lifetime.Singleton).As<IBattleSession>().As<IBattleClock>();
+
+            // Готовность и авторитет. Гейт у гостя пока соло-тело: «ждём всех» появится вместе с
+            // экранами подготовки, а до них ждать не на чем. Авторитет — нет: решения принимает хост,
+            // и отвечать «да, я тут главный» гостю нельзя ни на секунду.
             builder.Register<SoloReadyGate>(Lifetime.Singleton).As<IReadyGate>();
-            builder.Register<SoloPlayerIntentSource>(Lifetime.Singleton).As<IPlayerIntentSource>();
+
+            if (_role == Session.SessionRole.Owner)
+                builder.Register<SoloPlayerIntentSource>(Lifetime.Singleton).As<IPlayerIntentSource>();
+            else
+                builder.Register<GuestPlayerIntentSource>(Lifetime.Singleton).As<IPlayerIntentSource>();
 
             // Владелец жизненного цикла боя. Переехал из мира: бой заказывает узел, а узел — часть
             // мероприятия, и рождаться бой должен внутри той жизни, которая его заказала. Заготовку

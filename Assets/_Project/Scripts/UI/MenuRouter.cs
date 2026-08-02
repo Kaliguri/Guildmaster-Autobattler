@@ -104,6 +104,8 @@ namespace Guildmaster.UI
         /// висеть поверх мира, а площадку — невидимой.
         /// </summary>
         private System.Action _resolveMainMenuAsProvingGrounds;
+        private System.Action _resolveMainMenuAsCoopGuest;
+        private bool _coopGuestPending;              // приглашение приняли до того, как меню открылось
         private System.Action _resolveTitleCard;      // бут-экран умеет закрываться и не по клику
         private bool _provingGroundsPending;          // Ристалище запросили до того, как меню открылось
         // Звук экранов, у которых он СВОЙ (награда, лавка, привал, сундук): общий клик даёт корневой
@@ -131,6 +133,33 @@ namespace Guildmaster.UI
 
             System.Action resolve = _resolveMainMenuAsProvingGrounds;
             _resolveMainMenuAsProvingGrounds = null;
+            resolve();
+            return true;
+        }
+
+        /// <summary>
+        /// Закрыть главное меню, потому что нас приняли в чужую игру. Возвращает <c>false</c>, только
+        /// если закрывать нечего и запомнить намерение тоже не выйдет.
+        /// </summary>
+        /// <remarks>
+        /// <b>Меню закрывается не кликом, а событием сети,</b> и это не костыль: выбор игрок уже сделал
+        /// — в оверлее друзей Steam, возможно ещё до запуска игры. Оставить его в меню значило бы
+        /// показывать «Начать / Продолжить» человеку, который вообще-то уже в чужой партии.
+        /// <para>Тот же приём, что у Ристалища (<see cref="TryLeaveMainMenuForProvingGrounds"/>): пока
+        /// меню не открылось, намерение ждёт и торопит бут-экран — приглашение, принятое на заставке,
+        /// иначе молча потерялось бы.</para>
+        /// </remarks>
+        public bool TryLeaveMainMenuForCoopGuest()
+        {
+            if (_resolveMainMenuAsCoopGuest == null)
+            {
+                _coopGuestPending = true;
+                SkipTitleCard();
+                return true;
+            }
+
+            System.Action resolve = _resolveMainMenuAsCoopGuest;
+            _resolveMainMenuAsCoopGuest = null;
             resolve();
             return true;
         }
@@ -1137,6 +1166,7 @@ namespace Guildmaster.UI
                 resolve =>
                 {
                     _resolveMainMenuAsProvingGrounds = () => resolve(MainMenuChoice.ProvingGrounds);
+                    _resolveMainMenuAsCoopGuest      = () => resolve(MainMenuChoice.JoinCoop);
 
                     // Запрос пришёл, пока меню ещё не было на экране, — отдаём Ристалище сразу, не
                     // показывая меню игроку: он его не звал, он звал тест-бой.
@@ -1145,6 +1175,14 @@ namespace Guildmaster.UI
                         _provingGroundsPending = false;
                         _resolveMainMenuAsProvingGrounds = null;
                         resolve(MainMenuChoice.ProvingGrounds);
+                    }
+
+                    // То же с принятым приглашением: игрок уже в чужой партии, меню ему показывать нечего.
+                    if (_coopGuestPending)
+                    {
+                        _coopGuestPending = false;
+                        _resolveMainMenuAsCoopGuest = null;
+                        resolve(MainMenuChoice.JoinCoop);
                     }
                     return MainMenuScreenView.Build(
                         _mainMenuUxml,
@@ -1179,6 +1217,7 @@ namespace Guildmaster.UI
                 _mainMenuVisPub?.Publish(new MainMenuVisibilityChangedEvent(false));
                 _mainMenuOpen = false;
                 _resolveMainMenuAsProvingGrounds = null;
+                _resolveMainMenuAsCoopGuest      = null;
             }
         }
 
