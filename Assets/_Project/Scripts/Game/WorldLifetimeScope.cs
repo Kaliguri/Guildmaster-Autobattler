@@ -53,6 +53,14 @@ namespace Guildmaster.Game
             builder.RegisterComponentInHierarchy<Presentation.CameraModeController>()
                    .AsSelf().As<Presentation.IScreenShake>();
 
+            // Сценные презентеры боя. Живут здесь, а не в боевом скоупе, по устройству сцены: это
+            // объекты персист-сцены, инъекция в них случается один раз, а боёв за сессию много. Отсюда
+            // они получают только мировую половину зависимостей (кадр, палитра, звук, джус); боевую им
+            // раздаёт BattlePresenterBinder на время жизни боя.
+            builder.RegisterComponentInHierarchy<Presentation.CombatPresenter>();
+            builder.RegisterComponentInHierarchy<Presentation.CombatDebugDraw>();
+            builder.RegisterComponentInHierarchy<Presentation.CombatAreaFlash>();
+
             // Обесцвечивание арены: полигон — серая версия той же локации (материал, а не серый дубль тайлов).
             builder.RegisterComponentInHierarchy<Presentation.Arena.ArenaDesaturation>();
 

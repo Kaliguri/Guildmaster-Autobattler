@@ -106,34 +106,88 @@ namespace Guildmaster.Presentation
         // Режим dev-оверлеев: презентер только раздаёт его тому, что создаёт сам (статус-кольца).
         private DevOverlayMode _overlayMode;
 
+        // Пустой кадр: арена без единого тела (главное меню, хаб до сбора отряда). Статические, потому
+        // что содержимого у них нет и не будет.
+        private static readonly IReadOnlyList<Combat.Tape.UnitSnapshot>       NoUnits       = new List<Combat.Tape.UnitSnapshot>(0);
+        private static readonly IReadOnlyList<Combat.Tape.ProjectileSnapshot> NoProjectiles = new List<Combat.Tape.ProjectileSnapshot>(0);
+
         // Индекс кадра показа id→снимок: собирается раз в кадр, нужен для поиска снимка ЦЕЛИ.
         private readonly Dictionary<int, Combat.Tape.UnitSnapshot> _frameIndex =
             new Dictionary<int, Combat.Tape.UnitSnapshot>();
         private readonly List<int> _viewsToBury = new List<int>();
 
+        /// <summary>
+        /// Мировая половина зависимостей — та, что живёт всю сессию. Боевая приходит отдельно, по
+        /// границе боя (<see cref="BindBattle"/>): инъекция в сценный объект случается один раз, а боёв
+        /// за сессию много.
+        /// </summary>
         [Inject]
         public void Construct(
-            CombatSimulation simulation,
             IPublisher<DamageDealtEvent> damageDealtPublisher,
             IPublisher<BattleEndedEvent> battleEndedPublisher,
             Design.CombatFeelConfig feel,
             Core.Audio.IAudioService audio,
             Core.Players.ILocalPlayer localPlayer,
-            Combat.Tape.BattleTapePlayback playback,
-            Combat.Tape.BattleTapeDispatcher dispatcher,
-            Combat.Tape.StageFrameRouter stage,
-            DevOverlayMode overlayMode)
+            Combat.Tape.StageFrameRouter stage)
         {
-            _playback             = playback;
             _stage                = stage;
-            _dispatcher           = dispatcher;
-            _overlayMode          = overlayMode;
             _localPlayer          = localPlayer;
             _audio                = audio;
-            _simulation           = simulation;
             _damageDealtPublisher = damageDealtPublisher;
             _battleEndedPublisher = battleEndedPublisher;
             _feel                 = feel;
+
+            // Пул боевых VFX переживает бои вместе с презентером (на сбросе он гасится, а не сносится),
+            // поэтому заводится здесь. Вызов был потерян 29.07 при переводе показа на ленту — вместе со
+            // старым блоком подписок ушли и обе строки Ensure*, после чего `_vfx` всегда оставался null
+            // и дуга взмаха с пылью под ногами молча не работали.
+            EnsureVfx();
+        }
+
+        /// <summary>
+        /// Бой начался: подать его симуляцию, ленту и диспетчер событий. Зовёт боевой скоуп при
+        /// рождении, он же и забирает (<see cref="UnbindBattle"/>).
+        /// </summary>
+        /// <remarks>
+        /// Показ боя без этих троих невозможен, но показ ВООБЩЕ — возможен и обязателен: вне боя
+        /// презентер рисует тела мира из того же роутера. Поэтому «нет боя» здесь не деградация, а
+        /// штатное состояние — во дворе гильдии боя нет.
+        /// </remarks>
+        public void BindBattle(CombatSimulation simulation,
+                               Combat.Tape.BattleTapePlayback playback,
+                               Combat.Tape.BattleTapeDispatcher dispatcher,
+                               DevOverlayMode overlayMode)
+        {
+            UnbindBattle();
+
+            _simulation  = simulation;
+            _playback    = playback;
+            _dispatcher  = dispatcher;
+            _overlayMode = overlayMode;
+
+            // Статус-кольца читают симуляцию и ленту напрямую, поэтому создаются вместе с боем и
+            // умирают с ним (см. UnbindBattle). Второй потерянный 29.07 вызов — из той же пары.
+            EnsureStatusOverlay();
+
+            if (isActiveAndEnabled) SubscribeToBattle();
+        }
+
+        /// <summary>Бой ушёл: отписаться и забыть его внутренности — они уже мертвы.</summary>
+        public void UnbindBattle()
+        {
+            if (_simulation == null) return;
+
+            UnsubscribeFromBattle();
+
+            // Статус-кольца читают симуляцию и ленту напрямую (это dev-оверлей боя, не показ мира):
+            // пережить бой им нечем, поэтому слой сносится целиком и пересоздаётся следующим боем.
+            if (_statusOverlay != null) Destroy(_statusOverlay.gameObject);
+            _statusOverlay = null;
+
+            _simulation  = null;
+            _playback    = null;
+            _dispatcher  = null;
+            _overlayMode = null;
         }
 
         /// <summary>
@@ -155,10 +209,21 @@ namespace Guildmaster.Presentation
         /// <summary>Сколько паспортов юнитов известно показу. Только для dev-диагностики ленты.</summary>
         public int IdentityCount => _stage.Count;
 
+        // Подписка идёт на пересечении двух условий: бой привязан И объект включён. Поэтому она живёт
+        // отдельным методом, а не телом OnEnable — иначе бой, начавшийся при выключенном объекте, оставил
+        // бы презентер немым, а включение при живом бое подписало бы его дважды.
         private void OnEnable()
         {
-            if (_simulation == null) return;
+            if (_simulation != null) SubscribeToBattle();
+        }
 
+        private void OnDisable()
+        {
+            if (_simulation != null) UnsubscribeFromBattle();
+        }
+
+        private void SubscribeToBattle()
+        {
             // Рестарт — служебное событие, а не показ: лента уже очищена, и ждать «показа рестарта»
             // некому. Отсюда же сбрасываются момент показа и курсор диспетчера.
             _simulation.OnBattleReset += HandleBattleReset;
@@ -176,10 +241,8 @@ namespace Guildmaster.Presentation
             _dispatcher.AbilityCastInterrupted += HandleAbilityCastInterrupted;
         }
 
-        private void OnDisable()
+        private void UnsubscribeFromBattle()
         {
-            if (_simulation == null) return;
-
             _simulation.OnBattleReset -= HandleBattleReset;
 
             _dispatcher.DamageDealt       -= HandleDamageDealt;
@@ -252,10 +315,9 @@ namespace Guildmaster.Presentation
 
         private void Update()
         {
-            // Тот же признак готовности, что в OnEnable: пока Construct не позвали, презентеру нечего
-            // рисовать — ни симуляции, ни ленты ещё нет. Это не фолбэк на пустую зависимость: с пришедшим
-            // Construct приходят обе разом, поэтому отдельной проверки на _playback не нужно.
-            if (_simulation == null) return;
+            // Признак готовности — мировая половина: пока не позвали Construct, рисовать неоткуда.
+            // Боя при этом может не быть вовсе, и это штатно: вне боя на арене стоят тела мира.
+            if (_stage == null) return;
 
             // Единственный в кадре, кто двигает момент показа: иначе разные потребители увидели бы
             // разное «сейчас» в одном кадре. Двигаем ИСТОЧНИК, а не ленту напрямую: вне боя ленты нет,
@@ -265,10 +327,17 @@ namespace Guildmaster.Presentation
             // Состав юнитов на экране — тоже из кадра, а не из событий сима: события спавна и
             // смерти приходят на окно опережения РАНЬШЕ, и вид появлялся бы за десять секунд до того,
             // как игрок увидит выход юнита на арену.
+            // Пустая арена — тоже кадр: без этого виды последнего боя остались бы висеть на месте,
+            // потому что хоронит их именно отсутствие в кадре.
             if (_stage.TryGetFrame(out var frame, out var projectileFrame))
             {
                 SyncViewsToFrame(frame);
                 SyncProjectilesToFrame(projectileFrame);
+            }
+            else
+            {
+                SyncViewsToFrame(NoUnits);
+                SyncProjectilesToFrame(NoProjectiles);
             }
 
             // Доля берётся у ПОКАЗА, а не у боевого луча: она отсчитывается от показанного тика.
@@ -277,7 +346,8 @@ namespace Guildmaster.Presentation
             // События отдаются до показанного МОМЕНТА — тика вместе с его отыгранной долей. Той же долей
             // ниже течёт поза и позиция, поэтому цифра, звук, вспышка и hitstop садятся в тот самый кадр,
             // где меч коснулся, а не на границу тика (было до 33 мс мимо, в среднем ~16).
-            _dispatcher.PumpTo(_playback.ViewTick, alpha);
+            // Вне боя качать нечего: событий не бывает у того, кто просто стоит.
+            if (_dispatcher != null) _dispatcher.PumpTo(_playback.ViewTick, alpha);
 
             foreach (var kvp in _views)
             {

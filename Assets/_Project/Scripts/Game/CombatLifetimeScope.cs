@@ -238,9 +238,10 @@ namespace Guildmaster.Game
 
         private void RegisterPresentation(IContainerBuilder builder)
         {
-            builder.RegisterComponentInHierarchy<CombatPresenter>();
-            builder.RegisterComponentInHierarchy<CombatDebugDraw>();
-            builder.RegisterComponentInHierarchy<CombatAreaFlash>();
+            // Сами презентеры зарегистрированы МИРОМ: они живут в персист-сцене и переживают бои,
+            // поэтому инъекция в них — мировая половина зависимостей. Боевую половину раздаёт этот
+            // энтрипоинт, пока бой жив, и забирает, когда бой уходит.
+            builder.RegisterEntryPoint<Flow.BattlePresenterBinder>(Lifetime.Scoped);
 
             // Камера-риг (focus/controller/IScreenShake, вики «16» §5) переехал в персистентный
             // WorldLifetimeScope — боевой скоуп дочерний к нему и резолвит риг из предка (единая камера,

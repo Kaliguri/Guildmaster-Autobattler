@@ -1,6 +1,5 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
 using UnityEngine;
-using VContainer;
 
 namespace Guildmaster.Presentation
 {
@@ -21,20 +20,31 @@ namespace Guildmaster.Presentation
         [SerializeField] private Color _unitTeamAColor   = new Color(0.2f, 0.5f, 1f, 0.8f);
         [SerializeField] private Color _unitTeamBColor   = new Color(1f, 0.3f, 0.2f, 0.8f);
 
+        // Всё, что рисует этот слой, принадлежит бою — и приходит вместе с ним. Сам объект живёт в
+        // персист-сцене и переживает бои, поэтому инъекцией эти ссылки взять нельзя: она случается
+        // один раз, а боёв за сессию много.
         private CombatSimulation _simulation;
         private SpatialHash      _spatialHash;
         private Combat.Tape.BattleTapePlayback _playback;
         private DevOverlayMode   _mode;
 
-        [Inject]
-        public void Construct(
-            CombatSimulation simulation, SpatialHash spatialHash,
-            Combat.Tape.BattleTapePlayback playback, DevOverlayMode mode)
+        /// <summary>Бой начался: подать его состояние. Вне боя рисовать нечего — гизмо гаснут сами.</summary>
+        public void BindBattle(CombatSimulation simulation, SpatialHash spatialHash,
+                               Combat.Tape.BattleTapePlayback playback, DevOverlayMode mode)
         {
             _simulation  = simulation;
             _spatialHash = spatialHash;
             _playback    = playback;
             _mode        = mode;
+        }
+
+        /// <summary>Бой ушёл: держать ссылки на его внутренности нельзя — они уже мертвы.</summary>
+        public void UnbindBattle()
+        {
+            _simulation  = null;
+            _spatialHash = null;
+            _playback    = null;
+            _mode        = null;
         }
 
         public bool IsEnabled
