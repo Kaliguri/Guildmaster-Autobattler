@@ -1,4 +1,4 @@
-# Запуск тестов Unity локально через CLI
+﻿# Запуск тестов Unity локально через CLI
 # Использование: ./scripts/run-tests.ps1
 # Опции: ./scripts/run-tests.ps1 -Mode EditMode|PlayMode|All
 #        ./scripts/run-tests.ps1 -Where Shadow          # редактор открыт — гнать по теневому проекту

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Проверяет YAML-шапки документов Obsidian-vault (docs/wiki).
 

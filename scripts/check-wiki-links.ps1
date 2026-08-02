@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Проверяет целостность внутренних ссылок Obsidian-vault (docs/wiki).
 

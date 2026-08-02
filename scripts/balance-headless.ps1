@@ -1,4 +1,4 @@
-# Прогон балансного стенда без открытого редактора.
+﻿# Прогон балансного стенда без открытого редактора.
 #
 #   ./scripts/balance-headless.ps1 -Title "TTK-проход" -Summary "BAL-005, вариант 1"
 #   ./scripts/balance-headless.ps1 -Benches encounters,dps

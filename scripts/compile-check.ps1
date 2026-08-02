@@ -1,4 +1,4 @@
-# Проверка компиляции C# БЕЗ запуска Unity.
+﻿# Проверка компиляции C# БЕЗ запуска Unity.
 #
 # Зачем: цикл «сохранил скрипт → редактор снова готов» стоит около пятнадцати секунд, из которых сама
 # компиляция занимает миллисекунды — всё остальное это перезагрузка домена и проход asset pipeline.
@@ -361,7 +361,10 @@ MonoImporter:
   assetBundleName:
   assetBundleVariant:
 "@
-            Set-Content -LiteralPath $meta -Value $body -Encoding utf8NoBOM
+            # Писателя берём из .NET, а не Set-Content: имени кодировки "utf8NoBOM" в Windows
+            # PowerShell 5.1 нет вовсе, а её "utf8" — это UTF-8 С сигнатурой, которой в .meta быть
+            # не должно. Явный UTF8Encoding($false) даёт один и тот же байт в обеих оболочках.
+            [System.IO.File]::WriteAllText($meta, $body + "`n", (New-Object System.Text.UTF8Encoding $false))
             Write-Host "  .meta заведён: $($src.Substring($ProjectPath.Length + 1))" -ForegroundColor DarkGray
             $created++
         }
