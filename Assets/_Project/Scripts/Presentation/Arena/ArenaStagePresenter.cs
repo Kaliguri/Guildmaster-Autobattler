@@ -132,6 +132,7 @@ namespace Guildmaster.Presentation.Arena
 
             if (e.Setup.Kind == ActivityKind.Campaign)
             {
+                _desaturation?.SetVisible(true);
                 if (!string.IsNullOrEmpty(_homeSkin)) _swapper?.ApplyInstant(_homeSkin);
                 _desaturation?.SetGrey(false);
             }
@@ -148,6 +149,9 @@ namespace Guildmaster.Presentation.Arena
         private void HideArena()
         {
             _desaturation?.SetGrey(false);
+            // Трава и камни — отдельные спрайты, подмену облика они переживают. «Места нет» означает и
+            // их тоже, иначе на пустом поле остаётся висеть один декор.
+            _desaturation?.SetVisible(false);
 
             if (_swapper == null) return;
 
@@ -230,6 +234,10 @@ namespace Guildmaster.Presentation.Arena
         /// </summary>
         private void SpawnFromNothing()
         {
+            // Место снова показываем ДО сборки: рендереры включены, но рисовать им пока нечего — пол
+            // пуст, а декор придержит reveal ниже. Он и проявит траву по тем же клеткам, что и пол.
+            _desaturation?.SetVisible(true);
+
             if (_swapper == null) { _desaturation?.SetGrey(true); return; }
 
             // Домой возвращаемся к ЗАПОМНЕННОМУ облику, а не к текущему: текущий сейчас пустой — мы сами
@@ -278,6 +286,8 @@ namespace Guildmaster.Presentation.Arena
 
         private void Reveal(string skinId)
         {
+            _desaturation?.SetVisible(true); // являем место — значит, оно вообще должно рисоваться
+
             bool needsSkinSwap = !string.IsNullOrEmpty(skinId) &&
                                  _swapper != null && skinId != _swapper.CurrentSkinId;
 
