@@ -167,18 +167,16 @@ namespace Guildmaster.Game
             // Иерархия сохранений: профиль → гильдии → забег. Entry point поднимает прошлый выбор, а на
             // чистой установке заводит первый профиль с гильдией — иначе забегу некуда писаться.
             builder.RegisterEntryPoint<ProfileService>(Lifetime.Singleton).As<IProfileService>();
-            // Durable-состояние забега + правила вместимости реликов (план 11 §3.1, §5.4).
-            builder.Register<RunStateService>(Lifetime.Singleton);
+            // Владелец жизненного цикла Сессии — сеанса владения состоянием игры. Само состояние забега
+            // и шина команд живут в ЕГО скоупе, а не здесь: смена владельца (кооп-гость, другой профиль)
+            // обязана уносить прошлое состояние с собой, а вечный объект в корне уносить нечему.
+            builder.Register<Session.SessionHost>(Lifetime.Singleton).AsSelf();
 
-            // Шина команд забега: снаружи сборки Guild в RunState пишут только через неё, и мутаторы
-            // internal держат это компилятором. Лог append-only даёт реплей, аудит «кто передвинул» и
-            // хвост для реконнекта; соло идёт этим же путём, иначе кооп нашёл бы обход первым же
-            // расхождением состояний (ТЗ кооп-вертикали §4.1).
-            builder.Register<Guildmaster.Guild.Commands.RunCommandLog>(Lifetime.Singleton);
-            builder.Register<Guildmaster.Guild.Commands.RunCommandApplier>(Lifetime.Singleton);
-            builder.Register<Guildmaster.Guild.Commands.RunCommandBus>(Lifetime.Singleton)
-                   .As<Guildmaster.Guild.Commands.IRunCommands>()
-                   .AsSelf();
+            // Чтение забега для тех, кто переживает сеансы (корневой UI, мир, показ): роутер спрашивает
+            // держателя текущей сессии в момент обращения. Прямая ссылка означала бы состояние сеанса,
+            // который давно кончился; писать через этот шов нельзя намеренно — запись идёт шиной команд
+            // внутри сессии.
+            builder.Register<Session.SessionRunRouter>(Lifetime.Singleton).As<IRunStateView>();
 
             // За какую команду играет этот клиент. Единственный источник ответа «мы победили?» —
             // в бою есть команды, а не «сторона игрока» (шов под PvP).
@@ -217,8 +215,10 @@ namespace Guildmaster.Game
                    .AsSelf();
             builder.Register<Guildmaster.Net.BattleControlRelay>(Lifetime.Singleton);
 
-            // Роль узла в бою (соло / хост / гость) выводится из транспорта и спрашивается каждый кадр:
-            // боевой скоуп поднимается на буте, когда сети ещё нет, и решить роль регистрацией нельзя.
+            // Роль узла в бою (соло / хост / гость) выводится из транспорта и спрашивается каждый кадр.
+            // Причина, по которой так было сделано, отпала 02.08.2026: боевой скоуп больше не поднимается
+            // на буте, а рождается по требованию ВНУТРИ сессии, у которой роль уже известна (SessionRole).
+            // Сам снос этих ветвлений — отдельный заход, он трогает весь Net-слой (tech-debt.md).
             builder.Register<Guildmaster.Net.NetBattleAuthority>(Lifetime.Singleton)
                    .As<Guildmaster.Core.Net.IBattleAuthority>();
             builder.RegisterEntryPoint<Guildmaster.Net.NetPump>(Lifetime.Singleton);

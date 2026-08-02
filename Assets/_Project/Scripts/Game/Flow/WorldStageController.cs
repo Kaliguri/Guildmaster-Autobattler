@@ -27,14 +27,16 @@ namespace Guildmaster.Game.Flow
     public sealed class WorldStageController : IStartable, IDisposable
     {
         private readonly ISubscriber<RunPartyReadyEvent> _partyReadySub;
-        private readonly RunStateService  _runStates;
+        // Мир переживает сеансы, поэтому забег он только ЧИТАЕТ — и через роутер, а не прямой ссылкой
+        // на держателя из скоупа сессии (тот умрёт вместе с ней, а мир останется).
+        private readonly IRunStateView    _runStates;
         private readonly IContentDatabase _content;
         private readonly WorldBodyBuilder _bodies;
         private readonly WorldBodyStage   _stage;
 
         private IDisposable _subscription;
 
-        public WorldStageController(ISubscriber<RunPartyReadyEvent> partyReadySub, RunStateService runStates,
+        public WorldStageController(ISubscriber<RunPartyReadyEvent> partyReadySub, IRunStateView runStates,
                                     IContentDatabase content, WorldBodyBuilder bodies, WorldBodyStage stage)
         {
             _partyReadySub = partyReadySub;

@@ -17,6 +17,7 @@
     "Guildmaster.AnimationLab.Editor",
     "UniTask",
     "MessagePipe",
+    "VContainer",
     "Unity.UI.TestFramework.Runtime",
     "Unity.UI.TestFramework.Editor"
   ],

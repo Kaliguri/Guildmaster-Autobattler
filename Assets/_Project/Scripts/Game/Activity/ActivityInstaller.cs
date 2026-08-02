@@ -17,15 +17,11 @@ namespace Guildmaster.Game.Activity
     /// строка становилась багом следующего забега. Теперь конец мероприятия это смерть скоупа.
     /// <para><b>Состояние забега (<c>RunStateService</c>) сюда НЕ переезжает:</b> его дом — Сессия,
     /// уровнем выше. Забег кончается, а гильдия и сейв остаются — это разные жизни, и складывать их в
-    /// одну значило бы терять состояние на каждом выходе в хаб.</para>
+    /// одну значило бы терять состояние на каждом выходе в хаб. Мероприятие рождается ОТ сессии, так
+    /// что состояние и роль ему видны и без переезда.</para>
     /// </remarks>
     public sealed class ActivityInstaller : IInstaller
     {
-        private readonly CombatLifetimeScope _battleScopePrefab;
-
-        public ActivityInstaller(CombatLifetimeScope battleScopePrefab)
-            => _battleScopePrefab = battleScopePrefab;
-
         public void Install(IContainerBuilder builder)
         {
             RegisterBattleSeam(builder);
@@ -33,7 +29,7 @@ namespace Guildmaster.Game.Activity
         }
 
         /// <summary>Шов «мероприятие заказывает бой» и владелец боевого скоупа.</summary>
-        private void RegisterBattleSeam(IContainerBuilder builder)
+        private static void RegisterBattleSeam(IContainerBuilder builder)
         {
             // Один инстанс под двумя ролями: IBattleSession (write-side, боевой скоуп) + IBattleClock
             // (read-side, верхняя панель). Живёт ровно столько, сколько мероприятие: вне его ни фазы,
@@ -43,9 +39,9 @@ namespace Guildmaster.Game.Activity
             builder.Register<SoloPlayerIntentSource>(Lifetime.Singleton).As<IPlayerIntentSource>();
 
             // Владелец жизненного цикла боя. Переехал из мира: бой заказывает узел, а узел — часть
-            // мероприятия, и рождаться бой должен внутри той жизни, которая его заказала.
-            builder.RegisterEntryPoint<BattleHost>(Lifetime.Singleton).AsSelf()
-                   .WithParameter("battleScopePrefab", _battleScopePrefab);
+            // мероприятия, и рождаться бой должен внутри той жизни, которая его заказала. Заготовку
+            // боевого скоупа он резолвит сам — она выбрана в мире и видна отсюда вверх по цепочке.
+            builder.RegisterEntryPoint<BattleHost>(Lifetime.Singleton).AsSelf();
         }
 
         /// <summary>Ведение акта: узлы, награды, передышка, магазин, последствия ивентов.</summary>

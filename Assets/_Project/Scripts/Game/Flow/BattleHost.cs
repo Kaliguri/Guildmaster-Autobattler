@@ -10,7 +10,8 @@ namespace Guildmaster.Game.Flow
 {
     /// <summary>
     /// Единственный владелец жизненного цикла боя: рождает боевой скоуп на входе в бой и хоронит его
-    /// на выходе. Живёт в мире — потому что тот, кто создаёт бой, не может жить внутри него.
+    /// на выходе. Живёт в скоупе мероприятия — потому что тот, кто создаёт бой, не может жить внутри
+    /// него, а заказывает бой именно мероприятие.
     /// </summary>
     /// <remarks>
     /// <b>Дверь одна.</b> Забег входит через <see cref="IBattleSession"/> (делегаты привязаны здесь),
@@ -26,20 +27,22 @@ namespace Guildmaster.Game.Flow
     public sealed class BattleHost : IStartable, IDisposable
     {
         private readonly IBattleSession   _session;
-        private readonly RunStateService  _runStates;
-        private readonly LifetimeScope    _world;
-        private readonly CombatLifetimeScope _battleScopePrefab;
+        private readonly IRunStateView    _runStates;
+        // Скоуп мероприятия, внутри которого мы живём: от него и рождается бой. VContainer кладёт в
+        // контейнер сам скоуп, поэтому спрашивать его отдельно не нужно.
+        private readonly LifetimeScope    _activity;
+        private readonly Activity.BattleScopePrefab _battleScopePrefab;
         private readonly WorldStageController _worldStage;
 
         private CombatLifetimeScope _battle;
         private BattlePresetData    _lastPreset;
 
-        public BattleHost(IBattleSession session, RunStateService runStates, LifetimeScope world,
-                          CombatLifetimeScope battleScopePrefab, WorldStageController worldStage)
+        public BattleHost(IBattleSession session, IRunStateView runStates, LifetimeScope activity,
+                          Activity.BattleScopePrefab battleScopePrefab, WorldStageController worldStage)
         {
             _session           = session;
             _runStates         = runStates;
-            _world             = world;
+            _activity          = activity;
             _battleScopePrefab = battleScopePrefab;
             _worldStage        = worldStage;
         }
@@ -88,7 +91,7 @@ namespace Guildmaster.Game.Flow
                 Debug.LogWarning("[BattleHost] - Open без пресета: боя не будет");
                 return;
             }
-            if (_battleScopePrefab == null)
+            if (_battleScopePrefab?.Value == null)
             {
                 Debug.LogError("[BattleHost] - не задан префаб боевого скоупа → бой открыть нечем. " +
                                "Поле _battleScopePrefab у WorldLifetimeScope.");
@@ -103,7 +106,7 @@ namespace Guildmaster.Game.Flow
             // Скоуп рождается из ПРЕФАБА, а не из кода: боевые ассеты (тюнинг сима, джус, состав
             // Ристалища) выбираются в инспекторе, и собирать их заново на каждый бой из кода значило бы
             // завести им второго владельца.
-            _battle = _world.CreateChildFromPrefab(_battleScopePrefab,
+            _battle = _activity.CreateChildFromPrefab(_battleScopePrefab.Value,
                 builder => builder.RegisterInstance(parameters));
             _battle.name = $"[Battle] {preset.Id}";
         }

@@ -34,7 +34,11 @@ namespace Guildmaster.Game.Services
         // в его скоупе и умирают вместе с ним, поэтому берутся у хоста в момент использования, а не
         // инъекцией на всю жизнь верхней петли.
         private readonly Activity.ActivityHost _activities;
-        private readonly RunStateService     _runStates;
+
+        // Состояние забега живёт в скоупе СЕССИИ и умирает вместе с ней (смена профиля, вход гостем),
+        // поэтому верхняя петля спрашивает держателя у хоста в момент использования — тем же приёмом,
+        // что и участников занятия выше. Ссылка полем пережила бы своего владельца.
+        private readonly Session.SessionHost _sessions;
         private readonly IOutcomePresenter   _outcomePresenter;
         private readonly ITitleCardPresenter _titleCardPresenter;
         private readonly IMainMenuPresenter  _mainMenuPresenter;
@@ -51,7 +55,7 @@ namespace Guildmaster.Game.Services
 
         public GameFlow(
             Activity.ActivityHost activities,
-            RunStateService     runStates,
+            Session.SessionHost sessions,
             IOutcomePresenter   outcomePresenter,
             ITitleCardPresenter titleCardPresenter,
             IMainMenuPresenter  mainMenuPresenter,
@@ -67,7 +71,7 @@ namespace Guildmaster.Game.Services
             _provingGroundsPub = provingGroundsPub;
             _provingGroundsChangedSub = provingGroundsChangedSub;
             _activities      = activities;
-            _runStates        = runStates;
+            _sessions         = sessions;
             _outcomePresenter = outcomePresenter;
             _titleCardPresenter = titleCardPresenter;
             _mainMenuPresenter = mainMenuPresenter;
@@ -80,6 +84,20 @@ namespace Guildmaster.Game.Services
         }
 
         /// <summary>
+        /// Держатель забега текущего сеанса. <c>null</c> — не режим работы, а незаведённый сеанс:
+        /// вести забег в этом случае некому и некуда, поэтому говорим об этом громко и не пытаемся
+        /// «как-нибудь» продолжить.
+        /// </summary>
+        private RunStateService RequireRun()
+        {
+            RunStateService runStates = _sessions.Run;
+            if (runStates == null)
+                Debug.LogError("[GameFlow] - нет сеанса владельца состояния → вести забег некому. " +
+                               "Сессию открывает GameBootstrap сразу после подъёма мира (SessionHost.Open).");
+            return runStates;
+        }
+
+        /// <summary>
         /// A2-разрез: прогнать один бой как узел забега — запустить его в живой симуляции, дождаться исхода
         /// (с ретраями), вернуть арену в мир. Сцен не грузит: боевые системы подняты на буте и живут всегда.
         /// Заводит забег (<see cref="RunState"/>), если его ещё нет. Возвращает исход узла для будущей
@@ -88,8 +106,11 @@ namespace Guildmaster.Game.Services
         public async UniTask<EventResult> RunSingleBattleAsync(
             BattlePresetData preset, RewardTier tier = RewardTier.Battle, bool presentReward = true)
         {
-            RunState run = _runStates.Current
-                           ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
+            RunStateService runStates = RequireRun();
+            if (runStates == null) return EventResult.Aborted;
+
+            RunState run = runStates.Current
+                           ?? runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
             // Даже один бой — мероприятие: ему нужны рукопожатие боя и владелец боевого скоупа.
             _activities.Open();
@@ -99,7 +120,7 @@ namespace Guildmaster.Game.Services
                 var flow = new BattleFlow(preset, _activities.Battles, _localPlayer);
 
                 EventResult result = await flow.Run(ctx);
-                _runStates.Autosave(); // точка автосейва после узла (вики «7» §5)
+                runStates.Autosave(); // точка автосейва после узла (вики «7» §5)
 
                 // Победа → награда (A3): витрина 1-из-3, выбор пишется в RunState (enforce вместимости — §5.4).
                 if (presentReward && result.Outcome == EventOutcome.Completed)
@@ -125,7 +146,10 @@ namespace Guildmaster.Game.Services
 
             while (true)
             {
-                MainMenuChoice choice = await _mainMenuPresenter.ShowAsync(_runStates.HasSave);
+                RunStateService runStates = RequireRun();
+                if (runStates == null) return;
+
+                MainMenuChoice choice = await _mainMenuPresenter.ShowAsync(runStates.HasSave);
 
                 if (choice == MainMenuChoice.Quit) { QuitGame(); return; }
 
@@ -139,7 +163,7 @@ namespace Guildmaster.Game.Services
 
                 if (choice == MainMenuChoice.Continue)
                 {
-                    Core.Persistence.SaveLoadResult<Guild.RunState> loaded = _runStates.TryLoad();
+                    Core.Persistence.SaveLoadResult<Guild.RunState> loaded = runStates.TryLoad();
                     if (!loaded.IsOk)
                     {
                         // Показать это игроку экраном — фаза E ТЗ [[save-system]]; пока внятный лог, но
@@ -152,7 +176,7 @@ namespace Guildmaster.Game.Services
                 }
                 else
                 {
-                    _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
+                    runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
                 }
 
                 // QA #18: «В главное меню» из системного меню отменяет забег → OperationCanceledException
@@ -211,11 +235,14 @@ namespace Guildmaster.Game.Services
         /// </summary>
         public async UniTask<EventResult> RunActAsync()
         {
-            RunState run = _runStates.Current
-                           ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
+            RunStateService runStates = RequireRun();
+            if (runStates == null) return EventResult.Aborted;
 
-            _runStates.BeginAct(_actConfig != null ? _actConfig.ToGenConfig() : null); // карта из под-сида по ActConfig (no-op, если уже есть)
-            _runStates.Autosave();       // зафиксировать свежую карту
+            RunState run = runStates.Current
+                           ?? runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
+
+            runStates.BeginAct(_actConfig != null ? _actConfig.ToGenConfig() : null); // карта из под-сида по ActConfig (no-op, если уже есть)
+            runStates.Autosave();       // зафиксировать свежую карту
 
             // Persist-мир (план 12 Ф2): отряд забега готов → боевой скоуп ставит его на тест-арену вне боя.
             // Публикуем ПОСЛЕ BeginAct (гильдия+карта собраны) и ДО обхода узлов, чтобы отряд уже стоял.
@@ -229,14 +256,14 @@ namespace Guildmaster.Game.Services
             {
                 var ctx = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents, _runCts.Token);
                 EventResult result = await _activities.Runner.RunActAsync(ctx);
-                _runStates.Autosave();
+                runStates.Autosave();
                 Debug.Log($"[GameFlow] - акт завершён: {result.Outcome}");
 
                 // Экран исхода (C2): победа (босс) / поражение (пул перезапусков пуст). Забег окончен — чистим сейв.
                 if (result.Outcome == EventOutcome.Completed || result.Outcome == EventOutcome.PlayerDefeated)
                 {
                     await _outcomePresenter.ShowAsync(result.Outcome == EventOutcome.Completed);
-                    _runStates.DeleteSave();
+                    runStates.DeleteSave();
                 }
                 return result;
             }
@@ -274,8 +301,11 @@ namespace Guildmaster.Game.Services
         /// </summary>
         public async UniTask<EventResult> RunTextEventAsync(TextEventData ev)
         {
-            RunState run = _runStates.Current
-                           ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
+            RunStateService runStates = RequireRun();
+            if (runStates == null) return EventResult.Aborted;
+
+            RunState run = runStates.Current
+                           ?? runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
             _activities.Open();
             var ctx  = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents);

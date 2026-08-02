@@ -19,7 +19,9 @@ namespace Guildmaster.Game.Flow
     public sealed class WorldMapController : IStartable, IDisposable
     {
         private readonly IWorldMapView _view;
-        private readonly RunStateService _runStates;
+        // Владелец показа карты переживает сеансы, поэтому забег он только ЧИТАЕТ — через роутер, а не
+        // прямой ссылкой на держателя из скоупа сессии.
+        private readonly IRunStateView _runStates;
         private readonly ISubscriber<SetWorldMapRequest> _setSub;
         private readonly IPublisher<WorldMapSpaceChangedEvent> _spacePub;
 
@@ -32,7 +34,7 @@ namespace Guildmaster.Game.Flow
         private Action<string> _onChosen;
 
         public WorldMapController(IWorldMapView view,
-                                  RunStateService runStates,
+                                  IRunStateView runStates,
                                   ISubscriber<SetWorldMapRequest> setSub,
                                   IPublisher<WorldMapSpaceChangedEvent> spacePub)
         {

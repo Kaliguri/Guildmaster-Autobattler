@@ -9,9 +9,15 @@ namespace Guildmaster.Guild
     /// <summary>
     /// Владелец durable-состояния забега (<see cref="RunState"/>) и единая точка его сейва/загрузки и правил
     /// вместимости коллекции реликов (план 11 §5.4). Три точки автосейва (вики «7» §5) зовут <see cref="Autosave"/>
-    /// на переходах флоу. Сетевой-ready: хост владеет состоянием, автосейв = снапшот для репликации/реконнекта.
+    /// на переходах флоу.
     /// </summary>
-    public sealed class RunStateService
+    /// <remarks>
+    /// <b>Живёт в скоупе Сессии и только у владельца сейва.</b> Гость играет в чужом состоянии — этого
+    /// сервиса у него нет вовсе, поэтому «случайно записать чужой забег» ему нечем (см.
+    /// <c>SessionInstaller</c>). Тем, кто переживает сеанс, видна только читающая половина —
+    /// <see cref="IRunStateView"/> через роутер.
+    /// </remarks>
+    public sealed class RunStateService : IRunStateView
     {
         private readonly ISaveService    _save;
         private readonly GameConfig      _config;

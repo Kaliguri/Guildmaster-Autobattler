@@ -13,16 +13,21 @@ namespace Guildmaster.Game.Activity
     /// живёт дольше: верхней петли игры и корневого UI.
     /// </summary>
     /// <remarks>
-    /// <b>Живёт в корне, а рождает от мира.</b> Мир грузится аддитивно после корня, поэтому инъекцией
-    /// его не взять — он находится по факту загрузки. Зато иерархия выходит задуманной: Мир → Занятие →
-    /// Бой, и боевой скоуп рождается внутри той жизни, которая его заказала.
+    /// <b>Живёт в корне, а рождает от сессии.</b> Мероприятие идёт внутри сеанса владения состоянием:
+    /// иерархия выходит задуманной (Мир → Сессия → Занятие → Бой), и всё, что мероприятие заказывает,
+    /// видит и состояние забега, и роль этого клиента. Пережить сеанс, в котором началось, оно не может
+    /// по построению.
     /// <para><b>Наружу отдаём узкие фасады, а не резолвер.</b> Верхней петле нужен раннер акта, UI —
     /// часы боя. Отдать контейнер значило бы разрешить кому угодно дотянуться до чего угодно в чужой
     /// жизни и получить ссылку, которая протухнет вместе с занятием.</para>
     /// </remarks>
     public sealed class ActivityHost : IDisposable
     {
+        private readonly Session.SessionHost _sessions;
+
         private LifetimeScope _activity;
+
+        public ActivityHost(Session.SessionHost sessions) => _sessions = sessions;
 
         /// <summary>Идёт ли мероприятие прямо сейчас.</summary>
         public bool IsOpen => _activity != null && _activity.Container != null;
@@ -75,16 +80,9 @@ namespace Guildmaster.Game.Activity
         {
             Close();
 
-            var world = LifetimeScope.Find<WorldLifetimeScope>();
-            if (world == null || world.Container == null)
-            {
-                Debug.LogError("[ActivityHost] - мир ещё не поднят → занятие открывать не от кого. " +
-                               "Сцены грузятся раньше игры (см. GameBootstrap).");
-                return;
-            }
-
-            CombatLifetimeScope battlePrefab = world.Container.Resolve<BattleScopePrefab>().Value;
-            _activity = world.CreateChild(new ActivityInstaller(battlePrefab), "[Activity]");
+            // Заготовку боевого скоупа не тащим сюда руками: она выбрана в мире, а мир — предок сессии,
+            // значит внутри мероприятия она видна и так (её резолвит BattleHost).
+            _activity = _sessions.CreateChild(new ActivityInstaller(), "[Activity]");
         }
 
         /// <summary>

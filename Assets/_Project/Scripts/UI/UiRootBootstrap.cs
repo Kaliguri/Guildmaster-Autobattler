@@ -85,7 +85,9 @@ namespace Guildmaster.UI
         private MenuRouter _router;
         private IInputService _input;
         private IBattleClock _clock;
-        private RunStateService _runStates;
+        // Интерфейс переживает сеансы, поэтому забег он только ЧИТАЕТ и только через роутер: держатель
+        // состояния живёт в скоупе сессии и умирает вместе с ней.
+        private IRunStateView _runStates;
         private GameConfig _config;
         private ILocalizationService _loc;
         private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
@@ -159,7 +161,7 @@ namespace Guildmaster.UI
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
-            IBattleClock clock, RunStateService runStates, GameConfig config, ILocalizationService loc,
+            IBattleClock clock, IRunStateView runStates, GameConfig config, ILocalizationService loc,
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
             ISubscriber<OpenTextEventRequest> openEventSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
