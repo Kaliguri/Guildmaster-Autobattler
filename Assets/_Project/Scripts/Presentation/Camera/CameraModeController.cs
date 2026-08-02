@@ -136,6 +136,12 @@ namespace Guildmaster.Presentation
         private Vector3 _mapFrameBeforeDive;
         private float _mapSizeBeforeDive;
 
+        // Кадр МИРА, из которого ушли на карту. Возвращается при выходе с неё (см. ExitMap): карта живёт
+        // своей зоной далеко от арены, и подхватывать её кадр мировому виду нельзя.
+        private bool    _hasWorldFrame;
+        private Vector3 _worldFrameBeforeMap;
+        private float   _worldSizeBeforeMap;
+
         // Интро карты: отъезд на весь акт и возвращение к рабочему кадру. В отличие от нырка ПРЕРЫВАЕТСЯ
         // игроком — как только он взялся за колесо или потянул карту, камера остаётся там, где застал
         // ввод, и слушается его. Доводить кадр после этого значило бы спорить с рукой на руле.
@@ -314,13 +320,18 @@ namespace Guildmaster.Presentation
 
         // Активация вида. Свободная камера ПОДХВАТЫВАЕТ живой кадр (переход выходит бесшовным — в блендах
         // вход в свободную стоит Cut), сценарная взводит свой зум и отдаётся Brain'у на подводку.
-        private void EnterMode(CameraMode mode)
+        /// <param name="adoptLiveFrame">
+        /// Подхватывать ли кадр, который игрок видит сейчас. Так работает Tab внутри мира: вид меняется,
+        /// взгляд остаётся. При выходе С КАРТЫ подхват запрещён — живой кадр принадлежит карте, и мировой
+        /// вид получил бы от неё координаты, к арене не относящиеся.
+        /// </param>
+        private void EnterMode(CameraMode mode, bool adoptLiveFrame = true)
         {
             switch (mode)
             {
-                case CameraMode.Overview: AdoptLiveFrame(_overviewCam, clampToZone: true);  break;
-                case CameraMode.Dev:      AdoptLiveFrame(_devCam, clampToZone: false);      break;
-                case CameraMode.Action:   PrimeActionZoom();                                break;
+                case CameraMode.Overview: if (adoptLiveFrame) AdoptLiveFrame(_overviewCam, clampToZone: true); break;
+                case CameraMode.Dev:      if (adoptLiveFrame) AdoptLiveFrame(_devCam, clampToZone: false);     break;
+                case CameraMode.Action:   PrimeActionZoom();                                                   break;
             }
 
             _freeZoomTarget = -1f; // цель колеса перечитается с новой активной камеры
@@ -388,6 +399,9 @@ namespace Guildmaster.Presentation
         /// </returns>
         public bool EnterMap(Rect2D bounds, Vector2 focus, float visibleHeight)
         {
+            // Запоминаем мировой кадр ДО того, как карта заберёт приоритет: именно его вернёт ExitMap.
+            RememberWorldFrame();
+
             _mapZone = bounds;
             _onMap   = true;
             _freeZoomTarget = -1f;
@@ -541,7 +555,55 @@ namespace Guildmaster.Presentation
             SurfaceMap(); // карту могли закрыть посреди нырка — кадр обязан вернуться, а не остаться в узле
             _onMap = false;
             _worldMode = WantedWorldMode();
-            EnterMode(_worldMode);
+
+            // Мировой вид ВОЗВРАЩАЕТ свой кадр, а не подхватывает живой. Живой в этот момент показывает
+            // карту — другую область мира, за десятки единиц от арены, — и подхват уводил свободную камеру
+            // в пустоту: кламп зоны просто прижимал кадр карты к её краю, и игрок выходил из карты в
+            // синее ничто. В бою это было незаметно, потому что там правит следящая камера (баг 02.08.2026:
+            // «на расстановке пустой экран, а в бою всё ок»).
+            RestoreWorldFrame();
+            EnterMode(_worldMode, adoptLiveFrame: false);
+        }
+
+        /// <summary>Запомнить кадр мирового вида — тот, который игрок видит прямо сейчас.</summary>
+        private void RememberWorldFrame()
+        {
+            if (_onMap) return; // уже на карте: живой кадр — её, запоминать нечего
+            if (_brain == null || _brain.OutputCamera == null) return;
+
+            Camera live = _brain.OutputCamera;
+            _worldFrameBeforeMap = new Vector3(live.transform.position.x, live.transform.position.y, _cameraZ);
+            _worldSizeBeforeMap  = live.orthographicSize;
+            _hasWorldFrame       = true;
+        }
+
+        /// <summary>
+        /// Вернуть свободным видам кадр мира, оставленный перед входом на карту. Его нет (карту открыли
+        /// раньше, чем игрок вообще смотрел на арену) — встаём на арену: это её вид по умолчанию.
+        /// </summary>
+        private void RestoreWorldFrame()
+        {
+            if (!_hasWorldFrame)
+            {
+                SnapOverviewToArena();
+                return;
+            }
+
+            float size = Mathf.Clamp(_worldSizeBeforeMap, _minZoom, MaxZoomForZone());
+            Vector3 pos = ClampVisibleCenter(_worldFrameBeforeMap, size);
+
+            ApplyFrame(_overviewCam, pos, size);
+            ApplyFrame(_devCam, pos, Mathf.Clamp(_worldSizeBeforeMap, _minZoom, _devMaxZoom));
+        }
+
+        private static void ApplyFrame(CinemachineCamera cam, Vector3 position, float size)
+        {
+            if (cam == null) return;
+
+            cam.transform.position = position;
+            LensSettings lens = cam.Lens;
+            lens.OrthographicSize = size;
+            cam.Lens = lens;
         }
 
         // ── Покадровое управление ─────────────────────────────────────────────
