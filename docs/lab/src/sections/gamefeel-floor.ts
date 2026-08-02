@@ -244,17 +244,18 @@ interface Weather {
   name: string;
   /** Сколько облаков плывёт над ареной. */
   clouds: number;
-  /** Насколько они плотные и насколько тёмные их тени на земле. */
+  /** Насколько они плотные. */
   cloudAlpha: number;
+  /** Осталось нулём: облака ушли в фон, а то, что ЗА предметом, тени на него не бросает. */
   shadowAmount: number;
   /** Гроза: тучи темнее, добавляется вспышка. */
   storm: boolean;
 }
 
-const CLEAR: Weather = { id: "clear", name: "Малооблачно", clouds: 2, cloudAlpha: 0.13, shadowAmount: 0.12, storm: false };
-const NORMAL: Weather = { id: "normal", name: "Обычно", clouds: 4, cloudAlpha: 0.18, shadowAmount: 0.2, storm: false };
-const CLOUDY: Weather = { id: "cloudy", name: "Многооблачно", clouds: 8, cloudAlpha: 0.27, shadowAmount: 0.32, storm: false };
-const STORM: Weather = { id: "storm", name: "Гроза", clouds: 10, cloudAlpha: 0.34, shadowAmount: 0.45, storm: true };
+const CLEAR: Weather = { id: "clear", name: "Малооблачно", clouds: 3, cloudAlpha: 0.5, shadowAmount: 0, storm: false };
+const NORMAL: Weather = { id: "normal", name: "Обычно", clouds: 7, cloudAlpha: 0.66, shadowAmount: 0, storm: false };
+const CLOUDY: Weather = { id: "cloudy", name: "Многооблачно", clouds: 14, cloudAlpha: 0.82, shadowAmount: 0, storm: false };
+const STORM: Weather = { id: "storm", name: "Гроза", clouds: 18, cloudAlpha: 0.92, shadowAmount: 0, storm: true };
 
 const WEATHERS = [CLEAR, NORMAL, CLOUDY, STORM];
 
@@ -893,6 +894,44 @@ function slab(o: SlabOpts): DrawFn {
     ctx.fillStyle = vg;
     ctx.fillRect(0, 0, w, h);
 
+    // ОБЛАКА — ЗАДНИЙ ФОН, а не полог над сценой (поправка Макса). Плита висит НА ФОНЕ неба:
+    // облака идут позади неё и никогда её не перекрывают. Прошлая версия рисовала их поверх и
+    // укрывала ими поле — это и читалось туманом вместо неба.
+    // Тени облаков на арене убраны вместе с этим: то, что находится ЗА предметом, не может
+    // бросать на него тень.
+    for (let i = 0; i < wx.clouds; i++) {
+      const cxp = (jag(i * 3 + 1, o.seed + 101) * 1.2 - 0.1) * w;
+      const cyp = (jag(i * 3 + 2, o.seed + 103) * 0.9) * h;
+      const cr = w * (0.06 + jag(i, o.seed + 105) * 0.09);
+
+      const dark = wx.storm ? 0.4 : 0.82;
+      const body: RGB = [
+        lerp(tod.shadow[0], tod.light[0], dark),
+        lerp(tod.shadow[1], tod.light[1], dark),
+        lerp(tod.shadow[2], tod.light[2], dark)
+      ];
+
+      // Тёмное брюхо: облако снизу не освещено, иначе читается ватой.
+      cloudPath(ctx, cxp, cyp + cr * 0.16, cr, o.seed + i * 17);
+      ctx.fillStyle = `rgba(${shade(body, 0.32).map((v) => v | 0).join(",")},${(wx.cloudAlpha * 0.7).toFixed(3)})`;
+      ctx.fill();
+
+      cloudPath(ctx, cxp, cyp, cr, o.seed + i * 17);
+      ctx.fillStyle = `rgba(${body.map((v) => v | 0).join(",")},${wx.cloudAlpha.toFixed(3)})`;
+      ctx.fill();
+
+      // Подсвеченная кромка со стороны источника. На закате она делает всю картинку.
+      ctx.save();
+      cloudPath(ctx, cxp, cyp, cr, o.seed + i * 17);
+      ctx.clip();
+      const rim = ctx.createLinearGradient(cxp - cr, cyp - cr, cxp + cr * 0.3, cyp + cr * 0.4);
+      rim.addColorStop(0, `rgba(${lighten(tod.light, 0.25).map((v) => v | 0).join(",")},${(0.45 * tod.lightPower + 0.1).toFixed(3)})`);
+      rim.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = rim;
+      ctx.fillRect(cxp - cr * 2.5, cyp - cr * 2, cr * 5, cr * 4);
+      ctx.restore();
+    }
+
     const rimH = o.rimU * U;
     const pw = o.crop ? w : ARENA_W;
     const ph = o.crop ? h : ARENA_H;
@@ -1133,41 +1172,6 @@ function slab(o: SlabOpts): DrawFn {
     ctx.fillStyle = `rgba(${tod.groundTint.map((v) => v | 0).join(",")},${tod.groundTintAmount.toFixed(3)})`;
     ctx.fillRect(x0, y0, pw, ph);
 
-    // ТЕНИ ОБЛАКОВ, бегущие по полю. Самый сильный приём живости из дешёвых: поле перестаёт быть
-    // статичной картинкой, даже когда на нём ничего не происходит.
-    for (let i = 0; i < wx.clouds; i++) {
-      const cxp = x0 + jag(i * 3 + 1, o.seed + 101) * pw;
-      const cyp = y0 + jag(i * 3 + 2, o.seed + 103) * ph;
-      const cr = HUMAN_H * (0.45 + jag(i, o.seed + 105) * 0.7);
-      const g3 = ctx.createRadialGradient(cxp, cyp, cr * 0.2, cxp, cyp, cr * 1.5);
-      g3.addColorStop(0, `rgba(${tod.shadow.map((v) => v | 0).join(",")},${(wx.shadowAmount * tod.lightPower).toFixed(3)})`);
-      g3.addColorStop(1, `rgba(${tod.shadow.map((v) => v | 0).join(",")},0)`);
-      ctx.fillStyle = g3;
-      ctx.fillRect(x0, y0, pw, ph);
-    }
-
-    // 6. ПРИТЕНЕНИЕ ПО ПЕРИМЕТРУ — узкая тёмная кайма ВДОЛЬ КРАЁВ ПЛИТЫ, а не круглая виньетка.
-    //    Плита обретает толщину: земля у обрыва темнее, потому что свет туда не заворачивает.
-    //    Круглое затемнение этого не даёт — оно говорит про кадр, а не про предмет.
-    const edgeW = HUMAN_H * 0.9;
-    if (on("edgeShade")) {
-    const sides: Array<[number, number, number, number, number, number]> = [
-      [x0, y0, x0, y0 + edgeW, pw, edgeW],
-      [x0, y0 + ph, x0, y0 + ph - edgeW, pw, edgeW],
-      [x0, y0, x0 + edgeW, y0, edgeW, ph],
-      [x0 + pw, y0, x0 + pw - edgeW, y0, edgeW, ph]
-    ];
-    for (let i = 0; i < sides.length; i++) {
-      const [gx0, gy0, gx1, gy1] = sides[i] as [number, number, number, number, number, number];
-      const eg = ctx.createLinearGradient(gx0, gy0, gx1, gy1);
-      eg.addColorStop(0, "rgba(16,14,24,.34)");
-      eg.addColorStop(1, "rgba(16,14,24,0)");
-      ctx.fillStyle = eg;
-      if (i < 2) ctx.fillRect(x0, i === 0 ? y0 : y0 + ph - edgeW, pw, edgeW);
-      else ctx.fillRect(i === 2 ? x0 : x0 + pw - edgeW, y0, edgeW, ph);
-    }
-    }
-
     ctx.restore();
 
     if (o.unit) {
@@ -1194,43 +1198,6 @@ function slab(o: SlabOpts): DrawFn {
       ctx.beginPath();
       ctx.arc(px, py, 1.3, 0, Math.PI * 2);
       ctx.fill();
-    }
-
-    // ОБЛАКА ПОВЕРХ ВСЕГО — они плывут МЕЖДУ камерой и ареной (решение Макса). Отсюда и тени на
-    // поле выше: это одни и те же облака, просто здесь мы видим их сами.
-    // Цвет берут у времени суток: днём светлые верхушки, на закате горят краем, в грозу почти
-    // чёрные. Одна форма, четыре настроения.
-    for (let i = 0; i < wx.clouds; i++) {
-      const cxp = x0 + (jag(i * 3 + 1, o.seed + 101) * 1.2 - 0.1) * pw;
-      const cyp = y0 + (jag(i * 3 + 2, o.seed + 103) * 1.15 - 0.08) * ph;
-      const cr = HUMAN_H * (0.45 + jag(i, o.seed + 105) * 0.7);
-
-      const dark = wx.storm ? 0.45 : 0.86;
-      const body: RGB = [
-        lerp(tod.shadow[0], tod.light[0], dark),
-        lerp(tod.shadow[1], tod.light[1], dark),
-        lerp(tod.shadow[2], tod.light[2], dark)
-      ];
-
-      // Тёмное брюхо: облако снизу не освещено. Без этого оно читается ватой, а не облаком.
-      cloudPath(ctx, cxp, cyp + cr * 0.16, cr, o.seed + i * 17);
-      ctx.fillStyle = `rgba(${shade(body, 0.34).map((v) => v | 0).join(",")},${(wx.cloudAlpha * 0.75).toFixed(3)})`;
-      ctx.fill();
-
-      cloudPath(ctx, cxp, cyp, cr, o.seed + i * 17);
-      ctx.fillStyle = `rgba(${body.map((v) => v | 0).join(",")},${wx.cloudAlpha.toFixed(3)})`;
-      ctx.fill();
-
-      // Подсвеченная кромка со стороны источника. На закате она и делает всю картинку.
-      ctx.save();
-      cloudPath(ctx, cxp, cyp, cr, o.seed + i * 17);
-      ctx.clip();
-      const rim = ctx.createLinearGradient(cxp - cr, cyp - cr, cxp + cr * 0.3, cyp + cr * 0.4);
-      rim.addColorStop(0, `rgba(${lighten(tod.light, 0.25).map((v) => v | 0).join(",")},${(0.5 * tod.lightPower + 0.12).toFixed(3)})`);
-      rim.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.fillStyle = rim;
-      ctx.fillRect(cxp - cr * 2.5, cyp - cr * 2, cr * 5, cr * 4);
-      ctx.restore();
     }
 
     // ГРОЗА: вспышка подсвечивает арену, но ЕДВА — боевые вспышки несут информацию, и спорить
@@ -1377,7 +1344,7 @@ const WEATHER_STANDS: StandDef[] = WEATHERS.map((wv) => ({
   id: `wx-${wv.id}`,
   status: "waiting" as const,
   title: wv.name,
-  facts: [["облаков", String(wv.clouds)], ["тень на поле", `${Math.round(wv.shadowAmount * 100)}%`]],
+  facts: [["облаков", String(wv.clouds)], ["плотность", `${Math.round(wv.cloudAlpha * 100)}%`]],
   size: [430, 330] as [number, number],
   draw: slab({ biome: MEADOW, rimU: 1, seed: 27, unit: true, digital: true, tod: DAY, weather: wv })
 }));
@@ -1591,16 +1558,16 @@ const section: SectionDef = {
       kind: "head",
       id: "weather",
       title: "Облачность",
-      lede: "Меняется только погода, время — день. Облака плывут НАД ареной, поэтому их тени бегут по полю."
+      lede: "Меняется только погода, время — день. Облака идут ЗАДНИМ ФОНОМ и плиту не перекрывают."
     },
     { kind: "stands", items: WEATHER_STANDS },
     {
       kind: "note",
       html:
-        "Тени облаков на поле — самый дешёвый приём живости из всех: арена перестаёт быть статичной " +
-        "картинкой, даже когда на ней ничего не происходит. И это те же самые облака, что видны " +
-        "сверху, — один источник, два проявления. Молния подсвечивает арену <b>едва</b>: боевые " +
-        "вспышки несут информацию, и спорить с ними погода права не имеет."
+        "Облака — <b>задний фон</b>: плита висит НА фоне неба, а не под пологом. Первая версия " +
+        "рисовала их поверх сцены, и поле укрывалось туманом — вместе с этим ушли и тени облаков " +
+        "на арене: то, что находится ЗА предметом, тени на него не бросает. Молния подсвечивает " +
+        "арену <b>едва</b>: боевые вспышки несут информацию, и спорить с ними погода права не имеет."
     },
     {
       kind: "head",
