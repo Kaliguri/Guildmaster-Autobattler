@@ -89,6 +89,14 @@ export const PAGES: PageDef[] = [
   },
 
   {
+    id: "map-act",
+    area: "map",
+    title: "Акт целиком",
+    blurb: "Настоящая карта из настоящего генератора: шестьдесят сидов, честные пропорции, ручки раскладки.",
+    load: () => import("./sections/map-act.js"),
+    icon: "◈"
+  },
+  {
     id: "map-shapes",
     area: "map",
     title: "Формы областей",

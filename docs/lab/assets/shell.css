@@ -769,4 +769,20 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
 .search-list a:hover b { color: var(--brass-lift); }
 .search-list p { padding: 1rem; }
 
+/* --- акт целиком --- */
+.act-meta { font-family: var(--mono); font-size: .7rem; letter-spacing: .04em; margin-bottom: .8rem; }
+.act-tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .7rem; }
+.act-bar { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; margin-bottom: .7rem; }
+.act-seed { font-family: var(--mono); font-size: .74rem; color: var(--muted); letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+.act-canvas { display: block; width: 100%; height: auto; background: #0C0B09; border: 1px solid var(--edge-soft); border-radius: var(--radius); }
+.act-controls { display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap; margin-top: .8rem; }
+.act-ctl { display: flex; gap: .5rem; align-items: center; }
+.act-ctl-label { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.act-ctl-value { font-family: var(--mono); font-size: .72rem; color: var(--brass-lift); font-variant-numeric: tabular-nums; min-width: 2.2rem; }
+.act-check { display: flex; gap: .4rem; align-items: center; font-size: .82rem; color: var(--text-dim); cursor: pointer; }
+.act-hint { font-size: .82rem; margin-top: .7rem; }
+.act-legend { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: .8rem; font-size: .8rem; color: var(--text-dim); }
+.act-legend-item { display: flex; gap: .35rem; align-items: baseline; }
+.act-legend-item b { font-family: var(--mono); font-weight: 700; }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

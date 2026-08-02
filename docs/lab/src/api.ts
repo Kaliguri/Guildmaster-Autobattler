@@ -68,6 +68,54 @@ export function fetchWikiIndex(): Feed<WikiIndex> {
   return wikiFeed;
 }
 
+/* ---------- карты акта ---------- */
+
+/** Карта из дампа: узлы тройками [этаж, ряд, тип], рёбра парами индексов в этом же массиве. */
+export interface ActMap {
+  seed: number;
+  nodes: Array<[number, number, number]>;
+  edges: Array<[number, number]>;
+}
+
+/** Профиль: «а если так». Числа — ассетные с наложенным патчем, карты — на общих для всех сидах. */
+export interface ActProfile {
+  id: string;
+  title: string;
+  note: string;
+  config: Record<string, number>;
+  /** Шаги сетки и поля листа — стартовые значения ползунков этого профиля. */
+  style: Record<string, number>;
+  maps: ActMap[];
+}
+
+export interface ActMapDump {
+  /** Когда снят дамп. Правку генератора без нового прогона иначе нечем отличить от свежей карты. */
+  generated: string;
+  /** Ассеты и файл профилей, из которых взяты числа: видно, чем именно нарисовано. */
+  source: string[];
+  /** Сиды по порядку — общие для всех профилей, иначе сравнение сравнивает удачу. */
+  seeds: number[];
+  /** Имена MapNodeType по порядку enum: индекс типа узла — позиция в этом массиве. */
+  nodeTypes: string[];
+  /** Первым идёт `asset` — то, что стоит в игре. */
+  profiles: ActProfile[];
+}
+
+let actMapsFeed: Feed<ActMapDump> | null = null;
+
+/**
+ * Пачка карт, сгенерированных НАСТОЯЩИМ MapGenerator (`./scripts/map-dump.ps1`).
+ *
+ * Единственные данные здесь, которые лежат файлом, а не читаются с диска на лету, — и это
+ * осознанно: генератор надо собрать и выполнить, а сервер сайта обязан подниматься на голой
+ * машине. Поэтому дамп — снимок, и он врёт ровно в одном случае: если генератор правили, а
+ * скрипт не гоняли. Отсюда дата снимка на странице.
+ */
+export function fetchActMaps(): Feed<ActMapDump> {
+  actMapsFeed ??= feed("data/act-maps.json");
+  return actMapsFeed;
+}
+
 /** Общая заглушка на канвасе, пока данных нет или их не будет. */
 export function drawFeedState(
   ctx: CanvasRenderingContext2D, w: number, h: number, feed: Feed<unknown>, what: string
