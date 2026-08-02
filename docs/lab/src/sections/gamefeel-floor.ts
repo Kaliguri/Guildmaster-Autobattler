@@ -191,14 +191,33 @@ function grain(): HTMLCanvasElement {
 /** Тропа: изогнутая лента поперёк поля. Читается как «здесь ходят» — в отличие от кляксы,
  *  которая не читается ничем. */
 function trailPath(ctx: CanvasRenderingContext2D, x0: number, y0: number, w: number, h: number, seed: number): void {
-  const yA = y0 + h * (0.22 + jag(seed, 3) * 0.18);
-  const yB = y0 + h * (0.62 + jag(seed, 7) * 0.2);
-  const width = h * (0.11 + jag(seed, 11) * 0.05);
+  // Диапазон нарочно ШИРОКИЙ. Первая версия давала тропе сползать только сверху-слева вниз-направо,
+  // и на трёх сидах подряд это читалось как одна и та же арена: узкий диапазон вариации хуже
+  // отсутствия вариации, потому что обещает разнообразие и не даёт его.
+  const vertical = jag(seed, 19) > 0.62;
+  const width = h * (0.09 + jag(seed, 11) * 0.09);
+  const bow = (jag(seed, 23) - 0.5) * 0.55; // прогиб в обе стороны, а не всегда в одну
+
+  if (vertical) {
+    // Тропа поперёк, сверху вниз: тот же приём, повёрнутый на девяносто градусов.
+    const xA = x0 + w * (0.18 + jag(seed, 3) * 0.28);
+    const xB = x0 + w * (0.52 + jag(seed, 7) * 0.32);
+    ctx.beginPath();
+    ctx.moveTo(xA, y0 - 10);
+    ctx.bezierCurveTo(xA + w * bow, y0 + h * 0.35, xB - w * bow, y0 + h * 0.65, xB, y0 + h + 10);
+    ctx.lineTo(xB + width, y0 + h + 10);
+    ctx.bezierCurveTo(xB + width - w * bow, y0 + h * 0.65, xA + width + w * bow, y0 + h * 0.35, xA + width, y0 - 10);
+    ctx.closePath();
+    return;
+  }
+
+  const yA = y0 + h * (0.14 + jag(seed, 3) * 0.34);
+  const yB = y0 + h * (0.40 + jag(seed, 7) * 0.44);
   ctx.beginPath();
   ctx.moveTo(x0 - 10, yA);
-  ctx.bezierCurveTo(x0 + w * 0.35, yA - h * 0.16, x0 + w * 0.55, yB + h * 0.14, x0 + w + 10, yB);
+  ctx.bezierCurveTo(x0 + w * 0.35, yA + h * bow, x0 + w * 0.55, yB - h * bow, x0 + w + 10, yB);
   ctx.lineTo(x0 + w + 10, yB + width);
-  ctx.bezierCurveTo(x0 + w * 0.55, yB + width + h * 0.14, x0 + w * 0.35, yA + width - h * 0.16, x0 - 10, yA + width);
+  ctx.bezierCurveTo(x0 + w * 0.55, yB + width - h * bow, x0 + w * 0.35, yA + width + h * bow, x0 - 10, yA + width);
   ctx.closePath();
 }
 
@@ -777,24 +796,32 @@ const RIM_STANDS: StandDef[] = [
 
 /** Три сида одной поляны. Один сид ничего не доказывает: по нему не отличить удачную композицию
  *  от везения, и не видно, держится ли правило «центр пуст, акцент у края» на любом заходе. */
-const SEED_STANDS: StandDef[] = [11, 27, 43].map((s, i) => ({
+/** Три сида, которые крутятся ВЕЗДЕ: и на поляне целиком, и в каждом биоме. Один сид не отличает
+ *  удачную композицию от везения — а по трём сразу видно, держатся ли правила расстановки. */
+const SEEDS = [11, 27, 43];
+
+const SEED_STANDS: StandDef[] = SEEDS.map((s, i) => ({
   id: `seed-${s}`,
   status: "waiting" as const,
   title: `Сид ${s}`,
   tag: i === 0 ? "тот же биом, другой сид" : undefined,
   facts: [["биом", "поляна"], ["сид", String(s)]],
-  size: [520, 400] as [number, number],
   draw: slab({ biome: MEADOW, rimU: 1, seed: s, unit: true, digital: true })
 }));
 
-const BIOME_STANDS: StandDef[] = [MEADOW, FOREST, CAVE, ASH].map((b) => ({
-  id: b.id,
-  status: "waiting" as const,
-  title: b.name,
-  tag: "тот же код, другой конфиг",
-  facts: [["цветов", "5"], ["силуэт", b.plantKind]],
-  draw: slab({ biome: b, rimU: 1, seed: 9, crop: true })
-}));
+/** Четыре биома НА ТЕХ ЖЕ трёх сидах: ряд — биом, столбец — сид. Так сразу видно и то, что биом
+ *  это конфиг (ряды отличаются только данными), и то, что генерация даёт разброс (столбцы
+ *  отличаются композицией). По одному фрагменту на биом ни того, ни другого не проверить. */
+const BIOME_STANDS: StandDef[] = [MEADOW, FOREST, CAVE, ASH].flatMap((b) =>
+  SEEDS.map((s, i) => ({
+    id: `${b.id}-${s}`,
+    status: "waiting" as const,
+    title: i === 0 ? b.name : `${b.name} · ${s}`,
+    tag: i === 0 ? "тот же код, другой конфиг" : undefined,
+    facts: [["сид", String(s)], ["силуэт", b.plantKind]],
+    draw: slab({ biome: b, rimU: 1, seed: s, crop: true })
+  }))
+);
 
 const section: SectionDef = {
   id: "floor",
@@ -863,7 +890,7 @@ const section: SectionDef = {
       kind: "head",
       id: "biomes",
       title: "Биом — это конфиг",
-      lede: "Четыре фрагмента одним кодом. Отличаются пятью цветами и типом силуэта."
+      lede: "Ряд — биом, столбец — сид. Ряды отличаются только данными, столбцы — только сидом."
     },
     { kind: "stands", items: BIOME_STANDS },
     {
