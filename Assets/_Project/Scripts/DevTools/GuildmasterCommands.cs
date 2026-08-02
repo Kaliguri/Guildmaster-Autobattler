@@ -579,6 +579,11 @@ namespace Guildmaster.DevTools
 
             var order = new Data.Definitions.ProvingGroundsSetupRequest(mine, theirs, what);
 
+            // Заказали бой — консоли на экране больше делать нечего: её открывали ради этой команды, а
+            // смотреть на бой сквозь простыню логов нельзя. Закрываем ЗДЕСЬ, в единственной точке заказа,
+            // поэтому одинаково уходят и набранная команда, и выбор из витрины F3.
+            _menuRouter?.CloseDevOverlays();
+
             // Уже на площадке — слушатель заказа существует, шлём событием.
             if (OnProvingGrounds)
             {

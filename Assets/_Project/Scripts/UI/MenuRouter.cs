@@ -104,6 +104,8 @@ namespace Guildmaster.UI
         /// висеть поверх мира, а площадку — невидимой.
         /// </summary>
         private System.Action _resolveMainMenuAsProvingGrounds;
+        private System.Action _resolveTitleCard;      // бут-экран умеет закрываться и не по клику
+        private bool _provingGroundsPending;          // Ристалище запросили до того, как меню открылось
         // Звук экранов, у которых он СВОЙ (награда, лавка, привал, сундук): общий клик даёт корневой
         // UiSoundSystem, а эти моменты игрок должен отличать на слух.
         private readonly Core.Audio.IAudioService _audio;
@@ -116,12 +118,29 @@ namespace Guildmaster.UI
         /// </summary>
         public bool TryLeaveMainMenuForProvingGrounds()
         {
-            if (_resolveMainMenuAsProvingGrounds == null) return false;
+            if (_resolveMainMenuAsProvingGrounds == null)
+            {
+                // Меню ещё не открыто — мы на бут-экране, и запрос пришёл из dev-консоли (её открывают
+                // как раз тогда, когда игра куда-то не дошла). Запоминаем намерение и торопим титул-карту:
+                // главное меню отдаст Ристалище сразу, как только появится. Прежде запрос в этот момент
+                // молча терялся, и команда «работала» без единого следа (наход. Макса 02.08.2026).
+                _provingGroundsPending = true;
+                SkipTitleCard();
+                return true;
+            }
 
             System.Action resolve = _resolveMainMenuAsProvingGrounds;
             _resolveMainMenuAsProvingGrounds = null;
             resolve();
             return true;
+        }
+
+        /// <summary>Закрыть бут-экран, если он на экране: за ним ждут главного меню.</summary>
+        private void SkipTitleCard()
+        {
+            System.Action resolve = _resolveTitleCard;
+            _resolveTitleCard = null;
+            resolve?.Invoke();
         }
 
         /// <summary>
@@ -1047,13 +1066,20 @@ namespace Guildmaster.UI
         private async UniTaskVoid ShowTitleCardAsync(OpenTitleCardRequest req)
         {
             var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
-                resolve => TitleCardScreenView.Build(
-                    _titleCardUxml,
-                    _titleCardSeal,
-                    key => _loc?.GetString(key),
-                    onDismiss: () => resolve(true)));
+                resolve =>
+                {
+                    // Бут-экран умеет закрываться не только по клику: dev-запрос Ристалища торопит его,
+                    // потому что ждать заставку ради тест-боя незачем (см. TryLeaveMainMenuForProvingGrounds).
+                    _resolveTitleCard = () => resolve(true);
+                    return TitleCardScreenView.Build(
+                        _titleCardUxml,
+                        _titleCardSeal,
+                        key => _loc?.GetString(key),
+                        onDismiss: () => resolve(true));
+                });
 
             await _nav.ShowAsync(screen);
+            _resolveTitleCard = null;
             req.OnDismiss?.Invoke();
         }
 
@@ -1111,6 +1137,15 @@ namespace Guildmaster.UI
                 resolve =>
                 {
                     _resolveMainMenuAsProvingGrounds = () => resolve(MainMenuChoice.ProvingGrounds);
+
+                    // Запрос пришёл, пока меню ещё не было на экране, — отдаём Ристалище сразу, не
+                    // показывая меню игроку: он его не звал, он звал тест-бой.
+                    if (_provingGroundsPending)
+                    {
+                        _provingGroundsPending = false;
+                        _resolveMainMenuAsProvingGrounds = null;
+                        resolve(MainMenuChoice.ProvingGrounds);
+                    }
                     return MainMenuScreenView.Build(
                         _mainMenuUxml,
                         req.HasSave,
