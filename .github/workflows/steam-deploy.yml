@@ -10,8 +10,8 @@ on:
       branch:
         description: "Ветка Steam, куда ставим live"
         type: choice
-        options: [dev, playtest]
-        default: dev
+        options: [dev_happy_guidmasters, playtest]
+        default: dev_happy_guidmasters
       note:
         description: "Пометка к сборке (видна в партнёрке)"
         type: string
@@ -63,7 +63,7 @@ jobs:
       # вслух, — плохая идея: сообщение об отказе увидит тот, кто уже нажал.
       - name: Refuse the live branch
         run: |
-          branch="${{ github.event_name == 'push' && 'dev' || inputs.branch }}"
+          branch="${{ github.event_name == 'push' && 'dev_happy_guidmasters' || inputs.branch }}"
           case "$branch" in
             default|public|"")
               echo "::error::Ветка '$branch' — боевая. В прод переводит человек кнопкой в партнёрке."
