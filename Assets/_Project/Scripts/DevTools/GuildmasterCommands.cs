@@ -40,17 +40,14 @@ namespace Guildmaster.DevTools
         private Guildmaster.Game.Flow.BattleHost HostOrNull => _activities != null ? _activities.Battle : null;
 
         /// <summary>
-        /// Он же, но с открытием дев-арены при нужде: команда боя вне мероприятия и означает «заведи мне
-        /// арену». Пустое занятие — законное мероприятие (план: дев-арена стоит рядом с забегом).
+        /// Он же, но с открытием РИСТАЛИЩА при нужде: команда боя вне мероприятия и означает «заведи мне
+        /// площадку». Своей дев-арены у нас нет (решение Макса 02.08.2026) — тест-бои это прегены состава
+        /// для Ристалища, и открывать им отдельный вид мероприятия значило бы держать второй путь.
         /// </summary>
         private Guildmaster.Game.Flow.BattleHost HostEnsured
             => _activities != null ? _activities.EnsureBattleHost() : null;
-        [Tooltip("UXML витрины боёв (F3): поиск по энкаунтерам, пресетам и срезам китов.")]
-        [SerializeField] private UnityEngine.UIElements.VisualTreeAsset _battleBrowserUxml;
 
         private Guildmaster.UI.MenuRouter _menuRouter; // владелец показа консоли: у него и спрашиваем видимость
-        private Guildmaster.UI.UiNavigator _navigator; // витрину боёв показываем сами: UI-слою о боях знать незачем
-        private DevBattleBrowserScreen _battleBrowser;
         private DevCommandRegistry _registry;          // куда кладём команды
         private DevCommandSet _commands;               // свои команды + статические наборы; снимаются вместе с модулем
 
@@ -166,7 +163,6 @@ namespace Guildmaster.DevTools
             // некуда класть, и это не ошибка (тот же случай, что и с сессией боя выше).
             resolver.TryResolve(out _registry);
             resolver.TryResolve(out _menuRouter);
-            resolver.TryResolve(out _navigator);
             _provingGroundsSubscription = _provingGroundsChangedSub?.Subscribe(e => OnProvingGroundsChanged(e));
         }
 
@@ -193,7 +189,6 @@ namespace Guildmaster.DevTools
         private void Start()
         {
             if (_menuRouter != null) _menuRouter.DevConsoleVisibilityChanged += OnConsoleVisibilityChanged;
-            if (_input != null) _input.DevBattlesToggleRequested += ToggleBattleBrowser;
 
             // Команды кладём ЗДЕСЬ, а не в Construct: реестр приходит инъекцией, но статические наборы
             // (арена/карта/эффекты) тоже надо куда-то регистрировать, а своего объекта в сцене у них нет.
@@ -217,40 +212,7 @@ namespace Guildmaster.DevTools
         {
             _provingGroundsSubscription?.Dispose();
             if (_menuRouter != null) _menuRouter.DevConsoleVisibilityChanged -= OnConsoleVisibilityChanged;
-            if (_input != null) _input.DevBattlesToggleRequested -= ToggleBattleBrowser;
             _commands?.Dispose();
-        }
-
-        /// <summary>
-        /// Показать/снять витрину боёв (F3). Экран живёт одним инстансом: в нём набранный запрос и выбор,
-        /// и пересоздание сбрасывало бы их при каждом закрытии.
-        /// </summary>
-        private void ToggleBattleBrowser()
-        {
-            if (_navigator == null || _registry == null) return;
-
-            if (_battleBrowserUxml == null)
-            {
-                Debug.LogError("[GuildmasterCommands] - витрина боёв: не разведён UXML " +
-                               "(поле _battleBrowserUxml на объекте dev-команд)", this);
-                return;
-            }
-
-            if (_battleBrowser != null && _navigator.AnyScreen(s => ReferenceEquals(s, _battleBrowser)))
-            {
-                _navigator.Remove(_battleBrowser);
-                return;
-            }
-
-            // Полки взаимоисключающи: открытая консоль уходит, иначе две простыни лягут внахлёст.
-            _menuRouter?.CloseDevOverlays();
-
-            if (_battleBrowser == null)
-                _battleBrowser = new DevBattleBrowserScreen(_battleBrowserUxml, _registry, _content);
-            else
-                _battleBrowser.Refresh();   // база могла пересобраться, пока витрина была закрыта
-
-            _navigator.Push(_battleBrowser);
         }
 
         // Консоль показана/снята — тот же смысл, что раньше несли OnActivate/OnDeactivate у QFSW.
@@ -380,143 +342,10 @@ namespace Guildmaster.DevTools
                 _ => { ToggleOverlaySource(); return null; });
         }
 
-        // ── Готовые бои из контент-БД ────────────────────────────────────────
-
-        /// <summary>Запустить энкаунтер по id. Player-сторона пустая: это превью врагов.</summary>
-        private string LoadEncounter(string id)
-        {
-            if (_content == null) return "контент-БД недоступна";
-            if (!_content.TryGet(id, out Data.Definitions.EncounterData enc) || enc == null)
-                return $"нет энкаунтера «{id}». Список — battles";
-
-            Guildmaster.Game.Flow.BattleHost host = HostEnsured;
-            if (host == null) return "мира нет — бой открывать некому";
-
-            // Голый энкаунтер — это превью врагов без своей стороны. Заворачиваем в транзиентный пресет:
-            // бой рождается ровно одной дорогой, и у неё на входе всегда пресет.
-            Data.Definitions.BattlePresetData preset = Data.Definitions.BattlePresetData.CreateRuntime(
-                encounter: enc, roster: System.Array.Empty<Data.Definitions.PlayerSlot>(),
-                mode: Data.Definitions.DeploymentMode.Fixed, partyItems: null, id: $"battle.dev.{id}");
-
-            host.Open(preset);
-            SetLastBattle(c => c.HostEnsured?.Open(preset));
-            return $"энкаунтер «{id}» запущен";
-        }
-
-        /// <summary>Запустить боевой пресет по id (враги плюс собственный ростер пресета).</summary>
-        private string LoadPreset(string id)
-        {
-            if (_content == null) return "контент-БД недоступна";
-            if (!_content.TryGet(id, out Data.Definitions.BattlePresetData preset) || preset == null)
-                return $"нет пресета «{id}». Список — battles";
-
-            Guildmaster.Game.Flow.BattleHost host = HostEnsured;
-            if (host == null) return "мира нет — бой открывать некому";
-
-            host.Open(preset);
-            SetLastBattle(c => c.HostEnsured?.Open(preset));
-            return $"пресет «{id}» запущен";
-        }
-
-        /// <summary>Перечислить, что вообще можно запустить.</summary>
-        private string ListBattles()
-        {
-            if (_content == null) return "контент-БД недоступна";
-
-            var sb = new System.Text.StringBuilder();
-            var encounters = _content.All<Data.Definitions.EncounterData>();
-            var presets = _content.All<Data.Definitions.BattlePresetData>();
-
-            sb.AppendLine($"энкаунтеров {encounters?.Count ?? 0}, пресетов {presets?.Count ?? 0}");
-            if (encounters != null)
-                for (int i = 0; i < encounters.Count; i++) sb.AppendLine($"  battle {encounters[i].Id}");
-            if (presets != null)
-                for (int i = 0; i < presets.Count; i++) sb.AppendLine($"  preset {presets[i].Id}");
-
-            return sb.ToString();
-        }
-
-        // Загрузчик берём у ЖИВОГО боевого скоупа на каждый вызов, а не кэшируем: после F5 старый скоуп
-        // мёртв, и захваченная ссылка грузила бы бой в несуществующую арену.
-        /// <summary>Загрузчик ИДУЩЕГО боя или null. Пере-спавн состава внутри уже открытого боя.</summary>
-        private EncounterLoader LiveLoader() => HostOrNull?.Resolve<EncounterLoader>();
-
-        /// <summary>Кит для одиночного среза — аргумент команды <c>kit</c>.</summary>
-        /// <remarks>
-        /// Семь отдельных команд <c>gm_spawn_*</c> свёрнуты сюда (ревизия 31.07): они отличались только
-        /// китом и числом болванчиков, а в палитре занимали седьмую часть списка. Ошибка в имени теперь
-        /// сама печатает допустимые значения — искать нужную команду по памяти больше не надо.
-        /// </remarks>
-        private enum KitSlice { Spearman, Shepherd, Cryomancer, Defender, Ranger, Assassin, Monk }
-
-        // 0 = взять дефолт среза: у каждого он свой, и подставлять общий было бы враньём (пастырю нужны
-        // союзники, а не враги).
-        private void SpawnKitSlice(KitSlice kit, int count)
-        {
-            switch (kit)
-            {
-                case KitSlice.Spearman:   SpawnSpearman(count > 0 ? count : 3);   break;
-                case KitSlice.Shepherd:   SpawnShepherd(count > 0 ? count : 2);   break;
-                case KitSlice.Cryomancer: SpawnCryomancer(count > 0 ? count : 3); break;
-                case KitSlice.Defender:   SpawnDefender(count > 0 ? count : 3);   break;
-                case KitSlice.Ranger:     SpawnRanger(count > 0 ? count : 3);     break;
-                case KitSlice.Assassin:   SpawnAssassin(count > 0 ? count : 3);   break;
-                case KitSlice.Monk:       SpawnMonk(count > 0 ? count : 4);       break;
-            }
-        }
-
         /// <summary>Зафиксировать сид боя для детерминизм-отладки (только до старта).</summary>
         public void SetRngSeed(ulong seed)
         {
             Debug.Log($"[GuildmasterCommands] - gm_rng_seed {seed}: изменение сида поддерживается только через CombatLifetimeScope до запуска");
-        }
-
-        /// <summary>Поднять тест-бой N×M юнитов с заданными HP.</summary>
-        public void SpawnBattle(int countPerTeam = 2)
-        {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-
-            ResetForNewBattle();
-
-            for (int i = 0; i < countPerTeam; i++)
-            {
-                Sim.EnqueueUnitSpawn(MakeDummy(0, new Vector2(-5f + i, i)));
-                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2( 5f - i, i)));
-            }
-
-            _lastBattleSetup = self => self.SpawnBattle(countPerTeam);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_battle: добавлено {countPerTeam}×2 болванчиков");
-        }
-
-        /// <summary>
-        /// Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия).
-        /// Спавнит сеткой с шагом МЕНЬШЕ диаметра тела → юниты сразу перекрываются и разъезжаются; высокий
-        /// HP и низкий урон держат толпу живой, чтобы видеть spacing и при сшибке блобов в центре.
-        /// Крути на глаз <c>SimTuningConfig</c> (Strength / Iterations / BodyRadiusPerSize) или live gm_sep_*,
-        /// перезапуск на месте — R. Параметр <paramref name="size"/> — «толщина» тел (Size-стат).
-        /// </summary>
-        public void SpawnCrowd(int perTeam = 8)
-        {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-
-            ResetForNewBattle();
-
-            int cols = Mathf.Max(1, Mathf.CeilToInt(Mathf.Sqrt(perTeam)));
-            const float spacing = 0.15f; // << диаметра тела (~0.5 при Size 1) → перекрытие на старте
-
-            for (int i = 0; i < perTeam; i++)
-            {
-                int cx = i % cols, cy = i / cols;
-                float ox = (cx - (cols - 1) * 0.5f) * spacing;
-                float oy = (cy - (cols - 1) * 0.5f) * spacing;
-                Sim.EnqueueUnitSpawn(MakeDummy(0, new Vector2(-3f + ox, oy)));
-                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2( 3f + ox, oy)));
-            }
-
-            _lastBattleSetup = self => self.SpawnCrowd(perTeam);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_crowd: {perTeam}×2 болванчиков, плотный клубок");
         }
 
         /// <summary>Показать текущие параметры расталкивания (SeparationSystem).</summary>
@@ -559,190 +388,6 @@ namespace Guildmaster.DevTools
             SepInfo();
         }
 
-        /// <summary>Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4.</summary>
-        public void SpawnSpearman(int enemies = 3)
-        {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-            RelicData relic = DevRelic("relic.iron_spearman");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Копейщик слева — через фабрику (реальный путь сборки: статы/линейная АА/активка/AI-профиль/мана).
-            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-5f, 0f)));
-
-            // Кластер болванчиков справа — чтобы линейная АА задевала нескольких и сработало условие «≥2 в радиусе».
-            for (int i = 0; i < enemies; i++)
-            {
-                float y = (i - (enemies - 1) * 0.5f) * 0.8f; // компактно по вертикали
-                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(5f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnSpearman(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_spearman: копейщик vs {enemies} болванчиков");
-        }
-
-        /// <summary>Заспавнить «Светлого пастыря» (team 0) + раненых союзников против болванчиков — срез §10.1.</summary>
-        public void SpawnShepherd(int allies = 2)
-        {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-            RelicData relic = DevRelic("relic.light_shepherd");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Пастырь в тылу слева — через фабрику (реальный путь: AI-профиль Heal, хил-снаряд, активка «Длань жизни»).
-            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
-
-            // Раненые союзники-болванчики (team 0) на фронте: старт на 40% HP — видно выбор раненого и хил-снаряды.
-            for (int i = 0; i < allies; i++)
-            {
-                float y = (i - (allies - 1) * 0.5f) * 1.2f;
-                var ally = MakeDummy(0, new Vector2(-3f, y));
-                ally.CurrentHP = ally.Stats.Get(StatType.MaxHP) * 0.4f; // 40% — есть кого лечить
-                Sim.EnqueueUnitSpawn(ally);
-            }
-
-            // Пара болванчиков справа (team 1) — чтобы союзники завязли в бою и просаживались под «Длань».
-            for (int i = 0; i < 2; i++)
-            {
-                float y = (i - 0.5f) * 1.2f;
-                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnShepherd(allies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_shepherd: пастырь + {allies} раненых союзника vs 2 болванчика");
-        }
-
-        /// <summary>Заспавнить «Криоманта» (team 0) против кластера болванчиков (team 1) — срез §10.2.</summary>
-        public void SpawnCryomancer(int enemies = 3)
-        {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-            RelicData relic = DevRelic("relic.cryomancer");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Криомант в тылу слева — через фабрику (реальный путь: on-hit «Заморозка», масс-стан «Ледяные оковы», AI PreferUntagged).
-            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
-
-            // Кластер болванчиков справа: пока Криомант раздаёт «Заморозку», их накапливается ≥2 → срабатывают «Ледяные оковы».
-            for (int i = 0; i < enemies; i++)
-            {
-                float y = (i - (enemies - 1) * 0.5f) * 1f;
-                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnCryomancer(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_cryomancer: криомант vs {enemies} болванчиков");
-        }
-
-        /// <summary>Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10.3.</summary>
-        public void SpawnDefender(int enemies = 3)
-        {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-            RelicData relic = DevRelic("relic.defender");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Защитник по центру-слева — через фабрику (реальный путь: пассив «Оплот» pre-damage, HighestThreat, ульта).
-            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-4f, 0f)));
-
-            // Болванчики справа бьют защитника. «Оплот» поднимает щит на ЛЮБОЙ удар (PassiveTrigger.AnyHit, внутр. КД 4с).
-            for (int i = 0; i < enemies; i++)
-            {
-                float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnDefender(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_defender: защитник vs {enemies} ударных болванчиков");
-        }
-
-        /// <summary>Заспавнить «Лесного следопыта» (team 0) против кластера болванчиков (team 1) — срез §10.4.</summary>
-        public void SpawnRanger(int enemies = 3)
-        {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-            RelicData relic = DevRelic("relic.ranger");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Следопыт слева — через фабрику (реальный путь: кайт, стрельба на ходу, «Метка охотника» с переносом).
-            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
-
-            // Кластер болванчиков справа лезет в ближний бой — видно кайт (отход) и стрельбу на ходу.
-            for (int i = 0; i < enemies; i++)
-            {
-                float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnRanger(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_ranger: следопыт vs {enemies} болванчиков");
-        }
-
-        /// <summary>Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.</summary>
-        public void SpawnAssassin(int enemies = 3)
-        {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-            RelicData relic = DevRelic("relic.assassin");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Убийца слева — через фабрику (реальный путь: пассивы «Скрытность» + «Изворотливость» из GrantedEffects,
-            // усиленный первый удар, негейт крупных ударов, рестелс после убийства).
-            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-5f, 0f)));
-
-            // Болванчики справа. «Изворотливость» гейтит ЛЮБУЮ автоатаку независимо от размера урона (PassiveTrigger.AnyHit).
-            for (int i = 0; i < enemies; i++)
-            {
-                float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnAssassin(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_assassin: убийца vs {enemies} болванчиков");
-        }
-
-        /// <summary>Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10.6.</summary>
-        public void SpawnMonk(int enemies = 4)
-        {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-            RelicData relic = DevRelic("relic.whirl_monk");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Монах слева — через фабрику (реальный путь: рывок → фиксация → отбрасывание → телепорт, §10.6).
-            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
-
-            // Болванчики справа — раскиданы ХАОТИЧНО (детерминированный хэш по индексу, чтобы R повторял ту же
-            // расстановку), далеко друг от друга: видно заход к конкретной цели и УГЛОВОЙ цепной толчок «ядра»,
-            // а не ровный ряд. x∈[2,8], y∈[-3.5,3.5].
-            for (int i = 0; i < enemies; i++)
-            {
-                float hx = Frac(Mathf.Sin((i + 1) * 12.9898f) * 43758.5453f);
-                float hy = Frac(Mathf.Sin((i + 1) * 78.233f)  * 43758.5453f);
-                var pos = new Vector2(2f + hx * 6f, -3.5f + hy * 7f);
-                Sim.EnqueueUnitSpawn(MakeDummy(1, pos));
-            }
-
-            _lastBattleSetup = self => self.SpawnMonk(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков (хаос)");
-        }
-
-        // Дробная часть — детерминированный «хэш» [0,1) для хаотичной, но воспроизводимой расстановки.
-        private static float Frac(float v) => v - Mathf.Floor(v);
 
         /// <summary>Выставить HP юниту по ID.</summary>
         public void SetHp(int unitId, float hp)
@@ -923,67 +568,6 @@ namespace Guildmaster.DevTools
             _provingGroundsPub.Publish(new Core.Flow.OpenProvingGroundsRequest());
             Debug.Log("[GuildmasterCommands] - gm_proving_grounds: запрошено Ристалище");
             return true;
-        }
-
-        /// <summary>
-        /// Зеркальный отряд 4v4 из реальных китов — ровно тот бой, на котором стенд поймал преимущество
-        /// стороны. Составы, роли и позиции обеих команд отражены по оси X, поэтому честный исход —
-        /// ничья: любой перевес означает, что порядок обработки решает бой за бойцов.
-        /// </summary>
-        public void SpawnMirror()
-        {
-            // Тот же строй, что у командного бенча: фронт вплотную, тыл за спинами.
-            (string id, float x, float y)[] squad =
-            {
-                ("relic.defender",        2.2f, -0.6f),
-                ("relic.flame_swordsman", 2.2f,  0.6f),
-                ("relic.cryomancer",      4.4f, -0.6f),
-                ("relic.light_shepherd",  4.4f,  0.6f),
-            };
-
-            var relics = new RelicData[squad.Length];
-            for (int i = 0; i < squad.Length; i++)
-            {
-                relics[i] = DevRelic(squad[i].id);
-                if (relics[i] == null) return;
-            }
-
-            var mine   = new System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn>();
-            var theirs = new System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn>();
-            for (int i = 0; i < squad.Length; i++)
-            {
-                mine.Add(new Data.Definitions.ProvingGroundsSpawn(relics[i], new Vector2(-squad[i].x, squad[i].y)));
-                theirs.Add(new Data.Definitions.ProvingGroundsSpawn(relics[i], new Vector2(squad[i].x, squad[i].y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnMirror();
-
-            if (StageOnProvingGrounds(mine, theirs, "gm_spawn_mirror"))
-            {
-                Debug.Log("[GuildmasterCommands] - gm_spawn_mirror: зеркальный отряд 4v4 заказан площадке " +
-                          "(Защитник, Огненный мечник, Криомант, Пастырь). Честный исход — ничья. " +
-                          "Бой начинает кнопка «Начать».");
-                return;
-            }
-
-            SpawnMirrorNow(relics, squad); // площадки нет (standalone dev-арена) — ставим бой прямо здесь
-        }
-
-        // Прямой спавн без площадки: dev-арена, где расстановки-владельца попросту нет.
-        private void SpawnMirrorNow(RelicData[] relics, (string id, float x, float y)[] squad)
-        {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-
-            ResetForNewBattle();
-
-            // Порядок спавна — вся левая команда, затем вся правая: так же, как в бою и на стенде.
-            for (int i = 0; i < squad.Length; i++)
-                Sim.EnqueueUnitSpawn(Factory.Create(relics[i], null, 0, new Vector2(-squad[i].x, squad[i].y)));
-            for (int i = 0; i < squad.Length; i++)
-                Sim.EnqueueUnitSpawn(Factory.Create(relics[i], null, 1, new Vector2(squad[i].x, squad[i].y)));
-
-            Debug.Log("[GuildmasterCommands] - gm_spawn_mirror: зеркальный отряд 4v4 поставлен на dev-арене.");
         }
 
         /// <summary>
