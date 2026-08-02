@@ -87,6 +87,19 @@ namespace Guildmaster.Net.Session
             SteamFriends.OpenGameInviteOverlay(_lobby.Value.Id);
         }
 
+        /// <summary>
+        /// Открыть список друзей: оттуда игрок входит в чужую игру (ПКМ по другу → присоединиться).
+        /// </summary>
+        /// <remarks>
+        /// Своего лобби для этого не нужно — мы не зовём, а ищем, куда пойти. Именно поэтому вызов
+        /// живёт рядом с приглашением, но не требует <see cref="HasLobby"/>.
+        /// </remarks>
+        public void OpenFriendsOverlay()
+        {
+            if (!IsSteamReady) return;
+            SteamFriends.OpenOverlay("friends");
+        }
+
         /// <summary>Закрыть лобби (конец сессии).</summary>
         public void LeaveLobby()
         {

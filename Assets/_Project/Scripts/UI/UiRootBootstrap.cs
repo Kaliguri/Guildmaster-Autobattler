@@ -60,11 +60,12 @@ namespace Guildmaster.UI
         [Tooltip("UXML экрана исхода забега (Победа/Поражение → В меню).")]
         [SerializeField] private VisualTreeAsset _outcomeScreen;
 
-        [Tooltip("UXML главного меню (Начать/Продолжить/Настройки/Выход).")]
+        [Tooltip("UXML главного меню (Создать игру / Присоединиться / Настройки / Выход).")]
         [SerializeField] private VisualTreeAsset _mainMenuScreen;
 
-        [Tooltip("UXML экрана «Сетевая игра» (создать/присоединиться), открывается поверх главного меню.")]
-        [SerializeField] private VisualTreeAsset _coopScreen;
+        [Tooltip("UXML экрана «Создать игру»: режим, гильдия, галочка лобби. Поверх главного меню.")]
+        [SerializeField] private VisualTreeAsset _newGameScreen;
+
 
         [Tooltip("UXML boot title card (Happy Guildmasters) до главного меню.")]
         [SerializeField] private VisualTreeAsset _titleCardScreen;
@@ -251,7 +252,7 @@ namespace Guildmaster.UI
             // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
             // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
             _uiSound?.Attach(_doc.rootVisualElement);
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen, _coopScreen);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen, _newGameScreen);
             _input.MenuToggleRequested += OnMenuToggle;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

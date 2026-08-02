@@ -153,73 +153,136 @@ namespace Guildmaster.Game.Services
         }
 
         /// <summary>
-        /// Верхний цикл игры (план D1): главное меню → забег → меню. Начать = новый забег,
-        /// Продолжить = из автосейва, Выход = закрыть игру. Точка входа при обычном старте (не dev-разрез).
+        /// Верхний цикл игры: главное меню → мероприятие → меню. Точка входа при обычном старте
+        /// (не dev-разрез).
         /// <para>Бут-экран сюда не входит: он показывается раньше, вокруг загрузки мира
         /// (<c>GameBootstrap</c>), — иначе между поднятым миром и первым UI мелькает пустая арена.</para>
         /// </summary>
+        /// <remarks>
+        /// <b>Цикл не выбирает режим — он исполняет заказ</b> (модель Макса 02.08.2026). Меню отдаёт
+        /// сюда готовый <see cref="GameStartRequest"/>: во что играем, в каком доме и пускаем ли
+        /// друзей. Прежде на каждый режим здесь была своя ветка, а кооп был отдельным входом рядом с
+        /// игрой — то есть две двери вели в одно и то же.
+        /// </remarks>
         public async UniTask RunGameAsync()
         {
             while (true)
             {
-                // Главное меню живёт ВНЕ сеанса: сеанс рождается выбором режима, вместе с ролью. Поэтому
-                // «есть ли сейв» — вопрос к диску и активной гильдии, а не к держателю состояния,
-                // которого сейчас не существует.
+                // Главное меню живёт ВНЕ сеанса: сеанс рождается выбором в меню, вместе с ролью.
                 _sessions.Close();
-                bool hasSave = RunSaves.Exists(_save, _profiles);
 
-                MainMenuChoice choice = await _mainMenuPresenter.ShowAsync(hasSave);
+                // Кооп кончается вместе с игрой, а не отдельной кнопкой. Отдельного экрана «Сетевая
+                // игра» с «Отключиться» больше нет: сессия — свойство игры, и пережить возврат в меню
+                // она не может. У хоста это конец сессии для всех — так и задумано, миграции авторитета
+                // мы не пишем (решение 01.08.2026).
+                if (_coop != null && _coop.State != Core.Net.CoopSessionState.Offline) _coop.Leave();
 
-                if (choice == MainMenuChoice.Quit) { QuitGame(); return; }
+                MainMenuOutcome outcome = await _mainMenuPresenter.ShowAsync();
 
-                // Ристалище — не забег: ни сейва, ни акта, ни карты. Открываем площадку, ждём выхода
-                // и возвращаемся к меню тем же витком.
-                if (choice == MainMenuChoice.ProvingGrounds)
-                {
-                    await ShowProvingGroundsAsync();
-                    continue;
-                }
+                if (outcome.Action == MainMenuAction.Quit) { QuitGame(); return; }
 
                 // Приглашение доехало до рукопожатия: играем в чужом сеансе, пока он не кончится.
-                if (choice == MainMenuChoice.JoinCoop)
+                if (outcome.Action == MainMenuAction.JoinCoop)
                 {
                     await PlayAsGuestAsync();
                     continue;
                 }
 
-                // Кампания: с этого мгновения у состояния есть владелец — мы. Роль выбирается здесь,
-                // одним разом на весь сеанс; гостевой сеанс откроет вход по приглашению (кооп-вертикаль).
-                RunStateService runStates = RequireRun();
-                if (runStates == null) return;
-
-                if (choice == MainMenuChoice.Continue)
-                {
-                    Core.Persistence.SaveLoadResult<Guild.RunState> loaded = runStates.TryLoad();
-                    if (!loaded.IsOk)
-                    {
-                        // Показать это игроку экраном — фаза E ТЗ [[save-system]]; пока внятный лог, но
-                        // молча в меню не возвращаемся: «сейв есть, но заблокирован» ≠ «сейва нет».
-                        Debug.LogWarning($"[GameFlow] - продолжить не вышло ({loaded.Status}" +
-                                         (loaded.IsBlocked ? $", записан версией {loaded.SavedGameVersion}" : "") +
-                                         ") → назад в меню");
-                        continue;
-                    }
-                }
-                else
-                {
-                    runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
-                }
-
-                // QA #18: «В главное меню» из системного меню отменяет забег → OperationCanceledException
-                // всплывает из петли акта; ловим и уходим на новый виток while (показ главного меню). Сейв
-                // остаётся (autosave по ходу) — забег можно продолжить.
-                try { await RunActAsync(); } // BeginAct + петля + экран исхода + чистка сейва
-                catch (OperationCanceledException)
-                {
-                    Debug.Log("[GameFlow] - забег прерван из меню → возврат в главное меню");
-                }
+                if (!await PlayAsync(outcome.Start)) return;
             }
         }
+
+        /// <summary>
+        /// Исполнить заказ игрока: поднять лобби, если звал друзей, открыть сеанс владельца и провести
+        /// выбранный режим. <c>false</c> — играть не с кем и не в чем, цикл дальше не идёт.
+        /// </summary>
+        private async UniTask<bool> PlayAsync(GameStartRequest request)
+        {
+            // Лобби поднимается ДО входа в режим: пока мы внутри, звать друзей будет уже некогда — а
+            // кооп у нас свойство сеанса, а не отдельная игра, и открыт для всех трёх режимов сразу.
+            if (request.OnlineLobby && _coop != null && _coop.State == Core.Net.CoopSessionState.Offline)
+                _coop.StartHost();
+
+            if (request.Mode != GameMode.Campaign)
+            {
+                // Площадка и матч — не забег: ни сейва, ни акта, ни карты. Открываем, ждём выхода и
+                // возвращаемся к меню тем же витком.
+                await ShowProvingGroundsAsync(request.Mode == GameMode.Pvp
+                    ? ActivitySetup.Pvp
+                    : ActivitySetup.ProvingGrounds);
+                return true;
+            }
+
+            // Дом выбран в меню, и выбран ДО сеанса: ключ сейва растёт из активной гильдии, поэтому
+            // сеанс, открытый раньше неё, писал бы забег не туда.
+            if (!SelectGuild(request)) return true;
+
+            // Кампания: с этого мгновения у состояния есть владелец — мы.
+            RunStateService runStates = RequireRun();
+            if (runStates == null) return false;
+
+            // Забег в доме либо уже идёт, либо начинается. Отдельного «Продолжить» нет: игрок выбрал
+            // дом, а не действие (ТЗ [[save-system]] §3 — гильдия и есть слот сохранения).
+            if (RunSaves.Exists(_save, _profiles))
+            {
+                Core.Persistence.SaveLoadResult<RunState> loaded = runStates.TryLoad();
+                if (!loaded.IsOk)
+                {
+                    // Показать это игроку экраном — фаза E ТЗ [[save-system]]; пока внятный лог, но
+                    // молча в меню не возвращаемся: «сейв есть, но заблокирован» ≠ «сейва нет».
+                    Debug.LogWarning($"[GameFlow] - забег дома не открылся ({loaded.Status}" +
+                                     (loaded.IsBlocked ? $", записан версией {loaded.SavedGameVersion}" : "") +
+                                     ") → назад в меню");
+                    return true;
+                }
+            }
+            else
+            {
+                runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
+            }
+
+            // QA #18: «В главное меню» из системного меню отменяет забег → OperationCanceledException
+            // всплывает из петли акта; ловим и уходим на новый виток while (показ главного меню). Сейв
+            // остаётся (autosave по ходу) — забег можно продолжить.
+            try { await RunActAsync(); } // BeginAct + петля + экран исхода + чистка сейва
+            catch (OperationCanceledException)
+            {
+                Debug.Log("[GameFlow] - забег прерван из меню → возврат в главное меню");
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Сделать активным дом из заказа, заведя новый, если игрок выбрал «новая гильдия».
+        /// <c>false</c> — дома нет и не завелось, играть в кампанию некуда.
+        /// </summary>
+        private bool SelectGuild(GameStartRequest request)
+        {
+            if (_profiles == null)
+            {
+                Debug.LogError("[GameFlow] - нет службы профилей: кампании негде жить");
+                return false;
+            }
+
+            if (!request.IsNewGuild) return _profiles.SelectGuild(request.GuildId);
+
+            // Профиль заводится тем же кликом, если его ещё нет: игрок просил игру, а не анкету.
+            // Экран выбора профилей — своя задача, и до неё дом обязан появляться сам.
+            if (string.IsNullOrEmpty(_profiles.ActiveProfile.Id) && _profiles.CreateProfile("Игрок") == null)
+            {
+                Debug.LogError("[GameFlow] - профиль не завёлся (лимит?) → кампанию не начать");
+                return false;
+            }
+
+            if (_profiles.CreateGuild(DefaultGuildName(_profiles)) != null) return true;
+
+            Debug.LogWarning("[GameFlow] - новая гильдия не завелась (лимит домов?) → назад в меню");
+            return false;
+        }
+
+        /// <summary>Имя дома по умолчанию. Переименование — дело игрока, а не условие входа в игру.</summary>
+        private static string DefaultGuildName(Core.Persistence.IProfileService profiles) =>
+            $"Гильдия {profiles.Guilds.Count + 1}";
 
         /// <summary>
         /// Открыть Ристалище и держать цикл здесь, пока игрок не выйдет с площадки
@@ -231,7 +294,7 @@ namespace Guildmaster.Game.Services
         /// владелец расстановки (интент может быть и отклонён), поэтому выход ловим по СОСТОЯНИЮ площадки,
         /// а не по своему предположению о нём.
         /// </remarks>
-        private async UniTask ShowProvingGroundsAsync()
+        private async UniTask ShowProvingGroundsAsync(ActivitySetup setup)
         {
             if (_provingGroundsChangedSub == null)
             {
@@ -243,7 +306,7 @@ namespace Guildmaster.Game.Services
             // расстановки, которому адресован интент ниже. Пока площадку открывали одним интентом,
             // отвечать на него было некому — боевой скоуп рождается по требованию, и в этот момент
             // его ещё не существовало.
-            _activities.Open(Data.Definitions.ActivitySetup.ProvingGrounds);
+            _activities.Open(setup);
 
             // Токен мероприятия взводим и здесь, а не только на забеге: «В главное меню» из системного
             // меню отменяет ТЕКУЩЕЕ мероприятие, каким бы оно ни было. Пока токен взводил только забег,

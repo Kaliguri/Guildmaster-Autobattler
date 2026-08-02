@@ -40,6 +40,11 @@ namespace Guildmaster.UI
         // транспорт не знает ничего — иначе сетевой стек приехал бы в слой, который рисует кнопки.
         private readonly Core.Net.ICoopSessionControl _coop;
 
+        // Дома и их забеги для экрана «Создать игру». Спрашиваются напрямую у профиля и диска, потому
+        // что меню живёт ВНЕ сеанса: держателя состояния в этот момент не существует.
+        private readonly Core.Persistence.IProfileService _profiles;
+        private readonly Core.Persistence.ISaveService    _save;
+
         // Палитра проекта — единственный владелец цвета. Роутер её не читает сам: он передаёт её ригу
         // карточек, чтобы тот красил тело той же ступенью приглушения, что бой.
         private readonly GuildmasterPalette _palette;
@@ -63,7 +68,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _campUxml;
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
-        private VisualTreeAsset _coopUxml;
+        private VisualTreeAsset _newGameUxml;
         private VisualTreeAsset _titleCardUxml;
         private Sprite _titleCardSeal;
         private VisualTreeAsset _loadoutInventoryUxml;
@@ -80,8 +85,12 @@ namespace Guildmaster.UI
                           GuildmasterPalette palette,
                           Core.DevConsole.DevCommandRegistry registry,
                           Core.DevConsole.DevConsoleLog devLog,
-                          Core.Net.ICoopSessionControl coop)
+                          Core.Net.ICoopSessionControl coop,
+                          Core.Persistence.IProfileService profiles,
+                          Core.Persistence.ISaveService save)
         {
+            _profiles = profiles;
+            _save = save;
             _coop = coop;
             _registry = registry;
             _log = devLog;
@@ -192,9 +201,9 @@ namespace Guildmaster.UI
             VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null,
             VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null,
             VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null,
-            VisualTreeAsset coopUxml = null)
+            VisualTreeAsset newGameUxml = null)
         {
-            _coopUxml = coopUxml;
+            _newGameUxml = newGameUxml;
             _devConsoleUxml = devConsoleUxml;
             _devLogUxml = devLogUxml;
             _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
@@ -611,6 +620,17 @@ namespace Guildmaster.UI
             screen.Q<Button>("btn-return").clicked += Pop;
             screen.Q<Button>("btn-settings").clicked += () => PushScreen(BuildSettingsScreen, ScreenKind.Modal);
 
+            // Приглашение живёт ЗДЕСЬ, а не в главном меню: лобби поднимается вместе с игрой, и до
+            // входа звать друга некуда. Экран не закрываем — оверлей Steam ложится поверх, игрок
+            // возвращается в ту же паузу.
+            var invite = screen.Q<Button>("btn-invite");
+            if (invite != null)
+            {
+                invite.text = Loc("ui.menu.invite", "Пригласить друга");
+                invite.SetEnabled(_coop?.CanInvite ?? false);
+                invite.clicked += () => _coop?.InviteFriend();
+            }
+
             // QA #18/#37: «В главное меню» прерывает забег ЕДИНОЙ отменой (токен) — снять меню (Pop) + отменить
             // забег; отмена сама закрывает открытый экран забега (карта/награда/…) через навигатор и всплывает
             // OperationCanceledException в GameFlow → главное меню. Никакого CloseAll-веника (снос K11). Сейв цел.
@@ -637,16 +657,21 @@ namespace Guildmaster.UI
         }
 
         /// <summary>
-        /// Экран «Сетевая игра»: поднять сессию, войти по адресу, отключиться. Открывается поверх
-        /// главного меню и его не резолвит — подключение происходит ДО забега, а не вместо него.
+        /// Экран «Создать игру»: режим, дом, галочка лобби. Открывается поверх главного меню и
+        /// резолвит его собранным заказом.
         /// </summary>
-        private VisualElement BuildCoopScreen()
+        private VisualElement BuildNewGameScreen(Action<GameStartRequest> onStart)
         {
-            if (CannotShow("Сетевая игра (_coopScreen)", _coopUxml)) return new VisualElement();
+            if (CannotShow("Создать игру (_newGameScreen)", _newGameUxml)) return new VisualElement();
 
-            VisualElement screen = FillRoot(CoopScreenView.Build(
-                _coopUxml, _coop, key => _loc?.GetString(key), onBack: Pop));
-            return screen;
+            return FillRoot(NewGameScreenView.Build(
+                _newGameUxml,
+                NewGameScreenView.ReadGuilds(_profiles, _save),
+                _profiles?.GuildsFull ?? false,
+                _coop?.IsSteamReady ?? false,
+                key => _loc?.GetString(key),
+                onStart: onStart,
+                onBack: Pop));
         }
 
         private VisualElement BuildSettingsScreen()
@@ -1130,45 +1155,36 @@ namespace Guildmaster.UI
             req.OnToMenu?.Invoke();
         }
 
-        // Главное меню (D1) — на UXML (MainMenuScreen.uxml). Начать/Продолжить/Выход резолвят OnChoice и закрывают
-        // меню; «Настройки» открываются поверх (Push) и меню не закрывают.
+        // Главное меню — на UXML (MainMenuScreen.uxml). «Создать игру» открывает выбор режима ПОВЕРХ
+        // меню и резолвит его собранным заказом; «Настройки» тоже поверх и меню не закрывают.
         public void OpenMainMenu(OpenMainMenuRequest req)
         {
             // Единственный гард, чей отказ ЗАКРЫВАЕТ игру: без главного меню игроку некуда деться, а висеть
             // на чёрном экране хуже. Поэтому Quit остаётся — но громко, а не молча, как было.
-            if (CannotShow("Главное меню (_mainMenuScreen)", _mainMenuUxml)) { req.OnChoice?.Invoke(MainMenuChoice.Quit); return; }
+            if (CannotShow("Главное меню (_mainMenuScreen)", _mainMenuUxml)) { req.OnChoice?.Invoke(MainMenuOutcome.Quit); return; }
             ShowMainMenuAsync(req).Forget();
         }
 
         private async UniTaskVoid ShowMainMenuAsync(OpenMainMenuRequest req)
         {
-            RouterResultScreen<MainMenuChoice> screen = null;
+            RouterResultScreen<MainMenuOutcome> screen = null;
 
-            // Настройки ИЗ ГЛАВНОГО МЕНЮ ведут себя как замена панели, а не как модалка поверх неё
-            // (реш. Макса, раунд 3): панель меню на время прячется, затемнение не накладывается —
-            // мы и так в меню, темнить нечего. В забеге настройки остаются модалкой со скримом.
-            void OpenSettingsFromMainMenu()
+            // Экран поверх меню: панель меню на время прячется, затемнение не накладывается — мы и так
+            // в меню, темнить нечего (реш. Макса, раунд 3). В забеге настройки остаются модалкой со
+            // скримом. Тем же приёмом открывается выбор режима.
+            void OpenOverMenu(Func<VisualElement> build)
             {
                 VisualElement menuPanel = screen?.Root;
                 if (menuPanel != null) menuPanel.style.display = DisplayStyle.None;
-                PushScreen(BuildSettingsScreen, ScreenKind.Modal, scrimless: true,
+                PushScreen(build, ScreenKind.Modal, scrimless: true,
                     onExit: () => { if (menuPanel != null) menuPanel.style.display = DisplayStyle.Flex; });
             }
 
-            // Сетевая игра ведёт себя как настройки: панель меню прячется, скрима нет — мы и так в меню.
-            void OpenCoopFromMainMenu()
-            {
-                VisualElement menuPanel = screen?.Root;
-                if (menuPanel != null) menuPanel.style.display = DisplayStyle.None;
-                PushScreen(BuildCoopScreen, ScreenKind.Modal, scrimless: true,
-                    onExit: () => { if (menuPanel != null) menuPanel.style.display = DisplayStyle.Flex; });
-            }
-
-            screen = new RouterResultScreen<MainMenuChoice>(ScreenKind.Page, MainMenuChoice.Quit,
+            screen = new RouterResultScreen<MainMenuOutcome>(ScreenKind.Page, MainMenuOutcome.Quit,
                 resolve =>
                 {
-                    _resolveMainMenuAsProvingGrounds = () => resolve(MainMenuChoice.ProvingGrounds);
-                    _resolveMainMenuAsCoopGuest      = () => resolve(MainMenuChoice.JoinCoop);
+                    _resolveMainMenuAsProvingGrounds = () => resolve(MainMenuOutcome.StartGame(GameStartRequest.DevProvingGrounds));
+                    _resolveMainMenuAsCoopGuest      = () => resolve(MainMenuOutcome.JoinCoop);
 
                     // Запрос пришёл, пока меню ещё не было на экране, — отдаём Ристалище сразу, не
                     // показывая меню игроку: он его не звал, он звал тест-бой.
@@ -1176,7 +1192,7 @@ namespace Guildmaster.UI
                     {
                         _provingGroundsPending = false;
                         _resolveMainMenuAsProvingGrounds = null;
-                        resolve(MainMenuChoice.ProvingGrounds);
+                        resolve(MainMenuOutcome.StartGame(GameStartRequest.DevProvingGrounds));
                     }
 
                     // То же с принятым приглашением: игрок уже в чужой партии, меню ему показывать нечего.
@@ -1184,18 +1200,19 @@ namespace Guildmaster.UI
                     {
                         _coopGuestPending = false;
                         _resolveMainMenuAsCoopGuest = null;
-                        resolve(MainMenuChoice.JoinCoop);
+                        resolve(MainMenuOutcome.JoinCoop);
                     }
                     return MainMenuScreenView.Build(
                         _mainMenuUxml,
-                        req.HasSave,
                         key => _loc?.GetString(key),
-                        onStart:    () => resolve(MainMenuChoice.StartRun),
-                        onContinue: () => resolve(MainMenuChoice.Continue),
-                        onSettings: OpenSettingsFromMainMenu,
-                        onQuit:     () => { ShowQuitVeil(); resolve(MainMenuChoice.Quit); },
-                        onProvingGrounds: () => resolve(MainMenuChoice.ProvingGrounds),
-                        onCoop:     OpenCoopFromMainMenu);
+                        onCreate:   () => OpenOverMenu(() => BuildNewGameScreen(
+                            request => { Pop(); resolve(MainMenuOutcome.StartGame(request)); })),
+                        // «Присоединиться» меню НЕ закрывает: игрок соглашается войти уже в оверлее
+                        // Steam, а уводит нас отсюда рукопожатие — оно резолвит меню само.
+                        onJoin:     () => _coop?.BrowseFriends(),
+                        onSettings: () => OpenOverMenu(BuildSettingsScreen),
+                        onQuit:     () => { ShowQuitVeil(); resolve(MainMenuOutcome.Quit); },
+                        canJoin:    _coop?.IsSteamReady ?? false);
                 });
 
             // Забег кончился — UI прошлого забега кончается вместе с ним (QA #51). Инвентарь, карта и тест-зона
@@ -1209,8 +1226,8 @@ namespace Guildmaster.UI
             _mainMenuOpen = true;
             try
             {
-                MainMenuChoice choice = await _nav.ShowAsync(screen); // снятие без выбора = Quit (верхний цикл не виснет)
-                req.OnChoice?.Invoke(choice);
+                MainMenuOutcome outcome = await _nav.ShowAsync(screen); // снятие без выбора = Quit (цикл не виснет)
+                req.OnChoice?.Invoke(outcome);
             }
             finally
             {

@@ -33,7 +33,7 @@ namespace Guildmaster.DevTools
             ["chest"]        = BuildChest,
             ["outcome"]      = BuildOutcome,
             ["mainmenu"]     = BuildMainMenu,
-            ["coop"]         = BuildCoop,
+            ["newgame"]      = BuildNewGame,
             ["titlecard"]    = BuildTitleCard,
             ["devconsole"]   = BuildDevConsole,
             ["gallery"]      = BuildGallery,
@@ -309,39 +309,28 @@ namespace Guildmaster.DevTools
         {
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/MainMenuScreen.uxml");
             if (uxml == null) { AddError(root, "MainMenuScreen.uxml не найден"); return; }
-            // Стенд: hasSave=true (кнопка «Продолжить» активна).
             root.Add(Guildmaster.UI.MainMenuScreenView.Build(
-                uxml, hasSave: true, RuValue, () => { }, () => { }, () => { }, () => { }));
+                uxml, RuValue, () => { }, () => { }, () => { }, () => { }));
         }
 
-        private static void BuildCoop(VisualElement root)
+        /// <summary>
+        /// Экран «Создать игру»: три режима, дома, галочка лобби. Стенд показывает то состояние, в
+        /// котором экран и встречают, — два дома, из них один с идущим забегом.
+        /// </summary>
+        private static void BuildNewGame(VisualElement root)
         {
-            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/CoopScreen.uxml");
-            if (uxml == null) { AddError(root, "CoopScreen.uxml не найден"); return; }
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/NewGameScreen.uxml");
+            if (uxml == null) { AddError(root, "NewGameScreen.uxml не найден"); return; }
 
-            // Сессии в редакторе нет и быть не должно: стенд смотрит РАЗМЕТКУ, а не сеть. Заглушка отдаёт
-            // оффлайн — то состояние, в котором игрок этот экран и открывает.
-            root.Add(Guildmaster.UI.CoopScreenView.Build(uxml, new OfflineCoopStub(), RuValue, () => { }));
-        }
-
-        /// <summary>Кооп-сессия, которой нет: стенду нужна разметка, а не сеть.</summary>
-        private sealed class OfflineCoopStub : Guildmaster.Core.Net.ICoopSessionControl
-        {
-            public Guildmaster.Core.Net.CoopSessionState State     => Guildmaster.Core.Net.CoopSessionState.Offline;
-            public Guildmaster.Core.Net.CoopEndReason    EndReason => Guildmaster.Core.Net.CoopEndReason.None;
-            public string EndMessage => string.Empty;
-
-            public event Action<Guildmaster.Core.Net.CoopSessionState> StateChanged
+            // Ни профиля, ни диска стенд не трогает: он смотрит РАЗМЕТКУ, а не чужие сохранения.
+            var guilds = new System.Collections.Generic.List<Guildmaster.UI.NewGameScreenView.GuildEntry>
             {
-                add { } remove { }
-            }
+                new("g1", "Гильдия 1", hasRun: true),
+                new("g2", "Гильдия 2", hasRun: false),
+            };
 
-            public bool CanInvite => false;
-
-            public bool StartHost() => false;
-            public void InviteFriend() { }
-            public bool Join(string address) => false;
-            public void Leave() { }
+            root.Add(Guildmaster.UI.NewGameScreenView.Build(
+                uxml, guilds, guildsFull: false, steamReady: true, RuValue, _ => { }, () => { }));
         }
 
         private static void BuildTitleCard(VisualElement root)

@@ -85,6 +85,12 @@ namespace Guildmaster.Net.Session
         /// <summary>Позвать друга оверлеем Steam — единственный вход для игрока.</summary>
         public void InviteFriend() => _lobby?.OpenInviteOverlay();
 
+        /// <summary>Steam на связи: клиент запущен и поднят.</summary>
+        public bool IsSteamReady => _lobby?.IsSteamReady ?? false;
+
+        /// <summary>Открыть список друзей — оттуда входят в чужую игру.</summary>
+        public void BrowseFriends() => _lobby?.OpenFriendsOverlay();
+
         /// <summary>Выйти. У хоста это конец сессии для всех.</summary>
         public void Leave()
         {
