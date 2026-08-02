@@ -214,6 +214,10 @@ namespace Guildmaster.Game
                     Application.version),
                 Lifetime.Singleton);
 
+            // Steam поднимается ПЕРВЫМ: без него ни лобби, ни relay-сокет не существуют, а спрашивают
+            // они его сразу. Он же качает колбэки — приглашения и события лобби приходят только так.
+            builder.RegisterEntryPoint<Guildmaster.Net.Session.SteamBootstrap>(Lifetime.Singleton).AsSelf();
+
             builder.Register<Guildmaster.Net.Transport.SteamNetTransport>(Lifetime.Singleton)
                    .As<Guildmaster.Net.Transport.INetTransport>()
                    .AsSelf();

@@ -46,8 +46,12 @@
 - **Shapes** лежит в `Assets/Shapes/`, а не в `Plugins/`. **Odin** подключается в Editor-сборках через
   `overrideReferences` + `precompiledReferences`. **Roslyn** даёт дефайн `USE_ROSLYN` для
   `validate_script`.
-- **Steam:** `steam_api64.dll` в `Facepunch.Steamworks/redistributable_bin/win64/`, инициализация —
-  `Net/FacepunchTransportBootstrap.cs`. **MPPM** гоняет кооп в редакторе (до 4 виртуальных игроков).
+- **Steam:** `steam_api64.dll` в `Facepunch.Steamworks/redistributable_bin/win64/`, инициализация и
+  колбэки — `Net/Session/SteamBootstrap.cs` (AppId живёт там же константой), а `steam_appid.txt` в
+  корне репозитория нужен для запуска из редактора. Прежний `FacepunchTransportBootstrap` удалён
+  02.08.2026 вместе с NGO — и **унёс с собой инициализацию**, из-за чего кооп молча вёл себя как при
+  незапущенном Steam. **MPPM для Steam-пути не годится:** один клиент на машине = один аккаунт, кооп
+  вживую проверяется только на двух машинах.
 
 ## Сохранения
 
