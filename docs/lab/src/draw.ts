@@ -3,6 +3,7 @@
    эффекты станет нельзя. Специфика раздела живёт в его собственном файле. */
 
 import { tick } from "./clock.js";
+import type { DrawFn } from "./types.js";
 
 /* ---------- палитра ---------- */
 
@@ -46,6 +47,42 @@ export function jag(i: number, salt = 0): number {
 /* ---------- сцена ----------
    Канвас, трансформ и очистку держит каркас: рисовалка получает готовый ctx и логический размер.
    Здесь остаётся то, что рисуется поверх. */
+
+/** Обёртка для сцены, которая НЕ зависит от времени: рисуется один раз в свой канвас, дальше
+ *  копируется целиком.
+ *
+ *  Каркас перерисовывает всё видимое каждый кадр — так надо анимациям удара и статусов. Но
+ *  процедурный пол статичен, а стоит десятки тысяч операций на сцену: страница с двумя десятками
+ *  таких стендов вешала браузер, и правка стенда переставала быть секундным делом.
+ *
+ *  Кэш свой у каждой обёрнутой рисовалки и живёт, пока жив её замыкание, — то есть ровно столько,
+ *  сколько существует стенд. Ключ включает масштаб: смена окна или DPI обязана перерисовать, иначе
+ *  снимок вышел бы мыльным. */
+export function still(draw: DrawFn): DrawFn {
+  let cache: HTMLCanvasElement | null = null;
+  let cacheKey = "";
+  return (ctx, w, h) => {
+    const k = ctx.getTransform().a || 1;
+    const key = `${w}x${h}@${k.toFixed(3)}`;
+    if (!cache || cacheKey !== key) {
+      const off = document.createElement("canvas");
+      off.width = Math.max(1, Math.round(w * k));
+      off.height = Math.max(1, Math.round(h * k));
+      const octx = off.getContext("2d");
+      // Отказ браузера дать второй контекст — внешний отказ, и деградировать он обязан в
+      // «рисуем как раньше», а не в пустой стенд.
+      if (!octx) {
+        draw(ctx, w, h);
+        return;
+      }
+      octx.setTransform(k, 0, 0, k, 0, 0);
+      draw(octx, w, h);
+      cache = off;
+      cacheKey = key;
+    }
+    ctx.drawImage(cache, 0, 0, w, h);
+  };
+}
 
 /** Линия земли. Отступ снизу у сцен разный, поэтому передаётся, а не угадывается. */
 export function ground(ctx: CanvasRenderingContext2D, w: number, h: number, bottom = 56): number {

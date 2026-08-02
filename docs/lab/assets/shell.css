@@ -310,10 +310,22 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
 }
 .card-link:hover { border-color: var(--brass); }
 .card-link canvas { display: block; width: 100%; height: auto; background: #0C0B09; }
+/* Окно превью: одна высота у всех карточек, сцена кропится по центру. Без него карточка со
+   знаком была ниже карточки со сценой, и ряд разъезжался. */
+.card-cover {
+  height: 176px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: #0C0B09;
+  border-bottom: 1px solid var(--edge-soft);
+}
+.card-cover canvas { flex: 0 0 auto; }
 .card-mark {
   display: grid;
   place-items: center;
-  height: 120px;
+  height: 176px;
+  border-bottom: 1px solid var(--edge-soft);
   background: #0C0B09;
   font-size: 2.6rem;
   font-weight: 200;
@@ -447,20 +459,30 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
   justify-content: center;
   gap: 1rem;
   padding: clamp(1rem, 4vw, 3rem);
+  overflow: auto;
+  /* Прокрутка не «протекает» на страницу под лайтбоксом даже когда крутить внутри уже нечего. */
+  overscroll-behavior: contain;
 }
 .lightbox[hidden] { display: none; }
+body.lb-open { overflow: hidden; }
 /* Ширину кадра задаёт JS в пикселях — и это не прихоть. Если дать канвасу width:100%, а рамке
    ширину по содержимому, получится петля: канвас меряется по рамке, рамка по канвасу, и каждый
    кадр картинка становится меньше предыдущей. Поэтому размер вычисляется один раз при показе. */
-.lightbox-frame { display: flex; flex-direction: column; gap: .8rem; }
+.lightbox-frame { display: flex; flex-direction: column; gap: .8rem; max-height: 100%; }
+/* Страховка поверх расчёта: подпись не сжимается никогда, картинка сжимается всегда. Даже если
+   арифметика размера ошибётся, текст останется на экране, а сцена просто станет мельче —
+   object-fit не даёт ей сплющиться. Ошибаться в эту сторону обязательно: подпись нельзя листать. */
 .lightbox-frame canvas {
   display: block;
   width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  object-fit: contain;
   background: #0C0B09;
   border: 1px solid var(--edge);
   border-radius: var(--radius);
 }
-.lightbox-caption { display: flex; flex-direction: column; gap: .25rem; max-width: 78ch; }
+.lightbox-caption { display: flex; flex-direction: column; gap: .25rem; max-width: 78ch; flex: 0 0 auto; }
 .lightbox-caption b { font-size: 1.1rem; font-weight: 500; color: var(--text); }
 .lightbox-caption span { color: var(--text-dim); font-size: .92rem; }
 .lightbox-caption i {
@@ -485,6 +507,15 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
 }
 .lightbox-close { position: absolute; top: 1.2rem; right: 1.4rem; font-size: 1.3rem; }
 .lightbox-nav[hidden] { display: none; }
+/* Стрелки целятся в СЕРЕДИНУ КАРТИНКИ, а не кадра: кадр — это картинка плюс подпись, и его центр
+   всегда ниже. Точное значение ставит JS, здесь только раскладка. */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.lightbox-nav.prev { left: clamp(.8rem, 3vw, 2.6rem); }
+.lightbox-nav.next { right: clamp(.8rem, 3vw, 2.6rem); }
 
 /* Поле цвета: крупно и без соседей — единственный способ сравнить два близких оттенка. */
 .lightbox-color {
@@ -509,7 +540,7 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
 
 @media (max-width: 720px) {
   .i-status, .i-body { margin-left: 0; }
-  .lightbox-nav { position: absolute; bottom: 1.2rem; }
+  .lightbox-nav { position: absolute; top: auto; bottom: 1.2rem; transform: none; }
   .lightbox-nav.prev { left: 1.2rem; }
   .lightbox-nav.next { right: 1.2rem; }
 }
@@ -786,3 +817,21 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
 .act-legend-item b { font-family: var(--mono); font-weight: 700; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* --- режим съёмки: ?shot=id ---
+   Голая страница из одних канвасов. Полей нет намеренно: снимок кропится окном браузера, и любой
+   отступ пришлось бы вычитать в скрипте. Подпись оставлена — без неё три варианта на одном снимке
+   не различить, а вспоминать порядок аргументов дороже, чем прочитать строку. */
+/* Магента за содержимым — метка для авто-кропа: скрипт съёмки не знает логического размера стенда,
+   поэтому снимает окно с запасом и срезает всё, что этого цвета. Заведомо чужой цвет вместо
+   «обрезать по тёмному»: тёмный у нас — фон самой сцены, и кроп по нему съел бы небо. */
+body[data-shot] { background: #FF00FF; }
+body[data-shot] .wrap {
+  max-width: none; margin: 0; padding: 12px; gap: 12px;
+  width: fit-content; background: var(--ink, #0C0B09);
+}
+.shot-item { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.shot-item canvas { display: block; background: #0C0B09; }
+.shot-item figcaption {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .06em; color: var(--muted);
+}

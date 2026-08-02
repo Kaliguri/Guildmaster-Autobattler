@@ -38,6 +38,13 @@ export function setSpeed(value: number): void {
   speed = value;
 }
 
+/** Встать на конкретный кадр. Нужен съёмке: снимок обязан показывать заданный момент, а не тот,
+ *  на котором браузер успел остановиться, — иначе два снимка подряд нельзя сравнивать. */
+export function setFrame(value: number): void {
+  frame = ((value % TOTAL) + TOTAL) % TOTAL;
+  tick = Math.max(0, value);
+}
+
 /** Шаг вручную: транспорт ставит показ на паузу и двигает время сам. */
 export function stepBy(delta: number): void {
   frame = (frame + delta + TOTAL) % TOTAL;

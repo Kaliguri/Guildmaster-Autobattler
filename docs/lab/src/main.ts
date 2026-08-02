@@ -10,8 +10,8 @@
 import * as clock from "./clock.js";
 import { clear, el } from "./dom.js";
 import { AREAS, PAGES, areaOf, pagesOf } from "./registry.js";
-import { invalidateSizes, paint, reset } from "./stage.js";
-import type { AreaDef, PageDef, SectionDef } from "./types.js";
+import { invalidateSizes, paint, register, reset } from "./stage.js";
+import type { AreaDef, PageDef, SectionDef, StandDef } from "./types.js";
 import { eachStand, hero, renderArea, renderHome, renderLegacy, renderSection, routeHref } from "./views.js";
 
 const loaded = new Map<string, SectionDef>();
@@ -279,6 +279,98 @@ function fillSearch(list: HTMLElement, query: string, hide: () => void): void {
   if (hits === 0) list.appendChild(el("p", "dim", "Ничего не нашлось."));
 }
 
+/* ---------- режим съёмки ----------
+   `?shot=<id,id>&scale=2&frame=0` — голая страница из одних канвасов, без шапки, транспорта и
+   карточек. Заведён потому, что показать Максу картинку стенда стоило полутора минут: браузер
+   поднимал ВЕСЬ раздел (сорок с лишним сцен), а нужна была одна.
+
+   Ещё это адрес, который можно дать человеку: «посмотри вот на эти три варианта рядом» без
+   прокрутки страницы и без объяснений, куда смотреть. */
+
+interface ShotSpec {
+  /** Что снимаем. Пусто или `*` — все рисующие стенды раздела из хеша. */
+  ids: string[];
+  /** Во сколько раз крупнее логического размера. Мелкие детали иначе не видно на снимке. */
+  scale: number;
+  frame: number;
+}
+
+function parseShot(): ShotSpec | null {
+  const q = new URLSearchParams(location.search);
+  const raw = q.get("shot");
+  if (raw === null) return null;
+  const ids = raw
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0 && s !== "*");
+  const scale = Math.min(Math.max(Number(q.get("scale")) || 1, 0.25), 4);
+  return { ids, scale, frame: Number(q.get("frame")) || 0 };
+}
+
+/** Стенды по id. Ищем сначала в разделе из хеша, а не найдя — по всем: помнить, в каком разделе
+ *  лежит стенд, ради снимка не должно быть обязательным. */
+function findStands(spec: ShotSpec, pageId: string): StandDef[] {
+  const fromPage: StandDef[] = [];
+  const def = loaded.get(pageId);
+  if (def) eachStand(def, (s) => { if (s.draw) fromPage.push(s); });
+  if (spec.ids.length === 0) return fromPage;
+
+  const pool = new Map<string, StandDef>();
+  for (const s of fromPage) pool.set(s.id, s);
+  for (const page of PAGES) {
+    const other = loaded.get(page.id);
+    if (!other) continue;
+    eachStand(other, (s) => { if (s.draw && !pool.has(s.id)) pool.set(s.id, s); });
+  }
+  return spec.ids.map((id) => pool.get(id)).filter((s): s is StandDef => s !== undefined);
+}
+
+async function renderShot(spec: ShotSpec): Promise<void> {
+  const view = document.getElementById("lab-view");
+  if (!view) return;
+
+  document.body.dataset["shot"] = "true";
+  clock.setPlaying(false);
+  clock.setFrame(spec.frame);
+
+  const pageId = parseRoute().page;
+  await loadPage(pageId);
+  let stands = findStands(spec, pageId);
+  if (stands.length < spec.ids.length) {
+    await loadAll(); // не всё нашлось в разделе — добираем по остальным
+    stands = findStands(spec, pageId);
+  }
+
+  reset();
+  clear(view);
+
+  if (stands.length === 0) {
+    view.appendChild(el("p", "dim", `Нечего снимать: ${spec.ids.join(", ") || pageId}`));
+    document.body.dataset["ready"] = "true";
+    return;
+  }
+
+  for (const stand of stands) {
+    const [w, h] = stand.size ?? [320, 280];
+    const box = el("figure", "shot-item");
+    const canvas = el("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    canvas.style.width = `${Math.round(w * spec.scale)}px`;
+    canvas.style.height = `${Math.round(h * spec.scale)}px`;
+    box.appendChild(canvas);
+    box.appendChild(el("figcaption", null, `${stand.id} · ${stand.title}`));
+    view.appendChild(box);
+    // register, а не watch: колонка снимков выше экрана, и наблюдатель погасил бы нижние —
+    // на снимке они вышли бы пустыми.
+    register(canvas, stand, w, h);
+  }
+
+  paint();
+  // Флаг для скриншотера: рисовать больше нечего. Читается как body[data-ready] из devtools-протокола.
+  document.body.dataset["ready"] = "true";
+}
+
 /* ---------- отрисовка маршрута ---------- */
 
 async function renderRoute(): Promise<void> {
@@ -366,6 +458,13 @@ function buildToTop(): void {
 /* ---------- старт ---------- */
 
 function boot(): void {
+  const shot = parseShot();
+  if (shot) {
+    // Ни шапки, ни часов: снимку нужен один кадр, а не цикл отрисовки.
+    void renderShot(shot);
+    return;
+  }
+
   buildBar();
   buildToTop();
 

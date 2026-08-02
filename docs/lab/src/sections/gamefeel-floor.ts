@@ -28,7 +28,7 @@
    получает исключение для края плиты, либо формулировку канона надо править — это его развилка,
    и до вердикта здесь стоит его вариант, а не моё прочтение. */
 
-import { jag } from "../draw.js";
+import { jag, still } from "../draw.js";
 import type { DrawFn, SectionDef, StandDef } from "../types.js";
 
 /* ---------- настоящая геометрия ---------- */
@@ -201,6 +201,10 @@ interface TimeOfDay {
   groundTintAmount: number;
   /** Общая яркость сцены. */
   exposure: number;
+  /** Откуда солнце освещает ОБЛАКА, в долях радиуса: [по горизонтали, по вертикали].
+   *  Днём солнце выше облаков — светится верх. На закате оно НИЖЕ их уровня, и подсвечено
+   *  дно: это главный признак вечернего неба, и без него закат читается просто оранжевым днём. */
+  cloudLight: [number, number];
 }
 
 const MORNING: TimeOfDay = {
@@ -209,7 +213,8 @@ const MORNING: TimeOfDay = {
   light: [255, 232, 206], shadow: [86, 104, 146],
   lightPower: 0.6, shadowLen: 1.5,
   groundTint: [214, 220, 226], groundTintAmount: 0.10,
-  exposure: 0.98
+  exposure: 0.98,
+  cloudLight: [-0.5, -0.55]
 };
 
 const DAY: TimeOfDay = {
@@ -218,7 +223,8 @@ const DAY: TimeOfDay = {
   light: [255, 248, 226], shadow: [70, 88, 132],
   lightPower: 1, shadowLen: 0.75,
   groundTint: [255, 252, 240], groundTintAmount: 0.05,
-  exposure: 1
+  exposure: 1,
+  cloudLight: [-0.3, -0.75]
 };
 
 const SUNSET: TimeOfDay = {
@@ -228,7 +234,9 @@ const SUNSET: TimeOfDay = {
   // Мягче дня: тени светлее, свет рассеяннее. Длинные тени — вот что делает закат закатом.
   lightPower: 0.72, shadowLen: 2.4,
   groundTint: [255, 196, 140], groundTintAmount: 0.16,
-  exposure: 0.94
+  exposure: 0.94,
+  // Солнце ушло ниже облаков: подсвечены дно и боковая кромка.
+  cloudLight: [-0.75, 0.5]
 };
 
 const DUSK: TimeOfDay = {
@@ -237,7 +245,9 @@ const DUSK: TimeOfDay = {
   light: [178, 168, 200], shadow: [40, 48, 88],
   lightPower: 0.22, shadowLen: 3.2,
   groundTint: [140, 150, 196], groundTintAmount: 0.2,
-  exposure: 0.74
+  exposure: 0.74,
+  // Солнце за горизонтом: тлеет только нижняя кромка.
+  cloudLight: [-0.6, 0.72]
 };
 
 const TIMES = [MORNING, DAY, SUNSET, DUSK];
@@ -351,7 +361,11 @@ function paintCloudVolume(
   lit: RGB,
   shadow: RGB,
   bounce: RGB,
-  alpha: number
+  alpha: number,
+  /** Направление на источник в долях радиуса. Днём вверх, вечером вниз-вбок. */
+  dir: [number, number] = [-0.3, -0.75],
+  /** Контур массы: null — без него (по умолчанию). */
+  outline: RGB | null = null
 ): void {
   const lobes = cloudLobes(cx, cy, r, seed);
 
@@ -386,8 +400,10 @@ function paintCloudVolume(
       ctx.fillStyle = `rgba(${tone.map((v) => v | 0).join(",")},${alpha.toFixed(3)})`;
       // Ступени рисуются обычной дугой: рваность нужна СИЛУЭТУ, а внутренние границы тона от неё
       // только шумят и стоят втрое дороже. Первая версия рвала и их — страница со стендами вставала.
+      // Смещение идёт ПО НАПРАВЛЕНИЮ НА СОЛНЦЕ: днём ступени ползут вверх, вечером — вниз, и
+      // подсвеченным оказывается дно облака.
       ctx.beginPath();
-      ctx.arc(lx - lr * shift * 0.7, ly - lr * shift * 0.8, lr * scale, 0, Math.PI * 2);
+      ctx.arc(lx + lr * shift * dir[0], ly + lr * shift * dir[1], lr * scale, 0, Math.PI * 2);
       ctx.fill();
     }
   }
@@ -399,14 +415,26 @@ function paintCloudVolume(
   ctx.save();
   cloudMass(ctx, cx, cy, r, seed);
   ctx.clip();
-  ctx.strokeStyle = `rgba(${lighten(lit, 0.4).map((v) => v | 0).join(",")},${(alpha * 0.75).toFixed(3)})`;
+  ctx.strokeStyle = `rgba(${lighten(lit, 0.4).map((v) => v | 0).join(",")},${(alpha * 0.8).toFixed(3)})`;
   ctx.lineWidth = Math.max(1, r * 0.07);
+  // Дуга каймы поворачивается вслед за солнцем: вечером горит нижняя кромка, а не верхняя.
+  const ang = Math.atan2(dir[1], dir[0]);
   for (const [lx, ly, lr] of lobes) {
     ctx.beginPath();
-    ctx.arc(lx, ly, lr * 0.94, Math.PI * 1.05, Math.PI * 1.72);
+    ctx.arc(lx, ly, lr * 0.94, ang - 0.55, ang + 0.55);
     ctx.stroke();
   }
   ctx.restore();
+
+  // Контур массы — только если попросили. Мнение против него в разборе: облака это ДАЛЬНИЙ план,
+  // а обводка тянет предмет вперёд и ломает воздушную перспективу.
+  if (outline) {
+    cloudMass(ctx, cx, cy, r, seed);
+    ctx.strokeStyle = `rgba(${outline.map((v) => v | 0).join(",")},${(alpha * 0.85).toFixed(3)})`;
+    ctx.lineWidth = Math.max(1.2, r * 0.045);
+    ctx.lineJoin = "round";
+    ctx.stroke();
+  }
 }
 
 /* ---------- фактура ----------
@@ -846,6 +874,8 @@ interface SlabOpts {
   digital?: boolean;
   /** Прошлый заход: жирный контур на всём, ровная заливка, без света. Для сравнения. */
   naive?: boolean;
+  /** Контур у облаков: "ink" — почти чёрный, "tint" — тёмный цветной. Не задан — без контура. */
+  cloudOutline?: "ink" | "tint";
   /** Время суток и облачность. Не заданы — день при обычной облачности. */
   tod?: TimeOfDay;
   weather?: Weather;
@@ -1009,8 +1039,13 @@ function unitFigure(ctx: CanvasRenderingContext2D, x: number, groundY: number, l
   ctx.stroke();
 }
 
+/* Пол статичен: ни одна его линия не читает часы. Поэтому вся сцена считается ОДИН раз и дальше
+   копируется картинкой (still). Без этого каркас пересчитывал десятки тысяч операций тридцать раз
+   в секунду на каждый видимый стенд — раздел с двумя десятками плит подвешивал страницу, и правка
+   переставала быть секундным делом. Появится анимация (бегущая волна борта, качание травы) — она
+   выносится отдельным слоем ПОВЕРХ этой картинки, а не возвращает пересчёт всего. */
 function slab(o: SlabOpts): DrawFn {
-  return (ctx, w, h) => {
+  return still((ctx, w, h) => {
     const b = o.biome;
     const dens = o.density ?? 1;
     // Витрина: если layers задан, включено только перечисленное. Иначе включено всё.
@@ -1040,7 +1075,11 @@ function slab(o: SlabOpts): DrawFn {
       for (let row = 0; row < rows; row++) {
         // 0 — у горизонта, 1 — ближний край кадра.
         const depth = row / (rows - 1);
-        const rowY = h * (0.06 + Math.pow(depth, 1.6) * 0.92);
+        // ОБЛАКА ЖИВУТ ТОЛЬКО В НЕБЕ. Ниже линии горизонта начинается бездна, и облаку там взяться
+        // неоткуда: пропасть — это не воздух, а провал (поправка Макса). Поле занимает верхнюю
+        // треть кадра и упирается в горизонт, дальше вниз идёт чистое падение в темноту.
+        const horizon = 0.42;
+        const rowY = h * (0.04 + Math.pow(depth, 1.45) * horizon);
         const scale = 0.28 + depth * 0.95;
         // Дальние ряды бледнее: их съедает воздух.
         const haze = 0.45 + depth * 0.55;
@@ -1081,17 +1120,36 @@ function slab(o: SlabOpts): DrawFn {
             lerp(shadowTone[2], tod.light[2], 0.12)
           ];
 
-          paintCloudVolume(ctx, cxp, cyp, cr, o.seed + salt, lit, shadowTone, bounce, wx.cloudAlpha * haze);
+          // Контур получает только БЛИЖНИЙ ряд и только если стенд его просит: на дальних он
+          // немедленно съедает воздушную перспективу.
+          const outline: RGB | null = o.cloudOutline && depth > 0.62
+            ? (o.cloudOutline === "ink" ? [26, 24, 34] : mix(shadowTone, tod.shadow, 0.6))
+            : null;
+          paintCloudVolume(ctx, cxp, cyp, cr, o.seed + salt, lit, shadowTone, bounce, wx.cloudAlpha * haze, tod.cloudLight, outline);
         }
       }
     }
 
-    // Геометрия плиты: поле 640×384 по центру кадра, борт под ним.
+    // Геометрия плиты: поле 640×384 в НАТУРАЛЬНЫХ пикселях (PPU 32), борт под ним. В кадр стенда
+    // оно вписывается целиком через масштаб, а не обрезается: плита 640 в карточке шириной 430
+    // закрывала кадр целиком, и небо со всеми облаками оказывалось за краем — стенд про закат
+    // показывал одну траву. Отсюда правило: рисуем в мировых числах, показываем через зум камеры.
     const rimH = o.rimU * U;
     const pw = o.crop ? w : ARENA_W;
     const ph = o.crop ? h : ARENA_H;
-    const x0 = o.crop ? 0 : Math.round((w - pw) / 2);
-    const y0 = o.crop ? 0 : Math.round((h - ph - rimH) / 2);
+    // Плита занимает не весь кадр по ширине и меньше половины по высоте: остальное — небо сверху
+    // и падение в бездну снизу, ради которых стенд и существует.
+    const fit = o.crop ? 1 : Math.min((w * 0.86) / pw, (h * 0.44) / (ph + rimH));
+    const px0 = o.crop ? 0 : Math.round((w - pw * fit) / 2);
+    // Верх плиты ниже линии горизонта облаков (0.42h), а низ НЕ достаёт до края кадра: под плитой
+    // обязана остаться видимая пустота, иначе арена не висит, а лежит на дне картинки.
+    const py0 = o.crop ? 0 : Math.round(h * 0.36);
+    const x0 = 0;
+    const y0 = 0;
+
+    ctx.save();
+    ctx.translate(px0, py0);
+    ctx.scale(fit, fit);
 
     ctx.save();
     ctx.beginPath();
@@ -1335,7 +1393,10 @@ function slab(o: SlabOpts): DrawFn {
       unitFigure(ctx, x0 + pw * 0.68, y0 + ph * 0.64, false);
     }
 
-    if (o.crop) return;
+    if (o.crop) {
+      ctx.restore();
+      return;
+    }
 
     drawRim(ctx, b, x0, y0 + ph, pw, rimH, !!o.digital, o.seed);
 
@@ -1344,9 +1405,13 @@ function slab(o: SlabOpts): DrawFn {
     ctx.lineJoin = "miter";
     ctx.strokeRect(x0, y0, pw, ph + rimH);
 
-    const dustTop = y0 + ph + rimH;
+    ctx.restore(); // конец масштаба плиты: дальше кадр, а не мир
+
+    // Пыль, молния и экспозиция живут в КАДРЕ, а не на плите: пыль сыплется в пустоту под ней,
+    // молния бьёт с верха кадра, экспозиция — вообще пост-обработка.
+    const dustTop = py0 + (ph + rimH) * fit;
     for (let i = 0; i < 26; i++) {
-      const px = x0 + jag(i * 3 + 1, o.seed + 61) * pw;
+      const px = px0 + jag(i * 3 + 1, o.seed + 61) * pw * fit;
       const py = dustTop + jag(i * 3 + 2, o.seed + 63) * Math.max(h - dustTop, 1);
       const a = 0.3 * (1 - (py - dustTop) / Math.max(h - dustTop, 1));
       ctx.fillStyle = `rgba(198,178,132,${a.toFixed(3)})`;
@@ -1360,7 +1425,7 @@ function slab(o: SlabOpts): DrawFn {
     if (wx.storm) {
       ctx.fillStyle = "rgba(198,214,255,.1)";
       ctx.fillRect(0, 0, w, h);
-      const bx = x0 + pw * (0.2 + jag(o.seed, 111) * 0.6);
+      const bx = px0 + pw * fit * (0.2 + jag(o.seed, 111) * 0.6);
       ctx.strokeStyle = "rgba(226,238,255,.85)";
       ctx.lineWidth = 2;
       ctx.lineJoin = "miter";
@@ -1368,9 +1433,9 @@ function slab(o: SlabOpts): DrawFn {
       ctx.moveTo(bx, 0);
       let ly = 0;
       let lx = bx;
-      while (ly < y0 * 0.8) {
-        ly += y0 * 0.3;
-        lx += (jag(ly, o.seed + 113) - 0.5) * pw * 0.12;
+      while (ly < py0 * 0.8) {
+        ly += py0 * 0.3;
+        lx += (jag(ly, o.seed + 113) - 0.5) * pw * fit * 0.12;
         ctx.lineTo(lx, ly);
       }
       ctx.stroke();
@@ -1381,7 +1446,7 @@ function slab(o: SlabOpts): DrawFn {
       ctx.fillStyle = `rgba(${tod.abyss.map((v) => v | 0).join(",")},${(1 - tod.exposure).toFixed(3)})`;
       ctx.fillRect(0, 0, w, h);
     }
-  };
+  });
 }
 
 /* ---------- стенды ---------- */
@@ -1478,6 +1543,45 @@ const SHOWCASE_STANDS: StandDef[] = [
     note: l.note,
     draw: slab({ biome: MEADOW, rimU: 1, seed: 27, crop: true, layers: { [l.key]: true } })
   }))
+];
+
+/** Контур у облаков: три варианта под вердикт Макса. */
+const OUTLINE_STANDS: StandDef[] = [
+  {
+    id: "cloud-no-outline",
+    status: "waiting" as const,
+    title: "Без контура",
+    tag: "рекомендация Никси",
+    note: "Границу держит контраст тона, как у всей остальной земли.",
+    verdict:
+      "Облака — САМЫЙ ДАЛЬНИЙ план. Обводка тянет предмет вперёд, и небо начинает спорить с ареной " +
+      "за внимание. Воздушная перспектива держится на том, что дальнее теряет чёткость, а контур " +
+      "возвращает её насильно.",
+    size: [430, 300] as [number, number],
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: CLOUDY, crop: false })
+  },
+  {
+    id: "cloud-tint-outline",
+    status: "waiting" as const,
+    title: "Тёмный цветной контур",
+    note: "Обводка тоном самой массы, только у ближнего ряда.",
+    verdict:
+      "Компромисс: силуэт читается жёстче, но воздух ещё жив. Если брать контур вообще — то этот " +
+      "и только на ближних облаках.",
+    size: [430, 300] as [number, number],
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: CLOUDY, cloudOutline: "tint" })
+  },
+  {
+    id: "cloud-ink-outline",
+    status: "waiting" as const,
+    title: "Чёрный жёсткий контур",
+    note: "Как в Cult of the Lamb: единая тёмная обводка.",
+    verdict:
+      "Максимальная графичность и минимум воздуха: небо превращается в наклейку у самого носа. " +
+      "Плюс чёрный душит цветной свет заката — то, ради чего вечер и затевался.",
+    size: [430, 300] as [number, number],
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: CLOUDY, cloudOutline: "ink" })
+  }
 ];
 
 /** Шкала времени суток при обычной облачности: видно всю логику света на одном ряду. */
@@ -1682,6 +1786,23 @@ const section: SectionDef = {
         "цифра у нас язык ПЕРЕХОДА, а не состояния, и по этой причине я её из борта убирала. Значит " +
         "либо край плиты получает исключение, либо формулировку канона надо править: развилка " +
         "открыта, до вердикта стоит вариант Макса."
+    },
+    {
+      kind: "head",
+      id: "outline",
+      title: "Контур у облаков",
+      lede: "Все три на закате при плотной облачности — там разница видна лучше всего."
+    },
+    { kind: "stands", items: OUTLINE_STANDS },
+    {
+      kind: "note",
+      html:
+        "<b>Мой голос за «без контура», и довод не вкусовой.</b> Контур получает то, что БЛИЖЕ и " +
+        "важнее — так он работает и у нас на арене: земля без обводки, предметы с обводкой. Небо — " +
+        "самый дальний план в кадре, и обводка на нём тянет его вперёд, ломая воздушную " +
+        "перспективу. Ровно поэтому у фонов Samurai Jack контура нет вовсе, а у фигур он есть." +
+        "<br><br>Если контур всё-таки нужен — <b>только тёмный цветной и только на ближнем ряду</b>. " +
+        "Чёрный вдобавок душит цветной свет заката, то есть съедает то, ради чего вечер и делался."
     },
     {
       kind: "head",
