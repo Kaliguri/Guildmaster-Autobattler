@@ -50,6 +50,14 @@ namespace Guildmaster.Combat.Tape
 
         public bool TryGet(int unitId, out Entry entry) => _entries.TryGetValue(unitId, out entry);
 
+        /// <summary>
+        /// Записать паспорт, пришедший извне. Нужен гостю в коопе: своей симуляции у него нет, спавнов
+        /// он не видит, а показу всё равно надо знать, кто это и какой у него арт. Состав приезжает
+        /// отдельным сообщением раньше кадров — в снимках этих полей нет, они за бой не меняются.
+        /// </summary>
+        public void RegisterRemote(int unitId, UnitData definition, int team) =>
+            _entries[unitId] = new Entry(definition, team, unitId);
+
         public UnitData DefinitionOf(int unitId) =>
             _entries.TryGetValue(unitId, out Entry e) ? e.Definition : null;
 

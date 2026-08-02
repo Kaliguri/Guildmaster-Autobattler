@@ -19,14 +19,17 @@ namespace Guildmaster.Game.Input
 
         private readonly IInputService    _input;
         private readonly TimeScaleService _time;
+        private readonly Net.BattleControlRelay _pause;
         private readonly Core.Audio.IAudioService _audio;
 
         private int _speedIndex;
 
-        public BattleInputController(IInputService input, TimeScaleService time, Core.Audio.IAudioService audio)
+        public BattleInputController(IInputService input, TimeScaleService time,
+                                     Net.BattleControlRelay pause, Core.Audio.IAudioService audio)
         {
             _input = input;
             _time  = time;
+            _pause = pause;
             _audio = audio;
         }
 
@@ -44,23 +47,21 @@ namespace Guildmaster.Game.Input
             // Time.timeScale владеет TimeScaleService — он же вернёт его к 1 при разрушении скоупа.
         }
 
-        // Space: пауза ИГРОКА. Владелец у неё один — TimeScaleService: он обнуляет Time.timeScale, а вместе с
-        // ним и Time.deltaTime, из которого CombatLoopService копит тики, — так что симуляция встаёт сама.
-        // Камеры не касается: её пан на Time.unscaledDeltaTime, поле можно осмотреть на паузе.
+        // Space: пауза ИГРОКА. Отсюда уходит только ИНТЕНТ — состоянием владеет BattleControlRelay, а
+        // применяет его NetPauseBridge через TimeScaleService (тот обнуляет Time.timeScale, а с ним и
+        // Time.deltaTime, из которого CombatLoopService копит тики, — симуляция встаёт сама). Один путь
+        // применения нужен ради коопа: пауза там общая, и нажатие напарника обязано доходить тем же
+        // маршрутом, что и своё. Камеры это не касается: её пан на unscaledDeltaTime.
+        //
+        // Читаем состояние У РЕЛЕЯ, а не у времени: владелец флага один, иначе интент, посчитанный от
+        // чужого состояния, окажется «уже в этом состоянии» и потеряется молча.
         //
         // Симуляции здесь НЕ трогаем, хотя раньше трогали. CombatSimulation.SetPaused — другой факт: «сим
         // заморожен сценарием» (расстановка, передышка), и владеют им BattleBootstrap с DeploymentController.
         // Пока тумблер дёргал оба и читал состояние у СИМА, они расходились после каждого ResetBattle (сим
         // сбрасывает свою паузу сам): Space снимал паузу расстановки и оживлял отряд вне боя, а после
         // рестарта — ставил паузу вместо того, чтобы снять (аудит 2026-07-26, T-4).
-        private void OnPauseToggle()
-        {
-            bool paused = !_time.IsPaused;
-            _time.SetPaused(paused);
-            // Пауза глушит боевую шину питчем (TimeScale→0.05), поэтому щелчок нужен UI-шине: иначе
-            // нажатие Space не подтверждается ничем.
-            _audio?.Play(paused ? "ui.pause.ui" : "ui.resume.ui");
-        }
+        private void OnPauseToggle() => _pause.RequestPause(!_pause.IsPaused);
 
         // «.»: циклическая смена скорости боя (1x → 2x → 3x → 1x). Только темп — детерминизм не трогает.
         private void OnGameSpeedCycle()

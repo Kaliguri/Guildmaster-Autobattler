@@ -30,6 +30,9 @@ namespace Guildmaster.Net
 
         /// <summary>Рукопожатие: версия, отпечаток контента, назначенный номер пира.</summary>
         Handshake = 6,
+
+        /// <summary>Состав боя: кто вышел на арену. Хост → гости, по одному паспорту на спавн.</summary>
+        BattleRoster = 7,
     }
 
     /// <summary>
@@ -84,9 +87,20 @@ namespace Guildmaster.Net
             return true;
         }
 
-        private static bool IsKnown(byte raw) =>
-            raw == (byte)NetChannel.TapeChunk  || raw == (byte)NetChannel.TapeResend ||
-            raw == (byte)NetChannel.Presence   || raw == (byte)NetChannel.RunCommand ||
-            raw == (byte)NetChannel.BattleControl || raw == (byte)NetChannel.Handshake;
+        // Таблица известных каналов ВЫВОДИТСЯ из перечисления, а не переписывается рядом с ним.
+        // Рукописный список тут уже стоил захода: канал завели, в список не дописали, и сообщение
+        // молча не доходило — ровно та поломка, от которой этот метод и должен защищать. Владелец
+        // факта «какие каналы бывают» ровно один — сам NetChannel.
+        private static readonly bool[] Known = BuildKnown();
+
+        private static bool[] BuildKnown()
+        {
+            var known = new bool[256];
+            foreach (NetChannel channel in (NetChannel[])Enum.GetValues(typeof(NetChannel)))
+                known[(byte)channel] = true;
+            return known;
+        }
+
+        private static bool IsKnown(byte raw) => Known[raw];
     }
 }

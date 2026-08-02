@@ -1,4 +1,5 @@
 using Guildmaster.Combat;
+using Guildmaster.Core.Net;
 using VContainer.Unity;
 
 namespace Guildmaster.Net.Tape
@@ -19,17 +20,20 @@ namespace Guildmaster.Net.Tape
     /// гостя свой <c>BattleTapePlayback</c> с тем же лагом: он копит ленту и показывает её позже. Это и
     /// есть «сим впереди, показ с лагом», просто половины разнесены по машинам.</para>
     /// </remarks>
-    public sealed class BattleTapeBroadcast : ITickable
+    public sealed class BattleTapeBroadcast : ITickable, System.IDisposable
     {
         private readonly CombatSimulation _simulation;
         private readonly TapeStreamer     _streamer;
+        private readonly IBattleAuthority _authority;
 
         private bool _flushed;
 
-        public BattleTapeBroadcast(CombatSimulation simulation, TapeStreamer streamer)
+        public BattleTapeBroadcast(CombatSimulation simulation, TapeStreamer streamer,
+                                   IBattleAuthority authority)
         {
             _simulation = simulation;
             _streamer   = streamer;
+            _authority  = authority;
 
             _simulation.OnBattleReset += HandleBattleReset;
         }
@@ -43,6 +47,10 @@ namespace Guildmaster.Net.Tape
         public void Tick()
         {
             if (!Enabled) return;
+
+            // Раздаёт только хост. Соло-игрок иначе платил бы нарезкой чанков, которые некому принять,
+            // а гость раздавал бы обратно ленту, которую ему же и прислали.
+            if (_authority.Role != BattleRole.Host) return;
 
             int readyThrough = _simulation.CurrentTick - 1;
             if (readyThrough < 0) return;

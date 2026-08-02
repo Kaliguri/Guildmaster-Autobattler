@@ -21,7 +21,7 @@ namespace Guildmaster.Net.Tape
     /// буквально те же байты; кольцо на <see cref="DefaultHistoryChunks"/> чанков покрывает разрыв
     /// заметно длиннее окна снимков, а что старше — доедет опорным снимком, когда он появится.</para>
     /// </remarks>
-    public sealed class TapeStreamer
+    public sealed class TapeStreamer : IDisposable
     {
         /// <summary>Сколько отправленных чанков держим на случай запроса повтора.</summary>
         public const int DefaultHistoryChunks = 32;

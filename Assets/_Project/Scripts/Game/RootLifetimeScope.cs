@@ -197,6 +197,11 @@ namespace Guildmaster.Game
                    .As<Guildmaster.Core.Net.ICoopSessionControl>()
                    .AsSelf();
             builder.Register<Guildmaster.Net.BattleControlRelay>(Lifetime.Singleton);
+
+            // Роль узла в бою (соло / хост / гость) выводится из транспорта и спрашивается каждый кадр:
+            // боевой скоуп поднимается на буте, когда сети ещё нет, и решить роль регистрацией нельзя.
+            builder.Register<Guildmaster.Net.NetBattleAuthority>(Lifetime.Singleton)
+                   .As<Guildmaster.Core.Net.IBattleAuthority>();
             builder.RegisterEntryPoint<Guildmaster.Net.NetPump>(Lifetime.Singleton);
 
             // Флоу забега (план 11): рукопожатие в боевой скоуп + сетевые швы (соло-тела). BattleFlow создаётся

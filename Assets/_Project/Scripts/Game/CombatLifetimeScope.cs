@@ -195,6 +195,40 @@ namespace Guildmaster.Game
             // Петля гонит сим и пишет ленту. Долю интерполяции она больше не отдаёт: её отсчитывает
             // момент ПОКАЗА (BattleTapePlayback), потому что показ живёт на своём тике, а не на симовом.
             builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped);
+
+            RegisterCoop(builder);
+        }
+
+        /// <summary>
+        /// Сетевые половины боя. Регистрируются <b>обе и всегда</b>: скоуп поднимается на буте, когда
+        /// роль ещё неизвестна, поэтому расходятся узлы в рантайме — каждый потребитель спрашивает
+        /// <see cref="Core.Net.IBattleAuthority"/> сам. В соло это стоит двух объектов, которые молчат.
+        /// </summary>
+        private void RegisterCoop(IContainerBuilder builder)
+        {
+            // Приёмная сторона: читает чанки в ТУ ЖЕ BattleTape, которую в соло пишет рекордер. Значит
+            // весь показ ниже (презентер, телеграфы, диспетчер) у гостя работает без единой правки —
+            // он не знает и не должен знать, кто наполнил ленту.
+            builder.Register<Net.Tape.TapeChunkReader>(Lifetime.Scoped);
+            builder.Register<Net.Tape.TapeIntake>(Lifetime.Scoped);
+
+            // Стример регистрируется фабрикой: у его конструктора есть параметры со значениями по
+            // умолчанию (нарезка и глубина истории), а VContainer на таком ctor роняет всю ветку.
+            builder.Register<Net.Tape.TapeStreamer>(r => new Net.Tape.TapeStreamer(
+                    r.Resolve<Net.Transport.INetTransport>(),
+                    r.Resolve<Combat.Tape.BattleTape>()),
+                Lifetime.Scoped);
+
+            builder.RegisterEntryPoint<Net.Tape.BattleTapeBroadcast>(Lifetime.Scoped).AsSelf();
+            builder.RegisterEntryPoint<Net.Tape.TapeIntakePump>(Lifetime.Scoped);
+
+            // Состав боя: в снимках его нет (за бой не меняется), а показу он нужен — кто это, какой
+            // арт, чья команда. В соло эту роль играет событие спавна, у гостя его неоткуда взять.
+            builder.RegisterEntryPoint<Net.Tape.BattleRosterRelay>(Lifetime.Scoped);
+
+            // Пауза: сеть объявляет, показ применяет. Мост нужен и в соло — путь применения паузы один
+            // на все режимы (см. его докстринг).
+            builder.RegisterEntryPoint<Services.NetPauseBridge>(Lifetime.Scoped);
         }
 
         private void RegisterPresentation(IContainerBuilder builder)

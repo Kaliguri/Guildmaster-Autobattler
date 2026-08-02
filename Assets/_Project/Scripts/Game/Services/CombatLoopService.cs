@@ -11,8 +11,10 @@ namespace Guildmaster.Game.Services
     /// Реалтайм-пульс боевой симуляции: accumulator-паттерн на <c>Time.unscaledDeltaTime</c>.
     /// Время Unity читается ТОЛЬКО здесь — в <see cref="CombatSimulation"/> его нет.
     /// Реализует <see cref="IAsyncStartable"/> для авто-запуска через VContainer EntryPoint.
-    /// Тикует только хост (в мультиплеере); клиент применяет команды и следит за checksum.
-    /// (вики «10» §5.1).
+    /// <para><b>Тикает только тот, кто считает бой сам</b> — соло-игрок и хост. У гостя симуляции нет:
+    /// он смотрит ленту, которую хост раздаёт чанками, и цикл у него сводится к одной строке
+    /// (<see cref="GuestFrame"/>). Роль спрашивается каждый кадр, а не при регистрации: боевой скоуп
+    /// поднимается на буте, когда сети ещё нет.</para>
     /// <para><b>Почему UNSCALED:</b> пауза и slowmo — свойства ПОКАЗА, а не просчёта («сим впереди,
     /// показ с лагом»). Масштабированное время тормозило бы и расчёт: в финальном slowmo просчёт полз
     /// бы вместе с картинкой, хотя именно запас впереди и позволяет режиссуре знать будущее. Показ свою
@@ -24,6 +26,7 @@ namespace Guildmaster.Game.Services
         private readonly Combat.Tape.BattleTapeRecorder _tapeRecorder;
         private readonly Combat.Tape.BattleTapePlayback _playback;
         private readonly Data.Definitions.IBattleClock  _clock;
+        private readonly Core.Net.IBattleAuthority      _authority;
 
         private float _accumulator;
         private bool  _running;
@@ -39,12 +42,14 @@ namespace Guildmaster.Game.Services
             CombatSimulation simulation,
             Combat.Tape.BattleTapeRecorder tapeRecorder,
             Combat.Tape.BattleTapePlayback playback,
-            Data.Definitions.IBattleClock clock)
+            Data.Definitions.IBattleClock clock,
+            Core.Net.IBattleAuthority authority)
         {
             _simulation   = simulation;
             _tapeRecorder = tapeRecorder;
             _playback     = playback;
             _clock        = clock;
+            _authority    = authority;
         }
 
         /// <summary>
@@ -62,6 +67,15 @@ namespace Guildmaster.Game.Services
                 // сам возобновляет тик — без перезапуска цикла и без перезагрузки сцены.
                 while (_running && !cancellation.IsCancellationRequested)
                 {
+                    // Гость своей симуляции не тикает вовсе (см. GuestFrame): ни одного шага, ни одного
+                    // снятого кадра — иначе он затёр бы присланную ленту своей пустой ареной.
+                    if (!_authority.SimulatesLocally)
+                    {
+                        GuestFrame();
+                        await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
+                        continue;
+                    }
+
                     // Лаг — только на показ БОЯ. Мир, карта, расстановка идут в реальном времени: там
                     // игрок нажимает сам и обязан видеть результат немедленно (уточнение Макса 2026-07-29).
                     bool fighting = _clock != null && _clock.Phase == Data.Definitions.BattlePhase.Fighting;
@@ -140,6 +154,22 @@ namespace Guildmaster.Game.Services
                 _running = false;
             }
         }
+
+        /// <summary>
+        /// Кадр гостя: тика нет, есть только требование к отставанию показа.
+        /// </summary>
+        /// <remarks>
+        /// <b>Отставание у гостя постоянное, без оглядки на фазу боя,</b> и это не упрощение. Лента
+        /// гостя пополняется исключительно тогда, когда у хоста идёт бой: вне боя фронт хостовой ленты
+        /// стоит на месте (кадр каждый раз перезаписывает один и тот же тик), раздавать нечего, и
+        /// чанки не уходят. Значит растущая лента у гостя и есть «бой идёт», а спрашивать об этом
+        /// местные часы бессмысленно — они у гостя ведутся его собственным флоу, которого нет.
+        /// <para>Лаг тот же, что у хоста, намеренно: хост показывает <c>фронт − окно</c>, и гость,
+        /// показывающий свой фронт вплотную, увидел бы бой на десять секунд раньше напарника. Общий
+        /// лаг сводит обе картинки к одному моменту боя с точностью до задержки сети.</para>
+        /// </remarks>
+        private void GuestFrame()
+            => _playback.SetTargetLead(Combat.Tape.BattleTapePlayback.LookaheadTicks);
 
         // Ручного Stop() здесь нет: цикл живёт ровно столько, сколько боевой скоуп, и завершается
         // токеном отмены. Прежняя ручка «остановить при выгрузке сцены» осталась от модели, где бой

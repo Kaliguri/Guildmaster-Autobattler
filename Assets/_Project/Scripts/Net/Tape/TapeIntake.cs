@@ -19,7 +19,7 @@ namespace Guildmaster.Net.Tape
     /// проглатываются: показ у гостя после них разойдётся с хостом, и молчание здесь стоило бы поиска
     /// по симптому «у второго игрока другая картинка».</para>
     /// </remarks>
-    public sealed class TapeIntake
+    public sealed class TapeIntake : IDisposable
     {
         /// <summary>Сколько ждать перед повторной просьбой о том же чанке, секунд.</summary>
         public const float DefaultRetrySeconds = 0.5f;

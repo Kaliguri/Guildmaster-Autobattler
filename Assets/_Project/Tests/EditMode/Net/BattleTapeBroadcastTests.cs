@@ -127,8 +127,18 @@ namespace Guildmaster.Tests.EditMode.Net
                 Sim       = sim,
                 Recorder  = recorder,
                 Streamer  = streamer,
-                Broadcast = new BattleTapeBroadcast(sim, streamer),
+                Broadcast = new BattleTapeBroadcast(sim, streamer, HostRole),
             };
+        }
+
+        // Раздача — обязанность хоста; роль здесь фиксирована, потому что этот класс тестов про
+        // ПРАВИЛА раздачи, а не про то, кто раздаёт (это CoopBattleWiringTests).
+        private static readonly Guildmaster.Core.Net.IBattleAuthority HostRole = new AlwaysHost();
+
+        private sealed class AlwaysHost : Guildmaster.Core.Net.IBattleAuthority
+        {
+            public Guildmaster.Core.Net.BattleRole Role => Guildmaster.Core.Net.BattleRole.Host;
+            public bool SimulatesLocally => true;
         }
 
         // Тикаем так же, как боевой цикл: кадр ленты снимается сразу за тиком — иначе у чанка не будет
