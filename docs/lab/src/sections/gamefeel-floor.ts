@@ -89,6 +89,172 @@ function vnoise(x: number, y: number, salt: number): number {
   );
 }
 
+/* ---------- облачное поле ----------
+   Второй способ построить облако, и он же способ, которым это делают в шейдерах: не «нарисовать
+   несколько кругов», а посчитать ПОЛЕ и вырезать из него форму порогом.
+
+   Почему это важно именно нам: круг — главный признак мультяшности. Сколько тонов на него ни клади,
+   дуга постоянной кривизны читается воздушным шаром. У поля кривизна гуляет на всех масштабах сразу,
+   поэтому силуэт получается клубящимся без единой «нарисованной» дуги.
+
+   Рецепт взят из открытых источников (Book of Shaders §13, статья Иньиго Килеза про domain warping,
+   двумерные облака на Shadertoy) и упрощён до того, что нам нужно:
+     1. fbm — сумма октав шума, каждая вдвое мельче и вдвое слабее;
+     2. domain warping — поле сэмплится не в точке, а в точке, СДВИНУТОЙ другим полем: fbm(p+fbm(p)).
+        Именно варп превращает мыльные пятна в клубы, и стоит он одного лишнего вызова;
+     3. порог — всё выше него облако, ниже небо. Порог и есть силуэт;
+     4. постеризация — величина поля режется на три-четыре ступени тона, а не льётся градиентом.
+        Это и держит сторибук: плоские тона с ясными границами.
+   Свет берётся из ГРАДИЕНТА поля: где поле убывает в сторону солнца — там склон к нему обращён.
+   Отдельной лепки не нужно, форма освещает себя сама. */
+
+/** Целочисленный хэш вместо синусного: поле считается попиксельно, и Math.sin на каждый сэмпл
+ *  стоит порядок величины. Детерминизм тот же — одно и то же число на одном входе. */
+function ihash(x: number, y: number, s: number): number {
+  let n = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263) + Math.imul(s | 0, 1274126177);
+  n = Math.imul(n ^ (n >>> 13), 1274126177);
+  return ((n ^ (n >>> 16)) >>> 0) / 4294967296;
+}
+
+function vnoise2(x: number, y: number, salt: number): number {
+  const xi = Math.floor(x);
+  const yi = Math.floor(y);
+  const fx = x - xi;
+  const fy = y - yi;
+  const u = fx * fx * (3 - 2 * fx);
+  const v = fy * fy * (3 - 2 * fy);
+  return lerp(
+    lerp(ihash(xi, yi, salt), ihash(xi + 1, yi, salt), u),
+    lerp(ihash(xi, yi + 1, salt), ihash(xi + 1, yi + 1, salt), u),
+    v
+  );
+}
+
+function fbm2(x: number, y: number, salt: number, octaves = 4): number {
+  let sum = 0;
+  let amp = 0.5;
+  let norm = 0;
+  let fx = x;
+  let fy = y;
+  for (let i = 0; i < octaves; i++) {
+    sum += vnoise2(fx, fy, salt + i * 17) * amp;
+    norm += amp;
+    amp *= 0.5;
+    fx *= 2.03;
+    fy *= 2.03;
+  }
+  return sum / norm;
+}
+
+/** Само поле для полосы неба. Возвращает готовый канвас с прозрачным небом и плоскими тонами
+ *  облаков — его остаётся положить в кадр.
+ *
+ *  Перспектива честная: точка кадра переводится в точку ПЛОСКОСТИ облаков, поэтому к горизонту
+ *  масштаб сам собой мельчает и поле смыкается в сплошную полосу. Рядов и штучек здесь нет вовсе. */
+function cloudField(
+  pxW: number,
+  pxH: number,
+  horizonPx: number,
+  seed: number,
+  tod: TimeOfDay,
+  wx: Weather
+): HTMLCanvasElement {
+  const cv = document.createElement("canvas");
+  cv.width = Math.max(1, pxW);
+  cv.height = Math.max(1, pxH);
+  const c = cv.getContext("2d");
+  if (!c) return cv;
+  const img = c.createImageData(cv.width, cv.height);
+  const data = img.data;
+
+  // Поле считается в свой массив: из него же берётся градиент для света, поэтому второй проход
+  // шума не нужен — соседние ячейки уже посчитаны.
+  const field = new Float32Array(cv.width * cv.height);
+  const salt = seed | 0;
+
+  for (let y = 0; y < cv.height; y++) {
+    // Высота над горизонтом в пикселях. У самого горизонта луч почти параллелен плоскости облаков,
+    // и масштаб уходит в бесконечность — отсюда сгущение к горизонту без единого правила про ряды.
+    const above = Math.max(horizonPx - y, cv.height * 0.02);
+    // Дальность ограничена сверху НАМЕРЕННО: у горизонта луч почти параллелен плоскости, шаг
+    // сэмпла по X улетает за период шума, и поле рассыпается в вертикальный штрихкод. Настоящее
+    // небо в этой полосе всё равно съедено дымкой, так что потолок ничего не отнимает.
+    const dist = Math.min(190 / above, 34);
+    for (let x = 0; x < cv.width; x++) {
+      const nx = ((x - cv.width * 0.5) / cv.width) * dist * 3.4;
+      const ny = dist * 1.7;
+      // Один уровень варпа: fbm(p + fbm(p)). Второй уровень заметен только вблизи и стоит ещё
+      // одного прохода — для дальнего плана он не окупается.
+      const wxq = fbm2(nx, ny, salt, 3);
+      const wyq = fbm2(nx + 4.7, ny + 2.3, salt + 31, 3);
+      field[y * cv.width + x] = fbm2(nx + wxq * 1.9, ny + wyq * 1.9, salt + 61, 4);
+    }
+  }
+
+  // Порог: чем больше облачности, тем ниже планка. У горизонта планка ещё ниже — там поле
+  // обязано смыкаться, иначе дальний план распадается на отдельные пятнышки.
+  const cover = 0.52 - (wx.clouds / 18) * 0.20;
+
+  // Тона: тень (низ и края), тело, свет, блик. Те же правила, что и раньше, — тень светлая и
+  // уходит в фиолет, свет тёплый.
+  const litness = wx.storm ? 0.45 : 0.92;
+  const lit: RGB = [
+    lerp(tod.shadow[0], lighten(tod.light, 0.3)[0], litness),
+    lerp(tod.shadow[1], lighten(tod.light, 0.3)[1], litness),
+    lerp(tod.shadow[2], lighten(tod.light, 0.3)[2], litness)
+  ];
+  const dark: RGB = [
+    lerp(lit[0], tod.shadow[0], wx.storm ? 0.66 : 0.46),
+    lerp(lit[1], tod.shadow[1], wx.storm ? 0.66 : 0.46),
+    lerp(lit[2], tod.shadow[2], wx.storm ? 0.58 : 0.36) * 1.06
+  ];
+  const tones: RGB[] = [dark, mix(dark, lit, 0.55), lit, lighten(lit, 0.26)];
+
+  const dir = tod.cloudLight;
+  const dl = Math.hypot(dir[0], dir[1]) || 1;
+  const lx = dir[0] / dl;
+  const ly = dir[1] / dl;
+
+  for (let y = 0; y < cv.height; y++) {
+    for (let x = 0; x < cv.width; x++) {
+      const i = y * cv.width + x;
+      const f = field[i]!;
+      // Планка растёт вверх по кадру: над головой неба больше, у горизонта облака сплошные.
+      const th = cover + Math.max(0, (horizonPx - y) / Math.max(horizonPx, 1)) * 0.14;
+      if (f <= th) continue;
+
+      // Градиент поля = наклон формы. Проекция на направление света даёт освещённость: там, где
+      // поле убывает в сторону солнца, склон к солнцу и повёрнут.
+      const xr = Math.min(x + 2, cv.width - 1);
+      const xl = Math.max(x - 2, 0);
+      const yd = Math.min(y + 2, cv.height - 1);
+      const yu = Math.max(y - 2, 0);
+      const gx = field[y * cv.width + xr]! - field[y * cv.width + xl]!;
+      const gy = field[yd * cv.width + x]! - field[yu * cv.width + x]!;
+      const slope = -(gx * lx + gy * ly) * 26;
+
+      // Толщина: у самой кромки облако тонкое и всегда теневое — этим держится читаемый край.
+      const body = Math.min(1, (f - th) / 0.09);
+      const level = body < 0.42 ? 0 : Math.max(0, Math.min(3, 1 + Math.round(slope + body * 0.6)));
+      const tone = tones[level]!;
+
+      // Атмосферная перспектива: у горизонта тон уходит в цвет неба, а сама масса бледнеет. Это
+      // не украшение — без неё дальний план спорит с ближним по контрасту, и глубина пропадает.
+      const haze = Math.min(1, Math.max(horizonPx - y, 0) / Math.max(horizonPx * 0.42, 1));
+      const fade = 0.25 + haze * 0.75;
+      const a = wx.cloudAlpha * (0.55 + body * 0.45) * fade;
+      const p = i * 4;
+      data[p] = lerp(tod.skyNear[0], tone[0], fade) | 0;
+      data[p + 1] = lerp(tod.skyNear[1], tone[1], fade) | 0;
+      data[p + 2] = lerp(tod.skyNear[2], tone[2], fade) | 0;
+      data[p + 3] = (a * 255) | 0;
+    }
+  }
+
+  c.putImageData(img, 0, 0);
+  return cv;
+}
+
 /* ---------- биом ---------- */
 
 interface Biome {
@@ -895,6 +1061,9 @@ interface SlabOpts {
   naive?: boolean;
   /** Контур у облаков: "ink" — почти чёрный, "tint" — тёмный цветной. Не задан — без контура. */
   cloudOutline?: "ink" | "tint";
+  /** Чем построены облака: "lobes" — доли-полукружия (первый заход), "field" — поле шума с порогом
+   *  (способ из шейдеров). Не задано — доли. */
+  clouds?: "lobes" | "field";
   /** Время суток и облачность. Не заданы — день при обычной облачности. */
   tod?: TimeOfDay;
   weather?: Weather;
@@ -1089,7 +1258,17 @@ function slab(o: SlabOpts): DrawFn {
     // бледнее — атмосферная перспектива делает глубину без единого приёма сверх этого.
     // Три плоских тона на массу (тень снизу, тело, подсвеченный верх) — ровно язык сторибука,
     // и в рефе сделано так же.
-    {
+    if (o.clouds === "field") {
+      // Способ из шейдеров: одно поле на всю полосу неба вместо перечисления масс. Считается в
+      // своём канвасе в ФИЗИЧЕСКОМ разрешении — иначе кромка, вырезанная порогом, размылась бы
+      // при растяжении, а вся суть в её резкости.
+      const k = Math.min(Math.max(ctx.getTransform().a || 1, 1), 2);
+      const skyH = h * 0.46;
+      const tile = cloudField(
+        Math.round(w * k), Math.round(skyH * k), Math.round(h * 0.42 * k), o.seed, tod, wx
+      );
+      ctx.drawImage(tile, 0, 0, w, skyH);
+    } else {
       const rows = 6;
       for (let row = 0; row < rows; row++) {
         // 0 — у горизонта, 1 — ближний край кадра.
@@ -1564,6 +1743,51 @@ const SHOWCASE_STANDS: StandDef[] = [
   }))
 ];
 
+/** ЧЕМ СТРОИТСЯ ОБЛАКО: доли против поля. Развилка не про украшение, а про основу формы — от неё
+ *  зависит, читается небо нарисованным или мультяшным. */
+const FIELD_STANDS: StandDef[] = [
+  {
+    id: "clouds-lobes",
+    status: "waiting" as const,
+    title: "Доли: полукружия",
+    tag: "как сейчас",
+    note: "Масса собрана из трёх-пяти шапок, каждая лепится ступенями тона.",
+    verdict:
+      "Круг узнаётся всегда: дуга постоянной кривизны читается воздушным шаром, сколько тонов на " +
+      "неё ни клади. Отсюда «мультяшно» — оно в основе формы, а не в раскраске.",
+    size: [430, 330] as [number, number],
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: NORMAL })
+  },
+  {
+    id: "clouds-field",
+    status: "waiting" as const,
+    title: "Поле: шум с порогом",
+    tag: "способ из шейдеров",
+    note: "fbm с варпом, силуэт вырезан порогом, тон постеризован на четыре ступени, свет из градиента поля.",
+    verdict:
+      "Кривизна гуляет на всех масштабах, поэтому силуэт клубится сам. Перспектива честная: у " +
+      "горизонта поле смыкается без правила про ряды. Тот же приём переносится в шейдер один в один.",
+    size: [430, 330] as [number, number],
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: NORMAL, clouds: "field" })
+  },
+  {
+    id: "clouds-field-day",
+    status: "waiting" as const,
+    title: "Поле: день",
+    note: "То же поле при верхнем свете — видно, что лепка идёт от формы, а не от заданной стороны.",
+    size: [430, 330] as [number, number],
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: DAY, weather: NORMAL, clouds: "field" })
+  },
+  {
+    id: "clouds-field-storm",
+    status: "waiting" as const,
+    title: "Поле: гроза",
+    note: "Плотность и мрачность идут одними числами: порог ниже, тон уходит в холод.",
+    size: [430, 330] as [number, number],
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: DUSK, weather: STORM, clouds: "field" })
+  }
+];
+
 /** Контур у облаков: три варианта под вердикт Макса. */
 const OUTLINE_STANDS: StandDef[] = [
   {
@@ -1808,9 +2032,29 @@ const section: SectionDef = {
     },
     {
       kind: "head",
+      id: "clouds-build",
+      title: "Чем построено облако",
+      lede:
+        "Развилка об основе формы, а не об отделке. Слева способ, который был; справа — тот, " +
+        "которым облака строят в шейдерах: поле шума, порезанное порогом."
+    },
+    { kind: "stands", items: FIELD_STANDS },
+    {
+      kind: "note",
+      html:
+        "<b>Приём взят из открытых источников и упрощён.</b> Fbm — сумма октав (Book of Shaders §13); " +
+        "domain warping — сэмплирование поля в точке, сдвинутой другим полем, <code>fbm(p+fbm(p))</code> " +
+        "(статья Иньиго Килеза); силуэт вырезается порогом, тон режется на четыре ступени вместо " +
+        "градиента. Свет не задаётся отдельно: он берётся из ГРАДИЕНТА поля, поэтому подсвечена " +
+        "оказывается та сторона клуба, которая к солнцу и повёрнута." +
+        "<br><br>Главное следствие — <b>это ровно то, что потом станет шейдером неба в движке</b>: " +
+        "тот же fbm, тот же порог, та же постеризация. Доли пришлось бы переписывать заново."
+    },
+    {
+      kind: "head",
       id: "outline",
       title: "Контур у облаков",
-      lede: "Все три на закате при плотной облачности — там разница видна лучше всего."
+      lede: "Все три на закате при обычной облачности — при плотной ближний ряд слипается в хребет."
     },
     { kind: "stands", items: OUTLINE_STANDS },
     {
