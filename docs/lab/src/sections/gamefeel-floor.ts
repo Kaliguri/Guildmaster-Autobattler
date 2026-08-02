@@ -259,19 +259,31 @@ const STORM: Weather = { id: "storm", name: "Гроза", clouds: 18, cloudAlpha
 
 const WEATHERS = [CLEAR, NORMAL, CLOUDY, STORM];
 
-/** Облако плоской формой: несколько сросшихся окружностей. В нашем языке это правильнее шума —
- *  у облака должен быть силуэт, а не размытое пятно. */
-function cloudPath(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, seed: number): void {
+/** Облачная масса по рефу Dead Weight: клубы сверху, ПЛОСКИЙ НИЗ.
+ *
+ *  Плоское дно — главное правило рисования облака и то, чего не было в первой версии: там были
+ *  просто сросшиеся круги, и они читались комками ваты. Дно облака плоское, потому что на этой
+ *  высоте водяной пар начинает конденсироваться — и глаз знает это, даже не зная почему.
+ *
+ *  Масса вытянута вдоль горизонта и собрана из долей разного размера: крупная в середине, мельче
+ *  к краям. Один силуэт на всё поле выглядел бы штампом. */
+function cloudMass(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, seed: number): void {
+  const lobes = 3 + Math.floor(jag(seed, 3) * 3);
+  const halfW = r * 1.5;
   ctx.beginPath();
-  const lobes = 4 + Math.floor(jag(seed, 3) * 3);
+  ctx.moveTo(cx - halfW, cy);
+
   for (let i = 0; i < lobes; i++) {
-    const t = i / (lobes - 1) - 0.5;
-    const lx = cx + t * r * 2.1;
-    const ly = cy + (jag(seed + i * 7, 11) - 0.5) * r * 0.34;
-    const lr = r * (0.45 + jag(seed + i * 5, 13) * 0.55) * (1 - Math.abs(t) * 0.5);
-    ctx.moveTo(lx + lr, ly);
-    ctx.arc(lx, ly, lr, 0, Math.PI * 2);
+    const t = (i + 0.5) / lobes;
+    const lx = cx - halfW + t * halfW * 2;
+    // Средние доли выше крайних: масса растёт к центру, как настоящая кучёвка.
+    const bell = Math.sin(t * Math.PI);
+    const lr = r * (0.34 + jag(seed + i * 7, 11) * 0.42) * (0.45 + bell * 0.85);
+    ctx.arc(lx, cy - lr * 0.25, lr, Math.PI * 0.98, Math.PI * 2.02, false);
   }
+
+  ctx.lineTo(cx + halfW, cy);
+  ctx.closePath();
 }
 
 /* ---------- фактура ----------
@@ -894,44 +906,60 @@ function slab(o: SlabOpts): DrawFn {
     ctx.fillStyle = vg;
     ctx.fillRect(0, 0, w, h);
 
-    // ОБЛАКА — ЗАДНИЙ ФОН, а не полог над сценой (поправка Макса). Плита висит НА ФОНЕ неба:
-    // облака идут позади неё и никогда её не перекрывают. Прошлая версия рисовала их поверх и
-    // укрывала ими поле — это и читалось туманом вместо неба.
-    // Тени облаков на арене убраны вместе с этим: то, что находится ЗА предметом, не может
-    // бросать на него тень.
-    for (let i = 0; i < wx.clouds; i++) {
-      const cxp = (jag(i * 3 + 1, o.seed + 101) * 1.2 - 0.1) * w;
-      const cyp = (jag(i * 3 + 2, o.seed + 103) * 0.9) * h;
-      const cr = w * (0.06 + jag(i, o.seed + 105) * 0.09);
+    // ОБЛАЧНОЕ ПОЛЕ — задний фон (реф Dead Weight, docs/art-refs/dead-weight).
+    // Главная поправка после рефа: облака это ПОВЕРХНОСТЬ, а не отдельные штучки в пустоте.
+    // Поле собрано рядами, уходящими к горизонту: чем выше в кадре, тем ряд мельче, плотнее и
+    // бледнее — атмосферная перспектива делает глубину без единого приёма сверх этого.
+    // Три плоских тона на массу (тень снизу, тело, подсвеченный верх) — ровно язык сторибука,
+    // и в рефе сделано так же.
+    {
+      const rows = 5;
+      for (let row = 0; row < rows; row++) {
+        // 0 — у горизонта, 1 — ближний край кадра.
+        const depth = row / (rows - 1);
+        const rowY = h * (0.06 + Math.pow(depth, 1.6) * 0.92);
+        const scale = 0.28 + depth * 0.95;
+        // Дальние ряды бледнее: их съедает воздух.
+        const haze = 0.45 + depth * 0.55;
+        const perRow = Math.max(2, Math.round(wx.clouds * (1.5 - depth * 0.7) / 2));
 
-      const dark = wx.storm ? 0.4 : 0.82;
-      const body: RGB = [
-        lerp(tod.shadow[0], tod.light[0], dark),
-        lerp(tod.shadow[1], tod.light[1], dark),
-        lerp(tod.shadow[2], tod.light[2], dark)
-      ];
+        for (let i = 0; i < perRow; i++) {
+          const salt = row * 31 + i * 7;
+          const cxp = ((jag(salt, o.seed + 101) * 1.3 - 0.15) + i * 0.04) * w;
+          const cyp = rowY + (jag(salt, o.seed + 103) - 0.5) * h * 0.05;
+          const cr = w * (0.05 + jag(salt, o.seed + 105) * 0.07) * scale;
 
-      // Тёмное брюхо: облако снизу не освещено, иначе читается ватой.
-      cloudPath(ctx, cxp, cyp + cr * 0.16, cr, o.seed + i * 17);
-      ctx.fillStyle = `rgba(${shade(body, 0.32).map((v) => v | 0).join(",")},${(wx.cloudAlpha * 0.7).toFixed(3)})`;
-      ctx.fill();
+          const dark = wx.storm ? 0.34 : 0.8;
+          const body: RGB = [
+            lerp(tod.shadow[0], tod.light[0], dark),
+            lerp(tod.shadow[1], tod.light[1], dark),
+            lerp(tod.shadow[2], tod.light[2], dark)
+          ];
+          const a = wx.cloudAlpha * haze;
 
-      cloudPath(ctx, cxp, cyp, cr, o.seed + i * 17);
-      ctx.fillStyle = `rgba(${body.map((v) => v | 0).join(",")},${wx.cloudAlpha.toFixed(3)})`;
-      ctx.fill();
+          // 1. Тень массы: та же форма чуть ниже. Даёт облаку низ, без которого оно плоское.
+          cloudMass(ctx, cxp, cyp + cr * 0.3, cr, o.seed + salt);
+          ctx.fillStyle = `rgba(${shade(body, 0.38).map((v) => v | 0).join(",")},${(a * 0.8).toFixed(3)})`;
+          ctx.fill();
 
-      // Подсвеченная кромка со стороны источника. На закате она делает всю картинку.
-      ctx.save();
-      cloudPath(ctx, cxp, cyp, cr, o.seed + i * 17);
-      ctx.clip();
-      const rim = ctx.createLinearGradient(cxp - cr, cyp - cr, cxp + cr * 0.3, cyp + cr * 0.4);
-      rim.addColorStop(0, `rgba(${lighten(tod.light, 0.25).map((v) => v | 0).join(",")},${(0.45 * tod.lightPower + 0.1).toFixed(3)})`);
-      rim.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.fillStyle = rim;
-      ctx.fillRect(cxp - cr * 2.5, cyp - cr * 2, cr * 5, cr * 4);
-      ctx.restore();
+          // 2. Тело.
+          cloudMass(ctx, cxp, cyp, cr, o.seed + salt);
+          ctx.fillStyle = `rgba(${body.map((v) => v | 0).join(",")},${a.toFixed(3)})`;
+          ctx.fill();
+
+          // 3. Подсвеченные верхушки: обрезаем тело по верхней половине и светлим. На закате
+          //    именно эта полоса делает всю картинку.
+          ctx.save();
+          cloudMass(ctx, cxp, cyp, cr, o.seed + salt);
+          ctx.clip();
+          ctx.fillStyle = `rgba(${lighten(tod.light, 0.18).map((v) => v | 0).join(",")},${(a * (0.35 + 0.4 * tod.lightPower)).toFixed(3)})`;
+          ctx.fillRect(cxp - cr * 2, cyp - cr * 2, cr * 4, cr * 1.75);
+          ctx.restore();
+        }
+      }
     }
 
+    // Геометрия плиты: поле 640×384 по центру кадра, борт под ним.
     const rimH = o.rimU * U;
     const pw = o.crop ? w : ARENA_W;
     const ph = o.crop ? h : ARENA_H;
