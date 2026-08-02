@@ -1,4 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
+using VContainer;
 
 namespace Guildmaster.Game
 {
@@ -36,6 +37,35 @@ namespace Guildmaster.Game
             if (asset != null) return asset;
             Debug.LogError($"[{scope}] - поле {field} не назначено в сцене → {consequence}");
             return ScriptableObject.CreateInstance<T>();
+        }
+
+        /// <summary>
+        /// Зарегистрировать компонент, лежащий в ЛЮБОЙ из персист-сцен, а не только в сцене скоупа.
+        /// </summary>
+        /// <remarks>
+        /// <b>Почему не <c>RegisterComponentInHierarchy</c>.</b> Тот ищет строго в сцене своего скоупа
+        /// (<c>FindComponentProvider</c> запоминает её при регистрации), а персист-сцен у нас две:
+        /// <c>WorldScene</c> с камерой и ареной и <c>CombatSystemsScene</c>, где исторически лежат
+        /// презентеры. Мировой скоуп поднимается раньше второй сцены и не нашёл бы там ничего.
+        /// <para><b>Это временно и признано долгом:</b> объекты показа мировые по смыслу и должны
+        /// переехать в <c>WorldScene</c> вместе с расформированием <c>CombatSystemsScene</c> (шаг 1в
+        /// разделения скоупов). Пока они не переехали, поиск идёт по загруженным сценам — лениво, один
+        /// раз, в момент первого резолва.</para>
+        /// </remarks>
+        public static RegistrationBuilder RegisterPersistComponent<T>(
+            IContainerBuilder builder) where T : Component
+        {
+            return builder.Register(resolver =>
+            {
+                var component = Object.FindAnyObjectByType<T>(FindObjectsInactive.Include);
+                if (component == null)
+                    throw new System.InvalidOperationException(
+                        $"[ScopeWiring] - компонент {typeof(T).Name} не найден ни в одной загруженной сцене. " +
+                        "Он должен лежать в персист-сцене (WorldScene или CombatSystemsScene).");
+
+                resolver.Inject(component);
+                return component;
+            }, Lifetime.Singleton);
         }
     }
 }

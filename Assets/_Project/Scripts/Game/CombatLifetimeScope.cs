@@ -79,10 +79,10 @@ namespace Guildmaster.Game
             builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped)
                    .WithParameter("provingGrounds", _provingGroundsConfig);
 
-            // Мост в макро-флоу (план 11 §4 A2): забирает запрос боя из IBattleSession и грузит его, репортит
-            // исход. Регистрируется ПОСЛЕ DeploymentController — чтобы его подписка на Free-расстановку встала
-            // до LoadPreset. Пусто (запуск из dev-панели) = просто ждёт исход, LoadPreset не зовёт.
-            builder.RegisterEntryPoint<Flow.BattleBootstrap>(Lifetime.Scoped);
+            // Сборка боя, ради которого родился скоуп: отряд, враги, фаза расстановки, отчёт исхода.
+            // Регистрируется ПОСЛЕ DeploymentController — чтобы его подписка на Free-расстановку встала
+            // до того, как загрузчик её поднимет.
+            builder.RegisterEntryPoint<Flow.BattleStartup>(Lifetime.Scoped);
         }
 
         /// <summary>
@@ -104,17 +104,27 @@ namespace Guildmaster.Game
                 Debug.LogWarning("[CombatLifetimeScope] - боевая сцена поднята без мира → бесконечное " +
                                  "поле без зон (движение не клампится). В игре арену держит WorldLifetimeScope.");
                 builder.RegisterInstance(ArenaLayoutData.Unbounded);
+
+                // Родителя нет — значит скоуп поднялся сам, из сцены, и параметров боя ему никто не
+                // подал. Пустой бой с нулевым сидом честнее падения: dev-арена запускается ради того,
+                // чтобы что-то показать, а бой на ней ставят руками.
+                builder.RegisterInstance(new Flow.BattleScopeParams(preset: null, seed: 0UL));
             }
 
             builder.Register<DeploymentService>(Lifetime.Scoped);
         }
 
-        // Сид здесь больше не разыгрывается. Скоуп в persist-мире поднимается ОДИН раз на сессию, поэтому
-        // всё, что он посеет, — это состояние на весь забег сразу; настоящий сид боя приносит BattleBootstrap
-        // перед каждым запуском узла, выводя его из RunState.Seed (единственный сохраняемый сид, T-19).
-        // Стартовое значение — нейтральный ноль: до первого боя из этого генератора никто не тянет.
-        private void RegisterRng(IContainerBuilder builder)
-            => builder.RegisterInstance<IRngService>(new XorShiftRng(0UL));
+        /// <summary>
+        /// Генератор боя рождается вместе с боем и сразу с его сидом (<see cref="Flow.BattleScopeParams"/>).
+        /// </summary>
+        /// <remarks>
+        /// Пересева больше нет — не спрятан, а не нужен: пока скоуп жил всю сессию, его генератор тянул
+        /// одну последовательность через весь забег, и это лечили ручным <c>Reseed</c> перед каждым узлом.
+        /// Теперь неправильно посеянного генератора не существует в природе.
+        /// </remarks>
+        private static void RegisterRng(IContainerBuilder builder)
+            => builder.Register<IRngService>(
+                r => new XorShiftRng(r.Resolve<Flow.BattleScopeParams>().Seed), Lifetime.Scoped);
 
         private void RegisterCombatSystems(IContainerBuilder builder)
         {

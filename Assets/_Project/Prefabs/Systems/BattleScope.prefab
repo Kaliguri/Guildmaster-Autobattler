@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &704707395131321235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5621175212329302345}
+  - component: {fileID: 8219602246781497683}
+  m_Layer: 0
+  m_Name: BattleScope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5621175212329302345
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704707395131321235}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8219602246781497683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704707395131321235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d393a32f9d31ce64db2c8d37d8287909, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Game::Guildmaster.Game.CombatLifetimeScope
+  parentReference:
+    TypeName: Guildmaster.Game.WorldLifetimeScope
+  autoRun: 1
+  autoInjectGameObjects: []
+  _gameConfig: {fileID: 11400000, guid: 3f479309a3dcb31429f94c65a88fb275, type: 2}
+  _simTuningConfig: {fileID: 11400000, guid: 84596659d7f25a649833a4fe7640a14f, type: 2}
+  _provingGroundsConfig: {fileID: 11400000, guid: 557cd34fa730c0c4c8acfa210f1d7d75, type: 2}
+  _spatialHashCellSize: 3
+  _feelConfig: {fileID: 11400000, guid: b4321495354e86142b6e7f18dfd5b94d, type: 2}

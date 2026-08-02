@@ -38,9 +38,14 @@ namespace Guildmaster.Presentation
             _mode        = mode;
         }
 
-        /// <summary>Бой ушёл: держать ссылки на его внутренности нельзя — они уже мертвы.</summary>
-        public void UnbindBattle()
+        /// <summary>
+        /// Бой ушёл: держать ссылки на его внутренности нельзя. Отвязывает только свой бой — рестарт
+        /// закрывает и открывает бой в одном кадре, и умирающий не должен гасить начавшийся.
+        /// </summary>
+        public void UnbindBattle(CombatSimulation battle = null)
         {
+            if (battle != null && !ReferenceEquals(_simulation, battle)) return;
+
             _simulation  = null;
             _spatialHash = null;
             _playback    = null;

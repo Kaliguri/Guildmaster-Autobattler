@@ -48,12 +48,23 @@ namespace Guildmaster.Game.Flow
 
         public void Dispose() => _subscription?.Dispose();
 
-        private void OnPartyReady(RunPartyReadyEvent _)
+        private void OnPartyReady(RunPartyReadyEvent _) => PlaceParty();
+
+        /// <summary>
+        /// Поставить отряд забега на арену заново — из durable-состояния гильдии (полный HP, сохранённое
+        /// построение). Зовётся на старте акта и после каждого боя: когда боевой скоуп уходит, арену
+        /// снова показывает мир, и показать ему нужно тот же отряд.
+        /// </summary>
+        /// <remarks>
+        /// Забега нет — арена очищается. Это не отказ, а честный ответ: в главном меню отряду стоять
+        /// негде и не с чего.
+        /// </remarks>
+        public void PlaceParty()
         {
             RunState run = _runStates.Current;
             if (run == null)
             {
-                Debug.LogWarning("[WorldStageController] - RunPartyReady без активного забега (пропуск)");
+                _stage.Clear();
                 return;
             }
 

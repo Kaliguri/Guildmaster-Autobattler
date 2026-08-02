@@ -53,10 +53,13 @@ namespace Guildmaster.Game.Flow
 
         public void Dispose()
         {
+            // Отвязываем ИМЕННО свой бой: Destroy объекта скоупа отложен до конца кадра, а рестарт
+            // закрывает и открывает бой одним вызовом — новый успевает привязаться раньше, чем старый
+            // отвязаться. Безымянная отвязка погасила бы показ уже начавшегося боя.
             // Порядок обратный привязке — не по необходимости, а чтобы читалось как закрытие скобок.
-            _areaFlash.UnbindBattle();
-            _debugDraw.UnbindBattle();
-            _presenter.UnbindBattle();
+            _areaFlash.UnbindBattle(_dispatcher);
+            _debugDraw.UnbindBattle(_simulation);
+            _presenter.UnbindBattle(_simulation);
         }
     }
 }

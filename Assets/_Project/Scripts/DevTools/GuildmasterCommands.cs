@@ -26,11 +26,13 @@ namespace Guildmaster.DevTools
         [Tooltip("Тот же SimTuningConfig, что и на CombatLifetimeScope — для gm_tuning_rebake (QC).")]
         [SerializeField] private SimTuningConfig _simTuningConfig;
 
-        private CombatSimulation   _simulation;
         private CombatDebugDraw    _debugDraw;
-        private DevOverlayMode     _overlayMode; // общий режим dev-оверлеев: показ или живой сим
-        private RuntimeUnitFactory _factory;
         private IInputService      _input;
+
+        // Владелец жизненного цикла боя (мир). Боевых ссылок консоль больше НЕ держит: скоуп боя
+        // рождается и умирает, а этот объект живёт всю сессию — запомненная симуляция протухла бы на
+        // первом же переходе между узлами. Спрашиваем текущий бой в момент команды.
+        private Guildmaster.Game.Flow.BattleHost _host;
         [Tooltip("UXML витрины боёв (F3): поиск по энкаунтерам, пресетам и срезам китов.")]
         [SerializeField] private UnityEngine.UIElements.VisualTreeAsset _battleBrowserUxml;
 
@@ -84,21 +86,66 @@ namespace Guildmaster.DevTools
         /// </summary>
         public static void SetLastBattle(System.Action<GuildmasterCommands> setup) => _lastBattleSetup = setup;
 
-        [Inject]
-        public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory,
-            IInputService input, IContentDatabase contentDatabase, Core.Arena.ArenaLayoutData arena,
-            DevOverlayMode overlayMode, IObjectResolver resolver)
+        /// <summary>Симуляция ИДУЩЕГО боя или null. Для того, что боя не открывает: пауза, статус, отчёты.</summary>
+        private CombatSimulation SimOrNull => _host != null ? _host.Resolve<CombatSimulation>() : null;
+
+        /// <summary>Режим dev-оверлеев идущего боя или null (вне боя оверлеям нечего показывать).</summary>
+        private DevOverlayMode OverlayModeOrNull => _host != null ? _host.Resolve<DevOverlayMode>() : null;
+
+        /// <summary>
+        /// Арена, на которой работает дев-срез. Боя нет — открываем пустой дев-бой: команда «поставь мне
+        /// болванчика» и означает «мне нужна арена», а требовать сперва зайти в узел значило бы сделать
+        /// инструмент менее полезным, чем он был при вечной симуляции.
+        /// </summary>
+        private CombatSimulation Sim
         {
-            _simulation  = simulation;
+            get
+            {
+                CombatSimulation live = SimOrNull;
+                if (live != null) return live;
+                if (_host == null)
+                {
+                    Debug.LogWarning("[GuildmasterCommands] - мира нет → бой открывать некому");
+                    return null;
+                }
+
+                _host.Open(DevArenaPreset());
+                return SimOrNull;
+            }
+        }
+
+        /// <summary>Фабрика юнитов идущего боя. Как <see cref="Sim"/>, открывает дев-арену при нужде.</summary>
+        private RuntimeUnitFactory Factory
+        {
+            get
+            {
+                if (Sim == null) return null;
+                return _host.Resolve<RuntimeUnitFactory>();
+            }
+        }
+
+        /// <summary>
+        /// Пустой бой для дев-срезов: ни врагов, ни ростера — состав ставят сами команды. Транзиентный
+        /// пресет, а не ассет: этот бой не принадлежит контенту и не должен в нём заводиться.
+        /// </summary>
+        private static Data.Definitions.BattlePresetData DevArenaPreset()
+            => Data.Definitions.BattlePresetData.CreateRuntime(
+                encounter: null, roster: System.Array.Empty<Data.Definitions.PlayerSlot>(),
+                mode: Data.Definitions.DeploymentMode.Fixed, partyItems: null, id: "battle.dev.arena");
+
+        [Inject]
+        public void Construct(CombatDebugDraw debugDraw,
+            IInputService input, IContentDatabase contentDatabase, Core.Arena.ArenaLayoutData arena,
+            IObjectResolver resolver)
+        {
             _debugDraw   = debugDraw;
-            _overlayMode = overlayMode;
-            _factory    = factory;
             _input      = input;
             _content = contentDatabase;
             _arena   = arena;
             contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
             contentDatabase.TryGet("enemy.bone_dev", out _boneDuelist);
             // Сессия боя живёт в RootScope: в реальном забеге резолвится, в standalone dev-арене (без Root) — null.
+            resolver.TryResolve(out _host);
             resolver.TryResolve(out _session);
             resolver.TryResolve(out _runControl);
             resolver.TryResolve(out _provingGroundsPub);
@@ -110,6 +157,24 @@ namespace Guildmaster.DevTools
             resolver.TryResolve(out _menuRouter);
             resolver.TryResolve(out _navigator);
             _provingGroundsSubscription = _provingGroundsChangedSub?.Subscribe(e => OnProvingGroundsChanged(e));
+        }
+
+        /// <summary>
+        /// Консоль подключается к миру САМА. Прежде её инжектил боевой скоуп — он лежал в одной сцене с
+        /// ней и держал её в списке автоинъекции; теперь бой рождается из префаба и на объекты сцены
+        /// ссылаться не может. Мировой скоуп её тоже не зарегистрирует: игра не ссылается на dev-слой, и
+        /// заводить эту ссылку ради консоли — значит развернуть зависимость не в ту сторону.
+        /// </summary>
+        /// <remarks>
+        /// Мир поднимается раньше сцены с консолью (<c>GameBootstrap</c> грузит WorldScene первой),
+        /// поэтому к <c>Awake</c> он уже построен. Нет мира — значит запущена одиночная сцена без него, и
+        /// консоль честно останется без боевых команд.
+        /// </remarks>
+        private void Awake()
+        {
+            var world = VContainer.Unity.LifetimeScope.Find<Guildmaster.Game.WorldLifetimeScope>();
+            if (world != null && world.Container != null) world.Container.Inject(this);
+            else Debug.LogWarning("[GuildmasterCommands] - мир не найден: боевые команды консоли работать не будут");
         }
 
         // Пауза сима, пока консоль открыта: настраиваешь бой за консолью, закрываешь — он идёт с начала
@@ -195,8 +260,8 @@ namespace Guildmaster.DevTools
         private void PauseForConsole()
         {
             _consoleOpen = true;
-            _pausedBeforeConsole = _simulation != null && _simulation.IsPaused;
-            _simulation?.SetPaused(true);
+            _pausedBeforeConsole = SimOrNull != null && Sim.IsPaused;
+            SimOrNull?.SetPaused(true);
             if (_input != null) _input.SetSuppressed(Core.Input.InputSuppressSource.DevConsole, true);
         }
 
@@ -208,7 +273,7 @@ namespace Guildmaster.DevTools
             // помним: команда могла увести игрока в расстановку уже ПОСЛЕ открытия консоли — ровно так и
             // делает gm_proving_grounds.
             bool deploying = _session != null && _session.Phase == Data.Definitions.BattlePhase.Deployment;
-            _simulation?.SetPaused(deploying || _pausedBeforeConsole);
+            SimOrNull?.SetPaused(deploying || _pausedBeforeConsole);
             if (_input != null) _input.SetSuppressed(Core.Input.InputSuppressSource.DevConsole, false);
         }
 
@@ -334,11 +399,16 @@ namespace Guildmaster.DevTools
             if (!_content.TryGet(id, out Data.Definitions.EncounterData enc) || enc == null)
                 return $"нет энкаунтера «{id}». Список — battles";
 
-            EncounterLoader loader = LiveLoader();
-            if (loader == null) return "боевой скоуп не найден — бой запускать некуда";
+            if (_host == null) return "мира нет — бой открывать некому";
 
-            loader.Load(enc, null);
-            SetLastBattle(_ => { var live = LiveLoader(); if (live != null) live.Load(enc, null); });
+            // Голый энкаунтер — это превью врагов без своей стороны. Заворачиваем в транзиентный пресет:
+            // бой рождается ровно одной дорогой, и у неё на входе всегда пресет.
+            Data.Definitions.BattlePresetData preset = Data.Definitions.BattlePresetData.CreateRuntime(
+                encounter: enc, roster: System.Array.Empty<Data.Definitions.PlayerSlot>(),
+                mode: Data.Definitions.DeploymentMode.Fixed, partyItems: null, id: $"battle.dev.{id}");
+
+            _host.Open(preset);
+            SetLastBattle(c => c._host?.Open(preset));
             return $"энкаунтер «{id}» запущен";
         }
 
@@ -349,11 +419,10 @@ namespace Guildmaster.DevTools
             if (!_content.TryGet(id, out Data.Definitions.BattlePresetData preset) || preset == null)
                 return $"нет пресета «{id}». Список — battles";
 
-            EncounterLoader loader = LiveLoader();
-            if (loader == null) return "боевой скоуп не найден — бой запускать некуда";
+            if (_host == null) return "мира нет — бой открывать некому";
 
-            loader.LoadPreset(preset);
-            SetLastBattle(_ => { var live = LiveLoader(); if (live != null) live.LoadPreset(preset); });
+            _host.Open(preset);
+            SetLastBattle(c => c._host?.Open(preset));
             return $"пресет «{id}» запущен";
         }
 
@@ -377,11 +446,8 @@ namespace Guildmaster.DevTools
 
         // Загрузчик берём у ЖИВОГО боевого скоупа на каждый вызов, а не кэшируем: после F5 старый скоуп
         // мёртв, и захваченная ссылка грузила бы бой в несуществующую арену.
-        private static EncounterLoader LiveLoader()
-        {
-            var scope = VContainer.Unity.LifetimeScope.Find<Guildmaster.Game.CombatLifetimeScope>();
-            return scope != null && scope.Container != null ? scope.Container.Resolve<EncounterLoader>() : null;
-        }
+        /// <summary>Загрузчик ИДУЩЕГО боя или null. Пере-спавн состава внутри уже открытого боя.</summary>
+        private EncounterLoader LiveLoader() => _host != null ? _host.Resolve<EncounterLoader>() : null;
 
         /// <summary>Кит для одиночного среза — аргумент команды <c>kit</c>.</summary>
         /// <remarks>
@@ -423,8 +489,8 @@ namespace Guildmaster.DevTools
 
             for (int i = 0; i < countPerTeam; i++)
             {
-                _simulation.EnqueueUnitSpawn(MakeDummy(0, new Vector2(-5f + i, i)));
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2( 5f - i, i)));
+                Sim.EnqueueUnitSpawn(MakeDummy(0, new Vector2(-5f + i, i)));
+                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2( 5f - i, i)));
             }
 
             _lastBattleSetup = self => self.SpawnBattle(countPerTeam);
@@ -453,8 +519,8 @@ namespace Guildmaster.DevTools
                 int cx = i % cols, cy = i / cols;
                 float ox = (cx - (cols - 1) * 0.5f) * spacing;
                 float oy = (cy - (cols - 1) * 0.5f) * spacing;
-                _simulation.EnqueueUnitSpawn(MakeDummy(0, new Vector2(-3f + ox, oy)));
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2( 3f + ox, oy)));
+                Sim.EnqueueUnitSpawn(MakeDummy(0, new Vector2(-3f + ox, oy)));
+                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2( 3f + ox, oy)));
             }
 
             _lastBattleSetup = self => self.SpawnCrowd(perTeam);
@@ -465,7 +531,7 @@ namespace Guildmaster.DevTools
         public void SepInfo()
         {
             if (!SimReady()) return;
-            var s = _simulation.Separation;
+            var s = Sim.Separation;
             Debug.Log($"[GuildmasterCommands] - gm_sep: BodyRadiusPerSize={s.BodyRadiusPerSize} (⌀ при Size1 = {s.BodyRadiusPerSize * 2f}), Strength={s.Strength}, Iterations={s.Iterations}, SameTeamScale={s.SameTeamScale}");
         }
 
@@ -473,7 +539,7 @@ namespace Guildmaster.DevTools
         public void SepRadius(float radiusPerSize)
         {
             if (!SimReady()) return;
-            _simulation.Separation.BodyRadiusPerSize = Mathf.Max(0.01f, radiusPerSize);
+            Sim.Separation.BodyRadiusPerSize = Mathf.Max(0.01f, radiusPerSize);
             SepInfo();
         }
 
@@ -481,7 +547,7 @@ namespace Guildmaster.DevTools
         public void SepStrength(float strength)
         {
             if (!SimReady()) return;
-            _simulation.Separation.Strength = Mathf.Clamp(strength, 0f, 1f);
+            Sim.Separation.Strength = Mathf.Clamp(strength, 0f, 1f);
             SepInfo();
         }
 
@@ -489,7 +555,7 @@ namespace Guildmaster.DevTools
         public void SepIters(int iterations)
         {
             if (!SimReady()) return;
-            _simulation.Separation.Iterations = Mathf.Max(1, iterations);
+            Sim.Separation.Iterations = Mathf.Max(1, iterations);
             SepInfo();
         }
 
@@ -497,7 +563,7 @@ namespace Guildmaster.DevTools
         public void SepAlly(float scale)
         {
             if (!SimReady()) return;
-            _simulation.Separation.SameTeamScale = Mathf.Clamp01(scale);
+            Sim.Separation.SameTeamScale = Mathf.Clamp01(scale);
             SepInfo();
         }
 
@@ -512,13 +578,13 @@ namespace Guildmaster.DevTools
             ResetForNewBattle();
 
             // Копейщик слева — через фабрику (реальный путь сборки: статы/линейная АА/активка/AI-профиль/мана).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-5f, 0f)));
+            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-5f, 0f)));
 
             // Кластер болванчиков справа — чтобы линейная АА задевала нескольких и сработало условие «≥2 в радиусе».
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 0.8f; // компактно по вертикали
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(5f, y)));
+                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(5f, y)));
             }
 
             _lastBattleSetup = self => self.SpawnSpearman(enemies);
@@ -536,7 +602,7 @@ namespace Guildmaster.DevTools
             ResetForNewBattle();
 
             // Пастырь в тылу слева — через фабрику (реальный путь: AI-профиль Heal, хил-снаряд, активка «Длань жизни»).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
+            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
 
             // Раненые союзники-болванчики (team 0) на фронте: старт на 40% HP — видно выбор раненого и хил-снаряды.
             for (int i = 0; i < allies; i++)
@@ -544,14 +610,14 @@ namespace Guildmaster.DevTools
                 float y = (i - (allies - 1) * 0.5f) * 1.2f;
                 var ally = MakeDummy(0, new Vector2(-3f, y));
                 ally.CurrentHP = ally.Stats.Get(StatType.MaxHP) * 0.4f; // 40% — есть кого лечить
-                _simulation.EnqueueUnitSpawn(ally);
+                Sim.EnqueueUnitSpawn(ally);
             }
 
             // Пара болванчиков справа (team 1) — чтобы союзники завязли в бою и просаживались под «Длань».
             for (int i = 0; i < 2; i++)
             {
                 float y = (i - 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
+                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
             }
 
             _lastBattleSetup = self => self.SpawnShepherd(allies);
@@ -569,13 +635,13 @@ namespace Guildmaster.DevTools
             ResetForNewBattle();
 
             // Криомант в тылу слева — через фабрику (реальный путь: on-hit «Заморозка», масс-стан «Ледяные оковы», AI PreferUntagged).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
+            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
 
             // Кластер болванчиков справа: пока Криомант раздаёт «Заморозку», их накапливается ≥2 → срабатывают «Ледяные оковы».
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 1f;
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
+                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
             }
 
             _lastBattleSetup = self => self.SpawnCryomancer(enemies);
@@ -593,13 +659,13 @@ namespace Guildmaster.DevTools
             ResetForNewBattle();
 
             // Защитник по центру-слева — через фабрику (реальный путь: пассив «Оплот» pre-damage, HighestThreat, ульта).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-4f, 0f)));
+            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-4f, 0f)));
 
             // Болванчики справа бьют защитника. «Оплот» поднимает щит на ЛЮБОЙ удар (PassiveTrigger.AnyHit, внутр. КД 4с).
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
+                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
             }
 
             _lastBattleSetup = self => self.SpawnDefender(enemies);
@@ -617,13 +683,13 @@ namespace Guildmaster.DevTools
             ResetForNewBattle();
 
             // Следопыт слева — через фабрику (реальный путь: кайт, стрельба на ходу, «Метка охотника» с переносом).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
+            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
 
             // Кластер болванчиков справа лезет в ближний бой — видно кайт (отход) и стрельбу на ходу.
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
+                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
             }
 
             _lastBattleSetup = self => self.SpawnRanger(enemies);
@@ -642,13 +708,13 @@ namespace Guildmaster.DevTools
 
             // Убийца слева — через фабрику (реальный путь: пассивы «Скрытность» + «Изворотливость» из GrantedEffects,
             // усиленный первый удар, негейт крупных ударов, рестелс после убийства).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-5f, 0f)));
+            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-5f, 0f)));
 
             // Болванчики справа. «Изворотливость» гейтит ЛЮБУЮ автоатаку независимо от размера урона (PassiveTrigger.AnyHit).
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
+                Sim.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
             }
 
             _lastBattleSetup = self => self.SpawnAssassin(enemies);
@@ -666,7 +732,7 @@ namespace Guildmaster.DevTools
             ResetForNewBattle();
 
             // Монах слева — через фабрику (реальный путь: рывок → фиксация → отбрасывание → телепорт, §10.6).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
+            Sim.EnqueueUnitSpawn(Factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
 
             // Болванчики справа — раскиданы ХАОТИЧНО (детерминированный хэш по индексу, чтобы R повторял ту же
             // расстановку), далеко друг от друга: видно заход к конкретной цели и УГЛОВОЙ цепной толчок «ядра»,
@@ -676,7 +742,7 @@ namespace Guildmaster.DevTools
                 float hx = Frac(Mathf.Sin((i + 1) * 12.9898f) * 43758.5453f);
                 float hy = Frac(Mathf.Sin((i + 1) * 78.233f)  * 43758.5453f);
                 var pos = new Vector2(2f + hx * 6f, -3.5f + hy * 7f);
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, pos));
+                Sim.EnqueueUnitSpawn(MakeDummy(1, pos));
             }
 
             _lastBattleSetup = self => self.SpawnMonk(enemies);
@@ -689,11 +755,11 @@ namespace Guildmaster.DevTools
         /// <summary>Выставить HP юниту по ID.</summary>
         public void SetHp(int unitId, float hp)
         {
-            if (_simulation == null) return;
+            if (SimOrNull == null) return;
 
-            for (int i = 0; i < _simulation.Units.Count; i++)
+            for (int i = 0; i < Sim.Units.Count; i++)
             {
-                var unit = _simulation.Units[i];
+                var unit = Sim.Units[i];
                 if (unit.Id == unitId)
                 {
                     unit.CurrentHP = Mathf.Max(0f, hp);
@@ -708,11 +774,11 @@ namespace Guildmaster.DevTools
         /// <summary>Мгновенно завершить бой (убить всех из команды 1).</summary>
         public void SkipBattle()
         {
-            if (_simulation == null) return;
+            if (SimOrNull == null) return;
 
-            for (int i = 0; i < _simulation.Units.Count; i++)
+            for (int i = 0; i < Sim.Units.Count; i++)
             {
-                var unit = _simulation.Units[i];
+                var unit = Sim.Units[i];
                 if (unit.Team == 1) unit.CurrentHP = -1f;
             }
 
@@ -766,18 +832,18 @@ namespace Guildmaster.DevTools
         /// </summary>
         public void ToggleOverlaySource()
         {
-            if (_overlayMode == null) { Debug.LogWarning("[GuildmasterCommands] - DevOverlayMode не найден (нет активного боевого скоупа)"); return; }
-            DevOverlaySource source = _overlayMode.Toggle();
-            Debug.Log($"[GuildmasterCommands] - gm_overlay_source: {source} — {_overlayMode.Describe()}");
+            if (OverlayModeOrNull == null) { Debug.LogWarning("[GuildmasterCommands] - DevOverlayMode не найден (нет активного боевого скоупа)"); return; }
+            DevOverlaySource source = OverlayModeOrNull.Toggle();
+            Debug.Log($"[GuildmasterCommands] - gm_overlay_source: {source} — {OverlayModeOrNull.Describe()}");
         }
 
         /// <summary>Пересобрать SimTuning из SO и применить к идущему бою (QC-тюнинг без рекомпиляции).</summary>
         public void TuningRebake()
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: нет активного боя"); return; }
+            if (SimOrNull == null) { Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: нет активного боя"); return; }
             if (_simTuningConfig == null) { Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: SimTuningConfig не назначен"); return; }
 
-            _simulation.RebakeTuning(_simTuningConfig.ToSnapshot());
+            Sim.RebakeTuning(_simTuningConfig.ToSnapshot());
             Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: тюнинг применён к бою → battle TAINTED (реплей невалиден, вики «13» §4.1)");
         }
 
@@ -789,8 +855,8 @@ namespace Guildmaster.DevTools
             // ResetBattle() шлёт OnBattleReset → презентация снимает виды/цифры и сбрасывает slowmo/тряску
             // (CombatPresenter.HandleBattleReset → TimeScaleService.Reset). Ручной Time.timeScale тут больше не
             // нужен и вреден: перетёр бы выбранную игроком скорость (единый писатель — TimeScaleService).
-            _simulation?.ResetBattle();
-            _factory?.ResetIds();
+            SimOrNull?.ResetBattle();
+            Factory?.ResetIds();
         }
 
         // Единый dev-болванчик: собирается фабрикой из SO «enemy.training_dummy» (реальный путь — статы,
@@ -910,9 +976,9 @@ namespace Guildmaster.DevTools
 
             // Порядок спавна — вся левая команда, затем вся правая: так же, как в бою и на стенде.
             for (int i = 0; i < squad.Length; i++)
-                _simulation.EnqueueUnitSpawn(_factory.Create(relics[i], null, 0, new Vector2(-squad[i].x, squad[i].y)));
+                Sim.EnqueueUnitSpawn(Factory.Create(relics[i], null, 0, new Vector2(-squad[i].x, squad[i].y)));
             for (int i = 0; i < squad.Length; i++)
-                _simulation.EnqueueUnitSpawn(_factory.Create(relics[i], null, 1, new Vector2(squad[i].x, squad[i].y)));
+                Sim.EnqueueUnitSpawn(Factory.Create(relics[i], null, 1, new Vector2(squad[i].x, squad[i].y)));
 
             Debug.Log("[GuildmasterCommands] - gm_spawn_mirror: зеркальный отряд 4v4 поставлен на dev-арене.");
         }
@@ -958,8 +1024,8 @@ namespace Guildmaster.DevTools
             if (!FactoryReady()) return;
 
             ResetForNewBattle();
-            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 0, left));
-            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 1, right));
+            Sim.EnqueueUnitSpawn(Factory.Create(_boneDuelist, null, 0, left));
+            Sim.EnqueueUnitSpawn(Factory.Create(_boneDuelist, null, 1, right));
             Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: дуэль поставлена на dev-арене " +
                       $"(дистанция {(right.x - left.x):0.##}; ViewPrefab={view})");
         }
@@ -1007,24 +1073,21 @@ namespace Guildmaster.DevTools
             right = new Vector2(xRight, y);
         }
 
-        // Гейты боевых команд. Сообщение одно на все команды — раньше эта же строка стояла шестнадцатью
-        // копиями, и «Симуляция не активна» уводило по ложному следу: чаще всего симуляция как раз запущена,
-        // а потеряна ИНЪЕКЦИЯ. Скоуп инжектит этот объект один раз на буте, и перекомпиляция скриптов во
-        // время play-mode (domain reload) обнуляет ссылки, оставляя объект живым и команды видимыми.
+        // Гейты боевых команд. Боя может не быть — это законно (хаб, карта, меню), поэтому команда сама
+        // открывает дев-арену через Sim. Не сложиться это может только если мира нет вовсе: тогда бой
+        // открывать некому, и об этом надо сказать прямо.
         private bool SimReady()
         {
-            if (_simulation != null) return true;
-            Debug.LogWarning("[GuildmasterCommands] - симуляция не внедрена. Если игра сейчас запущена — " +
-                             "скрипты перекомпилировались во время play-mode, и domain reload снёс инъекцию " +
-                             "боевого скоупа: перезапусти play-mode.");
+            if (Sim != null) return true;
+            Debug.LogWarning("[GuildmasterCommands] - арену открыть не удалось: мира нет (standalone-сцена " +
+                             "без WorldLifetimeScope) или у мира не задан префаб боевого скоупа.");
             return false;
         }
 
         private bool FactoryReady()
         {
-            if (_factory != null) return true;
-            Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён (см. подсказку про " +
-                             "перезапуск play-mode в сообщении о симуляции).");
+            if (Factory != null) return true;
+            Debug.LogWarning("[GuildmasterCommands] - фабрика юнитов недоступна (см. сообщение об арене выше).");
             return false;
         }
 
@@ -1035,6 +1098,6 @@ namespace Guildmaster.DevTools
             return null;
         }
 
-        private RuntimeUnit MakeDummy(int team, Vector2 pos) => _factory.Create(_dummyEnemy, null, team, pos);
+        private RuntimeUnit MakeDummy(int team, Vector2 pos) => Factory.Create(_dummyEnemy, null, team, pos);
     }
 }

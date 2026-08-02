@@ -172,10 +172,19 @@ namespace Guildmaster.Presentation
             if (isActiveAndEnabled) SubscribeToBattle();
         }
 
-        /// <summary>Бой ушёл: отписаться и забыть его внутренности — они уже мертвы.</summary>
-        public void UnbindBattle()
+        /// <summary>
+        /// Бой ушёл: отписаться и забыть его внутренности. Отвязывает ТОЛЬКО свой бой — умирающий скоуп
+        /// не должен погасить показ того, кто уже начался.
+        /// </summary>
+        /// <remarks>
+        /// Порядок здесь не гарантирован никем: <c>Destroy</c> объекта скоупа отложен до конца кадра, а
+        /// рестарт закрывает и открывает бой в одном вызове — значит новый скоуп успевает привязаться
+        /// раньше, чем старый успевает отвязаться.
+        /// </remarks>
+        public void UnbindBattle(CombatSimulation battle = null)
         {
             if (_simulation == null) return;
+            if (battle != null && !ReferenceEquals(_simulation, battle)) return;
 
             UnsubscribeFromBattle();
 

@@ -19,6 +19,11 @@ namespace Guildmaster.Game
                  "Пусто = красная ошибка и тряски нет вовсе (ScreenShake своих чисел не держит).")]
         [SerializeField] private Presentation.Design.CombatFeelConfig _feelConfig;
 
+        [Tooltip("Префаб боевого скоупа: из него рождается КАЖДЫЙ бой и вместе с боем умирает. " +
+                 "ОБЯЗАТЕЛЕН — пусто = бой открыть нечем (красная ошибка при первом же входе в узел). " +
+                 "Боевые ассеты (тюнинг сима, джус, состав Ристалища) выбираются на самом префабе.")]
+        [SerializeField] private CombatLifetimeScope _battleScopePrefab;
+
         protected override void Configure(IContainerBuilder builder)
         {
             // Снапшот арены из авторинга в ЭТОЙ (persist) сцене. Бой берёт тот же layout из предка —
@@ -41,7 +46,13 @@ namespace Guildmaster.Game
             // Кто ставит отряд на арену вне боя. Живёт здесь, а не в боевом скоупе: отряд стоит во
             // дворе и между боями, когда боя — и его скоупа — не существует. Сборщик тел приходит из
             // корня (там же, где стат-конфиги), симуляция ему не нужна.
-            builder.RegisterEntryPoint<Flow.WorldStageController>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<Flow.WorldStageController>(Lifetime.Singleton).AsSelf();
+
+            // Владелец жизненного цикла боя: рождает боевой скоуп и хоронит его. Себя мир отдаёт ему
+            // ссылкой — от кого рождать дочерний скоуп, знает только сам скоуп.
+            builder.RegisterInstance<LifetimeScope>(this);
+            builder.RegisterEntryPoint<Flow.BattleHost>(Lifetime.Singleton).AsSelf()
+                   .WithParameter("battleScopePrefab", _battleScopePrefab);
 
             // Вне боя камера ни за кем не следует (пустой источник точек фокуса). На входе в бой
             // боевой скоуп переключит источник через CombatFocusTarget.SetSource(живые юниты).
@@ -57,9 +68,11 @@ namespace Guildmaster.Game
             // объекты персист-сцены, инъекция в них случается один раз, а боёв за сессию много. Отсюда
             // они получают только мировую половину зависимостей (кадр, палитра, звук, джус); боевую им
             // раздаёт BattlePresenterBinder на время жизни боя.
-            builder.RegisterComponentInHierarchy<Presentation.CombatPresenter>();
-            builder.RegisterComponentInHierarchy<Presentation.CombatDebugDraw>();
-            builder.RegisterComponentInHierarchy<Presentation.CombatAreaFlash>();
+            // Ищем по загруженным сценам, а не в своей: сами объекты пока лежат в CombatSystemsScene,
+            // которая грузится ПОЗЖЕ мира (см. RegisterPersistComponent — там же и долг на их переезд).
+            ScopeWiring.RegisterPersistComponent<Presentation.CombatPresenter>(builder);
+            ScopeWiring.RegisterPersistComponent<Presentation.CombatDebugDraw>(builder);
+            ScopeWiring.RegisterPersistComponent<Presentation.CombatAreaFlash>(builder);
 
             // Обесцвечивание арены: полигон — серая версия той же локации (материал, а не серый дубль тайлов).
             builder.RegisterComponentInHierarchy<Presentation.Arena.ArenaDesaturation>();

@@ -58,6 +58,12 @@ namespace Guildmaster.Tests.EditMode.Content
                 "_loadoutInventoryScreen",
                 "_arcanaCard",
             },
+            ["WorldLifetimeScope"] = new[]
+            {
+                // Из этого префаба рождается КАЖДЫЙ бой. Пусто = вход в узел упирается в красную ошибку,
+                // и заметно это станет только в игре, на первом же бою (02.08.2026, шаг 1б).
+                "_battleScopePrefab",
+            },
             ["CombatPresenter"] = new[]
             {
                 // Единственный владелец цветов HP и щита (T-12/T-13). Пусто = бар и боевые цифры

@@ -36,9 +36,14 @@ namespace Guildmaster.Presentation
             if (_dispatcher != null) _dispatcher.AreaHit += OnAreaHit;
         }
 
-        /// <summary>Бой ушёл: отписаться и погасить всё, что ещё догорало.</summary>
-        public void UnbindBattle()
+        /// <summary>
+        /// Бой ушёл: отписаться и погасить всё, что ещё догорало. Отвязывает только свой бой — рестарт
+        /// закрывает и открывает бой в одном кадре.
+        /// </summary>
+        public void UnbindBattle(Combat.Tape.BattleTapeDispatcher battle = null)
         {
+            if (battle != null && !ReferenceEquals(_dispatcher, battle)) return;
+
             if (_dispatcher != null) _dispatcher.AreaHit -= OnAreaHit;
             _dispatcher = null;
 

@@ -619,6 +619,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _feelConfig: {fileID: 11400000, guid: b4321495354e86142b6e7f18dfd5b94d, type: 2}
+  _battleScopePrefab: {fileID: 8219602246781497683, guid: b641334a1e7294441ac14c8ed260adf9, type: 3}
 --- !u!4 &309113943
 Transform:
   m_ObjectHideFlags: 0
