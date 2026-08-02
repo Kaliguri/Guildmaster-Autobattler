@@ -42,13 +42,16 @@ namespace Guildmaster.Guild
         /// </summary>
         private string SaveKey => _profiles.RunKey;
 
-        /// <summary>Есть ли автосейв забега на диске (для «Продолжить» в меню).</summary>
+        /// <summary>
+        /// Есть ли автосейв забега на диске. Тот же вопрос задаёт главное меню, но ему спрашивать
+        /// некого — оно живёт вне сессии, — поэтому знание вынесено в <see cref="RunSaves"/>, а здесь
+        /// осталась удобная дорога к нему.
+        /// </summary>
         public bool HasSave
         {
             get
             {
-                string key = SaveKey;
-                return !string.IsNullOrEmpty(key) && _save.Exists(key);
+                return RunSaves.Exists(_save, _profiles);
             }
         }
 

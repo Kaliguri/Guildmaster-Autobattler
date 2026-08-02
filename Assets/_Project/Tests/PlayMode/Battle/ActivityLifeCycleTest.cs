@@ -42,6 +42,12 @@ namespace Guildmaster.Tests.PlayMode.Battle
 
             var activities = root.Container.Resolve<ActivityHost>();
             var view       = root.Container.Resolve<IActivityView>();
+            var sessions   = root.Container.Resolve<Guildmaster.Game.Session.SessionHost>();
+
+            // Сеанс владения открывает ВХОД В РЕЖИМ, а не бут: мероприятие рождается внутри сеанса, и
+            // без него открывать его не от кого. Тест входит тем же путём, что игрок из меню.
+            sessions.Open(Guildmaster.Game.Session.SessionRole.Owner);
+            yield return WaitFrames(1);
 
             var swapper      = Object.FindAnyObjectByType<ArenaSkinSwapper>();
             var desaturation = Object.FindAnyObjectByType<ArenaDesaturation>();
@@ -77,6 +83,7 @@ namespace Guildmaster.Tests.PlayMode.Battle
             Assert.IsTrue(desaturation.IsGrey, "на втором заходе площадка не встала — сборку пропустили");
 
             activities.Close();
+            sessions.Close();
             yield return WaitFrames(2);
         }
 

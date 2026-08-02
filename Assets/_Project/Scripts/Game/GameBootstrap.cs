@@ -39,7 +39,6 @@ namespace Guildmaster.Game
 
         [Inject] private GameFlow _gameFlow;
         [Inject] private ISceneLoader _sceneLoader;
-        [Inject] private Session.SessionHost _sessions;
 
         /// <summary>Сколько раз поднимать петлю после падения, прежде чем сдаться и сказать об этом вслух.</summary>
         private const int MaxRestarts = 2;
@@ -80,11 +79,9 @@ namespace Guildmaster.Game
             // командой в живой sim (RequestLaunch), а не загрузкой сцены на каждый узел. Грузим один раз здесь.
             await _sceneLoader.LoadCombatSystemsAsync();
 
-            // Сеанс владения состоянием. Открываем ЗДЕСЬ, а не при входе в забег: главное меню уже
-            // спрашивает «есть ли сейв», то есть состояние нужно раньше первого узла. Соло-игрок всегда
-            // владелец своего сейва; гостем сеанс переоткрывается при входе в чужой кооп (ТЗ
-            // кооп-вертикали §4).
-            _sessions.Open(Session.SessionRole.Owner);
+            // Сеанс владения состоянием здесь НЕ открывается: он рождается при входе в игру, вместе с
+            // ролью и решением про лобби («Создать» → владелец, «Присоединиться» → гость). Бут поднимает
+            // только мир — до выбора режима владеть ещё нечем (решение Макса 02.08.2026).
 
             if (_runActOnBoot)
             {

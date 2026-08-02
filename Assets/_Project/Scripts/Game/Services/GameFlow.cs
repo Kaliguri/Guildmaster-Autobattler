@@ -41,6 +41,12 @@ namespace Guildmaster.Game.Services
         // поэтому верхняя петля спрашивает держателя у хоста в момент использования — тем же приёмом,
         // что и участников занятия выше. Ссылка полем пережила бы своего владельца.
         private readonly Session.SessionHost _sessions;
+
+        // Меню спрашивает про сейв ДО того, как сеанс открыт, поэтому диск и профиль оно спрашивает
+        // напрямую — знание об этом одно и живёт в RunSaves.
+        private readonly Core.Persistence.ISaveService    _save;
+        private readonly Core.Persistence.IProfileService _profiles;
+
         private readonly IOutcomePresenter   _outcomePresenter;
         private readonly ITitleCardPresenter _titleCardPresenter;
         private readonly IMainMenuPresenter  _mainMenuPresenter;
@@ -57,6 +63,8 @@ namespace Guildmaster.Game.Services
         public GameFlow(
             Activity.ActivityHost activities,
             Session.SessionHost sessions,
+            Core.Persistence.ISaveService    save,
+            Core.Persistence.IProfileService profiles,
             IOutcomePresenter   outcomePresenter,
             ITitleCardPresenter titleCardPresenter,
             IMainMenuPresenter  mainMenuPresenter,
@@ -71,6 +79,8 @@ namespace Guildmaster.Game.Services
             _provingGroundsChangedSub = provingGroundsChangedSub;
             _activities      = activities;
             _sessions         = sessions;
+            _save             = save;
+            _profiles         = profiles;
             _outcomePresenter = outcomePresenter;
             _titleCardPresenter = titleCardPresenter;
             _mainMenuPresenter = mainMenuPresenter;
@@ -89,10 +99,15 @@ namespace Guildmaster.Game.Services
         /// </summary>
         private RunStateService RequireRun()
         {
+            // Сеанс открывается входом в режим, а не бутом. Дев-разрезы входят мимо меню, поэтому
+            // сеанс им заводим здесь: разрез — это тот же вход в игру, просто без выбора.
+            if (_sessions.Run == null && !_sessions.IsOpen)
+                _sessions.Open(Session.SessionRole.Owner);
+
             RunStateService runStates = _sessions.Run;
             if (runStates == null)
                 Debug.LogError("[GameFlow] - нет сеанса владельца состояния → вести забег некому. " +
-                               "Сессию открывает GameBootstrap сразу после подъёма мира (SessionHost.Open).");
+                               "Сеанс открывает вход в режим (SessionHost.Open), мир — GameBootstrap.");
             return runStates;
         }
 
@@ -145,10 +160,13 @@ namespace Guildmaster.Game.Services
 
             while (true)
             {
-                RunStateService runStates = RequireRun();
-                if (runStates == null) return;
+                // Главное меню живёт ВНЕ сеанса: сеанс рождается выбором режима, вместе с ролью. Поэтому
+                // «есть ли сейв» — вопрос к диску и активной гильдии, а не к держателю состояния,
+                // которого сейчас не существует.
+                _sessions.Close();
+                bool hasSave = RunSaves.Exists(_save, _profiles);
 
-                MainMenuChoice choice = await _mainMenuPresenter.ShowAsync(runStates.HasSave);
+                MainMenuChoice choice = await _mainMenuPresenter.ShowAsync(hasSave);
 
                 if (choice == MainMenuChoice.Quit) { QuitGame(); return; }
 
@@ -159,6 +177,11 @@ namespace Guildmaster.Game.Services
                     await ShowProvingGroundsAsync();
                     continue;
                 }
+
+                // Кампания: с этого мгновения у состояния есть владелец — мы. Роль выбирается здесь,
+                // одним разом на весь сеанс; гостевой сеанс откроет вход по приглашению (кооп-вертикаль).
+                RunStateService runStates = RequireRun();
+                if (runStates == null) return;
 
                 if (choice == MainMenuChoice.Continue)
                 {
