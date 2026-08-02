@@ -290,9 +290,21 @@ interface SlabOpts {
   naive?: boolean;
 }
 
-/** Борт. Цифровой вариант: латунная сетка по мировой единице, бирюзовая насечка и светящееся
- *  ребро — тот самый эффект, который Макс выбрал для тонкой пластины. */
-function drawRim(ctx: CanvasRenderingContext2D, b: Biome, x0: number, y: number, w: number, hh: number, digital: boolean): void {
+/** Борт плиты — «край конструкта».
+ *
+ *  Собран из семи слоёв, и это осознанно дороже, чем полоса с сеткой: край — единственное место,
+ *  где игра говорит, что арена СДЕЛАНА, и весь бой он остаётся на экране. Слои снизу вверх по
+ *  смыслу: тело с падением к низу, ячейки данных по мировой сетке, скан-строки, угловые якоря,
+ *  бегущая полоса просчёта, светящееся ребро и проекционные лучи в пустоту.
+ *
+ *  Почему ячейки берут шаг ровно в мировую единицу: край тогда не декор, а ЛИНЕЙКА — по нему
+ *  читается масштаб поля, и это единственная разметка, которую видно, не включая дев-режим.
+ *
+ *  В движке это один шейдер на quad: все семь слоёв — функции от x вдоль борта и от y поперёк,
+ *  ни одного ветвления по объектам. Здесь они разложены руками, чтобы было видно, из чего он
+ *  состоит и что можно выключать по отдельности. */
+function drawRim(ctx: CanvasRenderingContext2D, b: Biome, x0: number, y: number, w: number, hh: number, digital: boolean, seed = 1): void {
+  // Верхняя кромка: тонкая светлая полоса на переходе грани в борт.
   ctx.fillStyle = rgb(lighten(b.rim, 0.42));
   ctx.fillRect(x0, y - LINE * 0.5, w, LINE * 0.5);
 
@@ -304,29 +316,102 @@ function drawRim(ctx: CanvasRenderingContext2D, b: Biome, x0: number, y: number,
 
   if (!digital) return;
 
-  ctx.strokeStyle = "rgba(184,134,59,.30)";
-  ctx.lineWidth = 1;
-  for (let x = x0; x <= x0 + w + 0.5; x += U) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x0, y, w, hh);
+  ctx.clip();
+
+  // 1. ЭНЕРГИЯ ВДОЛЬ КРАЯ — НЕПРЕРЫВНАЯ, а не по клеткам.
+  //    Здесь я дважды ошиблась одинаково: сперва заменила тайлмап шумом, потом разлиновала борт
+  //    ячейками по мировой единице. И то и другое — «мыслить клетками». Клетка навязывает ритм,
+  //    которого в предмете нет: борт это ОДНА пластина, у неё нет тридцати секций. Поэтому свечение
+  //    здесь — плавное поле вдоль длины, с двумя-тремя сгущениями по сиду, и ни одной вертикальной
+  //    границы.
+  const glow = ctx.createLinearGradient(x0, 0, x0 + w, 0);
+  const knots = 3;
+  for (let i = 0; i <= knots + 1; i++) {
+    const t = i / (knots + 1);
+    const a = 0.05 + jag(i, seed + 3) * 0.13;
+    glow.addColorStop(Math.min(1, t), `rgba(77,242,255,${a.toFixed(3)})`);
+  }
+  ctx.fillStyle = glow;
+  ctx.fillRect(x0, y, w, hh);
+
+  // Свет копится к нижнему ребру: пластина светится краем, а не всей плоскостью.
+  const toEdge = ctx.createLinearGradient(0, y, 0, y + hh);
+  toEdge.addColorStop(0, "rgba(77,242,255,0)");
+  toEdge.addColorStop(1, "rgba(77,242,255,.16)");
+  ctx.fillStyle = toEdge;
+  ctx.fillRect(x0, y, w, hh);
+
+  // 2. СКАН-СТРОКИ поперёк борта: горизонтальные линии через два пикселя. Дают «материал экрана»
+  //    вместо крашеного металла. Они идут ВДОЛЬ пластины и её не режут.
+  ctx.strokeStyle = "rgba(180,240,255,.055)";
+  for (let sy = y + 1.5; sy < y + hh; sy += 3) {
     ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x, y + hh);
+    ctx.moveTo(x0, sy);
+    ctx.lineTo(x0 + w, sy);
     ctx.stroke();
   }
-  // Насечки цифры: короткие штрихи у нижнего ребра, не сплошная сетка — цифра проступает, а не
-  // заполняет борт.
-  ctx.strokeStyle = "rgba(77,242,255,.34)";
-  for (let x = x0 + U * 0.5; x <= x0 + w; x += U) {
+
+  // 3. ВОЛНА ПРОСЧЁТА: мягкое пятно света, ползущее вдоль края. Именно пятно с растушёванными
+  //    краями, а не подсвеченная секция — у пластины нет секций. В игре оно поедет вдоль борта и
+  //    свяжет край с анимацией создания; здесь застыло.
+  const headX = x0 + jag(seed, 21) * w;
+  const wave = ctx.createLinearGradient(headX - U * 4, 0, headX + U * 1.2, 0);
+  wave.addColorStop(0, "rgba(140,255,246,0)");
+  wave.addColorStop(0.72, "rgba(140,255,246,.13)");
+  wave.addColorStop(1, "rgba(140,255,246,0)");
+  ctx.fillStyle = wave;
+  ctx.fillRect(x0, y, w, hh);
+
+  // 5. УГЛОВЫЕ ЯКОРЯ: короткие уголки на концах борта. Приём интерфейсов прицеливания — говорит
+  //    «это размеченная область», и стоит четыре линии.
+  ctx.strokeStyle = "rgba(77,242,255,.55)";
+  ctx.lineWidth = 1.6;
+  const arm = U * 0.7;
+  for (const [ax, dir] of [[x0, 1], [x0 + w, -1]] as Array<[number, number]>) {
     ctx.beginPath();
-    ctx.moveTo(x, y + hh * 0.55);
-    ctx.lineTo(x, y + hh);
+    ctx.moveTo(ax, y + hh);
+    ctx.lineTo(ax + arm * dir, y + hh);
+    ctx.moveTo(ax, y + hh);
+    ctx.lineTo(ax, y + hh - arm * 0.8);
     ctx.stroke();
   }
-  ctx.strokeStyle = "rgba(77,242,255,.6)";
-  ctx.lineWidth = 1.4;
+
+  ctx.restore();
+
+  // 6. РЕБРО: светящаяся линия низа плюс ореол под ней. Плита не обрывается, а заканчивается.
+  const halo = ctx.createLinearGradient(0, y + hh, 0, y + hh + U * 0.6);
+  halo.addColorStop(0, "rgba(77,242,255,.20)");
+  halo.addColorStop(1, "rgba(77,242,255,0)");
+  ctx.fillStyle = halo;
+  ctx.fillRect(x0, y + hh, w, U * 0.6);
+
+  ctx.strokeStyle = "rgba(150,250,255,.62)";
+  ctx.lineWidth = 1.6;
   ctx.beginPath();
   ctx.moveTo(x0, y + hh);
   ctx.lineTo(x0 + w, y + hh);
   ctx.stroke();
+
+  // 7. ПРОЕКЦИОННЫЕ ЛУЧИ вниз: редкие вертикали, гаснущие в пустоту. Читаются как «плита откуда-то
+  //    спроецирована», то есть договаривают мысль «арену собрали», уже не трогая саму плиту.
+  //    Позиции берутся сидом свободно, а НЕ по шагу сетки: иначе лучи снова расчертят край на клетки.
+  for (let i = 0; i < 7; i++) {
+    if (jag(i, seed + 31) < 0.35) continue;
+    const px = x0 + jag(i * 5 + 1, seed + 37) * w;
+    const len = U * (1.2 + jag(i, seed + 33) * 2.2);
+    const ray = ctx.createLinearGradient(0, y + hh, 0, y + hh + len);
+    ray.addColorStop(0, "rgba(77,242,255,.13)");
+    ray.addColorStop(1, "rgba(77,242,255,0)");
+    ctx.strokeStyle = ray;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(px, y + hh);
+    ctx.lineTo(px, y + hh + len);
+    ctx.stroke();
+  }
 }
 
 function unitFigure(ctx: CanvasRenderingContext2D, x: number, groundY: number, lit: boolean): void {
@@ -402,7 +487,7 @@ function slab(o: SlabOpts): DrawFn {
         ctx.stroke();
       }
       ctx.restore();
-      drawRim(ctx, b, x0, y0 + ph, pw, rimH, false);
+      drawRim(ctx, b, x0, y0 + ph, pw, rimH, false, o.seed);
       return;
     }
 
@@ -501,7 +586,7 @@ function slab(o: SlabOpts): DrawFn {
 
     if (o.crop) return;
 
-    drawRim(ctx, b, x0, y0 + ph, pw, rimH, !!o.digital);
+    drawRim(ctx, b, x0, y0 + ph, pw, rimH, !!o.digital, o.seed);
 
     ctx.strokeStyle = rgb(shade(b.rim, 0.55));
     ctx.lineWidth = LINE * 0.8;
@@ -541,7 +626,7 @@ const NAIVE_STAND: StandDef = {
     "«Непонятные фигуры, что это вообще» — и претензия точная. Пятно без узнаваемой формы не " +
     "сообщает ничего, а равномерная толстая обводка по каждому пятну — язык детской книжки.",
   size: FULL,
-  draw: slab({ biome: MEADOW, rimU: 0.4, seed: 4, naive: true })
+  draw: slab({ biome: MEADOW, rimU: 1, seed: 4, naive: true })
 };
 
 const MAIN_STAND: StandDef = {
@@ -560,19 +645,19 @@ const MAIN_STAND: StandDef = {
     "Разница не в «плоско или нет», а в четырёх приёмах, которых не было: узнаваемая форма, " +
     "обводка только у предметов и разной толщины, живописное зерно, направленный свет с прижатыми тенями.",
   size: FULL,
-  draw: slab({ biome: MEADOW, rimU: 0.4, seed: 4, unit: true, digital: true })
+  draw: slab({ biome: MEADOW, rimU: 1, seed: 4, unit: true, digital: true })
 };
 
 const RIM_STANDS: StandDef[] = [
   {
     id: "thin-digital",
     status: "accepted",
-    title: "Тонкая пластина с цифрой",
+    title: "Пластина с цифровым краем",
     tag: "выбор Макса",
-    facts: [["борт", "0.4 ед"], ["насечка", "бирюза по полушагу"], ["сетка", "латунь, шаг 1 ед"]],
+    facts: [["борт", "1 ед"], ["ячейки", "по мировой единице"], ["слоёв", "7"]],
     verdict: "Пластина в пустоте, и цифра проступает на её краю — плита читается сделанной, а не найденной.",
     size: FULL,
-    draw: slab({ biome: MEADOW, rimU: 0.4, seed: 4, unit: true, digital: true })
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 4, unit: true, digital: true })
   },
   {
     id: "thick",
@@ -591,7 +676,7 @@ const BIOME_STANDS: StandDef[] = [MEADOW, FOREST, CAVE, ASH].map((b) => ({
   title: b.name,
   tag: "тот же код, другой конфиг",
   facts: [["цветов", "5"], ["силуэт", b.plantKind]],
-  draw: slab({ biome: b, rimU: 0.4, seed: 9, crop: true })
+  draw: slab({ biome: b, rimU: 1, seed: 9, crop: true })
 }));
 
 const section: SectionDef = {
