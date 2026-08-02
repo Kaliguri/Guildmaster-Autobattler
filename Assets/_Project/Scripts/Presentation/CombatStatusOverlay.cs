@@ -85,8 +85,13 @@ namespace Guildmaster.Presentation
             if (!_enabled || _mode == null) return;
 
             GUI.color = Color.white;
-            GUI.Label(new Rect(12f, 12f, 640f, 22f), _mode.Describe());
+            // Ниже верхней панели забега: в самом верху подпись ложилась прямо на её заголовок и мешала
+            // читать оба (замечание Макса 02.08.2026). Панель занимает первые ~64 px при Full HD.
+            GUI.Label(new Rect(12f, TopBarHeight + 8f, 640f, 22f), _mode.Describe());
         }
+
+        /// <summary>Высота верхней панели забега, под которой начинается место для dev-подписей.</summary>
+        private const float TopBarHeight = 64f;
 
         private void DrawAllUnits()
         {

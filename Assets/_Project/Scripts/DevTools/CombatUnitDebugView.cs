@@ -1,5 +1,4 @@
-using Cysharp.Threading.Tasks;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Data.Stats;
 using Sirenix.OdinInspector;
@@ -10,23 +9,26 @@ using VContainer.Unity;
 namespace Guildmaster.DevTools
 {
     /// <summary>
-    /// Инспектор состояния всех юнитов симуляции в реальном времени.
-    /// Добавьте на любой GameObject в BattleScene — VContainer инжектирует симуляцию автоматически.
+    /// Инспектор состояния всех юнитов ИДУЩЕГО боя в реальном времени.
     /// </summary>
+    /// <remarks>
+    /// Симуляцию не запоминает: с 02.08.2026 бой рождается и умирает вместе со своим скоупом, а этот
+    /// объект живёт в персист-сцене — запомненная ссылка показывала бы юнитов боя, который давно
+    /// кончился. Спрашиваем текущий бой у хоста при каждом чтении; боя нет — таблица пуста, и это
+    /// честный ответ, а не поломка.
+    /// </remarks>
     public sealed class CombatUnitDebugView : MonoBehaviour
     {
-        private CombatSimulation _simulation;
+        private Guildmaster.Game.Flow.BattleHost _host;
 
-        [Inject]
-        public void Construct(CombatSimulation simulation) => _simulation = simulation;
+        private CombatSimulation _simulation => _host != null ? _host.Resolve<CombatSimulation>() : null;
 
-        private void Start()
+        // Мир поднимается раньше сцены с дев-панелями, поэтому к Awake он уже построен. Нет мира —
+        // панель просто ничего не показывает (standalone-сцена без бута).
+        private void Awake()
         {
-            if (_simulation != null) return;
-            // Fallback: самоинжекция через CombatLifetimeScope (DevTools знает Game, обратного нет).
-            // Ждём построения скоупа: объект скоупа в сцене есть раньше, чем его контейнер, и прямой
-            // scope.Container.Inject падал NRE в зависимости от порядка объектов в сцене.
-            DevSelfInject.WhenScopeReady<Guildmaster.Game.CombatLifetimeScope>(this).Forget();
+            var world = LifetimeScope.Find<Guildmaster.Game.WorldLifetimeScope>();
+            if (world != null && world.Container != null) _host = world.Container.Resolve<Guildmaster.Game.Flow.BattleHost>();
         }
 
         // ── Состояние симуляции ──────────────────────────────────────────────

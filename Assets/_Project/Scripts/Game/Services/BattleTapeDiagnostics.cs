@@ -106,10 +106,33 @@ namespace Guildmaster.Game.Services
                       $"в кадре юнитов {inFrame}, снарядов {projectilesInFrame}; {views}; " +
                       $"в симе юнитов {_simulation.Units.Count}; " +
                       $"событий отдано {_dispatcher.DeliveredCount} из {_tape.EventCount} " +
-                      $"(курсор на тике {_dispatcher.ShownTick})");
+                      $"(курсор на тике {_dispatcher.ShownTick}); {WhereEveryoneIs(frame)}");
         }
 
         private int Lead() => _playback.Lead;
+
+        /// <summary>
+        /// Где стоят юниты кадра и куда смотрит камера — одной строкой. Заведено 02.08.2026 по случаю
+        /// «на расстановке пустой экран»: кадр был полон, виды созданы, а на экране пусто, и различить
+        /// «юниты не там» от «камера не туда» было нечем — оба состояния выглядят одинаково.
+        /// </summary>
+        private static string WhereEveryoneIs(System.Collections.Generic.IReadOnlyList<UnitSnapshot> frame)
+        {
+            var camera = Camera.main;
+            string eye = camera != null
+                ? $"камера {(Vector2)camera.transform.position}, обзор {camera.orthographicSize:0.0}"
+                : "камеры нет";
+
+            if (frame == null || frame.Count == 0) return $"кадр пуст; {eye}";
+
+            Vector2 min = frame[0].Position, max = frame[0].Position;
+            for (int i = 1; i < frame.Count; i++)
+            {
+                min = Vector2.Min(min, frame[i].Position);
+                max = Vector2.Max(max, frame[i].Position);
+            }
+            return $"юниты в {min}..{max}; {eye}";
+        }
 
         private void OnBattleEndedOnScreen(BattleOutcome outcome) =>
             Debug.Log($"[BattleTape] - бой закончился НА ЭКРАНЕ: тик показа {_playback.ViewTick} ({outcome}). " +
