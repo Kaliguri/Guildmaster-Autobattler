@@ -48,9 +48,9 @@ namespace Guildmaster.Game
             // корня (там же, где стат-конфиги), симуляция ему не нужна.
             builder.RegisterEntryPoint<Flow.WorldStageController>(Lifetime.Singleton).AsSelf();
 
-            // Владелец жизненного цикла боя: рождает боевой скоуп и хоронит его. Себя мир отдаёт ему
-            // ссылкой — от кого рождать дочерний скоуп, знает только сам скоуп.
-            builder.RegisterInstance<LifetimeScope>(this);
+            // Владелец жизненного цикла боя: рождает боевой скоуп и хоронит его. Себя мир регистрировать
+            // не должен — VContainer делает это сам последней строкой InstallTo
+            // (`RegisterInstance<LifetimeScope>(this)`), так что хост получает родителя инъекцией.
             builder.RegisterEntryPoint<Flow.BattleHost>(Lifetime.Singleton).AsSelf()
                    .WithParameter("battleScopePrefab", _battleScopePrefab);
 
