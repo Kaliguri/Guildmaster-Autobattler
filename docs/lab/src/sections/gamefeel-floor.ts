@@ -67,6 +67,9 @@ const lighten = (c: RGB, k: number): RGB =>
  *  и именно этим тень отличается от грязи. */
 const shade = (c: RGB, k: number): RGB => [c[0] * (1 - k), c[1] * (1 - k * 0.92), c[2] * (1 - k * 0.72) + k * 22];
 
+/** Промежуточный тон между двумя: нужен для ступеней плоской лепки. */
+const mix = (a: RGB, b: RGB, t: number): RGB => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
+
 /* ---------- шум ---------- */
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -284,12 +287,45 @@ function cloudLobes(cx: number, cy: number, r: number, seed: number): Array<[num
 
 /** Силуэт массы: доли сверху, ПЛОСКИЙ НИЗ. Плоское дно — там, где восходящий воздух доходит до
  *  уровня конденсации; глаз знает это правило, даже не зная физики. */
+/** Рваная дуга: та же окружность, но радиус гуляет шумом по углу. Идеальная дуга — третья примета
+ *  нарисованной ваты: у настоящего облака край клубится на всех масштабах сразу. */
+function raggedArc(
+  ctx: CanvasRenderingContext2D,
+  lx: number,
+  ly: number,
+  lr: number,
+  from: number,
+  to: number,
+  seed: number,
+  amp = 0.13
+): void {
+  // Шагов немного и шум ДЕШЁВЫЙ: первая версия считала vnoise на каждую точку каждой ступени
+  // каждой доли, и страница со стендами просто вставала. Рваность — деталь второго плана,
+  // платить за неё интерполированным шумом незачем.
+  const steps = Math.max(5, Math.round((to - from) * 3.5));
+  for (let i = 0; i <= steps; i++) {
+    const a = from + ((to - from) * i) / steps;
+    const n = (jag(i * 3, seed) - 0.5) * 2;
+    const fine = (jag(i * 7 + 1, seed + 3) - 0.5);
+    const rr = lr * (1 + n * amp + fine * amp * 0.5);
+    const x = lx + Math.cos(a) * rr;
+    const y = ly + Math.sin(a) * rr;
+    if (i === 0) ctx.lineTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+}
+
+/** Силуэт массы: доли сверху, ПЛОСКИЙ НИЗ. Плоское дно — там, где восходящий воздух доходит до
+ *  уровня конденсации; глаз знает это правило, даже не зная физики. */
 function cloudMass(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, seed: number): void {
   const lobes = cloudLobes(cx, cy, r, seed);
   const halfW = r * 1.5;
   ctx.beginPath();
   ctx.moveTo(cx - halfW, cy);
-  for (const [lx, ly, lr] of lobes) ctx.arc(lx, ly, lr, Math.PI * 0.98, Math.PI * 2.02, false);
+  for (let i = 0; i < lobes.length; i++) {
+    const [lx, ly, lr] = lobes[i]!;
+    raggedArc(ctx, lx, ly, lr, Math.PI * 0.98, Math.PI * 2.02, seed + i * 13);
+  }
   ctx.lineTo(cx + halfW, cy);
   ctx.closePath();
 }
@@ -334,17 +370,26 @@ function paintCloudVolume(
   ctx.fillStyle = bg;
   ctx.fillRect(cx - r * 2, cy - r * 0.35, r * 4, r * 0.4);
 
-  // 3. Каждая доля лепится отдельно: освещённая шапка смещена к источнику (слева-сверху),
-  //    поэтому у соседних долей появляются тёмные швы — те самые впадины между клубами.
-  for (const [lx, ly, lr] of lobes) {
-    const g = ctx.createRadialGradient(lx - lr * 0.42, ly - lr * 0.5, lr * 0.1, lx, ly, lr * 1.08);
-    g.addColorStop(0, `rgba(${lit.map((v) => v | 0).join(",")},${alpha.toFixed(3)})`);
-    g.addColorStop(0.55, `rgba(${lit.map((v) => v | 0).join(",")},${(alpha * 0.7).toFixed(3)})`);
-    g.addColorStop(1, `rgba(${lit.map((v) => v | 0).join(",")},0)`);
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(lx, ly, lr, 0, Math.PI * 2);
-    ctx.fill();
+  // 3. Каждая доля лепится ЧЕТЫРЬМЯ ПЛОСКИМИ СТУПЕНЯМИ, а не градиентом. Градиент — язык
+  //    фотореализма; в сторибуке объём держится на ограниченном числе тонов с ясными границами
+  //    между ними, и именно счётное число ступеней отличает «нарисовано» от «отрендерено».
+  //    Ступени смещаются к источнику (слева-сверху) и уменьшаются — классическая лепка формы.
+  const steps: Array<[number, number, RGB]> = [
+    [0.94, 0.10, mix(shadow, lit, 0.45)],   // полутон
+    [0.72, 0.28, lit],                      // свет
+    [0.40, 0.46, lighten(lit, 0.22)]        // блик
+  ];
+
+  for (let i = 0; i < lobes.length; i++) {
+    const [lx, ly, lr] = lobes[i]!;
+    for (const [scale, shift, tone] of steps) {
+      ctx.fillStyle = `rgba(${tone.map((v) => v | 0).join(",")},${alpha.toFixed(3)})`;
+      // Ступени рисуются обычной дугой: рваность нужна СИЛУЭТУ, а внутренние границы тона от неё
+      // только шумят и стоят втрое дороже. Первая версия рвала и их — страница со стендами вставала.
+      ctx.beginPath();
+      ctx.arc(lx - lr * shift * 0.7, ly - lr * shift * 0.8, lr * scale, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 
   ctx.restore();
