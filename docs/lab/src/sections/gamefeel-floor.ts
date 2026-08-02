@@ -98,6 +98,11 @@ interface Biome {
   hard: RGB;
   plant: RGB;
   plantKind: "grass" | "shard" | "bone";
+  /** Цвет ПРЕДМЕТОВ биома: бревно, столб. Одна форма — разный смысл: упавший ствол, сломанная
+   *  колонна, обугленная балка. */
+  prop: RGB;
+  /** Свечение трещины. null — трещина просто тёмная. */
+  crackGlow: RGB | null;
   rim: RGB;
   voidTop: string;
   voidBottom: string;
@@ -111,6 +116,8 @@ const MEADOW: Biome = {
   hard: [122, 120, 112],
   plant: [74, 96, 50],
   plantKind: "grass",
+  prop: [116, 92, 62],
+  crackGlow: null,
   rim: [54, 50, 44],
   voidTop: "#171320",
   voidBottom: "#0B0910"
@@ -124,6 +131,8 @@ const FOREST: Biome = {
   hard: [92, 96, 90],
   plant: [44, 66, 42],
   plantKind: "grass",
+  prop: [96, 76, 52],
+  crackGlow: null,
   rim: [44, 46, 38],
   voidTop: "#101616",
   voidBottom: "#07090A"
@@ -137,6 +146,8 @@ const CAVE: Biome = {
   hard: [116, 112, 126],
   plant: [126, 158, 182],
   plantKind: "shard",
+  prop: [104, 100, 116],
+  crackGlow: [110, 190, 220],
   rim: [48, 46, 58],
   voidTop: "#0D0B14",
   voidBottom: "#06050A"
@@ -150,6 +161,8 @@ const ASH: Biome = {
   hard: [128, 116, 106],
   plant: [180, 166, 146],
   plantKind: "bone",
+  prop: [74, 62, 58],
+  crackGlow: [214, 116, 62],
   rim: [52, 44, 40],
   voidTop: "#150F0D",
   voidBottom: "#090606"
@@ -190,35 +203,45 @@ function grain(): HTMLCanvasElement {
 
 /** Тропа: изогнутая лента поперёк поля. Читается как «здесь ходят» — в отличие от кляксы,
  *  которая не читается ничем. */
-function trailPath(ctx: CanvasRenderingContext2D, x0: number, y0: number, w: number, h: number, seed: number): void {
-  // Диапазон нарочно ШИРОКИЙ. Первая версия давала тропе сползать только сверху-слева вниз-направо,
-  // и на трёх сидах подряд это читалось как одна и та же арена: узкий диапазон вариации хуже
-  // отсутствия вариации, потому что обещает разнообразие и не даёт его.
-  const vertical = jag(seed, 19) > 0.62;
-  const width = h * (0.09 + jag(seed, 11) * 0.09);
-  const bow = (jag(seed, 23) - 0.5) * 0.55; // прогиб в обе стороны, а не всегда в одну
+/** Тропа строится ПО ТОЧКАМ ПРОХОЖДЕНИЯ, а не выбором из заранее нарисованных изгибов (решение
+ *  Макса 02.08.2026). Разница принципиальная: набор вариантов конечен и через три арены узнаётся,
+ *  а точки дают непрерывный спектр — иногда почти прямая, иногда крутая дуга, и никто не считал
+ *  это отдельным случаем. Ширина ленты тоже гуляет вдоль длины, поэтому тропа не выглядит трубой.
+ *
+ *  Возвращает опорные точки; сама лента рисуется в strokeTrail. */
+function trailPoints(x0: number, y0: number, w: number, h: number, seed: number): Array<[number, number]> {
+  const vertical = jag(seed, 19) > 0.55;
+  const n = 3 + Math.floor(jag(seed, 21) * 2); // три-четыре точки
+  const pts: Array<[number, number]> = [];
 
-  if (vertical) {
-    // Тропа поперёк, сверху вниз: тот же приём, повёрнутый на девяносто градусов.
-    const xA = x0 + w * (0.18 + jag(seed, 3) * 0.28);
-    const xB = x0 + w * (0.52 + jag(seed, 7) * 0.32);
-    ctx.beginPath();
-    ctx.moveTo(xA, y0 - 10);
-    ctx.bezierCurveTo(xA + w * bow, y0 + h * 0.35, xB - w * bow, y0 + h * 0.65, xB, y0 + h + 10);
-    ctx.lineTo(xB + width, y0 + h + 10);
-    ctx.bezierCurveTo(xB + width - w * bow, y0 + h * 0.65, xA + width + w * bow, y0 + h * 0.35, xA + width, y0 - 10);
-    ctx.closePath();
-    return;
+  for (let i = 0; i < n; i++) {
+    const t = i / (n - 1);
+    // Вдоль оси идём равномерно, поперёк — гуляем свободно. Так тропа всегда пересекает поле
+    // насквозь и при этом нигде не повторяет свой прошлый путь.
+    const along = -0.08 + t * 1.16;
+    const across = 0.16 + jag(seed + i * 13, 31) * 0.68;
+    pts.push(vertical ? [x0 + w * across, y0 + h * along] : [x0 + w * along, y0 + h * across]);
   }
+  return pts;
+}
 
-  const yA = y0 + h * (0.14 + jag(seed, 3) * 0.34);
-  const yB = y0 + h * (0.40 + jag(seed, 7) * 0.44);
-  ctx.beginPath();
-  ctx.moveTo(x0 - 10, yA);
-  ctx.bezierCurveTo(x0 + w * 0.35, yA + h * bow, x0 + w * 0.55, yB - h * bow, x0 + w + 10, yB);
-  ctx.lineTo(x0 + w + 10, yB + width);
-  ctx.bezierCurveTo(x0 + w * 0.55, yB + width - h * bow, x0 + w * 0.35, yA + width + h * bow, x0 - 10, yA + width);
-  ctx.closePath();
+/** Лента по точкам: сглаженная кривая переменной ширины. */
+function strokeTrail(ctx: CanvasRenderingContext2D, pts: Array<[number, number]>, width: number, seed: number): void {
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i]!;
+    const b = pts[i + 1]!;
+    const mid: [number, number] = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const prev = pts[i - 1] ?? a;
+    const c1: [number, number] = [(prev[0] + a[0] * 3) / 4, (prev[1] + a[1] * 3) / 4];
+    ctx.lineWidth = width * (0.75 + jag(seed + i * 7, 41) * 0.6);
+    ctx.beginPath();
+    ctx.moveTo(c1[0], c1[1]);
+    ctx.quadraticCurveTo(a[0], a[1], mid[0], mid[1]);
+    ctx.lineTo(b[0], b[1]);
+    ctx.stroke();
+  }
 }
 
 /** Плита породы: угловатый многоугольник. Именно углы отличают камень от лужи. */
@@ -237,10 +260,10 @@ function slabRockPath(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: 
 }
 
 /** Пучок травы: тонкие дуги. Обводка тоньше, чем у предметов — трава не предмет, а деталь. */
-function grassTuft(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, seed: number, color: RGB): void {
+function grassTuft(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, seed: number, color: RGB, leaves = true): void {
   // Каждый пятый пучок — ЛИСТ, а не метёлка. Один силуэт, повторённый полсотни раз, читается
   // штампом; второй тип формы снимает это за десять строк.
-  if (jag(seed, 51) > 0.8) {
+  if (leaves && jag(seed, 51) > 0.8) {
     const lw = s * 0.85;
     const lh = s * 1.15;
     ctx.beginPath();
@@ -313,6 +336,158 @@ function boneShape(ctx: CanvasRenderingContext2D, x: number, y: number, s: numbe
   ctx.stroke();
 }
 
+/* ---------- переиспользуемые архетипы ----------
+   Каждый — ОДНА форма, меняющая смысл вместе с цветом биома: упавший ствол становится сломанной
+   колонной, столб — сталагмитом, трещина — светящимся разломом. Так и делают переиспользуемые
+   пропсы: общая геометрия плюс параметр материала, а не отдельный набор картинок на биом. */
+
+/** БРЕВНО — единственная длинная горизонталь на арене. Композиции она нужна: всё остальное
+ *  либо мелкое, либо круглое, и картинке не за что зацепиться по ширине. */
+function logProp(ctx: CanvasRenderingContext2D, x: number, y: number, len: number, seed: number, color: RGB): void {
+  const th = len * 0.17;
+  const ang = (jag(seed, 3) - 0.5) * 0.7;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(ang);
+
+  ctx.fillStyle = "rgba(20,16,24,.3)";
+  ctx.beginPath();
+  ctx.ellipse(th * 0.3, th * 0.55, len * 0.5, th * 0.6, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(-len * 0.5, -th * 0.5);
+  ctx.lineTo(len * 0.5, -th * 0.5);
+  ctx.quadraticCurveTo(len * 0.5 + th * 0.4, 0, len * 0.5, th * 0.5);
+  ctx.lineTo(-len * 0.5, th * 0.5);
+  ctx.quadraticCurveTo(-len * 0.5 - th * 0.4, 0, -len * 0.5, -th * 0.5);
+  ctx.closePath();
+  ctx.fillStyle = rgb(color);
+  ctx.fill();
+  ctx.strokeStyle = rgb(ink(color, 0.45));
+  ctx.lineWidth = LINE;
+  ctx.lineJoin = "round";
+  ctx.stroke();
+
+  // Освещённая верхняя половина: свет слева-сверху, как у всего остального.
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(-len * 0.5, -th * 0.5, len, th * 0.42);
+  ctx.clip();
+  ctx.fillStyle = `rgba(${lighten(color, 0.24).map((v) => v | 0).join(",")},.9)`;
+  ctx.fillRect(-len, -th, len * 2, th);
+  ctx.restore();
+
+  // Торец: без него бревно читается доской.
+  ctx.beginPath();
+  ctx.ellipse(len * 0.5, 0, th * 0.28, th * 0.5, 0, 0, Math.PI * 2);
+  ctx.fillStyle = rgb(shade(color, 0.22));
+  ctx.fill();
+  ctx.strokeStyle = rgb(ink(color, 0.45));
+  ctx.lineWidth = LINE * 0.7;
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+/** ТРЕЩИНА — ломаная по поверхности, с ветвями. Единственный архетип, который может СВЕТИТЬСЯ
+ *  изнутри земли: в пещере холодным, на пепелище тлеющим. */
+function crackProp(ctx: CanvasRenderingContext2D, x: number, y: number, len: number, seed: number, dark: RGB, glow: RGB | null): void {
+  const seg = 5;
+  const ang = jag(seed, 5) * Math.PI * 2;
+  const pts: Array<[number, number]> = [];
+  let cx = x;
+  let cy = y;
+  for (let i = 0; i <= seg; i++) {
+    pts.push([cx, cy]);
+    const a = ang + (jag(seed + i * 7, 11) - 0.5) * 1.5;
+    cx += Math.cos(a) * (len / seg);
+    cy += Math.sin(a) * (len / seg) * 0.55;
+  }
+
+  const drawLine = (width: number, style: string) => {
+    ctx.strokeStyle = style;
+    ctx.lineWidth = width;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    ctx.moveTo(pts[0]![0], pts[0]![1]);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i]![0], pts[i]![1]);
+    ctx.stroke();
+    // Две ветви от случайных узлов — без них трещина читается царапиной.
+    for (let i = 1; i < pts.length - 1; i++) {
+      if (jag(seed + i * 13, 17) < 0.55) continue;
+      const p = pts[i]!;
+      const a = ang + (jag(seed + i, 19) - 0.5) * 2.6;
+      ctx.beginPath();
+      ctx.moveTo(p[0], p[1]);
+      ctx.lineTo(p[0] + Math.cos(a) * len * 0.22, p[1] + Math.sin(a) * len * 0.14);
+      ctx.stroke();
+    }
+  };
+
+  if (glow) {
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    drawLine(LINE * 3.2, `rgba(${glow.join(",")},.16)`);
+    ctx.restore();
+  }
+  drawLine(LINE * 1.5, rgb(ink(dark, 0.34)));
+  if (glow) drawLine(LINE * 0.55, `rgba(${lighten(glow, 0.3).join(",")},.9)`);
+}
+
+/** СТОЛБ — единственный архетип с высотой: пень, сталагмит, обломок колонны. Даёт вертикальный
+ *  акцент и длинную тень, то есть единственный намёк на третье измерение. */
+function pillarProp(ctx: CanvasRenderingContext2D, x: number, y: number, h: number, seed: number, color: RGB): void {
+  const w = h * (0.36 + jag(seed, 3) * 0.16);
+  const lean = (jag(seed, 7) - 0.5) * 0.18;
+
+  // Длинная тень по направлению света: слева-сверху, значит тень уходит вправо-вниз.
+  ctx.fillStyle = "rgba(20,16,24,.3)";
+  ctx.beginPath();
+  ctx.moveTo(x - w * 0.4, y);
+  ctx.lineTo(x + w * 0.4, y);
+  ctx.lineTo(x + w * 0.4 + h * 0.7, y + h * 0.34);
+  ctx.lineTo(x + w * 0.1 + h * 0.7, y + h * 0.38);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(x - w * 0.5, y);
+  ctx.lineTo(x - w * 0.34 + lean * h, y - h);
+  ctx.lineTo(x + w * 0.34 + lean * h, y - h * 0.94);
+  ctx.lineTo(x + w * 0.5, y);
+  ctx.closePath();
+  ctx.fillStyle = rgb(color);
+  ctx.fill();
+  ctx.strokeStyle = rgb(ink(color, 0.45));
+  ctx.lineWidth = LINE;
+  ctx.lineJoin = "round";
+  ctx.stroke();
+
+  // Освещённая грань: левая половина светлее.
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(x - w * 0.5, y);
+  ctx.lineTo(x - w * 0.34 + lean * h, y - h);
+  ctx.lineTo(x + lean * h, y - h * 0.97);
+  ctx.lineTo(x, y);
+  ctx.closePath();
+  ctx.clip();
+  ctx.fillStyle = `rgba(${lighten(color, 0.26).map((v) => v | 0).join(",")},.92)`;
+  ctx.fillRect(x - w, y - h, w * 2, h);
+  ctx.restore();
+
+  // Скол на вершине: ровный срез читается столбиком из конструктора.
+  ctx.beginPath();
+  ctx.ellipse(x + lean * h, y - h * 0.97, w * 0.34, w * 0.14, 0, 0, Math.PI * 2);
+  ctx.fillStyle = rgb(lighten(color, 0.34));
+  ctx.fill();
+  ctx.strokeStyle = rgb(ink(color, 0.45));
+  ctx.lineWidth = LINE * 0.6;
+  ctx.stroke();
+}
+
 /* ---------- сцена ---------- */
 
 interface SlabOpts {
@@ -326,6 +501,9 @@ interface SlabOpts {
   digital?: boolean;
   /** Прошлый заход: жирный контур на всём, ровная заливка, без света. Для сравнения. */
   naive?: boolean;
+  /** Витрина приёмов: какие визуальные слои включены. Не задано — включены все. Пустой объект —
+   *  голая база, по которой видно, что даёт каждая правка по отдельности. */
+  layers?: Partial<Record<"masses" | "boulder" | "colorAccent" | "edgeShade" | "leaves" | "grain" | "props", boolean>>;
 }
 
 /** Борт плиты — «край конструкта».
@@ -487,6 +665,9 @@ function slab(o: SlabOpts): DrawFn {
   return (ctx, w, h) => {
     const b = o.biome;
     const dens = o.density ?? 1;
+    // Витрина: если layers задан, включено только перечисленное. Иначе включено всё.
+    const on = (k: "masses" | "boulder" | "colorAccent" | "edgeShade" | "leaves" | "grain" | "props") =>
+      o.layers ? o.layers[k] === true : true;
 
     const vg = ctx.createLinearGradient(0, 0, 0, h);
     vg.addColorStop(0, b.voidTop);
@@ -533,7 +714,7 @@ function slab(o: SlabOpts): DrawFn {
     //    Приём фонов Samurai Jack: глубину даёт не количество деталей, а НЕСКОЛЬКО БОЛЬШИХ
     //    плоскостей разной светлоты. Без них земля остаётся одной заливкой, по которой рассыпана
     //    мелочь, и картинка читается пустой независимо от числа объектов.
-    for (let m = 0; m < 3; m++) {
+    if (on("masses")) for (let m = 0; m < 3; m++) {
       const t = jag(m, o.seed + 71);
       const cx = x0 + pw * (0.2 + jag(m * 3, o.seed + 73) * 0.65);
       const cy = y0 + ph * (0.2 + jag(m * 3 + 1, o.seed + 75) * 0.6);
@@ -546,19 +727,37 @@ function slab(o: SlabOpts): DrawFn {
       ctx.fillRect(x0, y0, pw, ph);
     }
 
-    // 1. ТРОПА — узнаваемая форма вместо кляксы: лента поперёк поля, вдоль движения.
-    trailPath(ctx, x0, y0, pw, ph, o.seed);
-    ctx.fillStyle = rgb(b.trail);
-    ctx.fill();
-    // Прижатая тень у нижней кромки формы: земля перестаёт быть аппликацией и получает толщину.
-    ctx.save();
-    ctx.clip();
-    ctx.fillStyle = `rgba(${shade(b.trail, 0.4).map((v) => v | 0).join(",")},.55)`;
-    ctx.fillRect(x0, y0, pw, ph);
-    ctx.restore();
-    trailPath(ctx, x0, y0 - 3, pw, ph, o.seed);
-    ctx.fillStyle = rgb(b.trail);
-    ctx.fill();
+    // 1. ТРОПА по точкам прохождения. На части сидов её НЕТ ВОВСЕ — так решил Макс, и это делает
+    //    тропу событием, а не обязательным украшением: арена без неё читается как нехоженое место.
+    const hasTrail = jag(o.seed, 17) > 0.25;
+    if (hasTrail) {
+      const pts = trailPoints(x0, y0, pw, ph, o.seed);
+      const tw = HUMAN_W * (2.2 + jag(o.seed, 11) * 1.6);
+
+      // Тень тропы: та же лента, сдвинутая вниз и затемнённая. Земля получает толщину.
+      ctx.strokeStyle = `rgba(${shade(b.trail, 0.42).map((v) => v | 0).join(",")},.5)`;
+      ctx.save();
+      ctx.translate(0, 3);
+      strokeTrail(ctx, pts, tw, o.seed);
+      ctx.restore();
+
+      ctx.strokeStyle = rgb(b.trail);
+      strokeTrail(ctx, pts, tw, o.seed);
+
+      // Развилка: от середины уходит вторая, более узкая ветвь. Намекает, что местом пользовались
+      // не по одному маршруту.
+      if (jag(o.seed, 29) > 0.55) {
+        const from = pts[Math.max(1, Math.floor(pts.length / 2))]!;
+        const dir = jag(o.seed, 33) > 0.5 ? 1 : -1;
+        const branch: Array<[number, number]> = [
+          from,
+          [from[0] + pw * 0.16 * dir, from[1] + ph * (jag(o.seed, 37) - 0.5) * 0.5],
+          [from[0] + pw * 0.42 * dir, y0 + ph * (0.1 + jag(o.seed, 39) * 0.8)]
+        ];
+        ctx.strokeStyle = rgb(b.trail);
+        strokeTrail(ctx, branch, tw * 0.62, o.seed + 5);
+      }
+    }
 
     // 2. ПЛИТЫ ПОРОДЫ — углы, а не овалы, и группами: одиночный камень читается мусором.
     const clusters = [
@@ -597,7 +796,7 @@ function slab(o: SlabOpts): DrawFn {
     // 2б. КРУПНЫЙ АКЦЕНТ — один валун на арену, у края. Композиции нужен ЯКОРЬ: когда всё
     //     одного размера, глазу не за что зацепиться и поле читается шумом, сколько объектов в
     //     него ни клади. Ставится у края, чтобы не спорить с боем в центре.
-    {
+    if (on("boulder")) {
       const ax = x0 + pw * (jag(o.seed, 81) > 0.5 ? 0.11 : 0.89);
       const ay = y0 + ph * (0.24 + jag(o.seed, 83) * 0.55);
       const ar = HUMAN_H * 0.85;
@@ -629,7 +828,7 @@ function slab(o: SlabOpts): DrawFn {
     // 2в. ЦВЕТОВОЙ АКЦЕНТ — одно пятно другого оттенка на всю арену (мох, лишайник, выцветшая
     //     трава). Пять процентов площади, но именно оно снимает ощущение монохрома: приглушённая
     //     гамма без единого чужого тона выглядит выцветшей, а не сдержанной.
-    {
+    if (on("colorAccent")) {
       const mx = x0 + pw * (0.3 + jag(o.seed, 95) * 0.45);
       const my = y0 + ph * (0.3 + jag(o.seed, 97) * 0.42);
       const mr = HUMAN_H * (1.1 + jag(o.seed, 99) * 0.7);
@@ -641,6 +840,32 @@ function slab(o: SlabOpts): DrawFn {
       g2.addColorStop(1, `rgba(${accent.join(",")},0)`);
       ctx.fillStyle = g2;
       ctx.fillRect(x0, y0, pw, ph);
+    }
+
+    // 2г. ПРЕДМЕТЫ БИОМА — бревно, трещина, столб. Три архетипа, выбранные Максом: одна форма,
+    //     меняющая смысл вместе с цветом. Бревно даёт единственную длинную горизонталь, столб —
+    //     единственную вертикаль с тенью, трещина — единственное, что светится изнутри земли.
+    //     Ставятся не в центр: там дерутся (та же причина, по которой скупа растительность).
+    if (on("props")) {
+      const edgeSpot = (salt: number): [number, number] => {
+        const side = jag(salt, 61);
+        const fx = side < 0.5 ? 0.10 + jag(salt, 63) * 0.24 : 0.66 + jag(salt, 65) * 0.24;
+        const fy = 0.14 + jag(salt, 67) * 0.72;
+        return [x0 + pw * fx, y0 + ph * fy];
+      };
+
+      if (jag(o.seed, 71) > 0.35) {
+        const [lx, ly] = edgeSpot(o.seed + 1);
+        logProp(ctx, lx, ly, HUMAN_H * (2.2 + jag(o.seed, 73) * 1.4), o.seed + 3, b.prop);
+      }
+      if (jag(o.seed, 77) > 0.4) {
+        const [cx2, cy2] = edgeSpot(o.seed + 2);
+        crackProp(ctx, cx2, cy2, HUMAN_H * (1.8 + jag(o.seed, 79) * 1.6), o.seed + 7, b.hard, b.crackGlow);
+      }
+      if (jag(o.seed, 83) > 0.45) {
+        const [px2, py2] = edgeSpot(o.seed + 3);
+        pillarProp(ctx, px2, py2, HUMAN_H * (0.8 + jag(o.seed, 85) * 0.7), o.seed + 11, b.prop);
+      }
     }
 
     // 3. РАСТИТЕЛЬНОСТЬ — скупо и по краям (выбор Макса): в центре дерутся.
@@ -655,13 +880,14 @@ function slab(o: SlabOpts): DrawFn {
       const px = x0 + fx * pw;
       const py = y0 + fy * ph;
       const s = HUMAN_H * (0.15 + jag(i, o.seed + 41) * 0.13);
-      if (b.plantKind === "grass") grassTuft(ctx, px, py, s, o.seed + i * 17, b.plant);
+      if (b.plantKind === "grass") grassTuft(ctx, px, py, s, o.seed + i * 17, b.plant, on("leaves"));
       else if (b.plantKind === "shard") shardShape(ctx, px, py, s, o.seed + i * 17, b.plant);
       else boneShape(ctx, px, py, s, o.seed + i * 17, b.plant);
     }
 
     // 4. ЗЕРНО поверх всего: живописная фактура вместо ровной заливки. Главная разница между
     //    «дёшево» и «дорого» в плоской графике, и стоит она одного прохода.
+    if (on("grain")) {
     ctx.save();
     ctx.globalCompositeOperation = "overlay";
     ctx.globalAlpha = 0.16;
@@ -670,6 +896,7 @@ function slab(o: SlabOpts): DrawFn {
       for (let gx = x0; gx < x0 + pw; gx += 128) ctx.drawImage(gt, gx, gy);
     }
     ctx.restore();
+    }
 
     // 5. НАПРАВЛЕННЫЙ СВЕТ вместо круглой виньетки: слева-сверху выбито, справа-снизу уходит
     //    в холод. Это и есть «объём и свет отдаёт движок» из канона.
@@ -684,6 +911,7 @@ function slab(o: SlabOpts): DrawFn {
     //    Плита обретает толщину: земля у обрыва темнее, потому что свет туда не заворачивает.
     //    Круглое затемнение этого не даёт — оно говорит про кадр, а не про предмет.
     const edgeW = HUMAN_H * 0.9;
+    if (on("edgeShade")) {
     const sides: Array<[number, number, number, number, number, number]> = [
       [x0, y0, x0, y0 + edgeW, pw, edgeW],
       [x0, y0 + ph, x0, y0 + ph - edgeW, pw, edgeW],
@@ -698,6 +926,7 @@ function slab(o: SlabOpts): DrawFn {
       ctx.fillStyle = eg;
       if (i < 2) ctx.fillRect(x0, i === 0 ? y0 : y0 + ph - edgeW, pw, edgeW);
       else ctx.fillRect(i === 2 ? x0 : x0 + pw - edgeW, y0, edgeW, ph);
+    }
     }
 
     ctx.restore();
@@ -796,6 +1025,36 @@ const RIM_STANDS: StandDef[] = [
 
 /** Три сида одной поляны. Один сид ничего не доказывает: по нему не отличить удачную композицию
  *  от везения, и не видно, держится ли правило «центр пуст, акцент у края» на любом заходе. */
+/** ВИТРИНА ПРИЁМОВ: голая база и та же картинка с ОДНОЙ включённой правкой. Так видно вклад
+ *  каждого приёма по отдельности — на общей сборке они смешиваются, и спорить о них невозможно. */
+const LAYER_SHOWCASE: Array<{ key: "masses" | "boulder" | "colorAccent" | "edgeShade" | "leaves" | "grain" | "props"; title: string; note: string }> = [
+  { key: "masses", title: "+ Тональные массы", note: "Несколько крупных плоскостей разной светлоты. Глубину даёт число ПЛАНОВ, а не число деталей — приём фонов Samurai Jack." },
+  { key: "boulder", title: "+ Крупный акцент", note: "Один валун у края. Когда всё одного размера, глазу не за что зацепиться и поле читается шумом." },
+  { key: "colorAccent", title: "+ Цветовое пятно", note: "Один чужой тон, около пяти процентов площади. Гамма без него выглядит выцветшей, а не сдержанной." },
+  { key: "edgeShade", title: "+ Притенение краёв", note: "Кайма вдоль кромок плиты, а не круглая виньетка: у обрыва свет не заворачивает, и плита получает толщину." },
+  { key: "leaves", title: "+ Второй силуэт", note: "Каждый пятый пучок — лист. Одна форма, повторённая полсотни раз, читается штампом." },
+  { key: "grain", title: "+ Зерно", note: "Шум двух масштабов поверх заливок. Идеально ровный цвет читается как заливка в редакторе." },
+  { key: "props", title: "+ Предметы биома", note: "Бревно, трещина, столб. Горизонталь, свечение из земли и единственная вертикаль с тенью." }
+];
+
+const SHOWCASE_STANDS: StandDef[] = [
+  {
+    id: "base",
+    status: "note" as const,
+    title: "Оригинал",
+    tag: "база без правок",
+    note: "Земля, тропа, порода, трава. Всё, что ниже, добавляет ровно один приём поверх этого.",
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, crop: true, layers: {} })
+  },
+  ...LAYER_SHOWCASE.map((l) => ({
+    id: `layer-${l.key}`,
+    status: "waiting" as const,
+    title: l.title,
+    note: l.note,
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, crop: true, layers: { [l.key]: true } })
+  }))
+];
+
 /** Три сида, которые крутятся ВЕЗДЕ: и на поляне целиком, и в каждом биоме. Один сид не отличает
  *  удачную композицию от везения — а по трём сразу видно, держатся ли правила расстановки. */
 const SEEDS = [11, 27, 43];
@@ -871,6 +1130,20 @@ const section: SectionDef = {
         "цифра у нас язык ПЕРЕХОДА, а не состояния, и по этой причине я её из борта убирала. Значит " +
         "либо край плиты получает исключение, либо формулировку канона надо править: развилка " +
         "открыта, до вердикта стоит вариант Макса."
+    },
+    {
+      kind: "head",
+      id: "showcase",
+      title: "Каждый приём по отдельности",
+      lede: "Первый стенд — база. Дальше та же картинка с ОДНОЙ включённой правкой."
+    },
+    { kind: "stands", items: SHOWCASE_STANDS },
+    {
+      kind: "note",
+      html:
+        "На общей сборке приёмы смешиваются, и спорить о них невозможно — поэтому здесь они " +
+        "разложены. Самый большой вклад даёт <b>не тот приём, который дороже всех</b>: тональные " +
+        "массы это три градиента, а меняют они больше, чем валун, зерно и притенение вместе."
     },
     {
       kind: "head",
