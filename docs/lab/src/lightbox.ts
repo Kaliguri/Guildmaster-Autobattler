@@ -98,6 +98,9 @@ function show(at: number): void {
   release();
   index = at;
   box.hidden = false;
+  // Пока открыт лайтбокс, страница под ним не ездит: колесо мыши должно двигать содержимое кадра,
+  // а не уводить фон, к которому всё равно нет доступа.
+  document.body.classList.add("lb-open");
   frame.replaceChildren();
   // Перезапуск анимации появления: без сброса класса второй показ подряд прошёл бы молча.
   frame.classList.remove("pop");
@@ -109,26 +112,42 @@ function show(at: number): void {
 
   const nav = box.querySelectorAll<HTMLElement>(".lightbox-nav");
   nav.forEach((b) => { b.hidden = items.length < 2; });
+  aimNav();
+  // Высоту канваса окончательно ставит первая отрисовка сцены — до неё целиться не во что.
+  requestAnimationFrame(aimNav);
+}
+
+/** Навести стрелки на середину картинки. Раскладка уже случилась, поэтому берём фактический
+ *  прямоугольник: подложка растянута на весь экран, так что координаты окна — её же координаты. */
+function aimNav(): void {
+  if (!box || !frame) return;
+  const art = frame.querySelector<HTMLElement>("canvas, .lightbox-color");
+  const nav = box.querySelectorAll<HTMLElement>(".lightbox-nav");
+  if (!art || window.innerWidth < 720) {
+    nav.forEach((b) => b.style.removeProperty("top"));
+    return;
+  }
+  const r = art.getBoundingClientRect();
+  nav.forEach((b) => { b.style.top = `${Math.round(r.top + r.height / 2)}px`; });
 }
 
 function showScene(item: Extract<Item, { kind: "scene" }>): void {
   if (!frame) return;
-  sizeFrame(item.w / item.h);
   const canvas = el("canvas");
   canvas.width = item.w;
   canvas.height = item.h;
   frame.appendChild(canvas);
-  frame.appendChild(caption(item.stand.title, item.stand.note ?? ""));
+  const cap = caption(item.stand.title, item.stand.note ?? "");
+  frame.appendChild(cap);
+  sizeFrame(item.w / item.h, cap);
   liveCanvas = canvas;
   register(canvas, item.stand, item.w, item.h);
 }
 
 function showColor(item: Extract<Item, { kind: "color" }>): void {
   if (!frame) return;
-  sizeFrame(16 / 9);
   const field = el("div", "lightbox-color");
   field.style.background = item.css;
-  field.style.height = `${Math.round(frameWidth * 0.5)}px`;
   frame.appendChild(field);
 
   const cap = caption(item.token.name, item.token.note);
@@ -145,17 +164,23 @@ function showColor(item: Extract<Item, { kind: "color" }>): void {
   });
   cap.appendChild(value);
   frame.appendChild(cap);
+  sizeFrame(2, cap);
+  field.style.height = `${Math.round(frameWidth * 0.5)}px`;
 }
 
 /** Ширина кадра в пикселях: столько, чтобы картинка влезла и по ширине, и по высоте экрана.
  *  Считается ЗДЕСЬ, а не в CSS, потому что зависит сразу от обеих сторон и от пропорций сцены. */
 let frameWidth = 0;
 
-function sizeFrame(ratio: number): void {
-  if (!frame) return;
+/** Высоту подписи МЕРЯЕМ, а не угадываем: она зависит от длины note и от переносов, и константа
+ *  «190 под подпись» врала на длинных пояснениях — картинка занимала весь экран, а текст уезжал
+ *  за нижний край. Поэтому подпись вставляется в кадр ПЕРВОЙ, а размер считается по факту. */
+function sizeFrame(ratio: number, cap: HTMLElement): void {
+  if (!frame || !box) return;
+  const pad = 2 * parseFloat(getComputedStyle(box).paddingTop || "24");
   const gutter = window.innerWidth < 720 ? 32 : 190; // место под круглые кнопки по бокам
   const availW = window.innerWidth - gutter;
-  const availH = window.innerHeight - 190; // подпись, отступы и кнопка закрытия
+  const availH = window.innerHeight - pad - cap.offsetHeight - 24;
   frameWidth = Math.max(280, Math.min(availW, availH * ratio, 1600));
   frame.style.width = `${Math.round(frameWidth)}px`;
 }
@@ -183,4 +208,5 @@ function hide(): void {
   release();
   index = -1;
   box.hidden = true;
+  document.body.classList.remove("lb-open");
 }

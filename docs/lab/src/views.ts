@@ -65,12 +65,7 @@ export function renderHome(
     const cover = inside.map((p) => loaded.get(p.id)).find((d) => d && coverStand(d));
     const stand = cover ? coverStand(cover) : null;
     if (stand) {
-      const canvas = el("canvas");
-      canvas.width = 320;
-      canvas.height = 200;
-      card.appendChild(canvas);
-      watch(canvas, stand, 320, 200);
-      scenes.push({ kind: "scene", stand, w: 320, h: 200 });
+      card.appendChild(coverBox(stand));
     } else if (area.icon) {
       card.appendChild(el("div", "card-mark", area.icon));
     }
@@ -84,6 +79,21 @@ export function renderHome(
   }
   view.appendChild(grid);
   commitScenes();
+}
+
+/* Превью для карточки. Сцена рисуется в СВОЁМ логическом размере, иначе стенд, рассчитанный на
+   320×280, получал чужие 320×200 и подписи с барами уезжали за край. Окно фиксированной высоты
+   с overflow кропит сцену симметрично и заодно равняет карточки между собой. */
+function coverBox(stand: StandDef): HTMLElement {
+  const [w, h] = stand.size ?? [320, 280];
+  const box = el("div", "card-cover");
+  const canvas = el("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  box.appendChild(canvas);
+  watch(canvas, stand, w, h);
+  scenes.push({ kind: "scene", stand, w, h });
+  return box;
 }
 
 /* ---------- обзор области ---------- */
@@ -108,12 +118,7 @@ function indexCard(page: PageDef, def: SectionDef | undefined): HTMLElement {
   // Живое превью, а не скриншот: список ссылок не говорит, что внутри, а снимок устаревает молча.
   const cover = def ? coverStand(def) : null;
   if (cover) {
-    const canvas = el("canvas");
-    canvas.width = 320;
-    canvas.height = 200;
-    card.appendChild(canvas);
-    watch(canvas, cover, 320, 200);
-    scenes.push({ kind: "scene", stand: cover, w: 320, h: 200 });
+    card.appendChild(coverBox(cover));
   } else if (page.icon) {
     card.appendChild(el("div", "card-mark", page.icon));
   }
