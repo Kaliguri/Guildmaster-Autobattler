@@ -17,6 +17,19 @@ namespace Guildmaster.Guild.Commands
         public RunCommandApplier(RunStateService state) => _state = state;
 
         /// <summary>
+        /// Зафиксировать состояние на диск. Не команда и в лог не попадает: сохранение ничего не меняет,
+        /// оно закрепляет уже изменённое — но трогает состояние, а значит идёт отсюда, как и всё
+        /// остальное. <c>false</c> — забега нет, фиксировать нечего.
+        /// </summary>
+        public bool Save()
+        {
+            if (_state.Current == null) return false;
+
+            _state.Autosave();
+            return true;
+        }
+
+        /// <summary>
         /// Применить команду. Возвращает <c>false</c>, если применить было нечего (нет забега, слот вне
         /// ростера, пустой id) — тогда команда в лог не попадает: журнал хранит то, что случилось.
         /// </summary>

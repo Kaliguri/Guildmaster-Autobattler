@@ -74,6 +74,8 @@ namespace Guildmaster.Guild.Commands
 
         public void AwardBattleReward() => Submit(Next(RunCommandKind.AwardBattleReward));
 
+        public bool RequestSave() => _applier.Save();
+
         private RunCommand Next(RunCommandKind kind, int slotIndex = -1, int amount = 0,
             string text = null, float x = 0f, float y = 0f) =>
             new RunCommand(kind, _playerId, _sequence++,

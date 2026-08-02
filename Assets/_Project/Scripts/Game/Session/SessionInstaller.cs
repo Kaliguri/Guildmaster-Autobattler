@@ -45,11 +45,12 @@ namespace Guildmaster.Game.Session
             // internal держат это компилятором. Лог append-only даёт реплей, аудит «кто передвинул» и
             // хвост для реконнекта; соло идёт этим же путём, иначе кооп нашёл бы обход первым же
             // расхождением состояний (ТЗ кооп-вертикали §4.1).
+            // Сама шина регистрируется ТОЛЬКО собой: дорога к записи одна и идёт через корневой
+            // SessionCommandRouter — иначе у писателей внутри сессии был бы второй путь, мимо роутера,
+            // и «писать некуда» перестало бы работать одинаково для всех.
             builder.Register<Guildmaster.Guild.Commands.RunCommandLog>(Lifetime.Singleton);
             builder.Register<Guildmaster.Guild.Commands.RunCommandApplier>(Lifetime.Singleton);
-            builder.Register<Guildmaster.Guild.Commands.RunCommandBus>(Lifetime.Singleton)
-                   .As<Guildmaster.Guild.Commands.IRunCommands>()
-                   .AsSelf();
+            builder.Register<Guildmaster.Guild.Commands.RunCommandBus>(Lifetime.Singleton).AsSelf();
         }
     }
 }

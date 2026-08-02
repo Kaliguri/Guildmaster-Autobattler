@@ -27,7 +27,7 @@ namespace Guildmaster.Tests.EditMode.Run
             using IObjectResolver session = BuildSession(SessionRole.Owner);
 
             Assert.IsTrue(session.TryResolve(out RunStateService _), "у владельца нет держателя забега");
-            Assert.IsTrue(session.TryResolve(out IRunCommands _), "у владельца нет шины команд забега");
+            Assert.IsTrue(session.TryResolve(out RunCommandBus _), "у владельца нет шины команд забега");
             Assert.AreEqual(SessionRole.Owner, session.Resolve<SessionContext>().Role);
             Assert.IsTrue(session.Resolve<SessionContext>().IsOwner);
         }
@@ -44,7 +44,7 @@ namespace Guildmaster.Tests.EditMode.Run
 
             Assert.IsFalse(session.TryResolve(out RunStateService _),
                 "гость получил держателя забега — он умеет писать чужой сейв");
-            Assert.IsFalse(session.TryResolve(out IRunCommands _),
+            Assert.IsFalse(session.TryResolve(out RunCommandBus _),
                 "гость получил шину команд — он применяет их у себя вместо хоста");
             Assert.AreEqual(SessionRole.Guest, session.Resolve<SessionContext>().Role);
             Assert.IsFalse(session.Resolve<SessionContext>().IsOwner);
@@ -65,6 +65,55 @@ namespace Guildmaster.Tests.EditMode.Run
             Assert.IsNull(host.Run);
             Assert.IsNull(host.Commands);
             Assert.IsNull(host.Context);
+        }
+
+        /// <summary>
+        /// Писать в забег можно всегда, даже когда забега нет: тип записи существует независимо от
+        /// сеанса, а ответом на «некуда» служит <c>false</c>. Без этого дев-арена, Ристалище и PvP
+        /// роняли бы контейнер на подъёме — им шина не нужна, но зависимость никуда не девалась.
+        /// </summary>
+        [Test]
+        public void CommandRouter_AnswersNotWrittenWithoutASession()
+        {
+            IRunCommands commands = new SessionCommandRouter(new SessionHost());
+
+            Assert.IsFalse(commands.SetSlotPosition(0, Vector2.zero));
+            Assert.IsFalse(commands.SetSlotRelic(0, "relic.any"));
+            Assert.IsFalse(commands.RequestSave());
+            Assert.DoesNotThrow(() => commands.AddGold(10));
+            Assert.DoesNotThrow(() => commands.AwardBattleReward());
+        }
+
+        /// <summary>
+        /// Бой собирается БЕЗ забега — это и есть проверка правильности реза уровней: боевой скоуп
+        /// заказывают четверо (узел карты, Ристалище, PvP, тест), и трое из них живут без сейва.
+        /// </summary>
+        /// <remarks>
+        /// Инвариант живёт между скоупом боя и составом сессии, поэтому он в тесте: комментарий увидел
+        /// бы только тот, кто и так собирался его соблюсти, а нарушит его тот, кто однажды попросит
+        /// в конструкторе держателя состояния — и узнает об этом лишь падением контейнера в игре.
+        /// <para>Список типов явный: боевой скоуп собирается из префаба, и вывести его состав
+        /// рефлексией нельзя. Добавил боевой сервис, который трогает забег, — допиши сюда.</para>
+        /// </remarks>
+        [Test]
+        public void BattleScope_NeverAsksForTheOwnerHalf()
+        {
+            System.Type[] battleTypes =
+            {
+                typeof(Guildmaster.Game.Flow.BattleStartup),
+                typeof(Guildmaster.Game.DeploymentController),
+                typeof(Guildmaster.Game.Flow.BattleHost), // живёт в мероприятии, но заказывает бой и без забега
+            };
+
+            foreach (System.Type type in battleTypes)
+            foreach (System.Reflection.ConstructorInfo ctor in type.GetConstructors())
+            foreach (System.Reflection.ParameterInfo p in ctor.GetParameters())
+            {
+                Assert.AreNotEqual(typeof(RunStateService), p.ParameterType,
+                    $"{type.Name} просит держателя состояния — без владельца сейва такой скоуп не поднимется");
+                Assert.AreNotEqual(typeof(RunCommandBus), p.ParameterType,
+                    $"{type.Name} просит шину напрямую — мимо роутера, а значит мимо ответа «писать некуда»");
+            }
         }
 
         /// <summary>

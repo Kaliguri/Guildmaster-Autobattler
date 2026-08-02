@@ -29,7 +29,10 @@ namespace Guildmaster.Game.Flow
         private readonly BattleScopeParams             _params;
         private readonly EncounterLoader               _loader;
         private readonly CombatSimulation              _sim;
-        private readonly RunStateService               _runStates;
+        // Забег бой только ЧИТАЕТ, и то не всегда: дев-арена, Ристалище и PvP собираются там, где его
+        // нет вовсе. Держатель состояния сюда не приходит намеренно — иначе боевой скоуп нельзя было бы
+        // поднять без владельца сейва (канон: бой собирается без RunState, без сети, без карты).
+        private readonly IRunStateView                 _runStates;
         private readonly IContentDatabase              _content;
         private readonly ISubscriber<BattleEndedEvent> _endedSub;
         private readonly Services.TimeScaleService     _time;
@@ -37,7 +40,7 @@ namespace Guildmaster.Game.Flow
         private IDisposable _endedSubscription;
 
         public BattleStartup(IBattleSession session, BattleScopeParams parameters, EncounterLoader loader,
-                             CombatSimulation sim, RunStateService runStates, IContentDatabase content,
+                             CombatSimulation sim, IRunStateView runStates, IContentDatabase content,
                              ISubscriber<BattleEndedEvent> endedSub, Services.TimeScaleService time)
         {
             _session   = session;

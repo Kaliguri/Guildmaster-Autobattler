@@ -38,9 +38,13 @@ namespace Guildmaster.Game.Session
         /// </summary>
         public Guildmaster.Guild.RunStateService Run => Resolve<Guildmaster.Guild.RunStateService>();
 
-        /// <summary>Глаголы изменения забега; вне сессии владельца — <c>null</c>.</summary>
-        public Guildmaster.Guild.Commands.IRunCommands Commands
-            => Resolve<Guildmaster.Guild.Commands.IRunCommands>();
+        /// <summary>
+        /// Шина команд текущего сеанса; вне сессии владельца — <c>null</c>. Спрашиваем именно шину, а не
+        /// интерфейс <c>IRunCommands</c>: интерфейс в контейнере занят роутером, который стоит в корне и
+        /// сам ходит сюда, — резолв интерфейса ушёл бы вверх и вернулся бы к роутеру же.
+        /// </summary>
+        public Guildmaster.Guild.Commands.RunCommandBus Commands
+            => Resolve<Guildmaster.Guild.Commands.RunCommandBus>();
 
         /// <summary>
         /// Открыть сеанс с указанной ролью. Прошлый закрывается: два владельца состояния одновременно —

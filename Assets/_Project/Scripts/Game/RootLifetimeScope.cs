@@ -178,6 +178,12 @@ namespace Guildmaster.Game
             // внутри сессии.
             builder.Register<Session.SessionRunRouter>(Lifetime.Singleton).As<IRunStateView>();
 
+            // Запись в забег — тоже роутером и тоже из корня. Так бой и мероприятие собираются там, где
+            // забега нет вовсе (дев-арена, Ристалище, PvP, тест): тип есть всегда, а ответ «писать
+            // некуда» вызывающие уже умеют читать. Прямой резолв шины ронял бы такой скоуп целиком.
+            builder.Register<Session.SessionCommandRouter>(Lifetime.Singleton)
+                   .As<Guildmaster.Guild.Commands.IRunCommands>();
+
             // За какую команду играет этот клиент. Единственный источник ответа «мы победили?» —
             // в бою есть команды, а не «сторона игрока» (шов под PvP).
             builder.Register<SoloLocalPlayer>(Lifetime.Singleton).As<ILocalPlayer>();

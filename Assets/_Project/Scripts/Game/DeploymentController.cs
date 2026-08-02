@@ -51,7 +51,9 @@ namespace Guildmaster.Game
         // Камеры здесь НЕТ намеренно: какой вид показать, выводится из фазы боя (её слушает
         // CameraModeController). Прежде расстановка сама ставила свободную камеру и кадрировала арену, а
         // старт боя сам возвращал слежение — два владельца вида, и оба перебивали выбор игрока.
-        private readonly Guildmaster.Guild.RunStateService _runStates; // durable-гильдия: читаем ростер
+        // Durable-гильдия: только ЧИТАЕМ ростер, и только через шов чтения. Держателя состояния бой не
+        // получает: расстановка идёт и на дев-арене, и на Ристалище, где забега нет вовсе.
+        private readonly Guildmaster.Guild.IRunStateView _runStates;
         // Позиции и киты уезжают в забег ТОЛЬКО через шину команд: в коопе расстановку правят двое, и
         // «кто передвинул юнита» обязано остаться в логе (ТЗ кооп-вертикали §4.1).
         private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
@@ -151,7 +153,7 @@ namespace Guildmaster.Game
             IPublisher<TestZoneChangedEvent> testZoneChangedPub,
             IPublisher<ArenaRevealRequest> arenaRevealPub,
             IBattleSession session,
-            Guildmaster.Guild.RunStateService runStates,
+            Guildmaster.Guild.IRunStateView runStates,
             Guildmaster.Guild.Commands.IRunCommands commands,
             Core.Audio.IAudioService audio,
             ProvingGroundsConfig provingGrounds)
@@ -958,7 +960,10 @@ namespace Guildmaster.Game
         {
             if (!_rosterDirty) return;
             _rosterDirty = false;
-            _runStates?.Autosave();
+            // Просим ЗАПИСЬ зафиксировать, а не держателя состояния сохраниться: кто владелец сейва и
+            // есть ли он вообще — не дело расстановки. Вне забега ответ «нечего фиксировать», и это
+            // ровно то, что мы про дев-арену и знаем.
+            _commands?.RequestSave();
         }
     }
 }
