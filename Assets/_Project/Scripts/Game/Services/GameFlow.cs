@@ -26,9 +26,11 @@ namespace Guildmaster.Game.Services
     /// </remarks>
     public sealed class GameFlow : IRunControl
     {
-        // Токен отмены текущего забега (QA #18): взводится на время RunActAsync, Cancel() из системного меню
-        // прерывает висящие await'ы петли (выбор узла/«Продолжить»/исход боя) → возврат в главное меню.
-        private CancellationTokenSource _runCts;
+        // Токен отмены текущего МЕРОПРИЯТИЯ (QA #18): взводится на время забега и на время Ристалища,
+        // Cancel() из системного меню прерывает висящие await'ы (выбор узла, «Продолжить», исход боя,
+        // ожидание выхода с площадки) → возврат в главное меню. Пока токен взводил только забег, кнопка
+        // «В главное меню» на площадке молча ничего не делала — отменять было нечего.
+        private CancellationTokenSource _activityCts;
 
         // Участники ЗАНЯТИЯ (рукопожатие боя, раннер акта, награды, последствия ивентов, гейты) живут
         // в его скоупе и умирают вместе с ним, поэтому берутся у хоста в момент использования, а не
@@ -210,18 +212,31 @@ namespace Guildmaster.Game.Services
             // отвечать на него было некому — боевой скоуп рождается по требованию, и в этот момент
             // его ещё не существовало.
             _activities.Open(Data.Definitions.ActivitySetup.ProvingGrounds);
+
+            // Токен мероприятия взводим и здесь, а не только на забеге: «В главное меню» из системного
+            // меню отменяет ТЕКУЩЕЕ мероприятие, каким бы оно ни было. Пока токен взводил только забег,
+            // на площадке кнопка молча ничего не делала — отменять было нечего (наход. Макса 02.08.2026).
+            _activityCts?.Dispose();
+            _activityCts = new CancellationTokenSource();
             try
             {
                 // Интента «включи площадку» здесь НЕТ намеренно: площадка встаёт сама, по виду
                 // мероприятия. Интент, посланный отсюда, не доходил — расстановка рождается вместе с
                 // площадкой и подписывается позже, чем он уходит.
                 var closed = new UniTaskCompletionSource();
+                using (_activityCts.Token.Register(() => closed.TrySetCanceled()))
                 using (_provingGroundsChangedSub.Subscribe(e => { if (!e.Active) closed.TrySetResult(); }))
                     await closed.Task;
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log("[GameFlow] - Ристалище прервано из меню → возврат в главное меню");
             }
             finally
             {
                 _activities.Close();
+                _activityCts.Dispose();
+                _activityCts = null;
             }
 
             Debug.Log("[GameFlow] - Ристалище закрыто → главное меню");
@@ -258,12 +273,12 @@ namespace Guildmaster.Game.Services
             _partyReadyPub.Publish(new RunPartyReadyEvent());
 
             // Токен отмены забега на время акта (QA #18): «В главное меню» → Cancel → OperationCanceledException.
-            _runCts?.Dispose();
-            _runCts = new CancellationTokenSource();
+            _activityCts?.Dispose();
+            _activityCts = new CancellationTokenSource();
             _activities.Open(ActivitySetup.Campaign);
             try
             {
-                var ctx = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents, _runCts.Token);
+                var ctx = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents, _activityCts.Token);
                 EventResult result = await _activities.Runner.RunActAsync(ctx);
                 runStates.Autosave();
                 Debug.Log($"[GameFlow] - акт завершён: {result.Outcome}");
@@ -290,8 +305,8 @@ namespace Guildmaster.Game.Services
                 // единственным, что отделяло один забег от другого, и любая забытая делала следующий
                 // забег чужим.
                 _activities.Close();
-                _runCts.Dispose();
-                _runCts = null;
+                _activityCts.Dispose();
+                _activityCts = null;
             }
         }
 
@@ -299,7 +314,7 @@ namespace Guildmaster.Game.Services
         public void RequestReturnToMainMenu()
         {
             Debug.Log("[GameFlow] - запрос «В главное меню» → прерываю текущий забег");
-            _runCts?.Cancel();
+            _activityCts?.Cancel();
         }
 
         public void RequestQuit() => QuitGame();

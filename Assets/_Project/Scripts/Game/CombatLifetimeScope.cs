@@ -34,10 +34,6 @@ namespace Guildmaster.Game
         [Tooltip("Балансный тюнинг симуляции (вики «13» §3.4): печётся в снапшот SimTuning на старте боя.")]
         [SerializeField] private SimTuningConfig _simTuningConfig;
 
-        [Tooltip("Состав Ристалища по умолчанию — кто встаёт на площадку вне забега (ГДД «Modes - Proving Grounds»). " +
-                 "Пусто = вход на площадку из главного меню недоступен (скажет вслух), бой забега не затронут.")]
-        [SerializeField] private ProvingGroundsConfig _provingGroundsConfig;
-
         [Tooltip("Размер ячейки пространственного хэша.")]
         [SerializeField] private float _spatialHashCellSize = 3f;
 
@@ -74,10 +70,10 @@ namespace Guildmaster.Game
             builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);
 
             // Интерактивная фаза расстановки (шаг 4): активна на Free-пресетах; иначе спит.
-            // Состав Ристалища идёт параметром: он может быть не разведён (тогда площадка вне забега
-            // просто не открывается), поэтому Require здесь не к месту — бой от этого не зависит.
-            builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped)
-                   .WithParameter("provingGrounds", _provingGroundsConfig);
+            // Состава Ристалища «по умолчанию» здесь больше нет: площадка открывается ПУСТОЙ, а бойцов
+            // приносит заказ (сегодня — дев-команда, позже — экран сборки боя). Ассетный расклад делал
+            // вход на Ристалище готовым боем 4×4, которого игрок не заказывал (наход. Макса 02.08.2026).
+            builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped);
 
             // Сборка боя, ради которого родился скоуп: отряд, враги, фаза расстановки, отчёт исхода.
             // Регистрируется ПОСЛЕ DeploymentController — чтобы его подписка на Free-расстановку встала

@@ -57,7 +57,6 @@ namespace Guildmaster.Game
         // Позиции и киты уезжают в забег ТОЛЬКО через шину команд: в коопе расстановку правят двое, и
         // «кто передвинул юнита» обязано остаться в логе (ТЗ кооп-вертикали §4.1).
         private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
-        private readonly ProvingGroundsConfig _provingGrounds;         // состав Ристалища, когда своего отряда нет
         // С чем открыто мероприятие: вид площадки и заказанный при входе состав. Приходит параметром, а
         // не событием, — см. ActivitySetup.Roster.
         private readonly ActivitySetup _activity;
@@ -159,11 +158,9 @@ namespace Guildmaster.Game
             Guildmaster.Guild.IRunStateView runStates,
             Guildmaster.Guild.Commands.IRunCommands commands,
             Core.Audio.IAudioService audio,
-            ProvingGroundsConfig provingGrounds,
             ActivitySetup activity)
         {
             _activity = activity;
-            _provingGrounds = provingGrounds;
             _arenaRevealPub = arenaRevealPub;
             _audio         = audio;
             _runStates     = runStates;
@@ -499,49 +496,25 @@ namespace Guildmaster.Game
         /// </remarks>
         private bool StageProvingGrounds()
         {
-            if (!_hasGroundsOrder && (_provingGrounds == null || _provingGrounds.SquadCount == 0))
-            {
-                Debug.LogWarning("[DeploymentController] - Ристалище: расклад по умолчанию не задан " +
-                                 "(ProvingGroundsConfig пуст или не разведён) → входить не с кем");
-                return false;
-            }
-
             // Свои: заказанный состав (дев-срез) важнее всего — им площадку и просили поставить. Иначе
-            // расклад захода, если он уже есть (игрок переставлял бойцов и дрался), иначе из ассета.
+            // расклад ЭТОГО захода, если игрок уже переставлял бойцов и дрался. Иначе площадка ПУСТА.
             // Между заходами расклад не сохраняется — ГДД [[proving-grounds]], «Отложено».
             var side = new List<PlayerSpawn>();
-            if (_hasGroundsOrder)
-            {
-                side.AddRange(_groundsSquadOrder);
-            }
-            else
-            {
-                for (int i = 0; i < _provingGrounds.SquadCount; i++)
-                {
-                    RelicData relic = _provingGrounds.SquadAt(i);
-                    if (relic != null) side.Add(new PlayerSpawn(relic, null, _provingGrounds.SquadPositionAt(i)));
-                }
-                if (_provingSquad.Count > 0) { side.Clear(); side.AddRange(_provingSquad); }
-            }
+            if (_hasGroundsOrder)      side.AddRange(_groundsSquadOrder);
+            else if (_provingSquad.Count > 0) side.AddRange(_provingSquad);
 
-            if (side.Count == 0) return false;
+            // Пустой вход — норма и единственный честный ответ. Прежде площадка вставала раскладом из
+            // ассета, и игрок, вошедший на Ристалище, получал готовый бой 4×4, которого не заказывал
+            // (наход. Макса 02.08.2026). Ассет был заглушкой на время, пока нет экрана сборки состава,
+            // но заглушка стала вторым владельцем состава — и побеждала, потому что срабатывала первой.
             for (int i = 0; i < side.Count; i++)
                 _slots.Add(new Slot { Unit = side[i].Unit, Vessel = side[i].Vessel, Pos = side[i].Position, LiveUnitId = -1, GuildIndex = -1 });
 
-            // Противник — такие же киты, поэтому обе стороны задаются списком, а не энкаунтером.
+            // Противник — такие же киты, поэтому обе стороны задаются списком, а не энкаунтером. Без
+            // заказа противника нет вовсе: драться на площадке не с кем, пока состав не собрали, и
+            // кнопка «Начать» это честно покажет — она смотрит на наличие врага, а не на место.
             _opponents.Clear();
-            if (_hasGroundsOrder)
-            {
-                _opponents.AddRange(_groundsOpponentOrder);
-            }
-            else
-            {
-                for (int i = 0; i < _provingGrounds.OpponentCount; i++)
-                {
-                    RelicData relic = _provingGrounds.OpponentAt(i);
-                    if (relic != null) _opponents.Add(new PlayerSpawn(relic, null, _provingGrounds.OpponentPositionAt(i)));
-                }
-            }
+            if (_hasGroundsOrder) _opponents.AddRange(_groundsOpponentOrder);
 
             _loader.LoadSides(side, _opponents);
             _sim.FlushSpawns();
