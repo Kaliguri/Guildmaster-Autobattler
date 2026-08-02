@@ -98,6 +98,14 @@ export const PAGES: PageDef[] = [
   },
 
   {
+    id: "map-terrain",
+    area: "map",
+    title: "Земля и страна",
+    blurb: "Атласная модель: рельеф показан землёй, фракция — страной на ней. Берег, ореол, отмывка, штриховка.",
+    load: () => import("./sections/map-terrain.js"),
+    icon: "◈"
+  },
+  {
     id: "map-feel",
     area: "map",
     title: "Подача",
