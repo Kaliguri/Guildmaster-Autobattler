@@ -92,6 +92,11 @@ namespace Guildmaster.Presentation
         // состояние для картинки — будущее. Момент показа и доля кадра — у плеера ленты.
         private Combat.Tape.BattleTapePlayback _playback;
 
+        // Кадр сцены берётся ОТСЮДА, а не прямо у ленты: вне боя ленты не существует, а тела на арене
+        // стоять обязаны (двор, Ристалище, строй между забегами). Роутер знает, кто сейчас поставщик,
+        // и это единственный владелец факта «что сейчас на арене».
+        private Combat.Tape.StageFrameRouter _stage;
+
         // События приходят отсюда — то есть тогда, когда их ПОКАЗАЛИ, а не когда посчитал сим.
         private Combat.Tape.BattleTapeDispatcher _dispatcher;
 
@@ -118,9 +123,11 @@ namespace Guildmaster.Presentation
             Core.Players.ILocalPlayer localPlayer,
             Combat.Tape.BattleTapePlayback playback,
             Combat.Tape.BattleTapeDispatcher dispatcher,
+            Combat.Tape.StageFrameRouter stage,
             DevOverlayMode overlayMode)
         {
             _playback             = playback;
+            _stage                = stage;
             _dispatcher           = dispatcher;
             _overlayMode          = overlayMode;
             _localPlayer          = localPlayer;
@@ -258,20 +265,21 @@ namespace Guildmaster.Presentation
             if (_simulation == null) return;
 
             // Единственный в кадре, кто двигает момент показа: иначе разные потребители увидели бы
-            // разное «сейчас» в одном кадре.
-            _playback.Advance(Time.deltaTime);
+            // разное «сейчас» в одном кадре. Двигаем ИСТОЧНИК, а не ленту напрямую: вне боя ленты нет,
+            // и статичной сцене мира время не нужно вовсе.
+            _stage.Advance(Time.deltaTime);
 
-            // Состав юнитов на экране — тоже из кадра ленты, а не из событий сима: события спавна и
+            // Состав юнитов на экране — тоже из кадра, а не из событий сима: события спавна и
             // смерти приходят на окно опережения РАНЬШЕ, и вид появлялся бы за десять секунд до того,
             // как игрок увидит выход юнита на арену.
-            if (_playback.TryGetFrame(out var frame, out var projectileFrame))
+            if (_stage.TryGetFrame(out var frame, out var projectileFrame))
             {
                 SyncViewsToFrame(frame);
                 SyncProjectilesToFrame(projectileFrame);
             }
 
             // Доля берётся у ПОКАЗА, а не у боевого луча: она отсчитывается от показанного тика.
-            float alpha = _playback.Alpha;
+            float alpha = _stage.Alpha;
 
             // События отдаются до показанного МОМЕНТА — тика вместе с его отыгранной долей. Той же долей
             // ниже течёт поза и позиция, поэтому цифра, звук, вспышка и hitstop садятся в тот самый кадр,
@@ -303,7 +311,7 @@ namespace Guildmaster.Presentation
                     if (view == null) continue;
                 }
 
-                view.Follow(p.Position, p.PreviousPosition, p.Velocity, _playback.Alpha);
+                view.Follow(p.Position, p.PreviousPosition, p.Velocity, _stage.Alpha);
                 if (p.TargetId >= 0 && p.Velocity.sqrMagnitude > 1e-8f)
                     _lastShotDir[p.TargetId] = p.Velocity.normalized;
             }

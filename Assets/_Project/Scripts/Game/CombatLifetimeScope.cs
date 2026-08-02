@@ -182,6 +182,10 @@ namespace Guildmaster.Game
             builder.Register<Combat.Tape.BattleTapeDispatcher>(Lifetime.Scoped);
             builder.Register<Combat.Tape.BattleUnitRegistry>(Lifetime.Scoped);
 
+            // Пока идёт бой, кадр показу поставляет лента; вне боя — тела мира. Привязку делает бой,
+            // потому что он же её и снимает (шаг 1б: этот энтрипоинт переедет в боевой скоуп как есть).
+            builder.RegisterEntryPoint<Flow.BattleStageBinder>(Lifetime.Scoped);
+
             // Режим dev-оверлеев: один владелец на бой, иначе оверлеи разъедутся между собой.
             builder.Register<Presentation.DevOverlayMode>(Lifetime.Scoped);
 

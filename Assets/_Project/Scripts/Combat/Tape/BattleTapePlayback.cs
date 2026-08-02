@@ -16,7 +16,7 @@ namespace Guildmaster.Combat.Tape
     /// означал бы, что бой скучно смотреть, и вдобавок ломал бы всю режиссуру, рассчитанную на
     /// нормальный темп. Пауза — есть, она приходит в Ф4.</para>
     /// </summary>
-    public sealed class BattleTapePlayback
+    public sealed class BattleTapePlayback : IStageFrameSource
     {
         /// <summary>
         /// Целевой запас сима перед показом: 10 секунд (решение Макса 2026-07-29). Держит его продюсер;

@@ -31,6 +31,13 @@ namespace Guildmaster.Game
                 "тряски камеры не будет");
             builder.RegisterInstance(feel);
 
+            // Тела на арене вне боя (двор, Ристалище, строй между забегами) и единственный вход показа
+            // за кадром сцены. Держим здесь, потому что оба переживают бои: боевая симуляция теперь
+            // рождается и умирает вместе с боем, и вечного владельца тел больше нет
+            // (решение Макса 02.08.2026, см. журнал «The Simulation Belongs To The Battle»).
+            builder.Register<Combat.Tape.WorldBodyStage>(Lifetime.Singleton);
+            builder.Register<Combat.Tape.StageFrameRouter>(Lifetime.Singleton);
+
             // Вне боя камера ни за кем не следует (пустой источник точек фокуса). На входе в бой
             // боевой скоуп переключит источник через CombatFocusTarget.SetSource(живые юниты).
             builder.RegisterInstance<Presentation.IFocusPointSource>(Presentation.EmptyFocusPointSource.Instance);
