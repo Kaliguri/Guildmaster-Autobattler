@@ -80,6 +80,13 @@ export const PAGES: PageDef[] = [
     load: () => import("./sections/gamefeel-zones.js")
   },
   {
+    id: "floor",
+    area: "gamefeel",
+    title: "Пол арены",
+    blurb: "Плита в пустоте: поверхность биома, борт сбоку, ничего под ней. Два вопроса под вердикт.",
+    load: () => import("./sections/gamefeel-floor.js")
+  },
+  {
     id: "legacy",
     area: "gamefeel",
     title: "Отклонённое",
