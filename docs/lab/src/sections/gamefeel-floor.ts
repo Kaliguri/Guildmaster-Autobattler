@@ -913,7 +913,7 @@ function slab(o: SlabOpts): DrawFn {
     // Три плоских тона на массу (тень снизу, тело, подсвеченный верх) — ровно язык сторибука,
     // и в рефе сделано так же.
     {
-      const rows = 5;
+      const rows = 6;
       for (let row = 0; row < rows; row++) {
         // 0 — у горизонта, 1 — ближний край кадра.
         const depth = row / (rows - 1);
@@ -921,13 +921,21 @@ function slab(o: SlabOpts): DrawFn {
         const scale = 0.28 + depth * 0.95;
         // Дальние ряды бледнее: их съедает воздух.
         const haze = 0.45 + depth * 0.55;
-        const perRow = Math.max(2, Math.round(wx.clouds * (1.5 - depth * 0.7) / 2));
+        // Дальние ряды ГУЩЕ по числу: у горизонта поле смыкается в сплошную полосу, ближе к нам
+        // расходится на отдельные массы. В рефе именно так и читается облачное море.
+        const perRow = Math.max(3, Math.round(wx.clouds * (1.9 - depth * 1.0) / 2));
 
         for (let i = 0; i < perRow; i++) {
           const salt = row * 31 + i * 7;
-          const cxp = ((jag(salt, o.seed + 101) * 1.3 - 0.15) + i * 0.04) * w;
+          // Позиция РАВНОМЕРНАЯ по индексу плюс джиттер, а не чистый случай. Чистый случай
+          // кучкует облака и оставляет дыры — та же ошибка, что была у россыпи на земле.
+          const even = (i + 0.5) / perRow;
+          const jitter = (jag(salt, o.seed + 101) - 0.5) * (1.4 / perRow);
+          const cxp = (even + jitter) * w * 1.25 - w * 0.12;
           const cyp = rowY + (jag(salt, o.seed + 103) - 0.5) * h * 0.05;
-          const cr = w * (0.05 + jag(salt, o.seed + 105) * 0.07) * scale;
+          // Массы перекрываются: радиус берётся с запасом относительно шага ряда, поэтому
+          // соседи налезают друг на друга и поле читается сплошным, а не пунктиром.
+          const cr = w * (0.055 + jag(salt, o.seed + 105) * 0.075) * scale * (1 + 0.5 / perRow);
 
           const dark = wx.storm ? 0.34 : 0.8;
           const body: RGB = [
