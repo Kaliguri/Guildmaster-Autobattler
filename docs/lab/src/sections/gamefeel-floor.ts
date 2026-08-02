@@ -168,6 +168,111 @@ const ASH: Biome = {
   voidBottom: "#090606"
 };
 
+/* ---------- время суток и небо ----------
+   Решения Макса 02.08.2026: облака ПЛЫВУТ НАД ареной (значит их тени бегут по полю), а под плитой
+   небо уходит в чёрную непроглядную бездну. Время суток красит небо сильно, свет умеренно, землю
+   слабо — иначе поедет читаемость боя, а у нас цвет несёт информацию о стихии удара.
+
+   Из ресёрча, и оба пункта контринтуитивны:
+   - ЗАКАТ МЯГЧЕ ДНЯ ПО КОНТРАСТУ. Солнце низко, свет рассеивается сильнее, тени СВЕТЛЕЮТ. Драму
+     даёт цвет и длина тени, а не жёсткость. Сделать закат контрастным — типичная ошибка.
+   - СУМЕРКИ ЭТО 70/30, а не «всё синее»: большая холодная масса плюс узкая тёплая полоса остатка.
+     Убери тёплый остаток — получишь просто затемнённый день. */
+
+interface TimeOfDay {
+  id: string;
+  name: string;
+  /** Небо сразу под кромкой плиты — оттуда начинается падение в бездну. */
+  skyNear: RGB;
+  /** Дно: почти чёрное, но с оттенком времени суток. Чистый чёрный съел бы силуэт и погасил bloom. */
+  abyss: RGB;
+  /** Цвет прямого света и цвет тени. Тень КОМПЛЕМЕНТАРНА свету — этим она отличается от грязи. */
+  light: RGB;
+  shadow: RGB;
+  /** Сила прямого света: день жёсткий, сумерки почти без него. */
+  lightPower: number;
+  /** Длина теней в долях роста человека: полдень короткие, низкое солнце длинные. */
+  shadowLen: number;
+  /** Слабая покраска земли. Держим низкой сознательно (см. шапку). */
+  groundTint: RGB;
+  groundTintAmount: number;
+  /** Общая яркость сцены. */
+  exposure: number;
+}
+
+const MORNING: TimeOfDay = {
+  id: "morning", name: "Утро",
+  skyNear: [172, 188, 206], abyss: [16, 22, 34],
+  light: [255, 232, 206], shadow: [86, 104, 146],
+  lightPower: 0.6, shadowLen: 1.5,
+  groundTint: [214, 220, 226], groundTintAmount: 0.10,
+  exposure: 0.98
+};
+
+const DAY: TimeOfDay = {
+  id: "day", name: "День",
+  skyNear: [138, 172, 200], abyss: [10, 14, 24],
+  light: [255, 248, 226], shadow: [70, 88, 132],
+  lightPower: 1, shadowLen: 0.75,
+  groundTint: [255, 252, 240], groundTintAmount: 0.05,
+  exposure: 1
+};
+
+const SUNSET: TimeOfDay = {
+  id: "sunset", name: "Закат",
+  skyNear: [226, 148, 96], abyss: [22, 14, 22],
+  light: [255, 186, 118], shadow: [96, 78, 132],
+  // Мягче дня: тени светлее, свет рассеяннее. Длинные тени — вот что делает закат закатом.
+  lightPower: 0.72, shadowLen: 2.4,
+  groundTint: [255, 196, 140], groundTintAmount: 0.16,
+  exposure: 0.94
+};
+
+const DUSK: TimeOfDay = {
+  id: "dusk", name: "Сумерки",
+  skyNear: [86, 92, 140], abyss: [6, 7, 14],
+  light: [178, 168, 200], shadow: [40, 48, 88],
+  lightPower: 0.22, shadowLen: 3.2,
+  groundTint: [140, 150, 196], groundTintAmount: 0.2,
+  exposure: 0.74
+};
+
+const TIMES = [MORNING, DAY, SUNSET, DUSK];
+
+interface Weather {
+  id: string;
+  name: string;
+  /** Сколько облаков плывёт над ареной. */
+  clouds: number;
+  /** Насколько они плотные и насколько тёмные их тени на земле. */
+  cloudAlpha: number;
+  shadowAmount: number;
+  /** Гроза: тучи темнее, добавляется вспышка. */
+  storm: boolean;
+}
+
+const CLEAR: Weather = { id: "clear", name: "Малооблачно", clouds: 2, cloudAlpha: 0.13, shadowAmount: 0.12, storm: false };
+const NORMAL: Weather = { id: "normal", name: "Обычно", clouds: 4, cloudAlpha: 0.18, shadowAmount: 0.2, storm: false };
+const CLOUDY: Weather = { id: "cloudy", name: "Многооблачно", clouds: 8, cloudAlpha: 0.27, shadowAmount: 0.32, storm: false };
+const STORM: Weather = { id: "storm", name: "Гроза", clouds: 10, cloudAlpha: 0.34, shadowAmount: 0.45, storm: true };
+
+const WEATHERS = [CLEAR, NORMAL, CLOUDY, STORM];
+
+/** Облако плоской формой: несколько сросшихся окружностей. В нашем языке это правильнее шума —
+ *  у облака должен быть силуэт, а не размытое пятно. */
+function cloudPath(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, seed: number): void {
+  ctx.beginPath();
+  const lobes = 4 + Math.floor(jag(seed, 3) * 3);
+  for (let i = 0; i < lobes; i++) {
+    const t = i / (lobes - 1) - 0.5;
+    const lx = cx + t * r * 2.1;
+    const ly = cy + (jag(seed + i * 7, 11) - 0.5) * r * 0.34;
+    const lr = r * (0.45 + jag(seed + i * 5, 13) * 0.55) * (1 - Math.abs(t) * 0.5);
+    ctx.moveTo(lx + lr, ly);
+    ctx.arc(lx, ly, lr, 0, Math.PI * 2);
+  }
+}
+
 /* ---------- фактура ----------
    Зерно поверх плоских заливок — то, что отличает живописную плоскость от заливки в редакторе.
    Считается один раз в offscreen и накладывается на всё сразу. */
@@ -605,6 +710,9 @@ interface SlabOpts {
   digital?: boolean;
   /** Прошлый заход: жирный контур на всём, ровная заливка, без света. Для сравнения. */
   naive?: boolean;
+  /** Время суток и облачность. Не заданы — день при обычной облачности. */
+  tod?: TimeOfDay;
+  weather?: Weather;
   /** Витрина приёмов: какие визуальные слои включены. Не задано — включены все. Пустой объект —
    *  голая база, по которой видно, что даёт каждая правка по отдельности. */
   layers?: Partial<Record<"masses" | "boulder" | "colorAccent" | "edgeShade" | "leaves" | "grain" | "props", boolean>>;
@@ -772,10 +880,16 @@ function slab(o: SlabOpts): DrawFn {
     // Витрина: если layers задан, включено только перечисленное. Иначе включено всё.
     const on = (k: "masses" | "boulder" | "colorAccent" | "edgeShade" | "leaves" | "grain" | "props") =>
       o.layers ? o.layers[k] === true : true;
+    const tod = o.tod ?? DAY;
+    const wx = o.weather ?? NORMAL;
 
+    // ПОД ПЛИТОЙ небо уходит в непроглядную бездну (решение Макса): у кромки — цвет неба текущего
+    // времени суток, ниже — падение в почти чёрное. Именно падение, а не ровная темнота: ровная
+    // читалась бы фоном, а градиент — глубиной.
     const vg = ctx.createLinearGradient(0, 0, 0, h);
-    vg.addColorStop(0, b.voidTop);
-    vg.addColorStop(1, b.voidBottom);
+    vg.addColorStop(0, rgb(shade(tod.skyNear, 0.55)));
+    vg.addColorStop(0.42, rgb(tod.skyNear));
+    vg.addColorStop(1, rgb(tod.abyss));
     ctx.fillStyle = vg;
     ctx.fillRect(0, 0, w, h);
 
@@ -1004,12 +1118,33 @@ function slab(o: SlabOpts): DrawFn {
 
     // 5. НАПРАВЛЕННЫЙ СВЕТ вместо круглой виньетки: слева-сверху выбито, справа-снизу уходит
     //    в холод. Это и есть «объём и свет отдаёт движок» из канона.
+    // Свет и тень берут цвет у времени суток. Тень КОМПЛЕМЕНТАРНА свету — этим она отличается от
+    // простого затемнения. Сила прямого света падает к сумеркам, и картинка становится плоской
+    // не потому, что тёмная, а потому что рассеянная.
     const lg = ctx.createLinearGradient(x0, y0, x0 + pw * 0.9, y0 + ph);
-    lg.addColorStop(0, "rgba(255,238,198,.16)");
-    lg.addColorStop(0.45, "rgba(255,238,198,0)");
-    lg.addColorStop(1, "rgba(24,26,54,.34)");
+    lg.addColorStop(0, `rgba(${tod.light.map((v) => v | 0).join(",")},${(0.17 * tod.lightPower).toFixed(3)})`);
+    lg.addColorStop(0.45, `rgba(${tod.light.map((v) => v | 0).join(",")},0)`);
+    lg.addColorStop(1, `rgba(${tod.shadow.map((v) => v | 0).join(",")},${(0.2 + 0.26 * (1 - tod.lightPower)).toFixed(3)})`);
     ctx.fillStyle = lg;
     ctx.fillRect(x0, y0, pw, ph);
+
+    // Слабая покраска земли — «немного влияния цвета на арену», как просил Макс. Держим низкой:
+    // цвет у нас несёт информацию о стихии удара, и перекрашенная арена съела бы этот канал.
+    ctx.fillStyle = `rgba(${tod.groundTint.map((v) => v | 0).join(",")},${tod.groundTintAmount.toFixed(3)})`;
+    ctx.fillRect(x0, y0, pw, ph);
+
+    // ТЕНИ ОБЛАКОВ, бегущие по полю. Самый сильный приём живости из дешёвых: поле перестаёт быть
+    // статичной картинкой, даже когда на нём ничего не происходит.
+    for (let i = 0; i < wx.clouds; i++) {
+      const cxp = x0 + jag(i * 3 + 1, o.seed + 101) * pw;
+      const cyp = y0 + jag(i * 3 + 2, o.seed + 103) * ph;
+      const cr = HUMAN_H * (0.45 + jag(i, o.seed + 105) * 0.7);
+      const g3 = ctx.createRadialGradient(cxp, cyp, cr * 0.2, cxp, cyp, cr * 1.5);
+      g3.addColorStop(0, `rgba(${tod.shadow.map((v) => v | 0).join(",")},${(wx.shadowAmount * tod.lightPower).toFixed(3)})`);
+      g3.addColorStop(1, `rgba(${tod.shadow.map((v) => v | 0).join(",")},0)`);
+      ctx.fillStyle = g3;
+      ctx.fillRect(x0, y0, pw, ph);
+    }
 
     // 6. ПРИТЕНЕНИЕ ПО ПЕРИМЕТРУ — узкая тёмная кайма ВДОЛЬ КРАЁВ ПЛИТЫ, а не круглая виньетка.
     //    Плита обретает толщину: земля у обрыва темнее, потому что свет туда не заворачивает.
@@ -1059,6 +1194,70 @@ function slab(o: SlabOpts): DrawFn {
       ctx.beginPath();
       ctx.arc(px, py, 1.3, 0, Math.PI * 2);
       ctx.fill();
+    }
+
+    // ОБЛАКА ПОВЕРХ ВСЕГО — они плывут МЕЖДУ камерой и ареной (решение Макса). Отсюда и тени на
+    // поле выше: это одни и те же облака, просто здесь мы видим их сами.
+    // Цвет берут у времени суток: днём светлые верхушки, на закате горят краем, в грозу почти
+    // чёрные. Одна форма, четыре настроения.
+    for (let i = 0; i < wx.clouds; i++) {
+      const cxp = x0 + (jag(i * 3 + 1, o.seed + 101) * 1.2 - 0.1) * pw;
+      const cyp = y0 + (jag(i * 3 + 2, o.seed + 103) * 1.15 - 0.08) * ph;
+      const cr = HUMAN_H * (0.45 + jag(i, o.seed + 105) * 0.7);
+
+      const dark = wx.storm ? 0.45 : 0.86;
+      const body: RGB = [
+        lerp(tod.shadow[0], tod.light[0], dark),
+        lerp(tod.shadow[1], tod.light[1], dark),
+        lerp(tod.shadow[2], tod.light[2], dark)
+      ];
+
+      // Тёмное брюхо: облако снизу не освещено. Без этого оно читается ватой, а не облаком.
+      cloudPath(ctx, cxp, cyp + cr * 0.16, cr, o.seed + i * 17);
+      ctx.fillStyle = `rgba(${shade(body, 0.34).map((v) => v | 0).join(",")},${(wx.cloudAlpha * 0.75).toFixed(3)})`;
+      ctx.fill();
+
+      cloudPath(ctx, cxp, cyp, cr, o.seed + i * 17);
+      ctx.fillStyle = `rgba(${body.map((v) => v | 0).join(",")},${wx.cloudAlpha.toFixed(3)})`;
+      ctx.fill();
+
+      // Подсвеченная кромка со стороны источника. На закате она и делает всю картинку.
+      ctx.save();
+      cloudPath(ctx, cxp, cyp, cr, o.seed + i * 17);
+      ctx.clip();
+      const rim = ctx.createLinearGradient(cxp - cr, cyp - cr, cxp + cr * 0.3, cyp + cr * 0.4);
+      rim.addColorStop(0, `rgba(${lighten(tod.light, 0.25).map((v) => v | 0).join(",")},${(0.5 * tod.lightPower + 0.12).toFixed(3)})`);
+      rim.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = rim;
+      ctx.fillRect(cxp - cr * 2.5, cyp - cr * 2, cr * 5, cr * 4);
+      ctx.restore();
+    }
+
+    // ГРОЗА: вспышка подсвечивает арену, но ЕДВА — боевые вспышки несут информацию, и спорить
+    // с ними погода не имеет права.
+    if (wx.storm) {
+      ctx.fillStyle = "rgba(198,214,255,.1)";
+      ctx.fillRect(0, 0, w, h);
+      const bx = x0 + pw * (0.2 + jag(o.seed, 111) * 0.6);
+      ctx.strokeStyle = "rgba(226,238,255,.85)";
+      ctx.lineWidth = 2;
+      ctx.lineJoin = "miter";
+      ctx.beginPath();
+      ctx.moveTo(bx, 0);
+      let ly = 0;
+      let lx = bx;
+      while (ly < y0 * 0.8) {
+        ly += y0 * 0.3;
+        lx += (jag(ly, o.seed + 113) - 0.5) * pw * 0.12;
+        ctx.lineTo(lx, ly);
+      }
+      ctx.stroke();
+    }
+
+    // Экспозиция времени суток — последний штрих, как пост-обработка в движке.
+    if (tod.exposure < 1) {
+      ctx.fillStyle = `rgba(${tod.abyss.map((v) => v | 0).join(",")},${(1 - tod.exposure).toFixed(3)})`;
+      ctx.fillRect(0, 0, w, h);
     }
   };
 }
@@ -1158,6 +1357,44 @@ const SHOWCASE_STANDS: StandDef[] = [
     draw: slab({ biome: MEADOW, rimU: 1, seed: 27, crop: true, layers: { [l.key]: true } })
   }))
 ];
+
+/** Шкала времени суток при обычной облачности: видно всю логику света на одном ряду. */
+const TIME_STANDS: StandDef[] = TIMES.map((t) => ({
+  id: `tod-${t.id}`,
+  status: "waiting" as const,
+  title: t.name,
+  facts: [
+    ["свет", `${Math.round(t.lightPower * 100)}%`],
+    ["длина теней", `${t.shadowLen}×роста`],
+    ["покраска земли", `${Math.round(t.groundTintAmount * 100)}%`]
+  ],
+  size: [430, 330] as [number, number],
+  draw: slab({ biome: MEADOW, rimU: 1, seed: 27, unit: true, digital: true, tod: t, weather: NORMAL })
+}));
+
+/** Шкала облачности днём: меняется только погода. */
+const WEATHER_STANDS: StandDef[] = WEATHERS.map((wv) => ({
+  id: `wx-${wv.id}`,
+  status: "waiting" as const,
+  title: wv.name,
+  facts: [["облаков", String(wv.clouds)], ["тень на поле", `${Math.round(wv.shadowAmount * 100)}%`]],
+  size: [430, 330] as [number, number],
+  draw: slab({ biome: MEADOW, rimU: 1, seed: 27, unit: true, digital: true, tod: DAY, weather: wv })
+}));
+
+/** Комбинации, ради которых всё и затевалось. */
+const COMBO_STANDS: StandDef[] = [
+  { t: SUNSET, wv: CLOUDY, note: "Закат при плотных облаках: горящие кромки и длинные тени." },
+  { t: DUSK, wv: STORM, note: "Гроза в сумерках: тёмное небо, вспышка, почти нет прямого света." },
+  { t: MORNING, wv: CLEAR, note: "Утро в ясную погоду: чисто, холодновато, тени ещё длинные." }
+].map(({ t, wv, note }) => ({
+  id: `combo-${t.id}-${wv.id}`,
+  status: "waiting" as const,
+  title: `${t.name} · ${wv.name}`,
+  note,
+  size: [430, 330] as [number, number],
+  draw: slab({ biome: MEADOW, rimU: 1, seed: 27, unit: true, digital: true, tod: t, weather: wv })
+}));
 
 /** Проба воды: лужа с отражениями и те же фигуры рядом. Стенд собран отдельно от slab, потому что
  *  отражению нужно знать, ГДЕ стоят фигуры, — а в общей сборке они рисуются после земли. */
@@ -1324,6 +1561,54 @@ const section: SectionDef = {
         "либо край плиты получает исключение, либо формулировку канона надо править: развилка " +
         "открыта, до вердикта стоит вариант Макса."
     },
+    {
+      kind: "head",
+      id: "tod",
+      title: "Время суток",
+      lede: "Меняется только время. Облачность у всех четырёх — «Обычно»."
+    },
+    { kind: "stands", items: TIME_STANDS },
+    {
+      kind: "table",
+      head: ["Что гуляет от времени суток", "Насколько", "Почему так"],
+      rows: [
+        ["Небо и бездна под плитой", "<b>очень сильно</b>", "это фон, ему можно всё"],
+        ["Длина теней", "<b>сильно</b>", "полдень 0.75 роста, сумерки 3.2 — это и читается как время"],
+        ["Цвет света и тени", "умеренно", "тень комплементарна свету, иначе она читается грязью"],
+        ["Покраска земли", "5-20%", "выше — и цвет стихии удара перестанет различаться"],
+        ["Цвет боевых эффектов", "<b>ноль</b>", "цвет у нас несёт информацию (канон vfx-color)"]
+      ]
+    },
+    {
+      kind: "note",
+      html:
+        "<b>Два контринтуитивных правила из ресёрча, и оба здесь применены.</b> Закат <b>мягче</b> " +
+        "дня по контрасту: солнце низко, свет рассеивается, тени светлеют — драму даёт цвет и длина " +
+        "тени, а не жёсткость. Сумерки — это <b>70/30</b>, большая холодная масса плюс узкая тёплая " +
+        "полоса остатка; без тёплого остатка получается не вечер, а просто затемнённый день."
+    },
+    {
+      kind: "head",
+      id: "weather",
+      title: "Облачность",
+      lede: "Меняется только погода, время — день. Облака плывут НАД ареной, поэтому их тени бегут по полю."
+    },
+    { kind: "stands", items: WEATHER_STANDS },
+    {
+      kind: "note",
+      html:
+        "Тени облаков на поле — самый дешёвый приём живости из всех: арена перестаёт быть статичной " +
+        "картинкой, даже когда на ней ничего не происходит. И это те же самые облака, что видны " +
+        "сверху, — один источник, два проявления. Молния подсвечивает арену <b>едва</b>: боевые " +
+        "вспышки несут информацию, и спорить с ними погода права не имеет."
+    },
+    {
+      kind: "head",
+      id: "combo",
+      title: "Комбинации",
+      lede: "Ради чего всё и затевалось."
+    },
+    { kind: "stands", items: COMBO_STANDS },
     {
       kind: "head",
       id: "water",
