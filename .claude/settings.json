@@ -26,6 +26,16 @@
     ],
     "PostToolUse": [
       {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/compile-check-gate.py\" mark",
+            "timeout": 10
+          }
+        ]
+      },
+      {
         "matcher": "Bash",
         "hooks": [
           {
@@ -40,6 +50,18 @@
             "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/remind-gdd-sync.py\"",
             "statusMessage": "Проверяю, не разошлась ли карточка ГДД",
             "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/compile-check-gate.py\" check",
+            "statusMessage": "Проверяю, компилируется ли правка",
+            "timeout": 180
           }
         ]
       }
