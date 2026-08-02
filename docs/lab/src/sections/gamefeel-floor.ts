@@ -146,6 +146,174 @@ function fbm2(x: number, y: number, salt: number, octaves = 4): number {
   return sum / norm;
 }
 
+/** КУЧЕВАЯ ГРЯДА — облака, с которыми мы на одном уровне (реф Dead Weight).
+ *
+ *  Строится принципиально иначе, чем потолок, и это главный вывод захода: кучевое облако держится
+ *  не на пороге по двумерному шуму, а на ДВУХ вещах — общем плоском дне и профиле высоты. Дно
+ *  общее, потому что уровень конденсации один на всё небо; выше него масса растёт куполом, между
+ *  куполами до самого дна видно чистое небо. Порог по 2D-шуму этого дать не может в принципе: он
+ *  ставит облака и над куполами, и под ними, отчего небо превращается в покрывало.
+ *
+ *  Тон берётся от ГЛУБИНЫ под верхней кромкой (вершина светлая, дно теневое), а свет — от наклона
+ *  этой кромки: нормаль купола против направления на солнце. Отсюда закат подсвечивает дно и
+ *  обращённые к нему склоны сам, без отдельного правила.
+ *
+ *  Разрывы, высота и плотность — три числа, поэтому погода настраивается ими же. */
+function cloudBank(
+  pxW: number,
+  pxH: number,
+  basePx: number,
+  seed: number,
+  tod: TimeOfDay,
+  wx: Weather
+): HTMLCanvasElement {
+  const cv = document.createElement("canvas");
+  cv.width = Math.max(1, pxW);
+  cv.height = Math.max(1, pxH);
+  const c = cv.getContext("2d");
+  if (!c) return cv;
+  const img = c.createImageData(cv.width, cv.height);
+  const data = img.data;
+  const salt = seed | 0;
+
+  // Разрывы: где профиль ниже планки, облака нет вовсе — там чистое небо до горизонта. Чем больше
+  // облачность, тем ниже планка и тем реже разрывы.
+  const gap = 0.34 - (wx.clouds / 18) * 0.12;
+
+  const litness = wx.storm ? 0.45 : 0.92;
+  const lit: RGB = [
+    lerp(tod.shadow[0], lighten(tod.light, 0.3)[0], litness),
+    lerp(tod.shadow[1], lighten(tod.light, 0.3)[1], litness),
+    lerp(tod.shadow[2], lighten(tod.light, 0.3)[2], litness)
+  ];
+  const dark: RGB = [
+    lerp(lit[0], tod.shadow[0], wx.storm ? 0.66 : 0.48),
+    lerp(lit[1], tod.shadow[1], wx.storm ? 0.66 : 0.48),
+    lerp(lit[2], tod.shadow[2], wx.storm ? 0.58 : 0.38) * 1.06
+  ];
+  const tones: RGB[] = [dark, mix(dark, lit, 0.5), lit, lighten(lit, 0.24)];
+
+  const dir = tod.cloudLight;
+  const dl = Math.hypot(dir[0], dir[1]) || 1;
+  const lx = dir[0] / dl;
+  const ly = dir[1] / dl;
+
+  /** Профиль высоты гряды: одна величина на столбец, в ДОЛЯХ maxH.
+   *
+   *  Кромка строится как огибающая выпуклых клубов, а не как кривая шума, и это третий заход подряд
+   *  по одной причине: у кучевого облака кромка составлена из дуг, которые встречаются вогнутыми
+   *  стыками. Сырой fbm даёт острые пики (горный хребет), сглаженный — гладкие холмы (дюны). Ни то,
+   *  ни другое не облако.
+   *
+   *  Круги здесь — СКЕЛЕТ, а не рисуемая форма: ни один из них не заливается и не обводится
+   *  отдельно, наружу выходит только их общая верхняя огибающая. Ровно этим подход отличается от
+   *  первого захода, где каждая доля рисовалась сама по себе и потому читалась воздушным шаром.
+   *
+   *  Иерархия обязательна: крупные купола, на каждом мелкие клубы по дуге. Один уровень даёт
+   *  «цветную капусту» без масштаба, а именно смена масштабов и читается как облако. */
+  function profileOf(count: number, pSalt: number): Float32Array {
+    const out = new Float32Array(cv.width);
+    const w = cv.width;
+    // Клуб: центр по x, центр по высоте в долях maxH, радиус в долях ширины кадра.
+    const puffs: Array<[number, number, number]> = [];
+    for (let i = 0; i < count; i++) {
+      const t = (i + 0.5) / count + (jag(i * 3, pSalt) - 0.5) * (0.7 / count);
+      const r = w * (0.075 + jag(i * 5 + 1, pSalt) * 0.075);
+      // Купол сидит НА дне: центр чуть выше нуля, поэтому дно остаётся плоским само собой.
+      const hc = r * (0.05 + jag(i * 7 + 2, pSalt) * 0.5);
+      puffs.push([t * w, hc, r]);
+      const small = 3 + Math.floor(jag(i * 11, pSalt) * 4);
+      for (let j = 0; j < small; j++) {
+        // Мелкие клубы садятся по верхней дуге крупного — там, где у настоящего облака кипит
+        // восходящий поток. Снизу их нет: низ облака гладкий.
+        const a = Math.PI * (1.12 + (j + 0.5) / small * 0.76) + (jag(j * 13 + i, pSalt) - 0.5) * 0.3;
+        const br = r * (0.3 + jag(j * 17 + i, pSalt + 3) * 0.28);
+        puffs.push([t * w + Math.cos(a) * r * 0.72, hc - Math.sin(a) * r * 0.72, br]);
+      }
+    }
+    const raw = new Float32Array(w);
+    for (let x = 0; x < w; x++) {
+      let h = 0;
+      for (const [px, py, pr] of puffs) {
+        const dx = x - px;
+        if (dx <= -pr || dx >= pr) continue;
+        const top = py + Math.sqrt(pr * pr - dx * dx);
+        if (top > h) h = top;
+      }
+      raw[x] = h;
+    }
+
+    // Пол под кромкой: между соседними клубами огибающая проваливается до самого дна, и облако
+    // расчёсывается в вертикальные зубцы. У настоящего облака низ сплошной — тело держится, даже
+    // когда верх расходится на клубы. Пол считается размытым профилем: он игнорирует мелкие
+    // провалы, но следует крупной форме.
+    const rad = Math.max(2, Math.round(w * 0.03));
+    let acc = 0;
+    for (let x = -rad; x <= rad; x++) acc += raw[Math.min(Math.max(x, 0), w - 1)]!;
+    const n = rad * 2 + 1;
+    for (let x = 0; x < w; x++) {
+      const floorH = (acc / n) * 0.82;
+      out[x] = Math.max(raw[x]!, floorH) / (w * 0.3);
+      acc -= raw[Math.min(Math.max(x - rad, 0), w - 1)]!;
+      acc += raw[Math.min(Math.max(x + rad + 1, 0), w - 1)]!;
+    }
+    return out;
+  }
+
+  /** Слои гряды: дальний ниже и бледнее, ближний крупнее и контрастнее. Два плана вместо одного —
+   *  то же правило, что и на земле: глубину даёт число ПЛАНОВ, а не деталей. */
+  const layers = [
+    { salt: salt + 211, count: 7, hK: 0.6, base: basePx * 0.99, fade: 0.42 },
+    { salt: salt + 61, count: 4, hK: 1.0, base: basePx, fade: 1 }
+  ];
+
+  for (const layer of layers) {
+    const prof = profileOf(layer.count, layer.salt);
+    const maxH = basePx * 1.15 * layer.hK;
+
+    for (let x = 0; x < cv.width; x++) {
+      // Профиль уже в долях высоты, и там, где клубов нет, он равен нулю — разрывы получаются
+      // сами. Планка облачности лишь подрезает низкие хвосты куполов.
+      const top = Math.min(1, Math.max(0, prof[x]! - gap * 0.25));
+      const height = top * maxH;
+      if (height < 2) continue;
+
+      // Наклон верхней кромки: нормаль купола (-dh/dx, -1). Скалярное произведение с направлением
+      // на солнце и даёт освещённость склона — ровно то же, что делает шейдер по нормали.
+      const dh = (prof[Math.min(x + 3, cv.width - 1)]! - prof[Math.max(x - 3, 0)]!) * maxH * 0.5;
+      const nl = Math.hypot(dh, 1) || 1;
+      const face = (dh / nl) * lx + (-1 / nl) * ly;
+
+      for (let y = 0; y < cv.height; y++) {
+        const d = layer.base - y; // высота над дном
+        if (d < 0 || d > height) continue;
+
+        // Ступени идут ВДОЛЬ КРОМКИ, а не по относительной высоте: тон считается от расстояния
+        // вниз от верха в пикселях. По относительной высоте ленты вставали вертикально, потому
+        // что height резко меняется от столбца к столбцу, и облако получало сосульки.
+        const fromTop = (height - d) / Math.max(maxH * 0.42, 1);
+        // Дно ловит меньше света — у самого низа масса уходит в тень независимо от кромки.
+        const nearBottom = 1 - Math.min(1, d / Math.max(height * 0.5, 1));
+        const level = Math.max(
+          0,
+          Math.min(3, Math.round(2.6 - fromTop * 2.6 + face * 1.1 - nearBottom * 1.3))
+        );
+        const tone = tones[level]!;
+        const i = y * cv.width + x;
+        const p = i * 4;
+        // Дальний слой уходит в цвет неба: без этого два плана спорят по контрасту и склеиваются.
+        data[p] = lerp(tod.skyNear[0], tone[0], layer.fade) | 0;
+        data[p + 1] = lerp(tod.skyNear[1], tone[1], layer.fade) | 0;
+        data[p + 2] = lerp(tod.skyNear[2], tone[2], layer.fade) | 0;
+        data[p + 3] = (wx.cloudAlpha * 255) | 0;
+      }
+    }
+  }
+
+  c.putImageData(img, 0, 0);
+  return cv;
+}
+
 /** Само поле для полосы неба. Возвращает готовый канвас с прозрачным небом и плоскими тонами
  *  облаков — его остаётся положить в кадр.
  *
@@ -220,7 +388,8 @@ function cloudField(
       const i = y * cv.width + x;
       const f = field[i]!;
       // Планка растёт вверх по кадру: над головой неба больше, у горизонта облака сплошные.
-      const th = cover + Math.max(0, (horizonPx - y) / Math.max(horizonPx, 1)) * 0.14;
+      const up = Math.max(0, (horizonPx - y) / Math.max(horizonPx, 1));
+      const th = cover + up * 0.14;
       if (f <= th) continue;
 
       // Градиент поля = наклон формы. Проекция на направление света даёт освещённость: там, где
@@ -1061,9 +1230,9 @@ interface SlabOpts {
   naive?: boolean;
   /** Контур у облаков: "ink" — почти чёрный, "tint" — тёмный цветной. Не задан — без контура. */
   cloudOutline?: "ink" | "tint";
-  /** Чем построены облака: "lobes" — доли-полукружия (первый заход), "field" — поле шума с порогом
-   *  (способ из шейдеров). Не задано — доли. */
-  clouds?: "lobes" | "field";
+  /** Чем построены облака: "lobes" — доли-полукружия (первый заход), "field" — поле шума потолком
+   *  над головой, "bank" — то же поле кучевой грядой на уровне глаз. Не задано — доли. */
+  clouds?: "lobes" | "field" | "bank";
   /** Время суток и облачность. Не заданы — день при обычной облачности. */
   tod?: TimeOfDay;
   weather?: Weather;
@@ -1258,15 +1427,16 @@ function slab(o: SlabOpts): DrawFn {
     // бледнее — атмосферная перспектива делает глубину без единого приёма сверх этого.
     // Три плоских тона на массу (тень снизу, тело, подсвеченный верх) — ровно язык сторибука,
     // и в рефе сделано так же.
-    if (o.clouds === "field") {
+    if (o.clouds === "field" || o.clouds === "bank") {
       // Способ из шейдеров: одно поле на всю полосу неба вместо перечисления масс. Считается в
       // своём канвасе в ФИЗИЧЕСКОМ разрешении — иначе кромка, вырезанная порогом, размылась бы
       // при растяжении, а вся суть в её резкости.
       const k = Math.min(Math.max(ctx.getTransform().a || 1, 1), 2);
       const skyH = h * 0.46;
-      const tile = cloudField(
-        Math.round(w * k), Math.round(skyH * k), Math.round(h * 0.42 * k), o.seed, tod, wx
-      );
+      const tile =
+        o.clouds === "bank"
+          ? cloudBank(Math.round(w * k), Math.round(skyH * k), Math.round(h * 0.42 * k), o.seed, tod, wx)
+          : cloudField(Math.round(w * k), Math.round(skyH * k), Math.round(h * 0.42 * k), o.seed, tod, wx);
       ctx.drawImage(tile, 0, 0, w, skyH);
     } else {
       const rows = 6;
@@ -1769,6 +1939,26 @@ const FIELD_STANDS: StandDef[] = [
       "горизонта поле смыкается без правила про ряды. Тот же приём переносится в шейдер один в один.",
     size: [430, 330] as [number, number],
     draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: NORMAL, clouds: "field" })
+  },
+  {
+    id: "clouds-bank",
+    status: "waiting" as const,
+    title: "Гряда на уровне глаз",
+    tag: "то же поле, другая камера",
+    note: "Плоское дно на линии горизонта, купол вверх. Перспективы почти нет: мы с облаками на одной высоте.",
+    verdict:
+      "Разница не в шуме, а в том, где стоит камера. Потолок сообщает «мы под облаками», гряда — " +
+      "«мы среди них», и второе и есть остров над бездной.",
+    size: [430, 330] as [number, number],
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: SUNSET, weather: NORMAL, clouds: "bank" })
+  },
+  {
+    id: "clouds-bank-day",
+    status: "waiting" as const,
+    title: "Гряда: день",
+    note: "Тот же приём при верхнем свете.",
+    size: [430, 330] as [number, number],
+    draw: slab({ biome: MEADOW, rimU: 1, seed: 27, tod: DAY, weather: NORMAL, clouds: "bank" })
   },
   {
     id: "clouds-field-day",
