@@ -497,6 +497,91 @@ const drawRoads: DrawFn = (ctx, w, h) => {
   });
 };
 
+/* ---------- великий путь ----------
+   Одна сквозная дорога через весь акт, прочерченная заранее. Идёшь по ней — капают награды тремя
+   ступенями; свернул — счётчик встаёт. Это первая идея, где содержанием выбора становится САМА
+   линия, а не то, что лежит в узлах. */
+
+const drawGrandLine: DrawFn = (ctx, w, h) => {
+  const cols = 9;
+  const left = 40;
+  const stepX = (w - left * 2) / (cols - 1);
+  const midY = h / 2 - 4;
+  const spanY = h * 0.34;
+
+  // Ряд узлов на каждом этаже: три сверху вниз, кроме талии-костра.
+  const rowsOf = (c: number): number => (c === 4 ? 1 : 3);
+  const yOf = (c: number, r: number): number => midY + (r - (rowsOf(c) - 1) / 2) * spanY;
+
+  // Сам путь: ряд на каждом этаже, детерминированно.
+  const path: number[] = [];
+  for (let c = 0; c < cols; c++) path.push(c === 4 ? 0 : Math.floor(jag(c, 17) * 3));
+
+  ctx.strokeStyle = "rgba(147,128,94,.35)";
+  ctx.lineWidth = 1;
+  for (let c = 0; c + 1 < cols; c++)
+    for (let a = 0; a < rowsOf(c); a++)
+      for (let b = 0; b < rowsOf(c + 1); b++) {
+        if (Math.abs(a - b) > 1 && rowsOf(c) === rowsOf(c + 1)) continue;
+        ctx.beginPath();
+        ctx.moveTo(left + c * stepX + 7, yOf(c, a));
+        ctx.lineTo(left + (c + 1) * stepX - 7, yOf(c + 1, b));
+        ctx.stroke();
+      }
+
+  // Великий путь поверх обычных дорог — толще, теплее, с лёгким свечением.
+  ctx.save();
+  ctx.globalCompositeOperation = "lighter";
+  ctx.strokeStyle = "rgba(255,204,51,.55)";
+  ctx.lineWidth = 4.5;
+  ctx.lineJoin = "round";
+  ctx.beginPath();
+  for (let c = 0; c < cols; c++) {
+    const x = left + c * stepX;
+    const y = yOf(c, path[c] ?? 0);
+    if (c === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.restore();
+
+  for (let c = 0; c < cols; c++) {
+    for (let r = 0; r < rowsOf(c); r++) {
+      const on = (path[c] ?? 0) === r;
+      ctx.beginPath();
+      ctx.arc(left + c * stepX, yOf(c, r), on ? 7 : 5.5, 0, Math.PI * 2);
+      ctx.fillStyle = on ? "rgba(255,204,51,.3)" : COL.body;
+      ctx.fill();
+      ctx.lineWidth = on ? 2 : 1.4;
+      ctx.strokeStyle = on ? COL.honey : "rgba(184,134,59,.6)";
+      ctx.stroke();
+    }
+  }
+
+  // Три ступени награды: где именно они капают.
+  const marks: Array<[number, string]> = [[3, "1 · реликвия"], [5, "2 · предмет"], [8, "3 · реликвия элиты"]];
+  ctx.font = "500 10px ui-monospace, Consolas, monospace";
+  for (const [c, label] of marks) {
+    const x = left + c * stepX;
+    const y = yOf(c, path[c] ?? 0);
+    ctx.strokeStyle = "rgba(255,204,51,.5)";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([2, 3]);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, h - 32);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = "rgba(255,204,51,.9)";
+    ctx.textAlign = "center";
+    ctx.fillText(label, x, h - 18);
+    ctx.textAlign = "left";
+  }
+
+  ctx.fillStyle = "rgba(147,128,94,.9)";
+  ctx.fillText("костёр в талии не считается", left, 22);
+};
+
 /* ---------- стенды ---------- */
 
 const FORMS: StandDef[] = [
@@ -889,6 +974,52 @@ const section: SectionDef = {
         ["Встреча в пути", "короткое событие на самом ребре", "дёшево"],
         ["Клятва на распутье", "обет привязан к дороге, а не к области", "средне"],
         ["Тесная (кооп)", "пройти можно только разделившись — или только вместе", "дорого"]
+      ]
+    },
+    {
+      kind: "head",
+      id: "grand",
+      title: "Великий путь",
+      lede:
+        "Случайная сквозная дорога от начала акта до конца, прочерченная заранее. Идёшь по ней — " +
+        "награды капают тремя ступенями. Идея Макса 2026-08-02."
+    },
+    {
+      kind: "split",
+      items: [
+        {
+          id: "grand-line",
+          status: "waiting",
+          title: "Три ступени по пути",
+          note: "Первая ступень — за четыре узла на линии, вторая — за половину, третья — <b>только за путь целиком</b>. Костёр в талии не считается. Награды намеренно негромкие: линия должна влиять на стратегию, а не диктовать её.",
+          facts: [["1", "реликвия как за обычного врага"], ["2", "предмет, один из трёх"], ["3", "реликвия как за элиту"], ["гейт", "открывается в мете"]],
+          verdict: "Первая идея, где содержанием выбора становится сама линия, а не то, что лежит в узлах.",
+          size: [620, 330],
+          draw: drawGrandLine
+        }
+      ]
+    },
+    {
+      kind: "note",
+      html:
+        "<b>Что решить до реализации:</b> считается ли следование подряд или суммарно (предлагаю " +
+        "суммарно для ступеней 1–2 и без единого пропуска для третьей) · ведёт ли линия через " +
+        "ОПАСНЫЕ узлы — иначе идти по ней всегда выгодно и выбора нет · одна линия на партию в коопе."
+    },
+    {
+      kind: "head",
+      id: "gating",
+      title: "Что открывается когда",
+      lede: "Карта получилась богатой, поэтому слои включаются постепенно (Макс, 2026-08-02)."
+    },
+    {
+      kind: "table",
+      head: ["Слой", "Когда доступен"],
+      rows: [
+        ["Фракции зон", "сразу, с нулевого возвышения"],
+        ["Фракции + модификаторы", "с первого возвышения"],
+        ["Подземелья", "открываются в мете; опциональные допы, пути к ним генерятся дополнительно"],
+        ["Великий путь", "открывается в мете"]
       ]
     },
     {
