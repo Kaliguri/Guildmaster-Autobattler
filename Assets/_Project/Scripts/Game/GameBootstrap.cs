@@ -39,9 +39,19 @@ namespace Guildmaster.Game
 
         [Inject] private GameFlow _gameFlow;
         [Inject] private ISceneLoader _sceneLoader;
+        [Inject] private Flow.ITitleCardPresenter _titleCard;
 
         /// <summary>Сколько раз поднимать петлю после падения, прежде чем сдаться и сказать об этом вслух.</summary>
         private const int MaxRestarts = 2;
+
+        /// <summary>
+        /// Входим ли разрезом мимо главного меню. Считается ровно по тем же условиям, по которым ниже
+        /// выбирается ветка входа: два независимых списка флагов разъехались бы на первом же новом.
+        /// </summary>
+        private bool IsDevCut =>
+            _runActOnBoot ||
+            (_runTextEventOnBoot && _devStartEvent != null) ||
+            (_runBattleFlowOnBoot && _devStartPreset != null);
 
         private void Start()
         {
@@ -71,13 +81,23 @@ namespace Guildmaster.Game
         {
             Debug.Log("[GameBootstrap] - Старт");
 
-            // Персистентный мир (камера-риг + арена) поднимаем ПЕРВЫМ и держим всю сессию: вне боя он
-            // даёт вид арены (карта/инвентарь), в бою переиспользуется. Бой (BattleScene) ложится поверх.
-            await _sceneLoader.LoadWorldAsync();
+            async UniTask LoadWorldAsync()
+            {
+                // Персистентный мир (камера-риг + арена) поднимаем ПЕРВЫМ и держим всю сессию: вне боя он
+                // даёт вид арены (карта/инвентарь), в бою переиспользуется. Бой (BattleScene) ложится поверх.
+                await _sceneLoader.LoadWorldAsync();
 
-            // Боевые системы тоже persist (план 12 Ф2): боевой скоуп живёт всю сессию, бой запускается
-            // командой в живой sim (RequestLaunch), а не загрузкой сцены на каждый узел. Грузим один раз здесь.
-            await _sceneLoader.LoadCombatSystemsAsync();
+                // Боевые системы тоже persist (план 12 Ф2): боевой скоуп живёт всю сессию, бой запускается
+                // командой в живой sim (RequestLaunch), а не загрузкой сцены на каждый узел. Грузим один раз здесь.
+                await _sceneLoader.LoadCombatSystemsAsync();
+            }
+
+            // Бут-экран накрывает загрузку, а не следует за ней: мир поднимается со своей камерой и
+            // сразу рисует пустую арену, поэтому любой зазор между ним и первым UI виден кадрами
+            // (наход. Макса 03.08.2026). Dev-разрезы входят в игру мимо меню — им экран, требующий
+            // нажатия, только мешает, поэтому они грузятся молча.
+            if (IsDevCut) await LoadWorldAsync();
+            else          await _titleCard.ShowAsync(LoadWorldAsync);
 
             // Сеанс владения состоянием здесь НЕ открывается: он рождается при входе в игру, вместе с
             // ролью и решением про лобби («Создать» → владелец, «Присоединиться» → гость). Бут поднимает

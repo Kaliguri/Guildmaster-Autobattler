@@ -45,6 +45,7 @@ namespace Guildmaster.UI
         private readonly GuildmasterPalette _palette;
 
         private VisualElement _root;
+        private VisualElement _modalLayer;   // верхний слой — заслонка выхода ложится поверх и паузы
         private VisualTreeAsset _pauseUxml;
         private VisualTreeAsset _settingsUxml;
         private VisualTreeAsset _devConsoleUxml;
@@ -197,6 +198,7 @@ namespace Guildmaster.UI
             _devConsoleUxml = devConsoleUxml;
             _devLogUxml = devLogUxml;
             _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
+            _modalLayer = modalLayer;
             _pauseUxml = pauseUxml;
             _settingsUxml = settingsUxml;
             _loadoutUxml = loadoutUxml;
@@ -622,7 +624,7 @@ namespace Guildmaster.UI
             if (quit != null)
             {
                 quit.text = Loc("ui.menu.quit", "Выйти из игры");
-                quit.clicked += () => _runControl?.RequestQuit();
+                quit.clicked += () => { ShowQuitVeil(); _runControl?.RequestQuit(); };
             }
             return screen;
         }
@@ -1191,7 +1193,7 @@ namespace Guildmaster.UI
                         onStart:    () => resolve(MainMenuChoice.StartRun),
                         onContinue: () => resolve(MainMenuChoice.Continue),
                         onSettings: OpenSettingsFromMainMenu,
-                        onQuit:     () => resolve(MainMenuChoice.Quit),
+                        onQuit:     () => { ShowQuitVeil(); resolve(MainMenuChoice.Quit); },
                         onProvingGrounds: () => resolve(MainMenuChoice.ProvingGrounds),
                         onCoop:     OpenCoopFromMainMenu);
                 });
@@ -1219,6 +1221,29 @@ namespace Guildmaster.UI
                 _resolveMainMenuAsProvingGrounds = null;
                 _resolveMainMenuAsCoopGuest      = null;
             }
+        }
+
+        /// <summary>
+        /// Закрыть картинку заслонкой, потому что игрок выбрал выход из игры.
+        /// </summary>
+        /// <remarks>
+        /// Движок закрывается не мгновенно — уборка графики, звука и Steam занимает заметное время, — а
+        /// меню к этому моменту уже снято выбором. Всё это время игрок смотрел на фон пустой арены и
+        /// читал его как зависшую игру (наход. Макса 03.08.2026).
+        /// <para>Заслонка кладётся <b>мимо навигатора</b>, прямо в слой, и снять её нечем: снимать
+        /// нечего — за ней закрытие процесса. Экран стека здесь был бы хуже, а не лучше: любой
+        /// последующий <c>PopAll</c> вернул бы картинку ровно в тот момент, когда показывать её уже
+        /// незачем.</para>
+        /// </remarks>
+        private void ShowQuitVeil()
+        {
+            VisualElement layer = _modalLayer ?? _root;
+            if (layer == null) return;
+
+            // Ловит ввод: после выбора выхода клики в мир не должны ничего запускать.
+            var veil = new VisualElement { name = "quit-veil", pickingMode = PickingMode.Position };
+            veil.AddToClassList("gm-quit-veil");
+            layer.Add(veil);
         }
 
         private static void Disable(Button b) { if (b != null) b.SetEnabled(false); }

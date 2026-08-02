@@ -58,10 +58,52 @@
     margin-bottom: var(--gm-space-3);
 }
 
+/* --- МЕТА-СЛОЙ: панель-СТЕКЛО (главное меню, пауза, настройки) ---
+   Второй регистр поверхностей рядом с гроссбухом: сквозь поле виден стол, границы почти нет, форму
+   держит свет. Рамка ОДНА и только сверху — свет в сцене падает сверху, и кайма по всему периметру
+   мгновенно возвращает вид «коробки с содержимым».
+   Регистр выбирается по смыслу экрана (мета vs мир), см. --gm-color-surface-glass в семантике.
+   overflow:hidden обязателен: он обрезает свет по кромке панели, иначе пятно вылезает наружу и
+   читается грязью на столе. */
+.gm-panel--system {
+    background-color: var(--gm-color-surface-glass);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-top-width: 1px;
+    border-top-color: var(--gm-color-glass-rim);
+    overflow: hidden;
+}
+
+/* ФАКТУРА панели мета-слоя: запечённая процедурная текстура, растянутая 9-slice.
+   Плоская заливка давала ровно ту претензию, с которой всё началось — «прямоугольник без идеи».
+   Текстура печётся кодом (шум + волокно + затёртый край), а не рисуется: у нас нет UI-художника,
+   зато есть палитра как единый источник, и генератор берёт цвет из неё.
+   Слайс 40 при полотне 512: кромка с фаской держит размер, середина тянется. */
+.gm-panel--textured {
+    -unity-slice-left: 40;
+    -unity-slice-right: 40;
+    -unity-slice-top: 40;
+    -unity-slice-bottom: 40;
+    -unity-slice-scale: 1px;
+}
+
+/* Материал панели — отдельным модификатором: слайс и правила у всех общие, разное только полотно.
+   Пекутся окном Alebardium → UI → Bake Panel Textures, цвет приходит из палитры по токену. */
+.gm-panel--parchment { background-image: url("../../Art/UI/Panels/PanelParchment.png"); }
+.gm-panel--wood      { background-image: url("../../Art/UI/Panels/PanelWood.png"); }
+.gm-panel--plaster   { background-image: url("../../Art/UI/Panels/PanelPlaster.png"); }
+.gm-panel--matte     { background-image: url("../../Art/UI/Panels/PanelMattePane.png"); }
+.gm-panel--linen     { background-image: url("../../Art/UI/Panels/PanelLinen.png"); }
+
+/* Разделитель. ТИНТ ОБЯЗАТЕЛЕН: картинка разделителя почти белая, и без перекраски линия под
+   заголовком светилась чистым белым — единственным во всём интерфейсе цветом вне палитры
+   (находка Макса 2026-08-02 на скрине главного меню). Красим в ту же латунь, что рамки. */
 .gm-divider {
     height: 6px;
     background-color: rgba(0, 0, 0, 0);
     background-image: url("../../Art/UI/Honeti-gm/Separator_gm.png");
+    -unity-background-image-tint-color: var(--gm-color-border-frame);
     -unity-slice-left: 1;
     -unity-slice-right: 1;
     -unity-slice-top: 1;
@@ -266,6 +308,93 @@
     flex-grow: 1;
 }
 
+/* --- ПЛАСТИНА: вторая форма интерфейса (gm:PlateButton) ---
+   Прямоугольник со срезанными углами вместо прямоугольника с рамкой. Заведена 2026-08-02, потому
+   что форма в системе была ровно одна, и экран из шести кнопок читался списком одинаковых полос:
+   иерархию нёс только цвет заливки, а силуэт у главного действия и у «Выхода» был общий.
+   Фигуру рисует контрол вершинами, поэтому ЗДЕСЬ вид задают custom-свойства, а не background/border —
+   их builtin-рисование гасим, иначе под фигурой останется прямоугольник темы Unity.
+   Числа у --gm-plate-stroke-width / --gm-plate-chamfer идут БЕЗ единиц: CustomStyleProperty<float>
+   читает <number>, а `2px` для него не число (та же конвенция, что у --gm-slant-width). */
+.gm-plate-button {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: none;
+    border-width: 0;
+    align-items: center;
+    justify-content: center;
+    --gm-plate-fill: var(--gm-color-surface-panel);
+    --gm-plate-stroke: var(--gm-color-border-frame);
+    --gm-plate-stroke-width: 2;
+    --gm-plate-chamfer: 10;
+}
+
+/* Двухклассовые селекторы обязательны для КАЖДОГО состояния: одноклассовый проигрывает правилам
+   `.unity-button.gm-button:hover/:active/:disabled` выше, и тема снова принималась рисовать
+   прямоугольную плашку поверх пластины. */
+.unity-button.gm-plate-button,
+.unity-button.gm-plate-button:hover,
+.unity-button.gm-plate-button:active,
+.unity-button.gm-plate-button:focus,
+.unity-button.gm-plate-button:disabled,
+.unity-button.gm-plate-button.unity-disabled {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: none;
+    border-width: 0;
+}
+
+/* Подпись живёт в ребёнке (иначе заливка легла бы поверх текста — см. PlateButton.cs).
+   Цвет/кегль/гарнитуру она наследует от самой кнопки, поэтому ярус шрифтов и токены текста
+   продолжают работать без отдельных правил. */
+.gm-plate-button__label {
+    -unity-text-align: middle-center;
+}
+
+.gm-plate-button:hover {
+    --gm-plate-fill: var(--gm-color-hover-surface);
+    --gm-plate-stroke: var(--gm-color-hover-border);
+}
+
+/* Нажатие ВДАВЛИВАЕТ: поле уходит в самый тёмный тон, а подпись сдвигается на пиксель вниз.
+   Сдвиг здесь не украшение — до него у кнопки не было никакой физики, только смена цвета, и
+   нажатие не читалось как нажатие. */
+.gm-plate-button:active {
+    --gm-plate-fill: var(--gm-color-surface-sunken);
+    --gm-plate-stroke: var(--gm-color-border-inner);
+}
+
+.gm-plate-button:active > .gm-plate-button__label {
+    translate: 0 1px;
+}
+
+.gm-plate-button:focus {
+    --gm-plate-stroke: var(--gm-color-hover-border);
+}
+
+/* Выключенная: тихий контур и выцветшая подпись. Класс `unity-disabled` вешает сама UITK —
+   одного псевдокласса `:disabled` не хватает, чтобы перебить тему (та же готча, что у кнопок выше). */
+.gm-plate-button:disabled,
+.gm-plate-button.unity-disabled {
+    --gm-plate-fill: var(--gm-color-surface-raised);
+    --gm-plate-stroke: var(--gm-color-border-subtle);
+}
+
+/* Primary — та же пластина, только НАГРЕТАЯ (угли вместо холодного дерева). Форма общая: главное
+   действие отличается температурой поля, а не другим силуэтом. */
+.gm-plate-button.gm-button--primary {
+    --gm-plate-fill: var(--gm-color-surface-accent);
+    --gm-plate-stroke: var(--gm-color-hover-border);
+}
+
+.gm-plate-button.gm-button--primary:hover {
+    --gm-plate-fill: var(--gm-color-surface-accent-hover);
+    --gm-plate-stroke: var(--gm-color-focus-ring);
+}
+
+.gm-plate-button.gm-button--primary:active {
+    --gm-plate-fill: var(--gm-color-surface-accent-active);
+    --gm-plate-stroke: var(--gm-color-hover-border);
+}
+
 /* Ряд кнопок в подвале панели: равные доли с зазором. */
 .gm-button-row {
     flex-direction: row;
@@ -306,19 +435,23 @@
     align-items: stretch;
 }
 
-/* Скроллбар тела — в нашей гамме: дефолтный светло-серый читался деталью чужого интерфейса
-   (та же правка, что уже сделана для грида карт). */
-.gm-panel__body .unity-scroller--vertical {
+/* СКРОЛЛБАР — ОДНО ПРАВИЛО НА ВЕСЬ ИНТЕРФЕЙС: тонкий тёмный трек, латунная ручка, без стрелок.
+   Раньше та же тройка правил стояла отдельно у тела панели и отдельно у грида инвентаря, а всё
+   остальное доставалось теме Unity — из-за чего список продажи в лавке рисовал светло-серый
+   скроллбар с кнопками-стрелками посреди тёмного экрана (видно на рендере 2026-08-02).
+   Список мест, где скроллбар «уже поправлен», — заведомо неполный: чинить надо контрол, а не место.
+   Консоль перебивает это своим видом двухклассовыми селекторами — ей нужен более узкий инструментный. */
+.unity-scroller--vertical {
     width: var(--gm-scrollbar-width);
     background-color: var(--gm-color-surface-sunken);
 }
 
-.gm-panel__body .unity-scroller--vertical .unity-base-slider__tracker {
+.unity-scroller--vertical .unity-base-slider__tracker {
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
 }
 
-.gm-panel__body .unity-scroller--vertical .unity-base-slider__dragger {
+.unity-scroller--vertical .unity-base-slider__dragger {
     background-color: var(--gm-color-accent);
     border-width: 0;
     border-radius: var(--gm-radius-0);
@@ -326,8 +459,8 @@
     left: 2px;
 }
 
-.gm-panel__body .unity-scroller__low-button,
-.gm-panel__body .unity-scroller__high-button {
+.unity-scroller__low-button,
+.unity-scroller__high-button {
     display: none;
 }
 
@@ -710,9 +843,14 @@
  * Экран награды (A3): модальная витрина из N реликвий + опц. секция сброса.
  * ========================================================================== */
 
+/* Панель награды укрупнена 2026-08-02. Прежние 460–540px на канве 1920×1080 давали коробочку в
+   четверть ширины под ГЛАВНЫЙ выбор забега: три карточки по 120px, подпись «Арканист» ломалась
+   переносом посреди слова. Выбор реликвии — момент, ради которого играют бой, и места он должен
+   занимать соответственно. Размер всё ещё МЕНЬШЕ диалога (--gm-dialog-width): это не окно
+   настроек, а витрина, и края экрана ей закрывать незачем. */
 .gm-panel--reward {
-    min-width: 460px;
-    max-width: 540px;
+    min-width: 900px;
+    max-width: 1100px;
 }
 
 /* Витрина: карточки в ряд по центру (перенос — страховка при узкой панели). */
@@ -720,13 +858,16 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top: var(--gm-space-3);
+    margin-bottom: var(--gm-space-3);
 }
 
-/* Карточка витрины — крупная (фокус экрана: показываем анимированный спрайт персонажа). */
+/* Карточка витрины — крупная (фокус экрана: показываем анимированный спрайт персонажа).
+   Пропорция ближе к карте таро, чем к плитке: тот же язык, что у грида инвентаря. */
 .gm-card--reward {
-    width: 120px;
-    height: 136px;
-    margin: var(--gm-space-1);
+    width: 240px;
+    height: 330px;
+    margin: var(--gm-space-2);
 }
 
 .gm-reward-drop {
@@ -760,10 +901,17 @@
     border-left-color: var(--gm-color-accent);
 }
 
+/* Подвал витрины: обе кнопки У ПРАВОГО КРАЯ, главная — крайняя. Раньше стояло space-between, и на
+   узкой панели это читалось нормально; после укрупнения до 900+ кнопки разбежались по углам и
+   перестали читаться парой (рендер 2026-08-02). */
 .gm-reward-footer {
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-top: var(--gm-space-1);
+}
+
+.gm-reward-footer > .gm-button {
+    margin-left: var(--gm-space-2);
 }
 
 /* ============================================================================
@@ -1092,24 +1240,49 @@
 }
 
 /* ============================================================================
- * ЯРУС ШРИФТОВ: тело — Fira Sans, заголовки — Cormorant Garamond Medium (TextCore SDF).
- * Живёт здесь (а не отдельным @import), т.к. тема .tss не подхватывала 4-й @import.
+ * ЯРУС ШРИФТОВ: два голоса — ГОВОРИТ (сериф) и ПОКАЗЫВАЕТ (гротеск).
+ * Файлы гарнитур живут в примитивах, роли — в семантике; здесь только РАЗДАЧА ролей по
+ * классам. Живёт в этом файле (а не отдельным @import), т.к. тема .tss не подхватывала 4-й
+ * @import.
  * Специфичность: дефолт-тема Unity вешает шрифт ПРЯМО на .unity-text-element, а прямое
- * правило бьёт унаследованное — поэтому целим текст-элементы внутри экранов (2 класса),
- * а не корень через наследование. Финальный арт заменит файлы — структура та же.
+ * правило бьёт унаследованное — поэтому целим текст-элементы, а не корень через наследование.
+ * Оба блока ниже — спец. 1, поэтому ПОРЯДОК РЕШАЕТ: голосовой идёт вторым и выигрывает на
+ * тех же элементах (кнопка — сама себе текст-элемент, класс на ней).
  * ========================================================================== */
 
-/* Тело: ВСЕ текст-элементы = Fira Sans. Плоский `.unity-text-element` (спец. 1), но идёт
-   ПОСЛЕ дефолт-темы Unity в цепочке .tss → выигрывает по порядку. Фонтит и экраны, и галерею,
-   и любой будущий UI вне модалок (наследование от корня дефолт-тема бы перебила). */
+/* База: всё, что не названо голосом ниже, — гротеск. Плоский `.unity-text-element` (спец. 1),
+   но идёт ПОСЛЕ дефолт-темы Unity в цепочке .tss → выигрывает по порядку. Фонтит и экраны, и
+   галерею, и любой будущий UI вне модалок (наследование от корня дефолт-тема бы перебила). */
 .unity-text-element {
-    -unity-font-definition: url("../Fonts/FiraSans-Regular SDF.asset");
+    -unity-font-definition: var(--gm-font-data);
 }
 
-/* Дисплей: заголовки панелей = Cormorant Medium. Идёт ПОСЛЕ правила тела → выигрывает на
-   титуле (та же спец.); синт-болд снимаем (вес Medium уже в файле). */
-.gm-panel__title {
-    -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
+/* ГОЛОС ИГРЫ — сериф. Список ролевой, а не кегельный: сюда попадает то, что интерфейс
+   ПРОИЗНОСИТ (титул, зов кнопки, имя сущности, заголовок раздела), и не попадает то, что он
+   ПОКАЗЫВАЕТ (числа, статы, ввод, служебные подписи).
+   Синтетический жир снимаем ВЕЗДЕ, где ставим сериф: у антиквы он замазывает тонкие штрихи в
+   кашу, а вес Medium уже есть в файле. Там, где раньше жир нёс смысл «это заголовок», смысл
+   теперь несёт сама гарнитура. */
+.gm-panel__title,
+.gm-mainmenu__title,
+.gm-outcome__title,
+.gm-button,
+/* Подпись кнопки-пластины живёт в ДОЧЕРНЕМ Label, и наследование гарнитуры до неё не доходит:
+   базовое правило `.unity-text-element` бьёт по ней ПРЯМО, а прямое всегда сильнее унаследованного.
+   Поэтому ребёнок обязан быть в этом списке отдельной строкой — иначе кнопка «переоделась» бы в
+   сериф только по рамке, а подпись осталась гротеском (проверено рендером 2026-08-02). */
+.gm-plate-button__label,
+.gm-tab,
+.gm-card__name,
+.gm-detail__name,
+.gm-hub-vessel__name,
+.gm-arcana-card__title,
+.gm-loadout__detail-title,
+.gm-loadout__section-label,
+.gm-loadout__guild-name,
+.gm-shop__section-title,
+.gm-tooltip__title {
+    -unity-font-definition: var(--gm-font-voice);
     -unity-font-style: normal;
 }
 
@@ -1151,9 +1324,13 @@
 /* ============================================================================
  * МАГАЗИН (B2): витрина 4 слота + реролл + панель продажи + тост «нет места».
  * ========================================================================== */
+/* Лавка — самый высокий экран: витрина + список продажи. max-height обязателен, иначе панель
+   растёт под содержимое запаса и упирается в кромки экрана (на рендере 2026-08-02 у неё срезало
+   верхнюю рамку). Потолок берёт высоту диалога: все окна игры держат одну верхнюю границу. */
 .gm-panel--shop {
     min-width: 1100px;
     min-height: 760px;
+    max-height: var(--gm-dialog-height);
 }
 
 .gm-shop__topbar {
@@ -1168,14 +1345,20 @@
     color: var(--gm-brass-300);
 }
 
+/* Витрина и карточки НЕ сжимаются: как только у панели появился потолок высоты, флекс начал
+   ужимать их первыми — карточка становилась ниже своего содержимого, и кнопка «Купить» вылезала
+   за нижнюю кромку прямо на разделитель (рендер 2026-08-02). Место под нехватку высоты отдаёт
+   список запаса: он и так прокручивается. */
 .gm-shop__shelf {
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
+    flex-shrink: 0;
 }
 
 .gm-shop__card {
     width: 200px;
+    flex-shrink: 0;
     align-items: center;
     padding: var(--gm-space-2);
     margin: var(--gm-space-1);
@@ -1354,15 +1537,23 @@
     align-items: stretch;
 }
 
+/* Вид общий с .gm-button, СВОЙ здесь только вертикальный зазор: пунктов в главном меню шесть, и
+   при общем отступе (space-2 сверху и снизу = 32 на кнопку) колонка перестала влезать в тело
+   панели — появлялся скроллбар, а «Выход» обрезался нижней кромкой. Половинный зазор заодно
+   собирает пункты в одну колонку вместо шести отдельных полос. */
 .gm-mainmenu__btn {
-    /* модификатор оставлен как точка расширения; вид и отступы — общие с .gm-button */
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-1);
 }
 
 /* Пункты меню (главное и ESC) — колонка по центру, а не полосы во всю ширину. После укрупнения
    диалога до 1280 растянутая кнопка держала подпись в центре пустоты и читалась как разделитель.
    Правило одно на оба меню: они намеренно выглядят одинаково (реш. Макса, раунд 4). */
+/* Прямой потомок панели (кнопка «Назад» в коопе стоит вне тела) тоже держит колонку — иначе одна
+   кнопка из четырёх растягивалась во всю ширину диалога и ломала строй. */
 .gm-mainmenu__buttons .gm-button,
-.gm-panel--menu .gm-panel__body .gm-button {
+.gm-panel--menu .gm-panel__body .gm-button,
+.gm-panel--menu > .gm-button {
     width: var(--gm-menu-column-width);
     align-self: center;
 }
@@ -1466,7 +1657,7 @@
    Трекинг 0.5px = 2% кегля: капс требует 5–12%, строчные — почти ничего, а прежние 3px (14%!)
    разрывали слово на отдельные литеры. Bold берётся файлом SDF, синтетический вес снят. */
 .gm-boot__attrib-item {
-    -unity-font-definition: url("../Fonts/FiraSans-Bold SDF.asset");
+    -unity-font-definition: var(--gm-font-data-strong);
     -unity-font-style: normal;
     font-size: var(--gm-font-sm);
     color: var(--gm-color-brand-attrib);
@@ -1534,11 +1725,34 @@
     margin-right: var(--gm-space-1);
 }
 
+/* Заслонка закрытия игры. Кладётся поверх всего в тот момент, когда игрок выбрал «Выход»: движок
+   закрывается не мгновенно (уборка графики, звука, Steam), и всё это время меню уже снято, а мир
+   под ним ещё рисует свою пустую арену — выглядит как зависшая игра (наход. Макса 03.08.2026).
+   Своей анимации у неё нет намеренно: гаснуть плавно значит удлинять то, что игрок только что
+   попросил закончить. */
+.gm-quit-veil {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--gm-color-veil);
+}
+
+/* Знак загрузки — КОЛЬЦО, а не иконка приложения. Крутящийся логотип читается как «бренд сломался»:
+   фирменный знак принято показывать неподвижным, и вращение превращает его в индикатор состояния,
+   которым он не является. Кольцо рисуется рамкой (картинки нет вовсе): тусклый круг + один яркий
+   сегмент сверху, который и виден как движение — вращает его TitleCardScreenView. */
 .gm-boot__spinner {
-    width: 34px;
-    height: 34px;
-    -unity-background-scale-mode: scale-to-fit;
-    background-image: url("../../Art/Brand/AppIcon_HappyGuildmasters.png");
+    width: 22px;
+    height: 22px;
+    border-width: 2px;
+    border-color: var(--gm-color-border-inner);
+    border-top-color: var(--gm-color-accent);
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
 }
 
 /* ============================================================================
@@ -1588,7 +1802,10 @@
     display: none;
 }
 
-/* Кнопка «Начать» бой — латунная заливка (primary) + иконка боя, как у таба «Бой» в ленте.
+/* Кнопка «Начать» бой — ПЛАСТИНА-primary + иконка боя, как у таба «Бой» в ленте.
+   До 2026-08-02 она несла 9-slice-заливку Honeti (Gold2_gm) — ровно ту пиксельную плашку, которую
+   вывели из primary-кнопок 25.07 как чужеродную. Здесь она пережила зачистку и осталась
+   единственным местом со старым набором, причём на самом видном действии забега.
    min-width держит ширину постоянной: без него кнопка меняла размер вслед за длиной подписи
    в другой локали, и «центр» уезжал (реш. Макса, раунд 2). */
 .gm-loadout__start-btn {
@@ -1596,18 +1813,21 @@
     align-items: center;
     justify-content: center;
     min-width: 220px;
-    background-color: var(--gm-color-surface-raised);
-    background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
-    -unity-slice-left: 5;
-    -unity-slice-right: 5;
-    -unity-slice-top: 5;
-    -unity-slice-bottom: 5;
-    -unity-slice-scale: 2px;
-    border-width: 0;
-    color: var(--gm-color-text-on-accent);
+    color: var(--gm-color-text);
     font-size: var(--gm-font-sm);
     padding: var(--gm-space-1) var(--gm-space-4);
     margin: 0;
+    --gm-plate-fill: var(--gm-color-surface-accent);
+    --gm-plate-stroke: var(--gm-color-hover-border);
+}
+
+.gm-loadout__start-btn:hover {
+    --gm-plate-fill: var(--gm-color-surface-accent-hover);
+    --gm-plate-stroke: var(--gm-color-focus-ring);
+}
+
+.gm-loadout__start-btn:active {
+    --gm-plate-fill: var(--gm-color-surface-accent-active);
 }
 
 .gm-loadout__start-icon {
@@ -1619,17 +1839,16 @@
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    -unity-background-image-tint-color: var(--gm-color-text-on-accent);
+    -unity-background-image-tint-color: var(--gm-color-text);
 }
 
+/* Подпись — сериф, как у прочих кнопок-пластин (голос игры), поэтому синтетический жир снят:
+   поле у кнопки нагретое, и подпись читается без него. */
 .gm-loadout__start-label {
-    color: var(--gm-color-text-on-accent);
+    color: var(--gm-color-text);
     font-size: var(--gm-font-sm);
-    -unity-font-style: bold;
-}
-
-.gm-loadout__start-btn:hover {
-    background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
+    -unity-font-definition: var(--gm-font-voice);
+    -unity-font-style: normal;
 }
 
 /* --- Топбар-режимы: 3 зоны (гильдия | табы-режимы по центру | время+меню). --- */
@@ -2100,29 +2319,8 @@
     width: 100%;
 }
 
-/* Скроллбар грида: тонкий, тёмный трек + латунная ручка, без стрелок (дефолтный серый клашит с темой). */
-.gm-loadout .unity-scroller--vertical {
-    width: var(--gm-scrollbar-width);
-    background-color: var(--gm-color-surface-sunken);
-}
-
-.gm-loadout .unity-scroller--vertical .unity-base-slider__tracker {
-    background-color: rgba(0, 0, 0, 0);
-    border-width: 0;
-}
-
-.gm-loadout .unity-scroller--vertical .unity-base-slider__dragger {
-    background-color: var(--gm-color-accent);
-    border-width: 0;
-    border-radius: var(--gm-radius-0);
-    width: 10px;
-    left: 2px;
-}
-
-.gm-loadout .unity-scroller__low-button,
-.gm-loadout .unity-scroller__high-button {
-    display: none;
-}
+/* Скроллбар грида карт вида не переопределяет: он приходит из общего правила контрола выше
+   (искать «СКРОЛЛБАР — ОДНО ПРАВИЛО»). Прежняя копия правил жила здесь и расходилась бы с ним. */
 
 /* --- Таро-карточка релика: кайма-в-кайме, номер аркана в углу, титул на нижней плашке --- */
 .gm-arcana-card {
@@ -2301,7 +2499,7 @@
    min-height = резерв под 3 строки (17px × 1.35 ≈ 23 на строку): у разных китов описания разной
    длины, и без резерва блоки под ним ездили бы вслед за текстом. */
 .gm-loadout__narrative-text {
-    -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
+    -unity-font-definition: var(--gm-font-voice-italic);
     -unity-font-style: italic;
     color: var(--gm-color-text-muted);
     font-size: var(--gm-font-xs);
@@ -2452,7 +2650,7 @@
 /* Моно на всём тексте консоли: 2 класса против 1 у ярусного правила тела → выигрывает по
    специфичности, независимо от порядка секций в файле. */
 .gm-console .unity-text-element {
-    -unity-font-definition: url("../Fonts/FiraMono-Regular SDF.asset");
+    -unity-font-definition: var(--gm-font-code);
     font-size: var(--gm-font-xs);
     color: var(--gm-color-text);
 }

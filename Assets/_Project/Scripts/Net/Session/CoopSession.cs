@@ -42,7 +42,11 @@ namespace Guildmaster.Net.Session
                 _handshake.Rejected += HandleRejected;
             }
 
-            if (_lobby != null) _lobby.JoinRequested += HandleJoinRequested;
+            if (_lobby != null)
+            {
+                _lobby.JoinRequested += HandleJoinRequested;
+                _lobby.LobbyChanged  += HandleLobbyChanged;
+            }
         }
 
         public CoopSessionState State { get; private set; } = CoopSessionState.Offline;
@@ -102,7 +106,11 @@ namespace Guildmaster.Net.Session
                 _handshake.Rejected -= HandleRejected;
             }
 
-            if (_lobby != null) _lobby.JoinRequested -= HandleJoinRequested;
+            if (_lobby != null)
+            {
+                _lobby.JoinRequested -= HandleJoinRequested;
+                _lobby.LobbyChanged  -= HandleLobbyChanged;
+            }
         }
 
         // ── вход по приглашению ──────────────────────────────────────────────────
@@ -168,7 +176,13 @@ namespace Guildmaster.Net.Session
         {
             if (State == state) return;
             State = state;
-            StateChanged?.Invoke(state);
+            Raise();
         }
+
+        // Лобби поднялось или закрылось. Само состояние сессии от этого не меняется — меняется
+        // CanInvite, а экран узнаёт о нём тем же событием (см. ICoopSessionControl.StateChanged).
+        private void HandleLobbyChanged() => Raise();
+
+        private void Raise() => StateChanged?.Invoke(State);
     }
 }

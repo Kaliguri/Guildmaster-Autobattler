@@ -53,14 +53,14 @@ namespace Guildmaster.UI
                 legal.text = L("ui.boot.legal",
                     "© 2026 Alebardium  ·  FMOD Studio by Firelight Technologies Pty Ltd.");
 
-            // Спиннер: непрерывное вращение знака. Чистая презентация — крутится, пока экран на виду;
-            // schedule сам умирает вместе с элементом при закрытии панели.
+            // Спиннер: непрерывное вращение кольца (форму рисует USS рамкой, картинки нет). 2° за кадр
+            // при 16 мс — оборот за 0.8 с; schedule сам умирает вместе с элементом при закрытии панели.
             if (spinner != null)
             {
                 float angle = 0f;
                 spinner.schedule.Execute(() =>
                 {
-                    angle = (angle + 3f) % 360f;
+                    angle = (angle + 2f) % 360f;
                     spinner.style.rotate = new Rotate(new Angle(angle, AngleUnit.Degree));
                 }).Every(16);
             }

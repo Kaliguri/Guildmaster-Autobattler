@@ -48,7 +48,6 @@ namespace Guildmaster.Game.Services
         private readonly Core.Persistence.IProfileService _profiles;
 
         private readonly IOutcomePresenter   _outcomePresenter;
-        private readonly ITitleCardPresenter _titleCardPresenter;
         private readonly IMainMenuPresenter  _mainMenuPresenter;
         private readonly ActConfig           _actConfig;
         private readonly IRngService         _rng;
@@ -70,7 +69,6 @@ namespace Guildmaster.Game.Services
             Core.Persistence.ISaveService    save,
             Core.Persistence.IProfileService profiles,
             IOutcomePresenter   outcomePresenter,
-            ITitleCardPresenter titleCardPresenter,
             IMainMenuPresenter  mainMenuPresenter,
             ActConfig           actConfig,
             IRngService         rng,
@@ -87,7 +85,6 @@ namespace Guildmaster.Game.Services
             _save             = save;
             _profiles         = profiles;
             _outcomePresenter = outcomePresenter;
-            _titleCardPresenter = titleCardPresenter;
             _mainMenuPresenter = mainMenuPresenter;
             _actConfig       = actConfig;
             _rng             = rng;
@@ -156,13 +153,13 @@ namespace Guildmaster.Game.Services
         }
 
         /// <summary>
-        /// Верхний цикл игры (план D1): title card → главное меню → забег → меню. Начать = новый забег,
+        /// Верхний цикл игры (план D1): главное меню → забег → меню. Начать = новый забег,
         /// Продолжить = из автосейва, Выход = закрыть игру. Точка входа при обычном старте (не dev-разрез).
+        /// <para>Бут-экран сюда не входит: он показывается раньше, вокруг загрузки мира
+        /// (<c>GameBootstrap</c>), — иначе между поднятым миром и первым UI мелькает пустая арена.</para>
         /// </summary>
         public async UniTask RunGameAsync()
         {
-            await _titleCardPresenter.ShowAsync(); // один раз за сессию, до первого меню
-
             while (true)
             {
                 // Главное меню живёт ВНЕ сеанса: сеанс рождается выбором режима, вместе с ролью. Поэтому

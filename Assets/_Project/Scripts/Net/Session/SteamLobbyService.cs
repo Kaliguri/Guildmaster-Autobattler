@@ -44,8 +44,17 @@ namespace Guildmaster.Net.Session
         /// <summary>Нас позвали в чужое лобби — id лобби и хозяин. Ведёт в сессию.</summary>
         public event Action<ulong, ulong> JoinRequested;
 
-        /// <summary>Мы вошли в лобби (своё или чужое).</summary>
-        public event Action<ulong> LobbyEntered;
+        /// <summary>
+        /// Лобби появилось или исчезло, то есть <see cref="HasLobby"/> сменилось.
+        /// </summary>
+        /// <remarks>
+        /// <b>Создание лобби асинхронно, а спрашивают о нём синхронно.</b> <see cref="CreateLobby"/>
+        /// возвращается сразу, лобби приходит от Steam кадры спустя — и всё это время «есть кого
+        /// звать» отвечает <c>false</c>. Без этого события кнопка приглашения гасла навсегда: экран
+        /// перечитывал состояние только на смену состояния сессии, а она случалась ДО лобби. Оживало
+        /// оно лишь перезаходом на экран — то есть выглядело как «работает со второго раза».
+        /// </remarks>
+        public event Action LobbyChanged;
 
         /// <summary>
         /// Создать лобби под текущую сессию. Возвращает false, если Steam не запущен — это внешний
@@ -66,9 +75,9 @@ namespace Guildmaster.Net.Session
                 return;
             }
 
-            _lobby = created;
             created.Value.SetFriendsOnly(); // список комнат нам не нужен: вход только по приглашению
             created.Value.SetJoinable(true);
+            SetLobby(created);
         }
 
         /// <summary>Открыть оверлей приглашений на текущее лобби.</summary>
@@ -83,7 +92,7 @@ namespace Guildmaster.Net.Session
         {
             if (!_lobby.HasValue) return;
             _lobby.Value.Leave();
-            _lobby = null;
+            SetLobby(null);
         }
 
         public void Dispose()
@@ -100,10 +109,18 @@ namespace Guildmaster.Net.Session
             Debug.LogWarning($"[SteamLobbyService] лобби не создалось: {result}");
         }
 
-        private void HandleLobbyEntered(Lobby lobby)
+        private void HandleLobbyEntered(Lobby lobby) => SetLobby(lobby);
+
+        /// <summary>
+        /// Единственная точка, где меняется лобби: чтение (<see cref="HasLobby"/>) и правка ходят
+        /// через неё, поэтому событие не может разъехаться с состоянием. Молчим, когда наличие не
+        /// изменилось — создатель входит в собственное лобби, и об одном событии Steam сообщает дважды.
+        /// </summary>
+        private void SetLobby(Lobby? lobby)
         {
+            bool had = _lobby.HasValue;
             _lobby = lobby;
-            LobbyEntered?.Invoke(lobby.Id);
+            if (had != _lobby.HasValue) LobbyChanged?.Invoke();
         }
 
         private void HandleJoinRequested(Lobby lobby, SteamId host) =>
