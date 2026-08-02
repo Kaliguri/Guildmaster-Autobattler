@@ -267,23 +267,101 @@ const WEATHERS = [CLEAR, NORMAL, CLOUDY, STORM];
  *
  *  Масса вытянута вдоль горизонта и собрана из долей разного размера: крупная в середине, мельче
  *  к краям. Один силуэт на всё поле выглядел бы штампом. */
+/** Доли массы: позиция и радиус каждой шапки. Считаются один раз и переиспользуются всеми
+ *  проходами света — иначе тон ляжет не на ту форму. */
+function cloudLobes(cx: number, cy: number, r: number, seed: number): Array<[number, number, number]> {
+  const n = 3 + Math.floor(jag(seed, 3) * 3);
+  const halfW = r * 1.5;
+  const out: Array<[number, number, number]> = [];
+  for (let i = 0; i < n; i++) {
+    const t = (i + 0.5) / n;
+    const bell = Math.sin(t * Math.PI);
+    const lr = r * (0.34 + jag(seed + i * 7, 11) * 0.42) * (0.45 + bell * 0.85);
+    out.push([cx - halfW + t * halfW * 2, cy - lr * 0.25, lr]);
+  }
+  return out;
+}
+
+/** Силуэт массы: доли сверху, ПЛОСКИЙ НИЗ. Плоское дно — там, где восходящий воздух доходит до
+ *  уровня конденсации; глаз знает это правило, даже не зная физики. */
 function cloudMass(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, seed: number): void {
-  const lobes = 3 + Math.floor(jag(seed, 3) * 3);
+  const lobes = cloudLobes(cx, cy, r, seed);
   const halfW = r * 1.5;
   ctx.beginPath();
   ctx.moveTo(cx - halfW, cy);
-
-  for (let i = 0; i < lobes; i++) {
-    const t = (i + 0.5) / lobes;
-    const lx = cx - halfW + t * halfW * 2;
-    // Средние доли выше крайних: масса растёт к центру, как настоящая кучёвка.
-    const bell = Math.sin(t * Math.PI);
-    const lr = r * (0.34 + jag(seed + i * 7, 11) * 0.42) * (0.45 + bell * 0.85);
-    ctx.arc(lx, cy - lr * 0.25, lr, Math.PI * 0.98, Math.PI * 2.02, false);
-  }
-
+  for (const [lx, ly, lr] of lobes) ctx.arc(lx, ly, lr, Math.PI * 0.98, Math.PI * 2.02, false);
   ctx.lineTo(cx + halfW, cy);
   ctx.closePath();
+}
+
+/** ОБЪЁМ МАССЫ — то, ради чего затевался разбор теории.
+ *
+ *  Раньше объём изображала одна светлая полоса поверх тела, и это давало вату: полоса не знает,
+ *  где у формы выпуклости. Теперь каждая ДОЛЯ лепится отдельно, как шар — «подходи к кучевому
+ *  облаку так же, как лепил бы сферу». Три правила из теории, и все три контринтуитивны:
+ *
+ *  1. ТЕНЬ ОБЛАКА СВЕТЛАЯ. Типичная ошибка — валить её в тёмное; на деле тени облаков заметно
+ *     светлее теней на земле, разница со светом идёт больше по ЦВЕТУ, чем по яркости.
+ *  2. ТЕНЬ ТЕПЛЕЕ НЕБА и уходит в фиолетовый: она смешана из синего света неба и тёплого
+ *     отражения от земли снизу.
+ *  3. У ДНА ЕСТЬ ОТРАЖЁННЫЙ СВЕТ. Низ облака не чёрный — он ловит охру и фиолет от того, что
+ *     под ним. Чёрное дно — вторая примета нарисованной ваты. */
+function paintCloudVolume(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  r: number,
+  seed: number,
+  lit: RGB,
+  shadow: RGB,
+  bounce: RGB,
+  alpha: number
+): void {
+  const lobes = cloudLobes(cx, cy, r, seed);
+
+  ctx.save();
+  cloudMass(ctx, cx, cy, r, seed);
+  ctx.clip();
+
+  // 1. Заливаем всю массу ТЕНЕВЫМ тоном — он основа, свет ляжет сверху.
+  ctx.fillStyle = `rgba(${shadow.map((v) => v | 0).join(",")},${alpha.toFixed(3)})`;
+  ctx.fillRect(cx - r * 2, cy - r * 2.4, r * 4, r * 3.2);
+
+  // 2. Отражённый свет у самого дна: тёплая полоса снизу.
+  const bg = ctx.createLinearGradient(0, cy - r * 0.35, 0, cy);
+  bg.addColorStop(0, `rgba(${bounce.map((v) => v | 0).join(",")},0)`);
+  bg.addColorStop(1, `rgba(${bounce.map((v) => v | 0).join(",")},${(alpha * 0.55).toFixed(3)})`);
+  ctx.fillStyle = bg;
+  ctx.fillRect(cx - r * 2, cy - r * 0.35, r * 4, r * 0.4);
+
+  // 3. Каждая доля лепится отдельно: освещённая шапка смещена к источнику (слева-сверху),
+  //    поэтому у соседних долей появляются тёмные швы — те самые впадины между клубами.
+  for (const [lx, ly, lr] of lobes) {
+    const g = ctx.createRadialGradient(lx - lr * 0.42, ly - lr * 0.5, lr * 0.1, lx, ly, lr * 1.08);
+    g.addColorStop(0, `rgba(${lit.map((v) => v | 0).join(",")},${alpha.toFixed(3)})`);
+    g.addColorStop(0.55, `rgba(${lit.map((v) => v | 0).join(",")},${(alpha * 0.7).toFixed(3)})`);
+    g.addColorStop(1, `rgba(${lit.map((v) => v | 0).join(",")},0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(lx, ly, lr, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.restore();
+
+  // 4. Кайма на освещённой стороне: тонкая яркая дуга по верхне-левым шапкам. Она читается как
+  //    просвечивающий край и стоит одну линию.
+  ctx.save();
+  cloudMass(ctx, cx, cy, r, seed);
+  ctx.clip();
+  ctx.strokeStyle = `rgba(${lighten(lit, 0.4).map((v) => v | 0).join(",")},${(alpha * 0.75).toFixed(3)})`;
+  ctx.lineWidth = Math.max(1, r * 0.07);
+  for (const [lx, ly, lr] of lobes) {
+    ctx.beginPath();
+    ctx.arc(lx, ly, lr * 0.94, Math.PI * 1.05, Math.PI * 1.72);
+    ctx.stroke();
+  }
+  ctx.restore();
 }
 
 /* ---------- фактура ----------
@@ -937,32 +1015,28 @@ function slab(o: SlabOpts): DrawFn {
           // соседи налезают друг на друга и поле читается сплошным, а не пунктиром.
           const cr = w * (0.055 + jag(salt, o.seed + 105) * 0.075) * scale * (1 + 0.5 / perRow);
 
-          const dark = wx.storm ? 0.34 : 0.8;
-          const body: RGB = [
-            lerp(tod.shadow[0], tod.light[0], dark),
-            lerp(tod.shadow[1], tod.light[1], dark),
-            lerp(tod.shadow[2], tod.light[2], dark)
+          // ЦВЕТА МАССЫ по теории: свет тёплый, тень СВЕТЛАЯ и уходит в фиолет (смесь синего
+          // неба сверху и тёплого отражения снизу), дно ловит отражённый свет.
+          const litness = wx.storm ? 0.45 : 0.92;
+          const lit: RGB = [
+            lerp(tod.shadow[0], lighten(tod.light, 0.3)[0], litness),
+            lerp(tod.shadow[1], lighten(tod.light, 0.3)[1], litness),
+            lerp(tod.shadow[2], lighten(tod.light, 0.3)[2], litness)
           ];
-          const a = wx.cloudAlpha * haze;
+          // Тень НЕ тёмная: держим её близко к свету по яркости и разводим по цвету.
+          const shadowTone: RGB = [
+            lerp(lit[0], tod.shadow[0], wx.storm ? 0.62 : 0.42) * 1.02,
+            lerp(lit[1], tod.shadow[1], wx.storm ? 0.62 : 0.42),
+            lerp(lit[2], tod.shadow[2], wx.storm ? 0.55 : 0.34) * 1.06
+          ];
+          // Отражённый свет снизу: тёплая охра от земли под облаками.
+          const bounce: RGB = [
+            lerp(shadowTone[0], tod.light[0], 0.5),
+            lerp(shadowTone[1], tod.light[1], 0.34),
+            lerp(shadowTone[2], tod.light[2], 0.12)
+          ];
 
-          // 1. Тень массы: та же форма чуть ниже. Даёт облаку низ, без которого оно плоское.
-          cloudMass(ctx, cxp, cyp + cr * 0.3, cr, o.seed + salt);
-          ctx.fillStyle = `rgba(${shade(body, 0.38).map((v) => v | 0).join(",")},${(a * 0.8).toFixed(3)})`;
-          ctx.fill();
-
-          // 2. Тело.
-          cloudMass(ctx, cxp, cyp, cr, o.seed + salt);
-          ctx.fillStyle = `rgba(${body.map((v) => v | 0).join(",")},${a.toFixed(3)})`;
-          ctx.fill();
-
-          // 3. Подсвеченные верхушки: обрезаем тело по верхней половине и светлим. На закате
-          //    именно эта полоса делает всю картинку.
-          ctx.save();
-          cloudMass(ctx, cxp, cyp, cr, o.seed + salt);
-          ctx.clip();
-          ctx.fillStyle = `rgba(${lighten(tod.light, 0.18).map((v) => v | 0).join(",")},${(a * (0.35 + 0.4 * tod.lightPower)).toFixed(3)})`;
-          ctx.fillRect(cxp - cr * 2, cyp - cr * 2, cr * 4, cr * 1.75);
-          ctx.restore();
+          paintCloudVolume(ctx, cxp, cyp, cr, o.seed + salt, lit, shadowTone, bounce, wx.cloudAlpha * haze);
         }
       }
     }
