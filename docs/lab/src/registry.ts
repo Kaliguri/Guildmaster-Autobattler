@@ -98,6 +98,15 @@ export const PAGES: PageDef[] = [
   },
 
   {
+    id: "map-feel",
+    area: "map",
+    title: "Подача",
+    blurb: "Два слоя на одном листе: чья земля и какой рельеф. Плюс реестр — что уже в игре, что впереди.",
+    load: () => import("./sections/map-feel.js"),
+    icon: "◈"
+  },
+
+  {
     id: "palette",
     area: "style",
     title: "Палитра",
