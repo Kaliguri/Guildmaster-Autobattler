@@ -1,6 +1,8 @@
 #ifndef GUILDMASTER_MAP_FOG_COMMON_INCLUDED
 #define GUILDMASTER_MAP_FOG_COMMON_INCLUDED
 
+#include "Lib/Procedural.hlsl"
+
 struct Attributes
 {
     float4 positionOS : POSITION;
@@ -44,21 +46,8 @@ Varyings Vert(Attributes v)
     return o;
 }
 
-// Матрица Байера 4x4 — порог дизеринга по положению пикселя на экране. Даёт тот самый точечный растр
-// вместо гладкого градиента: дымка перестаёт быть «фильтром поверх» и становится частью пиксельной картинки.
-static const float BayerMatrix[16] =
-{
-     0.0 / 16.0,  8.0 / 16.0,  2.0 / 16.0, 10.0 / 16.0,
-    12.0 / 16.0,  4.0 / 16.0, 14.0 / 16.0,  6.0 / 16.0,
-     3.0 / 16.0, 11.0 / 16.0,  1.0 / 16.0,  9.0 / 16.0,
-    15.0 / 16.0,  7.0 / 16.0, 13.0 / 16.0,  5.0 / 16.0
-};
-
-float BayerThreshold(float2 screenPos)
-{
-    int2 p = int2(fmod(screenPos, 4.0));
-    return BayerMatrix[p.y * 4 + p.x];
-}
+// Дизеринг даёт тот самый точечный растр вместо гладкого градиента: дымка перестаёт быть «фильтром
+// поверх» и становится частью пиксельной картинки. Сама матрица — в Lib/Procedural.hlsl.
 
 half4 Frag(Varyings i) : SV_Target
 {
@@ -78,7 +67,7 @@ half4 Frag(Varyings i) : SV_Target
     half alpha = clouds * reveal * _Density;
 
     // Дизеринг: вместо полупрозрачности — решение «пиксель есть или нет» по порогу Байера.
-    float threshold = BayerThreshold(i.positionCS.xy);
+    float threshold = GM_BayerThreshold(i.positionCS.xy);
     half dithered = step(threshold, alpha);
     alpha = lerp(alpha, dithered * alpha, _Dither);
 

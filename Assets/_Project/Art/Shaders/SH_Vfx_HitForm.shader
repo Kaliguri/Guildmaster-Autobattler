@@ -71,6 +71,7 @@ Shader "Guildmaster/Vfx/HitForm"
             #pragma fragment Frag
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Lib/Procedural.hlsl"
 
             struct Attributes
             {
@@ -103,23 +104,9 @@ Shader "Guildmaster/Vfx/HitForm"
                 half  _TailLag;
             CBUFFER_END
 
-            // Дешёвый детерминированный шум: неровность краёв обязана быть ОДИНАКОВОЙ у всех клиентов
-            // кооператива, поэтому никакого шума по времени — только по координате и сиду, который
-            // приходит снаружи из IRngService.
-            float Hash11(float x)
-            {
-                x = frac(x * 0.1031);
-                x *= x + 33.33;
-                return frac((x + x) * x);
-            }
-
-            float ValueNoise(float x)
-            {
-                float i = floor(x);
-                float f = frac(x);
-                f = f * f * (3.0 - 2.0 * f);          // сглаживание: рваные скачки читались бы как грязь
-                return lerp(Hash11(i), Hash11(i + 1.0), f) * 2.0 - 1.0;
-            }
+            // Шум — вторая ступень детерминизма (code-standards §8): неровность краёв обязана быть
+            // ОДИНАКОВОЙ у всех клиентов кооператива, поэтому никакого шума по времени — только по
+            // координате и сиду, который приходит снаружи из IRngService. Формулы — GM_* из Lib.
 
             // Профиль полутолщины вдоль формы: максимум в середине, ноль на обоих остриях. Показатель
             // ниже единицы даёт лист с заострёнными концами, а не полосу постоянной ширины — именно это
@@ -130,7 +117,7 @@ Shader "Guildmaster/Vfx/HitForm"
                 float t = pow(body, 0.62);
                 // Неровность края: слабая волна по длине. Форма живёт 4-5 кадров, поэтому рисунок должен
                 // читаться сразу — частота низкая, амплитуда в четверть толщины.
-                t *= 1.0 + _Rough * 0.25 * ValueNoise(x * 3.7 + _Seed * 17.13);
+                t *= 1.0 + _Rough * 0.25 * GM_ValueNoise11(x * 3.7 + _Seed * 17.13);
                 return max(t, 0.0);
             }
 
@@ -146,8 +133,8 @@ Shader "Guildmaster/Vfx/HitForm"
                 float idx = floor((a + 3.14159265) / k);
                 float frac_a = frac((a + 3.14159265) / k) - 0.5;
 
-                float len  = radius * lerp(0.55, 1.0, Hash11(idx * 3.11 + seed));
-                float half_w = 0.09 * radius * lerp(0.6, 1.4, Hash11(idx * 7.77 + seed));
+                float len  = radius * lerp(0.55, 1.0, GM_Hash11(idx * 3.11 + seed));
+                float half_w = 0.09 * radius * lerp(0.6, 1.4, GM_Hash11(idx * 7.77 + seed));
 
                 // Луч сходит на нет к своему концу: у основания толстый, на острие исчезает.
                 float along = saturate(1.0 - r / max(len, 1e-4));
