@@ -68,14 +68,35 @@ Write-Host ""
 
 & $exePath "+login" $Login "+quit"
 
+# Проверяем СОДЕРЖИМОЕ, а не наличие. Файл steamcmd создаёт при любом запуске — в нём лежат
+# настройки серверов, и весит он килобайты даже когда вход не состоялся. Учётные данные появляются
+# в нём только после успешного логина, секцией "Accounts". Проверка на существование файла
+# пропускала неудачный вход и отправляла в секрет пустышку — CI падал на «Cached credentials not
+# found» через двенадцать минут сборки, то есть в самом дорогом месте (наход. 02.08.2026).
 if (-not (Test-Path $vdfPath)) {
+    throw "config.vdf не появился ($vdfPath) — steamcmd не запустился вовсе."
+}
+
+$vdfText = Get-Content -Raw $vdfPath
+if ($vdfText -notmatch '"Accounts"') {
     throw @"
-config.vdf не появился ($vdfPath) — значит вход не прошёл.
-Обычные причины: неверный пароль, не введён код Steam Guard, аккаунт без доступа к приложению.
-Попробуй запустить руками и посмотреть, что он говорит:
-  & "$exePath" +login $Login
+Вход НЕ состоялся: в config.vdf нет учётных данных (секции "Accounts").
+Файл при этом существует — steamcmd создаёт его всегда, поэтому по наличию судить нельзя.
+
+Что проверить:
+  1. Аккаунт '$Login' существует и пароль верный. Логин из примера в доке подставлять нельзя —
+     нужен реальный аккаунт-билдер.
+  2. Код Steam Guard введён (приходит на почту аккаунта, а не на твою основную).
+  3. Запусти руками и посмотри, что он отвечает:
+       & "$exePath" +login $Login
+     Успех выглядит как строка "Logging in user ... OK", а не "Invalid Password".
 "@
 }
+
+# Имя аккаунта в файле — не секрет, и показать его полезно: расхождение с секретом STEAM_USERNAME
+# даёт ровно ту же ошибку «cached credentials not found», но выглядит как проблема с MFA.
+$accounts = [regex]::Matches($vdfText, '"Accounts"\s*\{\s*"([^"]+)"') | ForEach-Object { $_.Groups[1].Value }
+if ($accounts) { Write-Host "В config.vdf лежит вход для: $($accounts -join ', ')" -ForegroundColor Green }
 
 # ── 3. Base64 для секрета ──────────────────────────────────────────────────────
 
@@ -97,7 +118,7 @@ Write-Host "ГОТОВО $clip" -ForegroundColor Green
 Write-Host "Файл: $outPath"
 Write-Host ""
 Write-Host "Дальше — в GitHub: Settings -> Secrets and variables -> Actions" -ForegroundColor Cyan
-Write-Host "  secret   STEAM_USERNAME    = $Login"
+Write-Host "  secret   STEAM_USERNAME    = $Login   <- РОВНО этот логин, иначе вход не найдётся"
 Write-Host "  secret   STEAM_CONFIG_VDF  = содержимое буфера (одна длинная строка)"
 Write-Host "  variable STEAM_APP_ID      = 3259720"
 Write-Host ""
