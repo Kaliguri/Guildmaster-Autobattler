@@ -155,6 +155,11 @@ namespace Guildmaster.UI
             Changed?.Invoke();
             UiTrace.Log($"nav.Push {Desc(screen)} → [{StackDesc()}] suppress={_input?.GameplaySuppressed}");
 
+            // Токен, отменённый ДО показа, разбираем сами. Register в этом случае выполняет колбэк
+            // синхронно — экран снялся бы раньше, чем Hook положит регистрацию в словарь, и запись
+            // осталась бы там навсегда, держа ссылку на мёртвый экран.
+            if (ct.IsCancellationRequested) { RemoveScreen(screen); return; }
+
             if (ct.CanBeCanceled)
                 Hook(screen, ct.Register(() => RemoveScreen(screen))); // RemoveScreen идемпотентен (уже снят → no-op)
         }
@@ -230,6 +235,11 @@ namespace Guildmaster.UI
             });
 
             Push(screen);
+
+            // См. Push: отменённый токен выполнил бы колбэк синхронно, до Hook, и регистрация осела бы
+            // в словаре навсегда — счётчик ActiveCancelHooks рос бы за забег, вместо того чтобы ходить
+            // за стеком.
+            if (ct.IsCancellationRequested) { screen.ResolveDefaultIfPending(); return tcs.Task; }
 
             if (ct.CanBeCanceled)
                 Hook(screen, ct.Register(() => screen.ResolveDefaultIfPending()));
