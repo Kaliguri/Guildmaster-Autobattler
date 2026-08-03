@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -167,7 +167,7 @@ namespace Guildmaster.Balance.Editor
 
             var sumHeaders = new List<string>
             {
-                "Rank", "Relic", "Wins", "Losses", "Draws", "WinRate", "TeamHpOnWin%", "HeroSurvival%",
+                "Rank", "Relic", "Wins", "Losses", "Draws", "WinRate%", "TeamHpOnWin%", "HeroSurvival%",
                 "AvgFightSec", "Timeout%", "Overtime%",
                 "AvgDmgDealt", "AvgDmgTaken", "React%", "BTStrength",
                 "HealTaken", "Mitigated", "Evaded",
@@ -195,7 +195,7 @@ namespace Guildmaster.Balance.Editor
 
                 sumTable.Add(new object[]
                 {
-                    rank++, relics[i].name, wCount[i], lCount[i], dCount[i], winRate, avgHp, surv,
+                    rank++, relics[i].name, wCount[i], lCount[i], dCount[i], 100.0 * winRate, avgHp, surv,
                     avgSec, timeoutPct, fights[i] > 0 ? 100.0 * overtimeHits[i] / fights[i] : 0.0,
                     Avg(a.DamageDealt), Avg(a.DamageTaken), reactShare, strength[i],
                     Avg(a.HealingReceived), Avg(a.DamageMitigated), Avg(a.HitsEvaded),
@@ -213,7 +213,7 @@ namespace Guildmaster.Balance.Editor
                 $"не разрешилось за потолок **{totalTimeouts} из {totalFights}** боёв " +
                 $"({(totalFights > 0 ? 100.0 * totalTimeouts / totalFights : 0):0}%). " +
                 $"Round-robin (потолок {CapSeconds:0} с/бой, каждая пара — обе стороны). " +
-                "WinRate учитывает ничьи как 0.5. **TeamHpOnWin%** — средний остаток HP команды в ВЫИГРАННЫХ боях: " +
+                "**WinRate%** — в процентах, как и все доли в отчётах: доля 0.04 и «4%» читаются по-разному, и смешивать два формата в одной таблице нельзя. Ничья считается за половину победы. **TeamHpOnWin%** — средний остаток HP команды в ВЫИГРАННЫХ боях: " +
                 "запас победы (80% = размазал не заметив, 10% = вытянул на последних каплях). " +
                 "**HeroSurvival%** — как часто сам испытуемый доживал до конца, независимо от исхода. " +
                 "**AvgFightSec** — средняя длительность боёв с этим китом, ТОЛЬКО по разрешившимся: потолок в " +

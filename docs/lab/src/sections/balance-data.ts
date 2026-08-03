@@ -206,8 +206,8 @@ export function fmtValue(key: string, value: unknown): string {
   if (typeof value === "string") return value;
   if (!isNum(value)) return String(value);
   const unit = meta(key).unit;
-  if (unit === "доля→%") return `${(value * 100).toFixed(0)}%`;
-  if (unit === "%") return `${fmt(value)}%`;
+  if (unit === "доля→%") return `${(value * 100).toFixed(2)}%`;
+  if (unit === "%") return `${value.toFixed(2)}%`;
   return fmt(value);
 }
 
@@ -256,8 +256,8 @@ export function flagsFor(unit: string): Flag[] {
   if (isReference(unit)) return [["info", "эталон ростера — не участник баланса"]];
 
   const out: Flag[] = [];
-  const win3 = valueOf(run, "trio_duel", unit, "WinRate");
-  const win4 = valueOf(run, "squad_duel", unit, "WinRate");
+  const win3 = valueOf(run, "trio_duel", unit, "WinRate%");
+  const win4 = valueOf(run, "squad_duel", unit, "WinRate%");
   const dps = valueOf(run, "bench_dps", unit, "DPS_solo");
   const react = valueOf(run, "squad_duel", unit, "React%") ?? valueOf(run, "trio_duel", unit, "React%");
   const ehpSolo = valueOf(run, "bench_survivability", unit, "EHP_solo");
@@ -273,16 +273,16 @@ export function flagsFor(unit: string): Flag[] {
     ? allDps.slice().sort((a, b) => a - b)[Math.floor(allDps.length / 2)]
     : undefined;
 
-  if (isNum(avgWin) && avgWin >= 0.7 && isNum(dps) && isNum(medianDps) && dps < medianDps) {
+  if (isNum(avgWin) && avgWin >= 70 && isNum(dps) && isNum(medianDps) && dps < medianDps) {
     out.push(["warn", "выигрывает не своим уроном"]);
   }
   if (isNum(react) && react >= 30) out.push(["warn", `${fmt(react)}% урона — ответка`]);
-  if (isNum(win3) && isNum(win4) && Math.abs(win3 - win4) >= 0.25) out.push(["warn", "форматозависимый"]);
+  if (isNum(win3) && isNum(win4) && Math.abs(win3 - win4) >= 25) out.push(["warn", "форматозависимый"]);
   if (isNum(ehpSolo) && isNum(ehpFocus) && ehpFocus > 0 && ehpSolo / ehpFocus >= 3) {
     out.push(["warn", "бинарный по фокусу"]);
   }
-  if (isNum(avgWin) && avgWin <= 0.25) out.push(["bad", "провал по результату"]);
-  if (isNum(avgWin) && avgWin >= 0.85) out.push(["bad", "доминирует"]);
+  if (isNum(avgWin) && avgWin <= 25) out.push(["bad", "провал по результату"]);
+  if (isNum(avgWin) && avgWin >= 85) out.push(["bad", "доминирует"]);
 
   for (const mode of modesOf(run)) {
     for (const key of NORM_KEYS) {
@@ -343,13 +343,13 @@ export const TARGET_NAMES: Record<string, string> = {
 /** Корзины страницы кита. PvE первой: игрок дерётся с энкаунтерами, и «прошёл ли бой» — первый
  *  вопрос о ките, а не его винрейт в зеркале. */
 export const BUCKETS: Array<{ name: string; keys: string[] }> = [
-  { name: "Бои с энкаунтерами (PvE)", keys: ["ClearRate", "Cleared", "Fights", "HpCostOnClear%", "FallenOnClear", "HeroDeaths%", "AvgFightSec", "Timeout%", "Overtime%"] },
+  { name: "Бои с энкаунтерами (PvE)", keys: ["ClearRate%", "Cleared", "Fights", "HpCostOnClear%", "FallenOnClear", "HeroDeaths%", "AvgFightSec", "Timeout%", "Overtime%"] },
   { name: "Урон", keys: ["DPS_solo", "DPS_aoe", "AoE_ratio", "AvgDmgDealt", "AutoPhys%", "AutoMagic%", "Ability%", "DoT%", "React%", "Vuln%", "SelfDmg%"] },
   { name: "Выживаемость", keys: ["TTD_solo", "EHP_solo", "HpLeft_solo%", "TTD_focus3", "EHP_focus3", "HpLeft_focus3%", "AvgDmgTaken", "HeroSurvival%", "HealTaken", "Mitigated", "Evaded"] },
   { name: "Контроль", keys: ["ControlSec", "ControlCount", "ControlTakenSec"] },
   { name: "Проклятия", keys: ["Debuffs", "DebuffSec", "Dots"] },
   { name: "Утилита", keys: ["HealDone", "Buffs", "BuffSec", "Cleanses"] },
-  { name: "Итог боя", keys: ["WinRate", "Wins", "Losses", "Draws", "TeamHpOnWin%", "BTStrength", "Rank"] }
+  { name: "Итог боя", keys: ["WinRate%", "Wins", "Losses", "Draws", "TeamHpOnWin%", "BTStrength", "Rank"] }
 ];
 
 export const UNIT_COLUMNS = ["Relic", "Unit", "Kit", "Name"];

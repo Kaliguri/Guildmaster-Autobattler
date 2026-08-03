@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -123,7 +123,7 @@ namespace Guildmaster.Balance.Editor
         {
             var headers = new List<string>
             {
-                "Rank", "Relic", "Class", "Cleared", "Fights", "ClearRate", "HpCostOnClear%",
+                "Rank", "Relic", "Class", "Cleared", "Fights", "ClearRate%", "HpCostOnClear%",
                 "AvgFightSec", "Timeout%", "Overtime%", "HeroDeaths%", "FallenOnClear",
                 "AvgDmgDealt", "HealDone", "ControlSec",
                 "SummonDmg", "DmgWithSummons", "SummonTanked", "SummonsAlive", "FirstSummonSec",
@@ -198,7 +198,7 @@ namespace Guildmaster.Balance.Editor
                     0,
                     isControl ? "(контроль: отряд без кита)" : relics[k].name,
                     isControl ? "—" : relics[k].CombatClass.ToString(),
-                    clears, fights, clearRate, hpCost,
+                    clears, fights, 100.0 * clearRate, hpCost,
                     secondsCount > 0 ? secondsSum / secondsCount : 0.0,
                     100.0 * timeouts / fights, 100.0 * overtimes / fights, 100.0 * heroDeaths / fights,
                     clears > 0 ? (double)fallenOnClear / clears : 0.0,
@@ -233,7 +233,7 @@ namespace Guildmaster.Balance.Editor
                 $"Прогнано {encounters.Count - skipped} из {encounters.Count} энкаунтеров" +
                 (skipped > 0 ? $" (пропущено {skipped}: в составе есть враг, которого нет в ассетах — " +
                                "неполный состав мерить нельзя, это дало бы число о другом бое)" : "") + ". " +
-                "**ClearRate** — доля пройденных боёв: главная PvE-метрика вместо винрейта. " +
+                "**ClearRate%** — процент пройденных боёв: главная PvE-метрика вместо винрейта. " +
                 "**HpCostOnClear%** — сколько HP отряда стоила ПОБЕДА (100% минус остаток), считается только " +
                 "по пройденным боям: в проигранном остаток HP говорит о том, как отряд лёг, а не о цене. " +
                 "**FallenOnClear** — сколько бойцов из четырёх легло в среднем в пройденном бою: победа с " +

@@ -42,7 +42,7 @@ MonoBehaviour:
   _stats:
   - Stat: 8
     Op: 3
-    Value: 0.7
+    Value: 0.25
   - Stat: 9
     Op: 3
     Value: 8

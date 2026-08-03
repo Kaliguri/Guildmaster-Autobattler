@@ -55,7 +55,7 @@ function draw(host: HTMLElement): void {
 
   const mainMode = run.modes["squad_duel"] ? "squad_duel" : modesOf(run)[0] ?? "";
   const wins = judged
-    .map((n) => ({ name: n, wr: valueOf(run, mainMode, n, "WinRate") }))
+    .map((n) => ({ name: n, wr: valueOf(run, mainMode, n, "WinRate%") }))
     .filter((x): x is { name: string; wr: number } => isNum(x.wr))
     .sort((a, b) => b.wr - a.wr);
 
@@ -67,7 +67,7 @@ function draw(host: HTMLElement): void {
 
   const best = wins[0];
   const worst = wins[wins.length - 1];
-  if (best) tiles.appendChild(tile("Сильнейший", displayName(best.name), `винрейт ${fmtValue("WinRate", best.wr)}`));
+  if (best) tiles.appendChild(tile("Сильнейший", displayName(best.name), `винрейт ${fmtValue("WinRate%", best.wr)}`));
   if (worst && worst !== best) {
     tiles.appendChild(tile("Слабейший", displayName(worst.name), `винрейт ${fmtValue("WinRate", worst.wr)}`, "bad"));
   }
@@ -77,7 +77,7 @@ function draw(host: HTMLElement): void {
     const clears = judged
       .map((n) => ({
         name: n,
-        rate: valueOf(run, "encounter_kits", n, "ClearRate"),
+        rate: valueOf(run, "encounter_kits", n, "ClearRate%"),
         cost: valueOf(run, "encounter_kits", n, "HpCostOnClear%")
       }))
       .filter((x): x is { name: string; rate: number; cost: unknown } => isNum(x.rate));
@@ -86,7 +86,7 @@ function draw(host: HTMLElement): void {
       const worstClear = clears.slice().sort((a, b) => a.rate - b.rate)[0];
       if (worstClear) {
         tiles.appendChild(tile("Хуже всех в PvE", displayName(worstClear.name),
-          `проходимость ${fmtValue("ClearRate", worstClear.rate)}`, worstClear.rate < 0.5 ? "bad" : ""));
+          `проходимость ${fmtValue("ClearRate%", worstClear.rate)}`, worstClear.rate < 50 ? "bad" : ""));
       }
       const priciest = clears.filter((x) => isNum(x.cost)).sort((a, b) => (b.cost as number) - (a.cost as number))[0];
       if (priciest) {
@@ -96,9 +96,9 @@ function draw(host: HTMLElement): void {
       // Планка: тот же отряд без испытуемого. Кит ниже неё отряд ослабляет.
       const control = Object.keys(run.modes["encounter_kits"].units).find(isControlRow);
       if (control) {
-        const rate = valueOf(run, "encounter_kits", control, "ClearRate");
+        const rate = valueOf(run, "encounter_kits", control, "ClearRate%");
         const cost = valueOf(run, "encounter_kits", control, "HpCostOnClear%");
-        tiles.appendChild(tile("Отряд без кита", fmtValue("ClearRate", rate),
+        tiles.appendChild(tile("Отряд без кита", fmtValue("ClearRate%", rate),
           isNum(cost) ? `цена победы ${fmtValue("HpCostOnClear%", cost)}` : "точка отсчёта"));
       }
     }

@@ -27,9 +27,17 @@ MonoBehaviour:
   _autoAttackLengthMult: 1
   _autoAttackEffects:
   - {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
@@ -60,6 +68,7 @@ MonoBehaviour:
   - _id: ice_zone
     _effects:
     - {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
+    _selfEffects: []
     _baseCooldown: 0
     _resourceCost: 40
     _targetMode: 1
@@ -67,7 +76,6 @@ MonoBehaviour:
     _damageType: 11
     _areaShape: 2
     _areaRadius: 3
-    _areaAtTarget: 1
     _healFlat: 0
     _healPctTargetMissingHp: 0
     _healEffect: {fileID: 0}
@@ -82,6 +90,20 @@ MonoBehaviour:
     _castSeconds: 0
     _channelSeconds: 5
     _channelTickSeconds: 0.5
+    _canMoveWhileCasting: 0
+    _castSource: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 1
     _displaces: 0
     _displaceDistance: 4
     _displaceDamageMult: 1
@@ -90,7 +112,7 @@ MonoBehaviour:
     _infoTags: []
   _aiPreset: {fileID: 11400000, guid: ba7e13bce9e895841b687a35814c5415, type: 2}
   _ai:
-    _autoAttackTargeting: 8
+    _autoAttackTargeting: 0
     _autoAttackMode: 0
     _targetTag: 128
     _retreat:
