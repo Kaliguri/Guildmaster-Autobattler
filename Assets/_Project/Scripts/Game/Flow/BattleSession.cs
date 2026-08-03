@@ -61,6 +61,15 @@ namespace Guildmaster.Game.Flow
         bool RequestRestart();
 
         /// <summary>
+        /// Есть ли кому исполнить перезапуск (делегат привязан живым боевым скоупом).
+        /// </summary>
+        /// <remarks>
+        /// Спрашивается ДО списания попытки из пула акта: <see cref="RequestRestart"/> отвечает тем же
+        /// «нет» уже после того, как попытка потрачена, и игрок терял бы её без единого перезапуска.
+        /// </remarks>
+        bool CanRestart { get; }
+
+        /// <summary>
         /// dev → перезапустить текущий бой НА МЕСТЕ, НЕ трогая ожидание исхода (в отличие от <see cref="RequestRestart"/>):
         /// текущий await флоу остаётся валиден и разрешится концом перезапущенного боя. Для dev-хоткея R.
         /// false = боя нет (некому перезапускать). Не для ретрай-логики флоу — только ручной dev-перезапуск.
@@ -124,6 +133,8 @@ namespace Guildmaster.Game.Flow
         public void BindRestart(Action restart) => _restart = restart;
 
         public void UnbindRestart() => _restart = null;
+
+        public bool CanRestart => _restart != null;
 
         public void BindLaunch(Action<BattlePresetData> launch) => _launch = launch;
 

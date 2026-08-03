@@ -54,7 +54,9 @@ namespace Guildmaster.Game.Flow
             BattleOutcome outcome = await _session.WaitOutcomeAsync(ctx.Cancellation);
 
             // Поражение → тратим перезапуск из пула акта (реш. №65) и переигрываем ТОТ ЖЕ бой.
-            while (!Won(outcome) && _tryConsumeRestart != null && _tryConsumeRestart())
+            // Спрашиваем CanRestart ДО списания: иначе попытка уходит из пула, RequestRestart отвечает
+            // «некому», и игрок теряет перезапуск, не получив ни одного.
+            while (!Won(outcome) && _session.CanRestart && _tryConsumeRestart != null && _tryConsumeRestart())
             {
                 Debug.Log("[BattleFlow] - поражение, трачу перезапуск акта");
                 if (!_session.RequestRestart())
