@@ -776,10 +776,7 @@ namespace Guildmaster.Game
             {
                 if ((world - _dragStartWorld).sqrMagnitude > DragMinDelta * DragMinDelta) _dragMoved = true;
                 dragTarget = DragTarget(world); // куда встанет юнит, если отпустить здесь (с учётом точки захвата)
-                // Сторона зоны — по КОМАНДЕ бойца, а не «всегда своя»: противника на площадке двигают в
-                // его половину, и жёсткая Player запрещала бы любой его сдвиг.
-                dragValid = _deploy.CanPlace(dragTarget, SideOf(_dragged.Team), CanUseExtended(_dragged))
-                            && !Overlaps(dragTarget, _dragged);
+                dragValid = CanDrop(dragTarget);
                 ShowDragGhost(dragTarget, dragValid); // призрак-силуэт у целевых ног (QA #9)
             }
             else
@@ -921,6 +918,21 @@ namespace Guildmaster.Game
             _audio?.PlayAt("ui.deploy_grab.ui", unit.Position);
         }
 
+        /// <summary>
+        /// Можно ли отпустить перетаскиваемого бойца в этой точке.
+        /// </summary>
+        /// <remarks>
+        /// Одна точка правды для превью и для самой постановки: разъехавшись, они дают призрака,
+        /// который горит зелёным там, откуда на отпускании боец откатится назад.
+        /// <para>Сторона зоны берётся по КОМАНДЕ бойца, а не «всегда своя»: на Ристалище противника
+        /// двигают в его половину, и жёсткая <c>Player</c> запрещала бы любой его сдвиг — зоны сторон
+        /// не пересекаются.</para>
+        /// </remarks>
+        private bool CanDrop(Vector2 target) =>
+            _dragged != null
+            && _deploy.CanPlace(target, SideOf(_dragged.Team), CanUseExtended(_dragged))
+            && !Overlaps(target, _dragged);
+
         private void OnPointerReleased()
         {
             if (_dragged == null) return;
@@ -929,7 +941,7 @@ namespace Guildmaster.Game
             {
                 // Та же целевая точка, что вела призрака: иначе юнит на отпускании прыгал бы к курсору.
                 Vector2 target = DragTarget(ScreenToWorld(_input.PointerScreenPosition));
-                if (_deploy.CanPlace(target, DeploymentSide.Player, CanUseExtended(_dragged)) && !Overlaps(target, _dragged))
+                if (CanDrop(target))
                 {
                     _dragged.Position = target;
                     _dragged.PreviousPosition = target; // снап вида (без слайда интерполяции)
