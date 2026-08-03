@@ -13,67 +13,69 @@ AvatarMask:
     m_Weight: 0
   - m_Path: Hips/Torso
     m_Weight: 0
-  - m_Path: Hips/Torso/Body
-    m_Weight: 0
   - m_Path: Hips/Torso/Head
     m_Weight: 0
-  - m_Path: Hips/Torso/Arm (Left)
+  - m_Path: Hips/Torso/Head/Head_Face_Art
+    m_Weight: 0
+  - m_Path: Hips/Torso/Shoulder_L
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Shoulder_L
+  - m_Path: Hips/Torso/Shoulder_L/Shoulder_L_Art
+    m_Weight: 0
+  - m_Path: Hips/Torso/Shoulder_L/UpperArm_L
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Shoulder_L/Arm_Shoulder
+  - m_Path: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Shoulder_L/Arm_Top
+  - m_Path: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L/Hand_L
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L
+  - m_Path: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L/Hand_L/Weapon_L
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L/Arm_Down
-    m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L/Arm_Down/Weapon_L
-    m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L/Arm_Down/Weapon_L/Shield
-    m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Right)
+  - m_Path: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L/Hand_L/Weapon_L/Weapon_L_Shield_Art
     m_Weight: 0
-  - m_Path: Hips/Torso/Arm (Right)/Shoulder_R
+  - m_Path: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L/LowerArm_L_Art
     m_Weight: 0
-  - m_Path: Hips/Torso/Arm (Right)/Shoulder_R/Arm_Shoulder
+  - m_Path: Hips/Torso/Shoulder_L/UpperArm_L/UpperArm_L_Art
     m_Weight: 0
-  - m_Path: Hips/Torso/Arm (Right)/Shoulder_R/Arm_Top
+  - m_Path: Hips/Torso/Shoulder_R
     m_Weight: 0
-  - m_Path: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R
+  - m_Path: Hips/Torso/Shoulder_R/Shoulder_R_Art
     m_Weight: 0
-  - m_Path: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R/Arm_Down
+  - m_Path: Hips/Torso/Shoulder_R/UpperArm_R
     m_Weight: 0
-  - m_Path: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R/Arm_Down/Weapon_R
+  - m_Path: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R
     m_Weight: 0
-  - m_Path: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R/Arm_Down/Weapon_R/Sword
+  - m_Path: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R/Hand_R
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)
+  - m_Path: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R/Hand_R/Weapon_R
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/UpperLeg_L
+  - m_Path: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R/Hand_R/Weapon_R/Weapon_R_Sword_Art
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/UpperLeg_L/Leg_Top
+  - m_Path: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R/LowerArm_R_Art
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L
+  - m_Path: Hips/Torso/Shoulder_R/UpperArm_R/UpperArm_R_Art
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L/Foot_L
+  - m_Path: Hips/Torso/Torso_Art
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L/Foot_L/Leg_Boots
+  - m_Path: Hips/UpperLeg_L
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L/Leg_Down
+  - m_Path: Hips/UpperLeg_L/LowerLeg_L
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)
+  - m_Path: Hips/UpperLeg_L/LowerLeg_L/Foot_L
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/UpperLeg_R
+  - m_Path: Hips/UpperLeg_L/LowerLeg_L/Foot_L/Foot_L_Art
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/UpperLeg_R/Leg_Top
+  - m_Path: Hips/UpperLeg_L/LowerLeg_L/LowerLeg_L_Art
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R
+  - m_Path: Hips/UpperLeg_L/UpperLeg_L_Art
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R/Foot_R
+  - m_Path: Hips/UpperLeg_R
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R/Foot_R/Leg_Boots
+  - m_Path: Hips/UpperLeg_R/LowerLeg_R
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R/Leg_Down
+  - m_Path: Hips/UpperLeg_R/LowerLeg_R/Foot_R
+    m_Weight: 0
+  - m_Path: Hips/UpperLeg_R/LowerLeg_R/Foot_R/Foot_R_Art
+    m_Weight: 0
+  - m_Path: Hips/UpperLeg_R/LowerLeg_R/LowerLeg_R_Art
+    m_Weight: 0
+  - m_Path: Hips/UpperLeg_R/UpperLeg_R_Art
     m_Weight: 0
