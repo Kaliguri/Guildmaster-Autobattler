@@ -108,7 +108,13 @@ namespace Guildmaster.Balance.Editor
             for (int h = 0; h < heroes.Count; h++)
             {
                 int slot = FindSlot(lineup, takenBy, SlotRole(heroes[h].CombatClass));
-                if (slot >= 0) takenBy[slot] = h;
+                if (slot >= 0) { takenBy[slot] = h; continue; }
+
+                // Героев больше, чем слотов: этот на арену НЕ выйдет. Молчать здесь нельзя — его
+                // heroIds останется нулём, то есть будет указывать на ЧУЖОГО юнита, и бенч напечатает
+                // испытуемому строку, посчитанную по чужим числам. Такой замер неотличим от честного.
+                Debug.LogError($"[Lineups] «{heroes[h].name}» не получил слот в строю из {lineup.Length} "
+                               + $"(героев {heroes.Count}) — на арену не выйдет, и замер по нему будет ложным.");
             }
 
             var heroIds = new int[heroes.Count];
