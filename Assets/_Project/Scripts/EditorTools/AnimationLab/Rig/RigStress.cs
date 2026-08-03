@@ -40,6 +40,13 @@ namespace Guildmaster.AnimationLab.Editor
 
             /// <summary>Перекрытие ниже этого — стык считается разошедшимся.</summary>
             public float MinOverlapPercent = 2f;
+
+            /// <summary>
+            /// Сколько кадров на сустав. Три — край, покой, край: этого хватает, чтобы поймать разрыв.
+            /// Больше нужно, когда ищут ГРАНИЦУ — угол, на котором деталь перестаёт читаться, — а он
+            /// лежит где-то внутри диапазона и на трёх кадрах невидим.
+            /// </summary>
+            public int Steps = 3;
         }
 
         public sealed class Result
@@ -93,7 +100,8 @@ namespace Guildmaster.AnimationLab.Editor
                 if (targets.Count == 0) throw new System.InvalidOperationException("Нет суставов с объявленным артом.");
 
                 int cell = options.CellSize;
-                var sheet = new Texture2D(cell * 3, cell * targets.Count, TextureFormat.RGBA32, false);
+                int steps = Mathf.Max(3, options.Steps);
+                var sheet = new Texture2D(cell * steps, cell * targets.Count, TextureFormat.RGBA32, false);
                 int row = 0;
 
                 foreach (var joint in targets)
@@ -101,7 +109,9 @@ namespace Guildmaster.AnimationLab.Editor
                     var node = unit.transform.Find(joint.Path);
                     var range = ranges[joint.Id];
                     float rest = joint.RestZ;
-                    var angles = new[] { range.Lo, rest, range.Hi };
+                    var angles = new float[steps];
+                    if (steps == 3) { angles[0] = range.Lo; angles[1] = rest; angles[2] = range.Hi; }
+                    else for (int s = 0; s < steps; s++) angles[s] = Mathf.Lerp(range.Lo, range.Hi, s / (float)(steps - 1));
 
                     var bounds = MeasureAcross(unit, node, angles, rest, FindPiece(unit, joint, anchors, parent: true));
                     cam.orthographicSize = Mathf.Max(bounds.extents.x, bounds.extents.y) * Mathf.Max(1f, options.Padding);
