@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Simulation;
@@ -26,6 +26,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Stats    = new Stats(null), // Size = 1 → радиус из SimConstants
                 Position = new Vector2(x, y),
                 DisplacedTicksRemaining = displaced,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
 
         private static void Step(SeparationSystem sys, List<RuntimeUnit> units, SpatialHash hash, ArenaBounds bounds, int times = 1)

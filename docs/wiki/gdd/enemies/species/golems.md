@@ -1,10 +1,12 @@
 ---
 title: "Species - Golems"
-order: 40
+order: 530
 kind: enemy_faction
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 species: Големы
+impl: engine
+asset: [species.golems]
 ---
 
 # Големы

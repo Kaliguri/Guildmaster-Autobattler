@@ -4,10 +4,10 @@ description: >-
   Звук Guildmaster: весь аудио-слой за фасадом IAudioService (FMOD-реализация, банки, шины и
   микс), ключи {contentId}.{action} и AudioCatalog, боевой и забеговый презентеры, звук
   интерфейса, плюс генеративный пайплайн scripts/audio — карта звука, нормализация, сборка
-  банков. Зови на любую задачу про звук, музыку, амбиент, стингеры, громкость и подбор сэмплов,
-  а также на правки под scripts/audio, FMOD Project, Core/Audio. НЕ применять к: боевому
-  времени и симуляции (combat-sim), визуальному джусу (gamefeel-vfx), тех-доке об аудио
-  (tech-scribe).
+  банков. Зови на любую задачу про звук, SFX, амбиент, стингеры, громкость, подбор сэмплов,
+  речь блипами и проигрывание музыки в игре, а также на правки под scripts/audio, FMOD Project,
+  Core/Audio. НЕ применять к: СОЗДАНИЮ музыки и промптам Suno (music), боевому времени и
+  симуляции (combat-sim), визуальному джусу (gamefeel-vfx), тех-доке об аудио (tech-scribe).
 ---
 # Audio — рабочий контур Guildmaster
 
@@ -47,7 +47,7 @@ description: >-
 | Фасад звука (Core, без ссылки на движок) | `Assets/_Project/Scripts/Core/Audio/IAudioService.cs` |
 | Имена глобальных FMOD-параметров | `Assets/_Project/Scripts/Core/Audio/AudioParameters.cs` |
 | FMOD-реализация (one-shot + хранимые `EventInstance` для лупов) | `Assets/_Project/Scripts/Game/Services/FmodAudioService.cs` |
-| Заглушка фасада (headless) | `Assets/_Project/Scripts/Game/Services/UnityAudioService.cs` |
+| Регистрация фасада (единственная реализация) | `Assets/_Project/Scripts/Game/RootLifetimeScope.cs` — `FmodAudioService` как `IAudioService`, Singleton. Заглушки нет и не заводим, см. `references/facade-and-fmod.md` |
 | Громкости шин из настроек | `Assets/_Project/Scripts/Game/Services/SettingsService.cs` |
 | Боевой аудио-презентер | `Assets/_Project/Scripts/Presentation/Audio/AudioPresenter.cs` |
 | **Звук забега вне боя + музыка (root-скоуп)** | `Assets/_Project/Scripts/Game/Services/RunAudioPresenter.cs` |
@@ -118,6 +118,18 @@ description: >-
 **Безопасность пустого контента — это шов, не баг.** Пустой каталог, пустой `EventReference`,
 невалидная шина (банк не загружен) — везде тихий no-op.
 
+**Речь идёт четвёртой ветвью, и она ещё НЕ реализована.** Озвучка диалогов «тоном звуков» (voice
+blips) — решения приняты 2026-07-29, кода нет: ни системы диалогов, ни категории `voice`, ни
+`AudioAction.Speak`. Контракт целиком — `references/voice-and-narrator.md`, читать **до** первой
+строчки по речи. Три вещи оттуда, которые ломаются молча:
+
+- речь у нас **контурная, а не как в Celeste**: один набор слогов + интонация из пунктуации, эмоция =
+  пресет контура. Ручной граф переходов в FMOD не заводим — он нарушил бы правило 4;
+- **эмоция живёт полем в данных реплики, НИКОГДА внутри локализованной строки** (иначе два владельца
+  одного факта и разъезд RU/EN, слышный только на слух);
+- шина `SFX/Voice` держится **вне кривой `TimeScale`** — иначе на ускорении x3 персонажи заговорят
+  чипманками.
+
 ## Пайплайн: как добавить или поменять звук
 
 ```bash
@@ -183,6 +195,9 @@ python scripts/audio/gen_audio_reference.py     # обновить reference-д�
 - [ ] `AudioCoverageTests` зелёные: код не зовёт ключей, которых нет; каталог не разошёлся с манифестом
 - [ ] Банки пересобраны и лежат в `StreamingAssets`; каталог наполнен из меню, не руками
 - [ ] Reference-дока перегенерирована; значимое решение — в `tech-changelog`
+- [ ] Задача по речи: `references/voice-and-narrator.md` прочитан; эмоция не уехала в локализованную
+      строку; `SFX/Voice` вне `TimeScale`-кривой; сэмплы Celeste в игру не попали
+- [ ] Задача про СОЗДАНИЕ музыки — это не сюда: скилл `xgaida-x-nixi-music`
 - [ ] `read_console` чист; что слушать — сказано Максу списком
 
 ## Справочные файлы (читать по надобности)
@@ -194,3 +209,15 @@ python scripts/audio/gen_audio_reference.py     # обновить reference-д�
 - `references/pipeline-and-mix.md` — карта звука, нормализация и её числа, категории, шины,
   анти-каша (max instances / stealing / cooldown / priority), `TimeScale`-кривая, готчи FMOD
   scripting API.
+- `references/voice-and-narrator.md` — **речь блипами и голос нарратора**: контурная схема против
+  метода Celeste, правила контура из пунктуации, где живёт эмоция, контракт категории `voice` и её
+  готчи; техника нарратора через ElevenLabs (Voice Design, бюджет, вычитка ударений).
+  **Не реализовано — это контракт, а не описание кода.**
+- `references/sfx-tooling.md` — **ElevenLabs как генератор SFX**: цена и возможности, где генерация
+  оправдана против паков, что у нас уже готово (`sfx_generate.py`), чего мы НЕ знаем. В конце —
+  отложенный разбор ElevenLabs Music (`composition_plan`), оставлен как материал.
+
+**Создание музыки — не этот скилл.** Целевой тон, канон состава, промпты Suno, тариф и права живут в
+**`xgaida-x-nixi-music`** (решение 30.07.2026: производство музыки — отдельный цикл со своим владельцем,
+Suno крутит Макс). Сюда готовый трек приходит уже утверждённым — и дальше идёт по обычному пайплайну:
+карта → нормализация → FMOD → каталог. **Бесшовность лупа даёт FMOD, а не файл.**

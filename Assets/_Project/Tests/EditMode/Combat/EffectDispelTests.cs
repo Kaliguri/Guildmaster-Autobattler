@@ -30,13 +30,18 @@ namespace Guildmaster.Tests.EditMode.Combat
             for (int i = 0; i < 60; i++) sys.Apply(unit, embers, unit, ctx);
             Assert.AreEqual(60, unit.ActiveEffects[0].Stacks, "Шестьдесят угольков");
 
+            // Снятие судит по состоянию НАЧАЛА тика: наложенное в этом же тике неприкосновенно.
+            ctx.AdvanceTick();
             sys.Dispel(new DispelRequest(unit, DispelTargetPolarity.Debuff, EffectTag.None, dispelPower: 1, maxCount: 0), ctx);
 
             Assert.AreEqual(1, unit.ActiveEffects.Count, "Эффект остался — унесли только часть");
             Assert.AreEqual(45, unit.ActiveEffects[0].Stacks, "25% от 60 больше десяти → ушло 15");
 
-            // На малом счёте выигрывает плоская часть и сметает остаток целиком.
-            unit.ActiveEffects[0].Stacks = 8;
+            // На малом счёте выигрывает плоская часть и сметает остаток целиком. Стаки правим тем же
+            // путём, что бой: у поля нет сеттера, чтобы граница тика оставалась у одного владельца.
+            unit.ActiveEffects[0].RemoveStacks(unit.ActiveEffects[0].Stacks - 8);
+            // Снятие судит по состоянию НАЧАЛА тика: наложенное в этом же тике неприкосновенно.
+            ctx.AdvanceTick();
             sys.Dispel(new DispelRequest(unit, DispelTargetPolarity.Debuff, EffectTag.None, dispelPower: 1, maxCount: 0), ctx);
             Assert.AreEqual(0, unit.ActiveEffects.Count, "Восемь стаков меньше плоских десяти → эффект снят");
         }
@@ -68,6 +73,8 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Reflect.FindField(typeof(EffectData), "_cleansePrice").SetValue(def, price);
 
                 for (int i = 0; i < 60; i++) sys.Apply(unit, def, unit, ctx);
+                // Снятие судит по состоянию НАЧАЛА тика: наложенное в этом же тике неприкосновенно.
+                ctx.AdvanceTick();
                 sys.Dispel(new DispelRequest(unit, DispelTargetPolarity.Debuff, EffectTag.None, dispelPower, maxCount: 0), ctx);
                 return unit.ActiveEffects.Count == 0 ? 0 : unit.ActiveEffects[0].Stacks;
             }
@@ -88,6 +95,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             sys.Apply(unit, TestEffect.Make(baseDuration: 5f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff), unit, ctx);
             Assert.AreEqual(2, unit.ActiveEffects.Count);
 
+            // Снятие судит по состоянию НАЧАЛА тика: наложенное в этом же тике неприкосновенно.
+            ctx.AdvanceTick();
             sys.Dispel(new DispelRequest(unit, DispelTargetPolarity.Debuff, EffectTag.None, dispelPower: 1, maxCount: 0), ctx);
 
             Assert.AreEqual(1, unit.ActiveEffects.Count);
@@ -105,6 +114,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             sys.Apply(unit, TestEffect.Make(baseDuration: 5f, polarity: EffectPolarity.Debuff, cleanseTier: 5), unit, ctx);
             sys.Apply(unit, TestEffect.Make(baseDuration: 5f, polarity: EffectPolarity.Debuff, unremovable: true), unit, ctx);
 
+            // Снятие судит по состоянию НАЧАЛА тика: наложенное в этом же тике неприкосновенно.
+            ctx.AdvanceTick();
             sys.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, EffectTag.None, dispelPower: 1, maxCount: 0), ctx);
 
             // Снят только tier0; tier5 (выше DispelPower) и unremovable остались.
@@ -124,6 +135,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             // Все три — разные EffectData (StackRule.None матчится по Def), поэтому 3 экземпляра.
             Assert.AreEqual(3, unit.ActiveEffects.Count);
 
+            // Снятие судит по состоянию НАЧАЛА тика: наложенное в этом же тике неприкосновенно.
+            ctx.AdvanceTick();
             sys.Dispel(new DispelRequest(unit, DispelTargetPolarity.Debuff, EffectTag.None, dispelPower: 1, maxCount: 2), ctx);
 
             Assert.AreEqual(1, unit.ActiveEffects.Count);
@@ -140,6 +153,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             sys.Apply(unit, TestEffect.Make(baseDuration: 5f, polarity: EffectPolarity.Debuff, tags: EffectTag.Control), unit, ctx);
 
             // Снять только DoT, оглушение оставить.
+            // Снятие судит по состоянию НАЧАЛА тика: наложенное в этом же тике неприкосновенно.
+            ctx.AdvanceTick();
             sys.Dispel(new DispelRequest(unit, DispelTargetPolarity.Debuff, EffectTag.DoT, dispelPower: 1, maxCount: 0), ctx);
 
             Assert.AreEqual(1, unit.ActiveEffects.Count);
@@ -161,6 +176,9 @@ namespace Guildmaster.Tests.EditMode.Combat
                 .With("_targetTags", EffectTag.None)
                 .With("_dispelPower", 1)
                 .With("_maxCount", 0);
+            // Дебафф должен «повисеть»: снятие судит по состоянию начала тика.
+            ctx.AdvanceTick();
+
             // Мгновенный (BaseDuration 0): OnApply диспелит и сам не персистится.
             sys.Apply(unit, TestEffect.Make(baseDuration: 0f, components: dispel), unit, ctx);
 

@@ -1,0 +1,28 @@
+{
+  "name": "Guildmaster.Presentation.Editor",
+  "rootNamespace": "Guildmaster.Presentation.Editor",
+  "references": [
+    "Guildmaster.Presentation",
+    "Guildmaster.Data",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.Universal.Runtime",
+    "MCPForUnity.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [
+    {
+      "name": "com.coplaydev.unity-mcp",
+      "expression": "",
+      "define": "MCP_FOR_UNITY"
+    }
+  ],
+  "noEngineReferences": false
+}

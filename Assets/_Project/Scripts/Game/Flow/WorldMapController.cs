@@ -16,23 +16,30 @@ namespace Guildmaster.Game.Flow
     /// (то есть после «Продолжить» на награде). До этого карту можно открыть и разглядывать, но гореть и
     /// вести никуда она не будет — иначе игрок видел бы «доступный» узел, в который ещё нельзя войти.</para>
     /// </summary>
-    public sealed class WorldMapController : IStartable, IDisposable
+    public sealed class WorldMapController : IActMapPresence, IStartable, IDisposable
     {
         private readonly IWorldMapView _view;
-        private readonly RunStateService _runStates;
+        // Владелец показа карты переживает сеансы, поэтому забег он только ЧИТАЕТ — через роутер, а не
+        // прямой ссылкой на держателя из скоупа сессии.
+        private readonly IRunStateView _runStates;
         private readonly ISubscriber<SetWorldMapRequest> _setSub;
         private readonly IPublisher<WorldMapSpaceChangedEvent> _spacePub;
 
         private IDisposable _setSubscription;
 
-        private bool _visible;
+        // Намерение показать карту и факт, что она нарисована, — РАЗНЫЕ вещи, и разошлись они не от
+        // красоты. У гостя состояние забега и объявление «карта открыта» едут разными каналами, порядок
+        // между которыми не гарантирован: просьба показать вполне может обогнать данные. Пока флаг был
+        // один, такой обгон гасил намерение навсегда — карта не появлялась уже никогда.
+        private bool _visible;   // хотим показывать
+        private bool _drawn;     // показываем на самом деле
         // Активное ожидание выбора: id узлов, в которые сейчас реально можно войти, и куда отдать результат.
         // null = карта в режиме просмотра (горящих узлов нет).
         private HashSet<string> _choosable;
         private Action<string> _onChosen;
 
         public WorldMapController(IWorldMapView view,
-                                  RunStateService runStates,
+                                  IRunStateView runStates,
                                   ISubscriber<SetWorldMapRequest> setSub,
                                   IPublisher<WorldMapSpaceChangedEvent> spacePub)
         {
@@ -63,15 +70,46 @@ namespace Guildmaster.Game.Flow
             if (_visible == visible) return;
             _visible = visible;
 
-            if (!visible)
-            {
-                _view.Hide(); // вернёт камеру в тот вид, из которого пришли
-                _spacePub?.Publish(new WorldMapSpaceChangedEvent(false));
-                return;
-            }
+            if (!visible) { HideNow(); return; }
 
-            if (!Redraw()) { _visible = false; return; } // карты нет (меню/нет забега) — показывать нечего
+            // Карты может ещё не быть (меню, забег без карты, у гостя — снимок не доехал). Намерение при
+            // этом остаётся: покажем, как только появится, — см. Refresh.
+            ShowIfReady();
+        }
+
+        /// <summary>Показана ли карта прямо сейчас. Хост объявляет это гостю, чтобы тот шёл следом.</summary>
+        public bool IsShown => _drawn;
+
+        /// <summary>
+        /// Состояние забега изменилось — перерисовать карту, если её просили показать.
+        /// </summary>
+        /// <remarks>
+        /// Нужен тем, у кого забег МЕНЯЕТСЯ извне: гость получает его снимком, и в момент просьбы
+        /// показать карту данных может ещё не быть. У владельца забег меняется его же руками, и там
+        /// перерисовку заказывает сама петля.
+        /// </remarks>
+        public void Refresh()
+        {
+            if (!_visible) return;
+            ShowIfReady();
+        }
+
+        private void ShowIfReady()
+        {
+            if (!Redraw()) return;
+            if (_drawn) return;
+
+            _drawn = true;
             _spacePub?.Publish(new WorldMapSpaceChangedEvent(true));
+        }
+
+        private void HideNow()
+        {
+            if (!_drawn) return;
+
+            _drawn = false;
+            _view.Hide(); // вернёт камеру в тот вид, из которого пришли
+            _spacePub?.Publish(new WorldMapSpaceChangedEvent(false));
         }
 
         /// <summary>
@@ -90,13 +128,12 @@ namespace Guildmaster.Game.Flow
 
             if (!show)
             {
-                if (_visible) Redraw(); // карта уже открыта (игрок сам её позвал) — просто зажечь доступные узлы
+                if (_drawn) Redraw(); // карта уже открыта (игрок сам её позвал) — просто зажечь доступные узлы
                 return;
             }
 
             _visible = true;
-            if (!Redraw()) { _visible = false; return; }
-            _spacePub?.Publish(new WorldMapSpaceChangedEvent(true));
+            ShowIfReady();
         }
 
         /// <summary>
@@ -110,8 +147,7 @@ namespace Guildmaster.Game.Flow
             if (!_visible) return;
 
             _visible = false;
-            _view.Hide();
-            _spacePub?.Publish(new WorldMapSpaceChangedEvent(false));
+            HideNow();
         }
 
         private void OnNodeClicked(string id)

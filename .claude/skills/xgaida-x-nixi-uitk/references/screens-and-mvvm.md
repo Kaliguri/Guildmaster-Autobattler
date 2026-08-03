@@ -2,7 +2,7 @@
 
 Как связать UXML-экран с данными. Наш паттерн — MVVM + runtime binding UI Toolkit.
 Эталоны в коде: `SettingsViewModel` + `SettingsScreen.uxml`, `LoadoutViewModel` +
-`LoadoutHubView`, `MenuRouter`/`IMenuRouter`.
+`LoadoutScreen.uxml` / `LoadoutInventoryScreen.uxml`, `MenuRouter`.
 
 ## Слои
 
@@ -75,7 +75,8 @@ runtime binding UI Toolkit вместо ручного `Q<>()`+событий. �
 
 ## Роутер
 
-`IMenuRouter`/`MenuRouter` переключают экраны/страницы (табы). Логика показа/скрытия
+`MenuRouter` (`sealed`, без интерфейса — он один-к-одному, а `IFoo`→`Foo` без второй реализации или
+границы теста мы не заводим, см. `code-standards` §4) переключает экраны/страницы (табы). Логика показа/скрытия
 и активной страницы живёт в роутере, а не в UXML — в разметке только каркас с
 модификаторами (`gm-tab-page--hidden`). Новую страницу заводи как модификатор + ветку
 в роутере.

@@ -25,6 +25,8 @@ namespace Guildmaster.Game.Flow
         private readonly RewardTier         _tier;
         private readonly IRewardPresenter   _reward;
         private readonly RunStateService    _runStates;
+        // Награда за победу — односторонняя запись в забег, идёт через шину и попадает в лог команд.
+        private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
         private readonly IContinuePresenter _continue;
         private readonly int                _rewardCount;
         private readonly float              _postWinDelaySeconds;
@@ -36,6 +38,7 @@ namespace Guildmaster.Game.Flow
         /// </param>
         /// <param name="awaitReplayOutcome">Чем дождаться исхода переигранного боя; парой к <paramref name="session"/>.</param>
         public BattleNodeFlow(IEventFlow battle, RewardTier tier, IRewardPresenter reward, RunStateService runStates,
+                              Guildmaster.Guild.Commands.IRunCommands commands,
                               IContinuePresenter continuePresenter,
                               int rewardCount = 1, float postWinDelaySeconds = 2f,
                               IBattleSession session = null,
@@ -45,6 +48,7 @@ namespace Guildmaster.Game.Flow
             _tier                = tier;
             _reward              = reward;
             _runStates           = runStates;
+            _commands            = commands;
             _continue            = continuePresenter;
             _rewardCount         = rewardCount < 1 ? 1 : rewardCount;
             _postWinDelaySeconds = postWinDelaySeconds < 0f ? 0f : postWinDelaySeconds;
@@ -69,7 +73,7 @@ namespace Guildmaster.Game.Flow
 
             // +золото за победу (B1). Считаем узел взятым, когда игрок ушёл с досмотра: до этого его ещё
             // можно откатить, и начисленное пришлось бы отбирать назад.
-            _runStates.AwardBattleReward();
+            _commands.AwardBattleReward();
 
             for (int i = 0; i < _rewardCount; i++)        // элитка = 2 выбора подряд (B5)
                 await _reward.PresentAsync(_tier, ctx.Cancellation); // ct → отмена забега размотает награду (QA #37)

@@ -1,11 +1,10 @@
-using Guildmaster.Combat;
-using Guildmaster.Combat.Commands;
+﻿using Guildmaster.Combat;
 using Guildmaster.Core.Input;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using Guildmaster.Presentation;
 using MessagePipe;
-using QFSW.QC;
+using Guildmaster.Core.DevConsole;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -26,31 +25,73 @@ namespace Guildmaster.DevTools
         [Tooltip("Тот же SimTuningConfig, что и на CombatLifetimeScope — для gm_tuning_rebake (QC).")]
         [SerializeField] private SimTuningConfig _simTuningConfig;
 
-        private CombatSimulation   _simulation;
         private CombatDebugDraw    _debugDraw;
-        private RuntimeUnitFactory _factory;
         private IInputService      _input;
-        private QuantumConsole     _console;
-        private Guildmaster.Game.Flow.IBattleSession _session; // опц.: перезапуск боя забега на R (null в standalone-арене)
+
+        // Владелец жизненного цикла МЕРОПРИЯТИЯ (корень). Ни боя, ни занятия консоль не запоминает:
+        // и то и другое рождается и умирает, а этот объект живёт всю игру — запомненная ссылка
+        // протухла бы на первом же переходе. Спрашиваем текущее в момент команды.
+        private Guildmaster.Game.Activity.ActivityHost _activities;
+
+        /// <summary>Рукопожатие боя идущего мероприятия или null. Живёт в занятии, поэтому не запоминается.</summary>
+        private Guildmaster.Game.Flow.IBattleSession Session => _activities != null ? _activities.Battles : null;
+
+        /// <summary>Владелец боя ИДУЩЕГО мероприятия или null (мероприятия нет).</summary>
+        private Guildmaster.Game.Flow.BattleHost HostOrNull => _activities != null ? _activities.Battle : null;
+
+        /// <summary>
+        /// Он же, но с открытием РИСТАЛИЩА при нужде: команда боя вне мероприятия и означает «заведи мне
+        /// площадку». Своей дев-арены у нас нет (решение Макса 02.08.2026) — тест-бои это прегены состава
+        /// для Ристалища, и открывать им отдельный вид мероприятия значило бы держать второй путь.
+        /// </summary>
+        private Guildmaster.Game.Flow.BattleHost HostEnsured
+            => _activities != null ? _activities.EnsureBattleHost() : null;
+
+        /// <summary>
+        /// Стоим ли мы сейчас на Ристалище. СПРАШИВАЕМ у мероприятия, а не помним по событиям.
+        /// </summary>
+        /// <remarks>
+        /// Прежде здесь жил флаг, поднимавшийся по <c>TestZoneChangedEvent</c>. Он залипал: площадка
+        /// уходит вместе со скоупом боя, а сказать об этом уже некому — событие о выходе приходит только
+        /// когда игрок покидает место сам. После пары переходов флаг оставался поднятым, и `bones`
+        /// молча слала заказ в пустоту вместо того, чтобы открыть площадку (наход. Макса 02.08.2026).
+        /// </remarks>
+        private bool OnProvingGrounds
+            => _activities != null && _activities.Current.Kind == ActivityKind.ProvingGrounds;
+
+        [Tooltip("UXML витрины боёв (F3): список того, что можно запустить прямо сейчас.")]
+        [SerializeField] private UnityEngine.UIElements.VisualTreeAsset _battleBrowserUxml;
+
+        private Guildmaster.UI.MenuRouter _menuRouter; // владелец показа консоли: у него и спрашиваем видимость
+        private Guildmaster.UI.UiNavigator _navigator; // витрину боёв показываем сами: UI-слою о боях знать незачем
+        private DevBattleBrowserScreen _battleBrowser;
+        private DevCommandRegistry _registry;          // куда кладём команды
+        private DevCommandSet _commands;               // свои команды + статические наборы; снимаются вместе с модулем
 
         // Ристалище: интент входа и состояние площадки. Живут ВЫШЕ боевого скоупа (Root), поэтому
         // резолвятся опционально — в standalone-арене без Root их нет, и команда честно об этом скажет.
         private Core.Flow.IRunControl _runControl;
         private MessagePipe.IPublisher<Core.Flow.OpenProvingGroundsRequest> _provingGroundsPub;
-        private MessagePipe.ISubscriber<Data.Definitions.TestZoneChangedEvent> _provingGroundsChangedSub;
 
-        // Бой, который надо поставить, КАК ТОЛЬКО площадка откроется: вход асинхронный (меню закрывается,
-        // отряд материализуется), поэтому спавнить сразу после запроса — значит спавнить в пустоту.
-        private System.Action<GuildmasterCommands> _pendingOnProvingGrounds;
-        private System.IDisposable _provingGroundsSubscription;
-        private bool _onProvingGrounds; // площадка открыта прямо сейчас — повторный запрос не нужен
+        // Заказ состава площадки: на Ристалище бойцов ставит расстановка, а команда только говорит, каких.
+        // Спавнить их самим нельзя — см. StageOnProvingGrounds.
+        private MessagePipe.IPublisher<Data.Definitions.ProvingGroundsSetupRequest> _groundsSetupPub;
 
         // Дамми-болванчики оформлены как полноценный юнит (EnemyData «enemy.training_dummy»): свой SO,
         // визуал MedievalWarrior (→ анимации). Резолвится из контент-БД, поэтому не нужен serialized-ref в сцене.
         private UnitData _dummyEnemy;
 
+        // Дев-дуэлянт на скелетном визуале (EnemyData «enemy.bone_dev»): отдельный ассет ради того, чтобы
+        // смотр анимации не требовал подмены вида у игровой реликвии. Бьёт и умирает — иначе не увидеть ни
+        // удар, ни разлёт на осколки.
+        private UnitData _boneDuelist;
+
         // Контент-БД для дев-срезов: релик берётся по id (relic.*) в момент вызова команды.
         private IContentDatabase _content;
+
+        // Снапшот арены: по зонам расстановки команды считают КРАЯ поля, а не хардкодят координаты —
+        // «максимально далеко друг от друга» на разных аренах означает разные числа.
+        private Core.Arena.ArenaLayoutData _arena;
 
         // Открыта ли консоль сейчас: пока да — глушим наш игровой ввод (кроме F5), чтобы набор
         // команд в консоли не протекал в геймплей (пауза/смена вида/пан-зум/перезапуск боя).
@@ -67,55 +108,163 @@ namespace Guildmaster.DevTools
         /// </summary>
         public static void SetLastBattle(System.Action<GuildmasterCommands> setup) => _lastBattleSetup = setup;
 
-        [Inject]
-        public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory,
-            IInputService input, IContentDatabase contentDatabase, IObjectResolver resolver)
+        /// <summary>Симуляция ИДУЩЕГО боя или null. Для того, что боя не открывает: пауза, статус, отчёты.</summary>
+        private CombatSimulation SimOrNull => HostOrNull != null ? HostOrNull.Resolve<CombatSimulation>() : null;
+
+        /// <summary>Режим dev-оверлеев идущего боя или null (вне боя оверлеям нечего показывать).</summary>
+        private DevOverlayMode OverlayModeOrNull => HostOrNull != null ? HostOrNull.Resolve<DevOverlayMode>() : null;
+
+        /// <summary>
+        /// Арена, на которой работает дев-срез. Боя нет — открываем пустой дев-бой: команда «поставь мне
+        /// болванчика» и означает «мне нужна арена», а требовать сперва зайти в узел значило бы сделать
+        /// инструмент менее полезным, чем он был при вечной симуляции.
+        /// </summary>
+        private CombatSimulation Sim
         {
-            _simulation = simulation;
-            _debugDraw  = debugDraw;
-            _factory    = factory;
+            get
+            {
+                CombatSimulation live = SimOrNull;
+                if (live != null) return live;
+                Guildmaster.Game.Flow.BattleHost host = HostEnsured;
+                if (host == null)
+                {
+                    Debug.LogWarning("[GuildmasterCommands] - мира нет → арену открывать некому");
+                    return null;
+                }
+
+                host.Open(DevArenaPreset());
+                return SimOrNull;
+            }
+        }
+
+        /// <summary>Фабрика юнитов идущего боя. Как <see cref="Sim"/>, открывает дев-арену при нужде.</summary>
+        private RuntimeUnitFactory Factory
+        {
+            get
+            {
+                if (Sim == null) return null;
+                return HostOrNull?.Resolve<RuntimeUnitFactory>();
+            }
+        }
+
+        /// <summary>
+        /// Пустой бой для дев-срезов: ни врагов, ни ростера — состав ставят сами команды. Транзиентный
+        /// пресет, а не ассет: этот бой не принадлежит контенту и не должен в нём заводиться.
+        /// </summary>
+        private static Data.Definitions.BattlePresetData DevArenaPreset()
+            => Data.Definitions.BattlePresetData.CreateRuntime(
+                encounter: null, roster: System.Array.Empty<Data.Definitions.PlayerSlot>(),
+                mode: Data.Definitions.DeploymentMode.Fixed, partyItems: null, id: "battle.dev.arena");
+
+        [Inject]
+        public void Construct(CombatDebugDraw debugDraw,
+            IInputService input, IContentDatabase contentDatabase, Core.Arena.ArenaLayoutData arena,
+            IObjectResolver resolver)
+        {
+            _debugDraw   = debugDraw;
             _input      = input;
             _content = contentDatabase;
+            _arena   = arena;
             contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
+            contentDatabase.TryGet("enemy.bone_dev", out _boneDuelist);
             // Сессия боя живёт в RootScope: в реальном забеге резолвится, в standalone dev-арене (без Root) — null.
-            resolver.TryResolve(out _session);
+            resolver.TryResolve(out _activities);
             resolver.TryResolve(out _runControl);
             resolver.TryResolve(out _provingGroundsPub);
-            resolver.TryResolve(out _provingGroundsChangedSub);
-            _provingGroundsSubscription = _provingGroundsChangedSub?.Subscribe(e => OnProvingGroundsChanged(e));
+            resolver.TryResolve(out _groundsSetupPub);
+            // Реестр и роутер живут в корне; в standalone dev-арене без Root их нет — команды тогда просто
+            // некуда класть, и это не ошибка (тот же случай, что и с сессией боя выше).
+            resolver.TryResolve(out _registry);
+            resolver.TryResolve(out _menuRouter);
+            resolver.TryResolve(out _navigator);
+        }
+
+        /// <summary>
+        /// Консоль подключается к миру САМА. Прежде её инжектил боевой скоуп — он лежал в одной сцене с
+        /// ней и держал её в списке автоинъекции; теперь бой рождается из префаба и на объекты сцены
+        /// ссылаться не может. Мировой скоуп её тоже не зарегистрирует: игра не ссылается на dev-слой, и
+        /// заводить эту ссылку ради консоли — значит развернуть зависимость не в ту сторону.
+        /// </summary>
+        /// <remarks>
+        /// Мир поднимается раньше сцены с консолью (<c>GameBootstrap</c> грузит WorldScene первой),
+        /// поэтому к <c>Awake</c> он уже построен. Нет мира — значит запущена одиночная сцена без него, и
+        /// консоль честно останется без боевых команд.
+        /// </remarks>
+        private void Awake()
+        {
+            var world = VContainer.Unity.LifetimeScope.Find<Guildmaster.Game.WorldLifetimeScope>();
+            if (world != null && world.Container != null) world.Container.Inject(this);
+            else Debug.LogWarning("[GuildmasterCommands] - мир не найден: боевые команды консоли работать не будут");
         }
 
         // Пауза сима, пока консоль открыта: настраиваешь бой за консолью, закрываешь — он идёт с начала
         // на виду (без этого бой проигрывается за полноэкранной консолью и заканчивается невидимым).
         private void Start()
         {
-            _console = FindAnyObjectByType<QuantumConsole>(FindObjectsInactive.Include);
-            if (_console != null)
+            if (_menuRouter != null) _menuRouter.DevConsoleVisibilityChanged += OnConsoleVisibilityChanged;
+            if (_input != null) _input.DevBattlesToggleRequested += ToggleBattleBrowser;
+
+            // Команды кладём ЗДЕСЬ, а не в Construct: реестр приходит инъекцией, но статические наборы
+            // (арена/карта/эффекты) тоже надо куда-то регистрировать, а своего объекта в сцене у них нет.
+            // Один набор на модуль — и снимается он одним Dispose, что важно после domain reload:
+            // повторная регистрация того же имени в реестре — исключение, а не тихая замена.
+            if (_registry != null)
             {
-                _console.OnActivate   += PauseForConsole;
-                _console.OnDeactivate += ResumeAfterConsole;
+                _commands = new DevCommandSet(_registry);
+                RegisterCommands(_commands);
+                ArenaDevCommands.Register(_commands);
+                MapDevCommands.Register(_commands);
+                VisualFxCommands.Register(_commands);
             }
         }
 
-        // Площадка открылась — ставим бой, который её и заказывал. Одноразово: следующий вход чистый.
-        private void OnProvingGroundsChanged(Data.Definitions.TestZoneChangedEvent e)
-        {
-            _onProvingGrounds = e.Active;
-            if (!e.Active || _pendingOnProvingGrounds == null) return;
-
-            System.Action<GuildmasterCommands> setup = _pendingOnProvingGrounds;
-            _pendingOnProvingGrounds = null;
-            setup(this);
-        }
+        // Состояние площадки: открыта ли она прямо сейчас. Ставить по этому событию бой больше нечего —
+        // состав площадки заказывается ДО входа и применяется её собственным владельцем (см. StageOnProvingGrounds).
 
         private void OnDestroy()
         {
-            _provingGroundsSubscription?.Dispose();
-            if (_console != null)
+            if (_menuRouter != null) _menuRouter.DevConsoleVisibilityChanged -= OnConsoleVisibilityChanged;
+            if (_input != null) _input.DevBattlesToggleRequested -= ToggleBattleBrowser;
+            _commands?.Dispose();
+        }
+
+        /// <summary>
+        /// Показать/снять витрину боёв (F3). Экран живёт одним инстансом: в нём набранный запрос и выбор,
+        /// и пересоздание сбрасывало бы их при каждом закрытии.
+        /// </summary>
+        private void ToggleBattleBrowser()
+        {
+            if (_navigator == null || _registry == null) return;
+
+            if (_battleBrowserUxml == null)
             {
-                _console.OnActivate   -= PauseForConsole;
-                _console.OnDeactivate -= ResumeAfterConsole;
+                Debug.LogError("[GuildmasterCommands] - витрина боёв: не разведён UXML " +
+                               "(поле _battleBrowserUxml на объекте dev-команд)", this);
+                return;
             }
+
+            if (_battleBrowser != null && _navigator.AnyScreen(s => ReferenceEquals(s, _battleBrowser)))
+            {
+                _navigator.Remove(_battleBrowser);
+                return;
+            }
+
+            // Полки взаимоисключающи: открытая консоль уходит, иначе две простыни лягут внахлёст.
+            _menuRouter?.CloseDevOverlays();
+
+            if (_battleBrowser == null)
+                _battleBrowser = new DevBattleBrowserScreen(_battleBrowserUxml, _registry, _content);
+            else
+                _battleBrowser.Refresh();   // список мог измениться, пока витрина была закрыта
+
+            _navigator.Push(_battleBrowser);
+        }
+
+        // Консоль показана/снята — тот же смысл, что раньше несли OnActivate/OnDeactivate у QFSW.
+        private void OnConsoleVisibilityChanged(bool visible)
+        {
+            if (visible) PauseForConsole();
+            else ResumeAfterConsole();
         }
 
         // Пауза сима, которая была ДО открытия консоли. Консоль паузой не владеет — она её одалживает:
@@ -129,8 +278,8 @@ namespace Guildmaster.DevTools
         private void PauseForConsole()
         {
             _consoleOpen = true;
-            _pausedBeforeConsole = _simulation != null && _simulation.IsPaused;
-            _simulation?.SetPaused(true);
+            _pausedBeforeConsole = SimOrNull != null && Sim.IsPaused;
+            SimOrNull?.SetPaused(true);
             if (_input != null) _input.SetSuppressed(Core.Input.InputSuppressSource.DevConsole, true);
         }
 
@@ -141,8 +290,8 @@ namespace Guildmaster.DevTools
             // по определению, и бой начинает кнопка «Начать», а не закрытая консоль. Фазу спрашиваем, а не
             // помним: команда могла увести игрока в расстановку уже ПОСЛЕ открытия консоли — ровно так и
             // делает gm_proving_grounds.
-            bool deploying = _session != null && _session.Phase == Data.Definitions.BattlePhase.Deployment;
-            _simulation?.SetPaused(deploying || _pausedBeforeConsole);
+            bool deploying = Session != null && Session.Phase == Data.Definitions.BattlePhase.Deployment;
+            SimOrNull?.SetPaused(deploying || _pausedBeforeConsole);
             if (_input != null) _input.SetSuppressed(Core.Input.InputSuppressSource.DevConsole, false);
         }
 
@@ -161,313 +310,138 @@ namespace Guildmaster.DevTools
             if (!_consoleOpen && kb.rKey.wasPressedThisFrame)
             {
                 if (_lastBattleSetup != null) RestartLastBattle();
-                else if (_session == null || !_session.RestartInPlace()) RestartLastBattle(); // варнинг «нет боя»
+                else if (Session == null || !Session.RestartInPlace()) RestartLastBattle(); // варнинг «нет боя»
             }
         }
 
+        /// <summary>
+        /// Объявить команды модуля в наборе. Тела остаются обычными методами: реестр хранит делегат, а не
+        /// рефлексию, поэтому команда — это одна строка объявления рядом с методом, который она зовёт.
+        /// </summary>
+        /// <remarks>
+        /// Команды ничего не возвращают строкой: их отчёты идут через <c>Debug.Log</c>, а консоль слушает
+        /// лог — то есть вывод виден и в ней, и в Console редактора, без дублирования текста в двух местах.
+        /// </remarks>
+        private void RegisterCommands(DevCommandSet set)
+        {
+            // --- Бой: запустить, закончить, повторить ---
+
+            // Команд запуска боя осталась ОДНА (решение Макса 02.08.2026). Снесены spawn, crowd, kit,
+            // mirror, battle, preset, battles: все они ставили бой в обход мероприятия — спавнили состав
+            // мимо расстановки, которая площадкой владеет. Работали они, пока боевой скоуп был вечным;
+            // с рождением боя по требованию каждая стала гонкой «заказ раньше владельца». Балансные
+            // прогоны (mirror, crowd) живут в SimBench, где им и место — там не нужен ни показ, ни арена.
+            set.Add("bones", "1×1 дуэль скелетных дев-бойцов (смоук вида юнита)",
+                _ => { SpawnBoneDuel(); return null; });
+
+            set.Add("win", "Мгновенно завершить бой победой команды A",
+                _ => { SkipBattle(); return null; });
+
+            set.Add("restart", "Перезапустить последний бой на месте",
+                _ => { RestartLastBattle(); return null; });
+
+            set.Add("reload", "Перезагрузить сцену целиком (жёсткий сброс)",
+                _ => { Restart(); return null; });
+
+            set.Add("grounds", "Уйти на Ристалище: свернуть забег и открыть площадку",
+                _ => { ProvingGrounds(); return null; });
+
+            // --- Правка состояния ---
+
+            set.Add("hp", "Выставить HP юниту по id",
+                a => { SetHp(a.GetInt(0), a.GetFloat(1)); return null; },
+                new DevParam("unitId", DevParamType.Int), new DevParam("value", DevParamType.Float));
+
+            set.Add("seed", "Зафиксировать сид боя (действует до старта симуляции)",
+                a => { SetRngSeed(a.GetULong(0)); return null; }, new DevParam("seed", DevParamType.Int));
+
+            set.Add("tuning", "Перечитать SimTuning из ассета и применить к бою (бой станет TAINTED)",
+                _ => { TuningRebake(); return null; });
+
+            // --- Расталкивание (живая правка) ---
+
+            set.Add("sep", "Показать параметры расталкивания",
+                _ => { SepInfo(); return null; });
+
+            set.Add("sep_radius", "Радиус тела на единицу Size",
+                a => { SepRadius(a.GetFloat(0)); return null; }, new DevParam("value", DevParamType.Float));
+
+            set.Add("sep_strength", "Сила расталкивания за тик",
+                a => { SepStrength(a.GetFloat(0)); return null; }, new DevParam("value", DevParamType.Float));
+
+            set.Add("sep_iters", "Проходов расталкивания за тик",
+                a => { SepIters(a.GetInt(0)); return null; }, new DevParam("count", DevParamType.Int));
+
+            set.Add("sep_ally", "Мягкость расталкивания своих (0..1)",
+                a => { SepAlly(a.GetFloat(0)); return null; }, new DevParam("scale", DevParamType.Float));
+
+            // --- Что видно на экране ---
+
+            set.Add("draw", "Вкл/выкл отладочную отрисовку боя",
+                _ => { ToggleDebugDraw(); return null; });
+
+            set.Add("rings", "Вкл/выкл кольца статусов над юнитами",
+                _ => { ToggleStatusOverlay(); return null; });
+
+            set.Add("overlay", "Источник оверлеев: показанный кадр или живой сим",
+                _ => { ToggleOverlaySource(); return null; });
+        }
+
         /// <summary>Зафиксировать сид боя для детерминизм-отладки (только до старта).</summary>
-        [Command("gm_rng_seed", "Зафиксировать сид боя (до старта симуляции)")]
         public void SetRngSeed(ulong seed)
         {
             Debug.Log($"[GuildmasterCommands] - gm_rng_seed {seed}: изменение сида поддерживается только через CombatLifetimeScope до запуска");
         }
 
-        /// <summary>Поднять тест-бой N×M юнитов с заданными HP.</summary>
-        [Command("gm_spawn_battle", "Запустить тест-бой N юнитов за каждую сторону")]
-        public void SpawnBattle(int countPerTeam = 2)
-        {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-
-            ResetForNewBattle();
-
-            for (int i = 0; i < countPerTeam; i++)
-            {
-                _simulation.EnqueueUnitSpawn(MakeDummy(0, new Vector2(-5f + i, i)));
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2( 5f - i, i)));
-            }
-
-            _lastBattleSetup = self => self.SpawnBattle(countPerTeam);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_battle: добавлено {countPerTeam}×2 болванчиков");
-        }
-
-        /// <summary>
-        /// Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия).
-        /// Спавнит сеткой с шагом МЕНЬШЕ диаметра тела → юниты сразу перекрываются и разъезжаются; высокий
-        /// HP и низкий урон держат толпу живой, чтобы видеть spacing и при сшибке блобов в центре.
-        /// Крути на глаз <c>SimTuningConfig</c> (Strength / Iterations / BodyRadiusPerSize) или live gm_sep_*,
-        /// перезапуск на месте — R. Параметр <paramref name="size"/> — «толщина» тел (Size-стат).
-        /// </summary>
-        [Command("gm_spawn_crowd", "Плотный клубок обеих команд для теста коллизии/расталкивания")]
-        public void SpawnCrowd(int perTeam = 8)
-        {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-
-            ResetForNewBattle();
-
-            int cols = Mathf.Max(1, Mathf.CeilToInt(Mathf.Sqrt(perTeam)));
-            const float spacing = 0.15f; // << диаметра тела (~0.5 при Size 1) → перекрытие на старте
-
-            for (int i = 0; i < perTeam; i++)
-            {
-                int cx = i % cols, cy = i / cols;
-                float ox = (cx - (cols - 1) * 0.5f) * spacing;
-                float oy = (cy - (cols - 1) * 0.5f) * spacing;
-                _simulation.EnqueueUnitSpawn(MakeDummy(0, new Vector2(-3f + ox, oy)));
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2( 3f + ox, oy)));
-            }
-
-            _lastBattleSetup = self => self.SpawnCrowd(perTeam);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_crowd: {perTeam}×2 болванчиков, плотный клубок");
-        }
-
         /// <summary>Показать текущие параметры расталкивания (SeparationSystem).</summary>
-        [Command("gm_sep", "Показать параметры расталкивания (радиус/сила/итерации)")]
         public void SepInfo()
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            var s = _simulation.Separation;
+            if (!SimReady()) return;
+            var s = Sim.Separation;
             Debug.Log($"[GuildmasterCommands] - gm_sep: BodyRadiusPerSize={s.BodyRadiusPerSize} (⌀ при Size1 = {s.BodyRadiusPerSize * 2f}), Strength={s.Strength}, Iterations={s.Iterations}, SameTeamScale={s.SameTeamScale}");
         }
 
         /// <summary>Радиус тела на единицу Size (0.25 = ⌀0.5 при Size1). Крути под ширину спрайта.</summary>
-        [Command("gm_sep_radius", "Радиус тела на единицу Size (live)")]
         public void SepRadius(float radiusPerSize)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            _simulation.Separation.BodyRadiusPerSize = Mathf.Max(0.01f, radiusPerSize);
+            if (!SimReady()) return;
+            Sim.Separation.BodyRadiusPerSize = Mathf.Max(0.01f, radiusPerSize);
             SepInfo();
         }
 
         /// <summary>Сила расталкивания за тик (0..1; 1 = жёстко, мягче = плавнее). Live.</summary>
-        [Command("gm_sep_strength", "Сила расталкивания за тик (live)")]
         public void SepStrength(float strength)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            _simulation.Separation.Strength = Mathf.Clamp(strength, 0f, 1f);
+            if (!SimReady()) return;
+            Sim.Separation.Strength = Mathf.Clamp(strength, 0f, 1f);
             SepInfo();
         }
 
         /// <summary>Проходов расталкивания за тик (больше = жёстче/дороже). Live.</summary>
-        [Command("gm_sep_iters", "Проходов расталкивания за тик (live)")]
         public void SepIters(int iterations)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            _simulation.Separation.Iterations = Mathf.Max(1, iterations);
+            if (!SimReady()) return;
+            Sim.Separation.Iterations = Mathf.Max(1, iterations);
             SepInfo();
         }
 
         /// <summary>Множитель расталкивания СВОИХ (0..1): меньше = свои расступаются мягче, задние просачиваются к фронту. Live.</summary>
-        [Command("gm_sep_ally", "Мягкость расталкивания своих (0..1, live)")]
         public void SepAlly(float scale)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            _simulation.Separation.SameTeamScale = Mathf.Clamp01(scale);
+            if (!SimReady()) return;
+            Sim.Separation.SameTeamScale = Mathf.Clamp01(scale);
             SepInfo();
         }
 
-        /// <summary>Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4.</summary>
-        [Command("gm_spawn_spearman", "Заспавнить Железного копейщика против кластера (срез шага 4)")]
-        public void SpawnSpearman(int enemies = 3)
-        {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            RelicData relic = DevRelic("relic.iron_spearman");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Копейщик слева — через фабрику (реальный путь сборки: статы/линейная АА/активка/AI-профиль/мана).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-5f, 0f)));
-
-            // Кластер болванчиков справа — чтобы линейная АА задевала нескольких и сработало условие «≥2 в радиусе».
-            for (int i = 0; i < enemies; i++)
-            {
-                float y = (i - (enemies - 1) * 0.5f) * 0.8f; // компактно по вертикали
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(5f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnSpearman(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_spearman: копейщик vs {enemies} болванчиков");
-        }
-
-        /// <summary>Заспавнить «Светлого пастыря» (team 0) + раненых союзников против болванчиков — срез §10.1.</summary>
-        [Command("gm_spawn_shepherd", "Заспавнить Светлого пастыря + раненых союзников против болванчиков (срез §10.1)")]
-        public void SpawnShepherd(int allies = 2)
-        {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            RelicData relic = DevRelic("relic.light_shepherd");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Пастырь в тылу слева — через фабрику (реальный путь: AI-профиль Heal, хил-снаряд, активка «Длань жизни»).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
-
-            // Раненые союзники-болванчики (team 0) на фронте: старт на 40% HP — видно выбор раненого и хил-снаряды.
-            for (int i = 0; i < allies; i++)
-            {
-                float y = (i - (allies - 1) * 0.5f) * 1.2f;
-                var ally = MakeDummy(0, new Vector2(-3f, y));
-                ally.CurrentHP = ally.Stats.Get(StatType.MaxHP) * 0.4f; // 40% — есть кого лечить
-                _simulation.EnqueueUnitSpawn(ally);
-            }
-
-            // Пара болванчиков справа (team 1) — чтобы союзники завязли в бою и просаживались под «Длань».
-            for (int i = 0; i < 2; i++)
-            {
-                float y = (i - 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnShepherd(allies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_shepherd: пастырь + {allies} раненых союзника vs 2 болванчика");
-        }
-
-        /// <summary>Заспавнить «Криоманта» (team 0) против кластера болванчиков (team 1) — срез §10.2.</summary>
-        [Command("gm_spawn_cryomancer", "Заспавнить Криоманта против кластера болванчиков (срез §10.2)")]
-        public void SpawnCryomancer(int enemies = 3)
-        {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            RelicData relic = DevRelic("relic.cryomancer");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Криомант в тылу слева — через фабрику (реальный путь: on-hit «Заморозка», масс-стан «Ледяные оковы», AI PreferUntagged).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
-
-            // Кластер болванчиков справа: пока Криомант раздаёт «Заморозку», их накапливается ≥2 → срабатывают «Ледяные оковы».
-            for (int i = 0; i < enemies; i++)
-            {
-                float y = (i - (enemies - 1) * 0.5f) * 1f;
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnCryomancer(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_cryomancer: криомант vs {enemies} болванчиков");
-        }
-
-        /// <summary>Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10.3.</summary>
-        [Command("gm_spawn_defender", "Заспавнить Надёжного защитника против ударных болванчиков (срез §10.3)")]
-        public void SpawnDefender(int enemies = 3)
-        {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            RelicData relic = DevRelic("relic.defender");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Защитник по центру-слева — через фабрику (реальный путь: пассив «Оплот» pre-damage, HighestThreat, ульта).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-4f, 0f)));
-
-            // Болванчики справа бьют защитника. «Оплот» поднимает щит на ЛЮБОЙ удар (PassiveTrigger.AnyHit, внутр. КД 4с).
-            for (int i = 0; i < enemies; i++)
-            {
-                float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnDefender(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_defender: защитник vs {enemies} ударных болванчиков");
-        }
-
-        /// <summary>Заспавнить «Лесного следопыта» (team 0) против кластера болванчиков (team 1) — срез §10.4.</summary>
-        [Command("gm_spawn_ranger", "Заспавнить Лесного следопыта против кластера болванчиков (срез §10.4)")]
-        public void SpawnRanger(int enemies = 3)
-        {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            RelicData relic = DevRelic("relic.ranger");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Следопыт слева — через фабрику (реальный путь: кайт, стрельба на ходу, «Метка охотника» с переносом).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
-
-            // Кластер болванчиков справа лезет в ближний бой — видно кайт (отход) и стрельбу на ходу.
-            for (int i = 0; i < enemies; i++)
-            {
-                float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnRanger(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_ranger: следопыт vs {enemies} болванчиков");
-        }
-
-        /// <summary>Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.</summary>
-        [Command("gm_spawn_assassin", "Заспавнить Скрытного убийцу против болванчиков (срез §10.5)")]
-        public void SpawnAssassin(int enemies = 3)
-        {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            RelicData relic = DevRelic("relic.assassin");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Убийца слева — через фабрику (реальный путь: пассивы «Скрытность» + «Изворотливость» из GrantedEffects,
-            // усиленный первый удар, негейт крупных ударов, рестелс после убийства).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-5f, 0f)));
-
-            // Болванчики справа. «Изворотливость» гейтит ЛЮБУЮ автоатаку независимо от размера урона (PassiveTrigger.AnyHit).
-            for (int i = 0; i < enemies; i++)
-            {
-                float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
-            }
-
-            _lastBattleSetup = self => self.SpawnAssassin(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_assassin: убийца vs {enemies} болванчиков");
-        }
-
-        /// <summary>Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10.6.</summary>
-        [Command("gm_spawn_monk", "Заспавнить Монаха вихря против болванчиков (срез §10.6)")]
-        public void SpawnMonk(int enemies = 4)
-        {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            RelicData relic = DevRelic("relic.whirl_monk");
-            if (relic == null) return;
-
-            ResetForNewBattle();
-
-            // Монах слева — через фабрику (реальный путь: рывок → фиксация → отбрасывание → телепорт, §10.6).
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
-
-            // Болванчики справа — раскиданы ХАОТИЧНО (детерминированный хэш по индексу, чтобы R повторял ту же
-            // расстановку), далеко друг от друга: видно заход к конкретной цели и УГЛОВОЙ цепной толчок «ядра»,
-            // а не ровный ряд. x∈[2,8], y∈[-3.5,3.5].
-            for (int i = 0; i < enemies; i++)
-            {
-                float hx = Frac(Mathf.Sin((i + 1) * 12.9898f) * 43758.5453f);
-                float hy = Frac(Mathf.Sin((i + 1) * 78.233f)  * 43758.5453f);
-                var pos = new Vector2(2f + hx * 6f, -3.5f + hy * 7f);
-                _simulation.EnqueueUnitSpawn(MakeDummy(1, pos));
-            }
-
-            _lastBattleSetup = self => self.SpawnMonk(enemies);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков (хаос)");
-        }
-
-        // Дробная часть — детерминированный «хэш» [0,1) для хаотичной, но воспроизводимой расстановки.
-        private static float Frac(float v) => v - Mathf.Floor(v);
 
         /// <summary>Выставить HP юниту по ID.</summary>
-        [Command("gm_set_hp", "Выставить HP юниту по ID")]
         public void SetHp(int unitId, float hp)
         {
-            if (_simulation == null) return;
+            if (SimOrNull == null) return;
 
-            for (int i = 0; i < _simulation.Units.Count; i++)
+            for (int i = 0; i < Sim.Units.Count; i++)
             {
-                var unit = _simulation.Units[i];
+                var unit = Sim.Units[i];
                 if (unit.Id == unitId)
                 {
                     unit.CurrentHP = Mathf.Max(0f, hp);
@@ -480,14 +454,13 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Мгновенно завершить бой (убить всех из команды 1).</summary>
-        [Command("gm_skip_battle", "Мгновенно завершить бой в пользу команды A")]
         public void SkipBattle()
         {
-            if (_simulation == null) return;
+            if (SimOrNull == null) return;
 
-            for (int i = 0; i < _simulation.Units.Count; i++)
+            for (int i = 0; i < Sim.Units.Count; i++)
             {
-                var unit = _simulation.Units[i];
+                var unit = Sim.Units[i];
                 if (unit.Team == 1) unit.CurrentHP = -1f;
             }
 
@@ -495,7 +468,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Перезагрузить боевую сцену для нового прогона (бой одноразовый: после конца loop останавливается).</summary>
-        [Command("gm_restart", "Перезапустить бой (перезагрузка сцены)")]
         public void Restart()
         {
             Scene active = SceneManager.GetActiveScene();
@@ -507,7 +479,6 @@ namespace Guildmaster.DevTools
         /// R: перезапустить ПОСЛЕДНИЙ бой НА МЕСТЕ — сброс сима (юниты/снаряды/исход) + повтор последнего сетапа.
         /// Сцену и камеру НЕ перезагружаем: заново начинается только бой (dev-итерация).
         /// </summary>
-        [Command("gm_restart_battle", "Перезапустить последний бой на месте (без перезагрузки сцены)")]
         public void RestartLastBattle()
         {
             if (_lastBattleSetup == null)
@@ -520,7 +491,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Включить/выключить Shapes debug-слой.</summary>
-        [Command("gm_toggle_debug_draw", "Вкл/выкл debug-отрисовку боя")]
         public void ToggleDebugDraw()
         {
             if (_debugDraw == null) { Debug.LogWarning("[GuildmasterCommands] - CombatDebugDraw не найден"); return; }
@@ -529,7 +499,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Включить/выключить dev-слой статус-колец (метка/стан/щит/заморозка/усиление).</summary>
-        [Command("gm_toggle_status", "Вкл/выкл dev-подсветку статусов юнитов (кольца)")]
         public void ToggleStatusOverlay()
         {
             var overlay = FindAnyObjectByType<CombatStatusOverlay>(FindObjectsInactive.Include);
@@ -538,14 +507,25 @@ namespace Guildmaster.DevTools
             Debug.Log($"[GuildmasterCommands] - gm_toggle_status: {(overlay.IsEnabled ? "ON" : "OFF")}");
         }
 
+        /// <summary>
+        /// Переключить источник dev-оверлеев: показанный кадр (по умолчанию) или живой сим. Сим впереди
+        /// картинки на окно опережения, поэтому в его режиме кольца и радиусы разъезжаются с боем —
+        /// это правда модели, а не баг, и подпись на экране про это говорит.
+        /// </summary>
+        public void ToggleOverlaySource()
+        {
+            if (OverlayModeOrNull == null) { Debug.LogWarning("[GuildmasterCommands] - DevOverlayMode не найден (нет активного боевого скоупа)"); return; }
+            DevOverlaySource source = OverlayModeOrNull.Toggle();
+            Debug.Log($"[GuildmasterCommands] - gm_overlay_source: {source} — {OverlayModeOrNull.Describe()}");
+        }
+
         /// <summary>Пересобрать SimTuning из SO и применить к идущему бою (QC-тюнинг без рекомпиляции).</summary>
-        [Command("gm_tuning_rebake", "Пересобрать SimTuning из SO и применить к бою (бой становится TAINTED)")]
         public void TuningRebake()
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: нет активного боя"); return; }
+            if (SimOrNull == null) { Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: нет активного боя"); return; }
             if (_simTuningConfig == null) { Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: SimTuningConfig не назначен"); return; }
 
-            _simulation.RebakeTuning(_simTuningConfig.ToSnapshot());
+            Sim.RebakeTuning(_simTuningConfig.ToSnapshot());
             Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: тюнинг применён к бою → battle TAINTED (реплей невалиден, вики «13» §4.1)");
         }
 
@@ -557,8 +537,8 @@ namespace Guildmaster.DevTools
             // ResetBattle() шлёт OnBattleReset → презентация снимает виды/цифры и сбрасывает slowmo/тряску
             // (CombatPresenter.HandleBattleReset → TimeScaleService.Reset). Ручной Time.timeScale тут больше не
             // нужен и вреден: перетёр бы выбранную игроком скорость (единый писатель — TimeScaleService).
-            _simulation?.ResetBattle();
-            _factory?.ResetIds();
+            SimOrNull?.ResetBattle();
+            Factory?.ResetIds();
         }
 
         // Единый dev-болванчик: собирается фабрикой из SO «enemy.training_dummy» (реальный путь — статы,
@@ -576,8 +556,49 @@ namespace Guildmaster.DevTools
         /// принимает <c>DeploymentController</c>: если отряда нет (мы в меню), он ставит состав из
         /// <c>ProvingGroundsConfig</c>.
         /// </remarks>
-        [Command("gm_proving_grounds", "Уйти на Ристалище: свернуть забег и открыть площадку вне забега")]
         public void ProvingGrounds() => RequestProvingGrounds();
+
+        /// <summary>
+        /// Поставить дев-бой на Ристалище: заказать площадке состав и уйти на неё. Возвращает false, если
+        /// площадки в этой сборке нет (standalone dev-арена без Root) — тогда зовущий ставит бой сам.
+        /// </summary>
+        /// <remarks>
+        /// Почему команда НЕ спавнит бойцов сама. На площадке составом распоряжается расстановка: она держит
+        /// его в слотах, пересобирает превью при каждом перетаскивании и владеет паузой, которую снимает
+        /// кнопка «Начать». Прямой спавн в симуляцию проигрывал ей трижды — юниты стирались первой же
+        /// пересборкой, сброс боя снимал чужую паузу (бой стартовал сам), а слоты оставались от прежнего
+        /// состава. Плюс порядок: событие «площадка открылась» приходит СИНХРОННО внутри запроса входа,
+        /// поэтому отложенный спавн, записанный после запроса, не исполнялся никогда — команда молча не
+        /// делала ничего, и игрок видел штатный расклад площадки. Заказ снимает все четыре разом: он уходит
+        /// ДО входа, а ставит бойцов тот, кто ими и так распоряжается.
+        /// </remarks>
+        private bool StageOnProvingGrounds(System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn> mine,
+            System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn> theirs, string what)
+        {
+            if (_groundsSetupPub == null || _provingGroundsPub == null) return false;
+
+            var order = new Data.Definitions.ProvingGroundsSetupRequest(mine, theirs, what);
+
+            // Заказали бой — консоли на экране больше делать нечего: её открывали ради этой команды, а
+            // смотреть на бой сквозь простыню логов нельзя. Закрываем ЗДЕСЬ, в единственной точке заказа,
+            // поэтому одинаково уходят и набранная команда, и выбор из витрины F3.
+            _menuRouter?.CloseDevOverlays();
+
+            // Уже на площадке — слушатель заказа существует, шлём событием.
+            if (OnProvingGrounds)
+            {
+                _groundsSetupPub.Publish(order);
+                return true;
+            }
+
+            // Площадки нет — событие слать НЕКОМУ: расстановка родится вместе с ней. Поэтому заказ
+            // кладём мероприятию как параметр входа, а сам вход просим у верхнего цикла: ему ещё меню
+            // закрывать. Прежде заказ публиковался до входа и терялся молча — команда «работала», а
+            // игрок получал пустую площадку (наход. Макса 02.08.2026).
+            _activities?.OrderGroundsRoster(order);
+            RequestProvingGrounds();
+            return true;
+        }
 
         /// <summary>
         /// Запросить Ристалище. Возвращает false, если запрашивать некому (dev-арена без Root-скоупа).
@@ -600,92 +621,111 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>
-        /// Зеркальный отряд 4v4 из реальных китов — ровно тот бой, на котором стенд поймал преимущество
-        /// стороны. Составы, роли и позиции обеих команд отражены по оси X, поэтому честный исход —
-        /// ничья: любой перевес означает, что порядок обработки решает бой за бойцов.
+        /// 1×1 зеркально на дев-дуэлянте (<c>enemy.bone_dev</c>) — смотреть скелетный визуал в живом бою.
+        /// Кит у него ЗАЩИТНИКА (Оплот + «Решительный удар»): смотреть скелетную анимацию на бойце без
+        /// активок было нечего — ни каста, ни телеграфа щита, ради которого поза блока и делается. Отличие
+        /// от Защитника ровно одно: HP 800 вместо 3000, иначе дуэль двух танков идёт полторы минуты и до
+        /// смерти с осколками дело не доходит.
+        /// У него СВОЙ контент-ассет со ссылкой на костяной вид, поэтому команда работает всегда и ничего не
+        /// подменяет в игровом контенте: раньше костяной вид приходилось руками вписывать в <c>relic.base</c>,
+        /// и пока подмена стояла, костяным становился каждый бой базовой реликвии.
+        /// Тот же вход на Ристалище, что у <see cref="SpawnMirror"/>.
         /// </summary>
-        [Command("gm_spawn_mirror", "Зеркальный отряд 4v4 из реальных китов (проверка преимущества стороны)")]
-        public void SpawnMirror()
+        public void SpawnBoneDuel()
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-
-            // Смотреть бой из-под главного меню нельзя — сначала уводим на площадку, а спавним, когда она
-            // откроется (вход асинхронный: меню закрывается, отряд материализуется). Если мы уже на
-            // Ристалище или в dev-арене без Root — ставим бой прямо сейчас.
-            if (!_onProvingGrounds && _provingGroundsPub != null && RequestProvingGrounds())
+            if (_boneDuelist == null)
             {
-                _pendingOnProvingGrounds = self => self.SpawnMirrorNow();
+                Debug.LogError("[GuildmasterCommands] - юнита 'enemy.bone_dev' нет в контент-БД → дуэль не запущена");
                 return;
             }
 
-            SpawnMirrorNow();
-        }
+            ResolveDuelEdges(out Vector2 left, out Vector2 right);
+            var mine   = new System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn>
+                { new Data.Definitions.ProvingGroundsSpawn(_boneDuelist, left) };
+            var theirs = new System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn>
+                { new Data.Definitions.ProvingGroundsSpawn(_boneDuelist, right) };
 
-        private void SpawnMirrorNow()
-        {
-            // Тот же строй, что у командного бенча: фронт вплотную, тыл за спинами.
-            (string id, float x, float y)[] squad =
-            {
-                ("relic.defender",        2.2f, -0.6f),
-                ("relic.flame_swordsman", 2.2f,  0.6f),
-                ("relic.cryomancer",      4.4f, -0.6f),
-                ("relic.light_shepherd",  4.4f,  0.6f),
-            };
+            _lastBattleSetup = self => self.SpawnBoneDuel();
+            string view = _boneDuelist.ViewPrefab != null ? _boneDuelist.ViewPrefab.name : "null";
 
-            var relics = new RelicData[squad.Length];
-            for (int i = 0; i < squad.Length; i++)
+            if (StageOnProvingGrounds(mine, theirs, "gm_spawn_bone_duel"))
             {
-                relics[i] = DevRelic(squad[i].id);
-                if (relics[i] == null) return;
+                Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: дуэль заказана площадке " +
+                          $"({left.x:0.##} vs {right.x:0.##}, дистанция {(right.x - left.x):0.##}; ViewPrefab={view}). " +
+                          "Бой начинает кнопка «Начать».");
+                return;
             }
 
+            // Площадки нет (standalone dev-арена) — владельца состава тоже, ставим бой сами.
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
+
             ResetForNewBattle();
-
-            // Порядок спавна — вся левая команда, затем вся правая: так же, как в бою и на стенде.
-            for (int i = 0; i < squad.Length; i++)
-                _simulation.EnqueueUnitSpawn(_factory.Create(relics[i], null, 0, new Vector2(-squad[i].x, squad[i].y)));
-            for (int i = 0; i < squad.Length; i++)
-                _simulation.EnqueueUnitSpawn(_factory.Create(relics[i], null, 1, new Vector2(squad[i].x, squad[i].y)));
-
-            _lastBattleSetup = self => self.SpawnMirror();
-            Debug.Log("[GuildmasterCommands] - gm_spawn_mirror: зеркальный отряд 4v4 " +
-                      "(Защитник, Огненный мечник, Криомант, Пастырь). Честный исход — ничья.");
+            Sim.EnqueueUnitSpawn(Factory.Create(_boneDuelist, null, 0, left));
+            Sim.EnqueueUnitSpawn(Factory.Create(_boneDuelist, null, 1, right));
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: дуэль поставлена на dev-арене " +
+                      $"(дистанция {(right.x - left.x):0.##}; ViewPrefab={view})");
         }
 
         /// <summary>
-        /// 1×1 BaseRelic зеркально — смотреть bone-визуал в бою (временно на relic.base → UnitView_BoneStandart).
-        /// Тот же вход на Ристалище, что у <see cref="SpawnMirror"/>.
+        /// Крайние точки своих зон расстановки — дуэлянты встают максимально далеко друг от друга. Дистанция
+        /// здесь не украшение: подход, спринт и атака с разбега видны только тогда, когда бойцам есть куда
+        /// разбегаться. Зоны читаются из снапшота арены, а не задаются числом: на другой арене «край» другой.
         /// </summary>
-        [Command("gm_spawn_bone_duel", "1×1 BaseRelic vs BaseRelic (bone UnitView smoke)")]
-        public void SpawnBoneDuel()
+        private void ResolveDuelEdges(out Vector2 left, out Vector2 right)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            const float margin = 0.6f;   // запас от кромки: юнит не должен влипать в границу зоны
+            const float fallbackX = 6f;  // бесконечное поле (dev-арена без авторинга) — разводим фиксированно
 
-            if (!_onProvingGrounds && _provingGroundsPub != null && RequestProvingGrounds())
+            float y = 0f;
+            float xLeft = float.NaN, xRight = float.NaN;
+
+            if (_arena != null)
             {
-                _pendingOnProvingGrounds = self => self.SpawnBoneDuelNow();
-                return;
+                y = _arena.Bounds.Center.y;
+                for (int i = 0; i < _arena.Zones.Count; i++)
+                {
+                    Core.Arena.DeploymentZone zone = _arena.Zones[i];
+                    float min = zone.Area.Center.x - zone.Area.HalfSize.x + margin;
+                    float max = zone.Area.Center.x + zone.Area.HalfSize.x - margin;
+
+                    // Команда 0 живёт в зонах игрока (слева), команда 1 — в зонах врага (справа).
+                    if (zone.Side == Core.Arena.DeploymentSide.Player)
+                        xLeft = float.IsNaN(xLeft) ? min : Mathf.Min(xLeft, min);
+                    else
+                        xRight = float.IsNaN(xRight) ? max : Mathf.Max(xRight, max);
+                }
             }
 
-            SpawnBoneDuelNow();
+            // Зон нет — берём кромки поля; поле бесконечное (Unbounded) — фиксированный разнос.
+            if (float.IsNaN(xLeft) || float.IsNaN(xRight))
+            {
+                float halfWidth = _arena != null ? _arena.Bounds.Rect.HalfSize.x : float.PositiveInfinity;
+                float edge = float.IsFinite(halfWidth) ? Mathf.Max(1f, halfWidth - margin) : fallbackX;
+                if (float.IsNaN(xLeft))  xLeft  = -edge;
+                if (float.IsNaN(xRight)) xRight =  edge;
+            }
+
+            left  = new Vector2(xLeft,  y);
+            right = new Vector2(xRight, y);
         }
 
-        private void SpawnBoneDuelNow()
+        // Гейты боевых команд. Боя может не быть — это законно (хаб, карта, меню), поэтому команда сама
+        // открывает дев-арену через Sim. Не сложиться это может только если мира нет вовсе: тогда бой
+        // открывать некому, и об этом надо сказать прямо.
+        private bool SimReady()
         {
-            RelicData relic = DevRelic("relic.base");
-            if (relic == null) return;
+            if (Sim != null) return true;
+            Debug.LogWarning("[GuildmasterCommands] - арену открыть не удалось: мира нет (standalone-сцена " +
+                             "без WorldLifetimeScope) или у мира не задан префаб боевого скоупа.");
+            return false;
+        }
 
-            ResetForNewBattle();
-
-            const float x = 2.2f;
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, 0, new Vector2(-x, 0f)));
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, 1, new Vector2(x, 0f)));
-
-            _lastBattleSetup = self => self.SpawnBoneDuel();
-            string view = relic.ViewPrefab != null ? relic.ViewPrefab.name : "null";
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: BaseRelic 1×1 (ViewPrefab={view})");
+        private bool FactoryReady()
+        {
+            if (Factory != null) return true;
+            Debug.LogWarning("[GuildmasterCommands] - фабрика юнитов недоступна (см. сообщение об арене выше).");
+            return false;
         }
 
         private RelicData DevRelic(string id)
@@ -695,6 +735,6 @@ namespace Guildmaster.DevTools
             return null;
         }
 
-        private RuntimeUnit MakeDummy(int team, Vector2 pos) => _factory.Create(_dummyEnemy, null, team, pos);
+        private RuntimeUnit MakeDummy(int team, Vector2 pos) => Factory.Create(_dummyEnemy, null, team, pos);
     }
 }

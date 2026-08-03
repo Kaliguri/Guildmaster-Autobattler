@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54a454cf52a3fe4ab1208c27c42d5ac, type: 3}
   m_Name: CombatFeelConfig
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Design.CombatFeelConfig
+  _palette: {fileID: 11400000, guid: f42219bf529da2c4d909a76d914ab971, type: 2}
   _enableContactDust: 1
   _enableHitNudge: 1
   _enableFacingFlipSquash: 1
@@ -25,6 +26,13 @@ MonoBehaviour:
   _enableFloatingTextArc: 1
   _enableHpBarPunch: 1
   _enableHealFlash: 1
+  _enableCastGlow: 1
+  _enableBlockGlow: 1
+  _enableHitFlash: 1
+  _enableHitSquash: 1
+  _enableTelegraphFlash: 1
+  _enableGuardPose: 1
+  _enableDeathShatter: 1
   _contactDustCooldown: 0.35
   _hitNudgeDistance: 0.08
   _hitNudgeDuration: 0.12
@@ -34,12 +42,6 @@ MonoBehaviour:
   _targetAcquireDuration: 0.08
   _idleBreathAmplitude: 0.02
   _idleBreathPeriod: 2.2
-  _flashPhysical: {r: 1, g: 1, b: 1, a: 1}
-  _flashElemental: {r: 1, g: 0.55, b: 0.25, a: 1}
-  _flashTrue: {r: 1, g: 0.95, b: 0.55, a: 1}
-  _flashPoison: {r: 0.45, g: 1, b: 0.4, a: 1}
-  _flashLight: {r: 1, g: 0.95, b: 0.75, a: 1}
-  _flashDark: {r: 0.55, g: 0.35, b: 0.85, a: 1}
   _anticipationDistance: 0.06
   _anticipationDuration: 0.1
   _lungeDistance: 0.1
@@ -48,19 +50,46 @@ MonoBehaviour:
   _deathAnticipateDuration: 0.1
   _deathAnticipateShake: 0.06
   _numberArcGravity: 2.2
-  _healFlashColor: {r: 0.55, g: 1, b: 0.65, a: 1}
-  _healFlashPeak: 0.5
-  _castOutlineDuration: 0.45
+  _healFlashPeak: 1
+  _castOutlineDuration: 0
   _castOutlineStrength: 0.9
+  _castGlowStrength: 1
+  _castGlowBloomIntensity: 2.5
+  _castGlowChargeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _castGlowRelease: 0.18
+  _castGlowPulseRise: 0.06
+  _castGlowFlatness: 0
   _lowHpThreshold: 0.25
   _lowHpPulsePeriod: 0.85
   _lowHpPulseAmount: 0.5
   _hpBarPunchAmount: 0.08
   _hpBarPunchDuration: 0.12
-  _flashColor: {r: 1, g: 1, b: 1, a: 1}
-  _flashDuration: 0.25
+  _flashDuration: 0.1
   _squashAmount: 0.2
-  _squashDuration: 0.25
+  _squashDuration: 0.14
   _hitstopMin: 0.02
   _hitstopMax: 0.09
   _hitstopFullFrac: 0.25
@@ -109,7 +138,7 @@ MonoBehaviour:
   _shatterTumble: 22
   _shatterUpBias: 0.35
   _shatterFlashOut: 0.12
-  _shardWhiteColor: {r: 2.6, g: 2.62, b: 2.75, a: 1}
+  _shardWhiteBrightness: 2.75
   _shardWhiteShare: 0.5
   _shatterFadePower: 0.55
   _shatterLifeVariance: 0.35
@@ -118,13 +147,13 @@ MonoBehaviour:
   _shatterLuma: 0.25
   _shatterHold: 0.05
   _shatterMinTimeScale: 0.4
-  _deathFlashColor: {r: 1.7, g: 1.7, b: 1.8, a: 1}
+  _deathFlashBrightness: 1.8
   _playDeathClip: 0
   _deathHologramDuration: 0.45
-  _hologramColor: {r: 0.3, g: 0.95, b: 1, a: 1}
   _hologramBodyAlpha: 0.45
   _hologramScanScale: 3
   _hologramScanAmount: 0.35
+  _killSlowLeadSeconds: 0.35
   _killSlowFactor: 0.4
   _killSlowRelease: 0.5
   _killSlowCooldown: 2
@@ -163,8 +192,59 @@ MonoBehaviour:
   _vfxImpactDust: {fileID: 11400000, guid: 9bb4d1bd7125aab44bda287808c647e8, type: 2}
   _vfxContactDust: {fileID: 11400000, guid: e38186879a79fef4b979ef4a9b28d040, type: 2}
   _vfxHeal: {fileID: 11400000, guid: 23b5496c9c572b249b5ac985ab2cc1b6, type: 2}
-  _vfxHitIntensityMin: 0.35
-  _vfxHitIntensityMax: 1
-  _vfxHitCountMin: 0.4
-  _vfxHitCountMax: 2.2
+  _vfxHitSizeMultMin: 0.7
+  _vfxHitSizeMultMax: 1
+  _hitSparkBase: 6
+  _hitSparkPerHp: 120
+  _hitSparkCap: 48
+  _hitSparkPrefabCount: 24
   _vfxCastBurst: {fileID: 11400000, guid: 0278f93e6a96dfa4ba9a886e862e9baa, type: 2}
+  _enableHitForm: 1
+  _enableHitFormBreakOnShield: 1
+  _vfxHitForm: {fileID: 11400000, guid: d82430ffaffd4a248a06944eb2963688, type: 2}
+  _hitFormUnitHeight: 1
+  _hitFormLife: 0.16
+  _hitFormGrowShare: 0.3
+  _hitFormTailLag: 0.4
+  _hitFormCoreWidth: 0.55
+  _hitFormCoreBrightness: 3.2
+  _hitFormSizeMax: 1.35
+  _hitFormSizeMin: 0.55
+  _enableBodyCuts: 1
+  _cutWidthUnits: 0.012
+  _cutLengthMinH: 0.09
+  _cutLengthMaxH: 0.2
+  _cutBrightness: 1.6
+  _enableSwingArc: 1
+  _vfxSwingArc: {fileID: 11400000, guid: ebe50167bd8259643881ef7aa77df7ec, type: 2}
+  _swingArcInnerShare: 0.4
+  _swingArcTailBias: 1.6
+  _swingArcFadeOut: 0.07
+  _hitFormSlash:
+    _lengthH: 1.4
+    _arcH: {x: 0.2, y: 0.28}
+    _halfThicknessH: {x: 0.055, y: 0.075}
+    _roughness: 0.3
+    _starRadiusH: 0
+    _starRays: {x: 7, y: 9}
+  _hitFormPierce:
+    _lengthH: 1.1
+    _arcH: {x: 0.015, y: 0.035}
+    _halfThicknessH: {x: 0.028, y: 0.036}
+    _roughness: 0.18
+    _starRadiusH: 0
+    _starRays: {x: 7, y: 9}
+  _hitFormBlunt:
+    _lengthH: 0.5
+    _arcH: {x: 0.09, y: 0.14}
+    _halfThicknessH: {x: 0.048, y: 0.066}
+    _roughness: 0.35
+    _starRadiusH: 0.35
+    _starRays: {x: 7, y: 9}
+  _hitFormBolt:
+    _lengthH: 0
+    _arcH: {x: 0, y: 0}
+    _halfThicknessH: {x: 0.024, y: 0.032}
+    _roughness: 0.12
+    _starRadiusH: 0
+    _starRays: {x: 7, y: 9}

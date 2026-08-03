@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Core.Arena;
@@ -63,9 +63,29 @@ namespace Guildmaster.Combat
 
         private readonly List<RuntimeUnit>  _units       = new List<RuntimeUnit>();
         private readonly List<RuntimeUnit>  _pendingAdd  = new List<RuntimeUnit>();
+
+        // Жизнь призванных тел (M10). Создаётся здесь, а не приходит извне: система без зависимостей и без
+        // состояния, а обязательный параметр конструктора заставил бы каждый существующий вызов (десятки
+        // тестов и бенчей) таскать её ради механики, которой в них нет. Осознанный компромисс.
+        private readonly SummonSystem _summonSystem = new SummonSystem();
+
+        // Кто сейчас скрыт (Маскировка). Создаётся здесь по той же причине, что SummonSystem: без
+        // зависимостей и без состояния, а обязательный параметр конструктора заставил бы десятки
+        // существующих тестов таскать её ради механики, которой в них нет.
+        private readonly ConcealmentSystem _concealmentSystem = new ConcealmentSystem();
+
+        // Фабрика призывов: подаётся снаружи (BindSummonFactory). null = в этом бою призывать нечем.
+        private ISummonFactory _summonFactory;
         private readonly List<Projectile>   _projectiles = new List<Projectile>();
-        private readonly List<ICombatCommand> _commandQueue = new List<ICombatCommand>();
         private readonly Queue<CombatEventData> _eventQueue = new Queue<CombatEventData>();
+
+        // ЗАЯВЛЕНИЯ — отдельная очередь, и это не оптимизация, а порядок причин. «Каст объявлен» обязано
+        // дойти до наблюдателей РАНЬШЕ, чем применится урон этого же каста: щит «Отражающего налёта»
+        // встаёт до попадания (карточка [[the-aegis]], шаг 5 п.1). В общей FIFO-очереди это правило
+        // выразить нельзя — она дренится после коммита реестра, то есть щит приходил на удар, который
+        // уже прилетел. Последствия («по мне ударили», «я убил») остаются в _eventQueue: им, наоборот,
+        // нужен уже применённый урон.
+        private readonly Queue<CombatEventData> _announceQueue = new Queue<CombatEventData>();
 
         // Системный эффект-маркер «в полёте» (смещение — это ЭФФЕКТ, вики §4.4): вешается на цель смещения,
         // несёт жёсткий контроль + тег KnockUp, снимается в конце полёта → единый EffectExpired. Neutral →
@@ -162,6 +182,9 @@ namespace Guildmaster.Combat
         public SeparationSystem Separation => _separationSystem;
 
         public IReadOnlyList<RuntimeUnit> Units    => _units;
+
+        /// <summary>Живые снаряды — их снимает лента боя, чтобы показ не летел по будущему.</summary>
+        public IReadOnlyList<Projectile>  Projectiles => _projectiles;
         public BattleOutcome              Outcome  => _outcome;
         public bool                       IsPaused => _isPaused;
 
@@ -263,19 +286,21 @@ namespace Guildmaster.Combat
 
             FlushPendingSpawns();
 
-            // Пауза, применённая ЭТИМ тиком, вступает в силу со следующего:
-            // текущий тик ещё досимулировывается. Поэтому фиксируем состояние ДО команд.
-            bool pausedBeforeCommands = _isPaused;
-            ApplyDueCommands();
+            // Пауза сценария («сим заморожен»): системы стоят, счётчик тиков не идёт. Раньше здесь
+            // разбиралась очередь команд на границе тика, и счётчик приходилось двигать вручную, чтобы
+            // отложенное «снять паузу» когда-нибудь наступило. Очереди больше нет — снимает паузу тот,
+            // кто её поставил, вызовом.
+            if (_isPaused) return;
 
-            if (_isPaused && pausedBeforeCommands)
-            {
-                // Системы стоят, но счётчик тиков продолжает идти, ПОКА в очереди есть
-                // команды — иначе ResumeCommand с будущим TargetTick никогда не наступит
-                // и бой залипнет в паузе навсегда.
-                if (_commandQueue.Count > 0) _currentTick++;
-                return;
-            }
+            // Снимок дееспособности на начало тика: по нему гейтятся реактивы, которым нужно ДЕЙСТВИЕ
+            // носителя. Живой CanAct для этого не годится — он пересчитывается синхронно при наложении
+            // контроля, то есть меняется посреди тика, и реакция начинала зависеть от порядка юнитов в
+            // списке (зеркальные команды расходились). См. RuntimeUnit.CanActAtTickStart.
+            for (int i = 0; i < _units.Count; i++) _units[i].CanActAtTickStart = _units[i].CanAct;
+
+            // Кто скрыт — ДО выбора целей и по позициям начала тика: мозг обязан решать по тому же
+            // снимку мира, что и все остальные, иначе видимость зависела бы от места юнита в обходе.
+            _concealmentSystem.Tick(_units, in _tuning);
 
             _brainSystem.Tick(_units, this);
             _abilitySystem.Tick(_units, this, dt);
@@ -296,6 +321,9 @@ namespace Guildmaster.Combat
             // поэтому исход не зависит от того, чей ход в обходе списка раньше. Место — после дренажа
             // (реактивы успевают наложить своё) и до смерти (пересчёт на трупах не нужен).
             _effectSystem.CommitTickChanges(_units);
+            // Срок жизни призывов и уход вместе с хозяином — ДО смерти: развеянный призыв обязан умереть
+            // тем же проходом, что все остальные, иначе он исчез бы без события смерти.
+            _summonSystem.Tick(_units);
             _deathSystem.Tick(_units, _spatialHash);
 
             CheckOutcome();
@@ -304,9 +332,15 @@ namespace Guildmaster.Combat
 
         // --- ICombatContext ---
 
-        public void DealDamage(in DamageRequest req)
+        public void DealDamage(in DamageRequest request)
         {
-            if (req.Target.IsDead) return;
+            if (request.Target.IsDead) return;
+
+            // Усиление ИСТОЧНИКА за состояние цели (Криомант больнее бьёт замороженных). Считается до
+            // расщепления, поэтому прибавка достаётся обеим половинам удара: это свойство удара, а не
+            // школы. Уязвимость цели («Угли») живёт отдельно, в pre-damage — путать их нельзя, иначе
+            // один множитель начнёт отвечать за два разных факта.
+            DamageRequest req = ApplyOutgoingBonus(in request);
 
             // Расщепление авто-атаки по школам (The Pyre: по горящей цели половина клинка бьёт Огнём).
             // Живёт здесь, а не в AutoAttackSystem, чтобы одинаково работать для мили, линии и снаряда.
@@ -322,26 +356,67 @@ namespace Guildmaster.Combat
                 float splitDamage = split.HasOwnDamage ? split.OwnDamage : removed;
 
                 DealDamageCore(new DamageRequest(req.Source, req.Target, req.RawDamage - removed,
-                    req.School, req.ArmorK, req.SourceKind, req.Affinity, req.Element));
+                    req.Type, req.ArmorK, req.SourceKind));
                 if (!req.Target.IsDead)
                     DealDamageCore(new DamageRequest(req.Source, req.Target, splitDamage,
-                        split.School, req.ArmorK, req.SourceKind, req.Affinity, split.Element));
+                        split.DamageType, req.ArmorK, req.SourceKind));
                 return;
             }
 
             DealDamageCore(in req);
         }
 
+        /// <inheritdoc/>
+        public bool ResolveAttackMiss(RuntimeUnit attacker) =>
+            _effectSystem.ResolveAttackMiss(attacker, this);
+
+        /// <summary>
+        /// Промах слепого подаётся тем же сигналом, что уклонение: для игрока это одна и та же цифра
+        /// «мимо» над целью, и второй канал показа означал бы вторую подачу одного факта. Разница «кто
+        /// виноват» показу сегодня недоступна — расхождение помечено в статусе врагов.
+        /// </summary>
+        public void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target) =>
+            OnAttackEvaded?.Invoke(target);
+
+        /// <summary>
+        /// Домножить удар на прибавки, которые даёт носителю его собственные эффекты за состояние цели.
+        /// Возвращает исходный запрос без копии, когда прибавок нет — это горячий путь каждого удара.
+        /// </summary>
+        private DamageRequest ApplyOutgoingBonus(in DamageRequest req)
+        {
+            float bonus = _effectSystem.ResolveOutgoingDamageBonus(
+                req.Source, req.Target, req.SourceKind == DamageSourceKind.AutoAttack, this);
+            if (bonus <= 0f) return req;
+
+            return new DamageRequest(
+                req.Source, req.Target, req.RawDamage * (1f + bonus), req.Type, req.ArmorK,
+                req.SourceKind, req.Vulnerability, req.BonusFlatPen);
+        }
+
         private void DealDamageCore(in DamageRequest req)
         {
             if (req.Target.IsDead) return;
 
-            // Синхронный pre-damage перехват (§9.3): «Оплот» поднимает щит (поглотит этот же удар),
+            // Заявка и только заявка. Считать здесь нельзя: счёт зовёт pre-damage цели, а тот тратит запас
+            // щита и копит поглощённое — то есть менял бы мир посреди фазы решений, и тот, кто в обходе
+            // позже, решал бы по другому состоянию. Счёт живёт в ResolveIncoming, на коммите реестра.
+            _ledger.AddDamage(req.Target, in req);
+        }
+
+        /// <summary>
+        /// Посчитать одну заявку в момент коммита: pre-damage цели, её уязвимости, овертайм и броня.
+        /// Единственное место, где защиты цели тратятся, — поэтому все удары тика видят один и тот же мир.
+        /// </summary>
+        DamageResolution ITickLedgerSink.ResolveIncoming(RuntimeUnit target, in DamageRequest req)
+        {
+            if (target == null || target.IsDead) return DamageResolution.None;
+
+            // Pre-damage перехват (§9.3): «Оплот» поднимает щит (поглотит этот же удар),
             // «Изворотливость» может полностью отменить удар. Порядок детерминирован.
-            if (_effectSystem.RunPreDamage(req.Target, in req, this))
+            if (_effectSystem.RunPreDamage(target, in req, this))
             {
-                OnAttackEvaded?.Invoke(req.Target); // presentation-сигнал «evade», симуляцию не трогает
-                return; // удар негейтнут — ни урона, ни урон-событий
+                OnAttackEvaded?.Invoke(target); // presentation-сигнал «evade», симуляцию не трогает
+                return DamageResolution.None;   // удар негейтнут — ни урона, ни урон-событий
             }
 
             // Уязвимости цели, накопленные тем же проходом («Угли» усиливают огонь по подожжённому).
@@ -357,13 +432,11 @@ namespace Guildmaster.Combat
             float scale = vulnerability * overtime;
             DamageRequest effective = scale == 1f
                 ? req
-                : new DamageRequest(req.Source, req.Target, req.RawDamage * scale, req.School,
-                                    req.ArmorK, req.SourceKind, req.Affinity, req.Element, vulnerability);
+                : new DamageRequest(req.Source, target, req.RawDamage * scale, req.Type,
+                                    req.ArmorK, req.SourceKind, vulnerability);
 
-            // Урон считается сразу (расчёт чист и от порядка не зависит — статы заморожены на тик),
-            // а применяется реестром, когда сложатся все удары раунда. См. TickLedger.
             float dealt = DamagePipeline.Resolve(effective, out float mitigated);
-            _ledger.AddDamage(req.Target, dealt, mitigated, in effective);
+            return new DamageResolution(dealt, mitigated, vulnerability);
         }
 
         /// <summary>
@@ -377,8 +450,8 @@ namespace Guildmaster.Combat
             // Внутренние события для реактивных компонентов (vampiric/thorns). Два события на удар:
             // DamageDealt доставляется источнику, DamageTaken — цели (вики «12» §3.4).
             if (source != null)
-                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, source, target, result.TotalDamage, Data.Definitions.EffectTag.None, result.SourceKind, result.School, result.Element));
-            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, source, target, result.TotalDamage, Data.Definitions.EffectTag.None, result.SourceKind, result.School, result.Element));
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, source, target, result.TotalDamage, Data.Definitions.EffectTag.None, result.SourceKind, result.Type));
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, source, target, result.TotalDamage, Data.Definitions.EffectTag.None, result.SourceKind, result.Type));
 
             // Убийство атрибутируется наибольшей доле урона (решение 2026-07-27) → доставляется УБИЙЦЕ
             // (§10.5, «Скрытность»). Реестр уже выбрал владельца — здесь только разносим.
@@ -434,8 +507,7 @@ namespace Guildmaster.Combat
                 CollisionRadius  = spawn.CollisionRadius,
                 TargetUnit       = spawn.TargetUnit,
                 RawDamage        = spawn.RawDamage,
-                School           = spawn.School,
-                Affinity         = spawn.Affinity,
+                DamageType       = spawn.DamageType,
                 ArmorK           = spawn.ArmorK,
                 PiercesRemaining = spawn.MaxPierces,
                 IsHeal           = spawn.IsHeal,
@@ -525,6 +597,17 @@ namespace Guildmaster.Combat
             _effectSystem.Apply(target, def, source, this);
         }
 
+        public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+        {
+            _effectSystem.Apply(target, def, source, this, durationSeconds);
+        }
+
+        public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds,
+            float potency)
+        {
+            _effectSystem.Apply(target, def, source, this, durationSeconds, potency);
+        }
+
         public void ReportAreaHit(in AreaHit hit) => OnAreaHit?.Invoke(hit);
 
         public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => OnAttackStarted?.Invoke(unit, target);
@@ -534,6 +617,46 @@ namespace Guildmaster.Combat
         public void Dispel(in Effects.DispelRequest req)
         {
             _effectSystem.Dispel(in req, this);
+        }
+
+        public void RemoveEffect(RuntimeUnit unit, EffectData def)
+        {
+            _effectSystem.RemoveByDef(unit, def, this);
+        }
+
+        /// <summary>
+        /// Атака завершена. Событие идёт в очередь ПОСЛЕДСТВИЙ, а не заявлений: заряд следующей Атаки
+        /// взводится после того, как всё случившееся в этой уже применилось.
+        /// </summary>
+        public void NotifyAttackCompleted(RuntimeUnit unit)
+        {
+            if (unit == null || unit.IsDead) return;
+
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.AttackCompleted, unit, unit, 0f));
+        }
+
+        /// <inheritdoc cref="ICombatContext.NotifyComboBroken"/>
+        public void NotifyComboBroken(RuntimeUnit unit)
+        {
+            if (unit == null || unit.IsDead) return;
+
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.ComboBroken, unit, unit, 0f));
+        }
+
+        /// <summary>
+        /// Каст объявлен: событие уходит в очередь ЗАЯВЛЕНИЙ, а разослать его врагам — работа дренажа
+        /// (см. <see cref="DrainAnnouncements"/>). Здесь оно ставится ОДНОЙ записью, потому что состав живых
+        /// врагов должен читаться в момент доставки, а не в момент заявки.
+        /// </summary>
+        /// <remarks>
+        /// Именно заявлений, а не последствий: реакция на каст обязана успеть до того, как нагрузка этого
+        /// каста применится (см. <see cref="_announceQueue"/>).
+        /// </remarks>
+        public void ReportAbilityCast(RuntimeUnit caster)
+        {
+            if (caster == null || caster.IsDead) return;
+
+            _announceQueue.Enqueue(new CombatEventData(CombatEvent.AbilityCast, caster, caster, 0f));
         }
 
         /// <summary>Заявка на переход за спину — применяется в конце раунда, см. <see cref="ApplyPendingTeleports"/>.</summary>
@@ -580,7 +703,17 @@ namespace Guildmaster.Combat
             // в конце полёта (OnDisplacementEnded → RemoveByTag) и поднимает единый EffectExpired.
             if (req.Target != null && !req.Target.IsDead)
                 _effectSystem.Apply(req.Target, _airborneEffect, req.Source, this);
-            _displacementSystem.Add(in req);
+
+            // Урон толчка по САМОЙ отброшенной цели (решение 2026-07-28): раньше заданный урон уходил
+            // только тем, кого задело «ядром» на линии, — то есть толчок бил мимо того, кого толкнули.
+            // Самосмещение (рывок кастующего) не бьёт себя, цепь идёт с нулевым уроном и тоже молчит.
+            if (req.Damage > 0f && req.Source != null && req.Target != null && !req.Target.IsDead
+                && !ReferenceEquals(req.Source, req.Target))
+            {
+                DealDamage(new DamageRequest(req.Source, req.Target, req.Damage, req.DamageType, ArmorK));
+            }
+
+            _displacementSystem.Add(in req, in _tuning);
         }
 
         // --- Управление симуляцией (вызывается командами) ---
@@ -621,7 +754,7 @@ namespace Guildmaster.Combat
             _pendingAdd.Clear();
             _projectiles.Clear();
             _eventQueue.Clear();
-            _commandQueue.Clear();
+            _announceQueue.Clear();
             _ledger.Clear();              // незакрытые заявки урона/лечения не должны пережить бой
             _pendingTeleports.Clear();    // как и незакрытые заявки на переход
             _displacementSystem.Clear();  // незавершённые полёты не должны держать ссылки на удалённых юнитов
@@ -637,21 +770,25 @@ namespace Guildmaster.Combat
         /// <summary>Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию).</summary>
         public void EnqueueUnitSpawn(RuntimeUnit unit) => _pendingAdd.Add(unit);
 
-        // --- Очередь команд ---
+        /// <summary>
+        /// Подать фабрику призывов (M10). Разводится снаружи — сборка юнитов из SO живёт вне боевого ядра,
+        /// и бою нужен из неё ровно один метод. Отдельный вызов, а не параметр конструктора: бой без
+        /// призывов полностью рабочий (балансные бенчи задают состав заранее), и обязательная зависимость
+        /// заставила бы каждый прогон таскать фабрику ради механики, которой в нём нет.
+        /// </summary>
+        public void BindSummonFactory(ISummonFactory factory) => _summonFactory = factory;
 
-        /// <summary>Добавить команду в отсортированную очередь.</summary>
-        public void EnqueueCommand(ICombatCommand command)
+        /// <summary>Призвать тело в бой: собрать по киту и поставить в очередь спавна (см. ICombatContext).</summary>
+        public RuntimeUnit Summon(
+            Data.Definitions.UnitData data, int team, Vector2 position, RuntimeUnit summoner)
         {
-            int insertIdx = _commandQueue.Count;
-            for (int i = 0; i < _commandQueue.Count; i++)
-            {
-                if (_commandQueue[i].TargetTick > command.TargetTick)
-                {
-                    insertIdx = i;
-                    break;
-                }
-            }
-            _commandQueue.Insert(insertIdx, command);
+            if (data == null || _summonFactory == null) return null;
+
+            RuntimeUnit summon = _summonFactory.CreateSummon(data, team, position, summoner);
+            if (summon == null) return null;
+
+            EnqueueUnitSpawn(summon);
+            return summon;
         }
 
         // --- Расчёт checksum для SimSyncProbe ---
@@ -755,10 +892,17 @@ namespace Guildmaster.Combat
         /// Разрешить весь урон и лечение тика — раундами, пока реактивы порождают новые заявки.
         /// </summary>
         /// <remarks>
-        /// Один раунд = «применить всё накопленное разом → доставить события». Ответка шипов и лечение
-        /// вампиризмом попадают в реестр во время доставки событий, поэтому уезжают в СЛЕДУЮЩИЙ раунд —
-        /// и там снова складываются со всем, что пришло вместе с ними. Так ответка остаётся мгновенной
-        /// (тот же тик), но ни один круг не зависит от порядка обхода: внутри круга всё одновременно.
+        /// Один раунд = «доставить заявления → применить всё накопленное разом → доставить последствия».
+        /// Ответка шипов и лечение вампиризмом попадают в реестр во время доставки последствий, поэтому
+        /// уезжают в СЛЕДУЮЩИЙ раунд — и там снова складываются со всем, что пришло вместе с ними. Так
+        /// ответка остаётся мгновенной (тот же тик), но ни один круг не зависит от порядка обхода: внутри
+        /// круга всё одновременно.
+        /// <para>
+        /// <b>Заявления идут ПЕРВЫМИ, и это правило, а не деталь:</b> реакция на объявленный каст обязана
+        /// встать до того, как нагрузка этого каста применится. Иначе щит «Отражающего налёта» приходит на
+        /// удар, который уже прилетел, — и карточка [[the-aegis]] («щит встаёт до попадания») перестаёт
+        /// исполняться. Порядок сломан был именно здесь: заявление лежало в одной очереди с последствиями.
+        /// </para>
         /// <para>
         /// Смерть при этом наступает только в конце тика (<c>DeathSystem</c>), поэтому древень, погибший
         /// в первом раунде, успевает уколоть в ответ во втором — взаимный размен возможен (решение
@@ -769,6 +913,8 @@ namespace Guildmaster.Combat
         {
             for (int round = 0; round < MaxCombatRounds; round++)
             {
+                DrainAnnouncements();
+
                 if (_ledger.HasPending) _ledger.Commit(this);
                 else if (_eventQueue.Count == 0) return;
 
@@ -778,7 +924,7 @@ namespace Guildmaster.Combat
                 // до того как следующий круг начнёт мерить дистанции.
                 if (ApplyPendingTeleports()) _spatialHash.Rebuild(_units);
 
-                if (!_ledger.HasPending) return;
+                if (!_ledger.HasPending && _announceQueue.Count == 0) return;
             }
 
             // Упёрлись в кап: заявки остались. Не обязательно баг — так выглядит контент с очень высокой
@@ -793,7 +939,37 @@ namespace Guildmaster.Combat
             }
         }
 
-        // FIFO-дренаж внутренних событий: реактивные компоненты могут породить новый урон → новые
+        /// <summary>
+        /// Разослать заявления круга: сейчас это только «каст объявлен». Идёт ДО коммита реестра, поэтому
+        /// поднятый в ответ щит успевает поглотить нагрузку того же каста.
+        /// </summary>
+        /// <remarks>
+        /// Реагирует не участник, а НАБЛЮДАТЕЛЬ, поэтому носителей столько, сколько подходящих юнитов.
+        /// Обход идёт по <c>_units</c> в порядке списка — он же порядок сборки боя, то есть
+        /// детерминированный и одинаковый у обеих сторон зеркала.
+        /// <para>Свой кап не нужен: заявление ставит только каст, а кастов за тик не больше, чем юнитов.
+        /// Породить новое заявление реакция не может — щит не кастует.</para>
+        /// </remarks>
+        private void DrainAnnouncements()
+        {
+            while (_announceQueue.Count > 0)
+            {
+                CombatEventData ev = _announceQueue.Dequeue();
+
+                // На чужой каст реагирует ПРОТИВНИК («Отражающий налёт» Антимага).
+                RuntimeUnit caster = ev.Source;
+                if (caster == null) continue;
+
+                for (int i = 0; i < _units.Count; i++)
+                {
+                    RuntimeUnit u = _units[i];
+                    if (u.IsDead || u.Team == caster.Team) continue;
+                    _effectSystem.Dispatch(u, in ev, this);
+                }
+            }
+        }
+
+        // FIFO-дренаж последствий: реактивные компоненты могут породить новый урон → новые
         // события → дренятся в той же очереди БЕЗ рекурсии. Кап ловит бесконечный пинг-понг.
         private void DrainEventQueue()
         {
@@ -801,17 +977,32 @@ namespace Guildmaster.Combat
             while (_eventQueue.Count > 0 && processed < MaxEventsPerDrain)
             {
                 CombatEventData ev = _eventQueue.Dequeue();
+
+                // Смерть слышит вся арена: на неё реагируют не только эффекты на трупе (перенос метки),
+                // но и наблюдатели — «Собиратель костей» Некроманта смотрит, не его ли скелет упал.
+                // Труп в рассылку входит: реактивы на нём обязаны сработать так же, как раньше.
+                if (ev.Type == CombatEvent.UnitDied)
+                {
+                    for (int i = 0; i < _units.Count; i++)
+                    {
+                        RuntimeUnit u = _units[i];
+                        if (u.IsDead && !ReferenceEquals(u, ev.Target)) continue;   // мёртвым зрителям смерть не нужна
+                        _effectSystem.Dispatch(u, in ev, this);
+                    }
+
+                    processed++;
+                    continue;
+                }
+
                 RuntimeUnit carrier =
                     ev.Type == CombatEvent.DamageDealt || ev.Type == CombatEvent.Healed
                     || ev.Type == CombatEvent.UnitKilled || ev.Type == CombatEvent.EffectExpired
                         ? ev.Source
                         : ev.Target;
 
-                // UnitDied доставляем даже мёртвому носителю: «Метка охотника» переносится с трупа
-                // на ближайшего живого врага (§9.5). Остальные события — только живым.
-                bool allowDeadCarrier = ev.Type == CombatEvent.UnitDied;
-
-                if (carrier != null && (allowDeadCarrier || !carrier.IsDead))
+                // Смерть ушла выше своей ветвью (труп получает событие там), значит здесь остались
+                // только события живым носителям.
+                if (carrier != null && !carrier.IsDead)
                 {
                     _effectSystem.Dispatch(carrier, in ev, this);
                 }
@@ -829,16 +1020,6 @@ namespace Guildmaster.Combat
                     $"[CombatSimulation] Event-queue cap hit: dropped {_eventQueue.Count} events at tick {_currentTick} " +
                     $"(processed {MaxEventsPerDrain}). Возможен пинг-понг реактивных компонентов.");
                 _eventQueue.Clear();
-            }
-        }
-
-        private void ApplyDueCommands()
-        {
-            int i = 0;
-            while (i < _commandQueue.Count && _commandQueue[i].TargetTick <= _currentTick)
-            {
-                _commandQueue[i].Apply(this);
-                _commandQueue.RemoveAt(i);
             }
         }
 

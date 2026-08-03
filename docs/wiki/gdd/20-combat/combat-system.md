@@ -72,7 +72,7 @@ updated: 2026-07-26
 > **Идея (не решено):** оформить трату перезапуска как **кооп-ритуал воскрешения** — короткий совместный QTE-кликер, чтобы «поднять павших» ощущалось командным усилием, а не кликом кнопки. Оговорки (не на каждый ретрай; церемония, не гейт исхода) — [[gdd/00-meta/roadmap|Meta - Roadmap]] Блок 3.
 
 > [!important] Канон-дом правила перезапуска — этот раздел
-> Тех-вика ([[tech/20-explanation/run-flow|Explanation - Run Flow]] §6) описывает реализацию
+> Тех-вика (флоу забега (код `Assets/_Project/Scripts/Game/Flow/`) §6) описывает реализацию
 > `BattleFlow`, но держит **прежнюю** дизайн-модель: «до 2 ретраев на каждый бой», «3-е поражение
 > финальное», «цена ретрая — TBD». Всё это замещено решением 2026-07-15/65 (пул на акт, цена =
 > сама попытка). Инженерная часть того раздела — саб-сид `runSeed + индекс_боя` без номера попытки
@@ -182,4 +182,4 @@ updated: 2026-07-26
 - Бой — **детерминированная симуляция с фиксированным тиком** (без Unity-физики), что даёт реплеи, сравнение AI-профилей и синхронный мультиплеер.
 - AI «Сосудов» (фокус цели, отступление, условия каста, позиционирование) строится по схеме **Filter / Score / Override** — настраивается вне боя, в бою не меняется.
 
-Детали реализации — [[tech/10-reference/tech-stack|Reference - Tech Stack]] и [[tech/40-planning/seed|Reference - Seed & RNG]]. Полный список статов — [[tech/40-planning/stat-system|Planning - Stat System]]. Сырые заметки по AI и статам — [[gdd/00-meta/open|Meta - Open Questions]].
+Детали реализации — [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]] и [[tech/40-planning/seed|Reference - Seed & RNG]]. Полный список статов — [[tech/40-planning/stat-system|Planning - Stat System]]. Сырые заметки по AI и статам — [[gdd/00-meta/open-forks|Meta - Open Forks]].

@@ -9,9 +9,9 @@ updated: 2026-07-16
 
 ---
 
-> План последовательности работ для игрового среза: интерактивная фаза расстановки, надевание реликов, система энкаунтеров, готовые бои и dev-переключатель между ними. Опирается на уже согласованный дизайн [[tech/10-reference/arena|Reference - Arena & Deployment]] и достраивает его до играбельного dev-инструмента.
+> План последовательности работ для игрового среза: интерактивная фаза расстановки, надевание реликов, система энкаунтеров, готовые бои и dev-переключатель между ними. Опирается на уже согласованный дизайн арена как данные (код `ArenaLayoutData`, `ArenaBounds`) и достраивает его до играбельного dev-инструмента.
 >
-> Связано: [[tech/10-reference/arena|Reference - Arena & Deployment]], [[tech/20-explanation/run-flow|Explanation - Run Flow]], [[tech/40-planning/phase-4-content|Planning - Phase 4: Content Framework]], [[tech/40-planning/roadmap|Planning - Roadmap]].
+> Связано: арена как данные (код `ArenaLayoutData`, `ArenaBounds`), флоу забега (код `Assets/_Project/Scripts/Game/Flow/`), [[tech/40-planning/phase-4-content|Planning - Phase 4: Content Framework]], [[tech/40-planning/roadmap|Planning - Roadmap]].
 
 ---
 
@@ -46,14 +46,14 @@ updated: 2026-07-16
 ### Шаг 1 — Энкаунтер-данные + загрузчик + dev-переключатель `[фундамент]`
 
 **Содержание:**
-- `EncounterData : ContentDefinition` (новый домен `encounter` в `ContentDomains.cs`). Поля по эскизу [[tech/10-reference/arena|Reference - Arena & Deployment]] §3, §5: список врагов (`EnemyData` + позиция + опц. каунт), ключ/ссылка арены, опц. фиксированный сид, метка сложности.
+- `EncounterData : ContentDefinition` (новый домен `encounter` в `ContentDomains.cs`). Поля по эскизу арена как данные (код `ArenaLayoutData`, `ArenaBounds`) §3, §5: список врагов (`EnemyData` + позиция + опц. каунт), ключ/ссылка арены, опц. фиксированный сид, метка сложности.
 - `EncounterLoader` — data-driven строитель боя поверх паттерна `ResetForNewBattle() → EnqueueUnitSpawn` (оживить/заменить `BattleSetupBuilder`). Переиспользует `ResetBattle` как движок переключения без перезагрузки сцены.
 - Реестр энкаунтеров в `ContentDatabase` (механика доменов + `TryGet` уже есть).
 - Минимальный dev-UI: список доступных энкаунтеров с кнопками запуска (**UI Toolkit** — единая дизайн-система, решение Макса; не Odin). Сохранить R = рестарт выбранного.
 - Перенести 2–3 существующих хардкод-боя в encounter-ассеты (враги пока = дамми).
 
 **Разблокирует:** всё дальнейшее встаёт на data-driven загрузку. Хардкод боёв начинает отмирать.
-**Ресёрч перед шагом:** [[tech/20-explanation/run-flow|Explanation - Run Flow]] — владелец `EncounterData` и связь «энкаунтер → ключ арены» (открытый вопрос дизайна §9); финальная структура полей.
+**Ресёрч перед шагом:** флоу забега (код `Assets/_Project/Scripts/Game/Flow/`) — владелец `EncounterData` и связь «энкаунтер → ключ арены» (открытый вопрос дизайна §9); финальная структура полей.
 **За Максом:** визуальная проверка в сцене.
 
 ### Шаг 2 — Враги: common-гоблины (контент + AI) `[контент]`

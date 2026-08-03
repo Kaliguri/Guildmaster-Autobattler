@@ -118,10 +118,10 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>Привязать к юниту: доли — на текущее состояние мгновенно, trail без догона.</summary>
-        public void Bind(RuntimeUnit unit)
+        public void Bind(in Combat.Tape.UnitSnapshot unit)
         {
             EnsureMaterial();
-            _maxHp  = Mathf.Max(1f, unit.Stats.Get(Data.Stats.StatType.MaxHP));
+            _maxHp  = Mathf.Max(1f, unit.MaxHP);
             _hp     = Mathf.Clamp(unit.CurrentHP, 0f, _maxHp);
             _shield = Mathf.Max(0f, unit.CurrentShield);
             _trailEhp = _hp + _shield;

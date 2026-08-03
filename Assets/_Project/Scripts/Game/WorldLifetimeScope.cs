@@ -19,6 +19,11 @@ namespace Guildmaster.Game
                  "Пусто = красная ошибка и тряски нет вовсе (ScreenShake своих чисел не держит).")]
         [SerializeField] private Presentation.Design.CombatFeelConfig _feelConfig;
 
+        [Tooltip("Префаб боевого скоупа: из него рождается КАЖДЫЙ бой и вместе с боем умирает. " +
+                 "ОБЯЗАТЕЛЕН — пусто = бой открыть нечем (красная ошибка при первом же входе в узел). " +
+                 "Боевые ассеты (тюнинг сима, джус, состав Ристалища) выбираются на самом префабе.")]
+        [SerializeField] private CombatLifetimeScope _battleScopePrefab;
+
         protected override void Configure(IContainerBuilder builder)
         {
             // Снапшот арены из авторинга в ЭТОЙ (persist) сцене. Бой берёт тот же layout из предка —
@@ -31,6 +36,26 @@ namespace Guildmaster.Game
                 "тряски камеры не будет");
             builder.RegisterInstance(feel);
 
+            // Тела на арене вне боя (двор, Ристалище, строй между забегами) и единственный вход показа
+            // за кадром сцены. Держим здесь, потому что оба переживают бои: боевая симуляция теперь
+            // рождается и умирает вместе с боем, и вечного владельца тел больше нет
+            // (решение Макса 02.08.2026, см. журнал «The Simulation Belongs To The Battle»).
+            builder.Register<Combat.Tape.WorldBodyStage>(Lifetime.Singleton);
+            builder.Register<Combat.Tape.StageFrameRouter>(Lifetime.Singleton);
+
+            // Кто ставит отряд на арену вне боя. Живёт здесь, а не в боевом скоупе: отряд стоит во
+            // дворе и между боями, когда боя — и его скоупа — не существует. Сборщик тел приходит из
+            // корня (там же, где стат-конфиги), симуляция ему не нужна.
+            // Под интерфейсом — тоже: гостевой сеанс переставляет отряд вслед за снимком, но собирать
+            // тела ему нечем и незачем (см. IPartyStage).
+            builder.RegisterEntryPoint<Flow.WorldStageController>(Lifetime.Singleton)
+                   .AsSelf().As<Flow.IPartyStage>();
+
+            // Заготовка боевого скоупа. Владелец жизненного цикла боя живёт НИЖЕ, в Занятии: бой
+            // заказывает узел мероприятия, и рождаться он должен внутри той жизни, которая его заказала.
+            // Мир держит только выбор ассета — он делается в инспекторе, то есть здесь.
+            builder.RegisterInstance(new Activity.BattleScopePrefab(_battleScopePrefab));
+
             // Вне боя камера ни за кем не следует (пустой источник точек фокуса). На входе в бой
             // боевой скоуп переключит источник через CombatFocusTarget.SetSource(живые юниты).
             builder.RegisterInstance<Presentation.IFocusPointSource>(Presentation.EmptyFocusPointSource.Instance);
@@ -40,6 +65,16 @@ namespace Guildmaster.Game
             builder.RegisterComponentInHierarchy<Presentation.CombatFocusTarget>();
             builder.RegisterComponentInHierarchy<Presentation.CameraModeController>()
                    .AsSelf().As<Presentation.IScreenShake>();
+
+            // Сценные презентеры боя. Живут здесь, а не в боевом скоупе, по устройству сцены: это
+            // объекты персист-сцены, инъекция в них случается один раз, а боёв за сессию много. Отсюда
+            // они получают только мировую половину зависимостей (кадр, палитра, звук, джус); боевую им
+            // раздаёт BattlePresenterBinder на время жизни боя.
+            // Ищем по загруженным сценам, а не в своей: сами объекты пока лежат в CombatSystemsScene,
+            // которая грузится ПОЗЖЕ мира (см. RegisterPersistComponent — там же и долг на их переезд).
+            ScopeWiring.RegisterPersistComponent<Presentation.CombatPresenter>(builder);
+            ScopeWiring.RegisterPersistComponent<Presentation.CombatDebugDraw>(builder);
+            ScopeWiring.RegisterPersistComponent<Presentation.CombatAreaFlash>(builder);
 
             // Обесцвечивание арены: полигон — серая версия той же локации (материал, а не серый дубль тайлов).
             builder.RegisterComponentInHierarchy<Presentation.Arena.ArenaDesaturation>();

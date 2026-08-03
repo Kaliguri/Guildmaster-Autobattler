@@ -30,6 +30,32 @@ Shader "Guildmaster/Sprite/HitFlash"
         _Outline ("Outline Amount", Range(0, 1)) = 0
         [HDR] _OutlineColor ("Outline Color", Color) = (1, 1, 1, 1)
 
+        // Свечение части (телеграф каста, реф SAO): оружие/конечность-источник наливается светом.
+        // Emission ПОВЕРХ тела, HDR-цвет пробивает bloom. Пишется per-instance через MPB только в ту
+        // часть, чья роль несёт приём (UnitView/Body), материал один на всех частях.
+        _GlowAmount ("Glow Amount", Range(0, 1)) = 0
+        [HDR] _GlowColor ("Glow Color", Color) = (1, 1, 1, 1)
+
+        // Сколько свечения ложится РОВНО, не считаясь с артом: 1 = плоская заливка (тёмные пиксели
+        // догоняют светлые, и клинок на пике превращается в однотонное пятно), 0 = свет строго по
+        // яркости пикселя, форма и грани читаются целиком. Между ними — сколько силуэта отдаём свету.
+        _GlowShapeKeep ("Glow Flatness", Range(0, 1)) = 0.35
+
+        // Порезы: тело помнит бой. Каждое попадание оставляет светящуюся линию в ЛОКАЛЬНЫХ координатах
+        // этой части, поэтому рана едет вместе с ней и не висит в воздухе там, где её нанесли. Красное у
+        // нас — не брызги, а вскрытое (реф SAO): гладкий штрих, а не пиксельная царапина.
+        // Три ОТДЕЛЬНЫХ вектора, а не массив: массив в property block выключает SRP Batcher для всего
+        // материала, а он стоит на каждой части каждого юнита. Три раны на часть при лимите двенадцати на
+        // тело — с запасом: порезы мелкие и расходятся по силуэту, а не копятся в одном предплечье.
+        // Упаковка: xy — место в локальных координатах части, z — угол в радианах, w — длина.
+        [HDR] _CutColor ("Cut Colour", Color) = (1.9, 0.18, 0.16, 1)
+        _CutWidth ("Cut Half Width (локальные единицы)", Float) = 0.012
+        _CutCount ("Cut Count", Float) = 0
+        _Cut0 ("Cut 0", Vector) = (0, 0, 0, 0)
+        _Cut1 ("Cut 1", Vector) = (0, 0, 0, 0)
+        _Cut2 ("Cut 2", Vector) = (0, 0, 0, 0)
+        _CutGlow ("Cut Brightness (xyz)", Vector) = (0, 0, 0, 0)
+
         // Спрайтовая обвязка — SpriteRenderer прокидывает per-renderer, руками не трогать.
         [HideInInspector] _RendererColor ("RendererColor", Color) = (1, 1, 1, 1)
         [HideInInspector] _Flip ("Flip", Vector) = (1, 1, 1, 1)
@@ -78,6 +104,7 @@ Shader "Guildmaster/Sprite/HitFlash"
                 float4 positionCS : SV_POSITION;
                 half4  color      : COLOR;
                 float2 uv         : TEXCOORD0;
+                float2 objectPos  : TEXCOORD1;   // положение в локальных координатах части — по нему живут порезы
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
@@ -99,7 +126,48 @@ Shader "Guildmaster/Sprite/HitFlash"
                 half   _HoloScanScale;
                 half   _HoloScanAmount;
                 half   _Outline;
+                half4  _GlowColor;
+                half   _GlowAmount;
+                half   _GlowShapeKeep;
+                half4  _CutColor;
+                half4  _Cut0;
+                half4  _Cut1;
+                half4  _Cut2;
+                half4  _CutGlow;
+                half   _CutWidth;
+                half   _CutCount;
             CBUFFER_END
+
+            /// Расстояние от точки до отрезка пореза: место, угол и длина приходят одним вектором.
+            float CutDistance(float2 p, half4 cut)
+            {
+                float2 dir = float2(cos(cut.z), sin(cut.z));
+                float2 d   = p - cut.xy;
+                // Проекция ограничена половиной длины в обе стороны — за концами меряем до самих концов,
+                // поэтому у пореза скруглённые острия, а не обрубленные.
+                float t = clamp(dot(d, dir), -cut.w * 0.5, cut.w * 0.5);
+                return length(d - dir * t);
+            }
+
+            /// Порезы: светящиеся красные прорехи ПО ТЕЛУ. Умножаются на альфу спрайта, иначе рана
+            /// висела бы в прозрачном углу квада рядом с силуэтом.
+            half4 ApplyCuts(half4 col, float2 objectPos)
+            {
+                if (_CutCount < 0.5) return col;
+
+                float glow = 0.0;
+                float w = max(_CutWidth, 1e-5);
+
+                // Мягкий профиль вместо порога: порез должен читаться светящимся штрихом, а не полоской
+                // с жёстким краем — он рисуется в том же гладком стиле, что весь остальной джус.
+                glow += _CutGlow.x * saturate(1.0 - CutDistance(objectPos, _Cut0) / w);
+                if (_CutCount > 1.5) glow += _CutGlow.y * saturate(1.0 - CutDistance(objectPos, _Cut1) / w);
+                if (_CutCount > 2.5) glow += _CutGlow.z * saturate(1.0 - CutDistance(objectPos, _Cut2) / w);
+
+                glow = saturate(glow) * col.a;
+                col.rgb = lerp(col.rgb, _CutColor.rgb, saturate(glow));
+                return col;
+            }
 
             /// Контур по краю силуэта: там, где рядом с пикселем пустота, — граница тела. Здесь он к месту
             /// (телеграф каста «сейчас будет»), в отличие от голограммы, где выделял кромку не по делу.
@@ -151,6 +219,7 @@ Shader "Guildmaster/Sprite/HitFlash"
 
                 v.positionOS = UnityFlipSprite(v.positionOS, _Flip.xy); // flipX/flipY спрайта
                 o.positionCS = TransformObjectToHClip(v.positionOS);
+                o.objectPos  = v.positionOS.xy;   // уже с учётом flip — порез обязан ехать вместе со спрайтом
                 o.uv         = TRANSFORM_TEX(v.uv, _MainTex);
                 o.color      = v.color * _Color;                        // vertex color = SpriteRenderer.color (тинт+альфа)
                 return o;
@@ -162,10 +231,23 @@ Shader "Guildmaster/Sprite/HitFlash"
                 // Голограмма идёт ПЕРЕД вспышкой: белый пересвет — следующая стадия смерти и должен
                 // забивать её собой, а не смешиваться с ней.
                 if (_Holo > 0.001h) mainTex = ApplyHologram(mainTex, i.uv);
+                // Порезы — часть САМОГО ТЕЛА, поэтому идут раньше контура и вспышки: и то, и другое —
+                // события поверх тела, и заливать их раной было бы неверно.
+                mainTex = ApplyCuts(mainTex, i.objectPos);
                 // Контур каста — поверх тела, но под вспышкой удара.
                 if (_Outline > 0.001h) mainTex = ApplyOutline(mainTex, i.uv);
                 // Вспышка: заливаем rgb к _FlashColor по силе _FlashAmount (в чистый белый может).
                 mainTex.rgb = lerp(mainTex.rgb, _FlashColor.rgb, saturate(_FlashAmount));
+                // Свечение части: emission поверх, только по телу (умножаем на alpha, иначе засветится
+                // прозрачный квад). HDR _GlowColor уводит rgb за 1.0 — bloom подхватывает свет, не арт.
+                //
+                // Свет МОДУЛИРУЕТСЯ яркостью пикселя, а не заливает площадь ровно: ровная добавка
+                // поднимает тёмные места так же, как светлые, внутренние контрасты схлопываются, и
+                // светящийся клинок читается силуэтом без формы. _GlowShapeKeep задаёт, какую долю
+                // отдаём ровному свету, остальное идёт по арту.
+                half glowLum   = dot(mainTex.rgb, half3(0.299h, 0.587h, 0.114h));
+                half glowShape = lerp(glowLum, 1.0h, saturate(_GlowShapeKeep));
+                mainTex.rgb += _GlowColor.rgb * (saturate(_GlowAmount) * mainTex.a * glowShape);
                 return mainTex;
             }
             ENDHLSL
@@ -195,6 +277,7 @@ Shader "Guildmaster/Sprite/HitFlash"
                 float4 positionCS : SV_POSITION;
                 half4  color      : COLOR;
                 float2 uv         : TEXCOORD0;
+                float2 objectPos  : TEXCOORD1;   // положение в локальных координатах части — по нему живут порезы
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
@@ -215,7 +298,48 @@ Shader "Guildmaster/Sprite/HitFlash"
                 half   _HoloScanScale;
                 half   _HoloScanAmount;
                 half   _Outline;
+                half4  _GlowColor;
+                half   _GlowAmount;
+                half   _GlowShapeKeep;
+                half4  _CutColor;
+                half4  _Cut0;
+                half4  _Cut1;
+                half4  _Cut2;
+                half4  _CutGlow;
+                half   _CutWidth;
+                half   _CutCount;
             CBUFFER_END
+
+            /// Расстояние от точки до отрезка пореза: место, угол и длина приходят одним вектором.
+            float CutDistance(float2 p, half4 cut)
+            {
+                float2 dir = float2(cos(cut.z), sin(cut.z));
+                float2 d   = p - cut.xy;
+                // Проекция ограничена половиной длины в обе стороны — за концами меряем до самих концов,
+                // поэтому у пореза скруглённые острия, а не обрубленные.
+                float t = clamp(dot(d, dir), -cut.w * 0.5, cut.w * 0.5);
+                return length(d - dir * t);
+            }
+
+            /// Порезы: светящиеся красные прорехи ПО ТЕЛУ. Умножаются на альфу спрайта, иначе рана
+            /// висела бы в прозрачном углу квада рядом с силуэтом.
+            half4 ApplyCuts(half4 col, float2 objectPos)
+            {
+                if (_CutCount < 0.5) return col;
+
+                float glow = 0.0;
+                float w = max(_CutWidth, 1e-5);
+
+                // Мягкий профиль вместо порога: порез должен читаться светящимся штрихом, а не полоской
+                // с жёстким краем — он рисуется в том же гладком стиле, что весь остальной джус.
+                glow += _CutGlow.x * saturate(1.0 - CutDistance(objectPos, _Cut0) / w);
+                if (_CutCount > 1.5) glow += _CutGlow.y * saturate(1.0 - CutDistance(objectPos, _Cut1) / w);
+                if (_CutCount > 2.5) glow += _CutGlow.z * saturate(1.0 - CutDistance(objectPos, _Cut2) / w);
+
+                glow = saturate(glow) * col.a;
+                col.rgb = lerp(col.rgb, _CutColor.rgb, saturate(glow));
+                return col;
+            }
 
             /// Контур по краю силуэта: там, где рядом с пикселем пустота, — граница тела. Здесь он к месту
             /// (телеграф каста «сейчас будет»), в отличие от голограммы, где выделял кромку не по делу.
@@ -267,6 +391,7 @@ Shader "Guildmaster/Sprite/HitFlash"
 
                 v.positionOS = UnityFlipSprite(v.positionOS, _Flip.xy);
                 o.positionCS = TransformObjectToHClip(v.positionOS);
+                o.objectPos  = v.positionOS.xy;   // уже с учётом flip — порез обязан ехать вместе со спрайтом
                 o.uv         = TRANSFORM_TEX(v.uv, _MainTex);
                 o.color      = v.color * _Color;
                 return o;
@@ -275,7 +400,18 @@ Shader "Guildmaster/Sprite/HitFlash"
             half4 UnlitFragment(Varyings i) : SV_Target
             {
                 half4 mainTex = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+                mainTex = ApplyCuts(mainTex, i.objectPos);
                 mainTex.rgb = lerp(mainTex.rgb, _FlashColor.rgb, saturate(_FlashAmount));
+                // Свечение части: emission поверх, только по телу (умножаем на alpha, иначе засветится
+                // прозрачный квад). HDR _GlowColor уводит rgb за 1.0 — bloom подхватывает свет, не арт.
+                //
+                // Свет МОДУЛИРУЕТСЯ яркостью пикселя, а не заливает площадь ровно: ровная добавка
+                // поднимает тёмные места так же, как светлые, внутренние контрасты схлопываются, и
+                // светящийся клинок читается силуэтом без формы. _GlowShapeKeep задаёт, какую долю
+                // отдаём ровному свету, остальное идёт по арту.
+                half glowLum   = dot(mainTex.rgb, half3(0.299h, 0.587h, 0.114h));
+                half glowShape = lerp(glowLum, 1.0h, saturate(_GlowShapeKeep));
+                mainTex.rgb += _GlowColor.rgb * (saturate(_GlowAmount) * mainTex.a * glowShape);
                 return mainTex;
             }
             ENDHLSL

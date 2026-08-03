@@ -41,7 +41,8 @@ namespace Guildmaster.Balance.Editor
 
             var headers = new List<string>
             {
-                "Relic", "Class", "Band", "MaxHP", "HP_norm", "DPS_norm", "EHP_norm", "TTD_solo_norm", "TTD_focus3_norm",
+                "Relic", "Class", "Band", "MaxHP", "HP_norm", "DPS_norm", "HPS_norm", "EHP_norm",
+                "TTD_solo_norm", "TTD_focus3_norm",
             };
             var table = new List<IReadOnlyList<object>>();
 
@@ -59,6 +60,7 @@ namespace Guildmaster.Balance.Editor
                     ActualMaxHp(stats, relic),
                     classes.BaseHp * hpMult,
                     classes.GetDpsNorm(unitClass),
+                    classes.GetHealNorm(unitClass),
                     ehpNorm,
                     ehpNorm / SurvivabilityBench.RefDps,
                     ehpNorm / (3f * SurvivabilityBench.RefDps),
@@ -72,7 +74,11 @@ namespace Guildmaster.Balance.Editor
                 "уклонений: разрыв с замеренным EHP — это ровно вклад механик кита. " +
                 "MaxHP — фактическое здоровье собранного юнита: расхождение с HP_norm значит, что стат-блок " +
                 "персоны перекрывает классовую базу. TTD-нормы — EHP_norm, поделённый на урон эталонных " +
-                $"атакующих ({SurvivabilityBench.RefDps:0} DPS каждый).";
+                $"атакующих ({SurvivabilityBench.RefDps:0} DPS каждый). " +
+                "**HPS_norm** — сколько HP в секунду класс обязан возвращать команде (0 = лечение не входит " +
+                "в роль). Считается в той же валюте, что урон: одно вылеченное HP равно одному нанесённому. " +
+                "Это потолок при полной загрузке — лечить есть кого не каждую секунду, поэтому замер ниже " +
+                "нормы читается вопросом «нечего лечить или нечем?», а не приговором киту.";
 
             string csv = ReportWriter.WriteCsv(Kind, headers, table);
             string md = ReportWriter.WriteMarkdown(Kind, "SimBench — классовые нормы", headers, table, notes);

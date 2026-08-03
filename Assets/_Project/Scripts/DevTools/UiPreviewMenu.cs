@@ -18,6 +18,9 @@ namespace Guildmaster.DevTools
         [MenuItem("Alebardium/UI Preview/Loadout Inventory (redesign)", priority = 200)]
         private static void LoadoutInventory() => Open("loadout-inventory");
 
+        [MenuItem("Alebardium/UI Preview/New Game (mode, guild, lobby)", priority = 210)]
+        private static void NewGame() => Open("newgame");
+
         [MenuItem("Alebardium/UI Preview/Component Gallery", priority = 220)]
         private static void Gallery() => Open("gallery");
 

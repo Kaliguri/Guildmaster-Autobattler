@@ -32,6 +32,29 @@ namespace Guildmaster.Tests.EditMode.Content
             "--gm-color-map-pawn",
         };
 
+        /// <summary>
+        /// Роли боевого фидбэка: их называют <c>CombatFeelConfig</c> и <c>CombatColorPalette</c>, своих
+        /// <c>Color</c>-полей у обоих больше нет. Отсутствие роли — это вспышка удара пурпуром, поэтому
+        /// список держится здесь по именам, а не выводится из кода: вывод сломался бы вместе с кодом.
+        /// </summary>
+        private static readonly string[] CombatRoles =
+        {
+            "--gm-color-combat-flash-physical",
+            "--gm-color-combat-flash-magical",
+            "--gm-color-combat-flash-true",
+            "--gm-color-combat-flash-poison",
+            "--gm-color-combat-flash-light",
+            "--gm-color-combat-flash-dark",
+            "--gm-color-combat-flash-neutral",
+            "--gm-color-combat-heal",
+            "--gm-color-combat-hp-ally",
+            "--gm-color-combat-hp-enemy",
+            "--gm-color-combat-shield",
+            "--gm-color-combat-overbright",
+            "--gm-color-combat-hologram",
+            "--gm-color-combat-cut",
+        };
+
         private static GuildmasterPalette LoadAsset()
         {
             var asset = AssetDatabase.LoadAssetAtPath<GuildmasterPalette>(PaletteSnapshotBuilder.AssetPath);
@@ -72,6 +95,16 @@ namespace Guildmaster.Tests.EditMode.Content
             foreach (string role in MapRoles)
                 Assert.IsTrue(asset.TryGet(role, out _),
                     $"в палитре нет роли '{role}' — карта нарисует её пурпуром и скажет об этом в логе");
+        }
+
+        [Test]
+        public void Все_роли_боевого_фидбэка_есть_в_палитре()
+        {
+            GuildmasterPalette asset = LoadAsset();
+
+            foreach (string role in CombatRoles)
+                Assert.IsTrue(asset.TryGet(role, out _),
+                    $"в палитре нет роли '{role}' — бой вспыхнет пурпуром и скажет об этом в логе");
         }
     }
 }

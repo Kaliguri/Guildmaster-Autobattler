@@ -1,4 +1,4 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
 using Guildmaster.Data.Stats;
 using NUnit.Framework;
 using UnityEngine;
@@ -15,7 +15,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("base", new[] { new StatModifier(StatType.AttackRange, ModifierOp.Flat, attackRange) });
-            return new RuntimeUnit { Stats = stats, Position = pos, PreviousPosition = pos };
+            return new RuntimeUnit { Stats = stats, Position = pos, PreviousPosition = pos, AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash };
         }
 
         [Test]

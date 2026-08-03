@@ -33,7 +33,9 @@ namespace Guildmaster.DevTools
             ["chest"]        = BuildChest,
             ["outcome"]      = BuildOutcome,
             ["mainmenu"]     = BuildMainMenu,
+            ["newgame"]      = BuildNewGame,
             ["titlecard"]    = BuildTitleCard,
+            ["devconsole"]   = BuildDevConsole,
             ["gallery"]      = BuildGallery,
         };
 
@@ -97,7 +99,9 @@ namespace Guildmaster.DevTools
                 nameOf: r => RuName(r?.Id),
                 localize: RuValue,
                 onTake: (_, __) => { },
-                onSkip: () => { });
+                onSkip: () => { },
+                // Стенд красит тело тем же путём, что игра: ступень из данных, цвет из палитры проекта.
+                palette: LoadFirst<Guildmaster.Data.Definitions.GuildmasterPalette>());
             root.Add(screen);
         }
 
@@ -151,7 +155,8 @@ namespace Guildmaster.DevTools
                 localize: RuValue,
                 lockedSlots: 3,
                 tagsOf: r => UnitTagResolver.Resolve(r, content),
-                statsOf: r => statPreview.Basic(r));
+                statsOf: r => statPreview.Basic(r),
+                palette: LoadFirst<Guildmaster.Data.Definitions.GuildmasterPalette>());
             root.Add(screen);
 
             // Глобальная панель забега (app-shell): статичная для стенда, режим «Инвентарь» активен.
@@ -304,9 +309,28 @@ namespace Guildmaster.DevTools
         {
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/MainMenuScreen.uxml");
             if (uxml == null) { AddError(root, "MainMenuScreen.uxml не найден"); return; }
-            // Стенд: hasSave=true (кнопка «Продолжить» активна).
             root.Add(Guildmaster.UI.MainMenuScreenView.Build(
-                uxml, hasSave: true, RuValue, () => { }, () => { }, () => { }, () => { }));
+                uxml, RuValue, () => { }, () => { }, () => { }, () => { }));
+        }
+
+        /// <summary>
+        /// Экран «Создать игру»: три режима, дома, галочка лобби. Стенд показывает то состояние, в
+        /// котором экран и встречают, — два дома, из них один с идущим забегом.
+        /// </summary>
+        private static void BuildNewGame(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/NewGameScreen.uxml");
+            if (uxml == null) { AddError(root, "NewGameScreen.uxml не найден"); return; }
+
+            // Ни профиля, ни диска стенд не трогает: он смотрит РАЗМЕТКУ, а не чужие сохранения.
+            var guilds = new System.Collections.Generic.List<Guildmaster.UI.NewGameScreenView.GuildEntry>
+            {
+                new("g1", "Гильдия 1", hasRun: true),
+                new("g2", "Гильдия 2", hasRun: false),
+            };
+
+            root.Add(Guildmaster.UI.NewGameScreenView.Build(
+                uxml, guilds, guildsFull: false, steamReady: true, RuValue, _ => { }, () => { }));
         }
 
         private static void BuildTitleCard(VisualElement root)
@@ -315,6 +339,47 @@ namespace Guildmaster.DevTools
             if (uxml == null) { AddError(root, "TitleCardScreen.uxml не найден"); return; }
             var seal = AssetDatabase.LoadAssetAtPath<UnityEngine.Sprite>("Assets/_Project/Art/Brand/AppIcon_HappyGuildmasters.png");
             root.Add(Guildmaster.UI.TitleCardScreenView.Build(uxml, seal, RuValue, () => { }));
+        }
+
+        /// <summary>
+        /// Dev-консоль (Трек К) в рабочем состоянии: пара команд в реестре, набранный префикс с открытой
+        /// палитрой и вывод всех четырёх видов строк — стенд должен показывать цвета кромок, а не пустую полку.
+        /// </summary>
+        private static void BuildDevConsole(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/DevConsoleScreen.uxml");
+            if (uxml == null) { AddError(root, "DevConsoleScreen.uxml не найден"); return; }
+
+            var registry = new Guildmaster.Core.DevConsole.DevCommandRegistry();
+            registry.Register("gm_sep_radius", "Радиус тела на единицу Size (live)", a => "0.45",
+                new Guildmaster.Core.DevConsole.DevParam("value", Guildmaster.Core.DevConsole.DevParamType.Float));
+            registry.Register("gm_sep_strength", "Сила расталкивания за тик (live)", a => "1.2",
+                new Guildmaster.Core.DevConsole.DevParam("value", Guildmaster.Core.DevConsole.DevParamType.Float));
+            registry.Register("gm_sep_iters", "Проходов расталкивания за тик (live)", a => "2",
+                new Guildmaster.Core.DevConsole.DevParam("value", Guildmaster.Core.DevConsole.DevParamType.Int));
+            registry.Register("gm_sep_ally", "Мягкость расталкивания своих (0..1, live)", a => "0.35",
+                new Guildmaster.Core.DevConsole.DevParam("value", Guildmaster.Core.DevConsole.DevParamType.Float));
+            registry.Register("gm_arena_swap", "Сменить облик арены с анимацией", a => null,
+                new Guildmaster.Core.DevConsole.DevParam("skinId", Guildmaster.Core.DevConsole.DevParamType.String));
+            registry.Register("gm_spawn_battle", "Запустить тест-бой N юнитов за каждую сторону", a => null,
+                new Guildmaster.Core.DevConsole.DevParam("count", Guildmaster.Core.DevConsole.DevParamType.Int, true));
+
+            var log = new Guildmaster.Core.DevConsole.DevConsoleLog();
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Info, "[BattleBootstrap] - арена собрана: 4 против 3");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Echo, "> gm_arena_swap stone");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Reply, "облик «stone» надет, переход 0.8 с");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Echo, "> gm_sep_radius");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Error, "мало аргументов. Форма: gm_sep_radius <value>");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Warn, "[AudioService] - банк 'sfx_combat' уже загружен");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Info, "[BattleTape] - лента: 1214 событий, показ на тике 342");
+
+            var screen = new Guildmaster.UI.DevConsole.DevConsoleScreen(uxml, registry, log);
+            screen.Build(new Guildmaster.UI.UiScreenContext(root, RuValue));
+            root.Add(screen.Root);
+
+            // Набранный префикс: палитра раскрывается, ghost дорисовывает общее продолжение.
+            var field = screen.Root.Q<TextField>("console-field");
+            if (field != null) field.value = "gm_sep";
         }
 
         private static void BuildGallery(VisualElement root)
@@ -332,7 +397,8 @@ namespace Guildmaster.DevTools
 
             // Пересоздаём риг галереи (прошлые камеры/RT освобождаем).
             _galleryRig?.Dispose();
-            _galleryRig = new Guildmaster.UI.Components.RelicCardVisualRig();
+            _galleryRig = new Guildmaster.UI.Components.RelicCardVisualRig(
+                palette: LoadFirst<Guildmaster.Data.Definitions.GuildmasterPalette>());
 
             root.style.backgroundColor = new UnityEngine.Color(18f / 255f, 16f / 255f, 13f / 255f, 1f);
             root.style.paddingTop = 20; root.style.paddingBottom = 20;
@@ -384,7 +450,7 @@ namespace Guildmaster.DevTools
             var btnRow = Row();
             Button Btn(string txt, bool primary, bool enabled)
             {
-                var b = new Button { text = txt };
+                var b = new Guildmaster.UI.Components.PlateButton { text = txt };
                 b.AddToClassList("gm-button");
                 if (primary) b.AddToClassList("gm-button--primary");
                 b.SetEnabled(enabled);

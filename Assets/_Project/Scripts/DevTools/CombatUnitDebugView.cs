@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Data.Stats;
 using Sirenix.OdinInspector;
@@ -9,22 +9,37 @@ using VContainer.Unity;
 namespace Guildmaster.DevTools
 {
     /// <summary>
-    /// Инспектор состояния всех юнитов симуляции в реальном времени.
-    /// Добавьте на любой GameObject в BattleScene — VContainer инжектирует симуляцию автоматически.
+    /// Инспектор состояния всех юнитов ИДУЩЕГО боя в реальном времени.
     /// </summary>
+    /// <remarks>
+    /// Симуляцию не запоминает: с 02.08.2026 бой рождается и умирает вместе со своим скоупом, а этот
+    /// объект живёт в персист-сцене — запомненная ссылка показывала бы юнитов боя, который давно
+    /// кончился. Спрашиваем текущий бой у хоста при каждом чтении; боя нет — таблица пуста, и это
+    /// честный ответ, а не поломка.
+    /// </remarks>
     public sealed class CombatUnitDebugView : MonoBehaviour
     {
-        private CombatSimulation _simulation;
+        // Владельца боя запоминать нельзя: он живёт в МЕРОПРИЯТИИ, а панель — в персист-сцене, и
+        // между забегами меняется и бой, и его хозяин. Держим корневой ActivityHost и спрашиваем цепочку
+        // «мероприятие → бой → симуляция» при каждом чтении.
+        private Guildmaster.Game.Activity.ActivityHost _activities;
 
-        [Inject]
-        public void Construct(CombatSimulation simulation) => _simulation = simulation;
-
-        private void Start()
+        private CombatSimulation _simulation
         {
-            if (_simulation != null) return;
-            // Fallback: самоинжекция через CombatLifetimeScope (DevTools знает Game, обратного нет).
-            var scope = VContainer.Unity.LifetimeScope.Find<Guildmaster.Game.CombatLifetimeScope>();
-            scope?.Container.Inject(this);
+            get
+            {
+                Guildmaster.Game.Flow.BattleHost battle = _activities != null ? _activities.Battle : null;
+                return battle != null ? battle.Resolve<CombatSimulation>() : null;
+            }
+        }
+
+        // Корень поднят раньше любой аддитивной сцены, поэтому к Awake он уже построен. Нет корня —
+        // панель просто ничего не показывает (standalone-сцена без бута).
+        private void Awake()
+        {
+            var root = LifetimeScope.Find<Guildmaster.Game.RootLifetimeScope>();
+            if (root != null && root.Container != null)
+                root.Container.TryResolve(out _activities);
         }
 
         // ── Состояние симуляции ──────────────────────────────────────────────

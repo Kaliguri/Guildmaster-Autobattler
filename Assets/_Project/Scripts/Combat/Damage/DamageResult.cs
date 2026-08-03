@@ -36,17 +36,14 @@ namespace Guildmaster.Combat
         /// </summary>
         public readonly DamageSourceKind SourceKind;
 
-        /// <summary>Школа урона — эхо <see cref="DamageRequest.School"/> (hit-flash по школе в презентации).</summary>
-        public readonly DamageSchool School;
-
-        /// <summary>Сродство урона — эхо <see cref="DamageRequest.Affinity"/> (тинт вспышки Poison/Light/Dark).</summary>
-        public readonly DamageAffinity Affinity;
-
         /// <summary>
-        /// Стихия урона — эхо <see cref="DamageRequest.Element"/>. Броню не делит (она одна на всю
-        /// магию), но нужна потребителям: искры по стихии в презентации, разбор огня в метриках.
+        /// Тип урона — эхо <see cref="DamageRequest.Type"/>. Нужен потребителям целиком: вспышка и
+        /// искры по типу в презентации, разбор огня и ядов в метриках стенда.
         /// </summary>
-        public readonly MagicElement Element;
+        public readonly DamageType Type;
+
+        /// <summary>Школа урона — следствие <see cref="Type"/>, отдельным полем не хранится.</summary>
+        public DamageSchool School => DamageTypes.SchoolOf(Type);
 
         /// <summary>
         /// Множитель уязвимости цели, вложенный в этот удар — эхо <see cref="DamageRequest.Vulnerability"/>.
@@ -72,20 +69,16 @@ namespace Guildmaster.Combat
 
         public DamageResult(float hpDamage, float shieldDamage, bool killedTarget,
             DamageSourceKind sourceKind = DamageSourceKind.Ability,
-            DamageSchool school = DamageSchool.Physical,
-            DamageAffinity affinity = DamageAffinity.None,
-            MagicElement element = MagicElement.None,
+            DamageType type = DamageType.Undefined,
             float vulnerability = 1f,
             float mitigated = 0f)
         {
-            Element       = element;
+            Type          = type;
             HpDamage      = hpDamage;
             ShieldDamage  = shieldDamage;
             Mitigated     = mitigated;
             KilledTarget  = killedTarget;
             SourceKind    = sourceKind;
-            School        = school;
-            Affinity      = affinity;
             Vulnerability = vulnerability;
         }
     }

@@ -14,49 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.treant
   _combatClass: 1
-  _damageSchool: 0
-  _physicalSubtype: 1
-  _magicElement: 0
-  _affinity: 0
+  _autoAttackDamageType: 1
   _creatureType: 0
   _attackType: 0
-  _resourceType: 0
+  _resourceType: 1
   _visual: {fileID: 11400000, guid: d0a79ee49ef5db14183cedd745bc33d1, type: 2}
   _viewPrefab: {fileID: 6633865311930413954, guid: aad39bd62a48f57439e7c1b59fe2a62b, type: 3}
-  _tint: {r: 0.55, g: 0.85, b: 0.45, a: 1}
-  _vfxColor: {r: 0.934, g: 2, b: 0.4, a: 1}
-  _vfxPalette:
-    serializedVersion: 2
-    key0: {r: 2.254, g: 2.6, b: 2.08, a: 1}
-    key1: {r: 1.027, g: 2.2, b: 0.44, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
+  _bodyShade: 2
+  _vfxTone: 4
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
@@ -79,24 +47,26 @@ MonoBehaviour:
   - Stat: 4
     Op: 3
     Value: 30
+  - Stat: 27
+    Op: 3
+    Value: 40
   _grantedEffects:
   - {fileID: 11400000, guid: 9d09a9ee0098ff74f982416aaf3c1e3d, type: 2}
   _abilities:
   - _id: overgrowth
     _effects:
     - {fileID: 11400000, guid: df5e074a7146eda41a164fd1673993d7, type: 2}
-    _baseCooldown: 12
-    _resourceCost: 0
+    _baseCooldown: 0
+    _resourceCost: 40
     _targetMode: 0
     _damageMultiplier: 0
-    _schoolOverride: 0
-    _physicalSubtypeOverride: 0
-    _magicElementOverride: 0
-    _affinityOverride: 0
+    _damageType: 0
     _areaShape: 0
     _areaRadius: 0
     _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
     _castCondition: 0
     _castConditionCount: 1
     _castConditionRadius: 0
@@ -106,7 +76,6 @@ MonoBehaviour:
     _consumesTriggerTag: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0

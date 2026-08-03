@@ -20,8 +20,17 @@ MonoBehaviour:
   _maxStacks: 1
   _cleanseTier: 0
   _unremovable: 0
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
   _components:
   - rid: 5615026876324511851
+  _icon: {fileID: 0}
+  _infoTags: []
   references:
     version: 2
     RefIds:
@@ -29,4 +38,3 @@ MonoBehaviour:
       type: {class: StealthComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _stealthBuff: {fileID: 11400000, guid: 17a717ac87459e246a3f562d9f41091a, type: 2}
-        _empowerMult: 2

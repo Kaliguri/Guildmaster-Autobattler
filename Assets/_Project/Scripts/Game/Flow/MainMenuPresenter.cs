@@ -5,10 +5,10 @@ using MessagePipe;
 
 namespace Guildmaster.Game.Flow
 {
-    /// <summary>Показ главного меню и ожидание выбора Начать/Продолжить/Ристалище/Выход (план D1).</summary>
+    /// <summary>Показ главного меню и ожидание исхода: заказ игры, вход к другу или выход.</summary>
     public interface IMainMenuPresenter
     {
-        UniTask<MainMenuChoice> ShowAsync(bool hasSave);
+        UniTask<MainMenuOutcome> ShowAsync();
     }
 
     /// <summary>
@@ -27,7 +27,7 @@ namespace Guildmaster.Game.Flow
         private readonly IDisposable _provingSubscription;
 
         // Ожидание выбора в текущем показе меню — по нему запрос Ристалища «нажимает кнопку» за игрока.
-        private UniTaskCompletionSource<MainMenuChoice> _pending;
+        private UniTaskCompletionSource<MainMenuOutcome> _pending;
 
         // Запрос пришёл, когда меню не на экране (шёл забег). Держим до ближайшего показа: иначе команда
         // из боя терялась бы молча — Publish без слушателя это no-op, а цикл возвращается в меню позже.
@@ -42,22 +42,22 @@ namespace Guildmaster.Game.Flow
 
         public void Dispose() => _provingSubscription?.Dispose();
 
-        public async UniTask<MainMenuChoice> ShowAsync(bool hasSave)
+        public async UniTask<MainMenuOutcome> ShowAsync()
         {
             // Запрос пришёл раньше показа (команда из забега) — отдаём исход сразу, меню не мелькает.
             if (_provingGroundsPending)
             {
                 _provingGroundsPending = false;
-                return MainMenuChoice.ProvingGrounds;
+                return MainMenuOutcome.StartGame(GameStartRequest.DevProvingGrounds);
             }
 
-            var tcs = new UniTaskCompletionSource<MainMenuChoice>();
+            var tcs = new UniTaskCompletionSource<MainMenuOutcome>();
             _pending = tcs;
-            _pub.Publish(new OpenMainMenuRequest(hasSave, c => tcs.TrySetResult(c), null));
+            _pub.Publish(new OpenMainMenuRequest(c => tcs.TrySetResult(c), null));
 
-            MainMenuChoice choice = await tcs.Task;
+            MainMenuOutcome outcome = await tcs.Task;
             _pending = null;
-            return choice;
+            return outcome;
         }
 
         private void OnProvingGroundsRequested()

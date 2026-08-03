@@ -1,9 +1,9 @@
 ---
 title: "Bandits - Elite - Bandit Warlock"
-order: 40
+order: 540
 kind: enemy
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 enemy_group: Элита
 species: Разбойники
 combat_class: Поддержка
@@ -24,6 +24,8 @@ mechanics:
   - Приоритет раненого союзника
   - Побег
   - Дополнительное золото
+impl: partial
+asset: [enemy.bandit_warlock]
 ---
 
 # Разбойник-маг

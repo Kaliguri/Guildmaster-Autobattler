@@ -1,0 +1,142 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7cba09029dfbf4fb4a5fa3399a44f1, type: 3}
+  m_Name: Necromancer
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
+  _id: relic.necromancer
+  _combatClass: 5
+  _autoAttackDamageType: 21
+  _creatureType: 0
+  _attackType: 1
+  _resourceType: 1
+  _visual: {fileID: 11400000, guid: 3915bda3962c1304d845007568e37a70, type: 2}
+  _viewPrefab: {fileID: 5941402093529111970, guid: a2b200a01d3a9174fa1c0a689413a030, type: 3}
+  _bodyShade: 1
+  _vfxTone: 11
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
+  _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
+  _windupShare: 0.35
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
+  _stats:
+  - Stat: 8
+    Op: 3
+    Value: 0.7
+  - Stat: 9
+    Op: 3
+    Value: 8
+  - Stat: 3
+    Op: 3
+    Value: 4
+  - Stat: 4
+    Op: 3
+    Value: 11
+  - Stat: 18
+    Op: 3
+    Value: 7
+  - Stat: 27
+    Op: 3
+    Value: 100
+  - Stat: 7
+    Op: 3
+    Value: 114
+  _grantedEffects:
+  - {fileID: 11400000, guid: 3d4e5f60718293a4b5c6d7e8f9a0b1c2, type: 2}
+  - {fileID: 11400000, guid: 2c3d4e5f60718293a4b5c6d7e8f9a0b1, type: 2}
+  _abilities:
+  - _id: summon_skeleton
+    _effects: []
+    _selfEffects: []
+    _baseCooldown: 0
+    _resourceCost: 100
+    _targetMode: 0
+    _damageMultiplier: 0
+    _damageType: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
+    _castCondition: 0
+    _castConditionCount: 1
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _castSource: 0
+    _statScalings: []
+    _summonUnit: {fileID: 11400000, guid: 0a1b2c3d4e5f60718293a4b5c6d7e8f9, type: 2}
+    _summonCount: 1
+    _summonCountGrowth: 1
+    _summonCountCap: 3
+    _summonLimit: 8
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceDamageMult: 1
+    _displaceWidth: 1
+    _visualSlot: 0
+    _infoTags: []
+  _aiPreset: {fileID: 11400000, guid: 4e5f60718293a4b5c6d7e8f9a0b1c2d3, type: 2}
+  _ai:
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 1
+      FleeAtHpPct: 0.35
+      ReturnAtHpPct: 0.6
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags:
+  - {fileID: 11400000, guid: c797469e70ac9ca4f8f4c9656cfad234, type: 2}
+  - {fileID: 11400000, guid: d8a1fea2ed170c54e92dba9f84de1058, type: 2}
+  - {fileID: 11400000, guid: a03c4a1e09f8d8744b487b5b280ff911, type: 2}
+  - {fileID: 11400000, guid: 45145ac326802ed499c369d31aa459e2, type: 2}
+  - {fileID: 11400000, guid: 14594298e055bb447b407fa154028462, type: 2}
+  _tags:
+  - necromancer
+  - summoner
+  - common
+  _kitPower: 0
+  _dropRarity: 1
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 0

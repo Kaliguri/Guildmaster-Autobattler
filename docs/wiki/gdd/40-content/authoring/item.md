@@ -89,7 +89,7 @@ updated: 2026-07-18
 
 - **Имя** — своё (не `The [X]`), RU + EN.
 - **id** `item.<name>` (`item.frost_rune`, `item.fey_cloak`) — в `ItemData`-ассете
-  ([[tech/10-reference/data-layer]]); в дизайн-карточку не дублируется.
+  (дата-слой (код `Assets/_Project/Scripts/Data/`, правила — скилл `xgaida-x-nixi-data-authoring`)); в дизайн-карточку не дублируется.
 - **Loc-ключи** сразу (`{id}.name/.desc`, RU заполнен).
 - `ItemData.Scope = Vessel` для предметов (Party — это Знамёна).
 

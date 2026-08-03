@@ -1,8 +1,8 @@
 ---
 title: "Planning - Barriers"
 order: 51
-status: ready
-updated: 2026-07-26
+status: planned
+updated: 2026-07-28
 ---
 
 # Барьеры — план реализации (Стена и Купол)

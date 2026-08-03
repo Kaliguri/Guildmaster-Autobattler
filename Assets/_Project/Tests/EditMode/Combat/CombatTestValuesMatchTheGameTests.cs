@@ -1,4 +1,4 @@
-using Guildmaster.Data.Definitions;
+﻿using Guildmaster.Data.Definitions;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -13,7 +13,9 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class CombatTestValuesMatchTheGameTests
     {
-        private const string CombatScenePath = "Assets/_Project/Scenes/CombatSystemsScene.unity";
+        // Боевой скоуп живёт ПРЕФАБОМ, а не объектом сцены: с 02.08.2026 он рождается на каждый бой и
+        // умирает вместе с ним, поэтому в сцене его нет и быть не может.
+        private const string BattleScopePrefabPath = "Assets/_Project/Prefabs/Systems/BattleScope.prefab";
 
         [Test]
         public void ArmorK_MatchesTheShippedStatsConfig()
@@ -29,32 +31,24 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
-        public void CellSize_MatchesTheBattleScopeInTheScene()
+        public void CellSize_MatchesTheBattleScopePrefab()
         {
-            Scene scene = EditorSceneManager.OpenPreviewScene(CombatScenePath);
-            try
-            {
-                SerializedProperty field = null;
-                foreach (GameObject root in scene.GetRootGameObjects())
-                {
-                    foreach (Component c in root.GetComponentsInChildren<Component>(true))
-                    {
-                        if (c == null || c.GetType().Name != "CombatLifetimeScope") continue;
-                        field = new SerializedObject(c).FindProperty("_spatialHashCellSize");
-                        break;
-                    }
-                    if (field != null) break;
-                }
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(BattleScopePrefabPath);
+            Assert.IsNotNull(prefab, $"Префаб боевого скоупа не найден: {BattleScopePrefabPath}. " +
+                                     "Из него рождается каждый бой — без него игра боя не откроет.");
 
-                Assert.IsNotNull(field, "В боевой сцене не найден CombatLifetimeScope с _spatialHashCellSize");
-                Assert.AreEqual(field.floatValue, CombatTestValues.CellSize, 1e-6f,
-                    "Размер ячейки хэша в тестах разошёлся со сценой: соседство юнитов в тестах считается " +
-                    "не так, как в бою");
-            }
-            finally
+            SerializedProperty field = null;
+            foreach (Component c in prefab.GetComponentsInChildren<Component>(true))
             {
-                EditorSceneManager.ClosePreviewScene(scene);
+                if (c == null || c.GetType().Name != "CombatLifetimeScope") continue;
+                field = new SerializedObject(c).FindProperty("_spatialHashCellSize");
+                break;
             }
+
+            Assert.IsNotNull(field, "В префабе боевого скоупа не найден CombatLifetimeScope с _spatialHashCellSize");
+            Assert.AreEqual(field.floatValue, CombatTestValues.CellSize, 1e-6f,
+                "Размер ячейки хэша в тестах разошёлся с боевым скоупом: соседство юнитов в тестах " +
+                "считается не так, как в бою");
         }
     }
 }

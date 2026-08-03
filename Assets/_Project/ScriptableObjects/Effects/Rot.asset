@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
+  m_Name: Rot
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
+  _id: effect.rot
+  _polarity: 1
+  _tags: 2058
+  _baseDuration: 6
+  _stacking: 3
+  _maxStacks: 999
+  _stacksPerApplication: 1
+  _cleanseTier: 1
+  _unremovable: 0
+  _cleansePrice:
+  - Flat: 5
+    Pct: 0.15
+  - Flat: 10
+    Pct: 0.25
+  - Flat: 20
+    Pct: 0.5
+  _components:
+  - rid: 7815026876324511910
+  - rid: 7815026876324511911
+  - rid: 5615027358498291819
+  _telegraphSeconds: 0
+  _icon: {fileID: 0}
+  _infoTags: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5615027358498291819
+      type: {class: PeriodicDamageComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _interval: 1
+        _damagePerSecond:
+          Base: 6
+          Scalings: []
+        _damageType: 14
+        _damagePctTargetMaxHp: 0
+        _growthPerSecond: 0
+    - rid: 7815026876324511910
+      type: {class: PeriodicDamageComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _interval: 1
+        _damagePerSecond:
+          Base: 6
+          Scalings: []
+        _damageType: 5
+        _damagePctTargetMaxHp: 0
+        _growthPerSecond: 0
+    - rid: 7815026876324511911
+      type: {class: StatModifierComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _modifiers:
+        - Stat: 3
+          Op: 0
+          Value: -3
+        - Stat: 4
+          Op: 0
+          Value: -3

@@ -36,25 +36,25 @@ namespace Guildmaster.Combat
         /// <summary>Базовый урон до модификаторов пайплайна.</summary>
         public readonly float RawDamage;
 
-        /// <summary>Школа урона — определяет, какая броня используется (Physical/Magical/True).</summary>
-        public readonly DamageSchool School;
+        /// <summary>
+        /// Тип урона — обязателен и задаётся источником явно (реформа 2026-07-30). Несёт и школу
+        /// брони (через <see cref="School"/>), и идентичность для реактивов: «Угли» копятся с
+        /// <see cref="DamageType.Fire"/>, хрупкая ледяная статуя добавляет +20%
+        /// <see cref="DamageType.Blunt"/>.
+        /// </summary>
+        public readonly DamageType Type;
+
+        /// <summary>
+        /// Школа урона — какая броня гасит удар. Не поле, а следствие <see cref="Type"/>: задать её
+        /// в обход типа нельзя, поэтому «физический огонь» невыразим.
+        /// </summary>
+        public DamageSchool School => DamageTypes.SchoolOf(Type);
 
         /// <summary>Константа K из StatsConfig (mult = K / (K + effArmor)).</summary>
         public readonly float ArmorK;
 
         /// <summary>Откуда пришёл урон — гейт для реактивов «на удар».</summary>
         public readonly DamageSourceKind SourceKind;
-
-        /// <summary>Сродство урона (Яд/Свет/Тьма) — метка идентичности источника, на число урона НЕ влияет.</summary>
-        public readonly DamageAffinity Affinity;
-
-        /// <summary>
-        /// Магический элемент (Огонь/Лёд/Молния/Аркана) при школе <see cref="DamageSchool.Magical"/>.
-        /// Броню не делит — она одна на всю магию (ГДД «Статы» §Школа vs сродство), но несёт
-        /// идентичность стихии дальше по цепочке: в боевое событие и оттуда в реактивы, которым
-        /// важно отличить огонь от прочей магии («Угли» копятся только с огня).
-        /// </summary>
-        public readonly MagicElement Element;
 
         /// <summary>
         /// Множитель уязвимости ЦЕЛИ, уже вложенный в <see cref="RawDamage"/> («Угли» усиливают огонь по
@@ -63,8 +63,28 @@ namespace Guildmaster.Combat
         /// </summary>
         public readonly float Vulnerability;
 
+        /// <summary>
+        /// Разовое плоское пробивание брони поверх статов источника — для ударов, которые игнорируют
+        /// часть защиты один раз («Атака из скрытности» Убийцы игнорирует 20 ед. брони). Стат
+        /// <c>PhysPen</c>/<c>MagicPen</c> так не выразить: он постоянный, а это свойство удара.
+        /// </summary>
+        public readonly float BonusFlatPen;
+
+        /// <summary>
+        /// Разовое ПРОЦЕНТНОЕ пробивание брони поверх статов источника, долей: 0.5 = удар считает броню
+        /// вдвое меньшей («Волчий разгон» наездника игнорирует половину защиты). Статами
+        /// <c>PhysPenPct</c>/<c>MagicPenPct</c> так не выразить — они постоянные, а это свойство удара.
+        /// </summary>
+        /// <remarks>
+        /// Процент и плоское пробивание НЕ взаимозаменяемы: процент отвечает «толстой» броне, плоское —
+        /// тонкой, и разгон, которому карточка обещает половину защиты, плоским числом выразим только
+        /// подгонкой под конкретных врагов. Складывается с процентом из статов умножением остатков
+        /// (см. <c>DamagePipeline</c>), поэтому суммарное пробивание никогда не превышает 100%.
+        /// </remarks>
+        public readonly float BonusPctPen;
+
         /// <summary>Урон стихии огня — то, что копит «Угли» и усиливается ими.</summary>
-        public bool IsFire => School == DamageSchool.Magical && Element == MagicElement.Fire;
+        public bool IsFire => Type == DamageType.Fire;
 
         /// <summary>Урон авто-атаки. «Изворотливость» убийцы уклоняется только от таких.</summary>
         public bool IsAutoAttack => SourceKind == DamageSourceKind.AutoAttack;
@@ -75,26 +95,38 @@ namespace Guildmaster.Combat
         /// </summary>
         public bool IsDirectHit => SourceKind is DamageSourceKind.AutoAttack or DamageSourceKind.Ability;
 
+        /// <param name="type">
+        /// Тип урона. Дефолта нет намеренно: каждый источник обязан назвать его явно, иначе
+        /// пропуск снова стал бы невидимым (реформа 2026-07-30).
+        /// </param>
         public DamageRequest(
             RuntimeUnit source,
             RuntimeUnit target,
             float rawDamage,
-            DamageSchool school,
+            DamageType type,
             float armorK,
             DamageSourceKind sourceKind = DamageSourceKind.Ability,
-            DamageAffinity affinity = DamageAffinity.None,
-            MagicElement element = MagicElement.None,
-            float vulnerability = 1f)
+            float vulnerability = 1f,
+            float bonusFlatPen = 0f,
+            float bonusPctPen = 0f)
         {
             Source        = source;
             Target        = target;
             RawDamage     = rawDamage;
-            School        = school;
+            Type          = type;
             ArmorK        = armorK;
             SourceKind    = sourceKind;
-            Affinity      = affinity;
-            Element       = school == DamageSchool.Magical ? element : MagicElement.None;
             Vulnerability = vulnerability;
+            BonusFlatPen  = bonusFlatPen;
+            BonusPctPen   = bonusPctPen;
+
+            // Не фолбэк, а сигнализация: незаданный тип — дефект контента, и он должен быть слышен
+            // сразу. Пайплайн отработает по физической школе (см. DamageTypes.SchoolOf), но тихо
+            // это не пройдёт. Полный скан контента живёт в DamageTypeCoverageTests.
+            if (type == DamageType.Undefined)
+                UnityEngine.Debug.LogError(
+                    $"[DamageRequest] Тип урона не задан: {source?.Unit?.Id ?? "?"} -> {target?.Unit?.Id ?? "?"}. " +
+                    "Источник урона обязан объявить DamageType явно.");
         }
     }
 }

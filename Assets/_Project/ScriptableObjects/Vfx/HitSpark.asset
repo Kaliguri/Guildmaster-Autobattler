@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.VfxData
   _id: vfx.hit_spark
   _prefab: {fileID: 2415933787469677738, guid: 24cdd9aab07cedd4eadbe40d51c8b277, type: 3}
-  _scale: 1
+  _sizeUnits: 0.576
   _sortingLayer: OverheadFX
   _sortingOrder: 0
   _defaultDirDeg: 0

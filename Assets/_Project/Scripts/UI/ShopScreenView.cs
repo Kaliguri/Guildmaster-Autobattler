@@ -1,6 +1,7 @@
 using System;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
+using Guildmaster.UI.Components;
 using Guildmaster.UI.Tooltips;
 using UnityEngine.UIElements;
 
@@ -84,7 +85,7 @@ namespace Guildmaster.UI
                     price.AddToClassList("gm-shop__price");
                     card.Add(price);
 
-                    var buy = new Button { text = L("ui.shop.buy", "Купить") };
+                    var buy = new PlateButton { text = L("ui.shop.buy", "Купить") };
                     buy.AddToClassList("gm-button");
                     int index = i;
                     buy.clicked += () => { if (shop.Buy(index) == ShopBuyOutcome.NoSpace) ShowNoSpace(); };
@@ -109,7 +110,7 @@ namespace Guildmaster.UI
                     n.WithTooltip(TooltipRequest.Relic(st.Relic?.Id)); // продаём вслепую только по имени — плохо
                     row.Add(n);
 
-                    var sell = new Button { text = L("ui.shop.sell", "Продать") + $" ({st.SellValue})" };
+                    var sell = new PlateButton { text = L("ui.shop.sell", "Продать") + $" ({st.SellValue})" };
                     sell.AddToClassList("gm-button");
                     RelicData relic = st.Relic;
                     sell.clicked += () => shop.Sell(relic);

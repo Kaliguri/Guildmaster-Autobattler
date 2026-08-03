@@ -31,6 +31,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Ожидаемый одиночный DPS Брузера — норма для стенда баланса. Классы — множители от неё.")]
         [SerializeField] private float _baseDps = 110f;
 
+        [Tooltip("Эталон ЛЕЧЕНИЯ: сколько HP в секунду возвращает команде класс с HealMult = 1 (Целитель). " +
+                 "Равен BaseDps по решению Макса 2026-08-01: одно вылеченное HP стоит одного нанесённого.")]
+        [SerializeField] private float _baseHps = 110f;
+
         [Header("Профили классов (множители от эталона)")]
         [Tooltip("Множители HP/скорости и бюджет брони на каждый класс. Класс без записи → эталон (1.0 / 1.0), броня 0.")]
         [SerializeField] private ClassProfile[] _profiles = Array.Empty<ClassProfile>();
@@ -43,6 +47,9 @@ namespace Guildmaster.Data.Definitions
         public float BaseHp => _baseHp;
         public float BaseMoveSpeed => _baseMoveSpeed;
         public float BaseDps => _baseDps;
+
+        /// <summary>Эталон лечения, HP/сек: норма класса с <c>HealMult = 1</c>.</summary>
+        public float BaseHps => _baseHps;
 
         /// <summary>Полуширина коридора нормы (0.3 = ±30%). Не игровой стат — линейка стенда баланса.</summary>
         public float BandWidth => _bandWidth;
@@ -98,6 +105,35 @@ namespace Guildmaster.Data.Definitions
         }
 
         /// <summary>
+        /// Ожидаемое ЛЕЧЕНИЕ класса, HP в секунду: <c>BaseHps × HealMult</c>. Класс без лечения в роли — 0.
+        /// </summary>
+        /// <remarks>
+        /// Вторая валюта нормы, заведена 2026-08-01. До неё линейка мерила только урон и голое HP, поэтому
+        /// у Целителя и Поддержки основная работа не была нормирована вовсе — сравнивать их замер было не с
+        /// чем, и «хил ощущается пустым» не превращалось в число. Единица счёта общая с уроном: одно
+        /// вылеченное HP = одно нанесённое, поэтому норма Целителя равна DPS-эталону Брузера.
+        /// <para>Как и <see cref="GetDpsNorm"/>, ни во что не подставляется: лечение собирается из
+        /// способностей кита, а норма — линейка, по которой стенд говорит «Целитель лечит вполсилы».</para>
+        /// <para><b>Читать вместе с КПД:</b> паспортная норма — потолок при полной загрузке, а лечить есть
+        /// кого не всегда. Замеренный HPS ниже нормы сам по себе не приговор — вопрос, почему: нечего
+        /// лечить (тогда это про бой) или нечем (тогда это про кит).</para>
+        /// <para><b>Норма ненулевая только у Целителя</b> (вердикт Макса 2026-08-01): держать своих
+        /// лечением ИЛИ щитами — его основная механика, а Поддержка живёт баффами и дебаффами. Поэтому
+        /// Хранитель углей (чистый антидебаффер) не лечит вовсе и это не отставание, а Друид лечит
+        /// точечно в затяжной свалке ближников (600 за бой длиной 240 секунд — 2.5 HPS) и потоком HP
+        /// не мерится.</para>
+        /// <para><b>Долг измерителя:</b> норма считает лечение и щит одной величиной, а стенд снимает
+        /// только <c>HealDone</c> — выданный щит в замер не попадает. Кит, держащий своих щитами, будет
+        /// выглядеть пустым при полной работе.</para>
+        /// </remarks>
+        public float GetHealNorm(UnitClass unitClass)
+        {
+            for (int i = 0; i < _profiles.Length; i++)
+                if (_profiles[i].Class == unitClass) return _baseHps * _profiles[i].HealMult;
+            return 0f;
+        }
+
+        /// <summary>
         /// Ожидаемый запас прочности класса против ФИЗИЧЕСКОГО урона: <c>HP × (1 + физброня / K)</c>,
         /// где физброня — половина классового бюджета. <paramref name="armorK"/> берётся из
         /// <c>StatsConfig.ArmorConstantK</c>.
@@ -142,14 +178,20 @@ namespace Guildmaster.Data.Definitions
             [Tooltip("Множитель ожидаемого DPS от эталона. Только норма для стенда — в бой не подставляется.")]
             public float DpsMult;
 
+            [Tooltip("Множитель ожидаемого ЛЕЧЕНИЯ от эталона BaseHps. Ненулевой ТОЛЬКО у Целителя: " +
+                     "у остальных классов лечение — свойство отдельного кита, а не обязанность роли. " +
+                     "Только норма для стенда.")]
+            public float HealMult;
+
             public ClassProfile(UnitClass unitClass, float hpMult, float moveSpeedMult,
-                float armorBudget = 0f, float dpsMult = 1f)
+                float armorBudget = 0f, float dpsMult = 1f, float healMult = 0f)
             {
                 Class = unitClass;
                 HpMult = hpMult;
                 MoveSpeedMult = moveSpeedMult;
                 ArmorBudget = armorBudget;
                 DpsMult = dpsMult;
+                HealMult = healMult;
             }
         }
     }

@@ -1,6 +1,8 @@
 #ifndef GUILDMASTER_MAP_TRANSITION_COMMON_INCLUDED
 #define GUILDMASTER_MAP_TRANSITION_COMMON_INCLUDED
 
+#include "Lib/Procedural.hlsl"
+
 struct Attributes
 {
     float4 positionOS : POSITION;
@@ -53,21 +55,9 @@ Varyings Vert(Attributes v)
     return o;
 }
 
-// Та же матрица Байера, что у тумана карты, и по той же причине: растворение точечным растром читается
+// Дизеринг тот же, что у тумана карты, и по той же причине: растворение точечным растром читается
 // как часть пиксельной картинки, а гладкий градиент — как фильтр, наложенный поверх неё.
-static const float BayerMatrix[16] =
-{
-     0.0 / 16.0,  8.0 / 16.0,  2.0 / 16.0, 10.0 / 16.0,
-    12.0 / 16.0,  4.0 / 16.0, 14.0 / 16.0,  6.0 / 16.0,
-     3.0 / 16.0, 11.0 / 16.0,  1.0 / 16.0,  9.0 / 16.0,
-    15.0 / 16.0,  7.0 / 16.0, 13.0 / 16.0,  5.0 / 16.0
-};
-
-float BayerThreshold(float2 screenPos)
-{
-    int2 p = int2(fmod(screenPos, 4.0));
-    return BayerMatrix[p.y * 4 + p.x];
-}
+// Общая матрица — в Lib/Procedural.hlsl.
 
 half4 Frag(Varyings i) : SV_Target
 {
@@ -113,7 +103,7 @@ half4 Frag(Varyings i) : SV_Target
     half soft = max(0.001h, _Softness);
     half alpha = saturate((_Progress * (1.0h + soft) - threshold) / soft);
 
-    half bayer = BayerThreshold(i.positionCS.xy);
+    half bayer = GM_BayerThreshold(i.positionCS.xy);
     half dithered = step(bayer, alpha);
     alpha = lerp(alpha, dithered, _Dither);
 

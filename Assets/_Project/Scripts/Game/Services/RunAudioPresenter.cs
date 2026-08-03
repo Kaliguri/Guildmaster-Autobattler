@@ -48,6 +48,7 @@ namespace Guildmaster.Game.Services
         private string _music;              // что играет сейчас (null — тишина)
         private bool _menuVisible;
         private bool _mapVisible;
+        private bool _runActive;            // забег идёт: между стартом отряда и экраном исхода
         private bool _fadeClosed;           // ребро шторки: звук только на смену состояния
         private BattlePhase _phase = BattlePhase.None;
 
@@ -97,7 +98,7 @@ namespace Guildmaster.Game.Services
             _titleCardSub?.Subscribe(_ => _audio?.Play("menu.title_card.stinger")).AddTo(bag);
             _outcomeSub?.Subscribe(OnOutcome).AddTo(bag);
             _relicDragSub?.Subscribe(OnRelicDrag).AddTo(bag);
-            _partyReadySub?.Subscribe(_ => _audio?.Play("run.start.stinger")).AddTo(bag);
+            _partyReadySub?.Subscribe(_ => OnPartyReady()).AddTo(bag);
             _subscriptions = bag.Build();
 
             if (_clock != null)
@@ -148,8 +149,18 @@ namespace Guildmaster.Game.Services
             }
         }
 
+        // Отряд встал на арену — забег начался. С этого момента тишины быть не должно: дорожка есть
+        // и на карте, и между узлами, и в бою.
+        private void OnPartyReady()
+        {
+            _runActive = true;
+            _audio?.Play("run.start.stinger");
+            SyncMusic();
+        }
+
         private void OnOutcome(OpenOutcomeRequest e)
         {
+            _runActive = false;
             SetMusic(null); // исход забега слушают в тишине, поверх — стингер
             _audio?.Play(e.Victory ? "run.outcome_victory.stinger" : "run.outcome_defeat.stinger");
         }
@@ -179,12 +190,15 @@ namespace Guildmaster.Game.Services
         /// <summary>Одна дорожка за раз: меню важнее фазы, бой важнее карты.</summary>
         private void SyncMusic()
         {
+            // Тишина — состояние «мы нигде»: забег ещё не начат или уже кончился. Признак — именно забег,
+            // а НЕ отсутствие боя: между узлами карта закрыта и боя нет, и по фазе музыка тут глохла
+            // ровно в тот момент, когда закрывалась карта (выбор узла, экран награды, шторка перехода).
             string wanted;
             if (_menuVisible) wanted = MusicMenu;
             else if (_phase == BattlePhase.Fighting) wanted = MusicBattle;
             else if (_mapVisible) wanted = MusicMap;
-            else if (_phase == BattlePhase.None) wanted = null;
-            else wanted = MusicMap;   // расстановка и передышка — та же спокойная дорожка, что на карте
+            else if (!_runActive && _phase == BattlePhase.None) wanted = null;
+            else wanted = MusicMap;   // расстановка, передышка и экраны узла — спокойная дорожка карты
 
             SetMusic(wanted);
 

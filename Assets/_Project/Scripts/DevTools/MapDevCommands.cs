@@ -1,7 +1,7 @@
 using System.Text;
 using Guildmaster.Game.Flow;
 using Guildmaster.Presentation.Map;
-using QFSW.QC;
+using Guildmaster.Core.DevConsole;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -16,7 +16,31 @@ namespace Guildmaster.DevTools
     /// </summary>
     public static class MapDevCommands
     {
-        [Command("gm_map_show", "Показать карту акта (просмотр, узлы не горят)")]
+        /// <summary>Положить команды карты в набор модуля (снимаются вместе с ним).</summary>
+        public static void Register(DevCommandSet set)
+        {
+            if (set == null) return;
+
+            set.Add("map", "Показать карту акта (просмотр, узлы не горят)", _ => Show());
+            set.Add("map_hide", "Скрыть карту акта", _ => Hide());
+            set.Add("map_nodes", "Узлы текущей карты: индекс и id", _ => Nodes());
+
+            // Индекс и id — одна команда: раньше их разводили на map_goto/map_goto_id, хотя выбор между
+            // ними человек делает по тому, что у него под рукой, а не по смыслу действия.
+            set.Add("map_goto", "Проехать фишкой к узлу (индекс или id) — без выбора узла",
+                a =>
+                {
+                    string raw = a.GetString(0);
+                    return int.TryParse(raw, System.Globalization.NumberStyles.Integer,
+                                        System.Globalization.CultureInfo.InvariantCulture, out int index)
+                        ? GoTo(index)
+                        : GoToId(raw);
+                },
+                new DevParam("indexOrId", DevParamType.String));
+
+            set.Add("map_pawn", "Вернуть фишку на узел, где стоит отряд", _ => ResetPawn());
+        }
+
         public static string Show()
         {
             WorldMapController ctl = Controller();
@@ -25,7 +49,6 @@ namespace Guildmaster.DevTools
             return "Карта показана.";
         }
 
-        [Command("gm_map_hide", "Скрыть карту акта")]
         public static string Hide()
         {
             WorldMapController ctl = Controller();
@@ -34,7 +57,6 @@ namespace Guildmaster.DevTools
             return "Карта скрыта.";
         }
 
-        [Command("gm_map_nodes", "Список узлов текущей карты (индекс + id)")]
         public static string Nodes()
         {
             IWorldMapView view = View();
@@ -48,7 +70,6 @@ namespace Guildmaster.DevTools
             return sb.ToString();
         }
 
-        [Command("gm_map_goto", "Проехать фишкой к узлу по ИНДЕКСУ — без выбора узла (только анимация)")]
         public static string GoTo(int index)
         {
             IWorldMapView view = View();
@@ -61,7 +82,6 @@ namespace Guildmaster.DevTools
             return $"Едем к [{index}] {ids[index]} (выбор не засчитывается).";
         }
 
-        [Command("gm_map_goto_id", "Проехать фишкой к узлу по ID — без выбора узла (только анимация)")]
         public static string GoToId(string nodeId)
         {
             IWorldMapView view = View();
@@ -71,7 +91,6 @@ namespace Guildmaster.DevTools
             return $"Едем к {nodeId} (выбор не засчитывается).";
         }
 
-        [Command("gm_map_reset_pawn", "Вернуть фишку на узел, где стоит отряд")]
         public static string ResetPawn()
         {
             IWorldMapView view = View();

@@ -1,8 +1,11 @@
 ---
 title: "Item - Common Items"
-order: 20
+order: 10
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
+impl: partial
+asset: [item.swift_boots]
+impl_note: "в движке только Сапоги-Скороходы, и там flat +0.6 вместо +30% из карточки"
 ---
 
 # Сборник: обычные предметы

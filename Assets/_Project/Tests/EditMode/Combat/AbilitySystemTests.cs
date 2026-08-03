@@ -21,6 +21,17 @@ namespace Guildmaster.Tests.EditMode.Combat
             return u;
         }
 
+        // Урон способности считается от AutoAttackDamage кастующего: без него множитель ×2 даёт ноль,
+        // и «нагрузка пришла» проверить нечем.
+        private static RuntimeUnit WithAttackDamage(RuntimeUnit u, float damage = 100f)
+        {
+            u.Stats.AddModifiersFrom("attack", new[]
+            {
+                new StatModifier(StatType.AutoAttackDamage, ModifierOp.Flat, damage),
+            });
+            return u;
+        }
+
         [Test]
         public void Cast_ConsumesResource_AndSetsCooldown()
         {
@@ -140,6 +151,291 @@ namespace Guildmaster.Tests.EditMode.Combat
                 sys.Tick(new List<RuntimeUnit> { caster }, ctx, SimConstants.TickDelta);
 
             Assert.LessOrEqual(caster.Abilities[0].CooldownRemaining, 0f);
+        }
+
+        // ===================== Каст-тайм и каналы (M3) =====================
+
+        [Test]
+        public void CastTime_PaysUpFront_AndDelaysThePayload()
+        {
+            var sys = new AbilitySystem();
+            var ctx = new MockCombatContext();
+            var caster = WithAttackDamage(TestUnit.Make());
+            var enemy  = TestUnit.Make(team: 1);
+            caster.CurrentTarget  = enemy;
+            caster.CurrentResource = 50f;
+            WithAbility(caster, TestAbility.Make(
+                cooldown: 5f, cost: 30f, mode: AbilityTargetMode.NearestEnemy,
+                damageMultiplier: 2f, castSeconds: 0.5f));
+
+            var units = new List<RuntimeUnit> { caster, enemy };
+            sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            // Цена уплачена на СТАРТЕ (решение Макса): прерывание контролем жжёт каст, а не откладывает.
+            Assert.AreEqual(20f, caster.CurrentResource, 1e-4f, "Ресурс списан в начале подготовки");
+            Assert.AreEqual(5f, caster.Abilities[0].CooldownRemaining, 1e-4f, "И кулдаун тоже");
+            Assert.IsTrue(caster.IsCasting, "Идёт подготовка");
+            Assert.AreEqual(0, ctx.DamageCalls.Count, "Но урона ещё нет");
+
+            // 0.5 с = 15 тиков; на старте один тик уже прошёл.
+            for (int i = 0; i < 15; i++) sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            Assert.AreEqual(1, ctx.DamageCalls.Count, "Нагрузка пришла ровно по окончании подготовки");
+            Assert.IsFalse(caster.IsCastBusy, "И каст закончился");
+        }
+
+        [Test]
+        public void CastTime_BrokenByHardControl_LosesTheCast()
+        {
+            var sys = new AbilitySystem();
+            var ctx = new MockCombatContext();
+            var caster = WithAttackDamage(TestUnit.Make());
+            var enemy  = TestUnit.Make(team: 1);
+            caster.CurrentTarget   = enemy;
+            caster.CurrentResource = 50f;
+            WithAbility(caster, TestAbility.Make(
+                cost: 30f, mode: AbilityTargetMode.NearestEnemy, damageMultiplier: 2f, castSeconds: 1f));
+
+            var units = new List<RuntimeUnit> { caster, enemy };
+            sys.Tick(units, ctx, SimConstants.TickDelta);
+            Assert.IsTrue(caster.IsCasting);
+
+            // Оглушение = полный вывод из строя (Q10): именно оно и рвёт каст.
+            caster.CanAct = false;
+            sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            Assert.IsFalse(caster.IsCastBusy, "Каст оборван");
+            Assert.AreEqual(0, ctx.DamageCalls.Count, "Нагрузка не пришла");
+            Assert.AreEqual(20f, caster.CurrentResource, 1e-4f, "Ресурс НЕ возвращается — каст сгорел");
+        }
+
+        [Test]
+        public void CastTime_NotBrokenBySoftControlOrDamage()
+        {
+            var sys = new AbilitySystem();
+            var ctx = new MockCombatContext();
+            var caster = WithAttackDamage(TestUnit.Make());
+            var enemy  = TestUnit.Make(team: 1);
+            caster.CurrentTarget   = enemy;
+            caster.CurrentResource = 50f;
+            WithAbility(caster, TestAbility.Make(
+                cost: 30f, mode: AbilityTargetMode.NearestEnemy, damageMultiplier: 2f, castSeconds: 0.5f));
+
+            var units = new List<RuntimeUnit> { caster, enemy };
+            sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            // Корень (обездвиживание без запрета действий) и урон по кастующему каст НЕ рвут — Q10.
+            caster.CanMove   = false;
+            caster.CurrentHP -= 50f;
+
+            for (int i = 0; i < 15; i++) sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            Assert.AreEqual(1, ctx.DamageCalls.Count, "Каст доиграл под корнем и уроном");
+        }
+
+        [Test]
+        public void CastTime_TargetDied_RetargetsInsteadOfHittingTheCorpse()
+        {
+            var sys = new AbilitySystem();
+            var ctx = new MockCombatContext();
+            var caster = WithAttackDamage(TestUnit.Make());
+            var first  = TestUnit.Make(team: 1);
+            var second = TestUnit.Make(team: 1);
+            caster.CurrentTarget   = first;
+            caster.CurrentResource = 50f;
+            WithAbility(caster, TestAbility.Make(
+                cost: 30f, mode: AbilityTargetMode.NearestEnemy, damageMultiplier: 2f, castSeconds: 0.5f));
+
+            var units = new List<RuntimeUnit> { caster, first, second };
+            sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            // Цель добили за время подготовки — мозг уже перевёл фокус на второго.
+            first.IsDead = true;
+            caster.CurrentTarget = second;
+
+            for (int i = 0; i < 15; i++) sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            Assert.AreEqual(1, ctx.DamageCalls.Count, "Каст не ушёл в пустоту");
+            Assert.AreSame(second, ctx.DamageCalls[0].Target, "Нагрузка перевелась на живую цель");
+        }
+
+        [Test]
+        public void Channel_FiresOnStartAndByPeriod_NotOnceMore()
+        {
+            var sys = new AbilitySystem();
+            var ctx = new MockCombatContext();
+            var caster = WithAttackDamage(TestUnit.Make());
+            var enemy  = TestUnit.Make(team: 1);
+            caster.CurrentTarget   = enemy;
+            caster.CurrentResource = 50f;
+            // Канал 3 с с периодом 1 с: первое срабатывание на старте, дальше по периоду — ТРИ всего.
+            // Четвёртое (на тике, где канал кончается) было бы бесплатной прибавкой к силе кита.
+            WithAbility(caster, TestAbility.Make(
+                cooldown: 30f, cost: 30f, mode: AbilityTargetMode.NearestEnemy, damageMultiplier: 1f,
+                channelSeconds: 3f, channelTickSeconds: 1f));
+
+            var units = new List<RuntimeUnit> { caster, enemy };
+            for (int i = 0; i < 4 * SimConstants.TickRate; i++)
+                sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            Assert.AreEqual(3, ctx.DamageCalls.Count, "Три срабатывания за три секунды канала");
+            Assert.IsFalse(caster.IsCastBusy, "Канал закончился сам");
+            Assert.AreEqual(20f, caster.CurrentResource, 1e-4f, "Канал платится один раз, на старте");
+        }
+
+        [Test]
+        public void Channel_BrokenByHardControl_KeepsWhatItAlreadyGave()
+        {
+            var sys = new AbilitySystem();
+            var ctx = new MockCombatContext();
+            var caster = WithAttackDamage(TestUnit.Make());
+            var enemy  = TestUnit.Make(team: 1);
+            caster.CurrentTarget   = enemy;
+            caster.CurrentResource = 50f;
+            WithAbility(caster, TestAbility.Make(
+                cooldown: 30f, cost: 30f, mode: AbilityTargetMode.NearestEnemy, damageMultiplier: 1f,
+                channelSeconds: 3f, channelTickSeconds: 1f));
+
+            var units = new List<RuntimeUnit> { caster, enemy };
+            for (int i = 0; i < SimConstants.TickRate + 2; i++)
+                sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            int beforeStun = ctx.DamageCalls.Count;
+            Assert.AreEqual(2, beforeStun, "Старт плюс первый период");
+
+            caster.CanAct = false;
+            for (int i = 0; i < 2 * SimConstants.TickRate; i++)
+                sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            Assert.IsFalse(caster.IsCastBusy, "Канал оборван контролем");
+            Assert.AreEqual(beforeStun, ctx.DamageCalls.Count, "Отданное остаётся, дальнейшее не приходит");
+        }
+
+        // ===================== Рекаст авто-атаки (M18) =====================
+
+        [Test]
+        public void Recast_WaitsOutTheWindup_ButCutsTheRecovery()
+        {
+            var sys = new AbilitySystem();
+            var ctx = new MockCombatContext();
+            var caster = WithAttackDamage(TestUnit.Make());
+            var enemy  = TestUnit.Make(team: 1);
+            caster.CurrentTarget   = enemy;
+            caster.CurrentResource = 50f;
+            WithAbility(caster, TestAbility.Make(
+                cost: 30f, mode: AbilityTargetMode.NearestEnemy, damageMultiplier: 2f, castSeconds: 0.2f));
+
+            var units = new List<RuntimeUnit> { caster, enemy };
+
+            // Занесённый замах доигрывается: удар без замаха читался бы как пропущенный кадр (Q8).
+            caster.Phase = AttackPhase.Windup;
+            caster.WindupRemaining = 3;
+            sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            Assert.IsFalse(caster.IsCastBusy, "В замахе умение не начинается");
+            Assert.AreEqual(50f, caster.CurrentResource, 1e-4f, "И цена не списана");
+
+            // Хвост после удара умение перебивает — в этом весь выигрыш рекаста.
+            caster.Phase = AttackPhase.Recovery;
+            caster.RecoveryRemaining = 10;
+            sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            Assert.IsTrue(caster.IsCasting, "Хвост не держит умение");
+            Assert.AreEqual(AttackPhase.Idle, caster.Phase, "Хвост снят");
+            Assert.AreEqual(0, caster.RecoveryRemaining);
+        }
+
+        [Test]
+        public void DamagingAbility_DoesNotSkipTheAttackQueue_RecastMustBeDeclared()
+        {
+            // Инвариант, ради которого удалён авто-рекаст (2026-07-31): урон способности САМ ПО СЕБЕ не
+            // даёт права на удар вне очереди. Раньше право выводилось из «есть множитель урона», и его
+            // молча получали залп Арканиста, «Ледяная жатва» и «Стальной вихрь» — киты, у которых свинга
+            // нет вовсе. Теперь рекаст объявляется зарядом (EmpowerNextAttackComponent), и если этот тест
+            // однажды позеленеет наоборот — значит косвенный признак вернулся.
+            var sys = new AbilitySystem();
+            var ctx = new MockCombatContext();
+            var caster = WithAttackDamage(TestUnit.Make());
+            var enemy  = TestUnit.Make(team: 1);
+            caster.CurrentTarget       = enemy;
+            caster.CurrentResource     = 50f;
+            caster.AttackCooldownTicks = 25;
+            WithAbility(caster, TestAbility.Make(
+                cost: 30f, mode: AbilityTargetMode.NearestEnemy, damageMultiplier: 2f, castSeconds: 0.2f));
+
+            var units = new List<RuntimeUnit> { caster, enemy };
+            for (int i = 0; i < 7; i++) sys.Tick(units, ctx, SimConstants.TickDelta);
+
+            Assert.AreEqual(1, ctx.DamageCalls.Count, "Предусловие: умение отработало");
+            // Сам кулдаун здесь не тикает — его ведёт AutoAttackSystem, которую тест не гоняет. Ровно это
+            // и нужно проверить: умение не ТРОГАЕТ чужой таймер, ни в какую сторону.
+            Assert.AreEqual(25, caster.AttackCooldownTicks,
+                "Очередь атаки не пропущена — умение её не касается");
+        }
+
+        // ===================== HealEffect: кому достаётся нагрузка-эффект =====================
+
+        [Test]
+        public void HealEffect_LandsOnSingleTarget()
+        {
+            // Барьер гоблина-мага: щит раненому союзнику задан ЭФФЕКТОМ, а не плоским лечением.
+            var sys = new AbilitySystem();
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+            var caster = TestUnit.Make();
+            var ally = TestUnit.Make(team: 0);
+            ally.CurrentHP = ally.Stats.Get(StatType.MaxHP) * 0.3f;
+            EffectData ward = TestEffect.Make(baseDuration: 5f, polarity: EffectPolarity.Buff);
+            WithAbility(caster, TestAbility.Make(mode: AbilityTargetMode.LowestHpAlly, healEffect: ward));
+
+            bool cast = sys.TryCast(caster, 0, new List<RuntimeUnit> { caster, ally }, ctx);
+
+            Assert.IsTrue(cast, "Способность с одним HealEffect — валидная лечащая способность");
+            Assert.IsTrue(ally.ActiveEffects.Exists(e => e.Def == ward),
+                "Хил-эффект достался цели, а не потерялся между ветвями нагрузки");
+        }
+
+        [Test]
+        public void HealEffect_LandsOnEveryAllyInAura()
+        {
+            var sys = new AbilitySystem();
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+            var caster = TestUnit.Make();
+            var ally = TestUnit.Make(team: 0);
+            ctx.UnitsInWorld.Add(caster);
+            ctx.UnitsInWorld.Add(ally);
+            EffectData hot = TestEffect.Make(baseDuration: 8f, polarity: EffectPolarity.Buff);
+            WithAbility(caster, TestAbility.Make(
+                mode: AbilityTargetMode.AlliesInRadius, areaRadius: 5f, healEffect: hot));
+
+            sys.TryCast(caster, 0, new List<RuntimeUnit> { caster, ally }, ctx);
+
+            Assert.IsTrue(ally.ActiveEffects.Exists(e => e.Def == hot), "Союзник в радиусе получил эффект");
+            Assert.IsTrue(caster.ActiveEffects.Exists(e => e.Def == hot), "Кастующий сам себе союзник (§ApplyAllyAura)");
+        }
+
+        [Test]
+        public void HealEffect_DoesNotReachEnemies_OfACircleCast()
+        {
+            // Инвариант места правки: хил-эффект живёт рядом с ctx.Heal, а НЕ в общем проходе эффектов.
+            // Иначе круг, который адресует врагов, начал бы щитовать тех, по кому бьёт.
+            var sys = new AbilitySystem();
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+            var caster = WithAttackDamage(TestUnit.Make());
+            var enemy  = TestUnit.Make(team: 1);
+            ctx.UnitsInWorld.Add(caster);
+            ctx.UnitsInWorld.Add(enemy);
+            EffectData ward = TestEffect.Make(baseDuration: 5f, polarity: EffectPolarity.Buff);
+            WithAbility(caster, TestAbility.Make(
+                mode: AbilityTargetMode.NearestEnemy, damageMultiplier: 2f,
+                areaShape: AreaShape.Circle, areaRadius: 5f, healEffect: ward));
+
+            sys.TryCast(caster, 0, new List<RuntimeUnit> { caster, enemy }, ctx);
+
+            Assert.IsFalse(enemy.ActiveEffects.Exists(e => e.Def == ward),
+                "Враг под круговым кастом хил-эффекта не получает");
         }
     }
 }

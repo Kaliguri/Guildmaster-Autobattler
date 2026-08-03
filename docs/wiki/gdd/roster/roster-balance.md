@@ -128,10 +128,15 @@ GROUP BY status
 SORT key ASC
 ```
 
-## Данные, требующие уточнения
+## Классификация, требующая уточнения
+
+Поле `needs_review` держит **только открытые вопросы по тегам** (сужено 2026-07-30, журнал 2026-07-30/1).
+Пустая таблица значит «классификация подтверждена», а не «вопросов по киту нет»: неутверждённые имена,
+классы и числа живут в [[gdd/00-meta/open-forks|Meta - Open Forks]] §2.5, долги реализации — в
+[[gdd/relics/implementation-status|Relic - Implementation Status]].
 
 ```dataview
-TABLE needs_review AS "Что уточнить"
+TABLE needs_review AS "Что уточнить по тегам"
 FROM "docs/wiki/gdd/relics"
 WHERE kind = "character" AND length(needs_review) > 0
 SORT file.name ASC

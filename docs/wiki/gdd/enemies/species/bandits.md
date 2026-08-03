@@ -1,10 +1,12 @@
 ---
 title: "Species - Bandits"
-order: 10
+order: 510
 kind: enemy_faction
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 species: Разбойники
+impl: engine
+asset: [species.bandits]
 ---
 
 # Разбойники

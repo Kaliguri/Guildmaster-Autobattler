@@ -31,6 +31,8 @@ CBUFFER_START(UnityPerMaterial)
     half   _LightStrength;
     half   _Ambient;
     half   _AspectX;
+    half   _Vignette;
+    half   _VignetteSoftness;
 CBUFFER_END
 
 Varyings Vert(Attributes v)
@@ -61,6 +63,17 @@ half4 Frag(Varyings i) : SV_Target
     half lit = saturate(_Ambient + light * _LightStrength);
 
     rgb *= lerp(half3(1, 1, 1) * _Ambient, _LightColor.rgb, lit);
+
+    // --- виньетка ---
+    // Радиальное затемнение от центра кадра. Считается по КВАДУ, а не по маске света: маска лежит
+    // текстурой и тянется вместе с тайлом, а край кадра обязан темнеть одинаково при любом
+    // разрешении. Аспект учитываем, иначе на широком экране пятно света вытягивается в овал и
+    // верх кадра гаснет раньше боков.
+    float2 vd = (i.uv - 0.5h) * 2.0h;
+    vd.x *= max(0.01h, _AspectX);
+    half dist = saturate(length(vd) / max(0.2h, _VignetteSoftness * 2.0h));
+    half vig = 1.0h - dist * dist;              // квадрат — спад мягче линейного, край не «обрубается»
+    rgb *= lerp(1.0h, vig, saturate(_Vignette));
 
     return half4(rgb, 1.0h);
 }

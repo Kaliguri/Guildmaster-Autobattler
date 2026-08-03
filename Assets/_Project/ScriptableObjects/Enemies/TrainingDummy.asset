@@ -14,47 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
   _id: enemy.training_dummy
   _combatClass: 0
-  _damageSchool: 0
-  _physicalSubtype: 0
-  _magicElement: 0
-  _affinity: 0
+  _autoAttackDamageType: 2
   _creatureType: 2
   _attackType: 0
   _resourceType: 0
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
   _viewPrefab: {fileID: 7656420421442111193, guid: fb286c11f6a4fba46bccc671b18655df, type: 3}
-  _tint: {r: 0.65, g: 0.65, b: 0.7, a: 1}
-  _vfxColor: {r: 1.76, g: 1.84, b: 2, a: 1}
-  _vfxPalette:
-    serializedVersion: 2
-    key0: {r: 2.522, g: 2.548, b: 2.6, a: 1}
-    key1: {r: 1.936, g: 2.024, b: 2.2, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
+  _bodyShade: 1
+  _vfxTone: 15
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects: []

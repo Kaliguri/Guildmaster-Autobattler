@@ -26,13 +26,18 @@ namespace Guildmaster.Game.Flow
     {
         private readonly RewardService   _rewards;
         private readonly RunStateService _runStates;
+        // Сброс реликвии ради места — односторонняя запись, идёт через шину и попадает в лог. Взятие
+        // награды осталось прямым: оно спрашивает «влезло ли» синхронно, то есть транзакция.
+        private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
         private readonly IPublisher<OpenRewardRequest> _openRewardPub;
 
         public RewardPresenter(RewardService rewards, RunStateService runStates,
+                               Guildmaster.Guild.Commands.IRunCommands commands,
                                IPublisher<OpenRewardRequest> openRewardPub)
         {
             _rewards       = rewards;
             _runStates     = runStates;
+            _commands      = commands;
             _openRewardPub = openRewardPub;
         }
 
@@ -60,7 +65,7 @@ namespace Guildmaster.Game.Flow
             }
 
             if (full && !string.IsNullOrEmpty(result.DropRelicId))
-                _runStates.RemoveRelic(result.DropRelicId);
+                _commands.RemoveRelic(result.DropRelicId);
 
             bool added = _runStates.TryAddRelic(result.Chosen.Id);
             Debug.Log($"[RewardPresenter] - награда: взят '{result.Chosen.Id}'" +

@@ -1,0 +1,39 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu gm-panel--system">
+            <ui:Label name="newgame-title" text="Создать игру" class="gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+
+            <ui:VisualElement class="gm-panel__body">
+                <!-- Три режима. PvP и Ристалище — одно занятие с разными ограничениями, но выбирает
+                     игрок игру, а не устройство движка, поэтому в меню это два пункта. -->
+                <ui:VisualElement name="mode-list" class="gm-newgame__modes">
+                    <gm:PlateButton name="btn-mode-campaign" text="Кампания" class="gm-button gm-newgame__mode" />
+                    <gm:PlateButton name="btn-mode-grounds" text="Ристалище" class="gm-button gm-newgame__mode" />
+                    <gm:PlateButton name="btn-mode-pvp" text="PvP" class="gm-button gm-newgame__mode" />
+                </ui:VisualElement>
+
+                <ui:Label name="mode-hint" class="gm-text-muted gm-newgame__hint" />
+
+                <!-- Дома видны только у Кампании: у площадки дома нет, и пустой список там читался бы
+                     как поломка. Гильдия и есть слот сохранения (ТЗ save-system §3), поэтому пары
+                     «Начать / Продолжить» здесь не существует — игрок выбирает дом. -->
+                <ui:VisualElement name="guild-block" class="gm-newgame__guilds">
+                    <ui:Label name="guild-caption" text="Гильдия" class="gm-text-muted" />
+                    <ui:ScrollView name="guild-list" class="gm-newgame__guild-list" />
+                </ui:VisualElement>
+
+                <!-- Открытость для друзей — свойство СЕАНСА, поэтому галочка одна на все три режима, а
+                     не отдельный «сетевой» вход рядом с каждым. Включена по умолчанию. -->
+                <gm:ToggleRow name="toggle-lobby" label-text="Создать онлайн-лобби" value="true" />
+                <ui:Label name="lobby-hint" class="gm-text-muted gm-newgame__hint" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="gm-divider" />
+            <ui:VisualElement class="gm-newgame__actions">
+                <gm:PlateButton name="btn-start" text="Начать" class="gm-button gm-button--primary" />
+                <gm:PlateButton name="btn-back" text="Назад" class="gm-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

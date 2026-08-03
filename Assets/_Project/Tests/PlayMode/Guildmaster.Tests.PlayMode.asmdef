@@ -6,7 +6,9 @@
     "Guildmaster.Core",
     "Guildmaster.Data",
     "Guildmaster.Combat",
-    "Guildmaster.Game"
+    "Guildmaster.Game",
+    "Guildmaster.Presentation",
+    "VContainer"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

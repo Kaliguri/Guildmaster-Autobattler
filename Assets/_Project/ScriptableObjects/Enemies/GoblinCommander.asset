@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63d49fa19860d104c90671a3fd8bb1e6, type: 3}
+  m_Name: GoblinCommander
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
+  _id: enemy.goblin_commander
+  _combatClass: 0
+  _autoAttackDamageType: 2
+  _creatureType: 0
+  _attackType: 0
+  _resourceType: 0
+  _visual: {fileID: 11400000, guid: 5e18a695936c40a4c94eaefe3364adf9, type: 2}
+  _viewPrefab: {fileID: 6992015941399791172, guid: fbf32b7bf5322ff4fa0fd0f88bac9a1f, type: 3}
+  _bodyShade: 0
+  _vfxTone: 14
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
+  _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
+  _stats:
+  - Stat: 7
+    Op: 3
+    Value: 75
+  - Stat: 8
+    Op: 3
+    Value: 0.8
+  - Stat: 3
+    Op: 3
+    Value: 10
+  _grantedEffects:
+  - {fileID: 11400000, guid: 4b954f618451de44f87a7881b5805328, type: 2}
+  - {fileID: 11400000, guid: f4bbe748a65d4a54a9bbd2791a5130ae, type: 2}
+  _abilities:
+  - _id: goblin_warcry
+    _effects:
+    - {fileID: 11400000, guid: 57fbc357b33b7bd43aac8dd1cb575b93, type: 2}
+    _selfEffects: []
+    _baseCooldown: 10
+    _resourceCost: 0
+    _targetMode: 5
+    _damageMultiplier: 0
+    _damageType: 0
+    _areaShape: 0
+    _areaRadius: 4
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
+    _castCondition: 1
+    _castConditionCount: 1
+    _castConditionRadius: 6
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 0
+    _canMoveWhileCasting: 0
+    _castSource: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 0
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 0
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 0
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
+    _displaces: 0
+    _displaceDistance: 0
+    _displaceDamageMult: 0
+    _displaceWidth: 0
+    _visualSlot: 0
+    _infoTags: []
+  _aiPreset: {fileID: 11400000, guid: 262d3cc7dfd31dc4ab9cbce9705ac85d, type: 2}
+  _ai:
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 0
+      FleeAtHpPct: 0.25
+      ReturnAtHpPct: 0.5
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags: []
+  _species: {fileID: 11400000, guid: 6bc6e7517b81dd74b892560d7246c559, type: 2}
+  _subspecies: {fileID: 0}
+  _threatPoints: 5
+  _goldBounty: 0

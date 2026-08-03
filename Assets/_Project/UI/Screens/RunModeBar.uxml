@@ -50,10 +50,10 @@
             <!-- «Начать» = иконка боя + подпись (иконка та же, что у таба «Бой» в ленте — один язык).
                  Текст живёт в дочернем Label, а не в атрибуте Button: у кнопки с детьми собственный
                  текст рисуется поверх содержимого и наезжает на иконку. -->
-            <ui:Button name="btn-start" class="gm-loadout__start-btn">
+            <gm:PlateButton name="btn-start" class="gm-loadout__start-btn">
                 <ui:VisualElement class="gm-loadout__start-icon" picking-mode="Ignore" />
                 <ui:Label name="btn-start-label" text="Начать" class="gm-loadout__start-label" picking-mode="Ignore" />
-            </ui:Button>
+            </gm:PlateButton>
             <ui:Label name="battle-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer gm-loadout__battle-timer" />
         </ui:VisualElement>
 

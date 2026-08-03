@@ -1,11 +1,11 @@
 ---
 title: "Planning - Vertical Slice"
 order: 100
-status: living
-updated: 2026-07-16
+status: archive
+updated: 2026-07-28
 ---
 
-**Статус:** План составлен (2026-07-14). **Часть A реализована (2026-07-14):** A1 `090913e3` (+.meta `f7ebbe0a`), A2 `ce6cfb33`, A3 `699a618d` — ветка `feat/encounter-data-loader`, 281/281 EditMode зелёные. Замкнутый разрез «бой → исход → награда 1-из-3 → рост гильдии». Ждёт play-mode QA + дизайн-полиш экрана награды (собран кодом, без UXML). **Следующее — развилка §7.1 + ресёрч B1 (генерация карты vs пролог-template): решение Макса.** Прогресс/решения — память `vertical-slice-progress`. Развилки — §7. Опирается на [[tech/40-planning/roadmap|Planning - Roadmap]] (Фаза 5 «Флоу забега» + цель Фазы 8), [[tech/20-explanation/run-flow|Explanation - Run Flow]], [[tech/40-planning/deployment-encounters|Planning - Deployment & Encounters]], [[meta-progression]].
+**Статус:** План составлен (2026-07-14). **Часть A реализована (2026-07-14):** A1 `090913e3` (+.meta `f7ebbe0a`), A2 `ce6cfb33`, A3 `699a618d` — ветка `feat/encounter-data-loader`, 281/281 EditMode зелёные. Замкнутый разрез «бой → исход → награда 1-из-3 → рост гильдии». Ждёт play-mode QA + дизайн-полиш экрана награды (собран кодом, без UXML). **Следующее — развилка §7.1 + ресёрч B1 (генерация карты vs пролог-template): решение Макса.** Прогресс/решения — память `vertical-slice-progress`. Развилки — §7. Опирается на [[tech/40-planning/roadmap|Planning - Roadmap]] (Фаза 5 «Флоу забега» + цель Фазы 8), флоу забега (код `Assets/_Project/Scripts/Game/Flow/`), [[tech/40-planning/deployment-encounters|Planning - Deployment & Encounters]], [[meta-progression]].
 
 ---
 
@@ -27,7 +27,7 @@ updated: 2026-07-16
 
 ## 2. Ведущая архитектура (одна, не меню вариантов)
 
-**`RunState` (durable, по строковым ID) = единственный источник истины забега; `GameFlow` (async UniTask) = оркестратор; узлы карты = полиморфные `IEventFlow`; бой/награда/сцена — эфемерные слои, собираемые из `RunState`.** Ровно модель [[tech/20-explanation/run-flow|Explanation - Run Flow]] §2–4.
+**`RunState` (durable, по строковым ID) = единственный источник истины забега; `GameFlow` (async UniTask) = оркестратор; узлы карты = полиморфные `IEventFlow`; бой/награда/сцена — эфемерные слои, собираемые из `RunState`.** Ровно модель флоу забега (код `Assets/_Project/Scripts/Game/Flow/`) §2–4.
 
 Почему так, а не enum-стейт-машина на верхнем уровне:
 - Макро-флоу — это **последовательность решений игроков**, не покадровая переигровка. `async/await` читается как сценарий и не угрожает детерминизму боя (детерминизм живёт внутри tick-loop, отдельно).
@@ -82,14 +82,14 @@ Data-first, как в [[tech/40-planning/deployment-encounters|Planning - Deploy
 ### Часть A — скелет петли (замыкает «бой → исход → награда → следующий бой»)
 
 **Шаг A1 — `RunState` + DTO + автосейв + `GameConfig`-лимиты** `[фундамент]`
-- `RunState` POCO (§3.1) в `Guildmaster.Guild` (или `Core`), DTO-слой + ES3-плумбинг (data-layer-principles: SO→POCO→DTO). Три точки автосейва ([[tech/20-explanation/run-flow|Explanation - Run Flow]] §5).
+- `RunState` POCO (§3.1) в `Guildmaster.Guild` (или `Core`), DTO-слой + ES3-плумбинг (data-layer-principles: SO→POCO→DTO). Три точки автосейва (флоу забега (код `Assets/_Project/Scripts/Game/Flow/`) §5).
 - `GameConfig`: добавить `RelicCapacityBase`, `RelicCapacityMax` (лимит реликов, §5.4). `VesselItemSlots` уже есть.
 - Тесты: сериализация round-trip, валидация лимитов.
 - Разблокирует: всё, что растёт между боями.
 
 **Шаг A2 — `GameFlow` (async) + `IEventFlow` + `BattleFlow(Prep→Combat→Outcome)`** `[оркестратор]`
 - Заменить заглушку `GameFlow` настоящим async-флоу: `Boot → MainMenu → RunSetup → Run → Act loop`. Ввести `IReadyGate`/`IPlayerIntentSource` (соло-тела).
-- `BattleFlow`: Prep (готово — `DeploymentController`+loadout) → Combat (готово) → **Outcome** (новое): по `BattleOutcome` показать исход, ретраи (до 2, [[tech/20-explanation/run-flow|Explanation - Run Flow]] §6), вернуть `EventResult`.
+- `BattleFlow`: Prep (готово — `DeploymentController`+loadout) → Combat (готово) → **Outcome** (новое): по `BattleOutcome` показать исход, ретраи (до 2, флоу забега (код `Assets/_Project/Scripts/Game/Flow/`) §6), вернуть `EventResult`.
 - `EncounterLoader` вызывается из `BattleFlow`, а не из dev-панели (dev-панель остаётся как debug-вход).
 - Разблокирует: узлы карты можно исполнять; появляется понятие «после боя».
 
@@ -101,7 +101,7 @@ Data-first, как в [[tech/40-planning/deployment-encounters|Planning - Deploy
 ### Часть B — карта, пролог и типы узлов
 
 **Шаг B1 — Карта акта + оверлей выбора узла** `[навигация]`
-- `MapNodeData`/граф (§3.3), генерация из сида ИЛИ загрузка `RunTemplateData`. Оверлей-UI (read-only поверх сцены, [[tech/20-explanation/run-flow|Explanation - Run Flow]] §9) для выбора следующего узла. `MapState` в `RunState`.
+- `MapNodeData`/граф (§3.3), генерация из сида ИЛИ загрузка `RunTemplateData`. Оверлей-UI (read-only поверх сцены, флоу забега (код `Assets/_Project/Scripts/Game/Flow/`) §9) для выбора следующего узла. `MapState` в `RunState`.
 - Разблокирует: последовательность узлов = собственно забег.
 
 **Шаг B2 — Пролог: заготовленная обучающая карта** `[онбординг]`

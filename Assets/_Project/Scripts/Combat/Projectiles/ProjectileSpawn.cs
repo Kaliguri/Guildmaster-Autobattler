@@ -14,10 +14,12 @@ namespace Guildmaster.Combat
         public readonly float       Speed;
         public readonly float       CollisionRadius;
         public readonly float       RawDamage;
-        public readonly DamageSchool School;
 
-        /// <summary>Сродство урона снаряда (Яд/Свет/Тьма).</summary>
-        public readonly DamageAffinity Affinity;
+        /// <summary>
+        /// Тип урона снаряда — тот же, что у источника, выпустившего его. Не читается у хил-снаряда
+        /// (<see cref="IsHeal"/>): лечение типа урона не имеет.
+        /// </summary>
+        public readonly DamageType  DamageType;
         public readonly float       ArmorK;
         public readonly int         MaxPierces;
 
@@ -37,13 +39,12 @@ namespace Guildmaster.Combat
             float        speed,
             float        collisionRadius,
             float        rawDamage,
-            DamageSchool school,
+            DamageType   damageType,
             float        armorK,
             int          maxPierces   = 0,
             bool         isHeal       = false,
             EffectData[] onHitEffects = null,
-            bool         isAutoAttack = false,
-            DamageAffinity affinity = DamageAffinity.None)
+            bool         isAutoAttack = false)
         {
             Source          = source;
             StartPosition   = startPosition;
@@ -51,8 +52,7 @@ namespace Guildmaster.Combat
             Speed           = speed;
             CollisionRadius = collisionRadius;
             RawDamage       = rawDamage;
-            School          = school;
-            Affinity        = affinity;
+            DamageType      = damageType;
             ArmorK          = armorK;
             MaxPierces      = maxPierces;
             IsHeal          = isHeal;

@@ -807,6 +807,782 @@ MonoBehaviour:
     m_Key: effect.spore_mend.name
     m_Metadata:
       m_Items: []
+  - m_Id: 6661801758679040
+    m_Key: enemy.bone_dev.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6661801850953728
+    m_Key: enemy.bone_dev.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6663474874933248
+    m_Key: effect.dodge_haste.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6665841439662080
+    m_Key: effect.chilling_touch.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742471229440
+    m_Key: effect.whirl_slow.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309824
+    m_Key: effect.whirl_slow.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309825
+    m_Key: effect.whirl_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309826
+    m_Key: effect.whirl_shield.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6788415695872000
+    m_Key: effect.hand_of_life_cleanse.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6788415750397952
+    m_Key: effect.hand_of_life_cleanse.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6795754930954240
+    m_Key: effect.vortex_micro_stun.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6795754977091584
+    m_Key: effect.vortex_micro_stun.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444622147584
+    m_Key: relic.arcanist.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119104
+    m_Key: relic.arcanist.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119105
+    m_Key: effect.discord.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119106
+    m_Key: effect.discord.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119107
+    m_Key: effect.phase_shift.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119108
+    m_Key: effect.phase_shift.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119109
+    m_Key: effect.phase_shift_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119110
+    m_Key: effect.phase_shift_shield.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119111
+    m_Key: relic.nightblade.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119112
+    m_Key: relic.nightblade.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119113
+    m_Key: effect.rot.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119114
+    m_Key: effect.rot.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119115
+    m_Key: effect.rot_carrier.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119116
+    m_Key: effect.rot_carrier.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119117
+    m_Key: effect.venom_seal.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119118
+    m_Key: effect.venom_seal.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119119
+    m_Key: relic.water_monk.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119120
+    m_Key: relic.water_monk.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119121
+    m_Key: effect.rising_strike.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119122
+    m_Key: effect.rising_strike.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119123
+    m_Key: effect.rising_strike_charge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119124
+    m_Key: effect.rising_strike_charge.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119125
+    m_Key: effect.water_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119126
+    m_Key: effect.water_shield.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119127
+    m_Key: effect.water_slow.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119128
+    m_Key: effect.water_slow.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119129
+    m_Key: relic.emberkeeper.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119130
+    m_Key: relic.emberkeeper.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119131
+    m_Key: effect.warm_ash.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119132
+    m_Key: effect.warm_ash.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119133
+    m_Key: effect.fire_ward.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119134
+    m_Key: effect.fire_ward.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119135
+    m_Key: effect.living_ember.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119136
+    m_Key: effect.living_ember.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119137
+    m_Key: effect.fan_the_flames_cleanse.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119138
+    m_Key: effect.fan_the_flames_cleanse.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555314462720
+    m_Key: relic.antimage.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045632
+    m_Key: relic.antimage.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045633
+    m_Key: effect.arcane_ward.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045634
+    m_Key: effect.arcane_ward.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045635
+    m_Key: effect.reflective_plating.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045636
+    m_Key: effect.reflective_plating.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045637
+    m_Key: effect.overload_strike.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045638
+    m_Key: effect.overload_strike.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399222775808
+    m_Key: relic.dreameater.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399256330240
+    m_Key: relic.dreameater.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399256330241
+    m_Key: effect.sleep.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399256330242
+    m_Key: effect.sleep.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399256330243
+    m_Key: effect.nightmare.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399256330244
+    m_Key: effect.nightmare.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959210426368
+    m_Key: relic.frostbound.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146624
+    m_Key: relic.frostbound.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146625
+    m_Key: effect.frost.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146626
+    m_Key: effect.frost.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146627
+    m_Key: effect.frost_root.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146628
+    m_Key: effect.frost_root.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340928
+    m_Key: effect.frost_statue.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340929
+    m_Key: effect.frost_statue.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340930
+    m_Key: effect.shatter_stun.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340931
+    m_Key: effect.shatter_stun.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340932
+    m_Key: effect.permafrost.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340933
+    m_Key: effect.permafrost.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340934
+    m_Key: effect.frost_heavy_charge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340935
+    m_Key: effect.frost_heavy_charge.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340936
+    m_Key: effect.harvest_grip.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340937
+    m_Key: effect.harvest_grip.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417282285568
+    m_Key: relic.geomancer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417320034304
+    m_Key: relic.geomancer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228608
+    m_Key: effect.bleed.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228609
+    m_Key: effect.bleed.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228610
+    m_Key: effect.stone_crush.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228611
+    m_Key: effect.stone_crush.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228612
+    m_Key: effect.stone_tithe.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228613
+    m_Key: effect.stone_tithe.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228614
+    m_Key: effect.blood_exchange.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228615
+    m_Key: effect.blood_exchange.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400006385664
+    m_Key: relic.necromancer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328704
+    m_Key: relic.necromancer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328705
+    m_Key: enemy.skeleton_swordsman.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328706
+    m_Key: enemy.skeleton_swordsman.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328707
+    m_Key: effect.bone_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328708
+    m_Key: effect.bone_shield.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328709
+    m_Key: effect.bone_collector.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328710
+    m_Key: effect.bone_collector.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328711
+    m_Key: effect.skeleton_guards.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328712
+    m_Key: effect.skeleton_guards.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7123947646869504
+    m_Key: effect.blood_stance.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7235787592818688
+    m_Key: effect.sinews.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7235787689287680
+    m_Key: effect.sinews.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7344620445097984
+    m_Key: effect.parry.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7344621430759424
+    m_Key: effect.parry_window.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7344621854384128
+    m_Key: effect.parry_haste.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7344622257037312
+    m_Key: effect.riposte_charge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7344622659690496
+    m_Key: effect.micro_stun.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7345064839995392
+    m_Key: effect.resolute_strike_charge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006191947776
+    m_Key: effect.trash_cleanse.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006548463616
+    m_Key: effect.trash_hex.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006909173760
+    m_Key: effect.trash_parry_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652007295049728
+    m_Key: effect.trash_parry_stance.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652007664148480
+    m_Key: effect.trash_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897044676608
+    m_Key: relic.trash_shieldbearer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897044676609
+    m_Key: relic.trash_shieldbearer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897409581056
+    m_Key: relic.trash_brawler.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897409581057
+    m_Key: relic.trash_brawler.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897774485504
+    m_Key: relic.trash_cutthroat.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897774485505
+    m_Key: relic.trash_cutthroat.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898143584256
+    m_Key: relic.trash_archer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898143584257
+    m_Key: relic.trash_archer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898512683008
+    m_Key: relic.trash_hexer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898512683009
+    m_Key: relic.trash_hexer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898873393152
+    m_Key: relic.trash_bonecaller.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898873393153
+    m_Key: relic.trash_bonecaller.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654899229908992
+    m_Key: relic.trash_herbalist.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654899229908993
+    m_Key: relic.trash_herbalist.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8364296469995520
+    m_Key: effect.antiheal_absolute.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366364530302976
+    m_Key: effect.antiheal_medium.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366365138477056
+    m_Key: effect.antiheal_strong.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366365549518848
+    m_Key: effect.antiheal_weak.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366365952172032
+    m_Key: effect.bandit_barrier.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366366359019520
+    m_Key: effect.bandit_bleed_strikes.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366366770061312
+    m_Key: effect.bandit_bulwark.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366367202074624
+    m_Key: effect.bandit_conceal.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366367608922112
+    m_Key: effect.bandit_duel_bonus.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366368049324032
+    m_Key: effect.bandit_hammer_stun.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366368447782912
+    m_Key: effect.bandit_parry.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366368867213312
+    m_Key: effect.bandit_parry_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366369282449408
+    m_Key: effect.bandit_venom.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366369693491200
+    m_Key: effect.blind.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366370096144384
+    m_Key: effect.goblin_backstab.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366370502991872
+    m_Key: effect.goblin_barrier.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366370914033664
+    m_Key: effect.goblin_bulwark.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366371346046976
+    m_Key: effect.goblin_charge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366371757088768
+    m_Key: effect.goblin_parry.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366372189102080
+    m_Key: effect.goblin_stealth.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366372612726784
+    m_Key: effect.goblin_throw.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366373019574272
+    m_Key: effect.goblin_throw_stun.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366373430616064
+    m_Key: effect.goblin_warcry.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366373862629376
+    m_Key: effect.golem_cycle.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366374273671168
+    m_Key: effect.golem_slam.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366374680518656
+    m_Key: effect.golem_slow.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366375083171840
+    m_Key: effect.golem_stone_ward.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366375485825024
+    m_Key: effect.golem_sweep.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366375896866816
+    m_Key: effect.mana_drain.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366376316297216
+    m_Key: effect.pack_instinct.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366376752504832
+    m_Key: effect.shaman_orb_haste.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366377167740928
+    m_Key: effect.shaman_orbs.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366377578782720
+    m_Key: effect.shaman_orb_strike.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366377994018816
+    m_Key: effect.shaman_ward.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366378396672000
+    m_Key: effect.warlock_mark.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366378803519488
+    m_Key: effect.warlock_mend.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366379222949888
+    m_Key: enemy.bandit_assassin.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366379222949889
+    m_Key: enemy.bandit_assassin.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366379667546112
+    m_Key: enemy.bandit_bruiser.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366379667546113
+    m_Key: enemy.bandit_bruiser.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366380095365120
+    m_Key: enemy.bandit_duelist.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366380095365121
+    m_Key: enemy.bandit_duelist.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366380506406912
+    m_Key: enemy.bandit_shieldman.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366380506406913
+    m_Key: enemy.bandit_shieldman.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366380930031616
+    m_Key: enemy.bandit_venombow.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366380930031617
+    m_Key: enemy.bandit_venombow.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366381341073408
+    m_Key: enemy.bandit_warlock.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366381341073409
+    m_Key: enemy.bandit_warlock.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366381756309504
+    m_Key: enemy.earth_golem.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366381756309505
+    m_Key: enemy.earth_golem.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366382175739904
+    m_Key: enemy.goblin_commander.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366382175739905
+    m_Key: enemy.goblin_commander.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366382586781696
+    m_Key: enemy.goblin_jester.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366382586781697
+    m_Key: enemy.goblin_jester.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366383010406400
+    m_Key: enemy.goblin_mocker.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366383010406401
+    m_Key: enemy.goblin_mocker.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366383429836800
+    m_Key: enemy.goblin_shaman.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366383429836801
+    m_Key: enemy.goblin_shaman.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366383849267200
+    m_Key: enemy.goblin_wolfrider.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366383849267201
+    m_Key: enemy.goblin_wolfrider.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366384256114688
+    m_Key: enemy.pack_wolf.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366384256114689
+    m_Key: enemy.pack_wolf.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366384679739392
+    m_Key: species.bandits.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366384679739393
+    m_Key: species.bandits.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366385136918528
+    m_Key: species.beasts.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366385136918529
+    m_Key: species.beasts.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366385560543232
+    m_Key: species.golems.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8366385560543233
+    m_Key: species.golems.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

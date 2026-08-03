@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -18,7 +18,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// <item><c>_radius</c> — радиус ответки, мировые единицы; растёт от «Разрастания».</item>
     /// <item><c>_radiusPerGrowthStack</c> — прибавка радиуса за стак «Разрастания» (0.2 = +20% базы).</item>
     /// <item><c>_cooldownSeconds</c> — микро-КД между залпами: ритм задаёт Древень, а не темп врагов.</item>
-    /// <item><c>_school</c>/<c>_physicalSubtype</c>/<c>_magicElement</c>/<c>_affinity</c> — тип урона шипов.</item>
+    /// <item><c>_damageType</c> — тип урона шипов (у Древня — Колющий).</item>
     /// </list>
     /// Итог залпа: <c>(_flatDamage + броня × _armorRatio) × стаки</c>. При броне 90 и базе 25 это 34.</para>
     /// <para><b>Когда срабатывает:</b> реактив на <see cref="CombatEvent.DamageTaken"/>, только от
@@ -55,19 +55,10 @@ namespace Guildmaster.Combat.Effects.Components
         [SerializeField] private float _radius = 3f;
 
         [Tooltip("Школа урона шипов.")]
-        [SerializeField] private DamageSchool _school = DamageSchool.Physical;
-
-        [Tooltip("Физ-подтип урона шипов (при школе Physical): Колющий для «Шипастого древа». Питает тег; None = не задан.")]
-        [SerializeField] private PhysicalSubtype _physicalSubtype = PhysicalSubtype.None;
-
-        [Tooltip("Магический элемент урона шипов (при школе Magical). Питает тег; None = не задан.")]
-        [SerializeField] private MagicElement _magicElement = MagicElement.None;
-
-        [Tooltip("Сродство урона шипов (Древень с апгрейдом «Ядовитые шипы» — Яд).")]
-        [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
         /// <summary>Тип урона шипов (прямые поля источника) — для агрегации тегов «быстрого чтения».</summary>
-        public DamageType DamageType => new DamageType(_school, _physicalSubtype, _magicElement, _affinity);
+        public DamageType DamageType => _damageType;
 
         [Tooltip("Эффект «Разрастание»: каждый его стак раздувает радиус шипов (карточка ГДД). Пусто = радиус фиксирован.")]
         [SerializeField] private EffectData _growthEffect;
@@ -115,8 +106,8 @@ namespace Guildmaster.Combat.Effects.Components
                 if (victim.IsDead) continue;
 
                 // Reactive: ответка шипов сама реактивы не будит — иначе два Древня зациклят друг друга.
-                ctx.Combat.DealDamage(new DamageRequest(self, victim, damage, _school, ctx.Combat.ArmorK,
-                    sourceKind: DamageSourceKind.Reactive, affinity: _affinity));
+                ctx.Combat.DealDamage(new DamageRequest(self, victim, damage, _damageType, ctx.Combat.ArmorK,
+                    sourceKind: DamageSourceKind.Reactive));
             }
 
             if (_cooldownSeconds > 0f) ctx.Combat.ApplyEffect(self, CooldownMarker(), self);
@@ -155,7 +146,7 @@ namespace Guildmaster.Combat.Effects.Components
         private static int StacksOf(RuntimeUnit unit, EffectData def)
         {
             for (int i = 0; i < unit.ActiveEffects.Count; i++)
-                if (unit.ActiveEffects[i].Def == def) return unit.ActiveEffects[i].Stacks;
+                if (unit.ActiveEffects[i].Def == def) return unit.ActiveEffects[i].VisibleStacks;
             return 0;
         }
     }

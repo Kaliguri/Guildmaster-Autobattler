@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -13,7 +13,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// получает награду: баф темпа и лечение от недостающего HP (карточка ГДД).
     /// <para><b>Числа:</b> <c>_detonateTag</c> — какой эффект считаем топливом (по умолчанию «Угли»);
     /// <c>_damagePerStack</c> — урон за каждый сожжённый стак (15 → при 20 стаках взрыв на 300);
-    /// <c>_school</c>/<c>_physicalSubtype</c>/<c>_magicElement</c> — тип урона взрыва (Огонь, поэтому
+    /// <c>_damageType</c> — тип урона взрыва (Огонь, поэтому
     /// сами «Угли» его и усиливают).</para>
     /// <para><b>Когда срабатывает:</b> в момент наложения (эффект мгновенный, длительность 0) — то
     /// есть по касту способности.</para>
@@ -34,19 +34,10 @@ namespace Guildmaster.Combat.Effects.Components
         [SerializeField] private float _damagePerStack = 15f;
 
         [Tooltip("Школа урона детонации.")]
-        [SerializeField] private DamageSchool _school = DamageSchool.Magical;
-
-        [Tooltip("Физ-подтип урона детонации (при школе Physical). Питает тег; None = не задан.")]
-        [SerializeField] private PhysicalSubtype _physicalSubtype = PhysicalSubtype.None;
-
-        [Tooltip("Магический элемент урона детонации (при школе Magical): Огонь для «Воспламенения». Питает тег; None = не задан.")]
-        [SerializeField] private MagicElement _magicElement = MagicElement.None;
-
-        [Tooltip("Сродство урона детонации.")]
-        [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
         /// <summary>Тип урона детонации (прямые поля источника) — для агрегации тегов «быстрого чтения».</summary>
-        public DamageType DamageType => new DamageType(_school, _physicalSubtype, _magicElement, _affinity);
+        public DamageType DamageType => _damageType;
 
         [Tooltip("Награда за добивание: баф на самого мечника (+скорость атаки/бега). Пусто = без бафа.")]
         [SerializeField] private EffectData _onKillBuff;
@@ -67,7 +58,9 @@ namespace Guildmaster.Combat.Effects.Components
             {
                 RuntimeEffect eff = target.ActiveEffects[i];
                 if (eff.Def == null || (eff.Def.Tags & _detonateTag) == 0) continue;
-                stacks += eff.Stacks;
+                // Топливо считаем по снимку начала тика: живое число правят внутри тика (очищение
+                // снимает стаки ценой), и тогда сила взрыва зависела бы от того, чей ход раньше.
+                stacks += eff.VisibleStacks;
             }
 
             if (stacks <= 0) return;
@@ -76,8 +69,8 @@ namespace Guildmaster.Combat.Effects.Components
             if (damage > 0f)
             {
                 // Урон летит ДО сброса: «Угли» усиливают и сам взрыв (+1% за стак), как любой огонь.
-                ctx.Combat.DealDamage(new DamageRequest(caster, target, damage, _school, ctx.Combat.ArmorK,
-                    sourceKind: DamageSourceKind.Ability, affinity: _affinity, element: _magicElement));
+                ctx.Combat.DealDamage(new DamageRequest(caster, target, damage, _damageType, ctx.Combat.ArmorK,
+                    sourceKind: DamageSourceKind.Ability));
             }
 
             // Угли израсходованы взрывом — снимаем их целиком.

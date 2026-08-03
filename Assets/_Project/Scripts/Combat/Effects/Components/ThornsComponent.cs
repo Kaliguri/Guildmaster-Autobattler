@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -9,7 +9,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// Шипы: отражает долю полученного урона обратно атакующему. Реактивный — слушает
     /// <see cref="CombatEvent.DamageTaken"/> своего носителя (вики «6» §5.5).
     /// <para><b>Числа:</b> <c>_reflectFraction</c> — доля ПОЛУЧЕННОГО урона, возвращаемая обидчику
-    /// (0.15 = 15%); <c>_damageSchool</c> и <c>_affinity</c> — тип ответки. Отличие от
+    /// (0.15 = 15%); <c>_damageType</c> — тип ответки. Отличие от
     /// <see cref="ArmorThornsComponent"/>: там урон считается от БРОНИ носителя и бьёт всех вокруг,
     /// здесь — доля конкретного удара и только тому, кто ударил.</para>
     /// <para><b>Когда срабатывает:</b> ТОЛЬКО на прямом попадании — авто-атака или способность.
@@ -31,10 +31,7 @@ namespace Guildmaster.Combat.Effects.Components
 
         [Tooltip("Школа отражённого урона.")]
         [FormerlySerializedAs("_damageType")]
-        [SerializeField] private DamageSchool _damageSchool = DamageSchool.Magical;
-
-        [Tooltip("Сродство отражённого урона.")]
-        [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
         public CombatEvent Events => CombatEvent.DamageTaken;
 
@@ -53,8 +50,8 @@ namespace Guildmaster.Combat.Effects.Components
             float reflected = e.Amount * _reflectFraction * ctx.Stacks;
             if (reflected <= 0f) return;
 
-            ctx.Combat.DealDamage(new DamageRequest(ctx.Target, attacker, reflected, _damageSchool, ctx.Combat.ArmorK,
-                sourceKind: DamageSourceKind.Reactive, affinity: _affinity));
+            ctx.Combat.DealDamage(new DamageRequest(ctx.Target, attacker, reflected, _damageType, ctx.Combat.ArmorK,
+                sourceKind: DamageSourceKind.Reactive));
         }
     }
 }

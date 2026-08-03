@@ -1,6 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
+using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
+using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -30,8 +32,9 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var monk   = MakeUnit(0, team: 0, pos: new Vector2(-1f, 0f));
                 var target = MakeUnit(1, team: 1, pos: Vector2.zero);
                 sim.Displace(new DisplaceRequest(target, monk, new Vector2(1f, 0f),
-                    distance: 4f, ticks: 8, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 1f));
-                for (int t = 0; t < 8; t++) sim.Tick(SimConstants.TickDelta);
+                    distance: 4f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 1f));
+                // Длительность полёта считается из дистанции: 4 ед. при 10 ед/с = 12 тиков (30 Гц).
+                for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta);
                 return target.Position;
             }
 
@@ -48,13 +51,14 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             var sim = BuildSim(1UL);
             var target = MakeUnit(1, team: 1, pos: Vector2.zero);
+            // 6 ед. при 10 ед/с = 18 тиков полёта.
             sim.Displace(new DisplaceRequest(target, MakeUnit(0, 0, Vector2.zero), new Vector2(1f, 0f),
-                distance: 6f, ticks: 6, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 1f));
+                distance: 6f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 1f));
 
-            for (int t = 0; t < 3; t++) sim.Tick(SimConstants.TickDelta);
+            for (int t = 0; t < 9; t++) sim.Tick(SimConstants.TickDelta);
             Assert.Greater(target.DisplacedTicksRemaining, 0, "В полёте цель оглушена (жёсткое состояние)");
 
-            for (int t = 0; t < 3; t++) sim.Tick(SimConstants.TickDelta);
+            for (int t = 0; t < 9; t++) sim.Tick(SimConstants.TickDelta);
             Assert.AreEqual(0, target.DisplacedTicksRemaining, "После приземления оглушение снято");
         }
 
@@ -72,12 +76,82 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.Tick(SimConstants.TickDelta); // флаш + регистрация в spatial hash
 
             sim.Displace(new DisplaceRequest(flying, monk, new Vector2(1f, 0f),
-                distance: 10f, ticks: 10, cannonball: true, damage: 50f, school: DamageSchool.Physical, width: 2f));
-            for (int t = 0; t < 11; t++) sim.Tick(SimConstants.TickDelta);
+                distance: 10f, cannonball: true, damage: 50f, damageType: DamageType.Slash, width: 2f));
+            for (int t = 0; t < 31; t++) sim.Tick(SimConstants.TickDelta); // 10 ед. = 30 тиков полёта
 
             Assert.Less(enemyB.CurrentHP, 200f, "«Ядро» бьёт врага источника на линии");
             Assert.AreEqual(200f, allyC.CurrentHP, 1e-4f, "Союзника источника «ядро» не задевает");
-            Assert.AreEqual(flying.Stats.Get(StatType.MaxHP), flying.CurrentHP, 1e-4f, "Сам летящий не бьёт себя");
+            // Отброшенный получает урон толчка ОДИН раз, при старте полёта (решение 2026-07-28): раньше
+            // заданный урон уходил только задетым на линии, то есть толчок бил мимо того, кого толкнули.
+            // Через себя «ядром» он при этом не проходит — иначе урон удваивался бы на каждом тике.
+            float flyingLost = flying.Stats.Get(StatType.MaxHP) - flying.CurrentHP;
+            Assert.AreEqual(50f, flyingLost, 1e-4f, "Летящий получил урон толчка ровно один раз");
+        }
+
+        [Test]
+        public void FlightDuration_ScalesWithDistance()
+        {
+            // Скорость полёта фиксирована, поэтому длительность — производная дистанции (решение
+            // 2026-07-28): вдвое дальше = вдвое дольше в контроль-иммунном оглушении.
+            int TicksToLand(float distance)
+            {
+                var sim = BuildSim(7UL);
+                var target = MakeUnit(1, team: 1, pos: Vector2.zero, moveSpeed: 0f);
+                sim.Displace(new DisplaceRequest(target, MakeUnit(0, 0, Vector2.zero), new Vector2(1f, 0f),
+                    distance: distance, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 0f));
+
+                int ticks = 0;
+                while (target.DisplacedTicksRemaining > 0 && ticks < 300)
+                {
+                    sim.Tick(SimConstants.TickDelta);
+                    ticks++;
+                }
+                return ticks;
+            }
+
+            int near = TicksToLand(3f);
+            int far  = TicksToLand(6f);
+
+            Assert.Greater(near, 0, "Полёт длится хотя бы тик — иначе не поднимется событие конца смещения");
+            Assert.AreEqual(near * 2, far, "Двойная дистанция — двойная длительность полёта");
+        }
+
+        [Test]
+        public void IntoWall_DealsImpactDamage_OncePerFlight()
+        {
+            // Арена узкая по X: цель у самого края, толчок вжимает её в стену на первом же тике.
+            var sim = new CombatSimulation(
+                new XorShiftRng(5UL), CombatTestValues.ArmorK, new SpatialHash(CombatTestValues.CellSize),
+                new BrainSystem(), new AbilitySystem(), new MovementSystem(),
+                new AutoAttackSystem(), new ProjectileSystem(), new DeathSystem(),
+                new EffectSystem(), new RegenSystem(),
+                arena: new ArenaBounds(Vector2.zero, new Vector2(4f, 20f)));
+
+            var monk   = MakeUnit(0, team: 0, pos: new Vector2(-2f, 0f), aad: 0f, moveSpeed: 0f);
+            var victim = MakeUnit(1, team: 1, pos: new Vector2(1.9f, 0f), maxHp: 500f, aad: 0f, moveSpeed: 0f);
+            sim.EnqueueUnitSpawn(monk);
+            sim.EnqueueUnitSpawn(victim);
+            sim.Tick(SimConstants.TickDelta);
+
+            float hpBefore = victim.CurrentHP;
+            sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
+                distance: 6f, cannonball: true, damage: 40f, damageType: DamageType.Slash, width: 1f));
+
+            for (int t = 0; t < 5; t++) sim.Tick(SimConstants.TickDelta);
+
+            // 40 за сам толчок (на старте полёта) + 40 за удар о край арены = ровно 80.
+            float lost = hpBefore - victim.CurrentHP;
+            Assert.AreEqual(80f, lost, 1e-3f, "Толчок + удар о стену: по одному разу каждый, а не урон на каждый прижатый тик");
+
+            // Полёт СТОИТ у стены, но цель продолжает лежать оглушённой ~1 секунду (30 тиков).
+            Vector2 restingPos = victim.Position;
+            for (int t = 0; t < 15; t++) sim.Tick(SimConstants.TickDelta);
+            Assert.AreEqual(restingPos, victim.Position, "У стены полёт остановлен — цель не скользит вдоль границы");
+            Assert.Greater(victim.DisplacedTicksRemaining, 0, "Через полсекунды после удара цель ещё лежит");
+
+            for (int t = 0; t < 20; t++) sim.Tick(SimConstants.TickDelta);
+            Assert.AreEqual(0, victim.DisplacedTicksRemaining, "Лежание кончилось — только теперь поднимается конец смещения (телепорт Монаха)");
+            Assert.AreEqual(80f, hpBefore - victim.CurrentHP, 1e-3f, "Лежание урона не добавляет");
         }
 
         // ===================== §10.6 «Вихревой заход» =====================
@@ -91,14 +165,87 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(monk, VortexPassive(2f), monk);
             sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
-                distance: 4f, ticks: 6, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 1f));
+                distance: 4f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 1f));
 
-            for (int t = 0; t < 6; t++) sim.Tick(SimConstants.TickDelta); // конец полёта → сигнал → телепорт+усиление тем же тиком
+            for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta); // конец полёта (4 ед. = 12 тиков) → сигнал → телепорт+усиление тем же тиком
 
             Assert.AreEqual(2f, monk.EmpowerDamageMult, 1e-4f, "В конце полёта «Вихревой заход» взвёл усиление ×2");
             Assert.AreSame(victim, monk.CurrentTarget, "Монах перенацелился на смещённую цель");
             float distToVictim = (monk.Position - victim.Position).magnitude;
             Assert.LessOrEqual(distToVictim, monk.Stats.Get(StatType.AttackRange) + 1e-3f, "Телепорт поставил монаха в пределах досягаемости");
+        }
+
+        [Test]
+        public void VortexEntry_LoopsControl_StunsBeforeTheBackstab_AndCutsTheQueue()
+        {
+            // M11 (решение Макса 2026-07-28): удар в спину выходит ВНЕ ОЧЕРЕДИ атак, ускоренным замахом,
+            // а цель к моменту удара уже зафиксирована микро-станом. Порядок и есть механика: стан
+            // ложится ДО удара, иначе монах бьёт в убегающую спину и комбо не замыкается.
+            var sim = BuildSim(1UL);
+            var monk   = MakeUnit(0, team: 0, pos: new Vector2(-3f, 0f), range: 2f);
+            var victim = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f));
+
+            // Монах «в хвосте» после предыдущего удара и с полным кулдауном — комбо обязано это перебить.
+            monk.AttackCooldownTicks = 25;
+            monk.Phase = AttackPhase.Recovery;
+            monk.RecoveryRemaining = 10;
+
+            sim.ApplyEffect(monk, VortexPassive(2f, MicroStun(0.25f)), monk);
+            sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
+                distance: 4f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 1f));
+
+            for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta);   // конец полёта → заход сработал
+
+            // Ещё пара тиков: заход накладывает стан в фазе доставки событий, которая идёт ПОСЛЕ тика
+            // эффектов, а флаги контроля пересчитываются на своём проходе. Именно этот зазор и делает
+            // стан «ложащимся ДО удара»: укороченный замах дозревает позже.
+            sim.Tick(SimConstants.TickDelta);
+            sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(0, monk.AttackCooldownTicks, "Удар вне очереди: таймер атаки обнулён");
+
+            // Хвост предыдущего удара ускорен — проверяем это по ОСТАТКУ хвоста, а не по фазе. Фазу двигает
+            // AutoAttackSystem в своём тике, и рекаст (RuntimeUnit.RecastAttack) её намеренно не трогает:
+            // у фазы один владелец. Проверять фазу здесь нельзя и по второй причине: дальше монах успевает
+            // провести сам удар в спину и войти в НОВЫЙ хвост, так что «не Recovery» перестаёт быть
+            // признаком успеха.
+            //
+            // Сравниваем с потолком, а не с точным числом: между взводом захода и этой строкой проходят
+            // тики, и остаток честно убывает. Инвариант тут — «ускорен вдвое, а не снят»: хвост из десяти
+            // тиков стал пятью и с тех пор дотикивает.
+            Assert.Less(monk.RecoveryRemaining, 10, "Хвост предыдущего удара ускорен");
+            Assert.AreEqual(0.5f, monk.NextWindupMult, 1e-4f, "Замах удара в спину ускорен вдвое");
+            // Проверяем ФАКТ наложения, а не производный флаг: контракт этого компонента — «повесить
+            // микро-стан на цель», а превращение эффекта в CanAct принадлежит EffectSystem, и у неё
+            // свои тесты. Иначе тест захода начнёт падать от чужих правок порядка в тике.
+            bool stunned = false;
+            for (int i = 0; i < victim.ActiveEffects.Count; i++)
+                if ((victim.ActiveEffects[i].Def.Tags & EffectTag.Control) != 0) stunned = true;
+
+            Assert.IsTrue(stunned, "Микро-стан наложен на цель до того, как дозреет удар в спину");
+        }
+
+        [Test]
+        public void VortexEntry_WithoutStunAsset_StillWorks_ButDoesNotFixTheTarget()
+        {
+            // Честная деградация: микро-стан — поле ассета, и без него комбо остаётся ударом вне очереди,
+            // а не ломается. Так видно, что фиксация цели — решение дизайна, а не побочный эффект кода.
+            var sim = BuildSim(1UL);
+            var monk   = MakeUnit(0, team: 0, pos: new Vector2(-3f, 0f), range: 2f);
+            var victim = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f));
+
+            sim.ApplyEffect(monk, VortexPassive(2f), monk);
+            sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
+                distance: 4f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 1f));
+
+            for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(2f, monk.EmpowerDamageMult, 1e-4f, "Усиление взведено как раньше");
+            bool anyControl = false;
+            for (int i = 0; i < victim.ActiveEffects.Count; i++)
+                if ((victim.ActiveEffects[i].Def.Tags & EffectTag.Control) != 0) anyControl = true;
+
+            Assert.IsFalse(anyControl, "Без ассета стана цель не фиксируется");
         }
 
         // ===================== §10.6 полная цепочка: рывок → отбрасывание → телепорт =====================
@@ -116,7 +263,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.EnqueueUnitSpawn(bystander);
             sim.Tick(SimConstants.TickDelta); // флаш + регистрация в spatial hash
 
-            sim.ApplyEffect(monk, DashLandingPassive(distance: 4f, ticks: 8, dmgMult: 1.5f), monk);
+            sim.ApplyEffect(monk, DashLandingPassive(distance: 4f, dmgMult: 1.5f), monk);
             sim.ApplyEffect(monk, VortexPassive(2f), monk);
 
             float enemyStartX     = enemy.Position.x;
@@ -124,7 +271,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             // Рывок монаха к цели (self-displacement) — как это делает активка «Шквальный толчок».
             sim.Displace(new DisplaceRequest(monk, monk, new Vector2(1f, 0f),
-                distance: 1f, ticks: 6, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 0f));
+                distance: 1f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 0f));
 
             // Конец рывка → приземление → отбрасывание врага → конец отбрасывания → телепорт монаха.
             // Усиление ×2 могло быть израсходовано авто-атакой к концу прогона — трекаем максимум за прогон.
@@ -151,20 +298,137 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         // ===================== Фабрики / хелперы =====================
 
-        private static EffectData VortexPassive(float mult)
+        private static EffectData VortexPassive(float mult, EffectData microStun = null)
         {
-            var vortex = new VortexEntryComponent().With("_empowerMult", mult);
+            var vortex = new VortexEntryComponent()
+                .With("_empowerMult", mult)
+                .With("_microStun", microStun);
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: vortex);
         }
 
-        private static EffectData DashLandingPassive(float distance, int ticks, float dmgMult)
+        /// <summary>Микро-стан захода: полный вывод из строя на заданные секунды (как VortexMicroStun в ассетах).</summary>
+        private static EffectData MicroStun(float seconds) =>
+            EffectData.CreateRuntime(
+                "test.vortex_micro_stun", EffectPolarity.Debuff, EffectTag.Debuff | EffectTag.Control,
+                seconds, unremovable: false,
+                new ControlComponent(preventAct: true, preventMove: true, preventCast: true));
+
+        private static EffectData DashLandingPassive(float distance, float dmgMult)
         {
             var landing = new WhirlDashLandingComponent()
                 .With("_displaceDistance", distance)
-                .With("_displaceTicks", ticks)
                 .With("_displaceDamageMult", dmgMult)
                 .With("_displaceWidth", 1.5f);
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: landing);
+        }
+
+        // ===================== Монах воды: гибрид «сталь + вода» =====================
+
+        /// <summary>
+        /// Взрыв «Водяного щита» приходит ДВУМЯ ударами разных типов и вгоняет стаки «Изморози»
+        /// (вердикт Макса 2026-07-30: 50/50 Дробящий + Лёд, три стака, своего замедления больше нет).
+        /// </summary>
+        /// <remarks>
+        /// Проверяются именно два запроса урона, а не сумма: одна цифра с «половинчатой школой» прошла бы
+        /// сумму, но половина Льдом не попала бы ни в уязвимость к льду, ни в накопление холода — то есть
+        /// связка с крио-китами молча не работала бы. Это ровно тот класс дефекта, из-за которого взрыв
+        /// костей не попадал в хрупкость статуи.
+        /// </remarks>
+        [Test]
+        public void WaterShieldBurst_LandsAsTwoTypes_AndStacksFrost()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext(effects: sys);
+            var monk   = TestUnit.Make();
+            var victim = TestUnit.Make(team: 1);
+            ctx.UnitsInWorld.Add(victim);
+
+            EffectData frost = TestEffect.Make(
+                baseDuration: -1f, stacking: StackRule.Stack, maxStacks: 20);
+
+            var shield = new ShieldComponent().With("_amount", new ScalableValue(200f));
+            var burst  = new ShieldBurstComponent()
+                .With("_fractionOfShield", 1f)
+                .With("_radius", 3f)
+                .With("_damageType", DamageType.Blunt)
+                .With("_secondShare", 0.5f)
+                .With("_secondType", DamageType.Ice)
+                .With("_victimEffect", frost)
+                .With("_victimEffectCount", 3);
+            EffectData def = TestEffect.Make(
+                baseDuration: 5f, tags: EffectTag.Shield,
+                components: new IEffectComponent[] { shield, burst });
+
+            sys.Apply(monk, def, monk, ctx);
+            Assert.AreEqual(200f, monk.CurrentShield, 1e-3f, "Щит поднялся — иначе взрыву нечего делить");
+
+            // Щит пробит — взрыв. Путь пробития и путь истечения ведут в один Burst, поэтому гибрид
+            // проверяется здесь: разойтись поведением они не могут по построению.
+            monk.CurrentShield = 0f;
+            sys.Dispatch(monk, new CombatEventData(CombatEvent.DamageTaken, monk, monk, 10f), ctx);
+
+            Assert.AreEqual(2, ctx.DamageCalls.Count, "Взрыв приходит двумя половинами, а не одной цифрой");
+            CollectionAssert.AreEquivalent(
+                new[] { DamageType.Blunt, DamageType.Ice },
+                new[] { ctx.DamageCalls[0].Type, ctx.DamageCalls[1].Type },
+                "Половины — Дробящий и Лёд");
+            Assert.AreEqual(100f, ctx.DamageCalls[0].RawDamage, 1e-3f, "Половина от щита 200");
+            Assert.AreEqual(100f, ctx.DamageCalls[1].RawDamage, 1e-3f, "Вторая половина такая же");
+
+            RuntimeEffect onVictim = victim.ActiveEffects.Find(e => e.Def == frost);
+            Assert.IsNotNull(onVictim, "Взрыв кладёт «Изморозь» на задетых");
+            Assert.AreEqual(3, onVictim.Stacks, "Три стака за взрыв — вердикт Макса, а не порция ассета");
+        }
+
+        /// <summary>
+        /// «Восходящий удар» (пассивка Монаха воды) тоже гибрид: половина урона Дробящим, половина Льдом,
+        /// плюс два стака «Изморози». Связь со льдом идёт через СПОСОБНОСТЬ, а обычная автоатака остаётся
+        /// чисто физической — иначе фон копил бы холод быстрее, чем задумано.
+        /// </summary>
+        [Test]
+        public void RisingStrike_SplitsHalfIntoIce_AndAddsTwoFrostStacks()
+        {
+            var sim = BuildSim(12UL);
+            var monk   = MakeUnit(0, team: 0, pos: Vector2.zero, aad: 100f, moveSpeed: 0f);
+            var victim = MakeUnit(1, team: 1, pos: new Vector2(1f, 0f), maxHp: 10000f, aad: 0f, moveSpeed: 0f);
+            monk.AutoAttackDamageType = DamageType.Blunt;   // посох Монаха воды
+            sim.EnqueueUnitSpawn(monk);
+            sim.EnqueueUnitSpawn(victim);
+            monk.AutoAttackTarget = victim;
+            sim.Tick(SimConstants.TickDelta);
+
+            var hits = new List<(DamageType type, float dmg)>();
+            sim.OnDamageDealt += (src, tgt, res) => { if (tgt == victim) hits.Add((res.Type, res.TotalDamage)); };
+
+            EffectData frost = TestEffect.Make(
+                baseDuration: -1f, stacking: StackRule.Stack, maxStacks: 20);
+
+            var charge = new EmpowerNextAttackComponent()
+                .With("_damageMult", 2f)
+                .With("_consumeTag", EffectTag.Empowered)
+                .With("_splitShare", 0.5f)
+                .With("_splitType", DamageType.Ice)
+                .With("_bonusOnHitEffects", new[] { frost })
+                .With("_bonusOnHitCount", 2);
+            EffectData def = TestEffect.Make(
+                baseDuration: -1f, tags: EffectTag.Empowered,
+                components: new IEffectComponent[] { charge });
+
+            sim.ApplyEffect(monk, def, monk);
+
+            // Ждём замах и прилёт заряженной автоатаки.
+            for (int i = 0; i < 40 && hits.Count < 2; i++) sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(2, hits.Count, "Заряженный удар приходит двумя половинами");
+            CollectionAssert.AreEquivalent(
+                new[] { DamageType.Blunt, DamageType.Ice },
+                new[] { hits[0].type, hits[1].type },
+                "Половины — тип автоатаки и Лёд");
+            Assert.AreEqual(hits[0].dmg, hits[1].dmg, 1e-2f, "Доли равные");
+
+            RuntimeEffect onVictim = victim.ActiveEffects.Find(e => e.Def == frost);
+            Assert.IsNotNull(onVictim, "Заряженный удар кладёт «Изморозь»");
+            Assert.AreEqual(2, onVictim.Stacks, "Два стака за удар");
         }
 
         private static CombatSimulation BuildSim(ulong seed) =>
@@ -195,6 +459,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CurrentHP        = maxHp,
                 Position         = pos,
                 PreviousPosition = pos,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
     }

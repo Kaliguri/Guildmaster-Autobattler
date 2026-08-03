@@ -1,8 +1,8 @@
 ---
 title: "Planning - Save System"
 order: 160
-status: planned
-updated: 2026-07-26
+status: needs_review
+updated: 2026-07-28
 ---
 
 **Статус:** planned — ТЗ утверждено 2026-07-26. **Фаза A реализована** в тот же день (см. §12);
@@ -11,15 +11,15 @@ updated: 2026-07-26
 > **Уточнение контракта, добытое реализацией.** §10 обещал, что сигнатуры `ISaveService` не изменятся.
 > Изменились: `Load<T>` заменён на `TryLoad<T>`, возвращающий `SaveLoadResult<T>`. Без этого «сейва нет»
 > и «сейв из более новой версии игры» приходили вызывающему одинаковым `null`, и ветка «не грузим и не
-> затираем» из §5 была бы недостижима. Актуальное «как есть» — [[tech/10-reference/saves|Reference - Saves]].
+> затираем» из §5 была бы недостижима. Актуальное «как есть» — сейвы (`CLAUDE.md` §Сохранения).
 
 ---
 
 > Полное ТЗ слоя сохранений: иерархия профиль → гильдия → забег, раскладка на диске,
 > версионирование игры и схем, миграции, Steam Cloud, мультиплеерные швы и порядок внедрения.
-> Заменяет собой прежний узкий взгляд «один файл забега» из [[tech/10-reference/saves|Reference - Saves]].
-> Смежное: [[tech/20-explanation/run-flow|Explanation - Run Flow]], [[tech/20-explanation/netcode|Explanation - Netcode]],
-> [[tech/10-reference/data-layer|Reference - Data Layer]], [[tech/40-planning/steam-workshop|Planning - Steam Workshop]].
+> Заменяет собой прежний узкий взгляд «один файл забега» из сейвы (`CLAUDE.md` §Сохранения).
+> Смежное: флоу забега (код `Assets/_Project/Scripts/Game/Flow/`), [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]],
+> дата-слой (код `Assets/_Project/Scripts/Data/`, правила — скилл `xgaida-x-nixi-data-authoring`), [[tech/40-planning/steam-workshop|Planning - Steam Workshop]].
 
 ---
 
@@ -38,7 +38,7 @@ updated: 2026-07-26
 
 | № | Решение | Причина |
 |---|---|---|
-| S1 | **Выход посреди боя = откат к началу узла.** Снапшот живой симуляции не делаем | Бой детерминирован саб-сидом, ретрай = тот же бой ([[tech/20-explanation/run-flow|Run Flow]] §6). Игрок теряет минуту, не прогресс. Снапшот сима ломался бы на каждой правке боевки |
+| S1 | **Выход посреди боя = откат к началу узла.** Снапшот живой симуляции не делаем | Бой детерминирован саб-сидом, ретрай = тот же бой (флоу забега (код `Assets/_Project/Scripts/Game/Flow/`) §6). Игрок теряет минуту, не прогресс. Снапшот сима ломался бы на каждой правке боевки |
 | S2 | **Steam Cloud = Auto-Cloud по маске путей** | Ноль кода. Ручной `ISteamRemoteStorage` — только если реально прижмёт |
 | S3 | **Кооп: гильдия у хоста, открытия — каждому в свой профиль** | Гость не уходит с пустыми руками, но гильдия остаётся одна |
 | S4 | **Забег ломать можно, мету — никогда** | Забег стоит 40 минут, гильдия — месяцы. Несовместимость забега объявляем честно, `profile` мигрируем любой ценой |
@@ -214,7 +214,7 @@ updated: 2026-07-26
 `gameVersion` и `savedAtUtc` — исключительно для диагностики.
 
 **Миграции требуют Newtonsoft.Json.** Пакет `3.2.2` уже стоит в проекте и не используется
-([[tech/10-reference/tech-stack|Tech Stack]]). `JsonUtility` не умеет работать с деревом JSON —
+([[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]]). `JsonUtility` не умеет работать с деревом JSON —
 без Newtonsoft пришлось бы вечно держать классы `RunStateV1`, `V2`, `V3` и цепочку конвертеров
 между ними. С деревом миграция — это «переложить узлы»:
 
@@ -239,7 +239,7 @@ interface ISaveMigration
 
 ### Дрейф, найденный при сверке с кодом (2026-07-26)
 
-[[tech/10-reference/saves|Reference - Saves]] и [[tech/20-explanation/run-flow|Run Flow]] §5
+сейвы (`CLAUDE.md` §Сохранения) и флоу забега (код `Assets/_Project/Scripts/Game/Flow/`) §5
 утверждают «три точки автосейва». В коде `RunStateService.Autosave()` вызывается из **девяти**
 мест: `GameFlow` (×3), `ActRunner` (×2), `ShopController` (×3), `RewardPresenter`,
 `EventEffectApplier`, `DeploymentController`. Фактическая политика давно другая — «сохраняем
@@ -273,7 +273,7 @@ interface ISaveMigration
 
 ## 9. Мультиплеер
 
-Опирается на host-authoritative модель ([[tech/20-explanation/netcode|Explanation - Netcode]]).
+Опирается на host-authoritative модель ([[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]]).
 
 ### Кто и что пишет
 
@@ -347,7 +347,7 @@ Steam Cloud от шифрования только страдает.
 
 **Снапшот живой симуляции** — решение S1.
 
-**Host migration в реальном времени** — отложена ранее, см. [[tech/10-reference/saves|Reference - Saves]].
+**Host migration в реальном времени** — отложена ранее, см. сейвы (`CLAUDE.md` §Сохранения).
 
 ---
 

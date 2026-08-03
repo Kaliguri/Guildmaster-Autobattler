@@ -15,8 +15,13 @@ namespace Guildmaster.Game.Services
     /// <see cref="UnitView"/>. Per-hit локальный фидбэк (вспышка/сплющивание/hitstop) остаётся в презентации;
     /// сюда приходят только КРУПНЫЕ моменты — добивающий удар и конец боя. Подписка на MessagePipe (развязка
     /// от симуляции, как у <c>AudioPresenter</c>). Крита в модели нет — «момент» = <c>KilledTarget</c>.
+    /// <para><b>Предчувствие смерти (Ф6 ленты боя):</b> замедление начинается ЧУТЬ РАНЬШЕ смертельного
+    /// удара. Это невозможно без лага показа — «раньше» неоткуда взять, если о смерти узнаёшь в тот же
+    /// кадр. Здесь режиссёр смотрит события ленты, до которых показ ещё не дошёл, и запускает slowmo
+    /// заранее. Когда запаса нет (первые кадры боя), остаётся честная деградация: замедление щёлкает
+    /// в момент удара, как было до ленты.</para>
     /// </summary>
-    public sealed class CombatFeelDirector : IStartable, IDisposable
+    public sealed class CombatFeelDirector : IStartable, ITickable, IDisposable
     {
         private readonly ISubscriber<DamageDealtEvent> _damageSub;
         private readonly ISubscriber<BattleEndedEvent> _endedSub;
@@ -25,9 +30,18 @@ namespace Guildmaster.Game.Services
         private readonly IScreenShake     _shake;
         private readonly CombatFeelConfig _cfg;
         private readonly Core.Audio.IAudioService _audio;
+        private readonly Combat.Tape.BattleTape         _tape;
+        private readonly Combat.Tape.BattleTapePlayback _playback;
 
         private IDisposable _subscriptions;
         private float _lastKillSlowmo = float.NegativeInfinity;
+
+        // Буфер под заглядывание вперёд: переиспользуется, чтобы не мусорить каждый кадр.
+        private readonly System.Collections.Generic.List<Combat.Tape.TapeEvent> _upcoming =
+            new System.Collections.Generic.List<Combat.Tape.TapeEvent>(32);
+
+        // Тик смертельного удара, под который замедление УЖЕ запущено предчувствием. NoTick = нет такого.
+        private int _foreseenKillTick = Combat.Tape.BattleTape.NoTick;
 
         public CombatFeelDirector(
             ISubscriber<DamageDealtEvent> damageSub,
@@ -36,8 +50,12 @@ namespace Guildmaster.Game.Services
             TimeScaleService time,
             IScreenShake shake,
             CombatFeelConfig cfg,
-            Core.Audio.IAudioService audio)
+            Core.Audio.IAudioService audio,
+            Combat.Tape.BattleTape tape,
+            Combat.Tape.BattleTapePlayback playback)
         {
+            _tape      = tape;
+            _playback  = playback;
             _damageSub = damageSub;
             _endedSub  = endedSub;
             _sim       = sim;
@@ -63,10 +81,47 @@ namespace Guildmaster.Game.Services
             _subscriptions?.Dispose();
         }
 
+        /// <summary>
+        /// Заглянуть вперёд показа: если смертельный удар случится в пределах <c>KillSlowLeadSeconds</c>,
+        /// начать замедление СЕЙЧАС — тогда игрок входит в момент смерти уже в slowmo, а не узнаёт о нём
+        /// постфактум.
+        /// </summary>
+        public void Tick()
+        {
+            float leadSeconds = _cfg != null ? _cfg.KillSlowLeadSeconds : 0f;
+            if (leadSeconds <= 0f || _playback == null || !_playback.IsPlaying) return;
+
+            int leadTicks = Mathf.RoundToInt(leadSeconds * Core.Simulation.SimConstants.TickRate);
+            if (leadTicks <= 0) return;
+
+            int viewTick = _playback.ViewTick;
+            _tape.CollectEvents(viewTick + 1, viewTick + leadTicks, _upcoming);
+
+            for (int i = 0; i < _upcoming.Count; i++)
+            {
+                Combat.Tape.TapeEvent ev = _upcoming[i];
+                if (ev.Kind != Combat.Tape.TapeEventKind.DamageDealt) continue;
+                if (!_tape.GetDamage(ev.PayloadIndex).KilledTarget) continue;
+                if (ev.Tick == _foreseenKillTick) continue;   // под этот удар slowmo уже запущено
+
+                float now = Time.unscaledTime;
+                if (now - _lastKillSlowmo < _cfg.KillSlowCooldown) return;
+
+                // Держим замедление до самого удара и ещё немного после: «чуть раньше и чуть позже»
+                // — ровно то, ради чего затевался лаг показа.
+                float untilHit = (ev.Tick - viewTick) / (float)Core.Simulation.SimConstants.TickRate;
+                _lastKillSlowmo   = now;
+                _foreseenKillTick = ev.Tick;
+                _time.CinematicPulse(_cfg.KillSlowFactor, untilHit, _cfg.KillSlowRelease);
+                return;
+            }
+        }
+
         // Перезапуск боя (dev-R): снять застрявший slowmo/финишер-секвенцию и остаточную тряску, сбросить
         // кулдаун килл-слоумо — иначе новый бой идёт в замедлении и первый килл может не «щёлкнуть».
         private void OnBattleReset()
         {
+            _foreseenKillTick = Combat.Tape.BattleTape.NoTick;
             _time.Reset();
             _shake.ResetShake();
             _lastKillSlowmo = float.NegativeInfinity;
@@ -78,7 +133,13 @@ namespace Guildmaster.Game.Services
             if (e.Result.KilledTarget)
             {
                 float now = Time.unscaledTime;
-                if (now - _lastKillSlowmo >= _cfg.KillSlowCooldown)
+
+                // Замедление могло начаться ЗАРАНЕЕ (предчувствие в Tick) — тогда повторно не щёлкаем,
+                // иначе момент смерти сбросит уже идущее замедление на его начало.
+                bool alreadyForeseen = _foreseenKillTick != Combat.Tape.BattleTape.NoTick;
+                _foreseenKillTick = Combat.Tape.BattleTape.NoTick;
+
+                if (!alreadyForeseen && now - _lastKillSlowmo >= _cfg.KillSlowCooldown)
                 {
                     _lastKillSlowmo = now;
                     _time.CinematicPulse(_cfg.KillSlowFactor, 0f, _cfg.KillSlowRelease);
@@ -91,8 +152,9 @@ namespace Guildmaster.Game.Services
             }
 
             // Тяжёлый (не добивающий) удар → только тряска, по доле урона от MaxHP цели, выше порога.
-            RuntimeUnit target = e.Target;
-            float maxHp = target != null ? target.Stats.Get(StatType.MaxHP) : 0f;
+            // MaxHP и точка берутся из СОБЫТИЯ (снято с показанного тика), а не с живого юнита: тот уже
+            // на окно опережения впереди, и тряска пришла бы от позиции, которой игрок ещё не видел.
+            float maxHp = e.TargetMaxHp;
             if (maxHp <= 0f) return;
             float frac = e.Result.TotalDamage / maxHp;
             if (frac < _cfg.HeavyHitFrac) return;
@@ -100,8 +162,7 @@ namespace Guildmaster.Game.Services
             _shake.Shake(Mathf.Lerp(_cfg.HeavyShakeMin, _cfg.HeavyShakeMax, k));
             // Басовый слой поверх обычного удара — из точки удара, как и сам удар: иначе бас
             // приходит из центра, а хруст сбоку, и они разъезжаются.
-            if (target != null) _audio?.PlayAt("feel.heavy_hit.hit", target.Position);
-            else _audio?.Play("feel.heavy_hit.hit");
+            _audio?.PlayAt("feel.heavy_hit.hit", e.TargetPosition);
         }
 
         // Конец боя → финишер-таймлайн ступенями (совпадает с секвенсом смерти на scaled-времени):

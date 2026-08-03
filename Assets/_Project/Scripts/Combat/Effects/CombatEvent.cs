@@ -30,6 +30,32 @@ namespace Guildmaster.Combat.Effects
         /// состояние: только длительность не скейлится (Neutral), всё остальное — через систему эффектов.
         /// </summary>
         EffectExpired = 1 << 6,
+
+        /// <summary>
+        /// Кто-то применил активную способность. Доставляется ВСЕМ живым врагам кастующего — потому что
+        /// реагирует на чужой каст именно противник («Отражающий налёт» Антимага копит щит за каждое
+        /// вражеское заклинание). Единственное широковещательное событие в очереди.
+        /// </summary>
+        AbilityCast   = 1 << 7,
+
+        /// <summary>
+        /// Носитель ЗАВЕРШИЛ Атаку: она прошла полный путь замах → (канал) → конец рекавери. Промах
+        /// событие даёт, прерванная контролем Атака — нет (вердикт Макса 2026-08-01). Доставляется самому
+        /// носителю; на нём живут «каждая N-я Атака» и цикл фаз, которые взводят заряд СЛЕДУЮЩЕЙ Атаки.
+        /// </summary>
+        /// <remarks>
+        /// Отдельно от <see cref="DamageDealt"/> потому, что то — событие УДАРА: у многоударного кита оно
+        /// приходит несколько раз за Атаку, у удара по площади — на каждого задетого, а у промаха не
+        /// приходит вовсе. Считать им Атаки значит считать что-то другое.
+        /// </remarks>
+        AttackCompleted = 1 << 8,
+
+        /// <summary>
+        /// Комбо носителя порвалось: он пробыл вне атакующего лупа дольше <c>SimTuning.ComboBreakSeconds</c>
+        /// (ГДД: глоссарий, 2026-07-30/11). Счётчик серии уже обнулён; событие нужно тем, у кого от серии
+        /// остался ВЗВЕДЁННЫЙ заряд — его гасит владелец, а не общий диспел.
+        /// </summary>
+        ComboBroken     = 1 << 9,
     }
 
     /// <summary>Полезная нагрузка боевого события, диспатчится через внутреннюю FIFO-очередь (Stage 6).</summary>
@@ -47,15 +73,20 @@ namespace Guildmaster.Combat.Effects
         /// их собственная ответка порождают новые срабатывания.</summary>
         public readonly DamageSourceKind SourceKind;
 
-        /// <summary>Урон-события: школа урона (Physical/Magical/True). Вне урон-событий — <c>True</c> по умолчанию.</summary>
-        public readonly Data.Definitions.DamageSchool School;
+        /// <summary>
+        /// Урон-события: тип урона. Одна ось вместо прежней пары «школа + стихия» (реформа
+        /// 2026-07-30) — реактив отличает огонь от прочей магии и дробящий от режущего по ней же.
+        /// Вне урон-событий — <see cref="Data.Definitions.DamageType.Undefined"/>: события «эффект
+        /// истёк» или «применена способность» типа урона не несут, и подставлять им какой-нибудь
+        /// значило бы соврать потребителю.
+        /// </summary>
+        public readonly Data.Definitions.DamageType DamageType;
 
-        /// <summary>Урон-события: стихия при магической школе. Так реактив отличает огонь от прочей магии.</summary>
-        public readonly Data.Definitions.MagicElement Element;
+        /// <summary>Школа урона события — следствие <see cref="DamageType"/>, отдельного поля нет.</summary>
+        public Data.Definitions.DamageSchool School => Data.Definitions.DamageTypes.SchoolOf(DamageType);
 
         /// <summary>Урон стихии огня: то, что копит «Угли» (карточка [[burn]]).</summary>
-        public bool IsFire => School == Data.Definitions.DamageSchool.Magical
-                           && Element == Data.Definitions.MagicElement.Fire;
+        public bool IsFire => DamageType == Data.Definitions.DamageType.Fire;
 
         /// <summary>Удар был авто-атакой (разгон «Пылающих клинков», уклонение убийцы).</summary>
         public bool IsAutoAttack => SourceKind == DamageSourceKind.AutoAttack;
@@ -69,8 +100,7 @@ namespace Guildmaster.Combat.Effects
         public CombatEventData(CombatEvent type, RuntimeUnit source, RuntimeUnit target, float amount,
                                Data.Definitions.EffectTag tags,
                                DamageSourceKind sourceKind = DamageSourceKind.Ability,
-                               Data.Definitions.DamageSchool school = Data.Definitions.DamageSchool.True,
-                               Data.Definitions.MagicElement element = Data.Definitions.MagicElement.None)
+                               Data.Definitions.DamageType damageType = Data.Definitions.DamageType.Undefined)
         {
             Type       = type;
             Source     = source;
@@ -78,8 +108,7 @@ namespace Guildmaster.Combat.Effects
             Amount     = amount;
             Tags       = tags;
             SourceKind = sourceKind;
-            School     = school;
-            Element    = element;
+            DamageType = damageType;
         }
     }
 }

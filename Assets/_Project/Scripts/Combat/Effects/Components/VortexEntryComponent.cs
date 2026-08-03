@@ -19,10 +19,20 @@ namespace Guildmaster.Combat.Effects.Components
     /// <see cref="WhirlDashLandingComponent"/>.</para>
     /// </summary>
     [Serializable]
+    /// <remarks>
+    /// Дееспособности НЕ требует — по той же причине, что и приземление рывка: заход состоит из смещений,
+    /// а смещение снимает дееспособность у летящего, поэтому гейт отменял бы фазы СВОЕЙ же способности.
+    /// Комбо начато дееспособным монахом; прерывать его должен внешний контроль в свою фазу, а не
+    /// собственный рывок (поймано тестом захода 2026-07-29).
+    /// </remarks>
     public sealed class VortexEntryComponent : IReactiveComponent
     {
         [Tooltip("Множитель урона усиленной атаки после телепорта.")]
         [SerializeField] private float _empowerMult = 2f;
+
+        [Tooltip("Микро-стан на цели, ложащийся ДО удара в спину (M11): полный вывод из строя на ~0.25 с. " +
+                 "Пусто = удар без фиксации, цель может уйти или ответить.")]
+        [SerializeField] private EffectData _microStun;
 
         public CombatEvent Events => CombatEvent.EffectExpired;
 
@@ -50,6 +60,19 @@ namespace Guildmaster.Combat.Effects.Components
             ctx.Combat.TeleportBehind(monk, victim);
             monk.CurrentTarget = victim;
             monk.EmpowerDamageMult = _empowerMult; // усиление след. атаки
+
+            // Контроль-луп (M11, решение Макса 2026-07-28): удар в спину выходит ВНЕ ОЧЕРЕДИ атак,
+            // ускоренным замахом, а цель к этому моменту уже зафиксирована микро-станом.
+            //
+            // Порядок здесь и есть механика. Стан накладывается СЕЙЧАС, поэтому по закону видимости
+            // эффектов он вступит в силу с конца этого тика — то есть раньше, чем дозреет укороченный
+            // замах. Ударить в стан, а не в убегающую спину, — ровно то, ради чего комбо и заведено.
+            if (_microStun != null) ctx.Combat.ApplyEffect(victim, _microStun, monk);
+
+            // Вне очереди — общим примитивом рекаста: доигрыш текущей атаки идёт вдвое быстрее, очередь
+            // пропускается, замах удара в спину — тоже вдвое быстрее. Тот же жест, что у умений-ударов
+            // (M18), поэтому и владелец у него один — RuntimeUnit.RecastAttack, вместе с числами.
+            monk.RecastAttack(ctx.Combat.Tuning);
         }
     }
 }

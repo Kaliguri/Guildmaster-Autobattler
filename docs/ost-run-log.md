@@ -1,0 +1,213 @@
+# OST — журнал прогонов Suno
+
+**Зачем этот файл.** Промпты живут в `docs/ost-prompt-pack.md`, а здесь — что из них вышло. Половина
+гипотез в `suno-prompting.md` собрана из чужого опыта и первым же прогоном опровергнется: без записи
+мы это забудем и наступим второй раз. Заполняет Макс (вердикты на слух) и Никси (числа и наблюдения).
+
+**Правило одной строки: не записал seed — прогон потерян.** Повторить генерацию без него нельзя,
+а Suno недетерминирован.
+
+## Имена файлов
+
+Схема Макса: **`01A - Boss Theme - 1`**, нумерация **сквозная по генерациям** (одна генерация Suno
+отдаёт два разных трека, поэтому «попытка» как единица не годится). То же имя вписывается в поле
+«Название песни» в Suno — иначе через сорок генераций библиотеку не разобрать.
+
+**Настройки в имя НЕ пишутся.** Странность, влияние стиля и seed живут в таблице ниже: параметр в
+имени файла — тот же факт в двух местах, и один из них однажды соврёт.
+
+Кладём в `FMOD Project/MusicSource/`, формат **WAV** (Pro его даёт). Скачивать **сразу**:
+v5.x задепрекейтят, библиотеку в облаке не держим.
+
+---
+
+## Пакет 01 — настроение босса
+
+Странность 60% · Влияние стиля 60% · Audio Influence не используется. Модель — в колонке.
+
+| Блок | № | Странность | Seed | Вердикт | Что несёт мелодию | Заметка |
+|---|---|---|---|---|---|---|
+| ~~01-A v1 (низ, тайко)~~ | 1 | 60 | — | **нет** | — | «бой в Риме, гладиаторская» — палитра трейлера |
+| ~~01-A v2 (флейта, соло-скрипка)~~ | 1 | 60 | — | **нет** | флейта | «слишком много дудки», «долгий разгон», «баллада, не боевая»; скрипка — «стандартный фэнтези вайб» |
+| ~~01-A-g v2 (то же + гитара)~~ | 1 | 60 | — | **нет** | флейта | то же, но **гитара — «оч круто, как добавка»**: принята в базовый состав |
+| ~~01-A v3 (стаккато + драм-кит, 158)~~ | 1 | 60 | — | **нет** | струнные | «песня про мехов», «слишком активная», «много барабанов» |
+| ~~01-A v4 (`epic anime`, арка словами)~~ | 1 | 60 | — | **нет** | — | «слишком аниме», «добренько-яркие»; `epic` и `anime` вычеркнуты из лексикона |
+| ~~01-A v5 (две краски, состав не фиксирован)~~ | 1 | 60 | — | **ближе** | скрипка | «стало намного лучше», но «опять скрипка»: `solo violin` был вытеснен из Exclude ради борьбы с яркостью |
+| ~~01-A v6 (канон состава, всё нежное)~~ | 1 | 60 | — | **нет** | гитара | «лирически спокойная, даже lofi», «0 мрачности, просто грусть» — годится после победы, не для боя |
+| 01-A v7 баланс сил, низ вернулся | 1 | 60 | | | | v5.5 |
+| 01-A v7 то же на **v5** | 2 | 60 | | | | замер модели: v5 «чище» |
+| 01-B женский вокализ | | | | | | v5.5 |
+
+Выводы из прогонов живут в `suno-prompting.md` §Проверено на своих прогонах — здесь только сырое.
+
+---
+
+## История промптов 01-A — полные тексты, дельты и вердикты
+
+**Ведётся по требованию Макса (30.07.2026): «не просто удаляй старые, а записывай как меняли и почему
+на память в будущем».** Старые версии не удаляются никогда: промпт, который не сработал, — это
+измерение, а не мусор.
+
+### v1 — палитра оркестрового трейлера
+```
+epic fantasy battle, resolute and driving, 138 BPM, D minor, low string ostinato, taiko and timpani,
+soaring string melody, no vocals, played with forward momentum rather than menace
+```
+**Вердикт:** «музыка для боя в Риме, гладиаторская».
+**Виновники:** `low string ostinato`, `taiko and timpani`, `resolute and driving`.
+
+### v2 — верх и лад, но легато
+```
+neo-medieval fantasy battle, modal dorian melody, high wooden flute and solo violin carry the theme,
+shimmering bells, propulsive light percussion in the background, folk-song phrasing, lilting 6/8
+groove, 150 BPM, D dorian, no vocals, airborne rather than marching
+```
+**Дельта от v1:** верх вместо низа, `D dorian` вместо `D minor`, перкуссия фоном, 6/8, тайко в Exclude.
+**Вердикт:** «слишком много дудки», «долгий разгон», «не боевая, а просто баллада»; «скрипка лишняя вот
+вообще, слишком фэнтезийно стандартный вайб».
+**Виновники:** флейта и соло-скрипка как носители темы (тянут легато), `6/8`, слово `fantasy`.
+**Вариант 2-g:** то же + `electric guitar lead trading the melody with solo violin` → **гитара
+одобрена**: «оч круто, как добавка».
+
+### v3 — стаккато и драйв
+```
+epic anime battle score, staccato string section ostinato driving the rhythm, electric guitar singing
+over it, drum kit and shimmering bells, modal dorian harmony, 158 BPM, D dorian, no intro straight
+into the main groove, no vocals, urgent from the first bar
+```
+**Дельта от v2:** стаккато вместо легато, `anime` вместо `fantasy`, `no intro`, 158 BPM.
+**Вердикт:** «песня про мехов», «слишком активная», «много барабанов».
+**Виновники:** четыре указания на энергию разом (`driving` + `drum kit` + `urgent from the first bar` +
+158 BPM).
+
+### v4 — короткий промпт и арка
+```
+epic anime battle score, tender but powerful, lyrical melody over restrained percussion, warm strings
+with electric guitar lift, starts intimate and grows, 132 BPM, D dorian, no vocals
+```
+**Дельта от v3:** десять тегов → шесть, барабаны сдержанные, 132 BPM, арка.
+**Вердикт:** «слишком аниме, слишком добренько-яркие... это НЕ хихи, эпик, всё круто».
+**Виновники:** `epic` и `anime`.
+**Попутная готча:** сокращая промпт, я срезала `no vocals` — а тумблер «Инструментал» в той схеме был
+выключен ради тегов арки. Обе защиты исчезли одновременно; поймал Макс до генерации.
+
+### v5 — две краски
+```
+cinematic battle score, desperate and determined, melancholic undertone, tender but powerful, lyrical
+melody over restrained percussion, warm strings with electric guitar lift, starts intimate and grows,
+132 BPM, D dorian, no vocals
+```
+**Дельта от v4:** `epic anime` → `cinematic`, добавлены `desperate and determined` и
+`melancholic undertone`.
+**Вердикт:** «стало намного лучше», но «опять скрипка».
+**Виновник:** `solo violin` был вытеснен из Exclude ради борьбы с яркостью — пять слотов как латки.
+
+### v6 — канон состава, гитара лидом
+```
+cinematic battle score, desperate and determined, melancholic undertone, clean electric guitar lead
+with singing sustain and gentle vibrato, lyrical phrasing, warm string section and delicate piano
+underneath, restrained low drum pulse, spacious reverb, starts intimate and grows, 132 BPM, D dorian,
+no vocals
+```
+**Дельта от v5:** состав зафиксирован по ролям, Exclude стал константой.
+**Вердикт:** «не боевая вообще, скорее лирически спокойная, даже lofi... вообще 0 мрачности, просто
+грусть». Годится для трека после победы, не для боя.
+**Виновники:** **восемь** указаний на нежность против одного на бой; **нет низа** — отсюда грусть
+вместо мрачности; `starts intimate and grows` делает первую половину трека небоевой.
+
+### v7 — баланс сил, низ вернулся
+```
+dark cinematic battle score, grim and desperate, clean electric guitar lead singing the melody, low
+cello ostinato underneath, insistent relentless pulse, tense strings, 140 BPM, D dorian, no vocals
+```
+**Дельта от v6:** тринадцать тегов → девять. Убраны `melancholic undertone`, `gentle vibrato`,
+`lyrical phrasing`, `delicate piano`, `spacious reverb`, `starts intimate and grows` — всё, что тянуло
+в мягкость. Добавлены `dark`, `low cello ostinato`, `insistent relentless pulse`, `tense strings`.
+Нежность оставлена **только в тембре лида**. 140 BPM.
+**Вердикт:** не прогонялся — заменён после разбора боевых треков SAO.
+
+### v8 — состав по разбору SAO: скрипка и барабаны вернулись (текущая)
+```
+dark cinematic battle score, tense and desperate, violin lead beautiful and deadly, slightly overdriven
+electric guitar with rare solo, low cello ostinato and bass guitar underneath, hard-hitting drums,
+builds in steps then drops away, 150 BPM, D dorian, no vocals
+```
+**Дельта от v7:** лид сменился с чистой гитары на **скрипку** (`beautiful and deadly`); гитара стала
+**грязноватой с редким соло** и ушла на второй голос; добавлены **бас-гитара** и **бьющие барабаны**;
+`insistent relentless pulse` → `builds in steps then drops away` (ступени и паузы вместо ровного
+пульса); 140 → 150 BPM.
+**Почему:** разбор Макса вскрыл, что я пять прогонов вычёркивала **инструменты**, тогда как виновата
+была **манера**. Скрипка нужна, но «невероятно красивая и смертельная», а не поющая длинными нотами;
+барабаны нужны бьющие, а не марширующие. `solo violin` убран из Exclude.
+**Вердикт:** не прогонялся — задача разрезана на две части (см. v9).
+
+### v9 — ДВЕ ТЕМЫ раздельно (текущая)
+
+Один трек больше не заказывается: требований больше двадцати, а Suno держит 6-12 тегов. Части соединяет
+FMOD.
+
+**01-A1 — агрессивная, рок против медиевальной мелодии**
+```
+dark battle score, medieval modal melody against driving rock percussion and heavy synth, open fourths
+and fifths, hard-hitting drums, bass guitar underneath, tense and desperate, 150 BPM, D dorian, no vocals
+```
+
+**01-A2 — смертельная, соло-скрипка**
+```
+solo violin outlining a modal melancholic melody, beautiful and deadly, high register, slightly
+overdriven electric guitar answering with a rare solo, low cello underneath, sparse hard drums,
+132 BPM, D dorian, no vocals
+```
+
+**Дельта от v8:** один промпт разрезан на два; добавлены `driving rock percussion and heavy synth` (прямая
+формула SAO из академического разбора) и `open fourths and fifths` (её приём средневековости); синт
+разрешён; `builds in steps` убран — ступени собирает FMOD, а не Suno.
+**Вердикт по 01-A1:** «перкуссия слишком явная и громкая, она должна как и бас-гитара быть НА ФОНЕ».
+**Виновники:** место в миксе не задано ни одной партии; плюс **два указания на одну партию**
+(`driving rock percussion` и `hard-hitting drums`) сложились по громкости вместо уточнения.
+
+### v10 — 01-A1 с расстановкой по слоям микса (текущая)
+```
+dark battle score, melody-forward production, medieval modal melody up front, rock percussion and bass
+guitar low in the mix, heavy synth pad underneath, open fourths and fifths, tense and desperate,
+150 BPM, D dorian, no vocals
+```
+**Дельта от v9 (только 01-A1):** каждой партии назван слой — `up front` / `low in the mix` /
+`underneath`, плюс `melody-forward production` как общая установка. Убраны `driving` и
+`hard-hitting drums`.
+**Вердикт:** —
+| 01-C мрачно-героически | | | | | | |
+| 01-D Testard, камерная | | | | | | |
+| 01-E гитарный лид | | | | | | |
+| 01-F хор без солистки | | | | | | |
+
+**Влияние стиля везде 60%**, пока не появится причина его тронуть. **Одна переменная за раз** —
+иначе разницу увидим, а причину нет.
+
+**Вердикт:** `нет` / `слабо` / `интересно` / **`кандидат`** — только последнее едет в пакет 02.
+
+### Что проверяем этим пакетом (гипотезы к опровержению)
+
+- v5.5 отрабатывает прозаические ремарки (`played with forward momentum rather than menace`,
+  `weight without dread`) — или игнорирует их, и надо возвращаться к сухим тегам;
+- `no vocals` в трёх местах (Style + `[Instrumental]` + Exclude) действительно глушит голос;
+- Exclude из 5 пунктов не делает микс тощим;
+- Weirdness 45% — рабочая зона, а не «слишком генерик» и не «уже кашица»;
+- слоги вокализа (`so-o-nta`, `e-lun do-re-a`) не подменяются похожими английскими словами;
+- **тумблеру «Инструментал» можно верить** — двух слоёв запрета (тумблер + `no vocals` в Стилях)
+  достаточно, третий в Exclude не нужен. Прорвётся голос — гипотеза убита, слой возвращаем;
+- **рабочая граница странности — наша, а не вычитанная.** 45 против 70 на одном промпте; если 70
+  выигрывает, следующий круг пробует 80 и ищет, где ломается.
+
+**Опровергнутое отмечать прямо здесь, потом переносить в `suno-prompting.md`.**
+
+---
+
+## Наблюдения (копятся свободным списком)
+
+Сюда — всё, что не влезло в таблицу: как ведёт себя слайдер, на чём модель спотыкается, какие
+формулировки сработали неожиданно хорошо. Из этого потом растут правила в `suno-prompting.md`.
+
+| Дата | Наблюдение | Следствие |
+|---|---|---|
+| 2026-07-30 | — заход начат, прогонов ещё нет | — |

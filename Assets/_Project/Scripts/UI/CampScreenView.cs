@@ -1,5 +1,6 @@
 using System;
 using Guildmaster.Guild;
+using Guildmaster.UI.Components;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -48,7 +49,7 @@ namespace Guildmaster.UI
             for (int i = 0; i < CampActions.Length; i++)
             {
                 CampAction action = CampActions[i];
-                var btn = new Button { text = L(LabelKey(action), Fallback(action)) };
+                var btn = new PlateButton { text = L(LabelKey(action), Fallback(action)) };
                 btn.AddToClassList("gm-button");
                 btn.AddToClassList("gm-event-choice");
                 btn.clicked += () => OnAction(action);

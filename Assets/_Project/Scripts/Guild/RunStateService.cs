@@ -9,9 +9,15 @@ namespace Guildmaster.Guild
     /// <summary>
     /// Владелец durable-состояния забега (<see cref="RunState"/>) и единая точка его сейва/загрузки и правил
     /// вместимости коллекции реликов (план 11 §5.4). Три точки автосейва (вики «7» §5) зовут <see cref="Autosave"/>
-    /// на переходах флоу. Сетевой-ready: хост владеет состоянием, автосейв = снапшот для репликации/реконнекта.
+    /// на переходах флоу.
     /// </summary>
-    public sealed class RunStateService
+    /// <remarks>
+    /// <b>Живёт в скоупе Сессии и только у владельца сейва.</b> Гость играет в чужом состоянии — этого
+    /// сервиса у него нет вовсе, поэтому «случайно записать чужой забег» ему нечем (см.
+    /// <c>SessionInstaller</c>). Тем, кто переживает сеанс, видна только читающая половина —
+    /// <see cref="IRunStateView"/> через роутер.
+    /// </remarks>
+    public sealed class RunStateService : ISessionRunState
     {
         private readonly ISaveService    _save;
         private readonly GameConfig      _config;
@@ -20,6 +26,18 @@ namespace Guildmaster.Guild
         private readonly Core.Audio.IAudioService _audio;
 
         public RunState Current { get; private set; }
+
+        /// <summary>
+        /// Состояние забега целое и зафиксировано: начат новый забег, загружен сохранённый или сделан
+        /// автосейв. Не «что-то поменялось» — именно те точки, на которых состояние считается готовым к
+        /// отправке наружу.
+        /// </summary>
+        /// <remarks>
+        /// Существует ради коопа: гость играет в присланном состоянии, и точки его обновления обязаны
+        /// совпадать с точками сохранения — гость получает ровно то же, что диск. Разъедься они, и
+        /// «у меня не так, как у него» отличалось бы от «у меня не так, как в сейве».
+        /// </remarks>
+        public event Action<RunState> Committed;
 
         public RunStateService(ISaveService save, GameConfig config, IProfileService profiles,
             Core.Audio.IAudioService audio = null)
@@ -36,13 +54,16 @@ namespace Guildmaster.Guild
         /// </summary>
         private string SaveKey => _profiles.RunKey;
 
-        /// <summary>Есть ли автосейв забега на диске (для «Продолжить» в меню).</summary>
+        /// <summary>
+        /// Есть ли автосейв забега на диске. Тот же вопрос задаёт главное меню, но ему спрашивать
+        /// некого — оно живёт вне сессии, — поэтому знание вынесено в <see cref="RunSaves"/>, а здесь
+        /// осталась удобная дорога к нему.
+        /// </summary>
         public bool HasSave
         {
             get
             {
-                string key = SaveKey;
-                return !string.IsNullOrEmpty(key) && _save.Exists(key);
+                return RunSaves.Exists(_save, _profiles);
             }
         }
 
@@ -58,6 +79,7 @@ namespace Guildmaster.Guild
                 Guild         = guild,
                 SlotOwner     = new int[guild.Length], // соло: все 0
             };
+            Committed?.Invoke(Current);
             return Current;
         }
 
@@ -113,7 +135,11 @@ namespace Guildmaster.Guild
             if (string.IsNullOrEmpty(key)) return SaveLoadResult<RunState>.Missing();
 
             SaveLoadResult<RunState> result = _save.TryLoad<RunState>(key);
-            if (result.IsOk) Current = result.Value;
+            if (result.IsOk)
+            {
+                Current = result.Value;
+                Committed?.Invoke(Current);
+            }
             return result;
         }
 
@@ -133,8 +159,12 @@ namespace Guildmaster.Guild
             Current.Map = MapGenerator.Generate(rng, mapConfig ?? new MapGenConfig());
         }
 
-        /// <summary>Изменить золото забега (±). Клампится в ноль снизу. No-op без активного забега.</summary>
-        public void AddGold(int delta)
+        /// <summary>
+        /// Изменить золото забега (±). Клампится в ноль снизу. No-op без активного забега.
+        /// <para><b>internal:</b> снаружи сборки золото меняют через <c>IRunCommands.AddGold</c> — запись в
+        /// забег обязана попасть в лог команд, иначе реконнект и аудит увидят состояние без причины.</para>
+        /// </summary>
+        internal void AddGold(int delta)
         {
             if (Current == null) return;
             Current.Gold = System.Math.Max(0, Current.Gold + delta);
@@ -143,7 +173,19 @@ namespace Guildmaster.Guild
         /// <summary>Текущее золото забега (0 без активного забега).</summary>
         public int Gold => Current?.Gold ?? 0;
 
-        /// <summary>Списать золото, если хватает. false = недостаточно (ничего не списано) или нет забега.</summary>
+        /// <summary>
+        /// Списать золото, если хватает. false = недостаточно (ничего не списано) или нет забега.
+        /// </summary>
+        /// <remarks>
+        /// <b>Осталось публичным сознательно — это транзакция, а не односторонняя запись.</b> Метод
+        /// отвечает «вышло или нет» СРАЗУ, а в коопе ответ даёт хост, и вызывающий обязан уметь ждать и
+        /// откатывать оптимистичный показ. Завернуть это в шину, не переделав магазин, награды и лоадаут,
+        /// нельзя — а их переделка и есть отложенный шаг «транзакции над экранами подготовки»
+        /// ([[tech/40-planning/coop-vertical|Planning - Coop Vertical]] §10). Пока сюда ходят напрямую, и
+        /// в логе команд этих изменений НЕТ: в коопе такой путь даст расхождение, поэтому первым делом
+        /// перед транзакциями сюда и возвращаемся. Товарищи по той же причине:
+        /// <see cref="TryAddRelic"/>, <see cref="TrySpendRestart"/>, <see cref="IncreaseCapacity"/>.
+        /// </remarks>
         public bool TrySpendGold(int amount)
         {
             if (Current == null || amount < 0 || Current.Gold < amount) return false;
@@ -151,8 +193,11 @@ namespace Guildmaster.Guild
             return true;
         }
 
-        /// <summary>Начислить награду золотом за победу в бою (из <see cref="GameConfig"/>).</summary>
-        public void AwardBattleReward()
+        /// <summary>
+        /// Начислить награду золотом за победу в бою (из <see cref="GameConfig"/>).
+        /// <para><b>internal:</b> см. <see cref="AddGold"/> — снаружи через <c>IRunCommands</c>.</para>
+        /// </summary>
+        internal void AwardBattleReward()
         {
             AddGold(_config.BattleGoldReward);
             _audio?.Play("run.gold_gain.ui"); // звенят только НАГРАДНЫЕ монеты: у продажи в лавке свой звук
@@ -163,7 +208,10 @@ namespace Guildmaster.Guild
         /// <summary>Оставшиеся перезапуски боя в текущем акте.</summary>
         public int RestartsRemaining => Current?.RestartsRemaining ?? 0;
 
-        /// <summary>Потратить один перезапуск, если есть. false = пул пуст (поражение = конец забега).</summary>
+        /// <summary>
+        /// Потратить один перезапуск, если есть. false = пул пуст (поражение = конец забега).
+        /// <para>Публичный по той же причине, что <see cref="TrySpendGold"/>.</para>
+        /// </summary>
         public bool TrySpendRestart()
         {
             if (Current == null || Current.RestartsRemaining <= 0) return false;
@@ -186,6 +234,7 @@ namespace Guildmaster.Guild
             }
 
             _save.Save(key, Current);
+            Committed?.Invoke(Current);
         }
 
         /// <summary>Удалить автосейв (конец/сброс забега).</summary>
@@ -201,7 +250,11 @@ namespace Guildmaster.Guild
         public bool RelicInventoryFull =>
             Current != null && Current.RelicInventory.Length >= Current.RelicCapacity;
 
-        /// <summary>Добавить релик в запас, если есть место. false = полно (игрок должен сбросить/пропустить).</summary>
+        /// <summary>
+        /// Добавить релик в запас, если есть место. false = полно (игрок должен сбросить/пропустить).
+        /// <para>Публичный по той же причине, что <see cref="TrySpendGold"/>: транзакция с синхронным
+        /// ответом, её переезд в шину — отложенный шаг транзакций.</para>
+        /// </summary>
         public bool TryAddRelic(string relicId)
         {
             if (Current == null || string.IsNullOrEmpty(relicId) || RelicInventoryFull) return false;
@@ -210,15 +263,21 @@ namespace Guildmaster.Guild
             return true;
         }
 
-        /// <summary>Убрать один экземпляр релика из запаса (сброс ради места под награду).</summary>
-        public void RemoveRelic(string relicId)
+        /// <summary>
+        /// Убрать один экземпляр релика из запаса (сброс ради места под награду).
+        /// <para><b>internal:</b> снаружи через <c>IRunCommands.RemoveRelic</c>.</para>
+        /// </summary>
+        internal void RemoveRelic(string relicId)
         {
             if (Current == null) return;
             var list = new List<string>(Current.RelicInventory);
             if (list.Remove(relicId)) Current.RelicInventory = list.ToArray();
         }
 
-        /// <summary>Увеличить вместимость на 1 (товар магазина/награда), до потолка. false = уже потолок.</summary>
+        /// <summary>
+        /// Увеличить вместимость на 1 (товар магазина/награда), до потолка. false = уже потолок.
+        /// <para>Публичный по той же причине, что <see cref="TrySpendGold"/>.</para>
+        /// </summary>
         public bool IncreaseCapacity()
         {
             if (Current == null || Current.RelicCapacity >= _config.RelicCapacityMax) return false;
@@ -278,8 +337,12 @@ namespace Guildmaster.Guild
         // Когда инвентарь начнёт показывать реальный запас забега (сейчас — весь контент), эти два пути стоит
         // свести в один, и тогда SetSlotRelic уйдёт.
 
-        /// <summary>Запомнить позицию сосуда на арене (перетаскивание в расстановке). false = слот вне ростера.</summary>
-        public bool SetSlotPosition(int slotIndex, UnityEngine.Vector2 position)
+        /// <summary>
+        /// Запомнить позицию сосуда на арене (перетаскивание в расстановке). false = слот вне ростера.
+        /// <para><b>internal:</b> снаружи через <c>IRunCommands.SetSlotPosition</c> — в коопе расстановку
+        /// правят двое, и «кто передвинул» обязано остаться в логе.</para>
+        /// </summary>
+        internal bool SetSlotPosition(int slotIndex, UnityEngine.Vector2 position)
         {
             RosterSlot slot = SlotAt(slotIndex);
             if (slot == null) return false;
@@ -290,8 +353,9 @@ namespace Guildmaster.Guild
         /// <summary>
         /// Поставить кит на сосуд НАПРЯМУЮ, минуя запас (drag реликвии на юнита в расстановке): запас не
         /// трогается, прежний кит не возвращается. false = слот вне ростера / пустой id.
+        /// <para><b>internal:</b> снаружи через <c>IRunCommands.SetSlotRelic</c>.</para>
         /// </summary>
-        public bool SetSlotRelic(int slotIndex, string relicId)
+        internal bool SetSlotRelic(int slotIndex, string relicId)
         {
             RosterSlot slot = SlotAt(slotIndex);
             if (slot == null || string.IsNullOrEmpty(relicId)) return false;

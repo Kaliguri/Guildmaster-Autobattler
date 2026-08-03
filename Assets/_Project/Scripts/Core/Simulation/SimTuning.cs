@@ -42,6 +42,16 @@ namespace Guildmaster.Core.Simulation
         public readonly float FleeThreatRadius;    // радиус (м) сбора врагов в центроид угрозы (иначе — ближайший)
         public readonly float KiteStrafeWeight;    // вес бокового ухода кайтера (дуга вместо пятящегося отхода)
 
+        // --- Смещение (DisplacementSystem, ГДД «Смещение») ---
+        // Скорость полёта фиксирована, поэтому ДЛИТЕЛЬНОСТЬ полёта считается из дистанции: дальний
+        // толчок держит цель в контроль-иммунном оглушении дольше (решение 2026-07-28). Отдельного
+        // параметра «сколько тиков лететь» намеренно нет — иначе у одного свойства два владельца.
+        public readonly float DisplaceSpeedPerSecond;  // ДЕФОЛТНАЯ скорость полёта, мировых единиц в секунду
+                                                       // (источник может задать свою в DisplaceRequest)
+        public readonly float CannonballWidthMult;     // во сколько раз коридор «ядра» шире заданной ширины
+        public readonly float WallImpactDamageMult;    // доля урона толчка, добиваемая при удар о край арены
+        public readonly float WallImpactStunSeconds;   // сколько цель лежит после удара о край арены
+
         // --- Овертайм (правило анти-затягивания, ГДД «Боевая система») ---
         // Растёт ТОЛЬКО наносимый урон. Лечение, щиты и реген не трогаем намеренно: клинч «танк+хил
         // против танк+хил» ломается ровно тем, что урон уезжает вверх, а сустейн остаётся плоским.
@@ -49,6 +59,39 @@ namespace Guildmaster.Core.Simulation
         // это предохранитель для хвоста, а не механика на каждый бой.
         public readonly float OvertimeStartSeconds;   // с какой секунды боя включается рампа
         public readonly float OvertimeDamagePerSecond; // прибавка к урону за каждую секунду сверх порога (0.05 = +5%)
+
+        // --- Спринт (рывок на дальнем подходе) ---
+        // Ускорение живёт В СИМУЛЯЦИИ, а не в презентации: иначе бегущая анимация обгонит позицию, и
+        // юнит поедет ногами по воздуху. Порог — ЗАЗОР сверх досягаемости, а не сырая дистанция до цели:
+        // у стрелка с досягаемостью 8 сырой порог «дальше трёх метров» держал бы спринт включённым всегда,
+        // хотя он уже на позиции. Гистерезис (вход шире выхода) — против мигания на коротких перебежках.
+        // Разгон намеренно НЕ мгновенный: юнит сперва идёт обычным шагом и только потом переходит на бег.
+        // Прибавка, включающаяся щелчком, читается как телепорт скорости — и вместе с ней щёлкает клип.
+        public readonly float SprintSpeedMult;   // множитель скорости в спринте (1.3 = +30%)
+        public readonly float SprintEnterGap;    // зазор сверх досягаемости, с которого начинается разбег
+        public readonly float SprintExitGap;     // зазор, на котором разбег заканчивается (< enter)
+        public readonly float SprintWalkSeconds; // сколько идёт обычным шагом, прежде чем начать разгон
+        public readonly float SprintRampSeconds; // за сколько разгон набирает полную прибавку
+
+        // --- Рекаст (атака вне очереди) ---
+        // Рекаст УСКОРЯЕТ фазы, а не снимает их (решение Макса 2026-07-31): снятая фаза убирает окно, в
+        // которое противник успевает ответить, — ускоренная лишь сокращает его. Скорости две, хотя пока
+        // равны: доигрыш и замах подкручиваются под разное («отпустил оружие» против читаемости телеграфа),
+        // и одна ручка на двоих значила бы, что настроить можно только оба сразу.
+        public readonly float RecastRecoverySpeed;  // во сколько раз быстрее доигрыш ОБОРВАННОЙ атаки
+        public readonly float RecastWindupSpeed;    // во сколько раз быстрее замах удара, вышедшего по рекасту
+
+        // --- Маскировка (ГДД «Маскировка», числа Макса 2026-07-31) ---
+        // Радиус обнаружения по ступеням: подошёл ближе — увидел. Инвиза здесь нет намеренно: он не
+        // обнаруживается ни на каком расстоянии, и число для него было бы враньём.
+        public readonly float ConcealWeakRadius;    // Слабая — видно издалека
+        public readonly float ConcealMediumRadius;  // Средняя
+        public readonly float ConcealStrongRadius;  // Сильная — заметен вплотную
+
+        // --- Комбо (серия Атак, ГДД: глоссарий 2026-07-30/11) ---
+        // Сколько боец должен пробыть ВНЕ атакующего лупа, чтобы серия порвалась и началась заново.
+        // Боевое ожидание сюда не считается: он в цикле атаки и держит цель, он просто ждёт интервала.
+        public readonly float ComboBreakSeconds;
 
         public SimTuning(
             float bodyRadiusPerSize,
@@ -65,8 +108,23 @@ namespace Guildmaster.Core.Simulation
             float fleeWallMargin,
             float fleeThreatRadius,
             float kiteStrafeWeight,
+            float displaceSpeedPerSecond,
+            float cannonballWidthMult,
+            float wallImpactDamageMult,
+            float wallImpactStunSeconds,
             float overtimeStartSeconds,
-            float overtimeDamagePerSecond)
+            float overtimeDamagePerSecond,
+            float sprintSpeedMult,
+            float sprintEnterGap,
+            float sprintExitGap,
+            float sprintWalkSeconds,
+            float sprintRampSeconds,
+            float recastRecoverySpeed,
+            float recastWindupSpeed,
+            float concealWeakRadius,
+            float concealMediumRadius,
+            float concealStrongRadius,
+            float comboBreakSeconds)
         {
             BodyRadiusPerSize         = bodyRadiusPerSize;
             SeparationStrength        = separationStrength;
@@ -82,8 +140,81 @@ namespace Guildmaster.Core.Simulation
             FleeWallMargin            = fleeWallMargin;
             FleeThreatRadius          = fleeThreatRadius;
             KiteStrafeWeight          = kiteStrafeWeight;
+            DisplaceSpeedPerSecond    = displaceSpeedPerSecond;
+            CannonballWidthMult       = cannonballWidthMult;
+            WallImpactDamageMult      = wallImpactDamageMult;
+            WallImpactStunSeconds     = wallImpactStunSeconds;
             OvertimeStartSeconds      = overtimeStartSeconds;
             OvertimeDamagePerSecond   = overtimeDamagePerSecond;
+            SprintSpeedMult           = sprintSpeedMult;
+            SprintEnterGap            = sprintEnterGap;
+            SprintExitGap             = sprintExitGap;
+            SprintWalkSeconds         = sprintWalkSeconds;
+            SprintRampSeconds         = sprintRampSeconds;
+            RecastRecoverySpeed       = recastRecoverySpeed;
+            RecastWindupSpeed         = recastWindupSpeed;
+            ConcealWeakRadius         = concealWeakRadius;
+            ConcealMediumRadius       = concealMediumRadius;
+            ConcealStrongRadius       = concealStrongRadius;
+            ComboBreakSeconds         = comboBreakSeconds;
+        }
+
+        /// <summary>
+        /// Сколько тиков подряд вне атакующего лупа рвут Комбо. Пол в один тик: ручка, выставленная в
+        /// ноль, означала бы «серия рвётся мгновенно», то есть Комбо не существует — такое отключение
+        /// делается не тюнингом, а удалением механики.
+        /// </summary>
+        public int ComboBreakTicks
+        {
+            get
+            {
+                int ticks = Ticks(ComboBreakSeconds);
+                return ticks < 1 ? 1 : ticks;
+            }
+        }
+
+
+        /// <summary>
+        /// Доля разгона [0..1] после <paramref name="wantTicks"/> тиков непрерывного намерения бежать:
+        /// ноль всю «прогулочную» часть, потом линейный набор до единицы. Формула живёт здесь, а не в
+        /// движении, потому что её же читают тесты и dev-инструменты — второй копии быть не должно.
+        /// </summary>
+        public float SprintRampAt(int wantTicks)
+        {
+            // Границы считаются в ТИКАХ, а не в секундах: тик, попавший ровно на конец прогулочной части,
+            // на float-арифметике оказывался то до неё, то после (30 × (1/30) больше единицы), и юнит
+            // получал одну тридцатимиллионную разгона — формально «уже бежит».
+            int walkTicks = Ticks(SprintWalkSeconds);
+            int over = wantTicks - walkTicks;
+            if (over <= 0) return 0f;
+
+            int rampTicks = Ticks(SprintRampSeconds);
+            if (rampTicks <= 0) return 1f;
+
+            float ramp = (float)over / rampTicks;
+            return ramp >= 1f ? 1f : ramp;
+        }
+
+        private static int Ticks(float seconds)
+        {
+            if (seconds <= 0f) return 0;
+            int ticks = (int)System.Math.Round(seconds * SimConstants.TickRate, System.MidpointRounding.AwayFromZero);
+            return ticks < 0 ? 0 : ticks;
+        }
+
+        /// <summary>
+        /// Сколько тиков длится полёт: дистанция ÷ скорость. <paramref name="speedPerSecond"/> ≤ 0 —
+        /// берётся общий дефолт <see cref="DisplaceSpeedPerSecond"/>, поэтому источник с иным характером
+        /// толчка (медленный тяжёлый бросок) задаёт свою скорость, а не свою длительность.
+        /// Минимум один тик: нулевой полёт не поднял бы событие конца смещения, на котором висят реактивы.
+        /// </summary>
+        public int DisplaceTicks(float distance, float speedPerSecond = 0f)
+        {
+            float speed = speedPerSecond > 0f ? speedPerSecond : DisplaceSpeedPerSecond;
+            if (speed <= 0f) return 1;
+            float seconds = distance / speed;
+            int ticks = (int)(seconds * SimConstants.TickRate + 0.5f);
+            return ticks < 1 ? 1 : ticks;
         }
 
         /// <summary>
@@ -113,7 +244,22 @@ namespace Guildmaster.Core.Simulation
             fleeWallMargin:            2.5f,
             fleeThreatRadius:          6f,
             kiteStrafeWeight:          0.35f,
+            displaceSpeedPerSecond:    10f,
+            cannonballWidthMult:       1.25f,
+            wallImpactDamageMult:      1f,
+            wallImpactStunSeconds:     1f,
             overtimeStartSeconds:      90f,
-            overtimeDamagePerSecond:   0.05f);
+            overtimeDamagePerSecond:   0.05f,
+            sprintSpeedMult:           1.3f,
+            sprintEnterGap:            1f,
+            sprintExitGap:             0.3f,
+            sprintWalkSeconds:         1f,
+            sprintRampSeconds:         0.5f,
+            recastRecoverySpeed:       2f,
+            recastWindupSpeed:         2f,
+            concealWeakRadius:         6f,
+            concealMediumRadius:       4f,
+            concealStrongRadius:       2f,
+            comboBreakSeconds:         1.5f);
     }
 }

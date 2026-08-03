@@ -49,6 +49,9 @@ namespace Guildmaster.Tests.EditMode.UI
             public event Action SkipRequested;
             public event Action GameSpeedCycleRequested;
             public event Action MenuToggleRequested;
+            public event Action DevConsoleToggleRequested;
+            public event Action DevLogToggleRequested;
+            public event Action DevBattlesToggleRequested;
             public event Action<bool> DetailsHeldChanged;
 #pragma warning restore 67
         }

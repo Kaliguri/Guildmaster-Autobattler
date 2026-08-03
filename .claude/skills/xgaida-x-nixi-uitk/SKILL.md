@@ -24,7 +24,7 @@ description: >-
 | Компоненты (`.gm-*`) | `Assets/_Project/UI/Theme/components.uss` |
 | Агрегатор темы (импортит 3 яруса) | `Assets/_Project/UI/Theme/theme.uss` |
 | Экраны (UXML) | `Assets/_Project/UI/Screens/*.uxml` |
-| Витрина компонентов | `Assets/_Project/UI/Screens/UiGalleryScreen.uxml` |
+| Витрина компонентов и стенд экранов | `Assets/_Project/Scripts/DevTools/UiPreviewCatalog.cs` (id → билдер) + меню `Alebardium/UI Preview/*`, пункт `Component Gallery` |
 | Custom controls (C#) | `Assets/_Project/Scripts/UI/Components/*.cs` (неймспейс `Guildmaster.UI.Components`, префикс UXML `gm:`) |
 | Views / ViewModels / роутер | `Assets/_Project/Scripts/UI/*.cs` (неймспейс `Guildmaster.UI`) |
 | Рантайм-asmdef | `Guildmaster.UI.asmdef` |
@@ -64,6 +64,9 @@ description: >-
    остальные — прочерк. Прямые строки в UXML/C# = откат.
    *Почему:* ретрофит локализации по готовому UI — дорогая боль; ключ сразу стоит
    почти ноль.
+   *Готча (добыто треком тултипов):* `StatValueFormatter` в настройках локализации обязан стоять
+   **перед `DefaultFormatter`** и иметь пустое имя в списке имён. Иначе `{dmg}` молча напечатает имя
+   структуры вместо числа; ловит `SmartStatStringTests`.
 
 4. **⚠️ КАРТИНКА В ЧАТ НА КАЖДОЙ ИТЕРАЦИИ — ЖЕЛЕЗНО. Это правило Макс повторял в гневе.**
    **Снял скрин → он ОБЯЗАН появиться в чате КАК ИЗОБРАЖЕНИЕ, в ТОМ ЖЕ ответе, где ты про
@@ -97,8 +100,10 @@ description: >-
   в UXML под `gm:`. Эталон — `SliderRow`.
 - **Дублируется третий раз — выноси в компонент.** Скопировал разметку/стиль дважды —
   на третий делай переиспользуемый компонент. Инлайн-повтор в экранах не копи.
-- **Витрина — источник правды.** Каждый компонент живёт в `UiGalleryScreen.uxml`;
-  добавил/поменял компонент — обнови витрину.
+- **Компонент обязан быть виден на стенде.** Витрина — не `.uxml`-экран, а запись в
+  `UiPreviewCatalog` (`id → билдер(root)`), открывается пунктом
+  `Alebardium/UI Preview/Component Gallery`. Завёл или поменял компонент — проверь его там;
+  добавить экран на стенд = одна запись в каталоге.
 
 Детали, примеры, старый vs новый синтаксис (`UxmlFactory`/`UxmlTraits` — deprecated) —
 в `references/component-model.md`. **Читай его перед созданием нового компонента.**

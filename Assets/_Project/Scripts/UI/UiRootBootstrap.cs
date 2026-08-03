@@ -18,6 +18,15 @@ namespace Guildmaster.UI
     /// UXML-шаблоны экранов — сериализованные ссылки (из сцены, не DI). Инъекция — методом (VContainer
     /// <see cref="RegisterComponentInHierarchy"/> в RootLifetimeScope).
     /// </summary>
+    /// <remarks>
+    /// <b>Порядок выполнения объявлен, а не унаследован.</b> Здесь регистрируются подписки на запросы
+    /// экранов, а публикует их <c>GameBootstrap</c> — с 03.08.2026 уже в первом кадре, потому что
+    /// бут-экран накрывает загрузку мира. Публикация MessagePipe без подписчика — пустая операция, и
+    /// презентер ждал бы ответа вечно: игра встала бы на чёрном экране, причём через раз, по порядку
+    /// объектов в сцене. Отрицательный порядок делает «UI подписывается раньше, чем его зовут»
+    /// контрактом; вне сцены он ничего не меняет.
+    /// </remarks>
+    [DefaultExecutionOrder(-50)]
     [RequireComponent(typeof(UIDocument))]
     public sealed class UiRootBootstrap : MonoBehaviour
     {
@@ -51,14 +60,24 @@ namespace Guildmaster.UI
         [Tooltip("UXML экрана исхода забега (Победа/Поражение → В меню).")]
         [SerializeField] private VisualTreeAsset _outcomeScreen;
 
-        [Tooltip("UXML главного меню (Начать/Продолжить/Настройки/Выход).")]
+        [Tooltip("UXML главного меню (Создать игру / Присоединиться / Настройки / Выход).")]
         [SerializeField] private VisualTreeAsset _mainMenuScreen;
+
+        [Tooltip("UXML экрана «Создать игру»: режим, гильдия, галочка лобби. Поверх главного меню.")]
+        [SerializeField] private VisualTreeAsset _newGameScreen;
+
 
         [Tooltip("UXML boot title card (Happy Guildmasters) до главного меню.")]
         [SerializeField] private VisualTreeAsset _titleCardScreen;
 
         [Tooltip("Печать/seal для boot title card (PixelLab AppIcon).")]
         [SerializeField] private Sprite _titleCardSeal;
+
+        [Tooltip("UXML dev-консоли (Трек К): полка сверху, открывается на ~ в редакторе и dev-сборке.")]
+        [SerializeField] private VisualTreeAsset _devConsoleScreen;
+
+        [Tooltip("UXML лог-консоли (F2): хвост сообщений движка без строки ввода.")]
+        [SerializeField] private VisualTreeAsset _devLogScreen;
 
         [Tooltip("UXML глобальной панели забега (app-shell): режимы-навигация + HP/золото/акт/таймер/меню.")]
         [SerializeField] private VisualTreeAsset _runModeBar;
@@ -76,7 +95,13 @@ namespace Guildmaster.UI
         private MenuRouter _router;
         private IInputService _input;
         private IBattleClock _clock;
-        private RunStateService _runStates;
+        // Интерфейс переживает сеансы, поэтому забег он только ЧИТАЕТ и только через роутер: держатель
+        // состояния живёт в скоупе сессии и умирает вместе с ней.
+        private IRunStateView _runStates;
+
+        // «Где мы» — вопрос к мероприятию, а не вывод из наличия забега и состояния арены. Панель
+        // забега, панель площадки и кнопка «Начать» живут по этому ответу.
+        private IActivityView _activities;
         private GameConfig _config;
         private ILocalizationService _loc;
         private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
@@ -118,7 +143,6 @@ namespace Guildmaster.UI
         private Tooltips.TooltipSystem _tooltips; // Трек Т: показыватель тултипов, привязан к слою в Start
         private Tooltips.KeywordStyle _keywordStyle; // Трек Т: цвет терминов, читается с USS-доноров
         private UiSoundSystem _uiSound;           // звук интерфейса: один слушатель на корне панели
-        private bool _testZoneActive;        // серая зона включена (в забеге — полигон, вне забега — Ристалище)
         private bool _lastProvingGrounds;    // ребро вида панели: забег ↔ площадка
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
         private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4; источник — _router.IsInventoryOpen)
@@ -128,6 +152,10 @@ namespace Guildmaster.UI
         private IDisposable _testZoneChangedSubscription;
         private ISubscriber<WorldMapSpaceChangedEvent> _mapSpaceSub; // фаза D: СОСТОЯНИЕ world-карты → Sheet-экран
         private IDisposable _mapSpaceSubscription;
+        // Счёт согласившихся на «Начать». Приходит сообщением, а не подпиской на сам гейт: гейт живёт в
+        // сеансе и умирает вместе с ним, а топбар переживает несколько сеансов подряд.
+        private ISubscriber<Core.Net.ReadyGateChangedEvent> _readySub;
+        private IDisposable _readySubscription;
         private IPublisher<SetWorldMapRequest> _worldMapPub; // фаза D: радио-табы → показать/скрыть карту в мире
         private ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> _mainMenuVisSub; // за меню виден мировой стол
         private IDisposable _mainMenuVisSubscription;
@@ -150,7 +178,8 @@ namespace Guildmaster.UI
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
-            IBattleClock clock, RunStateService runStates, GameConfig config, ILocalizationService loc,
+            IBattleClock clock, IActivityView activities, IRunStateView runStates,
+            GameConfig config, ILocalizationService loc,
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
             ISubscriber<OpenTextEventRequest> openEventSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
@@ -160,6 +189,7 @@ namespace Guildmaster.UI
             IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
             ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub,
+            ISubscriber<Core.Net.ReadyGateChangedEvent> readySub,
             ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> mainMenuVisSub,
             IPublisher<Core.Flow.ScreenBackdropChangedEvent> screenBackdropPub,
             ISubscriber<Core.Flow.ScreenFadeChangedEvent> screenFadeSub,
@@ -180,7 +210,9 @@ namespace Guildmaster.UI
             _openTitleCardSub = openTitleCardSub;
             _mainMenuVisSub = mainMenuVisSub;
             _router = router;
+            _activities = activities;
             _mapSpaceSub = mapSpaceSub;
+            _readySub    = readySub;
             _worldMapPub = worldMapPub;
             _relicDragPub = relicDragPub;
             _testZonePub = testZonePub;
@@ -226,8 +258,16 @@ namespace Guildmaster.UI
             // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
             // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
             _uiSound?.Attach(_doc.rootVisualElement);
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen, _newGameScreen);
             _input.MenuToggleRequested += OnMenuToggle;
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            // Тогл dev-консоли живёт только в редакторе и dev-сборке: в релизе клавиша ~ не должна
+            // открывать ничего. Гейт стоит здесь, на ПОДПИСКЕ, а не на регистрации реестра — команды
+            // регистрируют модули, и в релизной сборке им всё равно нужен адресат.
+            _input.DevConsoleToggleRequested += OnDevConsoleToggle;
+            _input.DevLogToggleRequested += OnDevLogToggle;
+#endif
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
             // Открытие экрана награды после боя (A3) — запрос из GameFlow.
@@ -268,7 +308,8 @@ namespace Guildmaster.UI
             _testZoneChangedSubscription = _testZoneChangedSub?.Subscribe(e =>
             {
                 UiTrace.Log($"bootstrap: TestZoneChanged(Active={e.Active}) → {(e.Active ? "ShowTestZone" : "HideTestZone")}");
-                _testZoneActive = e.Active; // вне забега это же и есть «игрок на Ристалище» (см. Update)
+                // Флага «мы на Ристалище» здесь больше НЕТ: где мы, знает мероприятие. Это событие —
+                // только про экран боя, то есть про серую зону как таковую.
                 if (e.Active) _router.ShowTestZone();
                 else          _router.HideTestZone();
             });
@@ -280,6 +321,9 @@ namespace Guildmaster.UI
                 if (e.Active) _router.ShowMapSpace();
                 else          _router.HideMapSpace();
             });
+            // Скольких ещё ждёт «Начать». В соло счёт не рисуется — топбар решает это сам.
+            _readySubscription = _readySub?.Subscribe(e => _topBar?.SetReadyCount(e.Ready, e.Required, e.LocallyReady));
+
             // Шторка перехода (QA #47): плотность считает тот, кто ведёт переход (карта акта), UI её рисует.
             _screenFadeSubscription = _screenFadeSub?.Subscribe(e => ApplyScreenFade(e.Progress, e.Center, e.Seed));
 
@@ -384,16 +428,19 @@ namespace Guildmaster.UI
             ApplyDeviceProfile(); // II.12.9: переоценка профиля при смене разрешения (дёшево — сравнение int)
             if (_topBar == null || _clock == null) return;
 
-            // Глобальный топбар виден ВЕСЬ забег (реш. №65, STS-style); тело экранов под ним (padding-top).
-            // НО не под главным меню: RunState там ещё жив (сейв не сбрасывается, забег можно продолжить),
-            // и по одному лишь runActive панель с «Начать» оставалась висеть поверх меню (наход. Макса, п.9).
+            // Глобальный топбар виден ВСЁ мероприятие (реш. №65, STS-style); тело экранов под ним
+            // (padding-top). НО не под главным меню: мероприятие там может ещё идти (забег прерван, но
+            // не окончен), а панель с «Начать» поверх меню — баг (наход. Макса, п.9).
             RunState run = _runStates?.Current;
 
-            // Ристалище — это площадка ВНЕ забега, и панель ей тоже нужна: там живут те же табы и та же
-            // кнопка «Начать» (ГДД [[proving-grounds]], требование 2026-07-27). Признак площадки выводим,
-            // а не храним вторым флагом: серая зона активна, а забега нет — значит мы пришли из меню.
-            bool onProvingGrounds = run == null && _testZoneActive;
-            bool shellVisible = (run != null || onProvingGrounds) && !_mainMenuOpen;
+            // Ристалище — площадка ВНЕ забега, и панель ей тоже нужна: там живут те же табы и та же
+            // кнопка «Начать» (ГДД [[proving-grounds]], требование 2026-07-27). Где мы — СПРАШИВАЕМ у
+            // мероприятия. Прежде это выводилось из «забега нет && серая зона включена», а владелец
+            // второго признака живёт в боевом скоупе: как только бой стал рождаться по требованию,
+            // ответа не стало вовсе, и панель пропадала целиком (наход. Макса 02.08.2026).
+            ActivitySetup activity = _activities != null ? _activities.Current : default;
+            bool onProvingGrounds = activity.Kind == ActivityKind.ProvingGrounds;
+            bool shellVisible = activity.IsOpen && !_mainMenuOpen;
             _topBar.Root.style.display = shellVisible ? DisplayStyle.Flex : DisplayStyle.None;
 
             // Панель площадки переписана: слева «Ристалище», без акта и вехи, справа без золота и
@@ -678,10 +725,15 @@ namespace Guildmaster.UI
         private void OnDestroy()
         {
             if (_input != null) _input.MenuToggleRequested -= OnMenuToggle;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (_input != null) _input.DevConsoleToggleRequested -= OnDevConsoleToggle;
+            if (_input != null) _input.DevLogToggleRequested -= OnDevLogToggle;
+#endif
             if (_router != null) _router.Changed -= RefreshShell;     // Ф4
             if (_loc != null) _loc.LocaleChanged -= RebuildTopBar;    // шов II.9.2
             _testZoneChangedSubscription?.Dispose();                  // Ф5
             _mapSpaceSubscription?.Dispose();                         // фаза D
+            _readySubscription?.Dispose();
             _mainMenuVisSubscription?.Dispose();                      // фон за главным меню
             _screenFadeSubscription?.Dispose();                       // QA #47: шторка перехода
             _openFarewellSubscription?.Dispose();                     // QA #48/#49: прощание узла
@@ -707,13 +759,21 @@ namespace Guildmaster.UI
         // Семантика ESC (план II.4, КОНСТИТУЦИЯ): показан тултип → ESC гасит ЕГО и меню не трогает.
         // QA #32: сам ESC-вызов меню работает ТОЛЬКО в активном забеге (в главном меню/вне забега — no-op).
         // Внутри забега ToggleSystemMenu сам решает открыть/шаг-назад.
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        // Консоль открывается ИЗ ЛЮБОГО состояния, включая главное меню и отсутствие забега: её зовут
+        // как раз тогда, когда игра куда-то не дошла. Никаких проверок RunState здесь быть не должно.
+        private void OnDevConsoleToggle() => _router.ToggleDevConsole();
+
+        private void OnDevLogToggle() => _router.ToggleDevLog();
+#endif
+
         private void OnMenuToggle()
         {
             if (_tooltips != null && _tooltips.HideAll()) return;
-            // Ристалище — тоже «внутри игры», хотя забега там нет: с площадки надо чем-то уходить, и
-            // уходят тем же системным меню. По одному лишь RunState ESC на ней был мёртв, и выйти
-            // было нельзя вовсе (наход. Макса 2026-07-27).
-            if (_runStates?.Current != null || _testZoneActive) _router.ToggleSystemMenu();
+            // «Внутри игры» = идёт мероприятие, любое. Ристалище тоже внутри, хотя забега там нет: с
+            // площадки надо чем-то уходить, и уходят тем же системным меню. По одному лишь RunState
+            // ESC на ней был мёртв, и выйти было нельзя вовсе (наход. Макса 2026-07-27).
+            if (_activities != null && _activities.Current.IsOpen) _router.ToggleSystemMenu();
         }
     }
 }

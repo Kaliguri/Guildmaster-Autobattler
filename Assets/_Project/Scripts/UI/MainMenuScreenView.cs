@@ -4,20 +4,25 @@ using UnityEngine.UIElements;
 namespace Guildmaster.UI
 {
     /// <summary>
-    /// Сборка главного меню (план [[act-map-run-loop]] §4 D1): Начать / Продолжить / Настройки / Выход. Общий код
-    /// для роутера и превью-стенда. «Продолжить» активна только при наличии автосейва (<paramref name="hasSave"/>).
+    /// Сборка главного меню: Создать игру / Присоединиться / Настройки / Выход. Общий код для роутера
+    /// и превью-стенда.
     /// </summary>
+    /// <remarks>
+    /// <b>Две кнопки входа, а не список режимов</b> (модель Макса 02.08.2026). Режим, дом и открытость
+    /// для друзей выбираются следующим шагом — на экране «Создать игру». Прежде здесь стояли «Начать
+    /// забег», «Продолжить», «Ристалище» и «Сетевая игра», и последняя вела ровно туда же, куда
+    /// первая: кооп у нас свойство сеанса, а не отдельная игра.
+    /// </remarks>
     public static class MainMenuScreenView
     {
         public static VisualElement Build(
             VisualTreeAsset uxml,
-            bool hasSave,
             Func<string, string> localize,
-            Action onStart,
-            Action onContinue,
+            Action onCreate,
+            Action onJoin,
             Action onSettings,
             Action onQuit,
-            Action onProvingGrounds = null)
+            bool canJoin = true)
         {
             string L(string key, string fallback)
             {
@@ -31,8 +36,8 @@ namespace Guildmaster.UI
 
             var title    = root.Q<Label>("menu-title");
             var version  = root.Q<Label>("menu-version");
-            var start    = root.Q<Button>("btn-start");
-            var cont     = root.Q<Button>("btn-continue");
+            var create   = root.Q<Button>("btn-create");
+            var join     = root.Q<Button>("btn-join");
             var settings = root.Q<Button>("btn-settings");
             var quit     = root.Q<Button>("btn-quit");
 
@@ -43,27 +48,33 @@ namespace Guildmaster.UI
             // видно, на чём игрок играл.
             if (version != null) version.text = "v" + UnityEngine.Application.version;
 
-            if (start != null)    { start.text    = L("ui.mainmenu.start", "Начать забег"); start.clicked += () => onStart?.Invoke(); }
-            if (cont != null)
+            if (create != null)
             {
-                cont.text = L("ui.mainmenu.continue", "Продолжить");
-                cont.SetEnabled(hasSave);
-                cont.clicked += () => onContinue?.Invoke();
+                create.text = L("ui.mainmenu.create", "Создать игру");
+                create.clicked += () => onCreate?.Invoke();
             }
-            // Ристалище (ГДД [[proving-grounds]]) — в меню стоит, но ВЫКЛЮЧЕНО: площадка ещё не готова к
-            // игроку (состав фиксирован ассетом, экрана сборки нет), а вход у нас пока через dev-команду
-            // gm_proving_grounds. Держим её выключенной, а не спрятанной, по HARD-правилу ui-feedback:
-            // «скоро будет» игроку честнее, чем пункт, появившийся из ниоткуда. Действие подключено —
-            // открыть площадку игроку будет ровно одной снятой строкой SetEnabled.
-            var proving = root.Q<Button>("btn-proving-grounds");
-            if (proving != null)
+
+            // «Присоединиться» открывает список друзей Steam и меню НЕ закрывает: войти игрок
+            // соглашается уже в оверлее, а уводит нас отсюда рукопожатие, а не клик. Без Steam кнопка
+            // гаснет — это внешний отказ, и прятать его нельзя.
+            if (join != null)
             {
-                proving.text = L("ui.mainmenu.proving_grounds", "Ристалище");
-                proving.SetEnabled(false);
-                proving.clicked += () => onProvingGrounds?.Invoke();
+                join.text = L("ui.mainmenu.join", "Присоединиться");
+                join.SetEnabled(canJoin);
+                join.clicked += () => onJoin?.Invoke();
             }
-            if (settings != null) { settings.text = L("ui.mainmenu.settings", "Настройки"); settings.clicked += () => onSettings?.Invoke(); }
-            if (quit != null)     { quit.text     = L("ui.mainmenu.quit", "Выход"); quit.clicked += () => onQuit?.Invoke(); }
+
+            if (settings != null)
+            {
+                settings.text = L("ui.mainmenu.settings", "Настройки");
+                settings.clicked += () => onSettings?.Invoke();
+            }
+
+            if (quit != null)
+            {
+                quit.text = L("ui.mainmenu.quit", "Выход");
+                quit.clicked += () => onQuit?.Invoke();
+            }
 
             return root;
         }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Data.Stats;
 using NUnit.Framework;
@@ -23,6 +23,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Stats    = stats,
                 Position = new Vector2(x, y),
                 IsDead   = dead,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 

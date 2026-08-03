@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Проверяет целостность внутренних ссылок Obsidian-vault (docs/wiki).
 
@@ -92,7 +92,9 @@ foreach ($f in ($allFiles | Where-Object { $_.Extension -eq '.md' })) {
     $rel = $f.FullName.Substring($vaultRoot.Length).TrimStart('\', '/').Replace('\', '/')
     $relNoExt = $rel -replace '\.md$', ''
     $set = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
-    $raw = Get-Content -LiteralPath $f.FullName -Raw
+    # -Encoding UTF8 обязателен: без него Windows PowerShell 5.1 читает .md как ANSI, и кириллица
+    # в заголовках и вики-ссылках превращается в мусор — гейт краснеет на ссылках, которые целы.
+    $raw = Get-Content -LiteralPath $f.FullName -Raw -Encoding UTF8
     if (-not [string]::IsNullOrEmpty($raw)) {
         $body = [regex]::Replace($raw, '(?s)```.*?```', '')
         foreach ($h in $headingRe.Matches($body)) { [void]$set.Add((Get-AnchorKey $h.Groups[1].Value)) }
@@ -226,7 +228,9 @@ $mdRe   = [regex]'(?<!\!)\[[^\]]*\]\(([^)]+)\)'
 foreach ($f in $mdFiles) {
     $rel = $f.FullName.Substring($vaultRoot.Length).TrimStart('\', '/').Replace('\', '/')
     $srcDir = if ($rel -match '/') { $rel -replace '/[^/]+$', '' } else { '' }
-    $raw = Get-Content -LiteralPath $f.FullName -Raw
+    # -Encoding UTF8 обязателен: без него Windows PowerShell 5.1 читает .md как ANSI, и кириллица
+    # в заголовках и вики-ссылках превращается в мусор — гейт краснеет на ссылках, которые целы.
+    $raw = Get-Content -LiteralPath $f.FullName -Raw -Encoding UTF8
     if ([string]::IsNullOrEmpty($raw)) { continue }
     $text = Remove-Code $raw
     # Внутри Markdown-таблиц пайп алиаса экранируется: [[target\|alias]]. Obsidian трактует \| как |,

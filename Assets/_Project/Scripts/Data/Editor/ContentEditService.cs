@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -233,7 +233,7 @@ namespace Guildmaster.Data.Editor
 
         /// <summary>
         /// Задать float-поле <paramref name="fieldName"/> в первом компоненте эффекта, где оно есть (например
-        /// <c>_internalCooldownSeconds</c> у <c>BulwarkComponent</c> — «кулдаун щита»). Не нужно знать путь массива.
+        /// <c>_internalCooldownSeconds</c> у <c>BlockComponent</c> — «кулдаун щита»). Не нужно знать путь массива.
         /// </summary>
         public static Change SetEffectComponentFloat(EffectData effect, string fieldName, float value)
         {

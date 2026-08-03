@@ -21,11 +21,17 @@ namespace Guildmaster.Tests.EditMode.Guild
     {
         private RunStateService _runStates;
 
+        // Награду за победу узел пишет через шину команд (ТЗ кооп-вертикали §4.1) — здесь она локальная.
+        private Guildmaster.Guild.Commands.IRunCommands _commands;
+
         private RunContext Ctx()
         {
             var config = GameConfig.CreateDefault();
             _runStates = new RunStateService(new InMemorySaveService(), config, new FixedProfileService());
             _runStates.NewRun(1L, Array.Empty<RosterSlot>());
+            _commands  = new Guildmaster.Guild.Commands.RunCommandBus(
+                new Guildmaster.Guild.Commands.RunCommandApplier(_runStates),
+                new Guildmaster.Guild.Commands.RunCommandLog());
             return new RunContext(_runStates.Current, new XorShiftRng(1), new SoloReadyGate(),
                                   new SoloPlayerIntentSource());
         }
@@ -36,7 +42,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             var ctx = Ctx();
             int before = _runStates.Gold;
             var reward = new CountingReward();
-            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Battle, reward, _runStates,
+            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Battle, reward, _runStates, _commands,
                                           new ImmediateContinue(), postWinDelaySeconds: 0f);
 
             EventResult result = flow.Run(ctx).GetAwaiter().GetResult();
@@ -52,7 +58,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         {
             var ctx = Ctx();
             var reward = new CountingReward();
-            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Elite, reward, _runStates,
+            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Elite, reward, _runStates, _commands,
                                           new ImmediateContinue(), rewardCount: 2, postWinDelaySeconds: 0f);
 
             flow.Run(ctx).GetAwaiter().GetResult();
@@ -66,7 +72,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             var ctx = Ctx();
             int before = _runStates.Gold;
             var reward = new CountingReward();
-            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Defeated), RewardTier.Elite, reward, _runStates,
+            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Defeated), RewardTier.Elite, reward, _runStates, _commands,
                                           new ImmediateContinue(), postWinDelaySeconds: 0f);
 
             EventResult result = flow.Run(ctx).GetAwaiter().GetResult();

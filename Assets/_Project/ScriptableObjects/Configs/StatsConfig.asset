@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: StatsConfig
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.StatsConfig
   _armorConstantK: 100
-  _attackSpeedMin: 0.1
-  _attackSpeedMax: 4
   _resourceRegenPerSecond: 5
   _defaults:
   - Stat: 7

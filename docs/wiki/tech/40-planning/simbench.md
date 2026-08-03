@@ -1,9 +1,15 @@
 ---
 title: "Planning - SimBench Balance Harness"
-order: 130
-status: ready
-updated: 2026-07-17
+order: 135
+status: archive
+updated: 2026-07-28
 ---
+
+> [!info] Статус: реализовано, ниже — архив ТЗ
+> Одна поправка к строке статуса: меню переехало под наш единственный корень — пункты живут как
+> `Alebardium/Balance/*` (`Assets/_Project/Scripts/Balance/Editor/BalanceMenu.cs`), а не `Tools/Balance/*`.
+> Актуальная раскладка меню — [[tech/10-reference/editor-tools|Reference - Editor Tools]].
+> Остальное тело плана — след замысла на 2026-07-17 и не переписывается.
 
 **Статус:** Реализовано (Фазы 0–2, 2026-07-17), ветка `feat/run-loop-and-simbench`. Код — `Assets/_Project/Scripts/Balance` (+ `/Editor`), меню `Tools/Balance/*`, тесты `Guildmaster.Balance.Tests` (3/3 зелёные). Верифицировано на реальном контенте (10 архетипов + 4 гоблина): цифры дискриминирующие. «Регрессия баланса в CI» — вырезана (наблюдательность на Максе).
 
@@ -19,7 +25,7 @@ updated: 2026-07-17
 
 > Набор **инструментов начального баланса**: headless-стенд, который гоняет боевое ядро без презентации и выдаёт цифры (DPS/EHP/TTK/win-rate/рейтинг) в CSV/Markdown для геймдизайнера. Инструмент **не решает** баланс — он даёт доп-информацию ГД. Сочетания/синергии он принципиально не ловит (комбинаторный взрыв), финальный баланс — за Максом и плейтестами.
 >
-> Связано: [[tech/20-explanation/simulation|Explanation - Simulation & Tick]], [[tech/20-explanation/data-stats-damage|Explanation - Data, Stats, Damage]], [[tech/20-explanation/di-events|Explanation - DI & Events]], [[tech/40-planning/content-hub|Planning - Content Hub]] (страница «Баланс» хаба — потребитель этих же цифр).
+> Связано: [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]], [[tech/00-meta/journal/2026-07-30-stats-pipeline-neither-reorders-nor-clamps|Journal - The Stats Pipeline Neither Reorders Nor Clamps]], [[tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly|Journal - The Bus Stops At The Combat Assembly]], [[tech/40-planning/content-hub|Planning - Content Hub]] (страница «Баланс» хаба — потребитель этих же цифр).
 
 ---
 

@@ -1,0 +1,21 @@
+// Шаблон депо Windows. Значения подставляет scripts/steam-publish.ps1.
+//
+// Забираем папку билда целиком и рекурсивно: раскладку внутри решает Unity, и перечислять её здесь
+// значило бы держать второй список файлов, который отстанет от первой же новой DLL.
+"DepotBuildConfig"
+{
+	"DepotID"	"{{DEPOT_ID}}"
+	"contentroot"	"{{CONTENT_ROOT}}"
+
+	"FileMapping"
+	{
+		"LocalPath"	"*"
+		"DepotPath"	"."
+		"recursive"	"1"
+	}
+
+	// Отладочные символы игроку не нужны и весят как сама игра.
+	"FileExclusion"	"*.pdb"
+	"FileExclusion"	"*_BurstDebugInformation_DoNotShip*"
+	"FileExclusion"	"*_BackUpThisFolder_ButDontShipItWithYourGame*"
+}

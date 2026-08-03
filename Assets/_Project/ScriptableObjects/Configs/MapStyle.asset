@@ -49,6 +49,13 @@ MonoBehaviour:
   _beatDivision: 1
   _pulseAmount: 0.14
   _flowDivision: 1
+  _introCameraSeconds: 1.7
+  _introStartDelay: 0.2
+  _introGrowSpeed: 62
+  _introSpeedScatter: 0.45
+  _introNodePop: 0.22
+  _introDotPop: 0.12
+  _introNodeSoundGap: 0.07
   _fogMaterial: {fileID: 2100000, guid: a97aedf5c4220d2469cdb08ac70901b6, type: 2}
   _fogFalloff: 14
   _fogTrail: 6

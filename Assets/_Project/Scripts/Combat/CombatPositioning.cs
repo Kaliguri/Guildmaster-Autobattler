@@ -70,6 +70,54 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
+        /// Скорость СБЛИЖЕНИЯ собственным ходом, мировые ед./тик (≥ 0): проекция своего шага за прошлый тик
+        /// (<c>Position − PreviousPosition</c>) на ось «self → target». Зеркало
+        /// <see cref="TargetRecedeSpeedPerTick"/> и по той же причине бесплатно и детерминированно:
+        /// <c>Movement</c> идёт до <c>AutoAttack</c>, поэтому дельта свежая и одинаковая для всех.
+        /// </summary>
+        public static float SelfClosingSpeedPerTick(RuntimeUnit self, RuntimeUnit target)
+        {
+            Vector2 toTarget = target.Position - self.Position;
+            float distSq = toTarget.sqrMagnitude;
+            if (distSq < 1e-6f) return 0f;
+
+            Vector2 step = self.Position - self.PreviousPosition;
+            float radial = Vector2.Dot(step, toTarget) / Mathf.Sqrt(distSq); // компонента вдоль оси self→target
+            return radial > 0f ? radial : 0f;
+        }
+
+        /// <summary>
+        /// Пора ли начинать замах УДАРА С РАЗБЕГА — то есть въедет ли юнит своим ходом в досягаемость ровно
+        /// к кадру контакта. Считает <c>dist − closing·windup ≤ reach</c>: замах стартует ЗА границей
+        /// досягаемости, на «тормозном пути» длиной в собственный замах, и остаток дистанции закрывается
+        /// бегом. Без этого удар с разбега невозможен по построению — гейт пускал свинг лишь из reach,
+        /// поэтому юнит добегал, вставал и только потом бил.
+        /// </summary>
+        /// <remarks>
+        /// <b>Сближение считается ПЕССИМИСТИЧНО:</b> свой ход плюсуется, уход цели вычитается, а вот её
+        /// движение НАВСТРЕЧУ не засчитывается вовсе. Полная относительная скорость выглядит честнее, но
+        /// в сшибке двух линий она удваивала бы дистанцию старта — и стоило цели затормозить (свой замах
+        /// рутует её), юнит не доезжал половину пути и бил по воздуху в двух шагах от врага. Ошибка в
+        /// «слишком рано» стоит промаха, ошибка в «слишком поздно» — лишь того, что последние тики замаха
+        /// юнит стоит: <see cref="AttackReachCenter"/> он уже прошёл, и удар засчитается.
+        /// <para>Цель уже в досягаемости → false: это обычный гейт (<see cref="InAttackRange"/> +
+        /// <see cref="CanLandWindup"/>), и второй путь к тому же решению был бы вторым владельцем.</para>
+        /// </remarks>
+        public static bool CanCloseIntoReach(RuntimeUnit self, RuntimeUnit target, int windupTicks, in SimTuning tuning)
+        {
+            if (windupTicks <= 0) return false;
+
+            float reach = AttackReachCenter(self, target, tuning);
+            float dist  = (target.Position - self.Position).magnitude;
+            if (dist <= reach) return false;
+
+            float closing = SelfClosingSpeedPerTick(self, target) - TargetRecedeSpeedPerTick(self, target);
+            if (closing <= 0f) return false;   // стоит или отстаёт — въезжать нечем
+
+            return dist - closing * windupTicks <= reach;
+        }
+
+        /// <summary>
         /// Телепорт атакующего ЗА спину цели: на ДАЛЬНЮЮ от атакующего сторону (по направлению
         /// «атакующий → цель»), на расстоянии половины радиуса атаки — чтобы встать вплотную и в радиусе.
         /// Снимает интерполяцию (<see cref="RuntimeUnit.PreviousPosition"/> = позиция) — вид снапает, не «едет».
@@ -97,6 +145,32 @@ namespace Guildmaster.Combat
             float offset = attacker.Stats.Get(StatType.AttackRange) * 0.5f;
 
             return target.Position + behindDir * offset;
+        }
+
+        /// <summary>
+        /// Бьёт ли <paramref name="attacker"/> в ТЫЛ цели: стоит ли он с той стороны, откуда цель пришла
+        /// (со стороны её собственного края арены), в конусе <paramref name="minCos"/> от этого направления.
+        /// Дефолт 0.5 — конус ±60°: «в спину», а не «сбоку».
+        /// </summary>
+        /// <remarks>
+        /// <b>Тыл считается от конвенции сторон, а не от разворота юнита.</b> Своего «лица» у юнита в
+        /// симуляции нет (ни поля, ни угла) — общий слой C позиционики (фланг/тыл для всех, ГДД
+        /// <c>positioning</c> §Слой C) в коде отсутствует. Пока его нет, направление «назад» берётся
+        /// оттуда же, откуда его берёт побег: у команды есть свой край арены, и путь в спину — это обход
+        /// строя. В сшибке двух линий это совпадает с интуицией и не требует ни разворотов, ни истории
+        /// движения, то есть остаётся детерминированным.
+        /// <para>Из этого следует ограничение: удар в спину цели, которая сама зашла за твою линию,
+        /// считаться тыловым не будет. Это цена прокси, и она осознанная — заведение настоящего «лица»
+        /// меняет баланс ВСЕХ юнитов, а не одного кита.</para>
+        /// </remarks>
+        public static bool IsRearAttack(RuntimeUnit attacker, RuntimeUnit target, float minCos = 0.5f)
+        {
+            if (attacker == null || target == null) return false;
+
+            Vector2 toAttacker = attacker.Position - target.Position;
+            if (toAttacker.sqrMagnitude < 1e-6f) return false; // стоят в одной точке — направления нет
+
+            return Vector2.Dot(toAttacker.normalized, FleeSteering.HomeDir(target)) >= minCos;
         }
     }
 }

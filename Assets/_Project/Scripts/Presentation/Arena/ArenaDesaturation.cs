@@ -79,6 +79,23 @@ namespace Guildmaster.Presentation.Arena
             if (_runtime != null) Destroy(_runtime);
         }
 
+        /// <summary>
+        /// Показать или убрать ВСЁ, что рисует арену, — вместе с декором. Нужно там, где места не должно
+        /// быть вовсе: вне мероприятия.
+        /// </summary>
+        /// <remarks>
+        /// Пустой облик убирает только тайлы, а трава и камни живут отдельными спрайтами и переживают
+        /// подмену облика — на пустом поле они оставались висеть сами по себе (наход. Макса 02.08.2026).
+        /// Здесь уже собран полный список рендереров арены, поэтому владелец видимости — тот же.
+        /// </remarks>
+        public void SetVisible(bool visible)
+        {
+            if (_targets.Count == 0) CollectTargets();
+
+            for (int i = 0; i < _targets.Count; i++)
+                if (_targets[i] != null) _targets[i].enabled = visible;
+        }
+
         /// <summary>Перекрасить арену в серое или вернуть её цвет. Мгновенно — плавность даёт цифровой слой.</summary>
         public void SetGrey(bool grey)
         {

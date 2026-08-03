@@ -279,6 +279,549 @@ MonoBehaviour:
     m_Localized: Fungal Mend
     m_Metadata:
       m_Items: []
+  - m_Id: 6661801758679040
+    m_Localized: Dev Defender
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6661801850953728
+    m_Localized: 'Dev fighter on the Defender kit: watching skeletal animation in
+      a live fight.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6663474874933248
+    m_Localized: Tumble
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6665841439662080
+    m_Localized: Chilling Touch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742471229440
+    m_Localized: Whirl Grip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309824
+    m_Localized: A slow that loosens with every moment.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309825
+    m_Localized: Steel Bark
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309826
+    m_Localized: A shield earned by your own blow.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6788415695872000
+    m_Localized: Cleansing Light
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6788415750397952
+    m_Localized: The light lifts base afflictions along with its healing.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6795754930954240
+    m_Localized: Vortex Daze
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6795754977091584
+    m_Localized: A moment of helplessness right after the fall.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444622147584
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119104
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119105
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119106
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119107
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119108
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119109
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119110
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119111
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119112
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119113
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119114
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119115
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119116
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119117
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119118
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119119
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119120
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119121
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119122
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119123
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119124
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119125
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119126
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119127
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119128
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119129
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119130
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119131
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119132
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119133
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119134
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119135
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119136
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119137
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119138
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555314462720
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045632
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045633
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045634
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045635
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045636
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045637
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6906555327045638
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399222775808
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399256330240
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399256330241
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399256330242
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399256330243
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6908399256330244
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959210426368
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146624
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146625
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146626
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146627
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146628
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340928
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340929
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340930
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340931
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340932
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340933
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340934
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340935
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340936
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340937
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417282285568
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417320034304
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228608
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228609
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228610
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228611
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228612
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228613
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228614
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228615
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400006385664
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328704
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328705
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328706
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328707
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328708
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328709
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328710
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328711
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328712
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7123947646869504
+    m_Localized: Form Shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7235787592818688
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7235787689287680
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005827043328
+    m_Localized: Cracked Shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005827043329
+    m_Localized: A piece of someone else's shield. It covers you until it falls apart.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004359036928
+    m_Localized: Notched Sword
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004359036929
+    m_Localized: Blunt, heavy, familiar. Good enough to turn aside a couple of blows.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004723941376
+    m_Localized: Worn Knife
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652004723941377
+    m_Localized: A knife without a name. It strikes from below; it knows no other
+      way.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652003088162816
+    m_Localized: Crooked Bow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652003125911552
+    m_Localized: Hard to draw, slow to loose. But that one shot lands properly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005466333184
+    m_Localized: Cracked Amulet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005466333185
+    m_Localized: Someone else's charm. The hex is brief, but the enemy hits softer.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652003985743872
+    m_Localized: Chipped Skull
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652003985743873
+    m_Localized: It raises one skeleton. It cannot hear a second.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005093040128
+    m_Localized: Bundle of Herbs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652005093040129
+    m_Localized: Smells of a cellar. Closes wounds and lifts a light curse.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652007664148480
+    m_Localized: Rusty Guard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006909173760
+    m_Localized: Deflection
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652007295049728
+    m_Localized: Deflecting Stance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006548463616
+    m_Localized: Hex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7652006191947776
+    m_Localized: Salve
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897044676608
+    m_Localized: Cracked Shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897044676609
+    m_Localized: A piece of someone else's shield. It covers you until it falls apart.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897409581056
+    m_Localized: Notched Sword
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897409581057
+    m_Localized: Blunt, heavy, familiar. Good enough to turn aside a couple of blows.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897774485504
+    m_Localized: Worn Knife
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654897774485505
+    m_Localized: A knife without a name. It strikes from below; it knows no other
+      way.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898143584256
+    m_Localized: Crooked Bow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898143584257
+    m_Localized: Hard to draw, slow to loose. But that one shot lands properly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898512683008
+    m_Localized: Cracked Amulet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898512683009
+    m_Localized: Someone else's charm. The hex is brief, but the enemy hits softer.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898873393152
+    m_Localized: Chipped Skull
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654898873393153
+    m_Localized: It raises one skeleton. It cannot hear a second.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654899229908992
+    m_Localized: Bundle of Herbs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7654899229908993
+    m_Localized: Smells of a cellar. Closes wounds and lifts a light curse.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8364296469995520
+    m_Localized: Absolute Antiheal
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

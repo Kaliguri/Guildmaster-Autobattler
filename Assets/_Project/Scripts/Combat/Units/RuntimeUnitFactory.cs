@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -21,7 +21,7 @@ namespace Guildmaster.Combat
     /// и стартовое здоровье. Поэтому фабрике нужны <see cref="EffectSystem"/> и боевой контекст —
     /// наложение пассивки зовёт <c>OnApply</c> компонентов (вики «12» §6, шаг 9).
     /// </remarks>
-    public sealed class RuntimeUnitFactory
+    public sealed class RuntimeUnitFactory : ISummonFactory
     {
         private readonly StatsConfig   _config;
         private readonly ClassBalanceConfig _classBalance;
@@ -72,30 +72,11 @@ namespace Guildmaster.Combat
         public RuntimeUnit Create(UnitData data, VesselData vessel, int team, Vector2 spawnPosition,
                                   IReadOnlyList<ItemData> items = null)
         {
-            var stats = new Stats(_config);
-
-            // Классовая база (2-й уровень каскада) — ПЕРВОЙ группой, до персоны: «последний Override
-            // побеждает» даёт каскад Класс → Персона → Vessel, дельты персоны копятся поверх.
-            ClassBaseline.Apply(stats, data, _classBalance);
-
-            // Видовые/подвидовые скейлы врага (уровни 3–4) — после класса, до персоны (перемножаются поверх базы).
-            EnemyScalers.Apply(stats, data);
-
-            if (data?.Stats != null && data.Stats.Length > 0)
-                stats.AddModifiersFrom(data, data.Stats);
-
-            // Судьба авторского «Сосуда» (у процедурных её нет — они приходят без ассета).
-            if (vessel?.FateModifiers != null && vessel.FateModifiers.Length > 0)
-                stats.AddModifiersFrom(vessel, vessel.FateModifiers);
-
-            // Предметы/баннеры: статовые моды (источник — сам предмет) до HP-init, наравне с Судьбой сосуда.
-            if (items != null)
-                for (int i = 0; i < items.Count; i++)
-                {
-                    ItemData item = items[i];
-                    if (item?.Mods != null && item.Mods.Length > 0)
-                        stats.AddModifiersFrom(item, item.Mods);
-                }
+            // Каскад целиком — у EffectiveStats: дефолты конфига → класс → вид → персона → Судьба
+            // сосуда → предметы. Своей копии здесь нет намеренно: она уже расходилась с показанными
+            // игроку числами (аудит 2026-07-26), а теперь по тому же каскаду собираются ещё и тела
+            // мира вне боя — три переписи одного порядка разъехались бы молча.
+            Stats stats = EffectiveStats.Build(data, vessel, items, _config, _classBalance);
 
             int id = _nextId++;
 
@@ -114,12 +95,14 @@ namespace Guildmaster.Combat
                 CurrentShield    = 0f,
                 Position         = spawnPosition,
                 PreviousPosition = spawnPosition,
-                Unit             = data,
                 Vessel           = vessel,
                 // AI (Фаза 3): мозг из профиля кита + фаза стаггера по месту в команде (вики «13» §2.7, §4.1).
                 Brain            = new ProfileBrain(data?.Ai),
                 BrainPhase       = teamIndex % SimConstants.AiTickInterval,
             };
+
+            // Форма авто-атаки — снимком, одним вызовом: тип урона, доставка, on-hit, канал.
+            unit.AdoptKit(data);
 
             RegisterPassives(unit, data);
             RegisterItemPassives(unit, items);
@@ -134,6 +117,52 @@ namespace Guildmaster.Combat
             unit.CurrentHP = stats.Get(StatType.MaxHP);
 
             return unit;
+        }
+
+        /// <summary>
+        /// Собрать призванного юнита (M10): та же сборка, что у всех, плюс множители силы призывов от
+        /// призывателя. Множители приезжают ОТДЕЛЬНОЙ группой модификаторов, поэтому база ассета остаётся
+        /// читаемой в отладке: видно и «сколько у скелета своего», и «сколько добавил хозяин».
+        /// </summary>
+        /// <remarks>
+        /// Множители применяются ДО инициализации HP — иначе призыв родился бы с полным HP по базе, а
+        /// потолок вырос бы после, и усиленный скелет выходил бы уже раненым.
+        /// </remarks>
+        public RuntimeUnit CreateSummon(UnitData data, int team, Vector2 position, RuntimeUnit summoner)
+        {
+            RuntimeUnit summon = Create(data, vessel: null, team, position);
+
+            if (summoner?.Stats == null) return summon;
+
+            float healthEff = summoner.Stats.Get(StatType.SummonHealthEff);
+            float damageEff = summoner.Stats.Get(StatType.SummonDamageEff);
+
+            bool scalesHealth = !Mathf.Approximately(healthEff, 1f);
+            bool scalesDamage = !Mathf.Approximately(damageEff, 1f);
+
+            if (scalesHealth || scalesDamage)
+            {
+                // PercentMult принимает ПРИБАВКУ (множитель считается как 1 + x), а сам стат силы призывов
+                // живёт вокруг единицы: 1.3 = «+30%». Отсюда −1.
+                StatModifier[] mods =
+                    scalesHealth && scalesDamage
+                        ? new[]
+                        {
+                            new StatModifier(StatType.MaxHP, ModifierOp.PercentMult, healthEff - 1f),
+                            new StatModifier(StatType.AutoAttackDamage, ModifierOp.PercentMult, damageEff - 1f),
+                        }
+                        : scalesHealth
+                            ? new[] { new StatModifier(StatType.MaxHP, ModifierOp.PercentMult, healthEff - 1f) }
+                            : new[] { new StatModifier(StatType.AutoAttackDamage, ModifierOp.PercentMult, damageEff - 1f) };
+
+                summon.Stats.AddModifiersFrom("summoner", mods);
+
+                // HP пересобираем: потолок только что вырос, а призыв обязан выйти целым.
+                summon.CurrentHP = summon.Stats.Get(StatType.MaxHP);
+            }
+
+            summon.Summoner = summoner;
+            return summon;
         }
 
         /// <summary>Наложить пассивные эффекты предметов/баннеров (источник — сам юнит, длительность из Def).</summary>

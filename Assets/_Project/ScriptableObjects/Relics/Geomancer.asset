@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7cba09029dfbf4fb4a5fa3399a44f1, type: 3}
+  m_Name: Geomancer
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
+  _id: relic.geomancer
+  _combatClass: 3
+  _autoAttackDamageType: 4
+  _creatureType: 0
+  _attackType: 1
+  _resourceType: 0
+  _visual: {fileID: 11400000, guid: 1726394c3d16f6b46b32737288e71402, type: 2}
+  _viewPrefab: {fileID: 4080731667428238973, guid: f1d5abc2956524d42b185654a918f37f, type: 3}
+  _bodyShade: 2
+  _vfxTone: 12
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
+  _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
+  _windupShare: 0.4
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
+  _stats:
+  - Stat: 3
+    Op: 3
+    Value: 6
+  - Stat: 4
+    Op: 3
+    Value: 14
+  - Stat: 18
+    Op: 3
+    Value: 7
+  - Stat: 7
+    Op: 3
+    Value: 160
+  _grantedEffects:
+  - {fileID: 11400000, guid: c3d4e5f60718293a4b5c6d7e8f900112, type: 2}
+  - {fileID: 11400000, guid: d4e5f60718293a4b5c6d7e8f90011223, type: 2}
+  - {fileID: 11400000, guid: e5f60718293a4b5c6d7e8f9001122345, type: 2}
+  - {fileID: 11400000, guid: 0680008ebe861c84f91d148860298b28, type: 2}
+  _abilities: []
+  _aiPreset: {fileID: 11400000, guid: e5f60718293a4b5c6d7e8f9001122334, type: 2}
+  _ai:
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 0
+      FleeAtHpPct: 0.25
+      ReturnAtHpPct: 0.5
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags:
+  - {fileID: 11400000, guid: d8a1fea2ed170c54e92dba9f84de1058, type: 2}
+  - {fileID: 11400000, guid: 2e74f4027aac58747add95950ec06969, type: 2}
+  - {fileID: 11400000, guid: 5cec4bc3f06a4e34fa90be427fcf58cc, type: 2}
+  - {fileID: 11400000, guid: ab815b5e6e657074ab85e622db5f22f2, type: 2}
+  - {fileID: 11400000, guid: 8dc33c508dab67647bed54196fa40858, type: 2}
+  _tags:
+  - geomancer
+  - hybrid
+  - common
+  _kitPower: 0
+  _dropRarity: 1
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 0

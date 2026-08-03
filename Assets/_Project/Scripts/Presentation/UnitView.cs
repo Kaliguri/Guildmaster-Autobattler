@@ -1,9 +1,18 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using LitMotion;
 using UnityEngine;
 using UnityEngine.Events;
+// Псевдонимы: `Body` — ещё и свойство вида (IUnitBodyVisual Body), поэтому `Body.PartMask` в выражении
+// резолвится в свойство, а не в неймспейс. Алиасы снимают конфликт — пишем короткие имена.
+using PartMask = Guildmaster.Presentation.Body.PartMask;
+using UnitPart = Guildmaster.Presentation.Body.UnitPart;
+using HandSlot = Guildmaster.Presentation.Body.HandSlot;
+using CastGlowMask = Guildmaster.Presentation.Body.CastGlowMask;
+using UnitPartGeometry = Guildmaster.Presentation.Body.UnitPartGeometry;
+using BodySide = Guildmaster.Presentation.Body.BodySide;
+using RigNaming = Guildmaster.Presentation.Body.RigNaming;
 
 namespace Guildmaster.Presentation
 {
@@ -16,19 +25,27 @@ namespace Guildmaster.Presentation
     /// «прибит к земле». <c>animator.fireEvents=false</c> — маркеры это данные, а не колбэки. Анимация
     /// НИКОГДА не пишет в сим. Базовая реакция на удар (вспышка/сплющивание/локальный hitstop) — кодом
     /// на LitMotion (zero-alloc); <see cref="UnityEvent"/>-хуки оставлены пустым швом под точечный MMF.
+    /// <para>
+    /// Само ТЕЛО вид держит за швом <see cref="Body.IUnitBodyVisual"/> и не знает, один это спрайт или
+    /// полтора десятка частей: тинт, вспышку, голограмму, контур, сортировку, силуэт и осколки он адресует
+    /// телу целиком. До шва всё это писалось в один <see cref="SpriteRenderer"/>, и у составного юнита
+    /// доставалось одной части — вспыхивала грудь, разлетался торс.
+    /// </para>
     /// </summary>
-    public sealed class UnitView : MonoBehaviour
+    public sealed class UnitView : MonoBehaviour, Effects.ISwingArcSource
     {
         private const float MoveEpsilonSq = 1e-6f;
         private const int   YSortPrecision = 100; // ордеров на 1 мировую ед. Y (0.01 Y = 1 ордер) — Y-сортировка тел
 
         [Header("Components")]
+        [Tooltip("Спрайт тела покадрового юнита. Из него собирается тело (SpriteBodyVisual), если не задано " +
+                 "составное — поэтому существующие покадровые префабы под шов не переразводятся.")]
         [SerializeField] private SpriteRenderer _sprite;
         [Tooltip("Animator на теле (той же GO, что SpriteRenderer). Пусто/без визуала = статичный спрайт.")]
         [SerializeField] private Animator _animator;
-        [Tooltip("Корень скелетного/составного визуала: разворот через scale.x (±1) вместо SpriteRenderer.flipX. " +
-                 "Пусто = классический flipX на _sprite (sprite-sheet юниты).")]
-        [SerializeField] private Transform _facingRoot;
+        [Tooltip("Составное (скелетное) тело: компонент на корне визуала, владеющий всеми частями. Задан — " +
+                 "телом становится он, и вспышка/тинт/осколки идут по ВСЕМ частям. Пусто — тело из _sprite.")]
+        [SerializeField] private Body.SkeletalBodyVisual _skeletalBody;
         [SerializeField] private HealthBarView  _healthBar;
         [Tooltip("Бар ресурса (мана/ярость). Пусто = без бара; скрывается сам для безресурсных юнитов.")]
         [SerializeField] private ManaBarView    _manaBar;
@@ -42,22 +59,38 @@ namespace Guildmaster.Presentation
         // ТОЛЬКО для маркера контакта/темпа бега (те же данные, что читает сим для windup).
         private UnitVisual _visual;
 
-        [Tooltip("Бег «прибит к земле»: сколько мировых юнитов проходит юнит на ОДИН кадр бега. " +
-                 "Меньше = ноги быстрее (бодрее), больше = медленнее. Темп бега привязан к скорости — не скользит.")]
-        [SerializeField] private float _runUnitsPerFrame = 0.15f;
+        [Tooltip("Бег «прибит к земле»: сколько мировых юнитов проходит клип бега за СЕКУНДУ на скорости 1. " +
+                 "Меньше = ноги быстрее (бодрее), больше = медленнее. Темп бега привязан к скорости — не скользит.\n" +
+                 "Покадровый юнит: (ед. на кадр) × (кадров в секунду), у нас 0.15 × 10 = 1.5.\n" +
+                 "Скелетный: (ед. за цикл шагов) ÷ (длина клипа), кадров у него нет.")]
+        [SerializeField] private float _runUnitsPerSecond = 1.5f;
+
+        [Tooltip("То же самое для клипа РАЗБЕГА: сколько мировых юнитов проходит клип спринта за секунду. " +
+                 "У спринта свой шаг и своя длина цикла, поэтому число у него ОТДЕЛЬНОЕ — общее с бегом " +
+                 "листало клип вдвое быстрее земли, и ноги мельтешили.\n" +
+                 "0 = клипа разбега у юнита нет (покадровый бестиарий), темп берётся от бега.")]
+        [SerializeField] private float _sprintUnitsPerSecond;
+
+        [Tooltip("Секунды блендинга между ПОЗНЫМИ стейтами (Idle / CombatIdle / Stun и переходы в/из них): " +
+                 "без него выход из стана и наведение цели щёлкали позу за кадр. Локомоция Run↔Sprint " +
+                 "блендится своим окном с переносом фазы шага; вход в свинг на базе покадровых — снапом, там " +
+                 "кадр сразу перехватывает скраб. 0 = мгновенный снап, как было.")]
+        [SerializeField] private float _poseBlendSeconds = 0.13f;
 
         [Header("Feel Hooks (пустой шов под точечный MMF_Player в Inspector)")]
         [SerializeField] private UnityEvent _onHitFeedback;
         [SerializeField] private UnityEvent _onDeathFeedback;
 
         [Header("Feel — реакция на попадание (LitMotion, код)")]
-        // Материал вспышки (Guildmaster/Sprite/HitFlash с параметром _FlashAmount) стоит ПРЯМО на Body-спрайте
+        // Материал вспышки (Guildmaster/Sprite/HitFlash с параметром _FlashAmount) стоит ПРЯМО на частях тела
         // в префабе — без рантайм-свапа. Свап базового материала ломал per-instance путь спрайта (тинт/флип
-        // не подхватывались до первого MPB). Длительности/сила/цвет вспышки — из CombatFeelConfig (ApplyFeelConfig).
+        // не подхватывались до первого MPB). Часть без этого материала физически не умеет вспыхивать — за
+        // раскладку по всем частям отвечает SkeletalBodyVisual и его валидатор.
+        // Длительности/сила/цвет вспышки — из CombatFeelConfig (ApplyFeelConfig).
 
-        [Header("Identity label — подпись персонажа над HP-баром (TMP-ребёнок префаба)")]
-        [Tooltip("TMP-текст подписи. Позиция/размер/шрифт настраиваются на нём в префабе.")]
-        [SerializeField] private TMPro.TMP_Text _nameLabel;
+        // Подписи-имени над юнитом НЕТ и не планируется (решение 2026-07-31/67): ни один автобаттлер жанра
+        // не пишет имя над головой — опознание идёт силуэтом, цветом бара и плашкой инфы по наведению.
+        // Поле _nameLabel и метод SetLabel сняты здесь же; не возвращать без пересмотра решения.
 
         [Header("Attach points (сокеты) — GO под 'Sprite Visual', ставятся по арту")]
         [Tooltip("Ноги: точка касания земли (совпадает с позицией юнита в симе).")]
@@ -79,29 +112,96 @@ namespace Guildmaster.Presentation
         [Tooltip("Показывать оранжевый круг коллизии симуляции (радиус = Size × SimTuning.BodyRadiusPerSize). Выключи, если мешает.")]
         [SerializeField] private bool _showCollisionGizmo = true;
 
+        // Пик подсветки телеграфа: заметно, но слабее удара — подводка не должна читаться как попадание.
+        private const float TelegraphPeak = 0.55f;
+
         private static readonly int IdleHash   = Animator.StringToHash("Idle");
         private static readonly int RunHash     = Animator.StringToHash("Run");
         private static readonly int AttackHash = Animator.StringToHash("Attack");
         private static readonly int DeathHash   = Animator.StringToHash("Death");
+        // Состояния скелетного бестиария. Имена совпадают со стейтами контроллера: у покадровых юнитов
+        // таких стейтов нет, и Animator.Play по несуществующему имени — тихий no-op, поэтому они просто
+        // продолжают играть то, что играли (см. HashFor: разбег у них падает обратно в бег).
+        private static readonly int SprintHash       = Animator.StringToHash("Sprint");
+        private static readonly int AttackChargeHash = Animator.StringToHash("AttackCharge");
+        private static readonly int StunHash         = Animator.StringToHash("Stun");
+        private static readonly int CombatIdleHash   = Animator.StringToHash("CombatIdle");
 
-        private RuntimeUnit _unit;
+        // Свинг тоже живёт СЛОЕМ — по той же причине, что и гвардия: удар это работа рук и корпуса, а не
+        // всего тела целиком. Пока он занимал базовый слой, «бей на бегу» упиралось в выбор одного из двух:
+        // либо клип атаки (и ноги замирали посреди разбега), либо клип бега (и удара не было видно).
+        // Маска слоя — торс, голова, обе руки; ноги остаются за базой и продолжают тот шаг, что шли.
+        private const string ActionLayerName     = "Action";
+        // Таз — отдельным АДДИТИВНЫМ слоем, а не частью маски действия: override поставил бы таз в позу
+        // клипа атаки и стёр качание бега, аддитив же кладёт дельту удара ПОВЕРХ этого качания. Замер
+        // 30.07: override давал −0.022 (bob бега исчезал), аддитив — 0.038 − 0.037 = 0.001.
+        private const string ActionHipsLayerName = "ActionHips";
+
+        /// <summary>
+        /// За сколько рука уходит со слоя действия обратно в локомоцию. Вход в свинг мгновенный и это не
+        /// симметрично намеренно: кадр контакта привязан к сим-тику, и плавный въезд смазал бы начало
+        /// замаха, тогда как уходить руке некуда торопиться.
+        /// </summary>
+        private const float ActionDropSeconds = 0.12f;
+
+        // Гвардия живёт СЛОЕМ, а не стейтом базы: щит поднимается поверх того, что юнит делает — бежит,
+        // бьёт, стоит, — и потому не имеет права занимать собой всё тело. Маска слоя — только рука со щитом.
+        private const string GuardLayerName    = "Block";
+        private static readonly int GuardHash  = Animator.StringToHash("Block");
+        private const float GuardRaiseSeconds  = 0.10f;   // въезд веса: гвардия, которая едет вверх, приезжает поздно
+        private const float GuardDropSeconds   = 0.22f;   // уход мягче въезда — рука опускается, а не отщёлкивает
+
+        /// <summary>
+        /// За сколько до события щит обязан УЖЕ СТОЯТЬ (требование Макса 29.07). Телеграф — это не «успеть к
+        /// кадру», а «встать и подождать»: подъём кончается на столько раньше, и остаток подводки поза держится
+        /// стоп-кадром. Без этой паузы щит приезжал в финал одновременно с барьером и читался как реакция на
+        /// него, а не как предупреждение о нём.
+        /// </summary>
+        private const float GuardSettleSeconds = 0.15f;
+
+        /// <summary>
+        /// Доля клипа гвардии, на которой поза уже поднята. Дальше клип только держит и оседает, поэтому
+        /// скрабить его до конца незачем — да и нельзя: держать позу должно ОКНО, а не длина клипа.
+        /// </summary>
+        private const float GuardRiseShare = 0.2f;
+
+        // Состояние берётся из ленты боя, а НЕ из живого RuntimeUnit: сим уходит вперёд на окно
+        // опережения, и живой юнит для показа — «будущее». Определение (UnitData) при этом статично,
+        // поэтому живёт отдельной ссылкой и на тик не копируется.
+        private Combat.Tape.UnitSnapshot _snapshot;
+        private bool                     _hasState;
+        private Data.Definitions.UnitData _definition;
+
+        // Снимок цели того же тика — нужен только развороту и вздрогу при смене цели.
+        private Combat.Tape.UnitSnapshot _targetState;
+        private bool                     _hasTargetState;
+
         private Vector2     _renderPosition;
+
+        // Доля внутри показываемого тика [0..1] — та же, по которой интерполируется позиция. Поза атаки
+        // скрабится ЕЮ, а не целыми счётчиками снимка: иначе клип получал бы ровно TickRate положений в
+        // секунду (при замахе в 6 тиков — 6 поз на весь замах), и рубленность выглядела бы «визуалом в
+        // 30 Гц». С дробной долей поза течёт непрерывно и синхронно с движением при любом TickRate.
+        private float _frameAlpha;
+
+        // Тело юнита за швом: один спрайт или полтора десятка частей — виду разницы не видно (см. IUnitBodyVisual).
+        private Body.IUnitBodyVisual _body;
+        private bool                 _bodyResolved;
 
         // --- Feel (реакция на удар, LitMotion) — только презентация, сим не трогает ---
         private Design.CombatFeelConfig _feel;          // параметры вспышки/сплющивания (из design-конфига)
         private Core.Audio.IAudioService _audio;        // голос вида: хруст разлёта на осколки
         private Color        _baseTint = Color.white;   // цвет-тинт тела (умножается на текстуру в шейдере)
+        private Gradient     _vfxSpread;                // «свой» разброс цвета: подаёт презентер, читают осколки
         private Color        _activeFlashColor = Color.white; // цвет текущей вспышки (school flash или фолбэк)
         private float        _flashAmount;               // 0..1 — сила вспышки (параметр _FlashAmount шейдера)
         private float        _flashPeak = 1f;            // пик текущей вспышки: удар бьёт в полную, лечение мягче
-        private bool         _flashApplied;              // держим ли сейчас MPB на спрайте (чтобы вернуть в 0 один раз)
         private Vector3      _baseSpriteScale = Vector3.one; // масштаб узла сплющивания до эффекта
         private Transform    _squashTarget;              // узел, который сплющиваем (выше Animator, чтобы не затирался)
         private float        _hitSquashWeight;           // 0..1 — вес hit-squash (твин)
         private float        _flipSquashWeight;          // 0..1 — вес facing-flip squash
         private float        _acquireSquashWeight;       // 0..1 — вес target-acquire twitch
         private float        _hitstopRemaining;          // unscaled-окно заморозки анимации участников удара
-        private MaterialPropertyBlock _mpb;              // per-instance _FlashAmount без клонирования материала
         private MotionHandle _flashHandle;
         private MotionHandle _squashHandle;
         private MotionHandle _nudgeHandle;
@@ -119,23 +219,14 @@ namespace Guildmaster.Presentation
         private int          _lastTargetId = int.MinValue;
         private float        _deathAnticipateLeft;       // remaining unscaled death-anticipation
         private System.Action<UnitView> _onContactDust;  // презентер спавнит VfxContactDust; null = нет VFX
-        private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
-        private static readonly int FlashColorId  = Shader.PropertyToID("_FlashColor");
-        private static readonly int HoloId        = Shader.PropertyToID("_Holo");
-        private static readonly int HoloColorId   = Shader.PropertyToID("_HoloColor");
-        private static readonly int HoloAlphaId   = Shader.PropertyToID("_HoloAlpha");
-        private static readonly int HoloScanScaleId  = Shader.PropertyToID("_HoloScanScale");
-        private static readonly int HoloScanAmountId = Shader.PropertyToID("_HoloScanAmount");
-        private static readonly int HoloTexelId      = Shader.PropertyToID("_HoloTexel");
-        private static readonly int OutlineId        = Shader.PropertyToID("_Outline");
-        private static readonly int OutlineColorId   = Shader.PropertyToID("_OutlineColor");
+        private System.Action<UnitView> _onSwingStarted; // презентер спавнит дугу за клинком; null = нет VFX
 
         // --- Состояние анимации (рендер-сторона, не влияет на сим) ---
         // Своя фаза анимации атаки (НЕ путать с сим-AttackPhase на RuntimeUnit): охватывает ВЕСЬ цикл
         // атаки — замах до кадра контакта + хвост-возврат, растянутый на «окно» до следующего замаха.
         // За счёт этого у непрерывно атакующего клип атаки лупится бесшовно в темпе скорости атаки, а
         // не мигает Attack↔Run в паузе между ударами.
-        private enum AttackAnimPhase { None, Windup, Recovery }
+        private enum AttackAnimPhase { None, Windup, Channel, Recovery }
 
         private UnitAnimationState _state = UnitAnimationState.Idle;
         private AttackAnimPhase _attackPhase;
@@ -153,6 +244,16 @@ namespace Guildmaster.Presentation
         private float _outlineLeft;        // остаток окна контура, сек
         private float _outlineTotal;
         private Color _outlineColor = Color.white;  // главный цвет кастера
+        private bool  _outlineCharge;      // это ПОДВОДКА к касту (растёт к концу), а не вспышка «состоялось»
+
+        // Свечение части-источника на касте (реф SAO): заряд за cast-time → пик на выпуске → спад.
+        private float _glowAmount;         // 0..1 — сила свечения (параметр _GlowAmount шейдера тела)
+        private float _glowLeft;           // остаток текущей фазы, сек
+        private float _glowChargeTotal;    // длительность заряда, сек (0 = сразу пик)
+        private float _glowReleaseTotal;   // длительность спада с пика, сек
+        private bool  _glowInCharge;       // идёт заряд (растём к пику) vs спад
+        private Color _glowColor = Color.white;              // HDR-цвет: цвет юнита × bloom-множитель
+        private PartMask _glowParts;       // какие ИМЕННО части светятся; пусто = не светимся
 
         private CanvasGroup _uiFadeGroup;  // контейнер world-UI: гаснет вместе с телом, а не щелчком
         private float _uiFadeLeft;
@@ -164,20 +265,68 @@ namespace Guildmaster.Presentation
         private bool  _holdKeepsAttackFrame; // добивающему — именно кадр контакта; остальным — где застало
         private float _holdRemaining; // unscaled-остаток удержания
 
-        private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
-        private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
-        private int   _recoveryGapTicks = 1;    // тиков от кадра контакта до следующего замаха (снап на конце замаха) — темп хвоста
-        private float _runFrameRate = 10f;
+        // --- Слой действия: свинг поверх ног ---
+        private int   _actionLayer     = -1;  // индекс слоя свинга; -1 = у юнита его нет (покадровый бестиарий)
+        private int   _actionHipsLayer = -1;  // аддитивный таз, синхронизированный с ним; -1 = нет
+        private float _actionWeight;          // текущий вес обоих 0..1
+        private bool  _swingCharged;          // текущий свинг — с разбега (фиксируется на входе в цикл)
 
-        /// <summary>Связать вид с рантайм-юнитом.</summary>
-        public void Bind(RuntimeUnit unit)
+        // --- Гвардия (телеграф барьера): поза щита, поднятая ДО того, как барьер появится ---
+        private int   _guardLayer = -1;  // индекс слоя щита; -1 = у юнита его нет
+        private float _guardWeight;      // текущий вес слоя 0..1
+        private bool  _guardActive;      // идёт окно гвардии (подводка + жизнь барьера)
+        private float _guardElapsed;     // сколько окна прошло
+        private float _guardTotal;       // всё окно: подводка + жизнь барьера
+        private float _guardRise = 0.1f; // за сколько щит встаёт; дальше стоп-кадр до конца окна
+
+        private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
+        private float _attackHitNormalized;  // 0..1 — доля клипа атаки до маркера контакта (Hit)
+
+        // --- Взмах: окно между маркерами StrikeStart и StrikeEnd ------------------------------------
+        // На нём живёт дуга за клинком, и с его начала берётся точка A формы удара. Клип без разметки
+        // взмаха просто не даёт ни того, ни другого: остальной удар (вспышка, искры, цифра) работает.
+        private bool  _hasStrikeWindow;      // клип атаки размечен обоими маркерами
+        private float _strikeFrom;           // 0..1 — нормированное начало взмаха
+        private float _strikeTo;             // 0..1 — нормированный конец взмаха
+        private float _swingClipTime = -1f;  // 0..1 — где скраб поставил клип свинга в этом кадре; -1 = свинг не играет
+        private bool  _hasStrikeOrigin;      // точка A снята с этого взмаха
+        private Vector3 _strikeOrigin;       // мировая позиция кончика оружия на кадре StrikeStart
+
+        /// <summary>
+        /// Тело юнита за швом. Резолвится лениво, а не в <c>Awake</c>, потому что силуэт для drag-призрака
+        /// снимается ПРЯМО С АССЕТА префаба (юнита на поле ещё нет) — там ни один жизненный метод не звучал.
+        /// </summary>
+        private Body.IUnitBodyVisual Body
         {
-            _unit           = unit;
-            _renderPosition = unit.Position;
+            get
+            {
+                if (_bodyResolved) return _body;
+                _bodyResolved = true;
+                // Составное тело разведено на префабе — оно и есть тело. Иначе собираем из одного спрайта:
+                // так 17 покадровых префабов остаются нетронутыми.
+                _body = _skeletalBody != null
+                    ? _skeletalBody
+                    : (_sprite != null ? new Body.SpriteBodyVisual(_sprite) : null);
+                return _body;
+            }
+        }
+
+        /// <summary>
+        /// Связать вид с юнитом ленты: <paramref name="state"/> — его состояние на показываемом тике,
+        /// <paramref name="definition"/> — его определение (арт, палитра, флаги), которое за бой не меняется.
+        /// </summary>
+        public void Bind(in Combat.Tape.UnitSnapshot state, Data.Definitions.UnitData definition)
+        {
+            _snapshot       = state;
+            _hasState       = true;
+            _definition     = definition;
+            _hasTargetState = false;
+            _renderPosition = state.Position;
             transform.position = (Vector3)_renderPosition;
 
             // Вид могли переиспользовать после чьей-то смерти — возвращаем полосу из погашенного состояния.
             _uiFadeLeft = 0f;
+            ClearBodyCuts();   // и раны прошлого жильца: они принадлежали его телу, а не этому виду
             if (_worldUi != null)
             {
                 _worldUi.SetActive(true);
@@ -188,28 +337,30 @@ namespace Guildmaster.Presentation
             // Спрайты/кости нарисованы лицом вправо: команда 0 (слева) так и смотрит, враги (справа) — влево.
             // Дальше разворот динамический (ApplyFacing по цели/движению), но стартовый — по стороне, иначе
             // стоящий без цели (напр. ассасин в инвизе) смотрит «от противника».
-            if (_sprite != null || _facingRoot != null)
+            if (Body != null)
             {
-                bool startFlip = unit.Team != 0;
+                // Вид переиспользуется после чьей-то смерти, а на разлёте осколков тело было спрятано —
+                // возвращаем его, иначе второй жилец этого вида выходит на арену невидимым.
+                Body.SetVisible(true);
+
+                bool startFlip = state.Team != 0;
                 _desiredFlipX = startFlip;
                 ApplyFacingVisual(startFlip);
 
-                // Сплющиваем узел ВЫШЕ Animator (facing root или родитель спрайта), иначе клип затирает scale.
-                _squashTarget = _facingRoot != null
-                    ? _facingRoot
-                    : (_sprite != null && _sprite.transform.parent != null
-                        ? _sprite.transform.parent
-                        : _sprite != null ? _sprite.transform : transform);
+                // Сплющиваем узел ВЫШЕ Animator (корень тела), иначе клип затирает scale каждым кадром.
+                _squashTarget = Body.Root != null ? Body.Root : transform;
                 _baseSpriteScale = _squashTarget.localScale;
 
                 // Праймим property block (flash=0) с первого кадра: спрайт с кастомным SRP-batcher-шейдером
                 // включает per-instance путь именно выставленным MPB — иначе тинт/флип не подхватывались до
                 // первого удара (наблюдалось как «юнит без своего цвета/прозрачности, пока не получит урон»).
-                if (_sprite != null) PrimeFlashBlock();
+                // _feel в Bind ещё может быть null — цвет вспышки тут не важен (сила 0).
+                Body.Prime(_feel != null ? _feel.FlashColor : Color.white);
+                _holoAmount = 0f;
             }
 
-            if (_healthBar != null) _healthBar.Bind(unit);
-            if (_manaBar != null)   _manaBar.Bind(unit);
+            if (_healthBar != null) _healthBar.Bind(in state);
+            if (_manaBar != null)   _manaBar.Bind(in state);
 
             InitVisual(); // визуал/анимация — из самого префаба (см. InitVisual), без рантайм-подмены
         }
@@ -218,8 +369,15 @@ namespace Guildmaster.Presentation
         public void SetTint(Color color)
         {
             _baseTint = color;
-            ApplyColor(); // итоговый цвет = база + вспышка + альфа инвиза (единый писатель _sprite.color)
+            ApplyColor(); // итоговый цвет = база + вспышка + альфа инвиза (единый писатель цвета тела)
         }
+
+        /// <summary>
+        /// Подать диапазон разброса «своего» цвета: осколки павшего берут его концы. Вид цвет не
+        /// РЕЗОЛВИТ — роль юнита превращает в цвет палитра проекта, и делает это презентер; иначе показ
+        /// снова начал бы знать про токены и стал бы вторым входом за цветом.
+        /// </summary>
+        public void SetVfxSpread(Gradient spread) => _vfxSpread = spread;
 
         /// <summary>Подать design-конфиг сочности (длительности/сила/цвет вспышки и сплющивания). CombatPresenter — при спавне.</summary>
         public void ApplyFeelConfig(Design.CombatFeelConfig feel)
@@ -243,6 +401,12 @@ namespace Guildmaster.Presentation
         /// </summary>
         public void SetContactDustHandler(System.Action<UnitView> handler) => _onContactDust = handler;
 
+        /// <summary>
+        /// Хук начала взмаха: презентер берёт из пула дугу за клинком и отдаёт ей этот вид как источник.
+        /// Зовётся на кадре <c>StrikeStart</c> — том же, с которого снимается точка A.
+        /// </summary>
+        public void SetSwingStartHandler(System.Action<UnitView> handler) => _onSwingStarted = handler;
+
         /// <summary>Цвет HP-бара по принадлежности к смотрящему (из <c>CombatColorPalette</c>).</summary>
         public void SetHealthColor(Color color)
         {
@@ -253,12 +417,6 @@ namespace Guildmaster.Presentation
         public void SetShieldColor(Color color)
         {
             if (_healthBar != null) _healthBar.SetShieldColor(color);
-        }
-
-        /// <summary>Подпись «что за персонаж» над HP-баром. Задаёт лишь текст — вид настраивается на TMP в префабе.</summary>
-        public void SetLabel(string text)
-        {
-            if (_nameLabel != null) _nameLabel.text = text;
         }
 
         /// <summary>
@@ -273,10 +431,21 @@ namespace Guildmaster.Presentation
             _attackPhase = AttackAnimPhase.None;
 
             // Данные юнита — только для маркера контакта/темпа бега (скраб по симу). Клипы играет контроллер.
-            _visual = _unit?.Unit != null ? _unit.Unit.Visual : null;
+            _visual = _definition != null ? _definition.Visual : null;
 
             // Анимация активна, если у Animator есть контроллер (клипы — в его стейтах). UnitVisual не обязателен.
             _animActive = _animator != null && _animator.runtimeAnimatorController != null;
+
+            // Индексы слоёв сбрасываются ДО выхода: вид переиспользуется после чьей-то смерти, и индекс
+            // прошлого жильца достался бы новому — вместе с попыткой писать вес в чужой Animator.
+            _guardLayer  = -1;
+            _guardActive = false;
+            _guardWeight = 0f;
+
+            _actionLayer     = -1;
+            _actionHipsLayer = -1;
+            _actionWeight    = 0f;
+            _swingCharged    = false;
 
             if (!_animActive)
             {
@@ -287,25 +456,262 @@ namespace Guildmaster.Presentation
             _animator.fireEvents = false;
             _animator.enabled = true;
 
-            // Маркер/темп — из UnitVisual (те же данные, что и у сима). Нет данных → удар без скраба (маркер=1).
-            _attackMarkerNormalized = _visual != null && _visual.AttackClip != null
-                ? ClipMarkers.MarkerNormalized(_visual.AttackClip) : 1f;
-            AnimationClip run = _visual != null ? _visual.Clip(UnitAnimationState.Run) : null;
-            _runFrameRate = run != null && run.frameRate > 0f ? run.frameRate : 10f;
+            ResolveAttackMarker();
+            RequireSockets();
+
+            // Слой-надстройка щита. Его нет у покадрового бестиария — тогда гвардия просто не играется:
+            // это отсутствие контента, а не ошибка разводки (см. ResolvedHash).
+            _guardLayer = _animator.GetLayerIndex(GuardLayerName);
+            if (_guardLayer >= 0) _animator.SetLayerWeight(_guardLayer, 0f);
+
+            // Слой-надстройка свинга. Его отсутствие тоже законно: у семнадцати покадровых юнитов клип
+            // атаки — это весь кадр целиком, разложить его по маске нечем. Тогда свинг остаётся на базе
+            // ровно как раньше (см. SwingIsOverlay), и «бей на бегу» у них по-прежнему выбирает одно из двух.
+            _actionLayer = _animator.GetLayerIndex(ActionLayerName);
+            if (_actionLayer >= 0)
+            {
+                _animator.SetLayerWeight(_actionLayer, 0f);
+                _actionHipsLayer = _animator.GetLayerIndex(ActionHipsLayerName);
+                if (_actionHipsLayer >= 0) _animator.SetLayerWeight(_actionHipsLayer, 0f);
+            }
 
             _animator.Play(IdleHash, 0, 0f);
             _animator.speed = 1f;
         }
 
         /// <summary>
+        /// Все четыре сокета обязаны быть разведены у КАЖДОГО вида — включая те, что киту как будто не
+        /// нужны: точка выстрела у ближнего бойца тоже обязательна, пусть даже в нуле (требование Макса,
+        /// 30.07). Молчать нельзя: незаданный сокет тихо падает на позицию юнита, и цифры урона, искры,
+        /// зона щита и будущий доворот прицела начинают считаться от ног — а ищется это глазами по всему бою.
+        /// </summary>
+        /// <remarks>
+        /// Это не фолбэк на внешний отказ, а дефект разводки внутри нашего же контента — по политике
+        /// фолбэков такой случай обязан кричать, а не подставлять правдоподобное значение.
+        /// </remarks>
+        private void RequireSockets()
+        {
+            string missing = null;
+            if (_feetPoint == null) missing = Join(missing, "Ноги (_feetPoint)");
+            if (_headPoint == null) missing = Join(missing, "Голова (_headPoint)");
+            if (_shotPoint == null) missing = Join(missing, "Выстрел (_shotPoint)");
+            if (_hitPoint  == null) missing = Join(missing, "Попадание (_hitPoint)");
+
+            if (missing != null)
+                Debug.LogError($"[UnitView] {name}: не разведены точки — {missing}. Стандартные точки " +
+                               "обязаны быть у ВСЕХ видов, даже если кит ими не пользуется (ближнему — " +
+                               "точка выстрела хотя бы в нуле).", this);
+        }
+
+        private static string Join(string list, string item) => list == null ? item : list + ", " + item;
+
+        /// <summary>
+        /// Найти долю клипа атаки до кадра контакта. По ней скрабится замах, поэтому промах здесь двигает
+        /// видимый удар мимо сим-тика урона. Источник **один** — <see cref="UnitVisual"/> из данных юнита,
+        /// тот же, из которого симуляция берёт кадр контакта. Клип без маркера — не «настройка по
+        /// умолчанию», а неразведённые данные: молчать нельзя, иначе удар уезжает в конец клипа и это
+        /// ищется глазами по всему бою.
+        /// </summary>
+        /// <remarks>
+        /// Прежде источников было два: у скелетных юнитов <c>UnitVisual</c> не заводили, и клип брался
+        /// отдельным полем с префаба вида. Тогда позиция контакта жила в двух местах — в клипе для показа
+        /// и долей <c>WindupShare</c> в данных для сима, — а второй владелец того же факта у нас считается
+        /// дефектом. Скелетный риг получил свой <c>UnitVisual</c> (2026-07-31), и путь стал общим для всех.
+        /// </remarks>
+        private void ResolveAttackMarker()
+        {
+            AnimationClip attack = _visual != null ? _visual.AttackClip : null;
+
+            if (attack == null)
+            {
+                Debug.LogError($"[UnitView] {name}: у юнита нет UnitVisual с клипом атаки — " +
+                               "удар не привязан к тику урона.", this);
+                _attackHitNormalized = 1f;
+                return;
+            }
+
+            if (ClipMarkers.FirstHitTime(attack) < 0f)
+            {
+                Debug.LogError($"[UnitView] {name}: в клипе '{attack.name}' нет маркера контакта " +
+                               $"(AnimationEvent '{ClipMarkers.HitFunction}') — удар не привязан к тику урона.", this);
+                _attackHitNormalized = 1f;
+                return;
+            }
+
+            _attackHitNormalized = ClipMarkers.HitNormalized(attack);
+
+            // Разметка взмаха необязательна: без неё удар теряет дугу и точку A, но не ломается. Молчать
+            // здесь можно ровно потому, что маркер контакта выше уже проверен — «клип не разведён вовсе»
+            // отловлен, а «взмах не размечен» это осознанное состояние покадрового бестиария.
+            _hasStrikeWindow = ClipMarkers.StrikeWindowNormalized(attack, out _strikeFrom, out _strikeTo);
+        }
+
+        // --- Взмах ------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Идёт ли сейчас взмах и насколько он прошёл (0..1) — окно между маркерами <c>StrikeStart</c> и
+        /// <c>StrikeEnd</c>. На нём живёт дуга за клинком: до начала клинок только собирается, после конца
+        /// возвращается, и рисовать там нечего.
+        /// </summary>
+        public bool TryGetSwingProgress(out float progress)
+        {
+            progress = 0f;
+            if (!_hasStrikeWindow || _swingClipTime < 0f) return false;
+            if (_swingClipTime < _strikeFrom || _swingClipTime > _strikeTo) return false;
+
+            progress = Mathf.InverseLerp(_strikeFrom, _strikeTo, _swingClipTime);
+            return true;
+        }
+
+        /// <summary>
+        /// Точка A текущего удара — где был кончик оружия, когда взмах начался. Снимается один раз за
+        /// свинг, на кадре <c>StrikeStart</c>, и живёт до конца цикла атаки.
+        /// </summary>
+        /// <remarks>
+        /// Снимок нужен именно потому, что форма рисуется ПОСЛЕ контакта: к этому моменту клинок уже ушёл
+        /// дальше, и спросить «откуда он пришёл» будет не у кого.
+        /// </remarks>
+        public bool TryGetStrikeOrigin(out Vector3 world)
+        {
+            world = _strikeOrigin;
+            return _hasStrikeOrigin;
+        }
+
+        /// <summary>
+        /// Отследить кадр начала взмаха и снять с него точку A. Зовётся из скраба свинга — там, где
+        /// известно, куда именно поставлен клип.
+        /// </summary>
+        private void TrackStrikeWindow(float clipTime)
+        {
+            _swingClipTime = clipTime;
+            if (!_hasStrikeWindow || _hasStrikeOrigin || clipTime < _strikeFrom) return;
+
+            // Кончиком считаем то, чем юнит бьёт: предмет в руке, а у безоружного — саму кисть. Нечем
+            // ударить (тела нет, части не разведены) — точки A не будет, и форма деградирует на вектор
+            // «атакующий → цель». Это фолбэк ВНЕШНЕГО отказа: у покадрового юнита частей не существует.
+            var body = Body;
+            if (body?.Parts == null) return;
+            if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source)) return;
+            if (!UnitPartGeometry.TryGetTip(source, out Vector3 tip)) return;
+
+            _strikeOrigin    = tip;
+            _hasStrikeOrigin = true;
+
+            // Взмах начался — дуге пора идти за клинком. Момент один и тот же с точкой A намеренно:
+            // два источника «когда начался взмах» разъехались бы, и дуга пошла бы не оттуда, откуда удар.
+            _onSwingStarted?.Invoke(this);
+        }
+
+        // --- Порезы: тело помнит бой ----------------------------------------------------------------
+
+        private readonly Body.BodyCutLedger _cuts = new Body.BodyCutLedger();
+
+        /// <summary>
+        /// Записать порез от состоявшегося удара: место в теле, направление вдоль удара, длина по весу.
+        /// </summary>
+        /// <param name="world">Точка попадания в мире.</param>
+        /// <param name="worldDir">Вектор удара — тот же, по которому построена форма.</param>
+        /// <param name="hpDamageFrac">Доля максимального HP, снятая ударом.</param>
+        /// <param name="hpDamage">Сколько HP снял удар — запас, по которому порез заживает.</param>
+        public void AddBodyCut(Vector3 world, Vector2 worldDir, float hpDamageFrac, float hpDamage)
+        {
+            if (_feel == null || !_feel.EnableBodyCuts || hpDamage <= 0f) return;
+
+            var body = Body;
+            if (body == null) return;
+
+            float length = _feel.EvaluateCutLength(hpDamageFrac);
+            if (!body.TryBuildCut(world, worldDir, length, hpDamage, out Body.BodyCut cut)) return;
+
+            _cuts.Add(in cut);
+            body.ApplyCuts(_cuts.Cuts, _feel.CutColor, _feel.CutWidthUnits);
+        }
+
+        /// <summary>
+        /// Залечить раны на <paramref name="amount"/> HP. Гаснут САМЫЕ СТАРЫЕ и пропорционально своему
+        /// запасу — тело чинится в том порядке, в каком его ломали, и это читается как процесс.
+        /// </summary>
+        public void HealBodyCuts(float amount)
+        {
+            if (_feel == null || !_feel.EnableBodyCuts) return;
+            if (!_cuts.Heal(amount)) return;
+
+            var body = Body;
+            if (body != null) body.ApplyCuts(_cuts.Cuts, _feel.CutColor, _feel.CutWidthUnits);
+        }
+
+        /// <summary>Стереть раны: вид переиспользуется под нового юнита, чужие порезы ему не положены.</summary>
+        private void ClearBodyCuts()
+        {
+            if (!_cuts.HasCuts) return;
+            _cuts.Clear();
+
+            var body = Body;
+            if (body != null && _feel != null) body.ApplyCuts(_cuts.Cuts, _feel.CutColor, _feel.CutWidthUnits);
+        }
+
+        /// <summary>
+        /// Геометрия текущего взмаха для дуги: вокруг чего он идёт (плечо бьющей руки), где сейчас
+        /// кончик оружия и насколько взмах прошёл.
+        /// </summary>
+        /// <returns><c>false</c> — взмаха сейчас нет либо тело не даёт ни плеча, ни ударной части.</returns>
+        public bool TryGetSwingArc(out Vector3 pivot, out Vector3 tip, out float progress)
+        {
+            pivot = default;
+            tip   = default;
+
+            if (!TryGetSwingProgress(out progress)) return false;
+
+            var body = Body;
+            if (body?.Parts == null) return false;
+            if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source)) return false;
+            if (!UnitPartGeometry.TryGetTip(source, out tip)) return false;
+
+            // Дуга идёт вокруг ПЛЕЧА, а не вокруг кисти: рука — жёсткий рычаг, и вращается вся плоскость
+            // удара. Взяв центром кисть, мы получили бы короткий веер вокруг запястья, которого в
+            // движении нет. Сторона — та же, что у бьющей руки: у бойца с двумя клинками левый взмах
+            // обязан идти от левого плеча.
+            BodySide side = source.Slot == HandSlot.Left ? BodySide.Left
+                          : source.Slot == HandSlot.Right ? BodySide.Right
+                          : source.Side;
+
+            if (!body.Parts.TryGetBone(RigNaming.ShoulderBone, side, out UnitPart shoulder)) return false;
+            if (shoulder.Renderer == null) return false;
+
+            pivot = shoulder.Renderer.transform.position;
+            return true;
+        }
+
+        /// <summary>
+        /// Положить состояние показываемого тика. Зовётся раз за кадр из <see cref="CombatPresenter"/>,
+        /// до <see cref="UpdateInterpolation"/>: сначала «что показываем», потом «где внутри тика».
+        /// </summary>
+        /// <param name="state">Снимок этого юнита на тике показа.</param>
+        /// <param name="target">Снимок его цели на том же тике — для разворота и вздрога при смене цели.</param>
+        /// <param name="hasTarget">Есть ли цель в кадре (её могли уже убить или её id — <c>-1</c>).</param>
+        public void SetState(in Combat.Tape.UnitSnapshot state, in Combat.Tape.UnitSnapshot target, bool hasTarget)
+        {
+            _snapshot       = state;
+            _hasState       = true;
+            _targetState    = target;
+            _hasTargetState = hasTarget;
+        }
+
+        /// <summary>
         /// Обновить интерполированную позицию. Вызывается из <see cref="CombatPresenter.Update"/>.
         /// </summary>
-        /// <param name="alpha">Степень интерполяции [0, 1] между PreviousPosition и Position.</param>
+        /// <param name="alpha">Степень интерполяции [0, 1] между PreviousPosition и Position
+        /// показанного тика — долю даёт момент ПОКАЗА, а не боевой луч.</param>
         public void UpdateInterpolation(float alpha)
         {
-            if (_unit == null) return;
+            if (!_hasState) return;
 
-            _renderPosition = Vector2.Lerp(_unit.PreviousPosition, _unit.Position, alpha);
+            // Доля нужна не только позиции: по ней же скрабится поза атаки (см. DriveAnimation). Порядок
+            // «презентер раньше видов» держит [DefaultExecutionOrder] на CombatPresenter — иначе поза
+            // отставала бы от позиции на кадр.
+            _frameAlpha = alpha;
+
+            _renderPosition = Vector2.Lerp(_snapshot.PreviousPosition, _snapshot.Position, alpha);
             transform.position = new Vector3(
                 _renderPosition.x + _nudgeOffset.x + _attackOffset.x,
                 _renderPosition.y + _nudgeOffset.y + _attackOffset.y,
@@ -313,14 +719,17 @@ namespace Guildmaster.Presentation
 
             // Y-sort: кто ниже по Y (ближе к зрителю) — рисуется поверх. Явный ордер стабильнее, чем
             // transparency-sort по позиции: у перекрытых спрайтов с ОДИНАКОВЫМ ордером иначе дрожит порядок.
-            if (_sprite != null)
-                _sprite.sortingOrder = -Mathf.RoundToInt(_renderPosition.y * YSortPrecision);
+            // У скелетного юнита частей полтора десятка, и писать ордер в одну из них — значит вырывать её
+            // из собственного тела: торс уезжает по своей шкале, руки и ноги остаются на локальной и лезут
+            // поверх чужих юнитов. Поэтому ордер получает ГРУППА, а внутренний порядок частей её переживает.
+            int ySort = -Mathf.RoundToInt(_renderPosition.y * YSortPrecision);
+            Body?.SetSortingOrder(ySort);
 
             if (_healthBar != null)
-                _healthBar.UpdateBar(_unit.CurrentHP, _unit.Stats.Get(Data.Stats.StatType.MaxHP), _unit.CurrentShield);
+                _healthBar.UpdateBar(_snapshot.CurrentHP, _snapshot.MaxHP, _snapshot.CurrentShield);
 
             if (_manaBar != null)
-                _manaBar.UpdateBar(_unit.CurrentResource, _unit.Stats.Get(Data.Stats.StatType.MaxResource));
+                _manaBar.UpdateBar(_snapshot.CurrentResource, _snapshot.MaxResource);
         }
 
         // --- Attach points (сокеты) ----------------------------------------------------------------
@@ -340,22 +749,20 @@ namespace Guildmaster.Presentation
         public Vector3 HitPoint => ResolveSocketFacing(_hitPoint);
 
         /// <summary>Слой сортировки тела — для размещения VFX относительно юнита.</summary>
-        public int BodySortingLayerId => _sprite != null ? _sprite.sortingLayerID : 0;
+        /// <summary>
+        /// Id юнита, которого показывает этот вид, или <c>-1</c>, пока состояние не подано. Нужен хукам,
+        /// которые вид дёргает сам (пыль, дуга за клинком): презентер получает вид, а палитра и паспорт
+        /// у него разложены по id.
+        /// </summary>
+        public int UnitId => _hasState ? _snapshot.Id : -1;
 
-        /// <summary>Текущий ордер сортировки тела (Y-sort) — VFX ставим со смещением от него.</summary>
-        public int BodySortingOrder => _sprite != null ? _sprite.sortingOrder : 0;
+        public int BodySortingLayerId => Body != null ? Body.SortingLayerId : 0;
 
         /// <summary>
-        /// Попадает ли мировая точка в спрайт тела (AABB). Сырой габарит кадра — для захвата в расстановке НЕ
-        /// годится (AABB скелетного кадра шире фигуры: замах оружия, плащ, пустые поля спрайта — зона хватания
-        /// выходила гигантской, наход. Макса). Захват берёт <see cref="FigureContainsWorldPoint"/>.
+        /// Текущий ордер сортировки тела (Y-sort) — VFX ставим со смещением от него. У составного тела это
+        /// ордер ГРУППЫ: внутри неё ордер отдельной части локальный и на арене ничего не значит.
         /// </summary>
-        public bool SpriteContainsWorldPoint(Vector2 world)
-        {
-            if (_sprite == null || _sprite.sprite == null) return false;
-            Bounds b = _sprite.bounds;
-            return world.x >= b.min.x && world.x <= b.max.x && world.y >= b.min.y && world.y <= b.max.y;
-        }
+        public int BodySortingOrder => Body != null ? Body.SortingOrder : 0;
 
         /// <summary>
         /// Попадает ли мировая точка в ЭТАЛОННЫЙ габарит фигуры — ту самую зелёную рамку гизмо
@@ -373,26 +780,12 @@ namespace Guildmaster.Presentation
                 && world.y >= feet.y - padding && world.y <= feet.y + height;
         }
 
-        /// <summary>Мировые границы спрайта тела (AABB). false = нет спрайта (ховер-подсветка возьмёт фолбэк).</summary>
-        public bool TryGetSpriteBounds(out Bounds bounds)
-        {
-            if (_sprite != null && _sprite.sprite != null) { bounds = _sprite.bounds; return true; }
-            bounds = default;
-            return false;
-        }
-
-        // --- Силуэт для drag-призрака расстановки (QA #9): копия текущего кадра спрайта тела ---
-        /// <summary>Текущий спрайт тела (кадр); null — нет визуала.</summary>
-        public Sprite BodySprite => _sprite != null ? _sprite.sprite : null;
-
-        /// <summary>Отражён ли спрайт тела по X (сторона/фейсинг).</summary>
-        public bool BodyFlipX => IsFacingFlipped();
-
-        /// <summary>Мировой масштаб спрайта тела (учитывает узел сплющивания/масштаб арта).</summary>
-        public Vector3 BodyLossyScale => _sprite != null ? _sprite.transform.lossyScale : Vector3.one;
-
-        /// <summary>Мировая позиция спрайта тела (со смещением арта от ног). Фолбэк — позиция юнита.</summary>
-        public Vector3 BodyWorldPosition => _sprite != null ? _sprite.transform.position : transform.position;
+        /// <summary>
+        /// Силуэт тела для drag-призрака расстановки (QA #9): части с их позами относительно точки ног
+        /// <paramref name="feet"/>. Работает и на живом виде, и прямо на ассете префаба — см. <see cref="Body"/>.
+        /// </summary>
+        public UnitSilhouette CaptureSilhouette(Vector2 feet)
+            => Body != null ? Body.CaptureSilhouette(feet) : UnitSilhouette.None;
 
         // Сокет с учётом разворота: flipX/facing-root НЕ зеркалят Points (они сиблинги визуала).
         // Для смотрящего влево отражаем локальную X сокета вручную.
@@ -405,32 +798,28 @@ namespace Guildmaster.Presentation
             return transform.TransformPoint(local);
         }
 
-        private bool IsFacingFlipped()
-        {
-            if (_facingRoot != null) return _facingRoot.localScale.x < 0f;
-            return _sprite != null && _sprite.flipX;
-        }
+        private bool IsFacingFlipped() => Body != null && Body.IsFlippedX;
 
-        /// <summary>Применить разворот: scale.x на _facingRoot или SpriteRenderer.flipX.</summary>
+        /// <summary>Применить разворот — как именно, решает тело (flipX спрайта или знак масштаба корня).</summary>
         private void ApplyFacingVisual(bool flipX)
         {
-            if (_facingRoot != null)
-            {
-                Vector3 s = _facingRoot.localScale;
-                float mag = Mathf.Abs(s.x) > 1e-5f ? Mathf.Abs(s.x) : 1f;
-                s.x = flipX ? -mag : mag;
-                _facingRoot.localScale = s;
-                if (_squashTarget == _facingRoot) _baseSpriteScale = s;
-                return;
-            }
+            if (Body == null) return;
+            Body.SetFlipX(flipX);
 
-            if (_sprite != null) _sprite.flipX = flipX;
+            // Составное тело разворачивается ЗНАКОМ МАСШТАБА того же узла, который сплющивает удар. Знак
+            // держим в базовом масштабе, иначе следующая же композиция масштаба вернула бы юнита лицом назад.
+            if (_squashTarget != null && _squashTarget == Body.Root)
+                _baseSpriteScale.x = Mathf.Abs(_baseSpriteScale.x) * (flipX ? -1f : 1f);
         }
 
         private void Update()
         {
-            ApplyColor(); // вспышка + альфа инвиза видны даже в hitstop/паузе (единый писатель _sprite.color)
+            ApplyColor(); // вспышка + альфа инвиза видны даже в hitstop/паузе (единый писатель цвета тела)
+            // Гвардия тикает ДО всех ранних выходов: смерть, финишер и конец боя обходят обычный ход
+            // анимации, и рука со щитом осталась бы поднятой навсегда — щит держал бы тот, кому уже нечем.
+            TickGuardPose(Time.deltaTime);
             TickCastOutline();
+            TickCastGlow();
             TickWorldUiFade();
             TickContactDustCooldown();
             TickIdleBreath();
@@ -471,38 +860,142 @@ namespace Guildmaster.Presentation
             float dt = Time.deltaTime;
             UpdateAttackPhase(dt);
 
-            bool isMoving = _unit != null &&
-                            (_unit.Position - _unit.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
+            bool isMoving = _hasState &&
+                            (_snapshot.Position - _snapshot.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
 
             // Attack показываем поверх Run, ПОКА идёт цикл атаки. Ключ — что «в атаке» решает СИМ-фаза,
             // а не сырое смещение: во время замаха/хвоста мили зарутован (MovementSystem), и толчок
             // сепарации НЕ должен рвать свинг в Run (иначе виден бег вместо замаха и пропадают замах/хвост
             // у преследователя — остаётся будто только удар). isMoving разделяет стойку и погоню лишь в
             // ПАУЗЕ между ударами (сим Idle, рендер ещё тянет хвост-цикл).
-            bool attackWhileMoving = _unit?.Unit != null && _unit.Unit.CanAttackWhileMoving;
-            bool simInSwing = _unit != null &&
-                              (_unit.Phase == AttackPhase.Windup || _unit.Phase == AttackPhase.Recovery);
+            bool attackWhileMoving = _definition != null && _definition.CanAttackWhileMoving;
+            bool simInSwing = _hasState && _snapshot.IsSwinging;
             bool attackPlaying = UnitAnimationSelector.AttackClipPlaying(
                 _attackPhase != AttackAnimPhase.None, simInSwing, attackWhileMoving, isMoving);
 
-            UnitAnimationState next = UnitAnimationSelector.Select(_isDead, attackPlaying, isMoving);
+            // Разбег и удар с разбега — признаки СИМУЛЯЦИИ из снимка, а не догадка показа по скорости:
+            // на дистанции одного тика прибавка в 30% неотличима от шума расталкивания.
+            //
+            // Со слоем действия база про атаку не знает ВООБЩЕ: свинг уехал наверх, и базе остаётся ровно
+            // то, чем юнит занят ногами. Именно поэтому удар с разбега больше не отменяет разбег — ноги
+            // продолжают тот же Sprint, пока руки бьют. Без слоя оба состояния по-прежнему делят базу, и
+            // атака вытесняет локомоцию, как вытесняла.
+            UnitAnimationState next = UnitAnimationSelector.Select(
+                _isDead, attackPlaying && !SwingIsOverlay, isMoving,
+                canAct: !_hasState || _snapshot.CanAct,
+                isSprinting: _hasState && _snapshot.IsSprinting,
+                chargedAttack: _hasState && _snapshot.ChargedSwing && !SwingIsOverlay,
+                hasTarget: _hasState && _snapshot.TargetId >= 0);
             if (next != _state)
             {
+                // Шаг и разбег — один цикл в разных амплитудах, между ними ПЕРЕХОД, а не подмена: клип,
+                // начатый с нуля, ставит ногу заново посреди шага. Фазу переносим, поэтому нога продолжает
+                // тот же шаг — клипы написаны одним скелетом поз и совпадают по долям цикла.
+                int hash = ResolvedHash(next);
+                if (IsLocomotion(_state) && IsLocomotion(next))
+                    _animator.CrossFade(hash, LocomotionBlend, 0, LocomotionPhase());
+                // Вход в свинг НА БАЗЕ (покадровый бестиарий) — снапом: DriveSwingScrub тем же кадром зовёт
+                // Play в нужную позицию и оборвал бы кроссфейд на полдороге. У скелетных свинг живёт слоем,
+                // база сюда с Attack не приходит вовсе, поэтому проверка бьёт ровно в покадровый случай.
+                else if (ScrubbedOnBase(next))
+                    _animator.Play(hash, 0, 0f);
+                // Всё прочее — позные стейты (Idle / CombatIdle / Stun) и переходы в/из локомоции. Раньше
+                // они щёлкали за кадр, и стан — самая свёрнутая поза — бросался в глаза сильнее всех.
+                // Фиксированные секунды, а не нормализованное окно: стейты разной длины (Stun 1.2с против
+                // Idle 2.6с), и одна доля дала бы разное реальное время перехода.
+                else if (_poseBlendSeconds > 0f)
+                    _animator.CrossFadeInFixedTime(hash, _poseBlendSeconds, 0, 0f);
+                else
+                    _animator.Play(hash, 0, 0f);
+
                 _state = next;
-                _animator.Play(HashFor(next), 0, 0f);
                 _animator.speed = 1f;
             }
 
             DriveAnimation(dt);
         }
 
+        // Доля цикла разбега, за которую он вытесняет шаг. Считается от длины ЦЕЛЕВОГО клипа, поэтому
+        // одинаково честна в обе стороны: примерно четверть цикла — быстрее рвётся, дольше плывёт.
+        private const float LocomotionBlend = 0.35f;
+
+        // Шаг и разбег — одно движение с разной амплитудой; всё остальное меняется подменой позы.
+        private static bool IsLocomotion(UnitAnimationState state)
+            => state == UnitAnimationState.Run || state == UnitAnimationState.Sprint;
+
+        // Свинг, который DriveSwingScrub каждый кадр листает через Play в позицию по сим-тику. Кроссфейд в
+        // такой стейт оборвался бы сразу — поэтому вход в него идёт снапом. У скелетных со слоем действия
+        // Attack на базу не приходит (свинг уехал наверх), так что здесь остаётся ровно покадровый бестиарий.
+        private bool ScrubbedOnBase(UnitAnimationState state)
+            => !SwingIsOverlay &&
+               (state == UnitAnimationState.Attack || state == UnitAnimationState.AttackCharge);
+
+        // Где нога внутри текущего цикла [0..1). Клипы локомоции написаны в одной фазе, поэтому эту долю
+        // можно перенести в другой из них как есть.
+        private float LocomotionPhase()
+        {
+            float t = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            return t - Mathf.Floor(t);
+        }
+
         private static int HashFor(UnitAnimationState state) => state switch
         {
-            UnitAnimationState.Run    => RunHash,
-            UnitAnimationState.Attack => AttackHash,
-            UnitAnimationState.Death  => DeathHash,
-            _                         => IdleHash,
+            UnitAnimationState.Run          => RunHash,
+            UnitAnimationState.Attack       => AttackHash,
+            UnitAnimationState.Death        => DeathHash,
+            UnitAnimationState.Sprint       => SprintHash,
+            UnitAnimationState.AttackCharge => AttackChargeHash,
+            UnitAnimationState.Stun         => StunHash,
+            UnitAnimationState.CombatIdle   => CombatIdleHash,
+            _                               => IdleHash,
         };
+
+        /// <summary>
+        /// Хэш стейта с явным фолбэком на общий, если своего у юнита НЕТ. Состояния бестиария (разбег, удар
+        /// с разбега, стан) объявляет симуляция для всех, а стейты под них есть только у скелетных: у
+        /// покадровых семнадцати клипа разбега не существует, и просить его — не ошибка данных, а честное
+        /// отсутствие контента.
+        /// <para>Фолбэк ЯВНЫЙ, а не молчание Animator: <c>Play</c> по несуществующему стейту действительно
+        /// тихий no-op, но <c>CrossFade</c> на такой полагаться не даёт, и разбег покадрового юнита завис бы
+        /// в том кадре, где его застало.</para>
+        /// </summary>
+        private int ResolvedHash(UnitAnimationState state)
+        {
+            int hash = HashFor(state);
+            if (_animator.HasState(0, hash)) return hash;
+
+            return state switch
+            {
+                UnitAnimationState.Sprint       => RunHash,      // разбег без своего клипа — обычный бег
+                UnitAnimationState.AttackCharge => AttackHash,   // удар с разбега — обычный свинг
+                _                               => IdleHash,     // стан, боевая стойка и прочее — покой
+            };
+        }
+
+        /// <summary>Свинг живёт отдельным слоем поверх ног — есть ли он у этого юнита.</summary>
+        private bool SwingIsOverlay => _actionLayer >= 0;
+
+        /// <summary>Слой, на котором скрабится свинг: свой, если есть, иначе база (покадровый бестиарий).</summary>
+        private int SwingLayer => _actionLayer >= 0 ? _actionLayer : 0;
+
+        // Каким стейтом СКРАБИТСЯ свинг. Удар с разбега живёт своим клипом, но тайминг у него общий с
+        // обычным: замах ведёт к тому же кадру контакта, просто короче. Держать для него отдельный путь
+        // скраба значило бы завести второй владелец одной формулы.
+        private int SwingHash()
+        {
+            // На слое действия базового состояния для свинга больше нет — что играть, помнит признак,
+            // снятый на входе в цикл. Фолбэк тут свой: на слое рук нет стейта покоя, и общий ResolvedHash
+            // увёл бы отсутствующий клип в Idle, которого на этом слое не существует.
+            if (SwingIsOverlay)
+            {
+                int overlay = _swingCharged ? AttackChargeHash : AttackHash;
+                return _animator.HasState(_actionLayer, overlay) ? overlay : AttackHash;
+            }
+
+            return ResolvedHash(_state == UnitAnimationState.AttackCharge
+                ? UnitAnimationState.AttackCharge
+                : UnitAnimationState.Attack);
+        }
 
         // Управление фазой анимации атаки от состояния сима (вики «14»): замах → кадр контакта → хвост.
         // Замах скрабится по windup-тикам (маркер на тик урона); хвост — по остатку интервала до
@@ -510,25 +1003,49 @@ namespace Guildmaster.Presentation
         private void UpdateAttackPhase(float dt)
         {
             if (_isDead) { _attackPhase = AttackAnimPhase.None; return; }
-            if (_unit == null) return;
+            if (!_hasState) return;
 
             // Идёт сим-замах → фаза замаха (покрывает и реконструкцию после load/resync без события старта).
-            if (_unit.IsWindingUp) { _attackPhase = AttackAnimPhase.Windup; return; }
+            if (_snapshot.IsWindingUp)
+            {
+                // Признак разбега снимаем на ВХОДЕ и держим до конца цикла: он принадлежит одному свингу, а
+                // не мгновению. Перечитывать его каждый кадр значило бы дать клипу право смениться посреди
+                // замаха — удар с разбега превратился бы в обычный на полпути к контакту.
+                if (_attackPhase != AttackAnimPhase.Windup)
+                {
+                    _swingCharged = _snapshot.ChargedSwing;
+                    // Точка A принадлежит ОДНОМУ взмаху: не сбросить её здесь значило бы рисовать второй
+                    // удар из места, откуда пришёл первый.
+                    _hasStrikeOrigin = false;
+                }
+                _attackPhase = AttackAnimPhase.Windup;
+                return;
+            }
+
+            // Поток идёт — показ следует за симом напрямую: длина канала переменная (цель может умереть,
+            // выйти из радиуса), и выводить её конец по счётчику показ не вправе.
+            if (_snapshot.Phase == AttackPhase.Channel) { _attackPhase = AttackAnimPhase.Channel; return; }
 
             switch (_attackPhase)
             {
                 case AttackAnimPhase.Windup:
-                    // Замах кончился (кадр контакта) → хвост. Окно до следующего удара = текущий кулдаун:
-                    // на старте замаха он равнялся интервалу, за замах убыл до «интервал − замах».
-                    _recoveryGapTicks = Mathf.Max(1, _unit.AttackCooldownTicks);
+                case AttackAnimPhase.Channel:
+                    // Замах (или поток) кончился — дальше хвост. Его длину знает сим (RecoveryTicks): она
+                    // равна доигрышу клипа, а не остатку интервала. Канал приходит сюда тем же путём:
+                    // сворачивание у него общее с обычным ударом, ради чего он и сделан фазой, а не ритмом.
                     _attackPhase = AttackAnimPhase.Recovery;
                     break;
 
                 case AttackAnimPhase.Recovery:
-                    // Пока тикает кулдаун — цикл атаки жив, держим хвост (в непрерывной атаке следующий
-                    // замах придёт ровно на кулдаун 0 → бесшовный луп, без провала в Run). Кулдаун истёк
-                    // без нового замаха (цель ушла/вне радиуса) → атака кончилась, возврат к локомоции.
-                    if (_unit.AttackCooldownTicks <= 0) _attackPhase = AttackAnimPhase.None;
+                    // Доигрыш кончается вместе с сим-фазой, а не с кулдауном. Дальше юнит ЖДЁТ своего окна,
+                    // и показывать это должно ожидание, а не бесконечно длинный возврат меча. У быстрого
+                    // кита разницы нет: там доигрыш и занимает весь интервал, поэтому серия остаётся
+                    // непрерывной сама собой.
+                    if (_snapshot.Phase != AttackPhase.Recovery)
+                    {
+                        _attackPhase   = AttackAnimPhase.None;
+                        _swingClipTime = -1f;   // свинг не играет — взмаха на экране нет, и дуге не за чем идти
+                    }
                     break;
             }
         }
@@ -540,45 +1057,191 @@ namespace Guildmaster.Presentation
             switch (_state)
             {
                 case UnitAnimationState.Attack:
-                    if (_attackPhase == AttackAnimPhase.Windup && _unit != null && _unit.WindupTicks > 0)
-                    {
-                        // Замах: скрабим [0..маркер] по прогрессу windup — контакт (маркер) приходится
-                        // ровно на конец замаха = сим-тик урона.
-                        float progress = 1f - (float)_unit.WindupRemaining / _unit.WindupTicks;
-                        progress = Mathf.Clamp01(progress);
-                        _animator.speed = 0f;
-                        _animator.Play(AttackHash, 0, progress * _attackMarkerNormalized);
-                    }
-                    else if (_attackPhase == AttackAnimPhase.Recovery && _unit != null)
-                    {
-                        // Хвост: скрабим [маркер..1] по прогрессу окна до следующего замаха — клип
-                        // доигрывает ровно к старту следующего удара, цикл лупится в темпе скорости атаки.
-                        float gapProgress = 1f - (float)_unit.AttackCooldownTicks / _recoveryGapTicks;
-                        gapProgress = Mathf.Clamp01(gapProgress);
-                        float clipT = _attackMarkerNormalized + gapProgress * (1f - _attackMarkerNormalized);
-                        _animator.speed = 0f;
-                        _animator.Play(AttackHash, 0, clipT);
-                    }
-                    else
-                    {
-                        // Мгновенный удар без данных тайминга — доигрываем натуральным ходом.
-                        _animator.speed = 1f;
-                    }
+                case UnitAnimationState.AttackCharge:
+                    // Базой атака бывает только у покадровых: со слоем действия сюда состояние не приходит.
+                    DriveSwingScrub();
                     break;
 
                 case UnitAnimationState.Run:
-                    // Кадры бега листаются по пройденной дистанции: скорость клипа = (ед/с) / (ед/кадр) / (кадр/с).
-                    float speed = _unit != null
-                        ? (_unit.Position - _unit.PreviousPosition).magnitude / SimConstants.TickDelta
+                case UnitAnimationState.Sprint:
+                    // Клип локомоции листается по пройденной дистанции: во сколько раз юнит быстрее «родной»
+                    // скорости клипа, во столько же крутим клип. Так ноги не скользят ни у покадрового
+                    // юнита (кадры), ни у скелетного (непрерывные кривые) — единица измерения одна.
+                    float speed = _hasState
+                        ? (_snapshot.Position - _snapshot.PreviousPosition).magnitude / SimConstants.TickDelta
                         : 0f;
-                    float step = Mathf.Max(0.01f, _runUnitsPerFrame);
-                    _animator.speed = speed / (step * _runFrameRate);
+                    _animator.speed = speed / Mathf.Max(0.01f, LocomotionUnitsPerSecond());
                     break;
 
                 default:
                     _animator.speed = 1f;
                     break;
             }
+
+            // Надстройка идёт ПОСЛЕ базы: темп ходом владеет она (ноги привязаны к земле), а свинг своего
+            // хода не имеет вовсе — он каждый кадр ставится в позицию скрабом.
+            if (SwingIsOverlay) DriveActionLayer(dt);
+        }
+
+        /// <summary>
+        /// Скраб позы свинга по сим-тикам — общий для обоих домов (слой действия и базовый слой покадровых).
+        /// Формула одна намеренно: маркер контакта садится на тик урона, и второй её экземпляр разъехался бы
+        /// с первым молча — удар уехал бы мимо цифр только у половины бестиария.
+        /// </summary>
+        private void DriveSwingScrub()
+        {
+            int layer = SwingLayer;
+            bool ownsSpeed = layer == 0;   // на базе скраб ведёт ход целиком; на слое ход принадлежит ногам
+
+            // Канал: удар не один, а поток, и кадр контакта обязан прийтись на КАЖДЫЙ его тик (см.
+            // ChannelClipTime — сама проекция чистая и живёт рядом с остальными).
+            if (_hasState && _snapshot.Phase == AttackPhase.Channel && _snapshot.AttackChannelTickPeriod > 0)
+            {
+                float cycle = UnitAnimationSelector.ChannelClipTime(
+                    _attackHitNormalized,
+                    _snapshot.AttackChannelTickRemaining,
+                    _snapshot.AttackChannelTickPeriod,
+                    _frameAlpha);
+                if (ownsSpeed) _animator.speed = 0f;
+                _animator.Play(SwingHash(), layer, cycle);
+                TrackStrikeWindow(cycle);
+                return;
+            }
+
+            if (_attackPhase == AttackAnimPhase.Windup && _hasState && _snapshot.WindupTicks > 0)
+            {
+                // Замах: скрабим [0..маркер] по прогрессу windup — контакт (маркер) приходится
+                // ровно на конец замаха = сим-тик урона.
+                float progress = TickScrubProgress(_snapshot.WindupRemaining, _snapshot.WindupTicks);
+                if (ownsSpeed) _animator.speed = 0f;
+                float clipTime = progress * _attackHitNormalized;
+                _animator.Play(SwingHash(), layer, clipTime);
+                TrackStrikeWindow(clipTime);
+            }
+            else if (_attackPhase == AttackAnimPhase.Recovery && _hasState)
+            {
+                // Хвост: скрабим [маркер..1] по прогрессу СВОЕГО доигрыша, а не по окну до
+                // следующего замаха. Растягивание отменено решением Макса (30.07): быстрые киты
+                // бьют непрерывной серией сами собой (у них доигрыш и занимает весь интервал), а
+                // медленные обязаны отыграть удар за своё время и ВСТАТЬ — пауза и есть то, что
+                // делает «редкий тяжёлый удар» видимым. Пока хвост тянулся по кулдауну, Защитник
+                // 0.83 сек бесконечно медленно опускал меч, и паузы на экране не существовало.
+                float tail = TickScrubProgress(_snapshot.RecoveryRemaining, _snapshot.RecoveryTicks);
+                float clipT = _attackHitNormalized + tail * (1f - _attackHitNormalized);
+                if (ownsSpeed) _animator.speed = 0f;
+                _animator.Play(SwingHash(), layer, clipT);
+                TrackStrikeWindow(clipT);
+            }
+            else if (ownsSpeed)
+            {
+                // Мгновенный удар без данных тайминга — доигрываем натуральным ходом.
+                _animator.speed = 1f;
+            }
+        }
+
+        /// <summary>
+        /// Вес слоя действия за кадр: пока идёт цикл атаки — рука принадлежит удару, после — плавно
+        /// возвращается тому, что играет база. Аддитивный таз ходит тем же весом, иначе дельта удара
+        /// осталась бы на теле дольше самого удара.
+        /// </summary>
+        private void DriveActionLayer(float dt)
+        {
+            if (_attackPhase != AttackAnimPhase.None)
+            {
+                _actionWeight = 1f;   // вход мгновенный: замах обязан начаться там, где его начал сим
+                DriveSwingScrub();
+            }
+            else
+            {
+                if (_actionWeight <= 0f) return;
+                _actionWeight = Mathf.Max(0f, _actionWeight - dt / ActionDropSeconds);
+            }
+
+            ApplyActionWeight();
+        }
+
+        private void ApplyActionWeight()
+        {
+            _animator.SetLayerWeight(_actionLayer, _actionWeight);
+            if (_actionHipsLayer >= 0) _animator.SetLayerWeight(_actionHipsLayer, _actionWeight);
+        }
+
+        /// <summary>
+        /// «Родная» скорость того, что сейчас на ногах: сколько мировых единиц земли проходит клип за
+        /// секунду. У шага и разбега она РАЗНАЯ — свой шаг, своя длина цикла, — и общее число листало
+        /// разбег вдвое быстрее земли. Пока идёт переход, число смешивается той же долей разгона, что
+        /// смешивает и сами клипы, поэтому ноги не скользят и в середине бленда.
+        /// </summary>
+        private float LocomotionUnitsPerSecond()
+        {
+            if (_sprintUnitsPerSecond <= 0f) return _runUnitsPerSecond;   // клипа разбега у юнита нет
+            float ramp = _hasState ? Mathf.Clamp01(_snapshot.SprintRamp) : 0f;
+            return Mathf.Lerp(_runUnitsPerSecond, _sprintUnitsPerSecond, ramp);
+        }
+
+        // Прогресс скраба по дробному тику: счётчики снимка целые, но показываемый момент лежит ВНУТРИ
+        // тика — долю даёт _frameAlpha, та же, что и у позиции.
+        private float TickScrubProgress(int ticksLeft, int totalTicks)
+            => UnitAnimationSelector.ScrubProgress(ticksLeft, totalTicks, _frameAlpha);
+
+        /// <summary>
+        /// Гвардия: поднять щит ЗАРАНЕЕ — до того, как на юните появится барьер. Зовёт режиссура телеграфов,
+        /// прочитав в ленте будущее наложение эффекта-щита; поза едет вверх за <paramref name="leadSeconds"/>
+        /// и держится, пока барьер живёт (<paramref name="holdSeconds"/>).
+        /// <para>Подводка ведёт к появлению БАРЬЕРА, а не к чужому удару (уточнение Макса 29.07): щит
+        /// поднимает сам носитель, и читаться должно именно его действие. То, что барьер у «Оплота»
+        /// встаёт в тик удара, — совпадение механики, а не смысл жеста.</para>
+        /// <para>Время — ИГРОВОЕ, как у ленты: подводка обязана приехать одновременно с событием, к которому
+        /// ведёт, а показ идёт по игровому времени и в slowmo растягивается вместе с ним.</para>
+        /// </summary>
+        public void RaiseGuard(float leadSeconds, float holdSeconds)
+        {
+            if (!_animActive || _guardLayer < 0) return;
+            if (_feel != null && !_feel.EnableGuardPose) return;
+
+            float lead = Mathf.Max(0f, leadSeconds);
+            _guardTotal   = Mathf.Max(0.05f, lead + Mathf.Max(0f, holdSeconds));
+            // Подъём кончается ЗАРАНЕЕ: остаток подводки щит стоит стоп-кадром. Если подводка короче
+            // паузы, поза встаёт мгновенно — лучше резкий щит вовремя, чем плавный, но опоздавший.
+            _guardRise    = Mathf.Max(0.02f, lead - GuardSettleSeconds);
+            _guardElapsed = 0f;
+            _guardActive  = true;
+        }
+
+        // Поза щита за кадр. Клип гвардии скрабится СВОИМ окном, а не проигрывается: глобальный
+        // animator.speed принадлежит свингу и в замахе равен нулю — щит, поднимающийся «сам», в этот момент
+        // просто застыл бы. Вес слоя даёт мягкий вход и уход, скраб — саму позу.
+        private void TickGuardPose(float dt)
+        {
+            if (_guardLayer < 0) return;
+
+            // Кадр заморожен целиком — щит замирает вместе с ним: hitstop и финишер держат МОМЕНТ, и
+            // рука, продолжающая двигаться в застывшем кадре, читается как чужая.
+            if (_hitstopRemaining > 0f || _holdHitFrame) return;
+
+            // Бой окончен: подводить больше не к чему, рука опускается (спад ниже сделает это плавно).
+            if (_freeRun) _guardActive = false;
+
+            if (!_guardActive)
+            {
+                if (_guardWeight <= 0f) return;
+                _guardWeight = Mathf.Max(0f, _guardWeight - dt / GuardDropSeconds);
+                _animator.SetLayerWeight(_guardLayer, _guardWeight);
+                return;
+            }
+
+            _guardElapsed += dt;
+
+            // Две фазы, а не одна: щит ВСТАЁТ за _guardRise, а потом ДЕРЖИТСЯ — и держится он до конца окна,
+            // то есть и последние 0.15 с подводки, и всю жизнь барьера. Линейный скраб по всему окну
+            // приводил позу в финал ровно к событию, и жест читался как реакция, а не как предупреждение.
+            float rise = Mathf.Clamp01(_guardElapsed / _guardRise);
+            _animator.Play(GuardHash, _guardLayer, rise * GuardRiseShare);
+
+            _guardWeight = Mathf.Min(1f, _guardWeight + dt / GuardRaiseSeconds);
+            _animator.SetLayerWeight(_guardLayer, _guardWeight);
+
+            if (_guardElapsed >= _guardTotal) _guardActive = false;   // барьер отжил — рука опускается сама
         }
 
         /// <summary>Юнит вошёл в замах авто-атаки — свинг + опц. anticipation-оттяг назад от цели.</summary>
@@ -587,14 +1250,17 @@ namespace Guildmaster.Presentation
         {
             if (_animActive)
             {
-                if (_unit != null && _unit.IsWindingUp && _unit.WindupTicks > 0)
+                // Тот же признак и на этом входе: мгновенный удар (windup 0) в UpdateAttackPhase не заходит
+                // вовсе — фаза начинается сразу с хвоста, и клип выбрать было бы нечем.
+                if (_attackPhase == AttackAnimPhase.None && _hasState) _swingCharged = _snapshot.ChargedSwing;
+
+                if (_hasState && _snapshot.IsWindingUp && _snapshot.WindupTicks > 0)
                 {
                     _attackPhase = AttackAnimPhase.Windup;
                 }
                 else
                 {
-                    // Мгновенный удар (windup 0): сразу хвост, окно = весь интервал (кулдаун только что взведён).
-                    _recoveryGapTicks = Mathf.Max(1, _unit != null ? _unit.AttackCooldownTicks : 1);
+                    // Мгновенный удар (windup 0): сразу хвост — его длину даёт сим (RecoveryTicks).
                     _attackPhase = AttackAnimPhase.Recovery;
                 }
             }
@@ -629,7 +1295,10 @@ namespace Guildmaster.Presentation
         /// </summary>
         public void HoldHitFrame(float seconds)
         {
-            if (!_animActive || _state != UnitAnimationState.Attack) return;
+            // «Юнит сейчас в атаке» спрашиваем у ФАЗЫ, а не у базового состояния: со слоем действия база в
+            // этот момент показывает ноги (стойку или разбег), и проверка по ней отняла бы кадр контакта
+            // ровно у того, ради кого финишер и играется.
+            if (!_animActive || _attackPhase == AttackAnimPhase.None) return;
             _holdHitFrame  = true;
             _holdKeepsAttackFrame = true;
             _holdRemaining = seconds;
@@ -654,8 +1323,18 @@ namespace Guildmaster.Presentation
         private void DriveHoldHitFrame()
         {
             _animator.speed = 0f;
-            // Добивающему кадр контакта возвращаем принудительно: скраб мог уже уползти с маркера.
-            if (_holdKeepsAttackFrame) _animator.Play(AttackHash, 0, _attackMarkerNormalized);
+            // Добивающему кадр контакта возвращаем принудительно: скраб мог уже уползти с маркера. Вес
+            // слоя при этом держим сами — обычный ход слоя сюда не доходит, и рука опустилась бы посреди
+            // застывшего момента.
+            if (_holdKeepsAttackFrame)
+            {
+                _animator.Play(SwingHash(), SwingLayer, _attackHitNormalized);
+                if (SwingIsOverlay)
+                {
+                    _actionWeight = 1f;
+                    ApplyActionWeight();
+                }
+            }
             _holdRemaining -= Time.unscaledDeltaTime;
             if (_holdRemaining <= 0f)
             {
@@ -673,10 +1352,25 @@ namespace Guildmaster.Presentation
             if (_freeRunSettled) return;
 
             // Пока текущий attack-клип не доигран — ждём (юнит завершает удар и хвост естественно).
-            if (_state == UnitAnimationState.Attack)
+            // Удар с разбега доигрывается наравне: обрывать его на полпути к стойке — тот же провал кадра.
+            if (SwingIsOverlay)
+            {
+                if (_actionWeight > 0f)
+                {
+                    // Слой доигрывает сам (speed вернули к 1), и только потом рука отпускается — тем же
+                    // спадом, что и в бою: щелчок веса читался бы как обрыв удара.
+                    if (_animator.GetCurrentAnimatorStateInfo(_actionLayer).normalizedTime < 1f) return;
+
+                    _attackPhase  = AttackAnimPhase.None;
+                    _actionWeight = Mathf.Max(0f, _actionWeight - Time.deltaTime / ActionDropSeconds);
+                    ApplyActionWeight();
+                    if (_actionWeight > 0f) return;
+                }
+            }
+            else if (_state == UnitAnimationState.Attack || _state == UnitAnimationState.AttackCharge)
             {
                 AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(0);
-                if (info.shortNameHash == AttackHash && info.normalizedTime < 1f) return;
+                if (info.shortNameHash == SwingHash() && info.normalizedTime < 1f) return;
             }
 
             _state = UnitAnimationState.Idle;
@@ -697,23 +1391,23 @@ namespace Guildmaster.Presentation
 
         private void ApplyFacing()
         {
-            if (_unit == null) return;
-            if (_sprite == null && _facingRoot == null) return;
+            if (!_hasState) return;
+            if (Body == null) return;
             if (_flipAnimActive) return; // идёт разворот-сплющивание — не дёргаем flip снаружи
 
             // Пока идёт цикл атаки — целимся в цель (приоритет над движением): стрелок смотрит на врага,
             // даже отступая. Нет цели — падаем на разворот по движению ниже.
             bool? wantFlip = null;
-            if (_attackPhase != AttackAnimPhase.None && TryDesiredFlipToward(_unit.CurrentTarget, out bool faceFlip))
+            if (_attackPhase != AttackAnimPhase.None && TryDesiredFlipToward(out bool faceFlip))
                 wantFlip = faceFlip;
             else
             {
-                float moveDx = _unit.Position.x - _unit.PreviousPosition.x;
+                float moveDx = _snapshot.Position.x - _snapshot.PreviousPosition.x;
                 _facingVelX = Mathf.Lerp(_facingVelX, moveDx, 0.2f);
 
                 if (Mathf.Abs(_facingVelX) > FacingMoveEpsilonX)
                     wantFlip = _facingVelX < 0f; // бежим влево → отражаем
-                else if (TryDesiredFlipToward(_unit.CurrentTarget, out bool standFlip))
+                else if (TryDesiredFlipToward(out bool standFlip))
                     wantFlip = standFlip;
             }
 
@@ -722,11 +1416,11 @@ namespace Guildmaster.Presentation
         }
 
         // Желаемый flip к цели. false = цели нет/мертва. Почти вертикаль — «уже повёрнут».
-        private bool TryDesiredFlipToward(RuntimeUnit target, out bool flipX)
+        private bool TryDesiredFlipToward(out bool flipX)
         {
             flipX = IsFacingFlipped();
-            if (target == null || target.IsDead || _unit == null) return false;
-            float dx = target.Position.x - _unit.Position.x;
+            if (!_hasState || !_hasTargetState || _targetState.IsDead) return false;
+            float dx = _targetState.Position.x - _snapshot.Position.x;
             if (Mathf.Abs(dx) < FacingTargetDeadzoneX) return true; // уже ок, не меняем
             flipX = dx < 0f;
             return true;
@@ -764,73 +1458,31 @@ namespace Guildmaster.Presentation
                 .AddTo(gameObject);
         }
 
-        // Тинт тела (умножается на текстуру в шейдере) + альфа инвиза (dev, §10.5: тег Stealth → полупрозрачность).
-        // Вспышка попадания идёт НЕ здесь, а через _FlashAmount материала (ApplyFlash) — .color осветлить не может.
+        // Материальное состояние тела за кадр — ОДНИМ куском: тинт с альфой инвиза (dev, §10.5: тег Stealth →
+        // полупрозрачность), вспышка попадания, голограмма развоплощения, контур каста. Тело само решает, во
+        // сколько рендереров это разложить и стоит ли вообще писать (повтор того же кадра не пишется).
+        // Вспышка идёт НЕ через цвет, а через _FlashAmount шейдера — .color осветлить не может.
         private void ApplyColor()
         {
-            if (_sprite == null) return;
-            Color c = _baseTint;
-            bool stealthed = _unit != null && (_unit.EffectTagMask & EffectTag.Stealth) != 0;
-            c.a = stealthed ? 0.4f : 1f;
-            _sprite.color = c;
-            ApplyFlash();
-        }
+            if (Body == null) return;
 
-        // Праймит property block один раз в Bind: выставляет _FlashAmount=0, чтобы рендерер спрайта с первого
-        // кадра шёл по per-instance пути (иначе SpriteRenderer.color/flip кастомного SRP-batcher-шейдера не
-        // подхватывались до первой записи MPB). _feel в Bind ещё может быть null — цвет вспышки тут не важен (0).
-        private void PrimeFlashBlock()
-        {
-            if (_sprite == null) return;
-            _mpb ??= new MaterialPropertyBlock();
-            _sprite.GetPropertyBlock(_mpb);
-            _mpb.SetFloat(FlashAmountId, 0f);
-            _mpb.SetColor(FlashColorId, _feel != null ? _feel.FlashColor : Color.white);
-            _mpb.SetFloat(HoloId, 0f);   // юнита могли переиспользовать после смерти — голограмма не должна дожить
-            _sprite.SetPropertyBlock(_mpb);
-            _flashApplied = false;
-            _holoAmount   = 0f;
-        }
+            Color tint = _baseTint;
+            bool stealthed = _hasState && (_snapshot.EffectTagMask & EffectTag.Stealth) != 0;
+            tint.a = stealthed ? 0.4f : 1f;
 
-        // Вспышка и голограмма через MaterialPropertyBlock (per-instance, без клонирования материала).
-        // Пишем блок, только пока что-то активно, + один раз чтобы вернуть в 0 (не ломаем SRP-батчинг зря).
-        private void ApplyFlash()
-        {
-            if (_sprite == null) return;
-            bool active = _flashAmount > 0.0001f || _holoAmount > 0.0001f || _outlineAmount > 0.0001f;
-            if (!active && !_flashApplied) return;
+            var state = new Body.BodyVisualState(
+                tint,
+                _flashAmount, _activeFlashColor,
+                _holoAmount,
+                _feel != null ? _feel.HologramColor      : Color.white,
+                _feel != null ? _feel.HologramBodyAlpha  : 1f,
+                _feel != null ? _feel.HologramScanScale  : 1f,
+                _feel != null ? _feel.HologramScanAmount : 0f,
+                _outlineAmount, _outlineColor,
+                _glowAmount, _glowColor, _glowParts,
+                _feel != null ? _feel.CastGlowFlatness : 1f);
 
-            _mpb ??= new MaterialPropertyBlock();
-            _sprite.GetPropertyBlock(_mpb);
-            _mpb.SetFloat(FlashAmountId, _flashAmount);
-            _mpb.SetColor(FlashColorId, _activeFlashColor);
-            _mpb.SetFloat(HoloId, _holoAmount);
-
-            _mpb.SetFloat(OutlineId, _outlineAmount);
-            if (_outlineAmount > 0.0001f)
-            {
-                SetHoloTexel();   // контуру нужен шаг текселя, чтобы найти край силуэта
-                _mpb.SetColor(OutlineColorId, _outlineColor);
-            }
-
-            if (_holoAmount > 0.0001f && _feel != null)
-            {
-                SetHoloTexel();
-                _mpb.SetColor(HoloColorId, _feel.HologramColor);
-                _mpb.SetFloat(HoloAlphaId, _feel.HologramBodyAlpha);
-                _mpb.SetFloat(HoloScanScaleId,  _feel.HologramScanScale);
-                _mpb.SetFloat(HoloScanAmountId, _feel.HologramScanAmount);
-            }
-            _sprite.SetPropertyBlock(_mpb);
-            _flashApplied = active;
-        }
-
-        // Размер текселя текущего кадра: по нему и голограмма, и контур находят край силуэта.
-        private void SetHoloTexel()
-        {
-            Texture tex = _sprite.sprite != null ? _sprite.sprite.texture : null;
-            Vector2 texel = tex != null ? new Vector2(1f / tex.width, 1f / tex.height) : new Vector2(0.01f, 0.01f);
-            _mpb.SetVector(HoloTexelId, texel);
+            Body.Apply(state);
         }
 
         /// <summary>
@@ -838,14 +1490,53 @@ namespace Guildmaster.Presentation
         /// </summary>
         /// <param name="flashColor">Цвет вспышки (резолвит презентер из feel-конфига по школе/сродству).</param>
         /// <param name="nudgeDir">Мировое направление отъезда (обычно от атакующего); zero = без nudge.</param>
-        public void OnDamageReceived(Color flashColor, Vector2 nudgeDir)
+        /// <remarks>
+        /// «Ярче обычного» задаётся ЦВЕТОМ, а не силой: <c>PlayHitFlash</c> клампит peak к единице, и
+        /// обычное попадание уже бьёт в этот потолок. Сверкание блока приходит HDR-цветом из палитры
+        /// (<c>CombatColorPalette.ShieldFlare</c>) — за порогом bloom он и даёт вспышку.
+        /// </remarks>
+        /// <param name="flashBody">
+        /// Заливать ли тело вспышкой. <c>false</c> — удар принял ЩИТ и в тело не вошёл: тогда говорит
+        /// только сам щит (его свечение), а тело молчит. Вспыхнувшее тело читалось бы как пробитие
+        /// (решение Макса 01.08.2026, отменяет золотую вспышку тела из `2026-07-31/67`).
+        /// </param>
+        public void OnDamageReceived(Color flashColor, Vector2 nudgeDir, bool flashBody = true)
         {
             _onHitFeedback?.Invoke();
-            PlayHitFlash(flashColor);
+            if (flashBody) PlayHitFlash(flashColor);
             PlayHitSquash();
             PlayHitNudge(nudgeDir);
             if (_feel != null && _feel.EnableHpBarPunch && _healthBar != null)
                 _healthBar.Punch(_feel.HpBarPunchAmount, _feel.HpBarPunchDuration);
+        }
+
+        /// <summary>
+        /// Телеграф: подводка к тому, что ЕЩЁ НЕ СЛУЧИЛОСЬ. Показ узнаёт о будущем событии из ленты боя и
+        /// зовёт это заранее — щит «Оплота» так поднимается до удара, а не в его кадр.
+        /// <para>Держит подсветку <paramref name="seconds"/> и гасит её к моменту события: к кадру, ради
+        /// которого подводка игралась, тело уже «готово», а не вспыхивает вместе с ним.</para>
+        /// </summary>
+        public void ShowTelegraph(Color color, float seconds)
+        {
+            if (Body == null || seconds <= 0f) return;
+            if (_feel != null && !_feel.EnableTelegraphFlash) return;
+            if (_flashHandle.IsActive()) _flashHandle.Cancel();
+
+            _activeFlashColor = color;
+            _flashPeak   = TelegraphPeak;
+            _flashAmount = 0f;
+
+            // Нарастание к пику и спад к нулю ровно за время телеграфа: время UNSCALED, иначе подводка
+            // застынет в slowmo и разъедется с событием, к которому ведёт.
+            _flashHandle = LMotion.Create(0f, 1f, seconds)
+                .WithEase(Ease.Linear)
+                .WithScheduler(MotionScheduler.UpdateIgnoreTimeScale)
+                .Bind(this, static (v, self) =>
+                {
+                    float shape = v < 0.5f ? v / 0.5f : 1f - (v - 0.5f) / 0.5f;
+                    self._flashAmount = self._flashPeak * shape;
+                })
+                .AddTo(gameObject);
         }
 
         /// <summary>
@@ -890,13 +1581,41 @@ namespace Guildmaster.Presentation
         {
             if (_feel == null || _feel.CastOutlineDuration <= 0f) return;
 
-            _outlineColor = color;
-            _outlineTotal = _feel.CastOutlineDuration;
-            _outlineLeft  = _outlineTotal;
+            _outlineColor  = color;
+            _outlineTotal  = _feel.CastOutlineDuration;
+            _outlineLeft   = _outlineTotal;
+            _outlineCharge = false;
         }
 
-        // Окно контура: быстрый подъём, затем спад (пик в первой четверти — телеграф должен успеть прочитаться
-        // до самого действия). Unscaled — как и остальной фидбэк: каст часто совпадает с hitstop.
+        /// <summary>
+        /// Подводка к касту с подготовкой (M3): контур держится ВСЮ подготовку и наливается к её концу —
+        /// туда, где придёт удар. Отличие от <see cref="PlayCastOutline"/> принципиальное: там вспышка
+        /// сообщает «уже случилось», здесь — «сейчас случится», и потому пик в конце, а не в начале.
+        /// </summary>
+        /// <param name="seconds">Длительность подготовки — её объявляет симуляция, не показ.</param>
+        public void PlayCastCharge(Color color, float seconds)
+        {
+            if (_feel == null || seconds <= 0f) return;
+
+            _outlineColor  = color;
+            _outlineTotal  = seconds;
+            _outlineLeft   = seconds;
+            _outlineCharge = true;
+        }
+
+        /// <summary>Каст оборван: подводка гаснет, потому что обещанного удара не будет.</summary>
+        public void CancelCastCharge()
+        {
+            if (!_outlineCharge) return;
+
+            _outlineCharge = false;
+            _outlineLeft   = 0f;
+            _outlineAmount = 0f;
+        }
+
+        // Окно контура: у вспышки-«состоялось» быстрый подъём и спад (пик в первой четверти), у подводки-
+        // «сейчас будет» — рост до конца подготовки. Unscaled — как и остальной фидбэк: каст часто
+        // совпадает с hitstop.
         private void TickCastOutline()
         {
             if (_outlineLeft <= 0f) return;
@@ -904,11 +1623,103 @@ namespace Guildmaster.Presentation
             _outlineLeft -= Time.unscaledDeltaTime;
             float t = 1f - Mathf.Clamp01(_outlineLeft / Mathf.Max(0.0001f, _outlineTotal));
 
+            if (_outlineCharge)
+            {
+                _outlineAmount = t * _feel.CastOutlineStrength;
+                if (_outlineLeft <= 0f) { _outlineAmount = 0f; _outlineCharge = false; }
+                return;
+            }
+
             const float rise = 0.25f;
             _outlineAmount = t < rise ? t / rise : 1f - (t - rise) / (1f - rise);
             _outlineAmount = Mathf.Clamp01(_outlineAmount) * _feel.CastOutlineStrength;
 
             if (_outlineLeft <= 0f) _outlineAmount = 0f;
+        }
+
+        /// <summary>
+        /// Какие части зажечь под этот приём. Навык называет РОЛЬ (<see cref="CastSource"/>), а конкретную
+        /// часть находит реестр тела: <c>OffHand</c> у дуалиста это второй клинок, у щитовика — щит.
+        /// </summary>
+        /// <param name="source">Чем исполняется приём. Способность без определения светит как <c>Auto</c>.</param>
+        public PartMask GlowMaskFor(CastSource source) =>
+            Body != null ? CastGlowMask.Resolve(Body.Parts, source) : PartMask.Empty;
+
+        /// <summary>
+        /// Свечение части-источника на касте (реф SAO): часть в маске <paramref name="parts"/> наливается
+        /// светом за <paramref name="chargeSeconds"/> (заряд приёма) и гаснет за спад из конфига. Для
+        /// МГНОВЕННОГО приёма (пассив без каста, пульс оружия у длительного баффа) вызывающий передаёт
+        /// короткий заряд <c>CastGlowPulseRise</c> — получается всполох вместо наливающегося заряда.
+        /// </summary>
+        /// <param name="glowColor">HDR-цвет: цвет юнита, поднятый под порог bloom (резолвит презентер).</param>
+        /// <param name="parts">Какие ИМЕННО части светятся — обычно <see cref="StrikeGlowMask"/>.</param>
+        /// <param name="chargeSeconds">Время заряда (cast-time из симуляции). 0 = сразу пик.</param>
+        public void PlayCastGlow(Color glowColor, PartMask parts, float chargeSeconds)
+        {
+            if (_feel == null || !_feel.EnableCastGlow) return;
+            LightParts(glowColor, parts, chargeSeconds);
+        }
+
+        /// <summary>
+        /// Щит поглотил удар — вспыхивает сам щит: тот же свет, что у каста, но событие обратное
+        /// (не «сейчас ударю», а «принял на себя»), поэтому заряда нет — всполох с пика.
+        /// </summary>
+        /// <param name="glowColor">HDR-цвет защиты (резолвит презентер), не цвет юнита.</param>
+        /// <param name="parts">Части щита. Щита в руках нет — маска пуста, и ничего не светится.</param>
+        public void PlayBlockGlow(Color glowColor, PartMask parts)
+        {
+            if (_feel == null || !_feel.EnableBlockGlow) return;
+            LightParts(glowColor, parts, chargeSeconds: 0f);
+        }
+
+        // Общий механизм для обоих входов: у них одна кривая и один спад, разные только повод и цвет.
+        private void LightParts(Color glowColor, PartMask parts, float chargeSeconds)
+        {
+            if (parts.IsEmpty) return;
+
+            _glowColor        = glowColor;
+            _glowParts        = parts;
+            _glowChargeTotal  = Mathf.Max(0f, chargeSeconds);
+            _glowReleaseTotal = Mathf.Max(0.0001f, _feel.CastGlowRelease);
+            _glowInCharge     = _glowChargeTotal > 0.0001f;
+            _glowLeft         = _glowInCharge ? _glowChargeTotal : _glowReleaseTotal;
+            if (!_glowInCharge) _glowAmount = _feel.CastGlowStrength;  // без заряда — стартуем с пика и гаснем
+        }
+
+        /// <summary>Каст оборван: свечение части гаснет мгновенно — обещанного приёма не будет.</summary>
+        public void CancelCastGlow()
+        {
+            if (_glowParts.IsEmpty) return;
+
+            _glowParts    = PartMask.Empty;
+            _glowInCharge = false;
+            _glowLeft     = 0f;
+            _glowAmount   = 0f;
+        }
+
+        // Профиль свечения: заряд за cast-time (форма — кривая конфига, пик к концу) → спад с пика в ноль.
+        // Unscaled, как весь фидбэк каста. Погасли — маска пустеет, чтобы тело перестало писать glow.
+        private void TickCastGlow()
+        {
+            if (_glowParts.IsEmpty || _feel == null) return;
+
+            _glowLeft -= Time.unscaledDeltaTime;
+
+            if (_glowInCharge)
+            {
+                float t = _glowChargeTotal > 0.0001f
+                    ? 1f - Mathf.Clamp01(_glowLeft / _glowChargeTotal)
+                    : 1f;
+                float shape = _feel.CastGlowChargeCurve != null ? _feel.CastGlowChargeCurve.Evaluate(t) : t;
+                _glowAmount = Mathf.Clamp01(shape) * _feel.CastGlowStrength;
+
+                if (_glowLeft <= 0f) { _glowInCharge = false; _glowLeft = _glowReleaseTotal; }
+                return;
+            }
+
+            float r = Mathf.Clamp01(_glowLeft / Mathf.Max(0.0001f, _glowReleaseTotal)); // 1→0
+            _glowAmount = r * _feel.CastGlowStrength;
+            if (_glowLeft <= 0f) { _glowAmount = 0f; _glowParts = PartMask.Empty; }
         }
 
         /// <summary>Заморозить анимацию этого вида на unscaled-окно (локальный hitstop участника удара).</summary>
@@ -925,7 +1736,7 @@ namespace Guildmaster.Presentation
         // секвенс смерти стоит следом (он ждёт её догорания). Вспышка — презентация, ей незачем стынуть.
         private void PlayHitFlash(Color flashColor, float peak = 1f)
         {
-            if (_sprite == null || _feel == null) return;
+            if (Body == null || _feel == null || !_feel.EnableHitFlash) return;
             if (_flashHandle.IsActive()) _flashHandle.Cancel();
             _activeFlashColor = flashColor;
             _flashPeak   = Mathf.Clamp01(peak);
@@ -958,7 +1769,7 @@ namespace Guildmaster.Presentation
         // Вес компонуется с flip/acquire/breath в ApplyComposedScale.
         private void PlayHitSquash()
         {
-            if (_squashTarget == null || _feel == null) return;
+            if (_squashTarget == null || _feel == null || !_feel.EnableHitSquash) return;
             if (_squashHandle.IsActive()) _squashHandle.Cancel();
             float dur = _feel.SquashDuration;
             _squashHandle = LMotion.Create(1f, 0f, dur)
@@ -1074,10 +1885,10 @@ namespace Guildmaster.Presentation
 
         private void TickLocomotionDust()
         {
-            if (_unit == null || _onContactDust == null) return;
+            if (!_hasState || _onContactDust == null) return;
             if (_feel == null || !_feel.EnableContactDust) { _wasMoving = false; return; }
 
-            bool isMoving = (_unit.Position - _unit.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
+            bool isMoving = (_snapshot.Position - _snapshot.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
             if (isMoving != _wasMoving && _contactDustCooldownLeft <= 0f)
             {
                 _onContactDust.Invoke(this);
@@ -1088,10 +1899,10 @@ namespace Guildmaster.Presentation
 
         private void TickTargetAcquireTell()
         {
-            if (_unit == null || _feel == null || !_feel.EnableTargetAcquireTell) return;
+            if (!_hasState || _feel == null || !_feel.EnableTargetAcquireTell) return;
 
-            int id = _unit.CurrentTarget != null && !_unit.CurrentTarget.IsDead
-                ? _unit.CurrentTarget.Id
+            int id = _hasTargetState && !_targetState.IsDead
+                ? _targetState.Id
                 : int.MinValue;
             if (id == _lastTargetId) return;
 
@@ -1121,7 +1932,7 @@ namespace Guildmaster.Presentation
         {
             _onDeathFeedback?.Invoke();
 
-            // Убираем world-UI (бары + подпись) — над трупом он не нужен. Но НЕ щелчком: тело после этого
+            // Убираем world-UI (бары) — над трупом он не нужен. Но НЕ щелчком: тело после этого
             // ещё три стадии развоплощается, и полоса, выпрыгнувшая из кадра в первый же момент, читалась
             // как сбой. Гасим её ровно за ту стадию, пока тело истончается в голограмму.
             if (_worldUi != null)
@@ -1141,14 +1952,19 @@ namespace Guildmaster.Presentation
             }
             else
             {
-                // Фолбэк, если контейнер 'UI' не привязан: гасим бары и подпись поштучно.
+                // Фолбэк, если контейнер 'UI' не привязан: гасим бары поштучно.
                 if (_healthBar != null) _healthBar.gameObject.SetActive(false);
                 if (_manaBar   != null) _manaBar.gameObject.SetActive(false);
-                if (_nameLabel != null) _nameLabel.gameObject.SetActive(false);
             }
 
             _isDead     = true;
             _deathPhase = DeathPhase.WaitFlash; // дальше — DriveDeath (ждём hit-flash → death → разлёт)
+
+            // Гвардия снимается сразу и целиком: секвенс смерти обходит обычный тик анимации, и рука со
+            // щитом осталась бы поднятой на всём падении — держал бы позу тот, кому уже нечем держать.
+            _guardActive = false;
+            _guardWeight = 0f;
+            if (_guardLayer >= 0 && _animator != null) _animator.SetLayerWeight(_guardLayer, 0f);
         }
 
         // Секвенс смерти. WaitFlash → Dying → Hologram (опц.) → Anticipate (опц.) → StartShatter.
@@ -1165,6 +1981,15 @@ namespace Guildmaster.Presentation
                     // застывает на кадре, где его достали, и уходит прямо в голограмму (как в референсе).
                     if (_animActive && _feel != null && _feel.PlayDeathClip)
                     {
+                        // Падение забирает тело ЦЕЛИКОМ: слой действия отпускаем сразу, иначе рука доиграет
+                        // чужой удар поверх падающего трупа. Стоп-кадру ниже гасить нечего — там поза как раз
+                        // обязана остаться той, в которой юнита достали.
+                        if (SwingIsOverlay && _actionWeight > 0f)
+                        {
+                            _actionWeight = 0f;
+                            ApplyActionWeight();
+                        }
+
                         _state = UnitAnimationState.Death;
                         _animator.Play(DeathHash, 0, 0f);
                         _animator.speed = 1f;
@@ -1257,29 +2082,23 @@ namespace Guildmaster.Presentation
             StartShatter();
         }
 
-        // Конец death-клипа / anticipation: прячем исходный спрайт и запускаем разлёт на осколки.
+        // Конец death-клипа / anticipation: прячем тело и запускаем разлёт на осколки. Сколько кусков тела
+        // колется и куда спавнятся осколки — знает тело; вид только даёт палитру и ждёт «догорело».
         private void StartShatter()
         {
             _deathPhase = DeathPhase.Shattering;
             _audio?.PlayAt("feel.death_shatter.death", transform.position);
 
-            if (_sprite == null || _sprite.sprite == null)
+            // Нечего колоть, или разлёт выключен тумблером — тело просто исчезает. Это законный выбор
+            // дизайна (и способ замерить, сколько джуса даёт сам разлёт), поэтому путь молчит.
+            if (Body == null || !Body.HasContent || (_feel != null && !_feel.EnableDeathShatter))
             {
-                gameObject.SetActive(false); // нечего колоть — просто убираем
+                gameObject.SetActive(false);
                 return;
             }
 
-            var go = new GameObject("DeathShatter");
-            // Сиблинг спрайта (тот же родитель — Visual Sprite), а не корень вида: иначе трансформ-пространство
-            // (масштаб/иерархия) не совпадает со спрайтом и осколки спавнятся со смещением.
-            Transform visualParent = _sprite.transform.parent != null ? _sprite.transform.parent : transform;
-            go.transform.SetParent(visualParent, worldPositionStays: false);
-            var shatter = go.AddComponent<DeathShatter>();
-            // Палитра павшего — из его же данных: осколки должны быть «его» цвета.
-            Gradient palette = _unit?.Unit != null ? _unit.Unit.ResolveVfxPalette() : null;
-            shatter.Play(_sprite, _feel, palette, () => gameObject.SetActive(false));
-
-            _sprite.enabled = false; // дальше показывают осколки, исходный спрайт прячем
+            // Разброс павшего подан презентером при спавне: осколки должны быть «его» цвета.
+            Body.PlayShatter(_feel, _vfxSpread, () => gameObject.SetActive(false));
         }
 
 #if UNITY_EDITOR
@@ -1318,8 +2137,8 @@ namespace Guildmaster.Presentation
             // попал в неё (офсет спавна — фаза коллизии), поэтому центр здесь = feet.
             if (_showCollisionGizmo)
             {
-                float size = Application.isPlaying && _unit != null
-                    ? Mathf.Max(0.01f, _unit.Stats.Get(Data.Stats.StatType.Size))
+                float size = Application.isPlaying && _hasState
+                    ? Mathf.Max(0.01f, _snapshot.Size)
                     : Mathf.Max(0.01f, _gizmoPreviewSize);
                 float cr = size * SimTuning.Default.BodyRadiusPerSize;
                 var orange = new Color(1f, 0.6f, 0.2f, 0.85f);

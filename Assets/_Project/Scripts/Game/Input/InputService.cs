@@ -19,7 +19,7 @@ namespace Guildmaster.Game.Input
         private readonly InputActionMap _cameraMap;
         private readonly InputActionMap _combatMap;
         private readonly InputActionMap _deploymentMap; // действия фазы расстановки (шаг 4)
-        private readonly InputActionMap _pointerMap; // указатель (позиция + ЛКМ) — общий для расстановки и карты
+        private readonly InputActionMap _pointerMap; // клик по миру (ЛКМ) — общий для расстановки и карты
         private readonly InputActionMap _uiMap; // seam под меню/навигацию (реализация — будущая фаза)
 
         private readonly InputAction _pan;
@@ -32,6 +32,9 @@ namespace Guildmaster.Game.Input
         private readonly InputAction _pointerPos;    // <Mouse>/position — screen→world при пикинге/drag
         private readonly InputAction _pointerPress;  // <Mouse>/leftButton — начало/конец протяжки
         private readonly InputAction _menuToggle; // Escape — оверлей системного меню, живёт вне контекст-карт (always-on)
+        private readonly InputAction _devConsoleToggle; // F1 — командная dev-консоль; always-on по той же причине, что и меню
+        private readonly InputAction _devLogToggle;     // F2 — лог-консоль
+        private readonly InputAction _devBattlesToggle; // F3 — витрина боёв
         private readonly InputAction _detailsHold; // Shift — подробности в подсказках, тоже always-on
         private readonly InputAction _skipTransition; // Space — пропустить подачу; always-on, см. комментарий у создания
 
@@ -59,6 +62,9 @@ namespace Guildmaster.Game.Input
         public event Action SkipRequested;
         public event Action GameSpeedCycleRequested;
         public event Action MenuToggleRequested;
+        public event Action DevConsoleToggleRequested;
+        public event Action DevLogToggleRequested;
+        public event Action DevBattlesToggleRequested;
         public event Action PointerPressed;
         public event Action PointerReleased;
 
@@ -89,6 +95,12 @@ namespace Guildmaster.Game.Input
             _pointerDelta = _cameraMap.AddAction("PointerDelta", InputActionType.Value, "<Mouse>/delta");
             _cycleView = _cameraMap.AddAction("CycleView", InputActionType.Button, "<Keyboard>/tab");
 
+            // Позиция указателя живёт в карте КАМЕРЫ, а не «Pointer», хотя клик по миру — там. Причина:
+            // зум колесом держит точку под курсором на месте, и позиция нужна везде, где есть камера, — в
+            // том числе в бою, где карта «Pointer» выключена (кликать по миру в бою нечем). Пока она лежала
+            // рядом с кликом, в бою ReadValue отдавал ноль, и колесо утаскивало кадр в левый нижний угол.
+            _pointerPos = _cameraMap.AddAction("PointerPosition", InputActionType.Value, "<Mouse>/position");
+
             // --- Карта «Combat»: пауза (Space), смена скорости (.). Рестарт боя/сцены (R/F5) — dev (DevTools). ---
             _combatMap = new InputActionMap("Combat");
             _pauseToggle = _combatMap.AddAction("PauseToggle", InputActionType.Button, "<Keyboard>/space");
@@ -97,11 +109,11 @@ namespace Guildmaster.Game.Input
             // --- Карта «Deployment»: действия фазы расстановки (шаг 4). Указатель вынесен в «Pointer». ---
             _deploymentMap = new InputActionMap("Deployment");
 
-            // --- Карта «Pointer»: указатель мыши (позиция + ЛКМ). Общая для расстановки (перетаскивание
-            // юнитов) и карты акта (клик по узлу) — оба контекста тыкают в мир одной и той же мышью,
-            // и включать ради этого чужую карту «Deployment» было бы враньём по смыслу. ---
+            // --- Карта «Pointer»: КЛИК по миру (ЛКМ). Общая для расстановки (перетаскивание юнитов) и
+            // карты акта (клик по узлу) — оба контекста тыкают в мир одной и той же мышью, и включать ради
+            // этого чужую карту «Deployment» было бы враньём по смыслу. Позиция указателя лежит не здесь,
+            // а в карте камеры (см. выше): она нужна и там, где кликать нечем. ---
             _pointerMap = new InputActionMap("Pointer");
-            _pointerPos   = _pointerMap.AddAction("PointerPosition", InputActionType.Value, "<Mouse>/position");
             _pointerPress = _pointerMap.AddAction("PointerPress", InputActionType.Button, "<Mouse>/leftButton");
             _pointerPress.performed += OnPointerPressed;
             _pointerPress.canceled  += OnPointerReleased;
@@ -114,6 +126,25 @@ namespace Guildmaster.Game.Input
             _menuToggle = new InputAction("MenuToggle", InputActionType.Button, "<Keyboard>/escape");
             _menuToggle.performed += OnMenuToggle;
             _menuToggle.Enable();
+
+            // Dev-консоли: вне контекст-карт и БЕЗ проверки глушения. Открытая консоль сама держит
+            // InputSuppressSource.DevConsole, и гейт по GameplaySuppressed запер бы её изнутри.
+            // F1 — командная, F2 — лог. Тильда возвращена вторым биндингом по просьбе Макса (02.08.2026):
+            // это привычная клавиша консоли, и ходить к ней рука тянется первой. Готча, из-за которой её
+            // однажды сняли, никуда не делась — ОС печатает литеру в поле ввода первым же символом, —
+            // поэтому её гасит сама консоль при открытии, а не отсутствие биндинга.
+            _devConsoleToggle = new InputAction("DevConsoleToggle", InputActionType.Button, "<Keyboard>/f1");
+            _devConsoleToggle.AddBinding("<Keyboard>/backquote");
+            _devConsoleToggle.performed += OnDevConsoleToggle;
+            _devConsoleToggle.Enable();
+
+            _devLogToggle = new InputAction("DevLogToggle", InputActionType.Button, "<Keyboard>/f2");
+            _devLogToggle.performed += OnDevLogToggle;
+            _devLogToggle.Enable();
+
+            _devBattlesToggle = new InputAction("DevBattlesToggle", InputActionType.Button, "<Keyboard>/f3");
+            _devBattlesToggle.performed += OnDevBattlesToggle;
+            _devBattlesToggle.Enable();
 
             // Подробности в подсказках (Shift): как и меню — вне контекст-карт и без глушения. Тултип
             // может висеть над модальным экраном, и там Shift обязан работать так же, как в бою.
@@ -221,6 +252,12 @@ namespace Guildmaster.Game.Input
         // Escape НЕ гейтится GameplaySuppressed: меню должно закрываться, даже когда геймплейный ввод заглушён.
         private void OnMenuToggle(InputAction.CallbackContext _) => MenuToggleRequested?.Invoke();
 
+        private void OnDevConsoleToggle(InputAction.CallbackContext _) => DevConsoleToggleRequested?.Invoke();
+
+        private void OnDevLogToggle(InputAction.CallbackContext _) => DevLogToggleRequested?.Invoke();
+
+        private void OnDevBattlesToggle(InputAction.CallbackContext _) => DevBattlesToggleRequested?.Invoke();
+
         private void OnDetailsHeld(InputAction.CallbackContext _)     => SetDetailsHeld(true);
         private void OnDetailsReleased(InputAction.CallbackContext _) => SetDetailsHeld(false);
 
@@ -239,6 +276,9 @@ namespace Guildmaster.Game.Input
             _pointerPress.performed  -= OnPointerPressed;
             _pointerPress.canceled   -= OnPointerReleased;
             _menuToggle.performed    -= OnMenuToggle;
+            _devConsoleToggle.performed -= OnDevConsoleToggle;
+            _devLogToggle.performed  -= OnDevLogToggle;
+            _devBattlesToggle.performed -= OnDevBattlesToggle;
             _detailsHold.performed   -= OnDetailsHeld;
             _detailsHold.canceled    -= OnDetailsReleased;
             _skipTransition.performed -= OnSkipRequested;
@@ -249,6 +289,9 @@ namespace Guildmaster.Game.Input
             _pointerMap.Dispose();
             _uiMap.Dispose();
             _menuToggle.Dispose();
+            _devConsoleToggle.Dispose();
+            _devLogToggle.Dispose();
+            _devBattlesToggle.Dispose();
             _detailsHold.Dispose();
             _skipTransition.Dispose();
         }

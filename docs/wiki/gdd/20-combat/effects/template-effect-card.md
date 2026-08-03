@@ -2,13 +2,13 @@
 title: "Effect - Template"
 order: 2
 status: draft
-updated: 2026-07-18
+updated: 2026-07-29
 ---
 
 # Имя RU (EN-канон)
 
 > **[[property-reference#Класс|Класс]]:** … · **[[property-reference#Полярность|Полярность]]:** Buff/Debuff · **[[property-reference#Теги|Теги]]:** `…`
-> **[[property-reference#Стакинг|Стакинг]]:** … · **[[property-reference#Снимаемость|Снятие]]:** T1/T2/T3 · **Школа:** … · **Сродство:** …
+> **[[property-reference#Стакинг|Стакинг]]:** … · **[[property-reference#Снимаемость|Снятие]]:** T1/T2/T3 · **Тип урона:** … *(если наносит урон; школа выводится из него)*
 
 Суть в 1–2 фразах: глагол эффекта + роль/ниша.
 

@@ -88,6 +88,27 @@ namespace Guildmaster.UI
         }
 
         /// <summary>
+        /// Показать, скольких ещё ждём. В одиночку счёт не рисуется вовсе: «(1/1)» ничего не сообщает, а
+        /// place на кнопке занимает.
+        /// </summary>
+        /// <remarks>
+        /// Подпись меняется, а не появляется рядом: кнопка одна, и второй элемент рядом с ней читался бы
+        /// как отдельная сущность. Своё нажатие видно по состоянию кнопки — подтвердивший видит, что ждут
+        /// уже не его.
+        /// </remarks>
+        public void SetReadyCount(int ready, int required, bool locallyReady)
+        {
+            if (_start == null) return;
+
+            string caption = required > 1
+                ? $"{L("ui.run.start", "Начать")} ({ready}/{required})"
+                : L("ui.run.start", "Начать");
+
+            SetText(_start.Q<Label>("btn-start-label"), caption);
+            _start.EnableInClassList("gm-btn--pending", required > 1 && locallyReady);
+        }
+
+        /// <summary>
         /// Завести таб режима. <paramref name="action"/> = null означает «режим объявлен, экрана ещё нет»:
         /// чип встаёт в ленту погашенным (<c>gm-chip--muted</c>), но остаётся живым — по HARD-правилу
         /// ui-feedback недоступное гаснет видом, а не выключением. В радио-набор активных режимов такой

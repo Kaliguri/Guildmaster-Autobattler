@@ -14,49 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.assassin
   _combatClass: 2
-  _damageSchool: 0
-  _physicalSubtype: 3
-  _magicElement: 0
-  _affinity: 0
+  _autoAttackDamageType: 3
   _creatureType: 0
   _attackType: 0
-  _resourceType: 0
+  _resourceType: 1
   _visual: {fileID: 11400000, guid: 6d5122680e4104e44b5ab581a2fa0291, type: 2}
   _viewPrefab: {fileID: 5174956930701221052, guid: 42fb5ce6fa7b3ab45ae12042c071db11, type: 3}
-  _tint: {r: 1, g: 1, b: 1, a: 1}
-  _vfxColor: {r: 1.466, g: 0.4, b: 2, a: 1}
-  _vfxPalette:
-    serializedVersion: 2
-    key0: {r: 2.426, g: 2.08, b: 2.6, a: 1}
-    key1: {r: 1.613, g: 0.44, b: 2.2, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
+  _bodyShade: 0
+  _vfxTone: 9
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
@@ -79,10 +47,40 @@ MonoBehaviour:
   - Stat: 4
     Op: 3
     Value: 10
+  - Stat: 27
+    Op: 3
+    Value: 75
   _grantedEffects:
   - {fileID: 11400000, guid: e3be461416627c240b9d261a7f4b4b29, type: 2}
   - {fileID: 11400000, guid: 3404fe6e06b59da4ab445d73bd764994, type: 2}
-  _abilities: []
+  _abilities:
+  - _id: shadow_step
+    _effects:
+    - {fileID: 11400000, guid: 17a717ac87459e246a3f562d9f41091a, type: 2}
+    _baseCooldown: 0
+    _resourceCost: 75
+    _targetMode: 0
+    _damageMultiplier: 0
+    _damageType: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
+    _castCondition: 0
+    _castConditionCount: 1
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceDamageMult: 1
+    _displaceWidth: 1
+    _visualSlot: 0
+    _infoTags: []
   _aiPreset: {fileID: 11400000, guid: 6ff0270a8ae2e2b4a9683cec33e5071b, type: 2}
   _ai:
     _autoAttackTargeting: 1

@@ -1,4 +1,4 @@
-using Guildmaster.Core.Simulation;
+﻿using Guildmaster.Core.Simulation;
 using NUnit.Framework;
 
 namespace Guildmaster.Tests.EditMode.Combat
@@ -30,8 +30,23 @@ namespace Guildmaster.Tests.EditMode.Combat
             fleeWallMargin:            SimTuning.Default.FleeWallMargin,
             fleeThreatRadius:          SimTuning.Default.FleeThreatRadius,
             kiteStrafeWeight:          SimTuning.Default.KiteStrafeWeight,
+            displaceSpeedPerSecond:    SimTuning.Default.DisplaceSpeedPerSecond,
+            cannonballWidthMult:       SimTuning.Default.CannonballWidthMult,
+            wallImpactDamageMult:      SimTuning.Default.WallImpactDamageMult,
+            wallImpactStunSeconds:     SimTuning.Default.WallImpactStunSeconds,
             overtimeStartSeconds:      start,
-            overtimeDamagePerSecond:   perSecond);
+            overtimeDamagePerSecond:   perSecond,
+            sprintSpeedMult:           SimTuning.Default.SprintSpeedMult,
+            sprintEnterGap:            SimTuning.Default.SprintEnterGap,
+            sprintExitGap:             SimTuning.Default.SprintExitGap,
+            sprintWalkSeconds:         SimTuning.Default.SprintWalkSeconds,
+            sprintRampSeconds:         SimTuning.Default.SprintRampSeconds,
+            recastRecoverySpeed:       SimTuning.Default.RecastRecoverySpeed,
+            recastWindupSpeed:         SimTuning.Default.RecastWindupSpeed,
+            concealWeakRadius:         SimTuning.Default.ConcealWeakRadius,
+            concealMediumRadius:       SimTuning.Default.ConcealMediumRadius,
+            concealStrongRadius:       SimTuning.Default.ConcealStrongRadius,
+            comboBreakSeconds:         SimTuning.Default.ComboBreakSeconds);
 
         [Test]
         public void BeforeThreshold_NoRamp()

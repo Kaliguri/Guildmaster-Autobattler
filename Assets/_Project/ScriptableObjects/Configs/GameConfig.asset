@@ -36,3 +36,5 @@ MonoBehaviour:
   _startingRosterCapacity: 8
   _maxRosterCapacity: 64
   _veteranHireUnlockDeaths: 8
+  _statsConfig: {fileID: 11400000, guid: ad16ddf55214b4f4f9fc8305dadd705e, type: 2}
+  _classBalanceConfig: {fileID: 11400000, guid: c346355e64f53d444b5cc7a9fe184c84, type: 2}

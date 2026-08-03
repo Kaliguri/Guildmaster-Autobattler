@@ -48,8 +48,15 @@ namespace Guildmaster.Combat
                     penPct = req.Source.Stats.Get(StatType.MagicPenPct);
                 }
 
-                // Пробивание: сначала %, потом плоское; эффективная броня не уходит в минус
-                float effArmor = Mathf.Max(0f, armor * (1f - penPct) - pen);
+                // Пробивание: сначала %, потом плоское (стат источника + разовое пробивание этого удара);
+                // эффективная броня не уходит в минус.
+                // Проценты стата и удара умножаются ОСТАТКАМИ, а не складываются: 60% от стата и 50% от
+                // удара дают 80% пробивания, а не 110% — сумма позволила бы обнулить любую броню двумя
+                // умеренными источниками, и «броня вдвое меньше» перестало бы что-либо значить.
+                float pctLeft = (1f - penPct) * (1f - req.BonusPctPen);
+                if (pctLeft < 0f) pctLeft = 0f;
+
+                float effArmor = Mathf.Max(0f, armor * pctLeft - pen - req.BonusFlatPen);
                 damage *= req.ArmorK / (req.ArmorK + effArmor);
             }
 

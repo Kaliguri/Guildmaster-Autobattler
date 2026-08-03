@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Guildmaster.Data.Definitions;
@@ -257,9 +257,9 @@ namespace Guildmaster.ContentHub.Editor
             badges.Add(Badge(TypeShort(entry.Type), accent: true));
             if (entry.Unit != null)
             {
-                badges.Add(Badge(entry.Unit.DamageSchool.ToString()));
-                if (entry.Unit.Affinity != Guildmaster.Data.Definitions.DamageAffinity.None)
-                    badges.Add(Badge(entry.Unit.Affinity.ToString()));
+                badges.Add(Badge(DamageTypes.SchoolOf(entry.Unit.AutoAttackDamageType).ToString()));
+                if (entry.Unit.AutoAttackDamageType != Guildmaster.Data.Definitions.DamageType.Undefined)
+                    badges.Add(Badge(entry.Unit.AutoAttackDamageType.ToString()));
                 badges.Add(Badge(entry.Unit.CreatureType.ToString()));
                 badges.Add(Badge(entry.Unit.AttackType.ToString()));
                 if (entry.Unit.ResourceType != ResourceType.None)

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -28,15 +28,15 @@ namespace Guildmaster.Combat
     }
 
     /// <summary>
-    /// Data-driven строитель боя из <see cref="EncounterData"/>: сбрасывает текущий бой на месте
-    /// (<see cref="CombatSimulation.ResetBattle"/> + <see cref="RuntimeUnitFactory.ResetIds"/>) и спавнит
-    /// вражескую сторону из энкаунтера (team 1) + переданную player-сторону (team 0). Приходит на смену
-    /// заготовке <c>BattleSetupBuilder</c> (вики «13» §3.1). Реюз движка переключения без перезагрузки сцены.
+    /// Data-driven строитель СОСТАВА боя: ставит вражескую сторону из <see cref="EncounterData"/>
+    /// (team 1) и переданную player-сторону (team 0). Собирает состав, а не бой: рождение и смерть боя
+    /// принадлежат <c>BattleHost</c> и его скоупу.
     /// </summary>
     /// <remarks>
-    /// Хранит последний загруженный бой для рестарта на месте (<see cref="Reload"/>, dev-R). Сервис живёт
-    /// в боевом скоупе — после F5 (релоад сцены) создаётся заново, поэтому «последний бой» не течёт между
-    /// боями через статику (в отличие от QC-команд).
+    /// <b>Загрузчик больше не помнит «последний бой».</b> Он был нужен рестарту на месте, пока боевой
+    /// скоуп жил всю сессию; с 02.08.2026 рестарт — это новый скоуп с тем же пресетом
+    /// (<c>BattleHost.Restart</c>), и помнить нечего. Здесь остался только состав: поставить сторону,
+    /// доспавнить врагов, пересобрать расстановку внутри идущего боя.
     /// </remarks>
     public sealed class EncounterLoader
     {
@@ -44,19 +44,15 @@ namespace Guildmaster.Combat
         private readonly CombatSimulation   _simulation;
         private readonly IContentDatabase   _content;
 
-        // Последний загруженный бой — для рестарта на месте (dev-R). Player-сторона копируется в свой список.
-        private EncounterData     _lastEncounter;
-        private List<PlayerSpawn> _lastPlayerSide;
-
-        // Сторона противника, заданная списком (полигон). Взаимоисключима с _lastEncounter: бой знает
-        // своего врага либо составом, либо энкаунтером — перезапуск должен повторить ровно тот способ.
-        private List<PlayerSpawn> _lastOpponentSide;
-
         public EncounterLoader(RuntimeUnitFactory factory, CombatSimulation simulation, IContentDatabase content)
         {
             _factory    = factory;
             _simulation = simulation;
             _content    = content;
+
+            // Разводка призывов (M10): бой умеет ставить тела, но собирать их из SO — работа фабрики.
+            // Точка одна и живёт здесь же, где собирается состав боя.
+            _simulation.BindSummonFactory(factory);
         }
 
         /// <summary>
@@ -68,8 +64,9 @@ namespace Guildmaster.Combat
         public event System.Action<BattlePresetData> FreeDeploymentRequested;
 
         /// <summary>
-        /// Загрузить бой: прерывает текущий, спавнит врагов энкаунтера (team 1) + player-сторону (team 0),
-        /// запоминает как «последний» для <see cref="Reload"/>.
+        /// Пересобрать состав ИДУЩЕГО боя: очистить арену и поставить врагов энкаунтера (team 1) плюс
+        /// player-сторону (team 0). Для пере-расстановки — когда игрок двигает строй и состав ставится
+        /// заново на том же бою.
         /// </summary>
         /// <param name="encounter">Состав врагов. null — no-op с предупреждением.</param>
         /// <param name="playerSide">Player-юниты (team 0). null/пусто — бой без союзников (превью врагов).</param>
@@ -81,31 +78,7 @@ namespace Guildmaster.Combat
                 return;
             }
 
-            _lastEncounter  = encounter;
-            _lastPlayerSide = CopyPlayerSide(playerSide);
-            _lastOpponentSide = null; // враг задан энкаунтером — списочная сторона больше не в силе
-
-            Build(encounter, _lastPlayerSide);
-        }
-
-        /// <summary>
-        /// Загрузить готовый бой (<see cref="BattlePresetData"/>): враги энкаунтера (team 1) + player-ростер
-        /// пресета (team 0). <see cref="DeploymentMode.Fixed"/> — спавн сразу по сохранённым позициям;
-        /// <see cref="DeploymentMode.Free"/> — интерактивная расстановка (шаг 4), пока ведёт себя как Fixed.
-        /// Реюзит <see cref="Load"/> — «последний бой» ставится для <see cref="Reload"/>/R.
-        /// </summary>
-        public void LoadPreset(BattlePresetData preset)
-        {
-            if (preset == null)          { Debug.LogWarning("[EncounterLoader] - LoadPreset: preset == null"); return; }
-            if (preset.Encounter == null) { Debug.LogWarning($"[EncounterLoader] - пресет '{preset.Id}': не задан энкаунтер"); return; }
-
-            // Ставим ростер (team 0) + врагов (team 1) в очередь спавна (ResetBattle внутри Load).
-            // Баннеры пресета (Party-скоуп) раздаются каждому юниту ростера (D1).
-            Load(preset.Encounter, BuildRosterSide(preset.Roster, preset.PartyItems));
-
-            // Free → отдаём управление фазе расстановки (пауза/флаш/drag). Fixed → бой стартует сам.
-            if (preset.DeploymentMode == DeploymentMode.Free)
-                FreeDeploymentRequested?.Invoke(preset);
+            Build(encounter, playerSide);
         }
 
         private static List<PlayerSpawn> BuildRosterSide(IReadOnlyList<PlayerSlot> roster,
@@ -123,8 +96,12 @@ namespace Guildmaster.Combat
             return side;
         }
 
-        // Предметы слота (Vessel) + баннеры команды (Party) в один список для сборки юнита. null, если оба пусты.
-        private static IReadOnlyList<ItemData> CombineItems(IReadOnlyList<ItemData> vesselItems,
+        /// <summary>
+        /// Предметы слота (Vessel) + баннеры команды (Party) в один список для сборки юнита. null, если
+        /// оба пусты. Публичный, потому что ровно тот же состав нужен телам мира вне боя: расходиться
+        /// «что надето в бою» и «что надето во дворе» не имеют права.
+        /// </summary>
+        public static IReadOnlyList<ItemData> CombineItems(IReadOnlyList<ItemData> vesselItems,
                                                             IReadOnlyList<ItemData> partyItems)
         {
             bool hasVessel = vesselItems != null && vesselItems.Count > 0;
@@ -137,28 +114,10 @@ namespace Guildmaster.Combat
             return combined;
         }
 
-        /// <summary>Перезапустить последний загруженный бой на месте (dev-R). No-op, если ничего не грузили.</summary>
-        public void Reload()
+        private void Build(EncounterData encounter, IReadOnlyList<PlayerSpawn> playerSide)
         {
-            // Бой с полигона знает врага списком, а не энкаунтером — перезапускаем тем же способом,
-            // которым он был поставлен, иначе R на Ристалище тихо ничего не делал бы.
-            if (_lastOpponentSide != null)
-            {
-                LoadSides(_lastPlayerSide, _lastOpponentSide);
-                return;
-            }
-
-            if (_lastEncounter == null)
-            {
-                Debug.LogWarning("[EncounterLoader] - Reload: последний бой не задан (сначала загрузи энкаунтер)");
-                return;
-            }
-            Build(_lastEncounter, _lastPlayerSide);
-        }
-
-        private void Build(EncounterData encounter, List<PlayerSpawn> playerSide)
-        {
-            // Сброс текущего боя на месте: OnBattleReset снимет виды/цифры и slowmo/тряску (как в QC-пути).
+            // Очистка арены перед новым составом: OnBattleReset снимет виды/цифры и slowmo/тряску.
+            // Это НЕ граница боя (её держит скоуп), а именно «поставить состав заново на том же бою».
             _simulation.ResetBattle();
             _factory.ResetIds();
 
@@ -169,20 +128,20 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
-        /// Persist-мир: поставить отряд игрока (team 0) на ЧИСТУЮ тест-арену вне боя. Сбрасывает текущую
-        /// сцену боя (<see cref="CombatSimulation.ResetBattle"/> + <see cref="RuntimeUnitFactory.ResetIds"/>)
-        /// и спавнит только player-сторону — врагов НЕ трогает (их доспавнит <see cref="SpawnEnemies"/> на
-        /// входе в бой). Данные — боевой ростер, разрешённый из гильдии забега (<c>GuildRoster.Resolve</c>).
+        /// Поставить отряд игрока (team 0) в начале боя. Врагов НЕ трогает — их доспавнит
+        /// <see cref="SpawnEnemies"/>. Данные — ростер, разрешённый из гильдии забега
+        /// (<c>GuildRoster.Resolve</c>).
         /// </summary>
+        /// <remarks>
+        /// Сброса здесь нет и быть не должно: скоуп боя только что родился, симуляция пуста, счётчик
+        /// Id у фабрики свой. Сброс был границей боя, пока скоуп жил всю сессию; теперь граница — сам
+        /// скоуп, а «очистить арену перед составом» осталось только у пере-расстановки внутри боя.
+        /// </remarks>
         public void PlaceParty(IReadOnlyList<PlayerSlot> roster, IReadOnlyList<ItemData> partyItems)
-        {
-            _simulation.ResetBattle();
-            _factory.ResetIds();
-            SpawnPlayerSide(BuildRosterSide(roster, partyItems));
-        }
+            => SpawnPlayerSide(BuildRosterSide(roster, partyItems));
 
         /// <summary>
-        /// Загрузить бой из ЯВНО заданных сторон, без энкаунтера: обе команды описаны списками спавнов.
+        /// Пересобрать состав из ЯВНО заданных сторон, без энкаунтера: обе команды описаны списками спавнов.
         /// Для Ристалища и любой другой площадки, где противник — такие же киты, а не авторенный состав
         /// врагов (ГДД «Modes - Proving Grounds»).
         /// </summary>
@@ -193,10 +152,6 @@ namespace Guildmaster.Combat
         /// </remarks>
         public void LoadSides(IReadOnlyList<PlayerSpawn> playerSide, IReadOnlyList<PlayerSpawn> opponentSide)
         {
-            _lastEncounter  = null;
-            _lastPlayerSide = CopyPlayerSide(playerSide);
-            _lastOpponentSide = CopyPlayerSide(opponentSide);
-
             _simulation.ResetBattle();
             _factory.ResetIds();
             SpawnSide(playerSide, team: 0);
@@ -255,19 +210,11 @@ namespace Guildmaster.Combat
                 for (int c = 0; c < count; c++)
                 {
                     // Count>1 → вертикальный кластер вокруг якоря (как компактные ряды в хардкод-боях).
-                    float dy = (c - (count - 1) * 0.5f) * u.Spacing;
-                    var pos = new Vector2(u.Position.x, u.Position.y + dy);
-                    _simulation.EnqueueUnitSpawn(_factory.Create(enemy, null, team: 1, pos));
+                    // Формулу держит сам пакет: её же читает балансный стенд, и разъехаться они не должны.
+                    _simulation.EnqueueUnitSpawn(_factory.Create(enemy, null, team: 1, u.PositionOf(c)));
                 }
             }
         }
 
-        private static List<PlayerSpawn> CopyPlayerSide(IReadOnlyList<PlayerSpawn> src)
-        {
-            if (src == null || src.Count == 0) return null;
-            var copy = new List<PlayerSpawn>(src.Count);
-            for (int i = 0; i < src.Count; i++) copy.Add(src[i]);
-            return copy;
-        }
     }
 }

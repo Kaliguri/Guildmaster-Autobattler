@@ -14,53 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.whirl_monk
   _combatClass: 0
-  _damageSchool: 0
-  _physicalSubtype: 1
-  _magicElement: 0
-  _affinity: 0
+  _autoAttackDamageType: 1
   _creatureType: 0
   _attackType: 0
   _resourceType: 1
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
+  _visual: {fileID: 11400000, guid: 3911e464d296a71469eea3e103a3a9dd, type: 2}
   _viewPrefab: {fileID: 4418477175249975121, guid: fa0ec35bf90e7fb46bcf01e163840218, type: 3}
-  _tint: {r: 1, g: 1, b: 1, a: 1}
-  _vfxColor: {r: 0.4, g: 1.734, b: 2, a: 1}
-  _vfxPalette:
-    serializedVersion: 2
-    key0: {r: 2.08, g: 2.514, b: 2.6, a: 1}
-    key1: {r: 0.44, g: 1.907, b: 2.2, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
+  _bodyShade: 0
+  _vfxTone: 14
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares:
+  - 0.5
+  - 0.5
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
@@ -69,10 +47,7 @@ MonoBehaviour:
     Value: 25
   - Stat: 27
     Op: 3
-    Value: 100
-  - Stat: 28
-    Op: 3
-    Value: 80
+    Value: 60
   - Stat: 9
     Op: 3
     Value: 1
@@ -92,18 +67,18 @@ MonoBehaviour:
   - _id: whirl_push
     _effects:
     - {fileID: 11400000, guid: 797317b8c41510641b4e40412ba219f7, type: 2}
-    _baseCooldown: 7
-    _resourceCost: 35
+    _selfEffects: []
+    _baseCooldown: 0
+    _resourceCost: 60
     _targetMode: 1
     _damageMultiplier: 0
-    _schoolOverride: 0
-    _physicalSubtypeOverride: 0
-    _magicElementOverride: 0
-    _affinityOverride: 0
+    _damageType: 0
     _areaShape: 0
     _areaRadius: 0
     _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
     _castCondition: 1
     _castConditionCount: 1
     _castConditionRadius: 6
@@ -111,9 +86,24 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
     _displaces: 1
     _displaceDistance: 4
-    _displaceTicks: 6
     _displaceDamageMult: 1.5
     _displaceWidth: 1.5
     _visualSlot: 0

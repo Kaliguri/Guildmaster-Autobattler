@@ -58,12 +58,62 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Боковой (тангенциальный) уход при кайте: дуга вокруг цели вместо пятящегося отхода. 0 = выкл.")]
         [SerializeField] private float _kiteStrafeWeight = SimTuning.Default.KiteStrafeWeight;
 
+        [TabGroup("Tuning", "Смещение"), SuffixLabel("ед/с", overlay: true), LabelText("Скорость полёта (дефолт)")]
+        [Tooltip("Скорость отбрасывания по умолчанию, мировых единиц в секунду. Длительность полёта = дистанция ÷ скорость, поэтому дальний толчок держит цель в оглушении дольше. Источник может задать свою скорость в запросе смещения — «сколько тиков лететь» не настраивается нигде намеренно.")]
+        [SerializeField] private float _displaceSpeedPerSecond = SimTuning.Default.DisplaceSpeedPerSecond;
+        [TabGroup("Tuning", "Смещение"), LabelText("Ширина коридора «ядра»")]
+        [Tooltip("Во сколько раз коридор летящего тела шире заданной ширины (1.25 = +25%). Толчок в плотный строй должен цеплять соседей, а не только тех, кто ровно на линии.")]
+        [SerializeField] private float _cannonballWidthMult = SimTuning.Default.CannonballWidthMult;
+        [TabGroup("Tuning", "Смещение"), LabelText("Урон об край арены")]
+        [Tooltip("Доля урона толчка, добиваемая цели, впечатанной в край арены (1 = ещё раз столько же). 0 = удар о стену безвреден.")]
+        [SerializeField] private float _wallImpactDamageMult = SimTuning.Default.WallImpactDamageMult;
+        [TabGroup("Tuning", "Смещение"), SuffixLabel("с", overlay: true), LabelText("Лежит после удара о стену")]
+        [Tooltip("Сколько цель лежит оглушённой, впечатавшись в край арены. Полёт при этом СТОИТ (скольжение вдоль стены выглядит сломанным), а реактивы «на конец смещения» — например телепорт Монаха — срабатывают уже после лежания.")]
+        [SerializeField] private float _wallImpactStunSeconds = SimTuning.Default.WallImpactStunSeconds;
+
         [TabGroup("Tuning", "Овертайм"), SuffixLabel("с", overlay: true), LabelText("Начало овертайма")]
         [Tooltip("С какой секунды боя урон начинает расти. Медиана боя — 20-29 с, так что до порога доживает только клинч.")]
         [SerializeField] private float _overtimeStartSeconds = SimTuning.Default.OvertimeStartSeconds;
         [TabGroup("Tuning", "Овертайм"), LabelText("Прибавка урона за секунду")]
         [Tooltip("Насколько растёт НАНОСИМЫЙ урон за каждую секунду сверх порога (0.05 = +5%). Лечение и щиты не растут — этим клинч и ломается. 0 = овертайм выключен.")]
         [SerializeField] private float _overtimeDamagePerSecond = SimTuning.Default.OvertimeDamagePerSecond;
+
+        [TabGroup("Tuning", "Спринт"), LabelText("Множитель скорости в разбеге")]
+        [Tooltip("Во сколько раз юнит быстрее на дальнем подходе (1.3 = +30%). Ускорение живёт в СИМУЛЯЦИИ, а не в анимации: иначе бегущие ноги обгонят позицию. Меняет время подхода — после правки нужен прогон бенча. 1 = спринта нет.")]
+        [SerializeField] private float _sprintSpeedMult = SimTuning.Default.SprintSpeedMult;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("ед", overlay: true), LabelText("Зазор входа в разбег")]
+        [Tooltip("На сколько дальше своей досягаемости должна быть цель, чтобы юнит побежал. Считается ЗАЗОР сверх досягаемости, а не сырая дистанция: у стрелка с досягаемостью 8 сырой порог держал бы разбег включённым всегда.")]
+        [SerializeField] private float _sprintEnterGap = SimTuning.Default.SprintEnterGap;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("ед", overlay: true), LabelText("Зазор выхода из разбега")]
+        [Tooltip("Зазор, на котором разбег заканчивается. Должен быть МЕНЬШЕ входа: полоса между ними и есть гистерезис, без него разбег мигал бы на каждой короткой перебежке.")]
+        [SerializeField] private float _sprintExitGap = SimTuning.Default.SprintExitGap;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("с", overlay: true), LabelText("Шаг перед разгоном")]
+        [Tooltip("Сколько юнит идёт ОБЫЧНЫМ шагом, прежде чем начать разгоняться. Без этой паузы разбег включается щелчком: и скорость, и клип меняются в один тик, что читается как телепорт. 0 = разгон начинается сразу.")]
+        [SerializeField] private float _sprintWalkSeconds = SimTuning.Default.SprintWalkSeconds;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("с", overlay: true), LabelText("Время разгона")]
+        [Tooltip("За сколько секунд прибавка скорости набирается от нуля до полной. По этой же доле показ подмешивает клип бега к шагу, поэтому число правит и движение, и картинку разом.")]
+        [SerializeField] private float _sprintRampSeconds = SimTuning.Default.SprintRampSeconds;
+
+        [TabGroup("Tuning", "Рекаст"), SuffixLabel("x", overlay: true), LabelText("Ускорение доигрыша")]
+        [Tooltip("Во сколько раз быстрее доигрывает атака, оборванная рекастом (2 = вдвое). Рекаст именно УСКОРЯЕТ, а не снимает фазу: снятая убрала бы окно чужого ответа целиком, ускоренная лишь сокращает его. 1 = доигрыш обычный, рекаст даёт только пропуск очереди.")]
+        [SerializeField] private float _recastRecoverySpeed = SimTuning.Default.RecastRecoverySpeed;
+        [TabGroup("Tuning", "Рекаст"), SuffixLabel("x", overlay: true), LabelText("Ускорение замаха")]
+        [Tooltip("Во сколько раз быстрее замах удара, вышедшего по рекасту (2 = вдвое). Сокращает ВЕСЬ свинг: контакт наступает раньше, доигрыш после него — обычной длины. Число отдельное от ускорения доигрыша намеренно — этим крутится читаемость телеграфа, и парированию нужно, чтобы окно осталось.")]
+        [SerializeField] private float _recastWindupSpeed = SimTuning.Default.RecastWindupSpeed;
+
+        [TabGroup("Tuning", "Маскировка"), SuffixLabel("ед", overlay: true), LabelText("Радиус обнаружения: Слабая")]
+        [Tooltip("С какого расстояния враг замечает слабо замаскированного. Обнаружение КОМАНДНОЕ: увидел один — видит вся команда, отошли все — снова пропал.")]
+        [SerializeField] private float _concealWeakRadius = SimTuning.Default.ConcealWeakRadius;
+        [TabGroup("Tuning", "Маскировка"), SuffixLabel("ед", overlay: true), LabelText("Радиус обнаружения: Средняя")]
+        [Tooltip("То же для средней ступени.")]
+        [SerializeField] private float _concealMediumRadius = SimTuning.Default.ConcealMediumRadius;
+        [TabGroup("Tuning", "Маскировка"), SuffixLabel("ед", overlay: true), LabelText("Радиус обнаружения: Сильная")]
+        [Tooltip("То же для сильной. Держать НЕ больше досягаемости ближнего боя, иначе сильная маскировка ничем не отличается от инвиза: подошедший ударить всё равно её не снимет.")]
+        [SerializeField] private float _concealStrongRadius = SimTuning.Default.ConcealStrongRadius;
+
+        [TabGroup("Tuning", "Комбо"), SuffixLabel("с", overlay: true), LabelText("Разрыв серии Атак")]
+        [Tooltip("Сколько боец должен пробыть ВНЕ атакующего лупа (нет цели, оглушён, бежит вне досягаемости), чтобы Комбо порвалось и началось заново. Боевое ожидание между ударами серию не рвёт. На этом держатся цикл ударов голема и «каждая третья» Драугра: порвалось — цикл начинается с обычного удара, взведённый заряд гаснет.")]
+        [SerializeField] private float _comboBreakSeconds = SimTuning.Default.ComboBreakSeconds;
 
         /// <summary>Снять иммутабельный снапшот для бейка на старте боя.</summary>
         public SimTuning ToSnapshot() => new SimTuning(
@@ -81,7 +131,22 @@ namespace Guildmaster.Data.Definitions
             _fleeWallMargin,
             _fleeThreatRadius,
             _kiteStrafeWeight,
+            _displaceSpeedPerSecond,
+            _cannonballWidthMult,
+            _wallImpactDamageMult,
+            _wallImpactStunSeconds,
             _overtimeStartSeconds,
-            _overtimeDamagePerSecond);
+            _overtimeDamagePerSecond,
+            _sprintSpeedMult,
+            _sprintEnterGap,
+            _sprintExitGap,
+            _sprintWalkSeconds,
+            _sprintRampSeconds,
+            _recastRecoverySpeed,
+            _recastWindupSpeed,
+            _concealWeakRadius,
+            _concealMediumRadius,
+            _concealStrongRadius,
+            _comboBreakSeconds);
     }
 }

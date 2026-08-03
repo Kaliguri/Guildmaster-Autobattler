@@ -1,7 +1,7 @@
 using System.Text;
 using Guildmaster.Core.Arena;
+using Guildmaster.Core.DevConsole;
 using Guildmaster.Presentation.Arena;
-using QFSW.QC;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -14,7 +14,22 @@ namespace Guildmaster.DevTools
     /// </summary>
     public static class ArenaDevCommands
     {
-        [Command("gm_arena_skins", "Список обликов арены (id) и какой надет сейчас")]
+        /// <summary>Положить команды арены в набор модуля (снимаются вместе с ним).</summary>
+        public static void Register(DevCommandSet set)
+        {
+            if (set == null) return;
+
+            set.Add("arena", "Облики арены: какие есть и какой надет", _ => Skins());
+            set.Add("arena_swap", "Сменить облик арены с анимацией перехода", a => Swap(a.GetString(0)),
+                new DevParam("skinId", DevParamType.String));
+            set.Add("arena_set", "Надеть облик мгновенно, без анимации", a => Set(a.GetString(0)),
+                new DevParam("skinId", DevParamType.String));
+            set.Add("arena_rush", "Доиграть идущий переход рывком", _ => Rush());
+#if UNITY_EDITOR
+            set.Add("arena_demo", "Собрать демо-облик «stone» из каменного тайлсета", _ => BuildDemoSkin());
+#endif
+        }
+
         public static string Skins()
         {
             ArenaSkinSwapper swapper = Swapper();
@@ -28,7 +43,7 @@ namespace Guildmaster.DevTools
             return sb.ToString();
         }
 
-        [Command("gm_arena_swap", "Сменить облик арены с анимацией: gm_arena_swap <skinId>")]
+
         public static string Swap(string skinId)
         {
             ArenaSkinSwapper swapper = Swapper();
@@ -41,7 +56,7 @@ namespace Guildmaster.DevTools
         }
 
 #if UNITY_EDITOR
-        [Command("gm_arena_demo", "Собрать демо-облик 'stone' из каменного тайлсета — чтобы было что показывать")]
+
         public static string BuildDemoSkin()
         {
             ArenaSkinSwapper swapper = Swapper();
@@ -81,7 +96,7 @@ namespace Guildmaster.DevTools
         }
 #endif
 
-        [Command("gm_arena_rush", "Резко ускорить идущий переход (то же, что Space)")]
+
         public static string Rush()
         {
             ArenaSkinSwapper swapper = Swapper();
@@ -92,7 +107,7 @@ namespace Guildmaster.DevTools
             return "Ускорено.";
         }
 
-        [Command("gm_arena_set", "Надеть облик мгновенно, без анимации: gm_arena_set <skinId>")]
+
         public static string Set(string skinId)
         {
             ArenaSkinSwapper swapper = Swapper();

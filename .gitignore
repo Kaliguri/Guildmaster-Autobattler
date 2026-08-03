@@ -145,3 +145,12 @@ FMOD Project/Candidates/
 
 # venv локальной генерации (Stable Audio Open, ~5 ГБ)
 scripts/audio/.venv-gen/
+
+# Референс-проект Celeste (FMOD Studio, ~600 МБ) — читаем, как устроена речь блипами.
+# Не наш ассет: лицензия Power Up Audio + Lena Raine разрешает только образовательное и личное
+# использование, поэтому в репозиторий он не едет ни при каких условиях. Скачивается вручную
+# с fmod.com/download#demos (вкладка Demos, нужен бесплатный аккаунт).
+fmodstudio20000celeste-project/
+
+# Лаборатория: сборка tsc из docs/lab/src, генерат в git не кладём
+docs/lab/dist/

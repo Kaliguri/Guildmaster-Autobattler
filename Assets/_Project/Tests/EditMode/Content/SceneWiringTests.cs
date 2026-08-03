@@ -28,15 +28,14 @@ namespace Guildmaster.Tests.EditMode.Content
             ["RootLifetimeScope"] = new[]
             {
                 "_contentDatabase",   // без него ContentRegistry падает прямо в Configure
-                "_gameConfig",
-                "_statsConfig",       // потребитель — IUnitStatPreview: пусто = панель инвентаря врёт
-                "_classBalanceConfig",
+                "_gameConfig",        // из него же приходят StatsConfig/ClassBalanceConfig для IUnitStatPreview
                 "_actConfig",         // владелец параметров карты акта (T-5), фолбэк — второй владелец
             },
             ["CombatLifetimeScope"] = new[]
             {
-                "_statsConfig",
-                "_classBalanceConfig",
+                // Стат-конфиги боевая сцена больше не держит своими полями — берёт их из GameConfig
+                // (миграция 2026-07-30). Пусто = скоуп не соберётся: armorK и классовый каскад брать негде.
+                "_gameConfig",
             },
             ["UiRootBootstrap"] = new[]
             {
@@ -59,6 +58,12 @@ namespace Guildmaster.Tests.EditMode.Content
                 "_loadoutInventoryScreen",
                 "_arcanaCard",
             },
+            ["WorldLifetimeScope"] = new[]
+            {
+                // Из этого префаба рождается КАЖДЫЙ бой. Пусто = вход в узел упирается в красную ошибку,
+                // и заметно это станет только в игре, на первом же бою (02.08.2026, шаг 1б).
+                "_battleScopePrefab",
+            },
             ["CombatPresenter"] = new[]
             {
                 // Единственный владелец цветов HP и щита (T-12/T-13). Пусто = бар и боевые цифры
@@ -67,8 +72,14 @@ namespace Guildmaster.Tests.EditMode.Content
             },
         };
 
-        /// <summary>Ассеты, которые обязаны совпадать во всех сценах, где вообще объявлены.</summary>
-        private static readonly string[] SharedAcrossScenes = { "_statsConfig", "_classBalanceConfig" };
+        /// <summary>
+        /// Ассеты, которые обязаны совпадать во всех сценах, где вообще объявлены.
+        /// <para>С 2026-07-30 здесь один <c>_gameConfig</c>, а не пара стат-конфигов: играющий экземпляр
+        /// <c>StatsConfig</c>/<c>ClassBalanceConfig</c> выбран ВНУТРИ этого ассета, поэтому сцены не могут
+        /// разъехаться по ним — им нечем. Что ссылки внутри самого ассета не пусты, проверяет
+        /// <c>ConfigValidationTests</c>.</para>
+        /// </summary>
+        private static readonly string[] SharedAcrossScenes = { "_gameConfig" };
 
         [Test]
         public void EveryBuildScene_ExistsOnDisk()

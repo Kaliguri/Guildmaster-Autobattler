@@ -43,8 +43,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          lfs: true
+        # Без lfs: true намеренно. LFS в репозитории не настроен, а если его завести,
+        # эта строка начнёт качать LFS-объекты на КАЖДЫЙ прогон: ~69 прогонов в месяц
+        # против 1 ГБ бесплатной квоты трафика — она сгорит в первый день, и причину
+        # будут искать в сборке. Замер и альтернативы: journal 2026-07-30-lfs-does-not-pay-here.
 
       - name: Cache Library
         uses: actions/cache@v4
@@ -66,7 +68,16 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: EditMode Test Results
 
+      # PlayMode гоняется ТОЛЬКО на master (решение Макса 03.08.2026). Он поднимает плеер и стоит
+      # заметно дороже EditMode, а ловит другое — жизненный цикл сцен и бута. На PR узкое место это
+      # тесты (сборка идёт параллельно и финиширует раньше), поэтому вынос PlayMode к релизной ветке
+      # укорачивает именно ожидание, а не «что-нибудь».
+      #
+      # Размен назван вслух: поломку жизненного цикла PR теперь не увидит — она всплывёт перед
+      # вливанием в master, где чинить дороже, чем в ветке. Если такое случится дважды, правило стоит
+      # пересмотреть, а не терпеть.
       - name: Run PlayMode Tests
+        if: github.ref == 'refs/heads/master'
         uses: game-ci/unity-test-runner@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -112,8 +123,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          lfs: true
+        # Без lfs: true намеренно. LFS в репозитории не настроен, а если его завести,
+        # эта строка начнёт качать LFS-объекты на КАЖДЫЙ прогон: ~69 прогонов в месяц
+        # против 1 ГБ бесплатной квоты трафика — она сгорит в первый день, и причину
+        # будут искать в сборке. Замер и альтернативы: journal 2026-07-30-lfs-does-not-pay-here.
 
       # The runner image ships toolchains we do not use; the project plus its
       # Library eats the headroom they leave.

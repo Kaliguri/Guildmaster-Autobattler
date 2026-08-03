@@ -11,10 +11,13 @@
     "Guildmaster.Presentation",
     "Guildmaster.Game",
     "Guildmaster.Guild",
+    "Guildmaster.Net",
     "Guildmaster.UI",
     "Guildmaster.ContentHub.Editor",
+    "Guildmaster.AnimationLab.Editor",
     "UniTask",
     "MessagePipe",
+    "VContainer",
     "Unity.UI.TestFramework.Runtime",
     "Unity.UI.TestFramework.Editor"
   ],

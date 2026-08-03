@@ -29,6 +29,8 @@ namespace Guildmaster.Presentation
         private static readonly Color RingDragValidCol   = new Color(0.45f, 1.00f, 0.55f, 0.95f); // тащу, можно ставить
         private static readonly Color RingDragInvalidCol = new Color(1.00f, 0.40f, 0.40f, 0.95f); // тащу, нельзя
 
+        private const int GhostBaseOrder = 1;   // призрак над кругами-опорами; внутри него — порядок частей тела
+
         private const float RingNormalThickness = 0.035f;
         private const float RingBoldThickness   = 0.075f;
         // Круг рисуется КРУПНЕЕ сим-радиуса тела (реш. Макса 2026-07-26: «в размер тела» смотрелось странно —
@@ -41,7 +43,8 @@ namespace Guildmaster.Presentation
         private int _sortingLayerId;
         private readonly List<(Line line, DeploymentZone zone)> _zoneLines = new();
         private readonly List<Disc> _rings = new(); // пул кругов-опор под юнитами (QA #20)
-        private SpriteRenderer _ghost;     // призрак-силуэт при drag (копия кадра спрайта юнита)
+        private readonly List<SpriteRenderer> _ghostParts = new(); // пул частей призрака (у скелета их полтора десятка)
+        private Transform _ghostRoot;      // общий родитель частей призрака: гасится/двигается одним куском
         private bool _extendedHighlight;
 
         /// <summary>Собрать оверлей из данных арены (рамки зон + спрайт-призрак). Зовётся один раз.</summary>
@@ -53,8 +56,10 @@ namespace Guildmaster.Presentation
                 foreach (DeploymentZone zone in layout.Zones)
                     BuildZoneBorder(zone); // QA #10: рисуем обе стороны (свои + вражьи)
 
-            _ghost = MakeGhost();
-            _ghost.gameObject.SetActive(false);
+            var ghostRoot = new GameObject("Ghost");
+            ghostRoot.transform.SetParent(transform, false);
+            _ghostRoot = ghostRoot.transform;
+            _ghostRoot.gameObject.SetActive(false);
 
             gameObject.SetActive(false);
         }
@@ -76,20 +81,51 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Ghost-призрак при drag (QA #9): полупрозрачная копия силуэта юнита в целевой точке ног
-        /// <paramref name="feet"/> со смещением арта <paramref name="spriteOffset"/> (спрайт рисуется выше ног).
-        /// Тинт по валидности drop (зелёный/красный). active=false — прячет призрак.
+        /// Ghost-призрак при drag (QA #9): полупрозрачная копия силуэта юнита, поставленная ногами в
+        /// <paramref name="feet"/>. Части рисуются со своими позами из силуэта — у составного юнита призрак
+        /// повторяет ТЕКУЩУЮ позу тела, а не один кадр торса. Тинт по валидности drop (зелёный/красный).
+        /// active=false — прячет призрак.
         /// </summary>
-        public void SetGhost(bool active, Vector2 feet, Vector2 spriteOffset, Sprite sprite, bool flipX, Vector3 scale, bool valid)
+        public void SetGhost(bool active, Vector2 feet, in UnitSilhouette silhouette, bool valid)
         {
-            if (_ghost == null) return;
-            _ghost.gameObject.SetActive(active && sprite != null);
-            if (!active || sprite == null) return;
-            _ghost.sprite               = sprite;
-            _ghost.flipX                = flipX;
-            _ghost.color                = valid ? GhostValidTint : GhostInvalidTint;
-            _ghost.transform.position   = new Vector3(feet.x + spriteOffset.x, feet.y + spriteOffset.y, OverlayZ - 0.01f);
-            _ghost.transform.localScale = scale;
+            if (_ghostRoot == null) return;
+
+            if (!active || !silhouette.Valid)
+            {
+                _ghostRoot.gameObject.SetActive(false);
+                return;
+            }
+
+            _ghostRoot.gameObject.SetActive(true);
+            _ghostRoot.position = new Vector3(feet.x, feet.y, OverlayZ - 0.01f);
+
+            SilhouettePart[] parts = silhouette.Parts;
+            while (_ghostParts.Count < parts.Length) _ghostParts.Add(MakeGhostPart());
+
+            Color tint = valid ? GhostValidTint : GhostInvalidTint;
+            for (int i = 0; i < _ghostParts.Count; i++)
+            {
+                SpriteRenderer sr = _ghostParts[i];
+                if (i >= parts.Length)
+                {
+                    if (sr.gameObject.activeSelf) sr.gameObject.SetActive(false);
+                    continue;
+                }
+
+                SilhouettePart part = parts[i];
+                sr.gameObject.SetActive(true);
+                sr.sprite = part.Sprite;
+                sr.flipX  = part.FlipX;
+                sr.color  = tint;
+                // Поза части приходит матрицей относительно ног: в ней и поворот от клипа, и зеркало
+                // отражённого тела. Раскладываем её в локальный трансформ — призрак живёт под общим корнем.
+                part.Decompose(out Vector3 pos, out Quaternion rot, out Vector3 scale);
+                sr.transform.localPosition = pos;
+                sr.transform.localRotation = rot;
+                sr.transform.localScale    = scale;
+                // Внутренний порядок частей призрак обязан сохранять, иначе рука уезжает за спину.
+                sr.sortingOrder = GhostBaseOrder + (parts.Length - 1 - part.Order);
+            }
         }
 
         /// <summary>
@@ -188,13 +224,13 @@ namespace Guildmaster.Presentation
             return disc;
         }
 
-        private SpriteRenderer MakeGhost()
+        private SpriteRenderer MakeGhostPart()
         {
-            var go = new GameObject("Ghost");
-            go.transform.SetParent(transform, false);
+            var go = new GameObject("GhostPart");
+            go.transform.SetParent(_ghostRoot, false);
             var sr = go.AddComponent<SpriteRenderer>();
             sr.sortingLayerID = _sortingLayerId;
-            sr.sortingOrder   = 1; // над кругами-опорами
+            sr.sortingOrder   = GhostBaseOrder;
             return sr;
         }
 

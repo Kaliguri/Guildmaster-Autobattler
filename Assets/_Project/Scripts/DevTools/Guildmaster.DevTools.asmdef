@@ -9,7 +9,6 @@
         "Guildmaster.Guild",
         "Guildmaster.Presentation",
         "Guildmaster.UI",
-        "QFSW.QC",
         "VContainer",
         "MessagePipe",
         "UniTask",

@@ -1,4 +1,4 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Random;
@@ -44,7 +44,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var defender = TestUnit.Make(team: 0);
             var attacker = TestUnit.Make(team: 1);
 
-            var comp = new ThornsComponent().With("_reflectFraction", 0.2f).With("_damageSchool", DamageSchool.True);
+            var comp = new ThornsComponent().With("_reflectFraction", 0.2f).With("_damageType", DamageType.Pure);
             EffectData def = TestEffect.Make(baseDuration: -1f, components: comp);
             sys.Apply(defender, def, defender, ctx);
 
@@ -105,7 +105,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static EffectData Thorns()
         {
-            var comp = new ThornsComponent().With("_reflectFraction", 0.25f).With("_damageSchool", DamageSchool.True);
+            var comp = new ThornsComponent().With("_reflectFraction", 0.25f).With("_damageType", DamageType.Pure);
             return TestEffect.Make(baseDuration: -1f, components: comp);
         }
 
@@ -140,6 +140,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CurrentHP        = 500f,
                 Position         = new Vector2(x, 0f),
                 PreviousPosition = new Vector2(x, 0f),
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
     }

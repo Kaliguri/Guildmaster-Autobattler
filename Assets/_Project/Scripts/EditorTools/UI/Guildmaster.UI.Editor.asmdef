@@ -1,7 +1,9 @@
 {
   "name": "Guildmaster.UI.Editor",
   "rootNamespace": "Guildmaster.UI.EditorTools",
-  "references": [],
+  "references": [
+    "Guildmaster.Data"
+  ],
   "includePlatforms": [
     "Editor"
   ],

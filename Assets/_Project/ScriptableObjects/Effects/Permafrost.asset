@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
+  m_Name: Permafrost
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
+  _id: effect.permafrost
+  _polarity: 0
+  _tags: 1
+  _baseDuration: -1
+  _stacking: 0
+  _maxStacks: 1
+  _cleanseTier: 0
+  _unremovable: 1
+  _stacksPerApplication: 1
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  _components:
+  - rid: 7815026876324511971
+  - rid: 7815026876324511972
+  _telegraphSeconds: 0
+  _icon: {fileID: 0}
+  _infoTags: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 7815026876324511971
+      type: {class: SplitAttackOnTagComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _requiredTargetTag: 0
+        _share: 0.5
+        _damageType: 11
+        _pctTargetMaxHp: 0
+        _pctPerStack: 0
+        _stackTag: 0
+    - rid: 7815026876324511972
+      type: {class: EveryNthAttackComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _period: 3
+        _charge: {fileID: 11400000, guid: b5e7a9c1d3f6840b2e4a6c8d0f2b4e59, type: 2}

@@ -3,14 +3,16 @@ name: Docs Lint
 on:
   pull_request:
     paths:
-      - "docs/wiki/**"
+      - "docs/**"
       - "scripts/check-wiki-*.ps1"
+      - "scripts/journals.ps1"
       - ".github/workflows/docs-lint.yml"
   push:
     branches: [dev, master]
     paths:
-      - "docs/wiki/**"
+      - "docs/**"
       - "scripts/check-wiki-*.ps1"
+      - "scripts/journals.ps1"
       - ".github/workflows/docs-lint.yml"
 
 jobs:
@@ -38,3 +40,20 @@ jobs:
       - name: Check frontmatter (fail on violations)
         shell: pwsh
         run: ./scripts/check-wiki-frontmatter.ps1 -VaultPath docs/wiki
+
+  journals:
+    name: Check journals
+    runs-on: ubuntu-latest
+    steps:
+      # fetch-depth: 0 — проверка «в архив дописали, а не починили ссылку» читает
+      # numstat последнего коммита файла, а на обрезанной истории его может не быть.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Ловит журнал без объявленного жанра, брошенный журнал захода и дописанный
+      # архив. Порог заброшенности в CI мягче локального: 30 дней — заход длиной
+      # в три недели у нас норма, а вот месяц молчания уже значит «забыли».
+      - name: Check journals (fail on violations)
+        shell: pwsh
+        run: ./scripts/journals.ps1 -Check -StaleDays 30

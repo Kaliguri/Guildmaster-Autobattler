@@ -1,9 +1,9 @@
 ---
 title: "Goblins - Common - Goblin Archer"
-order: 60
+order: 10
 kind: enemy
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 enemy_group: Обычный
 species: Гоблины
 combat_class: РДД
@@ -19,6 +19,8 @@ affinity: []
 encounter_role: Дальнее давление
 mechanics:
   - Кайт
+impl: engine
+asset: [enemy.goblin_archer]
 ---
 
 # Гоблин-лучник

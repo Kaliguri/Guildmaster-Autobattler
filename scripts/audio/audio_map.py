@@ -263,6 +263,10 @@ DEPLOY = [
 # =============================================================================
 MAP = [
     E("map.node_hover.ui",    "ui_soft", [f"{RPGE}/10_UI_Menu_SFX/001_Hover_01.wav"], path="event:/SFX/Map/node_hover"),
+    # Узел проступил на интро карты. Звучит десятками подряд, пока акт прорастает, поэтому взяты
+    # бумажные «тюки» в самой тихой категории и три варианта на рандомизацию: один и тот же щелчок
+    # сорок раз подряд читался бы как треск, а не как проявление карты.
+    E("map.node_appear.ui",   "ui_soft", [f"{KRPG}/bookPlace1.ogg", f"{KRPG}/bookPlace2.ogg", f"{KRPG}/bookPlace3.ogg"], path="event:/SFX/Map/node_appear"),
     E("map.node_select.ui",   "ui",      [f"{KI}/select_002.ogg", f"{KI}/select_004.ogg", f"{KI}/select_006.ogg"], path="event:/SFX/Map/node_select"),
     E("map.node_locked.ui",   "ui",      [f"{RPGE}/10_UI_Menu_SFX/029_Decline_09.wav", f"{KI}/error_005.ogg"], path="event:/SFX/Map/node_locked"),
     E("map.travel_start.ui",  "ui_soft", [f"{KRPG}/cloth1.ogg"], path="event:/SFX/Map/travel_start"),
@@ -376,6 +380,7 @@ DESCRIPTIONS = {
     "enemy.training_dummy.hit": "wooden dummy hit, hollow wood impact",
 
     "map.node_hover.ui":   "soft interface hover blip",
+    "map.node_appear.ui":  "soft paper tap, marker placed on parchment map",
     "map.node_select.ui":  "interface select confirm click",
     "map.node_locked.ui":  "interface error buzz, denied",
     "map.travel_arrive.ui": "soft bell arrival chime",

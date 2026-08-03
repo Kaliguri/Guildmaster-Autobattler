@@ -1,0 +1,26 @@
+{
+    "name": "Guildmaster.DevTools.Editor",
+    "rootNamespace": "Guildmaster.DevTools.Editor",
+    "references": [
+        "Guildmaster.Core",
+        "VContainer",
+        "MCPForUnity.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.coplaydev.unity-mcp",
+            "expression": "",
+            "define": "MCP_FOR_UNITY"
+        }
+    ],
+    "noEngineReferences": false
+}

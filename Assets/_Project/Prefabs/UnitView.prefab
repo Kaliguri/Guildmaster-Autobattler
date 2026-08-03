@@ -149,17 +149,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.UnitView
   _sprite: {fileID: 5019486704723773761}
   _animator: {fileID: 1355228489009499667}
+  _skeletalBody: {fileID: 0}
   _healthBar: {fileID: 7127319717872641838}
   _manaBar: {fileID: 8000216100949344901}
   _worldUi: {fileID: 8019541566543569921}
-  _runUnitsPerFrame: 0.15
+  _runUnitsPerSecond: 1.5
+  _sprintUnitsPerSecond: 0
+  _poseBlendSeconds: 0.13
   _onHitFeedback:
     m_PersistentCalls:
       m_Calls: []
   _onDeathFeedback:
     m_PersistentCalls:
       m_Calls: []
-  _nameLabel: {fileID: 4136415384210637921}
   _feetPoint: {fileID: 8255871860099045492}
   _headPoint: {fileID: 7188299341035105591}
   _shotPoint: {fileID: 6574159307270148577}
@@ -257,7 +259,7 @@ SpriteRenderer:
   m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5585378942455852698
 GameObject:
@@ -445,6 +447,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4324052607940970878}
   - component: {fileID: 642148395158044877}
+  - component: {fileID: 7898112791441038802}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -466,7 +469,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5309287671395967960}
-  - {fileID: 425849765106590452}
   - {fileID: 4918292173934757491}
   m_Father: {fileID: 2245965703680616668}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -482,6 +484,19 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &7898112791441038802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8019541566543569921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f68ee0afc646074ca2ef28e55b40338, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.ConstantScreenScale
+  _referenceOrthographicSize: 5
 --- !u!1 &8712704910842961996
 GameObject:
   m_ObjectHideFlags: 0
@@ -789,132 +804,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73bebc7c752d1bb47b19c9428852c536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.HealthBarView
---- !u!1001 &5496344632759462837
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4324052607940970878}
-    m_Modifications:
-    - target: {fileID: 388555447855128248, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_Name
-      value: NameLabel
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 445.0005
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 72.2744
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.0004
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.459
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8440185174650957780, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_text
-      value: Unit Name
-      objectReference: {fileID: 0}
-    - target: {fileID: 8440185174650957780, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_fontSize
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8440185174650957780, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_fontStyle
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8440185174650957780, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 50
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
---- !u!224 &425849765106590452 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-  m_PrefabInstance: {fileID: 5496344632759462837}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4136415384210637921 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8440185174650957780, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
-  m_PrefabInstance: {fileID: 5496344632759462837}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI

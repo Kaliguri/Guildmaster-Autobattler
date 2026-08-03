@@ -65,9 +65,14 @@ namespace Guildmaster.Core.Arena
             TailAcceleration = Clamp(tailAcceleration, 0f, 1f);
         }
 
-        /// <summary>Дефолт, утверждённый на дизайн-заходе: 4.5с, длинная середина, заметный разнобой.</summary>
+        /// <summary>
+        /// Дефолт: 2с, длинная середина, заметный разнобой. Было 4.5с — и это читалось как ожидание:
+        /// поле собиралось целиком уже к третьей секунде, а последние полсекунды под ним просто висел
+        /// каркас. Поэтому вместе с длиной срезана и доля возврата (0.12 → 0.08): каркас должен уходить
+        /// сразу за последней клеткой, а не после паузы.
+        /// </summary>
         public static ArenaSwapShape Default { get; } =
-            new ArenaSwapShape(4.5f, 0.12f, 0.12f, 0.62f, 0.10f, 0.34f, 0.55f);
+            new ArenaSwapShape(2f, 0.12f, 0.08f, 0.62f, 0.10f, 0.34f, 0.55f);
 
         /// <summary>Момент конца акта 1 в общем прогрессе.</summary>
         public float DigitizeEnd => DigitizeShare;

@@ -25,7 +25,12 @@ namespace Guildmaster.Tests.EditMode.Run
             _run = new RunStateService(new InMemorySaveService(), config, new FixedProfileService());
             _run.NewRun(1, Array.Empty<RosterSlot>());
             _run.Current.Gold = 0; // старт-золото забега — не предмет этих тестов (проверяем дельту эффекта)
-            _applier = new EventEffectApplier(_run);
+            // Золото и снятие реликвии едут через шину команд; выдача и вместимость — пока напрямую.
+            var commands = new Guildmaster.Guild.Commands.RunCommandBus(
+                new Guildmaster.Guild.Commands.RunCommandApplier(_run),
+                new Guildmaster.Guild.Commands.RunCommandLog());
+
+            _applier = new EventEffectApplier(_run, commands);
         }
 
         [Test]

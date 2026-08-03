@@ -33,7 +33,7 @@ description: >-
 | Реестр контента (шов код↔контент) | `.../Definitions/IContentDatabase.cs`, `ContentRegistry.cs`, `ContentDatabase.cs` |
 | Лок-мост «контент ↔ String Table Content» | `Assets/_Project/Scripts/Data/Editor/ContentLocalization.cs` |
 | id-утилиты / поиск ассетов (editor) | `Assets/_Project/Scripts/Data/Editor/ContentIdUtility.cs` |
-| Editor-миграции ассетов (образец) | `Assets/_Project/Scripts/Data/Editor/Migrations/*.cs` |
+| Массовая правка ассетов (Undo + аудит + обратный пресет) | `Assets/_Project/Scripts/Data/Editor/ContentEditService.cs`, `ContentEditBatch.cs`, `ContentCrudService.cs` |
 | Валидация контента (id/дубли/null-ref) | `Assets/_Project/Scripts/EditorTools/ContentHub/Core/ContentValidationService.cs` |
 | Тесты контента (EditMode) | `Assets/_Project/Tests/EditMode/Content/*.cs`, `.../ContentHub/*.cs` |
 | Сами ассеты контента | `Assets/_Project/ScriptableObjects/**` |
@@ -88,6 +88,9 @@ description: >-
    SO-ссылок из логики и `Resources.Load`.
    *Почему:* реестр — единственный шов код↔контент. Он же — точка, куда позже сядут
    source-namespace под моды и addressable-загрузка (см. `references/localization-and-loading.md`).
+   *Готча:* новый контент-SO не виден геймплею, пока не прогнан
+   `Tools/Guildmaster/Sync Content Database` (в скрипте — `ContentDatabaseSync.Sync`). Симптом
+   выглядит как «id не найден», хотя ассет на диске есть.
    Прямая ссылка в обход реестра убивает этот шов.
 
 5. **Весь player-facing текст — лок-ключами, RU заполняем, прочие локали прочерк.**

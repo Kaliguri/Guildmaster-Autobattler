@@ -1,10 +1,12 @@
 ---
 title: "Species - Goblins"
-order: 30
+order: 10
 kind: enemy_faction
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 species: Гоблины
+impl: engine
+asset: [species.goblins]
 ---
 
 # Гоблины

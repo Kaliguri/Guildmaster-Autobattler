@@ -15,40 +15,48 @@ MonoBehaviour:
   _baseHp: 2000
   _baseMoveSpeed: 3
   _baseDps: 110
+  _baseHps: 110
   _profiles:
   - Class: 0
     HpMult: 1
     MoveSpeedMult: 1
-    ArmorBudget: 0
+    ArmorBudget: 60
     DpsMult: 1
+    HealMult: 0
   - Class: 1
     HpMult: 1.5
     MoveSpeedMult: 0.85
-    ArmorBudget: 0
+    ArmorBudget: 120
     DpsMult: 0.5
+    HealMult: 0
   - Class: 2
     HpMult: 0.75
     MoveSpeedMult: 1.1
-    ArmorBudget: 0
+    ArmorBudget: 30
     DpsMult: 1.4
+    HealMult: 0
   - Class: 3
     HpMult: 0.65
     MoveSpeedMult: 0.75
-    ArmorBudget: 0
+    ArmorBudget: 20
     DpsMult: 1.2
+    HealMult: 0
   - Class: 4
     HpMult: 0.65
     MoveSpeedMult: 0.75
-    ArmorBudget: 0
+    ArmorBudget: 20
     DpsMult: 0.5
+    HealMult: 0
   - Class: 5
     HpMult: 0.65
     MoveSpeedMult: 0.75
-    ArmorBudget: 0
+    ArmorBudget: 20
     DpsMult: 0.5
+    HealMult: 0
   - Class: 6
     HpMult: 0.5
     MoveSpeedMult: 0.75
-    ArmorBudget: 0
+    ArmorBudget: 20
     DpsMult: 0.5
+    HealMult: 1
   _bandWidth: 0.3

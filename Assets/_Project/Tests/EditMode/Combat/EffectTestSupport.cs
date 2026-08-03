@@ -67,6 +67,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             float areaRadius = 0f,
             float healFlat = 0f,
             float healPctTargetMissingHp = 0f,
+            EffectData healEffect = null,
             CastCondition castCondition = CastCondition.Immediately,
             int castConditionCount = 1,
             float castConditionRadius = 0f,
@@ -74,12 +75,39 @@ namespace Guildmaster.Tests.EditMode.Combat
             float castOverrideSelfHpPct = 0f,
             EffectTag triggerTag = EffectTag.None,
             bool consumesTriggerTag = false,
-            DamageSchoolOverride schoolOverride = DamageSchoolOverride.Inherit,
-            DamageAffinityOverride affinityOverride = DamageAffinityOverride.Inherit)
+            // Дефолт задан намеренно: тестовая способность — ВАЛИДНАЯ способность, а Undefined в игре
+            // означает «автор забыл» и роняет запрос урона в консоль. Тест, которому важен другой тип,
+            // передаёт его явно.
+            DamageType damageType = DamageType.Slash,
+            float castSeconds = 0f,
+            float channelSeconds = 0f,
+            float channelTickSeconds = 1f,
+            bool canMoveWhileCasting = false,
+            EffectData[] selfEffects = null,
+            bool displaces = false,
+            float displaceDistance = 4f,
+            UnitData summonUnit = null,
+            int summonCount = 1,
+            int summonLimit = 3,
+            float summonLifetimeSeconds = 0f,
+            bool summonDiesWithSummoner = false,
+            string id = "test.ability")
         {
             var a = new AbilityData();
-            Set(a, "_schoolOverride", schoolOverride);
-            Set(a, "_affinityOverride", affinityOverride);
+            Set(a, "_id", id);
+            Set(a, "_summonUnit", summonUnit);
+            Set(a, "_summonCount", summonCount);
+            Set(a, "_summonLimit", summonLimit);
+            Set(a, "_summonLifetimeSeconds", summonLifetimeSeconds);
+            Set(a, "_summonDiesWithSummoner", summonDiesWithSummoner);
+            Set(a, "_selfEffects", selfEffects ?? System.Array.Empty<EffectData>());
+            Set(a, "_displaces", displaces);
+            Set(a, "_displaceDistance", displaceDistance);
+            Set(a, "_castSeconds", castSeconds);
+            Set(a, "_channelSeconds", channelSeconds);
+            Set(a, "_channelTickSeconds", channelTickSeconds);
+            Set(a, "_canMoveWhileCasting", canMoveWhileCasting);
+            Set(a, "_damageType", damageType);
             Set(a, "_effects", effects ?? System.Array.Empty<EffectData>());
             Set(a, "_baseCooldown", cooldown);
             Set(a, "_resourceCost", cost);
@@ -89,6 +117,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(a, "_areaRadius", areaRadius);
             Set(a, "_healFlat", healFlat);
             Set(a, "_healPctTargetMissingHp", healPctTargetMissingHp);
+            Set(a, "_healEffect", healEffect);
             Set(a, "_castCondition", castCondition);
             Set(a, "_castConditionCount", castConditionCount);
             Set(a, "_castConditionRadius", castConditionRadius);
@@ -115,7 +144,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData[] grantedEffects = null,
             AbilityData[] abilities = null,
             AttackType attackType = AttackType.Melee,
-            DamageSchool school = DamageSchool.Physical,
+            DamageType autoAttackDamageType = DamageType.Slash,
             AreaShape autoAttackShape = AreaShape.None,
             float autoAttackWidth = 1f,
             float resourceOnHit = 0f,
@@ -124,19 +153,20 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData[] autoAttackEffects = null,
             bool canAttackWhileMoving = false,
             float movingAttackSpeedPenaltyPct = 0.5f,
-            DamageAffinity affinity = DamageAffinity.None,
             CreatureType creatureType = CreatureType.Living,
-            UnitClass combatClass = UnitClass.Bruiser)
+            UnitClass combatClass = UnitClass.Bruiser,
+            AttackChannel channel = default,
+            float attackRecoverySeconds = 0f,
+            float[] hitDamageShares = null)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
             Set(r, "_combatClass", combatClass);
-            Set(r, "_affinity", affinity);
             Set(r, "_creatureType", creatureType);
             Set(r, "_stats", stats ?? Array.Empty<StatModifier>());
             Set(r, "_grantedEffects", grantedEffects ?? Array.Empty<EffectData>());
             Set(r, "_abilities", abilities ?? Array.Empty<AbilityData>());
             Set(r, "_attackType", attackType);
-            Set(r, "_damageSchool", school);
+            Set(r, "_autoAttackDamageType", autoAttackDamageType);
             Set(r, "_autoAttackShape", autoAttackShape);
             Set(r, "_autoAttackWidth", autoAttackWidth);
             Set(r, "_resourceOnHit", resourceOnHit);
@@ -145,6 +175,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(r, "_autoAttackEffects", autoAttackEffects ?? Array.Empty<EffectData>());
             Set(r, "_canAttackWhileMoving", canAttackWhileMoving);
             Set(r, "_movingAttackSpeedPenaltyPct", movingAttackSpeedPenaltyPct);
+            Set(r, "_channel", channel);
+            Set(r, "_attackRecoverySeconds", attackRecoverySeconds);
+            Set(r, "_hitDamageShares", hitDamageShares);
             return r;
         }
 
@@ -165,15 +198,16 @@ namespace Guildmaster.Tests.EditMode.Combat
     {
         private const float Fps = 10f;
 
-        public static UnitVisual Make(int frameCount, int hitFrame)
+        public static UnitVisual Make(int frameCount, params int[] hitFrames)
         {
             var v = ScriptableObject.CreateInstance<UnitVisual>();
             FieldInfo attackClip = typeof(UnitVisual).GetField("_attackClip", BindingFlags.Instance | BindingFlags.NonPublic);
-            attackClip.SetValue(v, BuildAttackClip(frameCount, hitFrame));
+            attackClip.SetValue(v, BuildAttackClip(frameCount, hitFrames));
             return v;
         }
 
-        private static AnimationClip BuildAttackClip(int frameCount, int hitFrame)
+        /// <summary>Кадры контакта = маркеры клипа. Их может быть несколько — это Атака из нескольких Ударов.</summary>
+        private static AnimationClip BuildAttackClip(int frameCount, int[] hitFrames)
         {
             var clip = new AnimationClip { frameRate = Fps };
             if (frameCount > 0)
@@ -182,11 +216,15 @@ namespace Guildmaster.Tests.EditMode.Combat
                 clip.SetCurve("", typeof(Transform), "localPosition.x",
                     AnimationCurve.Linear(0f, 0f, frameCount / Fps, 0f));
             }
-            if (hitFrame > 0)
+            if (hitFrames == null || hitFrames.Length == 0) return clip;
+
+            var events = new System.Collections.Generic.List<AnimationEvent>(hitFrames.Length);
+            foreach (int frame in hitFrames)
             {
-                var ev = new AnimationEvent { functionName = ClipMarkers.MarkerFunction, time = hitFrame / Fps };
-                UnityEditor.AnimationUtility.SetAnimationEvents(clip, new[] { ev });
+                if (frame <= 0) continue;
+                events.Add(new AnimationEvent { functionName = ClipMarkers.HitFunction, time = frame / Fps });
             }
+            if (events.Count > 0) UnityEditor.AnimationUtility.SetAnimationEvents(clip, events.ToArray());
             return clip;
         }
     }
@@ -198,7 +236,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("base", new[] { new StatModifier(StatType.MaxHP, ModifierOp.Flat, maxHp) });
-            return new RuntimeUnit { Team = team, Stats = stats, CurrentHP = maxHp };
+            return new RuntimeUnit { Team = team, Stats = stats, CurrentHP = maxHp, AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash };
         }
     }
 
@@ -235,7 +273,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             TotalHealed += amount;
             Heals.Add((target, amount));
         }
-        public void SpawnProjectile(in ProjectileSpawn spawn) { }
+        /// <summary>Выпущенные снаряды: по ним отличается «ударил мгновенно» от «послал снаряд».</summary>
+        public readonly List<ProjectileSpawn> Projectiles = new List<ProjectileSpawn>();
+
+        public void SpawnProjectile(in ProjectileSpawn spawn) => Projectiles.Add(spawn);
 
         public int QueryUnitsInRadius(
             Vector2 center, float radius, List<RuntimeUnit> results, TargetFilter filter, int requestingTeam)
@@ -261,20 +302,98 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source)
             => _effects?.Apply(target, def, source, this);
 
+        /// <summary>Наложение со сроком, посчитанным по ходу боя (обездвиживание холодной линии).</summary>
+        public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+            => _effects?.Apply(target, def, source, this, durationSeconds);
+
+        /// <summary>Наложение с величиной от накладывающего (порция кровотечения).</summary>
+        public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds,
+            float potency)
+            => _effects?.Apply(target, def, source, this, durationSeconds, potency);
+
         public void ReportAreaHit(in AreaHit hit) { }
 
         public void Dispel(in DispelRequest req) => _effects?.Dispel(in req, this);
-        public void Displace(in DisplaceRequest req) { }
+        // Слепота стабу не нужна: промах проверяют свои тесты, здесь удар всегда доходит.
+        public bool ResolveAttackMiss(RuntimeUnit attacker) => false;
+        public void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target) { }
+        // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.
+        public void ReportAbilityCast(RuntimeUnit caster) { }
+        /// <summary>Заявки на смещение: заглушка их не исполняет, но помнит — по ним и проверяется толчок.</summary>
+        public readonly List<DisplaceRequest> Displaces = new List<DisplaceRequest>();
+
+        public void Displace(in DisplaceRequest req) => Displaces.Add(req);
+
+        /// <summary>Призванные тела: мок собирает их сам, чтобы срез призывов не тянул фабрику и SO.</summary>
+        public readonly List<RuntimeUnit> Summons = new List<RuntimeUnit>();
+
+        /// <summary>Кит, который мок выдаёт за призыв. null = «призывать нечем» (проверка деградации).</summary>
+        public System.Func<UnitData, int, Vector2, RuntimeUnit, RuntimeUnit> SummonFactory;
+
+        public RuntimeUnit Summon(UnitData data, int team, Vector2 position, RuntimeUnit summoner)
+        {
+            RuntimeUnit summon = SummonFactory?.Invoke(data, team, position, summoner);
+            if (summon == null) return null;
+
+            summon.Summoner = summoner;
+            summon.Position = position;
+            summon.PreviousPosition = position;
+            Summons.Add(summon);
+            UnitsInWorld.Add(summon);
+            return summon;
+        }
 
         // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
         public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
             => CombatPositioning.TeleportBehind(unit, target);
 
-        public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
-        public void NotifyAttackInterrupted(RuntimeUnit unit) { }
+        public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => AttackStarted++;
+
+        /// <summary>Сколько раз замах прерывался: по нему отличается «удар сорван» от «удар доигран».</summary>
+        public int AttackInterrupted;
+        public int AttackStarted;
+
+        public void NotifyAttackInterrupted(RuntimeUnit unit) => AttackInterrupted++;
+
+        /// <summary>Сколько Атак носитель довёл до конца и сколько раз рвалась его серия.</summary>
+        public int AttacksCompleted;
+        public int CombosBroken;
+
+        // Очереди событий у заглушки нет, поэтому носитель получает событие сразу — как и переход за
+        // спину выше. Для среза этого достаточно: проверяется реакция компонента, а не порядок раундов.
+        public void NotifyAttackCompleted(RuntimeUnit unit)
+        {
+            AttacksCompleted++;
+            _effects?.Dispatch(unit, new CombatEventData(CombatEvent.AttackCompleted, unit, unit, 0f), this);
+        }
+
+        public void NotifyComboBroken(RuntimeUnit unit)
+        {
+            CombosBroken++;
+            _effects?.Dispatch(unit, new CombatEventData(CombatEvent.ComboBroken, unit, unit, 0f), this);
+        }
+
+        public void RemoveEffect(RuntimeUnit unit, EffectData def) => _effects?.RemoveByDef(unit, def, this);
 
         public IRngService Rng => _rng;
-        public int CurrentTick => 0;
+        /// <summary>
+        /// Тик боя. Подвижный, потому что снятие эффектов судит по состоянию НАЧАЛА тика: тест, который
+        /// кладёт эффект и снимает его при том же значении, выражает не игру, а гонку обхода — ровно то,
+        /// что запрещено. Двигать через <see cref="AdvanceTick"/>.
+        /// </summary>
+        public int CurrentTick { get; private set; }
+
+        /// <summary>
+        /// Перейти на следующий тик: всё наложенное до этого становится «висевшим ранее». Переданным
+        /// юнитам проявляется отложенное — статы, маска тегов, стаки — ровно как это делает
+        /// <c>CombatSimulation.Tick</c> в конце тика. Без юнитов двигается только счётчик.
+        /// </summary>
+        public void AdvanceTick(params RuntimeUnit[] units)
+        {
+            CurrentTick++;
+            if (units == null) return;
+            for (int i = 0; i < units.Length; i++) EffectSystem.CommitPending(units[i]);
+        }
         public float ArmorK => 100f;
         public Guildmaster.Core.Simulation.SimTuning Tuning => Guildmaster.Core.Simulation.SimTuning.Default;
     }

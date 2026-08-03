@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -16,6 +16,52 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class PoisonBurnThornsSliceTests
     {
+        // --- Закон видимости: снятое в этом тике на начало тика ещё было ---
+
+        /// <summary>
+        /// Счёт «сколько разных ядов на цели» судит по НАЧАЛУ тика: яд, снятый чужим клинзом в этом же
+        /// тике, всё ещё считается, а яд, легший в этом тике, — ещё нет.
+        /// </summary>
+        /// <remarks>
+        /// Без этого исход зависел от места юнита в обходе, и зеркало расходилось: левый Друид детонировал
+        /// отравленного врага и лечил своих, а к ходу правого чужое очищение яд уже сняло — «Взрыв спор»
+        /// уходил в пустоту (тик 543 серии 5 <c>MirrorMatchTests</c>, найдено 2026-07-30). Инвариант живёт
+        /// между <c>EffectSystem</c> и <c>AbilitySystem</c>, поэтому держать его может только тест.
+        /// </remarks>
+        [Test]
+        public void UniqueTagCount_CountsWhatWasThereAtTickStart()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext(effects: sys);
+            var victim = TestUnit.Make(team: 1);
+
+            EffectData poisonA = TestEffect.Make(baseDuration: 10f, tags: EffectTag.Poison);
+            EffectData poisonB = TestEffect.Make(baseDuration: 10f, tags: EffectTag.Poison);
+
+            // Оба яда легли РАНЬШЕ текущего тика — только так они «висели на начало».
+            sys.Apply(victim, poisonA, null, ctx);
+            sys.Apply(victim, poisonB, null, ctx);
+            ctx.AdvanceTick(victim);
+
+            int tick = ctx.CurrentTick;
+            Assert.AreEqual(2, EffectSystem.CountUniqueTaggedAtTickStart(victim, EffectTag.Poison, tick),
+                "Два разных яда — два уникальных");
+
+            // Клинз снимает один из них ЭТИМ тиком. На начало тика он был, поэтому счёт не меняется:
+            // иначе тот, кто ходит после клинза, увидел бы другую цель, чем тот, кто ходил до.
+            sys.Dispel(new DispelRequest(victim, DispelTargetPolarity.Any, EffectTag.Poison,
+                dispelPower: int.MaxValue, maxCount: 1), ctx);
+
+            Assert.AreEqual(1, victim.ActiveEffects.Count, "В живом списке яд уже снят");
+            Assert.AreEqual(2, EffectSystem.CountUniqueTaggedAtTickStart(victim, EffectTag.Poison, tick),
+                "Снятое в этом тике на начало тика ещё было — счёт тот же");
+
+            // Граница тика пройдена — снятое перестаёт считаться.
+            ctx.AdvanceTick(victim);
+            Assert.AreEqual(1, EffectSystem.CountUniqueTaggedAtTickStart(victim, EffectTag.Poison, ctx.CurrentTick),
+                "Со следующего тика остался один яд");
+        }
+
         // --- Древень: ответка по площади от БРОНИ, только на авто-атаку ---
 
         [Test]
@@ -33,7 +79,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             ctx.UnitsInWorld.Add(attacker);
             ctx.UnitsInWorld.Add(bystander);
 
-            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f);
+            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f).With("_damageType", DamageType.Pierce);
             sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: comp), treant, ctx);
 
             var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None, sourceKind: DamageSourceKind.AutoAttack);
@@ -65,7 +111,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var attacker = TestUnit.Make(team: 1);
             ctx.UnitsInWorld.Add(attacker);
 
-            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f).With("_cooldownSeconds", 0.5f);
+            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f).With("_damageType", DamageType.Pierce).With("_cooldownSeconds", 0.5f);
             sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: comp), treant, ctx);
 
             var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None,
@@ -100,6 +146,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var comp = new ArmorThornsComponent()
                 .With("_armorRatio", 1f)
                 .With("_radius", 3f)
+                .With("_damageType", DamageType.Pierce)
                 .With("_growthEffect", growth)
                 .With("_radiusPerGrowthStack", 0.2f)
                 .With("_cooldownSeconds", 0f); // КД тут не мешаем — проверяем ровно радиус
@@ -131,7 +178,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var attacker = TestUnit.Make(team: 1);
             ctx.UnitsInWorld.Add(attacker);
 
-            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f);
+            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f).With("_damageType", DamageType.Pierce);
             sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: comp), treant, ctx);
 
             var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None, sourceKind: kind);
@@ -178,7 +225,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(1, ctx.DamageCalls.Count, "Каждый удар стоит носителю части своего HP");
             Assert.AreSame(pyre, ctx.DamageCalls[0].Target, "Само-урон бьёт по себе");
             Assert.AreEqual(10f, ctx.DamageCalls[0].RawDamage, 1e-4f, "1% от текущего HP (1000)");
-            Assert.AreEqual(DamageSchool.True, ctx.DamageCalls[0].School, "Само-урон идёт мимо брони");
+            Assert.AreEqual(DamageType.Pure, ctx.DamageCalls[0].Type, "Само-урон идёт мимо брони");
         }
 
         [Test]
@@ -230,8 +277,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 castConditionCount: 2,
                 triggerTag: EffectTag.Poison,
                 consumesTriggerTag: true,
-                schoolOverride: DamageSchoolOverride.True,
-                affinityOverride: DamageAffinityOverride.Poison);
+                damageType: DamageType.PoisonMagical);
 
             druid.Abilities.Add(new AbilityRuntime(burst));
 
@@ -242,8 +288,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.AreEqual(2, ctx.DamageCalls.Count, "Детонируют только отравленные");
             Assert.AreEqual(250f, ctx.DamageCalls[0].RawDamage, 1e-4f, "2.5 × AutoAttackDamage");
-            Assert.AreEqual(DamageAffinity.Poison, ctx.DamageCalls[0].Affinity);
-            Assert.AreEqual(DamageSchool.True, ctx.DamageCalls[0].School);
+            Assert.AreEqual(DamageType.PoisonMagical, ctx.DamageCalls[0].Type);
 
             Assert.AreEqual(EffectTag.None, poisoned1.EffectTagMask & EffectTag.Poison, "Тег «Яд» израсходован взрывом");
         }
@@ -274,7 +319,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             effects.Apply(enemy, poisonA, druid, ctx);
             effects.Apply(enemy, poisonA, druid, ctx); // второй стак того же яда — уник не добавляет
             effects.Apply(enemy, poisonB, druid, ctx);
-            EffectSystem.CommitPending(enemy);         // яды легли тиком раньше взрыва (закон видимости)
+            // Яды должны лечь ТИКОМ РАНЬШЕ взрыва: детонация судит по началу тика, поэтому одного
+            // CommitPending мало — он проявляет отложенное, но не переводит счётчик тика.
+            ctx.AdvanceTick(enemy);
 
             AbilityData burst = TestAbility.Make(
                 mode: AbilityTargetMode.AllEnemiesWithTag,
@@ -283,8 +330,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 healFlat: 80f,                    // лечение союзнику за ОДИН уникальный яд
                 triggerTag: EffectTag.Poison,
                 consumesTriggerTag: true,
-                schoolOverride: DamageSchoolOverride.True,
-                affinityOverride: DamageAffinityOverride.Poison);
+                damageType: DamageType.PoisonMagical);
             druid.Abilities.Add(new AbilityRuntime(burst));
 
             Assert.IsTrue(new AbilitySystem().TryCast(druid, 0, units, ctx));
@@ -310,19 +356,23 @@ namespace Guildmaster.Tests.EditMode.Combat
             sys.Apply(victim, ember, pyre, ctx);
             sys.Apply(victim, ember, pyre, ctx);
             sys.Apply(victim, ember, pyre, ctx);
+            // Топливо детонация считает по снимку начала тика, а снятие судит по тику появления, — угли
+            // должны успеть «повисеть». Сдвигаем границу тика, как это делает бой.
+            ctx.AdvanceTick(victim);
 
             EffectData ignition = TestEffect.Make(baseDuration: 0f, components:
                 new IgnitionComponent()
                     .With("_detonateTag", EffectTag.Ember)
                     .With("_damagePerStack", 15f)
-                    .With("_school", DamageSchool.Magical)
-                    .With("_magicElement", MagicElement.Fire));
+                    .With("_damageType", DamageType.Fire));
             sys.Apply(victim, ignition, pyre, ctx);
 
             Assert.AreEqual(1, ctx.DamageCalls.Count, "Детонация наносит один удар — сумму по стакам");
             Assert.AreEqual(45f, ctx.DamageCalls[0].RawDamage, 1e-3f, "15 за стак × 3 стака");
-            Assert.AreEqual(DamageSchool.Magical, ctx.DamageCalls[0].School);
-            Assert.AreEqual(MagicElement.Fire, ctx.DamageCalls[0].Element, "Взрыв — огонь: его же усиливают «Угли»");
+            Assert.AreEqual(DamageType.Fire, ctx.DamageCalls[0].Type, "Взрыв — огонь: его же усиливают «Угли»");
+            // Маска тегов тоже отложена законом видимости: снятие проявляется в конце тика, а не в
+            // момент взрыва. Проводим границу второй раз — и только теперь спрашиваем про маску.
+            ctx.AdvanceTick(victim);
             Assert.AreEqual(EffectTag.None, victim.EffectTagMask & EffectTag.Ember, "«Угли» израсходованы взрывом");
         }
 
@@ -353,13 +403,16 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             EffectData ember = EmberEffect();
             for (int i = 0; i < 10; i++) sys.Apply(victim, ember, null, ctx);
+            // Стаки под законом видимости: набранное за тик влияет на исход со следующего. В бою эту
+            // границу проводит CommitTickChanges, здесь — сдвиг тика у мока.
+            ctx.AdvanceTick(victim);
 
-            var fire = new DamageRequest(null, victim, 100f, DamageSchool.Magical, 100f,
-                sourceKind: DamageSourceKind.Periodic, element: MagicElement.Fire);
+            var fire = new DamageRequest(null, victim, 100f, DamageType.Fire, 100f,
+                sourceKind: DamageSourceKind.Periodic);
             sys.RunPreDamage(victim, in fire, ctx);
             Assert.AreEqual(1.10f, sys.PreDamageMultiplier, 1e-4f, "10 стаков = +10% урона огнём");
 
-            var slash = new DamageRequest(null, victim, 100f, DamageSchool.Physical, 100f,
+            var slash = new DamageRequest(null, victim, 100f, DamageType.Slash, 100f,
                 sourceKind: DamageSourceKind.AutoAttack);
             sys.RunPreDamage(victim, in slash, ctx);
             Assert.AreEqual(1f, sys.PreDamageMultiplier, 1e-4f, "Не-огонь «Угли» не усиливают");

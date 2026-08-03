@@ -619,6 +619,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _feelConfig: {fileID: 11400000, guid: b4321495354e86142b6e7f18dfd5b94d, type: 2}
+  _battleScopePrefab: {fileID: 8219602246781497683, guid: b641334a1e7294441ac14c8ed260adf9, type: 3}
 --- !u!4 &309113943
 Transform:
   m_ObjectHideFlags: 0
@@ -1374,7 +1375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBrain
   ShowDebugText: 0
   ShowCameraFrustum: 1
-  IgnoreTimeScale: 0
+  IgnoreTimeScale: 1
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
   UpdateMethod: 2
@@ -1384,7 +1385,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 1
-    Time: 2
+    Time: 0.7
     CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -13459,9 +13460,9 @@ MonoBehaviour:
   _live: {fileID: 2118912155}
   _sources:
   - {fileID: 2118912155}
-  _durationSeconds: 4.5
+  _durationSeconds: 2
   _digitizeShare: 0.12
-  _restoreShare: 0.12
+  _restoreShare: 0.08
   _cellSpread: 0.62
   _cellDurationMin: 0.1
   _cellDurationMax: 0.34
@@ -13915,6 +13916,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8966882846673388717, guid: 403080d7568a4f949b4bfc7128477a8c, type: 3}
   m_PrefabInstance: {fileID: 916338319}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &948545649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 948545652}
+  - component: {fileID: 948545651}
+  - component: {fileID: 948545650}
+  m_Layer: 0
+  m_Name: Battle Post FX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &948545650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948545649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 106b25378add6de46b879865efc3b30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Effects.VolumeVisualToggle
+  _id: post.battle
+  _description: "\u041F\u043E\u0441\u0442\u043E\u0431\u0440\u0430\u0431\u043E\u0442\u043A\u0430
+    \u0431\u043E\u044F (bloom \u043F\u043E HDR-\u0441\u0432\u0435\u0447\u0435\u043D\u0438\u044E)"
+--- !u!114 &948545651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948545649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 6627a8c1d8fe47448b3bd3e9501aca5c, type: 2}
+--- !u!4 &948545652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948545649}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &969611257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18764,14 +18830,16 @@ MonoBehaviour:
   _overviewCam: {fileID: 587380979}
   _devCam: {fileID: 735157761}
   _mapCam: {fileID: 2124019629}
+  _brain: {fileID: 519420034}
   _cameraZ: -10
   _minZoom: 3
-  _zoomStep: 1.5
+  _zoomFactor: 1.15
+  _zoomDamping: 16
   _devMaxZoom: 40
   _mapFreedom: 0.5
   _mapDiveZoom: 0.45
-  _panSpeed: 12
-  _devPanSpeed: 24
+  _panScreens: 0.9
+  _devPanScreens: 1.8
   _actionZoomPadding: 4
   _actionZoomDamping: 3
   _actionZoomDeadzone: 0.4
@@ -19397,3 +19465,4 @@ SceneRoots:
   - {fileID: 1597628825}
   - {fileID: 1955251940}
   - {fileID: 264353447}
+  - {fileID: 948545652}

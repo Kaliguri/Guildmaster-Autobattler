@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
+using Guildmaster.UI.Components;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -68,7 +69,7 @@ namespace Guildmaster.UI
                 int index = i; // захват копии для замыкания
                 string label  = L(ev.ChoiceLabelKey(i),  $"Вариант {i + 1}");
                 string result = L(ev.ChoiceResultKey(i), string.Empty);
-                var btn = new Button(() => { onChosen?.Invoke(index); ShowResult(result); }) { text = label };
+                var btn = new PlateButton(() => { onChosen?.Invoke(index); ShowResult(result); }) { text = label };
                 btn.AddToClassList("gm-button");
                 btn.AddToClassList("gm-event-choice");
                 choicesBox?.Add(btn);

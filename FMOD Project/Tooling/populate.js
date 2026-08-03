@@ -1080,6 +1080,18 @@
       ]
     },
     {
+      "key": "map.node_appear.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Map/node_appear",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/node_appear_01.wav",
+        "ui_soft/node_appear_02.wav",
+        "ui_soft/node_appear_03.wav"
+      ]
+    },
+    {
       "key": "map.node_select.ui",
       "action": null,
       "isDefault": false,

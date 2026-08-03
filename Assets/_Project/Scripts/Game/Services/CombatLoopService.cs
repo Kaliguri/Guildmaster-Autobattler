@@ -8,29 +8,46 @@ using VContainer.Unity;
 namespace Guildmaster.Game.Services
 {
     /// <summary>
-    /// Реалтайм-пульс боевой симуляции: accumulator-паттерн на <c>Time.deltaTime</c>.
-    /// <c>Time.deltaTime</c> используется ТОЛЬКО здесь — в <see cref="CombatSimulation"/> его нет.
+    /// Реалтайм-пульс боевой симуляции: accumulator-паттерн на <c>Time.unscaledDeltaTime</c>.
+    /// Время Unity читается ТОЛЬКО здесь — в <see cref="CombatSimulation"/> его нет.
     /// Реализует <see cref="IAsyncStartable"/> для авто-запуска через VContainer EntryPoint.
-    /// Тикует только хост (в мультиплеере); клиент применяет команды и следит за checksum.
-    /// (вики «10» §5.1).
+    /// <para><b>Собирается только у того, кто считает бой сам</b> — у владельца сеанса, будь он один
+    /// или с гостями. У гостя симуляции нет вовсе, и вместо этого цикла его скоуп получает
+    /// <see cref="GuestPlaybackLoop"/>. Прежде роль спрашивалась здесь каждый кадр, потому что боевой
+    /// скоуп поднимался на буте, когда сети ещё не было; теперь он рождается внутри сеанса, роль
+    /// известна при сборке — и ветка из горячего цикла ушла.</para>
+    /// <para><b>Почему UNSCALED:</b> пауза и slowmo — свойства ПОКАЗА, а не просчёта («сим впереди,
+    /// показ с лагом»). Масштабированное время тормозило бы и расчёт: в финальном slowmo просчёт полз
+    /// бы вместе с картинкой, хотя именно запас впереди и позволяет режиссуре знать будущее. Показ свою
+    /// долю кадра берёт от <c>Time.deltaTime</c> — там масштаб как раз нужен.</para>
     /// </summary>
-    public sealed class CombatLoopService : IAsyncStartable, ISimInterpolation
+    public sealed class CombatLoopService : IAsyncStartable
     {
         private readonly CombatSimulation _simulation;
+        private readonly Combat.Tape.BattleTapeRecorder _tapeRecorder;
+        private readonly Combat.Tape.BattleTapePlayback _playback;
+        private readonly Data.Definitions.IBattleClock  _clock;
 
         private float _accumulator;
         private bool  _running;
 
         /// <summary>
-        /// Доля шага, накопленная сверх последнего тика. Аккумулятор здесь — единственный, кто знает,
-        /// сколько времени прошло с прошлого шага, поэтому и долю отдаёт он. Презентация её только
-        /// читает (см. <see cref="ISimInterpolation"/>).
+        /// Максимум тиков разгона за кадр. Разгон нужен, чтобы сим ушёл вперёд показа: тикая ровно по
+        /// реальному времени, он никуда бы не уехал и никакого «знания будущего» не появилось.
+        /// Тот же смысл, что у анти-лавины, но с другой стороны: не догнать прошлое, а набрать запас.
         /// </summary>
-        public float Alpha => Mathf.Clamp01(_accumulator / SimConstants.TickDelta);
+        private const int MaxLeadTicksPerFrame = 30;
 
-        public CombatLoopService(CombatSimulation simulation)
+        public CombatLoopService(
+            CombatSimulation simulation,
+            Combat.Tape.BattleTapeRecorder tapeRecorder,
+            Combat.Tape.BattleTapePlayback playback,
+            Data.Definitions.IBattleClock clock)
         {
-            _simulation = simulation;
+            _simulation   = simulation;
+            _tapeRecorder = tapeRecorder;
+            _playback     = playback;
+            _clock        = clock;
         }
 
         /// <summary>
@@ -48,14 +65,27 @@ namespace Guildmaster.Game.Services
                 // сам возобновляет тик — без перезапуска цикла и без перезагрузки сцены.
                 while (_running && !cancellation.IsCancellationRequested)
                 {
+                    // Лаг — только на показ БОЯ. Мир, карта, расстановка идут в реальном времени: там
+                    // игрок нажимает сам и обязан видеть результат немедленно (уточнение Макса 2026-07-29).
+                    bool fighting = _clock != null && _clock.Phase == Data.Definitions.BattlePhase.Fighting;
+                    _playback.SetTargetLead(fighting ? Combat.Tape.BattleTapePlayback.LookaheadTicks : 0);
+
                     if (_simulation.Outcome != BattleOutcome.Ongoing)
                     {
                         _accumulator = 0f;
+                        // Бой не идёт, но юниты на арене стоят (мир, расстановка) — показ читает ленту,
+                        // поэтому кадр состояния всё равно нужен, иначе арена окажется пустой.
+                        _tapeRecorder.CaptureCurrentState();
                         await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
                         continue;
                     }
 
-                    _accumulator += Time.deltaTime;
+                    // Просчёт живёт в НЕмасштабированном времени: пауза и slowmo его не касаются.
+                    _accumulator += Time.unscaledDeltaTime;
+
+                    // Убегать вперёд дальше окна снимков нельзя: вытесним кадр, который сейчас на
+                    // экране. Так пауза (показ стоит, время просчёта идёт) не съедает картинку.
+                    if (_playback.AtWindowLimit) _accumulator = 0f;
 
                     // Анти-лавина: не больше N догоняющих тиков за кадр. Иначе один долгий кадр
                     // (GC/загрузка/alt-tab) копит время → десятки тиков → ещё больший подвис.
@@ -64,6 +94,9 @@ namespace Guildmaster.Game.Services
                            && ticksThisFrame < SimConstants.MaxCatchUpTicksPerFrame)
                     {
                         _simulation.Tick(SimConstants.TickDelta);
+                        // Кадр ленты снимается сразу за тиком: состояние на юнитах — ровно то, что
+                        // этот тик досчитал. Показ читает ленту, а не живой сим (§7.2 ТЗ).
+                        _tapeRecorder.CaptureCurrentState();
                         _accumulator -= SimConstants.TickDelta;
                         ticksThisFrame++;
 
@@ -76,6 +109,25 @@ namespace Guildmaster.Game.Services
                     {
                         _accumulator = 0f;
                     }
+
+                    // Разгон: гоним сим ВПЕРЁД показа, пока не набран запас. Это и есть механизм лага —
+                    // показ идёт в реальном времени, а сим уходит от него на окно опережения и потому
+                    // знает будущее. Бюджет на кадр держит разгон незаметным для кадровой частоты.
+                    int leadTicks = 0;
+                    while (leadTicks < MaxLeadTicksPerFrame
+                           && !_playback.HasFullLead
+                           && !_playback.AtWindowLimit
+                           && _simulation.Outcome == BattleOutcome.Ongoing)
+                    {
+                        _simulation.Tick(SimConstants.TickDelta);
+                        _tapeRecorder.CaptureCurrentState();
+                        leadTicks++;
+                    }
+
+                    // Кадр состояния — в любом случае, раз в кадр рендера. Тик мог не наступить вовсе
+                    // (пауза в расстановке, нехватка накопленного времени), а состояние при этом
+                    // меняется: игрок двигает юнитов сам. Без этого лента оставалась бы пустой.
+                    _tapeRecorder.CaptureCurrentState();
 
                     await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
                 }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Arena;
@@ -207,7 +207,13 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.Greater(moving.Position.x, 0f, "Со стрельбой на ходу юнит движется в замахе");
             Assert.AreEqual(0f, rooted.Position.x, 1e-4f, "Без флага замах рутит (поведение Ф1)");
-            Assert.AreEqual(baseline.Position.x * 0.5f, moving.Position.x, 1e-4f, "В замахе скорость вдвое ниже (штраф 50%)");
+
+            // Штраф меряем от СОБСТВЕННОЙ скорости юнита, а не от свободного соседа: тот на дистанции 10
+            // при радиусе 1 идёт в разбеге (Ф5) и полной скоростью уже не движется. Эталоном он быть
+            // перестал, но остался проверкой, что занятый свингом медленнее свободного.
+            float fullStep = moving.Stats.Get(StatType.MoveSpeed) * SimConstants.TickDelta;
+            Assert.AreEqual(fullStep * 0.5f, moving.Position.x, 1e-4f, "В замахе скорость вдвое ниже (штраф 50%)");
+            Assert.Greater(baseline.Position.x, moving.Position.x, "Свободный юнит движется быстрее занятого свингом");
         }
 
         // Regress: хвост-восстановление — тоже «занятость». Замедление держится ВЕСЬ доигрыш свинга,
@@ -233,8 +239,12 @@ namespace Guildmaster.Tests.EditMode.Combat
             sys.Tick(new List<RuntimeUnit> { baseline, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
 
             Assert.Greater(recovering.Position.x, 0f, "В хвосте-восстановлении стрелок продолжает движение");
-            Assert.AreEqual(baseline.Position.x * 0.5f, recovering.Position.x, 1e-4f,
+
+            // Как и в замахе: эталон — своя скорость, а не свободный сосед (он на этой дистанции разбегается).
+            float fullStep = recovering.Stats.Get(StatType.MoveSpeed) * SimConstants.TickDelta;
+            Assert.AreEqual(fullStep * 0.5f, recovering.Position.x, 1e-4f,
                 "В хвосте скорость вдвое ниже — штраф держится, а не только в замахе");
+            Assert.Greater(baseline.Position.x, recovering.Position.x, "Свободный юнит движется быстрее доигрывающего свинг");
         }
 
         // ===================== Фабрики / хелперы =====================
@@ -281,6 +291,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 PreviousPosition = pos,
                 Unit             = relic,
                 Positioning      = positioning,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
     }

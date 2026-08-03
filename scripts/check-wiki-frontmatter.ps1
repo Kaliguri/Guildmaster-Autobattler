@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Проверяет YAML-шапки документов Obsidian-vault (docs/wiki).
 
@@ -10,8 +10,15 @@
     status   — из закрытого списка draft|needs_review|ready|living|archive;
     updated  — дата YYYY-MM-DD.
 
-  Проверяются только каталоги из -Include (по умолчанию gdd и tech). Шаблоны
-  карточек (template-*) и служебные файлы Obsidian пропускаются.
+  Карточки контента дополнительно несут состояние реализации (опционально, у глав
+  этих полей нет):
+    impl      — engine|partial|paper, владелец факта «есть ли сущность в игре»;
+    asset     — id ассета-владельца; при impl: paper запрещён;
+    impl_note — чем механика расходится с карточкой; только вместе с impl.
+
+  Проверяются только каталоги из -Include (по умолчанию gdd и tech). Пропускаются
+  служебные файлы Obsidian; шаблоны карточек (template-*) шапку несут как все
+  и проверяются наравне.
 
   Exit 0 — нарушений нет; exit 1 — есть. С -ReportOnly всегда exit 0 (режим
   постепенного внедрения: смотрим объём, не роняя CI).
@@ -45,8 +52,12 @@ $validStatus = @('draft', 'needs_review', 'ready', 'living', 'archive', 'planned
 
 # Ярлыки кластеров: папки-кластеры ГДД, префиксы карточек контента и кластеры
 # тех-вики (Diátaxis).
+# Состояние реализации карточки контента: есть рабочая сущность в движке / есть, но расходится
+# с карточкой / только дизайн. Поле опционально — его несут карточки контента, не главы.
+$validImpl = @('engine', 'partial', 'paper')
+
 $validClusters = @(
-    'Meta', 'Vision', 'Combat', 'Run', 'Content', 'Modes', 'Roster',
+    'Meta', 'Vision', 'Combat', 'Run', 'Content', 'Modes', 'Coop', 'Roster', 'Narrative', 'Gamefeel',
     'Effect', 'Item', 'Relic', 'Species', 'Faction', 'Enemies',
     'Bandits', 'Goblins', 'Golems', 'Beasts',
     'Reference', 'Explanation', 'How-to', 'Planning'
@@ -61,6 +72,9 @@ function Add-Issue {
 
 $files = Get-ChildItem -Path $vaultRoot -Recurse -File -Filter *.md |
     Where-Object { $_.FullName -notmatch '[\\/]\.obsidian[\\/]' } |
+    # Журнал тех-решений живёт по своему шаблону из CLAUDE.md (title + date + tags, append-only):
+    # order/status/updated там смысла не имеют — записи не переставляются и не дозревают.
+    Where-Object { $_.FullName -notmatch '[\\/]tech[\\/]00-meta[\\/]journal[\\/]' } |
     Where-Object {
         $rel = $_.FullName.Substring($vaultRoot.Length).TrimStart('\', '/').Replace('\', '/')
         $top = ($rel -split '/')[0]
@@ -69,7 +83,8 @@ $files = Get-ChildItem -Path $vaultRoot -Recurse -File -Filter *.md |
 
 foreach ($f in $files) {
     $rel = $f.FullName.Substring($vaultRoot.Length).TrimStart('\', '/').Replace('\', '/')
-    $raw = Get-Content -LiteralPath $f.FullName -Raw
+    # -Encoding UTF8: в 5.1 без него .md читается как ANSI и кириллица во frontmatter бьётся.
+    $raw = Get-Content -LiteralPath $f.FullName -Raw -Encoding UTF8
     if ([string]::IsNullOrWhiteSpace($raw)) {
         Add-Issue $rel '(файл)' 'пустой файл'
         continue
@@ -130,6 +145,28 @@ foreach ($f in $files) {
     }
     else {
         Add-Issue $rel 'updated' 'поле отсутствует'
+    }
+
+    # --- impl / asset (только карточки контента) ---
+    # Состояние реализации живёт в шапке карточки — она единственный владелец факта
+    # «есть эта сущность в игре или только на бумаге». Сводки (implementation-status.md)
+    # его лишь читают, поэтому важно, чтобы значения не разъезжались.
+    if ($fm -match '(?m)^impl:\s*(.+?)\s*$') {
+        $impl = $Matches[1].Trim().Trim('"', "'")
+        if ($validImpl -notcontains $impl) {
+            Add-Issue $rel 'impl' "вне списка ($($validImpl -join '|')): «$impl»"
+        }
+        $hasAsset = $fm -match '(?m)^asset:\s*\S'
+        if ($impl -eq 'paper' -and $hasAsset) {
+            Add-Issue $rel 'asset' 'impl: paper, но указан asset — сущности в движке нет'
+        }
+    }
+    elseif ($fm -match '(?m)^asset:\s*\S') {
+        Add-Issue $rel 'asset' 'asset без поля impl — непонятно, в каком состоянии сущность'
+    }
+
+    if (($fm -match '(?m)^impl_note:\s*\S') -and ($fm -notmatch '(?m)^impl:\s*\S')) {
+        Add-Issue $rel 'impl_note' 'impl_note без поля impl'
     }
 }
 

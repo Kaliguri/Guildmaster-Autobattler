@@ -14,8 +14,17 @@ namespace Guildmaster.Game.Flow
     public sealed class EventEffectApplier
     {
         private readonly RunStateService _runStates;
+        // Золото и снятие реликвии — односторонние записи, они идут через шину команд и попадают в лог.
+        // Выдача реликвии и вместимость остались прямыми: они спрашивают «вышло ли» синхронно, а это
+        // транзакция (см. RunStateService.TrySpendGold, отложенный шаг транзакций в ТЗ кооп-вертикали).
+        private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
 
-        public EventEffectApplier(RunStateService runStates) => _runStates = runStates;
+        public EventEffectApplier(RunStateService runStates,
+            Guildmaster.Guild.Commands.IRunCommands commands)
+        {
+            _runStates = runStates;
+            _commands  = commands;
+        }
 
         /// <summary>Применить список последствий по порядку. Пишет автосейв, если что-то изменилось.</summary>
         public void Apply(IReadOnlyList<EventEffect> effects)
@@ -33,7 +42,7 @@ namespace Guildmaster.Game.Flow
             switch (e.Kind)
             {
                 case EventEffectKind.Gold:
-                    _runStates.AddGold(e.Amount);
+                    _commands.AddGold(e.Amount);
                     Debug.Log($"[EventEffect] - золото {e.Amount:+#;-#;0} → {_runStates.Current?.Gold}");
                     break;
 
@@ -45,7 +54,7 @@ namespace Guildmaster.Game.Flow
 
                 case EventEffectKind.RemoveRelic:
                     if (string.IsNullOrEmpty(e.ContentId)) { WarnNoId(e); break; }
-                    _runStates.RemoveRelic(e.ContentId);
+                    _commands.RemoveRelic(e.ContentId);
                     Debug.Log($"[EventEffect] - убран релик '{e.ContentId}'");
                     break;
 

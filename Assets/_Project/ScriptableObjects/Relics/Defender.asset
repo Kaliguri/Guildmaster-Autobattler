@@ -14,53 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.defender
   _combatClass: 1
-  _damageSchool: 0
-  _physicalSubtype: 2
-  _magicElement: 0
-  _affinity: 0
+  _autoAttackDamageType: 2
   _creatureType: 0
   _attackType: 0
   _resourceType: 1
   _visual: {fileID: 11400000, guid: 8b29cc9a0f585034a8bf5ff1edd096f4, type: 2}
   _viewPrefab: {fileID: 473228482976433472, guid: c6cd49c4c8ea4c840a0365b5d58396da, type: 3}
-  _tint: {r: 1, g: 1, b: 1, a: 1}
-  _vfxColor: {r: 2, g: 1.6, b: 0.4, a: 1}
-  _vfxPalette:
-    serializedVersion: 2
-    key0: {r: 2.6, g: 2.47, b: 2.08, a: 1}
-    key1: {r: 2.2, g: 1.76, b: 0.44, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
+  _bodyShade: 0
+  _vfxTone: 1
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
@@ -78,10 +54,7 @@ MonoBehaviour:
     Value: 0.55
   - Stat: 27
     Op: 3
-    Value: 100
-  - Stat: 28
-    Op: 3
-    Value: 0
+    Value: 50
   - Stat: 9
     Op: 3
     Value: 1
@@ -89,21 +62,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c585ce229a24f184cbb2d0431b508603, type: 2}
   _abilities:
   - _id: resolute_strike
-    _effects:
-    - {fileID: 11400000, guid: 5f8a731f13f522a4090cc75dfe269d47, type: 2}
-    - {fileID: 11400000, guid: 2d42622144fda1d44a4161e7148fc2c5, type: 2}
-    _baseCooldown: 10
+    _effects: []
+    _selfEffects:
+    - {fileID: 11400000, guid: 6e2f62909cc746c4187f8f3c7dece36a, type: 2}
+    _baseCooldown: 0
     _resourceCost: 50
     _targetMode: 1
     _damageMultiplier: 0
-    _schoolOverride: 0
-    _physicalSubtypeOverride: 0
-    _magicElementOverride: 0
-    _affinityOverride: 0
+    _damageType: 2
     _areaShape: 0
     _areaRadius: 0
     _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
     _castCondition: 0
     _castConditionCount: 1
     _castConditionRadius: 0
@@ -111,9 +83,24 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0.3
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0

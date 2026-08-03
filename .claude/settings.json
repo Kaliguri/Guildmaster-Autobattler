@@ -8,5 +8,85 @@
       "Bash(powershell *)",
       "Bash(./scripts/run-tests.ps1)"
     ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(*git *)",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/deny-broad-staging.py\"",
+            "statusMessage": "Проверяю, что стейджинг точечный",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__unityMCP__execute_code",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-execute-code.py\"",
+            "statusMessage": "Проверяю готчи execute_code",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-asset-writes.py\"",
+            "statusMessage": "Проверяю, не правлю ли ассет при живом редакторе",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/compile-check-gate.py\" mark",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(*git commit*)",
+            "command": "grep -q 'git commit' && { git show --name-only --format= HEAD | grep -q '^Assets/_Project/' && echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"Журнал решений: коммит тронул Assets/_Project. Была развилка (выбор из двух и более), грабли или новый инвариант? Если да — новый файл docs/wiki/tech/00-meta/journal/ГГГГ-ММ-ДД-slug.md по шаблону из CLAUDE.md, раздел «Где живёт правда». Существующие записи не читать. Если ни одного да — ничего не писать, git и так помнит.\"}}'; } || true",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "if": "Bash(*git commit*)",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/remind-gdd-sync.py\"",
+            "statusMessage": "Проверяю, не разошлась ли карточка ГДД",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/compile-check-gate.py\" check",
+            "statusMessage": "Проверяю, компилируется ли правка",
+            "timeout": 180
+          }
+        ]
+      }
+    ]
   }
 }

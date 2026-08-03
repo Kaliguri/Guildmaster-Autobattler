@@ -6,7 +6,8 @@
     "Guildmaster.Core",
     "Guildmaster.Data",
     "Guildmaster.Combat",
-    "Unity.Localization"
+    "Unity.Localization",
+    "MCPForUnity.Editor"
   ],
   "includePlatforms": [
     "Editor"
@@ -17,6 +18,12 @@
   "precompiledReferences": [],
   "autoReferenced": true,
   "defineConstraints": [],
-  "versionDefines": [],
+  "versionDefines": [
+    {
+      "name": "com.coplaydev.unity-mcp",
+      "expression": "",
+      "define": "MCP_FOR_UNITY"
+    }
+  ],
   "noEngineReferences": false
 }

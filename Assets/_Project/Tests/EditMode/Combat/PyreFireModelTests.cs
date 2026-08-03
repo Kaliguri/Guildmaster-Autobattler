@@ -34,17 +34,16 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.ApplyEffect(victim, BurningMarker(), pyre); // цель уже горит
             sim.Tick(SimConstants.TickDelta);               // «уже горит» = с прошлого тика (закон видимости)
 
-            var hits = new System.Collections.Generic.List<(DamageSchool school, MagicElement element, float dmg)>();
-            sim.OnDamageDealt += (src, tgt, res) => hits.Add((res.School, res.Element, res.TotalDamage));
+            var hits = new System.Collections.Generic.List<(DamageType type, float dmg)>();
+            sim.OnDamageDealt += (src, tgt, res) => hits.Add((res.Type, res.TotalDamage));
 
-            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageSchool.Physical, ArmorK,
+            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageType.Slash, ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);   // удар применяется реестром в конце тика
 
             Assert.AreEqual(2, hits.Count, "Удар по горящей цели приходит двумя половинами");
-            Assert.AreEqual(DamageSchool.Physical, hits[0].school, "Первая половина — клинок");
-            Assert.AreEqual(DamageSchool.Magical, hits[1].school, "Вторая половина — огонь");
-            Assert.AreEqual(MagicElement.Fire, hits[1].element);
+            Assert.AreEqual(DamageType.Slash, hits[0].type, "Первая половина — клинок");
+            Assert.AreEqual(DamageType.Fire, hits[1].type, "Вторая половина — огонь");
             Assert.AreEqual(100f, hits[0].dmg + hits[1].dmg, 1e-3f, "Суммарный урон удара не изменился");
         }
 
@@ -63,7 +62,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             int hits = 0;
             sim.OnDamageDealt += (src, tgt, res) => hits++;
 
-            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageSchool.Physical, ArmorK,
+            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageType.Slash, ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);   // удар применяется реестром в конце тика
 
@@ -84,8 +83,8 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(pyre, IgniterPassive(), pyre);
 
-            sim.DealDamage(new DamageRequest(pyre, victim, 10f, DamageSchool.Magical, ArmorK,
-                sourceKind: DamageSourceKind.Periodic, element: MagicElement.Fire));
+            sim.DealDamage(new DamageRequest(pyre, victim, 10f, DamageType.Fire, ArmorK,
+                sourceKind: DamageSourceKind.Periodic));
             sim.Tick(SimConstants.TickDelta); // событие доставляется через очередь
 
             Assert.AreNotEqual(EffectTag.None, victim.EffectTagMask & EffectTag.Ember, "Огонь оставил уголёк");
@@ -94,7 +93,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var clean = MakeUnit(2, team: 1, pos: new Vector2(2f, 0f));
             sim.EnqueueUnitSpawn(clean);
             sim.Tick(SimConstants.TickDelta);
-            sim.DealDamage(new DamageRequest(pyre, clean, 10f, DamageSchool.Physical, ArmorK,
+            sim.DealDamage(new DamageRequest(pyre, clean, 10f, DamageType.Slash, ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);
 
@@ -139,12 +138,14 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             EffectData ember = EmberEffect();
             for (int i = 0; i < 10; i++) sim.ApplyEffect(victim, ember, pyre);
+            // Уязвимость считается по стакам НАЧАЛА тика (закон видимости). Стаки набраны между тиками,
+            // поэтому границу тика надо провести явно — иначе удар увидит один уголёк из десяти.
+            EffectSystem.CommitPending(victim);
 
             DamageResult captured = default;
             sim.OnDamageDealt += (src, tgt, res) => captured = res;
 
-            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageSchool.Magical, ArmorK,
-                element: MagicElement.Fire));
+            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageType.Fire, ArmorK));
             sim.Tick(SimConstants.TickDelta);   // удар применяется реестром в конце тика
 
             // Десять угольков по 1% → удар сильнее на 10%, и результат обязан уметь это назвать:
@@ -183,8 +184,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             components: new SplitAttackOnTagComponent()
                 .With("_requiredTargetTag", EffectTag.Burn)
                 .With("_share", 0.5f)
-                .With("_school", DamageSchool.Magical)
-                .With("_element", MagicElement.Fire));
+                .With("_damageType", DamageType.Fire));
 
         private static EffectData IgniterPassive() => TestEffect.Make(
             baseDuration: -1f, polarity: EffectPolarity.Neutral,
@@ -217,6 +217,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             {
                 Id = id, Team = team, Stats = stats, CurrentHP = maxHp,
                 Position = pos, PreviousPosition = pos,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 
@@ -234,8 +235,25 @@ namespace Guildmaster.Tests.EditMode.Combat
             public IRngService Rng => null;
 
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) => _effects.Apply(target, def, source, this);
+            // Срок, посчитанный по ходу боя, заглушке безразличен — она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+                => ApplyEffect(target, def, source);
+
+            // Наложение с величиной (порции кровотечения): заглушке величина безразлична —
+            // она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds,
+                float potency)
+                => ApplyEffect(target, def, source);
             public void Dispel(in DispelRequest req) => _effects.Dispel(in req, this);
+            // Слепота стабу не нужна: промах проверяют свои тесты, здесь удар всегда доходит.
+            public bool ResolveAttackMiss(RuntimeUnit attacker) => false;
+            public void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target) { }
+            // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.
+            public void ReportAbilityCast(RuntimeUnit caster) { }
             public void Displace(in DisplaceRequest req) { }
+
+            // Призывов в этом срезе нет: стаб честно отвечает «призывать нечем».
+            public RuntimeUnit Summon(UnitData data, int team, Vector2 position, RuntimeUnit summoner) => null;
 
             // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
             public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
@@ -246,6 +264,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ReportAreaHit(in AreaHit hit) { }
             public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
             public void NotifyAttackInterrupted(RuntimeUnit unit) { }
+            public void NotifyAttackCompleted(RuntimeUnit unit) { }
+            public void NotifyComboBroken(RuntimeUnit unit) { }
+            public void RemoveEffect(RuntimeUnit unit, EffectData def) { }
             public int QueryUnitsInRadius(Vector2 c, float r, System.Collections.Generic.List<RuntimeUnit> res, TargetFilter f, int team) { res.Clear(); return 0; }
             public int QueryUnitsInLine(Vector2 o, Vector2 d, float len, float w, System.Collections.Generic.List<RuntimeUnit> res, TargetFilter f, int team) { res.Clear(); return 0; }
         }

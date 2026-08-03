@@ -34,16 +34,9 @@ namespace Guildmaster.Game.Services
         {
             _rootFolder = rootFolder;
 
-            var settings = new JsonSerializerSettings
-            {
-                // Тип с новым полем должен читать старый файл: отсутствующее поле остаётся дефолтом
-                // DTO, а не роняет загрузку. Бампа схемы такое изменение не требует (ТЗ §5).
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                Formatting            = Formatting.Indented,
-            };
-            settings.Converters.Add(new Vector2JsonConverter());
-
-            _serializer = JsonSerializer.Create(settings);
+            // Правила сериализации живут в SaveJson, а не здесь: тем же DTO и по тем же правилам забег
+            // уезжает гостю по сети, и вторая копия настроек разошлась бы с этой молча.
+            _serializer = SaveJson.CreateSerializer();
         }
 
         // Корень — GameDataPath, а НЕ persistentDataPath: путь к данным игрока не должен зависеть от

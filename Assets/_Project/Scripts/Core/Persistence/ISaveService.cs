@@ -5,7 +5,7 @@ namespace Guildmaster.Core.Persistence
     /// <summary>
     /// Шов персистентности (ТЗ [[save-system]]): сохранение/загрузка сериализуемых DTO по строковому ключу.
     /// Единственная точка между игрой и диском — реализация прячет бэкенд (JSON-файл под
-    /// <c>persistentDataPath/Saves</c>, наш собственный: реш. 2026-07-26, Easy Save остаётся референсом).
+    /// <c><see cref="GameDataPath.Root"/>/Saves</c>, наш собственный: реш. 2026-07-26).
     /// Шов сохраняем: за ним же встанет Steam Cloud и, если понадобится, другой формат.
     /// <para><b>Ключ — это путь</b> внутри дерева сохранений: <c>prefs</c>,
     /// <c>profiles/{profileId}/profile</c>, <c>profiles/{profileId}/guilds/{guildId}/run</c>. Разделитель —

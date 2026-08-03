@@ -3,7 +3,6 @@ using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
 using Shapes;
 using UnityEngine;
-using VContainer;
 
 namespace Guildmaster.Presentation
 {
@@ -21,22 +20,42 @@ namespace Guildmaster.Presentation
         [SerializeField] private Color _teamAColor    = new Color(0.2f, 0.6f, 1f, 0.5f);
         [SerializeField] private Color _teamBColor    = new Color(1f, 0.35f, 0.2f, 0.5f);
 
-        private CombatSimulation _simulation;
+        // Зоны рисуются по ПОКАЗАННОМУ кадру: по симу вспышка полыхала бы за окно опережения до удара.
+        // Приходит и уходит вместе с боем: объект живёт в персист-сцене и переживает бои, а диспетчер —
+        // нет. Вне боя оверлею просто нечего показывать, зон удара не бывает.
+        private Combat.Tape.BattleTapeDispatcher _dispatcher;
         private readonly List<Flash>  _active     = new List<Flash>();
         private readonly Stack<Flash> _circlePool = new Stack<Flash>();
         private readonly Stack<Flash> _linePool   = new Stack<Flash>();
 
-        [Inject]
-        public void Construct(CombatSimulation simulation)
+        /// <summary>Бой начался: подписаться на его показанные зоны удара.</summary>
+        public void BindBattle(Combat.Tape.BattleTapeDispatcher dispatcher)
         {
-            _simulation = simulation;
-            _simulation.OnAreaHit += OnAreaHit;
+            UnbindBattle();
+            _dispatcher = dispatcher;
+            if (_dispatcher != null) _dispatcher.AreaHit += OnAreaHit;
         }
 
-        private void OnDestroy()
+        /// <summary>
+        /// Бой ушёл: отписаться и погасить всё, что ещё догорало. Отвязывает только свой бой — рестарт
+        /// закрывает и открывает бой в одном кадре.
+        /// </summary>
+        public void UnbindBattle(Combat.Tape.BattleTapeDispatcher battle = null)
         {
-            if (_simulation != null) _simulation.OnAreaHit -= OnAreaHit;
+            if (battle != null && !ReferenceEquals(_dispatcher, battle)) return;
+
+            if (_dispatcher != null) _dispatcher.AreaHit -= OnAreaHit;
+            _dispatcher = null;
+
+            for (int i = _active.Count - 1; i >= 0; i--)
+            {
+                _active[i].Hide();
+                Return(_active[i]);
+            }
+            _active.Clear();
         }
+
+        private void OnDestroy() => UnbindBattle();
 
         public bool IsEnabled
         {

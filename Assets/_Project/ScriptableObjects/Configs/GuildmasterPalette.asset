@@ -37,12 +37,20 @@ MonoBehaviour:
     Color: {r: 0.5411765, g: 0.37254903, b: 0.15686275, a: 1}
   - Token: --gm-color-border-subtle
     Color: {r: 0.49411765, g: 0.40784314, b: 0.2901961, a: 1}
+  - Token: --gm-color-brand-attrib
+    Color: {r: 0.74509805, g: 0.74509805, b: 0.74509805, a: 1}
+  - Token: --gm-color-combat-block-flash
+    Color: {r: 1, g: 0.8, b: 0.2, a: 1}
+  - Token: --gm-color-combat-cut
+    Color: {r: 1, g: 0.2, b: 0.2, a: 1}
   - Token: --gm-color-combat-flash-dark
     Color: {r: 0.54901963, g: 0.34901962, b: 0.8509804, a: 1}
   - Token: --gm-color-combat-flash-light
     Color: {r: 1, g: 0.9490196, b: 0.7490196, a: 1}
   - Token: --gm-color-combat-flash-magical
     Color: {r: 1, g: 0.54901963, b: 0.2509804, a: 1}
+  - Token: --gm-color-combat-flash-neutral
+    Color: {r: 1, g: 1, b: 1, a: 1}
   - Token: --gm-color-combat-flash-physical
     Color: {r: 1, g: 1, b: 1, a: 1}
   - Token: --gm-color-combat-flash-poison
@@ -51,18 +59,28 @@ MonoBehaviour:
     Color: {r: 1, g: 0.9490196, b: 0.54901963, a: 1}
   - Token: --gm-color-combat-heal
     Color: {r: 0.54901963, g: 1, b: 0.6509804, a: 1}
+  - Token: --gm-color-combat-hologram
+    Color: {r: 0.3019608, g: 0.9490196, b: 1, a: 1}
   - Token: --gm-color-combat-hp-ally
     Color: {r: 0.3019608, g: 0.8509804, b: 0.34901962, a: 1}
   - Token: --gm-color-combat-hp-enemy
     Color: {r: 1, g: 0.4, b: 0.12941177, a: 1}
+  - Token: --gm-color-combat-overbright
+    Color: {r: 0.94509804, g: 0.9529412, b: 1, a: 1}
   - Token: --gm-color-combat-shield
     Color: {r: 0.61960787, g: 0.85882354, b: 1, a: 1}
+  - Token: --gm-color-console-surface
+    Color: {r: 0.050980393, g: 0.043137256, b: 0.03529412, a: 0.96862745}
   - Token: --gm-color-danger
     Color: {r: 0.65882355, g: 0.3137255, b: 0.22745098, a: 1}
   - Token: --gm-color-disabled-text
     Color: {r: 0.54901963, g: 0.47843137, b: 0.36078432, a: 1}
+  - Token: --gm-color-display-accent
+    Color: {r: 0.9019608, g: 0.7882353, b: 0.56078434, a: 1}
   - Token: --gm-color-focus-ring
     Color: {r: 0.9019608, g: 0.7882353, b: 0.56078434, a: 1}
+  - Token: --gm-color-glass-rim
+    Color: {r: 0.9019608, g: 0.7882353, b: 0.56078434, a: 0.41960785}
   - Token: --gm-color-handle
     Color: {r: 0.8509804, g: 0.69803923, b: 0.41568628, a: 1}
   - Token: --gm-color-handle-border
@@ -103,6 +121,8 @@ MonoBehaviour:
     Color: {r: 0.22745098, g: 0.15686275, b: 0.078431375, a: 1}
   - Token: --gm-color-surface-accent-hover
     Color: {r: 0.36078432, g: 0.2509804, b: 0.11764706, a: 1}
+  - Token: --gm-color-surface-glass
+    Color: {r: 0.078431375, g: 0.06666667, b: 0.050980393, a: 0.61960787}
   - Token: --gm-color-surface-panel
     Color: {r: 0.10980392, g: 0.078431375, b: 0.050980393, a: 1}
   - Token: --gm-color-surface-raised
@@ -117,10 +137,58 @@ MonoBehaviour:
     Color: {r: 0.09019608, g: 0.06666667, b: 0.047058824, a: 1}
   - Token: --gm-color-track
     Color: {r: 0.18431373, g: 0.13333334, b: 0.08627451, a: 1}
+  - Token: --gm-color-unit-bog
+    Color: {r: 0.8509804, g: 1, b: 0.7019608, a: 1}
+  - Token: --gm-color-unit-dim-ash
+    Color: {r: 0.6509804, g: 0.7019608, b: 0.7490196, a: 1}
+  - Token: --gm-color-unit-dim-tan
+    Color: {r: 0.9019608, g: 0.7490196, b: 0.4, a: 1}
+  - Token: --gm-color-unit-dim-verdant
+    Color: {r: 0.7019608, g: 0.9490196, b: 0.6509804, a: 1}
+  - Token: --gm-color-unit-dust
+    Color: {r: 1, g: 0.9607843, b: 0.8784314, a: 1}
+  - Token: --gm-color-unit-emerald
+    Color: {r: 0.2, g: 1, b: 0.6, a: 1}
+  - Token: --gm-color-unit-fire
+    Color: {r: 1, g: 0.46666667, b: 0.2, a: 1}
+  - Token: --gm-color-unit-frost
+    Color: {r: 0.2, g: 0.6, b: 1, a: 1}
+  - Token: --gm-color-unit-gold
+    Color: {r: 1, g: 0.8, b: 0.2, a: 1}
+  - Token: --gm-color-unit-grass
+    Color: {r: 0.47058824, g: 1, b: 0.2, a: 1}
+  - Token: --gm-color-unit-iron
+    Color: {r: 1, g: 0.8745098, b: 0.7490196, a: 1}
+  - Token: --gm-color-unit-light
+    Color: {r: 1, g: 0.9490196, b: 0.7490196, a: 1}
+  - Token: --gm-color-unit-lime
+    Color: {r: 0.8, g: 1, b: 0.2, a: 1}
+  - Token: --gm-color-unit-neutral-cool
+    Color: {r: 0.8784314, g: 0.92156863, b: 1, a: 1}
+  - Token: --gm-color-unit-neutral-warm
+    Color: {r: 1, g: 0.9254902, b: 0.7019608, a: 1}
+  - Token: --gm-color-unit-shadow
+    Color: {r: 0.7294118, g: 0.2, b: 1, a: 1}
+  - Token: --gm-color-unit-steel
+    Color: {r: 0.54901963, g: 0.6627451, b: 1, a: 1}
+  - Token: --gm-color-unit-venom
+    Color: {r: 0.4509804, g: 1, b: 0.4, a: 1}
+  - Token: --gm-color-unit-wind
+    Color: {r: 0.2, g: 0.87058824, b: 1, a: 1}
+  - Token: --gm-color-veil
+    Color: {r: 0.07058824, g: 0.0627451, b: 0.050980393, a: 1}
+  - Token: --gm-color-warning
+    Color: {r: 0.8509804, g: 0.69803923, b: 0.41568628, a: 1}
   - Token: --gm-danger-400
     Color: {r: 0.7607843, g: 0.38431373, b: 0.26666668, a: 1}
   - Token: --gm-danger-500
     Color: {r: 0.65882355, g: 0.3137255, b: 0.22745098, a: 1}
+  - Token: --gm-dim-ash
+    Color: {r: 0.6509804, g: 0.7019608, b: 0.7490196, a: 1}
+  - Token: --gm-dim-tan
+    Color: {r: 0.9019608, g: 0.7490196, b: 0.4, a: 1}
+  - Token: --gm-dim-verdant
+    Color: {r: 0.7019608, g: 0.9490196, b: 0.6509804, a: 1}
   - Token: --gm-ember-500
     Color: {r: 0.36078432, g: 0.2509804, b: 0.11764706, a: 1}
   - Token: --gm-ember-600
@@ -129,24 +197,62 @@ MonoBehaviour:
     Color: {r: 0.22745098, g: 0.15686275, b: 0.078431375, a: 1}
   - Token: --gm-flare-amber
     Color: {r: 1, g: 0.54901963, b: 0.2509804, a: 1}
+  - Token: --gm-flare-amethyst
+    Color: {r: 0.7294118, g: 0.2, b: 1, a: 1}
+  - Token: --gm-flare-azure
+    Color: {r: 0.2, g: 0.6, b: 1, a: 1}
+  - Token: --gm-flare-bog
+    Color: {r: 0.8509804, g: 1, b: 0.7019608, a: 1}
+  - Token: --gm-flare-chalk
+    Color: {r: 0.8784314, g: 0.92156863, b: 1, a: 1}
+  - Token: --gm-flare-copper
+    Color: {r: 1, g: 0.8745098, b: 0.7490196, a: 1}
+  - Token: --gm-flare-cyan
+    Color: {r: 0.2, g: 0.87058824, b: 1, a: 1}
+  - Token: --gm-flare-dust
+    Color: {r: 1, g: 0.9607843, b: 0.8784314, a: 1}
+  - Token: --gm-flare-emerald
+    Color: {r: 0.2, g: 1, b: 0.6, a: 1}
+  - Token: --gm-flare-fire
+    Color: {r: 1, g: 0.46666667, b: 0.2, a: 1}
+  - Token: --gm-flare-frost-white
+    Color: {r: 0.94509804, g: 0.9529412, b: 1, a: 1}
   - Token: --gm-flare-gold
     Color: {r: 1, g: 0.9490196, b: 0.54901963, a: 1}
+  - Token: --gm-flare-grass
+    Color: {r: 0.47058824, g: 1, b: 0.2, a: 1}
   - Token: --gm-flare-halo
     Color: {r: 1, g: 0.9490196, b: 0.7490196, a: 1}
+  - Token: --gm-flare-holo
+    Color: {r: 0.3019608, g: 0.9490196, b: 1, a: 1}
+  - Token: --gm-flare-honey
+    Color: {r: 1, g: 0.8, b: 0.2, a: 1}
   - Token: --gm-flare-ice
     Color: {r: 0.61960787, g: 0.85882354, b: 1, a: 1}
   - Token: --gm-flare-leaf
     Color: {r: 0.3019608, g: 0.8509804, b: 0.34901962, a: 1}
+  - Token: --gm-flare-lime
+    Color: {r: 0.8, g: 1, b: 0.2, a: 1}
   - Token: --gm-flare-mint
     Color: {r: 0.54901963, g: 1, b: 0.6509804, a: 1}
   - Token: --gm-flare-rust
     Color: {r: 1, g: 0.4, b: 0.12941177, a: 1}
+  - Token: --gm-flare-steel
+    Color: {r: 0.54901963, g: 0.6627451, b: 1, a: 1}
+  - Token: --gm-flare-tallow
+    Color: {r: 1, g: 0.9254902, b: 0.7019608, a: 1}
   - Token: --gm-flare-venom
     Color: {r: 0.4509804, g: 1, b: 0.4, a: 1}
   - Token: --gm-flare-violet
     Color: {r: 0.54901963, g: 0.34901962, b: 0.8509804, a: 1}
   - Token: --gm-flare-white
     Color: {r: 1, g: 1, b: 1, a: 1}
+  - Token: --gm-flare-wound
+    Color: {r: 1, g: 0.2, b: 0.2, a: 1}
+  - Token: --gm-glass-900
+    Color: {r: 0.078431375, g: 0.06666667, b: 0.050980393, a: 0.61960787}
+  - Token: --gm-glass-rim
+    Color: {r: 0.9019608, g: 0.7882353, b: 0.56078434, a: 0.41960785}
   - Token: --gm-ink-100
     Color: {r: 0.49411765, g: 0.40784314, b: 0.2901961, a: 1}
   - Token: --gm-ink-200
@@ -171,6 +277,8 @@ MonoBehaviour:
     Color: {r: 0.5882353, g: 0.65882355, b: 0.3764706, a: 1}
   - Token: --gm-moss-500
     Color: {r: 0.4627451, g: 0.53333336, b: 0.28235295, a: 1}
+  - Token: --gm-neutral-300
+    Color: {r: 0.74509805, g: 0.74509805, b: 0.74509805, a: 1}
   - Token: --gm-outline-color
     Color: {r: 0.72156864, g: 0.5254902, b: 0.23137255, a: 1}
   - Token: --gm-outline-color-hover

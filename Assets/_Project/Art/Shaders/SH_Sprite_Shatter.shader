@@ -63,6 +63,7 @@ Shader "Guildmaster/Sprite/Shatter"
             #pragma vertex ShatterVertex
             #pragma fragment ShatterFragment
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Lib/Procedural.hlsl"
 
             struct Attributes
             {
@@ -111,8 +112,9 @@ Shader "Guildmaster/Sprite/Shatter"
 
             float3 UnityFlipSprite(in float3 pos, in half2 flip) { return float3(pos.xy * flip, pos.z); }
 
-            // Хеш осколка от его центроида — у каждого блока свой, отдельный вершинный канал не нужен.
-            float ShardHash(float2 c) { return frac(sin(dot(c, float2(12.9898, 78.233))) * 43758.5453); }
+            // Хеш осколка берётся от его центроида — у каждого блока свой, отдельный вершинный канал
+            // не нужен. Третья ступень детерминизма (code-standards §8): разброс осколков не сверяет
+            // никто, поэтому дешёвый sin-хеш из Lib здесь уместен.
 
             Varyings ShatterVertex(Attributes v)
             {
@@ -159,7 +161,7 @@ Shader "Guildmaster/Sprite/Shatter"
 
                 // Разброс времени жизни: часть осколков догорает раньше, часть тлеет дольше положенного.
                 // Ровное угасание всем разом выдаёт «один эффект», разнобой — рой отдельных искр.
-                float rnd = ShardHash(c);
+                float rnd = GM_Hash21(c);
                 o.age      = t * lerp(1.0 - _LifeVariance, 1.0 + _LifeVariance, rnd);
                 o.shardRnd = rnd;
                 return o;

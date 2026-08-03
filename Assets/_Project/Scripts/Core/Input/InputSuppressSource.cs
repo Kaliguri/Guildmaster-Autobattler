@@ -18,7 +18,7 @@ namespace Guildmaster.Core.Input
         /// <summary>Модальный экран интерфейса (навигатор: всё, что не Sheet).</summary>
         Ui = 1 << 0,
 
-        /// <summary>Dev-консоль QFSW: пока она открыта, клавиатура принадлежит ей.</summary>
+        /// <summary>Dev-консоль: пока она открыта, клавиатура принадлежит ей.</summary>
         DevConsole = 1 << 1,
     }
 }

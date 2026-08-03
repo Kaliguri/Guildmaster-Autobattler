@@ -1,7 +1,11 @@
 {
   "name": "Guildmaster.AnimationLab.Editor",
   "rootNamespace": "Guildmaster.AnimationLab.Editor",
-  "references": [],
+  "references": [
+    "Guildmaster.Presentation",
+    "Guildmaster.Presentation.Editor",
+    "Guildmaster.Data"
+  ],
   "includePlatforms": [
     "Editor"
   ],

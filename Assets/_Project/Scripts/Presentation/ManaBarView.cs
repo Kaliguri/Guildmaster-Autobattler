@@ -72,9 +72,9 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>Привязать к юниту: скрыть для безресурсных, иначе — на текущую долю мгновенно.</summary>
-        public void Bind(RuntimeUnit unit)
+        public void Bind(in Combat.Tape.UnitSnapshot unit)
         {
-            float max = unit.Stats.Get(Data.Stats.StatType.MaxResource);
+            float max = unit.MaxResource;
             bool hasResource = max > 0f;
             gameObject.SetActive(hasResource);
             if (!hasResource) return;

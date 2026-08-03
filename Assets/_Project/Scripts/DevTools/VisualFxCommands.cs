@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text;
 using Guildmaster.Presentation.Effects;
-using QFSW.QC;
+using Guildmaster.Core.DevConsole;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -13,7 +13,26 @@ namespace Guildmaster.DevTools
     /// </summary>
     public static class VisualFxCommands
     {
-        [Command("gm_fx", "Список визуальных эффектов и их состояние")]
+        /// <summary>Положить команды эффектов в набор модуля (снимаются вместе с ним).</summary>
+        public static void Register(DevCommandSet set)
+        {
+            if (set == null) return;
+
+            // Одна команда вместо четырёх: без аргументов — список, с id — тумблер, с явным состоянием —
+            // включить/выключить. Три отдельные fx_on/fx_off/fx_toggle отличались лишь тем, что человек и
+            // так держит в голове, набирая имя эффекта.
+            set.Add("fx", "Эффекты: без аргументов — список, с id — переключить, с on/off — задать явно",
+                a =>
+                {
+                    if (!a.Has(0)) return List();
+                    string id = a.GetString(0);
+                    return a.Has(1) ? (a.GetBool(1) ? On(id) : Off(id)) : Toggle(id);
+                },
+                new DevParam("id", DevParamType.String, true), new DevParam("on|off", DevParamType.Bool, true));
+
+            set.Add("fx_reset", "Вернуть все эффекты в исходное (всё включено)", _ => All());
+        }
+
         public static string List()
         {
             VisualToggles toggles = Toggles();
@@ -26,13 +45,10 @@ namespace Guildmaster.DevTools
             return sb.ToString();
         }
 
-        [Command("gm_fx_on", "Включить эффект по имени")]
         public static string On(string id) => Apply(id, true);
 
-        [Command("gm_fx_off", "Выключить эффект по имени")]
         public static string Off(string id) => Apply(id, false);
 
-        [Command("gm_fx_toggle", "Переключить эффект по имени")]
         public static string Toggle(string id)
         {
             VisualToggles toggles = Toggles();
@@ -43,7 +59,6 @@ namespace Guildmaster.DevTools
             return $"{id}: {(now.Value ? "включён" : "выключен")}";
         }
 
-        [Command("gm_fx_all", "Вернуть все эффекты (как по умолчанию)")]
         public static string All()
         {
             VisualToggles toggles = Toggles();
