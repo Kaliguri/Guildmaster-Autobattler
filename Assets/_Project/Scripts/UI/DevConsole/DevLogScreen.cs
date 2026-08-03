@@ -55,13 +55,24 @@ namespace Guildmaster.UI.DevConsole
                 _list?.schedule.Execute(ScrollToEnd);
             });
 
-            Rebuild();
+        }
 
+        /// <inheritdoc />
+        /// <remarks>
+        /// Подписка живёт ровно столько, сколько экран показан, и потому стоит здесь, симметрично
+        /// <see cref="OnExit"/>. В <c>Build</c> её держать нельзя: навигатор строит экран один раз за
+        /// сессию (пока <c>Root == null</c>), а показывают его многократно — после первого закрытия
+        /// список логов застывал бы на строках первого показа.
+        /// </remarks>
+        public override void OnEnter()
+        {
             if (_log != null)
             {
                 _log.Appended += OnAppended;
                 _log.Cleared  += Rebuild;
             }
+
+            Rebuild(); // заодно догоняем строки, набежавшие, пока экран был закрыт
         }
 
         /// <inheritdoc />

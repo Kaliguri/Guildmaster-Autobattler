@@ -107,16 +107,27 @@ namespace Guildmaster.UI.DevConsole
                 _logView?.schedule.Execute(ScrollToEnd);
             });
 
-            RebuildLog();
             UpdateStatus();
 
+            if (_log == null || _log.Count == 0) PrintWelcome();
+        }
+
+        /// <inheritdoc />
+        /// <remarks>
+        /// Подписка живёт ровно столько, сколько экран показан, и потому стоит здесь, симметрично
+        /// <see cref="OnExit"/>. В <c>Build</c> её держать нельзя: навигатор строит экран, только пока
+        /// <c>Root == null</c>, то есть один раз за сессию, а закрывают и открывают консоль много раз —
+        /// после первого закрытия она осталась бы без подписок и молчала бы на любую команду.
+        /// </remarks>
+        public override void OnEnter()
+        {
             if (_log != null)
             {
                 _log.Appended += OnLineAppended;
                 _log.Cleared  += RebuildLog;
             }
 
-            if (_log == null || _log.Count == 0) PrintWelcome();
+            RebuildLog(); // заодно догоняем строки, набежавшие, пока экран был закрыт
         }
 
         /// <summary>
