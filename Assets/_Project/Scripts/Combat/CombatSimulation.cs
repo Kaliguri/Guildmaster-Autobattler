@@ -355,11 +355,10 @@ namespace Guildmaster.Combat
                 float removed = req.RawDamage * split.Share;
                 float splitDamage = split.HasOwnDamage ? split.OwnDamage : removed;
 
-                DealDamageCore(new DamageRequest(req.Source, req.Target, req.RawDamage - removed,
-                    req.Type, req.ArmorK, req.SourceKind));
+                // Обе половины — тот же удар: пробивание и уязвимость свойства УДАРА, а не школы.
+                DealDamageCore(req.WithRawDamage(req.RawDamage - removed));
                 if (!req.Target.IsDead)
-                    DealDamageCore(new DamageRequest(req.Source, req.Target, splitDamage,
-                        split.DamageType, req.ArmorK, req.SourceKind));
+                    DealDamageCore(req.WithRawDamage(splitDamage, split.DamageType));
                 return;
             }
 
@@ -388,9 +387,7 @@ namespace Guildmaster.Combat
                 req.Source, req.Target, req.SourceKind == DamageSourceKind.AutoAttack, this);
             if (bonus <= 0f) return req;
 
-            return new DamageRequest(
-                req.Source, req.Target, req.RawDamage * (1f + bonus), req.Type, req.ArmorK,
-                req.SourceKind, req.Vulnerability, req.BonusFlatPen);
+            return req.WithRawDamage(req.RawDamage * (1f + bonus));
         }
 
         private void DealDamageCore(in DamageRequest req)
@@ -430,10 +427,7 @@ namespace Guildmaster.Combat
             float overtime = _tuning.OvertimeDamageMultiplier(ElapsedSeconds);
 
             float scale = vulnerability * overtime;
-            DamageRequest effective = scale == 1f
-                ? req
-                : new DamageRequest(req.Source, target, req.RawDamage * scale, req.Type,
-                                    req.ArmorK, req.SourceKind, vulnerability);
+            DamageRequest effective = req.ScaledForTarget(target, scale, vulnerability);
 
             float dealt = DamagePipeline.Resolve(effective, out float mitigated);
             return new DamageResolution(dealt, mitigated, vulnerability);

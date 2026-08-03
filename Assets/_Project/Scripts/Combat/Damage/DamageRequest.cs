@@ -83,6 +83,34 @@ namespace Guildmaster.Combat
         /// </remarks>
         public readonly float BonusPctPen;
 
+        /// <summary>
+        /// Тот же удар с другим сырым уроном: свойства удара — уязвимость и оба пробивания — переезжают
+        /// как есть.
+        /// </summary>
+        /// <remarks>
+        /// Копии «руками» уже трижды теряли поля молча: конструктор длинный, хвостовые аргументы
+        /// необязательные, и пропущенный подставляется ДЕФОЛТОМ, а не ошибкой компиляции. Пробивание при
+        /// этом просто исчезало — удар считался по полной броне, и увидеть это можно было только замером.
+        /// Поэтому копию делает сама структура: добавится поле — оно поедет во все копии разом.
+        /// </remarks>
+        public DamageRequest WithRawDamage(float rawDamage) =>
+            new DamageRequest(Source, Target, rawDamage, Type, ArmorK, SourceKind,
+                              Vulnerability, BonusFlatPen, BonusPctPen);
+
+        /// <inheritdoc cref="WithRawDamage(float)"/>
+        /// <param name="type">Школа отщеплённой половины — расщепление меняет тип, но не свойства удара.</param>
+        public DamageRequest WithRawDamage(float rawDamage, DamageType type) =>
+            new DamageRequest(Source, Target, rawDamage, type, ArmorK, SourceKind,
+                              Vulnerability, BonusFlatPen, BonusPctPen);
+
+        /// <summary>
+        /// Тот же удар, домноженный на множители ЦЕЛИ (уязвимость × овертайм), с записанной уязвимостью.
+        /// </summary>
+        /// <inheritdoc cref="WithRawDamage(float)" path="/remarks"/>
+        public DamageRequest ScaledForTarget(RuntimeUnit target, float scale, float vulnerability) =>
+            new DamageRequest(Source, target, RawDamage * scale, Type, ArmorK, SourceKind,
+                              vulnerability, BonusFlatPen, BonusPctPen);
+
         /// <summary>Урон стихии огня — то, что копит «Угли» и усиливается ими.</summary>
         public bool IsFire => Type == DamageType.Fire;
 
