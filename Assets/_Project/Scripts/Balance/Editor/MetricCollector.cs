@@ -72,6 +72,17 @@ namespace Guildmaster.Balance.Editor
         /// <summary>Полученное лечение (от союзников и от себя).</summary>
         public double HealingReceived;
 
+        /// <summary>
+        /// Сколько урона приняли на себя щиты, которые ВЫДАЛ этот юнит (свои и чужие). Вторая половина
+        /// поддержки рядом с <see cref="HealingDone"/>: щитовик не лечит вовсе, и без этой строки вся его
+        /// работа читалась нулём.
+        /// </summary>
+        /// <remarks>
+        /// Считается по факту поглощения, а не по величине выданного щита: невостребованный щит команде
+        /// ничего не сберёг, и приписывать его как работу значило бы награждать за холостой каст.
+        /// </remarks>
+        public double ShieldGranted;
+
         /// <summary>Урон, срезанный бронёй и эффективностями до того, как коснулся щита или HP.</summary>
         public double DamageMitigated;
 
@@ -271,6 +282,7 @@ namespace Guildmaster.Balance.Editor
             sim.OnHealed += HandleHeal;
             sim.OnUnitDied += HandleDeath;
             sim.OnAttackEvaded += HandleEvaded;
+            sim.OnShieldAbsorbed += HandleShieldAbsorbed;
             sim.OnUnitSpawned += HandleSpawned;
 
             // Контроль, проклятия и выданные бафы видны только на шве наложения эффекта. Он необязателен:
@@ -383,6 +395,15 @@ namespace Guildmaster.Balance.Editor
                 owner = owner.Summoner;
             }
             return -1;
+        }
+
+        /// <summary>
+        /// Щит поглотил урон. Автору идёт работа щита, носителю — уже посчитанный в
+        /// <see cref="HandleDamage"/> приём урона; двойного счёта нет, это разные корзины.
+        /// </summary>
+        private void HandleShieldAbsorbed(RuntimeUnit author, RuntimeUnit target, float amount)
+        {
+            if (author != null && _byId.TryGetValue(author.Id, out UnitMetric m)) m.ShieldGranted += amount;
         }
 
         private void HandleEvaded(RuntimeUnit target)

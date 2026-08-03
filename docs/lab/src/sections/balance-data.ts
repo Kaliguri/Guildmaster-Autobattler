@@ -348,7 +348,7 @@ export const BUCKETS: Array<{ name: string; keys: string[] }> = [
   { name: "Выживаемость", keys: ["TTD_solo", "EHP_solo", "HpLeft_solo%", "TTD_focus3", "EHP_focus3", "HpLeft_focus3%", "AvgDmgTaken", "HeroSurvival%", "HealTaken", "Mitigated", "Evaded"] },
   { name: "Контроль", keys: ["ControlSec", "ControlCount", "ControlTakenSec"] },
   { name: "Проклятия", keys: ["Debuffs", "DebuffSec", "Dots"] },
-  { name: "Утилита", keys: ["HealDone", "Buffs", "BuffSec", "Cleanses"] },
+  { name: "Поддержка", keys: ["HealDone", "ShieldHeld", "SupportHPS", "Buffs", "BuffSec", "Cleanses"] },
   { name: "Итог боя", keys: ["WinRate%", "Wins", "Losses", "Draws", "TeamHpOnWin%", "BTStrength", "Rank"] }
 ];
 

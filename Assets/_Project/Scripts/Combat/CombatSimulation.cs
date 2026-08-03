@@ -142,6 +142,12 @@ namespace Guildmaster.Combat
         /// <summary>Юнит исцелён: источник, цель, фактически вылеченное HP (overheal не входит). Для presentation (хил-цифры).</summary>
         public event Action<RuntimeUnit, RuntimeUnit, float> OnHealed;
 
+        /// <summary>
+        /// Щит поглотил урон: АВТОР щита, носитель, поглощённое. Работа щитовика — то, что его щит принял
+        /// на себя, и без этого события она неотличима от нуля: лечения он не делает, а урон приняла цель.
+        /// </summary>
+        public event Action<RuntimeUnit, RuntimeUnit, float> OnShieldAbsorbed;
+
         /// <summary>Входящий удар полностью отменён pre-damage реактивом («Изворотливость»). Для presentation («evade»). Урона нет.</summary>
         public event Action<RuntimeUnit> OnAttackEvaded;
 
@@ -471,6 +477,40 @@ namespace Guildmaster.Combat
                        * target.Stats.Get(Data.Stats.StatType.HealShieldTakenEff);
 
             _ledger.AddHeal(target, amount * mult, source);
+        }
+
+        /// <summary>
+        /// Щит цели поглотил урон — раскладываем поглощённое по тем, кто этот щит выдал, пропорционально
+        /// удерживаемым долям.
+        /// </summary>
+        /// <remarks>
+        /// Пул <see cref="RuntimeUnit.CurrentShield"/> общий и авторства не помнит, поэтому единственный
+        /// момент, когда поглощение можно приписать, — сразу после списания: состав эффектов ещё тот же.
+        /// Пропорция, а не порядок, потому что тик поглощает урон РАЗОМ (см. <c>TickLedger</c>): «первым
+        /// съели верхний щит» было бы решением, которого в модели нет.
+        /// <para>Щит без держащего эффекта (выдан не эффектом) остаётся без автора и в счёт не идёт —
+        /// приписывать его некому, а тихо отдать первому попавшемуся хуже, чем не отдать никому.</para>
+        /// </remarks>
+        void ITickLedgerSink.OnShieldAbsorbed(RuntimeUnit target, float absorbed)
+        {
+            if (target == null || absorbed <= 0f) return;
+
+            List<Effects.RuntimeEffect> effects = target.ActiveEffects;
+            float held = 0f;
+            for (int i = 0; i < effects.Count; i++) held += effects[i].HeldShield;
+            if (held <= 0f) return;
+
+            // Поглотить могли меньше, чем держат: доля считается от удерживаемого, а не от поглощённого.
+            float share = absorbed < held ? absorbed / held : 1f;
+            for (int i = 0; i < effects.Count; i++)
+            {
+                Effects.RuntimeEffect eff = effects[i];
+                float part = eff.HeldShield * share;
+                if (part <= 0f) continue;
+
+                eff.SpendHeldShield(part);
+                OnShieldAbsorbed?.Invoke(eff.Source, target, part);
+            }
         }
 
         /// <summary>

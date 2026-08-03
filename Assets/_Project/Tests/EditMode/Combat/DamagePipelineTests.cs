@@ -86,6 +86,12 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             public void OnHealResolved(RuntimeUnit source, RuntimeUnit target, float applied)
                 => Healed += applied;
+
+            /// <summary>Раскладка поглощённого по авторам щитов — работа сима; здесь только сумма.</summary>
+            public void OnShieldAbsorbed(RuntimeUnit target, float absorbed)
+                => ShieldAbsorbed += absorbed;
+
+            public float ShieldAbsorbed;
         }
 
         // --- True damage ---
