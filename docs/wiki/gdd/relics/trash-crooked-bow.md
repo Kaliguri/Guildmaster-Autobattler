@@ -1,5 +1,5 @@
 ---
-title: "Relic - Trash - Crooked Bow (Дальник)"
+title: "Relic - Trash - Crooked Bow (Ranged)"
 order: 113
 kind: character
 status: living

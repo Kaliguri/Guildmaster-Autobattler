@@ -1,7 +1,7 @@
 ---
 title: "Planning - Coop Vertical"
 order: 175
-status: active
+status: living
 updated: 2026-08-01
 ---
 

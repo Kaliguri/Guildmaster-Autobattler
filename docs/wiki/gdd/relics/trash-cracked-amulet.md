@@ -1,5 +1,5 @@
 ---
-title: "Relic - Trash - Cracked Amulet (Поддержка)"
+title: "Relic - Trash - Cracked Amulet (Support)"
 order: 114
 kind: character
 status: living

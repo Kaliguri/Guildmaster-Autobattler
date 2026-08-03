@@ -1,5 +1,5 @@
 ---
-title: "Relic - Trash - Chipped Skull (Призыватель)"
+title: "Relic - Trash - Chipped Skull (Summoner)"
 order: 115
 kind: character
 status: living

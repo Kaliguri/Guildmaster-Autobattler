@@ -1,5 +1,5 @@
 ---
-title: "Relic - Trash - Cracked Shield (Танк)"
+title: "Relic - Trash - Cracked Shield (Tank)"
 order: 110
 kind: character
 status: living

@@ -1,5 +1,5 @@
 ---
-title: "Relic - Trash - Bundle of Herbs (Целитель)"
+title: "Relic - Trash - Bundle of Herbs (Healer)"
 order: 116
 kind: character
 status: living

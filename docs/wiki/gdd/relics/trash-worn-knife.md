@@ -1,5 +1,5 @@
 ---
-title: "Relic - Trash - Worn Knife (Убийца)"
+title: "Relic - Trash - Worn Knife (Assassin)"
 order: 112
 kind: character
 status: living

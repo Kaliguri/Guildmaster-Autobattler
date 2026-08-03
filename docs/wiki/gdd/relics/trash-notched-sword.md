@@ -1,5 +1,5 @@
 ---
-title: "Relic - Trash - Notched Sword (Брузер)"
+title: "Relic - Trash - Notched Sword (Bruiser)"
 order: 111
 kind: character
 status: living
