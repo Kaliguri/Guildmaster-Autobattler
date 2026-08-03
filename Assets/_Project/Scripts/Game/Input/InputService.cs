@@ -247,7 +247,11 @@ namespace Guildmaster.Game.Input
         // Клик над непрозрачной UITK-панелью не начинает деплой-пик (уходит в UI). Drag, начатый над миром,
         // продолжается и над панелью (PointerHeld этот флаг не гейтит — иначе протяжка рвалась бы у края панели).
         private void OnPointerPressed(InputAction.CallbackContext _)  { if (!GameplaySuppressed && !PointerOverUI) PointerPressed?.Invoke(); }
-        private void OnPointerReleased(InputAction.CallbackContext _) { if (!GameplaySuppressed) PointerReleased?.Invoke(); }
+        // Отпускание НЕ гейтится (как и Escape ниже): оно ЗАВЕРШАЕТ начатое взаимодействие, а не
+        // начинает новое. Оба подписчика на нём сбрасывают состояние — протяжку бойца и зажатие карты, —
+        // и съеденное отпускание оставляет это состояние висеть: глушение по F1 посреди протяжки, и
+        // боец остаётся «в руке», чтобы телепортироваться на следующий посторонний клик.
+        private void OnPointerReleased(InputAction.CallbackContext _) => PointerReleased?.Invoke();
 
         // Escape НЕ гейтится GameplaySuppressed: меню должно закрываться, даже когда геймплейный ввод заглушён.
         private void OnMenuToggle(InputAction.CallbackContext _) => MenuToggleRequested?.Invoke();
