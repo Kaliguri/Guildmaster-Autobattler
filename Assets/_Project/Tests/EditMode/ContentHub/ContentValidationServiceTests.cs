@@ -1,6 +1,8 @@
 using Guildmaster.ContentHub.Editor;
 using Guildmaster.Data.Definitions;
 using NUnit.Framework;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Guildmaster.Tests.EditMode.ContentHub
 {
@@ -33,6 +35,27 @@ namespace Guildmaster.Tests.EditMode.ContentHub
         public void ValidId_NoIssues()
         {
             Assert.IsEmpty(ContentValidationService.ValidateIdString($"{RelicDomain}.fire_swordsman", typeof(RelicData)));
+        }
+
+        /// <summary>
+        /// Сторож наличия тела сам под сторожем: правило зовёт <c>UnitVisualPresenceTests</c> по всему
+        /// ростеру, и если оно молча перестанет находить пустоту, тот прогон останется зелёным — то есть
+        /// поломка спрячется ровно в гейте, который её и должен ловить.
+        /// </summary>
+        [Test]
+        public void UnitWithoutBody_IsTwoIssues()
+        {
+            var unit = ScriptableObject.CreateInstance<RelicData>();
+            try
+            {
+                var issues = ContentValidationService.ValidateUnitVisual(unit);
+                Assert.AreEqual(2, issues.Count,
+                    "Пустой юнит обязан дать две находки — нет UnitVisual и нет ViewPrefab.");
+            }
+            finally
+            {
+                Object.DestroyImmediate(unit);
+            }
         }
     }
 }

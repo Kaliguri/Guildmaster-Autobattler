@@ -79,7 +79,40 @@ namespace Guildmaster.ContentHub.Editor
                             result.Add(new ValidationIssue(entry, IssueSeverity.Error, $"null-компонент [{i}] (missing type)"));
             }
 
+            if (entry.Unit != null)
+                foreach (string m in ValidateUnitVisual(entry.Unit))
+                    result.Add(new ValidationIssue(entry, IssueSeverity.Error, m));
+
             return result;
+        }
+
+        /// <summary>
+        /// Юнит обязан иметь тело: <c>UnitVisual</c> и <c>ViewPrefab</c>. Пусто здесь — не «пока не
+        /// нарисовали», а поломка на арене, и найтись она должна при авторинге, а не логом в бою.
+        /// </summary>
+        /// <remarks>
+        /// Оба поля когда-то обещали в тултипах молчаливый фолбэк («пусто = дефолтный вид презентера»,
+        /// «null = статичный фолбэк»), и ровно этот фолбэк прятал проблему: юнит выходил на арену чужим
+        /// телом, неотличимым от соседа. Внутри нашего кода такой фолбэк считается багом разводки, а не
+        /// поведением, — обещания из тултипов сняты вместе с заведением этой проверки.
+        /// <para>Правило живёт здесь, а не в <c>OnValidate</c> у SO: юнита проектируют раньше, чем ему
+        /// рисуют тело, и запрет на сохранение заставил бы подсовывать заглушку ради обхода — то есть
+        /// врать данным. Doctor показывает, тест роняет CI, автору при этом никто не мешает работать.</para>
+        /// </remarks>
+        public static List<string> ValidateUnitVisual(UnitData unit)
+        {
+            var issues = new List<string>();
+            if (unit == null) return issues;
+
+            if (unit.Visual == null)
+                issues.Add("нет UnitVisual — UnitView не найдёт клип атаки, удар не привяжется к тику " +
+                           "урона, а замах свалится на телеграф-пол в три тика (удар прилетит почти мгновенно)");
+
+            if (unit.ViewPrefab == null)
+                issues.Add("нет ViewPrefab — на арене юнит возьмёт дефолтный вид презентера и станет " +
+                           "неотличим от любого другого юнита без вида");
+
+            return issues;
         }
 
         /// <summary>Полный проход по индексу — основа Doctor (P4).</summary>
