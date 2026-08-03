@@ -304,6 +304,66 @@ namespace Guildmaster.AnimationLab.Editor
             ("indigo",  new Color(0.45f, 0.55f, 1.00f)),
         };
 
+        [MenuItem("Alebardium/Animation/Render Rig Anchors Gizmo", priority = 625)]
+        static void RenderSelected()
+        {
+            var prefab = Selection.activeObject as GameObject;
+            if (prefab == null)
+            {
+                Debug.LogError("Render Rig Anchors Gizmo: select a rig prefab first.");
+                return;
+            }
+
+            var profile = FindProfileFor(prefab);
+            if (profile == null)
+            {
+                Debug.LogError($"Render Rig Anchors Gizmo: no RigProfile points at {prefab.name} " +
+                               "or at any prefab it is a variant of.");
+                return;
+            }
+
+            var result = Render(profile, new Options
+            {
+                Rig = prefab,
+                Size = 1400,
+                Padding = 1.12f,
+                Background = new Color(0.62f, 0.63f, 0.66f, 1f),
+                OutputPath = Path.Combine(AnimationLabRenderer.DefaultOutputDir, prefab.name + "_anchors.png"),
+            });
+            // Построчно: консоль через MCP отдаёт только первую строку многострочного лога, и легенда,
+            // ради которой картинку и смотрят, до читателя не доезжает.
+            Debug.Log("Rig anchors: " + result.Path);
+            foreach (var line in result.Legend) Debug.Log("  " + line);
+            EditorUtility.RevealInFinder(result.Path);
+        }
+
+        [MenuItem("Alebardium/Animation/Render Rig Anchors Gizmo", validate = true)]
+        static bool RenderSelectedValidate() => Selection.activeObject is GameObject;
+
+        /// <summary>
+        /// Профиль этого рига, либо профиль префаба, вариантом которого он является. Вариант с другим
+        /// артом судится профилем родителя намеренно: свой профиль у него появится только когда его
+        /// геометрию признают отдельной, а до тех пор вопрос к нему ровно один — «насколько он от
+        /// родителя уехал».
+        /// </summary>
+        static RigProfile FindProfileFor(GameObject prefab)
+        {
+            var profiles = new List<RigProfile>();
+            foreach (var guid in AssetDatabase.FindAssets("t:RigProfile"))
+            {
+                var p = AssetDatabase.LoadAssetAtPath<RigProfile>(AssetDatabase.GUIDToAssetPath(guid));
+                if (p != null) profiles.Add(p);
+            }
+
+            for (var candidate = prefab; candidate != null;
+                 candidate = PrefabUtility.GetCorrespondingObjectFromSource(candidate))
+            {
+                foreach (var p in profiles)
+                    if (p.Rig == candidate) return p;
+            }
+            return null;
+        }
+
         static Color JointColor(string id)
         {
             int hash = 0;
