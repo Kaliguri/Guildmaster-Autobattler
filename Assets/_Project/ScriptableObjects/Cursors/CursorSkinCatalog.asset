@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abd08c7f2dac4230bcb1aeeffb4d1d22, type: 3}
+  m_Name: CursorSkinCatalog
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.CursorSkinCatalog
+  _skins:
+  - {fileID: 11400000, guid: cb965899959046f4eb20ba873e05e108, type: 2}
+  - {fileID: 11400000, guid: 1ddc4ac6ef9fc8a468bb55b95fb4861c, type: 2}
+  - {fileID: 11400000, guid: 11357d26fd1636342acd7b26d762dcfa, type: 2}
+  - {fileID: 11400000, guid: 0f5af684c5b1f1f4997f24a1ee9f8579, type: 2}
+  - {fileID: 11400000, guid: ef341cc50ea1d9c4cb18d5bd8a654ee7, type: 2}
+  _default: {fileID: 11400000, guid: cb965899959046f4eb20ba873e05e108, type: 2}
