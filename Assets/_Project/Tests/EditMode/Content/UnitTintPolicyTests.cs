@@ -10,26 +10,17 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Content
 {
     /// <summary>
-    /// Политика цвета юнита (решения Макса 30.07.2026). Юнит хранит РОЛИ, а не цвета: оттенок свечения
-    /// (<see cref="UnitTone"/>) и ступень приглушения тела (<see cref="BodyShade"/>). Значения живут в
-    /// палитре проекта, поэтому здесь проверяется не «красиво ли», а что роли существуют и расставлены по
-    /// правилу.
-    /// <para>Правило тинта: он УМНОЖАЕТСЯ на готовый цветной арт, значит перекрасить им персонажа нельзя —
-    /// он годится ровно на то, чтобы развести юнитов, делящих один спрайт. Один из группы остаётся без
-    /// приглушения (оригинал), остальные берут ступень; у владельца своего арта приглушения нет.</para>
-    /// <para>Почему тестом, а не комментарием: спрайт назначается в ПРЕФАБЕ (у части юнитов вообще
-    /// наследуется от базового <c>UnitView</c>), роль — в SO, и ни одна сторона шва не видит вторую.</para>
+    /// Роли цвета юнита работоспособны. Юнит хранит РОЛИ, а не цвета: оттенок свечения
+    /// (<see cref="UnitTone"/>) и ступень приглушения тела (<see cref="BodyShade"/>), а значения живут в
+    /// палитре проекта.
+    /// <para><b>Здесь проверяется только то, что роль превратится в цвет</b> — что она названа в палитре
+    /// и что тинт остаётся умножением. КАК расставлять роли по контенту, тест не решает: правило
+    /// «делящие спрайт обязаны различаться цветом» отменено 03.08.2026, см. комментарий в конце файла.</para>
+    /// <para>Почему тестом, а не комментарием: перечисление живёт в коде, а значения — в USS-палитре, и
+    /// разъехаться они могут молча — юнит просто засветит пурпуром.</para>
     /// </summary>
     public sealed class UnitTintPolicyTests
     {
-        private static List<UnitData> AllUnits() =>
-            AssetDatabase.FindAssets($"t:{nameof(UnitData)}")
-                .Select(AssetDatabase.GUIDToAssetPath)
-                .Select(AssetDatabase.LoadAssetAtPath<UnitData>)
-                .Where(u => u != null)
-                .OrderBy(u => u.name)
-                .ToList();
-
         private static GuildmasterPalette Palette()
         {
             string[] guids = AssetDatabase.FindAssets($"t:{nameof(GuildmasterPalette)}");
@@ -37,51 +28,6 @@ namespace Guildmaster.Tests.EditMode.Content
             var palette = AssetDatabase.LoadAssetAtPath<GuildmasterPalette>(AssetDatabase.GUIDToAssetPath(guids[0]));
             Assert.IsNotNull(palette);
             return palette;
-        }
-
-        /// <summary>
-        /// Подпись арта юнита: по ней и определяется, делит ли он спрайты с кем-то ещё. Составное тело
-        /// подписывается ВСЕМИ своими частями (два скелетных юнита с разным набором частей — разный арт),
-        /// одиночное — спрайтом узла <c>Visual Sprites/Body</c>, тем же, что читает каталог визуалов.
-        /// Пусто — арта нет (юнит на дефолтном префабе презентера), такой из проверки выпадает.
-        /// </summary>
-        private static string ArtKey(UnitData unit)
-        {
-            GameObject prefab = unit.ViewPrefab;
-            if (prefab == null) return null;
-
-            var skeletal = prefab.GetComponentInChildren<SkeletalBodyVisual>(true);
-            if (skeletal != null && skeletal.Renderers.Count > 0)
-            {
-                var keys = skeletal.Renderers
-                    .Where(p => p != null && p.sprite != null)
-                    .Select(SpriteKey)
-                    .OrderBy(s => s)
-                    .ToArray();
-                if (keys.Length > 0) return string.Join("|", keys);
-            }
-
-            Transform body = prefab.transform.Find("Visual Sprites/Body");
-            var sr = body != null ? body.GetComponent<SpriteRenderer>() : null;
-            return sr != null && sr.sprite != null ? SpriteKey(sr) : null;
-        }
-
-        private static string SpriteKey(SpriteRenderer sr) =>
-            $"{AssetDatabase.GetAssetPath(sr.sprite)}#{sr.sprite.name}";
-
-        private static Dictionary<string, List<UnitData>> ByArt()
-        {
-            var groups = new Dictionary<string, List<UnitData>>();
-            foreach (UnitData unit in AllUnits())
-            {
-                string key = ArtKey(unit);
-                if (string.IsNullOrEmpty(key)) continue;
-                if (!groups.TryGetValue(key, out List<UnitData> list))
-                    groups[key] = list = new List<UnitData>();
-                list.Add(unit);
-            }
-
-            return groups;
         }
 
         /// <summary>
@@ -139,31 +85,22 @@ namespace Guildmaster.Tests.EditMode.Content
             }
         }
 
-        [Test]
-        public void OwnArt_IsNeverShaded()
-        {
-            foreach (KeyValuePair<string, List<UnitData>> group in ByArt())
-            {
-                if (group.Value.Count != 1) continue;
-                UnitData unit = group.Value[0];
-                Assert.AreEqual(BodyShade.None, unit.BodyShade,
-                    $"{unit.name} — единственный владелец своего арта ({group.Key}), приглушение ему не нужно: " +
-                    "разводить не с кем, а умножение только глушит краски художника.");
-            }
-        }
-
-        // Двух проверок здесь больше НЕТ, и это решение, а не упущение:
+        // Трёх проверок здесь больше НЕТ, и это решение, а не упущение:
         //
         //   SharedArt_KeepsExactlyOneUnshadedOriginal — ровно один без приглушения на группу;
-        //   SharedArt_ShadesDifferFromEachOther       — у делящих арт ступени попарно различны.
+        //   SharedArt_ShadesDifferFromEachOther       — у делящих арт ступени попарно различны;
+        //   OwnArt_IsNeverShaded                      — владелец своего арта не красится вовсе.
         //
-        // Обе требовали, чтобы юниты на общем спрайте различались цветом. Правило отменено Максом
-        // 03.08.2026: одинаковые спрайт и цвет допустимы. Оно и не могло выполняться — ступеней всего
-        // четыре, а один только лист гоблина делят ШЕСТЬ юнитов (BanditAssassin, GoblinCommander,
-        // GoblinCutthroat, GoblinGrunt, GoblinWarrior, GoblinWolfrider). Шесть различий из четырёх
-        // значений не собираются, и «починка» свелась бы к подгонке чисел под зелёный.
+        // Первые две требовали, чтобы юниты на общем спрайте различались цветом, и выполняться не могли:
+        // ступеней всего четыре, а один только лист гоблина делят ШЕСТЬ юнитов (BanditAssassin,
+        // GoblinCommander, GoblinCutthroat, GoblinGrunt, GoblinWarrior, GoblinWolfrider) — шесть различий
+        // из четырёх значений не собираются, и «починка» свелась бы к подгонке чисел под зелёный.
+        // Третья запрещала обратное: красить того, кому не с кем путаться.
         //
-        // Тинт остаётся ВОЗМОЖНОСТЬЮ развести похожих, но перестал быть обязанностью. Проверки самой
-        // механики выше — что ступень названа в палитре и что умножение не осветляет — в силе.
+        // Правило отменено Максом 03.08.2026 целиком: одинаковые спрайт и цвет допустимы, а красить
+        // одиночку — его дело, не теста. Тинт из обязанности стал возможностью.
+        //
+        // Осталось ровно то, без чего механика сломается молча: ступень обязана быть названа в палитре,
+        // и умножение обязано оставаться умножением (осветлить тинтом нельзя, в грязь уводить незачем).
     }
 }
