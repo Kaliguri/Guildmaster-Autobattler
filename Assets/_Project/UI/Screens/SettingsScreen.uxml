@@ -45,9 +45,9 @@
 
             <ui:VisualElement class="gm-divider" />
             <ui:VisualElement class="gm-button-row">
-                <ui:Button name="btn-save" text="Сохранить" class="gm-button gm-button--primary gm-button--fill" />
-                <ui:Button name="btn-cancel" text="Отмена" class="gm-button gm-button--fill" />
-                <ui:Button name="btn-defaults" text="Сброс" class="gm-button gm-button--fill" />
+                <gm:PlateButton name="btn-save" text="Сохранить" class="gm-button gm-button--primary gm-button--fill" />
+                <gm:PlateButton name="btn-cancel" text="Отмена" class="gm-button gm-button--fill" />
+                <gm:PlateButton name="btn-defaults" text="Сброс" class="gm-button gm-button--fill" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
