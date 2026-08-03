@@ -31,6 +31,7 @@ namespace Guildmaster.Presentation.Audio
             AudioAction.Expire  => "expire",
             AudioAction.Tick    => "tick",
             AudioAction.Stinger => "stinger",
+            AudioAction.Loop    => "loop",
             _                   => action.ToString().ToLowerInvariant(),
         };
 

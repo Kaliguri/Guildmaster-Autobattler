@@ -12,7 +12,8 @@ namespace Guildmaster.Game.Flow
 
     /// <summary>
     /// Презентер исхода забега (план [[act-map-run-loop]] §4 C2): публикует <see cref="OpenOutcomeRequest"/> и ждёт
-    /// «В меню». Без слушателя UI завершается сразу (headless/тесты). Тот же publish/await-паттерн, что награда.
+    /// «В меню». Тот же publish/await-паттерн, что награда.
+    /// <para><b>Слушатель UI обязателен</b> — см. разбор у <see cref="MainMenuPresenter"/>.</para>
     /// </summary>
     public sealed class OutcomePresenter : IOutcomePresenter
     {

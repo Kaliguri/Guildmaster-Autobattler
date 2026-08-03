@@ -1,21 +1,26 @@
 ---
 title: "Goblins - Common - Goblin Cutthroat"
+order: 20
 kind: enemy
 status: draft
+updated: 2026-07-29
 enemy_group: Обычный
-faction: Гоблины
-subfaction: Основные
+species: Гоблины
+combat_class: Убийца
+subspecies: Основные
 position: Фланг
 combat_range: Ближний
 attack_delivery:
   - Ближний бой
 physical_damage:
   - Колющий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Фланговое давление
 mechanics:
   - Приоритет тыла
+impl: engine
+asset: [enemy.goblin_cutthroat]
 ---
 
 # Гоблин-убийца
@@ -23,7 +28,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** обычный.
-- **Фракция:** гоблины.
+- **Вид:** гоблины.
 - **Позиция:** фланг.
 - **Ближний / дальний:** ближний.
 
@@ -59,7 +64,7 @@ mechanics:
 
 ## Шаг 5. Навыки
 
-Нет.
+Убийца, доп урон в спину. Скрытность (его не видят обычно, видно лишь в радиусе вокруг него) в начале боя.
 
 ---
 

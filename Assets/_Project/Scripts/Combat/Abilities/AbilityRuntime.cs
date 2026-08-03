@@ -13,6 +13,17 @@ namespace Guildmaster.Combat.Abilities
         /// <summary>Остаток кулдауна, сек. ≤ 0 — готова.</summary>
         public float CooldownRemaining;
 
+        /// <summary>
+        /// Сколько раз способность кастовала В ЭТОМ БОЮ. Питает разгон числа применений нагрузки
+        /// (<see cref="AbilityData.ResolvePayloadRepeats"/>): залп Арканиста растёт на стрелу за каст.
+        /// </summary>
+        /// <remarks>
+        /// Живёт здесь, а не на юните и не на эффекте: разгон — свойство КОНКРЕТНОЙ способности, и у
+        /// кита с двумя растущими активками счётчики обязаны быть раздельными. Обнуляется вместе с
+        /// рантаймом, то есть с началом нового боя — межбоевого накопления нет по замыслу.
+        /// </remarks>
+        public int CastsThisBattle;
+
         public AbilityRuntime(AbilityData data) => Data = data;
 
         public bool IsReady => CooldownRemaining <= 0f;

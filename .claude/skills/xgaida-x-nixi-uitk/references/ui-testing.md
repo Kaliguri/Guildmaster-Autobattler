@@ -40,6 +40,21 @@ Assert.IsTrue(vm.Saved);
 - Для событий вне абстракции — ручной синтез через `UnityEngine.Event` +
   `panel.visualTree.SendEvent()`, но начинай с `PanelSimulator`.
 
+### Готча: вне тестов `ClickEvent` кнопку не нажимает
+
+Внутри `PanelSimulator` всё честно, а вот при программном «клике» из `execute_code` или дев-скрипта
+`ClickEvent` **не триггерит `Button.clicked`** — обработчик висит не на нём. Работает навигационный
+submit:
+
+```csharp
+btn.Focus();                       // + шаг кадра
+using (var e = NavigationSubmitEvent.GetPooled()) { e.target = btn; btn.SendEvent(e); }
+```
+
+Там же: `Query`/`Q` — extension-методы, без `using UnityEngine.UIElements` они не резолвятся, а в
+`execute_code` (тело метода, без `using`) обходить дерево приходится через `ve.Children()`. Добыто
+реворком UI-архитектуры (Ф0–Ф7).
+
 ## Что тестировать
 
 Проверяем **состояние и проводку**, а не внешний вид:

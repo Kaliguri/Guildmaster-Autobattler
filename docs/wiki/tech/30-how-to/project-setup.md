@@ -1,191 +1,113 @@
 ---
 title: "How-to - Project Setup"
 order: 0
-status: needs_review
-updated: 2026-07-16
+status: ready
+updated: 2026-07-30
 ---
 
-﻿**Статус:** Выполнено (2026-05-28)
+**Как поднять проект на новой машине.** Не история первичной настройки — она в git; здесь то, что
+нужно сделать, чтобы проект собрался и тесты позеленели.
+
+> [!note] Что сверено 30.07.2026, а что нет
+> Всё, что проверяется по репозиторию — версия редактора, состав пакетов и плагинов, раскладка сборок,
+> MCP-канон, скрипты, submodule, ветка `gh-pages` — сверено. **Не проверялось живьём:** активация
+> лицензии Unity, секреты GitHub Actions, branch protection и FMOD Studio — они вне репозитория, и
+> подтвердить их может только Макс на своей машине.
+>
+> Предыдущая версия дока описывала проект по состоянию на май 2026 и разошлась с ним почти во всём:
+> пять сборок вместо 23, тесты в `Assets/Tests`, три пакета, пять MCP-серверов и структура вики с
+> нумерованными русскими именами. Это тот случай, когда how-to вреднее отсутствия how-to.
 
 ---
 
-Пошаговый чеклист. Проходить по порядку.
+## 1. Что нужно на машине
 
----
+| Что | Версия / примечание |
+|---|---|
+| **Unity** | ровно **6000.4.8f1** (`ProjectSettings/ProjectVersion.txt` — источник правды) |
+| **Git + Git LFS** | LFS обязателен: арт и аудио хранятся через него (см. [[tech/30-how-to/adding-assets\|How-to - Adding Assets]]) |
+| **PowerShell 7+** (`pwsh`) | им гоняются `scripts/*.ps1` |
+| **`uv` / `uvx`** | нужен MCP-серверу Unity (ставится с `uv`) |
+| Лицензия Unity | Personal хватает; локально лежит в `C:\ProgramData\Unity\Unity_lic.ulf` |
 
-## Шаг 1 — Git и GitHub
+## 2. Клонирование
 
-- [x] Создать репозиторий на GitHub
-- [x] Добавить `.gitignore` для Unity ([шаблон](https://github.com/github/gitignore/blob/main/Unity.gitignore))
-- [x] Сделать первый коммит с базовой структурой проекта
-- [x] Создать ветку `dev` от `master` и переключиться на неё
-- [x] Запушить обе ветки в remote
+**С сабмодулем** — иначе не соберётся сайт документации (`doxygen/doxygen-awesome-css`):
+
+```bash
+git clone --recurse-submodules <url>
+```
+
+Уже клонировал без него:
+
+```bash
+git submodule update --init --recursive
+```
+
+Ветки: `master` — релизная, работа идёт в `dev` и в фиче-ветках от него.
+
+## 3. Пакеты — руками не ставим
+
+Всё приходит из `Packages/manifest.json` при первом открытии, включая **пакеты по git-URL**:
+
+- `jp.hadashikick.vcontainer` (DI, 1.18.0) и `com.cysharp.messagepipe` + `.vcontainer` (шина) —
+  тянутся с GitHub, поэтому первое открытие требует сети;
+- `com.cysharp.unitask`, `com.annulusgames.lit-motion`, `com.unity.localization`,
+  `com.unity.netcode.gameobjects`, `com.unity.multiplayer.playmode` (MPPM), `com.unity.cinemachine`,
+  `com.unity.render-pipelines.universal`, 2D-набор (animation / aseprite / psdimporter / tilemap),
+  `com.unity.nuget.newtonsoft-json`, `com.unity.test-framework` и `com.unity.ui.test-framework`,
+  `com.coplaydev.unity-mcp`.
+
+**Плагины лежат в репозитории**, а не в Package Manager: `Assets/Plugins/` (FMOD, Easy Save 3,
+Facepunch.Steamworks, Sirenix/Odin, Roslyn, QFSW) и `Assets/Shapes/` — отдельно от `Plugins`, так
+исторически.
+
+Готчи по стеку (что нельзя удалять и почему) — `CLAUDE.md`, раздел «Ловушки стека». Обоснование выбора
+библиотек — запись
+[[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks]].
+
+## 4. MCP: один сервер, а не пять
+
+**Канон — версионируемый корневой `.mcp.json`, в нём ровно `unityMCP`** (`mcpforunityserver==10.0.0`
+через `uvx`, транспорт stdio). Внутри Unity — редакторный пакет `com.coplaydev.unity-mcp`; окно
+**`Window → MCP for Unity`** должно быть открыто, мост слушает порт `6400`.
+
+Проверка коннекта — ресурс `mcpforunity://instances`, `instance_count ≥ 1`.
+
+Прочие серверы (github, git, filesystem) **сознательно не подключаются** — решение 2026-07-26: git-MCP
+не умеет `git commit -F - -- <пути>` (наша защита от готчи «коммит берёт весь индекс»), filesystem-MCP
+хуже родных инструментов, github закрыт живым `gh` CLI, а каждый сервер постоянно ест контекст
+описаниями.
+
+## 5. Проверка, что всё поднялось
 
 ```powershell
-git checkout -b dev
-git push -u origin master
-git push -u origin dev
+./scripts/run-tests.ps1
 ```
 
----
+Прогон стоит на `scripts/unity-cli.ps1`: версия редактора берётся из проекта, а тесты гоняются в
+**теневом проекте** (своя `Library` вне репо поверх junction на живые `Assets`) — поэтому закрывать
+редактор не нужно. **Теневой режим только для чтения:** бенч, сохраняющий ассеты, в нём гонять нельзя.
 
-## Шаг 2 — Структура папок в Assets/
+Ориентир: EditMode зелёный целиком (на 30.07.2026 — 775 тестов).
 
-- [x] Создать `Assets/_Project/` со всеми подпапками
-- [x] Создать `Assets/Tests/EditMode/` и `Assets/Tests/PlayMode/`
+## 6. Раскладка, которую стоит знать заранее
 
-```
-Assets/
-├── _Project/
-│   ├── Scripts/
-│   │   ├── Core/         ← Guildmaster.Core.asmdef
-│   │   ├── Units/        ← Guildmaster.Units.asmdef
-│   │   ├── Combat/       ← Guildmaster.Combat.asmdef
-│   │   ├── Guild/        ← Guildmaster.Guild.asmdef
-│   │   └── UI/           ← Guildmaster.UI.asmdef
-│   ├── ScriptableObjects/
-│   ├── Prefabs/
-│   ├── Scenes/
-│   ├── Art/
-│   │   ├── Sprites/
-│   │   └── Animations/
-│   ├── UI/
-│   └── Audio/
-└── Tests/
-    ├── EditMode/         ← Guildmaster.Tests.EditMode.asmdef
-    └── PlayMode/         ← Guildmaster.Tests.PlayMode.asmdef
-```
+- Наш код и контент — только под `Assets/_Project/`; всё остальное в `Assets/` — вендор.
+- Тесты — `Assets/_Project/Tests/{EditMode,PlayMode}` (не `Assets/Tests`).
+- Сборок 23 (`Guildmaster.Core`, `.Data`, `.Combat`, `.Presentation`, `.Game`, `.UI`, `.Guild`, `.Net`,
+  `.Balance`, `.DevTools`, `.MiniGames` + Editor-сборки + две тестовые). **Карта сборок — сами
+  `.asmdef`**, отдельного документа с графом нет: он расходился с реальностью быстрее, чем правился.
+- Зависимости — только вниз по графу; перед созданием скрипта смотри, в какую сборку он попадёт.
 
----
+## 7. CI и сайт документации
 
-## Шаг 3 — Assembly Definitions
+Настроено и работает, повторять на новой машине нечего:
 
-- [x] Создать `.asmdef` файлы для каждого модуля в `Scripts/`
-- [x] Создать `.asmdef` для `Tests/EditMode/` и `Tests/PlayMode/`
-- [x] Актуализировать карту сборок в [[tech/10-reference/assemblies|Reference - Assemblies]]
+- `ci.yml` — `changes` → `test` (EditMode + PlayMode) + `build` (StandaloneWindows64) → `ci-gate`.
+  Секреты `UNITY_LICENSE` / `UNITY_EMAIL` / `UNITY_PASSWORD` живут в GitHub Actions.
+- `docs-lint.yml` — блокирующий гейт битых вики-ссылок; локально тот же прогон:
+  `./scripts/check-wiki-links.ps1`.
+- `docs.yml` — публикация сайта (Quartz + Doxygen) в ветку `gh-pages`; она существует и деплой идёт.
 
-Зависимости:
-```
-Core ← Units ← Combat
-               Guild ← UI
-```
-
----
-
-## Шаг 4 — Unity пакеты
-
-- [x] **Input System** — `com.unity.inputsystem`
-- [x] **Test Framework** — `com.unity.test-framework`
-- [x] **mcp-unity** — для интеграции с Cursor AI
-
-> После установки mcp-unity: `Window → MCP Unity → Server Window` → запустить сервер.
-
----
-
-## Шаг 5 — Cursor AI
-
-- [x] Создать `.cursor/mcp.json` с серверами: unity, github, git, context7, filesystem
-- [x] Создать `CLAUDE.md` — точка входа для агентов
-- [x] Создать `.cursor/rules/project-context.mdc` — стандарты кода, рабочий процесс
-- [x] Создать `.cursor/rules/git-conventions.mdc` — правила коммитов и веток
-
----
-
-## Шаг 6 — Документация (Obsidian Vault)
-
-- [x] Создать папку `docs/wiki/` как Obsidian Vault
-- [x] Создать `docs/wiki/.obsidian/app.json` с базовыми настройками
-- [x] Создать `docs/wiki/README.md` — корневой README для GitHub
-- [x] Создать `docs/wiki/index.md` — главная страница Vault
-- [x] Добавить в `.gitignore`: `docs/wiki/.obsidian/workspace.json`, `workspace-mobile.json`, `cache`
-
-### Структура документации
-
-```
-docs/wiki/
-├── README.md                                        ← корневой README (виден на GitHub)
-├── index.md                                         ← главная страница Vault (Obsidian)
-│
-├── gdd/
-│   ├── 0.0. README.md                               ← индекс раздела
-│   ├── 0.2. Открытые вопросы.md                    ← нерешённые вопросы дизайна
-│   ├── 0.3. Черновик.md                             ← сырые идеи
-│   ├── 0.4. Локализация.md                          ← глоссарий RU/EN
-│   ├── 1. Концепция.md
-│   ├── 2. Лор.md
-│   ├── 3. Боевая система.md
-│   ├── 4. Гильдмастер.md
-│   ├── 5. Реликвии.md
-│   ├── 6. Мультиплеер.md
-│   └── 7. Ивенты и мини-игры.md
-│
-└── tech/
-    ├── 0.0. README.md                               ← индекс раздела
-    ├── 0.1. Открытые вопросы.md                    ← нерешённые технические вопросы
-    ├── 0.2. Черновик.md                             ← сырые технические заметки
-    ├── 0.3. Подготовка проекта (Unity).md           ← этот файл
-    ├── 1. Сборки.md                                 ← карта Assembly Definitions
-    ├── 2. Сохранения.md
-    └── 3. Рандомизация.md
-```
-
-### Соглашение по нумерации
-
-| Префикс | Тип документа |
-|---|---|
-| `0.0.` | README / индекс раздела |
-| `0.1.–0.N.` | Служебные документы (вопросы, черновики, глоссарий) |
-| `1.–N.` | Основные документы раздела |
-
----
-
-## Шаг 7 — CI/CD
-
-- [x] Создать `.github/workflows/ci.yml` на основе [GameCI](https://game.ci)
-- [x] Добавить секреты в GitHub: `UNITY_LICENSE`, `UNITY_EMAIL`, `UNITY_PASSWORD`
-- [x] Настроить branch protection на `master` и `dev` (требует прохождения CI)
-- [x] Создать `scripts/run-tests.ps1` для локального запуска тестов
-- [x] Сделать тестовый push и убедиться, что pipeline проходит
-
-### Активация Unity License
-
-Лицензия находится локально: `C:\ProgramData\Unity\Unity_lic.ulf`
-
-Если файла нет: Unity Hub → Preferences → Licenses → Add → Get a free personal license.
-
-Добавить секреты: `GitHub → Settings → Secrets and Variables → Actions`
-
-| Секрет | Значение |
-|---|---|
-| `UNITY_LICENSE` | Содержимое `.ulf` файла (весь XML) |
-| `UNITY_EMAIL` | Email Unity аккаунта |
-| `UNITY_PASSWORD` | Пароль Unity аккаунта |
-
-> ✅ Секреты добавлены, CI запускается успешно (проверено 2026-05-28).
-
-> Branch protection требует публичного репозитория или GitHub Pro.
-
----
-
-## Шаг 8 — Финальный коммит
-
-- [x] Финальный коммит сделан
-
-```
-chore: initial project setup with CI, MCP, and Cursor rules
-```
-
----
-
-## Шаг 9 — GitHub Pages (Docs Site)
-
-- [x] Добавить `doxygen/doxygen-awesome-css` как git submodule
-- [x] Создать `quartz-config/quartz.config.ts` и `quartz.layout.ts`
-- [x] Создать `doxygen/Doxyfile`
-- [x] Создать `.github/workflows/docs.yml`
-- [ ] Запушить изменения и дождаться первого деплоя
-- [ ] Активировать GitHub Pages: `Settings → Pages → Branch: gh-pages → /root`
-
-> Подробнее: [[tech/30-how-to/docs-site|How-to - Docs Site]]
-
----
+Детали сайта — [[tech/30-how-to/docs-site|How-to - Docs Site]].

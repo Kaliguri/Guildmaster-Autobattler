@@ -55,12 +55,24 @@ namespace Guildmaster.Data.Definitions
             _skillClips != null && slot >= 0 && slot < _skillClips.Length ? _skillClips[slot] : null;
 
         /// <summary>Есть ли Attack-клип — признак, что визуал готов к проигрыванию через Animator.</summary>
-        public bool HasClips => _attackClip != null;
 
         /// <summary>Число кадров Attack-клипа (знаменатель windup, вики «14»). 0 если клипа нет.</summary>
         public int AttackFrameCount => ClipMarkers.FrameCount(_attackClip);
 
         /// <summary>Кадр контакта авто-атаки = маркер Attack-клипа (числитель windup). 0 если нет клипа/маркера.</summary>
         public int AttackHitFrame => ClipMarkers.HitFrame(_attackClip);
+
+        /// <summary>
+        /// Сколько Ударов в одной Атаке: столько, сколько маркеров в клипе. <c>0</c> = разметки нет.
+        /// </summary>
+        public int AttackHitCount => ClipMarkers.HitCount(_attackClip);
+
+        /// <summary>
+        /// Нормированные позиции всех контактов (0..1) в порядке ударов — дописываются в
+        /// <paramref name="result"/>, возвращается их число. Тики из них считает <c>AttackTiming</c>:
+        /// доли живут в клипе, а перевод в тики зависит от рантайм-скорости атаки.
+        /// </summary>
+        public int AttackHitPositions(System.Collections.Generic.List<float> result) =>
+            ClipMarkers.HitNormalizedAll(_attackClip, result);
     }
 }

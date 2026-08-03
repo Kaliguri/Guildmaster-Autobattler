@@ -1,4 +1,5 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
+using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
 
@@ -27,6 +28,10 @@ namespace Guildmaster.Balance.Editor
                 Stats = stats,
                 Position = pos,
                 PreviousPosition = pos,
+                // Кита у синтетики нет, поэтому тип называем здесь: болванка бьёт обычной физикой.
+                // Конкретный тип для стенда безразличен — броня одна на всю школу, — но объявить его
+                // обязан тот, кто создаёт бойца.
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
             unit.CurrentHP = stats.Get(StatType.MaxHP);
             return unit;
@@ -46,6 +51,54 @@ namespace Guildmaster.Balance.Editor
         /// </summary>
         public static RuntimeUnit ReferenceDummy(int team, Vector2 pos, float hp)
             => Build(team, pos, (StatType.MaxHP, hp));
+
+        /// <summary>Общий темп атаки стенда: атак в секунду (решение «медленнее, но импактнее»).</summary>
+        private const float ReferenceAttackSpeed = 0.75f;
+
+        /// <summary>DPS манекена, когда конфиг норм не найден: эталон Брузера по умолчанию поля.</summary>
+        private const float FallbackDps = 110f;
+
+        /// <summary>Дальность манекена: мили держат фронт вплотную, бэклайн бьёт с восьмёрки (норма доставки).</summary>
+        private static float ReferenceRange(UnitClass unitClass)
+            => unitClass is UnitClass.Tank or UnitClass.Bruiser or UnitClass.Assassin ? 1f : 8f;
+
+        /// <summary>
+        /// Эталонный СОЮЗНИК заданного класса — рядовой представитель своей роли, собранный ровно по норме:
+        /// HP, скорость и бюджет брони берутся из живого <see cref="ClassBalanceConfig"/> (то же, что видит
+        /// бой), урон — из классового коридора, темп — общий для стенда.
+        /// </summary>
+        /// <remarks>
+        /// Числа НЕ прибиты константами специально: манекен изображает «обычного бойца этого класса», и когда
+        /// норма класса осознанно поедет, вся линейка обязана поехать вместе с ней — иначе она перестанет
+        /// измерять то, ради чего заведена. Ограничение общее для синтетиков: без <c>UnitData</c> манекен
+        /// всегда физический single-target и не умеет ни лечить, ни бить по площади, поэтому «манекен-саппорт»
+        /// — это просто слабый стрелок, а не настоящая поддержка.
+        /// <para>Урон до 2026-08-01 жил здесь своей таблицей (Танк 60, Убийца 144, Дальник 120) при живой
+        /// норме в конфиге (55 / 154 / 132) — второй владелец одной величины, из-за которого эталонные
+        /// напарники были не тем, с чем сравнивались испытуемые. Владелец нормы теперь один.</para>
+        /// </remarks>
+        public static RuntimeUnit ReferenceAlly(UnitClass unitClass, ClassBalanceConfig classes, int team, Vector2 pos)
+        {
+            float hp = 2000f, moveSpeed = 3f, armorBudget = 0f, dps = FallbackDps;
+            if (classes != null)
+            {
+                (float hpMult, float moveMult) = classes.GetMultipliers(unitClass);
+                hp = classes.BaseHp * hpMult;
+                moveSpeed = classes.BaseMoveSpeed * moveMult;
+                armorBudget = classes.GetArmorBudget(unitClass);
+                dps = classes.GetDpsNorm(unitClass);
+            }
+
+            float halfArmor = armorBudget * 0.5f;
+            return Build(team, pos,
+                (StatType.MaxHP, hp),
+                (StatType.MoveSpeed, moveSpeed),
+                (StatType.AutoAttackDamage, dps / ReferenceAttackSpeed),
+                (StatType.AttackSpeed, ReferenceAttackSpeed),
+                (StatType.AttackRange, ReferenceRange(unitClass)),
+                (StatType.PhysArmor, halfArmor),
+                (StatType.MagicArmor, halfArmor));
+        }
 
         /// <summary>
         /// Бессмертный эталонный источник урона: фикс-DPS (физика, мили), высокая скорость хода (держится на цели).

@@ -46,6 +46,21 @@ namespace Guildmaster.Data.Definitions
         public Vector2 Position => _position;
         public int Count => Mathf.Max(1, _count);
         public float Spacing => _spacing <= 0f ? 0.8f : _spacing;
+
+        /// <summary>
+        /// Позиция копии <paramref name="copyIndex"/> (0..<see cref="Count"/>-1): сам якорь для одиночки,
+        /// вертикальный кластер вокруг якоря для нескольких копий.
+        /// </summary>
+        /// <remarks>
+        /// Владелец правила расстановки копий — сама структура, а не тот, кто спавнит: расстановку
+        /// спрашивают и боевой <c>EncounterLoader</c>, и балансный стенд, а одна формула у двух хозяев
+        /// разъезжается — стенд начал бы мерить бой, которого в игре нет.
+        /// </remarks>
+        public Vector2 PositionOf(int copyIndex)
+        {
+            float dy = (copyIndex - (Count - 1) * 0.5f) * Spacing;
+            return new Vector2(_position.x, _position.y + dy);
+        }
     }
 
     /// <summary>
@@ -65,7 +80,7 @@ namespace Guildmaster.Data.Definitions
 
         [Header("Arena (seam)")]
         [Tooltip("Ключ арены боя (prefab-per-arena Addressables, вики «10» §4-5). ЗАДЕЛ: пока не читается — " +
-                 "арена берётся из сцены через FindFirstObjectByType. Свап на загрузку по ключу — будущий шаг.")]
+                 "арена берётся из сцены поиском по типу. Свап на загрузку по ключу — будущий шаг.")]
         [SerializeField] private string _arenaId;
 
         public EncounterTier Tier => _tier;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Guildmaster.Data.Descriptions;
 
 namespace Guildmaster.Data.Definitions
 {
@@ -16,9 +17,12 @@ namespace Guildmaster.Data.Definitions
         {
             { typeof(RelicData),       "relic"       },
             { typeof(EnemyData),       "enemy"       },
+            { typeof(SpeciesData),     "species"     },
             { typeof(VesselData),      "vessel"      },
             { typeof(EffectData),      "effect"      },
+            { typeof(VfxData),         "vfx"         },
             { typeof(TagData),         "tag"         },
+            { typeof(KeywordDefinition), KeywordMarkup.Domain },
             { typeof(TraitData),       "trait"       },
             { typeof(ConsequenceData), "consequence" },
             { typeof(AIPresetData),    "ai_preset"   },
@@ -29,6 +33,14 @@ namespace Guildmaster.Data.Definitions
             { typeof(BattlePresetData),"battle_preset"},
             { typeof(TextEventData),   "event"       },
         };
+
+        /// <summary>
+        /// Все зарегистрированные типы контента, в порядке объявления. Единственный ответ на вопрос
+        /// «какие типы контента существуют»: редакторный слой (папки, меню создания) выводит свои списки
+        /// отсюда, а не заводит собственный — иначе тип, добавленный сюда, тихо теряется в редакторе
+        /// (аудит 2026-07-26, T-24: у путей был свой реестр на 13 типов против 17 здесь).
+        /// </summary>
+        public static IEnumerable<Type> RegisteredTypes => Domains.Keys;
 
         /// <summary>Найти домен для типа (точное совпадение или ближайший зарегистрированный предок).</summary>
         public static bool TryGetDomain(Type type, out string domain)
@@ -47,6 +59,30 @@ namespace Guildmaster.Data.Definitions
                 ? domain
                 : throw new ArgumentException(
                     $"No content domain registered for type '{type.Name}'. Add it to {nameof(ContentDomains)}.");
+
+        /// <summary>
+        /// Проверить, что строка — корректный content id: <c>domain.lower_snake</c>, только <c>[a-z0-9_]</c>,
+        /// ровно одна точка. Владелец правила — этот класс: он же его и применяет в <see cref="MakeId"/>,
+        /// поэтому валидация контента обязана спрашивать здесь, а не держать вторую регулярку у себя
+        /// (аудит 2026-07-26, волна 3 — она уже жила копией в тестах контента).
+        /// </summary>
+        public static bool IsValidId(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return false;
+
+            int dot = id.IndexOf('.');
+            if (dot <= 0 || dot == id.Length - 1) return false;
+            if (id.IndexOf('.', dot + 1) >= 0) return false;
+
+            for (int i = 0; i < id.Length; i++)
+            {
+                char c = id[i];
+                if (i == dot) continue;
+                bool ok = (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_';
+                if (!ok) return false;
+            }
+            return true;
+        }
 
         /// <summary>
         /// Собрать id <c>domain.lower_snake</c> из имени ассета: <c>("IceChainsStun")</c> → <c>effect.ice_chains_stun</c>.

@@ -1,7 +1,10 @@
 ---
 title: "Effect - Shield"
-order: 20
+order: 70
 status: draft
+updated: 2026-07-29
+impl: engine
+asset: [BulwarkShield]
 ---
 
 # Щит (Shield)

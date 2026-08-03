@@ -117,6 +117,70 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Assert.AreEqual(21, AttackTiming.WindupTicks(5, 7, 30));
         }
 
+        // ===================== Свой потолок свинга у юнита (override, 2026-07-30) =====================
+
+        [Test]
+        public void AttackDuration_UnitOverride_ReplacesGlobalCap()
+        {
+            // Медленный кит: интервал 55 тиков. Глобально свинг упёрся бы в 30; со своим потолком 45 —
+            // тяжёлый занос в 1.5 сек. Это и есть ручка «редкий тяжёлый удар».
+            Assert.AreEqual(SimConstants.MaxAttackAnimTicks, AttackTiming.AttackDurationTicks(55));
+            Assert.AreEqual(45, AttackTiming.AttackDurationTicks(55, 45));
+        }
+
+        [Test]
+        public void AttackDuration_ZeroOverride_FallsBackToGlobalCap()
+        {
+            // 0 — не «мгновенный свинг», а «значение не задано»: та же идиома, что у WindupShare.
+            Assert.AreEqual(AttackTiming.AttackDurationTicks(55), AttackTiming.AttackDurationTicks(55, 0));
+        }
+
+        [Test]
+        public void AttackDuration_OverrideLongerThanInterval_StillClampedToInterval()
+        {
+            // Кламп к интервалу сильнее любого потолка: свинг не имеет права наехать на следующую атаку,
+            // иначе удар совпадёт с тиком её старта. Override 60 при интервале 40 → 40.
+            Assert.AreEqual(40, AttackTiming.AttackDurationTicks(40, 60));
+        }
+
+        [Test]
+        public void Windup_UnitOverride_WidensTelegraph()
+        {
+            // Тот же клип (5/7) и тот же интервал: замах растёт вместе с потолком, то есть окно
+            // прерывания и парирования становится шире — ради этого override и заведён.
+            int windupGlobal   = AttackTiming.WindupTicks(5, 7, 55);
+            int windupOverride = AttackTiming.WindupTicks(5, 7, 55, 1f, 45);
+
+            Assert.AreEqual(21, windupGlobal);                          // 5×30/7
+            Assert.AreEqual(32, windupOverride);                        // 5×45/7 = 32.14 → floor 32
+            Assert.Greater(windupOverride, windupGlobal, "Свой потолок должен удлинять замах");
+        }
+
+        [Test]
+        public void Swing_UnitOverride_EatsTheWaitingWindow()
+        {
+            // Ловушка, названная в докстринге UnitData.AttackSwingTicks: пауза = интервал − свинг.
+            // Поднять потолок, не снизив скорость атаки, значит сократить окно ожидания — тест держит
+            // это арифметическим фактом, чтобы правку «сделаем занос длиннее» не приняли за рост паузы.
+            const int interval = 55;
+            int pauseGlobal   = interval - AttackTiming.AttackDurationTicks(interval);
+            int pauseOverride = interval - AttackTiming.AttackDurationTicks(interval, 45);
+
+            Assert.AreEqual(25, pauseGlobal);
+            Assert.AreEqual(10, pauseOverride);
+            Assert.Less(pauseOverride, pauseGlobal, "Длинный свинг съедает паузу при том же интервале");
+        }
+
+        [Test]
+        public void FollowThrough_UnitOverride_TailGrowsWithSwing()
+        {
+            // windup + доигрыш = длительность свинга ровно, каким бы потолком она ни была задана.
+            int windup = AttackTiming.WindupTicks(5, 7, 55, 1f, 45);
+            int tail   = AttackTiming.FollowThroughTicks(5, 7, 55, windup, 45);
+
+            Assert.AreEqual(45, windup + tail, "Замах и доигрыш складываются в длительность свинга");
+        }
+
         // ===================== FollowThroughTicks (доигрыш клипа после кадра контакта) =====================
 
         [Test]

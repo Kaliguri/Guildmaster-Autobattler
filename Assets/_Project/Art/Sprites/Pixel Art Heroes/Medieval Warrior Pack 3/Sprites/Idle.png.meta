@@ -1,4 +1,4 @@
-﻿fileFormatVersion: 2
+fileFormatVersion: 2
 guid: 128bc1a66bf56c242806631a367910fe
 TextureImporter:
   internalIDToNameTable:
@@ -130,12 +130,12 @@ TextureImporter:
       name: Idle_0
       rect:
         serializedVersion: 2
-        x: 53
-        y: 48
-        width: 28
-        height: 40
+        x: 0
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -152,12 +152,12 @@ TextureImporter:
       name: Idle_1
       rect:
         serializedVersion: 2
-        x: 188
-        y: 48
-        width: 28
-        height: 39
+        x: 135
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -174,12 +174,12 @@ TextureImporter:
       name: Idle_2
       rect:
         serializedVersion: 2
-        x: 323
-        y: 48
-        width: 28
-        height: 37
+        x: 270
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -196,12 +196,12 @@ TextureImporter:
       name: Idle_3
       rect:
         serializedVersion: 2
-        x: 458
-        y: 48
-        width: 28
-        height: 37
+        x: 405
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -218,12 +218,12 @@ TextureImporter:
       name: Idle_4
       rect:
         serializedVersion: 2
-        x: 593
-        y: 48
-        width: 28
-        height: 37
+        x: 540
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -240,12 +240,12 @@ TextureImporter:
       name: Idle_5
       rect:
         serializedVersion: 2
-        x: 728
-        y: 48
-        width: 28
-        height: 39
+        x: 675
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -262,12 +262,12 @@ TextureImporter:
       name: Idle_6
       rect:
         serializedVersion: 2
-        x: 863
-        y: 48
-        width: 28
-        height: 40
+        x: 810
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -284,12 +284,12 @@ TextureImporter:
       name: Idle_7
       rect:
         serializedVersion: 2
-        x: 998
-        y: 48
-        width: 28
-        height: 40
+        x: 945
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -306,12 +306,12 @@ TextureImporter:
       name: Idle_8
       rect:
         serializedVersion: 2
-        x: 1133
-        y: 48
-        width: 28
-        height: 40
+        x: 1080
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -328,12 +328,12 @@ TextureImporter:
       name: Idle_9
       rect:
         serializedVersion: 2
-        x: 1268
-        y: 48
-        width: 28
-        height: 40
+        x: 1215
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

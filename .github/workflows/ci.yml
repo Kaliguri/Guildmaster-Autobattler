@@ -43,8 +43,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          lfs: true
+        # Без lfs: true намеренно. LFS в репозитории не настроен, а если его завести,
+        # эта строка начнёт качать LFS-объекты на КАЖДЫЙ прогон: ~69 прогонов в месяц
+        # против 1 ГБ бесплатной квоты трафика — она сгорит в первый день, и причину
+        # будут искать в сборке. Замер и альтернативы: journal 2026-07-30-lfs-does-not-pay-here.
 
       - name: Cache Library
         uses: actions/cache@v4
@@ -66,7 +68,16 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: EditMode Test Results
 
+      # PlayMode гоняется ТОЛЬКО на master (решение Макса 03.08.2026). Он поднимает плеер и стоит
+      # заметно дороже EditMode, а ловит другое — жизненный цикл сцен и бута. На PR узкое место это
+      # тесты (сборка идёт параллельно и финиширует раньше), поэтому вынос PlayMode к релизной ветке
+      # укорачивает именно ожидание, а не «что-нибудь».
+      #
+      # Размен назван вслух: поломку жизненного цикла PR теперь не увидит — она всплывёт перед
+      # вливанием в master, где чинить дороже, чем в ветке. Если такое случится дважды, правило стоит
+      # пересмотреть, а не терпеть.
       - name: Run PlayMode Tests
+        if: github.ref == 'refs/heads/master'
         uses: game-ci/unity-test-runner@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -86,11 +97,75 @@ jobs:
           name: test-results
           path: test-results/
 
+  # Tests exercise assemblies; a build exercises the configuration a player
+  # actually receives — shaders that must be in Always Included, assets that
+  # never made it into a scene, platform defines. Those break the build only,
+  # so without this job they surface at release time.
+  #
+  # Standalone uses the Mono backend (ProjectSettings pins IL2CPP for Android
+  # only), so a Windows player cross-compiles on a Linux runner. If Standalone
+  # ever moves to IL2CPP this job has to move to a windows runner with it.
+  #
+  # Runs on pull requests and on master, not on every dev push: a build costs
+  # far more minutes than the test job, and dev pushes are already gated by it.
+  build:
+    name: Build Player (StandaloneWindows64)
+    needs: changes
+    if: >-
+      needs.changes.outputs.code == 'true' &&
+      (github.event_name == 'pull_request' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        # Без lfs: true намеренно. LFS в репозитории не настроен, а если его завести,
+        # эта строка начнёт качать LFS-объекты на КАЖДЫЙ прогон: ~69 прогонов в месяц
+        # против 1 ГБ бесплатной квоты трафика — она сгорит в первый день, и причину
+        # будут искать в сборке. Замер и альтернативы: journal 2026-07-30-lfs-does-not-pay-here.
+
+      # The runner image ships toolchains we do not use; the project plus its
+      # Library eats the headroom they leave.
+      - name: Free disk space
+        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost "$AGENT_TOOLSDIRECTORY"
+
+      # Own cache namespace: the test job writes Library at the same time, and
+      # two jobs sharing one key race each other.
+      - name: Cache Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-build-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: Library-build-
+
+      - name: Build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 6000.4.8f1
+          targetPlatform: StandaloneWindows64
+          buildName: HappyGuildmasters
+          # Version comes from ProjectSettings; Semantic would need git tags we
+          # do not cut yet, and would fail the build on their absence.
+          versioning: None
+
+      # The build output is not uploaded on purpose: the question this job
+      # answers is "does it still build", and the player runs well over a
+      # gigabyte. Publishing a playable build is a release concern, not a gate.
+
   # Single required status check. Passes instantly for docs-only changes
-  # (test skipped); for code changes it requires the tests to succeed.
+  # (test skipped); for code changes it requires the tests to succeed, and the
+  # build too whenever the build job actually ran.
   ci-gate:
     name: CI Gate
-    needs: [changes, test]
+    needs: [changes, test, build]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -98,8 +173,15 @@ jobs:
         run: |
           echo "code changed: ${{ needs.changes.outputs.code }}"
           echo "test result:  ${{ needs.test.result }}"
+          echo "build result: ${{ needs.build.result }}"
           if [ "${{ needs.changes.outputs.code }}" = "true" ] && [ "${{ needs.test.result }}" != "success" ]; then
             echo "::error::Code changed but tests did not pass (result: ${{ needs.test.result }})"
+            exit 1
+          fi
+          # 'skipped' is the expected result on dev pushes; anything else that
+          # is not success means the player configuration is broken.
+          if [ "${{ needs.build.result }}" != "success" ] && [ "${{ needs.build.result }}" != "skipped" ]; then
+            echo "::error::Player build did not pass (result: ${{ needs.build.result }})"
             exit 1
           fi
           echo "CI Gate passed"

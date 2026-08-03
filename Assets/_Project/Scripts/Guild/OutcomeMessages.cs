@@ -14,10 +14,21 @@ namespace Guildmaster.Guild
         /// <summary>Колбэк «В меню» (ровно один вызов).</summary>
         public readonly Action OnToMenu;
 
-        public OpenOutcomeRequest(bool victory, Action onToMenu)
+        /// <summary>
+        /// Колбэк «Продолжить»; <c>null</c> — продолжать нечем, и кнопки не будет.
+        /// </summary>
+        /// <remarks>
+        /// После забега продолжать действительно нечего: акт кончился. На площадке — наоборот: состав и
+        /// расстановка целы, и повторить бой тем же строем это норма, а не исключение. Разница живёт
+        /// здесь, а не в двух экранах: экран один, и различает их наличие действия.
+        /// </remarks>
+        public readonly Action OnContinue;
+
+        public OpenOutcomeRequest(bool victory, Action onToMenu, Action onContinue = null)
         {
-            Victory  = victory;
-            OnToMenu = onToMenu;
+            Victory    = victory;
+            OnToMenu   = onToMenu;
+            OnContinue = onContinue;
         }
     }
 }

@@ -24,6 +24,7 @@ namespace Guildmaster.ContentHub.Editor
         private static Dictionary<UnityEngine.Object, ContentEntry> _byAsset;
         private static Dictionary<Type, StatCohort> _cohorts;
         private static StatsConfig _statsConfig;
+        private static ClassBalanceConfig _classBalanceConfig;
 
         /// <summary>Индекс перестроен/инвалидирован — страницы пересобираются.</summary>
         public static event Action Changed;
@@ -64,6 +65,7 @@ namespace Guildmaster.ContentHub.Editor
             _byAsset = new Dictionary<UnityEngine.Object, ContentEntry>();
 
             _statsConfig = FindAll<StatsConfig>().FirstOrDefault();
+            _classBalanceConfig = FindAll<ClassBalanceConfig>().FirstOrDefault();
 
             // Контент-определения (folder-per-type) — единственный источник домена по типу.
             foreach (var cd in ContentIdUtility.FindAll())
@@ -121,7 +123,7 @@ namespace Guildmaster.ContentHub.Editor
 
             foreach (var e in _entries)
                 if (e.Unit != null)
-                    e.EffectiveStats = StatMath.BuildEffective(e.Unit, _statsConfig);
+                    e.EffectiveStats = StatMath.BuildEffective(e.Unit, _statsConfig, _classBalanceConfig);
 
             var byType = new Dictionary<Type, List<ContentEntry>>();
             foreach (var e in _entries)

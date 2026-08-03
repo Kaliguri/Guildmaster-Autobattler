@@ -1,7 +1,10 @@
 ---
 title: "Effect - Triggers"
-order: 35
+order: 110
 status: draft
+updated: 2026-07-29
+impl: engine
+impl_note: "поля _triggerTag / _consumesTriggerTag способности"
 ---
 
 # Сборник: триггеры и мета-эффекты

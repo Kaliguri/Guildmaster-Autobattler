@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d896b3dbdd3ef594a952cfa527d0e065, type: 3}
+  m_Name: MeleeBrawl_WithShepherd
+  m_EditorClassIdentifier: Guildmaster.Balance::Guildmaster.Balance.BalanceScenarioData
+  _teamA:
+  - Unit: {fileID: 11400000, guid: 3929f651376911d4e8bf8d6d5adb3ef5, type: 2}
+    Vessel: {fileID: 0}
+    Count: 1
+  - Unit: {fileID: 11400000, guid: 996f2fad803a29546b30c3849034e749, type: 2}
+    Vessel: {fileID: 0}
+    Count: 1
+  - Unit: {fileID: 11400000, guid: b94a788eb332911478cd8f88880f03ea, type: 2}
+    Vessel: {fileID: 0}
+    Count: 1
+  - Unit: {fileID: 11400000, guid: 2405b745f0480e2428fdaf24ac1b5d93, type: 2}
+    Vessel: {fileID: 0}
+    Count: 1
+  _teamB:
+  - Unit: {fileID: 11400000, guid: 3929f651376911d4e8bf8d6d5adb3ef5, type: 2}
+    Vessel: {fileID: 0}
+    Count: 1
+  - Unit: {fileID: 11400000, guid: 996f2fad803a29546b30c3849034e749, type: 2}
+    Vessel: {fileID: 0}
+    Count: 1
+  - Unit: {fileID: 11400000, guid: b94a788eb332911478cd8f88880f03ea, type: 2}
+    Vessel: {fileID: 0}
+    Count: 1
+  - Unit: {fileID: 11400000, guid: ab27903fcfcfda74aa115da3d3cee210, type: 2}
+    Vessel: {fileID: 0}
+    Count: 1
+  _maxSeconds: 240
+  _seed: 1

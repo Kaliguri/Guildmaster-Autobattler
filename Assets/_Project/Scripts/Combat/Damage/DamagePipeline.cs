@@ -5,19 +5,25 @@ using UnityEngine;
 namespace Guildmaster.Combat
 {
     /// <summary>
-    /// Детерминированный конвейер урона. Все методы статические и чистые
-    /// (in-параметры, мутация только HP/Shield цели через <see cref="DamageRequest"/>).
+    /// Детерминированный конвейер урона. Все методы статические и чистые.
     /// Порядок: raw → DamageDealtEff → броня/пробивание (школа) → сродство × тип существа →
-    /// DamageTakenEff → щит → HP (вики «10» §5.4, «6» §6; ГДД «8» §«Школа vs сродство»).
+    /// DamageTakenEff (вики «10» §5.4, «6» §6; ГДД «8» §«Школа vs сродство»).
     /// </summary>
+    /// <remarks>
+    /// Пайплайн ТОЛЬКО СЧИТАЕТ и ничего не применяет: щит и HP правит <c>TickLedger</c> на коммите
+    /// тика. Разделение держится на законе видимости эффектов — статы источника и цели заморожены
+    /// на весь тик, поэтому расчёт не зависит от того, в каком порядке удары дошли до пайплайна,
+    /// и его можно выполнить сразу, а применение отложить (см. <c>tick-resolution</c>).
+    /// </remarks>
     public static class DamagePipeline
     {
         /// <summary>
-        /// Выполнить пайплайн: вычислить финальный урон и применить его к <see cref="DamageRequest.Target"/>.
+        /// Посчитать урон, который дойдёт до цели, ДО поглощения щитом. Ничего не мутирует.
         /// </summary>
         /// <param name="req">Запрос урона с источником, целью и параметрами.</param>
-        /// <returns>Детализированный результат для триггеров (lifesteal, шипы — Фаза 2).</returns>
-        public static DamageResult Execute(in DamageRequest req)
+        /// <param name="mitigated">Сколько срезали броня и эффективности — то, чего не случилось.</param>
+        /// <returns>Эффективный урон (≥ 0) после эффективностей, брони и пробивания.</returns>
+        public static float Resolve(in DamageRequest req, out float mitigated)
         {
             float damage = req.RawDamage;
 
@@ -37,36 +43,39 @@ namespace Guildmaster.Combat
                 }
                 else
                 {
-                    armor  = req.Target.Stats.Get(StatType.ElementalArmor);
-                    pen    = req.Source.Stats.Get(StatType.ElementalPen);
-                    penPct = req.Source.Stats.Get(StatType.ElementalPenPct);
+                    armor  = req.Target.Stats.Get(StatType.MagicArmor);
+                    pen    = req.Source.Stats.Get(StatType.MagicPen);
+                    penPct = req.Source.Stats.Get(StatType.MagicPenPct);
                 }
 
-                // Пробивание: сначала %, потом плоское; эффективная броня не уходит в минус
-                float effArmor = Mathf.Max(0f, armor * (1f - penPct) - pen);
+                // Пробивание: сначала %, потом плоское (стат источника + разовое пробивание этого удара);
+                // эффективная броня не уходит в минус.
+                // Проценты стата и удара умножаются ОСТАТКАМИ, а не складываются: 60% от стата и 50% от
+                // удара дают 80% пробивания, а не 110% — сумма позволила бы обнулить любую броню двумя
+                // умеренными источниками, и «броня вдвое меньше» перестало бы что-либо значить.
+                float pctLeft = (1f - penPct) * (1f - req.BonusPctPen);
+                if (pctLeft < 0f) pctLeft = 0f;
+
+                float effArmor = Mathf.Max(0f, armor * pctLeft - pen - req.BonusFlatPen);
                 damage *= req.ArmorK / (req.ArmorK + effArmor);
             }
 
-            // 2.5. Сродство: бронёй НЕ гасится, зависит от типа существа цели. Действует и на True-урон.
-            if (req.Affinity != DamageAffinity.None)
-            {
-                damage *= AffinityTable.Multiplier(req.Affinity, req.Target.CreatureType);
-            }
+            // Сродство урона (Яд/Свет/Тьма) НЕ участвует в расчёте: оно несёт идентичность механикой —
+            // глаголом (яд травит, свет очищает и лечит, тьма бьёт голой мощью), а не коэффициентом по
+            // типу цели (решение 2026-07-15/35, подтверждено 2026-07-26). Матрица «сродство × существо»
+            // здесь стояла и снята: см. guard-тест Affinity_NeverScalesDamage_ByCreatureType.
 
             // 3. Множитель эффективности получаемого урона
             damage *= req.Target.Stats.Get(StatType.DamageTakenEff);
 
             damage = Mathf.Max(0f, damage);
 
-            // 4. Поглощение щитом
-            float shieldAbsorbed = Mathf.Min(req.Target.CurrentShield, damage);
-            req.Target.CurrentShield -= shieldAbsorbed;
-            float hpDamage = damage - shieldAbsorbed;
+            // Срезанное = замах минус дошедшее. Считается от СЫРОГО урона запроса (уязвимости в него
+            // уже вложены вызывающим), поэтому число отвечает ровно на «сколько защита не пустила».
+            mitigated = Mathf.Max(0f, req.RawDamage - damage);
 
-            // 5. Вычет из HP
-            req.Target.CurrentHP -= hpDamage;
-
-            return new DamageResult(hpDamage, shieldAbsorbed, req.Target.CurrentHP <= 0f, req.SourceKind);
+            // Щит и HP здесь НЕ трогаются: их правит TickLedger, когда сложит все удары тика.
+            return damage;
         }
     }
 }

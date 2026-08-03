@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
+  m_Name: BloodStance
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
+  _id: effect.blood_stance
+  _polarity: 0
+  _tags: 1
+  _baseDuration: -1
+  _stacking: 0
+  _maxStacks: 1
+  _stacksPerApplication: 1
+  _cleanseTier: 0
+  _unremovable: 1
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  _components:
+  - rid: 7815026876324512001
+  _telegraphSeconds: 0
+  _icon: {fileID: 0}
+  _infoTags: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 7815026876324512001
+      type: {class: AttackStanceComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _enterCloseRange: 3
+        _exitCloseRange: 4.5
+        _checkInterval: 0.1
+        _farStance:
+          Delivery: 1
+          DamageType: 4
+          Channel:
+            DurationSeconds: 3
+            WindupSeconds: 1
+            RecoverySeconds: 0.7
+          OnHitEffects: []
+          Targeting: 3
+          Stats:
+          - Stat: 9
+            Op: 3
+            Value: 8
+          - Stat: 8
+            Op: 3
+            Value: 0.75
+        _closeStance:
+          Delivery: 0
+          DamageType: 3
+          Channel:
+            DurationSeconds: 0
+            WindupSeconds: 0
+            RecoverySeconds: 0
+          OnHitEffects: []
+          Targeting: 0
+          Stats:
+          - Stat: 9
+            Op: 3
+            Value: 1
+          - Stat: 8
+            Op: 3
+            Value: 0.75

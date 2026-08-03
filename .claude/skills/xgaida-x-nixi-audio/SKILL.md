@@ -1,159 +1,223 @@
 ---
 name: xgaida-x-nixi-audio
 description: >-
-  Рабочий контур звука (audio / SFX / музыка) Guildmaster — весь аудио-слой за
-  фасадом IAudioService: Core-фасад и две реализации (FmodAudioService на FMOD,
-  UnityAudioService-заглушка), боевой аудио-презентер (AudioPresenter слушает
-  события боя), резолвер ключей {contentId}.{action} (AudioResolver), каталог
-  ключ→FMOD-событие (AudioCatalog + EventReference), канон действий (AudioAction),
-  глобальные параметры микса (AudioParameters, напр. TimeScale-питч), шины и
-  громкости (bus:/Music, bus:/SFX через SettingsService), FMOD-банки в
-  StreamingAssets. Используй ВСЕГДА, когда задача касается звука: audio, звук,
-  sound, SFX, музыка, стингер, микс, шина/bus, громкость/volume, FMOD, FMOD
-  Studio, банк/bank, EventReference, IAudioService, AudioPresenter, AudioCatalog,
-  AudioResolver, AudioAction, AudioParameters, ключ звука, {id}.{action}, озвучка
-  удара/каста/смерти, глобальный параметр микса, или когда правишь что-либо под
-  Assets/_Project/Scripts/Core/Audio, Assets/_Project/Scripts/Presentation/Audio,
-  аудио-сервисы в Game/Services (FmodAudioService, UnityAudioService, аудио-часть
-  SettingsService) и банки в Assets/StreamingAssets. Срабатывай, даже если слова
-  «audio» нет, но по сути правится озвучка/звуковой мост/микс. НЕ применять к:
-  боевому времени (TimeScaleService — combat-sim; звук лишь принимает от него
-  параметр TimeScale), джусу/VFX/тряске (gamefeel-vfx), поведению эффектов и
-  sim-логике (combat-sim), ОПРЕДЕЛЕНИЮ игрового контента и id (UnitData/EffectData,
-  ContentDomains — data-authoring; звук лишь резолвит по чужому id), самому
-  FMOD-Studio-проекту и звуковому контенту/сведению (аудио-дизайнер/Макс).
-  Инженерную тех-доку об аудио-слое (docs/wiki/tech) ведёт tech-scribe.
+  Звук Guildmaster: весь аудио-слой за фасадом IAudioService (FMOD-реализация, банки, шины и
+  микс), ключи {contentId}.{action} и AudioCatalog, боевой и забеговый презентеры, звук
+  интерфейса, плюс генеративный пайплайн scripts/audio — карта звука, нормализация, сборка
+  банков. Зови на любую задачу про звук, SFX, амбиент, стингеры, громкость, подбор сэмплов,
+  речь блипами и проигрывание музыки в игре, а также на правки под scripts/audio, FMOD Project,
+  Core/Audio. НЕ применять к: СОЗДАНИЮ музыки и промптам Suno (music), боевому времени и
+  симуляции (combat-sim), визуальному джусу (gamefeel-vfx), тех-доке об аудио (tech-scribe).
 ---
-
 # Audio — рабочий контур Guildmaster
 
 Этот скилл — процедура, а не справка. Он превращает правила звукового слоя в чеклист,
 который прогоняется на КАЖДОЙ аудио-задаче. Цель — чтобы весь звук ходил через один
-фасад (`IAudioService`), игровая логика не знала о FMOD, а новый звук ложился в готовую
-цепочку «событие → ключ → каталог → FMOD-событие», а не рядом с ней.
+фасад (`IAudioService`), игровая логика не знала о FMOD, новый звук ложился в готовую
+цепочку «событие → ключ → каталог → FMOD-событие», а FMOD-проект собирался из карты, а не
+руками.
 
 **Роль на этом слое:** я держу КОНТРАКТ звука (фасад, ключи, резолв, каталог, проводку
-событий) и код. Само звучание — какие сэмплы, сведе́ние, FMOD-Studio-проект, банки — за
-Максом/аудио-дизайнером. Не-звуково верю резолверу и тестам (`AudioResolver` покрыт
-юнит-тестом); «как звучит» — приёмка Макса.
+событий), КОД и ПАЙПЛАЙН (карта → нормализация → FMOD → каталог), включая числа микса.
+Чего я не могу — услышать: «сочно или дохло», «этот удар лучше того» решает Макс. Всё, что
+проверяется числами и моделью, проверяю сама (см. §Инструменты).
 
 ## Прежде всего: карта аудио-слоя
 
-Слой уже построен и живёт за фасадом. Ничего не изобретай — читай, продолжай, встраивайся.
+Слой построен и живой. Ничего не изобретай — читай, продолжай, встраивайся.
+
+### Пайплайн (источник правды — карта, не FMOD-проект)
 
 | Что | Где |
 |---|---|
-| Фасад звуковой подсистемы (Core, без ссылки на движок) | `Assets/_Project/Scripts/Core/Audio/IAudioService.cs` |
-| Имена глобальных FMOD-параметров (строковый контракт со Studio) | `Assets/_Project/Scripts/Core/Audio/AudioParameters.cs` |
-| FMOD-реализация фасада (PlayOneShot, шины, setParameter) | `Assets/_Project/Scripts/Game/Services/FmodAudioService.cs` |
-| Заглушка фасада (Debug.Log, Фаза 1 / headless) | `Assets/_Project/Scripts/Game/Services/UnityAudioService.cs` |
-| Громкости шин из настроек → фасад | `Assets/_Project/Scripts/Game/Services/SettingsService.cs` |
-| Боевой аудио-презентер (подписан на события боя) | `Assets/_Project/Scripts/Presentation/Audio/AudioPresenter.cs` |
-| Резолвер ключа `{contentId}.{action}` → точная/дефолт/тишина | `Assets/_Project/Scripts/Presentation/Audio/AudioResolver.cs` |
-| Каталог ключ→FMOD-событие (SO, EventReference) | `Assets/_Project/Scripts/Presentation/Audio/AudioCatalog.cs`, `IAudioCatalog.cs` |
-| Канон звуковых действий (enum, ординалы сериализуются) | `Assets/_Project/Scripts/Presentation/Audio/AudioAction.cs` |
-| FMOD-банки (собираются из Studio/CLI) | `Assets/StreamingAssets/Master.bank`, `Master.strings.bank`, `SFX.bank` |
-| Регистрация DI (FmodAudioService как IAudioService, каталог) | `Assets/_Project/Scripts/Game/RootLifetimeScope.cs`, `CombatLifetimeScope.cs` |
+| **Карта звука: ключ → категория → сэмплы + описания** | `scripts/audio/audio_map.py` |
+| Нормализация громкости + манифест | `scripts/audio/build_source_audio.py` |
+| Генератор скрипта заливки FMOD | `scripts/audio/build_populate.py` |
+| Сгенерированный скрипт заливки | `FMOD Project/Tooling/populate.js` |
+| Манифест (вход каталога и тестов) | `FMOD Project/Scripts/manifest.json` |
+| Нормализованные исходники (артефакт, в .gitignore) | `FMOD Project/SourceAudio/` |
+| Копии, которые версионируются (их кладёт FMOD при импорте) | `FMOD Project/Assets/` |
+| Сырьё музыки | `FMOD Project/MusicSource/` |
+| Генератор reference-доки | `scripts/audio/gen_audio_reference.py` |
 
-**Слои (asmdef):** фасад `IAudioService` и `AudioParameters` живут в **Core** — чтобы
-нижние слои (`Presentation`-аудио) звали звук без ссылки на композит-рут `Game` (тот же
-приём, что `ILocalizationService`). Резолвер/каталог/действия — в `Presentation.Audio`.
-FMOD-реализация — в `Game` (там есть ссылка на `FMODUnity`). Регистрация — в `Game` через
-VContainer.
+### Код
 
-## Три правила, нарушение которых = переделка (HARD)
+| Что | Где |
+|---|---|
+| Фасад звука (Core, без ссылки на движок) | `Assets/_Project/Scripts/Core/Audio/IAudioService.cs` |
+| Имена глобальных FMOD-параметров | `Assets/_Project/Scripts/Core/Audio/AudioParameters.cs` |
+| FMOD-реализация (one-shot + хранимые `EventInstance` для лупов) | `Assets/_Project/Scripts/Game/Services/FmodAudioService.cs` |
+| Регистрация фасада (единственная реализация) | `Assets/_Project/Scripts/Game/RootLifetimeScope.cs` — `FmodAudioService` как `IAudioService`, Singleton. Заглушки нет и не заводим, см. `references/facade-and-fmod.md` |
+| Громкости шин из настроек | `Assets/_Project/Scripts/Game/Services/SettingsService.cs` |
+| Боевой аудио-презентер | `Assets/_Project/Scripts/Presentation/Audio/AudioPresenter.cs` |
+| **Звук забега вне боя + музыка (root-скоуп)** | `Assets/_Project/Scripts/Game/Services/RunAudioPresenter.cs` |
+| **Звук интерфейса: один слушатель на корне панели** | `Assets/_Project/Scripts/UI/UiSoundSystem.cs` |
+| Feel-звуки (килл, тяжёлый удар, финишер) | `Assets/_Project/Scripts/Game/Services/CombatFeelDirector.cs` |
+| Резолвер `{contentId}.{action}` | `Assets/_Project/Scripts/Presentation/Audio/AudioResolver.cs` |
+| Каталог ключ→FMOD-событие | `.../Audio/AudioCatalog.cs`, `IAudioCatalog.cs` |
+| Канон действий (ординалы сериализуются) | `.../Audio/AudioAction.cs` |
+| Наполнение каталога из манифеста | `Assets/_Project/Scripts/EditorTools/Audio/AudioCatalogPopulator.cs` |
+| Тесты покрытия (код ↔ каталог ↔ манифест) | `Assets/_Project/Tests/EditMode/Audio/AudioCoverageTests.cs` |
+| Банки | `Assets/StreamingAssets/{Master,Master.strings,SFX,Music}.bank` |
+
+**Слои (asmdef):** фасад и `AudioParameters` — в **Core** (чтобы нижние слои звали звук без
+ссылки на композит-рут). Резолвер/каталог/действия — `Presentation.Audio`. FMOD-реализация и
+`RunAudioPresenter` — `Game`. `UiSoundSystem` — `UI`. Тестовая сборка FMOD-типов НЕ видит:
+каталог отвечает на её вопросы сам (`HasSound`, `EntryKeys`, `KeysWithoutEvent`).
+
+## Пять правил, нарушение которых = переделка (HARD)
 
 1. **Весь звук — через `IAudioService`; игровая логика FMOD НЕ трогает.** `FMODUnity`,
-   `RuntimeManager`, `EventReference`, шины `bus:/…` — живут ТОЛЬКО в `FmodAudioService` и
-   `AudioCatalog` (каталог держит `EventReference`, потому что это его работа — маппинг). Ни
-   один боевой/UI/геймплейный класс не зовёт FMOD напрямую — только `IAudioService.Play/Stop/
-   Set*Volume/SetGlobalParameter`.
-   *Почему:* фасад — единственная причина, по которой можно гонять headless-тесты (заглушка
-   `UnityAudioService`), переживать пустой проект без банков и в будущем сменить движок звука
-   не трогая геймплей. Прямой вызов FMOD из логики убивает всё это разом.
+   `RuntimeManager`, `EventReference`, шины `bus:/…` живут ТОЛЬКО в `FmodAudioService` и
+   `AudioCatalog`.
+   *Почему:* фасад — единственная причина, по которой можно гонять headless-тесты, переживать
+   пустой проект без банков и когда-нибудь сменить движок звука не трогая геймплей.
 
-2. **Звук адресуется строковым ключом `{contentId}.{action}`, не FMOD-типами.** Игровой код
-   говорит «сыграй `Hit` на этом юните» (`AudioAction` + `contentId` из `Unit.Id`); строковый
-   ключ строит `AudioResolver`; в FMOD-событие его превращает только `AudioCatalog`. Core и
-   резолвер про `EventReference` не знают.
-   *Почему:* так резолв (точная запись → дефолт действия → тишина) — чистая логика над
-   `IAudioCatalog`, покрытая юнит-тестом с фейк-каталогом; а привязка к движку изолирована в
-   одном SO.
+2. **Звук адресуется ключом `{contentId}.{action}`, не FMOD-типами.** Игровой код говорит
+   «сыграй `Hit` на этом юните»; ключ строит `AudioResolver`; в событие его превращает только
+   `AudioCatalog`.
+   *Почему:* резолв (точная запись → дефолт действия → тишина) остаётся чистой логикой, покрытой
+   юнит-тестом, а привязка к движку живёт в одном SO.
 
-3. **`AudioAction` — только ДОБАВЛЯТЬ в конец.** Ординалы enum сериализуются в
-   `AudioCatalog.asset` (`_defaults[].Action`). Переставишь/вставишь в середину — дефолты в
-   ассете съедут на чужие действия.
-   *Почему:* это молчаливая порча данных — компилятор промолчит, а звук поедет. Новое действие
-   — в конец списка, и всё.
+3. **`AudioAction` — только ДОБАВЛЯТЬ в конец.** Ординалы сериализуются в `AudioCatalog.asset`.
+   *Почему:* переставишь — дефолты в ассете молча съедут на чужие действия. Компилятор промолчит.
 
-## Цепочка озвучки (как звук попадает на колонки)
+4. **FMOD-проект собирается из карты, а не правится руками.** Новый звук = запись в
+   `scripts/audio/audio_map.py` + прогон пайплайна. Ручные события и ручной роутинг в FMOD Studio
+   `populate.js` снесёт на следующем прогоне (он чистит всё под `event:/SFX`, `event:/Stingers`,
+   `event:/Music` и пересоздаёт шины).
+   *Почему:* до этого FMOD-проект и код расходились молча — события были, а играть их было некому,
+   и наоборот. Один источник правды делает рассинхрон невозможным, а не «маловероятным».
+   *Исключение:* крутить микс живьём через **Live Update** можно и нужно — но удачные числа
+   переносятся в `CATEGORIES`/`BUS_TREE` карты, иначе следующий прогон их затрёт.
+
+5. **Числа громкости живут в карте, а обработка — в FMOD.** Нормализация сэмплов
+   (−23 dB RMS активной части, потолок −1 dBTP), категорийные offset'ы, рандомизация и
+   voice-макросы задаются в `audio_map.py`; эффекты, снапшоты и sidechain — в FMOD Studio.
+   Свой C#-инструмент сведения НЕ строим (решение [[audio-subbuses]]).
+   *Почему:* громкость должна быть воспроизводимой (прогнал — получил то же), а обработка звука —
+   это микшер, дублировать его кодом бессмысленно.
+
+## Цепочка озвучки
 
 ```
-боевое событие (sim/abilities)                 // OnDamageDealt, OnAbilityCast, OnUnitDied…
-  → AudioPresenter                             // маппит событие → (contentId, AudioAction)
-  → AudioResolver.Resolve(contentId, action)   // {id}.{action} → точная запись
-                                               //   ↘ нет → дефолт действия ("hit")
-                                               //     ↘ нет → null (тишина, лог раз за сессию)
-  → IAudioService.Play(key)                    // фасад
-  → FmodAudioService                           // key → EventReference через AudioCatalog
-  → RuntimeManager.PlayOneShot(evt)            // FMOD; пустой EventReference → тихо, без ошибок
+СОБЫТИЕ БОЯ (sim/abilities/effects)          OnDamageDealt, OnEffectApplied, OnUnitDied…
+  → AudioPresenter                            событие → (contentId, AudioAction)
+СОБЫТИЕ ЗАБЕГА (MessagePipe, фаза боя)       OpenRewardRequest, PhaseChanged, ScreenFade…
+  → RunAudioPresenter                         + музыка: одна дорожка за раз
+ЖЕСТ В ИНТЕРФЕЙСЕ (UITK, корень панели)      ClickEvent, PointerEnter, ChangeEvent, Wheel
+  → UiSoundSystem                             разбор по типу элемента и USS-классу
+      ↓
+  AudioResolver.Resolve(contentId, action)    {id}.{action} → точная запись
+                                                ↘ нет → дефолт действия ("hit")
+                                                  ↘ нет → null (тишина + один лог за сессию)
+  → IAudioService.Play(key)                   фасад
+  → FmodAudioService                          one-shot → PlayOneShot; луп → хранимый EventInstance
 ```
-
-`AudioPresenter` (POCO `IStartable`) подписан на C#-события `CombatSimulation` **напрямую**
-(как `CombatPresenter`) — не через MessagePipe. Это осознанно: он в `Presentation.Audio` и
-видит `Combat`. Точечные звуки реликвий/эффектов (`relic.cryomancer.attack`) резолвер
-подхватывает автоматически — достаточно выстрелить нужным `AudioAction` на нужном юните.
 
 **Безопасность пустого контента — это шов, не баг.** Пустой каталог, пустой `EventReference`,
-невалидная шина (банк не загружен) — везде тихий no-op, игра не падает. Звук «приезжает»
-контентом позже, код при этом не меняется.
+невалидная шина (банк не загружен) — везде тихий no-op.
+
+**Речь идёт четвёртой ветвью, и она ещё НЕ реализована.** Озвучка диалогов «тоном звуков» (voice
+blips) — решения приняты 2026-07-29, кода нет: ни системы диалогов, ни категории `voice`, ни
+`AudioAction.Speak`. Контракт целиком — `references/voice-and-narrator.md`, читать **до** первой
+строчки по речи. Три вещи оттуда, которые ломаются молча:
+
+- речь у нас **контурная, а не как в Celeste**: один набор слогов + интонация из пунктуации, эмоция =
+  пресет контура. Ручной граф переходов в FMOD не заводим — он нарушил бы правило 4;
+- **эмоция живёт полем в данных реплики, НИКОГДА внутри локализованной строки** (иначе два владельца
+  одного факта и разъезд RU/EN, слышный только на слух);
+- шина `SFX/Voice` держится **вне кривой `TimeScale`** — иначе на ускорении x3 персонажи заговорят
+  чипманками.
+
+## Пайплайн: как добавить или поменять звук
+
+```bash
+# 1. правишь карту: ключ, категорию, файлы, описание для CLAP
+#    scripts/audio/audio_map.py
+
+# 2. нормализация + манифест
+python scripts/audio/build_source_audio.py
+
+# 3. генерация скрипта заливки и прогон FMOD (две команды — build отдельно, это готча FMOD)
+python scripts/audio/build_populate.py
+"C:/Program Files/FMOD SoundSystem/FMOD Studio 2.03.14/fmodstudiocl.exe" -script "FMOD Project/Tooling/populate.js" "FMOD Project/Guildmaster Autobattler Game.fspro"
+"C:/Program Files/FMOD SoundSystem/FMOD Studio 2.03.14/fmodstudiocl.exe" -build -ignore-warnings -export-guids "FMOD Project/Guildmaster Autobattler Game.fspro"
+cp "FMOD Project/Build/Desktop/"*.bank Assets/StreamingAssets/
+
+# 4. каталог (в Unity): меню Alebardium/Audio/Populate Catalog from Manifest
+# 5. проверки
+python scripts/audio/audit_samples.py
+python scripts/audio/gen_audio_reference.py     # обновить reference-доку
+#    + EditMode-прогон: AudioCoverageTests должны быть зелёными
+```
+
+## Инструменты отбора (уши, которых у меня нет)
+
+| Инструмент | Что делает | Оговорка |
+|---|---|---|
+| `audit_samples.py` | клиппинг, DC-offset, тишина в начале, обрыв хвоста, длительность, частота | числа, не вкус |
+| `clap_pick.py --find` | подбор кандидатов по описанию из всех паков | **не верить на сэмплах < 0.6 с** |
+| `clap_pick.py --verify` | сверка «сэмпл ↔ смысл ключа» (описания в `DESCRIPTIONS` карты) | то же |
+| `freesound_fetch.py` | CC0-кандидаты с Freesound (ключ в `.env`) | превью, не финальные файлы |
+| `sfx_generate.py` | генерация через ElevenLabs (ключ в `.env`) | платно |
+| `sfx_generate_local.py` | Stable Audio Open локально (`HF_TOKEN` в `.env`, venv `.venv-gen`) | на CPU минуты на семпл, на CUDA — секунда |
+
+**Два venv, и это не вкусовщина.** `scripts/audio/.venv` — CLAP и поиск; `scripts/audio/.venv-gen` —
+локальная генерация. `stable-audio-tools` пинит `laion-clap==1.1.4`, чей чекпоинт не сходится с
+весами, которые качает CLAP: в общем окружении они ломали друг друга по очереди (плюс numpy 2.x
+против pandas и `torch.load` 2.6+ против весов CLAP). Оба в `.gitignore`, команды установки — в
+шапках `clap_pick.py` и `sfx_generate_local.py`.
 
 ## Стыки со смежными скиллами
 
-- **combat-sim** владеет боевым временем. `TimeScaleService` пишет `AudioParameters.TimeScale`
-  (slowmo-питч боевой шины) через `IAudioService.SetGlobalParameter` — **вызов** геймплейный
-  (combat-sim), а **имя параметра и смысл микса** — мои. FMOD за `Time.timeScale` сам не следит,
-  потому связь идёт этим параметром. `AudioPresenter` слушает боевые события sim — sim про звук
-  не знает.
-- **gamefeel-vfx** — джус и звук подписываются на одно событие НЕЗАВИСИМО: на добивающий удар
-  `AudioPresenter` даёт kill-стингер (`feel.kill`), `CombatFeelDirector` — slowmo+shake. Разные
-  слои, одно событие, друг через друга не ходят.
-- **data-authoring** владеет `id` контента (`domain.name`, `ContentDomains`). Звук лишь
-  РЕЗОЛВИТ по чужому `id` (`Unit.Id` → `contentId`). `AudioCatalog` (маппинг ключ→FMOD-событие) —
-  мой, это не игровой контент, а звуковой конфиг. Новый озвучиваемый контент = новый `id` в
-  data-authoring + запись/дефолт в каталоге здесь.
-- **Настройки/UI:** `SettingsService` гонит громкости в шины (`SetMasterVolume/Music/Sfx` →
-  `bus:/`, `bus:/Music`, `bus:/SFX`). UI-звук — `AudioAction.Ui`.
-
-## Как я авторю аудио-код — ГИБРИД (файл + editor)
-
-1. **Пишу C#-файлы напрямую** (`Write`/`Edit`) — фасад, резолвер, презентер, действия.
-2. **`AudioCatalog` наполняется в редакторе:** `EventReference` — это FMOD-GUID, руками в YAML
-   не пишем (как префаб-ref). Привязка ключ→событие — in-editor через инспектор/editor-инструмент
-   (`AudioCatalogPopulator`, вики impl «09» §П5). Ассет каталога:
-   `Assets/_Project/ScriptableObjects/Audio/AudioCatalog`.
-3. **Банки** собираются из FMOD Studio (или CLI `fmodstudiocl`) и кладутся в `StreamingAssets`
-   (`Master.bank`/`Master.strings.bank`/`SFX.bank` уже там). Сам FMOD-проект/сведение — Макс.
-4. **После C#-правок — `read_console`** (Unity MCP): компиляция, ноль ошибок.
-5. **Звуковая приёмка — за Максом.** Логику резолва проверяю тестом; «как звучит» — на слух Макса.
+- **combat-sim** владеет боевым временем: `TimeScaleService` пишет `AudioParameters.TimeScale`,
+  а кривая питча боевой шины — моя. Sim про звук не знает; `EffectSystem.OnEffectApplied/
+  OnEffectEnded` заведены как уведомления, детерминизм ими не задет.
+- **gamefeel-vfx** — джус и звук слушают одно событие НЕЗАВИСИМО, но feel-ЗВУКИ зовутся из
+  `CombatFeelDirector`: там уже посчитаны пороги и кулдауны, и звук обязан идти под теми же
+  воротами, что slowmo и тряска.
+- **data-authoring** владеет `id` контента; звук лишь резолвит по чужому `id`. Новый озвученный
+  контент = новый `id` там + запись в карте здесь.
+- **uitk** владеет экранами; `UiSoundSystem` слушает их корень и в разметку не лезет. Экрану,
+  которому нужен СВОЙ звук, его зовёт владелец флоу (`MenuRouter`, `ShopController`).
+- **tech-scribe** ведёт `docs/wiki/tech`: reference по звуку ГЕНЕРИРУЕТСЯ (`gen_audio_reference.py`),
+  решения пишутся в `tech-changelog`.
 
 ## Чеклист сдачи аудио-задачи
 
-- [ ] Звук идёт только через `IAudioService`; FMOD/`EventReference`/`RuntimeManager` не утекли в геймплей
-- [ ] Адресация строковым ключом `{contentId}.{action}`; резолв точная→дефолт→тишина цел
+- [ ] Звук идёт только через `IAudioService`; FMOD-типы не утекли в геймплей и в тесты
+- [ ] Новый звук добавлен В КАРТУ и прогнан пайплайном, а не заведён руками в FMOD Studio
 - [ ] Новое `AudioAction` добавлено В КОНЕЦ (ординалы в `.asset` не съехали)
-- [ ] Пустой каталог/EventReference/шина безопасны (тихий no-op, игра не падает)
-- [ ] `contentId` берётся из `Unit.Id` (data-authoring), звук чужой id не выдумывает
-- [ ] Глобал-параметры — по имени из `AudioParameters`; `TimeScale` пишет только `TimeScaleService`
-- [ ] На нетривиальный резолв — EditMode-тест с фейк-каталогом (тесты под игру)
-- [ ] `read_console` чист; звуковую приёмку (если есть сэмплы) показал Максу
-- [ ] Новые банки — в `StreamingAssets`; каталог наполнен in-editor, не hand-YAML
+- [ ] Пустой каталог/EventReference/шина безопасны (тихий no-op)
+- [ ] `contentId` берётся из данных (data-authoring), звук чужой id не выдумывает
+- [ ] Прогнан `audit_samples.py`: нет `clip` и `late` (их слышно)
+- [ ] `AudioCoverageTests` зелёные: код не зовёт ключей, которых нет; каталог не разошёлся с манифестом
+- [ ] Банки пересобраны и лежат в `StreamingAssets`; каталог наполнен из меню, не руками
+- [ ] Reference-дока перегенерирована; значимое решение — в `tech-changelog`
+- [ ] Задача по речи: `references/voice-and-narrator.md` прочитан; эмоция не уехала в локализованную
+      строку; `SFX/Voice` вне `TimeScale`-кривой; сэмплы Celeste в игру не попали
+- [ ] Задача про СОЗДАНИЕ музыки — это не сюда: скилл `xgaida-x-nixi-music`
+- [ ] `read_console` чист; что слушать — сказано Максу списком
 
 ## Справочные файлы (читать по надобности)
 
-- `references/facade-and-fmod.md` — `IAudioService`, `FmodAudioService`/`UnityAudioService`,
-  шины и громкости, глобальные параметры, банки/StreamingAssets, готча `fmodstudiocl`, границы
-  «фасад vs движок». Читать перед правкой реализации звука.
-- `references/keys-and-catalog.md` — ключи `{contentId}.{action}`, `AudioAction` (ординалы),
-  `AudioResolver` (точная→дефолт→тишина), `AudioCatalog` + `EventReference`, наполнение каталога,
-  подписка `AudioPresenter`. Читать перед добавлением звука/действия.
+- `references/facade-and-fmod.md` — `IAudioService`, реализации, шины и громкости, лупы через
+  `EventInstance`, глобальные параметры, банки, готчи `fmodstudiocl`, границы «фасад vs движок».
+- `references/keys-and-catalog.md` — ключи `{contentId}.{action}`, `AudioAction`, резолв, каталог,
+  наполнение, подписки презентеров.
+- `references/pipeline-and-mix.md` — карта звука, нормализация и её числа, категории, шины,
+  анти-каша (max instances / stealing / cooldown / priority), `TimeScale`-кривая, готчи FMOD
+  scripting API.
+- `references/voice-and-narrator.md` — **речь блипами и голос нарратора**: контурная схема против
+  метода Celeste, правила контура из пунктуации, где живёт эмоция, контракт категории `voice` и её
+  готчи; техника нарратора через ElevenLabs (Voice Design, бюджет, вычитка ударений).
+  **Не реализовано — это контракт, а не описание кода.**
+- `references/sfx-tooling.md` — **ElevenLabs как генератор SFX**: цена и возможности, где генерация
+  оправдана против паков, что у нас уже готово (`sfx_generate.py`), чего мы НЕ знаем. В конце —
+  отложенный разбор ElevenLabs Music (`composition_plan`), оставлен как материал.
+
+**Создание музыки — не этот скилл.** Целевой тон, канон состава, промпты Suno, тариф и права живут в
+**`xgaida-x-nixi-music`** (решение 30.07.2026: производство музыки — отдельный цикл со своим владельцем,
+Suno крутит Макс). Сюда готовый трек приходит уже утверждённым — и дальше идёт по обычному пайплайну:
+карта → нормализация → FMOD → каталог. **Бесшовность лупа даёт FMOD, а не файл.**

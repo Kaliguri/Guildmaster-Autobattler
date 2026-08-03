@@ -1,7 +1,10 @@
 ---
 title: "Effect - Heal"
-order: 17
+order: 50
 status: draft
+updated: 2026-07-29
+impl: engine
+asset: [LightMend, SporeMend]
 ---
 
 # Исцеление / HoT (Heal)

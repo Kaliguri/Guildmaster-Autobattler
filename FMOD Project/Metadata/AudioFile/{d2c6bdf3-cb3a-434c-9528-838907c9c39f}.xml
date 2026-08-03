@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{d2c6bdf3-cb3a-434c-9528-838907c9c39f}">
+		<property name="assetPath">
+			<value>heavy_hit_02.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.53519274376417236</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{780146db-d415-4c07-a500-d9f5da0d997f}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -8,7 +8,14 @@ namespace Guildmaster.Combat.Effects.Components
     /// Щит с величиной, зависящей от текущего HP носителя: <c>flat + pct × недостающее HP</c>
     /// (§9.3, «Оплот» Защитника — тем толще, чем сильнее просел). Величина считается в момент
     /// наложения (не из статов — недостающее HP юнит-относительно) и запоминается в
-    /// <see cref="RuntimeEffect.PendingShield"/>, чтобы <c>OnExpire</c> снял ровно её.
+    /// <see cref="RuntimeEffect.HeldShield"/>, чтобы <c>OnExpire</c> снял ровно её.
+    /// <para><b>Числа:</b> <c>_flat</c> — гарантированная часть щита; <c>_pctMissingHp</c> — прибавка
+    /// за просадку, доля НЕДОСТАЮЩЕГО здоровья (0.15 = 15%). У Брузера на 2000 HP, просевшего до
+    /// половины, это 20 + 150 = 170.</para>
+    /// <para><b>Готча:</b> процент считается от недостающего, а не от максимума — значит щит тем
+    /// толще, чем хуже носителю. Большая доля здесь превращает эффект в «отмену урона» тем вернее,
+    /// чем ближе смерть; ровно на этом однажды сломался хил Пастыря (решение 2026-07-27/4).</para>
+    /// <para><b>Когда срабатывает:</b> в момент наложения, один раз; величина не пересчитывается.</para>
     /// </summary>
     [Serializable]
     public sealed class MissingHpShieldComponent : IRuntimeEffectComponent
@@ -28,7 +35,7 @@ namespace Guildmaster.Combat.Effects.Components
             if (missing < 0f) missing = 0f;
 
             float amount = (_flat + _pctMissingHp * missing) * ctx.Stacks;
-            ctx.Effect.PendingShield = amount;
+            ctx.Effect.HoldShield(amount);
             t.CurrentShield += amount;
         }
 
@@ -36,7 +43,7 @@ namespace Guildmaster.Combat.Effects.Components
         {
             // Снимаем не больше, чем подняли (часть могла быть поглощена уроном).
             if (ctx.Target == null) return;
-            ctx.Target.CurrentShield = Mathf.Max(0f, ctx.Target.CurrentShield - ctx.Effect.PendingShield);
+            ctx.Target.CurrentShield = Mathf.Max(0f, ctx.Target.CurrentShield - ctx.Effect.ReleaseHeldShield());
         }
     }
 }

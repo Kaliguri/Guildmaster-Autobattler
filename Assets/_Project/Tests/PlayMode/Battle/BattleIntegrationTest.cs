@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using Guildmaster.Combat;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Simulation;
@@ -60,6 +60,7 @@ namespace Guildmaster.Tests.PlayMode.Battle
                 CurrentHP        = 300f,
                 Position         = pos,
                 PreviousPosition = pos,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 

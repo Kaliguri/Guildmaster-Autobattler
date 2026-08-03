@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: TrainingDummy
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
   _id: enemy.training_dummy
-  _damageSchool: 0
-  _affinity: 0
+  _combatClass: 0
+  _autoAttackDamageType: 2
   _creatureType: 2
   _attackType: 0
   _resourceType: 0
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _viewPrefab: {fileID: 7656420421442111193, guid: fb286c11f6a4fba46bccc671b18655df, type: 3}
+  _bodyShade: 1
+  _vfxTone: 15
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects: []
@@ -27,6 +29,7 @@ MonoBehaviour:
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
   _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
   _stats:
   - Stat: 0
     Op: 3
@@ -53,5 +56,7 @@ MonoBehaviour:
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
   _infoTags: []
+  _species: {fileID: 0}
+  _subspecies: {fileID: 0}
   _threatPoints: 0
   _goldBounty: 0

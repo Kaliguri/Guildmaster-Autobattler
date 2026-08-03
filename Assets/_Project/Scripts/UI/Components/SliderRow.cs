@@ -21,20 +21,8 @@ namespace Guildmaster.UI.Components
             set => _label.text = value;
         }
 
-        [UxmlAttribute]
-        public float LowValue
-        {
-            get => _slider.lowValue;
-            set { _slider.lowValue = value; UpdateValueLabel(_slider.value); }
-        }
-
-        [UxmlAttribute]
-        public float HighValue
-        {
-            get => _slider.highValue;
-            set { _slider.highValue = value; UpdateValueLabel(_slider.value); }
-        }
-
+        // Диапазон слайдера задаёт конструктор (0..1). Атрибутов low-value/high-value здесь больше нет:
+        // разметка их не задавала ни разу, а подпись-процент всё равно считается от текущих границ.
         [UxmlAttribute]
         public float Value
         {

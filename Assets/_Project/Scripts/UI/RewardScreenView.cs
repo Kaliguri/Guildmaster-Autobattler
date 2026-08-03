@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using Guildmaster.UI.Components;
+using Guildmaster.UI.Tooltips;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -32,7 +33,8 @@ namespace Guildmaster.UI
             Func<string, string> localize,
             Action<RelicData, string> onTake,
             Action onSkip,
-            Action<RelicData> onCardSelectSound = null)
+            Action<RelicData> onCardSelectSound = null,
+            GuildmasterPalette palette = null)
         {
             string L(string key, string ru)
             {
@@ -57,10 +59,9 @@ namespace Guildmaster.UI
             if (skipBtn != null) skipBtn.text = L("ui.reward.skip", "Пропустить");
             if (takeBtn != null) takeBtn.text = L("ui.reward.take", "Взять");
 
-            // Риг анимированных спрайтов карточек + подсказка. Живут, пока открыт экран (dispose при detach).
-            var rig = new RelicCardVisualRig();
-            var tooltip = new Tooltip();
-            root.Add(tooltip);
+            // Риг анимированных спрайтов карточек. Живёт, пока открыт экран (dispose при detach).
+            // Палитра нужна ему за цветом ступени приглушения — тем же, которым красит бой.
+            var rig = new RelicCardVisualRig(palette: palette);
             root.RegisterCallback<DetachFromPanelEvent>(_ => rig.Dispose());
 
             RelicData chosen = null;
@@ -100,8 +101,9 @@ namespace Guildmaster.UI
 
                 RelicData r = relic;
                 RenderTexture cardRt = rt;
-                card.RegisterCallback<PointerEnterEvent>(_ => ShowTooltip(tooltip, card, r, nameOf));
-                card.RegisterCallback<PointerLeaveEvent>(_ => tooltip.Hide());
+                // Подсказка — запросом по данным (Трек Т): содержимое соберёт общая фабрика, поэтому
+                // реликвия в награде, в магазине и в инвентаре выглядит одинаково без копирования кода.
+                card.WithTooltip(TooltipRequest.Relic(r?.Id));
                 card.RegisterCallback<ClickEvent>(_ =>
                 {
                     chosen = r;
@@ -143,26 +145,6 @@ namespace Guildmaster.UI
             Refresh();
             return root;
         }
-
-        // Наполнить и показать подсказку рядом с карточкой (справа от неё, в координатах панели).
-        private static void ShowTooltip(Tooltip tooltip, VisualElement card, RelicData relic, Func<RelicData, string> nameOf)
-        {
-            if (relic == null) { tooltip.Hide(); return; }
-            string name = nameOf != null ? nameOf(relic) : relic.Id;
-            string meta = KitPowerRu(relic.KitPower);
-            string tags = relic.Tags != null && relic.Tags.Length > 0 ? string.Join(" · ", relic.Tags) : null;
-            tooltip.Set(name, meta, tags, null);
-
-            Rect b = card.worldBound;
-            tooltip.ShowAt(new Vector2(b.xMax + 8f, b.yMin));
-        }
-
-        private static string KitPowerRu(KitPower power) => power switch
-        {
-            KitPower.Cursed => "Проклятый кит",
-            KitPower.Divine => "Божественный кит",
-            _               => "Обычный кит",
-        };
 
         private static string Coalesce(string a, string b) => string.IsNullOrEmpty(a) ? b : a;
 

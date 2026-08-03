@@ -21,7 +21,10 @@ namespace Guildmaster.Combat
 
         public void Decide(RuntimeUnit self, IBattleView view)
         {
-            TargetingMode mode = _profile.AutoAttackTargeting;
+            // Форма сильнее кита: у бойца со стойками фокус свой в каждой (Десятина вдали ищет самого
+            // живучего — тот дольше кровоточит, в упор бьёт ближайшего). Пусто — стоек на бойце нет, и
+            // работает профиль кита.
+            TargetingMode mode = self.StanceTargeting ?? _profile.AutoAttackTargeting;
             bool wantAllies = TargetsAllies(mode, _profile.AutoAttackMode);
 
             RuntimeUnit target = SelectBest(self, view.Units, mode, wantAllies);
@@ -65,10 +68,21 @@ namespace Guildmaster.Combat
                 if (wantAllies) { if (!isAlly || o == self) continue; }
                 else            { if (isAlly) continue; }
 
-                // Скрытность (§9.6, §10.5): скрытый враг невидим для вражеского таргетинга — его нельзя
-                // выбрать целью (враги не бегут к нему и не бьют), пока стелс не снят первой авто-атакой.
-                // Союзный таргетинг (хил) стелс не блокирует — только выбор цели противником.
-                if (!wantAllies && (o.EffectTagMask & EffectTag.Stealth) != 0) continue;
+                // Маскировка: скрытый враг невидим для вражеского таргетинга — его нельзя выбрать целью
+                // (враги не бегут к нему и не бьют), пока его не заметили с близкой дистанции или он сам
+                // себя не выдал ударом. Единственная точка выбора цели во всём бою — поэтому фильтр
+                // видимости стоит здесь и больше нигде. Союзный таргетинг (хил) маскировка не блокирует.
+                //
+                // Судим по состоянию, а не по тегу эффекта (до 2026-07-31 здесь стояла проверка
+                // EffectTag.Stealth): у Маскировки четыре ступени, и «висит тег» больше не значит
+                // «не видно» — видно или нет, решает ConcealmentSystem по расстоянию.
+                if (!wantAllies && o.IsHidden) continue;
+
+                // Сон («Колыбельная», [[the-lull]]): спящий выпадает из автовыбора ВСЕЙ команды —
+                // правило агро, а не свойство эффекта, иначе каждого кита пришлось бы настраивать
+                // руками. Исключение — тот, кто спящих ищет намеренно (демон добивает свою цель):
+                // он объявляет это профилем, предпочитая тег сна.
+                if (!wantAllies && (o.EffectTagMask & EffectTag.Sleep) != 0 && !HuntsSleepers(mode)) continue;
 
                 float distSq = (o.Position - self.Position).sqrMagnitude;
                 float score  = Score(o, mode, distSq);
@@ -84,6 +98,19 @@ namespace Guildmaster.Combat
 
             return best;
         }
+
+        /// <summary>
+        /// Охотится ли носитель профиля за спящими: только если он ЯВНО предпочитает тег сна
+        /// (<see cref="TargetingMode.PreferTagged"/> + <c>TargetTag = Sleep</c>). Так исключение из общего
+        /// правила агро объявляется в данных кита, а не зашивается в код по имени реликвии.
+        /// </summary>
+        /// <param name="mode">
+        /// ДЕЙСТВУЮЩИЙ режим, а не профильный: у бойца со стойками фокус переписывает форма, и правило
+        /// «спящих не выбираем» обязано смотреть на тот же режим, что и выбор цели.
+        /// </param>
+        private bool HuntsSleepers(TargetingMode mode) =>
+            mode == TargetingMode.PreferTagged
+            && (_profile.TargetTag & EffectTag.Sleep) != 0;
 
         // --- Score (меньше = лучше, §4.2) ---
 

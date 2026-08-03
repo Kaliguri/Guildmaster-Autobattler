@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -16,6 +16,10 @@ namespace Guildmaster.Data.Editor
     /// этот — правкой полей внутри ассета (статы, кулдауны, поля эффектов). Всё через <see cref="SerializedObject"/>
     /// + Undo; каждая правка возвращает <see cref="Change"/> (было→стало) для аудита. id/схему НЕ трогает.
     /// Editor-only, рантайм-SO не мутирует (правка в редакторе = авторинг, не игровая мутация).
+    /// <para><b>Потребитель — агент, а не игровой код.</b> Вызывается из редакторных сессий (Unity MCP
+    /// <c>execute_code</c>, балансные прогоны, Content Hub), поэтому ноль ссылок из <c>Assets/_Project/Scripts</c>
+    /// — нормальное состояние, а не мёртвый код. Аудит 2026-07-26 записал его в кандидаты на удаление именно
+    /// по этому признаку; решение Макса — сервис остаётся, это рабочий инструмент петли баланса.</para>
     /// </summary>
     public static class ContentEditService
     {
@@ -71,6 +75,27 @@ namespace Guildmaster.Data.Editor
             return null;
         }
 
+        /// <summary>
+        /// Найти ЛЮБОЙ ассет-<see cref="ScriptableObject"/> по имени — путь к конфигам, у которых нет id,
+        /// потому что они не <see cref="ContentDefinition"/> (<c>ClassBalanceConfig</c>, <c>StatsConfig</c>).
+        /// </summary>
+        /// <remarks>
+        /// Заведено под правку классовых коридоров: их числа — такой же предмет балансного вердикта, как
+        /// сила кита, и они обязаны крутиться тем же пакетом с откатом, а не руками по YAML. Поиск строго
+        /// по имени ассета: id у конфига нет, а совпадение имён внутри <c>Assets/</c> исключено правилом
+        /// «один конфиг — один владелец». Возвращает первое совпадение в стабильном порядке по пути.
+        /// </remarks>
+        public static ScriptableObject ResolveAnyAsset(string assetName)
+        {
+            if (string.IsNullOrEmpty(assetName)) return null;
+
+            foreach (ScriptableObject a in LoadAll<ScriptableObject>())
+            {
+                if (a.name == assetName) return a;
+            }
+            return null;
+        }
+
         // ---------------------------------------------------------------- stat edits (_stats)
 
         /// <summary>Умножить значение модификатора стата <paramref name="stat"/> на <paramref name="factor"/> (первое совпадение в <c>_stats</c>).</summary>
@@ -120,33 +145,73 @@ namespace Guildmaster.Data.Editor
 
         // ---------------------------------------------------------------- generic field
 
-        /// <summary>Задать float-поле по пути SerializedProperty (например <c>_movingAttackSpeedPenaltyPct</c>).</summary>
-        public static Change SetFloat(ScriptableObject asset, string propertyPath, float value)
+        /// <summary>
+        /// Задать СКАЛЯРНОЕ поле по пути SerializedProperty — float, int, bool или enum
+        /// (<c>_movingAttackSpeedPenaltyPct</c>, <c>_castConditionCount</c>, <c>_consumesTriggerTag</c>,
+        /// <c>_ai._autoAttackTargeting</c>).
+        /// </summary>
+        /// <remarks>
+        /// Значение всегда приходит числом, потому что <see cref="Change"/> ведёт аудит в float и обязан
+        /// уметь записать «было → стало» для любого поля одинаково. Для bool ненулевое значение = true;
+        /// для enum число — это его сериализованное значение (флаговые enum складываются, как в ассете).
+        /// <para><b>Почему не только float:</b> балансная правка кита регулярно упирается в переключатель,
+        /// а не в число — «расходует ли способность теги», «сколько целей нужно для каста», «кого бьёт
+        /// авто-атака». Без них пакет применялся бы наполовину, а вторая половина уезжала бы в ручную
+        /// правку YAML мимо Undo и аудита.</para>
+        /// </remarks>
+        public static Change SetValue(ScriptableObject asset, string propertyPath, float value)
         {
             var so = new SerializedObject(asset);
             SerializedProperty p = so.FindProperty(propertyPath);
-            if (p == null || p.propertyType != SerializedPropertyType.Float)
-                return Skip(asset, propertyPath, "нет float-поля по пути");
-            float before = p.floatValue;
-            p.floatValue = value;
+            if (p == null) return Skip(asset, propertyPath, "нет поля по пути");
+
+            if (!ReadScalar(p, out float before))
+                return Skip(asset, propertyPath, $"поле по пути не скалярное ({p.propertyType})");
+
+            WriteScalar(p, value);
             so.ApplyModifiedProperties();
             EditorUtility.SetDirty(asset);
             return Record(asset, propertyPath, before, value);
         }
 
-        /// <summary>Прибавить к float-полю (например кулдаун +1).</summary>
-        public static Change AddFloat(ScriptableObject asset, string propertyPath, float delta)
+        /// <summary>Прибавить к числовому полю (например кулдаун +1). Для bool/enum не применяется.</summary>
+        public static Change AddValue(ScriptableObject asset, string propertyPath, float delta)
         {
             var so = new SerializedObject(asset);
             SerializedProperty p = so.FindProperty(propertyPath);
-            if (p == null || p.propertyType != SerializedPropertyType.Float)
-                return Skip(asset, propertyPath, "нет float-поля по пути");
-            float before = p.floatValue;
+            if (p == null) return Skip(asset, propertyPath, "нет поля по пути");
+            if (p.propertyType is not (SerializedPropertyType.Float or SerializedPropertyType.Integer))
+                return Skip(asset, propertyPath, $"прибавлять можно только к числу ({p.propertyType})");
+
+            ReadScalar(p, out float before);
             float after = before + delta;
-            p.floatValue = after;
+            WriteScalar(p, after);
             so.ApplyModifiedProperties();
             EditorUtility.SetDirty(asset);
             return Record(asset, propertyPath, before, after);
+        }
+
+        private static bool ReadScalar(SerializedProperty p, out float value)
+        {
+            switch (p.propertyType)
+            {
+                case SerializedPropertyType.Float:   value = p.floatValue;              return true;
+                case SerializedPropertyType.Integer: value = p.intValue;                return true;
+                case SerializedPropertyType.Boolean: value = p.boolValue ? 1f : 0f;     return true;
+                case SerializedPropertyType.Enum:    value = p.enumValueFlag;           return true;
+                default:                             value = float.NaN;                 return false;
+            }
+        }
+
+        private static void WriteScalar(SerializedProperty p, float value)
+        {
+            switch (p.propertyType)
+            {
+                case SerializedPropertyType.Float:   p.floatValue    = value;                       break;
+                case SerializedPropertyType.Integer: p.intValue      = Mathf.RoundToInt(value);     break;
+                case SerializedPropertyType.Boolean: p.boolValue     = Mathf.Abs(value) > 1e-6f;    break;
+                case SerializedPropertyType.Enum:    p.enumValueFlag = Mathf.RoundToInt(value);     break;
+            }
         }
 
         // ---------------------------------------------------------------- ability cooldown (_abilities[id]._baseCooldown)
@@ -168,7 +233,7 @@ namespace Guildmaster.Data.Editor
 
         /// <summary>
         /// Задать float-поле <paramref name="fieldName"/> в первом компоненте эффекта, где оно есть (например
-        /// <c>_internalCooldownSeconds</c> у <c>BulwarkComponent</c> — «кулдаун щита»). Не нужно знать путь массива.
+        /// <c>_internalCooldownSeconds</c> у <c>BlockComponent</c> — «кулдаун щита»). Не нужно знать путь массива.
         /// </summary>
         public static Change SetEffectComponentFloat(EffectData effect, string fieldName, float value)
         {

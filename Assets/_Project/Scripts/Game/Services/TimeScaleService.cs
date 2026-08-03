@@ -93,14 +93,6 @@ namespace Guildmaster.Game.Services
             Apply();
         }
 
-        /// <summary>Задать cinematic-множитель напрямую (0..4): &lt;1 — slowmo. Отменяет активный пульс.</summary>
-        public void SetCinematic(float factor)
-        {
-            _cinematic = Mathf.Clamp(factor, 0f, 4f);
-            _cinematicActive = false;
-            Apply();
-        }
-
         /// <summary>
         /// Кинематографический пульс: мгновенно уйти в slowmo (<paramref name="factor"/>), ДЕРЖАТЬ его
         /// <paramref name="holdSeconds"/>, затем вернуться к 1 за <paramref name="releaseSeconds"/> по форме

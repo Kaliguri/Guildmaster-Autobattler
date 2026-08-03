@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Services;
@@ -7,10 +9,13 @@ using VContainer;
 namespace Guildmaster.Game
 {
     /// <summary>
-    /// Точка старта: поднимает <see cref="RootLifetimeScope"/> и запускает флоу. По умолчанию — legacy-вход
-    /// (просто грузит BattleScene, бои запускает dev-панель F2). Флаг <see cref="_runBattleFlowOnBoot"/> +
-    /// назначенный пресет включают A2-разрез: прогон одного боя через <c>BattleFlow</c> (Prep→Combat→Outcome).
+    /// Точка старта: поднимает персистентный мир и запускает верхнюю петлю игры (главное меню → забег →
+    /// меню). Dev-флаги ниже подменяют вход разрезом — актом, одиночным боем или текст-ивентом.
     /// Размещается в CoreScene на объекте [Bootstrap].
+    /// <para>Вся игра живёт внутри одной задачи, поэтому она обязана быть защищённой: раньше любое
+    /// исключение, кроме отмены, убивало петлю навсегда и молча — игра оставалась на экране, не отвечая
+    /// ни на что (аудит 2026-07-26, C-03). Теперь падение видно в логе, и петля поднимается заново
+    /// с главного меню ограниченное число раз.</para>
     /// </summary>
     public sealed class GameBootstrap : MonoBehaviour
     {
@@ -20,7 +25,7 @@ namespace Guildmaster.Game
         [SerializeField] private bool _runActOnBoot;
 
         [Tooltip("ON: на старте прогнать один бой через полный BattleFlow (нужен пресет ниже). " +
-                 "OFF (по умолчанию): legacy — грузить BattleScene, бой запускать dev-панелью F2.")]
+                 "OFF (по умолчанию): обычный вход — главное меню → забег.")]
         [SerializeField] private bool _runBattleFlowOnBoot;
 
         [Tooltip("Стартовый бой для A2-разреза (враги + ростер + режим расстановки). Нужен при включённом флаге.")]
@@ -32,25 +37,71 @@ namespace Guildmaster.Game
         [Tooltip("Стартовый текстовый ивент для дебага (StS-style). Нужен при включённом флаге ивента.")]
         [SerializeField] private TextEventData _devStartEvent;
 
-        [Tooltip("ON: legacy-вход — грузить BattleScene, бой запускать F2-панелью (без главного меню). " +
-                 "OFF (по умолчанию): главное меню → забег (D1).")]
-        [SerializeField] private bool _legacyBattleScene;
-
         [Inject] private GameFlow _gameFlow;
         [Inject] private ISceneLoader _sceneLoader;
+        [Inject] private Flow.ITitleCardPresenter _titleCard;
+
+        /// <summary>Сколько раз поднимать петлю после падения, прежде чем сдаться и сказать об этом вслух.</summary>
+        private const int MaxRestarts = 2;
+
+        /// <summary>
+        /// Входим ли разрезом мимо главного меню. Считается ровно по тем же условиям, по которым ниже
+        /// выбирается ветка входа: два независимых списка флагов разъехались бы на первом же новом.
+        /// </summary>
+        private bool IsDevCut =>
+            _runActOnBoot ||
+            (_runTextEventOnBoot && _devStartEvent != null) ||
+            (_runBattleFlowOnBoot && _devStartPreset != null);
 
         private void Start()
         {
-            StartBootAsync().Forget();
+            // Токен от объекта: при выгрузке сцены/остановке play-mode await'ы прекращаются, а не
+            // продолжают жить в оторванной задаче.
+            StartBootAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
-        private async UniTaskVoid StartBootAsync()
+        private async UniTaskVoid StartBootAsync(CancellationToken ct)
+        {
+            try
+            {
+                await BootAsync(ct);
+            }
+            catch (OperationCanceledException)
+            {
+                // Норма: выход из play-mode, выгрузка сцены, закрытие игры.
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                Debug.LogError("[GameBootstrap] - загрузка мира упала, игра не запущена");
+            }
+        }
+
+        private async UniTask BootAsync(CancellationToken ct)
         {
             Debug.Log("[GameBootstrap] - Старт");
 
-            // Персистентный мир (камера-риг + арена) поднимаем ПЕРВЫМ и держим всю сессию: вне боя он
-            // даёт вид арены (карта/инвентарь), в бою переиспользуется. Бой (BattleScene) ложится поверх.
-            await _sceneLoader.LoadWorldAsync();
+            async UniTask LoadWorldAsync()
+            {
+                // Персистентный мир (камера-риг + арена) поднимаем ПЕРВЫМ и держим всю сессию: вне боя он
+                // даёт вид арены (карта/инвентарь), в бою переиспользуется. Бой (BattleScene) ложится поверх.
+                await _sceneLoader.LoadWorldAsync();
+
+                // Боевые системы тоже persist (план 12 Ф2): боевой скоуп живёт всю сессию, бой запускается
+                // командой в живой sim (RequestLaunch), а не загрузкой сцены на каждый узел. Грузим один раз здесь.
+                await _sceneLoader.LoadCombatSystemsAsync();
+            }
+
+            // Бут-экран накрывает загрузку, а не следует за ней: мир поднимается со своей камерой и
+            // сразу рисует пустую арену, поэтому любой зазор между ним и первым UI виден кадрами
+            // (наход. Макса 03.08.2026). Dev-разрезы входят в игру мимо меню — им экран, требующий
+            // нажатия, только мешает, поэтому они грузятся молча.
+            if (IsDevCut) await LoadWorldAsync();
+            else          await _titleCard.ShowAsync(LoadWorldAsync);
+
+            // Сеанс владения состоянием здесь НЕ открывается: он рождается при входе в игру, вместе с
+            // ролью и решением про лобби («Создать» → владелец, «Присоединиться» → гость). Бут поднимает
+            // только мир — до выбора режима владеть ещё нечем (решение Макса 02.08.2026).
 
             if (_runActOnBoot)
             {
@@ -74,15 +125,47 @@ namespace Guildmaster.Game
             }
 
             if (_runBattleFlowOnBoot)
-                Debug.LogWarning("[GameBootstrap] - флаг BattleFlow включён, но пресет не назначен → legacy-вход");
+                Debug.LogWarning("[GameBootstrap] - флаг BattleFlow включён, но пресет не назначен → обычный вход");
 
-            if (_legacyBattleScene)
+            await RunGameLoopAsync(ct); // D1: главное меню → забег → меню
+        }
+
+        /// <summary>
+        /// Верхняя петля под защитой. <see cref="GameFlow.RunGameAsync"/> сам по себе бесконечен и всегда
+        /// начинается с главного меню, поэтому после падения его можно поднять заново — игрок теряет
+        /// незасчитанный узел, но не сессию. Молчаливую смерть петли не допускаем: она выглядит как
+        /// намертво зависшая игра, по которой невозможно понять, что произошло.
+        /// </summary>
+        private async UniTask RunGameLoopAsync(CancellationToken ct)
+        {
+            for (int attempt = 0; attempt <= MaxRestarts; attempt++)
             {
-                await _gameFlow.BootAsync(); // legacy: грузить BattleScene, бой запускать F2-панелью
-                return;
-            }
+                if (ct.IsCancellationRequested) return;
 
-            await _gameFlow.RunGameAsync(); // D1: главное меню → забег → меню
+                try
+                {
+                    await _gameFlow.RunGameAsync();
+                    return; // вышли штатно (Выход из меню)
+                }
+                catch (OperationCanceledException)
+                {
+                    throw; // отмену пробрасываем: её обрабатывает StartBootAsync
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+
+                    if (attempt == MaxRestarts)
+                    {
+                        Debug.LogError($"[GameBootstrap] - петля игры падала {attempt + 1} раз(а) подряд, " +
+                                       "перезапуск прекращён");
+                        return;
+                    }
+
+                    Debug.LogError($"[GameBootstrap] - петля игры упала, поднимаю заново " +
+                                   $"(попытка {attempt + 1} из {MaxRestarts})");
+                }
+            }
         }
     }
 }

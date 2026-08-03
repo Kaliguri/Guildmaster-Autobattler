@@ -30,7 +30,7 @@ namespace Guildmaster.Game.Flow
                 _               => _config.PriceCommon,
             };
 
-            var rng = new XorShiftRng(Fnv1a(id) ^ unchecked((ulong)(uint)shopSeed));
+            var rng = new XorShiftRng(DeterministicHash.Of(id) ^ unchecked((ulong)(uint)shopSeed));
             float t = rng.NextFloat(-1f, 1f);                       // -1..1
             int price = Mathf.RoundToInt(basePrice * (1f + t * _config.PriceSpread));
             return Mathf.Max(1, price);
@@ -39,14 +39,5 @@ namespace Guildmaster.Game.Flow
         /// <summary>Сколько игрок получит за продажу реликвии с ценой покупки <paramref name="buyPrice"/>.</summary>
         public int SellValue(int buyPrice) => Mathf.Max(1, Mathf.RoundToInt(buyPrice * _config.SellPercent));
 
-        // Стабильный 64-битный хэш строки (FNV-1a) — не зависит от рандомизации string.GetHashCode.
-        private static ulong Fnv1a(string s)
-        {
-            const ulong offset = 14695981039346656037UL, prime = 1099511628211UL;
-            ulong hash = offset;
-            if (s != null)
-                for (int i = 0; i < s.Length; i++) { hash ^= s[i]; hash *= prime; }
-            return hash;
-        }
     }
 }

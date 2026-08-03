@@ -1,0 +1,2 @@
+MIT License — Tsukina-7mochi/aseprite-scripts (Export as PSD)
+https://github.com/Tsukina-7mochi/aseprite-scripts/blob/master/LICENSE

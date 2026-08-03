@@ -13,50 +13,107 @@ namespace Guildmaster.Data.Definitions
     public sealed class SimTuningConfig : ScriptableObject
     {
         [TabGroup("Tuning", "Разведение тел"), SuffixLabel("м на Size", overlay: true), LabelText("Радиус тела")]
-        [Tooltip("Радиус тела = Size × это (мировые ед.). Size 1.0 → 0.575 (диаметр 1.15).")]
-        [SerializeField] private float _bodyRadiusPerSize = 0.575f;
+        [Tooltip("Радиус тела = Size × это (мировые ед.). Size 1.0 → 0.3 (диаметр 0.6).")]
+        [SerializeField] private float _bodyRadiusPerSize = SimTuning.Default.BodyRadiusPerSize;
         [TabGroup("Tuning", "Разведение тел"), LabelText("Сила разведения")]
         [Tooltip("Доля перекрытия, устраняемая за тик (1 = жёстко за тик).")]
-        [SerializeField] private float _separationStrength = 0.5f;
+        [SerializeField] private float _separationStrength = SimTuning.Default.SeparationStrength;
         [TabGroup("Tuning", "Разведение тел"), SuffixLabel("итераций", overlay: true), LabelText("Количество итераций")]
         [Tooltip("Проходов разделения за тик (больше = жёстче и дороже).")]
-        [SerializeField] private int _separationIterations = 1;
+        [SerializeField] private int _separationIterations = SimTuning.Default.SeparationIterations;
         [TabGroup("Tuning", "Разведение тел"), LabelText("Масштаб для союзников")]
         [Tooltip("Множитель расталкивания союзников (0..1); враги всегда на полную.")]
-        [SerializeField] private float _separationSameTeamScale = 0.35f;
+        [SerializeField] private float _separationSameTeamScale = SimTuning.Default.SeparationSameTeamScale;
 
         [TabGroup("Tuning", "Снаряды"), LabelText("Множитель радиуса попадания")]
         [Tooltip("Радиус коллизии снаряда/хил-снаряда = Size × это.")]
-        [SerializeField] private float _projectileHitRadiusFactor = 0.25f;
+        [SerializeField] private float _projectileHitRadiusFactor = SimTuning.Default.ProjectileHitRadiusFactor;
         [TabGroup("Tuning", "Снаряды"), SuffixLabel("м", overlay: true), LabelText("Запас до удаления")]
         [Tooltip("Отступ деспавна снаряда за границами арены (мировые ед.).")]
-        [SerializeField] private float _projectileDespawnMargin = 5f;
+        [SerializeField] private float _projectileDespawnMargin = SimTuning.Default.ProjectileDespawnMargin;
 
         [TabGroup("Tuning", "AI и цель"), LabelText("Множитель отхода при кайтинге")]
         [Tooltip("Fallback-полоса кайта при незаданных дистанциях: flee = AttackRange × это.")]
-        [SerializeField] private float _kiteFleeFactor = 0.6f;
+        [SerializeField] private float _kiteFleeFactor = SimTuning.Default.KiteFleeFactor;
         [TabGroup("Tuning", "AI и цель"), SuffixLabel("м", overlay: true), LabelText("Глобальный радиус поиска")]
         [Tooltip("«Глобальный» радиус поиска целей (метка/ближайший враг) на масштабе арены.")]
-        [SerializeField] private float _globalSearchRadius = 500f;
+        [SerializeField] private float _globalSearchRadius = SimTuning.Default.GlobalSearchRadius;
 
         [TabGroup("Tuning", "Побег"), LabelText("Вес отталкивания от врагов")]
         [Tooltip("Насколько побег отталкивается от центроида ближних врагов. Основной драйвер направления.")]
-        [SerializeField] private float _fleeThreatWeight = 1f;
+        [SerializeField] private float _fleeThreatWeight = SimTuning.Default.FleeThreatWeight;
         [TabGroup("Tuning", "Побег"), LabelText("Вес притяжения к тылу")]
         [Tooltip("Насколько побег тянет к своей стороне (Team 0 → влево, 1 → вправо). Держать < веса врагов.")]
-        [SerializeField] private float _fleeHomeWeight = 0.5f;
+        [SerializeField] private float _fleeHomeWeight = SimTuning.Default.FleeHomeWeight;
         [TabGroup("Tuning", "Побег"), LabelText("Вес избегания стен")]
         [Tooltip("Насколько сильно побег отворачивает от стен в пределах отступа (гасит углы/прижимания).")]
-        [SerializeField] private float _fleeWallWeight = 1.5f;
+        [SerializeField] private float _fleeWallWeight = SimTuning.Default.FleeWallWeight;
         [TabGroup("Tuning", "Побег"), SuffixLabel("м", overlay: true), LabelText("Отступ избегания стен")]
         [Tooltip("Дистанция до стены, с которой включается превентивное избегание.")]
-        [SerializeField] private float _fleeWallMargin = 2.5f;
+        [SerializeField] private float _fleeWallMargin = SimTuning.Default.FleeWallMargin;
         [TabGroup("Tuning", "Побег"), SuffixLabel("м", overlay: true), LabelText("Радиус центроида угрозы")]
         [Tooltip("Радиус, в котором враги усредняются в центр масс для направления побега (иначе — ближайший).")]
-        [SerializeField] private float _fleeThreatRadius = 6f;
+        [SerializeField] private float _fleeThreatRadius = SimTuning.Default.FleeThreatRadius;
         [TabGroup("Tuning", "Побег"), LabelText("Вес бокового ухода кайтера")]
         [Tooltip("Боковой (тангенциальный) уход при кайте: дуга вокруг цели вместо пятящегося отхода. 0 = выкл.")]
-        [SerializeField] private float _kiteStrafeWeight = 0.35f;
+        [SerializeField] private float _kiteStrafeWeight = SimTuning.Default.KiteStrafeWeight;
+
+        [TabGroup("Tuning", "Смещение"), SuffixLabel("ед/с", overlay: true), LabelText("Скорость полёта (дефолт)")]
+        [Tooltip("Скорость отбрасывания по умолчанию, мировых единиц в секунду. Длительность полёта = дистанция ÷ скорость, поэтому дальний толчок держит цель в оглушении дольше. Источник может задать свою скорость в запросе смещения — «сколько тиков лететь» не настраивается нигде намеренно.")]
+        [SerializeField] private float _displaceSpeedPerSecond = SimTuning.Default.DisplaceSpeedPerSecond;
+        [TabGroup("Tuning", "Смещение"), LabelText("Ширина коридора «ядра»")]
+        [Tooltip("Во сколько раз коридор летящего тела шире заданной ширины (1.25 = +25%). Толчок в плотный строй должен цеплять соседей, а не только тех, кто ровно на линии.")]
+        [SerializeField] private float _cannonballWidthMult = SimTuning.Default.CannonballWidthMult;
+        [TabGroup("Tuning", "Смещение"), LabelText("Урон об край арены")]
+        [Tooltip("Доля урона толчка, добиваемая цели, впечатанной в край арены (1 = ещё раз столько же). 0 = удар о стену безвреден.")]
+        [SerializeField] private float _wallImpactDamageMult = SimTuning.Default.WallImpactDamageMult;
+        [TabGroup("Tuning", "Смещение"), SuffixLabel("с", overlay: true), LabelText("Лежит после удара о стену")]
+        [Tooltip("Сколько цель лежит оглушённой, впечатавшись в край арены. Полёт при этом СТОИТ (скольжение вдоль стены выглядит сломанным), а реактивы «на конец смещения» — например телепорт Монаха — срабатывают уже после лежания.")]
+        [SerializeField] private float _wallImpactStunSeconds = SimTuning.Default.WallImpactStunSeconds;
+
+        [TabGroup("Tuning", "Овертайм"), SuffixLabel("с", overlay: true), LabelText("Начало овертайма")]
+        [Tooltip("С какой секунды боя урон начинает расти. Медиана боя — 20-29 с, так что до порога доживает только клинч.")]
+        [SerializeField] private float _overtimeStartSeconds = SimTuning.Default.OvertimeStartSeconds;
+        [TabGroup("Tuning", "Овертайм"), LabelText("Прибавка урона за секунду")]
+        [Tooltip("Насколько растёт НАНОСИМЫЙ урон за каждую секунду сверх порога (0.05 = +5%). Лечение и щиты не растут — этим клинч и ломается. 0 = овертайм выключен.")]
+        [SerializeField] private float _overtimeDamagePerSecond = SimTuning.Default.OvertimeDamagePerSecond;
+
+        [TabGroup("Tuning", "Спринт"), LabelText("Множитель скорости в разбеге")]
+        [Tooltip("Во сколько раз юнит быстрее на дальнем подходе (1.3 = +30%). Ускорение живёт в СИМУЛЯЦИИ, а не в анимации: иначе бегущие ноги обгонят позицию. Меняет время подхода — после правки нужен прогон бенча. 1 = спринта нет.")]
+        [SerializeField] private float _sprintSpeedMult = SimTuning.Default.SprintSpeedMult;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("ед", overlay: true), LabelText("Зазор входа в разбег")]
+        [Tooltip("На сколько дальше своей досягаемости должна быть цель, чтобы юнит побежал. Считается ЗАЗОР сверх досягаемости, а не сырая дистанция: у стрелка с досягаемостью 8 сырой порог держал бы разбег включённым всегда.")]
+        [SerializeField] private float _sprintEnterGap = SimTuning.Default.SprintEnterGap;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("ед", overlay: true), LabelText("Зазор выхода из разбега")]
+        [Tooltip("Зазор, на котором разбег заканчивается. Должен быть МЕНЬШЕ входа: полоса между ними и есть гистерезис, без него разбег мигал бы на каждой короткой перебежке.")]
+        [SerializeField] private float _sprintExitGap = SimTuning.Default.SprintExitGap;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("с", overlay: true), LabelText("Шаг перед разгоном")]
+        [Tooltip("Сколько юнит идёт ОБЫЧНЫМ шагом, прежде чем начать разгоняться. Без этой паузы разбег включается щелчком: и скорость, и клип меняются в один тик, что читается как телепорт. 0 = разгон начинается сразу.")]
+        [SerializeField] private float _sprintWalkSeconds = SimTuning.Default.SprintWalkSeconds;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("с", overlay: true), LabelText("Время разгона")]
+        [Tooltip("За сколько секунд прибавка скорости набирается от нуля до полной. По этой же доле показ подмешивает клип бега к шагу, поэтому число правит и движение, и картинку разом.")]
+        [SerializeField] private float _sprintRampSeconds = SimTuning.Default.SprintRampSeconds;
+
+        [TabGroup("Tuning", "Рекаст"), SuffixLabel("x", overlay: true), LabelText("Ускорение доигрыша")]
+        [Tooltip("Во сколько раз быстрее доигрывает атака, оборванная рекастом (2 = вдвое). Рекаст именно УСКОРЯЕТ, а не снимает фазу: снятая убрала бы окно чужого ответа целиком, ускоренная лишь сокращает его. 1 = доигрыш обычный, рекаст даёт только пропуск очереди.")]
+        [SerializeField] private float _recastRecoverySpeed = SimTuning.Default.RecastRecoverySpeed;
+        [TabGroup("Tuning", "Рекаст"), SuffixLabel("x", overlay: true), LabelText("Ускорение замаха")]
+        [Tooltip("Во сколько раз быстрее замах удара, вышедшего по рекасту (2 = вдвое). Сокращает ВЕСЬ свинг: контакт наступает раньше, доигрыш после него — обычной длины. Число отдельное от ускорения доигрыша намеренно — этим крутится читаемость телеграфа, и парированию нужно, чтобы окно осталось.")]
+        [SerializeField] private float _recastWindupSpeed = SimTuning.Default.RecastWindupSpeed;
+
+        [TabGroup("Tuning", "Маскировка"), SuffixLabel("ед", overlay: true), LabelText("Радиус обнаружения: Слабая")]
+        [Tooltip("С какого расстояния враг замечает слабо замаскированного. Обнаружение КОМАНДНОЕ: увидел один — видит вся команда, отошли все — снова пропал.")]
+        [SerializeField] private float _concealWeakRadius = SimTuning.Default.ConcealWeakRadius;
+        [TabGroup("Tuning", "Маскировка"), SuffixLabel("ед", overlay: true), LabelText("Радиус обнаружения: Средняя")]
+        [Tooltip("То же для средней ступени.")]
+        [SerializeField] private float _concealMediumRadius = SimTuning.Default.ConcealMediumRadius;
+        [TabGroup("Tuning", "Маскировка"), SuffixLabel("ед", overlay: true), LabelText("Радиус обнаружения: Сильная")]
+        [Tooltip("То же для сильной. Держать НЕ больше досягаемости ближнего боя, иначе сильная маскировка ничем не отличается от инвиза: подошедший ударить всё равно её не снимет.")]
+        [SerializeField] private float _concealStrongRadius = SimTuning.Default.ConcealStrongRadius;
+
+        [TabGroup("Tuning", "Комбо"), SuffixLabel("с", overlay: true), LabelText("Разрыв серии Атак")]
+        [Tooltip("Сколько боец должен пробыть ВНЕ атакующего лупа (нет цели, оглушён, бежит вне досягаемости), чтобы Комбо порвалось и началось заново. Боевое ожидание между ударами серию не рвёт. На этом держатся цикл ударов голема и «каждая третья» Драугра: порвалось — цикл начинается с обычного удара, взведённый заряд гаснет.")]
+        [SerializeField] private float _comboBreakSeconds = SimTuning.Default.ComboBreakSeconds;
 
         /// <summary>Снять иммутабельный снапшот для бейка на старте боя.</summary>
         public SimTuning ToSnapshot() => new SimTuning(
@@ -73,6 +130,23 @@ namespace Guildmaster.Data.Definitions
             _fleeWallWeight,
             _fleeWallMargin,
             _fleeThreatRadius,
-            _kiteStrafeWeight);
+            _kiteStrafeWeight,
+            _displaceSpeedPerSecond,
+            _cannonballWidthMult,
+            _wallImpactDamageMult,
+            _wallImpactStunSeconds,
+            _overtimeStartSeconds,
+            _overtimeDamagePerSecond,
+            _sprintSpeedMult,
+            _sprintEnterGap,
+            _sprintExitGap,
+            _sprintWalkSeconds,
+            _sprintRampSeconds,
+            _recastRecoverySpeed,
+            _recastWindupSpeed,
+            _concealWeakRadius,
+            _concealMediumRadius,
+            _concealStrongRadius,
+            _comboBreakSeconds);
     }
 }

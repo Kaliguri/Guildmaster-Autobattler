@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -13,23 +13,33 @@ namespace Guildmaster.Combat.Effects.Components
     /// <see cref="EffectTag.KnockUp"/>), где смещённый — САМ носитель (конец собственного рывка, по команде).
     /// В этот момент монах уже вплотную к цели → отталкивает ближайшего врага «от себя вперёд» + «ядро» по
     /// линии. Конец этого отбрасывания (смещённый = враг) поймает <see cref="VortexEntryComponent"/> → телепорт.
+    /// <para><b>Числа:</b> <c>_displaceDistance</c> — насколько далеко летит отброшенный, мировые
+    /// единицы (длительность полёта из неё и считается — чем дальше, тем дольше цель в оглушении);
+    /// <c>_displaceDamageMult</c> — множитель урона от удара телом; <c>_displaceWidth</c> — ширина
+    /// полосы, которую сносит летящее тело (система расширяет её на <c>CannonballWidthMult</c>);
+    /// <c>_chainDistance</c> — то же для цепного отбрасывания тех, кого задело по пути.</para>
+    /// <para><b>Когда срабатывает:</b> в конце СОБСТВЕННОГО рывка носителя — это третья фаза комбо
+    /// (рывок → фиксация → отбрасывание → телепорт), и следующую фазу поднимет уже другой компонент.</para>
     /// </summary>
     [Serializable]
+    /// <remarks>
+    /// Дееспособности НЕ требует, хотя толкает телом сам монах, — и это не поблажка, а следствие того, как
+    /// сделан рывок. Рывок реализован смещением, а смещение снимает дееспособность у летящего: гейт по
+    /// <see cref="IRequiresAgencyComponent"/> отменял бы приземление СОБСТВЕННОГО рывка, то есть монах
+    /// глушил бы сам себя своей же способностью (поймано тестом захода 2026-07-29). Действие здесь начато
+    /// до потери контроля и им же оплачено.
+    /// </remarks>
     public sealed class WhirlDashLandingComponent : IReactiveComponent
     {
-        [Tooltip("Дистанция отбрасывания цели (мировые единицы).")]
+        [Tooltip("Дистанция отбрасывания цели (мировые единицы). Длительность полёта считается из неё: дальше = дольше в оглушении.")]
         [SerializeField] private float _displaceDistance = 4f;
-        [Tooltip("Длительность полёта отбрасывания в тиках (30/сек).")]
-        [SerializeField] private int _displaceTicks = 12;
-        [Tooltip("Множитель урона-«ядра» от AutoAttackDamage монаха (0 = без урона на линии).")]
+        [Tooltip("Множитель урона-«ядра» от AutoAttackDamage монаха (0 = без урона на линии). Он же добивается цели, впечатанной в край арены.")]
         [SerializeField] private float _displaceDamageMult = 1.5f;
-        [Tooltip("Ширина линии «ядра» (мировые единицы).")]
+        [Tooltip("Ширина линии «ядра» (мировые единицы). Система расширяет коридор на CannonballWidthMult из SimTuning.")]
         [SerializeField] private float _displaceWidth = 1.5f;
 
-        [Tooltip("Цепное отбрасывание врагов, задетых «ядром»: дистанция (мировые ед.), обычно доля от основного толчка (_displaceDistance). 0 = только урон по задетым. ВАЖНО: тайминг «цепь кончается раньше главного полёта → финальный телепорт сядет на исходную цель» держится _chainTicks < _displaceTicks, а НЕ малой дистанцией.")]
+        [Tooltip("Цепное отбрасывание врагов, задетых «ядром»: дистанция (мировые ед.), доля от основного толчка. 0 = только урон по задетым. Держать МЕНЬШЕ _displaceDistance: длительность считается из дистанции, поэтому короткая цепь кончается раньше главного полёта и финальный телепорт садится на исходную цель.")]
         [SerializeField] private float _chainDistance = 1.5f;
-        [Tooltip("Длительность цепного полёта в тиках. Строго КОРОЧЕ главного (_displaceTicks) — чтобы цепь кончалась первой и телепорт сел на основную цель.")]
-        [SerializeField] private int _chainTicks = 4;
 
         public CombatEvent Events => CombatEvent.EffectExpired;
 
@@ -60,17 +70,16 @@ namespace Guildmaster.Combat.Effects.Components
             float dmg = _displaceDamageMult > 0f
                 ? _displaceDamageMult * monk.Stats.Get(StatType.AutoAttackDamage)
                 : 0f;
-            DamageSchool school = monk.DamageSchool;
+            DamageType damageType = monk.AutoAttackDamageType;
 
             ctx.Combat.ReportAreaHit(AreaHit.Line(
                 victim.Position, dir.sqrMagnitude > 1e-6f ? dir.normalized : Vector2.right,
                 _displaceDistance, _displaceWidth, monk.Team));
 
             ctx.Combat.Displace(new DisplaceRequest(
-                victim, monk, dir, _displaceDistance, _displaceTicks,
-                cannonball: true, damage: dmg, school: school, width: _displaceWidth,
-                affinity: monk.Affinity,
-                kind: DisplaceKind.Knockback, chainDistance: _chainDistance, chainTicks: _chainTicks));
+                victim, monk, dir, _displaceDistance,
+                cannonball: true, damage: dmg, damageType: damageType, width: _displaceWidth,
+                chainDistance: _chainDistance));
         }
 
         // Ближайший к точке <paramref name="from"/> живой враг монаха (тай-брейк по Id — детерминизм), кроме

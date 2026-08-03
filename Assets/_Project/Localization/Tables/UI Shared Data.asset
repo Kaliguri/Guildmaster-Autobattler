@@ -14,7 +14,431 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
   m_TableCollectionName: UI
   m_TableCollectionNameGuidString: 3aae2a3df45140c448f14ca531854eae
-  m_Entries: []
+  m_Entries:
+  - m_Id: 3461211247337472
+    m_Key: ui.camp.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474816
+    m_Key: ui.camp.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474817
+    m_Key: ui.camp.budget
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474818
+    m_Key: ui.camp.action.empower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474819
+    m_Key: ui.camp.action.copy_relic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474820
+    m_Key: ui.camp.action.cleanse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474821
+    m_Key: ui.camp.action.hire_vessel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474822
+    m_Key: ui.camp.action.move_on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5532690453618688
+    m_Key: ui.beat.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5532690512338944
+    m_Key: ui.beat.formation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5589400031584256
+    m_Key: ui.event.result.fallback
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5594274752356352
+    m_Key: ui.node.shop.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5594274802688000
+    m_Key: ui.node.shop.farewell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5594274802688001
+    m_Key: ui.node.chest.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5594274802688002
+    m_Key: ui.node.chest.farewell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5594274802688003
+    m_Key: ui.node.camp.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5594274802688004
+    m_Key: ui.node.camp.farewell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220287315968
+    m_Key: ui.kit.common
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230528
+    m_Key: ui.kit.cursed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230529
+    m_Key: ui.kit.divine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230530
+    m_Key: ui.tag.category.role
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230531
+    m_Key: ui.tag.category.damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230532
+    m_Key: ui.tag.category.playstyle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230533
+    m_Key: ui.tag.category.mechanic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230534
+    m_Key: ui.kw.category.status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230535
+    m_Key: ui.kw.category.damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230536
+    m_Key: ui.kw.category.defense
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230537
+    m_Key: ui.kw.category.behaviour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230538
+    m_Key: ui.kw.category.run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230539
+    m_Key: ui.settings.tooltip_details
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230540
+    m_Key: ui.loadout.slot.ability.empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230541
+    m_Key: ui.loadout.slot.upgrade.empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230542
+    m_Key: ui.loadout.tags.more
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619882303676416
+    m_Key: ui.dev.stat_probe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458929741824
+    m_Key: ui.stat.hp.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879168
+    m_Key: ui.stat.parmor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879169
+    m_Key: ui.stat.marmor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879170
+    m_Key: ui.stat.dmg.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879171
+    m_Key: ui.stat.aspd.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879172
+    m_Key: ui.stat.range.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879173
+    m_Key: ui.stat.move.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075719086080
+    m_Key: ui.chest.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417728
+    m_Key: ui.chest.hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417729
+    m_Key: ui.loadout.filter.relics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417730
+    m_Key: ui.loadout.filter.items
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417731
+    m_Key: ui.loadout.filter.banners
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417732
+    m_Key: ui.loadout.sort.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417733
+    m_Key: ui.loadout.video
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417734
+    m_Key: ui.loadout.basics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417735
+    m_Key: ui.loadout.skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417736
+    m_Key: ui.loadout.upgrades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417737
+    m_Key: ui.loadout.stats
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417738
+    m_Key: ui.loadout.search
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417739
+    m_Key: ui.mainmenu.start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417740
+    m_Key: ui.mainmenu.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417741
+    m_Key: ui.mainmenu.settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417742
+    m_Key: ui.mainmenu.quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417743
+    m_Key: ui.menu.to_main_menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417744
+    m_Key: ui.menu.quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417745
+    m_Key: ui.settings.card_anim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417746
+    m_Key: ui.settings.card_attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417747
+    m_Key: ui.outcome.victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417748
+    m_Key: ui.outcome.defeat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417749
+    m_Key: ui.outcome.victory_sub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417750
+    m_Key: ui.outcome.defeat_sub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417751
+    m_Key: ui.outcome.to_menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417752
+    m_Key: ui.mode.menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417753
+    m_Key: ui.run.floor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417754
+    m_Key: ui.shop.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417755
+    m_Key: ui.shop.leave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417756
+    m_Key: ui.shop.no_space
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417757
+    m_Key: ui.shop.sold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417758
+    m_Key: ui.shop.buy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417759
+    m_Key: ui.shop.sell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417760
+    m_Key: ui.shop.gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417761
+    m_Key: ui.shop.reroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227003437056
+    m_Key: ui.event.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227087323136
+    m_Key: ui.reward.drop_hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227087323137
+    m_Key: ui.reward.skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227087323138
+    m_Key: ui.reward.take
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227087323139
+    m_Key: ui.reward.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517440
+    m_Key: ui.run.act
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517441
+    m_Key: ui.run.gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517442
+    m_Key: ui.run.hub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517443
+    m_Key: ui.run.settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517444
+    m_Key: ui.run.start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517445
+    m_Key: ui.reward.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517446
+    m_Key: ui.titlecard.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517447
+    m_Key: ui.titlecard.studio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517448
+    m_Key: ui.titlecard.hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517449
+    m_Key: ui.mainmenu.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909707857920
+    m_Key: ui.stat.hp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606656
+    m_Key: ui.stat.parmor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606657
+    m_Key: ui.stat.marmor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606658
+    m_Key: ui.stat.dmg
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606659
+    m_Key: ui.stat.aspd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606660
+    m_Key: ui.stat.range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606661
+    m_Key: ui.stat.move
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5768072357208064
+    m_Key: ui.mode.map
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5768072411734016
+    m_Key: ui.mode.battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5768072411734017
+    m_Key: ui.mode.inventory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5768072411734018
+    m_Key: ui.mode.tactics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5768072411734019
+    m_Key: ui.mode.compendium
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5794616999927808
+    m_Key: ui.mode.proving_grounds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5795803220402176
+    m_Key: ui.mainmenu.proving_grounds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7495534342561792
+    m_Key: ui.boot.legal
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

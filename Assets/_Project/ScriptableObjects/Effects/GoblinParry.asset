@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
+  m_Name: GoblinParry
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
+  _id: effect.goblin_parry
+  _polarity: 2
+  _tags: 0
+  _baseDuration: -1
+  _stacking: 2
+  _maxStacks: 1
+  _stacksPerApplication: 1
+  _cleanseTier: 0
+  _unremovable: 0
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  _components:
+  - rid: 5615027358498291897
+  _telegraphSeconds: 0
+  _icon: {fileID: 0}
+  _infoTags: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5615027358498291897
+      type: {class: ParryComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _maxCharges: 1
+        _cooldownSeconds: 5
+        _parryWindow: {fileID: 11400000, guid: 4ef46c3efa38b1a43ab86de95efc46fc, type: 2}
+        _microStun: {fileID: 11400000, guid: 16c3cb673c8643b4fb26e348e9709d17, type: 2}
+        _stunRangeFactor: 2
+        _frontalDegrees: 180
+        _riposteCharge: {fileID: 11400000, guid: 71668fce1252ee84c88dac99ad957ff4, type: 2}
+        _outrangedHaste: {fileID: 11400000, guid: b4613ad8a34c6f54a9328bcfc3137510, type: 2}

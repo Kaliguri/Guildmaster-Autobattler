@@ -1,0 +1,9 @@
+﻿Encounter;Tier;Enemies;Threat;EnemyHP;ClearRate;AvgHpCostOnClear%;AvgFightSec;Timeout%;ControlClear;ControlHpCost%;FailedBy
+DummyPair;Special;2;0;2400;1;15.04;9.263;0;да;14.233;
+DummyScatter;Special;4;0;4800;1;42.955;18.811;0;да;43.522;
+DummyTrio;Special;3;0;3600;1;28.698;14.547;0;да;26.442;
+GoblinAmbush;Common;4;6;2800;1;16.686;9.283;0;да;15.118;
+GoblinRaid;Elite;7;12;5240;1;37.549;18.649;0;да;35.313;
+GoblinScouts;Common;3;3;2400;1;6.827;8.047;0;да;5.38;
+GoblinSkirmishLine;Common;3;7;2240;1;10.199;8.277;0;да;8.116;
+GoblinWarband;Common;4;7;3320;1;14.267;11.652;0;да;12.158;

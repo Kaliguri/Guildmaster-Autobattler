@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 232bd75e222f4f844ac1586925553f16, type: 3}
+  m_Name: MapStyle
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Map.MapStyle
+  _layout:
+    StepX: 6.5
+    StepY: 4.2
+    JitterY: 0
+    JitterX: 0
+    MinDistance: 2.2
+    RelaxIterations: 10
+  _floorsInView: 4
+  _pickRadiusScale: 1.4
+  _backdropMaterial: {fileID: 2100000, guid: bf7f4177f3ebe0a438ccd18201673bfd, type: 2}
+  _backdropPadding: 1.08
+  _backdropPaddingY: 1.35
+  _tableMaterial: {fileID: 2100000, guid: 90b10497a5a91c9459dc67c7c78bd6af, type: 2}
+  _tablePadding: 3.5
+  _tableLight: 1.6
+  _tableAmbient: 0.25
+  _tableTiling: 10
+  _menuTableLight: 2.2
+  _menuTableAmbient: 0.45
+  _menuTableTiling: 5
+  _palette: {fileID: 11400000, guid: f42219bf529da2c4d909a76d914ab971, type: 2}
+  _available: {r: 1, g: 1, b: 1, a: 1}
+  _current: {r: 1, g: 1, b: 1, a: 1}
+  _cleared: {r: 0.78, g: 0.74, b: 0.66, a: 1}
+  _locked: {r: 0.62, g: 0.6, b: 0.56, a: 1}
+  _dotRadius: 0.07
+  _dotSpacing: 0.32
+  _dotClearance: 1.25
+  _edgeCurve: 0
+  _dotFlowSpeed: 2.6
+  _dotFlowLength: 1.4
+  _hoverScale: 1.18
+  _pressScale: 0.9
+  _availableBreath: 0.22
+  _beatDivision: 1
+  _pulseAmount: 0.14
+  _flowDivision: 1
+  _introCameraSeconds: 1.7
+  _introStartDelay: 0.2
+  _introGrowSpeed: 62
+  _introSpeedScatter: 0.45
+  _introNodePop: 0.22
+  _introDotPop: 0.12
+  _introNodeSoundGap: 0.07
+  _fogMaterial: {fileID: 2100000, guid: a97aedf5c4220d2469cdb08ac70901b6, type: 2}
+  _fogFalloff: 14
+  _fogTrail: 6
+  _pawnRadius: 0.2
+  _pawnTravelSeconds: 1.5
+  _pawnSkipSpeed: 6
+  _transitionInSeconds: 0.85
+  _transitionInkDelay: 0.35
+  _transitionHoldSeconds: 0.3
+  _transitionOutSeconds: 0.55

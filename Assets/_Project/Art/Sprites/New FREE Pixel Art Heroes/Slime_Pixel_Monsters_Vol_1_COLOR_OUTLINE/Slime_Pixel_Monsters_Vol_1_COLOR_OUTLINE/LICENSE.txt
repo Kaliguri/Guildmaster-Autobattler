@@ -1,0 +1,15 @@
+Slime Enemy | Pixel Monsters Vol.1 LICENSE
+==========================================
+
+This asset pack is licensed as royalty-free.
+
+You are allowed to:
+- Use the assets in personal and commercial projects.
+- Modify, edit, recolor, resize, or adapt the assets.
+- Use the assets in games, prototypes, game jams, and other interactive media.
+
+You are NOT allowed to:
+- Redistribute or resell the asset pack, free or paid.
+
+Credit is appreciated but not required.
+

@@ -9,8 +9,8 @@ namespace Guildmaster.Data.Definitions
     /// </summary>
     public interface IContentDatabase
     {
-        /// <summary>Определение по id. Бросает при отсутствии — отсутствие контента = ошибка конфигурации.</summary>
-        T Get<T>(string id) where T : ContentDefinition;
+        // Бросающего Get&lt;T&gt; здесь больше нет: за всю историю его не позвал никто — весь код
+        // резолвит контент через TryGet и сам решает, что делать с промахом (аудит 2026-07-26).
 
         /// <summary>Попытаться получить определение по id нужного типа.</summary>
         bool TryGet<T>(string id, out T def) where T : ContentDefinition;

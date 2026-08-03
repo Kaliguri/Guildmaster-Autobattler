@@ -154,17 +154,21 @@ MonoBehaviour:
   _loadoutScreen: {fileID: 9197481963319205126, guid: 15c3d6ae3d7b0564e9f3085e3abba396, type: 3}
   _rewardScreen: {fileID: 9197481963319205126, guid: d9f6be55684a5534086ba8b49b9215ab, type: 3}
   _eventScreen: {fileID: 9197481963319205126, guid: 5f2c0deae1e055b4eaaf17257898cf83, type: 3}
-  _mapScreen: {fileID: 9197481963319205126, guid: af9fe6ae599511449b59ad30576aad90, type: 3}
   _continueScreen: {fileID: 9197481963319205126, guid: 4fda0ea06bc1e234e8ceaa9ebc8bb51e, type: 3}
   _shopScreen: {fileID: 9197481963319205126, guid: cfc0777af5f00e44896f6b4a073c626b, type: 3}
   _chestScreen: {fileID: 9197481963319205126, guid: 1ff8b7142418a244dbb702afa6cb314a, type: 3}
+  _campScreen: {fileID: 9197481963319205126, guid: 3dfc93592132fd343b4d7174836192c7, type: 3}
   _outcomeScreen: {fileID: 9197481963319205126, guid: 23b1ecddbec3ffa47bcda35390fcd78b, type: 3}
   _mainMenuScreen: {fileID: 9197481963319205126, guid: 6b74acde43d6f2845a61d543591cccb0, type: 3}
-  _runTopBar: {fileID: 9197481963319205126, guid: 94570721a23f87c4e851528c4b1212aa, type: 3}
+  _newGameScreen: {fileID: 9197481963319205126, guid: ed989ac3ff3a5054e81a6b252d84b56f, type: 3}
+  _titleCardScreen: {fileID: 9197481963319205126, guid: 42ddcfc3ca1fe3f46927e1220ca2a335, type: 3}
+  _titleCardSeal: {fileID: 21300000, guid: 01d44d9c508f7af409ba475c15c06460, type: 3}
+  _devConsoleScreen: {fileID: 9197481963319205126, guid: 5b8aedc823fbc7b4798b3eb00beb01a5, type: 3}
+  _devLogScreen: {fileID: 9197481963319205126, guid: e6826955038f6a647b3c6435757655fb, type: 3}
   _runModeBar: {fileID: 9197481963319205126, guid: 919b5073000fd104e8e188b2a2624dd5, type: 3}
-  _loadoutHubScreen: {fileID: 9197481963319205126, guid: b101555f184c6db48b81893633a005ee, type: 3}
   _loadoutInventoryScreen: {fileID: 9197481963319205126, guid: 57e9cea668276b146bb6ddbf4646c5ae, type: 3}
   _arcanaCard: {fileID: 9197481963319205126, guid: f3c82685632320143bae2eb20e6d7db1, type: 3}
+  _transitionMaterial: {fileID: 2100000, guid: 325cc584ed8653149a991f39ab3ccb43, type: 2}
 --- !u!114 &101249935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,7 +241,6 @@ MonoBehaviour:
   _devStartPreset: {fileID: 0}
   _runTextEventOnBoot: 0
   _devStartEvent: {fileID: 0}
-  _legacyBattleScene: 0
 --- !u!4 &140685069
 Transform:
   m_ObjectHideFlags: 0
@@ -288,7 +291,10 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _contentDatabase: {fileID: 11400000, guid: 6ee93f01d460d5942962e5433b56e5d8, type: 2}
   _gameConfig: {fileID: 11400000, guid: 3f479309a3dcb31429f94c65a88fb275, type: 2}
-  _audioCatalog: {fileID: 0}
+  _audioCatalog: {fileID: 11400000, guid: fe034423cf8b8c5409a5cf3289ab74cc, type: 2}
+  _actConfig: {fileID: 11400000, guid: dbc39cb776c7fd6469e9cd31b97af1ab, type: 2}
+  _provingGroundsConfig: {fileID: 11400000, guid: 557cd34fa730c0c4c8acfa210f1d7d75, type: 2}
+  _palette: {fileID: 11400000, guid: f42219bf529da2c4d909a76d914ab971, type: 2}
 --- !u!4 &265839542
 Transform:
   m_ObjectHideFlags: 0
@@ -314,6 +320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1505501010}
   - component: {fileID: 1505501009}
+  - component: {fileID: 1505501011}
   m_Layer: 0
   m_Name: Background Camera
   m_TagString: Untagged
@@ -387,6 +394,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1505501011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505501008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &1638055409
 GameObject:
   m_ObjectHideFlags: 0

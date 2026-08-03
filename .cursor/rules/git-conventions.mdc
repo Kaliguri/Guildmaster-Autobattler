@@ -10,7 +10,7 @@ alwaysApply: true
 ```
 <type>(<scope>): <short description>
 
-[optional body]
+<body — detailed, required for agent commits>
 ```
 
 ### Types
@@ -29,19 +29,66 @@ alwaysApply: true
 
 ### Scopes (optional)
 
-`combat`, `units`, `ui`, `inventory`, `guild`, `ai`, `audio`, `scene`
+`combat`, `units`, `ui`, `inventory`, `guild`, `ai`, `audio`, `scene`, `feel`
 
 ### Rules
 
 - Language: **English**
 - Use imperative: "add", "fix", "remove" — not "added", "fixes"
-- No period at the end
-- Max 72 characters in subject line
+- No period at the end of the subject
+- Max 72 characters in the subject line — **no author markers in the title**
+
+### Authorship (agent commits)
+
+Commits are authored by **Max Gaida only**. Never add `Co-authored-by:` (or any other
+authorship trailer) — Max asked for a clean, single-author history.
+
+An agent still has to say it was an agent, so Max can tell agent commits from his own
+and audit them separately. Put it in the **body**, not the subject:
+
+- first line of the body: `Cursor Auto commit.` (or the agent's own name)
+- then a body detailed enough that Max — or another agent in a later session — can audit
+  the change without re-reading the diff:
+  - what changed (files/systems, not every line)
+  - why / intent
+  - how to verify (Play steps, toggles, edge cases)
+  - anything intentionally left out or risky
+
+Rules the agent does **not** get to change on its own: this file, project conventions,
+and anything under `.cursor/rules`. Propose it to Max instead.
+
+Stage **only your own** changes: use explicit paths, never `git add -A`. Max and other
+agents may have unfinished work in the tree — sweeping it into your commit steals
+authorship and hides someone else's work-in-progress in an unrelated change.
+
+**This rule is enforced mechanically, not by memory** (2026-07-30). A `PreToolUse` hook in
+`.claude/settings.json` denies `git add -A|--all|-u|.` and `git commit -a|-am` outright.
+The reason it needed a barrier: the rule is **one-sided**. Following it protects other
+sessions from you, but nothing protects *your* uncommitted work from a session that sweeps
+the tree — and that is exactly how a finished test ended up inside an unrelated commit that
+same day. A directory in the pathspec (`git add -- Assets/_Project/Art`) passes the hook but is
+**not** an exemption and not safe: someone else's uncommitted edits may sit inside it, and a
+pathspec commit takes files **from disk**, ignoring the index — so `git restore --staged` cannot
+pull them back out. List files, not folders, and read `git diff --cached --name-only` before
+committing.
+
+The hook only refuses the flags that mean "everything", and it covers Claude Code sessions in this
+project only — a sweep typed in a terminal or clicked in an IDE still gets through.
+
+Corollary worth keeping: **commit as soon as a step is done.** The window between finishing
+work and committing it is exactly the window in which someone else's sweep can claim it.
 
 ### Examples
 
 ```
 feat(combat): add poison damage over time mechanic
+
+Cursor Auto commit.
+Adds PeriodicDamage stacking on Ignition. Wired through DamagePipeline.
+VERIFY: ignite dummy, confirm DoT ticks and refresh; no armor on True.
+```
+
+```
 fix(units): fix archer not targeting nearest enemy
 data(combat): rebalance warrior base stats
 refactor(ai): extract targeting logic into separate class

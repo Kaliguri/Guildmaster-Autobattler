@@ -1,3 +1,4 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
@@ -9,8 +10,9 @@ namespace Guildmaster.Game.Flow
     /// <summary>Показ экрана награды после узла (витрина 1-из-N → запись выбора в RunState).</summary>
     public interface IRewardPresenter
     {
-        /// <summary>Скатать витрину тира, показать её, дождаться выбора и применить к <see cref="RunState"/>.</summary>
-        UniTask PresentAsync(RewardTier tier);
+        /// <summary>Скатать витрину тира, показать её, дождаться выбора и применить к <see cref="RunState"/>.
+        /// <paramref name="ct"/> прерывает ожидание при выходе из забега (QA #37).</summary>
+        UniTask PresentAsync(RewardTier tier, CancellationToken ct = default);
     }
 
     /// <summary>
@@ -24,17 +26,22 @@ namespace Guildmaster.Game.Flow
     {
         private readonly RewardService   _rewards;
         private readonly RunStateService _runStates;
+        // Сброс реликвии ради места — односторонняя запись, идёт через шину и попадает в лог. Взятие
+        // награды осталось прямым: оно спрашивает «влезло ли» синхронно, то есть транзакция.
+        private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
         private readonly IPublisher<OpenRewardRequest> _openRewardPub;
 
         public RewardPresenter(RewardService rewards, RunStateService runStates,
+                               Guildmaster.Guild.Commands.IRunCommands commands,
                                IPublisher<OpenRewardRequest> openRewardPub)
         {
             _rewards       = rewards;
             _runStates     = runStates;
+            _commands      = commands;
             _openRewardPub = openRewardPub;
         }
 
-        public async UniTask PresentAsync(RewardTier tier)
+        public async UniTask PresentAsync(RewardTier tier, CancellationToken ct = default)
         {
             var choices = _rewards.RollChoices(tier);
             if (choices.Count == 0)
@@ -48,9 +55,9 @@ namespace Guildmaster.Game.Flow
 
             var tcs = new UniTaskCompletionSource<RewardChoiceResult>();
             _openRewardPub.Publish(new OpenRewardRequest(
-                choices, full, run.RelicInventory, r => tcs.TrySetResult(r)));
+                choices, full, run.RelicInventory, r => tcs.TrySetResult(r), ct)); // ct → закрыть экран при отмене (QA #37)
 
-            RewardChoiceResult result = await tcs.Task;
+            RewardChoiceResult result = await tcs.Task.AttachExternalCancellation(ct);
             if (result.Skipped)
             {
                 Debug.Log("[RewardPresenter] - награда пропущена");
@@ -58,7 +65,7 @@ namespace Guildmaster.Game.Flow
             }
 
             if (full && !string.IsNullOrEmpty(result.DropRelicId))
-                _runStates.RemoveRelic(result.DropRelicId);
+                _commands.RemoveRelic(result.DropRelicId);
 
             bool added = _runStates.TryAddRelic(result.Chosen.Id);
             Debug.Log($"[RewardPresenter] - награда: взят '{result.Chosen.Id}'" +

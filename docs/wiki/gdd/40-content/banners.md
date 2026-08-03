@@ -2,6 +2,9 @@
 title: "Content - Banners"
 order: 42
 status: draft
+updated: 2026-07-29
+impl: paper
+impl_note: "ассет item.war_banner в движке есть, но ни одному из четырёх Знамён не соответствует"
 ---
 
 # Знамёна (Party-скоуп)

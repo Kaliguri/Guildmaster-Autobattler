@@ -1,0 +1,143 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7cba09029dfbf4fb4a5fa3399a44f1, type: 3}
+  m_Name: Nightblade
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
+  _id: relic.nightblade
+  _combatClass: 2
+  _autoAttackDamageType: 3
+  _creatureType: 0
+  _attackType: 1
+  _resourceType: 1
+  _visual: {fileID: 11400000, guid: 92590d2f03f8004408b857efbb832317, type: 2}
+  _viewPrefab: {fileID: 5267563404213066422, guid: fbf7c66a68241fe4185ebbad80d3999b, type: 3}
+  _bodyShade: 2
+  _vfxTone: 10
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
+  _autoAttackEffects:
+  - {fileID: 11400000, guid: 1946ad3b25cd41b5ac335ee61789adc0, type: 2}
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
+  _windupShare: 0.25
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
+  _stats:
+  - Stat: 8
+    Op: 3
+    Value: 1
+  - Stat: 9
+    Op: 3
+    Value: 2
+  - Stat: 3
+    Op: 3
+    Value: 15
+  - Stat: 4
+    Op: 3
+    Value: 15
+  - Stat: 18
+    Op: 3
+    Value: 12
+  - Stat: 27
+    Op: 3
+    Value: 25
+  - Stat: 7
+    Op: 3
+    Value: 144
+  _grantedEffects:
+  - {fileID: 11400000, guid: 286004dd17bd4741b8ab583b69825809, type: 2}
+  _abilities:
+  - _id: venom_seal
+    _effects:
+    - {fileID: 11400000, guid: 944a5eb117594282bdd0394fc58b615c, type: 2}
+    _selfEffects: []
+    _baseCooldown: 0
+    _resourceCost: 25
+    _targetMode: 1
+    _damageMultiplier: 0
+    _damageType: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
+    _castCondition: 0
+    _castConditionCount: 1
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _castSource: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceDamageMult: 1
+    _displaceWidth: 1
+    _visualSlot: 0
+    _infoTags: []
+  _aiPreset: {fileID: 11400000, guid: 891ad387c7a64242996624c46b024ed2, type: 2}
+  _ai:
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 1
+      FleeAtHpPct: 0.25
+      ReturnAtHpPct: 0.5
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags:
+  - {fileID: 11400000, guid: beeff58f2ff88af4882f9245f9c5ed1f, type: 2}
+  - {fileID: 11400000, guid: f219333c551996c47a3e68dfd6a8655f, type: 2}
+  - {fileID: 11400000, guid: d064d4154bbe71e408406dc0686df80c, type: 2}
+  - {fileID: 11400000, guid: 2e74f4027aac58747add95950ec06969, type: 2}
+  - {fileID: 11400000, guid: 781a6294fb5565941a5a259e705ad986, type: 2}
+  _tags:
+  - nightblade
+  - assassin
+  - common
+  _kitPower: 0
+  _dropRarity: 1
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 1

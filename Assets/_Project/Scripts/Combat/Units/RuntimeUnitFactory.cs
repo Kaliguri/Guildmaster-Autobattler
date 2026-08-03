@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -9,8 +9,10 @@ namespace Guildmaster.Combat
 {
     /// <summary>
     /// Единственная точка сборки <see cref="RuntimeUnit"/> из SO-данных.
-    /// Шаги сборки (вики «10» §5.2, «6» §3): дефолты из <see cref="StatsConfig"/> → моды реликвии
-    /// → перки сосуда → пассивки (<see cref="RelicData.GrantedEffects"/> с постоянной длительностью)
+    /// Шаги сборки (вики «10» §5.2, «6» §3): дефолты из <see cref="StatsConfig"/> → классовая база
+    /// (<see cref="ClassBalanceConfig"/>) → видовые скейлы врага (<see cref="SpeciesData"/>) → моды
+    /// реликвии → перки сосуда → пассивки
+    /// (<see cref="RelicData.GrantedEffects"/> с постоянной длительностью)
     /// → активки (<see cref="AbilityRuntime"/>) → ресурс (<see cref="StatType.StartResource"/>)
     /// → <c>CurrentHP = Get(MaxHP)</c>.
     /// </summary>
@@ -19,18 +21,27 @@ namespace Guildmaster.Combat
     /// и стартовое здоровье. Поэтому фабрике нужны <see cref="EffectSystem"/> и боевой контекст —
     /// наложение пассивки зовёт <c>OnApply</c> компонентов (вики «12» §6, шаг 9).
     /// </remarks>
-    public sealed class RuntimeUnitFactory
+    public sealed class RuntimeUnitFactory : ISummonFactory
     {
         private readonly StatsConfig   _config;
+        private readonly ClassBalanceConfig _classBalance;
         private readonly EffectSystem  _effects;
         private readonly ICombatContext _combat;
         private int _nextId;
 
-        public RuntimeUnitFactory(StatsConfig config, EffectSystem effects, ICombatContext combat)
+        /// <summary>Сколько юнитов уже создано на каждую команду — источник фазы стаггера AI.</summary>
+        private readonly int[] _perTeamCount = new int[MaxTeams];
+
+        /// <summary>Потолок команд боя: кооп до 4 игроков + сторона врага.</summary>
+        private const int MaxTeams = 8;
+
+        public RuntimeUnitFactory(StatsConfig config, ClassBalanceConfig classBalance,
+                                  EffectSystem effects, ICombatContext combat)
         {
-            _config  = config;
-            _effects = effects;
-            _combat  = combat;
+            _config       = config;
+            _classBalance = classBalance;
+            _effects      = effects;
+            _combat       = combat;
         }
 
         /// <summary>
@@ -39,7 +50,11 @@ namespace Guildmaster.Combat
         /// на один ключ, вид одного осиротевает (стоит на месте, HP-бар не реагирует). Раньше это лечил
         /// релоад сцены (новый скоуп → новая фабрика); теперь чистим явно.
         /// </summary>
-        public void ResetIds() => _nextId = 0;
+        public void ResetIds()
+        {
+            _nextId = 0;
+            System.Array.Clear(_perTeamCount, 0, _perTeamCount.Length);
+        }
 
         /// <summary>
         /// Создать <see cref="RuntimeUnit"/> из SO-данных. Принимает базовый <see cref="UnitData"/> —
@@ -57,24 +72,20 @@ namespace Guildmaster.Combat
         public RuntimeUnit Create(UnitData data, VesselData vessel, int team, Vector2 spawnPosition,
                                   IReadOnlyList<ItemData> items = null)
         {
-            var stats = new Stats(_config);
-
-            if (data?.Stats != null && data.Stats.Length > 0)
-                stats.AddModifiersFrom(data, data.Stats);
-
-            if (vessel?.PerkModifiers != null && vessel.PerkModifiers.Length > 0)
-                stats.AddModifiersFrom(vessel, vessel.PerkModifiers);
-
-            // Предметы/баннеры: статовые моды (источник — сам предмет) до HP-init, наравне с перками сосуда.
-            if (items != null)
-                for (int i = 0; i < items.Count; i++)
-                {
-                    ItemData item = items[i];
-                    if (item?.Mods != null && item.Mods.Length > 0)
-                        stats.AddModifiersFrom(item, item.Mods);
-                }
+            // Каскад целиком — у EffectiveStats: дефолты конфига → класс → вид → персона → Судьба
+            // сосуда → предметы. Своей копии здесь нет намеренно: она уже расходилась с показанными
+            // игроку числами (аудит 2026-07-26), а теперь по тому же каскаду собираются ещё и тела
+            // мира вне боя — три переписи одного порядка разъехались бы молча.
+            Stats stats = EffectiveStats.Build(data, vessel, items, _config, _classBalance);
 
             int id = _nextId++;
+
+            // Фаза стаггера считается от порядкового номера ВНУТРИ КОМАНДЫ, а не от сквозного Id.
+            // Сквозной давал командам разные фазы (первая заспавненная думала раньше), и в равном бою
+            // это решало исход за бойцов: зеркальный отряд заканчивал со счётом 59.7% против нуля.
+            // Внутри команды фазы по-прежнему разные — нагрузка размазана, как и задумано.
+            int teamIndex = team >= 0 && team < _perTeamCount.Length ? _perTeamCount[team]++ : id;
+
             var unit = new RuntimeUnit
             {
                 Id               = id,
@@ -84,21 +95,74 @@ namespace Guildmaster.Combat
                 CurrentShield    = 0f,
                 Position         = spawnPosition,
                 PreviousPosition = spawnPosition,
-                Unit             = data,
                 Vessel           = vessel,
-                // AI (Фаза 3): мозг из профиля кита + фаза стаггера по Id (вики «13» §2.7, §4.1).
+                // AI (Фаза 3): мозг из профиля кита + фаза стаггера по месту в команде (вики «13» §2.7, §4.1).
                 Brain            = new ProfileBrain(data?.Ai),
-                BrainPhase       = id % SimConstants.AiTickInterval,
+                BrainPhase       = teamIndex % SimConstants.AiTickInterval,
             };
+
+            // Форма авто-атаки — снимком, одним вызовом: тип урона, доставка, on-hit, канал.
+            unit.AdoptKit(data);
 
             RegisterPassives(unit, data);
             RegisterItemPassives(unit, items);
             RegisterAbilities(unit, data);
 
+            // Пассивки правят статы по закону видимости — отложенно, до конца боевого тика. Здесь тика нет
+            // и ждать нечего: юнит должен родиться с уже действующими пассивками, поэтому проявляем их сразу.
+            // Без этого он выходит на арену с недобранным MaxHP (и, значит, с неполным стартовым HP).
+            EffectSystem.CommitPending(unit);
+
             // CurrentHP — после пассивок: они могли поднять MaxHP, юнит должен стартовать с полным.
             unit.CurrentHP = stats.Get(StatType.MaxHP);
 
             return unit;
+        }
+
+        /// <summary>
+        /// Собрать призванного юнита (M10): та же сборка, что у всех, плюс множители силы призывов от
+        /// призывателя. Множители приезжают ОТДЕЛЬНОЙ группой модификаторов, поэтому база ассета остаётся
+        /// читаемой в отладке: видно и «сколько у скелета своего», и «сколько добавил хозяин».
+        /// </summary>
+        /// <remarks>
+        /// Множители применяются ДО инициализации HP — иначе призыв родился бы с полным HP по базе, а
+        /// потолок вырос бы после, и усиленный скелет выходил бы уже раненым.
+        /// </remarks>
+        public RuntimeUnit CreateSummon(UnitData data, int team, Vector2 position, RuntimeUnit summoner)
+        {
+            RuntimeUnit summon = Create(data, vessel: null, team, position);
+
+            if (summoner?.Stats == null) return summon;
+
+            float healthEff = summoner.Stats.Get(StatType.SummonHealthEff);
+            float damageEff = summoner.Stats.Get(StatType.SummonDamageEff);
+
+            bool scalesHealth = !Mathf.Approximately(healthEff, 1f);
+            bool scalesDamage = !Mathf.Approximately(damageEff, 1f);
+
+            if (scalesHealth || scalesDamage)
+            {
+                // PercentMult принимает ПРИБАВКУ (множитель считается как 1 + x), а сам стат силы призывов
+                // живёт вокруг единицы: 1.3 = «+30%». Отсюда −1.
+                StatModifier[] mods =
+                    scalesHealth && scalesDamage
+                        ? new[]
+                        {
+                            new StatModifier(StatType.MaxHP, ModifierOp.PercentMult, healthEff - 1f),
+                            new StatModifier(StatType.AutoAttackDamage, ModifierOp.PercentMult, damageEff - 1f),
+                        }
+                        : scalesHealth
+                            ? new[] { new StatModifier(StatType.MaxHP, ModifierOp.PercentMult, healthEff - 1f) }
+                            : new[] { new StatModifier(StatType.AutoAttackDamage, ModifierOp.PercentMult, damageEff - 1f) };
+
+                summon.Stats.AddModifiersFrom("summoner", mods);
+
+                // HP пересобираем: потолок только что вырос, а призыв обязан выйти целым.
+                summon.CurrentHP = summon.Stats.Get(StatType.MaxHP);
+            }
+
+            summon.Summoner = summoner;
+            return summon;
         }
 
         /// <summary>Наложить пассивные эффекты предметов/баннеров (источник — сам юнит, длительность из Def).</summary>

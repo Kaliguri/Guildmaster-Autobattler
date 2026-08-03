@@ -17,6 +17,7 @@ namespace Guildmaster.UI.Components
     {
         private static readonly int IdleHash   = Animator.StringToHash("Idle");
         private static readonly int AttackHash = Animator.StringToHash("Attack");
+        private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
 
         private const float StageOrigin = 5000f; // далеко от игровой сцены (ничего не попадёт в кадр)
         private const float Spacing     = 6f;    // разнос юнитов, чтобы камера не ловила соседа
@@ -32,6 +33,7 @@ namespace Guildmaster.UI.Components
         private readonly int _size;
         private readonly float _fallbackHeight;
         private readonly float _framePadding;
+        private readonly GuildmasterPalette _palette;
         private readonly Transform _root;
         private readonly List<Entry> _entries = new List<Entry>();
         private int _slot;
@@ -39,11 +41,18 @@ namespace Guildmaster.UI.Components
         /// <param name="size">Сторона квадратной RT в пикселях.</param>
         /// <param name="fallbackHeight">Высота кадра, если у юнита нет рекомендованного габарита.</param>
         /// <param name="framePadding">Запас над рекоменд-габаритом (1.2 = +20% воздуха вокруг фигуры).</param>
-        public RelicCardVisualRig(int size = 256, float fallbackHeight = 2.0f, float framePadding = 1.2f)
+        /// <param name="palette">
+        /// Снимок палитры проекта: из него берётся цвет ступени приглушения тела, чтобы карточка красила
+        /// юнита ТЕМ ЖЕ путём, что бой. Пусто — тела не красим (у большинства юнитов ступень и так None,
+        /// а гадать цвет карточке нечем).
+        /// </param>
+        public RelicCardVisualRig(int size = 256, float fallbackHeight = 2.0f, float framePadding = 1.2f,
+                                  GuildmasterPalette palette = null)
         {
             _size = size;
             _fallbackHeight = fallbackHeight;
             _framePadding = framePadding;
+            _palette = palette;
 
             var rootGo = new GameObject("RelicCardVisualRig") { hideFlags = HideFlags.HideAndDontSave };
             rootGo.transform.position = new Vector3(StageOrigin, StageOrigin, 0f);
@@ -83,6 +92,11 @@ namespace Guildmaster.UI.Components
                     entry.Animator.fireEvents = false;
                     entry.Animator.Play(IdleHash, 0, 0f);
                 }
+
+                // Тинт тела — тот же путь, что в бою: ступень из данных, цвет из палитры проекта. Кастовый
+                // HitFlash-шейдер подхватывает .color лишь по per-instance пути → сперва праймим MPB (инвариант
+                // UnitView.PrimeFlashBlock), иначе тинт молча не отобразится на статичной карточке.
+                ApplyBodyTint(entry.Unit, UnitColorRoles.Shade(_palette, data.BodyShade));
             }
 
             // Камера НА этот юнит: рендерит в свою RT автоматически (URP).
@@ -190,6 +204,62 @@ namespace Guildmaster.UI.Components
             cam.orthographicSize = framed * 0.5f;
             // Центр кадра = ноги + половина рамки: ноги у низа, макушка под верхней кромкой.
             cam.transform.position = new Vector3(feetX, feetY + framed * 0.5f, -10f);
+        }
+
+        // Красит тело тем же цветом, что и бой (UnitData.ResolveBodyTint) — единый источник. Праймит MPB,
+        // иначе кастовый HitFlash-шейдер игнорит .color до первой записи блока (инвариант IUnitBodyVisual.Prime).
+        private static void ApplyBodyTint(GameObject unit, Color tint)
+        {
+            if (unit == null) return;
+
+            var body = new List<SpriteRenderer>();
+            CollectBodyParts(unit, body);
+
+            var mpb = new MaterialPropertyBlock();
+            for (int i = 0; i < body.Count; i++)
+            {
+                SpriteRenderer part = body[i];
+                if (part == null) continue;
+                part.GetPropertyBlock(mpb);
+                mpb.SetFloat(FlashAmountId, 0f);
+                part.SetPropertyBlock(mpb);
+                part.color = tint;
+            }
+        }
+
+        // Части тела рефлексией: UI-асмдеф не ссылается на Presentation, поэтому ни IUnitBodyVisual, ни
+        // UnitView здесь не типизируются. Составное тело отдаёт ВСЕ свои части — иначе на карточке
+        // скелетного героя покрашен один кусок, а остальные висят исходным цветом арта. Порядок поиска:
+        // список частей составного тела → одиночный спрайт UnitView → первый спрайт в иерархии.
+        private static void CollectBodyParts(GameObject unit, List<SpriteRenderer> into)
+        {
+            const System.Reflection.BindingFlags F =
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+
+            var behaviours = unit.GetComponentsInChildren<MonoBehaviour>(true);
+            for (int i = 0; i < behaviours.Length; i++)
+            {
+                MonoBehaviour mb = behaviours[i];
+                if (mb == null || mb.GetType().Name != "SkeletalBodyVisual") continue;
+                if (mb.GetType().GetProperty("Parts")?.GetValue(mb) is IEnumerable<SpriteRenderer> parts)
+                {
+                    into.AddRange(parts);
+                    if (into.Count > 0) return;
+                }
+                break;
+            }
+
+            for (int i = 0; i < behaviours.Length; i++)
+            {
+                MonoBehaviour mb = behaviours[i];
+                if (mb == null || mb.GetType().Name != "UnitView") continue;
+                var f = mb.GetType().GetField("_sprite", F);
+                if (f != null && f.GetValue(mb) is SpriteRenderer sr && sr != null) { into.Add(sr); return; }
+                break;
+            }
+
+            SpriteRenderer any = unit.GetComponentInChildren<SpriteRenderer>(true);
+            if (any != null) into.Add(any);
         }
 
         // Грубо гасим world-UI юнита (бары/подпись/контейнер 'UI') — на карточке нужен только персонаж.

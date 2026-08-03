@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,7 +20,7 @@ namespace Guildmaster.ContentHub.Editor
             if (units.Count > 0)
             {
                 AddCountSection(inner, "Юниты по типу урона",
-                    units.GroupBy(e => e.Unit.DamageSchool.ToString()).Select(g => (g.Key, g.Count()))
+                    units.GroupBy(e => Guildmaster.Data.Definitions.DamageTypes.SchoolOf(e.Unit.AutoAttackDamageType).ToString()).Select(g => (g.Key, g.Count()))
                          .OrderByDescending(x => x.Item2).ToList());
                 AddCountSection(inner, "Юниты по типу атаки",
                     units.GroupBy(e => e.Unit.AttackType.ToString()).Select(g => (g.Key, g.Count()))

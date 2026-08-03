@@ -41,10 +41,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Combat/fire
   Guid:
-    Data1: 2066257024
-    Data2: 1097155236
-    Data3: 2091282340
-    Data4: 704775534
+    Data1: -2075829353
+    Data2: 1212402946
+    Data3: -715831379
+    Data4: -1498213828
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 626
+--- !u!114 &-9103924107838118038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/light_mend/tick
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/light_mend/tick
+  Guid:
+    Data1: 1843118163
+    Data2: 1127814186
+    Data3: -2113810773
+    Data4: -1774351612
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
@@ -53,7 +80,34 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 2000
+  Length: 161
+--- !u!114 &-8751422060515612263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/camp_action
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/camp_action
+  Guid:
+    Data1: -1156791909
+    Data2: 1089469054
+    Data3: 1475969428
+    Data4: -965637095
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1329
 --- !u!114 &-8735675290241629838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,6 +155,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 5333
+--- !u!114 &-8651751642120444859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/tab
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/tab
+  Guid:
+    Data1: -399314577
+    Data2: 1238567384
+    Data3: 1308112281
+    Data4: -480092812
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 614
 --- !u!114 &-8490935345384670138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,19 +196,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Combat/heal
   Guid:
-    Data1: -913378619
-    Data2: 1092176451
-    Data3: 55244674
-    Data4: -1093930772
+    Data1: -515753567
+    Data2: 1259375197
+    Data3: 716128131
+    Data4: -1897166729
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 2000
+  Length: 1872
 --- !u!114 &-8289661655682921440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,19 +223,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Relics/cryomancer/attack
   Guid:
-    Data1: -817539090
-    Data2: 1284003413
-    Data3: 1664163457
-    Data4: -1437360735
+    Data1: 958885969
+    Data2: 1145676884
+    Data3: -1760510836
+    Data4: -663103959
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 2666
+  Length: 779
 --- !u!114 &-8228306961423184084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,19 +250,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Combat/shield
   Guid:
-    Data1: 761599100
-    Data2: 1081868864
-    Data3: 1313740972
-    Data4: -2010419264
+    Data1: 476987556
+    Data2: 1339958984
+    Data3: 101141692
+    Data4: 277285202
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 1333
+  Length: 1331
 --- !u!114 &-8002978983727142422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,10 +304,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/UI/deploy_place
   Guid:
-    Data1: -799766641
-    Data2: 1329273523
-    Data3: -687120205
-    Data4: -771695196
+    Data1: 1104192643
+    Data2: 1101806200
+    Data3: -894798707
+    Data4: 1112524660
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
@@ -235,7 +316,88 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 1333
+  Length: 1332
+--- !u!114 &-7779195430310376715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/shop_buy
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/shop_buy
+  Guid:
+    Data1: -373074654
+    Data2: 1169304500
+    Data3: 2086974396
+    Data4: -758000480
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1331
+--- !u!114 &-7765558059162602779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Map/node_hover
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Map/node_hover
+  Guid:
+    Data1: 190066416
+    Data2: 1278390206
+    Data3: -1437610103
+    Data4: 47041586
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1328
+--- !u!114 &-7751696299225847082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/event_choice
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/event_choice
+  Guid:
+    Data1: 673380793
+    Data2: 1196807283
+    Data3: 1332858548
+    Data4: -64508305
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 321
 --- !u!114 &-7667989450563182024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,19 +498,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Combat/attack
   Guid:
-    Data1: -1827506965
-    Data2: 1228484466
-    Data3: 1595094414
-    Data4: 906393472
+    Data1: 1271584306
+    Data2: 1330558411
+    Data3: 1225631895
+    Data4: 1039202525
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 1333
+  Length: 551
 --- !u!114 &-7228892216983079187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,19 +525,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Effects/frozen/apply
   Guid:
-    Data1: 191561285
-    Data2: 1179286042
-    Data3: -1227337303
-    Data4: 834599546
+    Data1: -2134061577
+    Data2: 1078691866
+    Data3: 1543842460
+    Data4: 712417188
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 2666
+  Length: 3996
 --- !u!114 &-7153892880344662757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,6 +619,56 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 429
+--- !u!114 &-6865970312059291636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: 
+  Guid:
+    Data1: -10513932
+    Data2: 1269990893
+    Data3: -1787448423
+    Data4: -524590815
+  Banks:
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1333
 --- !u!114 &-6835440264580634799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,6 +696,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1333
+--- !u!114 &-6732893968561704508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/relic_equip
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/relic_equip
+  Guid:
+    Data1: -155547338
+    Data2: 1212997114
+    Data3: -1169689215
+    Data4: 1489811978
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 445
 --- !u!114 &-6617326922780259876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,19 +757,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Combat/hit
   Guid:
-    Data1: 2145201470
-    Data2: 1167560925
-    Data3: 730230708
-    Data4: 2109872336
+    Data1: 233233787
+    Data2: 1157788118
+    Data3: -1977438535
+    Data4: 503174757
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 666
+  Length: 665
 --- !u!114 &-6243723618640407315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,10 +784,64 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Effects/frozen/expire
   Guid:
-    Data1: -248680144
-    Data2: 1138631947
-    Data3: 196457146
-    Data4: 1364474460
+    Data1: -494097806
+    Data2: 1134319205
+    Data3: 586434744
+    Data4: 6172686
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 540
+--- !u!114 &-6181820647917939392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Relics/treant/attack
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Relics/treant/attack
+  Guid:
+    Data1: 1635381957
+    Data2: 1306646156
+    Data3: -1913780831
+    Data4: -1642072873
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 779
+--- !u!114 &-6166626588403729178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Stingers/reward_open
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Stingers/reward_open
+  Guid:
+    Data1: 1630832220
+    Data2: 1108557017
+    Data3: -998644605
+    Data4: -653413915
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
@@ -557,7 +850,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 543
+  Length: 1554
 --- !u!114 &-6125485414353096890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -572,10 +865,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/UI/resume
   Guid:
-    Data1: -681310254
-    Data2: 1300678501
-    Data3: -386617440
-    Data4: 1427095219
+    Data1: 1759257126
+    Data2: 1302353195
+    Data3: 2120822418
+    Data4: -1544064144
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
@@ -584,7 +877,34 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 1333
+  Length: 1327
+--- !u!114 &-6026110636998371780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Relics/defender/shield
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Relics/defender/shield
+  Guid:
+    Data1: 1995299247
+    Data2: 1223129542
+    Data3: -278879359
+    Data4: 1847857580
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 494
 --- !u!114 &-5920278209714994375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,6 +932,87 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2666
+--- !u!114 &-5860185796863525588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Map/node_select
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Map/node_select
+  Guid:
+    Data1: -174376428
+    Data2: 1163397456
+    Data3: 472051347
+    Data4: 1528233746
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1908
+--- !u!114 &-5825780893816474241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/speed
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/speed
+  Guid:
+    Data1: 1559122495
+    Data2: 1089415500
+    Data3: 182314135
+    Data4: 699172086
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 20
+--- !u!114 &-5768459416060571845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/relic_select
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/relic_select
+  Guid:
+    Data1: -1000891636
+    Data2: 1075127938
+    Data3: -1786176835
+    Data4: 957438046
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 365
 --- !u!114 &-5757023621488691517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -626,19 +1027,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Relics/light_shepherd/cast
   Guid:
-    Data1: 234054884
-    Data2: 1223274403
-    Data3: -550535278
-    Data4: -1864456287
+    Data1: 1290592862
+    Data2: 1218636475
+    Data3: -365892221
+    Data4: -1518808506
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 6666
+  Length: 3996
 --- !u!114 &-5756473090132721681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -935,6 +1336,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 649
+--- !u!114 &-5707933977291358316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/stealth_buff/apply
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/stealth_buff/apply
+  Guid:
+    Data1: -1871911764
+    Data2: 1211420939
+    Data3: -2120898114
+    Data4: 108856144
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3996
 --- !u!114 &-5569629246892692077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -955,6 +1383,60 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1074
   Exists: 1
+--- !u!114 &-5445399439525182001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/spore_cloud/apply
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/spore_cloud/apply
+  Guid:
+    Data1: -1884264387
+    Data2: 1337315663
+    Data3: 494248332
+    Data4: -1165248716
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3996
+--- !u!114 &-5341509700232411679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/tooltip_detail
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/tooltip_detail
+  Guid:
+    Data1: 1114330059
+    Data2: 1210387170
+    Data3: -1171908699
+    Data4: -1442117801
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 198
 --- !u!114 &-5252674388265391467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -996,10 +1478,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Feel/kill
   Guid:
-    Data1: -1547854128
-    Data2: 1330860477
-    Data3: -1391696503
-    Data4: 1715514169
+    Data1: -1518855907
+    Data2: 1149272290
+    Data3: -852073824
+    Data4: -859725296
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
@@ -1009,6 +1491,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1740
+--- !u!114 &-4975939441748687044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/menu_hide
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/menu_hide
+  Guid:
+    Data1: -505616725
+    Data2: 1255510596
+    Data3: -915505262
+    Data4: -688386200
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 596
 --- !u!114 &-4939322719664978747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,10 +1559,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/Stingers/defeat
   Guid:
-    Data1: 1813023057
-    Data2: 1092029728
-    Data3: -1986383217
-    Data4: 1449836689
+    Data1: -1384288706
+    Data2: 1100371805
+    Data3: -761121863
+    Data4: -1277945583
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
@@ -1062,7 +1571,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 1333
+  Length: 908
 --- !u!114 &-4831699046767528659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1078,10 +1587,10 @@ MonoBehaviour:
   Path: FMOD Project/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639195707371232546
+  lastModified: 639208554057823951
   FileSizes:
   - Name: Desktop
-    Value: 1074
+    Value: 2848
   Exists: 1
 --- !u!114 &-4691484952484755097
 MonoBehaviour:
@@ -1137,6 +1646,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 4000
+--- !u!114 &-4616760392395793733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Map/close
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Map/close
+  Guid:
+    Data1: -125008988
+    Data2: 1291069884
+    Data3: 940212629
+    Data4: -1379536018
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 313
 --- !u!114 &-4447718697426024212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1164,6 +1700,87 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1333
+--- !u!114 &-4129888414367552571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/shop_denied
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/shop_denied
+  Guid:
+    Data1: 1815772963
+    Data2: 1194605838
+    Data3: 417097116
+    Data4: 1596579209
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1330
+--- !u!114 &-4017888992571445412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/reward_skip
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/reward_skip
+  Guid:
+    Data1: -487790360
+    Data2: 1313844992
+    Data3: 868541604
+    Data4: 1172442175
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 94
+--- !u!114 &-3816872729841563398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Combat/attack_interrupted
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Combat/attack_interrupted
+  Guid:
+    Data1: -2012600663
+    Data2: 1150128627
+    Data3: 1204073353
+    Data4: -1025547588
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 139
 --- !u!114 &-3664664725025433228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1191,6 +1808,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 666
+--- !u!114 &-3605693229842602988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/screen_close
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/screen_close
+  Guid:
+    Data1: 528613909
+    Data2: 1108526587
+    Data3: -948101993
+    Data4: 1179826867
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 181
 --- !u!114 &-3323380190749002620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1272,6 +1916,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2000
+--- !u!114 &-3154418551608205546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Map/travel_start
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Map/travel_start
+  Guid:
+    Data1: 1063257169
+    Data2: 1164277449
+    Data3: -527456344
+    Data4: -1480366974
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 626
+--- !u!114 &-2970966966353011534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/gold_gain
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/gold_gain
+  Guid:
+    Data1: 196605073
+    Data2: 1157583000
+    Data3: -1424869462
+    Data4: 1057686611
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 791
 --- !u!114 &-2888395917060918905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1306,19 +2004,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Relics/assassin/cast
   Guid:
-    Data1: 1834899849
-    Data2: 1169242081
-    Data3: -2023773268
-    Data4: -1369839606
+    Data1: 1142418674
+    Data2: 1266076258
+    Data3: 839417991
+    Data4: -448449320
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 2000
+  Length: 3996
 --- !u!114 &-2735468854657286988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1346,6 +2044,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 4000
+--- !u!114 &-2695054326946449842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Map/open
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Map/open
+  Guid:
+    Data1: 1329636001
+    Data2: 1313360952
+    Data3: 1747339941
+    Data4: -1485076091
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 303
 --- !u!114 &-2563869879428834363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1387,10 +2112,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/Stingers/stinger
   Guid:
-    Data1: -1957226360
-    Data2: 1142805718
-    Data3: -1648143204
-    Data4: -1962513548
+    Data1: 973281989
+    Data2: 1236422008
+    Data3: 729263769
+    Data4: -1231991622
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
@@ -1399,7 +2124,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 5333
+  Length: 5331
 --- !u!114 &-2203510462970391684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1427,6 +2152,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1333
+--- !u!114 &-2158304884569536327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Stingers/chest_open
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Stingers/chest_open
+  Guid:
+    Data1: -1040547212
+    Data2: 1236038816
+    Data3: -1218132577
+    Data4: 985956303
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 816
 --- !u!114 &-2092511803386648829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1454,6 +2206,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2000
+--- !u!114 &-2010745296822555412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/burn/apply
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/burn/apply
+  Guid:
+    Data1: -2095508006
+    Data2: 1250937740
+    Data3: 497250981
+    Data4: 130218814
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3996
 --- !u!114 &-1997198316439747024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1481,6 +2260,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2000
+--- !u!114 &-1904045506141267867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Stingers/run_defeat
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Stingers/run_defeat
+  Guid:
+    Data1: -1890983672
+    Data2: 1133024450
+    Data3: 451197364
+    Data4: -1262252095
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1052
 --- !u!114 &-1873056808577426060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1495,19 +2301,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Relics/whirl_monk/cast
   Guid:
-    Data1: -1227651525
-    Data2: 1248103614
-    Data3: -194827843
-    Data4: 1877141506
+    Data1: 2046987811
+    Data2: 1283796400
+    Data3: -1640848998
+    Data4: 1066331088
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 4000
+  Length: 3996
 --- !u!114 &-1693979776787705938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1522,10 +2328,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/UI/pause
   Guid:
-    Data1: -1562553962
-    Data2: 1131593479
-    Data3: 674622648
-    Data4: -1860682608
+    Data1: -701744092
+    Data2: 1115472732
+    Data3: 530844863
+    Data4: 1048187285
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
@@ -1534,7 +2340,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 1333
+  Length: 1332
 --- !u!114 &-1524404124396324240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1549,19 +2355,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Combat/apply
   Guid:
-    Data1: -609375970
-    Data2: 1219978080
-    Data3: 2010418583
-    Data4: -1971964247
+    Data1: 1622421062
+    Data2: 1188584228
+    Data3: 2007076743
+    Data4: 1715225805
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 4000
+  Length: 3996
 --- !u!114 &-1286455843926320647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1603,10 +2409,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/UI/ui
   Guid:
-    Data1: -306007693
-    Data2: 1146826829
-    Data3: 1312224405
-    Data4: 1544739332
+    Data1: -1244876945
+    Data2: 1196368097
+    Data3: -1691273323
+    Data4: -25685555
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
@@ -1615,7 +2421,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 1333
+  Length: 97
 --- !u!114 &-1219377838643110541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1643,6 +2449,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 5333
+--- !u!114 &-1219268960557667290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/scroll
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/scroll
+  Guid:
+    Data1: 423252012
+    Data2: 1171588588
+    Data3: -1120694878
+    Data4: 1569056268
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1000
 --- !u!114 &-1167926899681462434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1657,10 +2490,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/Stingers/battle_start
   Guid:
-    Data1: 1003583425
-    Data2: 1286453874
-    Data3: 1977105837
-    Data4: 1961330524
+    Data1: -2053306409
+    Data2: 1159954643
+    Data3: -1633905238
+    Data4: 514681042
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
@@ -1669,7 +2502,34 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 5333
+  Length: 5331
+--- !u!114 &-1163814494274341726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/shop_reroll
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/shop_reroll
+  Guid:
+    Data1: 1177362043
+    Data2: 1313412135
+    Data3: -1647911034
+    Data4: -1604406998
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 611
 --- !u!114 &-1141564178299518765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1697,6 +2557,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 5333
+--- !u!114 &-1129645051736816013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/stealth/apply
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/stealth/apply
+  Guid:
+    Data1: -582691915
+    Data2: 1154867992
+    Data3: -1635932236
+    Data4: -1212239708
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3960
+--- !u!114 &-1010837871140339823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Map/travel_arrive
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Map/travel_arrive
+  Guid:
+    Data1: 1280612721
+    Data2: 1177484062
+    Data3: -664872560
+    Data4: -1640237475
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 119
 --- !u!114 &-889585982557732042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1751,6 +2665,134 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1333
+--- !u!114 &-830885313221090985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/hunters_mark/apply
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/hunters_mark/apply
+  Guid:
+    Data1: 1316032193
+    Data2: 1143691988
+    Data3: 1194443190
+    Data4: 1318795755
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 54
+--- !u!114 &-667892662261002108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Music.bank
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorBankRef
+  Path: FMOD Project/Build/Desktop/Music.bank
+  Name: Music
+  StudioPath: bank:/Music
+  lastModified: 639208554095466435
+  FileSizes:
+  - Name: Desktop
+    Value: 7214592
+  Exists: 1
+--- !u!114 &-591425042282985506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Map/node_appear
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Map/node_appear
+  Guid:
+    Data1: 719052459
+    Data2: 1341013558
+    Data3: -1345054837
+    Data4: 1824289261
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 353
+--- !u!114 &-571331711493000128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/relic_unequip
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/relic_unequip
+  Guid:
+    Data1: -251657822
+    Data2: 1183913106
+    Data3: -2042703734
+    Data4: 744915835
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1323
+--- !u!114 &-255347842350787776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/hover
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/hover
+  Guid:
+    Data1: -216603841
+    Data2: 1319428791
+    Data3: 290513819
+    Data4: -297562348
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 224
 --- !u!114 &-174414357681638303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1794,6 +2836,7 @@ MonoBehaviour:
   - {fileID: 1228046200767346312}
   - {fileID: -4831699046767528659}
   - {fileID: 4007280467644039783}
+  - {fileID: -667892662261002108}
   EditorEvents:
   - {fileID: 391982711526189921}
   - {fileID: -1524404124396324240}
@@ -1825,28 +2868,345 @@ MonoBehaviour:
   - {fileID: 2940656521922047434}
   - {fileID: -8289661655682921440}
   - {fileID: 354454005753776891}
-  EditorParameters: []
+  - {fileID: 6033049689987223497}
+  - {fileID: 6548034773290444799}
+  - {fileID: 8162109880255334820}
+  - {fileID: 6928495461638398248}
+  - {fileID: 3633716784186307700}
+  - {fileID: 1570457168083210402}
+  - {fileID: 7895740238976141085}
+  - {fileID: 2070627111212446817}
+  - {fileID: 7571369583001019193}
+  - {fileID: -1219268960557667290}
+  - {fileID: -255347842350787776}
+  - {fileID: 8593102848446178569}
+  - {fileID: 1292438393705147568}
+  - {fileID: 5217305753743729994}
+  - {fileID: -6865970312059291636}
+  - {fileID: -7765558059162602779}
+  - {fileID: 228451841299943111}
+  - {fileID: 669807780639559525}
+  - {fileID: 6087455302451497840}
+  - {fileID: 4202807623462999262}
+  - {fileID: -2695054326946449842}
+  - {fileID: 2371430792363313834}
+  - {fileID: -5825780893816474241}
+  - {fileID: -8651751642120444859}
+  - {fileID: 8360968745737415256}
+  - {fileID: -9103924107838118038}
+  - {fileID: -2010745296822555412}
+  - {fileID: -3816872729841563398}
+  - {fileID: 8718497281206649437}
+  - {fileID: -571331711493000128}
+  - {fileID: 8624642503669209453}
+  - {fileID: -5445399439525182001}
+  - {fileID: 2399308257856781917}
+  - {fileID: -6181820647917939392}
+  - {fileID: -5768459416060571845}
+  - {fileID: 2571533544403959827}
+  - {fileID: 2173871685435473730}
+  - {fileID: 8343267468749758920}
+  - {fileID: 4889728298371639876}
+  - {fileID: -2970966966353011534}
+  - {fileID: 1871203886014005996}
+  - {fileID: -4975939441748687044}
+  - {fileID: 1835745970625010844}
+  - {fileID: 2494145090024630136}
+  - {fileID: -5860185796863525588}
+  - {fileID: -5707933977291358316}
+  - {fileID: 8327077614440771848}
+  - {fileID: -6732893968561704508}
+  - {fileID: -4616760392395793733}
+  - {fileID: -4017888992571445412}
+  - {fileID: -3154418551608205546}
+  - {fileID: 6610265508711528266}
+  - {fileID: -1904045506141267867}
+  - {fileID: -3605693229842602988}
+  - {fileID: -6166626588403729178}
+  - {fileID: -1163814494274341726}
+  - {fileID: 5821764392953122575}
+  - {fileID: 701191218326284978}
+  - {fileID: 4197862385142453118}
+  - {fileID: -1129645051736816013}
+  - {fileID: 8311355291797023373}
+  - {fileID: -5341509700232411679}
+  - {fileID: -2158304884569536327}
+  - {fileID: 4977901870361931214}
+  - {fileID: -4129888414367552571}
+  - {fileID: 5013787445869877938}
+  - {fileID: -7779195430310376715}
+  - {fileID: 7680198712374037828}
+  - {fileID: 6887045661087343710}
+  - {fileID: -6026110636998371780}
+  - {fileID: 2714012693927272605}
+  - {fileID: -1010837871140339823}
+  - {fileID: -7751696299225847082}
+  - {fileID: -8751422060515612263}
+  - {fileID: 1554830637272592872}
+  - {fileID: 7939609999907435347}
+  - {fileID: 8341436470612871789}
+  - {fileID: 7653169032164474982}
+  - {fileID: -830885313221090985}
+  - {fileID: 5577565656113009468}
+  - {fileID: -591425042282985506}
+  EditorParameters:
+  - {fileID: 6831425531597348091}
   MasterBanks:
   - {fileID: -4831699046767528659}
   StringsBanks:
   - {fileID: 1228046200767346312}
   cacheVersion: 131859
-  cacheTime: 639195707375906364
+  cacheTime: 639208554102862346
   SerializableEventsDict:
-  - key: event:/SFX/UI/deploy_place
+  - key: event:/SFX/Effects/vortex_entry/apply
     index: 0
-  - key: event:/SFX/Combat/hit
+  - key: event:/SFX/Combat/apply
     index: 1
-  - key: event:/SFX/Effects/frozen/apply
+  - key: event:/SFX/Effects/frozen/expire
     index: 2
-  - key: event:/SFX/Combat/heal
-    index: 3
   - key: event:/SFX/Relics/whirl_monk/cast
+    index: 3
+  - key: event:/SFX/Combat/hit
     index: 4
-  - key: event:/SFX/Combat/evade
+  - key: event:/SFX/Effects/frozen/apply
     index: 5
-  - key: event:/SFX/Combat/attack
+  - key: event:/Stingers/defeat
     index: 6
+  - key: event:/Stingers/victory
+    index: 7
+  - key: event:/SFX/Relics/cryomancer/cast
+    index: 8
+  - key: event:/SFX/UI/ui
+    index: 9
+  - key: event:/SFX/Combat/shield
+    index: 10
+  - key: event:/SFX/Combat/fire
+    index: 11
+  - key: event:/Stingers/stinger
+    index: 12
+  - key: event:/SFX/Relics/assassin/cast
+    index: 13
+  - key: event:/SFX/UI/deploy_place
+    index: 14
+  - key: event:/SFX/UI/pause
+    index: 15
+  - key: event:/SFX/Combat/cast
+    index: 16
+  - key: event:/Stingers/battle_start
+    index: 17
+  - key: event:/SFX/Combat/tick
+    index: 18
+  - key: event:/SFX/Combat/heal
+    index: 19
+  - key: event:/SFX/Combat/expire
+    index: 20
+  - key: event:/SFX/Feel/heavy_hit
+    index: 21
+  - key: event:/SFX/Feel/kill
+    index: 22
+  - key: event:/SFX/UI/resume
+    index: 23
+  - key: event:/SFX/Relics/light_shepherd/cast
+    index: 24
+  - key: event:/SFX/Combat/death
+    index: 25
+  - key: event:/SFX/Combat/attack
+    index: 26
+  - key: event:/SFX/Feel/death_shatter
+    index: 27
+  - key: event:/SFX/Relics/cryomancer/attack
+    index: 28
+  - key: event:/SFX/Combat/evade
+    index: 29
+  - key: event:/Music/battle
+    index: 30
+  - key: event:/SFX/Ambient/arena
+    index: 31
+  - key: event:/Music/map
+    index: 32
+  - key: event:/Music/menu
+    index: 33
+  - key: event:/SFX/Ambient/loop
+    index: 34
+  - key: event:/Stingers/run_victory
+    index: 35
+  - key: event:/SFX/UI/screen_open
+    index: 36
+  - key: event:/SFX/Flow/camp_denied
+    index: 37
+  - key: event:/SFX/Relics/flame_swordsman/attack
+    index: 38
+  - key: event:/SFX/UI/scroll
+    index: 39
+  - key: event:/SFX/UI/hover
+    index: 40
+  - key: event:/SFX/UI/toggle
+    index: 41
+  - key: event:/SFX/UI/back
+    index: 42
+  - key: event:/SFX/UI/drag_reject
+    index: 43
+  - key: 
+    index: 44
+  - key: event:/SFX/Map/node_hover
+    index: 45
+  - key: event:/SFX/Flow/menu_show
+    index: 46
+  - key: event:/SFX/Flow/fade_in
+    index: 47
+  - key: event:/SFX/Feel/finisher
+    index: 48
+  - key: event:/SFX/UI/click
+    index: 49
+  - key: event:/SFX/Map/open
+    index: 50
+  - key: event:/SFX/Flow/reward_card_select
+    index: 51
+  - key: event:/SFX/UI/speed
+    index: 52
+  - key: event:/SFX/UI/tab
+    index: 53
+  - key: event:/SFX/UI/modal_open
+    index: 54
+  - key: event:/SFX/Effects/light_mend/tick
+    index: 55
+  - key: event:/SFX/Effects/burn/apply
+    index: 56
+  - key: event:/SFX/Combat/attack_interrupted
+    index: 57
+  - key: event:/SFX/Relics/druid/cast
+    index: 58
+  - key: event:/SFX/UI/relic_unequip
+    index: 59
+  - key: event:/SFX/Effects/resolute_strike_stun/apply
+    index: 60
+  - key: event:/SFX/Effects/spore_cloud/apply
+    index: 61
+  - key: event:/SFX/Effects/ice_chains_stun/apply
+    index: 62
+  - key: event:/SFX/Relics/treant/attack
+    index: 63
+  - key: event:/SFX/UI/relic_select
+    index: 64
+  - key: event:/SFX/UI/tooltip_show
+    index: 65
+  - key: event:/SFX/Combat/unit_spawn
+    index: 66
+  - key: event:/SFX/UI/slider
+    index: 67
+  - key: event:/SFX/Effects/bulwark_shield/apply
+    index: 68
+  - key: event:/SFX/Flow/gold_gain
+    index: 69
+  - key: event:/SFX/UI/deploy_reject
+    index: 70
+  - key: event:/SFX/Flow/menu_hide
+    index: 71
+  - key: event:/SFX/UI/deploy_grab
+    index: 72
+  - key: event:/Stingers/run_start
+    index: 73
+  - key: event:/SFX/Map/node_select
+    index: 74
+  - key: event:/SFX/Effects/stealth_buff/apply
+    index: 75
+  - key: event:/SFX/UI/drag_grab
+    index: 76
+  - key: event:/SFX/UI/relic_equip
+    index: 77
+  - key: event:/SFX/Map/close
+    index: 78
+  - key: event:/SFX/Flow/reward_skip
+    index: 79
+  - key: event:/SFX/Map/travel_start
+    index: 80
+  - key: event:/Stingers/title_card
+    index: 81
+  - key: event:/Stingers/run_defeat
+    index: 82
+  - key: event:/SFX/UI/screen_close
+    index: 83
+  - key: event:/Stingers/reward_open
+    index: 84
+  - key: event:/SFX/Flow/shop_reroll
+    index: 85
+  - key: event:/SFX/Effects/burn/tick
+    index: 86
+  - key: event:/SFX/UI/drag_drop
+    index: 87
+  - key: event:/SFX/Relics/light_shepherd/fire
+    index: 88
+  - key: event:/SFX/Effects/stealth/apply
+    index: 89
+  - key: event:/SFX/Enemies/training_dummy/hit
+    index: 90
+  - key: event:/SFX/UI/tooltip_detail
+    index: 91
+  - key: event:/Stingers/chest_open
+    index: 92
+  - key: event:/SFX/Effects/overgrowth/apply
+    index: 93
+  - key: event:/SFX/Flow/shop_denied
+    index: 94
+  - key: event:/SFX/UI/disabled
+    index: 95
+  - key: event:/SFX/Flow/shop_buy
+    index: 96
+  - key: event:/SFX/Effects/ignition/apply
+    index: 97
+  - key: event:/SFX/Relics/ranger/fire
+    index: 98
+  - key: event:/SFX/Relics/defender/shield
+    index: 99
+  - key: event:/SFX/Flow/shop_sell
+    index: 100
+  - key: event:/SFX/Map/travel_arrive
+    index: 101
+  - key: event:/SFX/Flow/event_choice
+    index: 102
+  - key: event:/SFX/Flow/camp_action
+    index: 103
+  - key: event:/Stingers/reward_take
+    index: 104
+  - key: event:/SFX/Flow/fade_out
+    index: 105
+  - key: event:/SFX/Effects/dodge/apply
+    index: 106
+  - key: event:/SFX/Map/node_locked
+    index: 107
+  - key: event:/SFX/Effects/hunters_mark/apply
+    index: 108
+  - key: event:/SFX/Relics/iron_spearman/attack
+    index: 109
+  - key: event:/SFX/Map/node_appear
+    index: 110
+--- !u!114 &228451841299943111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/menu_show
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/menu_show
+  Guid:
+    Data1: 686354499
+    Data2: 1291751880
+    Data3: -2116773463
+    Data4: 1968614358
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1378
 --- !u!114 &354454005753776891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1861,19 +3221,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Combat/evade
   Guid:
-    Data1: -10513932
-    Data2: 1269990893
-    Data3: -1787448423
-    Data4: -524590815
+    Data1: -326315392
+    Data2: 1074729639
+    Data3: -614576987
+    Data4: 709234093
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 1333
+  Length: 1303
 --- !u!114 &391982711526189921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1888,19 +3248,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Effects/vortex_entry/apply
   Guid:
-    Data1: -1896467171
-    Data2: 1094664305
-    Data3: 224609669
-    Data4: -246931848
+    Data1: 852207570
+    Data2: 1181634375
+    Data3: 1246291339
+    Data4: 1207466791
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 4000
+  Length: 3996
 --- !u!114 &589919792074147168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1928,6 +3288,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 4000
+--- !u!114 &669807780639559525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/fade_in
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/fade_in
+  Guid:
+    Data1: 455318740
+    Data2: 1140434564
+    Data3: -1720689250
+    Data4: 617879558
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 211
+--- !u!114 &701191218326284978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/drag_drop
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/drag_drop
+  Guid:
+    Data1: 585922099
+    Data2: 1084001171
+    Data3: -1717086036
+    Data4: -108984657
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 188
 --- !u!114 &718130476461830569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1996,19 +3410,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Combat/expire
   Guid:
-    Data1: -512611898
-    Data2: 1114184206
-    Data3: 572959919
-    Data4: -750282363
+    Data1: 1786717592
+    Data2: 1252965489
+    Data3: -1998747764
+    Data4: -548798581
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 3333
+  Length: 540
 --- !u!114 &913932109464879896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2131,19 +3545,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Combat/cast
   Guid:
-    Data1: 1714826671
-    Data2: 1193537249
-    Data3: 249225134
-    Data4: -1808563817
+    Data1: 93656664
+    Data2: 1338186844
+    Data3: -491545188
+    Data4: -1899244253
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 5333
+  Length: 3996
 --- !u!114 &1228046200767346312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2159,11 +3573,92 @@ MonoBehaviour:
   Path: FMOD Project/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639195707371258820
+  lastModified: 639208554057852323
   FileSizes:
   - Name: Desktop
-    Value: 2140
+    Value: 6138
   Exists: 1
+--- !u!114 &1292438393705147568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/back
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/back
+  Guid:
+    Data1: -488495125
+    Data2: 1172672540
+    Data3: -964625479
+    Data4: 1173329178
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 91
+--- !u!114 &1554830637272592872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Stingers/reward_take
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Stingers/reward_take
+  Guid:
+    Data1: -757155164
+    Data2: 1309198297
+    Data3: 1995063703
+    Data4: 1693370327
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 488
+--- !u!114 &1570457168083210402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Stingers/run_victory
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Stingers/run_victory
+  Guid:
+    Data1: 20076031
+    Data2: 1165509897
+    Data3: -1946679907
+    Data4: 1277977865
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 908
 --- !u!114 &1750550816350834595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2191,6 +3686,168 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 5333
+--- !u!114 &1835745970625010844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/deploy_grab
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/deploy_grab
+  Guid:
+    Data1: -1237141454
+    Data2: 1249656819
+    Data3: 1082965391
+    Data4: -314401124
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 264
+--- !u!114 &1871203886014005996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/deploy_reject
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/deploy_reject
+  Guid:
+    Data1: 839851959
+    Data2: 1214709787
+    Data3: 2098229433
+    Data4: -664168467
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1330
+--- !u!114 &2070627111212446817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/camp_denied
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/camp_denied
+  Guid:
+    Data1: -1343299554
+    Data2: 1332940902
+    Data3: 691543204
+    Data4: 844860512
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 192
+--- !u!114 &2173871685435473730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Combat/unit_spawn
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Combat/unit_spawn
+  Guid:
+    Data1: -1195552157
+    Data2: 1102583536
+    Data3: 806380721
+    Data4: 1141905060
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 161
+--- !u!114 &2371430792363313834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/reward_card_select
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/reward_card_select
+  Guid:
+    Data1: 850444800
+    Data2: 1249119539
+    Data3: -301738581
+    Data4: 1332923956
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 59
+--- !u!114 &2399308257856781917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/ice_chains_stun/apply
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/ice_chains_stun/apply
+  Guid:
+    Data1: -1148158508
+    Data2: 1202873520
+    Data3: 108476055
+    Data4: 1191036506
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 616
 --- !u!114 &2427088623521645834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2218,6 +3875,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1333
+--- !u!114 &2494145090024630136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Stingers/run_start
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Stingers/run_start
+  Guid:
+    Data1: -1191260194
+    Data2: 1168194485
+    Data3: 1828607399
+    Data4: 195690853
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 908
+--- !u!114 &2571533544403959827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/tooltip_show
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/tooltip_show
+  Guid:
+    Data1: -1219939208
+    Data2: 1317295116
+    Data3: -1182771014
+    Data4: -778399580
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 693
 --- !u!114 &2601880388550493804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2238,6 +3949,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1074
   Exists: 1
+--- !u!114 &2714012693927272605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/shop_sell
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/shop_sell
+  Guid:
+    Data1: 1893595192
+    Data2: 1279078041
+    Data3: 2115218074
+    Data4: 1210869126
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 285
 --- !u!114 &2752983850133995535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2306,19 +4044,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Feel/death_shatter
   Guid:
-    Data1: 1512866795
-    Data2: 1326806712
-    Data3: -310490209
-    Data4: -1298770263
+    Data1: -1774275791
+    Data2: 1248032366
+    Data3: -250491213
+    Data4: 528945142
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 429
+  Length: 428
 --- !u!114 &3058215131658226205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2387,19 +4125,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Combat/death
   Guid:
-    Data1: 2014464234
-    Data2: 1144815536
-    Data3: 138635690
-    Data4: 265448663
+    Data1: 714694539
+    Data2: 1166234739
+    Data3: 1867860900
+    Data4: -1330411065
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 2666
+  Length: 2664
+--- !u!114 &3633716784186307700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Ambient/loop
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Ambient/loop
+  Guid:
+    Data1: 482171801
+    Data2: 1133925198
+    Data3: 2067932559
+    Data4: -345268969
+  Banks:
+  - {fileID: -667892662261002108}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 94400
 --- !u!114 &4007280467644039783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2415,10 +4180,10 @@ MonoBehaviour:
   Path: FMOD Project/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639195707375906364
+  lastModified: 639208554102862346
   FileSizes:
   - Name: Desktop
-    Value: 711296
+    Value: 1168768
   Exists: 1
 --- !u!114 &4152994361824831193
 MonoBehaviour:
@@ -2447,6 +4212,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 5333
+--- !u!114 &4197862385142453118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Relics/light_shepherd/fire
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Relics/light_shepherd/fire
+  Guid:
+    Data1: 78254736
+    Data2: 1322765933
+    Data3: -1911807329
+    Data4: 1388424276
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 626
+--- !u!114 &4202807623462999262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/click
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/click
+  Guid:
+    Data1: -1324131735
+    Data2: 1123476296
+    Data3: 185697196
+    Data4: -1896434777
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 90
 --- !u!114 &4331787313730826186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2461,19 +4280,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Combat/tick
   Guid:
-    Data1: 1917791682
-    Data2: 1293250782
-    Data3: 1559952281
-    Data4: 1490490285
+    Data1: 1823103617
+    Data2: 1126907702
+    Data3: -972646526
+    Data4: 1653572320
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 2000
+  Length: 161
 --- !u!114 &4333385483340802317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2521,6 +4340,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1333
+--- !u!114 &4889728298371639876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/bulwark_shield/apply
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/bulwark_shield/apply
+  Guid:
+    Data1: 1792276232
+    Data2: 1141838081
+    Data3: -209674097
+    Data4: -1709947182
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 616
+--- !u!114 &4977901870361931214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/overgrowth/apply
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/overgrowth/apply
+  Guid:
+    Data1: -425678616
+    Data2: 1226813449
+    Data3: 1701568164
+    Data4: -1578822345
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3996
 --- !u!114 &4983857418654885834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2548,6 +4421,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 6666
+--- !u!114 &5013787445869877938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/disabled
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/disabled
+  Guid:
+    Data1: -249462886
+    Data2: 1076407540
+    Data3: 927425712
+    Data4: -677924033
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 476
 --- !u!114 &5097339235148496476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2568,6 +4468,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1037536
   Exists: 1
+--- !u!114 &5217305753743729994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/drag_reject
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/drag_reject
+  Guid:
+    Data1: 533254235
+    Data2: 1289929479
+    Data3: 1929396644
+    Data4: 1373431760
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 520
 --- !u!114 &5501037471516856539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2582,19 +4509,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Feel/heavy_hit
   Guid:
-    Data1: 546738123
-    Data2: 1250661824
-    Data3: 436324284
-    Data4: -547360239
+    Data1: 1644930757
+    Data2: 1248963891
+    Data3: -1201977163
+    Data4: -2074133431
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 649
+  Length: 647
+--- !u!114 &5577565656113009468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Relics/iron_spearman/attack
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Relics/iron_spearman/attack
+  Guid:
+    Data1: 1932156251
+    Data2: 1166725960
+    Data3: -2000795766
+    Data4: -256360988
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 517
 --- !u!114 &5806111713444339013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2622,6 +4576,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1333
+--- !u!114 &5821764392953122575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/burn/tick
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/burn/tick
+  Guid:
+    Data1: 212613399
+    Data2: 1209895278
+    Data3: -937627264
+    Data4: -917097503
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 161
+--- !u!114 &6033049689987223497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/battle
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Music/battle
+  Guid:
+    Data1: 1066665529
+    Data2: 1280015820
+    Data3: 877971610
+    Data4: -1060123247
+  Banks:
+  - {fileID: -667892662261002108}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 95900
 --- !u!114 &6036323224263540222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2649,6 +4657,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1333
+--- !u!114 &6087455302451497840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Feel/finisher
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Feel/finisher
+  Guid:
+    Data1: -641675326
+    Data2: 1241955535
+    Data3: -2061093986
+    Data4: -1305300008
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 697
 --- !u!114 &6157373817509952235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2730,6 +4765,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1740
+--- !u!114 &6548034773290444799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Ambient/arena
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Ambient/arena
+  Guid:
+    Data1: -39121828
+    Data2: 1223313715
+    Data3: -931172969
+    Data4: -2108174693
+  Banks:
+  - {fileID: -667892662261002108}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 94400
 --- !u!114 &6591593639771718664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2757,6 +4819,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1333
+--- !u!114 &6610265508711528266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Stingers/title_card
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Stingers/title_card
+  Guid:
+    Data1: -1725143860
+    Data2: 1244312833
+    Data3: 1560694176
+    Data4: 1845721831
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 558
 --- !u!114 &6731674118479104725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2784,6 +4873,57 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2666
+--- !u!114 &6831425531597348091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/TimeScale
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: TimeScale
+  StudioPath: parameter:/TimeScale
+  Min: 0.05
+  Max: 3
+  Default: 1
+  ID:
+    data1: 2311220345
+    data2: 1800716980
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
+--- !u!114 &6887045661087343710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Relics/ranger/fire
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Relics/ranger/fire
+  Guid:
+    Data1: -9176754
+    Data2: 1219149616
+    Data3: 1141318077
+    Data4: -914353523
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 626
 --- !u!114 &6892610224732754069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2811,6 +4951,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1333
+--- !u!114 &6928495461638398248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/menu
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Music/menu
+  Guid:
+    Data1: -1324499974
+    Data2: 1221099882
+    Data3: -498112861
+    Data4: 1333702333
+  Banks:
+  - {fileID: -667892662261002108}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 191700
 --- !u!114 &7349007755613652971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2825,10 +4992,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/Stingers/victory
   Guid:
-    Data1: 1383751517
-    Data2: 1214175122
-    Data3: -904772215
-    Data4: -572749251
+    Data1: 1271110689
+    Data2: 1191879413
+    Data3: -921505879
+    Data4: -753080758
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
@@ -2837,7 +5004,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 1333
+  Length: 912
 --- !u!114 &7443862723824178431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2892,6 +5059,141 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1333
+--- !u!114 &7571369583001019193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Relics/flame_swordsman/attack
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Relics/flame_swordsman/attack
+  Guid:
+    Data1: -1502039939
+    Data2: 1213005789
+    Data3: -24369775
+    Data4: -1355333449
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 517
+--- !u!114 &7653169032164474982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Map/node_locked
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Map/node_locked
+  Guid:
+    Data1: -1154495586
+    Data2: 1196650878
+    Data3: 110346643
+    Data4: 441799215
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1330
+--- !u!114 &7680198712374037828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/ignition/apply
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/ignition/apply
+  Guid:
+    Data1: 29522162
+    Data2: 1250483044
+    Data3: -1218597484
+    Data4: 1860422215
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3996
+--- !u!114 &7895740238976141085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/screen_open
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/screen_open
+  Guid:
+    Data1: -241619202
+    Data2: 1147748146
+    Data3: -1623965027
+    Data4: 1476974731
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 132
+--- !u!114 &7939609999907435347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flow/fade_out
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Flow/fade_out
+  Guid:
+    Data1: -96772965
+    Data2: 1232759789
+    Data3: 551096985
+    Data4: -83718889
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 200
 --- !u!114 &7972089771551533631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2919,6 +5221,168 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 3333
+--- !u!114 &8162109880255334820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/map
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Music/map
+  Guid:
+    Data1: 639760529
+    Data2: 1201380509
+    Data3: -923460213
+    Data4: 1257946626
+  Banks:
+  - {fileID: -667892662261002108}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 97500
+--- !u!114 &8311355291797023373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/training_dummy/hit
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Enemies/training_dummy/hit
+  Guid:
+    Data1: 57436822
+    Data2: 1107925811
+    Data3: 834101945
+    Data4: -1913598216
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 329
+--- !u!114 &8327077614440771848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/drag_grab
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/drag_grab
+  Guid:
+    Data1: -180086202
+    Data2: 1311447968
+    Data3: -336678477
+    Data4: 1045668091
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 389
+--- !u!114 &8341436470612871789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/dodge/apply
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/dodge/apply
+  Guid:
+    Data1: -1855393759
+    Data2: 1297760097
+    Data3: 251017642
+    Data4: -1420851514
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3996
+--- !u!114 &8343267468749758920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/slider
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/slider
+  Guid:
+    Data1: 1390401798
+    Data2: 1341472598
+    Data3: -2044829280
+    Data4: -327925506
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 54
+--- !u!114 &8360968745737415256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/modal_open
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/modal_open
+  Guid:
+    Data1: 1759965634
+    Data2: 1141434284
+    Data3: -1430410085
+    Data4: 1751813771
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 379
 --- !u!114 &8371839613952343350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2939,6 +5403,87 @@ MonoBehaviour:
   - Name: Desktop
     Value: 2140
   Exists: 1
+--- !u!114 &8593102848446178569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/toggle
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/UI/toggle
+  Guid:
+    Data1: 1238264644
+    Data2: 1098430459
+    Data3: 29905855
+    Data4: -2019893663
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 139
+--- !u!114 &8624642503669209453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Effects/resolute_strike_stun/apply
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Effects/resolute_strike_stun/apply
+  Guid:
+    Data1: -1753618290
+    Data2: 1216898408
+    Data3: 94474143
+    Data4: -1830087392
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 616
+--- !u!114 &8718497281206649437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Relics/druid/cast
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/SFX/Relics/druid/cast
+  Guid:
+    Data1: -956439558
+    Data2: 1208010628
+    Data3: -342850918
+    Data4: 1408305432
+  Banks:
+  - {fileID: 4007280467644039783}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3996
 --- !u!114 &8768795292896540621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2980,19 +5525,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/SFX/Relics/cryomancer/cast
   Guid:
-    Data1: 68215401
-    Data2: 1243242895
-    Data3: -1302482795
-    Data4: 1609720450
+    Data1: 1790015744
+    Data2: 1114847004
+    Data3: -455368789
+    Data4: 1820658020
   Banks:
   - {fileID: 4007280467644039783}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 5333
+  Length: 5332
 --- !u!114 &8836177223610951962
 MonoBehaviour:
   m_ObjectHideFlags: 0

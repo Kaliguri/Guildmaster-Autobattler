@@ -13,60 +13,62 @@ MonoBehaviour:
   m_Name: Ranger
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.ranger
-  _damageSchool: 0
-  _affinity: 0
+  _combatClass: 3
+  _autoAttackDamageType: 3
   _creatureType: 0
   _attackType: 1
   _resourceType: 1
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _visual: {fileID: 11400000, guid: 92590d2f03f8004408b857efbb832317, type: 2}
+  _viewPrefab: {fileID: 5267563404213066422, guid: fbf7c66a68241fe4185ebbad80d3999b, type: 3}
+  _bodyShade: 0
+  _vfxTone: 3
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
   _canAttackWhileMoving: 1
   _movingAttackSpeedPenaltyPct: 0.6
   _attackRecoverySeconds: 0
-  _resourceOnHit: 15
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
   _stats:
-  - Stat: 0
-    Op: 3
-    Value: 1300
   - Stat: 7
     Op: 3
     Value: 140
   - Stat: 8
     Op: 3
-    Value: 1.1
+    Value: 0.83
   - Stat: 9
     Op: 3
-    Value: 9
-  - Stat: 20
-    Op: 3
-    Value: 2.9167
+    Value: 8
   - Stat: 18
     Op: 3
-    Value: 12
+    Value: 14
   - Stat: 27
     Op: 3
-    Value: 80
-  - Stat: 28
+    Value: 30
+  - Stat: 3
     Op: 3
-    Value: 0
+    Value: 6
+  - Stat: 4
+    Op: 3
+    Value: 4
   _grantedEffects: []
   _abilities:
   - _id: hunters_mark
     _effects:
     - {fileID: 11400000, guid: 3298bf235ea63504f9280191cd46a500, type: 2}
-    _baseCooldown: 6
-    _resourceCost: 53
+    _baseCooldown: 0
+    _resourceCost: 30
     _targetMode: 1
     _damageMultiplier: 0
-    _schoolOverride: 0
-    _affinityOverride: 0
+    _damageType: 0
     _areaShape: 0
     _areaRadius: 0
     _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
     _castCondition: 0
     _castConditionCount: 1
     _castConditionRadius: 0
@@ -76,7 +78,6 @@ MonoBehaviour:
     _consumesTriggerTag: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0
@@ -97,7 +98,10 @@ MonoBehaviour:
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: f219333c551996c47a3e68dfd6a8655f, type: 2}
+  - {fileID: 11400000, guid: 9594869665cde9c438c400720bb20b5a, type: 2}
+  - {fileID: 11400000, guid: afea0a30941b69242b794bb19baee24c, type: 2}
   _tags:
   - ranger
   - ranged

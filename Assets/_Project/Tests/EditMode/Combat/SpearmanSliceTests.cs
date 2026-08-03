@@ -1,7 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
+using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -201,6 +202,137 @@ namespace Guildmaster.Tests.EditMode.Combat
                 system.Tick(units, ctx, SimConstants.TickDelta);
         }
 
+        // ===================== «Стальной вихрь» целиком (M2) =====================
+
+        [Test]
+        public void SteelWhirl_PushesEveryoneOutwardFromTheCentre()
+        {
+            RelicData spear = TestRelic.Make();
+            var spearman = MakeUnit(0, team: 0, pos: Vector2.zero, relic: spear, aad: 10f, maxResource: 45f);
+            spearman.CurrentResource = 45f;
+
+            var east = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f));
+            var west = MakeUnit(2, team: 1, pos: new Vector2(-1.5f, 0f));
+            spearman.CurrentTarget = east;
+
+            var whirl = TestAbility.Make(
+                cost: 45f, mode: AbilityTargetMode.Self, damageMultiplier: 3f,
+                areaShape: AreaShape.Circle, areaRadius: 2.5f,
+                displaces: true, displaceDistance: 4f);
+            spearman.Abilities.Add(new AbilityRuntime(whirl));
+
+            var units = new List<RuntimeUnit> { spearman, east, west };
+            var ctx   = new SpatialStubContext(units);
+
+            new AbilitySystem().TryCast(spearman, 0, units, ctx);
+
+            Assert.AreEqual(2, ctx.Displaces.Count, "Толчок достаётся каждому задетому, а не одной цели");
+
+            // Направление — строго от центра вихря, у каждого своё.
+            DisplaceRequest toEast = ctx.Displaces.Find(d => ReferenceEquals(d.Target, east));
+            DisplaceRequest toWest = ctx.Displaces.Find(d => ReferenceEquals(d.Target, west));
+            Assert.Greater(toEast.Direction.x, 0.9f, "Стоящего справа несёт вправо");
+            Assert.Less(toWest.Direction.x, -0.9f, "Стоящего слева — влево");
+            Assert.AreEqual(4f, toEast.Distance, 1e-4f);
+
+            // Урон вихрь нанёс сам: «ядро» на линии полёта было бы вторым ударом той же способности.
+            Assert.AreEqual(0f, toEast.Damage, 1e-4f, "Толчок вихря — без урона-ядра");
+        }
+
+        [Test]
+        public void SteelWhirl_DoesNotDashTheCasterLikeTheMonk()
+        {
+            // Один и тот же флаг `_displaces` означает РАЗНОЕ у круга и у одиночной цели. Если круг уйдёт
+            // в монашью ветку, копейщик будет рывком прыгать к врагу вместо удара вокруг себя.
+            RelicData spear = TestRelic.Make();
+            var spearman = MakeUnit(0, team: 0, pos: Vector2.zero, relic: spear, aad: 10f, maxResource: 45f);
+            spearman.CurrentResource = 45f;
+            var enemy = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f));
+            spearman.CurrentTarget = enemy;
+
+            var whirl = TestAbility.Make(
+                cost: 45f, mode: AbilityTargetMode.Self, damageMultiplier: 3f,
+                areaShape: AreaShape.Circle, areaRadius: 2.5f, displaces: true);
+            spearman.Abilities.Add(new AbilityRuntime(whirl));
+
+            var units = new List<RuntimeUnit> { spearman, enemy };
+            var ctx   = new SpatialStubContext(units);
+
+            new AbilitySystem().TryCast(spearman, 0, units, ctx);
+
+            Assert.AreEqual(1, ctx.Damage.Count, "Круг ударил врага");
+            for (int i = 0; i < ctx.Displaces.Count; i++)
+                Assert.AreNotSame(spearman, ctx.Displaces[i].Target, "Кастующего вихрь не двигает");
+        }
+
+        [Test]
+        public void SteelWhirl_ShieldGrowsFromDamageActuallyDealt()
+        {
+            // Щит вихря — 20% от НАНЕСЁННОГО: считать долю от заявленного урона значило бы платить
+            // щитом за урон, который срезала броня или который ушёл в уже мёртвую цель.
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+
+            var spearman = TestUnit.Make();
+            EffectData whirlShield = TestEffect.Make(
+                baseDuration: 3f, polarity: EffectPolarity.Buff,
+                tags: EffectTag.Buff | EffectTag.Shield, stacking: StackRule.Refresh,
+                components: new DamageToShieldComponent().With("_fraction", 0.2f));
+
+            effects.Apply(spearman, whirlShield, spearman, ctx);
+            EffectSystem.CommitPending(spearman);
+
+            // Вихрь нанёс 300 урона суммарно (три цели по 100) — щит обязан вырасти на 60.
+            for (int i = 0; i < 3; i++)
+            {
+                var hit = new CombatEventData(
+                    CombatEvent.DamageDealt, spearman, spearman, 100f, EffectTag.None,
+                    DamageSourceKind.Ability);
+                effects.Dispatch(spearman, in hit, ctx);
+            }
+
+            Assert.AreEqual(60f, spearman.CurrentShield, 1e-3f, "20% от 300 нанесённого урона");
+        }
+
+        [Test]
+        public void SteelWhirl_SlowFadesToZeroInsteadOfSnapping()
+        {
+            // Замедление 80%, «медленно проходящее за секунду до нуля» — иначе цель отпускает щелчком,
+            // и рывок из вихря не читается.
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+            var victim = MakeUnit(1, team: 1, pos: Vector2.zero);
+            victim.Stats.AddModifiersFrom("move", new[]
+            {
+                new StatModifier(StatType.MoveSpeed, ModifierOp.Flat, 10f),
+            });
+
+            EffectData slow = TestEffect.Make(
+                baseDuration: 1f, polarity: EffectPolarity.Debuff, tags: EffectTag.Debuff,
+                stacking: StackRule.Refresh,
+                components: new DecayingStatModifierComponent().With("_modifiers", new[]
+                {
+                    new StatModifier(StatType.MoveSpeed, ModifierOp.PercentMult, -0.8f),
+                }));
+
+            effects.Apply(victim, slow, victim, ctx);
+            EffectSystem.CommitPending(victim);
+
+            float atStart = victim.Stats.Get(StatType.MoveSpeed);
+            Assert.AreEqual(2f, atStart, 0.2f, "В первый тик замедление в полную силу: 10 → ~2");
+
+            // Полсекунды спустя должно отпустить примерно наполовину.
+            for (int i = 0; i < SimConstants.TickRate / 2; i++)
+            {
+                effects.Tick(new List<RuntimeUnit> { victim }, ctx, SimConstants.TickDelta);
+                EffectSystem.CommitPending(victim);
+            }
+
+            float atHalf = victim.Stats.Get(StatType.MoveSpeed);
+            Assert.Greater(atHalf, atStart, "Замедление отпускает постепенно, а не держится ровным");
+            Assert.Less(atHalf, 10f, "Но ещё не отпустило совсем");
+        }
+
         private static RuntimeUnit MakeUnit(
             int id, int team, Vector2 pos, RelicData relic = null,
             float aad = 10f, float range = 5f, float atkSpeed = 1f,
@@ -224,6 +356,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Position         = pos,
                 PreviousPosition = pos,
                 Unit             = relic,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 
@@ -242,11 +375,36 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) { }
             public void SpawnProjectile(in ProjectileSpawn spawn) { }
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) { }
+            // Срок, посчитанный по ходу боя, заглушке безразличен — она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+                => ApplyEffect(target, def, source);
+
+            // Наложение с величиной (порции кровотечения): заглушке величина безразлична —
+            // она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds,
+                float potency)
+                => ApplyEffect(target, def, source);
             public void ReportAreaHit(in AreaHit hit) { }
             public void Dispel(in DispelRequest req) { }
-            public void Displace(in DisplaceRequest req) { }
+            // Слепота стабу не нужна: промах проверяют свои тесты, здесь удар всегда доходит.
+            public bool ResolveAttackMiss(RuntimeUnit attacker) => false;
+            public void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target) { }
+            // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.
+            public void ReportAbilityCast(RuntimeUnit caster) { }
+            public readonly List<DisplaceRequest> Displaces = new List<DisplaceRequest>();
+            public void Displace(in DisplaceRequest req) => Displaces.Add(req);
+
+            // Призывов в этом срезе нет: стаб честно отвечает «призывать нечем».
+            public RuntimeUnit Summon(UnitData data, int team, Vector2 position, RuntimeUnit summoner) => null;
+
+            // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
+            public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+                => CombatPositioning.TeleportBehind(unit, target);
             public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => AttackStarted++;
             public void NotifyAttackInterrupted(RuntimeUnit unit) => AttackInterrupted++;
+            public void NotifyAttackCompleted(RuntimeUnit unit) { }
+            public void NotifyComboBroken(RuntimeUnit unit) { }
+            public void RemoveEffect(RuntimeUnit unit, EffectData def) { }
 
             public IRngService Rng => null;
             public int CurrentTick => 0;

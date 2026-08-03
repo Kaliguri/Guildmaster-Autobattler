@@ -1,7 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
+using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Simulation;
@@ -26,8 +27,6 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class ShepherdSliceTests
     {
-        private const float ArmorK   = 100f;
-        private const float CellSize = 3f;
 
         // ===================== §9.2 Хил-автоатака =====================
 
@@ -97,6 +96,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var target = MakeUnit(1, team: 0, pos: new Vector2(1f, 0f), maxHp: 1000f, hp: 100f);
 
             sim.Heal(target, amount: 20f, source: source); // 20 (AutoAttackDamage) × 1.5 dealtEff × 1.0 takenEff
+            sim.Tick(SimConstants.TickDelta);              // лечение применяется реестром в конце тика
 
             Assert.AreEqual(130f, target.CurrentHP, 1e-4f, "Вылечено 20 × 1.5 = 30 → 100 + 30");
         }
@@ -110,6 +110,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var target = MakeUnit(1, team: 0, pos: new Vector2(1f, 0f), maxHp: 100f, hp: 90f);
 
             sim.Heal(target, amount: 999f, source: source);
+            sim.Tick(SimConstants.TickDelta);   // лечение применяется реестром в конце тика
 
             Assert.AreEqual(100f, target.CurrentHP, 1e-4f, "Лечение не превышает MaxHP");
         }
@@ -235,10 +236,91 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static CombatSimulation BuildSim(ulong seed) =>
             new CombatSimulation(
-                new XorShiftRng(seed), ArmorK, new SpatialHash(CellSize),
+                new XorShiftRng(seed), CombatTestValues.ArmorK, new SpatialHash(CombatTestValues.CellSize),
                 new BrainSystem(), new AbilitySystem(), new MovementSystem(),
                 new AutoAttackSystem(), new ProjectileSystem(), new DeathSystem(),
                 new EffectSystem(), new RegenSystem());
+
+        // ===================== «Длань жизни» очищает (M7) =====================
+
+        [Test]
+        public void HandOfLife_CleansesBaseDebuffs_ButNotHardControl()
+        {
+            // Вердикт Макса 2026-07-29: сила очистки понижена 2 → 1. Тир 2 (жёсткий контроль) оставлен
+            // специализированному клинсовику, поэтому «Длань» обязана СНЯТЬ базовое и ОСТАВИТЬ стан.
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+
+            var shepherd = TestUnit.Make();
+            var ally     = TestUnit.Make();
+            shepherd.CurrentResource = 30f;
+
+            EffectData basic = TestEffect.Make(
+                baseDuration: 5f, polarity: EffectPolarity.Debuff, tags: EffectTag.Debuff, cleanseTier: 1);
+            EffectData hardControl = TestEffect.Make(
+                baseDuration: 5f, polarity: EffectPolarity.Debuff,
+                tags: EffectTag.Debuff | EffectTag.Control, cleanseTier: 2);
+
+            effects.Apply(ally, basic, shepherd, ctx);
+            effects.Apply(ally, hardControl, shepherd, ctx);
+            EffectSystem.CommitPending(ally);
+            Assert.AreEqual(2, ally.ActiveEffects.Count, "На союзнике оба дебаффа");
+
+            // Дебаффы должны «повисеть»: клинс судит по состоянию НАЧАЛА тика, поэтому снять только что
+            // наложенное он не может — иначе исход зависел бы от места юнита в обходе.
+            ctx.AdvanceTick();
+
+            // Нагрузка «Длани»: мгновенный эффект с диспелом силы 1.
+            EffectData cleanse = TestEffect.Make(
+                baseDuration: 0f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
+                components: new DispelComponent()
+                    .With("_targetPolarity", DispelTargetPolarity.Debuff)
+                    .With("_dispelPower", 1)
+                    .With("_maxCount", 0));
+
+            effects.Apply(ally, cleanse, shepherd, ctx);
+            EffectSystem.CommitPending(ally);
+
+            Assert.AreEqual(1, ally.ActiveEffects.Count, "Базовый дебафф снят, жёсткий контроль остался");
+            Assert.AreSame(hardControl, ally.ActiveEffects[0].Def, "Остаться должен именно тир 2");
+        }
+
+        [Test]
+        public void HandOfLife_CleanseTakesStacksInsteadOfRemoving_WhenTheEffectHasAPrice()
+        {
+            // «Снять эффект» ≠ «снять всё накопленное»: у эффекта с ценой очистки диспел забирает стаки,
+            // а сам эффект живёт дальше. Иначе одна «Длань» стирала бы полностью раскачанное горение.
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+
+            var shepherd = TestUnit.Make();
+            var ally     = TestUnit.Make();
+
+            EffectData stacking = TestEffect.Make(
+                baseDuration: 5f, polarity: EffectPolarity.Debuff, tags: EffectTag.Debuff,
+                stacking: StackRule.Stack, maxStacks: 10, cleanseTier: 1,
+                cleanseStacksFlat: 3, cleanseStacksPct: 0f);
+
+            for (int i = 0; i < 8; i++) effects.Apply(ally, stacking, shepherd, ctx);
+            EffectSystem.CommitPending(ally);
+            Assert.AreEqual(8, ally.ActiveEffects[0].Stacks, "Восемь стаков накоплено");
+
+            // Тот же закон: снимать можно то, что висело до этого тика.
+            ctx.AdvanceTick();
+
+            EffectData cleanse = TestEffect.Make(
+                baseDuration: 0f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
+                components: new DispelComponent()
+                    .With("_targetPolarity", DispelTargetPolarity.Debuff)
+                    .With("_dispelPower", 1)
+                    .With("_maxCount", 0));
+
+            effects.Apply(ally, cleanse, shepherd, ctx);
+            EffectSystem.CommitPending(ally);
+
+            Assert.AreEqual(1, ally.ActiveEffects.Count, "Эффект с ценой очистки не исчезает целиком");
+            Assert.AreEqual(5, ally.ActiveEffects[0].Stacks, "Цена — три стака: 8 → 5");
+        }
 
         /// <summary>Хилер: relic с AutoAttackMode.Heal + Ranged, статы силы лечения/дальности/снаряда.</summary>
         private static RuntimeUnit MakeShepherd(int id, int team, Vector2 pos, float aad, float range)
@@ -281,6 +363,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Position         = pos,
                 PreviousPosition = pos,
                 Unit             = relic,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 
@@ -308,14 +391,41 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void SpawnProjectile(in ProjectileSpawn spawn) => Spawns.Add(spawn);
 
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) { }
+            // Срок, посчитанный по ходу боя, заглушке безразличен — она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+                => ApplyEffect(target, def, source);
+
+            // Наложение с величиной (порции кровотечения): заглушке величина безразлична —
+            // она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds,
+                float potency)
+                => ApplyEffect(target, def, source);
             public void ReportAreaHit(in AreaHit hit) { }
             public void Dispel(in DispelRequest req) { }
+            // Слепота стабу не нужна: промах проверяют свои тесты, здесь удар всегда доходит.
+            public bool ResolveAttackMiss(RuntimeUnit attacker) => false;
+            public void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target) { }
+            // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.
+            public void ReportAbilityCast(RuntimeUnit caster) { }
             public void Displace(in DisplaceRequest req) { }
+
+            // Призывов в этом срезе нет: стаб честно отвечает «призывать нечем».
+            public RuntimeUnit Summon(UnitData data, int team, Vector2 position, RuntimeUnit summoner) => null;
+
+            // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
+            public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+                => CombatPositioning.TeleportBehind(unit, target);
             public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
             public void NotifyAttackInterrupted(RuntimeUnit unit) { }
+            public void NotifyAttackCompleted(RuntimeUnit unit) { }
+            public void NotifyComboBroken(RuntimeUnit unit) { }
+            public void RemoveEffect(RuntimeUnit unit, EffectData def) { }
 
             public IRngService Rng => null;
-            public int CurrentTick => 0;
+            /// <summary>Тик боя — подвижный: снятие судит по состоянию начала тика (см. MockCombatContext).</summary>
+            public int CurrentTick { get; private set; }
+
+            public void AdvanceTick() => CurrentTick++;
             public float ArmorK => 100f;
             public Guildmaster.Core.Simulation.SimTuning Tuning => Guildmaster.Core.Simulation.SimTuning.Default;
 

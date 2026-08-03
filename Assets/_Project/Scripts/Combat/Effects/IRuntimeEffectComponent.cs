@@ -1,4 +1,4 @@
-using Guildmaster.Data.Definitions;
+﻿using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 
 namespace Guildmaster.Combat.Effects
@@ -37,6 +37,37 @@ namespace Guildmaster.Combat.Effects
         void OnStacksChanged(int previousStacks, in EffectContext ctx);
     }
 
+    /// <summary>
+    /// Опциональный шов подкрепления: компонент, выдающий ОДНОРАЗОВЫЙ заряд, взводится заново, когда
+    /// уже висящий эффект накладывают повторно (<see cref="StackRule.Refresh"/> /
+    /// <see cref="StackRule.StackAndRefresh"/>). Обычный Refresh продлевает длительность и компонентов
+    /// не трогает — и правильно: разбудить <c>StatModifierComponent</c> значило бы добавить его моды
+    /// второй раз. Но заряд, который уже потрачен, продлевать нечего: «Скрытность», подкреплённая
+    /// вторым уходом в тень, обязана снова дать усиленный удар, иначе повторный уход не даёт ничего.
+    /// <para>Требование к реализации: <c>OnApply</c> должен быть идемпотентен (присваивать, а не
+    /// накапливать) — его позовут поверх живого состояния.</para>
+    /// </summary>
+    public interface IRearmOnRefreshComponent : IRuntimeEffectComponent
+    {
+    }
+
+    /// <summary>
+    /// Маркер: этому компоненту нужна ДЕЕСПОСОБНОСТЬ носителя — он не срабатывает, пока юнит выведен
+    /// контролем (<c>CanAct == false</c>: оглушение, сон). Проверку делает <see cref="EffectSystem"/> один
+    /// раз на диспатче, а не каждый компонент у себя.
+    /// <para><b>Почему маркер, а не список эффектов</b> (решение Макса 2026-07-29). Список «эффектов,
+    /// отключающих реактивы» был бы вторым владельцем факта, который уже есть: дееспособность считает
+    /// <see cref="EffectSystem"/> из активных компонентов контроля в <c>CanAct</c>. Такой список расходится
+    /// на первом же новом контроле — добавили сон, забыли дописать.</para>
+    /// <para><b>Почему маркер, а не проверка везде.</b> Требование дееспособности — свойство самого
+    /// поведения, и оно РАЗНОЕ: щит «Оплота» юнит поднимает (нужна), кувырок «Изворотливости» делает
+    /// (нужна), вихревой заход монаха — это рывок (нужна). А шипы колют бронёй сами, вампиризм и горение
+    /// идут своим ходом — им дееспособность не нужна, и оглушённый носитель обязан продолжать колоть.</para>
+    /// </summary>
+    public interface IRequiresAgencyComponent : IRuntimeEffectComponent
+    {
+    }
+
     /// <summary>Периодический компонент: <c>OnTick</c> каждые <see cref="Interval"/> секунд (DoT/HoT/реген).</summary>
     public interface IPeriodicComponent : IRuntimeEffectComponent
     {
@@ -51,13 +82,35 @@ namespace Guildmaster.Combat.Effects
         void OnEvent(in EffectContext ctx, in CombatEventData e);
     }
 
-    /// <summary>Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар.</summary>
+    /// <summary>
+    /// Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар или
+    /// изменить его величину.
+    /// </summary>
     public sealed class PreDamageResult
     {
         /// <summary>Удар отменён (урон не наносится) — «Изворотливость» ассасина.</summary>
         public bool Negated;
 
-        public void Reset() => Negated = false;
+        /// <summary>
+        /// Множитель входящего урона, накопленный компонентами цели (1 = без изменений). Компоненты
+        /// НЕ присваивают его, а домножают через <see cref="AddMultiplier"/> — иначе два уязвимости
+        /// на одной цели затирали бы друг друга. Применяется в <see cref="DamagePipeline.Execute"/>
+        /// ДО брони: это уязвимость самой цели, а не пробивание источника.
+        /// Носители: «Угли» (+1% урона огнём за стак), будущее «+25% урона молнии по Мокрому».
+        /// </summary>
+        public float DamageMultiplier = 1f;
+
+        /// <summary>Домножить множитель входящего урона (уязвимости копятся, а не перетирают друг друга).</summary>
+        public void AddMultiplier(float factor)
+        {
+            if (factor > 0f) DamageMultiplier *= factor;
+        }
+
+        public void Reset()
+        {
+            Negated = false;
+            DamageMultiplier = 1f;
+        }
     }
 
     /// <summary>
@@ -70,6 +123,79 @@ namespace Guildmaster.Combat.Effects
     public interface IPreDamageComponent : IRuntimeEffectComponent
     {
         void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx);
+    }
+
+    /// <summary>
+    /// Часть удара, уходящая другой школой урона (карточка The Pyre: по горящей цели половина клинка
+    /// бьёт Огнём). Доля берётся ОТ того же сырого урона, суммарная величина удара не меняется —
+    /// меняется то, какой бронёй она гасится и какие реакции будит.
+    /// <para>Исключение — <see cref="OwnDamage"/>: отщеплённая часть считается СВОЕЙ величиной (у
+    /// Мечника — процентом от макс. HP цели), и тогда суммарный урон удара уже не сохраняется. Это
+    /// намеренно: процентная половина и есть то, чем он выкашивает толстых.</para>
+    /// </summary>
+    public readonly struct AttackSplit
+    {
+        /// <summary>Доля урона [0..1], уходящая типом <see cref="DamageType"/>. При <see cref="HasOwnDamage"/> задаёт только, сколько СНИМАЕТСЯ с исходного типа.</summary>
+        public readonly float Share;
+
+        /// <summary>
+        /// Своя величина отщеплённой части. &gt; 0 — она бьёт этим числом вместо <c>RawDamage × Share</c>;
+        /// исходная школа при этом всё равно теряет свою долю, то есть клинок остаётся ополовиненным.
+        /// </summary>
+        public readonly float OwnDamage;
+
+        /// <summary>
+        /// Тип урона отщеплённой части — обязателен: расщепление и существует ради того, чтобы часть
+        /// удара пошла ДРУГИМ типом («Водяной щит» Монаха: половина Дробящим, половина Льдом).
+        /// </summary>
+        public readonly Data.Definitions.DamageType DamageType;
+
+        public bool HasOwnDamage => OwnDamage > 0f;
+
+        public AttackSplit(float share, Data.Definitions.DamageType damageType, float ownDamage = 0f)
+        {
+            Share      = share < 0f ? 0f : share > 1f ? 1f : share;
+            DamageType = damageType;
+            OwnDamage  = ownDamage < 0f ? 0f : ownDamage;
+        }
+    }
+
+    /// <summary>
+    /// Компонент на эффекте АТАКУЮЩЕГО, расщепляющий его авто-атаку по школам (условие смотрит на
+    /// цель). Опрашивается <see cref="EffectSystem.TryResolveAttackSplit"/> в момент удара; первый
+    /// сработавший выигрывает — порядок опроса по индексу активных эффектов, как и у pre-damage.
+    /// </summary>
+    public interface IAttackSplitComponent : IRuntimeEffectComponent
+    {
+        bool TrySplit(RuntimeUnit attacker, RuntimeUnit target, in EffectContext ctx, out AttackSplit split);
+    }
+
+    /// <summary>
+    /// Опциональный шов: компонент носителя усиливает ЕГО удары по цели, отвечающей условию
+    /// (Криомант больнее бьёт замороженных). Это свойство ИСТОЧНИКА — в отличие от уязвимости, которая
+    /// живёт на цели («Угли» усиливают огонь по подожжённому) и считается в pre-damage.
+    /// <para>Прибавка возвращается долей (0.25 = +25%) и складывается между компонентами, как статы:
+    /// два разных источника усиления обязаны оба сработать. Выбор «что сильнее» внутри одного набора
+    /// правил — забота компонента, а не системы.</para>
+    /// </summary>
+    public interface IOutgoingDamageBonusComponent : IRuntimeEffectComponent
+    {
+        float BonusAgainst(RuntimeUnit attacker, RuntimeUnit target, bool isAutoAttack, in EffectContext ctx);
+    }
+
+    /// <summary>
+    /// Опциональный шов: эффект на НОСИТЕЛЕ способен отправить его собственную атаку в молоко (слепота).
+    /// Спрашивается один раз на снятии цифр удара; <c>true</c> — удар уходит мимо.
+    /// </summary>
+    /// <remarks>
+    /// Зеркало pre-damage-негейта («Изворотливость» гасит удар со стороны ЦЕЛИ) — только со стороны
+    /// атакующего, и потому отдельный шов: у цели решение тратит её заряды и щиты, а здесь ничего не
+    /// расходуется, кроме самой атаки. Ответ обязан быть детерминированным (правило нулевого выходного
+    /// рандома): счёт идёт по <see cref="RuntimeUnit.HitsMade"/>, а не по броску.
+    /// </remarks>
+    public interface IAttackMissComponent : IRuntimeEffectComponent
+    {
+        bool MissesAttack(RuntimeUnit attacker, in EffectContext ctx);
     }
 
     /// <summary>

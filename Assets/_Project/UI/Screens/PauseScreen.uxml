@@ -1,10 +1,23 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
-        <ui:VisualElement class="gm-panel gm-panel--menu">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <ui:Label text="Меню" class="gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
-            <ui:Button name="btn-return" text="Продолжить" class="gm-button gm-button--primary" />
-            <ui:Button name="btn-settings" text="Настройки" class="gm-button" />
+            <!-- Тело диалога: пунктов немного, но занимает оно ту же область, что и у настроек —
+                 поэтому окно одинаковое, а кнопки не растягиваются по всей высоте. -->
+            <ui:ScrollView class="gm-panel__body">
+                <gm:PlateButton name="btn-return" text="Продолжить" class="gm-button gm-button--primary" />
+                <!-- Друзей зовут ИЗНУТРИ партии, а не из главного меню: лобби поднимается вместе с
+                     игрой (галочка на «Создать игру»), и звать некого, пока играть не начали.
+                     Кнопка гаснет, когда лобби нет, — например, при выключенной галочке или
+                     незапущенном Steam. -->
+                <gm:PlateButton name="btn-invite" text="Пригласить друга" class="gm-button" />
+                <gm:PlateButton name="btn-settings" text="Настройки" class="gm-button" />
+                <ui:VisualElement class="gm-divider" />
+            <!-- QA #18: выход из забега. Текст проставляет MenuRouter через loc (ui.menu.*), тут RU-плейсхолдер. -->
+                <gm:PlateButton name="btn-main-menu" text="В главное меню" class="gm-button" />
+                <gm:PlateButton name="btn-quit" text="Выйти из игры" class="gm-button" />
+            </ui:ScrollView>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

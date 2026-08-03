@@ -49,8 +49,10 @@ new CinematicSegment(1f, cfg.FinisherReturn, ramp: true, curve: cfg.FinisherRetu
 ## `IScreenShake` — тряска за интерфейсом
 
 `Presentation/Camera/IScreenShake.cs`: `Shake(intensity 0..1)` (удары складываются вверх —
-берётся максимум), `ResetShake()`. За интерфейсом, чтобы бой не зависел от наличия камеры-рига:
-нет рига в сцене → регистрируется `NullScreenShake` (no-op). Форма тряски (смещение как доля
+берётся максимум), `ResetShake()`. За интерфейсом, чтобы бой не зависел от конкретного рига. **Заглушки `NullScreenShake` НЕТ** — она удалена
+2026-07-26 в заходе по фолбэкам: тихий no-op делал отсутствие тряски неотличимым от рабочей тряски.
+Реализацию регистрирует `WorldLifetimeScope` (`.AsSelf().As<IScreenShake>()` на камера-риге); нет рига —
+это громкий отказ разводки, а не «молча без тряски». Форма тряски (смещение как доля
 `orthoSize`, крен, частота, затухание) — в `CombatFeelConfig` (`Shake*`), интенсивность по
 событию — там же (`KillShake`/`HeavyShake*`/`BattleEndShake`). FeelDirector передаёт только
 интенсивность; форму знает `ScreenShake`.

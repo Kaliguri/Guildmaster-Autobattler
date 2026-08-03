@@ -1,21 +1,26 @@
 ---
 title: "Goblins - Common - Goblin Archer"
+order: 10
 kind: enemy
 status: draft
+updated: 2026-07-29
 enemy_group: Обычный
-faction: Гоблины
-subfaction: Основные
+species: Гоблины
+combat_class: РДД
+subspecies: Основные
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:
   - Снаряд
 physical_damage:
   - Колющий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Дальнее давление
 mechanics:
   - Кайт
+impl: engine
+asset: [enemy.goblin_archer]
 ---
 
 # Гоблин-лучник
@@ -23,7 +28,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** обычный.
-- **Фракция:** гоблины.
+- **Вид:** гоблины.
 - **Позиция:** вторая линия.
 - **Ближний / дальний:** дальний.
 

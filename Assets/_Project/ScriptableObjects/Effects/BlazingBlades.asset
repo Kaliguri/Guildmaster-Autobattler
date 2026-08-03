@@ -20,8 +20,17 @@ MonoBehaviour:
   _maxStacks: 1
   _cleanseTier: 0
   _unremovable: 0
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
   _components:
   - rid: 5615026976500744326
+  - rid: 5615027269181898857
+  - rid: 5615027269181898858
   _icon: {fileID: 0}
   _infoTags: []
   references:
@@ -32,3 +41,16 @@ MonoBehaviour:
       data:
         _selfDamagePctCurrentHp: 0.01
         _rampEffect: {fileID: 11400000, guid: 80edca810544eaf4d916a79f30a13f60, type: 2}
+    - rid: 5615027269181898857
+      type: {class: EmberIgniterComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _emberEffect: {fileID: 11400000, guid: 5015c5ee2e3464b4583531f7d5506c78, type: 2}
+    - rid: 5615027269181898858
+      type: {class: SplitAttackOnTagComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _requiredTargetTag: 4096
+        _share: 0.5
+        _damageType: 10
+        _pctTargetMaxHp: 0.01
+        _pctPerStack: 0.0025
+        _stackTag: 8192

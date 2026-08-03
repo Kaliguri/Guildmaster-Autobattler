@@ -1,7 +1,10 @@
 ---
 title: "Effect - Mark"
-order: 18
+order: 60
 status: draft
+updated: 2026-07-29
+impl: engine
+asset: [HuntersMark]
 ---
 
 # Метка (Mark)

@@ -1,11 +1,21 @@
 ---
 title: "Planning - Act Map & Run Loop"
-order: 110
-status: draft
-updated: 2026-07-17
+order: 115
+status: archive
+updated: 2026-07-28
 ---
 
-**Статус:** Черновик плана (2026-07-17), согласован с Максом в чате (18 решений + опрос по экономике). **Ждёт финального ревью Макса перед реализацией.** Детализирует шаг B1 из [[tech/40-planning/vertical-slice|Planning - Vertical Slice]] (карта акта) и достраивает всё, что на карте висит: петля забега, магазин, сундук, «?»-узел, элитка, экран исхода, главное меню, модель перезапуска. Опирается на [[tech/20-explanation/run-flow|Explanation - Run Flow]] (§8 карта, §5 автосейв), [[tech/10-reference/saves|Reference - Saves]], [[meta-progression]] (экономика), [[combat-system]] (§Перезапуск, реш. №65).
+**Статус:** Черновик плана (2026-07-17), согласован с Максом в чате (18 решений + опрос по экономике). **Ждёт финального ревью Макса перед реализацией.** Детализирует шаг B1 из [[tech/40-planning/vertical-slice|Planning - Vertical Slice]] (карта акта) и достраивает всё, что на карте висит: петля забега, магазин, сундук, «?»-узел, элитка, экран исхода, главное меню, модель перезапуска. Опирается на флоу забега (код `Assets/_Project/Scripts/Game/Flow/`) (§8 карта, §5 автосейв), сейвы (`CLAUDE.md` §Сохранения), [[meta-progression]] (экономика), [[combat-system]] (§Перезапуск, реш. №65).
+
+> [!info] Граница вик (проставлено 2026-07-26 заходом по ГДД; тело плана не менялось)
+> Дизайн-факты, описанные ниже (структура акта, талия, состав узлов, модель перезапуска),
+> имеют канон-дом в ГДД: [[gdd/30-run-meta/events-minigames|Run - Events & Minigames]] §Место
+> привалов и [[gdd/20-combat/combat-system|Combat - System]] §Перезапуск. Этот док — **архив
+> замысла реализации** на момент 2026-07-17, поэтому его числа (`Columns = 9`, состав якорей)
+> намеренно оставлены как след того, что планировалось тогда, и **источником правды не являются**:
+> фактическая карта живёт в `ActConfig` (15 колонок), дизайн — в ГДД.
+
+> **Обновление статуса (2026-07-19):** глобальная панель забега РЕАЛИЗОВАНА как `RunModeBarView` (упоминаемый ниже по тексту `RunTopBarView` снесён при UI-реворке как легаси). Актуальное устройство UI-слоя — [[tech/00-meta/journal/2026-07-30-the-world-replicates-the-view-does-not|Journal - The World Replicates, The View Does Not]]. Имена в прозе плана ниже оставлены как след замысла на момент фазы.
 
 ---
 
@@ -16,7 +26,7 @@ updated: 2026-07-17
 ## 1. Отправная точка (факт на 2026-07-17)
 
 **Есть (готовые швы под петлю):**
-- `IEventFlow.Run(RunContext) → EventResult` — полиморфный узел ([`RunFlow.cs`](../../../Assets/_Project/Scripts/Game/Flow/RunFlow.cs)). Реализации: `BattleFlow`, `TextEventFlow`.
+- `IEventFlow.Run(RunContext) → EventResult` — полиморфный узел ([`RunFlow.cs`](../../../../Assets/_Project/Scripts/Game/Flow/RunFlow.cs)). Реализации: `BattleFlow`, `TextEventFlow`.
 - `GameFlow` (singleton, VContainer) — оркестратор, умеет прогнать **один** узел за вызов (`RunSingleBattleAsync`, `RunTextEventAsync`, `PresentRewardAsync`). Петли обхода карты **нет**.
 - `RewardService` + `RewardScreenView` — витрина 1-из-3 реликвий, наклон по `RewardTier {Battle/Elite/Boss}` (uniqueChance 10/20/100%).
 - `RunStateService` — владелец `RunState`, вместимость реликвий (`RelicCapacityBase=8..Max=16`), `TryAddRelic`/`RemoveRelic`, `AddGold` (кламп в ноль), `Autosave`, **`HasSave`** (готово под кнопку «Продолжить»).
@@ -24,7 +34,7 @@ updated: 2026-07-17
 - Золото: `RunState.Gold`, показ в `RunTopBarView`. `ItemData` уже имеет поля `Cost`/`ShopWeight`.
 
 **Есть в данных, но мёртвое (никто не читает/не пишет):**
-- DTO карты: `MapNodeType {Start, Battle, Elite, TextEvent, Shop, Boss}`, `MapNode {Id, Type, PayloadId, Edges[], Cleared, UiPosition}`, `MapState {CurrentNodeId, Nodes[]}`, `RunState.Map`, `RunState.CurrentActIndex` ([`RunState.cs`](../../../Assets/_Project/Scripts/Guild/RunState.cs)). Ни генератора, ни траверса, ни экрана.
+- DTO карты: `MapNodeType {Start, Battle, Elite, TextEvent, Shop, Boss}`, `MapNode {Id, Type, PayloadId, Edges[], Cleared, UiPosition}`, `MapState {CurrentNodeId, Nodes[]}`, `RunState.Map`, `RunState.CurrentActIndex` ([`RunState.cs`](../../../../Assets/_Project/Scripts/Guild/RunState.cs)). Ни генератора, ни траверса, ни экрана.
 
 **Нет вообще:**
 - Генератор карты, петля обхода узлов (главное), экран карты.
@@ -104,7 +114,7 @@ Data-first. Каждый шаг оставляет играбельный/тес
 - Разблокирует: карта существует как данные, обход тестируем headless.
 
 **A2 — `ActRunner` + `NodeResolver`** `[оркестратор петли]`
-- `ActRunner.RunActAsync` (§3.2) поверх `GameFlow` (делегирование). `NodeResolver` маппит тип→`IEventFlow`; на этом шаге Shop/Chest/«?» — заглушки, возвращающие `Completed`. Автосейв на переходах ([[tech/20-explanation/run-flow|Run Flow]] §5).
+- `ActRunner.RunActAsync` (§3.2) поверх `GameFlow` (делегирование). `NodeResolver` маппит тип→`IEventFlow`; на этом шаге Shop/Chest/«?» — заглушки, возвращающие `Completed`. Автосейв на переходах (флоу забега (код `Assets/_Project/Scripts/Game/Flow/`) §5).
 - Dev-вход «начать акт» (без меню). Забег проходится через существующие бой/ивент-узлы.
 - Разблокирует: последовательность узлов = собственно забег.
 
@@ -171,7 +181,7 @@ Data-first. Каждый шаг оставляет играбельный/тес
 Отдельный тип узла **и** исход «?». Фасад + клик → существующий reward 1-из-3 (B3).
 
 ### 5.4. «?»-узел
-До входа — «?»; на входе роллится тип (текст 60 / бой 15 / сундук 12 / магазин 8 / элитка 5), делегирует (B4). Совпадает с каноном превью: точный тип скрыт до входа ([[tech/20-explanation/run-flow|Run Flow]] §8).
+До входа — «?»; на входе роллится тип (текст 60 / бой 15 / сундук 12 / магазин 8 / элитка 5), делегирует (B4). Совпадает с каноном превью: точный тип скрыт до входа (флоу забега (код `Assets/_Project/Scripts/Game/Flow/`) §8).
 
 ### 5.5. Кнопка «Продолжить»
 Единый компонент, правый нижний угол, одно место на всех исходах, возврат на карту (A4).

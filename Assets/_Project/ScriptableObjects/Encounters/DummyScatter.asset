@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DummyScatter
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EncounterData
   _id: encounter.dummy_scatter
-  _tier: 1
+  _tier: 3
   _units:
   - _enemyId: enemy.training_dummy
     _position: {x: 2.5, y: 2.8}

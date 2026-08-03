@@ -13,59 +13,63 @@ MonoBehaviour:
   m_Name: IronSpearman
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.iron_spearman
-  _damageSchool: 0
-  _affinity: 0
+  _combatClass: 0
+  _autoAttackDamageType: 3
   _creatureType: 0
   _attackType: 0
-  _resourceType: 2
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _resourceType: 1
+  _visual: {fileID: 11400000, guid: 1726394c3d16f6b46b32737288e71402, type: 2}
+  _viewPrefab: {fileID: 4080731667428238973, guid: f1d5abc2956524d42b185654a918f37f, type: 3}
+  _bodyShade: 0
+  _vfxTone: 8
   _autoAttackShape: 1
   _autoAttackWidth: 2.25
+  _autoAttackLengthMult: 2
   _autoAttackEffects: []
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
-  _resourceOnHit: 15
+  _windupShare: 0
+  _chargeAttackWindupMult: 1
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
   _stats:
-  - Stat: 0
-    Op: 3
-    Value: 3300
   - Stat: 7
     Op: 3
     Value: 140
   - Stat: 8
     Op: 3
-    Value: 0.8
+    Value: 0.6
   - Stat: 9
     Op: 3
-    Value: 3
+    Value: 2
   - Stat: 3
     Op: 3
-    Value: 8
-  - Stat: 20
-    Op: 3
-    Value: 2.5
+    Value: 45
   - Stat: 27
     Op: 3
-    Value: 80
-  - Stat: 28
+    Value: 45
+  - Stat: 4
     Op: 3
-    Value: 0
+    Value: 15
   _grantedEffects: []
   _abilities:
   - _id: steel_whirl
-    _effects: []
-    _baseCooldown: 5
-    _resourceCost: 80
+    _effects:
+    - {fileID: 11400000, guid: e45ab3ab710483b4cbed64181e23b842, type: 2}
+    _selfEffects:
+    - {fileID: 11400000, guid: 27f6768c5a98b7d49b8c1275cd2e54ae, type: 2}
+    _baseCooldown: 0
+    _resourceCost: 45
     _targetMode: 0
     _damageMultiplier: 3
-    _schoolOverride: 0
-    _affinityOverride: 0
+    _damageType: 2
     _areaShape: 2
     _areaRadius: 2.5
     _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
     _castCondition: 1
     _castConditionCount: 2
     _castConditionRadius: 0
@@ -73,10 +77,20 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0.25
     _triggerTag: 0
     _consumesTriggerTag: 0
-    _displaces: 0
+    _castSeconds: 0.5
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _statScalings:
+    - Target: 1
+      Conversion:
+        Source: 8
+        Form: 1
+        Baseline: 0.6
+        PerUnit: 0.3
+    _displaces: 1
     _displaceDistance: 4
-    _displaceTicks: 12
-    _displaceDamageMult: 1
+    _displaceDamageMult: 0
     _displaceWidth: 1
     _visualSlot: 0
     _infoTags: []
@@ -96,7 +110,9 @@ MonoBehaviour:
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: 53b2b41325a73594eb47d125fc37e8c5, type: 2}
+  - {fileID: 11400000, guid: 8bf0488bf66556b44b1970f09c629b1b, type: 2}
   _tags:
   - spearman
   - common

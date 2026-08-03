@@ -44,7 +44,8 @@ namespace Guildmaster.Balance.Editor
                 new RegenSystem());
 
             // Фабрика делит EffectSystem и контекст с симом (пассивки/HP-init зовут OnApply в этом же боевом контексте).
-            Factory = new RuntimeUnitFactory(config, Effects, Sim);
+            // Классовый профиль грузим здесь, чтобы бенчи считали базу так же, как бой («таблица не врёт»).
+            Factory = new RuntimeUnitFactory(config, BalanceAssets.LoadClassBalanceConfig(), Effects, Sim);
         }
 
         /// <summary>Собрать реального юнита из контент-SO через боевую фабрику (те же шаги, что в бою).</summary>

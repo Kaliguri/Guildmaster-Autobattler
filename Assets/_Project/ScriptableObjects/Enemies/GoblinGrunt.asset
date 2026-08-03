@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: GoblinGrunt
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
   _id: enemy.goblin_grunt
-  _damageSchool: 0
-  _affinity: 0
+  _combatClass: 0
+  _autoAttackDamageType: 1
   _creatureType: 0
   _attackType: 0
   _resourceType: 0
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _visual: {fileID: 11400000, guid: 5e18a695936c40a4c94eaefe3364adf9, type: 2}
+  _viewPrefab: {fileID: 9077715029037053228, guid: b490d15271d05f74798b8f2fa92d7735, type: 3}
+  _bodyShade: 0
+  _vfxTone: 13
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects: []
@@ -27,10 +29,8 @@ MonoBehaviour:
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
   _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
   _stats:
-  - Stat: 0
-    Op: 3
-    Value: 600
   - Stat: 7
     Op: 3
     Value: 45
@@ -40,9 +40,6 @@ MonoBehaviour:
   - Stat: 3
     Op: 3
     Value: 2
-  - Stat: 20
-    Op: 3
-    Value: 3
   _grantedEffects: []
   _abilities: []
   _aiPreset: {fileID: 11400000, guid: 262d3cc7dfd31dc4ab9cbce9705ac85d, type: 2}
@@ -62,5 +59,7 @@ MonoBehaviour:
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
   _infoTags: []
+  _species: {fileID: 11400000, guid: 6bc6e7517b81dd74b892560d7246c559, type: 2}
+  _subspecies: {fileID: 0}
   _threatPoints: 1
   _goldBounty: 0

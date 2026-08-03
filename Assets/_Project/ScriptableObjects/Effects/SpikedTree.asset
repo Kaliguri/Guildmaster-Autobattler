@@ -30,10 +30,10 @@ MonoBehaviour:
     - rid: 5615026976500744327
       type: {class: ArmorThornsComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _armorRatio: 1
-        _radius: 3
-        _school: 0
-        _affinity: 0
+        _flatDamage: 25
+        _armorRatio: 0.1
+        _radius: 1.5
+        _damageType: 3
         _growthEffect: {fileID: 11400000, guid: df5e074a7146eda41a164fd1673993d7, type: 2}
         _radiusPerGrowthStack: 0.2
-        _cooldownSeconds: 0.5
+        _cooldownSeconds: 1

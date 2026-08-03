@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Guildmaster.Data.Definitions;
 using UnityEditor;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ namespace Guildmaster.PaletteRemap
 
         private Vector2 _scroll;
 
-        [MenuItem("Alebardium/Palette Remapper")]
+        [MenuItem("Alebardium/Palette Remapper", priority = 1)]
         public static void Open()
         {
             var w = GetWindow<PaletteRemapWindow>("Palette Remapper");
@@ -45,22 +46,54 @@ namespace Guildmaster.PaletteRemap
                 _ramp = BuildGuildmasterRamp();
         }
 
-        // Дефолтная рампа Guildmaster: значения = наши примитив-токены (ink/brass/parchment).
-        // Держим в синхроне с tokens.primitives.uss вручную (там — источник правды по палитре).
+        /// <summary>Снимок палитры проекта — тот же, что читают карта и боевой UI.</summary>
+        private const string PalettePath = "Assets/_Project/ScriptableObjects/Configs/GuildmasterPalette.asset";
+
+        // Ступени рампы: токен палитры → позиция по яркости. Ни цветов, ни разбора USS здесь нет.
+        // Копия цветов ушла раньше (UA-21), собственный парсер токенов — сейчас: читать палитру
+        // умеет PaletteSnapshotBuilder, и второй такой же разбор рядом — тот же дубль, только логики.
+        private static readonly (string Token, float Position)[] RampStops =
+        {
+            ("--gm-ink-900",       0.00f),
+            ("--gm-ink-600",       0.30f),
+            ("--gm-ink-300",       0.50f),
+            ("--gm-brass-700",     0.65f),
+            ("--gm-brass-500",     0.80f),
+            ("--gm-brass-300",     0.92f),
+            ("--gm-parchment-100", 1.00f),
+        };
+
+        /// <summary>
+        /// Дефолтная рампа Guildmaster из палитры проекта. Роли нет в снимке — ступень пропускается,
+        /// и об этом говорится вслух: молча подставить «похожий» цвет значило бы перекрасить арт мимо
+        /// палитры, а это ровно то, ради чего тул и существует.
+        /// </summary>
         private static Gradient BuildGuildmasterRamp()
         {
-            Color RGB(int r, int g, int b) => new Color(r / 255f, g / 255f, b / 255f);
-            var g = new Gradient();
-            g.colorKeys = new[]
+            var palette = AssetDatabase.LoadAssetAtPath<GuildmasterPalette>(PalettePath);
+            var keys = new List<GradientColorKey>(RampStops.Length);
+            var missing = new List<string>();
+
+            if (palette == null)
             {
-                new GradientColorKey(RGB(18, 16, 13),   0.00f), // ink-900
-                new GradientColorKey(RGB(36, 26, 18),   0.30f), // ink-600
-                new GradientColorKey(RGB(74, 58, 38),   0.50f), // ink-300
-                new GradientColorKey(RGB(138, 95, 40),  0.65f), // brass-700
-                new GradientColorKey(RGB(184, 134, 59), 0.80f), // brass-500
-                new GradientColorKey(RGB(217, 178, 106),0.92f), // brass-300
-                new GradientColorKey(RGB(239, 226, 196),1.00f), // parchment-100
-            };
+                Debug.LogError($"[PaletteRemap] - нет снимка палитры {PalettePath}. Собери его: " +
+                               "Alebardium → Дизайн-система → Пересобрать палитру.");
+            }
+            else
+            {
+                foreach ((string token, float position) in RampStops)
+                {
+                    if (palette.TryGet(token, out Color c)) keys.Add(new GradientColorKey(c, position));
+                    else missing.Add(token);
+                }
+
+                if (missing.Count > 0)
+                    Debug.LogError($"[PaletteRemap] - в палитре нет токенов: {string.Join(", ", missing)}. " +
+                                   "Рампа собрана без них — пересобери снимок или проверь имена.");
+            }
+
+            var g = new Gradient();
+            if (keys.Count > 0) g.colorKeys = keys.ToArray();
             g.alphaKeys = new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) };
             return g;
         }

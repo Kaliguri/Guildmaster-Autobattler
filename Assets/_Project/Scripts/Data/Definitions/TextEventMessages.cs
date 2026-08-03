@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 
 namespace Guildmaster.Data.Definitions
 {
@@ -14,10 +15,14 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Колбэк выбора (ровно один вызов): индекс варианта в <see cref="TextEventData.Choices"/>.</summary>
         public readonly Action<int> OnChosen;
 
-        public OpenTextEventRequest(TextEventData ev, Action<int> onChosen)
+        /// <summary>Токен отмены забега (QA #37): отмена закрывает ивент через навигатор.</summary>
+        public readonly CancellationToken Cancellation;
+
+        public OpenTextEventRequest(TextEventData ev, Action<int> onChosen, CancellationToken cancellation = default)
         {
-            Event    = ev;
-            OnChosen = onChosen;
+            Event        = ev;
+            OnChosen     = onChosen;
+            Cancellation = cancellation;
         }
     }
 }

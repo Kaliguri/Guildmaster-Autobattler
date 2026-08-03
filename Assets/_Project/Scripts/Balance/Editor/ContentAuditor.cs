@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Guildmaster.Combat;
@@ -10,7 +10,7 @@ namespace Guildmaster.Balance.Editor
 {
     /// <summary>
     /// Фаза 0 — статический аудитор контента. БЕЗ симуляции: бейкает реальные статы каждого кита
-    /// (реюз боевого <see cref="Stats"/> + <see cref="StatsConfig"/>, НЕ свои формулы), считает грубые
+    /// (реюз боевого <see cref="EffectiveStats"/> (полный каскад) и <see cref="AttackTiming"/>, НЕ свои формулы), считает грубые
     /// производные (raw-DPS, EHP) и флагует выбросы (z-score) и подозрительные нули. Ловит грубые ошибки
     /// данных до всякого боя. Производные — приближение: без учёта wind-up, способностей, on-hit эффектов.
     /// </summary>
@@ -39,19 +39,19 @@ namespace Guildmaster.Balance.Editor
         public static (string csv, string md) Run()
         {
             StatsConfig config = BalanceAssets.LoadStatsConfig();
+            // Классовый слой каскада: без него MaxHP и MoveSpeed в таблице — не те, что в бою.
+            ClassBalanceConfig classConfig = BalanceAssets.LoadClassBalanceConfig();
             float armorK = config != null ? config.ArmorConstantK : 100f;
-            float asMin = config != null ? config.AttackSpeedMin : 0.1f;
-            float asMax = config != null ? config.AttackSpeedMax : 2.5f;
 
             var rows = new List<Row>();
-            foreach (RelicData r in BalanceAssets.LoadRelics()) rows.Add(BuildRow("Relic", r, config, armorK, asMin, asMax));
-            foreach (EnemyData e in BalanceAssets.LoadEnemies()) rows.Add(BuildRow("Enemy", e, config, armorK, asMin, asMax));
+            foreach (RelicData r in BalanceAssets.LoadRelics()) rows.Add(BuildRow("Relic", r, config, classConfig, armorK));
+            foreach (EnemyData e in BalanceAssets.LoadEnemies()) rows.Add(BuildRow("Enemy", e, config, classConfig, armorK));
 
             FlagOutliers(rows);
 
             var headers = new List<string>
             {
-                "Type", "Name", "MaxHP", "AutoAtk", "AtkSpeed(clamped)", "AtkRange", "MoveSpeed",
+                "Type", "Name", "MaxHP", "AutoAtk", "Атк/сек", "AtkRange", "MoveSpeed",
                 "PhysArmor", "ElemArmor", "DmgTakenEff", "DmgDealtEff", "Lifesteal",
                 "RawDPS", "EHP_phys", "EHP_elem", "Flags"
             };
@@ -68,29 +68,32 @@ namespace Guildmaster.Balance.Editor
 
             string notes =
                 "**Что это:** статический аудит контента (без боя). Производные — приближение " +
-                "(raw-DPS = AutoAtk × clamped(AtkSpeed) × DmgDealtEff; EHP = MaxHP × (K+armor)/K ÷ DmgTakenEff, " +
+                "(raw-DPS = AutoAtk × Атк/сек × DmgDealtEff, где Атк/сек — с тиковой квантизацией сима; " +
+                "EHP = MaxHP × (K+armor)/K ÷ DmgTakenEff, " +
                 $"K={armorK:0.#}). Не учтены wind-up, способности, on-hit эффекты. **Flags** — z-score>2 по " +
                 "RawDPS/EHP или подозрительный ноль. Флаг ≠ баг: это повод посмотреть, а не приговор.";
 
             string csv = ReportWriter.WriteCsv("audit_content", headers, table);
             string md = ReportWriter.WriteMarkdown("audit_content", "SimBench — аудит контента (Фаза 0)", headers, table, notes);
+            ReportWriter.WriteJson("audit_content", "SimBench — аудит контента (Фаза 0)", headers, table, notes);
             return (csv, md);
         }
 
-        private static Row BuildRow(string type, UnitData data, StatsConfig config, float armorK, float asMin, float asMax)
+        private static Row BuildRow(string type, UnitData data, StatsConfig config, ClassBalanceConfig classConfig,
+            float armorK)
         {
-            var stats = new Stats(config);
-            if (data.Stats != null && data.Stats.Length > 0)
-                stats.AddModifiersFrom(data, data.Stats);
+            // ТОТ ЖЕ путь, что у боя и у панели инвентаря: класс → вид → персона (EffectiveStats).
+            Stats stats = EffectiveStats.Build(data, config, classConfig);
 
             float maxHp = stats.Get(StatType.MaxHP);
             float autoAtk = stats.Get(StatType.AutoAttackDamage);
-            float atkSpeedRaw = stats.Get(StatType.AttackSpeed);
-            float atkSpeed = Mathf.Clamp(atkSpeedRaw, asMin, asMax);
+            // Скорострельность — квантизованная тиками, как её производит сим. Прежний кламп по
+            // StatsConfig.AttackSpeedMin/Max здесь врал: сим никаких клампов не применяет (T-18).
+            float atkSpeed = AttackTiming.AttacksPerSecond(stats.Get(StatType.AttackSpeed));
             float dmgDealt = stats.Get(StatType.DamageDealtEff);
             float dmgTaken = stats.Get(StatType.DamageTakenEff);
             float physArmor = stats.Get(StatType.PhysArmor);
-            float elemArmor = stats.Get(StatType.ElementalArmor);
+            float elemArmor = stats.Get(StatType.MagicArmor);
 
             float takenEff = dmgTaken <= 0f ? 1f : dmgTaken;
             var row = new Row

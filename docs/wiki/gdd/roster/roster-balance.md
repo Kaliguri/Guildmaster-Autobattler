@@ -1,6 +1,8 @@
 ---
 title: "Roster - Balance"
+order: 20
 status: draft
+updated: 2026-07-26
 ---
 
 # Баланс ростера
@@ -21,14 +23,26 @@ GROUP BY rarity
 SORT key ASC
 ```
 
-## Роли
+## Роли (боевой класс)
+
+Role — ось, выводимая из `combat_class`; заполняется один раз и не дублируется руками.
 
 ```dataview
 TABLE length(rows) AS "Персонажей"
 FROM "docs/wiki/gdd/relics"
 WHERE kind = "character"
-FLATTEN roles AS role
-GROUP BY role
+GROUP BY combat_class
+SORT length(rows) DESC
+```
+
+## Профиль (Playstyle)
+
+```dataview
+TABLE length(rows) AS "Персонажей"
+FROM "docs/wiki/gdd/relics"
+WHERE kind = "character"
+FLATTEN playstyle AS style
+GROUP BY style
 SORT length(rows) DESC
 ```
 
@@ -63,13 +77,13 @@ GROUP BY damage
 SORT length(rows) DESC
 ```
 
-### Стихийный
+### Магическая школа
 
 ```dataview
 TABLE length(rows) AS "Персонажей"
 FROM "docs/wiki/gdd/relics"
 WHERE kind = "character"
-FLATTEN elemental_damage AS damage
+FLATTEN magical_damage AS damage
 GROUP BY damage
 SORT length(rows) DESC
 ```
@@ -114,10 +128,15 @@ GROUP BY status
 SORT key ASC
 ```
 
-## Данные, требующие уточнения
+## Классификация, требующая уточнения
+
+Поле `needs_review` держит **только открытые вопросы по тегам** (сужено 2026-07-30, журнал 2026-07-30/1).
+Пустая таблица значит «классификация подтверждена», а не «вопросов по киту нет»: неутверждённые имена,
+классы и числа живут в [[gdd/00-meta/open-forks|Meta - Open Forks]] §2.5, долги реализации — в
+[[gdd/relics/implementation-status|Relic - Implementation Status]].
 
 ```dataview
-TABLE needs_review AS "Что уточнить"
+TABLE needs_review AS "Что уточнить по тегам"
 FROM "docs/wiki/gdd/relics"
 WHERE kind = "character" AND length(needs_review) > 0
 SORT file.name ASC

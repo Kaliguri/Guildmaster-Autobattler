@@ -3,19 +3,6 @@ using UnityEngine;
 
 namespace Guildmaster.Combat
 {
-    /// <summary>Вид принудительного смещения (§9.9). MVP реализует <see cref="Knockback"/>.</summary>
-    public enum DisplaceKind
-    {
-        /// <summary>Отбрасывание от источника на фиксированную дистанцию.</summary>
-        Knockback = 0,
-
-        /// <summary>Притягивание к источнику (задел, не в MVP).</summary>
-        Pull = 1,
-
-        /// <summary>Телепорт в точку (задел, не в MVP).</summary>
-        Teleport = 2,
-    }
-
     /// <summary>
     /// Параметры принудительного смещения цели (§9.9, «Шквальный толчок»). Передаётся в
     /// <see cref="ICombatContext.Displace"/>. Дистанция фиксирована (не «до столкновения»); на время
@@ -24,55 +11,71 @@ namespace Guildmaster.Combat
     /// </summary>
     public readonly struct DisplaceRequest
     {
-        public readonly DisplaceKind Kind;
+        // Вида смещения (Knockback/Pull/Teleport) здесь нет: система смещения его не читала ни разу,
+        // то есть все три «вида» вели себя одинаково — отбрасыванием (аудит 2026-07-26, волна 2).
+        // Длительности полёта здесь нет: она считается как Distance ÷ Speed — дальний толчок держит
+        // цель в оглушении дольше, и у этого свойства ровно один владелец (решение 2026-07-28).
         public readonly RuntimeUnit  Target;
         public readonly RuntimeUnit  Source;
         public readonly Vector2      Direction;
         public readonly float        Distance;
-        public readonly int          Ticks;
         public readonly bool         Cannonball;
         public readonly float        Damage;
-        public readonly DamageSchool School;
-        public readonly DamageAffinity Affinity;
+
+        /// <summary>
+        /// Тип урона «ядра» и удара в стену. Обязателен наравне с любым другим источником урона:
+        /// толчок, который бьёт, — такой же источник, и его тип не выводится из толчка сам.
+        /// При <see cref="Damage"/> = 0 не читается.
+        /// </summary>
+        public readonly DamageType   DamageType;
         public readonly float        Width;
 
         /// <summary>
         /// Слабое «цепное» отбрасывание врагов, задетых «ядром» на линии полёта (§10.6): &gt;0 — каждый задетый
         /// не только получает урон, но и сам чуть отбрасывается (что тоже триггерит «Вихревой заход» монаха).
-        /// Держим слабым, чтобы цепные полёты кончались раньше главного и финальный телепорт сел на исходную цель.
+        /// Держим КОРОЧЕ главного толчка: тогда цепные полёты кончаются раньше и финальный телепорт садится на
+        /// исходную цель. Длительность цепи считается из этой дистанции, поэтому короче = быстрее, автоматически.
         /// 0 = без цепи (обычное «ядро» — только урон).
         /// </summary>
         public readonly float        ChainDistance;
-        public readonly int          ChainTicks;
+
+        /// <summary>
+        /// Скорость полёта, мировых единиц в секунду: вместе с <see cref="Distance"/> задаёт длительность.
+        /// <c>0</c> = взять общий дефолт из <c>SimTuning.DisplaceSpeedPerSecond</c>. Своё значение нужно
+        /// источникам с другим характером толчка — тяжёлый медленный бросок против быстрого пинка.
+        /// </summary>
+        public readonly float        SpeedPerSecond;
+
+        /// <summary>
+        /// Процентное пробивание брони для урона этого полёта, долей: 0.5 = «ядро» и удар о стену считают
+        /// броню вдвое меньшей («Волчий разгон» наездника). 0 = броня как есть.
+        /// </summary>
+        public readonly float        PctArmorPen;
 
         public DisplaceRequest(
             RuntimeUnit target,
             RuntimeUnit source,
             Vector2     direction,
             float       distance,
-            int         ticks,
             bool        cannonball,
             float       damage,
-            DamageSchool school,
+            DamageType  damageType,
             float       width,
-            DisplaceKind kind = DisplaceKind.Knockback,
             float       chainDistance = 0f,
-            int         chainTicks = 0,
-            DamageAffinity affinity = DamageAffinity.None)
+            float       speedPerSecond = 0f,
+            float       pctArmorPen = 0f)
         {
-            Kind          = kind;
             Target        = target;
             Source        = source;
             Direction     = direction;
             Distance      = distance;
-            Ticks         = ticks;
             Cannonball    = cannonball;
             Damage        = damage;
-            School        = school;
-            Affinity      = affinity;
-            Width         = width;
-            ChainDistance = chainDistance;
-            ChainTicks    = chainTicks;
+            DamageType    = damageType;
+            Width          = width;
+            ChainDistance  = chainDistance;
+            SpeedPerSecond = speedPerSecond;
+            PctArmorPen    = pctArmorPen;
         }
     }
 }

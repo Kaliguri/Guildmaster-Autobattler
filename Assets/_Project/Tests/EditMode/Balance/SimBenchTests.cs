@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Balance.Editor;
 using Guildmaster.Combat;
+using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using NUnit.Framework;
 using UnityEngine;
@@ -25,7 +26,7 @@ namespace Guildmaster.Balance.Tests
                 new StatModifier(StatType.MaxHP, ModifierOp.Flat, hp),
                 new StatModifier(StatType.MoveSpeed, ModifierOp.Flat, 1f),
             });
-            var unit = new RuntimeUnit { Team = team, Stats = stats, Position = pos, PreviousPosition = pos };
+            var unit = new RuntimeUnit { Team = team, Stats = stats, Position = pos, PreviousPosition = pos, AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash };
             unit.CurrentHP = hp;
             return unit;
         }
@@ -68,6 +69,58 @@ namespace Guildmaster.Balance.Tests
             };
             BattleReport report = SimBench.Drive(env, tracked, RunMode.FixedDuration, TenSeconds);
             return report.Find(1).DamageTaken;
+        }
+
+        [Test]
+        public void HpLeft_IsZeroForDead_AndMatchesRemainingForSurvivor()
+        {
+            var env = new SimEnvironment(1UL, null);
+            var tracked = new List<TrackedUnit>
+            {
+                new TrackedUnit(SyntheticUnits.ImmortalAttacker(0, new Vector2(-1f, 0f), 100f), "atk", "atk"),
+                new TrackedUnit(WeakTarget(1, new Vector2(1f, 0f), hp: 50f), "victim", "victim"),
+            };
+
+            BattleReport report = SimBench.Drive(env, tracked, RunMode.UntilOutcome, 3600);
+
+            UnitMetric victim = report.Find(1);
+            Assert.IsTrue(victim.Died);
+            Assert.AreEqual(0.0, victim.HpPctLeft, 1e-9, "У погибшего остаток HP — ноль, а не отрицательный оверкилл");
+
+            UnitMetric attacker = report.Find(0);
+            Assert.IsFalse(attacker.Died);
+            Assert.AreEqual(1.0, attacker.HpPctLeft, 1e-6, "Нетронутый боец доживает с полным запасом");
+            Assert.AreEqual(attacker.MaxHp, attacker.HpLeft, 1e-3, "Абсолютный остаток совпадает с максимумом");
+        }
+
+        [Test]
+        public void ReferenceAlly_FollowsClassCorridor()
+        {
+            // Манекены — линейка командных форматов, и мерить ею можно только пока каждый честно
+            // изображает рядового бойца своего класса. С 2026-08-01 классовая раскладка урона живёт
+            // ТОЛЬКО в ClassBalanceConfig (прежде стенд держал её второй копией у себя, и копии
+            // разошлись — см. ClassNormOwnershipTests). Здесь конфига нет, поэтому проверяется ровно
+            // то, что от него не зависит: единый фолбэк урона и роль-зависимая дальность.
+            AssertDps(UnitClass.Bruiser, 110f);
+            AssertDps(UnitClass.Tank, 110f);
+            AssertDps(UnitClass.Assassin, 110f);
+            AssertDps(UnitClass.Ranged, 110f);
+            AssertDps(UnitClass.Support, 110f);
+            AssertDps(UnitClass.Summoner, 110f);
+
+            // Фронт бьёт вплотную, тыл — с восьмёрки: строй формата держится на этой разнице.
+            Assert.AreEqual(1f, SyntheticUnits.ReferenceAlly(UnitClass.Tank, null, 0, Vector2.zero)
+                .Stats.Get(StatType.AttackRange), 1e-3f);
+            Assert.AreEqual(8f, SyntheticUnits.ReferenceAlly(UnitClass.Ranged, null, 0, Vector2.zero)
+                .Stats.Get(StatType.AttackRange), 1e-3f);
+        }
+
+        private static void AssertDps(UnitClass unitClass, float expected)
+        {
+            RuntimeUnit ally = SyntheticUnits.ReferenceAlly(unitClass, null, 0, Vector2.zero);
+            float dps = ally.Stats.Get(StatType.AutoAttackDamage) * ally.Stats.Get(StatType.AttackSpeed);
+            Assert.AreEqual(expected, dps, 1e-3f,
+                $"Манекен класса {unitClass} без конфига норм должен брать единый фолбэк, а не свою таблицу");
         }
 
         [Test]

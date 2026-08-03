@@ -16,14 +16,16 @@ namespace Guildmaster.Data.Editor
     /// </summary>
     public static class ContentLocalization
     {
-        public const string TableName = "Content";
-        public const string NameSuffix = "name";
-        public const string DescSuffix = "desc";
+        // Единственный источник — рантайм-ContentKeys: редактор ключи создаёт, рантайм их читает,
+        // и расходиться этим двум нельзя.
+        public const string TableName = ContentKeys.TableName;
+        public const string NameSuffix = ContentKeys.NameSuffix;
+        public const string DescSuffix = ContentKeys.DescSuffix;
 
         private static readonly string[] NameOnly = { NameSuffix };
         private static readonly string[] NameAndDesc = { NameSuffix, DescSuffix };
 
-        public static string KeyFor(ContentDefinition def, string suffix) => def.Id + "." + suffix;
+        public static string KeyFor(ContentDefinition def, string suffix) => ContentKeys.KeyFor(def, suffix);
 
         public static StringTableCollection Collection =>
             LocalizationEditorSettings.GetStringTableCollection(TableName);
@@ -45,6 +47,7 @@ namespace Guildmaster.Data.Editor
                 case "ai_preset":
                 case "encounter":
                 case "battle_preset":
+                case "vfx":
                     return Array.Empty<string>();
                 case "event":
                     return EventSuffixes(def as TextEventData);
@@ -127,6 +130,40 @@ namespace Guildmaster.Data.Editor
             foreach (ContentDefinition def in ContentIdUtility.FindAll())
                 if (type.IsInstanceOfType(def)) created += CreateMissingKeys(def);
             return created;
+        }
+
+        /// <summary>
+        /// Все пары «ключ → значение» локали. Отдаём простыми строками, чтобы читателям (валидация
+        /// контента в тестах) не приходилось тянуть сборку редактора локализации ради перечисления.
+        /// </summary>
+        public static IEnumerable<KeyValuePair<string, string>> AllValues(string localeCode)
+        {
+            if (Collection?.GetTable(new LocaleIdentifier(localeCode)) is not StringTable table)
+                yield break;
+
+            foreach (StringTableEntry entry in table.Values)
+            {
+                if (entry == null) continue;
+                yield return new KeyValuePair<string, string>(entry.Key, entry.Value);
+            }
+        }
+
+        /// <summary>
+        /// Записи произвольной таблицы с флагом Smart. Флаг критичен: строка с плейсхолдером
+        /// <c>{dmg}</c> без него не форматируется, а РУШИТСЯ в пустоту (аргументы уходят в
+        /// <c>string.Format</c>, тот падает на именованном слоте) — и дырка видна только в игре.
+        /// </summary>
+        public static IEnumerable<(string Key, string Value, bool IsSmart)> AllEntries(
+            string tableName, string localeCode)
+        {
+            StringTableCollection col = LocalizationEditorSettings.GetStringTableCollection(tableName);
+            if (col?.GetTable(new LocaleIdentifier(localeCode)) is not StringTable table) yield break;
+
+            foreach (StringTableEntry entry in table.Values)
+            {
+                if (entry == null) continue;
+                yield return (entry.Key, entry.Value, entry.IsSmart);
+            }
         }
 
         private static void EnsureKey(StringTableCollection col, string key)

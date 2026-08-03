@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Editor;
+using Guildmaster.Data.Stats;
 using NUnit.Framework;
 using UnityEditor;
 
@@ -15,7 +15,8 @@ namespace Guildmaster.Tests.EditMode.Content
     /// </summary>
     public sealed class ContentValidationTests
     {
-        private static readonly Regex IdFormat = new Regex(@"^[a-z0-9_]+\.[a-z0-9_]+$", RegexOptions.Compiled);
+        // Своей регулярки формата id здесь нет: правило принадлежит ContentDomains — он же его
+        // применяет, когда id генерирует. Копия разъехалась бы на первой правке формата.
 
         private static List<ContentDefinition> AllContent() => ContentIdUtility.FindAll();
 
@@ -28,7 +29,7 @@ namespace Guildmaster.Tests.EditMode.Content
             {
                 string assetPath = AssetDatabase.GetAssetPath(def);
                 Assert.IsFalse(string.IsNullOrEmpty(def.Id), $"Empty id: {assetPath}");
-                Assert.IsTrue(IdFormat.IsMatch(def.Id), $"Id '{def.Id}' not in domain.name format: {assetPath}");
+                Assert.IsTrue(ContentDomains.IsValidId(def.Id), $"Id '{def.Id}' not in domain.name format: {assetPath}");
 
                 string expectedDomain = ContentDomains.GetDomain(def.GetType());
                 Assert.IsTrue(def.Id.StartsWith(expectedDomain + "."),
@@ -56,7 +57,7 @@ namespace Guildmaster.Tests.EditMode.Content
         {
             string[] guids = AssetDatabase.FindAssets($"t:{nameof(ContentDatabase)}");
             Assert.AreEqual(1, guids.Length,
-                "Ровно один ContentDatabase.asset ожидается (Tools/Guildmaster/Sync Content Database).");
+                "Ровно один ContentDatabase.asset ожидается (Alebardium/Data/Sync Content Database).");
 
             var db = AssetDatabase.LoadAssetAtPath<ContentDatabase>(AssetDatabase.GUIDToAssetPath(guids[0]));
             Assert.IsNotNull(db);
@@ -66,7 +67,7 @@ namespace Guildmaster.Tests.EditMode.Content
             var dbIds = db.Entries.Select(e => e.Id).OrderBy(x => x).ToArray();
             var projectIds = AllContent().Select(d => d.Id).OrderBy(x => x).ToArray();
             CollectionAssert.AreEqual(projectIds, dbIds,
-                "ContentDatabase не актуален: запусти Tools/Guildmaster/Sync Content Database.");
+                "ContentDatabase не актуален: запусти Alebardium/Data/Sync Content Database.");
         }
 
         // --- §8 правило 3: [SerializeReference]-списки без null (следы missing types) ---
@@ -124,16 +125,46 @@ namespace Guildmaster.Tests.EditMode.Content
             }
         }
 
+        /// <summary>
+        /// База HP и скорости передвижения принадлежит боевому классу (ГДД «Боевая система»: «Базу HP и
+        /// скорости передвижения задаёт класс»), а <c>ClassBalanceConfig</c> кладёт её первой Override-группой.
+        /// Значение из <c>StatsConfig._defaults</c> при этом до юнита не доживало никогда — но выглядело
+        /// правдой при чтении конфига, и уже разошлось с классовым якорем (1200 против 2000×множитель).
+        /// Дефолты сняты; тест держит их снятыми, чтобы второй владелец не отрос заново.
+        /// </summary>
         [Test]
-        public void StatsConfig_AttackSpeedClampOrdered()
+        public void StatsConfig_DoesNotOwnBaseHpOrMoveSpeed()
         {
             foreach (string guid in AssetDatabase.FindAssets($"t:{nameof(StatsConfig)}"))
             {
                 var cfg = AssetDatabase.LoadAssetAtPath<StatsConfig>(AssetDatabase.GUIDToAssetPath(guid));
-                Assert.Less(cfg.AttackSpeedMin, cfg.AttackSpeedMax,
-                    $"StatsConfig: AttackSpeedMin должен быть < AttackSpeedMax ({AssetDatabase.GetAssetPath(cfg)}).");
+                var so  = new SerializedObject(cfg);
+                SerializedProperty defaults = so.FindProperty("_defaults");
+
+                for (int i = 0; i < defaults.arraySize; i++)
+                {
+                    var stat = (StatType)defaults.GetArrayElementAtIndex(i).FindPropertyRelative("Stat").enumValueIndex;
+                    Assert.That(stat, Is.Not.EqualTo(StatType.MaxHP).And.Not.EqualTo(StatType.MoveSpeed),
+                        $"StatsConfig ({AssetDatabase.GetAssetPath(cfg)}) задаёт дефолт '{stat}'. " +
+                        "Базу HP и скорости держит боевой класс — здесь она была бы вторым владельцем.");
+                }
             }
         }
+
+        /// <summary>
+        /// Раз базы в <c>StatsConfig</c> больше нет, единственный её источник — класс. Юнит без класса
+        /// собрался бы с нулевым HP и умер на спавне, поэтому проверяем: класс задан у каждого.
+        /// </summary>
+        [Test]
+        public void EveryUnit_DeclaresCombatClass()
+        {
+            foreach (UnitData unit in AllContent().OfType<UnitData>())
+                Assert.That(System.Enum.IsDefined(typeof(UnitClass), unit.CombatClass), Is.True,
+                    $"'{unit.Id}': боевой класс не задан, а базу HP и скорости даёт именно он.");
+        }
+
+        // Тест клампа скорости атаки снят вместе с самим клампом (решение 2026-07-28): симуляция его
+        // не применяла, поля в StatsConfig врали, а потолок темпа бил по киту, чья фантазия — разгон.
 
         // --- §8 правило 7: ссылочная целостность по id — враги энкаунтера существуют ---
 

@@ -13,7 +13,6 @@ namespace Guildmaster.ContentHub.Editor
 
         public bool CanBack => _index > 0;
         public bool CanForward => _index >= 0 && _index < _items.Count - 1;
-        public bool HasCurrent => _index >= 0;
         public T Current => _index >= 0 ? _items[_index] : default;
         public int Count => _items.Count;
 

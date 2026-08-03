@@ -19,6 +19,31 @@ namespace Guildmaster.Tests.EditMode.Content
                 .Select(g => AssetDatabase.LoadAssetAtPath<UnitVisual>(AssetDatabase.GUIDToAssetPath(g)))
                 .ToArray();
 
+        private static UnitData[] AllUnits() =>
+            AssetDatabase.FindAssets($"t:{nameof(UnitData)}")
+                .Select(g => AssetDatabase.LoadAssetAtPath<UnitData>(AssetDatabase.GUIDToAssetPath(g)))
+                .Where(u => u != null)
+                .ToArray();
+
+        [Test]
+        public void HitDamageShares_MatchMarkerCount()
+        {
+            // Доли урона задаются каждому Удару лично и читаются ПО ИНДЕКСУ контакта. Список короче
+            // разметки — часть Ударов молча уйдёт в полную силу; длиннее — лишние числа никогда не
+            // сыграют, и автор будет крутить их, не понимая, почему ничего не меняется. Обе ошибки
+            // не видны в игре, поэтому ловятся здесь.
+            foreach (UnitData unit in AllUnits())
+            {
+                float[] shares = unit.HitDamageShares;
+                if (shares == null || shares.Length == 0) continue;   // не задано = каждый Удар в полную силу
+
+                int contacts = unit.Visual != null ? unit.Visual.AttackHitCount : 0;
+                Assert.AreEqual(contacts, shares.Length,
+                    $"{unit.name}: долей урона {shares.Length}, а контактов в клипе атаки {contacts} " +
+                    $"({AssetDatabase.GetAssetPath(unit)}). Число долей обязано совпадать с числом маркеров.");
+            }
+        }
+
         [Test]
         public void Visuals_RequiredBaseSlotsFilled()
         {
@@ -43,10 +68,32 @@ namespace Guildmaster.Tests.EditMode.Content
                 if (attack == null) continue; // покрыто RequiredBaseSlotsFilled
                 string path = AssetDatabase.GetAssetPath(vis);
 
-                float t = ClipMarkers.FirstMarkerTime(attack);
+                float t = ClipMarkers.FirstHitTime(attack);
                 Assert.GreaterOrEqual(t, 0f, $"UnitVisual '{vis.name}' Attack clip has no \"Marker\" event ({path}).");
                 Assert.LessOrEqual(t, attack.length,
                     $"UnitVisual '{vis.name}' Attack marker at {t}s is past clip end {attack.length}s ({path}).");
+            }
+        }
+
+        /// <summary>
+        /// Маркер контакта не стоит в НУЛЕ. Ноль формально «внутри клипа», поэтому проверка выше его
+        /// пропускает, а сим считает по нему долю замаха: `windup = hit / frames`, то есть удар без замаха.
+        /// Ровно это случилось 30.07.2026, когда Монах переехал на Fantasy Warrior — у пака маркер лежал в
+        /// нуле, и его авто-атака стала бить мгновенно, молча и без единой ошибки в консоли.
+        /// </summary>
+        [Test]
+        public void Visuals_AttackMarkerIsNotAtFrameZero()
+        {
+            foreach (UnitVisual vis in AllVisuals())
+            {
+                AnimationClip attack = vis.AttackClip;
+                if (attack == null) continue;
+                if (ClipMarkers.FirstHitTime(attack) < 0f) continue;   // отсутствие покрыто тестом выше
+
+                Assert.Greater(vis.AttackHitFrame, 0,
+                    $"UnitVisual '{vis.name}': маркер контакта стоит на кадре 0 " +
+                    $"({AssetDatabase.GetAssetPath(vis)}). Сим выведет из него нулевой замах — удар без " +
+                    "подводки. Поставь маркер туда, где оружие реально достаёт цель.");
             }
         }
 
@@ -61,7 +108,7 @@ namespace Guildmaster.Tests.EditMode.Content
                     AnimationClip clip = vis.SkillClip(slot);
                     if (clip == null) continue; // слот необязателен
 
-                    float t = ClipMarkers.FirstMarkerTime(clip);
+                    float t = ClipMarkers.FirstHitTime(clip);
                     Assert.GreaterOrEqual(t, 0f, $"UnitVisual '{vis.name}' Skill{slot + 1} clip has no \"Marker\" event ({path}).");
                     Assert.LessOrEqual(t, clip.length,
                         $"UnitVisual '{vis.name}' Skill{slot + 1} marker at {t}s past clip end {clip.length}s ({path}).");

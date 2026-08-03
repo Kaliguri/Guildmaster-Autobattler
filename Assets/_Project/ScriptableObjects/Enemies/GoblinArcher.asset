@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: GoblinArcher
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
   _id: enemy.goblin_archer
-  _damageSchool: 0
-  _affinity: 0
+  _combatClass: 3
+  _autoAttackDamageType: 3
   _creatureType: 0
   _attackType: 1
   _resourceType: 0
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _visual: {fileID: 11400000, guid: 3915bda3962c1304d845007568e37a70, type: 2}
+  _viewPrefab: {fileID: 5941402093529111970, guid: a2b200a01d3a9174fa1c0a689413a030, type: 3}
+  _bodyShade: 0
+  _vfxTone: 11
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects: []
@@ -27,10 +29,8 @@ MonoBehaviour:
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
   _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
   _stats:
-  - Stat: 0
-    Op: 3
-    Value: 375
   - Stat: 7
     Op: 3
     Value: 60
@@ -43,9 +43,6 @@ MonoBehaviour:
   - Stat: 3
     Op: 3
     Value: 1
-  - Stat: 20
-    Op: 3
-    Value: 3
   - Stat: 18
     Op: 3
     Value: 10
@@ -68,5 +65,7 @@ MonoBehaviour:
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
   _infoTags: []
+  _species: {fileID: 11400000, guid: 6bc6e7517b81dd74b892560d7246c559, type: 2}
+  _subspecies: {fileID: 0}
   _threatPoints: 2
   _goldBounty: 0

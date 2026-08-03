@@ -33,4 +33,13 @@ namespace Guildmaster.Game.Flow
     {
         public bool IsLocalAuthority => true;
     }
+
+    /// <summary>
+    /// Гость: авторитета нет никогда. Решения по забегу принимает владелец состояния, гость их только
+    /// просит — и это не «ограничение прав», а единственный способ не разойтись состояниями.
+    /// </summary>
+    public sealed class GuestPlayerIntentSource : IPlayerIntentSource
+    {
+        public bool IsLocalAuthority => false;
+    }
 }

@@ -1,85 +1,1389 @@
 {
-  "_comment": "SFX placeholder manifest (spec impl 09). Drives populate.js. Paths under sourceRoot are Max-machine-specific pack locations; FMOD copies imported audio into 'FMOD Project/Assets' so the .fspro becomes self-contained after import. Packs: RPG Essentials Free (Leohpaz, free-commercial), Kenney impact-sounds (CC0). Sonniss intentionally not used yet (needs ear-curation).",
-  "sourceRoot": "C:/My Program Files/_TEMP/SFX",
+  "sourceRoot": "FMOD Project/SourceAudio",
   "bank": "SFX",
+  "musicBank": "Music",
+  "targetRmsDb": -23.0,
+  "truePeakDb": -1.0,
   "buses": {
-    "SFX_Combat": "bus:/SFX_Combat",
-    "SFX_UI": "bus:/SFX_UI",
-    "Stingers": "bus:/Stingers"
+    "SFX": {
+      "parent": null,
+      "volumeDb": 0.0
+    },
+    "Music": {
+      "parent": null,
+      "volumeDb": -6.0
+    },
+    "SFX/Combat": {
+      "parent": "SFX",
+      "volumeDb": 0.0
+    },
+    "SFX/UI": {
+      "parent": "SFX",
+      "volumeDb": -5.0
+    },
+    "SFX/Ambient": {
+      "parent": "SFX",
+      "volumeDb": -9.0
+    },
+    "SFX/Stingers": {
+      "parent": "SFX",
+      "volumeDb": 1.0
+    }
   },
   "categories": {
-    "impact":  { "bus": "SFX_Combat", "pitchSemitones": 2.5, "volumeDb": 3.0, "maxInstances": 4, "cooldownMs": 60, "stealing": "quietest",   "priority": "low" },
-    "whoosh":  { "bus": "SFX_Combat", "pitchSemitones": 1.5, "volumeDb": 3.0, "maxInstances": 4, "cooldownMs": 60, "stealing": "quietest",   "priority": "low" },
-    "tonal":   { "bus": "SFX_Combat", "pitchSemitones": 0.5, "volumeDb": 2.0, "maxInstances": 3, "cooldownMs": 50, "stealing": "virtualize", "priority": "medium" },
-    "cast":    { "bus": "SFX_Combat", "pitchSemitones": 1.0, "volumeDb": 2.0, "maxInstances": 2, "cooldownMs": 50, "stealing": "virtualize", "priority": "medium" },
-    "death":   { "bus": "SFX_Combat", "pitchSemitones": 2.0, "volumeDb": 3.0, "maxInstances": 3, "cooldownMs": 80, "stealing": "oldest",     "priority": "high" },
-    "stinger": { "bus": "Stingers",   "pitchSemitones": 0.0, "volumeDb": 1.0, "maxInstances": 1, "cooldownMs": 0,  "stealing": "none",       "priority": "highest" },
-    "ui":      { "bus": "SFX_UI",     "pitchSemitones": 1.0, "volumeDb": 2.0, "maxInstances": 2, "cooldownMs": 30, "stealing": "oldest",     "priority": "high" }
+    "impact": {
+      "bus": "SFX/Combat",
+      "volumeDb": 0.0,
+      "pitchSt": 2.5,
+      "volRandDb": 3.0,
+      "maxVoices": 4,
+      "cooldownMs": 50,
+      "stealing": 2,
+      "priority": 1,
+      "spatial": true
+    },
+    "whoosh": {
+      "bus": "SFX/Combat",
+      "volumeDb": -2.0,
+      "pitchSt": 1.5,
+      "volRandDb": 3.0,
+      "maxVoices": 4,
+      "cooldownMs": 60,
+      "stealing": 2,
+      "priority": 1,
+      "spatial": true
+    },
+    "tonal": {
+      "bus": "SFX/Combat",
+      "volumeDb": -3.0,
+      "pitchSt": 0.5,
+      "volRandDb": 2.0,
+      "maxVoices": 3,
+      "cooldownMs": 60,
+      "stealing": 3,
+      "priority": 2,
+      "spatial": true
+    },
+    "cast": {
+      "bus": "SFX/Combat",
+      "volumeDb": -1.0,
+      "pitchSt": 1.0,
+      "volRandDb": 2.0,
+      "maxVoices": 2,
+      "cooldownMs": 50,
+      "stealing": 3,
+      "priority": 2,
+      "spatial": true
+    },
+    "death": {
+      "bus": "SFX/Combat",
+      "volumeDb": 0.0,
+      "pitchSt": 2.0,
+      "volRandDb": 3.0,
+      "maxVoices": 3,
+      "cooldownMs": 80,
+      "stealing": 0,
+      "priority": 3,
+      "spatial": true
+    },
+    "stinger": {
+      "bus": "SFX/Stingers",
+      "volumeDb": 0.0,
+      "pitchSt": 0.0,
+      "volRandDb": 0.0,
+      "maxVoices": 1,
+      "cooldownMs": 250,
+      "stealing": 4,
+      "priority": 4
+    },
+    "ui": {
+      "bus": "SFX/UI",
+      "volumeDb": -2.0,
+      "pitchSt": 1.0,
+      "volRandDb": 2.0,
+      "maxVoices": 2,
+      "cooldownMs": 30,
+      "stealing": 0,
+      "priority": 3
+    },
+    "ui_soft": {
+      "bus": "SFX/UI",
+      "volumeDb": -9.0,
+      "pitchSt": 1.0,
+      "volRandDb": 2.0,
+      "maxVoices": 2,
+      "cooldownMs": 40,
+      "stealing": 0,
+      "priority": 2
+    },
+    "music": {
+      "bus": "Music",
+      "volumeDb": 0.0,
+      "pitchSt": 0.0,
+      "volRandDb": 0.0,
+      "maxVoices": 1,
+      "cooldownMs": 0,
+      "stealing": 4,
+      "priority": 4,
+      "looping": true
+    },
+    "ambient": {
+      "bus": "SFX/Ambient",
+      "volumeDb": -6.0,
+      "pitchSt": 0.0,
+      "volRandDb": 0.0,
+      "maxVoices": 1,
+      "cooldownMs": 0,
+      "stealing": 4,
+      "priority": 2,
+      "looping": true
+    }
+  },
+  "timeScaleParam": {
+    "name": "TimeScale",
+    "minimum": 0.05,
+    "maximum": 3.0,
+    "initial": 1.0,
+    "bus": "SFX/Combat",
+    "curve": [
+      [
+        0.05,
+        -24.0
+      ],
+      [
+        0.25,
+        -24.0
+      ],
+      [
+        0.5,
+        -12.0
+      ],
+      [
+        0.75,
+        -4.98
+      ],
+      [
+        1.0,
+        0.0
+      ],
+      [
+        1.5,
+        7.02
+      ],
+      [
+        2.0,
+        12.0
+      ],
+      [
+        3.0,
+        19.02
+      ]
+    ]
   },
   "events": [
-    { "key": "attack", "action": "Attack", "isDefault": true, "path": "event:/SFX/Combat/attack", "category": "whoosh",
-      "files": ["RPG_Essentials_Free/10_Battle_SFX/22_Slash_04.wav", "RPG_Essentials_Free/12_Player_Movement_SFX/56_Attack_03.wav"] },
-    { "key": "fire", "action": "Fire", "isDefault": true, "path": "event:/SFX/Combat/fire", "category": "whoosh",
-      "files": ["RPG_Essentials_Free/8_Atk_Magic_SFX/25_Wind_01.wav"] },
-    { "key": "hit", "action": "Hit", "isDefault": true, "path": "event:/SFX/Combat/hit", "category": "impact",
-      "files": ["kenney_impact-sounds/Audio/impactPunch_medium_000.ogg", "kenney_impact-sounds/Audio/impactPunch_medium_001.ogg", "kenney_impact-sounds/Audio/impactPunch_medium_002.ogg", "kenney_impact-sounds/Audio/impactPunch_medium_003.ogg", "kenney_impact-sounds/Audio/impactPunch_medium_004.ogg", "RPG_Essentials_Free/10_Battle_SFX/15_Impact_flesh_02.wav", "RPG_Essentials_Free/10_Battle_SFX/77_flesh_02.wav"] },
-    { "key": "evade", "action": "Evade", "isDefault": true, "path": "event:/SFX/Combat/evade", "category": "whoosh",
-      "files": ["RPG_Essentials_Free/10_Battle_SFX/35_Miss_Evade_02.wav"] },
-    { "key": "shield", "action": "Shield", "isDefault": true, "path": "event:/SFX/Combat/shield", "category": "impact",
-      "files": ["kenney_impact-sounds/Audio/impactMetal_medium_000.ogg", "kenney_impact-sounds/Audio/impactMetal_medium_001.ogg", "kenney_impact-sounds/Audio/impactMetal_medium_002.ogg", "kenney_impact-sounds/Audio/impactMetal_medium_003.ogg", "kenney_impact-sounds/Audio/impactMetal_medium_004.ogg", "RPG_Essentials_Free/10_Battle_SFX/39_Block_03.wav"] },
-    { "key": "heal", "action": "Heal", "isDefault": true, "path": "event:/SFX/Combat/heal", "category": "tonal",
-      "files": ["RPG_Essentials_Free/8_Buffs_Heals_SFX/02_Heal_02.wav"] },
-    { "key": "cast", "action": "Cast", "isDefault": true, "path": "event:/SFX/Combat/cast", "category": "cast",
-      "files": ["RPG_Essentials_Free/8_Atk_Magic_SFX/45_Charge_05.wav"] },
-    { "key": "death", "action": "Death", "isDefault": true, "path": "event:/SFX/Combat/death", "category": "death",
-      "files": ["kenney_impact-sounds/Audio/impactSoft_heavy_000.ogg", "kenney_impact-sounds/Audio/impactSoft_heavy_001.ogg", "kenney_impact-sounds/Audio/impactSoft_heavy_002.ogg", "kenney_impact-sounds/Audio/impactSoft_heavy_003.ogg", "kenney_impact-sounds/Audio/impactSoft_heavy_004.ogg", "RPG_Essentials_Free/10_Battle_SFX/69_Enemy_death_01.wav"] },
-    { "key": "apply", "action": "Apply", "isDefault": true, "path": "event:/SFX/Combat/apply", "category": "tonal",
-      "files": ["RPG_Essentials_Free/8_Buffs_Heals_SFX/16_Atk_buff_04.wav", "RPG_Essentials_Free/8_Buffs_Heals_SFX/17_Def_buff_01.wav"] },
-    { "key": "expire", "action": "Expire", "isDefault": true, "path": "event:/SFX/Combat/expire", "category": "tonal",
-      "files": ["RPG_Essentials_Free/8_Buffs_Heals_SFX/21_Debuff_01.wav"] },
-    { "key": "tick", "action": "Tick", "isDefault": true, "path": "event:/SFX/Combat/tick", "category": "tonal",
-      "files": ["RPG_Essentials_Free/8_Atk_Magic_SFX/46_Poison_01.wav"] },
-    { "key": "ui", "action": "Ui", "isDefault": true, "path": "event:/SFX/UI/ui", "category": "ui",
-      "files": ["RPG_Essentials_Free/10_UI_Menu_SFX/013_Confirm_03.wav"] },
-    { "key": "stinger", "action": "Stinger", "isDefault": true, "path": "event:/Stingers/stinger", "category": "stinger",
-      "files": ["RPG_Essentials_Free/10_Battle_SFX/55_Encounter_02.wav"] },
-
-    { "key": "relic.cryomancer.attack", "isDefault": false, "path": "event:/SFX/Relics/cryomancer/attack", "category": "tonal",
-      "files": ["RPG_Essentials_Free/8_Atk_Magic_SFX/13_Ice_explosion_01.wav"] },
-    { "key": "relic.cryomancer.cast", "isDefault": false, "path": "event:/SFX/Relics/cryomancer/cast", "category": "cast",
-      "files": ["RPG_Essentials_Free/8_Atk_Magic_SFX/13_Ice_explosion_01.wav", "RPG_Essentials_Free/8_Atk_Magic_SFX/45_Charge_05.wav"] },
-    { "key": "effect.frozen.apply", "isDefault": false, "path": "event:/SFX/Effects/frozen/apply", "category": "tonal",
-      "files": ["RPG_Essentials_Free/8_Atk_Magic_SFX/13_Ice_explosion_01.wav"] },
-    { "key": "effect.frozen.expire", "isDefault": false, "path": "event:/SFX/Effects/frozen/expire", "category": "impact",
-      "files": ["kenney_impact-sounds/Audio/impactGlass_medium_000.ogg", "kenney_impact-sounds/Audio/impactGlass_medium_001.ogg", "kenney_impact-sounds/Audio/impactGlass_medium_002.ogg", "kenney_impact-sounds/Audio/impactGlass_medium_003.ogg", "kenney_impact-sounds/Audio/impactGlass_medium_004.ogg"] },
-    { "key": "relic.light_shepherd.cast", "isDefault": false, "path": "event:/SFX/Relics/light_shepherd/cast", "category": "tonal",
-      "files": ["RPG_Essentials_Free/8_Buffs_Heals_SFX/30_Revive_03.wav"] },
-    { "key": "relic.whirl_monk.cast", "isDefault": false, "path": "event:/SFX/Relics/whirl_monk/cast", "category": "whoosh",
-      "files": ["RPG_Essentials_Free/12_Player_Movement_SFX/88_Teleport_02.wav"] },
-    { "key": "effect.vortex_entry.apply", "isDefault": false, "path": "event:/SFX/Effects/vortex_entry/apply", "category": "whoosh",
-      "files": ["RPG_Essentials_Free/12_Player_Movement_SFX/88_Teleport_02.wav"] },
-    { "key": "relic.assassin.cast", "isDefault": false, "path": "event:/SFX/Relics/assassin/cast", "category": "whoosh",
-      "files": ["RPG_Essentials_Free/8_Atk_Magic_SFX/25_Wind_01.wav"] },
-
-    { "key": "feel.kill.stinger", "isDefault": false, "path": "event:/SFX/Feel/kill", "category": "stinger",
-      "files": ["kenney_impact-sounds/Audio/impactBell_heavy_000.ogg", "kenney_impact-sounds/Audio/impactBell_heavy_001.ogg", "kenney_impact-sounds/Audio/impactBell_heavy_002.ogg", "kenney_impact-sounds/Audio/impactBell_heavy_003.ogg", "kenney_impact-sounds/Audio/impactBell_heavy_004.ogg"] },
-    { "key": "feel.heavy_hit.hit", "isDefault": false, "path": "event:/SFX/Feel/heavy_hit", "category": "impact",
-      "files": ["kenney_impact-sounds/Audio/impactPunch_heavy_000.ogg", "kenney_impact-sounds/Audio/impactPunch_heavy_001.ogg", "kenney_impact-sounds/Audio/impactPunch_heavy_002.ogg", "kenney_impact-sounds/Audio/impactPunch_heavy_003.ogg", "kenney_impact-sounds/Audio/impactPunch_heavy_004.ogg"] },
-    { "key": "feel.death_shatter.death", "isDefault": false, "path": "event:/SFX/Feel/death_shatter", "category": "impact",
-      "files": ["kenney_impact-sounds/Audio/impactGlass_heavy_000.ogg", "kenney_impact-sounds/Audio/impactGlass_heavy_001.ogg", "kenney_impact-sounds/Audio/impactGlass_heavy_002.ogg", "kenney_impact-sounds/Audio/impactGlass_heavy_003.ogg", "kenney_impact-sounds/Audio/impactGlass_heavy_004.ogg"] },
-
-    { "key": "ui.pause.ui", "isDefault": false, "path": "event:/SFX/UI/pause", "category": "ui",
-      "files": ["RPG_Essentials_Free/10_UI_Menu_SFX/092_Pause_04.wav"] },
-    { "key": "ui.resume.ui", "isDefault": false, "path": "event:/SFX/UI/resume", "category": "ui",
-      "files": ["RPG_Essentials_Free/10_UI_Menu_SFX/098_Unpause_04.wav"] },
-    { "key": "ui.deploy_place.ui", "isDefault": false, "path": "event:/SFX/UI/deploy_place", "category": "ui",
-      "files": ["RPG_Essentials_Free/10_UI_Menu_SFX/070_Equip_10.wav"] },
-
-    { "key": "battle.start.stinger", "isDefault": false, "path": "event:/Stingers/battle_start", "category": "stinger",
-      "files": ["RPG_Essentials_Free/10_Battle_SFX/55_Encounter_02.wav"] },
-    { "key": "battle.victory.stinger", "isDefault": false, "path": "event:/Stingers/victory", "category": "stinger",
-      "files": ["RPG_Essentials_Free/10_UI_Menu_SFX/013_Confirm_03.wav"] },
-    { "key": "battle.defeat.stinger", "isDefault": false, "path": "event:/Stingers/defeat", "category": "stinger",
-      "files": ["RPG_Essentials_Free/10_UI_Menu_SFX/033_Denied_03.wav"] }
+    {
+      "key": "attack",
+      "action": "Attack",
+      "isDefault": true,
+      "path": "event:/SFX/Combat/attack",
+      "category": "whoosh",
+      "files": [
+        "whoosh/attack_01.wav",
+        "whoosh/attack_02.wav",
+        "whoosh/attack_03.wav",
+        "whoosh/attack_04.wav"
+      ]
+    },
+    {
+      "key": "fire",
+      "action": "Fire",
+      "isDefault": true,
+      "path": "event:/SFX/Combat/fire",
+      "category": "whoosh",
+      "files": [
+        "whoosh/fire_01.wav",
+        "whoosh/fire_02.wav",
+        "whoosh/fire_03.wav"
+      ]
+    },
+    {
+      "key": "hit",
+      "action": "Hit",
+      "isDefault": true,
+      "path": "event:/SFX/Combat/hit",
+      "category": "impact",
+      "files": [
+        "impact/hit_01.wav",
+        "impact/hit_02.wav",
+        "impact/hit_03.wav",
+        "impact/hit_04.wav",
+        "impact/hit_05.wav",
+        "impact/hit_06.wav",
+        "impact/hit_07.wav"
+      ]
+    },
+    {
+      "key": "evade",
+      "action": "Evade",
+      "isDefault": true,
+      "path": "event:/SFX/Combat/evade",
+      "category": "whoosh",
+      "files": [
+        "whoosh/evade_01.wav",
+        "whoosh/evade_02.wav",
+        "whoosh/evade_03.wav"
+      ]
+    },
+    {
+      "key": "shield",
+      "action": "Shield",
+      "isDefault": true,
+      "path": "event:/SFX/Combat/shield",
+      "category": "impact",
+      "files": [
+        "impact/shield_01.wav",
+        "impact/shield_02.wav",
+        "impact/shield_03.wav",
+        "impact/shield_04.wav",
+        "impact/shield_05.wav",
+        "impact/shield_06.wav"
+      ]
+    },
+    {
+      "key": "heal",
+      "action": "Heal",
+      "isDefault": true,
+      "path": "event:/SFX/Combat/heal",
+      "category": "tonal",
+      "files": [
+        "tonal/heal_01.wav"
+      ]
+    },
+    {
+      "key": "cast",
+      "action": "Cast",
+      "isDefault": true,
+      "path": "event:/SFX/Combat/cast",
+      "category": "cast",
+      "files": [
+        "cast/cast_01.wav"
+      ]
+    },
+    {
+      "key": "death",
+      "action": "Death",
+      "isDefault": true,
+      "path": "event:/SFX/Combat/death",
+      "category": "death",
+      "files": [
+        "death/death_01.wav",
+        "death/death_02.wav",
+        "death/death_03.wav",
+        "death/death_04.wav",
+        "death/death_05.wav",
+        "death/death_06.wav"
+      ]
+    },
+    {
+      "key": "apply",
+      "action": "Apply",
+      "isDefault": true,
+      "path": "event:/SFX/Combat/apply",
+      "category": "tonal",
+      "files": [
+        "tonal/apply_01.wav",
+        "tonal/apply_02.wav"
+      ]
+    },
+    {
+      "key": "expire",
+      "action": "Expire",
+      "isDefault": true,
+      "path": "event:/SFX/Combat/expire",
+      "category": "tonal",
+      "files": [
+        "tonal/expire_01.wav"
+      ]
+    },
+    {
+      "key": "tick",
+      "action": "Tick",
+      "isDefault": true,
+      "path": "event:/SFX/Combat/tick",
+      "category": "tonal",
+      "files": [
+        "tonal/tick_01.wav"
+      ]
+    },
+    {
+      "key": "ui",
+      "action": "Ui",
+      "isDefault": true,
+      "path": "event:/SFX/UI/ui",
+      "category": "ui",
+      "files": [
+        "ui/ui_01.wav",
+        "ui/ui_02.wav",
+        "ui/ui_03.wav",
+        "ui/ui_04.wav",
+        "ui/ui_05.wav"
+      ]
+    },
+    {
+      "key": "stinger",
+      "action": "Stinger",
+      "isDefault": true,
+      "path": "event:/Stingers/stinger",
+      "category": "stinger",
+      "files": [
+        "stinger/stinger_01.wav"
+      ]
+    },
+    {
+      "key": "loop",
+      "action": "Loop",
+      "isDefault": true,
+      "path": "event:/SFX/Ambient/loop",
+      "category": "ambient",
+      "files": [
+        "ambient/loop_01.ogg"
+      ]
+    },
+    {
+      "key": "battle.start.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Stingers/battle_start",
+      "category": "stinger",
+      "files": [
+        "stinger/battle_start_01.wav"
+      ]
+    },
+    {
+      "key": "battle.victory.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Stingers/victory",
+      "category": "stinger",
+      "files": [
+        "stinger/victory_01.wav"
+      ]
+    },
+    {
+      "key": "battle.defeat.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Stingers/defeat",
+      "category": "stinger",
+      "files": [
+        "stinger/defeat_01.wav"
+      ]
+    },
+    {
+      "key": "combat.unit_spawn.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Combat/unit_spawn",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/unit_spawn_01.wav",
+        "ui_soft/unit_spawn_02.wav"
+      ]
+    },
+    {
+      "key": "combat.attack_interrupted.evade",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Combat/attack_interrupted",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/attack_interrupted_01.wav",
+        "ui_soft/attack_interrupted_02.wav"
+      ]
+    },
+    {
+      "key": "enemy.training_dummy.hit",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Enemies/training_dummy/hit",
+      "category": "impact",
+      "files": [
+        "impact/hit_01.wav",
+        "impact/hit_02.wav",
+        "impact/hit_03.wav",
+        "impact/hit_04.wav"
+      ]
+    },
+    {
+      "key": "feel.kill.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Feel/kill",
+      "category": "stinger",
+      "files": [
+        "stinger/kill_01.wav",
+        "stinger/kill_02.wav",
+        "stinger/kill_03.wav",
+        "stinger/kill_04.wav",
+        "stinger/kill_05.wav"
+      ]
+    },
+    {
+      "key": "feel.heavy_hit.hit",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Feel/heavy_hit",
+      "category": "impact",
+      "files": [
+        "impact/heavy_hit_01.wav",
+        "impact/heavy_hit_02.wav",
+        "impact/heavy_hit_03.wav",
+        "impact/heavy_hit_04.wav",
+        "impact/heavy_hit_05.wav"
+      ]
+    },
+    {
+      "key": "feel.death_shatter.death",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Feel/death_shatter",
+      "category": "impact",
+      "files": [
+        "impact/death_shatter_01.wav",
+        "impact/death_shatter_02.wav",
+        "impact/death_shatter_03.wav",
+        "impact/death_shatter_04.wav",
+        "impact/death_shatter_05.wav"
+      ]
+    },
+    {
+      "key": "feel.finisher.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Feel/finisher",
+      "category": "stinger",
+      "files": [
+        "stinger/finisher_01.wav",
+        "stinger/finisher_02.wav"
+      ]
+    },
+    {
+      "key": "relic.cryomancer.attack",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/cryomancer/attack",
+      "category": "tonal",
+      "files": [
+        "tonal/attack_01.wav"
+      ]
+    },
+    {
+      "key": "relic.cryomancer.cast",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/cryomancer/cast",
+      "category": "cast",
+      "files": [
+        "cast/cast_01.wav",
+        "cast/cast_02.wav"
+      ]
+    },
+    {
+      "key": "relic.light_shepherd.cast",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/light_shepherd/cast",
+      "category": "tonal",
+      "files": [
+        "tonal/cast_01.wav"
+      ]
+    },
+    {
+      "key": "relic.light_shepherd.fire",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/light_shepherd/fire",
+      "category": "tonal",
+      "files": [
+        "tonal/fire_01.wav"
+      ]
+    },
+    {
+      "key": "relic.whirl_monk.cast",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/whirl_monk/cast",
+      "category": "whoosh",
+      "files": [
+        "whoosh/cast_01.wav"
+      ]
+    },
+    {
+      "key": "relic.assassin.cast",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/assassin/cast",
+      "category": "whoosh",
+      "files": [
+        "whoosh/cast_01.wav"
+      ]
+    },
+    {
+      "key": "relic.ranger.fire",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/ranger/fire",
+      "category": "whoosh",
+      "files": [
+        "whoosh/fire_01.wav",
+        "whoosh/fire_02.wav"
+      ]
+    },
+    {
+      "key": "relic.iron_spearman.attack",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/iron_spearman/attack",
+      "category": "whoosh",
+      "files": [
+        "whoosh/attack_01.wav",
+        "whoosh/attack_02.wav"
+      ]
+    },
+    {
+      "key": "relic.defender.shield",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/defender/shield",
+      "category": "impact",
+      "files": [
+        "impact/shield_01.wav",
+        "impact/shield_02.wav",
+        "impact/shield_03.wav"
+      ]
+    },
+    {
+      "key": "relic.flame_swordsman.attack",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/flame_swordsman/attack",
+      "category": "whoosh",
+      "files": [
+        "whoosh/attack_01.wav",
+        "whoosh/attack_02.wav"
+      ]
+    },
+    {
+      "key": "relic.treant.attack",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/treant/attack",
+      "category": "impact",
+      "files": [
+        "impact/attack_01.wav",
+        "impact/attack_02.wav"
+      ]
+    },
+    {
+      "key": "relic.druid.cast",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Relics/druid/cast",
+      "category": "tonal",
+      "files": [
+        "tonal/cast_01.wav"
+      ]
+    },
+    {
+      "key": "effect.frozen.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/frozen/apply",
+      "category": "tonal",
+      "files": [
+        "tonal/apply_01.wav"
+      ]
+    },
+    {
+      "key": "effect.frozen.expire",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/frozen/expire",
+      "category": "impact",
+      "files": [
+        "impact/expire_01.wav",
+        "impact/expire_02.wav",
+        "impact/expire_03.wav",
+        "impact/expire_04.wav",
+        "impact/expire_05.wav"
+      ]
+    },
+    {
+      "key": "effect.burn.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/burn/apply",
+      "category": "tonal",
+      "files": [
+        "tonal/apply_01.wav"
+      ]
+    },
+    {
+      "key": "effect.burn.tick",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/burn/tick",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/tick_01.wav"
+      ]
+    },
+    {
+      "key": "effect.ignition.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/ignition/apply",
+      "category": "cast",
+      "files": [
+        "cast/apply_01.wav"
+      ]
+    },
+    {
+      "key": "effect.spore_cloud.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/spore_cloud/apply",
+      "category": "tonal",
+      "files": [
+        "tonal/apply_01.wav"
+      ]
+    },
+    {
+      "key": "effect.ice_chains_stun.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/ice_chains_stun/apply",
+      "category": "impact",
+      "files": [
+        "impact/apply_01.wav",
+        "impact/apply_02.wav"
+      ]
+    },
+    {
+      "key": "effect.resolute_strike_stun.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/resolute_strike_stun/apply",
+      "category": "impact",
+      "files": [
+        "impact/apply_01.wav",
+        "impact/apply_02.wav"
+      ]
+    },
+    {
+      "key": "effect.stealth.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/stealth/apply",
+      "category": "whoosh",
+      "files": [
+        "whoosh/apply_01.wav",
+        "whoosh/apply_02.wav"
+      ]
+    },
+    {
+      "key": "effect.stealth_buff.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/stealth_buff/apply",
+      "category": "whoosh",
+      "files": [
+        "whoosh/apply_01.wav"
+      ]
+    },
+    {
+      "key": "effect.hunters_mark.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/hunters_mark/apply",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/apply_01.wav",
+        "ui_soft/apply_02.wav"
+      ]
+    },
+    {
+      "key": "effect.bulwark_shield.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/bulwark_shield/apply",
+      "category": "impact",
+      "files": [
+        "impact/apply_01.wav",
+        "impact/apply_02.wav"
+      ]
+    },
+    {
+      "key": "effect.dodge.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/dodge/apply",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/apply_01.wav"
+      ]
+    },
+    {
+      "key": "effect.vortex_entry.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/vortex_entry/apply",
+      "category": "whoosh",
+      "files": [
+        "whoosh/apply_01.wav"
+      ]
+    },
+    {
+      "key": "effect.overgrowth.apply",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/overgrowth/apply",
+      "category": "tonal",
+      "files": [
+        "tonal/apply_01.wav"
+      ]
+    },
+    {
+      "key": "effect.light_mend.tick",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Effects/light_mend/tick",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/tick_01.wav"
+      ]
+    },
+    {
+      "key": "ui.click.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/click",
+      "category": "ui",
+      "files": [
+        "ui/click_01.wav",
+        "ui/click_02.wav",
+        "ui/click_03.wav",
+        "ui/click_04.wav",
+        "ui/click_05.wav"
+      ]
+    },
+    {
+      "key": "ui.hover.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/hover",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/hover_01.wav",
+        "ui_soft/hover_02.wav",
+        "ui_soft/hover_03.wav",
+        "ui_soft/hover_04.wav",
+        "ui_soft/hover_05.wav"
+      ]
+    },
+    {
+      "key": "ui.tab.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/tab",
+      "category": "ui",
+      "files": [
+        "ui/tab_01.wav",
+        "ui/tab_02.wav",
+        "ui/tab_03.wav"
+      ]
+    },
+    {
+      "key": "ui.toggle.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/toggle",
+      "category": "ui",
+      "files": [
+        "ui/toggle_01.wav",
+        "ui/toggle_02.wav",
+        "ui/toggle_03.wav"
+      ]
+    },
+    {
+      "key": "ui.slider.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/slider",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/slider_01.wav",
+        "ui_soft/slider_02.wav",
+        "ui_soft/slider_03.wav"
+      ]
+    },
+    {
+      "key": "ui.back.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/back",
+      "category": "ui",
+      "files": [
+        "ui/back_01.wav",
+        "ui/back_02.wav",
+        "ui/back_03.wav"
+      ]
+    },
+    {
+      "key": "ui.disabled.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/disabled",
+      "category": "ui",
+      "files": [
+        "ui/disabled_01.wav",
+        "ui/disabled_02.wav",
+        "ui/disabled_03.wav"
+      ]
+    },
+    {
+      "key": "ui.tooltip_show.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/tooltip_show",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/tooltip_show_01.wav",
+        "ui_soft/tooltip_show_02.wav"
+      ]
+    },
+    {
+      "key": "ui.tooltip_detail.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/tooltip_detail",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/tooltip_detail_01.wav"
+      ]
+    },
+    {
+      "key": "ui.screen_open.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/screen_open",
+      "category": "ui",
+      "files": [
+        "ui/screen_open_01.wav"
+      ]
+    },
+    {
+      "key": "ui.screen_close.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/screen_close",
+      "category": "ui",
+      "files": [
+        "ui/screen_close_01.wav"
+      ]
+    },
+    {
+      "key": "ui.modal_open.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/modal_open",
+      "category": "ui",
+      "files": [
+        "ui/modal_open_01.wav",
+        "ui/modal_open_02.wav"
+      ]
+    },
+    {
+      "key": "ui.drag_grab.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/drag_grab",
+      "category": "ui",
+      "files": [
+        "ui/drag_grab_01.wav",
+        "ui/drag_grab_02.wav"
+      ]
+    },
+    {
+      "key": "ui.drag_drop.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/drag_drop",
+      "category": "ui",
+      "files": [
+        "ui/drag_drop_01.wav",
+        "ui/drag_drop_02.wav",
+        "ui/drag_drop_03.wav"
+      ]
+    },
+    {
+      "key": "ui.drag_reject.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/drag_reject",
+      "category": "ui",
+      "files": [
+        "ui/drag_reject_01.wav",
+        "ui/drag_reject_02.wav"
+      ]
+    },
+    {
+      "key": "ui.scroll.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/scroll",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/scroll_01.wav",
+        "ui_soft/scroll_02.wav",
+        "ui_soft/scroll_03.wav"
+      ]
+    },
+    {
+      "key": "ui.pause.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/pause",
+      "category": "ui",
+      "files": [
+        "ui/pause_01.wav"
+      ]
+    },
+    {
+      "key": "ui.resume.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/resume",
+      "category": "ui",
+      "files": [
+        "ui/resume_01.wav"
+      ]
+    },
+    {
+      "key": "ui.speed.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/speed",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/speed_01.wav"
+      ]
+    },
+    {
+      "key": "ui.deploy_grab.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/deploy_grab",
+      "category": "ui",
+      "files": [
+        "ui/deploy_grab_01.wav",
+        "ui/deploy_grab_02.wav"
+      ]
+    },
+    {
+      "key": "ui.deploy_place.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/deploy_place",
+      "category": "ui",
+      "files": [
+        "ui/deploy_place_01.wav",
+        "ui/deploy_place_02.wav"
+      ]
+    },
+    {
+      "key": "ui.deploy_reject.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/deploy_reject",
+      "category": "ui",
+      "files": [
+        "ui/deploy_reject_01.wav"
+      ]
+    },
+    {
+      "key": "ui.relic_equip.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/relic_equip",
+      "category": "ui",
+      "files": [
+        "ui/relic_equip_01.wav",
+        "ui/relic_equip_02.wav"
+      ]
+    },
+    {
+      "key": "ui.relic_unequip.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/relic_unequip",
+      "category": "ui",
+      "files": [
+        "ui/relic_unequip_01.wav"
+      ]
+    },
+    {
+      "key": "ui.relic_select.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/UI/relic_select",
+      "category": "ui",
+      "files": [
+        "ui/relic_select_01.wav",
+        "ui/relic_select_02.wav",
+        "ui/relic_select_03.wav"
+      ]
+    },
+    {
+      "key": "map.node_hover.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Map/node_hover",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/node_hover_01.wav"
+      ]
+    },
+    {
+      "key": "map.node_appear.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Map/node_appear",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/node_appear_01.wav",
+        "ui_soft/node_appear_02.wav",
+        "ui_soft/node_appear_03.wav"
+      ]
+    },
+    {
+      "key": "map.node_select.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Map/node_select",
+      "category": "ui",
+      "files": [
+        "ui/node_select_01.wav",
+        "ui/node_select_02.wav",
+        "ui/node_select_03.wav"
+      ]
+    },
+    {
+      "key": "map.node_locked.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Map/node_locked",
+      "category": "ui",
+      "files": [
+        "ui/node_locked_01.wav",
+        "ui/node_locked_02.wav"
+      ]
+    },
+    {
+      "key": "map.travel_start.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Map/travel_start",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/travel_start_01.wav"
+      ]
+    },
+    {
+      "key": "map.travel_arrive.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Map/travel_arrive",
+      "category": "ui",
+      "files": [
+        "ui/travel_arrive_01.wav"
+      ]
+    },
+    {
+      "key": "map.open.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Map/open",
+      "category": "ui",
+      "files": [
+        "ui/open_01.wav",
+        "ui/open_02.wav"
+      ]
+    },
+    {
+      "key": "map.close.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Map/close",
+      "category": "ui",
+      "files": [
+        "ui/close_01.wav",
+        "ui/close_02.wav"
+      ]
+    },
+    {
+      "key": "flow.fade_in.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/fade_in",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/fade_in_01.wav"
+      ]
+    },
+    {
+      "key": "flow.fade_out.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/fade_out",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/fade_out_01.wav"
+      ]
+    },
+    {
+      "key": "reward.open.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Stingers/reward_open",
+      "category": "stinger",
+      "files": [
+        "stinger/reward_open_01.wav"
+      ]
+    },
+    {
+      "key": "reward.card_select.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/reward_card_select",
+      "category": "ui",
+      "files": [
+        "ui/reward_card_select_01.wav",
+        "ui/reward_card_select_02.wav"
+      ]
+    },
+    {
+      "key": "reward.take.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Stingers/reward_take",
+      "category": "stinger",
+      "files": [
+        "stinger/reward_take_01.wav"
+      ]
+    },
+    {
+      "key": "reward.skip.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/reward_skip",
+      "category": "ui",
+      "files": [
+        "ui/reward_skip_01.wav"
+      ]
+    },
+    {
+      "key": "run.gold_gain.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/gold_gain",
+      "category": "ui",
+      "files": [
+        "ui/gold_gain_01.wav",
+        "ui/gold_gain_02.wav"
+      ]
+    },
+    {
+      "key": "shop.buy.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/shop_buy",
+      "category": "ui",
+      "files": [
+        "ui/shop_buy_01.wav"
+      ]
+    },
+    {
+      "key": "shop.sell.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/shop_sell",
+      "category": "ui",
+      "files": [
+        "ui/shop_sell_01.wav"
+      ]
+    },
+    {
+      "key": "shop.reroll.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/shop_reroll",
+      "category": "ui",
+      "files": [
+        "ui/shop_reroll_01.wav",
+        "ui/shop_reroll_02.wav"
+      ]
+    },
+    {
+      "key": "shop.denied.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/shop_denied",
+      "category": "ui",
+      "files": [
+        "ui/shop_denied_01.wav"
+      ]
+    },
+    {
+      "key": "chest.open.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Stingers/chest_open",
+      "category": "stinger",
+      "files": [
+        "stinger/chest_open_01.wav"
+      ]
+    },
+    {
+      "key": "camp.action.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/camp_action",
+      "category": "ui",
+      "files": [
+        "ui/camp_action_01.wav"
+      ]
+    },
+    {
+      "key": "camp.denied.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/camp_denied",
+      "category": "ui",
+      "files": [
+        "ui/camp_denied_01.wav"
+      ]
+    },
+    {
+      "key": "event.choice.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/event_choice",
+      "category": "ui",
+      "files": [
+        "ui/event_choice_01.wav",
+        "ui/event_choice_02.wav"
+      ]
+    },
+    {
+      "key": "run.start.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Stingers/run_start",
+      "category": "stinger",
+      "files": [
+        "stinger/run_start_01.wav"
+      ]
+    },
+    {
+      "key": "run.outcome_victory.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Stingers/run_victory",
+      "category": "stinger",
+      "files": [
+        "stinger/run_victory_01.wav"
+      ]
+    },
+    {
+      "key": "run.outcome_defeat.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Stingers/run_defeat",
+      "category": "stinger",
+      "files": [
+        "stinger/run_defeat_01.wav"
+      ]
+    },
+    {
+      "key": "menu.title_card.stinger",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Stingers/title_card",
+      "category": "stinger",
+      "files": [
+        "stinger/title_card_01.wav"
+      ]
+    },
+    {
+      "key": "menu.show.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/menu_show",
+      "category": "ui",
+      "files": [
+        "ui/menu_show_01.wav"
+      ]
+    },
+    {
+      "key": "menu.hide.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Flow/menu_hide",
+      "category": "ui",
+      "files": [
+        "ui/menu_hide_01.wav"
+      ]
+    },
+    {
+      "key": "music.menu.loop",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Music/menu",
+      "category": "music",
+      "files": [
+        "music/menu_01.ogg"
+      ]
+    },
+    {
+      "key": "music.map.loop",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Music/map",
+      "category": "music",
+      "files": [
+        "music/map_01.ogg"
+      ]
+    },
+    {
+      "key": "music.battle.loop",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/Music/battle",
+      "category": "music",
+      "files": [
+        "music/battle_01.ogg"
+      ]
+    },
+    {
+      "key": "ambient.arena.loop",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Ambient/arena",
+      "category": "ambient",
+      "files": [
+        "ambient/arena_01.ogg"
+      ]
+    }
   ]
 }

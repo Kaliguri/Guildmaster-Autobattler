@@ -1,7 +1,9 @@
 ---
 title: "Item - Fey Cloak"
-order: 10
+order: 510
 status: draft
+updated: 2026-07-29
+impl: paper
 ---
 
 # Плащ Фей (Fey Cloak)

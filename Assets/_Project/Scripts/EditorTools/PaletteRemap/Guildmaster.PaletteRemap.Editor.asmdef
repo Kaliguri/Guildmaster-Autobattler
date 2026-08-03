@@ -1,7 +1,9 @@
 {
   "name": "Guildmaster.PaletteRemap.Editor",
   "rootNamespace": "Guildmaster.PaletteRemap",
-  "references": [],
+  "references": [
+    "Guildmaster.Data"
+  ],
   "includePlatforms": [
     "Editor"
   ],

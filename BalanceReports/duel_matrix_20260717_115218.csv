@@ -1,0 +1,12 @@
+﻿Left \ Right;Assassin;BaseRelic;Cryomancer;Defender;Druid;FlameSwordsman;IronSpearman;LightShepherd;Ranger;Treant;WhirlMonk
+Assassin;-;W;W;W;W;L;L;D;W;W;W
+BaseRelic;L;-;L;L;L;L;L;D;L;L;L
+Cryomancer;L;W;-;L;L;L;L;W;L;L;L
+Defender;L;W;W;-;W;L;L;D;L;W;D
+Druid;L;W;W;L;-;L;L;D;L;L;L
+FlameSwordsman;W;W;W;W;W;-;W;W;L;W;W
+IronSpearman;W;W;W;W;W;L;-;D;L;W;W
+LightShepherd;D;D;L;D;D;L;D;-;L;D;D
+Ranger;L;W;W;W;W;W;W;W;-;L;D
+Treant;L;W;W;L;W;L;L;D;W;-;W
+WhirlMonk;L;W;W;D;W;L;L;D;D;L;-

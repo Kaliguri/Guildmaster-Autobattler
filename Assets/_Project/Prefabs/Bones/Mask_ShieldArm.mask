@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Mask_ShieldArm
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: Hips
+    m_Weight: 0
+  - m_Path: Hips/Torso
+    m_Weight: 0
+  - m_Path: Hips/Torso/Body
+    m_Weight: 0
+  - m_Path: Hips/Torso/Head
+    m_Weight: 0
+  - m_Path: Hips/Torso/Arm (Left)
+    m_Weight: 1
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)
+    m_Weight: 1
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Arm_Shoulder
+    m_Weight: 1
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Arm_Top
+    m_Weight: 1
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)
+    m_Weight: 1
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down
+    m_Weight: 1
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)
+    m_Weight: 1
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)/Shield
+    m_Weight: 1
+  - m_Path: Hips/Torso/Arm (Right)
+    m_Weight: 0
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)
+    m_Weight: 0
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Arm_Shoulder
+    m_Weight: 0
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Arm_Top
+    m_Weight: 0
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)
+    m_Weight: 0
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down
+    m_Weight: 0
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)
+    m_Weight: 0
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)/Sword
+    m_Weight: 0
+  - m_Path: Hips/Leg (Left)
+    m_Weight: 0
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)
+    m_Weight: 0
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)/Leg_Top
+    m_Weight: 0
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)
+    m_Weight: 0
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation Point
+      (Ankle)
+    m_Weight: 0
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation Point
+      (Ankle)/Leg_Boots
+    m_Weight: 0
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)/Leg_Down
+    m_Weight: 0
+  - m_Path: Hips/Leg (Right)
+    m_Weight: 0
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)
+    m_Weight: 0
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)/Leg_Top
+    m_Weight: 0
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)
+    m_Weight: 0
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation
+      Point (Ankle)
+    m_Weight: 0
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation
+      Point (Ankle)/Leg_Boots
+    m_Weight: 0
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)/Leg_Down
+    m_Weight: 0

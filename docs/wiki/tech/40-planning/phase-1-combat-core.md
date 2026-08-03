@@ -2,16 +2,22 @@
 title: "Planning - Phase 1: Combat Core"
 order: 10
 status: archive
-updated: 2026-07-16
+updated: 2026-07-26
 ---
 
 **Статус:** Реализовано (боевое ядро Фазы 1 в коде). Документ — архив исходного плана Фазы 1.
+
+> **Раскладка сцен с тех пор изменилась (2026-07-26).** План описывает связку «persistent `CoreScene` +
+> аддитивная `BattleScene`, которая грузится на бой и выгружается после», и опциональную `BootScene`.
+> В коде сегодня три сцены — `CoreScene`, `WorldScene`, `CombatSystemsScene`, — обе аддитивные грузятся один
+> раз на буте и не выгружаются, а `BootScene` не заведена вовсе. Имена и схемы ниже **намеренно оставлены
+> как след замысла**; актуальное «как есть» — сцены проекта (`Assets/_Project/Scenes/`).
 
 ---
 
 > Детальная архитектура **Фазы 1** из роадмапа ([[tech/40-planning/roadmap|9. Roadmap реализации]]): боевое ядро + нетворк-спайк.
 > Кто за что отвечает, как классы взаимодействуют, какие сборки и сцены создаём.
-> Опирается на [[tech/10-reference/tech-stack|5. Стек и архитектура]], [[tech/10-reference/combat-model|6. Боевая модель]], [[tech/20-explanation/run-flow|7. Флоу забега]].
+> Опирается на [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]], боевая модель (код `Assets/_Project/Scripts/Combat/`), флоу забега (код `Assets/_Project/Scripts/Game/Flow/`).
 >
 > **Это план для ревью, а не финальный код.** Сначала Макс читает и даёт мнение → потом реализуем конкретные классы.
 
@@ -158,7 +164,7 @@ Core
 public enum StatType
 {
     MaxHP, AutoAttackDamage, AttackSpeed, AttackRange, MoveSpeed,
-    PhysArmor, ElementalArmor, PhysPen, ElementalPen,
+    PhysArmor, MagicArmor, PhysPen, MagicPen,
     DamageDealtEff, DamageTakenEff,   // «эффективности» — старт 1.0, PercentMult
     // … всего 30 (полный канон — док 11); остальные — Фаза 2/4
     // Крита НЕТ (решение залочено, док 11 §1): стат крита не вводим.
@@ -454,4 +460,4 @@ GameBootstrap → RootLifetimeScope (CoreScene)
 
 ## 14. Следующий шаг
 
-Макс читает → даёт мнение / правки → по согласованию начинаем с **шага 1** (§12): новый asmdef-граф + сцены + пустой composition root + зелёный CI. После апрува — обновить [[tech/10-reference/assemblies|1. Сборки]] под новый граф.
+Макс читает → даёт мнение / правки → по согласованию начинаем с **шага 1** (§12): новый asmdef-граф + сцены + пустой composition root + зелёный CI. После апрува — обновить карта сборок (сами `.asmdef`) под новый граф.

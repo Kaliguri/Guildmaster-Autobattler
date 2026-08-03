@@ -1,17 +1,20 @@
 ---
 title: "Bandits - Common - Bandit Shieldman"
+order: 520
 kind: enemy
 status: draft
+updated: 2026-07-29
 enemy_group: Обычный
-faction: Разбойники
-subfaction: Основные
+species: Разбойники
+combat_class: Танк
+subspecies: Основные
 position: Фронт
 combat_range: Ближний
 attack_delivery:
   - Ближний бой
 physical_damage:
   - Режущий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Фронтовой добиватель
 mechanics:
@@ -19,6 +22,8 @@ mechanics:
   - Фокус раненых
   - Побег
   - Дополнительное золото
+impl: partial
+asset: [enemy.bandit_shieldman]
 ---
 
 # Разбойник с топором и щитом
@@ -26,7 +31,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** обычный.
-- **Фракция:** разбойники, основные.
+- **Вид:** разбойники. **Подвид:** основные.
 - **Позиция:** фронт.
 - **Ближний / дальний:** ближний.
 
@@ -62,7 +67,7 @@ mechanics:
 
 ## Шаг 5. Навыки
 
-Нет. Использует общую тактику фракции Разбойников.
+Барьер на 100 урона (как в Оплота). 2 стак, кд 6 сек.
 
 ---
 

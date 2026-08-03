@@ -1,15 +1,23 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
-        <ui:VisualElement class="gm-panel gm-panel--mainmenu">
-            <ui:Label name="menu-title" text="Гильдмастер" class="gm-panel__title gm-mainmenu__title" />
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--mainmenu gm-panel--system">
+            <ui:Label name="menu-title" text="Happy Guildmasters" class="gm-panel__title gm-mainmenu__title" />
             <ui:VisualElement class="gm-divider" />
 
-            <ui:VisualElement class="gm-mainmenu__buttons">
-                <ui:Button name="btn-start" text="Начать забег" class="gm-button gm-button--primary gm-mainmenu__btn" />
-                <ui:Button name="btn-continue" text="Продолжить" class="gm-button gm-mainmenu__btn" />
-                <ui:Button name="btn-settings" text="Настройки" class="gm-button gm-mainmenu__btn" />
-                <ui:Button name="btn-quit" text="Выход" class="gm-button gm-mainmenu__btn" />
-            </ui:VisualElement>
+            <!-- ДВЕ кнопки входа, а не список режимов (модель Макса 02.08.2026). Режим выбирается
+                 следующим шагом, вместе с домом и открытостью для друзей: кооп у нас свойство сеанса,
+                 а не отдельная игра, и прежний вход «Сетевая игра» рядом с «Начать забег» вёл в то же
+                 самое место — две двери в одну комнату. -->
+            <ui:ScrollView class="gm-panel__body gm-mainmenu__buttons">
+                <gm:PlateButton name="btn-create" text="Создать игру" class="gm-button gm-button--primary gm-mainmenu__btn" />
+                <gm:PlateButton name="btn-join" text="Присоединиться" class="gm-button gm-mainmenu__btn" />
+                <gm:PlateButton name="btn-settings" text="Настройки" class="gm-button gm-mainmenu__btn" />
+                <gm:PlateButton name="btn-quit" text="Выход" class="gm-button gm-mainmenu__btn" />
+            </ui:ScrollView>
         </ui:VisualElement>
+
+        <!-- Версия билда: угол экрана, а не панели — не спорит с меню и одинаково стоит при любом
+             размере панели. Текст проставляется кодом из Application.version. -->
+        <ui:Label name="menu-version" class="gm-text-muted gm-version-stamp" />
     </ui:VisualElement>
 </ui:UXML>

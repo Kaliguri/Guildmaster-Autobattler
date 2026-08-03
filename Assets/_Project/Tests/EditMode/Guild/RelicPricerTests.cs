@@ -17,7 +17,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         [SetUp]
         public void SetUp()
         {
-            _config = ScriptableObject.CreateInstance<GameConfig>(); // код-дефолты: 50/100/150, spread .2, sell .25
+            _config = GameConfig.CreateDefault(); // заготовка: 50/100/150, spread .2, sell .25
             _pricer = new RelicPricer(_config);
         }
 

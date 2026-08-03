@@ -13,24 +13,33 @@ MonoBehaviour:
   m_Name: GoblinCutthroat
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
   _id: enemy.goblin_cutthroat
-  _damageSchool: 0
-  _affinity: 0
+  _combatClass: 2
+  _autoAttackDamageType: 2
   _creatureType: 0
   _attackType: 0
   _resourceType: 0
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _visual: {fileID: 11400000, guid: 5e18a695936c40a4c94eaefe3364adf9, type: 2}
+  _viewPrefab: {fileID: 8877763347292836115, guid: 5b0792deec91a774284d9be47be085d9, type: 3}
+  _bodyShade: 3
+  _vfxTone: 10
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
   _stats:
-  - Stat: 0
-    Op: 3
-    Value: 330
   - Stat: 7
     Op: 3
     Value: 65
@@ -40,10 +49,9 @@ MonoBehaviour:
   - Stat: 3
     Op: 3
     Value: 0
-  - Stat: 20
-    Op: 3
-    Value: 4.5
-  _grantedEffects: []
+  _grantedEffects:
+  - {fileID: 11400000, guid: 297eb63a3dabde24292076394905c43c, type: 2}
+  - {fileID: 11400000, guid: 2ca899b64b6d00744a4b753ffa7587a1, type: 2}
   _abilities: []
   _aiPreset: {fileID: 11400000, guid: d05bbe58325e0e9428c3dd746969e8ff, type: 2}
   _ai:
@@ -62,5 +70,7 @@ MonoBehaviour:
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
   _infoTags: []
+  _species: {fileID: 11400000, guid: 6bc6e7517b81dd74b892560d7246c559, type: 2}
+  _subspecies: {fileID: 0}
   _threatPoints: 2
   _goldBounty: 0

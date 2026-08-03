@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Simulation;
@@ -27,6 +27,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             {
                 Id = id, Team = team, Stats = stats, CurrentHP = 100f,
                 Position = pos, PreviousPosition = pos,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 

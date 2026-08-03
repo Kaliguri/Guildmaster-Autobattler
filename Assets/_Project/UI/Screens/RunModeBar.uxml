@@ -1,32 +1,63 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <!-- Глобальная панель забега (app-shell): всегда сверху во время забега, тело экранов сдвинуто под неё.
-         Слева гильдия + возвышение; центр — режимы-навигация (Карта/Бой/Инвентарь/Тактика/Компендиум);
-         справа — HP-сердечки, золото, акт, таймер забега, кнопка «Начать»/таймер боя, бургер-меню.
+         Слева гильдия + возвышение + акт + веха одной строкой; центр — лента со скошенными торцами, в ней
+         иконки-режимы (Карта/Бой/Инвентарь/Тактика/Компендиум) и отделённые настройки;
+         справа — компактные капсулы золота и перезапусков. Подписи режимов позже даст общая tooltip-система.
          Строки-плейсхолдеры RU; локализованные проставляет RunModeBarView (ключи ui.*). -->
     <ui:VisualElement name="runbar-root" class="gm-loadout__topbar gm-runbar">
         <ui:VisualElement class="gm-loadout__topbar-side">
-            <ui:VisualElement>
-                <ui:Label name="guild-name" text="Alebardium" class="gm-loadout__guild-name" />
-                <ui:Label name="guild-asc" text="ASCENSION · IV" class="gm-loadout__guild-asc" />
-            </ui:VisualElement>
+            <ui:Label name="guild-name" text="Alebardium" class="gm-loadout__guild-name" />
+            <ui:Label name="guild-asc" text="· ASC IV" class="gm-loadout__guild-asc" />
+            <ui:Label name="topbar-act" text="· Акт 1" class="gm-loadout__guild-asc" />
+            <ui:Label name="topbar-floor" text="· Веха 1/15" class="gm-loadout__guild-asc" />
         </ui:VisualElement>
 
-        <ui:VisualElement class="gm-loadout__topbar-center">
-            <ui:Button name="mode-map" text="Карта" class="gm-loadout__mode" />
-            <ui:Button name="mode-battle" text="Бой" class="gm-loadout__mode" />
-            <ui:Button name="mode-inventory" text="Инвентарь" class="gm-loadout__mode" />
-            <ui:Button name="mode-tactics" text="Тактика" class="gm-loadout__mode" />
-            <ui:Button name="mode-compendium" text="Компендиум" class="gm-loadout__mode" />
-        </ui:VisualElement>
+        <!-- Лента-островок: форму рисует SlantedPanel вершинами (скос на 9-slice «плывёт» по ширине). -->
+        <gm:SlantedPanel name="runbar-ribbon" Slant="14" class="gm-runbar__ribbon">
+            <!-- Крайние табы — SlantedChip: их подсветка повторяет скошенный торец ленты, иначе
+                 прямоугольная заливка срезала угол ступенькой. Slant чуть меньше ленты (12 против 14):
+                 таб ниже ленты на её вертикальные поля, и при равном вылете угол клина не совпал бы.
+                 Палочек-разделителей между режимами больше НЕТ: каждый таб — самостоятельная кнопка
+                 со своим контуром (п.2 раунда 4). Разделитель остался ровно один — перед настройками,
+                 и он смысловой: там кончаются режимы и начинается модалка. -->
+            <gm:SlantedChip name="mode-map" Slant="12" slant-side="Left" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--first gm-runbar__tab--map" />
+            <gm:Chip name="mode-battle" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--battle" />
+            <gm:Chip name="mode-inventory" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--inventory" />
+            <!-- Тактика и Компендиум стоят в ленте погашенными: экранов за ними пока нет, но место в
+                 ряду режимов у них своё, и игрок должен видеть, что оно есть. Гасим по HARD-правилу
+                 [[ui-feedback]] — текстом, не выключением: чип остаётся живым на наведение и нажатие. -->
+            <gm:Chip name="mode-tactics" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--tactics" />
+            <gm:Chip name="mode-compendium" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--compendium" />
+            <!-- Настройки за разделителем: открывают модалку, а не переключают режим — не должны читаться шестым табом. -->
+            <ui:VisualElement class="gm-runbar__sep" />
+            <gm:SlantedChip name="btn-menu" Slant="12" slant-side="Right" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--last gm-runbar__tab--menu" />
+        </gm:SlantedPanel>
 
         <ui:VisualElement class="gm-loadout__topbar-side gm-loadout__topbar-side--right">
-            <ui:VisualElement name="topbar-hp" class="gm-topbar__hp" />
-            <ui:Label name="topbar-gold" text="Золото: 0" class="gm-loadout__stat" />
-            <ui:Label name="topbar-act" text="Акт 1" class="gm-loadout__stat" />
-            <ui:Label name="topbar-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer" />
-            <ui:Button name="btn-start" text="Начать" class="gm-loadout__start-btn" />
-            <ui:Label name="battle-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer gm-loadout__battle-timer" />
-            <ui:Button name="btn-menu" text="≡" class="gm-loadout__menu-btn" />
+            <gm:SlantedPanel Slant="10" class="gm-runbar__capsule">
+                <ui:VisualElement class="gm-runbar__capsule-icon gm-runbar__capsule-icon--gold" />
+                <ui:Label name="topbar-gold" text="0" class="gm-runbar__capsule-value" />
+            </gm:SlantedPanel>
+            <gm:SlantedPanel Slant="10" class="gm-runbar__capsule">
+                <ui:VisualElement class="gm-runbar__capsule-icon gm-runbar__capsule-icon--hp" />
+                <ui:Label name="topbar-hp" text="2/2" class="gm-runbar__capsule-value" />
+            </gm:SlantedPanel>
         </ui:VisualElement>
+
+        <!-- Центр-слот «Начать»/таймер боя (QA #14): по центру, ЧУТЬ НИЖЕ панели (absolute под топбаром),
+             единая точка — расстановка показывает «Начать», бой заменяет его таймером в ТОЙ ЖЕ точке. -->
+        <ui:VisualElement name="battle-center" class="gm-loadout__battle-center" picking-mode="Ignore">
+            <!-- «Начать» = иконка боя + подпись (иконка та же, что у таба «Бой» в ленте — один язык).
+                 Текст живёт в дочернем Label, а не в атрибуте Button: у кнопки с детьми собственный
+                 текст рисуется поверх содержимого и наезжает на иконку. -->
+            <gm:PlateButton name="btn-start" class="gm-loadout__start-btn">
+                <ui:VisualElement class="gm-loadout__start-icon" picking-mode="Ignore" />
+                <ui:Label name="btn-start-label" text="Начать" class="gm-loadout__start-label" picking-mode="Ignore" />
+            </gm:PlateButton>
+            <ui:Label name="battle-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer gm-loadout__battle-timer" />
+        </ui:VisualElement>
+
+        <!-- Подписи режимов при наведении будут от общей системы тултипов (проектируется отдельно):
+             свой локальный тултип здесь не заводим, чтобы потом не выпиливать конкурента. -->
     </ui:VisualElement>
 </ui:UXML>

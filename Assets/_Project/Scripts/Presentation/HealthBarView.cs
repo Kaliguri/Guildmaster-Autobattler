@@ -21,15 +21,12 @@ namespace Guildmaster.Presentation
     /// </summary>
     public sealed class HealthBarView : MonoBehaviour
     {
-        private const string ShaderName = "Guildmaster/UI/SegmentedHealthBar";
-
         [Header("Рендер")]
         [Tooltip("Единственный Image бара (тип Simple, на всю ширину, белый vertex-цвет). На него ставится инстанс материала.")]
         [SerializeField] private Image _fillImage;
 
         [Tooltip("Шаблон материала (шейдер SegmentedHealthBar) — задаёт статичный вид (цвета пустоты/урона/" +
-                 "хила/насечек, толщину). В рантайме клонируется per-instance. Пусто → Shader.Find (для билда " +
-                 "шейдер должен быть Always Included).")]
+                 "хила/насечек, толщину). В рантайме клонируется per-instance. ОБЯЗАТЕЛЕН.")]
         [SerializeField] private Material _barMaterial;
 
         [Header("Насечки (плотность — код; вид — материал)")]
@@ -39,9 +36,10 @@ namespace Guildmaster.Presentation
         [Tooltip("Через сколько EHP идёт ЖИРНАЯ насечка (якорь абсолюта, напр. каждые 1000). Кратно tickValue.")]
         [SerializeField] private float _majorTickValue = 1000f;
 
-        [Header("Цвета HP/щита (фолбэк; в бою — из CombatColorPalette)")]
-        [SerializeField] private Color _fallbackHpColor = new Color(0.30f, 0.85f, 0.35f);
-        [SerializeField] private Color _fallbackShieldColor = new Color(0.62f, 0.86f, 1.0f);
+        // Цвета HP и щита сюда ПОДАЮТСЯ (SetMainColor/SetShieldColor) из CombatColorPalette — единственного
+        // владельца. Своих копий бар не держит: прежние поля-фолбэки повторяли те же значения третьим
+        // местом (после SO и префаба) и разъехались бы на первой же правке палитры. Цвет не подан — значит
+        // разводка сцены сломана, и бар честно покажет цвет материала (аудит 2026-07-26, T-12/T-13).
 
         [Header("Анимация chip-дельты")]
         [Tooltip("Пауза перед стартом догона, сек.")]
@@ -59,6 +57,15 @@ namespace Guildmaster.Presentation
         private Material _mat;
         private bool _hasHpColor, _hasShieldColor;
         private Color _hpColor, _shieldColor;
+        private Vector3 _baseLocalScale = Vector3.one;
+        private bool _baseScaleCaptured;
+        private float _punchRemaining;
+        private float _punchDuration;
+        private float _punchAmount;
+
+        private float _lowHpThreshold;   // доля HP, ниже которой полоса начинает тревожно дышать
+        private float _lowHpPeriod = 0.9f;
+        private float _lowHpAmount;
 
         private static readonly int IdHpFrac       = Shader.PropertyToID("_HpFrac");
         private static readonly int IdCombinedFrac = Shader.PropertyToID("_CombinedFrac");
@@ -74,22 +81,24 @@ namespace Guildmaster.Presentation
         {
             if (_mat != null) return;
 
-            if (_barMaterial != null)
-                _mat = new Material(_barMaterial);      // клон шаблона — статичный вид берётся из него
-            else
+            // Материал ОБЯЗАТЕЛЕН. Прежний фолбэк через Shader.Find был страховкой, которая ни разу не
+            // срабатывала (префабы всегда подают материал) и не сработала бы в билде: шейдера нет в Always
+            // Included Shaders, поэтому пустой слот дал бы белую полосу только у игрока, а в редакторе всё
+            // выглядело бы целым (аудит фолбэков 2026-07-26, п.6).
+            if (_barMaterial == null)
             {
-                Shader sh = Shader.Find(ShaderName);
-                if (sh != null) _mat = new Material(sh);
+                Debug.LogError($"[HealthBarView] - {name}: не назначен _barMaterial → полоса здоровья не будет отрисована");
+                return;
             }
 
-            if (_mat == null) return;
+            _mat = new Material(_barMaterial);          // клон шаблона — статичный вид берётся из него
             if (_fillImage != null) _fillImage.material = _mat;
 
             // Плотность насечек: жирная каждые majorTickValue/tickValue минорных.
             _mat.SetFloat(IdMajorEvery, Mathf.Max(1f, _majorTickValue / Mathf.Max(0.0001f, _tickValue)));
-            // Цвета HP/щита — палитра, если подана; иначе фолбэк.
-            _mat.SetColor(IdHpColor,     _hasHpColor ? _hpColor : _fallbackHpColor);
-            _mat.SetColor(IdShieldColor, _hasShieldColor ? _shieldColor : _fallbackShieldColor);
+            // Цвета — только те, что подали из палитры. Не подали — оставляем материалу его собственные.
+            if (_hasHpColor)     _mat.SetColor(IdHpColor,     _hpColor);
+            if (_hasShieldColor) _mat.SetColor(IdShieldColor, _shieldColor);
         }
 
         /// <summary>Цвет HP по принадлежности к смотрящему (из <c>CombatColorPalette</c>).</summary>
@@ -109,10 +118,10 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>Привязать к юниту: доли — на текущее состояние мгновенно, trail без догона.</summary>
-        public void Bind(RuntimeUnit unit)
+        public void Bind(in Combat.Tape.UnitSnapshot unit)
         {
             EnsureMaterial();
-            _maxHp  = Mathf.Max(1f, unit.Stats.Get(Data.Stats.StatType.MaxHP));
+            _maxHp  = Mathf.Max(1f, unit.MaxHP);
             _hp     = Mathf.Clamp(unit.CurrentHP, 0f, _maxHp);
             _shield = Mathf.Max(0f, unit.CurrentShield);
             _trailEhp = _hp + _shield;
@@ -137,6 +146,19 @@ namespace Guildmaster.Presentation
             _shield = newSh;
         }
 
+        /// <summary>Микро-punch масштаба бара при уроне (ghost/trail уже в Update).</summary>
+        public void Punch(float amount, float duration)
+        {
+            if (!_baseScaleCaptured)
+            {
+                _baseLocalScale = transform.localScale;
+                _baseScaleCaptured = true;
+            }
+            _punchAmount = Mathf.Max(0f, amount);
+            _punchDuration = Mathf.Max(0.01f, duration);
+            _punchRemaining = _punchDuration;
+        }
+
         // Догон по рендер-времени; доли считаются от текущего scale.
         private void Update()
         {
@@ -152,10 +174,32 @@ namespace Guildmaster.Presentation
                 }
             }
 
+            if (_punchRemaining > 0f)
+            {
+                _punchRemaining -= Time.unscaledDeltaTime;
+                float t = 1f - Mathf.Clamp01(_punchRemaining / _punchDuration);
+                // triangle punch 0→1→0
+                float w = t < 0.5f ? t * 2f : (1f - t) * 2f;
+                float s = 1f + _punchAmount * w;
+                transform.localScale = _baseLocalScale * s;
+                if (_punchRemaining <= 0f) transform.localScale = _baseLocalScale;
+            }
+
             PushDynamicProps();
         }
 
         private float CurrentScale() => Mathf.Max(_maxHp, _hp + _shield, _trailEhp, 1f);
+
+        /// <summary>
+        /// Порог и форма тревожного пульса на низком HP. Подаёт <c>UnitView</c> из feel-конфига —
+        /// своих чисел бар не держит (см. заметку про цвета выше). Порог ≤ 0 = пульса нет.
+        /// </summary>
+        public void SetLowHpPulse(float threshold, float period, float amount)
+        {
+            _lowHpThreshold = Mathf.Clamp01(threshold);
+            _lowHpPeriod    = Mathf.Max(0.05f, period);
+            _lowHpAmount    = Mathf.Max(0f, amount);
+        }
 
         private void PushDynamicProps()
         {
@@ -166,6 +210,35 @@ namespace Guildmaster.Presentation
             _mat.SetFloat(IdCombinedFrac, (_hp + _shield) / scale);
             _mat.SetFloat(IdTrailFrac,    _trailEhp / scale);
             _mat.SetFloat(IdSegments,     Mathf.Max(1f, scale / Mathf.Max(0.0001f, _tickValue)));
+
+            PushHpColor();
+        }
+
+        /// <summary>
+        /// Полоса на исходе дышит светом. Это не украшение, а сведения: в свалке из восьми бойцов
+        /// «кто вот-вот умрёт» иначе читается только сравнением длин полосок.
+        /// <para>Пульсируем ЯРКОСТЬЮ, а не масштабом: масштаб уже занят punch'ем от урона, и два эффекта
+        /// на одном канале дрались бы. Время unscaled — тревога не должна застывать в slowmo.</para>
+        /// </summary>
+        private void PushHpColor()
+        {
+            if (!_hasHpColor) return;
+
+            float frac = _maxHp > 0f ? _hp / _maxHp : 1f;
+            if (_lowHpThreshold <= 0f || _lowHpAmount <= 0f || frac > _lowHpThreshold || _hp <= 0f)
+            {
+                _mat.SetColor(IdHpColor, _hpColor);
+                return;
+            }
+
+            // Ближе к нулю — тревожнее: у самой смерти пульс на полную, у порога едва заметен.
+            float urgency = 1f - Mathf.Clamp01(frac / _lowHpThreshold);
+            float wave = 0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * (Mathf.PI * 2f / _lowHpPeriod));
+            float boost = 1f + _lowHpAmount * urgency * wave;
+
+            Color pulsed = _hpColor * boost;
+            pulsed.a = _hpColor.a;
+            _mat.SetColor(IdHpColor, pulsed);
         }
 
         private void OnDestroy()

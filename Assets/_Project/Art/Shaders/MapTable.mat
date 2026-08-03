@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MapTable
+  m_Shader: {fileID: 4800000, guid: 252a9c184b78ae04aa4ae8fe08d21bee, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _LightMask:
+        m_Texture: {fileID: 2800000, guid: 93fbeb540c37d5647b8eaa990e7145a0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: b1a19d73bb1fc7d4d8045e946a26b9f4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Ambient: 0.25
+    - _AspectX: 1
+    - _LightStrength: 1.6
+    - _PatternStrength: 0.35
+    - _PatternTiling: 10
+    m_Colors:
+    - _BaseColor: {r: 0.055, g: 0.045, b: 0.038, a: 1}
+    - _LightColor: {r: 1, g: 0.88, b: 0.68, a: 1}
+    - _PatternColor: {r: 0.105, g: 0.086, b: 0.07, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

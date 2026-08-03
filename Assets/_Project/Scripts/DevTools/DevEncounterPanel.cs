@@ -1,107 +1,53 @@
-using System.Collections.Generic;
-using Guildmaster.Combat;
-using Guildmaster.Data.Definitions;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using VContainer;
-using VContainer.Unity;
 
 namespace Guildmaster.DevTools
 {
     /// <summary>
-    /// Dev-панель запуска боёв (UI Toolkit; план шаги 1/3). Два списка: <b>Encounters</b> (только враги —
-    /// player-сторона = временная dev-реликвия) и <b>Battle Presets</b> (враги + свой player-ростер).
-    /// <b>F2</b> — показать/скрыть. Запускает через <see cref="EncounterLoader"/>; <b>R</b> (рестарт на
-    /// месте) идёт через единого владельца <see cref="GuildmasterCommands"/> (F5-безопасно).
+    /// Dev-просмотрщик UI-экранов (<b>F4</b>): полноэкранная лента экранов со стендовыми данными через
+    /// <see cref="UiPreviewCatalog"/> — посмотреть награду, ивент или галерею, не гоняя весь флоу.
     /// </summary>
     /// <remarks>
-    /// Повесь на GameObject с <see cref="UIDocument"/> в BattleScene; на UIDocument назначь
-    /// <c>GuildmasterPanelSettings</c> (тема даёт gm-токены) и Source Asset = <c>DevBattlePicker.uxml</c>
-    /// (шелл панели + компактные dev-классы). Код только НАПОЛНЯЕТ список — вёрстка в UXML/USS.
-    /// VContainer инжектит зависимости; при отсутствии — самоинжект из <c>CombatLifetimeScope</c> в Start.
+    /// <b>Список боёв отсюда снят 31.07</b> — его заменила витрина на F3, а 02.08.2026 не стало и её:
+    /// команда запуска боя осталась одна (<c>bones</c>), и полка ради одной строки не нужна. Здесь живёт
+    /// ровно та часть, у которой замены нет, — лента UI-экранов.
+    /// <para>Повесь на GameObject с <see cref="UIDocument"/>; Editor-only по содержимому — каталог
+    /// стенда грузит UXML через AssetDatabase, поэтому в билде лента просто не строится.</para>
     /// </remarks>
     [RequireComponent(typeof(UIDocument))]
     public sealed class DevEncounterPanel : MonoBehaviour
     {
-        [Header("Dev player side для списка Encounters (заглушка шага 1)")]
-        [Tooltip("Временная player-реликвия (team 0) для запуска ГОЛЫХ энкаунтеров. Пресеты используют свой ростер. " +
-                 "Пусто = энкаунтер без союзников (превью врагов).")]
-        [SerializeField] private RelicData _devPlayerRelic;
+        private UIDocument _document;
 
-        [Tooltip("Позиция dev-player-реликвии на арене (для списка Encounters).")]
-        [SerializeField] private Vector2 _devPlayerPosition = new Vector2(-5f, 0f);
-
-        /// <summary>Что показывает dev-панель сейчас (переключается F2/F1; None — скрыта).</summary>
-        private enum DevView { None, Battles, Screens }
-
-        private EncounterLoader  _loader;
-        private IContentDatabase _content;
-        private UIDocument       _document;
-
-        private VisualElement _overlay;       // battles-режим (F2): обёртка в углу (тогглим display)
-        private VisualElement _list;
-        private VisualElement _screensRoot;   // screens-режим (F1): полноэкранный просмотр экранов (editor-only)
+        private VisualElement _screensRoot;   // полноэкранный просмотр экранов (тогглим display)
         private VisualElement _screenContent; // куда UiPreviewCatalog строит выбранный экран
-        private readonly List<(string key, VisualElement row)> _rows = new();
-        private string _activeKey;            // "e:<id>" | "p:<id>" — что запущено последним (подсветка)
-        private DevView _view = DevView.None;
-
-        [Inject]
-        public void Construct(EncounterLoader loader, IContentDatabase content)
-        {
-            _loader  = loader;
-            _content = content;
-        }
+        private bool _visible;
 
         private void Start()
         {
-            if (_loader == null || _content == null)
-            {
-                // Самоинжект (DevTools знает Game, обратного нет) — как CombatUnitDebugView.
-                var scope = LifetimeScope.Find<Guildmaster.Game.CombatLifetimeScope>();
-                scope?.Container.Inject(this);
-            }
-
             _document = GetComponent<UIDocument>();
             if (_document == null) { Debug.LogWarning("[DevEncounterPanel] - нет UIDocument"); enabled = false; return; }
 
-            BuildUi();
-            Apply(); // старт скрыт (DevView.None) — панель не мозолит глаз, пока не нажали F2/F1
+            BuildScreensOverlay(_document.rootVisualElement);
+            Apply();
         }
 
         private void Update()
         {
             Keyboard kb = Keyboard.current;
             if (kb == null) return;
-            // F2 — бои, F1 — экраны UI; повторное нажатие того же режима прячет панель.
-            if (kb.f2Key.wasPressedThisFrame) Toggle(DevView.Battles);
-            if (kb.f1Key.wasPressedThisFrame) Toggle(DevView.Screens);
-        }
 
-        private void BuildUi()
-        {
-            VisualElement root = _document.rootVisualElement;
-
-            _overlay = root.Q<VisualElement>("gm-dev-overlay");
-            var scroll = root.Q<ScrollView>("gm-dev-scroll");
-
-            if (_overlay == null || scroll == null)
+            // F4 — лента экранов. F1 (и тильда) — командная консоль, F2 — лог; F3 свободна с 02.08.2026.
+            if (kb.f4Key.wasPressedThisFrame)
             {
-                Debug.LogWarning("[DevEncounterPanel] - на UIDocument не назначен DevBattlePicker.uxml " +
-                                 "(нет #gm-dev-overlay/#gm-dev-scroll). Source Asset панели пуст?");
-                enabled = false;
-                return;
+                _visible = !_visible;
+                Apply();
             }
-
-            _list = scroll.contentContainer;
-            PopulateRows();
-            BuildScreensOverlay(root);
         }
 
-        // F1-режим: полноэкранный просмотрщик UI-экранов (награда/ивент/хаб/галерея и т.д.) со стендовыми
-        // данными через UiPreviewCatalog — чтобы глазами проверить экраны, не гоняя весь флоу. Editor-only
-        // (каталог грузит UXML через AssetDatabase); в билде F1 просто не строится.
         [System.Diagnostics.Conditional("UNITY_EDITOR")]
         private void BuildScreensOverlay(VisualElement root)
         {
@@ -140,89 +86,17 @@ namespace Guildmaster.DevTools
         {
             "reward"      => "Награда",
             "event"       => "Ивент",
-            "loadout-hub" => "Лоадаут-хаб",
-            "run-topbar"  => "Верх. панель",
             "settings"    => "Настройки",
             "gallery"     => "Галерея",
+            "devconsole"  => "Консоль",
             _              => id,
         };
 #endif
 
-        private void Toggle(DevView view)
-        {
-            _view = _view == view ? DevView.None : view;
-            Apply();
-        }
-
         private void Apply()
         {
-            if (_overlay != null)
-                _overlay.style.display = _view == DevView.Battles ? DisplayStyle.Flex : DisplayStyle.None;
             if (_screensRoot != null)
-                _screensRoot.style.display = _view == DevView.Screens ? DisplayStyle.Flex : DisplayStyle.None;
+                _screensRoot.style.display = _visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
-
-        private void PopulateRows()
-        {
-            // Разметку строк держит общий билдер (им же пользуется превью-стенд); панель отвечает за
-            // реальные действия Play и подсветку активного.
-            DevBattlePickerView.Populate(_list, _content, PlayPreset, PlayEncounter, _rows);
-            RefreshActiveHighlight();
-        }
-
-        private void PlayEncounter(EncounterData enc)
-        {
-            if (_loader == null) { Debug.LogWarning("[DevEncounterPanel] - EncounterLoader не внедрён"); return; }
-            List<PlayerSpawn> side = BuildDevPlayerSide();
-            _loader.Load(enc, side);
-            GuildmasterCommands.SetLastBattle(_ => ReloadEncounterViaLiveScope(enc, side));
-            _activeKey = "e:" + enc.Id;
-            RefreshActiveHighlight();
-        }
-
-        private void PlayPreset(BattlePresetData preset)
-        {
-            if (_loader == null) { Debug.LogWarning("[DevEncounterPanel] - EncounterLoader не внедрён"); return; }
-            _loader.LoadPreset(preset);
-            GuildmasterCommands.SetLastBattle(_ => ReloadPresetViaLiveScope(preset));
-            _activeKey = "p:" + preset.Id;
-            RefreshActiveHighlight();
-        }
-
-        private List<PlayerSpawn> BuildDevPlayerSide()
-        {
-            if (_devPlayerRelic == null) return null;
-            return new List<PlayerSpawn> { new PlayerSpawn(_devPlayerRelic, null, _devPlayerPosition) };
-        }
-
-        // Рестарт по R: находим ТЕКУЩИЙ боевой скоуп и его загрузчик (не захватываем старый — F5-безопасно).
-        private static void ReloadEncounterViaLiveScope(EncounterData enc, List<PlayerSpawn> side)
-        {
-            var loader = LiveLoader();
-            if (loader != null) loader.Load(enc, side);
-        }
-
-        private static void ReloadPresetViaLiveScope(BattlePresetData preset)
-        {
-            var loader = LiveLoader();
-            if (loader != null) loader.LoadPreset(preset);
-        }
-
-        private static EncounterLoader LiveLoader()
-        {
-            var scope = LifetimeScope.Find<Guildmaster.Game.CombatLifetimeScope>();
-            if (scope == null) { Debug.LogWarning("[DevEncounterPanel] - R: боевой скоуп не найден"); return null; }
-            return scope.Container.Resolve<EncounterLoader>();
-        }
-
-        private void RefreshActiveHighlight()
-        {
-            for (int i = 0; i < _rows.Count; i++)
-            {
-                bool active = _activeKey != null && _rows[i].key == _activeKey;
-                _rows[i].row.EnableInClassList("gm-dev-row--active", active);
-            }
-        }
-
     }
 }

@@ -6,7 +6,8 @@
     "Guildmaster.Data.Editor",
     "Guildmaster.Core",
     "Guildmaster.Combat",
-    "Guildmaster.Presentation"
+    "Guildmaster.Presentation",
+    "Unity.2D.Sprite.Editor"
   ],
   "includePlatforms": [
     "Editor"

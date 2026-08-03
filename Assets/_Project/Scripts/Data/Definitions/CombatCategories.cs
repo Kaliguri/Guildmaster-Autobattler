@@ -2,34 +2,26 @@ namespace Guildmaster.Data.Definitions
 {
     /// <summary>
     /// Школа урона — числовая ось, которую гасит броня (ГДД «8» §«Школа vs сродство»).
-    /// Школ намеренно мало: <see cref="Physical"/> (гасится физ. бронёй) и <see cref="Elemental"/>
-    /// (Огонь/Лёд/Молния под ОДНОЙ стихийной бронёй; различия элементов живут в механике, не в резистах).
+    /// Школ намеренно мало: <see cref="Physical"/> (гасится физ. бронёй) и <see cref="Magical"/>
+    /// (Огонь/Лёд/Молния/Аркана под ОДНОЙ магической бронёй; различия элементов живут в механике, не в резистах).
     /// <see cref="True"/> идёт мимо брони.
-    /// <para>Int-значения совпадают с легаси <c>DamageType</c> (Magic=1 → Elemental=1) — ассеты не мигрируют.</para>
+    /// <para><b>Автором контента НЕ задаётся</b> (реформа 2026-07-30): школа выводится из
+    /// <see cref="DamageType"/> через <see cref="DamageTypes.SchoolOf"/>. Отдельного поля школы нет
+    /// нигде — ни в ассете, ни в запросе урона, — иначе тип и школа могли бы разойтись.</para>
     /// </summary>
     public enum DamageSchool
     {
         Physical = 0,
-        Elemental = 1,
+        Magical = 1,
         True = 2,
     }
 
     /// <summary>
-    /// Сродство урона — качественная ось. Бронёй НЕ гасится, взаимодействует с <see cref="CreatureType"/>
-    /// цели (ГДД «8»): Нежить/Конструкты иммунны к Яду, Нежить/Демоны уязвимы к Свету, Живое — к Тьме.
-    /// Накладывается ПОВЕРХ школы (в т.ч. поверх <see cref="DamageSchool.True"/>). Таблица — <c>AffinityTable</c>.
-    /// </summary>
-    public enum DamageAffinity
-    {
-        None = 0,
-        Poison = 1,
-        Light = 2,
-        Dark = 3,
-    }
-
-    /// <summary>
-    /// Тип существа — таксономия юнита (у реликвий тоже, не только у врагов). Драйвит сродства.
+    /// Тип существа — таксономия юнита (у реликвий тоже, не только у врагов).
     /// Отдельно от фракции (фракция — организационная группа, тип существа — что юнит есть).
+    /// <para>Уязвимости и иммунитеты по типу существа — <b>редкая специя на конкретном враге</b>
+    /// («нежить не кровоточит»), а не матрица правил для класса целей: универсальная таблица
+    /// «сродство × тип существа» отклонена решением 2026-07-15/35 и снята из кода 2026-07-26.</para>
     /// </summary>
     public enum CreatureType
     {
@@ -38,52 +30,6 @@ namespace Guildmaster.Data.Definitions
         Construct = 2,
         Demon = 3,
         Beast = 4,
-    }
-
-    /// <summary>Школа урона способности: <see cref="Inherit"/> = взять школу юнита-кастера (ГДД: школа задаётся каждой атаке/способности отдельно).</summary>
-    public enum DamageSchoolOverride
-    {
-        Inherit = 0,
-        Physical = 1,
-        Elemental = 2,
-        True = 3,
-    }
-
-    /// <summary>Сродство урона способности: <see cref="Inherit"/> = взять сродство юнита-кастера.</summary>
-    public enum DamageAffinityOverride
-    {
-        Inherit = 0,
-        None = 1,
-        Poison = 2,
-        Light = 3,
-        Dark = 4,
-    }
-
-    /// <summary>Разрешение override-ов школы/сродства способности в конкретные значения.</summary>
-    public static class DamageCategories
-    {
-        public static DamageSchool Resolve(DamageSchoolOverride ovr, DamageSchool unitSchool)
-        {
-            switch (ovr)
-            {
-                case DamageSchoolOverride.Physical:  return DamageSchool.Physical;
-                case DamageSchoolOverride.Elemental: return DamageSchool.Elemental;
-                case DamageSchoolOverride.True:      return DamageSchool.True;
-                default:                             return unitSchool;
-            }
-        }
-
-        public static DamageAffinity Resolve(DamageAffinityOverride ovr, DamageAffinity unitAffinity)
-        {
-            switch (ovr)
-            {
-                case DamageAffinityOverride.None:   return DamageAffinity.None;
-                case DamageAffinityOverride.Poison: return DamageAffinity.Poison;
-                case DamageAffinityOverride.Light:  return DamageAffinity.Light;
-                case DamageAffinityOverride.Dark:   return DamageAffinity.Dark;
-                default:                            return unitAffinity;
-            }
-        }
     }
 
     /// <summary>Способ доставки автоатаки (вики «11» §2).</summary>

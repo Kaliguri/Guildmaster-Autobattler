@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="devlog-root" class="gm-console gm-console--log">
+        <ui:VisualElement class="gm-console__header">
+            <ui:Label text="Лог движка" class="gm-console__title" picking-mode="Ignore" />
+            <ui:VisualElement class="gm-console__spacer" picking-mode="Ignore" />
+            <ui:Label text="F1 команды · F2 лог · F3 бои" class="gm-console__keys" picking-mode="Ignore" />
+        </ui:VisualElement>
+
+        <ui:ScrollView name="devlog-list" class="gm-console__log" mode="Vertical"
+                       vertical-scroller-visibility="Auto" horizontal-scroller-visibility="Hidden" />
+
+        <ui:VisualElement class="gm-console__footer">
+            <ui:VisualElement class="gm-console__footer-buttons">
+                <ui:Button name="devlog-save" text="сохранить в файл" class="gm-console__tool" />
+                <ui:Button name="devlog-clear" text="очистить" class="gm-console__tool" />
+            </ui:VisualElement>
+            <ui:Label name="devlog-status" text="" class="gm-console__footer-text" picking-mode="Ignore" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

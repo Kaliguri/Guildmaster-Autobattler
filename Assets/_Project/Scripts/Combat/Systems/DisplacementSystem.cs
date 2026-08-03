@@ -1,13 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Arena;
+using Guildmaster.Core.Simulation;
 using UnityEngine;
 
 namespace Guildmaster.Combat
 {
     /// <summary>
     /// Принудительные смещения (§9.9, «Шквальный толчок»): двигает <c>Position</c> летящих юнитов по
-    /// фиксированному шагу за фикс. число тиков, держит жёсткое оглушение полёта
+    /// фиксированному шагу столько тиков, сколько требует дистанция при фиксированной скорости
+    /// (<see cref="SimTuning.DisplaceTicks"/>), держит жёсткое оглушение полёта
     /// (<see cref="RuntimeUnit.DisplacedTicksRemaining"/> — не эффект, поэтому иммунно к сопротивлению
     /// контролю), и при «ядре» бьёт врагов источника на пройденном сегменте. По завершении полёта
     /// зовёт <see cref="OnDisplacementEnded"/> (сигнал для «Вихревого захода»).
@@ -24,13 +26,17 @@ namespace Guildmaster.Combat
             public int         TicksRemaining;
             public bool        Cannonball;
             public float       Damage;
-            public Data.Definitions.DamageSchool School;
-            public Data.Definitions.DamageAffinity Affinity;
+            public Data.Definitions.DamageType DamageType;
             public float       Width;
             public float       ChainDistance;
-            public int         ChainTicks;
+            public float       PctArmorPen;
+            public bool        WallHit; // урон об край арены добивается один раз за полёт
             public readonly List<RuntimeUnit> Hit = new List<RuntimeUnit>();
         }
+
+        // Порог «шаг обрезан границей»: квадрат расхождения желаемой и фактической позиции. Меньше —
+        // это арифметика float на самом краю, а не удар о стену.
+        private const float WallHitEpsilonSq = 1e-6f;
 
         private readonly List<Active> _active = new List<Active>();
         private readonly List<RuntimeUnit> _lineBuffer = new List<RuntimeUnit>();
@@ -46,30 +52,35 @@ namespace Guildmaster.Combat
             _lineBuffer.Clear();
         }
 
-        /// <summary>Поставить смещение в работу. Цель сразу переходит в полётное оглушение.</summary>
-        public void Add(in DisplaceRequest req)
+        /// <summary>
+        /// Поставить смещение в работу. Цель сразу переходит в полётное оглушение.
+        /// Длительность полёта считается ИЗ ДИСТАНЦИИ при фиксированной скорости
+        /// (<see cref="SimTuning.DisplaceTicks"/>): дальний толчок сам по себе держит цель дольше.
+        /// Коридор «ядра» шире заданной ширины на <see cref="SimTuning.CannonballWidthMult"/>.
+        /// </summary>
+        public void Add(in DisplaceRequest req, in SimTuning tuning)
         {
             RuntimeUnit target = req.Target;
-            if (target == null || target.IsDead || req.Ticks <= 0) return;
+            if (target == null || target.IsDead || req.Distance <= 0f) return;
 
             Vector2 dir = req.Direction.sqrMagnitude > 1e-6f ? req.Direction.normalized : Vector2.right;
+            int ticks = tuning.DisplaceTicks(req.Distance, req.SpeedPerSecond);
 
             _active.Add(new Active
             {
                 Unit           = target,
                 Source         = req.Source,
-                Step           = dir * (req.Distance / req.Ticks),
-                TicksRemaining = req.Ticks,
+                Step           = dir * (req.Distance / ticks),
+                TicksRemaining = ticks,
                 Cannonball     = req.Cannonball,
                 Damage         = req.Damage,
-                School         = req.School,
-                Affinity       = req.Affinity,
-                Width          = req.Width,
+                DamageType     = req.DamageType,
+                Width          = req.Width * tuning.CannonballWidthMult,
                 ChainDistance  = req.ChainDistance,
-                ChainTicks     = req.ChainTicks,
+                PctArmorPen    = req.PctArmorPen,
             });
 
-            target.DisplacedTicksRemaining = req.Ticks;
+            target.DisplacedTicksRemaining = ticks;
         }
 
         /// <summary>Продвинуть все активные смещения на один тик.</summary>
@@ -92,10 +103,32 @@ namespace Guildmaster.Combat
                 Vector2 prev = u.Position;
                 u.PreviousPosition = prev;
                 // Клампим ДО «ядра»: сегмент удара идёт до стены, врагов за полем не задеваем.
-                u.Position = bounds.Clamp(prev + a.Step);
+                Vector2 wanted = prev + a.Step;
+                u.Position = bounds.Clamp(wanted);
 
                 if (a.Cannonball && a.Damage > 0f && a.Source != null)
                     Cannonball(a, prev, u.Position, ctx);
+
+                // Впечатало в край арены (кламп съел часть шага) — уникальный случай, три следствия:
+                // урон толчка ещё раз, полёт СТОИТ (скольжение вдоль стены выглядело бы сломанным),
+                // и цель лежит оглушённой ещё WallImpactStunSeconds. Маркер «в полёте» при этом не
+                // снимается, поэтому конец смещения (и телепорт монаха на него) приходит ПОСЛЕ лежания.
+                // Самосмещение (рывок монаха: source == unit) о стену не наказывается — он бьётся не о
+                // стену, а приезжает к цели; стан здесь заморозил бы кастующего на своей же способности.
+                if (!a.WallHit && a.Source != null && !ReferenceEquals(a.Source, u)
+                    && (u.Position - wanted).sqrMagnitude > WallHitEpsilonSq)
+                {
+                    a.WallHit = true;
+                    a.Step = Vector2.zero;
+
+                    float wallDamage = a.Damage * ctx.Tuning.WallImpactDamageMult;
+                    if (wallDamage > 0f)
+                        ctx.DealDamage(new DamageRequest(a.Source, u, wallDamage, a.DamageType, ctx.ArmorK,
+                            bonusPctPen: a.PctArmorPen));
+
+                    int stunTicks = (int)(ctx.Tuning.WallImpactStunSeconds * SimConstants.TickRate + 0.5f);
+                    if (stunTicks > a.TicksRemaining) a.TicksRemaining = stunTicks;
+                }
 
                 a.TicksRemaining--;
                 u.DisplacedTicksRemaining = a.TicksRemaining;
@@ -124,12 +157,13 @@ namespace Guildmaster.Combat
                 if (victim == a.Unit || victim.IsDead || a.Hit.Contains(victim)) continue;
 
                 a.Hit.Add(victim);
-                ctx.DealDamage(new DamageRequest(a.Source, victim, a.Damage, a.School, ctx.ArmorK, affinity: a.Affinity));
+                ctx.DealDamage(new DamageRequest(a.Source, victim, a.Damage, a.DamageType, ctx.ArmorK,
+                    bonusPctPen: a.PctArmorPen));
 
                 // §10.6: задетый «ядром» не только получает урон, но и сам слабо отбрасывается вдоль полёта.
                 // Источник — тот же (монах), поэтому конец этого цепного полёта тоже триггерит «Вихревой заход».
                 // Без каскада (cannonball:false) и слабый (короче главного) → финальный телепорт сядет на исходную цель.
-                if (a.ChainDistance > 0f && a.ChainTicks > 0 && a.Source != null)
+                if (a.ChainDistance > 0f && a.Source != null)
                 {
                     // Направление цепного толчка учитывает УГОЛ попадания: чем дальше цель от оси полёта
                     // (скользящее/касательное попадание), тем сильнее толкает ВБОК, а не строго вперёд.
@@ -140,8 +174,8 @@ namespace Guildmaster.Combat
                     Vector2 cdir = fwd + lateral;
                     cdir = cdir.sqrMagnitude > 1e-6f ? cdir.normalized : fwd;
                     ctx.Displace(new DisplaceRequest(
-                        victim, a.Source, cdir, a.ChainDistance, a.ChainTicks,
-                        cannonball: false, damage: 0f, school: a.School, width: 0f));
+                        victim, a.Source, cdir, a.ChainDistance,
+                        cannonball: false, damage: 0f, damageType: a.DamageType, width: 0f));
                 }
             }
         }

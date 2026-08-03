@@ -18,11 +18,14 @@ namespace Guildmaster.Guild
         Boss,       // финалист акта
         Chest,      // сундук: сцена-фасад → награда 1-из-3 (payload = reward-пул; пусто = дефолт)
         Unknown,    // «?»-узел: тип роллится на входе (RandomEventFlow, план §5.4/B4)
+        Camp,       // привал: бюджет действий отряда тратится на несколько трат подряд (CampFlow)
     }
 
     /// <summary>
     /// Узел графа акта (сериализуемый DTO). Рёбра — по id соседних узлов. <see cref="Cleared"/> помечает
-    /// пройденные (для оверлея и валидации хода). Нагрузка — строковый id (пресет/ивент/пул).
+    /// пройденные (для валидации хода). Нагрузка — строковый id (пресет/ивент/пул).
+    /// <para>Хранит только ТОПОЛОГИЮ (этаж + ряд). Мировые координаты, шаг, центрирование ряда и разброс —
+    /// забота презентера карты: домен про отрисовку не знает.</para>
     /// </summary>
     [Serializable]
     public sealed class MapNode
@@ -32,7 +35,11 @@ namespace Guildmaster.Guild
         public string      PayloadId;
         public string[]    Edges = Array.Empty<string>();
         public bool        Cleared;
-        public Vector2     UiPosition; // для оверлея карты (раскладка узлов)
+        /// <summary>Этаж (индекс колонки) от старта: 0 = Start, последний = Boss. На него завязаны зоны и якоря.</summary>
+        public int Floor;
+
+        /// <summary>Индекс узла внутри своего этажа, сверху вниз (0..ширина-1).</summary>
+        public int Row;
     }
 
     /// <summary>Состояние карты акта в <see cref="RunState"/>: граф узлов + где игрок сейчас.</summary>
@@ -52,7 +59,7 @@ namespace Guildmaster.Guild
     public sealed class RosterSlot
     {
         public string   VesselId = string.Empty;
-        public string   RelicId = "relic.base";
+        public string   RelicId = Data.Definitions.ContentIds.BaseRelic;
         public string   AiPresetId = string.Empty;
         public string[] VesselItemIds = Array.Empty<string>();
         public Vector2  SavedPosition;
@@ -64,12 +71,14 @@ namespace Guildmaster.Guild
     /// в боевые <c>RuntimeUnit</c> штатной фабрикой на каждый бой, изменения пишутся обратно. Плоский
     /// <c>[Serializable]</c> = сам себе save-DTO (нет SO-ссылок и рантайм-состояния — сплит на отдельный DTO
     /// не нужен; появится рантайм-поле — тогда и разделим). Сетевой-ready: реплицируется хостом как есть.
+    /// <para>Версия схемы — в атрибуте <c>[SaveSchema]</c>, а не полем: она свойство ФАЙЛА и живёт в его
+    /// конверте (ТЗ [[save-system]] §5). Прежнее поле <c>SchemaVersion</c> убрано — оно писалось, никем не
+    /// читалось и было вторым владельцем того же факта.</para>
     /// </summary>
     [Serializable]
+    [Core.Persistence.SaveSchema(1)]
     public sealed class RunState
     {
-        public int    SchemaVersion = 1;
-
         public long   Seed;
         public int    CurrentActIndex;
         public int    Difficulty;
@@ -93,7 +102,15 @@ namespace Guildmaster.Guild
         /// <summary>Карта текущего акта.</summary>
         public MapState Map = new MapState();
 
-        /// <summary>Кооп-шов: индекс игрока-владельца по каждому слоту ростера (соло — все 0). Реализация — Фаза 6.</summary>
+        /// <summary>
+        /// Кооп-шов: <b>кто ведёт</b> каждый слот ростера — индекс игрока (соло — все нули).
+        /// </summary>
+        /// <remarks>
+        /// <b>Это управление, а не собственность.</b> Сосуды, казна, ростер, реликвии и предметы в
+        /// коопе ОБЩИЕ; хост раздаёт не имущество, а кого кто ведёт, и раздача меняется в любой момент
+        /// (HARD-правило ГДД, `50-modes-ux/coop/index`). Поэтому «владелец слота» — неверные слова, и
+        /// поле не даёт никаких прав: гость правит любой слот общего отряда, просто через хоста.
+        /// </remarks>
         public int[] SlotOwner = Array.Empty<int>();
     }
 }

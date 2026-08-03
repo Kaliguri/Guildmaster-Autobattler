@@ -1,4 +1,4 @@
-﻿fileFormatVersion: 2
+fileFormatVersion: 2
 guid: 0ba8bace98f2a4a42be9cd0b14587fc1
 TextureImporter:
   internalIDToNameTable:
@@ -118,12 +118,12 @@ TextureImporter:
       name: Run_0
       rect:
         serializedVersion: 2
-        x: 51
-        y: 48
-        width: 36
-        height: 38
+        x: 0
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -140,12 +140,12 @@ TextureImporter:
       name: Run_1
       rect:
         serializedVersion: 2
-        x: 184
-        y: 48
-        width: 42
-        height: 39
+        x: 135
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -162,12 +162,12 @@ TextureImporter:
       name: Run_2
       rect:
         serializedVersion: 2
-        x: 323
-        y: 48
-        width: 34
-        height: 39
+        x: 270
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -184,12 +184,12 @@ TextureImporter:
       name: Run_3
       rect:
         serializedVersion: 2
-        x: 456
-        y: 48
-        width: 36
-        height: 38
+        x: 405
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -206,12 +206,12 @@ TextureImporter:
       name: Run_4
       rect:
         serializedVersion: 2
-        x: 589
-        y: 48
-        width: 38
-        height: 39
+        x: 540
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -228,12 +228,12 @@ TextureImporter:
       name: Run_5
       rect:
         serializedVersion: 2
-        x: 729
-        y: 48
-        width: 33
-        height: 39
+        x: 675
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

@@ -1,0 +1,29 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="titlecard-root" class="gm-screen gm-boot">
+        <ui:VisualElement name="boot-glow" class="gm-boot__glow" picking-mode="Ignore" />
+
+        <ui:VisualElement class="gm-boot__logo" picking-mode="Ignore">
+            <ui:VisualElement name="titlecard-seal" class="gm-boot__seal" picking-mode="Ignore" />
+            <ui:Label name="titlecard-title" text="Happy Guildmasters" class="gm-panel__title gm-boot__title" />
+        </ui:VisualElement>
+
+        <ui:Label name="titlecard-hint" text="" class="gm-boot__hint" picking-mode="Ignore" />
+
+        <ui:VisualElement name="boot-attrib" class="gm-boot__attrib" picking-mode="Ignore">
+            <ui:VisualElement class="gm-boot__attrib-row" picking-mode="Ignore">
+                <ui:VisualElement class="gm-boot__attrib-icon" picking-mode="Ignore" />
+                <ui:Label text="Alebardium" class="gm-boot__attrib-item" />
+                <ui:Label text="·" class="gm-boot__attrib-sep" />
+                <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--unity" picking-mode="Ignore" />
+                <ui:Label text="·" class="gm-boot__attrib-sep" />
+                <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--fmod" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:Label name="boot-legal" text="" class="gm-boot__legal" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="boot-loading" class="gm-boot__loading" picking-mode="Ignore">
+            <ui:Label name="boot-loading-label" text="" class="gm-boot__loading-label" />
+            <ui:VisualElement name="boot-spinner" class="gm-boot__spinner" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

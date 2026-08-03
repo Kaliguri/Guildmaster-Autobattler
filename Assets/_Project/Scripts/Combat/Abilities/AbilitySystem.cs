@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Core.Simulation;
@@ -18,15 +18,85 @@ namespace Guildmaster.Combat
         // Переиспользуемый буфер для радиус-запросов (условие каста / AOE-цели) — без аллокаций.
         private readonly List<RuntimeUnit> _targets = new List<RuntimeUnit>();
 
-        /// <summary>Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает).</summary>
-        public event System.Action<RuntimeUnit> OnAbilityCast;
+        // Касты, решённые за этот тик — применяются ПОСЛЕ того, как решения приняты всеми (см. Tick).
+        private readonly List<PlannedCast> _planned = new List<PlannedCast>();
 
+        /// <summary>Что именно применяется в фазе применения тика.</summary>
+        private enum PlanKind
+        {
+            /// <summary>Заявка на каст: списать цену и либо применить сразу, либо взвести подготовку/канал.</summary>
+            Begin = 0,
+
+            /// <summary>Нагрузка идущего каста: подготовка дошла до конца или сработал период канала.</summary>
+            Payload = 1,
+        }
+
+        /// <summary>Решённый, но ещё не применённый каст: кто, чем и по кому бьёт. Цель выбрана по состоянию
+        /// начала тика — в том числе и разворот лечения на себя по панике (блок E).</summary>
+        private readonly struct PlannedCast
+        {
+            public readonly RuntimeUnit Caster;
+            public readonly AbilityRuntime Ability;
+            public readonly RuntimeUnit Target;
+            public readonly int AbilityIndex;
+            public readonly PlanKind Kind;
+
+            public PlannedCast(
+                RuntimeUnit caster, AbilityRuntime ability, RuntimeUnit target,
+                int abilityIndex, PlanKind kind)
+            {
+                Caster       = caster;
+                Ability      = ability;
+                Target       = target;
+                AbilityIndex = abilityIndex;
+                Kind         = kind;
+            }
+        }
+
+        /// <summary>
+        /// Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает).
+        /// Определение приходит вместе с кастующим: показу нужно знать, ЧЕМ исполнен приём
+        /// (<see cref="AbilityData.CastSource"/>), а по одному id юнита это не восстановить.
+        /// </summary>
+        public event System.Action<RuntimeUnit, AbilityData> OnAbilityCast;
+
+        /// <summary>
+        /// Начата подготовка или канал (<see cref="AbilityData.TakesTime"/>): кастующий и длительность
+        /// подготовки в тиках. Мгновенные способности этого события не дают — у них подводить нечего.
+        /// </summary>
+        public event System.Action<RuntimeUnit, AbilityData, int> OnAbilityCastStarted;
+
+        /// <summary>Каст или канал оборван, не доиграв: контроль, полёт, смерть или потеря цели.</summary>
+        public event System.Action<RuntimeUnit> OnAbilityCastInterrupted;
+
+        /// <summary>Тик способностей: кулдауны, решения о кастах, затем сами касты.</summary>
+        /// <remarks>
+        /// РЕШЕНИЯ ОТДЕЛЕНЫ ОТ ПРИМЕНЕНИЯ, и это принципиально. Пока каст применялся сразу по ходу обхода,
+        /// наложенный им контроль тут же лишал права каста всех, кто стоит в списке позже, — а список у
+        /// зеркальных сторон обратный. Два готовых в один тик криоманта решали исход тем, кто заспавнен
+        /// первым: левый вешал «Оковы», правый ловил стан и терял свой каст навсегда (пойман зондом на
+        /// тике 240 — у левых «Заморозка», у правых уже стан от чужого криоманта). Теперь оба решают по
+        /// состоянию НАЧАЛА тика и оба кастуют: одновременная готовность разрешается одновременно,
+        /// а не по месту в списке. Тот же приём, что в <c>MovementSystem</c> и <c>SeparationSystem</c>.
+        /// </remarks>
         public void Tick(IReadOnlyList<RuntimeUnit> units, ICombatContext ctx, float dt)
         {
+            _planned.Clear();
+
+            // --- Проход 1: кулдауны и решения. Мир не меняется. ---
             for (int u = 0; u < units.Count; u++)
             {
                 RuntimeUnit unit = units[u];
-                if (unit.IsDead || unit.Abilities.Count == 0) continue;
+
+                // Смерть обрывает каст молча: показывать прерывание трупу нечего, а состояние обязано
+                // уйти — иначе dev-рестарт поднимет юнита с чужим кастом на счётчике.
+                if (unit.IsDead)
+                {
+                    if (unit.IsCastBusy) ClearCast(unit);
+                    continue;
+                }
+
+                if (unit.Abilities.Count == 0) continue;
 
                 for (int a = 0; a < unit.Abilities.Count; a++)
                 {
@@ -34,29 +104,161 @@ namespace Guildmaster.Combat
                     if (ability.CooldownRemaining > 0f) ability.CooldownRemaining -= dt;
                 }
 
+                // Идёт подготовка или канал — юнит занят: продвигаем его каст, новый начать нельзя.
+                if (unit.IsCastBusy)
+                {
+                    AdvanceCast(unit);
+                    continue;
+                }
+
                 // Плейсхолдер-триггер: кастуем первую готовую активку, если можем (в полёте — нет, §9.9).
                 if (unit.CanAct && unit.CanCast && unit.DisplacedTicksRemaining == 0)
                 {
                     for (int a = 0; a < unit.Abilities.Count; a++)
                     {
-                        if (TryCast(unit, a, units, ctx)) break; // одна способность за тик
+                        if (!TryPlan(unit, a, units, ctx, out PlannedCast plan)) continue;
+                        _planned.Add(plan);
+                        break;  // одна способность за тик
                     }
                 }
             }
+
+            // --- Проход 2: применение. Только здесь мир меняется. ---
+            for (int i = 0; i < _planned.Count; i++) Execute(_planned[i], units, ctx);
         }
 
         /// <summary>
-        /// Попытаться скастовать способность <paramref name="abilityIndex"/>. Возвращает false, если
-        /// не готова / не хватает ресурса / нет валидной цели.
+        /// Попытаться скастовать способность <paramref name="abilityIndex"/> НЕМЕДЛЕННО (решение + применение
+        /// одним вызовом). Возвращает false, если не готова / не хватает ресурса / нет валидной цели.
+        /// Внутри тика так не кастуют — там решения собираются со всех и применяются после (см. <see cref="Tick"/>);
+        /// этот вход остаётся для прямого каста из тестов и dev-команд.
+        /// <para>У способности с подготовкой (<see cref="AbilityData.TakesTime"/>) <c>true</c> означает
+        /// «каст НАЧАТ», а не «нагрузка применена»: цена списана, счётчик взведён, а сама нагрузка придёт
+        /// через свои тики. Проверять результат такого каста нужно после прогона тиков.</para>
         /// </summary>
         public bool TryCast(RuntimeUnit caster, int abilityIndex, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
         {
+            if (!TryPlan(caster, abilityIndex, units, ctx, out PlannedCast plan)) return false;
+            Execute(plan, units, ctx);
+            return true;
+        }
+
+        /// <summary>
+        /// Продвинуть идущий каст на тик: прерывание, подготовка, срабатывания канала. Сюда попадает только
+        /// занятый кастом юнит; сам каст мир не меняет — нагрузка уезжает в фазу применения (<see cref="_planned"/>).
+        /// </summary>
+        /// <remarks>
+        /// Прерывает ровно то, что решил Макс (Q10, 2026-07-29): контроль, полностью выводящий из строя
+        /// (<c>CanAct == false</c> — оглушение, сон). Замедление, корень и урон каст НЕ рвут. Полёт от
+        /// отбрасывания рвёт тоже: он и начать каст не даёт (§9.9), значит не может и дать его завершить.
+        /// Немота (<c>CanCast</c>) запрещает НАЧАТЬ каст, но начатый не обрывает — это прямое следствие
+        /// формулировки Q10, а не отдельное решение.
+        /// </remarks>
+        private void AdvanceCast(RuntimeUnit unit)
+        {
+            AbilityRuntime ability = unit.Abilities[unit.CastingAbilityIndex];
+            AbilityData data = ability.Data;
+
+            if (!unit.CanAct || unit.DisplacedTicksRemaining > 0 || data == null)
+            {
+                InterruptCast(unit);
+                return;
+            }
+
+            // Подготовка: тикает до нуля, на нуле — нагрузка (и, если способность канальная, старт канала).
+            if (unit.CastRemaining > 0)
+            {
+                unit.CastRemaining--;
+                if (unit.CastRemaining > 0) return;
+
+                PlanPayload(unit, ability);
+                StartChannelOrClear(unit, data);
+                return;
+            }
+
+            // Канал: срабатывает периодом. Тик, на котором канал кончается, нагрузки НЕ даёт — иначе канал
+            // в 3 с с периодом в 1 с выдавал бы четыре срабатывания вместо трёх (первое идёт на старте).
+            if (unit.ChannelTickRemaining > 0) unit.ChannelTickRemaining--;
+            if (unit.ChannelRemaining > 0) unit.ChannelRemaining--;
+
+            bool ended = unit.ChannelRemaining <= 0;
+            if (!ended && unit.ChannelTickRemaining <= 0)
+            {
+                PlanPayload(unit, ability);
+                unit.ChannelTickRemaining = AttackTiming.RecoveryTicks(data.ChannelTickSeconds);
+            }
+
+            if (ended) ClearCast(unit);
+        }
+
+        // Нагрузка идущего каста заезжает в фазу применения. Цель берётся ЗАНОВО, если та, на кого
+        // начинали, уже мертва (решение Макса): долгий каст не должен уходить в труп, но и «умного»
+        // перенаведения на лучшую цель здесь нет — только замена выбывшей.
+        private void PlanPayload(RuntimeUnit unit, AbilityRuntime ability)
+        {
+            _planned.Add(new PlannedCast(
+                unit, ability, unit.CastTarget, unit.CastingAbilityIndex, PlanKind.Payload));
+        }
+
+        // Подготовка позади: либо начинается канал, либо каст закончен. Один владелец перехода на оба
+        // входа — старт без подготовки (BeginCast) и конец подготовки (AdvanceCast).
+        private static void StartChannelOrClear(RuntimeUnit unit, AbilityData data)
+        {
+            int channelTicks = AttackTiming.RecoveryTicks(data.ChannelSeconds);
+            if (channelTicks <= 0)
+            {
+                ClearCast(unit);
+                return;
+            }
+
+            unit.ChannelTicks         = channelTicks;
+            unit.ChannelRemaining     = channelTicks;
+            unit.ChannelTickRemaining = AttackTiming.RecoveryTicks(data.ChannelTickSeconds);
+        }
+
+        /// <summary>Оборвать каст, не доиграв: цена уже уплачена и НЕ возвращается (решение Макса по Q10).</summary>
+        private void InterruptCast(RuntimeUnit unit)
+        {
+            ClearCast(unit);
+            OnAbilityCastInterrupted?.Invoke(unit);
+        }
+
+        /// <summary>Снять состояние каста. Единственный писатель этих полей — эта система.</summary>
+        private static void ClearCast(RuntimeUnit unit)
+        {
+            unit.CastingAbilityIndex  = -1;
+            unit.CastRemaining        = 0;
+            unit.CastTicks            = 0;
+            unit.ChannelRemaining     = 0;
+            unit.ChannelTicks         = 0;
+            unit.ChannelTickRemaining = 0;
+            unit.CastTarget           = null;
+        }
+
+        /// <summary>
+        /// Решить, кастуется ли способность, и по кому — БЕЗ единой мутации мира. Всё, что меняет состояние
+        /// (расход ресурса, кулдаун, эффекты, урон), делает <see cref="Execute"/>.
+        /// </summary>
+        private bool TryPlan(RuntimeUnit caster, int abilityIndex, IReadOnlyList<RuntimeUnit> units,
+            ICombatContext ctx, out PlannedCast plan)
+        {
+            plan = default;
             if (caster == null || abilityIndex < 0 || abilityIndex >= caster.Abilities.Count) return false;
 
             AbilityRuntime ability = caster.Abilities[abilityIndex];
             AbilityData data = ability.Data;
             if (data == null || !ability.IsReady) return false;
             if (caster.CurrentResource < data.ResourceCost) return false;
+
+            // Рекаст авто-атаки (M18): умение-удар вклинивается в ритм атак, но занесённый замах
+            // ДОИГРЫВАЕТ (решение Макса по Q8) — удар без замаха читается как пропущенный кадр. Хвост
+            // после удара (Recovery) умение перебивает: в этом и весь выигрыш рекаста.
+            if (data.DamageMultiplier > 0f && caster.Phase == AttackPhase.Windup) return false;
+
+            // Тот же закон для канала авто-атаки: незавершённый удар доигрывает, а перебивается только
+            // хвост. Канал — это удар, идущий ПРЯМО СЕЙЧАС, и каст поверх него оборвал бы уже начатую
+            // атаку, за которую кит заплатил длинным заносом.
+            if (caster.Phase == AttackPhase.Channel) return false;
 
             // Блок E (паника): при своём низком HP лечащая способность разворачивается на самого
             // кастующего (лечит себя); урон-способность просто кастуется независимо от условия.
@@ -80,7 +282,8 @@ namespace Guildmaster.Combat
             {
                 // Аура по союзникам всегда валидна: кастующий сам себе союзник.
             }
-            else if (data.AreaShape != AreaShape.Circle && target == null)
+            // Круг вокруг себя цели не требует; круг вокруг ЦЕЛИ — требует, иначе центру негде лечь.
+            else if ((data.AreaShape != AreaShape.Circle || data.AreaAtTarget) && target == null)
             {
                 return false;
             }
@@ -89,22 +292,153 @@ namespace Guildmaster.Combat
             // Паника (блок E) кастует независимо от условия.
             if (!panicSelf && !CastConditionMet(caster, target, data, ctx, units)) return false;
 
-            caster.CurrentResource -= data.ResourceCost;
-            ability.CooldownRemaining = data.BaseCooldown * caster.Stats.Get(StatType.CooldownEff);
-
-            if (data.Displaces)
-                ApplyDisplace(caster, target, data, ctx);
-            else if (isAllyAura)
-                ApplyAllyAura(caster, data, ctx);
-            else if (isMassTag)
-                ApplyAllWithTag(caster, data, units, ctx);
-            else if (data.AreaShape == AreaShape.Circle)
-                ApplyCircle(caster, data, ctx);
-            else
-                ApplyToTarget(caster, target, data, ctx);
-
-            OnAbilityCast?.Invoke(caster); // презентация-сигнал «каст состоялся»
+            plan = new PlannedCast(caster, ability, target, abilityIndex, PlanKind.Begin);
             return true;
+        }
+
+        /// <summary>
+        /// Применить решённый план. Заявка (<see cref="PlanKind.Begin"/>) платит цену и либо применяет
+        /// нагрузку в тот же тик (мгновенная способность), либо взводит подготовку/канал. Нагрузка идущего
+        /// каста (<see cref="PlanKind.Payload"/>) цену не платит — она уже уплачена на старте.
+        /// </summary>
+        private void Execute(in PlannedCast plan, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
+        {
+            RuntimeUnit caster = plan.Caster;
+            // Между решением и применением кастующего могли добить (урон в этом же тике).
+            if (caster.IsDead) return;
+
+            if (plan.Kind == PlanKind.Payload)
+            {
+                ApplyPayload(caster, plan.Ability, plan.Target, units, ctx);
+                return;
+            }
+
+            AbilityRuntime ability = plan.Ability;
+            AbilityData data       = ability.Data;
+
+            caster.CurrentResource -= data.ResourceCost;
+            ability.CooldownRemaining = data.ResolveCooldown(caster.Stats) * caster.Stats.Get(StatType.CooldownEff);
+
+            // Счётчик кастов растёт здесь, вместе с ценой: «каст состоялся» — это уплаченная стоимость,
+            // а не применённая нагрузка. У канала нагрузка приходит много раз за один каст, и считать её
+            // срабатывания значило бы разгонять залп периодом канала.
+            ability.CastsThisBattle++;
+
+            // Враги узнают о касте ЗДЕСЬ, а не после применения нагрузки: Антимаг получает щит раньше,
+            // чем в него попадут, — игрок обязан видеть причину прежде следствия (карточка the-aegis).
+            ctx.ReportAbilityCast(caster);
+
+            // Каст выдаёт замаскированного (Макс 2026-07-31: маскировка слетает от атаки И каста) —
+            // в тот же момент, что и объявление каста врагам: невидимый источник видимого заклинания
+            // читался бы как баг. Каст на СЕБЯ исключения не делает: уход в тень активкой вернёт
+            // маскировку следующей же строкой нагрузки, а вот бафнуться из тени бесплатно нельзя.
+            if (caster.ConcealTier != Data.Definitions.ConcealmentTier.None)
+                ctx.Dispel(new Effects.DispelRequest(caster, DispelTargetPolarity.Any,
+                    EffectTag.Stealth, int.MaxValue, 0));
+
+            if (!data.TakesTime)
+            {
+                ApplyPayload(caster, ability, plan.Target, units, ctx);
+                return;
+            }
+
+            // Способность занимает время: взводим подготовку. Хвост предыдущей авто-атаки при этом
+            // перебивается — умение вклинивается в ритм, а не ждёт его (M18).
+            if (caster.Phase == AttackPhase.Recovery)
+            {
+                caster.Phase = AttackPhase.Idle;
+                caster.RecoveryRemaining = 0;
+            }
+
+            int castTicks = AttackTiming.RecoveryTicks(data.ResolveCastSeconds(caster.Stats));
+            caster.CastingAbilityIndex = plan.AbilityIndex;
+            caster.CastTarget          = plan.Target;
+            caster.CastTicks           = castTicks;
+            caster.CastRemaining       = castTicks;
+
+            OnAbilityCastStarted?.Invoke(caster, data, castTicks);
+
+            // Подготовки нет, но есть канал: первое срабатывание идёт в этот же тик, дальше — периодом.
+            if (castTicks <= 0)
+            {
+                StartChannelOrClear(caster, data);
+                ApplyPayload(caster, ability, plan.Target, units, ctx);
+            }
+        }
+
+        /// <summary>
+        /// Нагрузка способности: урон, лечение, эффекты — по её форме. Одно место на все три входа
+        /// (мгновенный каст, конец подготовки, срабатывание канала), поэтому канал не может «случайно»
+        /// отличаться от разового применения.
+        /// </summary>
+        private void ApplyPayload(
+            RuntimeUnit caster, AbilityRuntime ability, RuntimeUnit target,
+            IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
+        {
+            AbilityData data = ability.Data;
+
+            bool isMassTag  = data.TargetMode == AbilityTargetMode.AllEnemiesWithTag;
+            bool isAllyAura = data.TargetMode == AbilityTargetMode.AlliesInRadius;
+
+            // Цель могла выбыть за время подготовки: берём новую тем же TargetMode (решение Макса).
+            // Не нашли — нагрузка не уходит в пустоту, каст обрывается; цена остаётся уплаченной.
+            bool needsTarget = !isMassTag && !isAllyAura
+                               && (data.AreaShape != AreaShape.Circle || data.AreaAtTarget);
+            if (needsTarget && (target == null || target.IsDead))
+            {
+                target = ResolveTarget(caster, data.TargetMode, units);
+                if (target == null)
+                {
+                    if (caster.IsCastBusy) InterruptCast(caster);
+                    return;
+                }
+                caster.CastTarget = target;
+            }
+
+            // Призыв не конкурирует с формой способности: тела появляются вместе с любой нагрузкой, поэтому
+            // он ДО ветвления, а не одной из ветвей.
+            if (data.Summons) ApplySummons(caster, data, ability.CastsThisBattle - 1, ctx);
+
+            // Залп: одна и та же нагрузка уходит несколько раз за каст, с разгоном от числа прошлых
+            // кастов (Арканист — стрела за каст). Каждое применение — самостоятельный удар: свой урон и
+            // свой стак эффекта, поэтому это цикл вокруг формы, а не множитель урона.
+            int repeats = data.ResolvePayloadRepeats(ability.CastsThisBattle - 1);
+            for (int shot = 0; shot < repeats; shot++)
+            {
+                // Цель добита предыдущей стрелой — остальные не уходят в труп. Перевыбирать цель на
+                // ходу нельзя: залп по одной цели и есть причина, по которой «Разлад» копится фокусом.
+                if (shot > 0 && needsTarget && (target == null || target.IsDead)) break;
+
+                // Порядок ветвей разводит два РАЗНЫХ смысла отбрасывания, и путать их нельзя: у круга
+                // (§10.7 «Стальной вихрь») толчок расходится от центра по всем задетым, у одиночной цели
+                // (§10.6 Монах) — это рывок самого кастующего с последующей цепью реактивов.
+                if (data.AreaShape == AreaShape.Circle)
+                    ApplyCircle(caster, data, ctx, target);
+                else if (data.Displaces)
+                    ApplyDisplace(caster, target, data, ctx);
+                else if (isAllyAura)
+                    ApplyAllyAura(caster, data, ctx);
+                else if (isMassTag)
+                    ApplyAllWithTag(caster, data, units, ctx);
+                else
+                    ApplyToTarget(caster, target, data, ctx);
+            }
+
+            // Эффекты на себя — ПОСЛЕ нагрузки: щит «Вихря» растёт от урона, который вихрь только что
+            // нанёс, значит реактив обязан висеть к моменту сведения тика, но не раньше самого удара.
+            ApplySelfEffects(caster, data, ctx, data.RepeatSelfEffects ? repeats : 1);
+
+            // Рекаста здесь БОЛЬШЕ НЕТ, и это правка дефекта, а не потеря функции. Он выводился из
+            // «есть множитель урона и нет канала» — то есть доставался любой активке с уроном просто по
+            // факту её существования. Так его молча получили залп Арканиста, «Ледяная жатва» Морозного и
+            // «Стальной вихрь» Копейщика, которым он не нужен: у залпа урон размазан по снарядам, у вихря
+            // это круг вокруг себя, и свинга, который можно ускорить, у них нет вовсе.
+            //
+            // Теперь рекаст ОБЪЯВЛЯЕТСЯ там, где взводится уникальный удар (<c>EmpowerNextAttackComponent</c>
+            // с включённым рекастом): «Решительный удар», удар Монаха воды, выход из тени у Убийцы. Список
+            // стал явным и перестал пополняться сам собой при добавлении новой активки с уроном.
+
+            OnAbilityCast?.Invoke(caster, data); // презентация-сигнал «каст состоялся»
         }
 
         /// <summary>
@@ -145,8 +479,44 @@ namespace Guildmaster.Combat
 
             // Рывок = смещение самого кастующего, без «ядра». Приземление (EffectExpired на себе) поднимет отбрасывание.
             ctx.Displace(new DisplaceRequest(
-                caster, caster, dashDir, dashDist, data.DisplaceTicks,
-                cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 0f));
+                caster, caster, dashDir, dashDist,
+                cannonball: false, damage: 0f, damageType: DamageType.Pure, width: 0f));
+        }
+
+        /// <summary>
+        /// Призвать тела (M10). Ставим их вокруг призывателя по детерминированной раскладке: смещения
+        /// считаются от индекса, без случайности и без запросов к миру — иначе одинаковые призывы у
+        /// зеркальных сторон встали бы по-разному и разошлись бы с первого же тика.
+        /// </summary>
+        /// <remarks>
+        /// Призыв — единственное место, где тела появляются на арене мимо расстановки, и это сознательно:
+        /// он боевая механика, а не заказ состава. Всё остальное про призыв (срок жизни, уход за хозяином)
+        /// исполняет <see cref="SummonSystem"/>; здесь только рождение.
+        /// </remarks>
+        private static void ApplySummons(RuntimeUnit caster, AbilityData data, int previousCasts, ICombatContext ctx)
+        {
+            int lifetimeTicks = AttackTiming.RecoveryTicks(data.SummonLifetimeSeconds);
+            int count = data.ResolveSummonCount(previousCasts);
+
+            // Шаг раскладки — от размера призывателя: крупный хозяин не должен рождать тела внутри себя.
+            float step = Mathf.Max(0.6f, caster.Stats.Get(StatType.Size));
+
+            for (int i = 0; i < count; i++)
+            {
+                // Веером за спиной хозяина: чередуем стороны, отступая на шаг. Формула чистая от
+                // состояния мира, поэтому одинакова у обеих команд.
+                int lane = (i / 2) + 1;
+                float side = (i % 2 == 0) ? -1f : 1f;
+                var offset = new Vector2(side * step * lane, -step * 0.5f);
+
+                RuntimeUnit summon = ctx.Summon(
+                    data.SummonUnit, caster.Team, caster.Position + offset, caster);
+                if (summon == null) return;   // призывать нечем — молчим, это не боевая ошибка
+
+                summon.SummonAbilityId         = data.Id;
+                summon.SummonLifetimeRemaining = lifetimeTicks;
+                summon.DiesWithSummoner        = data.SummonDiesWithSummoner;
+            }
         }
 
         /// <summary>Ближайший к точке живой враг команды <paramref name="selfTeam"/>, кроме <paramref name="exclude"/> (тай-брейк по Id).</summary>
@@ -217,8 +587,8 @@ namespace Guildmaster.Combat
         {
             EffectTag tag = data.TriggerTag;
             float dmg = AbilityDamage(caster, data);
-            DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
-            DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
+            // Тип урона способности — её собственный, наследования от кастера нет (реформа 2026-07-30).
+            DamageType damageType = data.DamageType;
 
             // «Взрыв спор» Друида: помимо урона лечит союзников вокруг КАЖДОЙ детонированной цели за каждый
             // уникальный эффект-триггер на ней. Гейт по IsHeal+радиусу — у крио-«Оков» хила нет, они не лечат.
@@ -231,42 +601,25 @@ namespace Guildmaster.Combat
                 if ((u.EffectTagMask & tag) == 0) continue;
 
                 // Детонация: урон по каждому тегнутому врагу («Взрыв спор», «Воспламенение»). 0 = только эффекты (крио).
-                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, u, dmg, school, ctx.ArmorK, affinity: affinity));
+                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, u, dmg, damageType, ctx.ArmorK));
 
                 ApplyEffects(u, data, caster, ctx);
 
                 // Хил за уникальные яды считаем ДО расхода тега (иначе Dispel их снимет и уники обнулятся).
                 if (healsPerUnique)
                 {
-                    int uniques = CountUniqueTagged(u, tag);
+                    // Счёт по НАЧАЛУ тика, а не по живому списку: иначе чужой клинз, прошедший раньше по
+                    // обходу, обкрадывает детонацию, и зеркальные стороны расходятся (см. EffectSystem).
+                    int uniques = EffectSystem.CountUniqueTaggedAtTickStart(u, tag, ctx.CurrentTick);
                     if (uniques > 0) HealAlliesAround(caster, u, data, uniques, ctx);
                 }
 
                 // Конверсия: снять тег-триггер (напр. Frozen) после наложения стана — «Заморозка» превращается в стан.
                 if (data.ConsumesTriggerTag)
-                    ctx.Dispel(new DispelRequest(u, DispelTargetPolarity.Any, tag, dispelPower: int.MaxValue, maxCount: 0));
+                    ctx.Dispel(new DispelRequest(
+                        u, DispelTargetPolarity.Any, tag, dispelPower: int.MaxValue, maxCount: 0,
+                        source: caster, consumesOwnTrigger: true));
             }
-        }
-
-        /// <summary>Сколько РАЗНЫХ эффектов (по <c>Def</c>) с данным тегом висит на юните. Стаки одного эффекта = 1.</summary>
-        private static int CountUniqueTagged(RuntimeUnit unit, EffectTag tag)
-        {
-            int count = 0;
-            for (int i = 0; i < unit.ActiveEffects.Count; i++)
-            {
-                RuntimeEffect e = unit.ActiveEffects[i];
-                if (e.Def == null || (e.Def.Tags & tag) == 0) continue;
-
-                // Дубли по Def не считаем: ищем этот Def среди уже пройденных.
-                bool seen = false;
-                for (int j = 0; j < i; j++)
-                {
-                    RuntimeEffect prev = unit.ActiveEffects[j];
-                    if (prev.Def == e.Def && (prev.Def.Tags & tag) != 0) { seen = true; break; }
-                }
-                if (!seen) count++;
-            }
-            return count;
         }
 
         /// <summary>
@@ -274,6 +627,12 @@ namespace Guildmaster.Combat
         /// умножая лечение на число уникальных ядов на нём — «Взрыв спор» лечит тем сильнее, чем разнообразнее
         /// отравлена цель. Хил каждому союзнику стакается от каждой взорванной рядом цели (внешний цикл).
         /// </summary>
+        /// <remarks>
+        /// Нагрузка бывает двух видов, и они не исключают друг друга: мгновенное восстановление HP и
+        /// <see cref="AbilityData.HealEffect"/> — эффект-HoT, где множитель превращается в СТАКИ. Стаки
+        /// набиваются повторным наложением, а не отдельным API: <c>StackRule.Stack</c> для этого и есть,
+        /// и так же ведёт себя любой другой источник стаков в бою (решение по Друиду 2026-07-28).
+        /// </remarks>
         private void HealAlliesAround(RuntimeUnit caster, RuntimeUnit epicenter, AbilityData data, int multiplier, ICombatContext ctx)
         {
             ctx.QueryUnitsInRadius(epicenter.Position, data.AreaRadius, _targets, TargetFilter.Allies, caster.Team);
@@ -282,8 +641,12 @@ namespace Guildmaster.Combat
                 RuntimeUnit ally = _targets[i];
                 if (ally.IsDead) continue;
 
-                float heal = HealAmount(ally, data) * multiplier;
+                float heal = HealAmount(ally, data, caster) * multiplier;
                 if (heal > 0f) ctx.Heal(ally, heal, caster);
+
+                if (data.HealEffect == null) continue;
+                for (int stack = 0; stack < multiplier; stack++)
+                    ctx.ApplyEffect(ally, data.HealEffect, caster);
             }
         }
 
@@ -310,30 +673,69 @@ namespace Guildmaster.Combat
         private static void ApplyAura(RuntimeUnit t, AbilityData data, RuntimeUnit caster, ICombatContext ctx)
         {
             if (t.IsDead) return;
-            if (data.IsHeal) ctx.Heal(t, HealAmount(t, data), caster);
+            if (data.IsHeal)
+            {
+                ctx.Heal(t, HealAmount(t, data, caster), caster);
+                ApplyHealEffect(t, data, caster, ctx);
+            }
             ApplyEffects(t, data, caster, ctx);
         }
 
-        /// <summary>Круговой AOE-удар вокруг кастующего («Стальной вихрь»): урон + эффекты по всем врагам в радиусе.</summary>
-        private void ApplyCircle(RuntimeUnit caster, AbilityData data, ICombatContext ctx)
+        /// <summary>
+        /// Круговой AOE-удар вокруг кастующего («Стальной вихрь»): урон + эффекты по всем врагам в
+        /// радиусе, а при <see cref="AbilityData.Displaces"/> — ещё и толчок КАЖДОГО наружу от центра.
+        /// </summary>
+        /// <remarks>
+        /// Толчок здесь без «ядра» (<c>cannonball: false</c>) и без своего урона: вихрь уже нанёс его
+        /// сам, и повторный урон на линии полёта означал бы двойной удар одной способностью. Смещение
+        /// идёт тем же швом, что монашье, поэтому цель, отброшенная вихрем, ведёт себя как любая другая
+        /// отброшенная — включая удар о край арены и реактивы на конец полёта («интеграция с монахом»).
+        /// </remarks>
+        private void ApplyCircle(RuntimeUnit caster, AbilityData data, ICombatContext ctx, RuntimeUnit target = null)
         {
-            // Dev-оверлей зоны круга.
-            ctx.ReportAreaHit(AreaHit.Circle(caster.Position, data.AreaRadius, caster.Team));
+            // Центр круга: под ногами кастующего (Копейщик рубит вокруг себя) или под ногами цели
+            // (ледяная зона Криоманта ложится во вражеский строй, а не в собственный бэклайн).
+            Vector2 center = data.AreaAtTarget && target != null ? target.Position : caster.Position;
 
-            ctx.QueryUnitsInRadius(caster.Position, data.AreaRadius, _targets, TargetFilter.Enemies, caster.Team);
+            // Dev-оверлей зоны круга.
+            ctx.ReportAreaHit(AreaHit.Circle(center, data.AreaRadius, caster.Team));
+
+            ctx.QueryUnitsInRadius(center, data.AreaRadius, _targets, TargetFilter.Enemies, caster.Team);
 
             float dmg = AbilityDamage(caster, data);
-            DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
-            DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
+            // Тип урона способности — её собственный, наследования от кастера нет (реформа 2026-07-30).
+            DamageType damageType = data.DamageType;
 
             // Урон по целям независим (коммутативен) — порядок из spatial hash не влияет на итог.
             for (int i = 0; i < _targets.Count; i++)
             {
                 RuntimeUnit t = _targets[i];
-                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, t, dmg, school, ctx.ArmorK, affinity: affinity));
+                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, t, dmg, damageType, ctx.ArmorK));
                 ApplyEffects(t, data, caster, ctx);
+
+                if (data.Displaces) PushOutward(caster, t, data, ctx);
             }
         }
+
+        // Толчок от центра круга. Стоящего ровно в центре толкаем «куда смотрит» кастующий — направление
+        // обязано быть определённым при любой геометрии, иначе на зеркале стороны разойдутся.
+        private static void PushOutward(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx)
+        {
+            Vector2 away = target.Position - caster.Position;
+            Vector2 dir = away.sqrMagnitude > 1e-6f
+                ? away.normalized
+                : (caster.CurrentTarget != null
+                    ? SafeDirection(caster.CurrentTarget.Position - caster.Position)
+                    : Vector2.right);
+
+            // Порядок аргументов — (кого двигаем, кто двигает): толкаемый здесь ЦЕЛЬ, а не кастующий.
+            ctx.Displace(new DisplaceRequest(
+                target, caster, dir, data.DisplaceDistance,
+                cannonball: false, damage: 0f, damageType: DamageType.Pure, width: 0f));
+        }
+
+        private static Vector2 SafeDirection(Vector2 v) =>
+            v.sqrMagnitude > 1e-6f ? v.normalized : Vector2.right;
 
         /// <summary>Одиночный каст: хил-нагрузка (Пастырь) ИЛИ прямой урон ×AutoAttackDamage (поведение Ф2) + эффекты.</summary>
         private static void ApplyToTarget(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx)
@@ -341,35 +743,62 @@ namespace Guildmaster.Combat
             if (data.IsHeal)
             {
                 // Сырое лечение (dealt/taken eff и кламп к MaxHP применяет ctx.Heal). «Длань жизни» = X + недостающее HP.
-                ctx.Heal(target, HealAmount(target, data), caster);
+                ctx.Heal(target, HealAmount(target, data, caster), caster);
+                ApplyHealEffect(target, data, caster, ctx);
             }
             else
             {
                 float dmg = AbilityDamage(caster, data);
                 if (dmg > 0f)
                 {
-                    DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
-                    DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
-                    ctx.DealDamage(new DamageRequest(caster, target, dmg, school, ctx.ArmorK, affinity: affinity));
+                    DamageType damageType = data.DamageType;
+                    ctx.DealDamage(new DamageRequest(caster, target, dmg, damageType, ctx.ArmorK));
                 }
             }
             ApplyEffects(target, data, caster, ctx);
         }
 
-        /// <summary>Сырое лечение способности = HealFlat + HealPctTargetMissingHp × недостающее HP цели.</summary>
-        private static float HealAmount(RuntimeUnit target, AbilityData data)
+        /// <summary>
+        /// Сырое лечение способности = <c>HealFlat + HealPctTargetMissingHp × недостающее HP цели</c>,
+        /// а на самого кастующего — ещё и × <see cref="AbilityData.SelfHealFraction"/>.
+        /// </summary>
+        private static float HealAmount(RuntimeUnit target, AbilityData data, RuntimeUnit caster = null)
         {
             float missing = target.Stats.Get(StatType.MaxHP) - target.CurrentHP;
             if (missing < 0f) missing = 0f;
-            return data.HealFlat + data.HealPctTargetMissingHp * missing;
+
+            float amount = data.HealFlat + data.HealPctTargetMissingHp * missing;
+            return ReferenceEquals(target, caster) ? amount * data.SelfHealFraction : amount;
         }
 
         /// <summary>Прямой урон способности = DamageMultiplier × AutoAttackDamage кастующего (0 = только эффекты).</summary>
         private static float AbilityDamage(RuntimeUnit caster, AbilityData data)
         {
-            return data.DamageMultiplier > 0f
-                ? data.DamageMultiplier * caster.Stats.Get(StatType.AutoAttackDamage)
-                : 0f;
+            // Множитель берётся через конвертации (M4): базовый ×3 может расти от статов носителя.
+            // Гейт по БАЗОВОМУ значению: способность без прямого урона не должна начать бить от того,
+            // что у кита высокая скорость атаки.
+            if (data.DamageMultiplier <= 0f) return 0f;
+
+            return data.ResolveDamageMultiplier(caster.Stats) * caster.Stats.Get(StatType.AutoAttackDamage);
+        }
+
+        /// <summary>
+        /// Нагрузка лечащей способности, заданная ЭФФЕКТОМ (<see cref="AbilityData.HealEffect"/>): щит
+        /// раненому союзнику у гоблина-мага, лечение отступающему разбойнику у их варлока, HoT Друида.
+        /// </summary>
+        /// <remarks>
+        /// Живёт рядом с <c>ctx.Heal</c>, а не в <see cref="ApplyEffects"/>, и это не дубль вызова: у
+        /// эффектов способности цель определяется формой (круг и масс-по-тегу адресуют ВРАГОВ), а хил-эффект
+        /// по контракту поля достаётся лечимому. Положи его в общий проход — и круговой каст с
+        /// <c>HealEffect</c> начал бы щитовать тех, по кому бьёт.
+        /// <para><b>Стаки здесь ровно один.</b> Множитель в стаки превращает только «Взрыв спор»
+        /// (<see cref="HealAlliesAround"/>): там число ядов на детонированной цели и есть множитель, и
+        /// стаки набиваются повторным наложением. Одиночный каст и аура множителя не имеют.</para>
+        /// </remarks>
+        private static void ApplyHealEffect(RuntimeUnit target, AbilityData data, RuntimeUnit caster, ICombatContext ctx)
+        {
+            if (data.HealEffect == null) return;
+            ctx.ApplyEffect(target, data.HealEffect, caster);
         }
 
         private static void ApplyEffects(RuntimeUnit target, AbilityData data, RuntimeUnit caster, ICombatContext ctx)
@@ -378,6 +807,26 @@ namespace Guildmaster.Combat
             if (effects == null) return;
             for (int i = 0; i < effects.Length; i++)
                 ctx.ApplyEffect(target, effects[i], caster);
+        }
+
+        /// <summary>
+        /// Эффекты на самого кастующего — независимо от формы способности и наличия цели.
+        /// <paramref name="repeats"/> — сколько раз применить каждый (см. <see cref="AbilityData.RepeatSelfEffects"/>).
+        /// </summary>
+        private static void ApplySelfEffects(RuntimeUnit caster, AbilityData data, ICombatContext ctx, int repeats)
+        {
+            EffectData[] effects = data.SelfEffects;
+            if (effects == null) return;
+            if (repeats < 1) repeats = 1;
+
+            // Порядок «эффект за эффектом, а не проход за проходом» смысла не меняет — стаки накопительные, —
+            // но держит применения одного эффекта рядом, что читаемее в логе боя.
+            for (int i = 0; i < effects.Length; i++)
+            {
+                if (effects[i] == null) continue;
+                for (int shot = 0; shot < repeats; shot++)
+                    ctx.ApplyEffect(caster, effects[i], caster);
+            }
         }
 
         private static float HpPct(RuntimeUnit u)
@@ -402,9 +851,42 @@ namespace Guildmaster.Combat
                 case AbilityTargetMode.LowestHpAlly:
                     return LowestHpAlly(caster, units);
 
+                case AbilityTargetMode.NearestEnemyWithResource:
+                    return NearestEnemyWithResource(caster, units);
+
                 default:
                     return null;
             }
+        }
+
+        /// <summary>
+        /// Ближайший враг с непустым пулом ресурса; тай-брейк — <c>Id</c> (детерминизм). Никого с
+        /// ресурсом нет — <c>null</c>, и каст просто не состоится.
+        /// </summary>
+        /// <remarks>
+        /// Дальностью не ограничено, как и прочие режимы выбора: дотянется ли проказник до жертвы —
+        /// вопрос его дальности каста, а не выбора цели.
+        /// </remarks>
+        private static RuntimeUnit NearestEnemyWithResource(RuntimeUnit caster, IReadOnlyList<RuntimeUnit> units)
+        {
+            RuntimeUnit best   = null;
+            float       bestSq = float.MaxValue;
+
+            for (int i = 0; i < units.Count; i++)
+            {
+                RuntimeUnit other = units[i];
+                if (other.IsDead || other.Team == caster.Team) continue;
+                if (other.Stats.Get(StatType.MaxResource) <= 0f) continue;
+
+                float sq = (other.Position - caster.Position).sqrMagnitude;
+                if (sq < bestSq || (sq == bestSq && best != null && other.Id < best.Id))
+                {
+                    bestSq = sq;
+                    best   = other;
+                }
+            }
+
+            return best;
         }
 
         private static RuntimeUnit NearestAlly(RuntimeUnit caster, IReadOnlyList<RuntimeUnit> units)
@@ -430,8 +912,16 @@ namespace Guildmaster.Combat
 
         /// <summary>
         /// Союзник с наименьшим HP% — глобально, без ограничения дальности (хилер-ульта «Длань жизни»).
-        /// Себя исключаем: свой критический HP покрывает блок E. Тай-брейк — дистанция, затем Id (детерминизм).
+        /// Кастующий входит в перебор наравне со всеми: лечит того, кому хуже, будь то он сам.
+        /// Тай-брейк — дистанция, затем Id (детерминизм).
         /// </summary>
+        /// <remarks>
+        /// Себя раньше исключали (решение 2026-07-26/7: «свет — это то, что он отдаёт другим»), но это
+        /// оставляло хилера без единственного инструмента, когда фокус переводили на него самого.
+        /// Решение 2026-07-28: адресную ульту разрешили и на себя, а цена перенесена в ПАССИВКУ —
+        /// само-лечение светом вчетверо слабее союзного (25% против 100%). Отдавать по-прежнему
+        /// выгоднее, но выбор «спасти себя» перестал быть невозможным.
+        /// </remarks>
         private static RuntimeUnit LowestHpAlly(RuntimeUnit caster, IReadOnlyList<RuntimeUnit> units)
         {
             RuntimeUnit best      = null;
@@ -441,7 +931,7 @@ namespace Guildmaster.Combat
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit other = units[i];
-                if (other == caster || other.IsDead || other.Team != caster.Team) continue;
+                if (other.IsDead || other.Team != caster.Team) continue;
 
                 float pct    = HpPct(other);
                 float distSq = (other.Position - caster.Position).sqrMagnitude;

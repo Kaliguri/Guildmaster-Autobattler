@@ -1,4 +1,5 @@
 using System;
+using Guildmaster.Data.Stats;
 using UnityEngine;
 
 namespace Guildmaster.Data.Definitions
@@ -24,6 +25,14 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Все живые союзники в <see cref="AbilityData.AreaRadius"/> вокруг кастующего, включая его самого
         /// (групповой баф «Командный клич»; лечение — если задана хил-нагрузка). Цель не одиночная.</summary>
         AlliesInRadius = 5,
+
+        /// <summary>
+        /// Ближайший враг <b>из тех, у кого есть пул ресурса</b> (<c>MaxResource &gt; 0</c>) — мана-дрейн
+        /// гоблина-проказника. Не «умный выбор»: жертва не сравнивается по величине пула или полноте
+        /// шкалы, отсекаются только те, для кого дебафф ресурса — ровно ноль (решение Макса 2026-07-31).
+        /// Нет ни одного врага с ресурсом — каст не состоится вовсе.
+        /// </summary>
+        NearestEnemyWithResource = 6,
     }
 
     /// <summary>
@@ -40,6 +49,9 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Эффекты, накладываемые на цель при касте.")]
         [SerializeField] private EffectData[] _effects;
 
+        [Tooltip("Эффекты, накладываемые на САМОГО кастующего при применении («Стальной вихрь»: щит от нанесённого урона). Не зависят от формы способности.")]
+        [SerializeField] private EffectData[] _selfEffects;
+
         [Tooltip("Базовый кулдаун, сек. Фактический = base × CooldownEff кастующего.")]
         [SerializeField] private float _baseCooldown = 5f;
 
@@ -52,11 +64,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Множитель прямого урона от AutoAttackDamage кастующего. 0 = только эффекты (поведение Ф2). «Стальной вихрь» = 3.")]
         [SerializeField] private float _damageMultiplier;
 
-        [Tooltip("Школа урона способности. Inherit = школа юнита-кастера (ГДД «8»: школа задаётся каждой атаке/способности отдельно).")]
-        [SerializeField] private DamageSchoolOverride _schoolOverride = DamageSchoolOverride.Inherit;
-
-        [Tooltip("Сродство урона способности (Яд/Свет/Тьма). Inherit = сродство юнита-кастера.")]
-        [SerializeField] private DamageAffinityOverride _affinityOverride = DamageAffinityOverride.Inherit;
+        [Tooltip("Тип урона ЭТОЙ способности — свой, не унаследованный от юнита. Обязателен, если " +
+                 "способность наносит прямой урон (множитель > 0). Копейщик: ульта Режущая при " +
+                 "автоатаке Колющей.")]
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
         [Header("Area of effect (Phase 3)")]
         [Tooltip("Форма зоны поражения. None = одиночная цель по TargetMode (поведение Ф2).")]
@@ -71,6 +82,13 @@ namespace Guildmaster.Data.Definitions
 
         [Tooltip("Доля недостающего HP цели, добавляемая к лечению («Длань жизни» = 1.0 → долечивает до полного). >0 делает способность лечащей.")]
         [SerializeField] private float _healPctTargetMissingHp;
+
+        [Tooltip("Эффект вместо разового лечения: накладывается на каждого лечимого союзника (Друид = HoT «Грибной покров»). Множитель лечения превращается в стаки эффекта. Задан → тоже делает способность лечащей.")]
+        [SerializeField] private EffectData _healEffect;
+
+        [Tooltip("Доля лечения, когда цель — САМ кастующий (Пастырь = 0.25: себе вчетверо хуже, чем союзнику). 1 = без разницы.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _selfHealFraction = 1f;
 
         [Header("Cast condition (blocks D/E, Phase 3)")]
         [Tooltip("Когда кастовать: Immediately = как только готова; EnemiesInRadius = врагов в радиусе ≥ CastConditionCount; AllyTargetHpBelowPct = HP% выбранной цели ≤ CastConditionHpPct.")]
@@ -95,15 +113,85 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("После наложения эффектов снять TriggerTag с цели (конверсия: «Ледяные оковы» превращают «Заморозку» в стан).")]
         [SerializeField] private bool _consumesTriggerTag;
 
+        [Header("Cast time and channel (M3) — Копейщик, Маг молний, Барабанщик")]
+        [Tooltip("Подготовка перед применением, сек. 0 = мгновенно (поведение всего текущего контента). Маг молний = 1.5. Ресурс и КД списываются в НАЧАЛЕ подготовки: прерывание контролем жжёт каст.")]
+        [SerializeField] private float _castSeconds;
+
+        [Tooltip("Длительность канала, сек: после подготовки нагрузка применяется периодически, пока канал держится. 0 = разовое применение. Барабанщик «Марш».")]
+        [SerializeField] private float _channelSeconds;
+
+        [Tooltip("Период срабатывания канала, сек (первое — сразу на старте канала). ≤ 0 = взять 1 с. Барабанщик лечит раз в секунду.")]
+        [SerializeField] private float _channelTickSeconds = 1f;
+
+        [Tooltip("Кастовать и держать канал НА ХОДУ (по образцу «Стрельбы на ходу» Рейнджера). Выкл = каст держит на месте, как авто-атака. Барабанщик марширует.")]
+        [SerializeField] private bool _canMoveWhileCasting;
+
+        [Header("Presentation")]
+        [Tooltip("Чем юнит исполняет приём — что светится на телеграфе каста. Auto = чем бьёт обычно " +
+                 "(оружие ведущей руки, у безоружного кулак). OffHand — вторая рука, Shield — щит, " +
+                 "BothHands — оба клинка, WholeBody — длительные баффы и марши, None — не светится вовсе.")]
+        [SerializeField] private CastSource _castSource = CastSource.Auto;
+
+        [Header("Stat conversions (M4) — Убийца, Маг молний")]
+        [Tooltip("Правила «стат юнита → параметр способности»: ускорение каста и кулдауна от скорости атаки, прибавка к множителю удара. Пусто = параметры берутся ровно из полей выше.")]
+        [SerializeField] private AbilityStatScaling[] _statScalings;
+
+        [Header("Summons (M10) — Некромант, Хранитель")]
+        [Tooltip("Кого призывать. Пусто = способность не призывает. Статы призыва берутся из ЭТОГО ассета " +
+                 "и множатся на SummonHealthEff/SummonDamageEff призывателя.")]
+        [SerializeField] private UnitData _summonUnit;
+
+        [Tooltip("Сколько призывает за один каст.")]
+        [Min(1)]
+        [SerializeField] private int _summonCount = 1;
+
+        [Tooltip("Прибавка к числу призываемых за каждый предыдущий каст В ЭТОМ БОЮ (Некромант = 1: армия " +
+                 "растёт с каждым призывом). 0 = число постоянно. Клампится SummonCountCap.")]
+        [Min(0)]
+        [SerializeField] private int _summonCountGrowth;
+
+        [Tooltip("Потолок числа призываемых за ОДИН каст при разгоне (Некромант = 3). 0 = без потолка.")]
+        [Min(0)]
+        [SerializeField] private int _summonCountCap;
+
+        [Tooltip("Максимум ЖИВЫХ призывов от этой способности. Лимит достигнут — каст не идёт вовсе " +
+                 "(мана и КД целы, игрок видит предел глазами). 0 = без лимита.")]
+        [Min(0)]
+        [SerializeField] private int _summonLimit = 3;
+
+        [Tooltip("Срок жизни призыва, сек. 0 = бессрочно (обычный случай): живёт до конца боя или своей смерти.")]
+        [Min(0f)]
+        [SerializeField] private float _summonLifetimeSeconds;
+
+        [Tooltip("Призыв умирает вместе с призывателем. Выкл = переживает его (земляной голем Мага бандитов).")]
+        [SerializeField] private bool _summonDiesWithSummoner;
+
+        [Header("Multi-hit payload — Арканист")]
+        [Tooltip("Сколько раз нагрузка применяется за ОДИН каст (стрел в залпе). 1 = обычная способность. " +
+                 "Арканист = 3. Каждое применение — отдельный удар: свой урон и свой стак эффекта.")]
+        [Min(1)]
+        [SerializeField] private int _payloadRepeats = 1;
+
+        [Tooltip("Прибавка к числу применений за каждый предыдущий каст В ЭТОМ БОЮ (Арканист = 1: залп " +
+                 "растёт на стрелу с каждым кастом). 0 = число применений постоянно.")]
+        [Min(0)]
+        [SerializeField] private int _payloadRepeatGrowth;
+
+        [Tooltip("Повторять и эффекты НА СЕБЯ столько же раз, сколько нагрузку на цель. " +
+                 "Хранитель углей = вкл: «Раздуть жар» кладёт 5 стаков союзнику и 5 себе. " +
+                 "Выкл (по умолчанию) = self-эффекты применяются один раз за каст, как щит «Стального вихря».")]
+        [SerializeField] private bool _repeatSelfEffects;
+
+        [Tooltip("Круг строится вокруг ЦЕЛИ, а не вокруг кастующего. Криомант: ледяная зона ложится там, " +
+                 "где стоит враг, а не под ноги магу второй линии. Требует цель, как обычная способность.")]
+        [SerializeField] private bool _areaAtTarget;
+
         [Header("Displacement (§9.9) — Монах")]
-        [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance за DisplaceTicks; на линии полёта — урон-ядро.")]
+        [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. На линии полёта — урон-ядро.")]
         [SerializeField] private bool _displaces;
 
         [Tooltip("Дистанция отбрасывания (фиксированная, мировые единицы).")]
         [SerializeField] private float _displaceDistance = 4f;
-
-        [Tooltip("Длительность полёта в сим-тиках (30/сек). Цель оглушена в полёте.")]
-        [SerializeField] private int _displaceTicks = 12;
 
         [Tooltip("Множитель урона-ядра от AutoAttackDamage кастующего (0 = без урона на линии).")]
         [SerializeField] private float _displaceDamageMult = 1f;
@@ -121,19 +209,62 @@ namespace Guildmaster.Data.Definitions
 
         public string Id => _id;
         public EffectData[] Effects => _effects;
+
+        /// <summary>
+        /// Эффекты на самого кастующего. Заведены отдельным списком, потому что <see cref="Effects"/>
+        /// адресован ЦЕЛИ, и у круговых или масс-способностей цели вообще нет — «дай себе щит» иначе
+        /// выразить нечем, кроме второй способности-пустышки.
+        /// </summary>
+        public EffectData[] SelfEffects => _selfEffects;
         public float BaseCooldown => _baseCooldown;
         public float ResourceCost => _resourceCost;
         public AbilityTargetMode TargetMode => _targetMode;
 
         public float DamageMultiplier => _damageMultiplier;
-        public DamageSchoolOverride SchoolOverride => _schoolOverride;
-        public DamageAffinityOverride AffinityOverride => _affinityOverride;
+
+        /// <summary>
+        /// Тип урона способности — собственный. Наследования от кастера нет: прежний <c>Inherit</c>
+        /// был единственным способом не назвать тип и выглядеть при этом законно (реформа
+        /// 2026-07-30). У способностей без прямого урона остаётся <c>Undefined</c> — им тип урона
+        /// не нужен, и тест покрытия спрашивает его только с тех, у кого множитель больше нуля.
+        /// </summary>
+        public DamageType DamageType => _damageType;
         public AreaShape AreaShape => _areaShape;
         public float AreaRadius => _areaRadius;
+
+        /// <summary>
+        /// Круг применяется вокруг ЦЕЛИ, а не вокруг кастующего.
+        /// </summary>
+        /// <remarks>
+        /// Заведено под ледяную зону Криоманта: он дальник второй линии, и круг «вокруг себя» ложился бы
+        /// туда, где врагов нет по построению. Свободный выбор ТОЧКИ на арене (как в карточке) потребовал
+        /// бы таргетинга по точке, которого у способностей нет вовсе; позиция цели — самая близкая к
+        /// замыслу форма из тех, что выражаются данными.
+        /// </remarks>
+        public bool AreaAtTarget => _areaAtTarget;
         public float HealFlat => _healFlat;
         public float HealPctTargetMissingHp => _healPctTargetMissingHp;
-        /// <summary>Способность лечит (а не бьёт), если задана любая хил-нагрузка.</summary>
-        public bool IsHeal => _healFlat > 0f || _healPctTargetMissingHp > 0f;
+
+        /// <summary>
+        /// Эффект-нагрузка лечения: если задан, союзник получает ЕГО (со стаками по множителю лечения)
+        /// вместо мгновенного восстановления HP. Плоский хил и процент при этом не отменяются — заданы
+        /// оба, союзник получит и то, и то.
+        /// </summary>
+        public EffectData HealEffect => _healEffect;
+
+        /// <summary>
+        /// Во сколько раз слабее лечение, когда цель — сам кастующий. Отдавать выгоднее, чем брать:
+        /// та же асимметрия, что у пассивки Пастыря (решение 2026-07-28), но для адресной способности.
+        /// </summary>
+        /// <remarks>
+        /// Заведено вместо прежнего запрета «ульта не может целиться в себя»: запрет оставлял хилера
+        /// без единственного инструмента ровно тогда, когда фокус переводили на него. Цена честнее
+        /// невозможности — спасти себя можно, но вчетверо дороже.
+        /// </remarks>
+        public float SelfHealFraction => _selfHealFraction;
+
+        /// <summary>Способность лечит (а не бьёт), если задана любая хил-нагрузка — мгновенная или эффектом.</summary>
+        public bool IsHeal => _healFlat > 0f || _healPctTargetMissingHp > 0f || _healEffect != null;
         public CastCondition CastCondition => _castCondition;
         public int CastConditionCount => _castConditionCount;
         /// <summary>Радиус условия каста; при ≤ 0 откатывается к <see cref="AreaRadius"/>.</summary>
@@ -142,9 +273,126 @@ namespace Guildmaster.Data.Definitions
         public float CastOverrideSelfHpPct => _castOverrideSelfHpPct;
         public EffectTag TriggerTag => _triggerTag;
         public bool ConsumesTriggerTag => _consumesTriggerTag;
+        /// <summary>
+        /// Подготовка перед применением, сек (0 = мгновенно). Цена платится на СТАРТЕ подготовки —
+        /// решение Макса 2026-07-29: иначе контроль лишь задерживает каст, и телеграф не стоит ничего.
+        /// </summary>
+        public float CastSeconds => _castSeconds;
+
+        /// <summary>Длительность канала, сек (0 = разовое применение после подготовки).</summary>
+        public float ChannelSeconds => _channelSeconds;
+
+        /// <summary>Период срабатывания канала, сек; при ≤ 0 — одна секунда.</summary>
+        public float ChannelTickSeconds => _channelTickSeconds > 0f ? _channelTickSeconds : 1f;
+
+        /// <summary>Способность кастуется на ходу — исключение из «каст держит на месте» (Q9, форма — поле ассета).</summary>
+        public bool CanMoveWhileCasting => _canMoveWhileCasting;
+
+        /// <summary>Способность занимает время: есть подготовка или канал (иначе применяется в тот же тик).</summary>
+        public bool TakesTime => _castSeconds > 0f || _channelSeconds > 0f;
+
+        /// <summary>
+        /// Чем исполняется приём — что зажигает показ на телеграфе. Роль, а не узел рига: конкретную
+        /// часть находит реестр частей юнита, поэтому одно и то же значение верно и для дуалиста, и
+        /// для щитовика.
+        /// </summary>
+        public CastSource CastSource => _castSource;
+
+        /// <summary>Правила конвертации статов в параметры этой способности (M4).</summary>
+        public AbilityStatScaling[] StatScalings => _statScalings;
+
+        /// <summary>Кулдаун с учётом конвертаций статов носителя (до умножения на <c>CooldownEff</c>).</summary>
+        public float ResolveCooldown(IStatReader stats) => Resolve(AbilityParameter.Cooldown, _baseCooldown, stats);
+
+        /// <summary>Длительность подготовки с учётом конвертаций: скорость атаки укорачивает каст.</summary>
+        public float ResolveCastSeconds(IStatReader stats) => Resolve(AbilityParameter.CastSeconds, _castSeconds, stats);
+
+        /// <summary>Множитель прямого урона с учётом конвертаций («Удар из скрытности» растёт от AS).</summary>
+        public float ResolveDamageMultiplier(IStatReader stats) => Resolve(AbilityParameter.DamageMultiplier, _damageMultiplier, stats);
+
+        /// <summary>
+        /// Свести все правила для одного параметра. Правила ОДНОГО параметра применяются подряд, в
+        /// порядке ассета: порядок значим для обратной формы, поэтому он берётся из данных, а не из
+        /// сортировки — иначе одно и то же содержимое давало бы разные числа между сборками.
+        /// </summary>
+        private float Resolve(AbilityParameter parameter, float baseValue, IStatReader stats)
+        {
+            if (_statScalings == null || _statScalings.Length == 0) return baseValue;
+
+            float value = baseValue;
+            for (int i = 0; i < _statScalings.Length; i++)
+                if (_statScalings[i].Target == parameter) value = _statScalings[i].Apply(value, stats);
+
+            return value;
+        }
+
+        /// <summary>Кого призывает способность. null = не призывает.</summary>
+        public UnitData SummonUnit => _summonUnit;
+
+        /// <summary>Сколько тел появляется за каст (базовое число, без разгона).</summary>
+        public int SummonCount => _summonCount < 1 ? 1 : _summonCount;
+
+        /// <summary>
+        /// Сколько тел появится с учётом разгона: <paramref name="previousCasts"/> — сколько раз эта
+        /// способность уже призывала в этом бою. Клампится <c>_summonCountCap</c>, если он задан.
+        /// </summary>
+        /// <remarks>
+        /// Отдельно от <see cref="ResolvePayloadRepeats"/>, хотя арифметика та же: призыв применяется ВНЕ
+        /// цикла нагрузки (тела появляются вместе с любой формой способности), и мешать два разгона в
+        /// одно поле значило бы, что «залп из трёх стрел» случайно начнёт множить и скелетов.
+        /// </remarks>
+        public int ResolveSummonCount(int previousCasts)
+        {
+            int count = SummonCount + (_summonCountGrowth < 0 ? 0 : _summonCountGrowth) * (previousCasts < 0 ? 0 : previousCasts);
+            return _summonCountCap > 0 && count > _summonCountCap ? _summonCountCap : count;
+        }
+
+        /// <summary>Максимум живых призывов от этой способности; 0 = без лимита.</summary>
+        public int SummonLimit => _summonLimit;
+
+        /// <summary>Срок жизни призыва в секундах; 0 = бессрочно.</summary>
+        public float SummonLifetimeSeconds => _summonLifetimeSeconds;
+
+        /// <summary>Призыв уходит вместе с призывателем.</summary>
+        public bool SummonDiesWithSummoner => _summonDiesWithSummoner;
+
+        /// <summary>Способность призывает тела на поле.</summary>
+        public bool Summons => _summonUnit != null;
+
+        /// <summary>Базовое число применений нагрузки за каст (1 = обычная способность).</summary>
+        public int PayloadRepeats => _payloadRepeats < 1 ? 1 : _payloadRepeats;
+
+        /// <summary>Прибавка к числу применений за каждый предыдущий каст в бою; 0 = не растёт.</summary>
+        public int PayloadRepeatGrowth => _payloadRepeatGrowth < 0 ? 0 : _payloadRepeatGrowth;
+
+        /// <summary>
+        /// Сколько раз применить нагрузку с учётом разгона: <paramref name="previousCasts"/> — сколько
+        /// раз эта способность уже кастовала В ЭТОМ БОЮ.
+        /// </summary>
+        /// <remarks>
+        /// Счётчик принадлежит способности носителя, а не цели: залп Арканиста не сбрасывается при
+        /// смене цели — он тем сильнее, чем дольше идёт бой. Это намеренная кривая (карточка
+        /// [[the-rift]] §Баланс-флаги), и потолка у неё нет: тормоз — короткая жизнь «Разлада», а не кап.
+        /// </remarks>
+        public int ResolvePayloadRepeats(int previousCasts)
+            => PayloadRepeats + PayloadRepeatGrowth * (previousCasts < 0 ? 0 : previousCasts);
+
+        /// <summary>
+        /// Повторять ли <see cref="SelfEffects"/> столько же раз, сколько нагрузку на цель.
+        /// </summary>
+        /// <remarks>
+        /// <b>Флаг, а не второе число</b> (вердикт Макса 2026-07-30): у Хранителя углей требование звучит
+        /// как «столько же, сколько союзнику», то есть величина у обеих половин ОДНА. Отдельное
+        /// <c>_selfPayloadRepeats</c> завело бы второго владельца этой величины, и при правке залпа
+        /// половины разошлись бы молча.
+        /// <para><b>Выключено по умолчанию намеренно:</b> щит «Стального вихря» и родня — реактивы,
+        /// которые вешаются на каст РАЗ и растут от урона всей нагрузки. Повтор дал бы Копейщику пять
+        /// щитов вместо одного, то есть тихо усилил бы кита, которого никто не трогал.</para>
+        /// </remarks>
+        public bool RepeatSelfEffects => _repeatSelfEffects;
+
         public bool Displaces => _displaces;
         public float DisplaceDistance => _displaceDistance;
-        public int DisplaceTicks => _displaceTicks;
         public float DisplaceDamageMult => _displaceDamageMult;
         public float DisplaceWidth => _displaceWidth;
         public TagData[] InfoTags => _infoTags;

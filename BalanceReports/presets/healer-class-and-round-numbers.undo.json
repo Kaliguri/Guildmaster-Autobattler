@@ -1,0 +1,48 @@
+{
+  "title": "ОТКАТ: Класс Целитель, лечение Пастыря на ровных числах, дальность Копейщика",
+  "edits": [
+    {
+      "op": "setStat",
+      "asset": "IronSpearman",
+      "stat": "AttackRange",
+      "modOp": "Override",
+      "value": 3.0
+    },
+    {
+      "op": "addCooldown",
+      "asset": "LightShepherd",
+      "ability": "hand_of_life",
+      "delta": 1.0
+    },
+    {
+      "op": "setValue",
+      "asset": "LightShepherd",
+      "path": "_abilities.Array.data[0]._healPctTargetMissingHp",
+      "value": 0.08
+    },
+    {
+      "op": "setValue",
+      "asset": "LightShepherd",
+      "path": "_abilities.Array.data[0]._healFlat",
+      "value": 100.0
+    },
+    {
+      "op": "setEffectField",
+      "asset": "LightMend",
+      "field": "_allyBonus",
+      "value": 3.0
+    },
+    {
+      "op": "setEffectField",
+      "asset": "LightMend",
+      "field": "_fraction",
+      "value": 0.375
+    },
+    {
+      "op": "setValue",
+      "asset": "LightShepherd",
+      "path": "_combatClass",
+      "value": 4.0
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 title: "Content - Authoring - Overview"
 order: 0
 status: living
+updated: 2026-07-18
 ---
 
 # Методички авторинга контента

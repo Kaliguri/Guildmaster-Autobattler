@@ -1,0 +1,166 @@
+# Выкладка плеера в Steam. Отдельно от ci.yml намеренно: тот отвечает на вопрос
+# «собирается ли», а этот — «отдаём это людям». Разные вопросы, разная цена
+# ошибки, разные триггеры.
+name: Deploy to Steam
+
+on:
+  # Кнопка в Actions: выложить текущее состояние ветки на выбранную ветку Steam.
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Ветка Steam, куда ставим live"
+        type: choice
+        options: [dev_happy_guildmasters, playtest]
+        default: dev_happy_guildmasters
+      note:
+        description: "Пометка к сборке (видна в партнёрке)"
+        type: string
+        default: ""
+
+  # Тег версии. Он же НАЗНАЧАЕТ версию сборки — см. шаг «Версия» ниже.
+  push:
+    tags: ["v*"]
+
+# Две выкладки одновременно — это гонка в SteamPipe за один и тот же депо.
+# Очередь дешевле разбирательства, чей билд встал live.
+concurrency:
+  group: steam-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy to Steam
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        # Без lfs намеренно — та же причина, что в ci.yml (LFS в репозитории нет).
+
+      # Разводка обязана падать ГРОМКО и до сборки: двадцать пять минут ради
+      # «steamcmd не залогинился» — это худший способ узнать о пустом секрете.
+      - name: Check secrets
+        env:
+          STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+          STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
+          STEAM_APP_ID: ${{ vars.STEAM_APP_ID }}
+        run: |
+          missing=""
+          [ -z "$STEAM_USERNAME" ]   && missing="$missing STEAM_USERNAME(secret)"
+          [ -z "$STEAM_CONFIG_VDF" ] && missing="$missing STEAM_CONFIG_VDF(secret)"
+          [ -z "$STEAM_APP_ID" ]     && missing="$missing STEAM_APP_ID(variable)"
+          if [ -n "$missing" ]; then
+            echo "::error::Не настроено:$missing — см. docs/steam-deploy-setup.md"
+            exit 1
+          fi
+
+      # Боевая ветка Steam из CI не ставится live НИКОГДА. Valve и сама режет API
+      # на ней, но полагаться на чужой отказ, когда своё правило можно назвать
+      # вслух, — плохая идея: сообщение об отказе увидит тот, кто уже нажал.
+      - name: Refuse the live branch
+        run: |
+          branch="${{ github.event_name == 'push' && 'dev_happy_guildmasters' || inputs.branch }}"
+          case "$branch" in
+            default|public|"")
+              echo "::error::Ветка '$branch' — боевая. В прод переводит человек кнопкой в партнёрке."
+              exit 1 ;;
+          esac
+          echo "steam_branch=$branch" >> "$GITHUB_ENV"
+
+      # ВЛАДЕЛЕЦ ВЕРСИИ РЕЛИЗА — ТЕГ, а не ProjectSettings.
+      #
+      # Почему так: «не забыть поменять версию перед сборкой» — это задача,
+      # которая проигрывается на третий раз, а замечают проигрыш по чужому
+      # багрепорту с неверным номером. Тег ставится осознанно и ровно тогда,
+      # когда версия и меняется, поэтому он и назначает её.
+      #
+      # Версия едет НЕ только в имя сборки: Application.version попадает в
+      # отпечаток контента и сверяется на кооп-рукопожатии. Значит два клиента с
+      # разными версиями честно откажутся играть вместе — что и требуется.
+      - name: Version
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            version="${GITHUB_REF_NAME#v}"
+            note="${{ github.ref_name }}"
+          else
+            base=$(grep -m1 'bundleVersion:' ProjectSettings/ProjectSettings.asset | awk '{print $2}')
+            version="${base}-dev.${GITHUB_SHA::7}"
+            note="${{ inputs.note }}"
+          fi
+          [ -z "$note" ] && note="$version"
+          echo "build_version=$version" >> "$GITHUB_ENV"
+          echo "build_note=$note ($version, ${GITHUB_SHA::7})" >> "$GITHUB_ENV"
+          echo "Версия сборки: $version"
+
+      - name: Free disk space
+        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost "$AGENT_TOOLSDIRECTORY"
+
+      # Кэш ТОЛЬКО читаем, и читаем чужой — тот, что пишут обычные сборки ci.yml.
+      #
+      # Своё пространство кэша (Library-steam-) стоило двенадцати минут на первом же
+      # прогоне: оно было пустым, хотя рядом лежал готовый Library от сборок. И оно
+      # добавляло третью копию по полтора гигабайта к квоте репозитория, которая на
+      # 02.08.2026 занята на 6.9 ГБ из 10 — то есть кэши начали бы вытеснять друг
+      # друга, и «холодный старт» стал бы случаться регулярно и необъяснимо.
+      #
+      # Писать нам нечего: выкладка идёт по кнопке, изредка, и греть ею кэш незачем —
+      # это делают сборки, которые случаются на каждом PR.
+      - name: Restore Library cache
+        uses: actions/cache/restore@v4
+        with:
+          path: Library
+          key: Library-build-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: Library-build-
+
+      - name: Build player
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 6000.4.8f1
+          targetPlatform: StandaloneWindows64
+          buildName: HappyGuildmasters
+          buildsPath: build
+          versioning: Custom
+          version: ${{ env.build_version }}
+
+      # steam_appid.txt в билде ОТКЛЮЧАЕТ проверку «запущено через Steam»: игра
+      # пойдёт у кого угодно, включая того, кто её не покупал. В репозитории он
+      # лежит вне Assets и попасть сюда не должен — но проверяем, потому что
+      # однажды кто-то скопирует его «чтобы заработало», и заметить это по игре
+      # будет нельзя.
+      - name: Refuse to ship steam_appid.txt
+        run: |
+          if find build -name steam_appid.txt | grep -q .; then
+            echo "::error::steam_appid.txt попал в билд — он отключает проверку владения. Убрать."
+            exit 1
+          fi
+
+      - name: Deploy to Steam
+        uses: game-ci/steam-deploy@v3
+        with:
+          username: ${{ secrets.STEAM_USERNAME }}
+          configVdf: ${{ secrets.STEAM_CONFIG_VDF }}
+          appId: ${{ vars.STEAM_APP_ID }}
+          # Пусто — депо считается как appId+1. Задаётся, когда нумерация иная.
+          firstDepotIdOverride: ${{ vars.STEAM_DEPOT_ID }}
+          buildDescription: ${{ env.build_note }}
+          rootPath: build
+          depot1Path: StandaloneWindows64
+          releaseBranch: ${{ env.steam_branch }}
+
+      - name: Summary
+        run: |
+          echo "### Выложено в Steam" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- версия: \`${{ env.build_version }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- ветка Steam: \`${{ env.steam_branch }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- коммит: \`${GITHUB_SHA::7}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "В боевую ветку это НЕ уехало — туда переводит человек в партнёрке." >> "$GITHUB_STEP_SUMMARY"

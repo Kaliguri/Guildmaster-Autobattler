@@ -25,9 +25,9 @@ namespace Guildmaster.Tests.EditMode.Guild
         [SetUp]
         public void SetUp()
         {
-            _config = ScriptableObject.CreateInstance<GameConfig>();
-            var save = new MemSave();
-            _runStates = new RunStateService(save, _config);
+            _config = GameConfig.CreateDefault();
+            var save = new InMemorySaveService();
+            _runStates = new RunStateService(save, _config, new FixedProfileService());
             _runStates.NewRun(1L, Array.Empty<RosterSlot>());
 
             var relics = new List<RelicData>
@@ -43,7 +43,12 @@ namespace Guildmaster.Tests.EditMode.Guild
             var rewards = new RewardService(content, rng);
             var pricer  = new RelicPricer(_config);
 
-            _shop = new ShopController(rewards, pricer, _runStates, content, rng, _config);
+            // Продажа пишет в забег через шину команд — она же держит лог (ТЗ кооп-вертикали §4.1).
+            var commands = new Guildmaster.Guild.Commands.RunCommandBus(
+                new Guildmaster.Guild.Commands.RunCommandApplier(_runStates),
+                new Guildmaster.Guild.Commands.RunCommandLog());
+
+            _shop = new ShopController(rewards, pricer, _runStates, commands, content, rng, _config);
             _shop.Open();
         }
 
@@ -137,7 +142,6 @@ namespace Guildmaster.Tests.EditMode.Guild
                 _relics = relics;
                 foreach (var r in relics) _byId[r.Id] = r;
             }
-            public T Get<T>(string id) where T : ContentDefinition => (T)(object)_byId[id];
             public bool TryGet<T>(string id, out T def) where T : ContentDefinition
             {
                 if (_byId.TryGetValue(id, out var r) && r is T t) { def = t; return true; }
@@ -145,15 +149,6 @@ namespace Guildmaster.Tests.EditMode.Guild
             }
             public IReadOnlyList<T> All<T>() where T : ContentDefinition =>
                 typeof(T) == typeof(RelicData) ? (IReadOnlyList<T>)_relics : Array.Empty<T>();
-        }
-
-        private sealed class MemSave : ISaveService
-        {
-            private readonly Dictionary<string, object> _s = new();
-            public void Save<T>(string key, T value) => _s[key] = value;
-            public T Load<T>(string key) => _s.TryGetValue(key, out var v) ? (T)v : default;
-            public bool Exists(string key) => _s.ContainsKey(key);
-            public void Delete(string key) => _s.Remove(key);
         }
     }
 }

@@ -1,0 +1,13 @@
+﻿Rank;Relic;Class;Cleared;Fights;ClearRate;HpCostOnClear%;AvgFightSec;Timeout%;Overtime%;HeroDeaths%;FallenOnClear;AvgDmgDealt;HealDone;ControlSec
+1;Assassin;Assassin;5;5;1;14.5;9.407;0;0;0;0;1401.578;0;0
+2;Defender;Tank;5;5;1;14.507;10.453;0;0;0;0;580.885;0;0.2
+3;IronSpearman;Bruiser;5;5;1;16.45;8.813;0;0;0;0;1491.827;0;0
+4;WhirlMonk;Bruiser;5;5;1;18.258;10.56;0;0;0;0;1118.329;0;0.08
+5;Druid;Support;5;5;1;18.818;10.253;0;0;0;0;549.673;0;0
+6;Treant;Tank;5;5;1;19.398;9.693;0;0;0;0;650.875;0;0
+7;LightShepherd;Healer;5;5;1;19.651;12.953;0;0;0;0;580;473.247;0
+8;(контроль: отряд без кита);—;5;5;1;19.934;10.233;0;0;0;0;0;0;0
+9;Ranger;Ranged;5;5;1;20.257;10.187;0;0;0;0;1106.552;0;0
+10;Cryomancer;Ranged;5;5;1;21.714;10.733;0;0;0;0;1029.6;0;26
+11;FlameSwordsman;Assassin;5;5;1;21.972;11.913;0;0;20;0.2;670.729;0;0
+12;BaseRelic;Bruiser;5;5;1;22.013;11.413;0;0;0;0;1013.68;0;0

@@ -1,7 +1,9 @@
 ---
 title: "Effect - Frenzy"
-order: 16
+order: 530
 status: draft
+updated: 2026-07-29
+impl: paper
 ---
 
 # Ярость (Frenzy)

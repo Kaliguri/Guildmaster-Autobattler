@@ -20,7 +20,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             effects = new EffectSystem();
             var ctx = new MockCombatContext(effects: effects);
-            return new RuntimeUnitFactory(null, effects, ctx);
+            return new RuntimeUnitFactory(null, null, effects, ctx);
         }
 
         [Test]

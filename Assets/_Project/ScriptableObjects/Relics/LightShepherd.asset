@@ -13,69 +13,98 @@ MonoBehaviour:
   m_Name: LightShepherd
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.light_shepherd
-  _damageSchool: 0
-  _affinity: 2
+  _combatClass: 6
+  _autoAttackDamageType: 20
   _creatureType: 0
   _attackType: 1
   _resourceType: 1
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _visual: {fileID: 11400000, guid: 03da3358ac0ba5f4ba06dee0a3e46b47, type: 2}
+  _viewPrefab: {fileID: 1061886862013777703, guid: e2a36f04513e08343b7874695ca466a3, type: 3}
+  _bodyShade: 1
+  _vfxTone: 2
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
-  _resourceOnHit: 15
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
   _stats:
-  - Stat: 0
-    Op: 3
-    Value: 1400
   - Stat: 7
     Op: 3
     Value: 100
   - Stat: 8
     Op: 3
-    Value: 0.9
+    Value: 0.5
   - Stat: 9
     Op: 3
-    Value: 7
-  - Stat: 20
-    Op: 3
-    Value: 2.6667
+    Value: 8
   - Stat: 18
     Op: 3
-    Value: 8
+    Value: 10
   - Stat: 27
     Op: 3
-    Value: 80
-  - Stat: 28
+    Value: 30
+  - Stat: 3
     Op: 3
-    Value: 0
-  _grantedEffects: []
+    Value: 8
+  - Stat: 4
+    Op: 3
+    Value: 12
+  _grantedEffects:
+  - {fileID: 11400000, guid: 498aa7d8439661d458d4f2d989f7af0e, type: 2}
   _abilities:
   - _id: hand_of_life
-    _effects: []
-    _baseCooldown: 6
-    _resourceCost: 80
+    _effects:
+    - {fileID: 11400000, guid: ef056ecb7c1a60044851f2023c6b3f9a, type: 2}
+    _selfEffects: []
+    _baseCooldown: 0
+    _resourceCost: 30
     _targetMode: 3
     _damageMultiplier: 0
-    _schoolOverride: 0
-    _affinityOverride: 0
+    _damageType: 0
     _areaShape: 0
     _areaRadius: 0
-    _healFlat: 300
-    _healPctTargetMissingHp: 1
+    _healFlat: 100
+    _healPctTargetMissingHp: 0.25
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 0.25
     _castCondition: 2
     _castConditionCount: 1
     _castConditionRadius: 0
     _castConditionHpPct: 0.5
-    _castOverrideSelfHpPct: 0.3
+    _castOverrideSelfHpPct: 0
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _castSource: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0
@@ -96,12 +125,15 @@ MonoBehaviour:
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: 5cec4bc3f06a4e34fa90be427fcf58cc, type: 2}
+  - {fileID: 11400000, guid: b5a3c2d20a7b3d94c852b807ef4e6d73, type: 2}
   _tags:
   - shepherd
   - healer
   - common
-  _rarity: 0
+  _kitPower: 0
+  _dropRarity: 1
   _runEffects: []
   _altAiPresets: []
   _canUseExtendedDeployment: 0

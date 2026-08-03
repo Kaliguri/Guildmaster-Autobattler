@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects.Components;
@@ -32,6 +32,8 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             caster.Abilities.Add(new AbilityRuntime(MakeWarCry(radius: 5f)));
             bool cast = new AbilitySystem().TryCast(caster, 0, units, ctx);
+            // Закон видимости: баф проявляется в конце тика — доигрываем его за всю четвёрку.
+            foreach (RuntimeUnit u in units) EffectSystem.CommitPending(u);
 
             Assert.IsTrue(cast, "Клич кастуется");
             Assert.AreNotEqual(EffectTag.None, allyNear.EffectTagMask & EffectTag.Buff, "Союзник в радиусе получил баф");
@@ -72,6 +74,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             caster.Abilities.Add(new AbilityRuntime(MakeWarCry(radius: 5f)));
             bool cast = new AbilitySystem().TryCast(caster, 0, units, ctx);
+            EffectSystem.CommitPending(caster);   // закон видимости: баф проявляется в конце тика
 
             Assert.IsTrue(cast, "Без союзников рядом клич всё равно кастуется — кастующий сам себе союзник");
             Assert.AreNotEqual(EffectTag.None, caster.EffectTagMask & EffectTag.Buff, "И бафает себя");
@@ -116,6 +119,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Stats     = stats,
                 CurrentHP = maxHp,
                 Position  = pos,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
     }

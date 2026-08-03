@@ -1,0 +1,104 @@
+namespace Guildmaster.Guild.Commands
+{
+    /// <summary>
+    /// Что команда делает с забегом. Байтовый enum, а не полиморфные классы: команда обязана
+    /// сериализоваться плоско (в коопе она едет по сети и ложится в лог, который переживает сессию), а
+    /// иерархия типов потребовала бы своего кода на каждую сторону провода.
+    /// </summary>
+    public enum RunCommandKind : byte
+    {
+        None = 0,
+
+        /// <summary>Запомнить позицию сосуда на арене: <c>SlotIndex</c> + <c>X</c>/<c>Y</c>.</summary>
+        SetSlotPosition = 1,
+
+        /// <summary>Поставить кит на сосуд напрямую (drag реликвии в расстановке): <c>SlotIndex</c> + <c>Text</c>.</summary>
+        SetSlotRelic = 2,
+
+        /// <summary>Изменить золото забега на <c>Amount</c> (может быть отрицательным).</summary>
+        AddGold = 3,
+
+        /// <summary>Убрать один экземпляр реликвии из запаса: <c>Text</c> — её id.</summary>
+        RemoveRelic = 4,
+
+        /// <summary>Начислить награду золотом за победу в бою; величина живёт в конфиге, не в команде.</summary>
+        AwardBattleReward = 5,
+    }
+
+    /// <summary>
+    /// Одно изменение забега как ДАННЫЕ: что сделать, кто попросил и когда попросил по своим часам.
+    /// <para><b>Зачем это существует.</b> <see cref="RunState"/> меняется только обработчиком команды, а
+    /// сам поток команд — append-only лог (<see cref="RunCommandLog"/>). Из одного этого следуют четыре
+    /// вещи, которых иначе пришлось бы добиваться по отдельности: тест «один лог → один
+    /// <see cref="RunState"/>», аудит «кто передвинул юнита», реконнект как «снимок плюс хвост лога» и
+    /// защита от дублей — повтор пары <see cref="PlayerId"/>+<see cref="Sequence"/> отбрасывается.</para>
+    /// <para><b>Соло идёт этим же путём</b>, без сети. Это и есть проверка шва в одиночной игре: путь,
+    /// работающий мимо лога, кооп обнаружил бы первым же расхождением состояний.</para>
+    /// </summary>
+    /// <remarks>
+    /// Полей аргументов ровно столько, сколько нужно сегодняшним видам команд, и они безымянные по
+    /// смыслу (<see cref="Amount"/>, <see cref="Text"/>) намеренно: у плоского конверта не может быть
+    /// поля под каждый вид, иначе он растёт с каждой новой командой. Что чем является — сказано у вида в
+    /// <see cref="RunCommandKind"/>, и это единственное место, где значение полей объявлено.
+    /// </remarks>
+    public readonly struct RunCommand
+    {
+        public readonly RunCommandKind Kind;
+
+        /// <summary>Кто отправил. Соло — всегда <see cref="LocalPlayerId"/>.</summary>
+        public readonly int PlayerId;
+
+        /// <summary>
+        /// Номер команды в СВОЁМ счётчике игрока. Идемпотентность держится парой (игрок, номер): клиент
+        /// нумерует сам и не ждёт номера от хоста — иначе оптимистичный локальный отклик требовал бы
+        /// второго механизма рядом с этим.
+        /// </summary>
+        public readonly int Sequence;
+
+        /// <summary>
+        /// Время отправителя, мс. Нужно для порядка конкурирующих интентов: у хоста RTT нулевой, и
+        /// сортировка по времени ПРИБЫТИЯ отдавала бы ему любую гонку за кубик или за вещь в воздухе.
+        /// В соло не используется ни для чего, кроме аудита.
+        /// </summary>
+        public readonly long ClientTimeMs;
+
+        /// <summary>Индекс слота ростера, если вид команды его требует; иначе <c>-1</c>.</summary>
+        public readonly int SlotIndex;
+
+        /// <summary>Числовой аргумент вида команды (дельта золота), иначе <c>0</c>.</summary>
+        public readonly int Amount;
+
+        /// <summary>Строковый аргумент вида команды (id реликвии), иначе <c>null</c>.</summary>
+        public readonly string Text;
+
+        /// <summary>Позиция, если вид команды её требует.</summary>
+        public readonly float X;
+        public readonly float Y;
+
+        /// <summary>Единственный игрок одиночной игры. В коопе id выдаёт сессия.</summary>
+        public const int LocalPlayerId = 0;
+
+        public RunCommand(RunCommandKind kind, int playerId, int sequence, long clientTimeMs,
+            int slotIndex = -1, int amount = 0, string text = null, float x = 0f, float y = 0f)
+        {
+            Kind         = kind;
+            PlayerId     = playerId;
+            Sequence     = sequence;
+            ClientTimeMs = clientTimeMs;
+            SlotIndex    = slotIndex;
+            Amount       = amount;
+            Text         = text;
+            X            = x;
+            Y            = y;
+        }
+
+        /// <summary>Ключ идемпотентности: пара «игрок и его номер». Повтор с этим же ключом — дубль.</summary>
+        public (int Player, int Sequence) Key => (PlayerId, Sequence);
+
+        public override string ToString() =>
+            $"{Kind}(p{PlayerId}#{Sequence}" +
+            (SlotIndex >= 0 ? $", slot {SlotIndex}" : string.Empty) +
+            (Amount != 0 ? $", {Amount}" : string.Empty) +
+            (!string.IsNullOrEmpty(Text) ? $", '{Text}'" : string.Empty) + ")";
+    }
+}

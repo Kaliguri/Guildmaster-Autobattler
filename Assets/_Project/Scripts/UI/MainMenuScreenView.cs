@@ -4,19 +4,25 @@ using UnityEngine.UIElements;
 namespace Guildmaster.UI
 {
     /// <summary>
-    /// Сборка главного меню (план [[act-map-run-loop]] §4 D1): Начать / Продолжить / Настройки / Выход. Общий код
-    /// для роутера и превью-стенда. «Продолжить» активна только при наличии автосейва (<paramref name="hasSave"/>).
+    /// Сборка главного меню: Создать игру / Присоединиться / Настройки / Выход. Общий код для роутера
+    /// и превью-стенда.
     /// </summary>
+    /// <remarks>
+    /// <b>Две кнопки входа, а не список режимов</b> (модель Макса 02.08.2026). Режим, дом и открытость
+    /// для друзей выбираются следующим шагом — на экране «Создать игру». Прежде здесь стояли «Начать
+    /// забег», «Продолжить», «Ристалище» и «Сетевая игра», и последняя вела ровно туда же, куда
+    /// первая: кооп у нас свойство сеанса, а не отдельная игра.
+    /// </remarks>
     public static class MainMenuScreenView
     {
         public static VisualElement Build(
             VisualTreeAsset uxml,
-            bool hasSave,
             Func<string, string> localize,
-            Action onStart,
-            Action onContinue,
+            Action onCreate,
+            Action onJoin,
             Action onSettings,
-            Action onQuit)
+            Action onQuit,
+            bool canJoin = true)
         {
             string L(string key, string fallback)
             {
@@ -29,22 +35,46 @@ namespace Guildmaster.UI
             root.pickingMode = PickingMode.Position;
 
             var title    = root.Q<Label>("menu-title");
-            var start    = root.Q<Button>("btn-start");
-            var cont     = root.Q<Button>("btn-continue");
+            var version  = root.Q<Label>("menu-version");
+            var create   = root.Q<Button>("btn-create");
+            var join     = root.Q<Button>("btn-join");
             var settings = root.Q<Button>("btn-settings");
             var quit     = root.Q<Button>("btn-quit");
 
-            if (title != null) title.text = L("ui.mainmenu.title", "Гильдмастер");
+            if (title != null) title.text = L("ui.mainmenu.title", "Happy Guildmasters");
 
-            if (start != null)    { start.text    = L("ui.mainmenu.start", "Начать забег"); start.clicked += () => onStart?.Invoke(); }
-            if (cont != null)
+            // Версия билда. Лок-ключа намеренно нет: строка не содержит слов — это «v» и номер из
+            // ProjectSettings, одинаковые на всех языках. Нужна, чтобы по скриншоту в багрепорте было
+            // видно, на чём игрок играл.
+            if (version != null) version.text = "v" + UnityEngine.Application.version;
+
+            if (create != null)
             {
-                cont.text = L("ui.mainmenu.continue", "Продолжить");
-                cont.SetEnabled(hasSave);
-                cont.clicked += () => onContinue?.Invoke();
+                create.text = L("ui.mainmenu.create", "Создать игру");
+                create.clicked += () => onCreate?.Invoke();
             }
-            if (settings != null) { settings.text = L("ui.mainmenu.settings", "Настройки"); settings.clicked += () => onSettings?.Invoke(); }
-            if (quit != null)     { quit.text     = L("ui.mainmenu.quit", "Выход"); quit.clicked += () => onQuit?.Invoke(); }
+
+            // «Присоединиться» открывает список друзей Steam и меню НЕ закрывает: войти игрок
+            // соглашается уже в оверлее, а уводит нас отсюда рукопожатие, а не клик. Без Steam кнопка
+            // гаснет — это внешний отказ, и прятать его нельзя.
+            if (join != null)
+            {
+                join.text = L("ui.mainmenu.join", "Присоединиться");
+                join.SetEnabled(canJoin);
+                join.clicked += () => onJoin?.Invoke();
+            }
+
+            if (settings != null)
+            {
+                settings.text = L("ui.mainmenu.settings", "Настройки");
+                settings.clicked += () => onSettings?.Invoke();
+            }
+
+            if (quit != null)
+            {
+                quit.text = L("ui.mainmenu.quit", "Выход");
+                quit.clicked += () => onQuit?.Invoke();
+            }
 
             return root;
         }

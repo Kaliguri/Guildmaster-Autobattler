@@ -1,31 +1,72 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Guild;
 using MessagePipe;
 
 namespace Guildmaster.Game.Flow
 {
-    /// <summary>Показ главного меню и ожидание выбора Начать/Продолжить/Выход (план D1).</summary>
+    /// <summary>Показ главного меню и ожидание исхода: заказ игры, вход к другу или выход.</summary>
     public interface IMainMenuPresenter
     {
-        UniTask<MainMenuChoice> ShowAsync(bool hasSave);
+        UniTask<MainMenuOutcome> ShowAsync();
     }
 
     /// <summary>
     /// Презентер главного меню (план [[act-map-run-loop]] §4 D1): публикует <see cref="OpenMainMenuRequest"/> и ждёт
-    /// выбор. Настройки обрабатываются UI поверх меню (не завершают ожидание). Без слушателя UI возвращает Quit,
-    /// чтобы headless-запуск не завис.
+    /// выбор. Настройки обрабатываются UI поверх меню (не завершают ожидание).
+    /// <para><b>Слушатель UI обязателен.</b> Прежний докстринг обещал «без слушателя возвращает Quit, чтобы
+    /// headless-запуск не завис» — обещания не существовало: <c>Publish</c> без подписчиков это no-op, TCS
+    /// никто не завершает, таймаута нет. Единственный способ остаться здесь навсегда — ранний выход
+    /// <c>UiRootBootstrap.Start</c>, который не регистрирует подписки; он теперь кричит ошибкой, а не
+    /// предупреждением (аудит фолбэков 2026-07-26, п.3). Ложное обещание снято, чтобы следующий читатель
+    /// не искал страховку, которой нет.</para>
     /// </summary>
-    public sealed class MainMenuPresenter : IMainMenuPresenter
+    public sealed class MainMenuPresenter : IMainMenuPresenter, IDisposable
     {
         private readonly IPublisher<OpenMainMenuRequest> _pub;
+        private readonly IDisposable _provingSubscription;
 
-        public MainMenuPresenter(IPublisher<OpenMainMenuRequest> pub) => _pub = pub;
+        // Ожидание выбора в текущем показе меню — по нему запрос Ристалища «нажимает кнопку» за игрока.
+        private UniTaskCompletionSource<MainMenuOutcome> _pending;
 
-        public async UniTask<MainMenuChoice> ShowAsync(bool hasSave)
+        // Запрос пришёл, когда меню не на экране (шёл забег). Держим до ближайшего показа: иначе команда
+        // из боя терялась бы молча — Publish без слушателя это no-op, а цикл возвращается в меню позже.
+        private bool _provingGroundsPending;
+
+        public MainMenuPresenter(IPublisher<OpenMainMenuRequest> pub,
+                                 ISubscriber<Core.Flow.OpenProvingGroundsRequest> provingSub)
         {
-            var tcs = new UniTaskCompletionSource<MainMenuChoice>();
-            _pub.Publish(new OpenMainMenuRequest(hasSave, c => tcs.TrySetResult(c), null));
-            return await tcs.Task;
+            _pub = pub;
+            _provingSubscription = provingSub?.Subscribe(_ => OnProvingGroundsRequested());
+        }
+
+        public void Dispose() => _provingSubscription?.Dispose();
+
+        public async UniTask<MainMenuOutcome> ShowAsync()
+        {
+            // Запрос пришёл раньше показа (команда из забега) — отдаём исход сразу, меню не мелькает.
+            if (_provingGroundsPending)
+            {
+                _provingGroundsPending = false;
+                return MainMenuOutcome.StartGame(GameStartRequest.DevProvingGrounds);
+            }
+
+            var tcs = new UniTaskCompletionSource<MainMenuOutcome>();
+            _pending = tcs;
+            _pub.Publish(new OpenMainMenuRequest(c => tcs.TrySetResult(c), null));
+
+            MainMenuOutcome outcome = await tcs.Task;
+            _pending = null;
+            return outcome;
+        }
+
+        private void OnProvingGroundsRequested()
+        {
+            // Меню на экране — его закроет UI-слой, резолвя экран через навигатор (иначе панель и стол под
+            // ней останутся висеть). Здесь важен только случай «меню ещё не показано»: запрос из боя обязан
+            // дожить до ближайшего показа, потому что публикация без слушателя — пустая операция.
+            if (_pending != null) return;
+            _provingGroundsPending = true;
         }
     }
 }

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551ba710b5e1fcc4f9e3f6c56bdfdf45, type: 3}
+  m_Name: MedievalWarrior3
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.UnitVisual
+  _idleClip: {fileID: 7400000, guid: 747e23304d857164ba074d8e055cfd07, type: 2}
+  _runClip: {fileID: 7400000, guid: 67874f7f456731543b34fba36b7a2911, type: 2}
+  _attackClip: {fileID: 7400000, guid: c5b52389a68ca2540b4c14e1327c969c, type: 2}
+  _deathClip: {fileID: 7400000, guid: fcad067ef2ff1cc44b067cd7eb1126b9, type: 2}
+  _hitClip: {fileID: 7400000, guid: 7da020d8030199d41a4d827f9dc18bae, type: 2}
+  _skillClips:
+  - {fileID: 7400000, guid: c5b52389a68ca2540b4c14e1327c969c, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _portrait: {fileID: 4723107735738678597, guid: 128bc1a66bf56c242806631a367910fe, type: 3}

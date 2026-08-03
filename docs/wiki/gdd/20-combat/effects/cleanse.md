@@ -1,7 +1,10 @@
 ---
 title: "Effect - Cleanse"
-order: 14
+order: 30
 status: draft
+updated: 2026-07-29
+impl: engine
+impl_note: "DispelComponent"
 ---
 
 # Очистка / Диспел (Cleanse)
@@ -22,7 +25,7 @@ status: draft
 - **DispelPower 3** — привилегия редких уников (T3), напр. [[gdd/relics/the-paragon|The Paragon]].
 
 Порядок снятия при лимите — высший тир первым, тай — по наибольшей оставшейся длительности
-([[tech/10-reference/combat-model|Combat Model §5.4]]).
+(боевая модель (код `Assets/_Project/Scripts/Combat/`)).
 
 ## Снятие и контра
 

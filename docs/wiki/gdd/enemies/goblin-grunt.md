@@ -1,20 +1,25 @@
 ---
 title: "Goblins - Common - Goblin Grunt"
+order: 30
 kind: enemy
 status: draft
+updated: 2026-07-29
 enemy_group: Обычный
-faction: Гоблины
-subfaction: Основные
+species: Гоблины
+combat_class: Брузер
+subspecies: Основные
 position: Фронт
 combat_range: Ближний
 attack_delivery:
   - Ближний бой
 physical_damage:
   - Дробящий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Ближняя масса
 mechanics: []
+impl: engine
+asset: [enemy.goblin_grunt]
 ---
 
 # Гоблин с палкой
@@ -22,7 +27,7 @@ mechanics: []
 ## Шаг 1. Общая информация
 
 - **Тип:** обычный.
-- **Фракция:** гоблины.
+- **Вид:** гоблины.
 - **Позиция:** фронт.
 - **Ближний / дальний:** ближний.
 

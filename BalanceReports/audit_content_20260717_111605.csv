@@ -1,0 +1,17 @@
+﻿Type;Name;MaxHP;AutoAtk;AtkSpeed(clamped);AtkRange;MoveSpeed;PhysArmor;ElemArmor;DmgTakenEff;DmgDealtEff;Lifesteal;RawDPS;EHP_phys;EHP_elem;Flags
+Relic;Assassin;1100;160;1.3;1;3.333;3;0;1;1;0;208;1133;1100;RawDPS:+2,6σ
+Relic;BaseRelic;1200;100;1;1;3;4;0;1;1;0;100;1248;1200;
+Relic;Cryomancer;1200;120;0.9;8;2.333;3;0;1;1;0;108;1236;1200;
+Relic;Defender;2200;80;0.7;1;2.083;12;8;1;1;0;56;2464;2376;
+Relic;Druid;1100;70;1.1;8;2.5;2;0;1;1;0;77;1122;1100;
+Relic;FlameSwordsman;1300;110;1.2;1;3;4;0;1;1;0;132;1352;1300;
+Relic;IronSpearman;2200;140;0.8;3;2.5;8;0;1;1;0;112;2376;2200;
+Relic;LightShepherd;1400;100;0.9;7;2.667;4;0;1;1;0;90;1456;1400;
+Relic;Ranger;1300;140;1.1;9;2.917;4;0;1;1;0;154;1352;1300;
+Relic;Treant;2400;90;0.6;1;1.8;20;10;1;1;0;54;2880;2640;EHP:+2,1σ
+Relic;WhirlMonk;1600;120;1;1;3.333;6;0;1;1;0;120;1696;1600;
+Enemy;GoblinArcher;250;60;0.9;6;3;1;0;1;1;0;54;252.5;250;
+Enemy;GoblinCutthroat;220;65;1.3;1;4.5;0;0;1;1;0;84.5;220;220;
+Enemy;GoblinGrunt;400;45;0.9;1;3;2;0;1;1;0;40.5;408;400;
+Enemy;GoblinWarrior;850;70;0.6;1;2;12;0;1;1;0;42;952;850;
+Enemy;TrainingDummy;1200;100;1;1;3;4;0;1;1;0;100;1248;1200;

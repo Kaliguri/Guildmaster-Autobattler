@@ -1,17 +1,12 @@
 ---
 name: xgaida-x-nixi-uitk
 description: >-
-  Рабочий контур для UI Toolkit (UITK) в проекте Guildmaster — рантайм-экраны на
-  UXML/USS, дизайн-система токенов, компоненты, MVVM и UI-тесты. Используй ВСЕГДА,
-  когда задача касается интерфейса: UXML, USS, UI Toolkit, UITK, экраны (Screens),
-  стили, токены, тема, VisualElement, custom control, PanelSettings, слайдеры/кнопки/
-  панели, дизайн-система, или когда правишь что-либо под Assets/_Project/UI и
-  Assets/_Project/Scripts/UI. Срабатывай, даже если слова «UI Toolkit» нет, но по
-  сути строится или правится игровой интерфейс. Не применять к боевому uGUI-HUD
-  (Image.Filled и т.п.) и к inspector-логике вне UITK. Инженерную тех-доку об
-  UI-слое (docs/wiki/tech) ведёт tech-scribe.
+  UI Toolkit в Guildmaster: рантайм-экраны на UXML/USS, дизайн-система токенов, компоненты,
+  MVVM и UI-тесты. Зови на любую работу с интерфейсом — экраны, стили, токены, custom controls,
+  PanelSettings — и на всё под Assets/_Project/UI и Scripts/UI, даже если слова «UI Toolkit» в
+  задаче нет. НЕ применять к: боевому uGUI-HUD (Image.Filled и родня), inspector-логике вне
+  UITK, тех-доке об UI-слое (tech-scribe).
 ---
-
 # UI Toolkit — рабочий контур Guildmaster
 
 Этот скилл — процедура, а не справка. Он превращает разрозненные правила в чеклист,
@@ -29,15 +24,19 @@ description: >-
 | Компоненты (`.gm-*`) | `Assets/_Project/UI/Theme/components.uss` |
 | Агрегатор темы (импортит 3 яруса) | `Assets/_Project/UI/Theme/theme.uss` |
 | Экраны (UXML) | `Assets/_Project/UI/Screens/*.uxml` |
-| Витрина компонентов | `Assets/_Project/UI/Screens/UiGalleryScreen.uxml` |
+| Витрина компонентов и стенд экранов | `Assets/_Project/Scripts/DevTools/UiPreviewCatalog.cs` (id → билдер) + меню `Alebardium/UI Preview/*`, пункт `Component Gallery` |
 | Custom controls (C#) | `Assets/_Project/Scripts/UI/Components/*.cs` (неймспейс `Guildmaster.UI.Components`, префикс UXML `gm:`) |
 | Views / ViewModels / роутер | `Assets/_Project/Scripts/UI/*.cs` (неймспейс `Guildmaster.UI`) |
 | Рантайм-asmdef | `Guildmaster.UI.asmdef` |
 | Превью-стенд (изоляция) | `Assets/_Project/UI/Dev/UiPreviewRoot.uxml` (+ `PreviewPanelSettings.asset`) |
 
-**Канва: 1920×1080, `PanelSettings.scale = 1`.** Один UI-пиксель = один пиксель токена.
-Всё проектируется под это разрешение. (Старые заметки про «640×360 ×3» — устаревший
-костыль, игнорируй.)
+**Канва: 1920×1080.** Один UI-пиксель = один пиксель токена; всё проектируется под это
+разрешение. `PanelSettings`: `scaleMode = ScaleWithScreenSize`, `referenceResolution =
+1920×1080`, `screenMatchMode = MatchWidthOrHeight`, `match = 1` (по высоте) — UI держит одну
+долю экрана на любом разрешении (нецелый скейл разрешён, стиль стилизованного пиксель-арта,
+реш. 2026-07-18). Множитель `scale = 1` — шов под будущую настройку UI-scale (доступность),
+в логике на `scale == 1` не закладываться. (Старые заметки про «640×360 ×3» / целочисленный
+`IntegerPanelScaler` — pixel-perfect отменён, удалено в Ф0 UI-реворка.)
 
 ## Пять правил, нарушение которых = переделка (HARD)
 
@@ -65,6 +64,9 @@ description: >-
    остальные — прочерк. Прямые строки в UXML/C# = откат.
    *Почему:* ретрофит локализации по готовому UI — дорогая боль; ключ сразу стоит
    почти ноль.
+   *Готча (добыто треком тултипов):* `StatValueFormatter` в настройках локализации обязан стоять
+   **перед `DefaultFormatter`** и иметь пустое имя в списке имён. Иначе `{dmg}` молча напечатает имя
+   структуры вместо числа; ловит `SmartStatStringTests`.
 
 4. **⚠️ КАРТИНКА В ЧАТ НА КАЖДОЙ ИТЕРАЦИИ — ЖЕЛЕЗНО. Это правило Макс повторял в гневе.**
    **Снял скрин → он ОБЯЗАН появиться в чате КАК ИЗОБРАЖЕНИЕ, в ТОМ ЖЕ ответе, где ты про
@@ -98,8 +100,10 @@ description: >-
   в UXML под `gm:`. Эталон — `SliderRow`.
 - **Дублируется третий раз — выноси в компонент.** Скопировал разметку/стиль дважды —
   на третий делай переиспользуемый компонент. Инлайн-повтор в экранах не копи.
-- **Витрина — источник правды.** Каждый компонент живёт в `UiGalleryScreen.uxml`;
-  добавил/поменял компонент — обнови витрину.
+- **Компонент обязан быть виден на стенде.** Витрина — не `.uxml`-экран, а запись в
+  `UiPreviewCatalog` (`id → билдер(root)`), открывается пунктом
+  `Alebardium/UI Preview/Component Gallery`. Завёл или поменял компонент — проверь его там;
+  добавить экран на стенд = одна запись в каталоге.
 
 Детали, примеры, старый vs новый синтаксис (`UxmlFactory`/`UxmlTraits` — deprecated) —
 в `references/component-model.md`. **Читай его перед созданием нового компонента.**

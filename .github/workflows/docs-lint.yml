@@ -3,14 +3,16 @@ name: Docs Lint
 on:
   pull_request:
     paths:
-      - "docs/wiki/**"
-      - "scripts/check-wiki-links.ps1"
+      - "docs/**"
+      - "scripts/check-wiki-*.ps1"
+      - "scripts/journals.ps1"
       - ".github/workflows/docs-lint.yml"
   push:
     branches: [dev, master]
     paths:
-      - "docs/wiki/**"
-      - "scripts/check-wiki-links.ps1"
+      - "docs/**"
+      - "scripts/check-wiki-*.ps1"
+      - "scripts/journals.ps1"
       - ".github/workflows/docs-lint.yml"
 
 jobs:
@@ -20,6 +22,38 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # -StrictAmbiguous: короткая [[ссылка]], совпадающая с несколькими файлами,
+      # тоже роняет сборку — Obsidian выбирает цель непредсказуемо. Vault от таких
+      # вычищен, флаг держит фронт.
       - name: Check wiki links (fail on broken)
         shell: pwsh
-        run: ./scripts/check-wiki-links.ps1 -VaultPath docs/wiki
+        run: ./scripts/check-wiki-links.ps1 -VaultPath docs/wiki -StrictAmbiguous
+
+  frontmatter:
+    name: Check frontmatter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Флаг -ReportOnly снят 2026-07-26 вместе с закрытием фазы Ф6: все 142
+      # нарушения вычищены, и с этого момента линт держит фронт, а не отчитывается.
+      - name: Check frontmatter (fail on violations)
+        shell: pwsh
+        run: ./scripts/check-wiki-frontmatter.ps1 -VaultPath docs/wiki
+
+  journals:
+    name: Check journals
+    runs-on: ubuntu-latest
+    steps:
+      # fetch-depth: 0 — проверка «в архив дописали, а не починили ссылку» читает
+      # numstat последнего коммита файла, а на обрезанной истории его может не быть.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Ловит журнал без объявленного жанра, брошенный журнал захода и дописанный
+      # архив. Порог заброшенности в CI мягче локального: 30 дней — заход длиной
+      # в три недели у нас норма, а вот месяц молчания уже значит «забыли».
+      - name: Check journals (fail on violations)
+        shell: pwsh
+        run: ./scripts/journals.ps1 -Check -StaleDays 30

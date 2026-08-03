@@ -13,24 +13,33 @@ MonoBehaviour:
   m_Name: GoblinWarrior
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
   _id: enemy.goblin_warrior
-  _damageSchool: 0
-  _affinity: 0
+  _combatClass: 1
+  _autoAttackDamageType: 2
   _creatureType: 0
   _attackType: 0
   _resourceType: 0
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _visual: {fileID: 11400000, guid: 5e18a695936c40a4c94eaefe3364adf9, type: 2}
+  _viewPrefab: {fileID: 6992015941399791172, guid: fbf32b7bf5322ff4fa0fd0f88bac9a1f, type: 3}
+  _bodyShade: 2
+  _vfxTone: 12
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
   _stats:
-  - Stat: 0
-    Op: 3
-    Value: 1275
   - Stat: 7
     Op: 3
     Value: 70
@@ -40,12 +49,10 @@ MonoBehaviour:
   - Stat: 3
     Op: 3
     Value: 12
-  - Stat: 20
-    Op: 3
-    Value: 2
-  _grantedEffects: []
+  _grantedEffects:
+  - {fileID: 11400000, guid: 70570d211ca686f4fa3cf8cb37e245ea, type: 2}
   _abilities: []
-  _aiPreset: {fileID: 11400000, guid: 262d3cc7dfd31dc4ab9cbce9705ac85d, type: 2}
+  _aiPreset: {fileID: 11400000, guid: ec9dc0936e1b93a4a8936de2182f9db3, type: 2}
   _ai:
     _autoAttackTargeting: 0
     _autoAttackMode: 0
@@ -62,5 +69,7 @@ MonoBehaviour:
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
   _infoTags: []
+  _species: {fileID: 11400000, guid: 6bc6e7517b81dd74b892560d7246c559, type: 2}
+  _subspecies: {fileID: 0}
   _threatPoints: 3
   _goldBounty: 0

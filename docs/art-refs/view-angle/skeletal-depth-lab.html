@@ -1,0 +1,522 @@
+<title>Скелетная проба: ось Z против Z+Y</title>
+
+<style>
+  :root {
+    --ground: #101119;
+    --panel: #181a25;
+    --panel-2: #1f2231;
+    --line: #2c3043;
+    --ink: #e8e7ef;
+    --ink-soft: #a9adc0;
+    --ink-faint: #757a8f;
+    --teal: #76bfcc;
+    --teal-dim: #3d7d88;
+    --gold: #c9a859;
+    --steel: #8c96aa;
+
+    --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --body: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+    --mono: Consolas, "SF Mono", Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --ground: #eeece5;
+      --panel: #ffffff;
+      --panel-2: #f6f4ee;
+      --line: #d6d2c6;
+      --ink: #16171f;
+      --ink-soft: #474a5e;
+      --ink-faint: #6f7386;
+      --teal: #2c6a76;
+      --teal-dim: #4d9aa6;
+      --gold: #8a6a1f;
+      --steel: #5b6478;
+    }
+  }
+  :root[data-theme="light"] {
+    --ground: #eeece5; --panel: #ffffff; --panel-2: #f6f4ee; --line: #d6d2c6;
+    --ink: #16171f; --ink-soft: #474a5e; --ink-faint: #6f7386;
+    --teal: #2c6a76; --teal-dim: #4d9aa6; --gold: #8a6a1f; --steel: #5b6478;
+  }
+  :root[data-theme="dark"] {
+    --ground: #101119; --panel: #181a25; --panel-2: #1f2231; --line: #2c3043;
+    --ink: #e8e7ef; --ink-soft: #a9adc0; --ink-faint: #757a8f;
+    --teal: #76bfcc; --teal-dim: #3d7d88; --gold: #c9a859; --steel: #8c96aa;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(24px,5vw,56px) clamp(16px,4vw,40px) 80px; display: flex; flex-direction: column; gap: 30px; }
+
+  h1, h2, h3 { font-family: var(--display); margin: 0; line-height: 1.15; text-wrap: balance; font-weight: 600; }
+  h1 { font-size: clamp(27px,4.4vw,40px); }
+  h2 { font-size: clamp(20px,2.6vw,26px); }
+  h3 { font-size: 17px; }
+  p { margin: 0; max-width: 68ch; }
+  .stack { display: flex; flex-direction: column; gap: 12px; }
+
+  .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint); }
+
+  code { font-family: var(--mono); font-size: 0.9em; background: var(--panel-2); border: 1px solid var(--line); border-radius: 3px; padding: 0.1em 0.35em; }
+
+  /* controls */
+  .controls { background: var(--panel); border: 1px solid var(--line); padding: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(215px,1fr)); gap: 18px 26px; align-items: start; }
+  .ctl { display: flex; flex-direction: column; gap: 7px; }
+  .ctl > label { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); display: flex; justify-content: space-between; gap: 10px; }
+  .ctl output { color: var(--teal); font-variant-numeric: tabular-nums; }
+  input[type="range"] { width: 100%; accent-color: var(--teal); }
+  .seg { display: flex; border: 1px solid var(--line); background: var(--panel-2); }
+  .seg button { flex: 1; appearance: none; background: none; border: 0; color: var(--ink-soft); font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 4px; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--teal); color: var(--ground); }
+  .seg button:focus-visible, .toggle:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  .toggle { appearance: none; background: var(--panel-2); border: 1px solid var(--line); color: var(--ink-soft); font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 12px; cursor: pointer; }
+  .toggle[aria-pressed="true"] { border-color: var(--teal); color: var(--teal); }
+
+  /* stage */
+  .stage { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .stage { grid-template-columns: 1fr; } }
+  .cell { background: var(--panel); border: 1px solid var(--line); padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .cell[data-mode="zy"] { border-color: var(--teal-dim); }
+  .cell h3 { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; color: var(--ink-soft); }
+  .cell[data-mode="zy"] h3 { color: var(--teal); }
+  canvas { width: 100%; height: auto; display: block; background: var(--panel-2); border: 1px solid var(--line); }
+  .readout { display: grid; grid-template-columns: 1fr auto; gap: 3px 12px; font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+  .readout b { color: var(--ink); font-weight: 600; }
+  .readout .warnv { color: var(--gold); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+  .legend i { display: inline-block; width: 22px; height: 3px; vertical-align: middle; margin-right: 6px; }
+
+  .verdict { background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--teal); padding: 22px; display: flex; flex-direction: column; gap: 12px; }
+  ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 8px; max-width: 68ch; }
+  .note { border-left: 3px solid var(--gold); padding-left: 15px; color: var(--ink-soft); font-size: 15px; max-width: 68ch; }
+  footer { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); }
+</style>
+
+<div class="wrap">
+
+  <header class="stack">
+    <p class="eyebrow">Guildmaster · Animation Lab · 2026-07-29</p>
+    <h1>Скелетная проба: что даёт ось Y</h1>
+    <p style="font-size:18px; color:var(--ink-soft);">
+      Одна и та же кость, один и тот же клип, два способа его написать. Слева — как у нас сейчас:
+      кривая только на <code>localEulerAnglesRaw.z</code>. Справа — та же поза плюс разворот части
+      в глубину по Y. Ракурс корпуса крутится ползунком, чтобы видеть, где каждый способ ломается.
+    </p>
+  </header>
+
+  <div class="controls">
+    <div class="ctl">
+      <label for="turn">Поворот корпуса <output id="turnOut">55°</output></label>
+      <input type="range" id="turn" min="0" max="90" value="55" step="1">
+      <span style="font-family:var(--mono); font-size:11px; color:var(--ink-faint);">0° профиль · 90° юг</span>
+    </div>
+    <div class="ctl">
+      <label for="elev">Подъём камеры <output id="elevOut">25°</output></label>
+      <input type="range" id="elev" min="0" max="55" value="25" step="1">
+      <span style="font-family:var(--mono); font-size:11px; color:var(--ink-faint);">рисуется в спрайтах</span>
+    </div>
+    <div class="ctl">
+      <label>Клип</label>
+      <div class="seg" id="clipSeg">
+        <button type="button" data-clip="attack" aria-pressed="true">Удар</button>
+        <button type="button" data-clip="block" aria-pressed="false">Блок</button>
+        <button type="button" data-clip="idle" aria-pressed="false">Покой</button>
+      </div>
+    </div>
+    <div class="ctl">
+      <label>Показ</label>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" class="toggle" id="trailBtn" aria-pressed="true">След кисти</button>
+        <button type="button" class="toggle" id="playBtn" aria-pressed="true">Играет</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="cell" data-mode="z">
+      <h3>Только Z — как сейчас</h3>
+      <canvas id="cvZ" width="520" height="440"></canvas>
+      <div class="readout">
+        <span>Размах кисти по горизонтали</span><b id="ampZ">—</b>
+        <span>Щит: видимая ширина от полной</span><b id="shieldZ">—</b>
+      </div>
+    </div>
+    <div class="cell" data-mode="zy">
+      <h3>Z + Y — псевдо-3D разворот</h3>
+      <canvas id="cvZY" width="520" height="440"></canvas>
+      <div class="readout">
+        <span>Размах кисти по горизонтали</span><b id="ampZY">—</b>
+        <span>Щит: видимая ширина от полной</span><b id="shieldZY">—</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:#8c96aa"></i>ближняя сторона тела</span>
+    <span><i style="background:#5a6274"></i>дальняя сторона</span>
+    <span><i style="background:#c9a859"></i>оружие и щит</span>
+    <span><i style="background:#76bfcc"></i>след кисти за цикл</span>
+  </div>
+
+  <div class="verdict stack">
+    <p class="eyebrow">Что проба показывает</p>
+    <h2>Удар и блок требуют противоположных ракурсов — и ось Y разводит этот конфликт</h2>
+    <p>
+      Покрути «поворот корпуса» на клипе <b>Удар</b> и следи за размахом. Он падает с
+      фронтальностью, и ось Y его почти не спасает: дуга ушла вдоль линии взгляда, вернуть её на
+      экран разворотом части нельзя. Читаемость удара покупается только углом корпуса.
+    </p>
+    <p>
+      Теперь <b>Блок</b> — и здесь всё наоборот. Щит держат плоскостью на врага, поэтому в чистом
+      профиле он смотрит на камеру кромкой и не читается как щит вовсе, а во фронте виден плашмя
+      сам собой. Ось Y снимает эту зависимость: доворот кисти выводит щит плашмя на любом угле
+      корпуса.
+    </p>
+  </div>
+
+  <div class="table-scroll" style="overflow-x:auto; border:1px solid var(--line); background:var(--panel);">
+    <table style="border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px; font-family:var(--mono); font-variant-numeric:tabular-nums;">
+      <thead>
+        <tr>
+          <th style="text-align:left; padding:9px 14px; border-bottom:1px solid var(--line); color:var(--ink-faint); font-weight:500; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;">Поворот корпуса</th>
+          <th style="text-align:right; padding:9px 14px; border-bottom:1px solid var(--line); color:var(--ink-faint); font-weight:500; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;">Размах удара</th>
+          <th style="text-align:right; padding:9px 14px; border-bottom:1px solid var(--line); color:var(--ink-faint); font-weight:500; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;">Щит, только Z</th>
+          <th style="text-align:right; padding:9px 14px; border-bottom:1px solid var(--line); color:var(--ink-faint); font-weight:500; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;">Щит с Y</th>
+          <th style="text-align:right; padding:9px 14px; border-bottom:1px solid var(--line); color:var(--ink-faint); font-weight:500; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;">Нужный Y кисти</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:8px 14px; border-bottom:1px solid var(--line);">0° профиль</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">150 px</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line); color:var(--gold);">0.00</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line); color:var(--teal);">0.93</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">90°</td></tr>
+        <tr><td style="padding:8px 14px; border-bottom:1px solid var(--line);">30°</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">130 px</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">0.50</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line); color:var(--teal);">0.99</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">60°</td></tr>
+        <tr><td style="padding:8px 14px; border-bottom:1px solid var(--line);">35°</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">123 px</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">0.57</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line); color:var(--teal);">0.97</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">55°</td></tr>
+        <tr><td style="padding:8px 14px; border-bottom:1px solid var(--line);">55°</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">86 px</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">0.82</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">0.84</td><td style="text-align:right; padding:8px 14px; border-bottom:1px solid var(--line);">35°</td></tr>
+        <tr><td style="padding:8px 14px;">90° юг</td><td style="text-align:right; padding:8px 14px; color:var(--gold);">0 px</td><td style="text-align:right; padding:8px 14px; color:var(--teal);">1.00</td><td style="text-align:right; padding:8px 14px;">0.37</td><td style="text-align:right; padding:8px 14px;">0°</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="stack">
+    <h2>Правило, которое из этого выпадает</h2>
+    <p style="font-family:var(--mono); font-size:17px; color:var(--teal);">Y кисти = 90° − поворот корпуса</p>
+    <p>
+      Ровно этот доворот выводит щит плашмя к камере при любом ракурсе — числа в последней колонке
+      сходятся идеально. То же правило работает для любого плоского предмета, который должен
+      «показать себя»: книга мага, поднос, крышка люка, лицо на реакции.
+    </p>
+    <h2 style="margin-top:14px;">Значит распределение работ такое</h2>
+    <ul>
+      <li><strong>Угол корпуса</strong> отвечает за читаемость <em>движения</em>: дуги, замахи, выпады. Ось Y тут не помощник — вердикт про умеренный отворот от профиля остаётся.</li>
+      <li><strong>Ось Y</strong> отвечает за читаемость <em>ориентации</em>: щит в блоке, разворот торса на замахе, доворот при смене цели, поворот на ходьбе вглубь.</li>
+      <li><strong>Вместе</strong> они снимают конфликт: корпус рисуем под дуги, а щит и плоские предметы доворачиваем к камере, когда наступает их момент.</li>
+    </ul>
+    <p class="note">
+      Готчи оси Y, которые придётся принять: плоская часть к 80–90° вырождается в линию, так что
+      рабочий диапазон до ~65°; при развороте показывается обратная сторона спрайта — для щита
+      нужна внутренняя сторона отдельной картинкой; сжатие по X даёт нецелый скейл, но у нас он
+      разрешён стилевым решением, так что это не блокер.
+    </p>
+  </div>
+
+  <footer>Проба на модели рига: две кости руки, проекция ортокамерой, подъём камеры имитируется в спрайтах</footer>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const D = Math.PI / 180;
+
+  // ---- rig dimensions (screen units) ----
+  const RIG = {
+    hip:      { y: 250 },
+    torsoLen: 78,
+    headR:    22,
+    shoulderHalf: 20,   // across the body (depth axis at profile)
+    hipHalf:  16,
+    upperArm: 42,
+    lowerArm: 36,
+    swordLen: 62,
+    upperLeg: 44,
+    lowerLeg: 40,
+    shieldR:  26,
+  };
+
+  // ---- clips: functions of cycle t (0..1) -> pose in degrees ----
+  // z = angle inside the body plane (0 = straight down, + = forward/up swing)
+  // y = rotation out of the body plane (+ = turn the part's face toward camera)
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const ease = k => k < 0.5 ? 2*k*k : 1 - Math.pow(-2*k+2, 2)/2;
+
+  function clipAttack(t) {
+    // 0..0.38 wind up, 0.38..0.52 strike, 0.52..1 recover
+    let sh, el, yaw, torso;
+    if (t < 0.38) {
+      const k = ease(t / 0.38);
+      sh = lerp(15, -125, k); el = lerp(-15, -55, k); yaw = lerp(0, 34, k); torso = lerp(0, -9, k);
+    } else if (t < 0.52) {
+      const k = (t - 0.38) / 0.14;
+      sh = lerp(-125, 78, k*k); el = lerp(-55, -8, k); yaw = lerp(34, -22, k); torso = lerp(-9, 11, k);
+    } else {
+      const k = ease((t - 0.52) / 0.48);
+      sh = lerp(78, 15, k); el = lerp(-8, -15, k); yaw = lerp(-22, 0, k); torso = lerp(11, 0, k);
+    }
+    return {
+      swordArm: { z: sh, y: yaw }, swordFore: { z: el, y: yaw * 0.5 },
+      shieldArm: { z: 18, y: 0 },  shieldFore: { z: -22, y: 0 },
+      torsoTurn: torso, breathe: 0,
+    };
+  }
+
+  function clipBlock(t) {
+    // raise shield, hold, lower
+    let k;
+    if (t < 0.22) k = ease(t / 0.22);
+    else if (t < 0.78) k = 1;
+    else k = 1 - ease((t - 0.78) / 0.22);
+    const jitter = (t > 0.34 && t < 0.42) ? Math.sin((t - 0.34) / 0.08 * Math.PI) * 7 : 0;
+    return {
+      swordArm:  { z: lerp(15, 34, k), y: 0 },
+      swordFore: { z: lerp(-15, -46, k), y: 0 },
+      shieldArm: { z: lerp(18, -46, k) - jitter, y: lerp(0, 40, k) },
+      shieldFore:{ z: lerp(-22, -74, k), y: lerp(0, 40, k) },
+      torsoTurn: lerp(0, -7, k) - jitter * 0.3,
+      breathe: 0,
+      // how far into the block we are: the wrist turn needed is 90 - bodyTurn, applied by this factor
+      faceK: k,
+    };
+  }
+
+  function clipIdle(t) {
+    const b = Math.sin(t * Math.PI * 2);
+    return {
+      swordArm:  { z: 15 + b * 2.5, y: 0 }, swordFore: { z: -15 + b * 3, y: 0 },
+      shieldArm: { z: 18 - b * 2.5, y: 0 }, shieldFore:{ z: -22 - b * 3, y: 0 },
+      torsoTurn: b * 1.5, breathe: b,
+    };
+  }
+
+  const CLIPS = { attack: clipAttack, block: clipBlock, idle: clipIdle };
+
+  // ---- projection: body coords (f = forward, u = up, d = across/depth) -> screen ----
+  function makeProjector(turnDeg, elevDeg) {
+    const c = Math.cos(turnDeg * D), s = Math.sin(turnDeg * D), se = Math.sin(elevDeg * D);
+    return {
+      // returns {x, y, depth}
+      p(f, u, d) {
+        const x = f * c - d * s;
+        const depth = f * s + d * c;
+        const y = -u + depth * se;
+        return { x, y, depth };
+      },
+      cos: c, sin: s, sinE: se,
+    };
+  }
+
+  // direction of a bone in body coords from its two angles
+  function boneDir(zDeg, yDeg, useY) {
+    const z = zDeg * D, y = useY ? yDeg * D : 0;
+    return { f: Math.sin(z) * Math.cos(y), u: -Math.cos(z), d: Math.sin(z) * Math.sin(y) };
+  }
+
+  function addScaled(p, dir, len) {
+    return { f: p.f + dir.f * len, u: p.u + dir.u * len, d: p.d + dir.d * len };
+  }
+
+  // ---- drawing ----
+  const CSS = getComputedStyle(document.documentElement);
+  function col(name, fallback) {
+    const v = CSS.getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  function capsule(ctx, a, b, w, fill) {
+    ctx.strokeStyle = fill; ctx.lineWidth = w; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+  }
+
+  const state = { turn: 55, elev: 25, clip: "attack", trail: true, playing: true, t: 0 };
+  const trails = { z: [], zy: [] };
+
+  function drawFigure(canvas, useY, key, out) {
+    const ctx = canvas.getContext("2d");
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    const steel = col("--steel", "#8c96aa");
+    const far = "#5a6274";
+    const gold = col("--gold", "#c9a859");
+    const teal = col("--teal", "#76bfcc");
+    const faint = col("--ink-faint", "#757a8f");
+
+    const pose = CLIPS[state.clip](state.t);
+    const turn = Math.max(0, Math.min(90, state.turn + (useY ? pose.torsoTurn : 0)));
+    const pr = makeProjector(turn, state.elev);
+
+    const ox = W / 2, oy = H * 0.72;
+    const S = (bp) => { const q = pr.p(bp.f, bp.u, bp.d); return { x: ox + q.x, y: oy + q.y, depth: q.depth }; };
+
+    // --- skeleton in body coords ---
+    const hips = { f: 0, u: 0, d: 0 };
+    const torsoTop = { f: 0, u: RIG.torsoLen + (pose.breathe || 0) * 1.5, d: 0 };
+    const shoulderNear = { f: 0, u: torsoTop.u - 6, d: +RIG.shoulderHalf };
+    const shoulderFar  = { f: 0, u: torsoTop.u - 6, d: -RIG.shoulderHalf };
+    const hipNear = { f: 0, u: 0, d: +RIG.hipHalf };
+    const hipFar  = { f: 0, u: 0, d: -RIG.hipHalf };
+
+    // sword arm = far side, shield arm = near side
+    const swDir1 = boneDir(pose.swordArm.z, pose.swordArm.y, useY);
+    const elbowSw = addScaled(shoulderFar, swDir1, RIG.upperArm);
+    const swDir2 = boneDir(pose.swordArm.z + pose.swordFore.z, pose.swordFore.y, useY);
+    const handSw = addScaled(elbowSw, swDir2, RIG.lowerArm);
+    const swordTip = addScaled(handSw, swDir2, RIG.swordLen);
+
+    const shDir1 = boneDir(pose.shieldArm.z, pose.shieldArm.y, useY);
+    const elbowSh = addScaled(shoulderNear, shDir1, RIG.upperArm);
+    const shDir2 = boneDir(pose.shieldArm.z + pose.shieldFore.z, pose.shieldFore.y, useY);
+    const handSh = addScaled(elbowSh, shDir2, RIG.lowerArm);
+
+    // legs: static stance
+    const legNearKnee = addScaled(hipNear, boneDir(8, 0, false), RIG.upperLeg);
+    const legNearFoot = addScaled(legNearKnee, boneDir(-4, 0, false), RIG.lowerLeg);
+    const legFarKnee = addScaled(hipFar, boneDir(-8, 0, false), RIG.upperLeg);
+    const legFarFoot = addScaled(legFarKnee, boneDir(4, 0, false), RIG.lowerLeg);
+
+    // --- ground + shadow ---
+    const gNear = S(legNearFoot), gFar = S(legFarFoot);
+    ctx.strokeStyle = faint; ctx.globalAlpha = 0.35; ctx.lineWidth = 1;
+    ctx.setLineDash([3, 5]);
+    ctx.beginPath(); ctx.moveTo(40, gFar.y); ctx.lineTo(W - 40, gFar.y); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = "rgba(0,0,0,0.22)";
+    ctx.beginPath();
+    ctx.ellipse(ox, gNear.y + 2, 52 * (0.5 + 0.5 * Math.cos(turn * D)) + 22, 10, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // --- trail of the sword hand ---
+    const hs = S(handSw);
+    const tr = trails[key];
+    tr.push({ x: hs.x, y: hs.y, t: state.t });
+    if (tr.length > 190) tr.shift();
+    let minX = Infinity, maxX = -Infinity;
+    for (const p of tr) { if (p.x < minX) minX = p.x; if (p.x > maxX) maxX = p.x; }
+    if (state.trail && tr.length > 3) {
+      ctx.strokeStyle = teal; ctx.lineWidth = 2; ctx.globalAlpha = 0.5; ctx.lineJoin = "round";
+      ctx.beginPath(); ctx.moveTo(tr[0].x, tr[0].y);
+      for (let i = 1; i < tr.length; i++) ctx.lineTo(tr[i].x, tr[i].y);
+      ctx.stroke(); ctx.globalAlpha = 1;
+    }
+
+    // --- far side first (painter order by depth) ---
+    const drawArm = (sh, el, hd, colour, w) => {
+      capsule(ctx, S(sh), S(el), w, colour);
+      capsule(ctx, S(el), S(hd), w * 0.86, colour);
+    };
+
+    drawArm(shoulderFar, elbowSw, handSw, far, 15);
+    capsule(ctx, S(hipFar), S(legFarKnee), 16, far);
+    capsule(ctx, S(legFarKnee), S(legFarFoot), 14, far);
+
+    // sword (weapon of the far arm) — drawn flat to camera on purpose
+    capsule(ctx, S(handSw), S(swordTip), 7, gold);
+
+    // torso
+    const tBase = S(hips), tTop = S(torsoTop);
+    ctx.strokeStyle = steel; ctx.lineCap = "round";
+    ctx.lineWidth = 34 * (0.42 + 0.58 * Math.cos(turn * D)) + 12;
+    ctx.beginPath(); ctx.moveTo(tBase.x, tBase.y); ctx.lineTo(tTop.x, tTop.y); ctx.stroke();
+
+    // head
+    const hd = S({ f: 0, u: torsoTop.u + RIG.headR - 2, d: 0 });
+    ctx.fillStyle = steel;
+    ctx.beginPath(); ctx.arc(hd.x, hd.y, RIG.headR, 0, Math.PI * 2); ctx.fill();
+    // face marker: shows which way the head looks
+    const faceDir = pr.p(1, 0, 0);
+    ctx.fillStyle = col("--panel-2", "#1f2231");
+    ctx.beginPath();
+    ctx.arc(hd.x + faceDir.x * 9, hd.y + faceDir.y * 9 - 3, 4.2, 0, Math.PI * 2); ctx.fill();
+
+    // near side
+    capsule(ctx, S(hipNear), S(legNearKnee), 17, steel);
+    capsule(ctx, S(legNearKnee), S(legNearFoot), 15, steel);
+    drawArm(shoulderNear, elbowSh, handSh, steel, 16);
+
+    // shield: ellipse whose visible width follows its normal turning toward camera.
+    // A shield is held face-on to the ENEMY, so its normal is the body's forward axis —
+    // not something perpendicular to the forearm. The Y rotation of the wrist is what
+    // swings that normal out of the body plane and toward the camera.
+    // wrist turn follows the rule that falls out of the maths: Y = 90 - bodyTurn, scaled by
+    // how far into the clip we are (a shield only needs to face the camera while it blocks).
+    const yTot = (useY ? (pose.faceK || 0) * (90 - turn) : 0) * D;
+    const n = { f: Math.cos(yTot), u: 0, d: Math.sin(yTot) };
+    const nProj = pr.p(n.f, n.u, n.d);
+    const nLen = Math.hypot(n.f, n.u, n.d) || 1;
+    const towardCamera = Math.abs(nProj.depth) / nLen;      // 1 = flat to camera, 0 = edge on
+    const shieldCentre = S(handSh);
+    const rx = Math.max(3, RIG.shieldR * towardCamera);
+    const tilt = Math.atan2(nProj.y, nProj.x) + Math.PI / 2;
+    ctx.strokeStyle = gold; ctx.lineWidth = 3.5;
+    ctx.beginPath(); ctx.ellipse(shieldCentre.x, shieldCentre.y, rx, RIG.shieldR, tilt, 0, Math.PI * 2); ctx.stroke();
+    if (towardCamera > 0.45) {
+      ctx.globalAlpha = 0.5;
+      ctx.beginPath(); ctx.ellipse(shieldCentre.x, shieldCentre.y, rx * 0.34, RIG.shieldR * 0.34, tilt, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+
+    // readouts
+    const amp = (maxX - minX);
+    out.amp.textContent = tr.length > 60 ? Math.round(amp) + " px" : "замер…";
+    out.amp.className = amp < 60 ? "warnv" : "";
+    const pct = Math.round(towardCamera * 100);
+    out.shield.textContent = pct + "%";
+    out.shield.className = pct < 35 ? "warnv" : "";
+  }
+
+  // ---- wiring ----
+  const cvZ = document.getElementById("cvZ"), cvZY = document.getElementById("cvZY");
+  const outZ = { amp: document.getElementById("ampZ"), shield: document.getElementById("shieldZ") };
+  const outZY = { amp: document.getElementById("ampZY"), shield: document.getElementById("shieldZY") };
+  const turnEl = document.getElementById("turn"), elevEl = document.getElementById("elev");
+  const turnOut = document.getElementById("turnOut"), elevOut = document.getElementById("elevOut");
+
+  function resetTrails() { trails.z.length = 0; trails.zy.length = 0; }
+
+  turnEl.addEventListener("input", () => { state.turn = +turnEl.value; turnOut.textContent = state.turn + "°"; resetTrails(); });
+  elevEl.addEventListener("input", () => { state.elev = +elevEl.value; elevOut.textContent = state.elev + "°"; resetTrails(); });
+
+  document.getElementById("clipSeg").addEventListener("click", e => {
+    const b = e.target.closest("button[data-clip]"); if (!b) return;
+    state.clip = b.dataset.clip; state.t = 0; resetTrails();
+    for (const btn of e.currentTarget.querySelectorAll("button")) btn.setAttribute("aria-pressed", String(btn === b));
+  });
+
+  const trailBtn = document.getElementById("trailBtn");
+  trailBtn.addEventListener("click", () => {
+    state.trail = !state.trail; trailBtn.setAttribute("aria-pressed", String(state.trail));
+  });
+  const playBtn = document.getElementById("playBtn");
+  playBtn.addEventListener("click", () => {
+    state.playing = !state.playing;
+    playBtn.setAttribute("aria-pressed", String(state.playing));
+    playBtn.textContent = state.playing ? "Играет" : "Пауза";
+  });
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    state.playing = false; playBtn.setAttribute("aria-pressed", "false"); playBtn.textContent = "Пауза";
+  }
+
+  const CYCLE = 1.9; // seconds
+  let last = null;
+  function frame(ts) {
+    if (last === null) last = ts;
+    const dt = Math.min(0.05, (ts - last) / 1000); last = ts;
+    if (state.playing) state.t = (state.t + dt / CYCLE) % 1;
+    drawFigure(cvZ, false, "z", outZ);
+    drawFigure(cvZY, true, "zy", outZY);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>

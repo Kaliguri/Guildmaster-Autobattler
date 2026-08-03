@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -20,8 +20,6 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class DefenderSliceTests
     {
-        private const float ArmorK   = 100f;
-        private const float CellSize = 3f;
 
         // ===================== §9.3 «Оплот» (pre-damage щит) =====================
 
@@ -35,8 +33,10 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(defender, BulwarkPassive(), defender);
 
-            // True-урон 30: брони нет, эффективности 1.0. «Оплот» до Execute поднимает щит 20 + 15%×100 = 35.
-            sim.DealDamage(new DamageRequest(attacker, defender, 30f, DamageSchool.True, sim.ArmorK));
+            // True-урон 30: брони нет, эффективности 1.0. «Оплот» СИНХРОННО (pre-damage — исключение из
+            // закона видимости) поднимает щит 20 + 15%×100 = 35, и он успевает к тому самому удару.
+            sim.DealDamage(new DamageRequest(attacker, defender, 30f, DamageType.Pure, sim.ArmorK));
+            sim.Tick(SimConstants.TickDelta);   // сам удар применяется реестром в конце тика
 
             Assert.AreEqual(100f, defender.CurrentHP, 1e-4f, "Триггер-удар поглощён щитом — HP не просело");
             Assert.AreEqual(5f, defender.CurrentShield, 1e-4f, "Остаток щита = 35 − 30");
@@ -60,10 +60,10 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
-        public void Bulwark_RespectsInternalCooldown()
+        public void Bulwark_SpendsTwoChargesThenWaitsForRecharge()
         {
-            // Внутренний КД проверяем напрямую по ReactiveReadyTick: срабатывание перевзводит его,
-            // блокировка — нет. (Не по щиту: в headless-контексте 2-сек щит-эффект не истекает без
+            // Заряды проверяем напрямую по ChargeReadyTick: срабатывание тратит ОДИН заряд, каждый
+            // перезаряжается независимо. (Не по щиту: в headless-контексте щит-эффект не истекает без
             // EffectSystem.Tick, и повторный Apply ушёл бы в Refresh — это артефакт теста, не бага.)
             var es  = new EffectSystem();
             var ctx = new TickContext(es);
@@ -72,21 +72,107 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             ctx.ApplyEffect(defender, BulwarkPassive(), defender);
             RuntimeEffect bulwark = defender.ActiveEffects[0];
-            var incoming = new DamageRequest(null, defender, 10f, DamageSchool.True, ArmorK);
+            var incoming = new DamageRequest(null, defender, 10f, DamageType.Pure, CombatTestValues.ArmorK);
 
             int cd = Mathf.RoundToInt(7f * SimConstants.TickRate);
 
+            Assert.AreEqual(2, bulwark.ChargeCount, "Два заряда взведены при наложении пассивки");
+
             ctx.Tick = 0;
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd, bulwark.ReactiveReadyTick, "Первое срабатывание взвело внутренний КД");
+            Assert.AreEqual(cd, bulwark.ChargeReadyTick(0), "Первый удар потратил первый заряд");
+            Assert.AreEqual(0,  bulwark.ChargeReadyTick(1), "Второй заряд ещё цел");
 
-            ctx.Tick = 1; // в пределах КД
+            ctx.Tick = 1; // сразу следом — второй удар гасится вторым зарядом
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd, bulwark.ReactiveReadyTick, "В КД повторного срабатывания нет — КД не перевзведён");
+            Assert.AreEqual(1 + cd, bulwark.ChargeReadyTick(1), "Второй удар подряд потратил второй заряд");
 
-            ctx.Tick = cd; // КД истёк
+            ctx.Tick = 2; // зарядов не осталось — удар проходит, таймеры не сдвигаются
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd + cd, bulwark.ReactiveReadyTick, "После КД сработало снова — КД перевзведён");
+            Assert.AreEqual(cd,     bulwark.ChargeReadyTick(0), "Без готовых зарядов первый таймер не перевзведён");
+            Assert.AreEqual(1 + cd, bulwark.ChargeReadyTick(1), "Без готовых зарядов второй таймер не перевзведён");
+
+            ctx.Tick = cd; // первый заряд восстановился
+            es.RunPreDamage(defender, in incoming, ctx);
+            Assert.AreEqual(cd + cd, bulwark.ChargeReadyTick(0), "Восстановившийся заряд снова потрачен");
+        }
+
+        [Test]
+        public void Bulwark_IgnoresDotTicks_AndThornsBackfire()
+        {
+            var es  = new EffectSystem();
+            var ctx = new TickContext(es);
+            var defender = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f, hp: 100f,
+                relic: DefenderRelic(PassiveTrigger.AnyHit));
+
+            ctx.ApplyEffect(defender, BulwarkPassive(), defender);
+            RuntimeEffect bulwark = defender.ActiveEffects[0];
+
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 10f, DamageType.Pure, CombatTestValues.ArmorK,
+                sourceKind: DamageSourceKind.Periodic), ctx);
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 10f, DamageType.Pure, CombatTestValues.ArmorK,
+                sourceKind: DamageSourceKind.Reactive), ctx);
+
+            Assert.AreEqual(0, bulwark.ChargeReadyTick(0), "Тик DoT заряд не тратит");
+            Assert.AreEqual(0, bulwark.ChargeReadyTick(1), "Ответка шипов заряд не тратит");
+
+            // Способность — прямой удар: щит встаёт.
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 10f, DamageType.Pure, CombatTestValues.ArmorK,
+                sourceKind: DamageSourceKind.Ability), ctx);
+            Assert.AreNotEqual(0, bulwark.ChargeReadyTick(0), "Урон способности поднимает щит");
+        }
+
+        [Test]
+        public void Bulwark_DoesNotRaiseTheShieldWhileIncapacitated()
+        {
+            // Решение Макса 29.07: пассивка, требующая ДЕЙСТВИЯ, не работает у выведенного контролем.
+            // Щит носитель поднимает сам — оглушённый или спящий этого не может, и телеграф не имеет права
+            // показывать поднимающийся щит у юнита, который собой не владеет.
+            var es  = new EffectSystem();
+            var ctx = new TickContext(es);
+            var defender = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f, hp: 100f,
+                relic: DefenderRelic(PassiveTrigger.AnyHit));
+
+            ctx.ApplyEffect(defender, BulwarkPassive(), defender);
+            RuntimeEffect bulwark = defender.ActiveEffects[0];
+            var incoming = new DamageRequest(null, defender, 30f, DamageType.Pure, CombatTestValues.ArmorK,
+                sourceKind: DamageSourceKind.AutoAttack);
+
+            defender.CanAct = defender.CanActAtTickStart = false;
+            es.RunPreDamage(defender, in incoming, ctx);
+            Assert.AreEqual(0, bulwark.ChargeReadyTick(0), "Оглушённый щит не поднимает — заряд цел");
+            Assert.AreEqual(0, defender.CurrentShield, 1e-4f, "И щита на нём не появилось");
+
+            // Контроль кончился — та же пассивка работает как обычно (проверка, что гейт именно по CanAct,
+            // а не «сломали Оплот»).
+            defender.CanAct = defender.CanActAtTickStart = true;
+            es.RunPreDamage(defender, in incoming, ctx);
+            Assert.AreNotEqual(0, bulwark.ChargeReadyTick(0), "Дееспособный поднимает щит");
+        }
+
+        [Test]
+        public void Thorns_StillBiteWhileIncapacitated()
+        {
+            // Обратная сторона того же правила: шипы колют БРОНЁЙ, а не действием. Оглушённый носитель
+            // обязан продолжать колоть — иначе «дееспособность» превратилась бы в «под контролем не
+            // работает ничего», а это уже другой дизайн.
+            var es  = new EffectSystem();
+            var ctx = new TickContext(es);
+            var defender = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f, hp: 200f,
+                relic: DefenderRelic(PassiveTrigger.AnyHit));
+            var attacker = MakeUnit(1, team: 1, pos: new Vector2(1f, 0f), maxHp: 200f, hp: 200f);
+
+            var thorns = new ThornsComponent().With("_reflectFraction", 0.5f).With("_damageType", DamageType.Pure);
+            ctx.ApplyEffect(defender, TestEffect.Make(
+                baseDuration: -1f, polarity: EffectPolarity.Neutral, components: thorns), defender);
+
+            defender.CanAct = defender.CanActAtTickStart = false;
+            es.Dispatch(defender, new CombatEventData(
+                CombatEvent.DamageTaken, attacker, defender, 30f, EffectTag.None,
+                sourceKind: DamageSourceKind.AutoAttack), ctx);
+
+            Assert.AreEqual(1, ctx.Dealt.Count, "Шипы работают и у оглушённого: это свойство брони, не действие");
+            Assert.AreEqual(attacker, ctx.Dealt[0].Target, "И колют они атакующего");
         }
 
         [Test]
@@ -98,7 +184,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 relic: DefenderRelic(PassiveTrigger.None));
 
             ctx.ApplyEffect(defender, BulwarkPassive(), defender);
-            es.RunPreDamage(defender, new DamageRequest(null, defender, 50f, DamageSchool.True, ArmorK), ctx);
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 50f, DamageType.Pure, CombatTestValues.ArmorK), ctx);
 
             Assert.AreEqual(0f, defender.CurrentShield, 1e-4f, "Триггер None — щит не поднимается");
         }
@@ -114,7 +200,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var d = MakeUnit(0, 0, Vector2.zero, maxHp: 200f, hp: 200f,
                     relic: DefenderRelic(PassiveTrigger.OnHitAbovePctMaxHp, thresholdPct: 0.2f));
                 ctx.ApplyEffect(d, passive, d);
-                es.RunPreDamage(d, new DamageRequest(null, d, 30f, DamageSchool.True, ArmorK), ctx);
+                es.RunPreDamage(d, new DamageRequest(null, d, 30f, DamageType.Pure, CombatTestValues.ArmorK), ctx);
                 Assert.AreEqual(0f, d.CurrentShield, 1e-4f, "Удар ниже порога — нет щита");
             }
             {
@@ -122,7 +208,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var d = MakeUnit(0, 0, Vector2.zero, maxHp: 200f, hp: 200f,
                     relic: DefenderRelic(PassiveTrigger.OnHitAbovePctMaxHp, thresholdPct: 0.2f));
                 ctx.ApplyEffect(d, passive, d);
-                es.RunPreDamage(d, new DamageRequest(null, d, 50f, DamageSchool.True, ArmorK), ctx);
+                es.RunPreDamage(d, new DamageRequest(null, d, 50f, DamageType.Pure, CombatTestValues.ArmorK), ctx);
                 Assert.AreEqual(20f, d.CurrentShield, 1e-4f, "Удар выше порога — щит поднят (целый → плоские 20)");
             }
         }
@@ -130,25 +216,95 @@ namespace Guildmaster.Tests.EditMode.Combat
         // ===================== «Решительный удар» (актив) =====================
 
         [Test]
-        public void ResoluteStrike_StunsAndWeakens_CurrentTargetOnly()
+        public void ResoluteStrike_CastItself_AppliesNothingToTheTarget()
         {
+            // Активка — заявка на удар, а не удар. На касте цель не получает ничего: ни урона, ни стана,
+            // ни ослабления. Всё это придёт вместе с попаданием — или не придёт вовсе.
             var es  = new EffectSystem();
             var ctx = new MockCombatContext(effects: es);
 
-            var caster    = MakeUnit(0, team: 0, pos: Vector2.zero);
+            var caster     = MakeUnit(0, team: 0, pos: Vector2.zero);
             var mainThreat = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f));
-            var bystander  = MakeUnit(2, team: 1, pos: new Vector2(3f, 0f));
-            caster.CurrentTarget = mainThreat; // мозг (блок C/A) выбрал главную угрозу
+            caster.CurrentTarget = mainThreat;
 
             caster.Abilities.Add(new AbilityRuntime(ResoluteStrike()));
-            var units = new List<RuntimeUnit> { caster, mainThreat, bystander };
+            var units = new List<RuntimeUnit> { caster, mainThreat };
 
             bool cast = new AbilitySystem().TryCast(caster, 0, units, ctx);
+            foreach (RuntimeUnit u in units) EffectSystem.CommitPending(u);
 
-            Assert.IsTrue(cast);
-            Assert.AreNotEqual(EffectTag.None, mainThreat.EffectTagMask & EffectTag.Control, "Цель оглушена");
-            Assert.AreEqual(0.7f, mainThreat.Stats.Get(StatType.DamageDealtEff), 1e-4f, "Урон цели снижен на 30%");
-            Assert.AreEqual(EffectTag.None, bystander.EffectTagMask & EffectTag.Control, "Соседа ульта не задевает");
+            Assert.IsTrue(cast, "Активка скастована");
+            Assert.AreEqual(EffectTag.None, mainThreat.EffectTagMask & EffectTag.Control,
+                "На касте цель НЕ оглушена — стан ложится при попадании");
+            Assert.AreEqual(1f, mainThreat.Stats.Get(StatType.DamageDealtEff), 1e-4f,
+                "На касте ослабления нет");
+            Assert.AreEqual(2f, caster.EmpowerDamageMult, 1e-4f, "Зато взведён уникальный удар ×2");
+            Assert.AreEqual(0, caster.AttackCooldownTicks, "И он выходит вне очереди: ожидание интервала снято");
+        }
+
+        [Test]
+        public void ResoluteStrike_StunAndWeaken_LandOnHit()
+        {
+            var sim = BuildSim(11UL);
+            var caster = MakeUnit(0, team: 0, pos: Vector2.zero, relic: DefenderRelic(PassiveTrigger.None),
+                aad: 10f, range: 3f);
+            var target = MakeUnit(1, team: 1, pos: new Vector2(1.5f, 0f), maxHp: 10000f, hp: 10000f);
+            caster.CurrentTarget = target;
+            caster.AutoAttackTarget = target;
+
+            sim.EnqueueUnitSpawn(caster);
+            sim.EnqueueUnitSpawn(target);
+            sim.Tick(SimConstants.TickDelta);
+
+            caster.Abilities.Add(new AbilityRuntime(ResoluteStrike()));
+            new AbilitySystem().TryCast(caster, 0, new List<RuntimeUnit> { caster, target }, sim);
+
+            // Ждём, пока взведённый удар дозреет и прилетит.
+            for (int i = 0; i < 60 && (target.EffectTagMask & EffectTag.Control) == 0; i++)
+                sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreNotEqual(EffectTag.None, target.EffectTagMask & EffectTag.Control,
+                "Стан пришёл вместе с ударом");
+            Assert.AreEqual(0.7f, target.Stats.Get(StatType.DamageDealtEff), 1e-4f,
+                "Ослабление пришло тем же ударом");
+            Assert.Less(target.CurrentHP, 10000f, "И урон нанесён самим ударом, а не активкой");
+        }
+
+        [Test]
+        public void ResoluteStrike_SwingInterrupted_AppliesNothing()
+        {
+            // Главное следствие модели: уникальный удар можно СБИТЬ. Контроль в замахе — и заявка ушла
+            // в никуда, ни стана, ни ослабления, ни урона.
+            var sim = BuildSim(12UL);
+            var caster = MakeUnit(0, team: 0, pos: Vector2.zero, relic: DefenderRelic(PassiveTrigger.None),
+                aad: 10f, range: 3f);
+            var target = MakeUnit(1, team: 1, pos: new Vector2(1.5f, 0f), maxHp: 10000f, hp: 10000f);
+            caster.CurrentTarget = target;
+            caster.AutoAttackTarget = target;
+
+            sim.EnqueueUnitSpawn(caster);
+            sim.EnqueueUnitSpawn(target);
+            sim.Tick(SimConstants.TickDelta);
+
+            caster.Abilities.Add(new AbilityRuntime(ResoluteStrike()));
+            new AbilitySystem().TryCast(caster, 0, new List<RuntimeUnit> { caster, target }, sim);
+
+            sim.Tick(SimConstants.TickDelta);          // заряженный замах пошёл
+
+            // Срываем НАСТОЯЩИМ станом, а не флагом: CanAct пересчитывается системой эффектов каждый
+            // тик, и присвоенное руками значение она затирает на следующем же проходе.
+            var stun = new ControlComponent().With("_preventAct", true);
+            sim.ApplyEffect(caster, TestEffect.Make(
+                baseDuration: 1f, polarity: EffectPolarity.Debuff,
+                tags: EffectTag.Control | EffectTag.Debuff, components: stun), caster);
+
+            for (int i = 0; i < 10; i++) sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(EffectTag.None, target.EffectTagMask & EffectTag.Control,
+                "Сорванный удар не оглушает");
+            Assert.AreEqual(1f, target.Stats.Get(StatType.DamageDealtEff), 1e-4f,
+                "И не ослабляет");
+            Assert.AreEqual(10000f, target.CurrentHP, 1e-4f, "И не наносит урона");
         }
 
         // ===================== S5 (влитый): детерминизм pre-damage =====================
@@ -192,7 +348,8 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static EffectData BulwarkPassive()
         {
-            var bulwark = new BulwarkComponent()
+            var bulwark = new BlockComponent()
+                .With("_maxCharges", 2)
                 .With("_internalCooldownSeconds", 7f)
                 .With("_shieldEffect", BulwarkShield());
             return TestEffect.Make(
@@ -212,8 +369,22 @@ namespace Guildmaster.Tests.EditMode.Combat
                 baseDuration: 3f, polarity: EffectPolarity.Debuff,
                 tags: EffectTag.Debuff, components: weaken);
 
+            // Модель Макса 2026-07-31: активка НЕ бьёт сама. Она взводит уникальный удар — ×2, вне
+            // очереди, — а стан и ослабление ложатся ПРИ ПОПАДАНИИ. Поэтому удар можно сбить контролем,
+            // от него можно уклониться, и он может уйти в промах, ничего не наложив.
+            var empower = new EmpowerNextAttackComponent()
+                .With("_damageMult", 2f)
+                .With("_recastImmediately", true)
+                .With("_bonusOnHitEffects", new[] { stunEffect, weakenEffect })
+                .With("_bonusOnHitCount", 1)
+                .With("_consumeTag", EffectTag.Empowered);
+
+            EffectData charge = TestEffect.Make(
+                baseDuration: -1f, polarity: EffectPolarity.Neutral, tags: EffectTag.Empowered,
+                components: empower);
+
             return TestAbility.Make(
-                effects: new[] { stunEffect, weakenEffect },
+                selfEffects: new[] { charge },
                 cost: 0f, mode: AbilityTargetMode.NearestEnemy, castCondition: CastCondition.Immediately);
         }
 
@@ -228,7 +399,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static CombatSimulation BuildSim(ulong seed) =>
             new CombatSimulation(
-                new XorShiftRng(seed), ArmorK, new SpatialHash(CellSize),
+                new XorShiftRng(seed), CombatTestValues.ArmorK, new SpatialHash(CombatTestValues.CellSize),
                 new BrainSystem(), new AbilitySystem(), new MovementSystem(),
                 new AutoAttackSystem(), new ProjectileSystem(), new DeathSystem(),
                 new EffectSystem(), new RegenSystem());
@@ -255,6 +426,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Position         = pos,
                 PreviousPosition = pos,
                 Unit             = relic,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 
@@ -272,15 +444,43 @@ namespace Guildmaster.Tests.EditMode.Combat
             public IRngService Rng => null;
 
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) => _effects.Apply(target, def, source, this);
+            // Срок, посчитанный по ходу боя, заглушке безразличен — она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+                => ApplyEffect(target, def, source);
+
+            // Наложение с величиной (порции кровотечения): заглушке величина безразлична —
+            // она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds,
+                float potency)
+                => ApplyEffect(target, def, source);
             public void Dispel(in DispelRequest req) => _effects.Dispel(in req, this);
+            // Слепота стабу не нужна: промах проверяют свои тесты, здесь удар всегда доходит.
+            public bool ResolveAttackMiss(RuntimeUnit attacker) => false;
+            public void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target) { }
+            // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.
+            public void ReportAbilityCast(RuntimeUnit caster) { }
             public void Displace(in DisplaceRequest req) { }
 
-            public void DealDamage(in DamageRequest req) { }
+            // Призывов в этом срезе нет: стаб честно отвечает «призывать нечем».
+            public RuntimeUnit Summon(UnitData data, int team, Vector2 position, RuntimeUnit summoner) => null;
+
+            // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
+            public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+                => CombatPositioning.TeleportBehind(unit, target);
+
+            /// <summary>Что через контекст просили нанести. Нужно реактивам: их работа — это ВЫЗОВ урона,
+            /// и без записи «сработали ли шипы» проверялось бы по HP, которого пустышка не двигает.</summary>
+            public readonly List<DamageRequest> Dealt = new List<DamageRequest>();
+
+            public void DealDamage(in DamageRequest req) => Dealt.Add(req);
             public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) { }
             public void SpawnProjectile(in ProjectileSpawn spawn) { }
             public void ReportAreaHit(in AreaHit hit) { }
             public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
             public void NotifyAttackInterrupted(RuntimeUnit unit) { }
+            public void NotifyAttackCompleted(RuntimeUnit unit) { }
+            public void NotifyComboBroken(RuntimeUnit unit) { }
+            public void RemoveEffect(RuntimeUnit unit, EffectData def) { }
             public int QueryUnitsInRadius(Vector2 c, float r, List<RuntimeUnit> res, TargetFilter f, int team) { res.Clear(); return 0; }
             public int QueryUnitsInLine(Vector2 o, Vector2 d, float len, float w, List<RuntimeUnit> res, TargetFilter f, int team) { res.Clear(); return 0; }
         }

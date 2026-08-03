@@ -1,16 +1,19 @@
 ---
 title: "Relic - Unique - The Mirror (Doppelganger)"
+order: 560
 kind: character
 status: draft
+updated: 2026-07-29
 rarity: Уникальная
+combat_class: Наследует
 position: Наследует
 combat_range: Наследует
 attack_delivery:
   - Наследует
 physical_damage: []
-elemental_damage: []
+magical_damage: []
 affinity: []
-roles:
+playstyle:
   - Копировщик
 mechanics:
   - Копирование реликвии
@@ -20,18 +23,20 @@ gender: Не применимо
 themes:
   - Мистика
 needs_review: []
+impl: paper
 ---
 
 # The Mirror (Doppelganger)
 
-**Статус:** Черновик
+> Нестабильная реликвия, которая становится отражением ближайшего союзника и постепенно стирает
+> исходную личность «Сосуда».
 
 ---
 ## Шаг 1. Общая инфа
 
 1. **Редкость:** Уникальная
-2. **Тип:** Уникальная
-3. Ресурс: нет
+2. **Тип:** Проклятая
+3. Ресурс: своего нет — наследуется от скопированной реликвии вместе с её способностями
 4. Ближний/дальний/смешанный: наследует профиль скопированной реликвии
 
 ---
@@ -67,3 +72,9 @@ needs_review: []
 ## Шаг 7. AI настройки
 
 Двойник копирует AI-профиль и доступные настройки реликвии ближайшего союзника вместе с её боевым комплектом.
+
+---
+
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
+> Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

@@ -39,9 +39,12 @@ namespace Guildmaster.Game.Flow
                 return EventResult.Completed;
             }
 
+            // Экран живёт по токену УЗЛА, а не забега (QA #49): выбор оставляет на нём текст-результат, и он
+            // висит всю передышку — гаснет, когда игрок вошёл в следующий узел. Отмена забега тоже снимает
+            // его (узловой токен связан с забеговым).
             var tcs = new UniTaskCompletionSource<int>();
-            _openPub.Publish(new OpenTextEventRequest(_event, i => tcs.TrySetResult(i)));
-            int index = await tcs.Task;
+            _openPub.Publish(new OpenTextEventRequest(_event, i => tcs.TrySetResult(i), ctx.NodeCancellation));
+            int index = await tcs.Task.AttachExternalCancellation(ctx.Cancellation);
 
             if (index < 0 || index >= choices.Count)
             {

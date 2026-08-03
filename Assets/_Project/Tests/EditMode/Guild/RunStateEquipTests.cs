@@ -21,8 +21,8 @@ namespace Guildmaster.Tests.EditMode.Guild
         [SetUp]
         public void SetUp()
         {
-            _config    = ScriptableObject.CreateInstance<GameConfig>();
-            _runStates = new RunStateService(new MemSave(), _config);
+            _config    = GameConfig.CreateDefault();
+            _runStates = new RunStateService(new InMemorySaveService(), _config, new FixedProfileService());
             _runStates.NewDefaultRun(1L); // 4 сосуда с relic.base
         }
 
@@ -90,13 +90,32 @@ namespace Guildmaster.Tests.EditMode.Guild
             Assert.IsFalse(_runStates.UnequipRelic(0), "На слоте базовый кит — снимать нечего.");
         }
 
-        private sealed class MemSave : ISaveService
+        // ── Правки прямо с арены (фаза расстановки): позиция и кит сосуда ──
+
+        [Test]
+        public void SetSlotPosition_PersistsIntoGuild()
         {
-            private readonly Dictionary<string, object> _s = new();
-            public void Save<T>(string key, T value) => _s[key] = value;
-            public T Load<T>(string key) => _s.TryGetValue(key, out var v) ? (T)v : default;
-            public bool Exists(string key) => _s.ContainsKey(key);
-            public void Delete(string key) => _s.Remove(key);
+            var pos = new Vector2(-3.5f, 1.25f);
+            Assert.IsTrue(_runStates.SetSlotPosition(1, pos));
+            Assert.AreEqual(pos, _runStates.Current.Guild[1].SavedPosition,
+                "Переставленный на поле сосуд обязан помнить своё место между боями.");
+        }
+
+        [Test]
+        public void SetSlotRelic_PutsKitOnSlot_WithoutTouchingStash()
+        {
+            _runStates.TryAddRelic("relic.a");
+
+            Assert.IsTrue(_runStates.SetSlotRelic(0, "relic.b")); // притащили из грида, минуя запас
+            Assert.AreEqual("relic.b", _runStates.Current.Guild[0].RelicId);
+            Assert.Contains("relic.a", _runStates.Current.RelicInventory, "Запас не трогаем — это другой путь.");
+        }
+
+        [Test]
+        public void SetSlot_Fails_WhenSlotOutOfRange()
+        {
+            Assert.IsFalse(_runStates.SetSlotRelic(99, "relic.a"));
+            Assert.IsFalse(_runStates.SetSlotPosition(-1, Vector2.zero));
         }
     }
 }

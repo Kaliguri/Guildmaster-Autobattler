@@ -13,244 +13,884 @@ MonoBehaviour:
   m_Name: AudioCatalog
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Audio.AudioCatalog
   _entries:
-  - Key: relic.cryomancer.attack
-    Event:
-      Guid:
-        Data1: -817539090
-        Data2: 1284003413
-        Data3: 1664163457
-        Data4: -1437360735
-      Path: event:/SFX/Relics/cryomancer/attack
-  - Key: relic.cryomancer.cast
-    Event:
-      Guid:
-        Data1: 68215401
-        Data2: 1243242895
-        Data3: -1302482795
-        Data4: 1609720450
-      Path: event:/SFX/Relics/cryomancer/cast
-  - Key: effect.frozen.apply
-    Event:
-      Guid:
-        Data1: 191561285
-        Data2: 1179286042
-        Data3: -1227337303
-        Data4: 834599546
-      Path: event:/SFX/Effects/frozen/apply
-  - Key: effect.frozen.expire
-    Event:
-      Guid:
-        Data1: -248680144
-        Data2: 1138631947
-        Data3: 196457146
-        Data4: 1364474460
-      Path: event:/SFX/Effects/frozen/expire
-  - Key: relic.light_shepherd.cast
-    Event:
-      Guid:
-        Data1: 234054884
-        Data2: 1223274403
-        Data3: -550535278
-        Data4: -1864456287
-      Path: event:/SFX/Relics/light_shepherd/cast
-  - Key: relic.whirl_monk.cast
-    Event:
-      Guid:
-        Data1: -1227651525
-        Data2: 1248103614
-        Data3: -194827843
-        Data4: 1877141506
-      Path: event:/SFX/Relics/whirl_monk/cast
-  - Key: effect.vortex_entry.apply
-    Event:
-      Guid:
-        Data1: -1896467171
-        Data2: 1094664305
-        Data3: 224609669
-        Data4: -246931848
-      Path: event:/SFX/Effects/vortex_entry/apply
-  - Key: relic.assassin.cast
-    Event:
-      Guid:
-        Data1: 1834899849
-        Data2: 1169242081
-        Data3: -2023773268
-        Data4: -1369839606
-      Path: event:/SFX/Relics/assassin/cast
-  - Key: feel.kill.stinger
-    Event:
-      Guid:
-        Data1: -1547854128
-        Data2: 1330860477
-        Data3: -1391696503
-        Data4: 1715514169
-      Path: event:/SFX/Feel/kill
-  - Key: feel.heavy_hit.hit
-    Event:
-      Guid:
-        Data1: 546738123
-        Data2: 1250661824
-        Data3: 436324284
-        Data4: -547360239
-      Path: event:/SFX/Feel/heavy_hit
-  - Key: feel.death_shatter.death
-    Event:
-      Guid:
-        Data1: 1512866795
-        Data2: 1326806712
-        Data3: -310490209
-        Data4: -1298770263
-      Path: event:/SFX/Feel/death_shatter
-  - Key: ui.pause.ui
-    Event:
-      Guid:
-        Data1: -1562553962
-        Data2: 1131593479
-        Data3: 674622648
-        Data4: -1860682608
-      Path: event:/SFX/UI/pause
-  - Key: ui.resume.ui
-    Event:
-      Guid:
-        Data1: -681310254
-        Data2: 1300678501
-        Data3: -386617440
-        Data4: 1427095219
-      Path: event:/SFX/UI/resume
-  - Key: ui.deploy_place.ui
-    Event:
-      Guid:
-        Data1: -799766641
-        Data2: 1329273523
-        Data3: -687120205
-        Data4: -771695196
-      Path: event:/SFX/UI/deploy_place
   - Key: battle.start.stinger
     Event:
       Guid:
-        Data1: 1003583425
-        Data2: 1286453874
-        Data3: 1977105837
-        Data4: 1961330524
+        Data1: -2053306409
+        Data2: 1159954643
+        Data3: -1633905238
+        Data4: 514681042
       Path: event:/Stingers/battle_start
   - Key: battle.victory.stinger
     Event:
       Guid:
-        Data1: 1383751517
-        Data2: 1214175122
-        Data3: -904772215
-        Data4: -572749251
+        Data1: 1271110689
+        Data2: 1191879413
+        Data3: -921505879
+        Data4: -753080758
       Path: event:/Stingers/victory
   - Key: battle.defeat.stinger
     Event:
       Guid:
-        Data1: 1813023057
-        Data2: 1092029728
-        Data3: -1986383217
-        Data4: 1449836689
+        Data1: -1384288706
+        Data2: 1100371805
+        Data3: -761121863
+        Data4: -1277945583
       Path: event:/Stingers/defeat
+  - Key: combat.unit_spawn.ui
+    Event:
+      Guid:
+        Data1: -1195552157
+        Data2: 1102583536
+        Data3: 806380721
+        Data4: 1141905060
+      Path: event:/SFX/Combat/unit_spawn
+  - Key: combat.attack_interrupted.evade
+    Event:
+      Guid:
+        Data1: -2012600663
+        Data2: 1150128627
+        Data3: 1204073353
+        Data4: -1025547588
+      Path: event:/SFX/Combat/attack_interrupted
+  - Key: enemy.training_dummy.hit
+    Event:
+      Guid:
+        Data1: 57436822
+        Data2: 1107925811
+        Data3: 834101945
+        Data4: -1913598216
+      Path: event:/SFX/Enemies/training_dummy/hit
+  - Key: feel.kill.stinger
+    Event:
+      Guid:
+        Data1: -1518855907
+        Data2: 1149272290
+        Data3: -852073824
+        Data4: -859725296
+      Path: event:/SFX/Feel/kill
+  - Key: feel.heavy_hit.hit
+    Event:
+      Guid:
+        Data1: 1644930757
+        Data2: 1248963891
+        Data3: -1201977163
+        Data4: -2074133431
+      Path: event:/SFX/Feel/heavy_hit
+  - Key: feel.death_shatter.death
+    Event:
+      Guid:
+        Data1: -1774275791
+        Data2: 1248032366
+        Data3: -250491213
+        Data4: 528945142
+      Path: event:/SFX/Feel/death_shatter
+  - Key: feel.finisher.stinger
+    Event:
+      Guid:
+        Data1: -641675326
+        Data2: 1241955535
+        Data3: -2061093986
+        Data4: -1305300008
+      Path: event:/SFX/Feel/finisher
+  - Key: relic.cryomancer.attack
+    Event:
+      Guid:
+        Data1: 958885969
+        Data2: 1145676884
+        Data3: -1760510836
+        Data4: -663103959
+      Path: event:/SFX/Relics/cryomancer/attack
+  - Key: relic.cryomancer.cast
+    Event:
+      Guid:
+        Data1: 1790015744
+        Data2: 1114847004
+        Data3: -455368789
+        Data4: 1820658020
+      Path: event:/SFX/Relics/cryomancer/cast
+  - Key: relic.light_shepherd.cast
+    Event:
+      Guid:
+        Data1: 1290592862
+        Data2: 1218636475
+        Data3: -365892221
+        Data4: -1518808506
+      Path: event:/SFX/Relics/light_shepherd/cast
+  - Key: relic.light_shepherd.fire
+    Event:
+      Guid:
+        Data1: 78254736
+        Data2: 1322765933
+        Data3: -1911807329
+        Data4: 1388424276
+      Path: event:/SFX/Relics/light_shepherd/fire
+  - Key: relic.whirl_monk.cast
+    Event:
+      Guid:
+        Data1: 2046987811
+        Data2: 1283796400
+        Data3: -1640848998
+        Data4: 1066331088
+      Path: event:/SFX/Relics/whirl_monk/cast
+  - Key: relic.assassin.cast
+    Event:
+      Guid:
+        Data1: 1142418674
+        Data2: 1266076258
+        Data3: 839417991
+        Data4: -448449320
+      Path: event:/SFX/Relics/assassin/cast
+  - Key: relic.ranger.fire
+    Event:
+      Guid:
+        Data1: -9176754
+        Data2: 1219149616
+        Data3: 1141318077
+        Data4: -914353523
+      Path: event:/SFX/Relics/ranger/fire
+  - Key: relic.iron_spearman.attack
+    Event:
+      Guid:
+        Data1: 1932156251
+        Data2: 1166725960
+        Data3: -2000795766
+        Data4: -256360988
+      Path: event:/SFX/Relics/iron_spearman/attack
+  - Key: relic.defender.shield
+    Event:
+      Guid:
+        Data1: 1995299247
+        Data2: 1223129542
+        Data3: -278879359
+        Data4: 1847857580
+      Path: event:/SFX/Relics/defender/shield
+  - Key: relic.flame_swordsman.attack
+    Event:
+      Guid:
+        Data1: -1502039939
+        Data2: 1213005789
+        Data3: -24369775
+        Data4: -1355333449
+      Path: event:/SFX/Relics/flame_swordsman/attack
+  - Key: relic.treant.attack
+    Event:
+      Guid:
+        Data1: 1635381957
+        Data2: 1306646156
+        Data3: -1913780831
+        Data4: -1642072873
+      Path: event:/SFX/Relics/treant/attack
+  - Key: relic.druid.cast
+    Event:
+      Guid:
+        Data1: -956439558
+        Data2: 1208010628
+        Data3: -342850918
+        Data4: 1408305432
+      Path: event:/SFX/Relics/druid/cast
+  - Key: effect.frozen.apply
+    Event:
+      Guid:
+        Data1: -2134061577
+        Data2: 1078691866
+        Data3: 1543842460
+        Data4: 712417188
+      Path: event:/SFX/Effects/frozen/apply
+  - Key: effect.frozen.expire
+    Event:
+      Guid:
+        Data1: -494097806
+        Data2: 1134319205
+        Data3: 586434744
+        Data4: 6172686
+      Path: event:/SFX/Effects/frozen/expire
+  - Key: effect.burn.apply
+    Event:
+      Guid:
+        Data1: -2095508006
+        Data2: 1250937740
+        Data3: 497250981
+        Data4: 130218814
+      Path: event:/SFX/Effects/burn/apply
+  - Key: effect.burn.tick
+    Event:
+      Guid:
+        Data1: 212613399
+        Data2: 1209895278
+        Data3: -937627264
+        Data4: -917097503
+      Path: event:/SFX/Effects/burn/tick
+  - Key: effect.ignition.apply
+    Event:
+      Guid:
+        Data1: 29522162
+        Data2: 1250483044
+        Data3: -1218597484
+        Data4: 1860422215
+      Path: event:/SFX/Effects/ignition/apply
+  - Key: effect.spore_cloud.apply
+    Event:
+      Guid:
+        Data1: -1884264387
+        Data2: 1337315663
+        Data3: 494248332
+        Data4: -1165248716
+      Path: event:/SFX/Effects/spore_cloud/apply
+  - Key: effect.ice_chains_stun.apply
+    Event:
+      Guid:
+        Data1: -1148158508
+        Data2: 1202873520
+        Data3: 108476055
+        Data4: 1191036506
+      Path: event:/SFX/Effects/ice_chains_stun/apply
+  - Key: effect.resolute_strike_stun.apply
+    Event:
+      Guid:
+        Data1: -1753618290
+        Data2: 1216898408
+        Data3: 94474143
+        Data4: -1830087392
+      Path: event:/SFX/Effects/resolute_strike_stun/apply
+  - Key: effect.stealth.apply
+    Event:
+      Guid:
+        Data1: -582691915
+        Data2: 1154867992
+        Data3: -1635932236
+        Data4: -1212239708
+      Path: event:/SFX/Effects/stealth/apply
+  - Key: effect.stealth_buff.apply
+    Event:
+      Guid:
+        Data1: -1871911764
+        Data2: 1211420939
+        Data3: -2120898114
+        Data4: 108856144
+      Path: event:/SFX/Effects/stealth_buff/apply
+  - Key: effect.hunters_mark.apply
+    Event:
+      Guid:
+        Data1: 1316032193
+        Data2: 1143691988
+        Data3: 1194443190
+        Data4: 1318795755
+      Path: event:/SFX/Effects/hunters_mark/apply
+  - Key: effect.bulwark_shield.apply
+    Event:
+      Guid:
+        Data1: 1792276232
+        Data2: 1141838081
+        Data3: -209674097
+        Data4: -1709947182
+      Path: event:/SFX/Effects/bulwark_shield/apply
+  - Key: effect.dodge.apply
+    Event:
+      Guid:
+        Data1: -1855393759
+        Data2: 1297760097
+        Data3: 251017642
+        Data4: -1420851514
+      Path: event:/SFX/Effects/dodge/apply
+  - Key: effect.vortex_entry.apply
+    Event:
+      Guid:
+        Data1: 852207570
+        Data2: 1181634375
+        Data3: 1246291339
+        Data4: 1207466791
+      Path: event:/SFX/Effects/vortex_entry/apply
+  - Key: effect.overgrowth.apply
+    Event:
+      Guid:
+        Data1: -425678616
+        Data2: 1226813449
+        Data3: 1701568164
+        Data4: -1578822345
+      Path: event:/SFX/Effects/overgrowth/apply
+  - Key: effect.light_mend.tick
+    Event:
+      Guid:
+        Data1: 1843118163
+        Data2: 1127814186
+        Data3: -2113810773
+        Data4: -1774351612
+      Path: event:/SFX/Effects/light_mend/tick
+  - Key: ui.click.ui
+    Event:
+      Guid:
+        Data1: -1324131735
+        Data2: 1123476296
+        Data3: 185697196
+        Data4: -1896434777
+      Path: event:/SFX/UI/click
+  - Key: ui.hover.ui
+    Event:
+      Guid:
+        Data1: -216603841
+        Data2: 1319428791
+        Data3: 290513819
+        Data4: -297562348
+      Path: event:/SFX/UI/hover
+  - Key: ui.tab.ui
+    Event:
+      Guid:
+        Data1: -399314577
+        Data2: 1238567384
+        Data3: 1308112281
+        Data4: -480092812
+      Path: event:/SFX/UI/tab
+  - Key: ui.toggle.ui
+    Event:
+      Guid:
+        Data1: 1238264644
+        Data2: 1098430459
+        Data3: 29905855
+        Data4: -2019893663
+      Path: event:/SFX/UI/toggle
+  - Key: ui.slider.ui
+    Event:
+      Guid:
+        Data1: 1390401798
+        Data2: 1341472598
+        Data3: -2044829280
+        Data4: -327925506
+      Path: event:/SFX/UI/slider
+  - Key: ui.back.ui
+    Event:
+      Guid:
+        Data1: -488495125
+        Data2: 1172672540
+        Data3: -964625479
+        Data4: 1173329178
+      Path: event:/SFX/UI/back
+  - Key: ui.disabled.ui
+    Event:
+      Guid:
+        Data1: -249462886
+        Data2: 1076407540
+        Data3: 927425712
+        Data4: -677924033
+      Path: event:/SFX/UI/disabled
+  - Key: ui.tooltip_show.ui
+    Event:
+      Guid:
+        Data1: -1219939208
+        Data2: 1317295116
+        Data3: -1182771014
+        Data4: -778399580
+      Path: event:/SFX/UI/tooltip_show
+  - Key: ui.tooltip_detail.ui
+    Event:
+      Guid:
+        Data1: 1114330059
+        Data2: 1210387170
+        Data3: -1171908699
+        Data4: -1442117801
+      Path: event:/SFX/UI/tooltip_detail
+  - Key: ui.screen_open.ui
+    Event:
+      Guid:
+        Data1: -241619202
+        Data2: 1147748146
+        Data3: -1623965027
+        Data4: 1476974731
+      Path: event:/SFX/UI/screen_open
+  - Key: ui.screen_close.ui
+    Event:
+      Guid:
+        Data1: 528613909
+        Data2: 1108526587
+        Data3: -948101993
+        Data4: 1179826867
+      Path: event:/SFX/UI/screen_close
+  - Key: ui.modal_open.ui
+    Event:
+      Guid:
+        Data1: 1759965634
+        Data2: 1141434284
+        Data3: -1430410085
+        Data4: 1751813771
+      Path: event:/SFX/UI/modal_open
+  - Key: ui.drag_grab.ui
+    Event:
+      Guid:
+        Data1: -180086202
+        Data2: 1311447968
+        Data3: -336678477
+        Data4: 1045668091
+      Path: event:/SFX/UI/drag_grab
+  - Key: ui.drag_drop.ui
+    Event:
+      Guid:
+        Data1: 585922099
+        Data2: 1084001171
+        Data3: -1717086036
+        Data4: -108984657
+      Path: event:/SFX/UI/drag_drop
+  - Key: ui.drag_reject.ui
+    Event:
+      Guid:
+        Data1: 533254235
+        Data2: 1289929479
+        Data3: 1929396644
+        Data4: 1373431760
+      Path: event:/SFX/UI/drag_reject
+  - Key: ui.scroll.ui
+    Event:
+      Guid:
+        Data1: 423252012
+        Data2: 1171588588
+        Data3: -1120694878
+        Data4: 1569056268
+      Path: event:/SFX/UI/scroll
+  - Key: ui.pause.ui
+    Event:
+      Guid:
+        Data1: -701744092
+        Data2: 1115472732
+        Data3: 530844863
+        Data4: 1048187285
+      Path: event:/SFX/UI/pause
+  - Key: ui.resume.ui
+    Event:
+      Guid:
+        Data1: 1759257126
+        Data2: 1302353195
+        Data3: 2120822418
+        Data4: -1544064144
+      Path: event:/SFX/UI/resume
+  - Key: ui.speed.ui
+    Event:
+      Guid:
+        Data1: 1559122495
+        Data2: 1089415500
+        Data3: 182314135
+        Data4: 699172086
+      Path: event:/SFX/UI/speed
+  - Key: ui.deploy_grab.ui
+    Event:
+      Guid:
+        Data1: -1237141454
+        Data2: 1249656819
+        Data3: 1082965391
+        Data4: -314401124
+      Path: event:/SFX/UI/deploy_grab
+  - Key: ui.deploy_place.ui
+    Event:
+      Guid:
+        Data1: 1104192643
+        Data2: 1101806200
+        Data3: -894798707
+        Data4: 1112524660
+      Path: event:/SFX/UI/deploy_place
+  - Key: ui.deploy_reject.ui
+    Event:
+      Guid:
+        Data1: 839851959
+        Data2: 1214709787
+        Data3: 2098229433
+        Data4: -664168467
+      Path: event:/SFX/UI/deploy_reject
+  - Key: ui.relic_equip.ui
+    Event:
+      Guid:
+        Data1: -155547338
+        Data2: 1212997114
+        Data3: -1169689215
+        Data4: 1489811978
+      Path: event:/SFX/UI/relic_equip
+  - Key: ui.relic_unequip.ui
+    Event:
+      Guid:
+        Data1: -251657822
+        Data2: 1183913106
+        Data3: -2042703734
+        Data4: 744915835
+      Path: event:/SFX/UI/relic_unequip
+  - Key: ui.relic_select.ui
+    Event:
+      Guid:
+        Data1: -1000891636
+        Data2: 1075127938
+        Data3: -1786176835
+        Data4: 957438046
+      Path: event:/SFX/UI/relic_select
+  - Key: map.node_hover.ui
+    Event:
+      Guid:
+        Data1: 190066416
+        Data2: 1278390206
+        Data3: -1437610103
+        Data4: 47041586
+      Path: event:/SFX/Map/node_hover
+  - Key: map.node_appear.ui
+    Event:
+      Guid:
+        Data1: 719052459
+        Data2: 1341013558
+        Data3: -1345054837
+        Data4: 1824289261
+      Path: event:/SFX/Map/node_appear
+  - Key: map.node_select.ui
+    Event:
+      Guid:
+        Data1: -174376428
+        Data2: 1163397456
+        Data3: 472051347
+        Data4: 1528233746
+      Path: event:/SFX/Map/node_select
+  - Key: map.node_locked.ui
+    Event:
+      Guid:
+        Data1: -1154495586
+        Data2: 1196650878
+        Data3: 110346643
+        Data4: 441799215
+      Path: event:/SFX/Map/node_locked
+  - Key: map.travel_start.ui
+    Event:
+      Guid:
+        Data1: 1063257169
+        Data2: 1164277449
+        Data3: -527456344
+        Data4: -1480366974
+      Path: event:/SFX/Map/travel_start
+  - Key: map.travel_arrive.ui
+    Event:
+      Guid:
+        Data1: 1280612721
+        Data2: 1177484062
+        Data3: -664872560
+        Data4: -1640237475
+      Path: event:/SFX/Map/travel_arrive
+  - Key: map.open.ui
+    Event:
+      Guid:
+        Data1: 1329636001
+        Data2: 1313360952
+        Data3: 1747339941
+        Data4: -1485076091
+      Path: event:/SFX/Map/open
+  - Key: map.close.ui
+    Event:
+      Guid:
+        Data1: -125008988
+        Data2: 1291069884
+        Data3: 940212629
+        Data4: -1379536018
+      Path: event:/SFX/Map/close
+  - Key: flow.fade_in.ui
+    Event:
+      Guid:
+        Data1: 455318740
+        Data2: 1140434564
+        Data3: -1720689250
+        Data4: 617879558
+      Path: event:/SFX/Flow/fade_in
+  - Key: flow.fade_out.ui
+    Event:
+      Guid:
+        Data1: -96772965
+        Data2: 1232759789
+        Data3: 551096985
+        Data4: -83718889
+      Path: event:/SFX/Flow/fade_out
+  - Key: reward.open.stinger
+    Event:
+      Guid:
+        Data1: 1630832220
+        Data2: 1108557017
+        Data3: -998644605
+        Data4: -653413915
+      Path: event:/Stingers/reward_open
+  - Key: reward.card_select.ui
+    Event:
+      Guid:
+        Data1: 850444800
+        Data2: 1249119539
+        Data3: -301738581
+        Data4: 1332923956
+      Path: event:/SFX/Flow/reward_card_select
+  - Key: reward.take.stinger
+    Event:
+      Guid:
+        Data1: -757155164
+        Data2: 1309198297
+        Data3: 1995063703
+        Data4: 1693370327
+      Path: event:/Stingers/reward_take
+  - Key: reward.skip.ui
+    Event:
+      Guid:
+        Data1: -487790360
+        Data2: 1313844992
+        Data3: 868541604
+        Data4: 1172442175
+      Path: event:/SFX/Flow/reward_skip
+  - Key: run.gold_gain.ui
+    Event:
+      Guid:
+        Data1: 196605073
+        Data2: 1157583000
+        Data3: -1424869462
+        Data4: 1057686611
+      Path: event:/SFX/Flow/gold_gain
+  - Key: shop.buy.ui
+    Event:
+      Guid:
+        Data1: -373074654
+        Data2: 1169304500
+        Data3: 2086974396
+        Data4: -758000480
+      Path: event:/SFX/Flow/shop_buy
+  - Key: shop.sell.ui
+    Event:
+      Guid:
+        Data1: 1893595192
+        Data2: 1279078041
+        Data3: 2115218074
+        Data4: 1210869126
+      Path: event:/SFX/Flow/shop_sell
+  - Key: shop.reroll.ui
+    Event:
+      Guid:
+        Data1: 1177362043
+        Data2: 1313412135
+        Data3: -1647911034
+        Data4: -1604406998
+      Path: event:/SFX/Flow/shop_reroll
+  - Key: shop.denied.ui
+    Event:
+      Guid:
+        Data1: 1815772963
+        Data2: 1194605838
+        Data3: 417097116
+        Data4: 1596579209
+      Path: event:/SFX/Flow/shop_denied
+  - Key: chest.open.stinger
+    Event:
+      Guid:
+        Data1: -1040547212
+        Data2: 1236038816
+        Data3: -1218132577
+        Data4: 985956303
+      Path: event:/Stingers/chest_open
+  - Key: camp.action.ui
+    Event:
+      Guid:
+        Data1: -1156791909
+        Data2: 1089469054
+        Data3: 1475969428
+        Data4: -965637095
+      Path: event:/SFX/Flow/camp_action
+  - Key: camp.denied.ui
+    Event:
+      Guid:
+        Data1: -1343299554
+        Data2: 1332940902
+        Data3: 691543204
+        Data4: 844860512
+      Path: event:/SFX/Flow/camp_denied
+  - Key: event.choice.ui
+    Event:
+      Guid:
+        Data1: 673380793
+        Data2: 1196807283
+        Data3: 1332858548
+        Data4: -64508305
+      Path: event:/SFX/Flow/event_choice
+  - Key: run.start.stinger
+    Event:
+      Guid:
+        Data1: -1191260194
+        Data2: 1168194485
+        Data3: 1828607399
+        Data4: 195690853
+      Path: event:/Stingers/run_start
+  - Key: run.outcome_victory.stinger
+    Event:
+      Guid:
+        Data1: 20076031
+        Data2: 1165509897
+        Data3: -1946679907
+        Data4: 1277977865
+      Path: event:/Stingers/run_victory
+  - Key: run.outcome_defeat.stinger
+    Event:
+      Guid:
+        Data1: -1890983672
+        Data2: 1133024450
+        Data3: 451197364
+        Data4: -1262252095
+      Path: event:/Stingers/run_defeat
+  - Key: menu.title_card.stinger
+    Event:
+      Guid:
+        Data1: -1725143860
+        Data2: 1244312833
+        Data3: 1560694176
+        Data4: 1845721831
+      Path: event:/Stingers/title_card
+  - Key: menu.show.ui
+    Event:
+      Guid:
+        Data1: 686354499
+        Data2: 1291751880
+        Data3: -2116773463
+        Data4: 1968614358
+      Path: event:/SFX/Flow/menu_show
+  - Key: menu.hide.ui
+    Event:
+      Guid:
+        Data1: -505616725
+        Data2: 1255510596
+        Data3: -915505262
+        Data4: -688386200
+      Path: event:/SFX/Flow/menu_hide
+  - Key: music.menu.loop
+    Event:
+      Guid:
+        Data1: -1324499974
+        Data2: 1221099882
+        Data3: -498112861
+        Data4: 1333702333
+      Path: event:/Music/menu
+  - Key: music.map.loop
+    Event:
+      Guid:
+        Data1: 639760529
+        Data2: 1201380509
+        Data3: -923460213
+        Data4: 1257946626
+      Path: event:/Music/map
+  - Key: music.battle.loop
+    Event:
+      Guid:
+        Data1: 1066665529
+        Data2: 1280015820
+        Data3: 877971610
+        Data4: -1060123247
+      Path: event:/Music/battle
+  - Key: ambient.arena.loop
+    Event:
+      Guid:
+        Data1: -39121828
+        Data2: 1223313715
+        Data3: -931172969
+        Data4: -2108174693
+      Path: event:/SFX/Ambient/arena
   _defaults:
   - Action: 0
     Event:
       Guid:
-        Data1: -1827506965
-        Data2: 1228484466
-        Data3: 1595094414
-        Data4: 906393472
+        Data1: 1271584306
+        Data2: 1330558411
+        Data3: 1225631895
+        Data4: 1039202525
       Path: event:/SFX/Combat/attack
   - Action: 1
     Event:
       Guid:
-        Data1: 2145201470
-        Data2: 1167560925
-        Data3: 730230708
-        Data4: 2109872336
+        Data1: 233233787
+        Data2: 1157788118
+        Data3: -1977438535
+        Data4: 503174757
       Path: event:/SFX/Combat/hit
   - Action: 2
     Event:
       Guid:
-        Data1: 2014464234
-        Data2: 1144815536
-        Data3: 138635690
-        Data4: 265448663
+        Data1: 714694539
+        Data2: 1166234739
+        Data3: 1867860900
+        Data4: -1330411065
       Path: event:/SFX/Combat/death
   - Action: 3
     Event:
       Guid:
-        Data1: 1714826671
-        Data2: 1193537249
-        Data3: 249225134
-        Data4: -1808563817
+        Data1: 93656664
+        Data2: 1338186844
+        Data3: -491545188
+        Data4: -1899244253
       Path: event:/SFX/Combat/cast
   - Action: 4
     Event:
       Guid:
-        Data1: -306007693
-        Data2: 1146826829
-        Data3: 1312224405
-        Data4: 1544739332
+        Data1: -1244876945
+        Data2: 1196368097
+        Data3: -1691273323
+        Data4: -25685555
       Path: event:/SFX/UI/ui
   - Action: 5
     Event:
       Guid:
-        Data1: 2066257024
-        Data2: 1097155236
-        Data3: 2091282340
-        Data4: 704775534
+        Data1: -2075829353
+        Data2: 1212402946
+        Data3: -715831379
+        Data4: -1498213828
       Path: event:/SFX/Combat/fire
   - Action: 6
     Event:
       Guid:
-        Data1: -10513932
-        Data2: 1269990893
-        Data3: -1787448423
-        Data4: -524590815
+        Data1: -326315392
+        Data2: 1074729639
+        Data3: -614576987
+        Data4: 709234093
       Path: event:/SFX/Combat/evade
   - Action: 7
     Event:
       Guid:
-        Data1: 761599100
-        Data2: 1081868864
-        Data3: 1313740972
-        Data4: -2010419264
+        Data1: 476987556
+        Data2: 1339958984
+        Data3: 101141692
+        Data4: 277285202
       Path: event:/SFX/Combat/shield
   - Action: 8
     Event:
       Guid:
-        Data1: -913378619
-        Data2: 1092176451
-        Data3: 55244674
-        Data4: -1093930772
+        Data1: -515753567
+        Data2: 1259375197
+        Data3: 716128131
+        Data4: -1897166729
       Path: event:/SFX/Combat/heal
   - Action: 9
     Event:
       Guid:
-        Data1: -609375970
-        Data2: 1219978080
-        Data3: 2010418583
-        Data4: -1971964247
+        Data1: 1622421062
+        Data2: 1188584228
+        Data3: 2007076743
+        Data4: 1715225805
       Path: event:/SFX/Combat/apply
   - Action: 10
     Event:
       Guid:
-        Data1: -512611898
-        Data2: 1114184206
-        Data3: 572959919
-        Data4: -750282363
+        Data1: 1786717592
+        Data2: 1252965489
+        Data3: -1998747764
+        Data4: -548798581
       Path: event:/SFX/Combat/expire
   - Action: 11
     Event:
       Guid:
-        Data1: 1917791682
-        Data2: 1293250782
-        Data3: 1559952281
-        Data4: 1490490285
+        Data1: 1823103617
+        Data2: 1126907702
+        Data3: -972646526
+        Data4: 1653572320
       Path: event:/SFX/Combat/tick
   - Action: 12
     Event:
       Guid:
-        Data1: -1957226360
-        Data2: 1142805718
-        Data3: -1648143204
-        Data4: -1962513548
+        Data1: 973281989
+        Data2: 1236422008
+        Data3: 729263769
+        Data4: -1231991622
       Path: event:/Stingers/stinger
+  - Action: 13
+    Event:
+      Guid:
+        Data1: 482171801
+        Data2: 1133925198
+        Data3: 2067932559
+        Data4: -345268969
+      Path: event:/SFX/Ambient/loop

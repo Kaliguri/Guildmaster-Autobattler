@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DummyTrio
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EncounterData
   _id: encounter.dummy_trio
-  _tier: 0
+  _tier: 3
   _units:
   - _enemyId: enemy.training_dummy
     _position: {x: 5, y: 0}

@@ -1,6 +1,8 @@
 using System;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
+using Guildmaster.UI.Components;
+using Guildmaster.UI.Tooltips;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -66,6 +68,9 @@ namespace Guildmaster.UI
                     var card = new VisualElement();
                     card.AddToClassList("gm-shop__card");
                     if (item.Sold) card.AddToClassList("gm-shop__card--sold");
+                    // Витрина показывает имя и цену; чем реликвия ЯВЛЯЕТСЯ — тем же тултипом, что в награде
+                    // и в инвентаре (Трек Т): решение о покупке принимается по киту, а не по цене.
+                    card.WithTooltip(TooltipRequest.Relic(item.Relic?.Id));
 
                     var sprite = new VisualElement();
                     sprite.AddToClassList("gm-card__sprite");
@@ -80,7 +85,7 @@ namespace Guildmaster.UI
                     price.AddToClassList("gm-shop__price");
                     card.Add(price);
 
-                    var buy = new Button { text = L("ui.shop.buy", "Купить") };
+                    var buy = new PlateButton { text = L("ui.shop.buy", "Купить") };
                     buy.AddToClassList("gm-button");
                     int index = i;
                     buy.clicked += () => { if (shop.Buy(index) == ShopBuyOutcome.NoSpace) ShowNoSpace(); };
@@ -102,9 +107,10 @@ namespace Guildmaster.UI
 
                     var n = new Label(nameOf(st.Relic));
                     n.AddToClassList("gm-shop__stash-name");
+                    n.WithTooltip(TooltipRequest.Relic(st.Relic?.Id)); // продаём вслепую только по имени — плохо
                     row.Add(n);
 
-                    var sell = new Button { text = L("ui.shop.sell", "Продать") + $" ({st.SellValue})" };
+                    var sell = new PlateButton { text = L("ui.shop.sell", "Продать") + $" ({st.SellValue})" };
                     sell.AddToClassList("gm-button");
                     RelicData relic = st.Relic;
                     sell.clicked += () => shop.Sell(relic);

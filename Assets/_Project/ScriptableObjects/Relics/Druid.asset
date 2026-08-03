@@ -13,76 +13,95 @@ MonoBehaviour:
   m_Name: Druid
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.druid
-  _damageSchool: 0
-  _affinity: 1
+  _combatClass: 4
+  _autoAttackDamageType: 3
   _creatureType: 0
   _attackType: 1
-  _resourceType: 0
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _resourceType: 1
+  _visual: {fileID: 11400000, guid: a4d7ac06ec4199f45b32b0e4fe7452ac, type: 2}
+  _viewPrefab: {fileID: 4284165950888649411, guid: 596b0e53e267a4643b70c724d56f25d8, type: 3}
+  _bodyShade: 0
+  _vfxTone: 14
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects:
   - {fileID: 11400000, guid: 17b0a5bf45cc4f74e88c2127ae84c1bb, type: 2}
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _windupShare: 0
+  _chargeAttackWindupMult: 1
   _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
   _stats:
-  - Stat: 0
-    Op: 3
-    Value: 1100
   - Stat: 7
     Op: 3
-    Value: 70
+    Value: 45
   - Stat: 8
     Op: 3
-    Value: 1.1
+    Value: 0.425
   - Stat: 9
     Op: 3
     Value: 8
   - Stat: 3
     Op: 3
-    Value: 2
-  - Stat: 20
-    Op: 3
-    Value: 2.5
+    Value: 8
   - Stat: 18
     Op: 3
-    Value: 8
+    Value: 10
+  - Stat: 4
+    Op: 3
+    Value: 12
+  - Stat: 27
+    Op: 3
+    Value: 45
   _grantedEffects: []
   _abilities:
   - _id: spore_burst
     _effects: []
-    _baseCooldown: 9
-    _resourceCost: 0
+    _selfEffects: []
+    _baseCooldown: 0
+    _resourceCost: 45
     _targetMode: 4
-    _damageMultiplier: 2.5
-    _schoolOverride: 3
-    _affinityOverride: 2
+    _damageMultiplier: 0
+    _damageType: 0
     _areaShape: 0
-    _areaRadius: 3.5
-    _healFlat: 80
+    _areaRadius: 1.5
+    _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 11400000, guid: dd60a04a362a4b742b77529b3558aa75, type: 2}
+    _selfHealFraction: 1
     _castCondition: 3
-    _castConditionCount: 2
+    _castConditionCount: 1
     _castConditionRadius: 0
     _castConditionHpPct: 0.5
     _castOverrideSelfHpPct: 0
     _triggerTag: 2048
-    _consumesTriggerTag: 1
+    _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0
     _infoTags: []
   _aiPreset: {fileID: 11400000, guid: 23dcec69dda38814e99c0d882a05b246, type: 2}
   _ai:
-    _autoAttackTargeting: 0
+    _autoAttackTargeting: 8
     _autoAttackMode: 0
-    _targetTag: 0
+    _targetTag: 2048
     _retreat:
       Enabled: 0
       FleeAtHpPct: 0.25
@@ -94,7 +113,12 @@ MonoBehaviour:
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: f219333c551996c47a3e68dfd6a8655f, type: 2}
+  - {fileID: 11400000, guid: 2e74f4027aac58747add95950ec06969, type: 2}
+  - {fileID: 11400000, guid: 5cec4bc3f06a4e34fa90be427fcf58cc, type: 2}
+  - {fileID: 11400000, guid: 53b2b41325a73594eb47d125fc37e8c5, type: 2}
+  - {fileID: 11400000, guid: afea0a30941b69242b794bb19baee24c, type: 2}
   _tags:
   - druid
   - poison

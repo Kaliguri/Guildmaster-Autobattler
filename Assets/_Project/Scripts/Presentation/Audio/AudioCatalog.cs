@@ -46,6 +46,27 @@ namespace Guildmaster.Presentation.Audio
             return false;
         }
 
+        /// <summary>
+        /// Играет ли что-нибудь по этому ключу: есть точная запись или дефолт действия, и ссылка не пуста.
+        /// Обёртка над <see cref="TryGetEvent"/> для тех, кому нельзя видеть FMOD-типы (тесты, валидаторы) —
+        /// <see cref="EventReference"/> живёт в сборке FMODUnity, и тащить её в каждую сборку-потребителя ради
+        /// одной проверки незачем.
+        /// </summary>
+        public bool HasSound(string key) => TryGetEvent(key, out _);
+
+        /// <summary>Ключи записей, за которыми нет FMOD-события (в игре это тихий no-op).</summary>
+        public IEnumerable<string> KeysWithoutEvent()
+        {
+            for (int i = 0; i < _entries.Length; i++)
+                if (_entries[i].Event.IsNull) yield return _entries[i].Key;
+        }
+
+        /// <summary>Ключи всех точных записей — без доступа к их FMOD-ссылкам.</summary>
+        public IEnumerable<string> EntryKeys()
+        {
+            for (int i = 0; i < _entries.Length; i++) yield return _entries[i].Key;
+        }
+
         public bool HasDefault(AudioAction action)
         {
             for (int i = 0; i < _defaults.Length; i++)

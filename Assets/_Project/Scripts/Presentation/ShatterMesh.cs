@@ -25,8 +25,11 @@ namespace Guildmaster.Presentation
         {
             var rng = new System.Random(Seed);
             int bp = Mathf.Max(1, blockPixels);
-            int cols = Mathf.Clamp(Mathf.RoundToInt(regionPixels.x / bp), 3, 16);
-            int rows = Mathf.Clamp(Mathf.RoundToInt(regionPixels.y / bp), 3, 20);
+            // Потолок сетки был 16×20 — и он, а не Block Pixels, определял размер осколка: спрайту в 48 px
+            // с блоком в 3 px нужно ровно 16 колонок, дальше параметр переставал что-либо менять. Потолок
+            // поднят до 48×64 (это по-прежнему ОДИН дро-колл — вся сетка живёт в вершинах одного меша).
+            int cols = Mathf.Clamp(Mathf.RoundToInt(regionPixels.x / bp), 3, 48);
+            int rows = Mathf.Clamp(Mathf.RoundToInt(regionPixels.y / bp), 3, 64);
 
             float[] fx = BuildLines(cols, regionPixels.x, rng); // доли [0..1] границ по X, снап на пиксели
             float[] fy = BuildLines(rows, regionPixels.y, rng);
@@ -93,7 +96,7 @@ namespace Guildmaster.Presentation
                 (float)rng.NextDouble(),  // r = speed
                 (float)rng.NextDouble(),  // g = spin
                 (float)rng.NextDouble(),  // b = dir jitter
-                1f);
+                (float)rng.NextDouble()); // a = tumble axis/phase (псевдо-3D кувыркание)
 
             int start = verts.Count;
             AddVertex(bl, fx0, fy0, centroid, rand, uvRect, verts, uvs, centroids, colors);
