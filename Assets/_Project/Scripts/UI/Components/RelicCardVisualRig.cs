@@ -96,7 +96,7 @@ namespace Guildmaster.UI.Components
                 // Тинт тела — тот же путь, что в бою: ступень из данных, цвет из палитры проекта. Кастовый
                 // HitFlash-шейдер подхватывает .color лишь по per-instance пути → сперва праймим MPB (инвариант
                 // UnitView.PrimeFlashBlock), иначе тинт молча не отобразится на статичной карточке.
-                ApplyBodyTint(entry.Unit, UnitColorRoles.Shade(_palette, data.BodyShade));
+                ApplyBodyTint(entry.Unit, UnitColorRoles.Body(_palette, data.BodyShade, data.VfxTone));
             }
 
             // Камера НА этот юнит: рендерит в свою RT автоматически (URP).

@@ -125,6 +125,20 @@ namespace Guildmaster.Data.Definitions
         public static Color Shade(GuildmasterPalette palette, BodyShade shade) =>
             shade == BodyShade.None ? Color.white : Resolve(palette, TokenOf(shade), $"приглушение {shade}");
 
+        /// <summary>
+        /// ЦВЕТ ТЕЛА юнита — одно правило на всех, кто это тело рисует: бой, карточка, витрина. Своя
+        /// ступень приглушения, если автор её выставил; иначе — собственный оттенок юнита.
+        /// </summary>
+        /// <remarks>
+        /// Правило живёт здесь, а не у потребителей, потому что потребителей уже двое (боевой
+        /// <c>CombatColorPalette</c> и карточка <c>RelicCardVisualRig</c>), а вопрос у них один: «каким
+        /// цветом это тело». Разъехавшись, они дали бы юниту два разных цвета в бою и в инвентаре — и
+        /// поймать это можно было бы только глазами, переключаясь между экранами.
+        /// <para>Ступень главнее тона: она адресная правка автора, а тон — общее правило.</para>
+        /// </remarks>
+        public static Color Body(GuildmasterPalette palette, BodyShade shade, UnitTone tone) =>
+            shade != BodyShade.None ? Shade(palette, shade) : Tone(palette, tone);
+
         private static Color Resolve(GuildmasterPalette palette, string token, string what)
         {
             if (palette == null)

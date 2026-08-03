@@ -1047,7 +1047,9 @@ namespace Guildmaster.Presentation
         // Ступень → цвет. Без палитры не гадаем: белый значит «арт как нарисован», и это честнее пурпура,
         // потому что тинт по умолчанию и есть «не красим» — большинство юнитов носит None.
         private Color BodyTintOf(UnitData definition) =>
-            _colorPalette != null ? _colorPalette.BodyTint(definition.BodyShade) : Color.white;
+            _colorPalette != null
+                ? _colorPalette.BodyTint(definition.BodyShade, definition.VfxTone)
+                : Color.white;
 
         /// <summary>
         /// Цвета ЭФФЕКТОВ юнита. Их два, и они про разное: ГЛАВНЫЙ цвет — там, где цвет один (тело снаряда,

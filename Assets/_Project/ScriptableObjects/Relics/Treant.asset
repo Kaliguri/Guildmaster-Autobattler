@@ -18,17 +18,25 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 0
   _resourceType: 1
-  _visual: {fileID: 11400000, guid: d0a79ee49ef5db14183cedd745bc33d1, type: 2}
-  _viewPrefab: {fileID: 6633865311930413954, guid: aad39bd62a48f57439e7c1b59fe2a62b, type: 3}
+  _visual: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
+  _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
   _bodyShade: 2
   _vfxTone: 4
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackLengthMult: 1
   _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
@@ -56,6 +64,7 @@ MonoBehaviour:
   - _id: overgrowth
     _effects:
     - {fileID: 11400000, guid: df5e074a7146eda41a164fd1673993d7, type: 2}
+    _selfEffects: []
     _baseCooldown: 0
     _resourceCost: 40
     _targetMode: 0
@@ -74,6 +83,23 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _castSource: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
     _displaces: 0
     _displaceDistance: 4
     _displaceDamageMult: 1

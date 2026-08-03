@@ -90,6 +90,7 @@ MonoBehaviour:
     _channelSeconds: 0
     _channelTickSeconds: 1
     _canMoveWhileCasting: 0
+    _castSource: 0
     _statScalings: []
     _summonUnit: {fileID: 0}
     _summonCount: 1
