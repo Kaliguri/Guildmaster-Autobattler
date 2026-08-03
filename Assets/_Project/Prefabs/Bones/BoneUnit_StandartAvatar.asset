@@ -7,7 +7,7 @@ Avatar:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BoneUnit_StandartAvatar
-  m_AvatarSize: 4300
+  m_AvatarSize: 8116
   m_Avatar:
     serializedVersion: 3
     m_AvatarSkeleton:
@@ -21,17 +21,17 @@ Avatar:
           m_AxesId: -1
         - m_ParentId: 2
           m_AxesId: -1
-        - m_ParentId: 2
+        - m_ParentId: 3
+          m_AxesId: -1
+        - m_ParentId: 4
           m_AxesId: -1
         - m_ParentId: 2
           m_AxesId: -1
-        - m_ParentId: 5
-          m_AxesId: -1
         - m_ParentId: 6
           m_AxesId: -1
-        - m_ParentId: 6
+        - m_ParentId: 7
           m_AxesId: -1
-        - m_ParentId: 6
+        - m_ParentId: 2
           m_AxesId: -1
         - m_ParentId: 9
           m_AxesId: -1
@@ -39,15 +39,15 @@ Avatar:
           m_AxesId: -1
         - m_ParentId: 11
           m_AxesId: -1
-        - m_ParentId: 2
+        - m_ParentId: 12
           m_AxesId: -1
-        - m_ParentId: 13
-          m_AxesId: -1
-        - m_ParentId: 14
+        - m_ParentId: 10
           m_AxesId: -1
         - m_ParentId: 14
           m_AxesId: -1
-        - m_ParentId: 14
+        - m_ParentId: 15
+          m_AxesId: -1
+        - m_ParentId: 10
           m_AxesId: -1
         - m_ParentId: 17
           m_AxesId: -1
@@ -55,35 +55,103 @@ Avatar:
           m_AxesId: -1
         - m_ParentId: 19
           m_AxesId: -1
-        - m_ParentId: 1
+        - m_ParentId: 18
           m_AxesId: -1
         - m_ParentId: 21
           m_AxesId: -1
         - m_ParentId: 22
           m_AxesId: -1
-        - m_ParentId: 22
+        - m_ParentId: 23
           m_AxesId: -1
-        - m_ParentId: 24
+        - m_ParentId: 18
           m_AxesId: -1
-        - m_ParentId: 25
+        - m_ParentId: 2
           m_AxesId: -1
-        - m_ParentId: 24
+        - m_ParentId: 26
           m_AxesId: -1
-        - m_ParentId: 1
+        - m_ParentId: 27
           m_AxesId: -1
         - m_ParentId: 28
           m_AxesId: -1
         - m_ParentId: 29
           m_AxesId: -1
-        - m_ParentId: 29
+        - m_ParentId: 27
           m_AxesId: -1
         - m_ParentId: 31
           m_AxesId: -1
         - m_ParentId: 32
           m_AxesId: -1
-        - m_ParentId: 31
+        - m_ParentId: 27
           m_AxesId: -1
-        m_ID: 000000001106d1de8490b13933da53ec1d27089094352ca9ba581272e9e3d28f242cfb50bf029525053b48897da34b1291c460cb0b9cc239eeca8e6e78a09a28b61a743612ea979493b19f8afe0cf8897982609d308530b4dd969a1a2b80e2782ad96235aa7f2c6d9b96c21b05c4d5684ae764e830ed5e29beaaa0e2a5c9c13aba96b51b086a8e159641972a
+        - m_ParentId: 34
+          m_AxesId: -1
+        - m_ParentId: 35
+          m_AxesId: -1
+        - m_ParentId: 36
+          m_AxesId: -1
+        - m_ParentId: 35
+          m_AxesId: -1
+        - m_ParentId: 38
+          m_AxesId: -1
+        - m_ParentId: 39
+          m_AxesId: -1
+        - m_ParentId: 40
+          m_AxesId: -1
+        - m_ParentId: 35
+          m_AxesId: -1
+        - m_ParentId: 1
+          m_AxesId: -1
+        - m_ParentId: 43
+          m_AxesId: -1
+        - m_ParentId: 44
+          m_AxesId: -1
+        - m_ParentId: 45
+          m_AxesId: -1
+        - m_ParentId: 46
+          m_AxesId: -1
+        - m_ParentId: 44
+          m_AxesId: -1
+        - m_ParentId: 48
+          m_AxesId: -1
+        - m_ParentId: 49
+          m_AxesId: -1
+        - m_ParentId: 50
+          m_AxesId: -1
+        - m_ParentId: 51
+          m_AxesId: -1
+        - m_ParentId: 48
+          m_AxesId: -1
+        - m_ParentId: 53
+          m_AxesId: -1
+        - m_ParentId: 54
+          m_AxesId: -1
+        - m_ParentId: 1
+          m_AxesId: -1
+        - m_ParentId: 56
+          m_AxesId: -1
+        - m_ParentId: 57
+          m_AxesId: -1
+        - m_ParentId: 58
+          m_AxesId: -1
+        - m_ParentId: 59
+          m_AxesId: -1
+        - m_ParentId: 57
+          m_AxesId: -1
+        - m_ParentId: 61
+          m_AxesId: -1
+        - m_ParentId: 62
+          m_AxesId: -1
+        - m_ParentId: 63
+          m_AxesId: -1
+        - m_ParentId: 64
+          m_AxesId: -1
+        - m_ParentId: 61
+          m_AxesId: -1
+        - m_ParentId: 66
+          m_AxesId: -1
+        - m_ParentId: 67
+          m_AxesId: -1
+        m_ID: 000000001106d1de8490b13933da53ece5a2ff2abc55c8091d27089035a1dd5710ed8b4f94352ca9a83673409354b66728250b9b80894a5fd31aa5adfa5494c6acdd689395ad4d28e49848c9da5ab89bc43dd597efbaafbe7537074de6c3ac0ab28d0221354bb2500b9cc239cac1aa78ef283a36d5f11844f0c84cc4e207d23abde10afe2bf240744597e6c60e6ba0a0021b4f443bb68c9fb229e885e146d8b574e9e5239caae3b42fd0e1c0308530b416a8a828054821350eb9f9fe4aa4b19ae10a475798c94bac1440fefcda5095e0cf18bb9005906c02cc6b387f4d724c9c4ae764e8bcbd0f369d0883e0123d531439a31f17de53e996ebd0082204ded89e800be80514dc47a8c912ad7447bf57022ab65930
         m_AxesArray: []
     m_AvatarSkeletonPose:
       data:
@@ -100,8 +168,20 @@ Avatar:
         - t: {x: -0.032, y: 0.04, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.032, y: 0.205, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -9.3132e-10, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 0.73590106, y: 0.73590106, z: 0.73590106}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: -0.051, y: -0.022, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
@@ -112,8 +192,20 @@ Avatar:
         - t: {x: -0.0022, y: 0.0088, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.0022, y: -0.09120001, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0.009798512, y: -0.13811213, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
@@ -121,12 +213,27 @@ Avatar:
         - t: {x: 0.005701486, y: -0.030087873, z: 0}
           q: {x: -0, y: -0, z: 0.38493973, w: 0.92294174}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: 0.019756738, y: 0.025444381, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0, y: 0, z: 0}
-          q: {x: -0, y: -0, z: -0.34202012, w: 0.9396927}
+          q: {x: 0, y: 0, z: 0.2143944, w: -0.9767472}
           s: {x: 1.0999998, y: 1.0999998, z: 1.1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.014819317, y: 0.0076100626, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: 0.132, y: -0.011999999, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
@@ -136,8 +243,20 @@ Avatar:
         - t: {x: -0.0022, y: 0.0088, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.0022, y: -0.09120001, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0.0036294982, y: -0.13958894, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
@@ -146,11 +265,26 @@ Avatar:
           q: {x: -0, y: -0, z: 0.23013468, w: 0.97315884}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0.1856, y: -0.0102, z: 0}
           q: {x: 0, y: 0, z: -0.7033327, w: 0.71086085}
           s: {x: 0.65083003, y: 1.2645358, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.014819317, y: 0.0076100626, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.064, y: -0.023, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
@@ -159,6 +293,12 @@ Avatar:
           s: {x: 1, y: 1, z: 1}
         - t: {x: -0.0509, y: -0.1102, z: 0}
           q: {x: 0, y: 0, z: -0.05312034, w: 0.99858814}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: -0.06495, y: -0.17229615, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
@@ -169,8 +309,20 @@ Avatar:
         - t: {x: -0.0037999973, y: -0.01493597, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.014050007, y: -0.056903854, z: 0}
           q: {x: -0, y: -0, z: -0.14211062, w: 0.9898508}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0.064, y: -0.0029999986, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
@@ -181,6 +333,12 @@ Avatar:
         - t: {x: -0.0153, y: -0.1143, z: 0}
           q: {x: 0, y: 0, z: 0.19183686, w: 0.98142684}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.011149995, y: -0.17526129, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
@@ -190,8 +348,20 @@ Avatar:
         - t: {x: 0.0013500005, y: -0.016590446, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: 0.0041499957, y: -0.047538713, z: 0}
           q: {x: -0, y: -0, z: -0.090024225, w: 0.9959396}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
           s: {x: 1, y: 1, z: 1}
     m_DefaultPose:
       data:
@@ -208,8 +378,20 @@ Avatar:
         - t: {x: -0.032, y: 0.04, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.032, y: 0.205, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -9.3132e-10, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 0.73590106, y: 0.73590106, z: 0.73590106}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: -0.051, y: -0.022, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
@@ -220,8 +402,20 @@ Avatar:
         - t: {x: -0.0022, y: 0.0088, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.0022, y: -0.09120001, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0.009798512, y: -0.13811213, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
@@ -229,12 +423,27 @@ Avatar:
         - t: {x: 0.005701486, y: -0.030087873, z: 0}
           q: {x: -0, y: -0, z: 0.38493973, w: 0.92294174}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: 0.019756738, y: 0.025444381, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0, y: 0, z: 0}
-          q: {x: -0, y: -0, z: -0.34202012, w: 0.9396927}
+          q: {x: 0, y: 0, z: 0.2143944, w: -0.9767472}
           s: {x: 1.0999998, y: 1.0999998, z: 1.1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.014819317, y: 0.0076100626, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: 0.132, y: -0.011999999, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
@@ -244,8 +453,20 @@ Avatar:
         - t: {x: -0.0022, y: 0.0088, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.0022, y: -0.09120001, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0.0036294982, y: -0.13958894, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
@@ -254,11 +475,26 @@ Avatar:
           q: {x: -0, y: -0, z: 0.23013468, w: 0.97315884}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0.1856, y: -0.0102, z: 0}
           q: {x: 0, y: 0, z: -0.7033327, w: 0.71086085}
           s: {x: 0.65083003, y: 1.2645358, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.014819317, y: 0.0076100626, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.064, y: -0.023, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
@@ -267,6 +503,12 @@ Avatar:
           s: {x: 1, y: 1, z: 1}
         - t: {x: -0.0509, y: -0.1102, z: 0}
           q: {x: 0, y: 0, z: -0.05312034, w: 0.99858814}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: -0.06495, y: -0.17229615, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
@@ -277,8 +519,20 @@ Avatar:
         - t: {x: -0.0037999973, y: -0.01493597, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.014050007, y: -0.056903854, z: 0}
           q: {x: -0, y: -0, z: -0.14211062, w: 0.9898508}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
           s: {x: 1, y: 1, z: 1}
         - t: {x: 0.064, y: -0.0029999986, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
@@ -289,6 +543,12 @@ Avatar:
         - t: {x: -0.0153, y: -0.1143, z: 0}
           q: {x: 0, y: 0, z: 0.19183686, w: 0.98142684}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: -0.011149995, y: -0.17526129, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
@@ -298,10 +558,22 @@ Avatar:
         - t: {x: 0.0013500005, y: -0.016590446, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
         - t: {x: 0.0041499957, y: -0.047538713, z: 0}
           q: {x: -0, y: -0, z: -0.090024225, w: 0.9959396}
           s: {x: 1, y: 1, z: 1}
-    m_SkeletonNameIDArray: 000000001106d1de81939ee68ca49a7ba259c10763c54bf75b736485875760cc4921e312d319031e9f784268dd255b8aded73f19449c451a5b736485875760cc4921e312d319031e9f784268dd255b8a0be8245ba37dd45b9b5d21f00b6a57278b3fcb6ba589e8f83e7ecf7568eca5f04cc18d819b5d21f00b6a57278b3fcb6ba589e8f83e7ecf7568eca5f0
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+    m_SkeletonNameIDArray: 000000001106d1de81939ee68ca49a7b6a94b4978ca49a7ba259c10758c21e4ba259c10763c54bf799d2c9eb875760cc68743372875760cc4921e312bfcb7b354921e312919bc47b9f784268f2facc119f7842689b3770baded73f198ba32822ded73f19b3d8f520449c451afaefc611875760cc68743372875760cc4921e312bfcb7b354921e312f2a6cb819f784268f2facc119f784268f80a7f400be8245be61fd93b0be8245bd0e5fadaa37dd45b4b9b0ae10b6a5727485f9cad0b6a5727d0b50d43b7c355013e7ecf75fe9f9c7d3e7ecf7568eca5f0d97a8d3268eca5f04cc18d8128a6051b0b6a5727485f9cad0b6a5727b38802b9d4fe5afb3e7ecf75fe9f9c7d3e7ecf7568eca5f0d97a8d3268eca5f0
     m_Human:
       data:
         serializedVersion: 2
@@ -378,49 +650,87 @@ Avatar:
         m_X: []
     m_RootMotionSkeletonIndexArray: 
   m_TOS:
-    306946941: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
-      Point (Grip)
-    446338781: Hips/Leg (Left)/Rotation Point (Hip)
+    3766683805: Hips/Leg (Right)/UpperLeg_R/Leg_Top
+    3337000773: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R
     2838246804: Hips/Torso/Arm (Left)
-    681222264: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Arm_Shoulder
-    1758839813: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)/Leg_Down
-    1854851822: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)
+    1464273633: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L
+    3376978148: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L/Arm_Down
+    3199187695: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L/Arm_Down/Weapon_L
+    2134404044: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L/Leg_Down/Visual Part (Leg_Down)
+    2428180687: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L/Foot_L/Leg_Boots/Visual Part
+      (Leg_Boots)/Leg_Boots
+    2913278675: Hips/Torso/Arm (Left)/Shoulder_L/Arm_Top
+    1950413355: Hips/Torso/Arm (Right)/Shoulder_R/Arm_Top/Visual Part (Arm_Top)/Arm_Top
+    2823281684: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R/Foot_R/Leg_Boots/Visual Part
+      (Leg_Boots)/Leg_Boots
     3898926922: Hips/Leg (Right)
-    1358638116: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Arm_Top
-    465737371: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation
-      Point (Ankle)/Leg_Boots
-    694086960: Hips/Leg (Right)/Rotation Point (Hip)
-    895670570: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)
-    913578678: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Arm_Top
-    2028109867: Hips/Leg (Left)/Rotation Point (Hip)/Leg_Top
-    630522559: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)
-    1831632810: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation
-      Point (Ankle)
+    1957499593: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R/Leg_Down
+    3236024367: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R/Arm_Down/Hand_R
+    3331609850: Hips/Torso/Arm (Left)/Shoulder_L/Arm_Top/Visual Part (Arm_Top)
+    2612550362: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L/Arm_Down/Visual Part
+      (Arm_Down)
+    40669189: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L/Leg_Down
+    4277778702: Hips/Leg (Left)/UpperLeg_L/Leg_Top/Visual Part (Leg_Top)
+    99093376: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R/Foot_R/Leg_Boots/Visual Part
+      (Leg_Boots)
+    1292318581: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L/Arm_Down/Weapon_L/Shield
+    682141718: Hips/Leg (Left)/UpperLeg_L
+    811185706: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R/Leg_Down/Visual Part (Leg_Down)/Leg_Down
     0: 
-    2314734846: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
-      Point (Grip)
-    2412962793: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Arm_Shoulder
-    3412116625: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
-      Point (Grip)/Shield
+    2531873758: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R
+    3050850017: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R/Arm_Down/Weapon_R/Sword
+    553815474: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L/Arm_Down/Weapon_L/Shield/Visual
+      Part (Shield)/Shield
+    3023078704: Hips/Leg (Left)
     3964918323: Hips/Torso/Body
-    1913804986: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)
+    4244520980: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L/Foot_L/Leg_Boots
+    2024456650: Hips/Torso/Arm (Right)/Shoulder_R
+    2547334596: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L/Arm_Down/Visual Part
+      (Arm_Down)/Arm_Down
+    676179349: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L
+    3293366512: Hips/Torso/Arm (Right)/Shoulder_R/Arm_Shoulder/Visual Part (Arm_Shoulder)/Arm_Shoulder
+    3767881946: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L/Foot_L/Leg_Boots/Visual Part
+      (Leg_Boots)
+    986843106: Hips/Torso/Arm (Right)/Shoulder_R/Arm_Top
+    2676799035: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R/Arm_Down/Visual Part
+      (Arm_Down)/Arm_Down
+    2601198888: Hips/Torso/Arm (Left)/Shoulder_L/Arm_Shoulder/Visual Part (Arm_Shoulder)
+    1081292456: Hips/Torso/Arm (Left)/Shoulder_L
+    39305031: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R/Leg_Down/Visual Part (Leg_Down)
+    2473123244: Hips/Torso/Arm (Left)/Shoulder_L/Arm_Top/Visual Part (Arm_Top)/Arm_Top
+    2890647960: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L/Foot_L
+    2595333194: Hips/Leg (Left)/UpperLeg_L/Leg_Top/Visual Part (Leg_Top)/Leg_Top
+    164124092: Hips/Torso/Body/Visual Part (Body)/Body
+    602270068: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R/Arm_Down/Weapon_R/Sword/Visual
+      Part (Sword)
+    2246584754: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R/Arm_Down/Weapon_R
+    2622255693: Hips/Leg (Left)/UpperLeg_L/LowerLeg_L/Leg_Down/Visual Part (Leg_Down)/Leg_Down
+    1474142517: Hips/Torso/Head/Visual Part (Head)
+    1598720384: Hips/Torso/Arm (Left)/Shoulder_L/Arm_Shoulder/Visual Part (Arm_Shoulder)/Arm_Shoulder
+    891373573: Hips/Leg (Left)/UpperLeg_L/Leg_Top
+    1353861941: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L/Arm_Down/Hand_L
+    2694867726: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R/Arm_Down
+    4262126013: Hips/Torso/Arm (Right)/Shoulder_R/Arm_Top/Visual Part (Arm_Top)
+    179094502: Hips/Torso/Arm (Left)/Shoulder_L/LowerArm_L/Arm_Down/Weapon_L/Shield/Visual
+      Part (Shield)
+    387949369: Hips/Leg (Right)/UpperLeg_R/Leg_Top/Visual Part (Leg_Top)/Leg_Top
+    907001276: Hips/Leg (Right)/UpperLeg_R
+    571003115: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R/Foot_R
+    1142485461: Hips/Torso/Arm (Right)/Shoulder_R/Arm_Shoulder/Visual Part (Arm_Shoulder)
+    1334570256: Hips/Torso/Head/Visual Part (Head)/Head
     969055243: Hips/Torso/Arm (Right)
     967938180: Hips/Torso
-    2492983826: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)
-    3023078704: Hips/Leg (Left)
-    2640347769: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
-      Point (Grip)/Sword
-    714555798: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)/Leg_Down
-    3802180286: Hips/Leg (Right)/Rotation Point (Hip)/Leg_Top
-    985778597: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)
-    361654792: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation
-      Point (Ankle)/Leg_Boots
-    464885434: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation
-      Point (Ankle)
+    721396453: Hips/Torso/Body/Visual Part (Body)
+    340999442: Hips/Leg (Right)/UpperLeg_R/Leg_Top/Visual Part (Leg_Top)
+    1146034946: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R/Arm_Down/Visual Part
+      (Arm_Down)
+    1740002451: Hips/Torso/Arm (Left)/Shoulder_L/Arm_Shoulder
+    2665012740: Hips/Leg (Right)/UpperLeg_R/LowerLeg_R/Foot_R/Leg_Boots
+    3034819228: Hips/Torso/Arm (Right)/Shoulder_R/LowerArm_R/Arm_Down/Weapon_R/Sword/Visual
+      Part (Sword)/Sword
     3738240529: Hips
+    909781231: Hips/Torso/Arm (Right)/Shoulder_R/Arm_Shoulder
     2416453405: Hips/Torso/Head
-    2303212293: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down
-    2325721491: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down
   m_HumanDescription:
     serializedVersion: 3
     m_Human: []
