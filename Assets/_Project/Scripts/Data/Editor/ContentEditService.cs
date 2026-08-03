@@ -33,9 +33,22 @@ namespace Guildmaster.Data.Editor
             public readonly bool Applied;
             public readonly string Note;
 
-            public Change(string asset, string field, float before, float after, bool applied, string note)
+            /// <summary>
+            /// Правка СОЗДАЛА запись, которой в ассете не было. Тогда <see cref="Before"/> равен NaN —
+            /// и это не «значение было нулевым», а «значения не существовало».
+            /// </summary>
+            /// <remarks>
+            /// Различие несёт откат: обратная правка к добавлению — снять запись, а не задать ей число.
+            /// Записать вместо неё <see cref="Before"/> значит положить в ассет NaN (или ноль, если
+            /// разбор NaN провалится) и выпустить юнита на арену без HP.
+            /// </remarks>
+            public readonly bool Added;
+
+            public Change(string asset, string field, float before, float after, bool applied, string note,
+                bool added = false)
             {
                 Asset = asset; Field = field; Before = before; After = after; Applied = applied; Note = note;
+                Added = added;
             }
 
             public override string ToString()
@@ -140,7 +153,38 @@ namespace Guildmaster.Data.Editor
             added.FindPropertyRelative("Value").floatValue = value;
             so.ApplyModifiedProperties();
             EditorUtility.SetDirty(unit);
-            return Record(unit, stat + " (new)", float.NaN, value);
+            return RecordAdded(unit, stat + " (new)", value);
+        }
+
+        /// <summary>Снять модификатор стата из <c>_stats</c> (первое совпадение).</summary>
+        /// <remarks>
+        /// Существует ради отката. <see cref="SetStat"/>, не найдя стата, ДОБАВЛЯЕТ модификатор — и
+        /// обратной правкой к этому будет снятие записи, а не запись числа: до правки значения не
+        /// существовало, и «вернуть как было» нельзя ничем, кроме удаления.
+        /// </remarks>
+        public static Change RemoveStat(UnitData unit, StatType stat) => RemoveStat(unit, stat, out _);
+
+        /// <inheritdoc cref="RemoveStat(UnitData, StatType)"/>
+        /// <param name="removedOp">Операция снятого модификатора — нужна, чтобы откатить сам откат.</param>
+        public static Change RemoveStat(UnitData unit, StatType stat, out ModifierOp removedOp)
+        {
+            removedOp = ModifierOp.Flat;
+
+            var so = new SerializedObject(unit);
+            SerializedProperty stats = so.FindProperty("_stats");
+            for (int i = 0; i < stats.arraySize; i++)
+            {
+                SerializedProperty el = stats.GetArrayElementAtIndex(i);
+                if (el.FindPropertyRelative("Stat").enumValueIndex != (int)stat) continue;
+
+                removedOp = (ModifierOp)el.FindPropertyRelative("Op").enumValueIndex;
+                float before = el.FindPropertyRelative("Value").floatValue;
+                stats.DeleteArrayElementAtIndex(i);
+                so.ApplyModifiedProperties();
+                EditorUtility.SetDirty(unit);
+                return Record(unit, stat + " (removed)", before, float.NaN);
+            }
+            return Skip(unit, "stat:" + stat, "нет модификатора этого стата в _stats");
         }
 
         // ---------------------------------------------------------------- generic field
@@ -333,6 +377,10 @@ namespace Guildmaster.Data.Editor
 
         private static Change Record(UnityEngine.Object asset, string field, float before, float after)
             => new Change(asset.name, field, before, after, true, null);
+
+        /// <summary>Правка создала запись, которой не было: «было» тут не число, а его отсутствие.</summary>
+        private static Change RecordAdded(UnityEngine.Object asset, string field, float after)
+            => new Change(asset.name, field, float.NaN, after, true, null, added: true);
 
         private static Change Skip(UnityEngine.Object asset, string field, string note)
         {
