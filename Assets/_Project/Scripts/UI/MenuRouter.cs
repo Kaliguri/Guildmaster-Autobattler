@@ -704,16 +704,17 @@ namespace Guildmaster.UI
         {
             var screen = FillRoot(_settingsUxml.CloneTree());
 
+            // Подписи через loc с RU-фолбэком (как остальной новый UI); значения проводятся из VM.
+            string L(string key, string ru) { string v = _loc?.GetString(key); return string.IsNullOrEmpty(v) ? ru : v; }
+
             var master = screen.Q<Guildmaster.UI.Components.SliderRow>("row-master");
             var music  = screen.Q<Guildmaster.UI.Components.SliderRow>("row-music");
             var sfx    = screen.Q<Guildmaster.UI.Components.SliderRow>("row-sfx");
-            master.LabelText = "Общий";
-            music.LabelText  = "Музыка";
-            sfx.LabelText    = "Звук";
+            if (master != null) master.LabelText = L("ui.settings.volume_master", "Общий");
+            if (music  != null) music.LabelText  = L("ui.settings.volume_music", "Музыка");
+            if (sfx    != null) sfx.LabelText    = L("ui.settings.volume_sfx", "Звук");
 
-            // Таб «Игра»: тумблеры презентации (анимация карточек / анимация атаки). Подписи через loc
-            // с RU-фолбэком (как остальной новый UI); значения проводятся из VM.
-            string L(string key, string ru) { string v = _loc?.GetString(key); return string.IsNullOrEmpty(v) ? ru : v; }
+            // Таб «Игра»: тумблеры презентации (анимация карточек / анимация атаки).
             var cardAnim   = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-card-anim");
             var cardAttack = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-card-attack");
             var tipDetails = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-tooltip-details");
