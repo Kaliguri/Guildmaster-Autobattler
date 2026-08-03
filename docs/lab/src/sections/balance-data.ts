@@ -73,6 +73,8 @@ export interface Issue {
   status: string;
   symptom: string;
   diagnosis: string;
+  /** Что показал последний прогон по этой записи: подтвердилось, смягчилось, не воспроизводится. */
+  recheck: string;
   options: string[];
   verdict: string;
 }
