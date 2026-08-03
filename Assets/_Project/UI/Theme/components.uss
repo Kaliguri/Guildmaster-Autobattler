@@ -88,6 +88,40 @@
     -unity-slice-scale: 1px;
 }
 
+/* --- ЛИСТ: панель мета-слоя с фактурой и оправой (выбор Макса 2026-08-03: пергамент) ---
+   Регистры разведены по тому, ЕСТЬ ЛИ под панелью живой мир, а не по вкусу:
+     `--sheet`  — мира под ней нет (главное меню, создание игры, настройки): непрозрачный лист
+                  пергамента в оправе, сквозь него смотреть незачем;
+     `--system` — мир под ней ЕСТЬ (пауза поверх боя): тёмное стекло, бой обязан читаться.
+   До 03.08 меню было стеклом, и фактура легла на голый прямоугольник — материал появился, а предмет
+   нет («нет рамки вокруг какой-то», «очень скучная форма»). Оправу рисует gm:PanelFrame, поэтому
+   собственной рамки у листа нет: две рамки на одной панели читаются рамкой в рамке. */
+.gm-panel--sheet {
+    background-color: var(--gm-color-surface-panel);
+    background-image: url("../../Art/UI/Panels/PanelParchment.png");
+    -unity-slice-left: 40;
+    -unity-slice-right: 40;
+    -unity-slice-top: 40;
+    -unity-slice-bottom: 40;
+    -unity-slice-scale: 1px;
+    border-width: 0;
+}
+
+/* Оправа: растянута по панели, прозрачна для мыши, вид — через custom-свойства (контрол рисует
+   вершинами и background-color не читает). Толщина и зазор БЕЗ единиц: CustomStyleProperty<float>
+   принимает <number>, а не <length> — та же конвенция, что у --gm-slant-width. */
+.gm-panel__frame {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    --gm-frame-line: var(--gm-color-border-frame);
+    --gm-frame-inner: var(--gm-color-border-inner);
+    --gm-frame-width: 2;
+    --gm-frame-gap: 7;
+}
+
 /* Материал панели — отдельным модификатором: слайс и правила у всех общие, разное только полотно.
    Пекутся окном Alebardium → UI → Bake Panel Textures, цвет приходит из палитры по токену. */
 .gm-panel--parchment { background-image: url("../../Art/UI/Panels/PanelParchment.png"); }
@@ -3206,3 +3240,49 @@
 .gm-cursor--p3 > .gm-cursor__name  { color: var(--gm-color-player-3); }
 .gm-cursor--p4 > .gm-cursor__point { background-color: var(--gm-color-player-4); }
 .gm-cursor--p4 > .gm-cursor__name  { color: var(--gm-color-player-4); }
+
+
+/* === Список участников сеанса (кооп) =======================================
+   Слева под верхней панелью забега. Место выбрано не случайно: до 03.08.2026 его занимала dev-подпись
+   оверлеев боя, и оно единственное на экране, где постоянная строка никому не мешает.
+   В одиночку панель скрыта целиком — список из одного себя не отвечает ни на один вопрос. */
+.gm-participants {
+    position: absolute;
+    left: var(--gm-space-2);
+    /* Высота панели забега ~64 px при Full HD; плюс воздух, чтобы строки не липли к её краю. */
+    top: 72px;
+    flex-direction: column;
+}
+
+.gm-participants__row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--gm-space-0);
+}
+
+/* Точка мейн-цвета: тот же набор классов, что у курсора, — цвет игрока обязан совпадать в обоих
+   местах, и достигается это общим классом, а не двумя одинаковыми правилами. */
+.gm-participants__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: var(--gm-ink-900);
+    margin-right: var(--gm-space-1);
+}
+
+.gm-cursor--p1.gm-participants__dot { background-color: var(--gm-color-player-1); }
+.gm-cursor--p2.gm-participants__dot { background-color: var(--gm-color-player-2); }
+.gm-cursor--p3.gm-participants__dot { background-color: var(--gm-color-player-3); }
+.gm-cursor--p4.gm-participants__dot { background-color: var(--gm-color-player-4); }
+
+.gm-participants__name {
+    font-size: var(--gm-font-xxs);
+    color: var(--gm-color-text-muted);
+}
+
+/* Своя строка ярче: в списке из четверых глаз ищет себя первым. */
+.gm-participants__row--self > .gm-participants__name {
+    color: var(--gm-color-text);
+    -unity-font-style: bold;
+}

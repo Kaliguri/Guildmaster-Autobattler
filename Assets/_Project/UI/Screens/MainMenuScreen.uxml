@@ -1,6 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
-        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--mainmenu gm-panel--system">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--mainmenu gm-panel--sheet">
+            <!-- Оправа: двойная кайма без угловых накладок (выбор Макса 03.08.2026 — вариант C).
+                 Отдельным элементом, а не рамкой панели: вторую линию border не умеет, а вкладывать
+                 ради неё лишний div — это структура ради вида. Накладки остались ручкой контрола
+                 (`corner`) на случай, если оправа где-то должна звучать громче. -->
+            <gm:PanelFrame name="menu-frame" corner="0" />
             <ui:Label name="menu-title" text="Happy Guildmasters" class="gm-panel__title gm-mainmenu__title" />
             <ui:VisualElement class="gm-divider" />
 

@@ -71,6 +71,7 @@ SORT file.name ASC
 - [[guildmaster|Vision - Guildmaster & Captain]] — две разведённые сущности: **Гильдмастер** — роль игрока (руководит гильдией, в бою не участвует); **Капитан** — боевая сущность забега (стартовый набор Реликвий, гильдие-широкие бонусы, стиль).
 - [[difficulty-skill|Vision - Difficulty & Skill]] — три оси, модель рандома, правила честности.
 - [[visual-direction|Vision - Visual Direction]] — визуальный опыт и дорожная карта: стиль, пост-процесс, атмосфера, свет, переходы, gamefeel.
+- [[ui-visual-language|Vision - UI Visual Language]] — **что изображает интерфейс**: стол гильдмастера, предмет под каждым экраном, два регистра поверхностей, правила материала и оправы.
 - [[character-animation|Vision - Character Animation]] — скелетка: два слоя движения, три оси переиспользования, инструмент, слои Animator (план, отложено).
 - [[audio-subbuses|Vision - Audio Sub-buses]] — под-шины FMOD как ранний шов микса.
 
