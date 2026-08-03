@@ -300,7 +300,8 @@ git и `gh` CLI через шелл, файлы — родными Read / Write 
 | тронул `.cs` | `./scripts/compile-check.ps1` | 2–7 сек |
 | дописал кусок логики | `run-tests.ps1 -Mode EditMode -Where Shadow -Filter <класс или неймспейс>` | 30–60 сек |
 | сдаёшь блок целиком | полный EditMode, **один раз** | минуты |
-| pull request | полный EditMode + PlayMode + сборка | делает CI, не твоё время |
+| pull request | полный EditMode + сборка плеера | делает CI, не твоё время |
+| влитие в master | плюс PlayMode | там же, перед релизной веткой |
 
 `-Mode` в узкой строке не для красоты: без него гонятся обе платформы, и фильтр по EditMode-классу
 даёт пустой PlayMode — а пустой прогон скрипт по своей же защите от ложного зелёного считает
@@ -332,7 +333,8 @@ git и `gh` CLI через шелл, файлы — родными Read / Write 
 
 ## CI/CD
 
-`ci.yml`: `changes` (paths-filter) → `test` (`unity-test-runner`, editmode + playmode) + `build`
+`ci.yml`: `changes` (paths-filter) → `test` (`unity-test-runner`, editmode всегда, **playmode только на
+`master`**) + `build`
 (`unity-builder`, StandaloneWindows64) → `ci-gate`. Секреты: `UNITY_LICENSE`, `UNITY_EMAIL`,
 `UNITY_PASSWORD`.
 
