@@ -151,7 +151,8 @@ namespace Guildmaster.AnimationLab.Editor
 
                     if (grip.parent != null)
                     {
-                        var boneRenderer = RigVisualParts.FindVisual(grip.parent);
+                        var boneArt = Presentation.Body.RigNaming.FindArt(grip.parent);
+                        var boneRenderer = boneArt != null ? boneArt.GetComponent<SpriteRenderer>() : null;
                         if (boneRenderer != null && boneRenderer.sprite != null)
                         {
                             float half = boneRenderer.sprite.bounds.extents.y;

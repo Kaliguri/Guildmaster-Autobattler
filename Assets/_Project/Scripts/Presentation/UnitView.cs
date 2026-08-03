@@ -707,14 +707,15 @@ namespace Guildmaster.Presentation
                           : source.Slot == HandSlot.Right ? BodySide.Right
                           : source.Side;
 
-            if (!body.Parts.TryGetBone(RigNaming.ShoulderBone, side, out UnitPart shoulder)
+            string shoulderBone = RigNaming.ShoulderBone(side);
+            if (!body.Parts.TryGetBone(shoulderBone, side, out UnitPart shoulder)
                 || shoulder.Renderer == null)
             {
                 // Дуга уже заказана презентером — значит взмах состоялся, а вести её не вокруг чего.
                 // Молча вернуть false здесь значило бы погасить эффект в первом же кадре и оставить
                 // впечатление, что дуги у этого кита «не бывает».
                 VisualDefects.Report($"swing-pivot:{DefectKey}",
-                    $"[UnitView] {name}: дуга за клинком заказана, но плеча '{RigNaming.ShoulderBone}' " +
+                    $"[UnitView] {name}: дуга за клинком заказана, но плеча '{shoulderBone}' " +
                     $"({side}) в теле нет — вращать сектор не вокруг чего, дуги не будет.", this);
                 return false;
             }

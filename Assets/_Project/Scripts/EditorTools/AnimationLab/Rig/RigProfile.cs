@@ -127,15 +127,22 @@ namespace Guildmaster.AnimationLab.Editor
     /// </summary>
     public static class RigProfileBuilder
     {
-        /// <summary>Nodes named like "Rotation Point (Elbow)" are joints; the word in brackets is the id.</summary>
-        public const string JointPrefix = Presentation.Body.RigNaming.JointPrefix;
-
         /// <summary>
-        /// Bones that carry the body itself rather than a limb, so they never got a "Rotation Point" name:
-        /// the pelvis (vertical bob), the spine (lean, and it drags the head and both arms with it) and the
-        /// head (its own lag). Without them a clip has no weight shift at all — the unit slides.
+        /// Прежние логические id суставов -> имена костей. Нужна ровно один раз, на первой пересборке
+        /// после переименования рига: авторские поля (знак сгиба, лимит) переносятся ПО ID, и без карты
+        /// они молча вернулись бы к нулю — а нулевой знак сгиба разгибает локоть в обратную сторону.
         /// </summary>
-        static readonly string[] BodyBones = { "Hips", "Torso", "Head" };
+        static readonly Dictionary<string, string> LegacyIds = new Dictionary<string, string>
+        {
+            { "shoulder.R", "Shoulder_R" }, { "shoulder.L", "Shoulder_L" },
+            { "elbow.R",    "LowerArm_R" }, { "elbow.L",    "LowerArm_L" },
+            { "wrist.R",    "Hand_R"     }, { "wrist.L",    "Hand_L"     },
+            { "grip.R",     "Weapon_R"   }, { "grip.L",     "Weapon_L"   },
+            { "hip.R",      "UpperLeg_R" }, { "hip.L",      "UpperLeg_L" },
+            { "knee.R",     "LowerLeg_R" }, { "knee.L",     "LowerLeg_L" },
+            { "ankle.R",    "Foot_R"     }, { "ankle.L",    "Foot_L"     },
+            { "hips",       "Hips"       }, { "torso",      "Torso"      }, { "head", "Head" },
+        };
 
         /// <summary>Rebuilds the profile in place and returns a human-readable summary of what it measured.</summary>
         public static string Build(RigProfile profile)
@@ -150,7 +157,11 @@ namespace Guildmaster.AnimationLab.Editor
                 var root = contents.transform;
                 var authored = new Dictionary<string, (int sign, float limit)>();
                 foreach (var joint in profile.Joints)
+                {
                     authored[joint.Id] = (joint.FlexSign, joint.FlexLimit);
+                    if (LegacyIds.TryGetValue(joint.Id, out string moved))
+                        authored[moved] = (joint.FlexSign, joint.FlexLimit);
+                }
 
                 var joints = new List<RigProfile.Joint>();
                 var held = new List<RigProfile.HeldItem>();
@@ -158,17 +169,17 @@ namespace Guildmaster.AnimationLab.Editor
                 foreach (var node in root.GetComponentsInChildren<Transform>(includeInactive: true))
                 {
                     if (node == root) continue;
-                    // Artwork is off limits: a sprite node inside "Visual Part (Head)" is also called
-                    // "Head", and reading it as a joint produced a second, bogus 'head' entry.
-                    if (RigVisualParts.IsUnderContainer(node)) continue;
-                    bool isBodyBone = System.Array.IndexOf(BodyBones, node.name) >= 0;
-                    if (!node.name.StartsWith(JointPrefix, System.StringComparison.Ordinal) && !isBodyBone) continue;
+                    // Рисунок суставом не является. Отдельного понятия «сустав» больше нет: кость и есть
+                    // точка вращения, поэтому в профиль идёт КАЖДАЯ кость — таз и позвоночник в том числе,
+                    // без них у клипа нет переноса веса и юнит скользит.
+                    if (Presentation.Body.RigNaming.IsArt(node)) continue;
 
-                    string label = isBodyBone ? node.name : ExtractLabel(node.name);
-                    string id = label.ToLowerInvariant() + (isBodyBone ? "" : SideSuffix(node, root));
+                    // Id — само имя кости. Логическая метка отдельно от имени была вторым владельцем:
+                    // переименуй узел, и id разошёлся бы с ригом без единой ошибки.
+                    string id = node.name;
                     string path = AnimationUtility.CalculateTransformPath(node, root);
 
-                    if (label == "Grip")
+                    if (Presentation.Body.RigNaming.IsGrip(node))
                     {
                         var item = MeasureHeld(node, root, id, path);
                         if (item != null) held.Add(item);
@@ -225,7 +236,7 @@ namespace Guildmaster.AnimationLab.Editor
             foreach (var child in node.GetComponentsInChildren<Transform>(includeInactive: true))
             {
                 if (child == node || !IsJoint(child)) continue;
-                if (ExtractLabel(child.name) == "Grip") continue;
+                if (Presentation.Body.RigNaming.IsGrip(child)) continue;
                 float distance = Vector3.Distance(child.position, node.position);
                 if (distance < 1e-4f || distance >= nearest) continue;
                 nearest = distance;
@@ -257,8 +268,7 @@ namespace Guildmaster.AnimationLab.Editor
             return farthest > 1e-4f;
         }
 
-        static bool IsJoint(Transform node) =>
-            node.name.StartsWith(JointPrefix, System.StringComparison.Ordinal);
+        static bool IsJoint(Transform node) => Presentation.Body.RigNaming.IsBone(node);
 
         /// <summary>A sprite below another joint belongs to that joint's bone, not to this one.</summary>
         static bool BelongsToDeeperJoint(Transform joint, Transform sprite)
@@ -301,7 +311,8 @@ namespace Guildmaster.AnimationLab.Editor
 
             if (grip.parent != null)
             {
-                var boneRenderer = RigVisualParts.FindVisual(grip.parent);
+                var boneArt = Presentation.Body.RigNaming.FindArt(grip.parent);
+                var boneRenderer = boneArt != null ? boneArt.GetComponent<SpriteRenderer>() : null;
                 if (boneRenderer != null && boneRenderer.sprite != null)
                 {
                     float boneHalf = boneRenderer.sprite.bounds.extents.y;
@@ -313,13 +324,6 @@ namespace Guildmaster.AnimationLab.Editor
             }
             return measured;
         }
-
-        /// <summary>"Rotation Point (Elbow)" -> "Elbow".</summary>
-        static string ExtractLabel(string nodeName) => Presentation.Body.RigNaming.ExtractLabel(nodeName);
-
-        /// <summary>Side comes from the limb above the joint, so joints keep one name across both sides.</summary>
-        static string SideSuffix(Transform node, Transform root) =>
-            Presentation.Body.RigNaming.SideSuffix(Presentation.Body.RigNaming.SideOf(node, root));
 
         /// <summary>
         /// The item's logical id, taken from the declaration on its bone (<c>UnitHeldItem</c>): weapon or

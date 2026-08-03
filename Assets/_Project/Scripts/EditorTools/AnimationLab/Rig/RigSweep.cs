@@ -767,7 +767,7 @@ namespace Guildmaster.AnimationLab.Editor
             var body = new List<SpriteRenderer>();
             foreach (var r in all)
                 foreach (var name in options.CoverBodyNodes)
-                    if (RigVisualParts.BoneNameOf(r.transform) == name) { body.Add(r); break; }
+                    if (Presentation.Body.RigNaming.BoneNameOf(r.transform) == name) { body.Add(r); break; }
 
             var coverNode = root.Find(coverItem.ItemPath);
             var cover = coverNode != null ? coverNode.GetComponent<SpriteRenderer>() : null;

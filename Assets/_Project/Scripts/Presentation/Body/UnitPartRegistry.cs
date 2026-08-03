@@ -9,9 +9,9 @@ namespace Guildmaster.Presentation.Body
     /// </summary>
     /// <remarks>
     /// Ручная разметка «эта часть — оружие» была бы вторым владельцем: риг уже держит структурно всё, что
-    /// нужно, — предмет в руке это кость под <c>Rotation Point (Grip)</c>, рука это <c>(Left)</c>/<c>(Right)</c>
-    /// над ней, часть тела это кость над <c>Visual Part (…)</c>. Метка нужна ровно для того, что из геометрии
-    /// не следует, — типа предмета (<see cref="UnitHeldItem"/>).
+    /// нужно, — предмет в руке это кость-хват (<c>Weapon_R</c>), сторона это суффикс <c>_R</c>/<c>_L</c>
+    /// в имени кости, часть тела это кость над узлом <c>…_Art</c>. Метка нужна ровно для того, что из
+    /// геометрии не следует, — типа предмета (<see cref="UnitHeldItem"/>).
     /// <para>
     /// Поэтому реестр расстановко-независим сам собой: меч со щитом, два кинжала, двуручное копьё и пустые
     /// руки собираются одним кодом, и новая расстановка не требует ни строки здесь.
@@ -69,7 +69,7 @@ namespace Guildmaster.Presentation.Body
                 Transform bone = RigNaming.BoneOf(renderer.transform);
                 if (bone == null) continue;
 
-                bool     isHeld = RigNaming.IsGrip(bone.parent);
+                bool     isHeld = RigNaming.IsGrip(bone);
                 bool     isHand = HasGrip(bone);
                 BodySide side   = RigNaming.SideOf(bone, root);
 
@@ -133,8 +133,8 @@ namespace Guildmaster.Presentation.Body
 
             if (slot == HandSlot.None)
                 Debug.LogError($"[UnitPartRegistry] предмет '{bone.name}' в хвате, но сторона руки не " +
-                               "определена: конвенция ждёт '(Left)' или '(Right)' в имени конечности над " +
-                               "хватом. Запрос «что в правой руке» его не найдёт.", context);
+                               "определена: конвенция ждёт суффикс '_L' или '_R' в имени кости-хвата " +
+                               "или её предка. Запрос «что в правой руке» его не найдёт.", context);
         }
 
         public bool TryGetHeld(HandSlot slot, out UnitPart part)

@@ -186,23 +186,29 @@ namespace Guildmaster.AnimationLab.Editor
         /// </summary>
         static string Caption(string jointId)
         {
-            int dot = jointId.IndexOf('.');
-            string bone = dot < 0 ? jointId : jointId.Substring(0, dot);
-            string side = dot < 0 ? "" : jointId.Substring(dot);
-            return (Names.TryGetValue(bone, out string human) ? human : bone) + side;
+            // Сторона теперь суффикс имени кости (LowerArm_R), а не хвост после точки.
+            string bone = jointId, side = "";
+            if (jointId.EndsWith("_R") || jointId.EndsWith("_L"))
+            {
+                bone = jointId.Substring(0, jointId.Length - 2);
+                side = jointId.Substring(jointId.Length - 1);
+            }
+            return (Names.TryGetValue(bone, out string human) ? human : bone) + (side.Length > 0 ? "." + side : "");
         }
 
         static readonly Dictionary<string, string> Names = new Dictionary<string, string>
         {
-            ["hips"] = "таз",
-            ["torso"] = "корпус",
-            ["head"] = "голова",
-            ["shoulder"] = "плечо",
-            ["elbow"] = "локоть",
-            ["grip"] = "хват",
-            ["hip"] = "бедро",
-            ["knee"] = "колено",
-            ["ankle"] = "голеностоп",
+            ["Hips"] = "таз",
+            ["Torso"] = "корпус",
+            ["Head"] = "голова",
+            ["Shoulder"] = "плечо",
+            ["UpperArm"] = "плечо (кость)",
+            ["LowerArm"] = "предплечье",
+            ["Hand"] = "кисть",
+            ["Weapon"] = "хват",
+            ["UpperLeg"] = "бедро",
+            ["LowerLeg"] = "голень",
+            ["Foot"] = "стопа",
         };
     }
 }

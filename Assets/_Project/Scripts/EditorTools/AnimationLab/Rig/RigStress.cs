@@ -247,9 +247,9 @@ namespace Guildmaster.AnimationLab.Editor
         static Transform FindParentJoint(Transform root, Transform visual)
         {
             for (var node = visual.parent; node != null && node != root; node = node.parent)
-                if (Presentation.Body.RigNaming.IsJoint(node))
+                if (Presentation.Body.RigNaming.IsBone(node))
                     for (var up = node.parent; up != null && up != root; up = up.parent)
-                        if (Presentation.Body.RigNaming.IsJoint(up)) return up;
+                        if (Presentation.Body.RigNaming.IsBone(up)) return up;
             return null;
         }
 

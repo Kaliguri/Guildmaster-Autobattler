@@ -155,19 +155,15 @@ namespace Guildmaster.AnimationLab.Editor
         }
 
         /// <summary>
-        /// Контейнер этого спрайта стоит на кости, чьё имя он и носит: <c>Visual Part (Arm_Down)</c>
-        /// под <c>Arm_Down</c>. Конвенция имён — единственный признак, отличающий «кусок этой кости» от
-        /// «куска, подвешенного сюда за неимением своего узла».
+        /// Рисунок носит имя кости, на которой висит: <c>LowerArm_R_Art</c> под <c>LowerArm_R</c>.
+        /// Конвенция имён — единственный признак, отличающий «кусок этой кости» от «куска, подвешенного
+        /// сюда за неимением своего узла» (гарда и рукоять под <c>Weapon_R</c> — как раз второе).
         /// </summary>
         static bool SitsOnOwnBone(Transform visual)
         {
-            for (var node = visual; node != null; node = node.parent)
-            {
-                if (!RigNaming.IsContainer(node)) continue;
-                var bone = node.parent;
-                return bone != null && RigNaming.BoneNameFromContainer(node.name) == bone.name;
-            }
-            return false;
+            if (!RigNaming.IsArt(visual) || visual.parent == null) return false;
+            string boneName = visual.name.Substring(0, visual.name.Length - RigNaming.ArtSuffix.Length);
+            return boneName == visual.parent.name;
         }
 
         static void CollectVisuals(Transform node, Dictionary<Transform, string> stops, List<SpriteRenderer> into)
@@ -175,7 +171,7 @@ namespace Guildmaster.AnimationLab.Editor
             for (int i = 0; i < node.childCount; i++)
             {
                 var child = node.GetChild(i);
-                if (stops.ContainsKey(child) || RigNaming.IsJoint(child)) continue;
+                if (stops.ContainsKey(child) || RigNaming.IsBone(child)) continue;
 
                 var sr = child.GetComponent<SpriteRenderer>();
                 if (sr != null && sr.sprite != null) into.Add(sr);

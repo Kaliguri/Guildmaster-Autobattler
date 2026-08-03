@@ -56,6 +56,7 @@ namespace Guildmaster.Presentation.Body
         public PartMask Mask => PartMask.Single(Index);
 
         public override string ToString() =>
-            IsHeld ? $"[{Index}] {Bone} ({Kind}, {Slot})" : $"[{Index}] {Bone}{RigNaming.SideSuffix(Side)}";
+            // Сторону дописывать не надо: она уже в имени кости (LowerArm_R), иначе вышло бы "LowerArm_R_R".
+            IsHeld ? $"[{Index}] {Bone} ({Kind}, {Slot})" : $"[{Index}] {Bone}";
     }
 }
