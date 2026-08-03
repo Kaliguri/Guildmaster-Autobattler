@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Stats;
 using UnityEngine;
 
@@ -15,6 +15,13 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Множитель прямого урона («Абсолютная сила» Мага молний растёт от статов).</summary>
         DamageMultiplier = 2,
+
+        /// <summary>
+        /// СОБСТВЕННАЯ база урона способности, не привязанная к автоатаке. Через неё заклинание
+        /// скейлится от силы способностей: «Аркановый залп» бьёт своей базой + AP, а не долей удара
+        /// посохом (карточка [[the-rift]]).
+        /// </summary>
+        BaseDamage = 3,
     }
 
     /// <summary>

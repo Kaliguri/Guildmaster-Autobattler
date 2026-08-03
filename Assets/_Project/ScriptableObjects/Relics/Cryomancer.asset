@@ -72,7 +72,8 @@ MonoBehaviour:
     _baseCooldown: 0
     _resourceCost: 40
     _targetMode: 1
-    _damageMultiplier: 0.15
+    _damageMultiplier: 0
+    _baseDamage: 25
     _damageType: 11
     _areaShape: 2
     _areaRadius: 3
@@ -88,7 +89,7 @@ MonoBehaviour:
     _triggerTag: 0
     _consumesTriggerTag: 0
     _castSeconds: 0
-    _channelSeconds: 5
+    _channelSeconds: 6
     _channelTickSeconds: 0.5
     _canMoveWhileCasting: 0
     _castSource: 0

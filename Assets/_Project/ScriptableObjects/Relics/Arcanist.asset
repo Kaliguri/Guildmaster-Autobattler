@@ -60,7 +60,7 @@ MonoBehaviour:
     Value: 15
   - Stat: 7
     Op: 3
-    Value: 160
+    Value: 60
   _grantedEffects:
   - {fileID: 11400000, guid: c626b774d4ba4052b046bd6908bdc488, type: 2}
   _abilities:
@@ -71,7 +71,8 @@ MonoBehaviour:
     _baseCooldown: 0
     _resourceCost: 15
     _targetMode: 1
-    _damageMultiplier: 0.35
+    _damageMultiplier: 0
+    _baseDamage: 40
     _damageType: 13
     _areaShape: 0
     _areaRadius: 0

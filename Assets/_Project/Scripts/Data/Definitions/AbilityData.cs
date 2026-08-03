@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Stats;
 using UnityEngine;
 
@@ -63,6 +63,11 @@ namespace Guildmaster.Data.Definitions
         [Header("Direct damage (Phase 3)")]
         [Tooltip("Множитель прямого урона от AutoAttackDamage кастующего. 0 = только эффекты (поведение Ф2). «Стальной вихрь» = 3.")]
         [SerializeField] private float _damageMultiplier;
+
+        [Tooltip("СОБСТВЕННАЯ база урона способности, плоским числом. Складывается с множителем от " +
+                 "автоатаки: заклинателю нужна своя величина, растущая от силы способностей, а не от " +
+                 "того, как больно он бьёт посохом. Скейл от AP задаётся правилом на BaseDamage.")]
+        [SerializeField] private float _baseDamage;
 
         [Tooltip("Тип урона ЭТОЙ способности — свой, не унаследованный от юнита. Обязателен, если " +
                  "способность наносит прямой урон (множитель > 0). Копейщик: ульта Режущая при " +
@@ -221,6 +226,12 @@ namespace Guildmaster.Data.Definitions
         public AbilityTargetMode TargetMode => _targetMode;
 
         public float DamageMultiplier => _damageMultiplier;
+
+        /// <summary>Своя база урона способности (без учёта конвертаций). 0 = бьёт только долей автоатаки.</summary>
+        public float BaseDamage => _baseDamage;
+
+        /// <summary>База урона с учётом конвертаций: сюда приходит скейл от силы способностей.</summary>
+        public float ResolveBaseDamage(IStatReader stats) => Resolve(AbilityParameter.BaseDamage, _baseDamage, stats);
 
         /// <summary>
         /// Тип урона способности — собственный. Наследования от кастера нет: прежний <c>Inherit</c>

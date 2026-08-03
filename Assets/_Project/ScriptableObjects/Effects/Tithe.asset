@@ -39,7 +39,7 @@ MonoBehaviour:
     - rid: 7815026876324511982
       type: {class: TitheComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _startAtHpPct: 0.01
+        _startAtHpPct: 0.25
         _tithePctCurrentHp: 0.2
         _keepShare: 0.3
         _healShareOfTaken: 1

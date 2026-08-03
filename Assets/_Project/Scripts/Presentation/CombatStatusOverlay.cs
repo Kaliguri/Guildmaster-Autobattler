@@ -48,7 +48,11 @@ namespace Guildmaster.Presentation
         private CombatSimulation             _simulation;
         private Combat.Tape.BattleTapePlayback _playback;
         private DevOverlayMode               _mode;
-        private bool _enabled = true;
+        // Выключен по умолчанию (03.08.2026). Включённым с рождения он выглядел не как выбранный режим,
+        // а как недогляд: кольца висели вокруг всех юнитов каждый бой, а подпись режима занимала левый
+        // верх экрана — то самое место, где живёт список участников. Dev-инструмент молчит, пока его не
+        // позвали (gm_toggle_status).
+        private bool _enabled;
 
         private readonly List<Disc> _pool = new List<Disc>();
         private int _used;

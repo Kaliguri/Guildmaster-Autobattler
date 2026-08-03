@@ -250,10 +250,24 @@ namespace Guildmaster.Combat
             if (data == null || !ability.IsReady) return false;
             if (caster.CurrentResource < data.ResourceCost) return false;
 
+            // Предел живых призывов — гейт КАСТА: мана и кулдаун остаются целы, игрок видит предел
+            // глазами. Поле SummonLimit объявлено в данных и описано тестом, но до 03.08.2026 его не
+            // читала ни одна строка боевой логики — Некромант с лимитом 8 плодил скелетов, пока хватало
+            // маны. Число прошлых кастов здесь ещё НЕ увеличено (Execute зовёт ApplySummons с
+            // CastsThisBattle - 1), поэтому разгон считаем от текущего значения.
+            if (data.Summons && data.SummonLimit > 0
+                && SummonSystem.CountLiveSummons(caster, data.Id, units)
+                   + data.ResolveSummonCount(ability.CastsThisBattle) > data.SummonLimit)
+            {
+                return false;
+            }
+
             // Рекаст авто-атаки (M18): умение-удар вклинивается в ритм атак, но занесённый замах
             // ДОИГРЫВАЕТ (решение Макса по Q8) — удар без замаха читается как пропущенный кадр. Хвост
             // после удара (Recovery) умение перебивает: в этом и весь выигрыш рекаста.
-            if (data.DamageMultiplier > 0f && caster.Phase == AttackPhase.Windup) return false;
+            // «Наносит урон» теперь два слагаемых: заклинание со своей базой вклинивается в ритм
+            // атак ровно так же, как удар-умение, и занесённый замах доигрывает и перед ним.
+            if ((data.DamageMultiplier > 0f || data.BaseDamage > 0f) && caster.Phase == AttackPhase.Windup) return false;
 
             // Тот же закон для канала авто-атаки: незавершённый удар доигрывает, а перебивается только
             // хвост. Канал — это удар, идущий ПРЯМО СЕЙЧАС, и каст поверх него оборвал бы уже начатую
@@ -771,15 +785,31 @@ namespace Guildmaster.Combat
             return ReferenceEquals(target, caster) ? amount * data.SelfHealFraction : amount;
         }
 
-        /// <summary>Прямой урон способности = DamageMultiplier × AutoAttackDamage кастующего (0 = только эффекты).</summary>
+        /// <summary>
+        /// Прямой урон способности: СВОЯ база плюс доля автоатаки кастующего. Ноль по обоим слагаемым —
+        /// способность бьёт только эффектами.
+        /// </summary>
+        /// <remarks>
+        /// Два слагаемых, а не одно, потому что киты бьют способностями по-разному: у воина ульта —
+        /// усиленный удар и честно считается от его автоатаки, а у заклинателя залп к силе удара посохом
+        /// отношения не имеет — там своя величина, растущая от силы способностей (карточка [[the-rift]]).
+        /// Пока базы не было, магу приходилось задирать автоатаку, чтобы заклинание что-то значило, и
+        /// он становился сильным сразу в двух местах.
+        /// <para>Гейт по БАЗОВЫМ значениям обоих слагаемых: способность без прямого урона не должна
+        /// начать бить от того, что у кита высокая скорость атаки или большой AP.</para>
+        /// </remarks>
         private static float AbilityDamage(RuntimeUnit caster, AbilityData data)
         {
-            // Множитель берётся через конвертации (M4): базовый ×3 может расти от статов носителя.
-            // Гейт по БАЗОВОМУ значению: способность без прямого урона не должна начать бить от того,
-            // что у кита высокая скорость атаки.
-            if (data.DamageMultiplier <= 0f) return 0f;
+            bool hasBase = data.BaseDamage > 0f;
+            bool hasMultiplier = data.DamageMultiplier > 0f;
+            if (!hasBase && !hasMultiplier) return 0f;
 
-            return data.ResolveDamageMultiplier(caster.Stats) * caster.Stats.Get(StatType.AutoAttackDamage);
+            float damage = 0f;
+            if (hasBase) damage += data.ResolveBaseDamage(caster.Stats);
+            if (hasMultiplier)
+                damage += data.ResolveDamageMultiplier(caster.Stats) * caster.Stats.Get(StatType.AutoAttackDamage);
+
+            return damage;
         }
 
         /// <summary>

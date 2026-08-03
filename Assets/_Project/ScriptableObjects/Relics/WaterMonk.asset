@@ -43,7 +43,7 @@ MonoBehaviour:
   _stats:
   - Stat: 8
     Op: 3
-    Value: 0.8
+    Value: 0.55
   - Stat: 9
     Op: 3
     Value: 2
@@ -70,6 +70,7 @@ MonoBehaviour:
     _resourceCost: 35
     _targetMode: 3
     _damageMultiplier: 0
+    _baseDamage: 0
     _damageType: 0
     _areaShape: 0
     _areaRadius: 0
