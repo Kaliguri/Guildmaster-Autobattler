@@ -25,7 +25,8 @@ MonoBehaviour:
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackLengthMult: 1
-  _autoAttackEffects: []
+  _autoAttackEffects:
+  - {fileID: 11400000, guid: d0ef18f1705413e4e925a9fd7212cc43, type: 2}
   _channel:
     DurationSeconds: 0
     WindupSeconds: 0

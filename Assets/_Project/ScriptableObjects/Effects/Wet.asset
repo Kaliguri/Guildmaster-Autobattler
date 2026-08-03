@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
-  m_Name: WarmAsh
+  m_Name: Wet
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
-  _id: effect.warm_ash
-  _polarity: 0
-  _tags: 8193
-  _baseDuration: -1
-  _stacking: 1
-  _maxStacks: 50
+  _id: effect.wet
+  _polarity: 1
+  _tags: 131074
+  _baseDuration: 4
+  _stacking: 2
+  _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 1
   _unremovable: 0
   _cleansePrice:
@@ -27,18 +28,10 @@ MonoBehaviour:
     Pct: 0
   - Flat: 0
     Pct: 0
-  _components:
-  - rid: 7815026876324511930
+  _components: []
   _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
   references:
     version: 2
-    RefIds:
-    - rid: 7815026876324511930
-      type: {class: StatModifierComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
-      data:
-        _modifiers:
-        - Stat: 25
-          Op: 1
-          Value: -0.01
+    RefIds: []

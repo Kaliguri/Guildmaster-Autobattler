@@ -967,28 +967,12 @@ MonoBehaviour:
     m_Key: relic.emberkeeper.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 6901444643119131
-    m_Key: effect.warm_ash.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6901444643119132
-    m_Key: effect.warm_ash.desc
-    m_Metadata:
-      m_Items: []
   - m_Id: 6901444643119133
     m_Key: effect.fire_ward.name
     m_Metadata:
       m_Items: []
   - m_Id: 6901444643119134
     m_Key: effect.fire_ward.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6901444643119135
-    m_Key: effect.living_ember.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6901444643119136
-    m_Key: effect.living_ember.desc
     m_Metadata:
       m_Items: []
   - m_Id: 6901444643119137
@@ -1581,6 +1565,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8366385560543233
     m_Key: species.golems.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8537203460530176
+    m_Key: effect.warm_ember.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8537203523444736
+    m_Key: effect.warm_ember.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8537203523444737
+    m_Key: effect.wet.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8537203523444738
+    m_Key: effect.wet.desc
     m_Metadata:
       m_Items: []
   m_Metadata:

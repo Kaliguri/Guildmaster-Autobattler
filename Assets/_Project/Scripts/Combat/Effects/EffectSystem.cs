@@ -517,6 +517,16 @@ namespace Guildmaster.Combat
             return Mathf.Max(1, ticks);
         }
 
+        /// <summary>
+        /// Множитель длительности этого эффекта от статов сторон (эффективность наложения × стойкость
+        /// цели). Публичен ради эффектов, которые живут СОБСТВЕННЫМ таймером схода, а не общей
+        /// длительностью: «Угли» и «Изморозь» бессрочны намеренно (иначе истекли бы разом со всеми
+        /// стаками вместо постепенного осыпания), и стойкость проходила бы мимо них — сокращать ей
+        /// было бы нечего. Такой компонент обязан сам сжать своё окно на этот множитель.
+        /// </summary>
+        public static float DurationScale(EffectData def, RuntimeUnit source, RuntimeUnit target)
+            => def == null ? 1f : DurationMultiplier(def.Polarity, source, target);
+
         // --- Приватные ---
 
         private static void TickPeriodic(RuntimeUnit unit, RuntimeEffect eff, ICombatContext combat)

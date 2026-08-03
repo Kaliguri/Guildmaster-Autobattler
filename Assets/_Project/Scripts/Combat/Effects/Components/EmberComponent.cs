@@ -42,6 +42,9 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Нижняя граница интервала схода, сек — быстрее стаки не осыпаются.")]
         [SerializeField] private float _minDecaySeconds = 0.25f;
 
+        [Tooltip("Во сколько раз быстрее осыпаются угли на МОКРОЙ цели (карточка [[burn]]: ×2).")]
+        [SerializeField] private float _wetDecayMult = 2f;
+
         /// <summary>Тикаем часто: сход управляется собственным таймером, период — лишь разрешение опроса.</summary>
         public float Interval => _minDecaySeconds;
 
@@ -80,6 +83,12 @@ namespace Guildmaster.Combat.Effects.Components
             // сказано в RuntimeEffect.RescheduleTimer (иначе первая секунда молча станет 0.75).
             int minTicks     = Mathf.Max(1, Mathf.RoundToInt(_minDecaySeconds * SimConstants.TickRate));
             int nextInterval = Mathf.RoundToInt(eff.TimerIntervalTicks * _decayFalloff);
+
+            // Вода гасит угли: на мокрой цели они осыпаются вдвое быстрее, но не сбрасываются —
+            // зеркало того, как огонь ускоряет сход «Изморози» (карточка [[burn]] §Снятие и контра).
+            if (_wetDecayMult > 1f && (ctx.Target.EffectTagMask & EffectTag.Wet) != 0)
+                nextInterval = Mathf.RoundToInt(nextInterval / _wetDecayMult);
+
             eff.RescheduleTimer(now, Mathf.Max(minTicks, nextInterval));
         }
 
@@ -88,8 +97,14 @@ namespace Guildmaster.Combat.Effects.Components
             RuntimeEffect eff = ctx.Effect;
             int now = ctx.Combat.CurrentTick;
 
-            int graceTicks = Mathf.Max(1, Mathf.RoundToInt(_graceSeconds * SimConstants.TickRate));
-            int firstTicks = Mathf.Max(1, Mathf.RoundToInt(_firstDecaySeconds * SimConstants.TickRate));
+            // Стойкость цели сжимает ОКНО ЖИЗНИ углей. Общей длительности у них нет намеренно
+            // (иначе истекли бы разом со всеми стаками), поэтому сокращать её нечему — и без этой
+            // строки сопротивление дебаффам молча проходило бы мимо самого частого дебаффа в игре.
+            float scale = Mathf.Max(0.05f,
+                EffectSystem.DurationScale(eff.Def, ctx.Source, ctx.Target));
+
+            int graceTicks = Mathf.Max(1, Mathf.RoundToInt(_graceSeconds * scale * SimConstants.TickRate));
+            int firstTicks = Mathf.Max(1, Mathf.RoundToInt(_firstDecaySeconds * scale * SimConstants.TickRate));
             eff.ScheduleTimer(now + graceTicks, firstTicks);
         }
     }

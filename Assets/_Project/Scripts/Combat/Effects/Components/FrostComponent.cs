@@ -212,8 +212,14 @@ namespace Guildmaster.Combat.Effects.Components
         /// <summary>Взвести grace: стаки держатся, пока цель греется свежими попаданиями.</summary>
         private void ArmDecay(in EffectContext ctx)
         {
-            int graceTicks = Mathf.Max(1, Mathf.RoundToInt(_graceSeconds * SimConstants.TickRate));
-            int firstTicks = Mathf.Max(1, Mathf.RoundToInt(_firstDecaySeconds * SimConstants.TickRate));
+            // Стойкость цели сжимает окно жизни стаков — так же, как у «Углей». У бессрочного эффекта
+            // общей длительности нет, и без этой строки сопротивление дебаффам проходило бы мимо всей
+            // холодной линии, хотя это самый настоящий дебафф.
+            float scale = Mathf.Max(0.05f,
+                EffectSystem.DurationScale(ctx.Effect.Def, ctx.Source, ctx.Target));
+
+            int graceTicks = Mathf.Max(1, Mathf.RoundToInt(_graceSeconds * scale * SimConstants.TickRate));
+            int firstTicks = Mathf.Max(1, Mathf.RoundToInt(_firstDecaySeconds * scale * SimConstants.TickRate));
             ctx.Effect.ScheduleTimer(ctx.Combat.CurrentTick + graceTicks, firstTicks);
         }
 

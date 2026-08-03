@@ -68,9 +68,9 @@ MonoBehaviour:
     _effects:
     - {fileID: 11400000, guid: 7a3e5b96c2d14f8fa6b9e1d3c5f70a48, type: 2}
     - {fileID: 11400000, guid: 51c7b8e3d9a24f0d8e4b1c6a7f2e9d33, type: 2}
-    - {fileID: 11400000, guid: 4be0d1a5f7c4471ab29d5a02c6f3d811, type: 2}
+    - {fileID: 11400000, guid: 5015c5ee2e3464b4583531f7d5506c78, type: 2}
     _selfEffects:
-    - {fileID: 11400000, guid: 4be0d1a5f7c4471ab29d5a02c6f3d811, type: 2}
+    - {fileID: 11400000, guid: 5015c5ee2e3464b4583531f7d5506c78, type: 2}
     _baseCooldown: 0
     _resourceCost: 30
     _targetMode: 3
