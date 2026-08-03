@@ -19,6 +19,13 @@ namespace Guildmaster.Balance.Editor
         public readonly RuntimeUnitFactory Factory;
         public readonly StatsConfig Config;
 
+        /// <summary>
+        /// Система умений — держим ссылку, потому что события каста живут на ней, а не на симе. Без
+        /// них разбор боя не отвечает на вопрос «он не скастовал или скастовал впустую»: у умения,
+        /// которое ничего не задело, событий нет вовсе, и молчание ленты читается как «не кастовал».
+        /// </summary>
+        public readonly AbilitySystem Abilities;
+
         private const float DefaultArmorK = 100f;
         private const float SpatialCellSize = 3f;
 
@@ -29,13 +36,14 @@ namespace Guildmaster.Balance.Editor
             Effects = new EffectSystem();
 
             float armorK = config != null ? config.ArmorConstantK : DefaultArmorK;
+            Abilities = new AbilitySystem();
 
             Sim = new CombatSimulation(
                 rng,
                 armorK,
                 new SpatialHash(SpatialCellSize),
                 new BrainSystem(),
-                new AbilitySystem(),
+                Abilities,
                 new MovementSystem(),
                 new AutoAttackSystem(),
                 new ProjectileSystem(),
