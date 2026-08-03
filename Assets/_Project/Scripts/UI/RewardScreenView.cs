@@ -126,7 +126,10 @@ namespace Guildmaster.UI
                 for (int i = 0; currentInventory != null && i < currentInventory.Count; i++)
                 {
                     string id = currentInventory[i];
-                    string label = nameOf != null ? Coalesce(nameOf(FindById(choices, id)), id) : id;
+                    // Имя берём ключом по id, а не поиском в choices: там лежат ПРЕДЛОЖЕННЫЕ реликвии,
+                    // и та, что уже у игрока, в этом списке отсутствует по определению — резолв всегда
+                    // промахивался, и в списке «что сбросить» игрок читал сырые id.
+                    string label = Coalesce(localize?.Invoke(id + "." + ContentKeys.NameSuffix), id);
                     var r = new Label(label);
                     r.AddToClassList("gm-reward-drop__row");
                     r.RegisterCallback<ClickEvent>(_ => { drop = id; Refresh(); });
@@ -147,12 +150,5 @@ namespace Guildmaster.UI
         }
 
         private static string Coalesce(string a, string b) => string.IsNullOrEmpty(a) ? b : a;
-
-        private static RelicData FindById(IReadOnlyList<RelicData> pool, string id)
-        {
-            for (int i = 0; pool != null && i < pool.Count; i++)
-                if (pool[i] != null && pool[i].Id == id) return pool[i];
-            return null;
-        }
     }
 }
