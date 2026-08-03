@@ -10,7 +10,7 @@
 import * as clock from "./clock.js";
 import { clear, el } from "./dom.js";
 import { AREAS, PAGES, areaOf, pagesOf } from "./registry.js";
-import { invalidateSizes, paint, register, reset } from "./stage.js";
+import { hasLive, invalidateSizes, paint, register, reset } from "./stage.js";
 import type { AreaDef, PageDef, SectionDef, StandDef } from "./types.js";
 import { eachStand, hero, renderArea, renderHome, renderLegacy, renderSection, routeHref } from "./views.js";
 
@@ -484,7 +484,7 @@ function boot(): void {
   });
 
   void renderRoute();
-  clock.start(render);
+  clock.start(render, hasLive);
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);

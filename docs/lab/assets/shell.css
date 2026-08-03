@@ -256,7 +256,11 @@ input[type=range] { accent-color: var(--brass); width: 170px; }
 .swatch { width: 10px; height: 10px; border-radius: 1px; display: inline-block; }
 
 table { border-collapse: collapse; width: 100%; font-size: .86rem; }
-.scroller { overflow-x: auto; }
+/* Прокрутка живёт ВНУТРИ блока: без ограничения ширины таблица на тридцать колонок растягивает
+   документ, и вместе с ним — липкую шапку с размытием под ней. Тогда каждый кадр прокрутки
+   пересчитывает блюр во всю ширину таблицы, а не окна. */
+.scroller { overflow-x: auto; max-width: 100%; }
+.bal-mode { min-width: 0; }
 th, td { text-align: left; padding: .5rem .8rem .5rem 0; border-bottom: 1px solid var(--edge-soft); vertical-align: top; }
 th { font-family: var(--mono); font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
 td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass-lift); }

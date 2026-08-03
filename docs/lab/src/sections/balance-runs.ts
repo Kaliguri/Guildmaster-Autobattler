@@ -9,7 +9,7 @@ import {
   balance, deviation, displayName, fmt, fmtValue, isNum, meta, modeTitle, modesOf, outOfBand,
   rich, runA, runB, setting, state, UNIT_COLUMNS, unitsOf, type Mode, type Run
 } from "./balance-data.js";
-import { balanceControls, redrawAll } from "./balance-ui.js";
+import { balanceControls } from "./balance-ui.js";
 
 const view = { mode: "", sort: null as { key: string; desc: boolean } | null };
 
@@ -72,18 +72,37 @@ function modeTable(run: Run, modeKey: string): HTMLElement {
   if (setting("bal-band")) names = names.filter(outOfBand);
   const columns = liveColumns(mode, names);
 
-  if (view.sort) {
-    const { key, desc } = view.sort;
-    names = names.slice().sort((x, y) => {
-      const a = mode.units[x]?.[key];
-      const b = mode.units[y]?.[key];
-      if (!isNum(a) || !isNum(b)) return String(a ?? "").localeCompare(String(b ?? ""));
-      return desc ? b - a : a - b;
-    });
-  }
-
   const scroller = el("div", "scroller");
   const table = el("table", `bal-table${setting("bal-compact") ? " compact" : ""}`);
+
+  // Сортировка переставляет ГОТОВЫЕ строки, а не пересобирает страницу. Раньше клик по заголовку
+  // звал redrawAll(), и таблица на 27 китов и 30 колонок строилась с нуля — тысячи узлов, дельты и
+  // нормы заново на каждую ячейку. Числа при этом не менялись ни одного: менялся только порядок.
+  const rowByName = new Map<string, HTMLElement>();
+  const headByKey = new Map<string, HTMLElement>();
+
+  const applySort = (): void => {
+    const s = view.sort;
+    const order = names.slice();
+    if (s) {
+      order.sort((x, y) => {
+        const a = mode.units[x]?.[s.key];
+        const b = mode.units[y]?.[s.key];
+        if (!isNum(a) || !isNum(b)) return String(a ?? "").localeCompare(String(b ?? ""));
+        return s.desc ? b - a : a - b;
+      });
+    }
+    // appendChild перемещает уже существующий узел, а не копирует его: перестановка стоит строк,
+    // а не ячеек.
+    for (const name of order) {
+      const row = rowByName.get(name);
+      if (row) table.appendChild(row);
+    }
+    for (const [key, th] of headByKey) {
+      if (s?.key === key) th.dataset["sorted"] = s.desc ? "desc" : "asc";
+      else delete th.dataset["sorted"];
+    }
+  };
 
   const hr = el("tr");
   for (const key of columns) {
@@ -94,18 +113,19 @@ function modeTable(run: Run, modeKey: string): HTMLElement {
     btn.title = m.note || key;
     btn.addEventListener("click", () => {
       view.sort = view.sort?.key === key ? { key, desc: !view.sort.desc } : { key, desc: true };
-      redrawAll();
+      applySort();
     });
     th.appendChild(btn);
     if (setting("bal-keys")) th.appendChild(el("span", "unit", ` ${key}`));
     else if (m.unit && m.unit !== "доля→%") th.appendChild(el("span", "unit", ` ${m.unit}`));
-    if (view.sort?.key === key) th.dataset["sorted"] = view.sort.desc ? "desc" : "asc";
+    headByKey.set(key, th);
     hr.appendChild(th);
   }
   table.appendChild(hr);
 
   for (const name of names) {
     const tr = el("tr");
+    rowByName.set(name, tr);
     for (const key of columns) {
       const value = mode.units[name]?.[key];
       const td = el("td");
@@ -128,6 +148,8 @@ function modeTable(run: Run, modeKey: string): HTMLElement {
     }
     table.appendChild(tr);
   }
+
+  applySort();   // порядок и стрелка в заголовке переживают перестроение страницы
 
   scroller.appendChild(table);
   wrap.appendChild(scroller);
