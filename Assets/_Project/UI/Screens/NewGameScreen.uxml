@@ -5,7 +5,10 @@
             <ui:Label name="newgame-title" text="Создать игру" class="gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
-            <ui:VisualElement class="gm-panel__body">
+            <!-- Тело диалога — ScrollView, а не VisualElement: переполнение обязано уходить в
+                 прокрутку. Обычная коробка при нехватке места сжимает содержимое, и то рисуется
+                 поверх соседей (04.08.2026: подсказка режима легла на кнопку PvP). -->
+            <ui:ScrollView class="gm-panel__body">
                 <!-- Открытость для друзей — свойство СЕАНСА, а не режима, поэтому галочка стоит ВЫШЕ
                      режимов: сначала «с кем играем», потом «во что». Под кнопкой-действием она
                      читалась бы как настройка этой кнопки. -->
@@ -25,7 +28,7 @@
 
                 <!-- Пояснение идёт за курсором, а не за выбором: выбора на экране больше нет. -->
                 <ui:Label name="mode-hint" class="gm-text-muted gm-newgame__hint" />
-            </ui:VisualElement>
+            </ui:ScrollView>
 
             <ui:VisualElement class="gm-divider" />
             <gm:PlateButton name="btn-back" text="Назад" class="gm-button" />
