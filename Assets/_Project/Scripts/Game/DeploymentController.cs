@@ -394,7 +394,11 @@ namespace Guildmaster.Game
             _formationSubscription?.Dispose();
             _groundsSetupSubscription?.Dispose();
             _session.UnbindStart();
+            // Снимаем ОБА своих ключа: гейт живёт в скоупе сессии и переживает и бой, и занятие, а
+            // Unbind чужого ключа он игнорирует. Уйти с активным battle.continue значило бы оставить
+            // на гейте делегат уничтоженного контроллера — и «готов» от напарника позвал бы его.
             _ready?.Unbind(ReadyKeyStart);
+            _ready?.Unbind(ReadyKeyContinue);
             _session.UnbindClock(); // сбрасывает фазу в None → панель скрывается между боями
             if (_view != null) UnityEngine.Object.Destroy(_view.gameObject);
         }
