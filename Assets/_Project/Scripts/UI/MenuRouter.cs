@@ -1206,7 +1206,7 @@ namespace Guildmaster.UI
             _onReadyChanged = e =>
             {
                 ApplyReadyCount(built, e);
-                if (e.Key == ReadyKeyContinue && e.Fired) close?.Invoke(false); // согласились все
+                if (e.Key == Core.Net.ReadyKeys.BattleContinue && e.Fired) close?.Invoke(false); // согласились все
             };
 
             try
@@ -1217,12 +1217,9 @@ namespace Guildmaster.UI
             finally { _onReadyChanged = null; }
         }
 
-        /// <summary>Что подтверждают на этом экране. Тот же ключ объявляет расстановка площадки.</summary>
-        private const string ReadyKeyContinue = "battle.continue";
-
         private void ApplyReadyCount(VisualElement root, Core.Net.ReadyGateChangedEvent e)
         {
-            if (root == null || e.Key != ReadyKeyContinue) return;
+            if (root == null || e.Key != Core.Net.ReadyKeys.BattleContinue) return;
             OutcomeScreenView.SetContinueCount(root, key => _loc?.GetString(key),
                 e.Ready, e.Required, e.LocallyReady);
         }

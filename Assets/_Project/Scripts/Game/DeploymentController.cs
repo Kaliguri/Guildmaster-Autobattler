@@ -28,11 +28,10 @@ namespace Guildmaster.Game
     /// </summary>
     public sealed class DeploymentController : IStartable, ITickable, IDisposable
     {
-        /// <summary>Что подтверждают все игроки, прежде чем бой начнётся.</summary>
-        private const string ReadyKeyStart = "battle.start";
-
-        /// <summary>…и прежде чем вернуться с итогов боя обратно в расстановку.</summary>
-        private const string ReadyKeyContinue = "battle.continue";
+        // Что подтверждают все игроки: прежде чем бой начнётся — и прежде чем вернуться с итогов боя
+        // обратно в расстановку. Ключи общие с теми, кто рисует счёт, поэтому живут одним владельцем.
+        private const string ReadyKeyStart    = Core.Net.ReadyKeys.BattleStart;
+        private const string ReadyKeyContinue = Core.Net.ReadyKeys.BattleContinue;
 
         private const float DoubleClickWindow = 0.30f;
         private const float DragMinDelta       = 0.05f; // мир-единицы: меньше = «клик», больше = «drag»

@@ -322,7 +322,14 @@ namespace Guildmaster.UI
                 else          _router.HideMapSpace();
             });
             // Скольких ещё ждёт «Начать». В соло счёт не рисуется — топбар решает это сам.
-            _readySubscription = _readySub?.Subscribe(e => _topBar?.SetReadyCount(e.Ready, e.Required, e.LocallyReady));
+            // По шине ходят объявления РАЗНЫХ гейтов (старт боя, возврат к расстановке, снятие
+            // привязки с пустым ключом), поэтому сверяем ключ: без этого конец боя на площадке
+            // переписывал подпись кнопки «Начать» счётом чужого согласия.
+            _readySubscription = _readySub?.Subscribe(e =>
+            {
+                if (e.Key != Core.Net.ReadyKeys.BattleStart) return;
+                _topBar?.SetReadyCount(e.Ready, e.Required, e.LocallyReady);
+            });
 
             // Шторка перехода (QA #47): плотность считает тот, кто ведёт переход (карта акта), UI её рисует.
             _screenFadeSubscription = _screenFadeSub?.Subscribe(e => ApplyScreenFade(e.Progress, e.Center, e.Seed));
