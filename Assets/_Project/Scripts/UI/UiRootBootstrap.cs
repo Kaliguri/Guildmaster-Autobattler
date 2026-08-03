@@ -70,6 +70,9 @@ namespace Guildmaster.UI
                  "чистой установке — без профиля забегу некуда писаться.")]
         [SerializeField] private VisualTreeAsset _profileScreen;
 
+        [Tooltip("UXML диалога подтверждения необратимого действия (снос профиля, дома). Умолчание — отказ.")]
+        [SerializeField] private VisualTreeAsset _confirmDialog;
+
 
         [Tooltip("UXML boot title card (Happy Guildmasters) до главного меню.")]
         [SerializeField] private VisualTreeAsset _titleCardScreen;
@@ -278,7 +281,7 @@ namespace Guildmaster.UI
             // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
             // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
             _uiSound?.Attach(_doc.rootVisualElement);
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen, _newGameScreen, _profileScreen);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen, _newGameScreen, _profileScreen, _confirmDialog);
             _input.MenuToggleRequested += OnMenuToggle;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

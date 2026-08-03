@@ -156,6 +156,9 @@ namespace Guildmaster.Game
             // Курсоры других игроков: слой им выдаёт корень UI, а тикают они сами — рисование идёт
             // каждый кадр и не зависит от того, какой экран сейчас открыт.
             builder.RegisterEntryPoint<Guildmaster.UI.Presence.CursorLayerView>(Lifetime.Singleton).AsSelf();
+            // Список участников: кто с нами и на чьей стороне. Тикает сам — состав меняют подключение
+            // и представление гостя, а не действие игрока.
+            builder.RegisterEntryPoint<Guildmaster.UI.Presence.ParticipantsPanelView>(Lifetime.Singleton).AsSelf();
             builder.RegisterComponentInHierarchy<UiRootBootstrap>();
 
             // Точка входа игры (D1): GameBootstrap в персистентной CoreScene получает GameFlow и крутит

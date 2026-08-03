@@ -3360,3 +3360,94 @@
     flex-direction: row;
     justify-content: flex-end;
 }
+
+
+/* === Подтверждение необратимого =============================================
+   Стекло поверх того, что игрок сейчас видит: диалог спрашивает про уже открытый экран, и прятать
+   его целиком значило бы забрать контекст вопроса. */
+.gm-panel--confirm {
+    max-width: 520px;
+}
+
+.gm-confirm__body {
+    white-space: normal;
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Последствие — тем же красным, что и кнопка сноса: это одна мысль, сказанная дважды. */
+.gm-confirm__consequence {
+    white-space: normal;
+    color: var(--gm-color-danger);
+}
+
+.gm-confirm__actions {
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+/* Опасное действие: красный текст и кайма, но НЕ красная заливка — залитая кнопка в нашем интерфейсе
+   означает «сюда», а сюда мы игрока как раз не зовём. */
+.gm-button--danger {
+    color: var(--gm-color-danger);
+    border-color: var(--gm-color-danger);
+}
+
+
+
+
+/* === Список участников (кооп) ==============================================
+   Левый край под верхней панелью: своя сторона сверху, противники под разделителем. Появляется от
+   двух участников — список из одного себя не отвечает ни на один вопрос, ради которых заведён.
+   Цвет строки берётся тем же набором, что у курсоров (`.gm-cursor--p*`): игрок опознаётся одним
+   оттенком и на арене, и здесь. */
+.gm-participants {
+    position: absolute;
+    left: var(--gm-space-2);
+    top: var(--gm-space-6);
+    min-width: 180px;
+    padding: var(--gm-space-1);
+}
+
+.gm-participants__group {
+    flex-direction: column;
+}
+
+.gm-participants__caption {
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-0);
+    font-size: var(--gm-font-xxs);
+    color: var(--gm-color-text-muted);
+    -unity-font-style: italic;
+}
+
+.gm-participants__row {
+    flex-direction: row;
+    align-items: center;
+    padding-top: var(--gm-space-0);
+    padding-bottom: var(--gm-space-0);
+}
+
+.gm-participants__row--self .gm-participants__name {
+    -unity-font-style: bold;
+}
+
+.gm-participants__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    margin-right: var(--gm-space-1);
+    flex-shrink: 0;
+    border-width: 1px;
+    border-color: var(--gm-ink-900);
+}
+
+.gm-participants__name {
+    font-size: var(--gm-font-xxs);
+    color: var(--gm-color-text);
+}
+
+.gm-participants__you {
+    margin-left: var(--gm-space-0);
+    font-size: var(--gm-font-xxs);
+    color: var(--gm-color-text-muted);
+}

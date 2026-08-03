@@ -80,6 +80,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _mainMenuUxml;
         private VisualTreeAsset _newGameUxml;
         private VisualTreeAsset _profileUxml;
+        private VisualTreeAsset _confirmUxml;
 
         // Профиль: набор скинов, число слотов, имя из Steam и применение выбранного курсора. Роутер
         // держит их функциями, а не тянет сервисы вглубь экрана: экран — разметка, а не владелец правил.
@@ -239,10 +240,12 @@ namespace Guildmaster.UI
             VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null,
             VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null,
             VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null,
-            VisualTreeAsset newGameUxml = null, VisualTreeAsset profileUxml = null)
+            VisualTreeAsset newGameUxml = null, VisualTreeAsset profileUxml = null,
+            VisualTreeAsset confirmUxml = null)
         {
             _newGameUxml = newGameUxml;
             _profileUxml = profileUxml;
+            _confirmUxml = confirmUxml;
             _devConsoleUxml = devConsoleUxml;
             _devLogUxml = devLogUxml;
             _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
@@ -721,6 +724,57 @@ namespace Guildmaster.UI
         }
 
         /// <summary>
+        /// Спросить подтверждение необратимого действия. <c>true</c> — игрок согласился.
+        /// </summary>
+        /// <remarks>
+        /// <b>Модалка поверх текущего экрана, а не вместо него.</b> Вопрос всегда про то, что игрок
+        /// сейчас видит («удалить ЭТОТ слот»), и убрать контекст из-под вопроса значит заставить его
+        /// вспоминать, о чём речь.
+        /// <para><b>Умолчание — отказ:</b> снятие экрана мимо кнопок (Esc, отмена сверху) читается как
+        /// «нет». У необратимого действия любая неясность обязана падать в безопасную сторону.</para>
+        /// </remarks>
+        public async UniTask<bool> ConfirmAsync(string title, string body, string consequence, string confirmText)
+        {
+            if (CannotShow("Подтверждение (_confirmDialog)", _confirmUxml)) return false;
+
+            var screen = new RouterResultScreen<bool>(ScreenKind.Modal, false, resolve =>
+            {
+                VisualElement root = FillRoot(_confirmUxml.CloneTree());
+
+                var titleLabel = root.Q<Label>("confirm-title");
+                var bodyLabel  = root.Q<Label>("confirm-body");
+                var consLabel  = root.Q<Label>("confirm-consequence");
+                var cancel     = root.Q<Button>("btn-cancel");
+                var confirm    = root.Q<Button>("btn-confirm");
+
+                if (titleLabel != null) titleLabel.text = title;
+                if (bodyLabel  != null) bodyLabel.text  = body;
+
+                if (consLabel != null)
+                {
+                    consLabel.text = consequence ?? string.Empty;
+                    if (string.IsNullOrEmpty(consequence)) consLabel.style.display = DisplayStyle.None;
+                }
+
+                if (cancel != null)
+                {
+                    cancel.text = _loc?.GetString("ui.confirm.cancel") is { Length: > 0 } c ? c : "Отмена";
+                    cancel.clicked += () => resolve(false);
+                }
+
+                if (confirm != null)
+                {
+                    confirm.text = confirmText;
+                    confirm.clicked += () => resolve(true);
+                }
+
+                return root;
+            });
+
+            return await _nav.ShowAsync(screen);
+        }
+
+        /// <summary>
         /// Показать профиль. <paramref name="required"/> — профиля нет вовсе: экран открывается без
         /// «Назад» и закрывается сам, как только слот заведён.
         /// </summary>
@@ -775,13 +829,53 @@ namespace Guildmaster.UI
                     if (required) { Pop(); onClosed?.Invoke(); return; }
                     Rebuild();
                 },
-                onDelete: id => { _profiles?.DeleteProfile(id); Rebuild(); },
+                onDelete: id => ConfirmDeleteAsync(id, Rebuild).Forget(),
                 onSave: identity =>
                 {
                     _profiles?.SaveIdentity(identity);
                     _cursorApply?.Invoke(identity.CursorSkinId);
                 },
                 onBack: () => { Pop(); onClosed?.Invoke(); }));
+        }
+
+        /// <summary>
+        /// Спросить и снести профиль. Отдельным методом, потому что вопрос асинхронный, а обработчик
+        /// кнопки — нет: держать здесь <c>async void</c> значило бы терять исключения молча.
+        /// </summary>
+        private async UniTaskVoid ConfirmDeleteAsync(string profileId, Action onDone)
+        {
+            string name = profileId;
+            if (_profiles != null)
+            {
+                for (int i = 0; i < _profiles.Profiles.Count; i++)
+                    if (_profiles.Profiles[i].Id == profileId) name = _profiles.Profiles[i].Name;
+            }
+
+            bool yes = await ConfirmAsync(
+                _loc?.GetString("ui.profile.delete.title") is { Length: > 0 } t ? t : "Удалить профиль?",
+                $"{name}",
+                // Последствие названо числом домов, а не словом «всё»: «все гильдии» звучит абстрактно,
+                // «три дома вместе с их забегами» — нет.
+                DeleteConsequence(profileId),
+                _loc?.GetString("ui.profile.delete") is { Length: > 0 } d ? d : "Удалить");
+
+            if (!yes) return;
+
+            _profiles?.DeleteProfile(profileId);
+            onDone?.Invoke();
+        }
+
+        /// <summary>Что именно пропадёт вместе с профилем.</summary>
+        private string DeleteConsequence(string profileId)
+        {
+            // Дома чужого профиля не спросить, не переключившись на него, — а переключение ради текста
+            // диалога сменило бы игроку активный слот. Поэтому число домов называем только для текущего.
+            bool isActive = _profiles != null && _profiles.ActiveProfile.Id == profileId;
+            if (!isActive) return "Вместе с ним пропадут его дома и все их забеги. Это необратимо.";
+
+            int guilds = _profiles.Guilds.Count;
+            string homes = guilds == 1 ? "один дом" : $"{guilds} дома";
+            return $"Вместе с ним пропадут {homes} и все их забеги. Это необратимо.";
         }
 
         private VisualElement BuildSettingsScreen()
