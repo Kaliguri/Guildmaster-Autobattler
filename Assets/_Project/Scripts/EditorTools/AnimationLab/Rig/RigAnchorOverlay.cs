@@ -55,45 +55,80 @@ namespace Guildmaster.AnimationLab.Editor
         {
             if (!Enabled) return;
 
+            // duringSceneGui зовут на КАЖДОЕ событие, включая mouseMove: без этой строки полный обход
+            // рига считался десятки раз в секунду просто оттого, что мышь ползёт по вьюпорту.
+            if (Event.current.type != EventType.Repaint) return;
+
             var root = ResolveRig();
             if (root == null) return;
 
-            var profile = RigProbe.FindProfileFor(PrefabRootAsset(root));
-            if (profile == null) return;
-
-            List<RigAnchors.Anchor> anchors;
-            try { anchors = RigAnchors.Collect(root.transform, profile); }
-            catch (System.Exception) { return; }   // риг может быть на полпути правки — молчим, а не сыплем
+            var anchors = CachedAnchors(root);
+            if (anchors == null) return;
 
             Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
             var drawnJoints = new HashSet<Transform>();
 
             foreach (var anchor in anchors)
             {
+                // Кэш держит СОСТАВ (какой кусок к какому суставу), а точки берутся из живых трансформов:
+                // иначе перетаскивание спрайта отображалось бы с задержкой в полсекунды.
+                if (anchor.Joint == null || anchor.Visual == null) continue;
+                var jointPos = anchor.Joint.position;
+                var pivotPos = anchor.Visual.transform.position;
+
                 if (drawnJoints.Add(anchor.Joint))
                 {
                     Handles.color = JointColor;
-                    Handles.DrawSolidDisc(anchor.Joint.position, Vector3.forward, JointRadius(view));
-                    Handles.Label(anchor.Joint.position + LabelNudge(view), Caption(anchor.JointId), JointStyle);
+                    Handles.DrawSolidDisc(jointPos, Vector3.forward, JointRadius(view));
+                    Handles.Label(jointPos + LabelNudge(view), Caption(anchor.JointId), JointStyle);
                 }
 
                 if (!anchor.DeclaresPivot)
                 {
                     Handles.color = PlaceholderColor;
-                    Handles.DrawSolidDisc(anchor.PivotWorld, Vector3.forward, JointRadius(view) * 0.5f);
+                    Handles.DrawSolidDisc(pivotPos, Vector3.forward, JointRadius(view) * 0.5f);
                     continue;
                 }
 
-                bool off = anchor.OffsetPixels > RigAnchors.DefaultTolerancePixels;
+                float ppu = anchor.Visual.sprite != null ? anchor.Visual.sprite.pixelsPerUnit : 1000f;
+                float offsetPixels = Vector3.Distance(jointPos, pivotPos) * ppu;
+                bool off = offsetPixels > RigAnchors.DefaultTolerancePixels;
                 Handles.color = off ? BadColor : OkColor;
-                Handles.DrawSolidDisc(anchor.PivotWorld, Vector3.forward, JointRadius(view) * 0.7f);
+                Handles.DrawSolidDisc(pivotPos, Vector3.forward, JointRadius(view) * 0.7f);
                 if (!off) continue;
 
-                Handles.DrawLine(anchor.Joint.position, anchor.PivotWorld, 3f);
-                Handles.Label(anchor.PivotWorld + LabelNudge(view) * 0.6f,
-                              $"{anchor.SpriteName}  {anchor.OffsetPixels:F0} px", BadStyle);
+                Handles.DrawLine(jointPos, pivotPos, 3f);
+                Handles.Label(pivotPos + LabelNudge(view) * 0.6f,
+                              $"{anchor.SpriteName}  {offsetPixels:F0} px", BadStyle);
             }
         }
+
+        /// <summary>
+        /// Якоря с кэшем: полный обход рига стоит поиска по путям всех суставов плюс обхода их поддеревьев,
+        /// и на каждой перерисовке это ощущается рукой как залипание вьюпорта. Позиции берутся из живых
+        /// трансформов при рисовании, поэтому кэш устаревает только по СОСТАВУ рига, а не по позам —
+        /// перетаскивание спрайта видно сразу же.
+        /// </summary>
+        static List<RigAnchors.Anchor> CachedAnchors(GameObject root)
+        {
+            double now = EditorApplication.timeSinceStartup;
+            if (_cache != null && _cacheRoot == root && now - _cacheTime < CacheSeconds) return _cache;
+
+            var profile = RigProbe.FindProfileFor(PrefabRootAsset(root));
+            if (profile == null) { _cache = null; return null; }
+
+            try { _cache = RigAnchors.Collect(root.transform, profile); }
+            catch (System.Exception) { _cache = null; }   // риг может быть на полпути правки — молчим, а не сыплем
+
+            _cacheRoot = root;
+            _cacheTime = now;
+            return _cache;
+        }
+
+        const double CacheSeconds = 0.5;
+        static List<RigAnchors.Anchor> _cache;
+        static GameObject _cacheRoot;
+        static double _cacheTime;
 
         /// <summary>
         /// Что рисуем: открытую prefab-stage, иначе — корень юнита, внутри которого стоит выделение.
