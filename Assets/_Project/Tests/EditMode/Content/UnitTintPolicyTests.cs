@@ -152,35 +152,18 @@ namespace Guildmaster.Tests.EditMode.Content
             }
         }
 
-        [Test]
-        public void SharedArt_KeepsExactlyOneUnshadedOriginal()
-        {
-            foreach (KeyValuePair<string, List<UnitData>> group in ByArt())
-            {
-                if (group.Value.Count < 2) continue;
-                UnitData[] plain = group.Value.Where(u => u.BodyShade == BodyShade.None).ToArray();
-                Assert.AreEqual(1, plain.Length,
-                    $"Арт {group.Key} делят {group.Value.Count} юнита ({string.Join(", ", group.Value.Select(u => u.name))}), " +
-                    $"а без приглушения из них {plain.Length}. Ровно один показывает арт как есть — он оригинал; " +
-                    "остальные подкрашиваются, чтобы их различали на арене.");
-            }
-        }
-
-        [Test]
-        public void SharedArt_ShadesDifferFromEachOther()
-        {
-            foreach (KeyValuePair<string, List<UnitData>> group in ByArt())
-            {
-                if (group.Value.Count < 2) continue;
-                var seen = new Dictionary<BodyShade, string>();
-                foreach (UnitData unit in group.Value)
-                {
-                    if (seen.TryGetValue(unit.BodyShade, out string other))
-                        Assert.Fail($"{unit.name} и {other} делят и арт ({group.Key}), и ступень " +
-                                    $"{unit.BodyShade} — то есть на арене неразличимы.");
-                    seen[unit.BodyShade] = unit.name;
-                }
-            }
-        }
+        // Двух проверок здесь больше НЕТ, и это решение, а не упущение:
+        //
+        //   SharedArt_KeepsExactlyOneUnshadedOriginal — ровно один без приглушения на группу;
+        //   SharedArt_ShadesDifferFromEachOther       — у делящих арт ступени попарно различны.
+        //
+        // Обе требовали, чтобы юниты на общем спрайте различались цветом. Правило отменено Максом
+        // 03.08.2026: одинаковые спрайт и цвет допустимы. Оно и не могло выполняться — ступеней всего
+        // четыре, а один только лист гоблина делят ШЕСТЬ юнитов (BanditAssassin, GoblinCommander,
+        // GoblinCutthroat, GoblinGrunt, GoblinWarrior, GoblinWolfrider). Шесть различий из четырёх
+        // значений не собираются, и «починка» свелась бы к подгонке чисел под зелёный.
+        //
+        // Тинт остаётся ВОЗМОЖНОСТЬЮ развести похожих, но перестал быть обязанностью. Проверки самой
+        // механики выше — что ступень названа в палитре и что умножение не осветляет — в силе.
     }
 }

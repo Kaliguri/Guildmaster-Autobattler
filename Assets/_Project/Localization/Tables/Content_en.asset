@@ -818,6 +818,10 @@ MonoBehaviour:
     m_Localized: Smells of a cellar. Closes wounds and lifts a light curse.
     m_Metadata:
       m_Items: []
+  - m_Id: 8364296469995520
+    m_Localized: Absolute Antiheal
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
