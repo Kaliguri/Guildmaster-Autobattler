@@ -141,6 +141,12 @@ namespace Guildmaster.UI
             if (screen == null) return;
             if (screen.Root == null) screen.Build(_context);
 
+            // Резолв мог случиться прямо в Build — главное меню, получившее готовый заказ (принятое
+            // приглашение в кооп, dev-команда Ристалища), решает всё, ещё собираясь. Снятие в тот момент
+            // прошло вхолостую: экрана в стеке не было. Положить его сюда сейчас значит оставить панель
+            // лежать поверх мира до следующего PopAll — снять её будет уже нечем.
+            if (screen.IsResolved) return;
+
             UiScreen prevTop = Top;
             _stack.Add(screen);
             LayerFor(screen)?.Add(screen.Root);

@@ -72,6 +72,17 @@ namespace Guildmaster.UI
 
         /// <summary>Навигатор дорезолвит result-экран его дефолтом при снятии без выбора. База — no-op.</summary>
         internal virtual void ResolveDefaultIfPending() { }
+
+        /// <summary>
+        /// Экран уже отдал результат, и класть его в стек нечего.
+        /// </summary>
+        /// <remarks>
+        /// Резолв может случиться прямо внутри <see cref="Build"/> — например, у главного меню, которое
+        /// на старте получило готовый заказ (принятое приглашение в кооп). Снятие в этот момент проходит
+        /// вхолостую: экрана в стеке ещё нет. Без этой проверки навигатор положил бы его туда следом, и
+        /// снять панель было бы уже нечем. База — всегда false: у экрана без результата резолва нет.
+        /// </remarks>
+        internal virtual bool IsResolved => false;
     }
 
     /// <summary>
@@ -102,5 +113,8 @@ namespace Guildmaster.UI
         {
             if (!_resolved) Resolve(DefaultResult);
         }
+
+        /// <inheritdoc />
+        internal override bool IsResolved => _resolved;
     }
 }
