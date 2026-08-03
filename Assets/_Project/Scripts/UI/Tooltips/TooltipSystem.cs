@@ -166,7 +166,11 @@ namespace Guildmaster.UI.Tooltips
             _detailed = value;
             if (_chain.Count == 0) return;
 
-            foreach (Window w in _chain.Items) FillWindow(w);
+            // Перебираем СНИМОК: FillWindow, получив пустой контент, убирает окно из цепочки — то есть
+            // правит коллекцию прямо во время обхода. Сегодняшняя фабрика контента от «подробности»
+            // не зависит и потому null не отдаёт, но интерфейс это допускает, и тогда Shift над
+            // открытым окном ронял бы исключение прямо в обработчике ввода.
+            foreach (Window w in new List<Window>(_chain.Items)) FillWindow(w);
             _sound?.PlayUi("tooltip_detail");
         }
 
