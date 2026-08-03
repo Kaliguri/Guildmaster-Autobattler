@@ -49,6 +49,7 @@ namespace Guildmaster.Game.Services
 
         private readonly IOutcomePresenter   _outcomePresenter;
         private readonly IMainMenuPresenter  _mainMenuPresenter;
+        private readonly IProfilePresenter   _profilePresenter;
         private readonly ActConfig           _actConfig;
         private readonly IRngService         _rng;
         private readonly ILocalPlayer        _localPlayer;
@@ -70,6 +71,7 @@ namespace Guildmaster.Game.Services
             Core.Persistence.IProfileService profiles,
             IOutcomePresenter   outcomePresenter,
             IMainMenuPresenter  mainMenuPresenter,
+            IProfilePresenter   profilePresenter,
             ActConfig           actConfig,
             IRngService         rng,
             ILocalPlayer        localPlayer,
@@ -86,6 +88,7 @@ namespace Guildmaster.Game.Services
             _profiles         = profiles;
             _outcomePresenter = outcomePresenter;
             _mainMenuPresenter = mainMenuPresenter;
+            _profilePresenter  = profilePresenter;
             _actConfig       = actConfig;
             _rng             = rng;
             _localPlayer     = localPlayer;
@@ -177,6 +180,10 @@ namespace Guildmaster.Game.Services
                 // мы не пишем (решение 01.08.2026).
                 if (_coop != null && _coop.State != Core.Net.CoopSessionState.Offline) _coop.Leave();
 
+                // Кем заходим — спрашивается ДО меню и только когда профиля нет: дом живёт внутри
+                // профиля, и выбирать дом раньше слота попросту нечем. Профиль есть — экран не мелькает.
+                if (_profilePresenter != null) await _profilePresenter.RequireAsync();
+
                 MainMenuOutcome outcome = await _mainMenuPresenter.ShowAsync();
 
                 if (outcome.Action == MainMenuAction.Quit) { QuitGame(); return; }
@@ -266,11 +273,13 @@ namespace Guildmaster.Game.Services
 
             if (!request.IsNewGuild) return _profiles.SelectGuild(request.GuildId);
 
-            // Профиль заводится тем же кликом, если его ещё нет: игрок просил игру, а не анкету.
-            // Экран выбора профилей — своя задача, и до неё дом обязан появляться сам.
-            if (string.IsNullOrEmpty(_profiles.ActiveProfile.Id) && _profiles.CreateProfile("Игрок") == null)
+            // Профиль здесь уже обязан быть: до главного меню игрок проходит через выбор слота
+            // (03.08.2026). Молчаливое создание отсюда убрано — оно заводило профиль под именем,
+            // которого игрок не выбирал, и делало это в момент, когда он думал о доме, а не о слоте.
+            if (!_profiles.HasActiveProfile)
             {
-                Debug.LogError("[GameFlow] - профиль не завёлся (лимит?) → кампанию не начать");
+                Debug.LogError("[GameFlow] - активного профиля нет → кампанию не начать. " +
+                               "Экран выбора профиля обязан отработать до главного меню.");
                 return false;
             }
 

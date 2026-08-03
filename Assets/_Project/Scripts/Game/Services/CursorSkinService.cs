@@ -1,4 +1,4 @@
-using Guildmaster.Data.Definitions;
+﻿using Guildmaster.Data.Definitions;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -15,22 +15,28 @@ namespace Guildmaster.Game.Services
     /// <para><b>Один владелец на оба применения.</b> Своё изображение и чужое обязаны совпадать — иначе
     /// игрок видит у себя одну стрелку, а напарник у него другую, и разговор «наведи на лучника»
     /// перестаёт работать.</para>
-    /// <para><b>Выбор игрока приезжает из профиля</b> — но экран профиля ещё не написан, поэтому пока
-    /// применяется умолчание набора. Место подключения одно (<see cref="Apply"/>), и подключается оно
-    /// вместе с экраном, а не раньше: пустой сеттер «на будущее» вводил бы в заблуждение.</para>
+    /// <para><b>Выбор игрока приезжает из профиля</b> — там живёт идентичность (ник, цвет, курсор).
+    /// На старте надевается сохранённый скин, дальше экран профиля зовёт <see cref="Apply"/> сам, чтобы
+    /// игрок увидел выбор сразу, а не после перезахода.</para>
     /// </remarks>
-    public sealed class CursorSkinService : IStartable
+    public sealed class CursorSkinService : Guildmaster.Core.Players.ICursorSkinControl, IStartable
     {
         private readonly CursorSkinCatalog _catalog;
+        private readonly Guildmaster.Core.Persistence.IProfileService _profiles;
 
         private CursorSkinData _current;
 
-        public CursorSkinService(CursorSkinCatalog catalog) => _catalog = catalog;
+        public CursorSkinService(CursorSkinCatalog catalog,
+                                 Guildmaster.Core.Persistence.IProfileService profiles)
+        {
+            _catalog  = catalog;
+            _profiles = profiles;
+        }
 
         /// <summary>Чем играем сейчас. <c>null</c> — набор пуст, и курсор остаётся системным.</summary>
         public CursorSkinData Current => _current;
 
-        public void Start() => Apply(null);
+        public void Start() => Apply(_profiles?.Identity.CursorSkinId);
 
         /// <summary>
         /// Надеть скин по id. Неизвестный id даёт умолчание набора: id приходит из профиля и по сети,

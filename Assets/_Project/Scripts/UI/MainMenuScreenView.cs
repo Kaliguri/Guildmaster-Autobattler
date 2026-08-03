@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -22,7 +22,8 @@ namespace Guildmaster.UI
             Action onJoin,
             Action onSettings,
             Action onQuit,
-            bool canJoin = true)
+            bool canJoin = true,
+            Action onProfile = null)
         {
             string L(string key, string fallback)
             {
@@ -38,6 +39,7 @@ namespace Guildmaster.UI
             var version  = root.Q<Label>("menu-version");
             var create   = root.Q<Button>("btn-create");
             var join     = root.Q<Button>("btn-join");
+            var profile  = root.Q<Button>("btn-profile");
             var settings = root.Q<Button>("btn-settings");
             var quit     = root.Q<Button>("btn-quit");
 
@@ -52,6 +54,14 @@ namespace Guildmaster.UI
             {
                 create.text = L("ui.mainmenu.create", "Создать игру");
                 create.clicked += () => onCreate?.Invoke();
+            }
+
+            // «Профиль» — кем игрок заходит: слот сохранения плюс ник, цвет и курсор. Стоит в меню, а не
+            // в настройках, потому что настройки принадлежат машине, а профиль — игроку.
+            if (profile != null)
+            {
+                profile.text = L("ui.mainmenu.profile", "Профиль");
+                profile.clicked += () => onProfile?.Invoke();
             }
 
             // «Присоединиться» открывает список друзей Steam и меню НЕ закрывает: войти игрок

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Players;
 using Guildmaster.Data.Definitions;
@@ -24,9 +24,10 @@ namespace Guildmaster.Game.Session.Net
     /// </remarks>
     public sealed class HostSessionRoster : ISessionRoster, IStartable, IDisposable
     {
-        private readonly INetTransport                 _transport;
-        private readonly Guildmaster.Net.Session.SteamBootstrap _steam;
-        private readonly GameConfig                    _config;
+        private readonly INetTransport  _transport;
+        private readonly Guildmaster.Core.Players.IPlatformIdentity _platform;
+        private readonly Guildmaster.Core.Persistence.IProfileService _profiles;
+        private readonly GameConfig     _config;
 
         private readonly List<SessionPlayer> _players = new List<SessionPlayer>(4);
         private readonly NetByteWriter       _writer  = new NetByteWriter(128);
@@ -35,14 +36,32 @@ namespace Guildmaster.Game.Session.Net
         /// <summary>По скольким сторонам раскладываем. Одна — все свои; две — PvP.</summary>
         private int _sides = 1;
 
+        /// <summary>
+        /// Какой цвет игрок хотел бы. Пожелание, а не назначение: в одной сессии цвета обязаны быть
+        /// разными (ГДД, кооп-кластер), а выбирают их в профиле порознь и заранее.
+        /// </summary>
+        private readonly Dictionary<int, int> _wanted = new Dictionary<int, int>(4);
+
         public HostSessionRoster(INetTransport transport,
-                                 Guildmaster.Net.Session.SteamBootstrap steam,
+                                 Guildmaster.Core.Players.IPlatformIdentity platform,
+                                 Guildmaster.Core.Persistence.IProfileService profiles,
                                  GameConfig config)
         {
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
-            _steam     = steam;
+            _platform  = platform;
+            _profiles  = profiles;
             _config    = config;
         }
+
+        /// <summary>
+        /// Кем мы играем: ник, цвет и скин курсора берутся из профиля — там их выбрал игрок. Ник может
+        /// быть «из Steam», и решает это тоже профиль, а не мы.
+        /// </summary>
+        private Guildmaster.Core.Persistence.ProfileIdentity MyIdentity =>
+            _profiles?.Identity ?? default;
+
+        private string MyName =>
+            MyIdentity.ResolveName(_platform != null ? _platform.PlayerName : "Игрок");
 
         public IReadOnlyList<SessionPlayer> Players => _players;
 
@@ -50,7 +69,7 @@ namespace Guildmaster.Game.Session.Net
 
         public void Start()
         {
-            Add(LocalId, _steam != null ? _steam.PlayerName : "Игрок");
+            Add(LocalId, MyName);
 
             _transport.PeerConnected    += OnPeerConnected;
             _transport.PeerDisconnected += OnPeerDisconnected;
@@ -121,7 +140,21 @@ namespace Guildmaster.Game.Session.Net
             // На этом канале гость говорит ровно одно: как его зовут. Объявленную таблицу шлём только мы,
             // и прилететь она к нам не может — принимать её тут значило бы верить чужому составу.
             var bytes = new NetByteReader(payload);
-            string name = bytes.ReadString();
+
+            string name;
+            int    wantedColor;
+            string skin;
+            try
+            {
+                name        = bytes.ReadString();
+                wantedColor = bytes.ReadByte();
+                skin        = bytes.ReadString();
+            }
+            catch (InvalidOperationException)
+            {
+                return; // чужая версия представления — состав не трогаем
+            }
+
             if (string.IsNullOrWhiteSpace(name)) return;
 
             for (int i = 0; i < _players.Count; i++)
@@ -129,8 +162,9 @@ namespace Guildmaster.Game.Session.Net
                 if (_players[i].Id != from) continue;
 
                 SessionPlayer was = _players[i];
-                _players[i] = new SessionPlayer(was.Id, name, was.Team, was.ColorIndex);
-                Announce();
+                _wanted[from] = wantedColor;
+                _players[i] = new SessionPlayer(was.Id, name, was.Team, was.ColorIndex, skin);
+                Reseat(); // цвет мог освободиться или, наоборот, столкнуться с чужим пожеланием
                 return;
             }
         }
@@ -139,20 +173,43 @@ namespace Guildmaster.Game.Session.Net
         {
             if (TryGet(peerId, out _)) return;
 
-            _players.Add(new SessionPlayer(peerId, name, TeamFor(_players.Count), _players.Count));
-            Announce();
+            string skin = peerId == LocalId ? MyIdentity.CursorSkinId : string.Empty;
+            if (peerId == LocalId) _wanted[peerId] = MyIdentity.ColorIndex;
+
+            _players.Add(new SessionPlayer(peerId, name, TeamFor(_players.Count), _players.Count, skin));
+            Reseat();
         }
 
-        /// <summary>Пересадить всех по текущему порядку и числу сторон.</summary>
+        /// <summary>
+        /// Пересадить всех: стороны по порядку входа, цвета — по пожеланиям, но без повторов.
+        /// </summary>
+        /// <remarks>
+        /// Кто пришёл раньше, тот и оставляет за собой желаемый цвет; опоздавшему выдаётся ближайший
+        /// свободный. Отказать во входе или пустить двоих одним цветом нельзя: первое — наказание за
+        /// совпадение вкусов, второе убивает единственную функцию мейн-цвета.
+        /// </remarks>
         private void Reseat()
         {
+            var taken = new HashSet<int>();
+
             for (int i = 0; i < _players.Count; i++)
             {
                 SessionPlayer was = _players[i];
-                _players[i] = new SessionPlayer(was.Id, was.Name, TeamFor(i), i);
+
+                int wanted = _wanted.TryGetValue(was.Id, out int w) ? w : i;
+                int colour = taken.Contains(wanted) ? FirstFree(taken) : wanted;
+                taken.Add(colour);
+
+                _players[i] = new SessionPlayer(was.Id, was.Name, TeamFor(i), colour, was.CursorSkinId);
             }
 
             Announce();
+        }
+
+        private static int FirstFree(HashSet<int> taken)
+        {
+            for (int c = 0; ; c++)
+                if (!taken.Contains(c)) return c;
         }
 
         /// <summary>

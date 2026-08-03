@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Players;
@@ -29,7 +29,7 @@ namespace Guildmaster.Tests.EditMode.Net
             var net = new LoopbackNetwork();
             INetTransport hostNode = net.CreateNode();
 
-            var roster = new HostSessionRoster(hostNode, null, null);
+            var roster = new HostSessionRoster(hostNode, null, null, null);
             roster.Start();
 
             INetTransport foeNode  = net.CreateNode(); // место 1 → сторона 1
@@ -61,7 +61,7 @@ namespace Guildmaster.Tests.EditMode.Net
             var net = new LoopbackNetwork();
             INetTransport hostNode = net.CreateNode();
 
-            var roster = new HostSessionRoster(hostNode, null, null);
+            var roster = new HostSessionRoster(hostNode, null, null, null);
             roster.Start();
 
             INetTransport first  = net.CreateNode();
@@ -90,7 +90,7 @@ namespace Guildmaster.Tests.EditMode.Net
             var net = new LoopbackNetwork();
             INetTransport hostNode = net.CreateNode();
 
-            var roster = new HostSessionRoster(hostNode, null, null);
+            var roster = new HostSessionRoster(hostNode, null, null, null);
             roster.Start();
 
             INetTransport speaker = net.CreateNode(); // место 1 → сторона 1
@@ -125,7 +125,7 @@ namespace Guildmaster.Tests.EditMode.Net
             var net = new LoopbackNetwork();
             INetTransport hostNode = net.CreateNode();
 
-            var roster = new HostSessionRoster(hostNode, null, null);
+            var roster = new HostSessionRoster(hostNode, null, null, null);
             roster.Start();
 
             net.CreateNode();

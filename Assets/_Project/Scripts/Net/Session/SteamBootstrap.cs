@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Steamworks;
 using UnityEngine;
 using VContainer.Unity;
@@ -21,7 +21,7 @@ namespace Guildmaster.Net.Session
     /// <para><b>Steam не запущен — это внешний отказ, и он честный:</b> говорим вслух и живём дальше
     /// одиночной игрой. Подменять его нечем, а молчание читалось бы как «кооп сломан».</para>
     /// </remarks>
-    public sealed class SteamBootstrap : IStartable, ITickable, IDisposable
+    public sealed class SteamBootstrap : Guildmaster.Core.Players.IPlatformIdentity, IStartable, ITickable, IDisposable
     {
         /// <summary>
         /// Слот, под которым мы ходим в Steam. Пока это неизданная <i>Few Seconds - Many Deaths!</i>

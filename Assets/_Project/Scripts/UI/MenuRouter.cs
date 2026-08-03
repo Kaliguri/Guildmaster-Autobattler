@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -79,6 +79,17 @@ namespace Guildmaster.UI
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
         private VisualTreeAsset _newGameUxml;
+        private VisualTreeAsset _profileUxml;
+
+        // Профиль: набор скинов, число слотов, имя из Steam и применение выбранного курсора. Роутер
+        // держит их функциями, а не тянет сервисы вглубь экрана: экран — разметка, а не владелец правил.
+        private readonly CursorSkinCatalog _cursorSkins;
+        private readonly int               _profileSlotLimit;
+        private readonly Func<string>      _steamName;
+        private readonly Action<string>    _cursorApply;
+
+        /// <summary>Сколько мейн-цветов предлагаем. Столько же токенов в палитре — предел кооп-сессии.</summary>
+        private const int ProfileColorCount = 4;
         private VisualTreeAsset _titleCardUxml;
         private Sprite _titleCardSeal;
         private VisualTreeAsset _loadoutInventoryUxml;
@@ -98,8 +109,15 @@ namespace Guildmaster.UI
                           Core.Net.ICoopSessionControl coop,
                           Core.Persistence.IProfileService profiles,
                           Core.Persistence.ISaveService save,
+                          GameConfig gameConfig,
+                          Core.Players.IPlatformIdentity platform,
+                          Core.Players.ICursorSkinControl cursors,
                           ISubscriber<Core.Net.ReadyGateChangedEvent> readySub)
         {
+            _cursorSkins     = gameConfig?.CursorSkins;
+            _profileSlotLimit = gameConfig != null ? gameConfig.MaxProfiles : 1;
+            _steamName       = () => platform != null ? platform.PlayerName : "Игрок";
+            _cursorApply     = id => cursors?.Apply(id);
             _readySub = readySub;
             // Подписка живёт столько же, сколько роутер, и это не лень: гейт объявляет счёт в момент
             // привязки действия — раньше, чем экран заказан. Подписка на время показа это объявление
@@ -221,9 +239,10 @@ namespace Guildmaster.UI
             VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null,
             VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null,
             VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null,
-            VisualTreeAsset newGameUxml = null)
+            VisualTreeAsset newGameUxml = null, VisualTreeAsset profileUxml = null)
         {
             _newGameUxml = newGameUxml;
+            _profileUxml = profileUxml;
             _devConsoleUxml = devConsoleUxml;
             _devLogUxml = devLogUxml;
             _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
@@ -699,6 +718,70 @@ namespace Guildmaster.UI
                 key => _loc?.GetString(key),
                 onStart: onStart,
                 onBack: Pop));
+        }
+
+        /// <summary>
+        /// Показать профиль. <paramref name="required"/> — профиля нет вовсе: экран открывается без
+        /// «Назад» и закрывается сам, как только слот заведён.
+        /// </summary>
+        public void OpenProfile(OpenProfileRequest req)
+        {
+            if (CannotShow("Профиль (_profileScreen)", _profileUxml)) { req.OnClosed?.Invoke(); return; }
+
+            PushScreen(() => BuildProfileScreen(req.Required, req.OnClosed),
+                       ScreenKind.Modal, scrimless: _mainMenuOpen);
+        }
+
+        private VisualElement BuildProfileScreen(bool required, Action onClosed)
+        {
+            void Rebuild()
+            {
+                // Список слотов и активный профиль поменялись — экран пересобирается целиком. Точечная
+                // правка строк стоила бы своего кода ради экрана, который открывают раз в сессию.
+                Pop();
+                PushScreen(() => BuildProfileScreen(required, onClosed), ScreenKind.Modal, scrimless: _mainMenuOpen);
+            }
+
+            var slots = new List<ProfileScreenView.SlotEntry>();
+            if (_profiles != null)
+            {
+                string activeId = _profiles.ActiveProfile.Id;
+                for (int i = 0; i < _profiles.Profiles.Count; i++)
+                {
+                    Core.Persistence.ProfileSummary p = _profiles.Profiles[i];
+                    slots.Add(new ProfileScreenView.SlotEntry(p.Id, p.Name, p.Id == activeId));
+                }
+            }
+
+            bool canLeave = !required || (_profiles?.HasActiveProfile ?? false);
+
+            return FillRoot(ProfileScreenView.Build(
+                _profileUxml,
+                slots,
+                _profileSlotLimit,
+                _profiles?.Identity ?? default,
+                _steamName?.Invoke() ?? "Игрок",
+                _cursorSkins?.Skins,
+                ProfileColorCount,
+                canLeave,
+                key => _loc?.GetString(key),
+                onSelect: id => { _profiles?.SelectProfile(id); Rebuild(); },
+                onCreate: () =>
+                {
+                    if (_profiles?.CreateProfile() == null) return;
+
+                    // Обязательный показ существует ради одного события — появления профиля. Оно
+                    // случилось, держать игрока больше не на чем.
+                    if (required) { Pop(); onClosed?.Invoke(); return; }
+                    Rebuild();
+                },
+                onDelete: id => { _profiles?.DeleteProfile(id); Rebuild(); },
+                onSave: identity =>
+                {
+                    _profiles?.SaveIdentity(identity);
+                    _cursorApply?.Invoke(identity.CursorSkinId);
+                },
+                onBack: () => { Pop(); onClosed?.Invoke(); }));
         }
 
         private VisualElement BuildSettingsScreen()
@@ -1281,6 +1364,7 @@ namespace Guildmaster.UI
                         // Steam, а уводит нас отсюда рукопожатие — оно резолвит меню само.
                         onJoin:     () => _coop?.BrowseFriends(),
                         onSettings: () => OpenOverMenu(BuildSettingsScreen),
+                        onProfile:  () => OpenOverMenu(() => BuildProfileScreen(required: false, onClosed: null)),
                         onQuit:     () => { ShowQuitVeil(); resolve(MainMenuOutcome.Quit); },
                         canJoin:    _coop?.IsSteamReady ?? false);
                 });

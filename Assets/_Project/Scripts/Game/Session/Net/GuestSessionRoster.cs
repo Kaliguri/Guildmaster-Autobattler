@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Players;
 using Guildmaster.Net;
@@ -20,18 +20,22 @@ namespace Guildmaster.Game.Session.Net
     /// </remarks>
     public sealed class GuestSessionRoster : ISessionRoster, IStartable, IDisposable
     {
-        private readonly INetTransport                          _transport;
-        private readonly Guildmaster.Net.Session.SteamBootstrap _steam;
+        private readonly INetTransport _transport;
+        private readonly Guildmaster.Core.Players.IPlatformIdentity _platform;
+        private readonly Guildmaster.Core.Persistence.IProfileService _profiles;
 
         private readonly List<SessionPlayer> _players  = new List<SessionPlayer>(4);
         private readonly List<SessionPlayer> _incoming = new List<SessionPlayer>(4);
         private readonly NetByteWriter       _writer   = new NetByteWriter(64);
         private byte[] _envelope;
 
-        public GuestSessionRoster(INetTransport transport, Guildmaster.Net.Session.SteamBootstrap steam)
+        public GuestSessionRoster(INetTransport transport,
+                                  Guildmaster.Core.Players.IPlatformIdentity platform,
+                                  Guildmaster.Core.Persistence.IProfileService profiles)
         {
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
-            _steam     = steam;
+            _platform  = platform;
+            _profiles  = profiles;
         }
 
         public IReadOnlyList<SessionPlayer> Players => _players;
@@ -81,7 +85,13 @@ namespace Guildmaster.Game.Session.Net
         private void SayName()
         {
             _writer.Reset();
-            _writer.WriteString(_steam != null ? _steam.PlayerName : "Игрок");
+            // Ник из профиля: игрок мог выбрать свой вместо Steam-имени, и хост обязан увидеть тот же.
+            // Цвет едет ПОЖЕЛАНИЕМ: занять его может кто-то раньше нас, и решает это хост — иначе двое
+            // пришли бы одним цветом, а весь смысл мейн-цвета в том, что «чей это» читается мгновенно.
+            Guildmaster.Core.Persistence.ProfileIdentity identity = _profiles?.Identity ?? default;
+            _writer.WriteString(identity.ResolveName(_platform != null ? _platform.PlayerName : "Игрок"));
+            _writer.WriteByte((byte)Math.Clamp(identity.ColorIndex, 0, 255));
+            _writer.WriteString(identity.CursorSkinId);
 
             _transport.Send(NetPeer.HostPeerId,
                 NetEnvelope.Wrap(NetChannel.SessionRoster, _writer.WrittenSegment, ref _envelope),

@@ -237,7 +237,8 @@ namespace Guildmaster.Game
 
             // Steam поднимается ПЕРВЫМ: без него ни лобби, ни relay-сокет не существуют, а спрашивают
             // они его сразу. Он же качает колбэки — приглашения и события лобби приходят только так.
-            builder.RegisterEntryPoint<Guildmaster.Net.Session.SteamBootstrap>(Lifetime.Singleton).AsSelf();
+            builder.RegisterEntryPoint<Guildmaster.Net.Session.SteamBootstrap>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Players.IPlatformIdentity>();
 
             builder.Register<Guildmaster.Net.Transport.SteamNetTransport>(Lifetime.Singleton)
                    .As<Guildmaster.Net.Transport.INetTransport>()
@@ -264,6 +265,8 @@ namespace Guildmaster.Game
             builder.Register<TitleCardPresenter>(Lifetime.Singleton).As<ITitleCardPresenter>();
             // Главное меню (D1) — верхний цикл игры.
             builder.Register<MainMenuPresenter>(Lifetime.Singleton).As<IMainMenuPresenter>();
+            // Профиль: кем игрок заходит. Требуется до меню, открывается и по кнопке из него.
+            builder.Register<ProfilePresenter>(Lifetime.Singleton).As<IProfilePresenter>();
 
 
             // Линк к world-слою карты: держим ЗДЕСЬ (в корне), потому что петля акта живёт здесь, а сам слой —
@@ -307,7 +310,8 @@ namespace Guildmaster.Game
             builder.RegisterInstance(ScopeWiring.Require(
                 gameConfig.CursorSkins, nameof(GameConfig), nameof(GameConfig.CursorSkins)));
             builder.Register<Services.CursorSkinService>(Lifetime.Singleton)
-                   .AsSelf().As<VContainer.Unity.IStartable>();
+                   .AsSelf().As<Guildmaster.Core.Players.ICursorSkinControl>()
+                   .As<VContainer.Unity.IStartable>();
 
             // Указатель в мировых координатах: один владелец перевода «экран → мир» на расстановку и на
             // присутствие. Камеру ищет лениво — сцена арены поднимается позже этого скоупа.
