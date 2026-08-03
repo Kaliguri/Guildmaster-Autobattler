@@ -99,54 +99,50 @@ chore: update Unity packages
 
 ## Branch Strategy
 
+> **Rewritten 03.08.2026.** The previous scheme (a branch per feature, PR into `dev`, PR into
+> `master`) was ceremony without its benefit: branches isolate parallel work, but this project runs
+> several sessions **against one working tree**, so every session writes to the same branch anyway.
+> `feat/slice-feel-and-content` lived three weeks and collected 789 commits — a second `main` under a
+> different name. See journal `2026-08-03-speed-comes-from-the-local-build-not-from-skipping-checks`.
+
 ### Structure
 
 ```
-master        ← stable, released versions only
-dev           ← main development branch
-feature/*     ← new mechanics and systems
-fix/*         ← bug fixes
-data/*        ← balance/content-only changes
-refactor/*    ← code cleanup without new functionality
-ci/*          ← CI/CD changes
+master   ← the shop window: what gets shown to people. Updated by PR from dev, before a demo.
+dev      ← where the work happens. Commit here directly.
+<topic>  ← only for a risky run you would not mind abandoning (a rewrite, an experiment)
 ```
-
-### When to Create Branches
-
-| Branch | When | Example |
-|---|---|---|
-| `feature/*` | Any new system or mechanic | `feature/combat-poison-effect` |
-| `fix/*` | Fixing a specific bug | `fix/archer-targeting` |
-| `data/*` | Data/balance changes only, no logic | `data/warrior-rebalance` |
-| `refactor/*` | Code cleanup only | `refactor/targeting-system` |
-| `ci/*` | CI/CD or build pipeline changes | `ci/add-test-workflow` |
 
 ### Rules
 
-- All branches are created **from `dev`**, never from `master`
-- `master` is updated only via PR from `dev` — when the version is stable
-- **`feature/*`, `fix/*`, `data/*`, `refactor/*` PRs always target `dev`, never `master`** — merging a feature branch directly into `master` breaks the flow and leaves `dev` behind
-- Branch names: lowercase, hyphen-separated, concise
-  - Good: `feature/guild-management`
-  - Bad: `feature/add_new_guild_management_system`
-- No broken compilation in any commit
-- **Commit per stage:** when implementing a multi-stage feature/phase, make one commit per completed stage (each compiling + green tests). Every stage is then a safe rollback point and the history reads as the plan's steps
-- Delete branches after merging
-- Keep `dev` always green and buildable: do breaking/WIP work on `feature/*`, merge into `dev` only when CI is green
-- `CI Gate` is the required status check on `dev` and `master`; docs/wiki/markdown pass instantly, code requires green tests
+- **Commit to `dev` directly.** No branch per feature, per fix, or per content change.
+- **A branch is for work that may not survive** — rewriting combat, trying a renderer. Not for
+  "a feature". If you would merge it no matter what, it belongs on `dev`.
+- **`master` moves only by PR from `dev`**, and only when something is being shown. It is not part of
+  the fix-and-play loop.
+- **NEVER squash, NEVER rebase-merge — every commit is kept** (Max, 03.08.2026: «Все коммиты должны
+  сохраняться»). Squash rewrites N commits into one new hash, the target branch stops seeing the
+  originals as ancestors, and the next release PR opens in conflict — that is exactly how `master` and
+  `dev` split in July and produced a 419-file conflict two weeks later. Both options are now **disabled
+  in the repository settings**, so the button cannot offer them.
+- **Do not delete a merged branch** until its history is confirmed in the target branch.
+- No broken compilation in any commit.
+- **Commit per stage:** one commit per completed stage of a multi-stage feature, each compiling and
+  green. Every stage is then a rollback point and the history reads as the plan's steps.
+- `dev` may go red — you are the one who fixes it. CI on a push costs no waiting: it runs while you
+  work, and it exists for one thing local runs cannot do — catching what never reached the repository.
+- `CI Gate` is the required status check on `dev` and `master`.
 
-### When you MUST create a branch (never commit directly to `dev`)
+### Before pushing
 
-If currently on `dev` or `master`, **always** create a branch before starting:
-- Any new feature, system, or mechanic (`feature/*`)
-- Mass bug fixing or large fix affecting multiple files (`fix/*`)
-- Refactoring (`refactor/*`)
-- Any change that touches ≥3 files or takes more than one commit
+Local runs are faster than CI and catch the same code problems:
 
-**Exceptions — allowed directly on `dev`:**
-- Hotfix: tiny, isolated fix (1-2 files, obvious change, no risk of breaking CI)
-- Docs/wiki-only changes
-- CI/config tweaks with no logic changes
+```powershell
+./scripts/compile-check.ps1                      # seconds
+./scripts/run-tests.ps1 -Mode EditMode -Where Shadow   # minutes
+```
+
+What they cannot catch is a file you forgot to commit — that is CI's job, and the reason it stays.
 
 ---
 
