@@ -40,7 +40,10 @@ const LEGACY_ANCHORS: Record<string, string> = {
 };
 
 function parseRoute(): Route {
-  const raw = location.hash;
+  // Хвост «?…» — параметры раздела (kit=, mode=): их читают сами разделы прямо из location.hash, а
+  // маршруту он мешает. Без этой строки `#/balance-kits?kit=Assassin` искался как раздел с именем
+  // «balance-kits?kit=Assassin» — то есть КАЖДАЯ ссылка на кита из таблиц вела на «Раздела нет».
+  const raw = location.hash.split("?")[0] ?? "";
   if (!raw.startsWith("#/")) {
     const flat = raw.slice(1);
     if (!flat) return { page: "index", anchor: null };
