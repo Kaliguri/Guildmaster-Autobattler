@@ -1,4 +1,4 @@
-/* ============================================================================
+﻿/* ============================================================================
  * Дизайн-система — ЯРУС 3: COMPONENTS (.gm-*).
  * Единственный слой, задающий вид. Экраны СОБИРАЮТСЯ из этих классов —
  * сырой стиль на экране запрещён (так «единый стиль» становится структурой, а не договором).
@@ -3158,3 +3158,51 @@
     min-width: auto;
     max-width: none;
 }
+
+
+/* === Курсоры других игроков (кооп) =========================================
+   Курсор чужого игрока в мировой точке: цветной указатель и подпись именем. Позицию ставит
+   CursorLayerView переводом «мир → панель», здесь только вид.
+   Форма — плейсхолдер: ГДД обещает указатель-«перчатку», сменяемый скином за личную валюту, и когда
+   арт появится, меняться будет ОДИН этот блок. */
+.gm-cursor {
+    position: absolute;
+    /* Кончик указателя должен приходиться ровно на точку, а не левый верхний угол коробки. */
+    translate: -2px -2px;
+    align-items: flex-start;
+}
+
+.gm-cursor__point {
+    width: 14px;
+    height: 14px;
+    rotate: 45deg;
+    /* Три скруглённых угла и один острый: получается каплевидное остриё, смотрящее вверх-влево. */
+    border-radius: 50% 50% 50% 2px;
+    background-color: var(--gm-color-player-1);
+    border-width: 1px;
+    /* Тёмная обводка держит курсор читаемым и на светлой карте, и на тёмной арене. */
+    border-color: var(--gm-ink-900);
+}
+
+.gm-cursor__name {
+    margin-top: var(--gm-space-1);
+    margin-left: var(--gm-space-2);
+    font-size: var(--gm-font-xxs);
+    color: var(--gm-color-player-1);
+    -unity-font-style: bold;
+}
+
+/* Держит вещь — указатель крупнее: «в руке» видно всем, это условие работы перехвата. */
+.gm-cursor--holding > .gm-cursor__point {
+    scale: 1.35 1.35;
+}
+
+/* Место в наборе цветов раздаёт состав сеанса; оттенки живут в токенах, а не здесь. */
+.gm-cursor--p1 > .gm-cursor__point { background-color: var(--gm-color-player-1); }
+.gm-cursor--p1 > .gm-cursor__name  { color: var(--gm-color-player-1); }
+.gm-cursor--p2 > .gm-cursor__point { background-color: var(--gm-color-player-2); }
+.gm-cursor--p2 > .gm-cursor__name  { color: var(--gm-color-player-2); }
+.gm-cursor--p3 > .gm-cursor__point { background-color: var(--gm-color-player-3); }
+.gm-cursor--p3 > .gm-cursor__name  { color: var(--gm-color-player-3); }
+.gm-cursor--p4 > .gm-cursor__point { background-color: var(--gm-color-player-4); }
+.gm-cursor--p4 > .gm-cursor__name  { color: var(--gm-color-player-4); }

@@ -66,6 +66,16 @@ namespace Guildmaster.Game.Session
             // и гейт пропускает действие в тот же кадр: ветки «а мы одни?» у вызывающих нет.
             builder.RegisterEntryPoint<Net.HostReadyGate>(Lifetime.Singleton)
                    .AsSelf().As<Guildmaster.Core.Net.IReadyGate>();
+
+            // Состав сеанса: кто играет и за какую сторону. Ведёт владелец по той же причине, что и
+            // согласие, — участников знает соединение, а оно есть только у него.
+            builder.RegisterEntryPoint<Net.HostSessionRoster>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Players.ISessionRoster>();
+
+            // Присутствие: собирает курсоры всех и раздаёт каждому курсоры ЕГО стороны. Отбор стоит на
+            // отправке, поэтому раздавать может только тот, у кого сходятся все соединения.
+            builder.RegisterEntryPoint<Net.HostPresence>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Players.IPresenceView>();
         }
 
         /// <summary>
@@ -96,6 +106,15 @@ namespace Guildmaster.Game.Session
             // сессии, знает хост.
             builder.RegisterEntryPoint<Net.GuestReadyGate>(Lifetime.Singleton)
                    .AsSelf().As<Guildmaster.Core.Net.IReadyGate>();
+
+            // Состав сеанса приходит таблицей — гость только представляется именем. Своё мнение о том,
+            // кто ему союзник, в PvP означало бы, что стороны решает каждый клиент сам.
+            builder.RegisterEntryPoint<Net.GuestSessionRoster>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Players.ISessionRoster>();
+
+            // Свой курсор уходит хосту, чужие приходят от него уже отобранными по стороне.
+            builder.RegisterEntryPoint<Net.GuestPresence>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Players.IPresenceView>();
         }
     }
 }

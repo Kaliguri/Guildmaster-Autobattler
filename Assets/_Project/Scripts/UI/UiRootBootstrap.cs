@@ -139,8 +139,10 @@ namespace Guildmaster.UI
         private VisualElement _layerScreens;      // [2] Page/Sheet навигатора (под топбаром)
         private VisualElement _layerTopbar;       // [3] RunModeBar (над обычными экранами)
         private VisualElement _layerModal;        // [4] Modal навигатора (над топбаром, scrim накрывает его)
+        private VisualElement _layerCursors;      // [5] курсоры других игроков (кооп) — под тултипами
         private VisualElement _layerTooltip;      // [6] окно тултипа (Трек Т) — над топбаром и модалками
         private Tooltips.TooltipSystem _tooltips; // Трек Т: показыватель тултипов, привязан к слою в Start
+        private Presence.CursorLayerView _cursors; // кооп: чужие курсоры, привязаны к своему слою в Start
         private Tooltips.KeywordStyle _keywordStyle; // Трек Т: цвет терминов, читается с USS-доноров
         private UiSoundSystem _uiSound;           // звук интерфейса: один слушатель на корне панели
         private bool _lastProvingGrounds;    // ребро вида панели: забег ↔ площадка
@@ -198,9 +200,11 @@ namespace Guildmaster.UI
             ISubscriber<OpenTitleCardRequest> openTitleCardSub,
             Tooltips.TooltipSystem tooltips,
             Tooltips.KeywordStyle keywordStyle,
-            UiSoundSystem uiSound)
+            UiSoundSystem uiSound,
+            Presence.CursorLayerView cursors)
         {
             _uiSound = uiSound;
+            _cursors = cursors;
             _tooltips = tooltips;
             _keywordStyle = keywordStyle;
             _screenBackdropPub = screenBackdropPub;
@@ -252,6 +256,8 @@ namespace Guildmaster.UI
             // Трек Т: система тултипов слушает всплывающие запросы на КОРНЕ панели, а окно держит в своём
             // слое — поэтому привязка идёт сразу после слоёв и до построения экранов.
             _tooltips?.Attach(_doc.rootVisualElement, _layerTooltip);
+            // Кооп-курсоры: слой свой, тикает их сам сервис — здесь только выдаём ему место для рисования.
+            _cursors?.Attach(_layerCursors);
             // Доноры цвета терминов: невидимые элементы с классами .gm-kw--* в слое подсказок. Так
             // палитра остаётся в USS, а rich text получает готовый hex (rich text переменные не читает).
             _keywordStyle?.Attach(_layerTooltip);
@@ -355,7 +361,7 @@ namespace Guildmaster.UI
             _layerScreens      = AddLayer(root, "layer-screens");
             _layerTopbar       = AddLayer(root, "layer-topbar");
             _layerModal        = AddLayer(root, "layer-modal");
-            AddLayer(root, "layer-cursors");  // задел II.14 (live-курсоры)
+            _layerCursors = AddLayer(root, "layer-cursors"); // кооп: курсоры других игроков (03.08.2026)
             _layerTooltip = AddLayer(root, "layer-tooltip"); // Трек Т: окно тултипа над топбаром и модалками
             AddLayer(root, "layer-system");   // задел II.13/Трек К (тосты/фид/dev-консоль)
 

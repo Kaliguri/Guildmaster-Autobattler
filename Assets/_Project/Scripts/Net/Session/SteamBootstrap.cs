@@ -34,6 +34,14 @@ namespace Guildmaster.Net.Session
         /// </remarks>
         public const uint AppId = 3259720;
 
+        /// <summary>Как зовут игрока за этим клиентом. Steam не поднят — безымянное «Игрок».</summary>
+        /// <remarks>
+        /// Живёт здесь, потому что здесь единственное место, где мы вообще говорим со Steam про личность.
+        /// Спрашивать <c>SteamClient.Name</c> из игрового кода значило бы завести второй вход в Steam —
+        /// и второе поведение на случай, когда Steam не запущен.
+        /// </remarks>
+        public string PlayerName => _running ? SteamClient.Name : "Игрок";
+
         private bool _running;
 
         /// <summary>Поднялся ли Steam. Спрашивают лобби и транспорт — им без него делать нечего.</summary>

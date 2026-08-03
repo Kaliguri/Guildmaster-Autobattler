@@ -12,7 +12,6 @@ using Guildmaster.Data.Descriptions;
 using Guildmaster.Data.Stats;
 using Guildmaster.Game.Flow;
 using Guildmaster.Game.Input;
-using Guildmaster.Game.Players;
 using Guildmaster.Game.Services;
 using Guildmaster.Guild;
 using Guildmaster.UI;
@@ -154,6 +153,9 @@ namespace Guildmaster.Game
             // подключён к роутеру — переезд MenuRouter на него в Ф2. Зависимости (IInputService, IBattleClock)
             // резолвятся ниже в этом же скоупе.
             builder.Register<UiNavigator>(Lifetime.Singleton);
+            // Курсоры других игроков: слой им выдаёт корень UI, а тикают они сами — рисование идёт
+            // каждый кадр и не зависит от того, какой экран сейчас открыт.
+            builder.RegisterEntryPoint<Guildmaster.UI.Presence.CursorLayerView>(Lifetime.Singleton).AsSelf();
             builder.RegisterComponentInHierarchy<UiRootBootstrap>();
 
             // Точка входа игры (D1): GameBootstrap в персистентной CoreScene получает GameFlow и крутит
@@ -195,9 +197,17 @@ namespace Guildmaster.Game
             builder.Register<Session.SessionCommandRouter>(Lifetime.Singleton)
                    .As<Guildmaster.Guild.Commands.IRunCommands>();
 
-            // За какую команду играет этот клиент. Единственный источник ответа «мы победили?» —
-            // в бою есть команды, а не «сторона игрока» (шов под PvP).
-            builder.Register<SoloLocalPlayer>(Lifetime.Singleton).As<ILocalPlayer>();
+            // Кто с нами играет и за какую сторону играем мы. Единственный источник ответа «мы
+            // победили?» и «чей это курсор»: в бою есть команды, а не «сторона игрока». Роутер, а не
+            // объект с полем, потому что состав живёт в сеансе и умирает вместе с ним — а спрашивают
+            // его те, кто сеансы переживает (бой, показ, звук).
+            builder.Register<Session.SessionPlayerRouter>(Lifetime.Singleton)
+                   .As<ILocalPlayer>().As<Guildmaster.Core.Players.ISessionRoster>();
+
+            // Чужие курсоры — тем же роутером-приёмом: живут они в сеансе, а рисует их мир, который
+            // сеансы переживает.
+            builder.Register<Session.SessionPresenceRouter>(Lifetime.Singleton)
+                   .As<Guildmaster.Core.Players.IPresenceView>();
 
             builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>();
 
@@ -291,6 +301,11 @@ namespace Guildmaster.Game
 
             // Ввод глобален и переживает перезагрузку боевой сцены (вики «16» §3).
             builder.Register<InputService>(Lifetime.Singleton).As<IInputService>();
+
+            // Указатель в мировых координатах: один владелец перевода «экран → мир» на расстановку и на
+            // присутствие. Камеру ищет лениво — сцена арены поднимается позже этого скоупа.
+            builder.Register<Guildmaster.Presentation.PointerWorld>(Lifetime.Singleton)
+                   .As<Guildmaster.Core.Input.IPointerWorld>();
 
             // Провайдера GlobalMessagePipe здесь больше нет: статический доступ к шине не звал никто,
             // все потребители получают IPublisher/ISubscriber инъекцией — как и задумано (аудит 2026-07-26).

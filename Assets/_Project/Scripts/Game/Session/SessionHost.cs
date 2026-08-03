@@ -45,6 +45,17 @@ namespace Guildmaster.Game.Session
         public Guildmaster.Guild.ISessionRunState RunView => Resolve<Guildmaster.Guild.ISessionRunState>();
 
         /// <summary>
+        /// Кто в сеансе и за какую сторону играет; вне сессии — <c>null</c>. У владельца состав ведётся,
+        /// у гостя принимается — спрашивающему разница не видна.
+        /// </summary>
+        public Guildmaster.Core.Players.ISessionRoster Roster
+            => Resolve<Guildmaster.Core.Players.ISessionRoster>();
+
+        /// <summary>Чужие курсоры текущего сеанса; вне сессии — <c>null</c>, рисовать нечего.</summary>
+        public Guildmaster.Core.Players.IPresenceView Presence
+            => Resolve<Guildmaster.Core.Players.IPresenceView>();
+
+        /// <summary>
         /// Команды забега текущего сеанса; вне сессии — <c>null</c>. У владельца это локальная шина, у
         /// гостя — отправка интента хосту; спрашивающему разница не видна и не нужна.
         /// </summary>

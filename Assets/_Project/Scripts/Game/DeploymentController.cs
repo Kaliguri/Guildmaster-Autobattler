@@ -53,6 +53,12 @@ namespace Guildmaster.Game
         private readonly IPublisher<TestZoneChangedEvent> _testZoneChangedPub; // Ф5: вещаем СОСТОЯНИЕ (единый источник)
         private readonly IPublisher<ArenaRevealRequest>   _arenaRevealPub;    // «яви место боя» — подача за презентером
         private readonly IBattleSession   _session;
+        // За какую сторону играем МЫ. Своего поля с командой у расстановки нет и не должно быть:
+        // владелец этого факта один — состав сеанса, и спрашивается он в момент вопроса.
+        private readonly Core.Players.ILocalPlayer _localPlayer;
+        // Указатель в мире. Свой перевод «экран → мир» расстановка держала до 03.08.2026, пока считать
+        // его не понадобилось второму потребителю (присутствие): два перевода разъехались бы молча.
+        private readonly Core.Input.IPointerWorld  _pointer;
         // Камеры здесь НЕТ намеренно: какой вид показать, выводится из фазы боя (её слушает
         // CameraModeController). Прежде расстановка сама ставила свободную камеру и кадрировала арену, а
         // старт боя сам возвращал слежение — два владельца вида, и оба перебивали выбор игрока.
@@ -126,7 +132,6 @@ namespace Guildmaster.Game
         private Venue _venue = Venue.None;
 
         private DeploymentView _view;
-        private Camera _camera;
         private IDisposable _equipSubscription;
         private IDisposable _relicDragSubscription;
         private IDisposable _testZoneSubscription;
@@ -186,6 +191,8 @@ namespace Guildmaster.Game
             ActivitySetup activity,
             ProvingGroundsConfig groundsConfig,
             Core.Net.IReadyGate ready,
+            Core.Players.ILocalPlayer localPlayer,
+            Core.Input.IPointerWorld pointer,
             ISubscriber<BattleEndedEvent> battleEndedSub,
             IPublisher<Guildmaster.Guild.OpenOutcomeRequest> outcomePub,
             Core.Flow.IRunControl runControl)
@@ -196,6 +203,8 @@ namespace Guildmaster.Game
             _activity = activity;
             _groundsConfig = groundsConfig;
             _ready         = ready;
+            _localPlayer   = localPlayer;
+            _pointer       = pointer;
             _arenaRevealPub = arenaRevealPub;
             _audio         = audio;
             _runStates     = runStates;
@@ -296,12 +305,22 @@ namespace Guildmaster.Game
         /// которому PvP не заводится отдельным видом. До 03.08.2026 флаг не читал никто: расстановка
         /// жёстко знала «команда 0» в семи местах, и на площадке нельзя было тронуть противника, хотя
         /// он там — такой же кит игрока.
-        /// <para>Сторона арены выводится отсюда же: своя половина у команды 0, вражеская у всех
-        /// остальных. Без этого перетаскивание противника проверялось бы по чужой зоне и запрещалось
-        /// всегда.</para>
+        /// <para><b>Своя сторона спрашивается у <see cref="ILocalPlayer"/>, а не считается нулём</b>
+        /// (03.08.2026). Ноль был верен ровно до второго живого игрока: в PvP оба клиента считали бы
+        /// своей одну и ту же сторону и распоряжались бы одним строем. Сторону локального игрока держит
+        /// состав сеанса (<c>ISessionRoster</c>), и это единственный её владелец.</para>
         /// </remarks>
-        private bool CanCommand(int team) => !_activity.OwnUnitsOnly || team == 0;
+        private bool CanCommand(int team) => !_activity.OwnUnitsOnly || team == _localPlayer.Team;
 
+        /// <summary>
+        /// Половина арены, на которой стоит эта команда.
+        /// </summary>
+        /// <remarks>
+        /// <b>Ноль здесь — НЕ «моя команда», а первая сторона арены,</b> и менять его на сторону
+        /// смотрящего нельзя: зоны расстановки привязаны к геометрии площадки, а не к тому, кто на неё
+        /// смотрит. Игрок за команду 1 расставляется в правой зоне и у себя, и у противника — иначе бойцы
+        /// у двух клиентов стояли бы в разных местах одной арены.
+        /// </remarks>
         private static DeploymentSide SideOf(int team) =>
             team == 0 ? DeploymentSide.Player : DeploymentSide.Enemy;
 
@@ -311,7 +330,7 @@ namespace Guildmaster.Game
         {
             IReadOnlyList<RuntimeUnit> units = _sim.Units;
             for (int i = 0; i < units.Count; i++)
-                if (units[i].Team != 0 && !units[i].IsDead) return true;
+                if (units[i].Team != _localPlayer.Team && !units[i].IsDead) return true;
             return false;
         }
 
@@ -770,7 +789,7 @@ namespace Guildmaster.Game
                 return;
             }
 
-            Vector2 world = ScreenToWorld(_input.PointerScreenPosition);
+            Vector2 world = _pointer.Position;
             int hoverId = -1;
             bool dragValid = false;
 
@@ -866,7 +885,7 @@ namespace Guildmaster.Game
                     _relicDrag = e.Relic; // позицию берём из _input в Tick/Drop (тот же источник, что deployment-pick)
                     break;
                 case RelicDragPhase.Drop:
-                    RuntimeUnit target = e.Relic != null ? PickUnit(ScreenToWorld(_input.PointerScreenPosition)) : null;
+                    RuntimeUnit target = e.Relic != null ? PickUnit(_pointer.Position) : null;
                     if (target != null && e.Relic != null)
                     {
                         EquipOn(target.Id, e.Relic);
@@ -886,7 +905,7 @@ namespace Guildmaster.Game
         // на поле ещё нет) + подсветка юнита под курсором (цель эквипа). Круги-опоры остаются видимыми.
         private void DrawRelicDragGhost()
         {
-            Vector2 world = ScreenToWorld(_input.PointerScreenPosition);
+            Vector2 world = _pointer.Position;
             RuntimeUnit target = PickUnit(world);
 
             UnitSilhouette sil = UnitSilhouette.FromPrefab(_relicDrag != null ? _relicDrag.ViewPrefab : null);
@@ -900,7 +919,7 @@ namespace Guildmaster.Game
         {
             if (!_deploying || _input.GameplaySuppressed) return;
 
-            Vector2 world = ScreenToWorld(_input.PointerScreenPosition);
+            Vector2 world = _pointer.Position;
             RuntimeUnit unit = PickUnit(world);
             if (unit == null) return;
 
@@ -946,7 +965,7 @@ namespace Guildmaster.Game
             if (_dragMoved && !_input.GameplaySuppressed) // именно перетаскивание (не клик) → пробуем поставить
             {
                 // Та же целевая точка, что вела призрака: иначе юнит на отпускании прыгал бы к курсору.
-                Vector2 target = DragTarget(ScreenToWorld(_input.PointerScreenPosition));
+                Vector2 target = DragTarget(_pointer.Position);
                 if (CanDrop(target))
                 {
                     _dragged.Position = target;
@@ -1132,14 +1151,6 @@ namespace Guildmaster.Game
 
         private static bool CanUseExtended(RuntimeUnit u) =>
             (u.Unit as RelicData)?.CanUseExtendedDeployment ?? false;
-
-        private Vector2 ScreenToWorld(Vector2 screen)
-        {
-            if (_camera == null) _camera = Camera.main;
-            if (_camera == null) return screen; // нет камеры → возвращаем как есть (пикинг просто не совпадёт)
-            Vector3 w = _camera.ScreenToWorldPoint(new Vector3(screen.x, screen.y, -_camera.transform.position.z));
-            return new Vector2(w.x, w.y);
-        }
 
         private Slot FindSlot(int unitId)
         {
