@@ -92,16 +92,26 @@ namespace Guildmaster.Tests.EditMode.Run
             Assert.AreEqual(EventOutcome.PlayerDefeated, Run(loser).Outcome, "для другой команды тот же бой — поражение");
         }
 
+        /// <summary>
+        /// Перезапускать некому — поражение сразу, и пул акта при этом НЕ тронут.
+        /// </summary>
+        /// <remarks>
+        /// Второе утверждение и есть суть: списание стояло прямо в условии цикла, до выяснения,
+        /// исполним ли перезапуск. Игрок терял попытку, не получив ни одного перезапуска, — а видно
+        /// это было только по уменьшившемуся счётчику в верхней панели.
+        /// </remarks>
         [Test]
-        public void Loss_NoRestartBinding_DefeatedImmediately()
+        public void Loss_NoRestartBinding_DefeatedImmediately_AndPoolUntouched()
         {
             var session = new FakeSession(BattleOutcome.Win(EnemyTeam)) { CanRestart = false };
-            var flow    = new BattleFlow(NewPreset(), session, Player(MyTeam), Restarts(2));
+            var pool    = new RestartPool(2);
+            var flow    = new BattleFlow(NewPreset(), session, Player(MyTeam), pool.TryConsume);
 
             EventResult result = Run(flow);
 
             Assert.AreEqual(EventOutcome.PlayerDefeated, result.Outcome);
             Assert.AreEqual(0, session.RestartCount, "некому перезапускать → без ретраев");
+            Assert.AreEqual(0, pool.Spent, "попытка не тратится, когда исполнить её некому");
         }
 
         [Test]
@@ -134,6 +144,24 @@ namespace Guildmaster.Tests.EditMode.Run
             return () => { if (left <= 0) return false; left--; return true; };
         }
 
+        /// <summary>Тот же пул, но со счётчиком списанного — чтобы проверять, что попытку НЕ потратили.</summary>
+        private sealed class RestartPool
+        {
+            private int _left;
+
+            public RestartPool(int size) => _left = size;
+
+            public int Spent { get; private set; }
+
+            public bool TryConsume()
+            {
+                if (_left <= 0) return false;
+                _left--;
+                Spent++;
+                return true;
+            }
+        }
+
         private static BattlePresetData NewPreset()
         {
             // Пустой пресет достаточен: BattleFlow читает только preset != null и preset.Id (для лога).
@@ -150,7 +178,9 @@ namespace Guildmaster.Tests.EditMode.Run
         {
             private readonly Queue<BattleOutcome> _outcomes;
             public int  RestartCount;
-            public bool CanRestart = true;
+
+            /// <summary>Есть ли кому перезапустить. Флоу обязан спросить это ДО списания попытки из пула.</summary>
+            public bool CanRestart { get; set; } = true;
 
             public FakeSession(params BattleOutcome[] outcomes)
             {
