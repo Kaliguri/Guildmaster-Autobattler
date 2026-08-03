@@ -39,7 +39,8 @@
       "maxVoices": 4,
       "cooldownMs": 50,
       "stealing": 2,
-      "priority": 1
+      "priority": 1,
+      "spatial": true
     },
     "whoosh": {
       "bus": "SFX/Combat",
@@ -49,7 +50,8 @@
       "maxVoices": 4,
       "cooldownMs": 60,
       "stealing": 2,
-      "priority": 1
+      "priority": 1,
+      "spatial": true
     },
     "tonal": {
       "bus": "SFX/Combat",
@@ -59,7 +61,8 @@
       "maxVoices": 3,
       "cooldownMs": 60,
       "stealing": 3,
-      "priority": 2
+      "priority": 2,
+      "spatial": true
     },
     "cast": {
       "bus": "SFX/Combat",
@@ -69,7 +72,8 @@
       "maxVoices": 2,
       "cooldownMs": 50,
       "stealing": 3,
-      "priority": 2
+      "priority": 2,
+      "spatial": true
     },
     "death": {
       "bus": "SFX/Combat",
@@ -79,7 +83,8 @@
       "maxVoices": 3,
       "cooldownMs": 80,
       "stealing": 0,
-      "priority": 3
+      "priority": 3,
+      "spatial": true
     },
     "stinger": {
       "bus": "SFX/Stingers",
@@ -1047,6 +1052,18 @@
       "category": "ui_soft",
       "files": [
         "ui_soft/node_hover_01.wav"
+      ]
+    },
+    {
+      "key": "map.node_appear.ui",
+      "action": null,
+      "isDefault": false,
+      "path": "event:/SFX/Map/node_appear",
+      "category": "ui_soft",
+      "files": [
+        "ui_soft/node_appear_01.wav",
+        "ui_soft/node_appear_02.wav",
+        "ui_soft/node_appear_03.wav"
       ]
     },
     {
