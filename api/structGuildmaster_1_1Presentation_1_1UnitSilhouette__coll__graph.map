@@ -1,0 +1,9 @@
+<map id="Guildmaster.Presentation.UnitSilhouette" name="Guildmaster.Presentation.UnitSilhouette">
+<area shape="rect" id="Node000001" title="Единый силуэт юнита для drag&#45;призрака расстановки (QA #5/#9) — ОДИН источник того,..." alt="" coords="5,411,188,531"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Presentation_1_1SilhouettePart.html" title="Одна часть силуэта: спрайт и его поза ОТНОСИТЕЛЬНО ТОЧКИ НОГ юнита." alt="" coords="5,5,188,165"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,166,90,228,90,348,93,394,87,394,85,348,85,228,88,165"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Presentation_1_1UnitSilhouette.html" title="Единый силуэт юнита для drag&#45;призрака расстановки (QA #5/#9) — ОДИН источник того,..." alt="" coords="148,228,331,348"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="155,164,190,213,186,216,151,167"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="195,350,156,399,152,396,191,347"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="332,270,350,276,357,288,355,296,348,301,345,297,350,293,352,288,346,280,330,275"/>
+</map>

@@ -113,16 +113,16 @@ Collaboration diagram for Guildmaster.Presentation.DeathShatter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac3033443fa45cf481cfebe680b9d196f" id="r_ac3033443fa45cf481cfebe680b9d196f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeathShatter.html#ac3033443fa45cf481cfebe680b9d196f">Play</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">SpriteRenderer</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">src</a>, <a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">Design.CombatFeelConfig</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">cfg</a>, System.Action <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">onComplete</a>)</td></tr>
-<tr class="memdesc:ac3033443fa45cf481cfebe680b9d196f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запустить разлёт из текущего состояния спрайта <em>src</em> .  <br /></td></tr>
-<tr class="separator:ac3033443fa45cf481cfebe680b9d196f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7736ab9646ca98f3ba8eac4616aa470" id="r_ae7736ab9646ca98f3ba8eac4616aa470"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeathShatter.html#ae7736ab9646ca98f3ba8eac4616aa470">Play</a> (SpriteRenderer src, <a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">Design.CombatFeelConfig</a> cfg, Gradient palette, System.Action onComplete)</td></tr>
+<tr class="memdesc:ae7736ab9646ca98f3ba8eac4616aa470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запустить разлёт из текущего состояния спрайта <em>src</em> .  <br /></td></tr>
+<tr class="separator:ae7736ab9646ca98f3ba8eac4616aa470"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Разлёт спрайта юнита на осколки при смерти. </p>
-<p>Берёт ТЕКУЩИЙ кадр спрайта и строит меш строго под его ВИДИМЫЕ границы (из собственного меша спрайта — <code>sprite.vertices</code>/<code>sprite.uv</code>), поэтому осколки размером с персонажа, а не с прозрачной спрайт-ячейки. Рисует шейдером Guildmaster/Sprite/Shatter: вспышка в белый → осколки дрейфуют наружу во все стороны, медленно вращаясь, и плавно тают. Разлёт нормирован на высоту спрайта. Per-instance данные через MaterialPropertyBlock (материал общий, без аллокаций). По завершении зовёт callback и самоуничтожается. Только презентация; сим не трогает. </p>
+<p>Берёт ТЕКУЩИЙ кадр спрайта и строит меш строго под его ВИДИМЫЕ границы (из собственного меша спрайта — <code>sprite.vertices</code>/<code>sprite.uv</code>), поэтому осколки размером с персонажа, а не с прозрачной спрайт-ячейки. Рисует шейдером Guildmaster/Sprite/Shatter: пересвет догорает → светящиеся угольки дрейфуют наружу во все стороны, медленно кувыркаясь, и гаснут вразнобой. Цвет осколка задаёт рампа, а не тело: спрайт остаётся только формой. Разлёт нормирован на высоту спрайта. Per-instance данные через MaterialPropertyBlock (материал общий, без аллокаций). По завершении зовёт callback и самоуничтожается. Только презентация; сим не трогает. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac3033443fa45cf481cfebe680b9d196f" name="ac3033443fa45cf481cfebe680b9d196f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3033443fa45cf481cfebe680b9d196f">&#9670;&#160;</a></span>Play()</h2>
+<a id="ae7736ab9646ca98f3ba8eac4616aa470" name="ae7736ab9646ca98f3ba8eac4616aa470"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7736ab9646ca98f3ba8eac4616aa470">&#9670;&#160;</a></span>Play()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -131,9 +131,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.DeathShatter.Play </td>
+          <td class="memname">void Guildmaster.Presentation.DeathShatter.Play </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">SpriteRenderer</a>&#160;</td>
+          <td class="paramtype">SpriteRenderer&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
@@ -141,6 +141,12 @@ Public Member Functions</h2></td></tr>
           <td></td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">Design::CombatFeelConfig</a>&#160;</td>
           <td class="paramname"><em>cfg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Gradient&#160;</td>
+          <td class="paramname"><em>palette</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -162,10 +168,21 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Запустить разлёт из текущего состояния спрайта <em>src</em> . </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">palette</td><td>Палитра ПАВШЕГО юнита: часть осколков красится ею, остальные — белым пересветом. Так разлёт говорит, кто именно погиб, а не «здесь кто-то умер». </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1DeathShatter_ac3033443fa45cf481cfebe680b9d196f_cgraph.svg" width="440" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1DeathShatter_ae7736ab9646ca98f3ba8eac4616aa470_cgraph.svg" width="440" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1DeathShatter_ae7736ab9646ca98f3ba8eac4616aa470_icgraph.svg" width="511" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

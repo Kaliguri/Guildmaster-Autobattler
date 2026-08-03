@@ -1,3 +1,3 @@
 <map id="Guildmaster.Data.Definitions.OpenRewardRequest" name="Guildmaster.Data.Definitions.OpenRewardRequest">
-<area shape="rect" id="Node000001" title="Запрос показать экран награды после боя (публикует флоу забега, слушает UI)." alt="" coords="5,5,212,145"/>
+<area shape="rect" id="Node000001" title="Запрос показать экран награды после боя (публикует флоу забега, слушает UI)." alt="" coords="5,5,212,165"/>
 </map>

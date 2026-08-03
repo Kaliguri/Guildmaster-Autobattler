@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.DevConsole.DevArgs.GetULong" name="Guildmaster.Core.DevConsole.DevArgs.GetULong">
+<area shape="rect" id="Node000001" title="Беззнаковое 64&#45;битное — сиды RNG. Отдельно от GetInt: сид не помещается в int." alt="" coords="5,5,227,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1DevConsole_1_1DevArgs.html#aaf4ac9ccc678a744e5d2361361847840" title="Сырое слово или null, если его нет. Не бросает — для необязательных аргументов." alt="" coords="275,5,496,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,23,261,23,261,28,227,28"/>
+</map>

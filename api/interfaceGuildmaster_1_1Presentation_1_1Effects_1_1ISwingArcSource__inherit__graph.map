@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Effects.ISwingArcSource" name="Guildmaster.Presentation.Effects.ISwingArcSource">
+<area shape="rect" id="Node000001" title="Кто машет: источник геометрии взмаха для дуги за клинком." alt="" coords="9,5,192,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html" title="World&#45;space визуальное представление RuntimeUnit." alt="" coords="5,133,196,593"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,100,103,133,98,133,98,100"/>
+</map>

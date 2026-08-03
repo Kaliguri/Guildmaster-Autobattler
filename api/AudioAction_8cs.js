@@ -13,6 +13,7 @@ var AudioAction_8cs =
       [ "Apply", "AudioAction_8cs.html#a0237365cea7b702ebea76dfd948d1da1a9639e32cab248434a17ab32237cb3b71", null ],
       [ "Expire", "AudioAction_8cs.html#a0237365cea7b702ebea76dfd948d1da1a4a4998a3b2da0d8aa25b4067aba9d501", null ],
       [ "Tick", "AudioAction_8cs.html#a0237365cea7b702ebea76dfd948d1da1a0b3516a5bbb77566f904f9d3877f4710", null ],
-      [ "Stinger", "AudioAction_8cs.html#a0237365cea7b702ebea76dfd948d1da1ae60b65c860681c0a53fcded0e33fc6de", null ]
+      [ "Stinger", "AudioAction_8cs.html#a0237365cea7b702ebea76dfd948d1da1ae60b65c860681c0a53fcded0e33fc6de", null ],
+      [ "Loop", "AudioAction_8cs.html#a0237365cea7b702ebea76dfd948d1da1a89d7b10cb4238977d2b523dfd9ea7745", null ]
     ] ]
 ];

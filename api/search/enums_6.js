@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['kind_0',['Kind',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a685d227543d73264d3c77b5ed5b0e02c',1,'Guildmaster::ContentHub::Editor::HubToasts']]],
-  ['kitpower_1',['KitPower',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aee083e738438161de13eeb944ce80dea',1,'Guildmaster::Data::Definitions']]]
+  ['handslot_0',['HandSlot',['../namespaceGuildmaster_1_1Presentation_1_1Body.html#a5720775fdbc2ef9a22c2ab013201505b',1,'Guildmaster::Presentation::Body']]],
+  ['heldkind_1',['HeldKind',['../namespaceGuildmaster_1_1Presentation_1_1Body.html#a5fedd7faf007da62d2a6014f6d2f1f0d',1,'Guildmaster::Presentation::Body']]],
+  ['hitformkind_2',['HitFormKind',['../namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1caabb0a57eb911cd211aa9b39edca3e',1,'Guildmaster::Presentation::Effects']]]
 ];

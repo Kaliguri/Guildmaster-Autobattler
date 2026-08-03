@@ -1,0 +1,7 @@
+<map id="Guildmaster.Data.Definitions.ClassBalanceConfig.GetBaseModifiers" name="Guildmaster.Data.Definitions.ClassBalanceConfig.GetBaseModifiers">
+<area shape="rect" id="Node000001" title="Классовая стат&#45;база как группа ModifierOp.Override&#45;модификаторов для скармливания в Stats ПЕРВОЙ груп..." alt="" coords="5,37,275,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#a377b6b7de1d6706dec62a7cbba3e350a" title="Бюджет брони класса — СУММА физической и магической (ГДД «Статы» §Броня, решение 2026&#45;07&#45;26/12)." alt="" coords="323,5,585,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="274,41,309,37,309,43,275,46"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#adcc5178b8efe420078d250c3ec5185a5" title=" " alt="" coords="331,69,577,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="275,68,317,73,317,78,274,74"/>
+</map>

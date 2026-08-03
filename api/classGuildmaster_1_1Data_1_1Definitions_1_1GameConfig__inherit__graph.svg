@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Общие дефолты игры (вики «13» §3.4): начальные пользовательские настройки (громкости,...">
+<g id="a_Node000001"><a xlink:title="Общие правила и экономика игры (вики «13» §3.4) плюс громкости первого запуска.">
 <polygon fill="#999999" stroke="transparent" points="155,-210 0,-210 0,0 155,0 155,-210"/>
 <text text-anchor="start" x="5.5" y="-198" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="start" x="47.5" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">GameConfig</text>
@@ -32,21 +32,22 @@
 <text text-anchor="start" x="11" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="30.5" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">DefaultSfxVolume</text>
 <text text-anchor="start" x="11" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="30.5" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">DefaultLocale</text>
+<text text-anchor="start" x="30.5" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">LocalPlayerTeam</text>
 <text text-anchor="start" x="11" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="30.5" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">LocalPlayerTeam</text>
+<text text-anchor="start" x="30.5" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">VesselItemSlots</text>
 <text text-anchor="start" x="11" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="30.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">VesselItemSlots</text>
+<text text-anchor="start" x="30.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">PartyBannerSlots</text>
 <text text-anchor="start" x="11" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="30.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">PartyBannerSlots</text>
+<text text-anchor="start" x="30.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">RelicCapacityBase</text>
 <text text-anchor="start" x="11" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="30.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">RelicCapacityBase</text>
+<text text-anchor="start" x="30.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">RelicCapacityMax</text>
 <text text-anchor="start" x="11" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="30.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">RelicCapacityMax</text>
+<text text-anchor="start" x="30.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">StartGold</text>
 <text text-anchor="start" x="11" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="30.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">StartGold</text>
-<text text-anchor="start" x="30.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">and 10 more...</text>
-<text text-anchor="start" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="30.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">BattleGoldReward</text>
+<text text-anchor="start" x="30.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">and 16 more...</text>
+<text text-anchor="start" x="11" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">CreateDefault()</text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-182 0.5,-182 155.5,-182 155.5,-182 0.5,-182"/>
 <polygon fill="#666666" stroke="#666666" points="0.5,-17 0.5,-17 28.5,-17 28.5,-17 0.5,-17"/>
 <polygon fill="#666666" stroke="#666666" points="28.5,-17 28.5,-17 155.5,-17 155.5,-17 28.5,-17"/>

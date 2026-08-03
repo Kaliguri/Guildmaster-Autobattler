@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.EffectSystem.Tick" name="Guildmaster.Combat.EffectSystem.Tick">
+<area shape="rect" id="Node000001" title="Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение." alt="" coords="331,5,528,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1EffectSystem.html#ad9274c96894e43dc957fa63d1eb1884c" title="Сколько РАЗНЫХ эффектов (по Def) с тегом tag &#160;висело на юните на НАЧАЛО тика." alt="" coords="5,5,283,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="317,28,283,28,283,23,317,23"/>
+</map>

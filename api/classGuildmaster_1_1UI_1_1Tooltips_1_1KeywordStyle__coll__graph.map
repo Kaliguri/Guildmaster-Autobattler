@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Tooltips.KeywordStyle" name="Guildmaster.UI.Tooltips.KeywordStyle">
+<area shape="rect" id="Node000001" title="Оформление терминов в тексте: полужирный плюс цвет раздела глоссария." alt="" coords="5,139,175,319"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Data_1_1Descriptions_1_1IKeywordStyle.html" title="Оформление термина в тексте: чем обернуть слово, чтобы оно читалось как термин." alt="" coords="37,5,143,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,105,93,138,87,138,87,105"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="Guildmaster.Combat.Effects.Components.EmberComponent.OnTick" name="Guildmaster.Combat.Effects.Components.EmberComponent.OnTick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,101,280,141"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a6c584dfe148019088ac6cce1c3d4c4e9" title="Срок вышел досрочно: эффект снимается штатным путём, а не отдельной веткой." alt="" coords="339,5,547,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,99,327,55,354,47,356,52,329,60,200,104"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#aac05d7d23fb5a0653c64d151277f4b5f" title="Пора сработать? Абсолютный тик против текущего — без потиковых декрементов, иначе таймер зависел бы о..." alt="" coords="339,69,547,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="280,104,325,99,326,104,281,109"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a5554fd4708aa26adef1a86a2991addd4" title="Срезать стаки (цена очищения, сход «Углей»). Ниже нуля не уходит." alt="" coords="336,133,551,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="281,133,322,138,322,143,280,139"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ad3b04ab7a3c2257e525f0ea361fde3b7" title="Перевзвести на свой же шаг и назначить шаг для следующего раза: сначала ждём текущий интервал,..." alt="" coords="328,197,559,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="200,139,329,183,356,191,354,196,327,188,198,144"/>
+</map>

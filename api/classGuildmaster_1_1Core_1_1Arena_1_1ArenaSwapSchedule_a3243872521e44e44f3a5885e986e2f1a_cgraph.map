@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.Arena.ArenaSwapSchedule.CrossTime" name="Guildmaster.Core.Arena.ArenaSwapSchedule.CrossTime">
+<area shape="rect" id="Node000001" title="Момент (в общем прогрессе 0..1), когда клетка проходит середину указанного акта: переворачивается на ..." alt="" coords="5,5,224,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1Arena_1_1ArenaSwapSchedule.html#a14f71b54fc35942fd0b4063c86ec107d" title="Состояние клетки (cellX , cellY ) в момент t &#160;(0..1)." alt="" coords="272,5,491,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,23,258,23,258,28,224,28"/>
+</map>

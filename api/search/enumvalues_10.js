@@ -1,17 +1,4 @@
 var searchData=
 [
-  ['rage_0',['Rage',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0af467834a619fdbc994d37e84f5fef567',1,'Guildmaster::Data::Definitions']]],
-  ['ranged_1',['Ranged',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1ac2f329a17c18a701dbe1e96e03858728',1,'Guildmaster::Data::Definitions']]],
-  ['reactive_2',['Reactive',['../namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70dac0d2be90914e0cb1d969da682299d7f7',1,'Guildmaster::Combat']]],
-  ['receivebuffeff_3',['ReceiveBuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aa975ee95467413b8434907de4d592960',1,'Guildmaster::Data::Stats']]],
-  ['receivedebuffeff_4',['ReceiveDebuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a4fec34cb21c0846bb789a55b61d07d65',1,'Guildmaster::Data::Stats']]],
-  ['recovery_5',['Recovery',['../namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fad8afbc541b39d23648c823057cffe3a5',1,'Guildmaster::Combat']]],
-  ['refresh_6',['Refresh',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca63a6a88c066880c5ac42394a22803ca6',1,'Guildmaster::Data::Definitions']]],
-  ['removerelic_7',['RemoveRelic',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a77f110cb08935b14a4b3742c4dc83b80a101391afc2c0d5f640162e9f03f0cd04',1,'Guildmaster::Data::Definitions']]],
-  ['resourcegaineff_8',['ResourceGainEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a143f98d287cb622e9f790376ba67377d',1,'Guildmaster::Data::Stats']]],
-  ['resume_9',['Resume',['../namespaceGuildmaster_1_1Net.html#abfefa865c9eefe25d3d732f0c5c953f8af1cefec9e2196c672a622347f1fbc325',1,'Guildmaster::Net']]],
-  ['retreat_10',['Retreat',['../namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba008bec353de180da9782954e7a1374e6',1,'Guildmaster::Combat']]],
-  ['role_11',['Role',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113abbbabdbe1b262f75d99d62880b953be1',1,'Guildmaster::Data::Definitions']]],
-  ['rules_12',['Rules',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ae2772e0f6d732c1f22cce603b3958140a1f4da964f8eab62e96e8cfe406e44364',1,'Guildmaster::Data::Definitions']]],
-  ['run_13',['Run',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6ac5301693c4e792bcd5a479ef38fb8f8d',1,'Guildmaster::Data::Definitions']]]
+  ['quit_0',['Quit',['../namespaceGuildmaster_1_1Guild.html#a4a1eebf8d11d1dc26e1abd53f5a525dda0d82790b0612935992bd564a17ce37d6',1,'Guildmaster::Guild']]]
 ];

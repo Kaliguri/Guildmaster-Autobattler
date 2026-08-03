@@ -1,0 +1,14 @@
+<map id="Guildmaster.Combat.Effects.Components.SchoolShieldComponent" name="Guildmaster.Combat.Effects.Components.SchoolShieldComponent">
+<area shape="rect" id="Node000001" title="Щит С ФИЛЬТРОМ ПО ШКОЛЕ: поглощает только урон своей школы (и, если задана, стихии),..." alt="" coords="149,365,407,505"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html" title="Синхронный перехват ДО вычета HP (§9.3): вызывается из EffectSystem.RunPreDamage перед DamagePipeline..." alt="" coords="5,252,175,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,324,192,363,189,367,139,328"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="91,119,276,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="145,217,117,253,112,250,141,213"/>
+<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html" title="Опциональный шов рестака (07 §3.8 B1–B3): компонент с накопленным ВНЕШНИМ состоянием (пул щита,..." alt="" coords="199,252,357,317"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="226,213,255,250,251,253,222,217"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="118,5,249,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="186,85,186,119,181,119,181,85"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="281,331,281,365,275,365,275,331"/>
+<area shape="rect" id="Node000006" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html" title="Опциональный шов: компонент объявляет масштабируемую потенцию." alt="" coords="381,252,506,317"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="400,329,357,367,353,363,396,325"/>
+</map>

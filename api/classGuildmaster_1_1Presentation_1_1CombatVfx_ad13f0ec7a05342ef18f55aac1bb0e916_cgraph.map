@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.CombatVfx.DespawnAll" name="Guildmaster.Presentation.CombatVfx.DespawnAll">
+<area shape="rect" id="Node000001" title="Погасить всё летящее (battle reset) и вернуть в пулы." alt="" coords="5,5,196,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1PooledVfx.html#ad5973e2cadbbb878a0cd32ccad97239c" title="Прервать и вернуть в пул (battle reset)." alt="" coords="244,5,435,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
+</map>

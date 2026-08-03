@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f41579d23e8074e346e93e793eb0f5b" target="_top" xlink:title="Обработать автоатаки всех живых юнитов за один тик. dt &#160;не используется (тайминг на тиках).">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f5124a8ff7ffd8371a17034c6c5ddd6" target="_top" xlink:title="Обработать автоатаки всех живых юнитов за один тик.">
 <polygon fill="white" stroke="#666666" points="174,-30 0,-30 0,0 174,0 174,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.AutoAttack</text>
 <text text-anchor="middle" x="87" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">System.Tick</text>

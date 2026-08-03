@@ -1,0 +1,3 @@
+<map id="Guildmaster.UI.UiScreenContext" name="Guildmaster.UI.UiScreenContext">
+<area shape="rect" id="Node000001" title="Общий контекст, который навигатор передаёт экрану в UiScreen.Build: корень слоя экранов и локализатор..." alt="" coords="5,5,229,91"/>
+</map>

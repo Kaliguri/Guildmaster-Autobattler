@@ -103,46 +103,30 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Ma
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.MainMenuPresenter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter__inherit__graph.svg" width="218" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter__inherit__graph.svg" width="275" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Flow.MainMenuPresenter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter__coll__graph.svg" width="218" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter__coll__graph.svg" width="275" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8102da71250312018d0ca47367b6f1b8" id="r_a8102da71250312018d0ca47367b6f1b8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter.html#a8102da71250312018d0ca47367b6f1b8">MainMenuPresenter</a> (IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html">OpenMainMenuRequest</a> &gt; pub)</td></tr>
-<tr class="separator:a8102da71250312018d0ca47367b6f1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5a23a51cb44b98f91580cb730d87405" id="r_ae5a23a51cb44b98f91580cb730d87405"><td class="memItemLeft" align="right" valign="top">async UniTask&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8">MainMenuChoice</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter.html#ae5a23a51cb44b98f91580cb730d87405">ShowAsync</a> (bool hasSave)</td></tr>
-<tr class="separator:ae5a23a51cb44b98f91580cb730d87405"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a3fec5296ba2b24ec76964107a74404" id="r_a1a3fec5296ba2b24ec76964107a74404"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter.html#a1a3fec5296ba2b24ec76964107a74404">MainMenuPresenter</a> (IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html">OpenMainMenuRequest</a> &gt; pub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1OpenProvingGroundsRequest.html">Core.Flow.OpenProvingGroundsRequest</a> &gt; provingSub)</td></tr>
+<tr class="separator:a1a3fec5296ba2b24ec76964107a74404"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2131d8f893e229964f26f15ca81ca696" id="r_a2131d8f893e229964f26f15ca81ca696"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter.html#a2131d8f893e229964f26f15ca81ca696">Dispose</a> ()</td></tr>
+<tr class="separator:a2131d8f893e229964f26f15ca81ca696"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88bf511d28a756f119e8ce80d1edeaba" id="r_a88bf511d28a756f119e8ce80d1edeaba"><td class="memItemLeft" align="right" valign="top">async UniTask&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1MainMenuOutcome.html">MainMenuOutcome</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter.html#a88bf511d28a756f119e8ce80d1edeaba">ShowAsync</a> ()</td></tr>
+<tr class="separator:a88bf511d28a756f119e8ce80d1edeaba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Презентер главного меню (план [[act-map-run-loop]] §4 D1): публикует OpenMainMenuRequest и ждёт выбор. </p>
-<p>Настройки обрабатываются UI поверх меню (не завершают ожидание). Без слушателя UI возвращает Quit, чтобы headless-запуск не завис. </p>
+<p>Настройки обрабатываются UI поверх меню (не завершают ожидание). </p>
+<p><b>Слушатель UI обязателен.</b> Прежний докстринг обещал «без слушателя возвращает Quit, чтобы headless-запуск не завис» — обещания не существовало: <code>Publish</code> без подписчиков это no-op, TCS никто не завершает, таймаута нет. Единственный способ остаться здесь навсегда — ранний выход <code>UiRootBootstrap.Start</code>, который не регистрирует подписки; он теперь кричит ошибкой, а не предупреждением (аудит фолбэков 2026-07-26, п.3). Ложное обещание снято, чтобы следующий читатель не искал страховку, которой нет.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8102da71250312018d0ca47367b6f1b8" name="a8102da71250312018d0ca47367b6f1b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8102da71250312018d0ca47367b6f1b8">&#9670;&#160;</a></span>MainMenuPresenter()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Guildmaster.Game.Flow.MainMenuPresenter.MainMenuPresenter </td>
-          <td>(</td>
-          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html">OpenMainMenuRequest</a> &gt;&#160;</td>
-          <td class="paramname"><em>pub</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae5a23a51cb44b98f91580cb730d87405" name="ae5a23a51cb44b98f91580cb730d87405"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5a23a51cb44b98f91580cb730d87405">&#9670;&#160;</a></span>ShowAsync()</h2>
+<a id="a1a3fec5296ba2b24ec76964107a74404" name="a1a3fec5296ba2b24ec76964107a74404"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a3fec5296ba2b24ec76964107a74404">&#9670;&#160;</a></span>MainMenuPresenter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -151,10 +135,63 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">async UniTask&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8">MainMenuChoice</a> &gt; Guildmaster.Game.Flow.MainMenuPresenter.ShowAsync </td>
+          <td class="memname">Guildmaster.Game.Flow.MainMenuPresenter.MainMenuPresenter </td>
           <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>hasSave</em></td><td>)</td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html">OpenMainMenuRequest</a> &gt;&#160;</td>
+          <td class="paramname"><em>pub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1OpenProvingGroundsRequest.html">Core::Flow::OpenProvingGroundsRequest</a> &gt;&#160;</td>
+          <td class="paramname"><em>provingSub</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2131d8f893e229964f26f15ca81ca696" name="a2131d8f893e229964f26f15ca81ca696"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2131d8f893e229964f26f15ca81ca696">&#9670;&#160;</a></span>Dispose()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Flow.MainMenuPresenter.Dispose </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a88bf511d28a756f119e8ce80d1edeaba" name="a88bf511d28a756f119e8ce80d1edeaba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88bf511d28a756f119e8ce80d1edeaba">&#9670;&#160;</a></span>ShowAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">async UniTask&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1MainMenuOutcome.html">MainMenuOutcome</a> &gt; Guildmaster.Game.Flow.MainMenuPresenter.ShowAsync </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -165,7 +202,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IMainMenuPresenter.html#a32254ea9a14d69a2eca3d0c9f5ca4080">Guildmaster.Game.Flow.IMainMenuPresenter</a>.</p>
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IMainMenuPresenter.html#a1f47e32702f2413655c9529b0c3362bb">Guildmaster.Game.Flow.IMainMenuPresenter</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter_a88bf511d28a756f119e8ce80d1edeaba_cgraph.svg" width="484" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

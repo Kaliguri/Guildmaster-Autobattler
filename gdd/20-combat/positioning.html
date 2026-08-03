@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Combat - Positioning | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Combat - Positioning | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Combat - Positioning | Guildmaster Wiki"/><meta name="twitter:description" content="Позиционика боя Статус: круг вердиктов закрыт (2026-07-26). Все пункты P1-P22 разобраны — принятое отмечено явно, отклонённое оставлено с причиной."/><meta property="og:description" content="Позиционика боя Статус: круг вердиктов закрыт (2026-07-26). Все пункты P1-P22 разобраны — принятое отмечено явно, отклонённое оставлено с причиной."/><meta property="og:image:alt" content="Позиционика боя Статус: круг вердиктов закрыт (2026-07-26). Все пункты P1-P22 разобраны — принятое отмечено явно, отклонённое оставлено с причиной."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/positioning"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/positioning"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Позиционика боя Статус: круг вердиктов закрыт (2026-07-26). Все пункты P1-P22 разобраны — принятое отмечено явно, отклонённое оставлено с причиной."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="gdd/20-combat/positioning"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-120"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-120" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../gdd/">gdd</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../gdd/20-combat/">20 combat</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Combat   Positioning</a></div></nav><h1 class="article-title">Combat - Positioning</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-26T00:00:00.000Z">26 июл. 2026 г.</time><span>время чтения ~9 мин.</span></p></div></div><article class="popover-hint"><h1 id="позиционика-боя">Позиционика боя<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#позиционика-боя" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p><strong>Статус: круг вердиктов закрыт (2026-07-26).</strong> Все пункты <code>P1-P22</code> разобраны — принятое
+отмечено явно, отклонённое оставлено с причиной. Открытыми остаются только темы из раздела
+<a href="#%D0%BD%D0%B5-%D0%BE%D0%B1%D1%81%D1%83%D0%B6%D0%B4%D0%B0%D0%BB%D0%B8" class="internal alias">Не обсуждали</a>; числа (5 сек агро, +20%/+40% за тыл) — черновые, к ревизии при балансе.</p>
+</blockquote>
+<hr/>
+<h2 id="задача">Задача<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#задача" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Юниты не должны стоять втроём в ряд перед целью и тупо бить. Нужны <strong>реальные позиционные
+действия</strong>, которые влияют на бой, а свободное время между атаками тратится осмысленно.</p>
+<p>Три критерия отбора:</p>
+<ol>
+<li><strong>Читаемо</strong> — игрок понимает, почему юнит пошёл, без объяснений.</li>
+<li><strong>Не бесит</strong> — не выглядит как баг, глупость или потеря урона впустую.</li>
+<li><strong>Тактично</strong> — влияет на исход, а не изображает влияние.</li>
+</ol>
+<p>Третий критерий — следствие спора по ходу обсуждения: движение, которое <strong>выглядит</strong>
+тактическим, но ни на что не влияет, читается игроком как обещание механики. Обещание
+оказывается ложным, и дальше игрок перестаёт верить картинке вообще. В игре, где он
+<a href="../../gdd/20-combat/combat-system" class="internal alias" data-slug="gdd/20-combat/combat-system">наблюдает и не вмешивается</a>, картинка — единственный канал, и ложный
+телеграф обходится дороже пустого экрана.</p>
+<hr/>
+<h2 id="архитектурный-принцип-поведение--это-набор-ai-блоков">Архитектурный принцип: поведение — это набор AI-блоков<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#архитектурный-принцип-поведение--это-набор-ai-блоков" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Главный вывод обсуждения, снимающий большинство споров «нужно ли поведение X всем»:</p>
+<blockquote>
+<p><strong>Поведение — набор переключаемых блоков. Класс задаёт дефолтный набор, конкретный юнит
+его переопределяет.</strong></p>
+</blockquote>
+<p>Правильный вопрос про любое поведение ниже — не «нужно ли оно», а <strong>«кому оно включено по
+умолчанию»</strong>. Ложится на записанную схему Filter / Score / Override
+(<a href="../../gdd/relics/ai-settings-model" class="internal alias" data-slug="gdd/relics/ai-settings-model">модель AI-настроек</a>, настраивается вне боя).</p>
+<p>Примеры, которые этим уже закрыты: призыватель с фланкёрами выключает «держаться за
+призывами»; отступление дальника отключается для конкретной роли; отклонённая «линия огня»
+может вернуться как уникальная настройка одного персонажа.</p>
+<hr/>
+<h2 id="слой-a-слоты-вокруг-цели--принято">Слой A: слоты вокруг цели — принято<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#слой-a-слоты-вокруг-цели--принято" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>У каждой цели есть набор точек боевого контакта по окружности; атакующий занимает свободную.
+<strong>Окружение — общая механика для всех мили-классов.</strong> Отдельного «приказа обходить» не требуется:
+спереди занято — заходишь сбоку.</p>
+<p>Технические решения — <strong>приняты</strong>:</p>
+<p><strong>P1. Слот — это угол, а не точка в пространстве.</strong> У копейщика и мечника разная дальность
+атаки. Если слот — точка, копейщик встанет вплотную и потеряет свою дальность. Если слот —
+<strong>сектор направления</strong>, юнит идёт на свой угол и встаёт там на своей дистанции.</p>
+<p><strong>P2. Число слотов зависит от размера цели.</strong> Размер юнита уже влияет на радиус тела и
+досягаемость — тот же вход. Босса окружают шестеро, мелкого гоблина двое.</p>
+<p><strong>P3. Резервация слота детерминирована.</strong> Назначение по фиксированному приоритету (порядок
+юнитов, расстояние), без <code>Random</code> — иначе повтор боя разойдётся.</p>
+<blockquote>
+<p>Существующее расталкивание эту задачу <strong>не</strong> решает: оно разводит тела физически, но не
+создаёт намерения.</p>
+</blockquote>
+<hr/>
+<h2 id="слой-b-зона-контроля--отклонено">Слой B: зона контроля — ОТКЛОНЕНО<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#слой-b-зона-контроля--отклонено" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Рассматривалась механика «вступивший в ближний бой залипает и не может проскользнуть мимо».</p>
+<p><strong>Отклонено. Проход сквозь строй свободный.</strong> Юниты не держат друг друга и не блокируют
+перемещение.</p>
+<p>Возражение «без зоны контроля обход бессмыслен, ведь можно пройти напрямую» <strong>снято</strong>: обход
+оправдан не преградой, а <strong>выгодой</strong> — см. слой C. Убийца выбирает более долгий маршрут
+осознанно, потому что удар в спину сильнее, а не потому что его куда-то не пускают.</p>
+<hr/>
+<h2 id="слой-c-фланг-и-тыл--принято">Слой C: фланг и тыл — принято<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#слой-c-фланг-и-тыл--принято" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Атака сбоку и со спины даёт бонус. Он и делает обход осмысленным.</p>
+<p><strong>P4. Бонус — голый урон, с разными числами по ролям (принято):</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Кто бьёт в тыл</th><th>Бонус</th></tr></thead><tbody><tr><td>Обычные юниты</td><td><strong>+20%</strong></td></tr><tr><td>Фланкёры</td><td><strong>+40%</strong></td></tr></tbody></table></div>
+<p>Вариант «снижать броню вместо урона» рассмотрен и <strong>отклонён</strong> — лишняя сложность. Разные числа
+делают работу сами: удвоенный бонус у фланкёра — это его механическая идентичность, выраженная
+прямо в цифре, без отдельного правила.</p>
+<p><strong>P5. Обход у Убийцы — это AI-тактика выбора маршрута, а не отдельная механика.</strong> Принято в
+изменённом виде: оценивается «идти дольше, но зайти в спину и нанести больше урона». Обычный
+мили в это не играет — он просто занимает свободный слот.</p>
+<p><strong>Условие против вырождения:</strong> целенаправленный обход включается, только если Убийца <strong>уже
+дерётся в ближнем бою и фокусит кого-то ещё</strong>. В бою один на один обход отключён — иначе двое
+будут бесконечно кружить друг вокруг друга, и это читается как баг.</p>
+<hr/>
+<h2 id="танк-удержание-линии--принято">Танк: удержание линии — принято<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#танк-удержание-линии--принято" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Две связанные механики, вместе дающие настоящую линию фронта <strong>без</strong> зоны контроля.</p>
+<p><strong>Агро-автоатака.</strong> Автоатака танка принудительно переводит фокус цели на него самого.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Параметр</th><th>Значение</th></tr></thead><tbody><tr><td>На кого действует</td><td>на всех, <strong>кроме танков</strong> (два танка не перетягивают друг друга)</td></tr><tr><td>Длительность</td><td><strong>5 секунд</strong> (черновое число), затем фокус свободен</td></tr></tbody></table></div>
+<p>Ограничение по времени намеренное: агро спадает, враг снова рвётся к бэклайну, и танку нужно
+бить его <strong>повторно</strong>. Танк работает весь бой, а не привязывает цель одним ударом навсегда.</p>
+<p><strong>Перехват.</strong> Если кто-то идёт мимо танка — выбрал целью союзника <strong>за</strong> его спиной, а не самого
+танка — танк пытается <strong>встретить</strong> его и автоатаковать.</p>
+<p>Связка работает так: прорывающийся получает удар на подходе, агро переводит его фокус на танка,
+прорыв срывается. Проход при этом остаётся физически свободным — линию держит <strong>угроза</strong>, а не
+стена. Это и есть замена отклонённого слоя B, полученная более дешёвым способом.</p>
+<p><strong>Контр-игра — по замыслу.</strong> «Скрытность» Убийцы сама по себе защищает от агро, поэтому окно
+прорыва у него есть, но ограничено (начало боя и после убийства). Соответственно <strong>развеять
+скрытность и следом сагрить — валидная тактика</strong>, а не дыра в дизайне.</p>
+<hr/>
+<h2 id="каталог-поведения-по-ролям">Каталог поведения по ролям<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#каталог-поведения-по-ролям" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Класс</th><th>Поведение</th><th>Вердикт</th></tr></thead><tbody><tr><td><strong>P6</strong></td><td>Танк</td><td>агро-автоатака + перехват идущих мимо</td><td><strong>принято</strong>, см. <a href="#%D0%A2%D0%B0%D0%BD%D0%BA:%20%D1%83%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%BB%D0%B8%D0%BD%D0%B8%D0%B8%20%E2%80%94%20%D0%BF%D1%80%D0%B8%D0%BD%D1%8F%D1%82%D0%BE" class="internal alias"></a></td></tr><tr><td><strong>P7</strong></td><td>Брузер</td><td>занимает свободный слот; спереди занято — заходит сбоку</td><td><strong>принято</strong> (общая механика мили)</td></tr><tr><td><strong>P8</strong></td><td>Убийца</td><td>ищет тыл ради бонуса; после убийства идёт к ценной цели</td><td><strong>принято</strong> (см. P5)</td></tr><tr><td><strong>P9</strong></td><td>РДД</td><td>удерживает дистанцию на подходе + убегает при выборе целью</td><td><strong>принято с изменением</strong> (ниже)</td></tr><tr><td><strong>P10</strong></td><td>РДД</td><td>смещение ради линии огня</td><td><strong>ОТКЛОНЕНО</strong></td></tr><tr><td><strong>P11</strong></td><td>Поддержка</td><td>подходит к раненому <strong>до</strong> каста</td><td><strong>принято</strong></td></tr><tr><td><strong>P12</strong></td><td>Поддержка</td><td>держится в середине группы, прячется за танка</td><td><strong>принято</strong></td></tr><tr><td><strong>P13</strong></td><td>Призыватель</td><td>держится за своими призывами</td><td><strong>принято с оговоркой</strong> (ниже)</td></tr></tbody></table></div>
+<p><strong>P9 — дальник.</strong> Базовое поведение: удерживает дистанцию, пока враг <strong>идёт</strong> через арену, и
+выигрывает лишние выстрелы. Дополнительно: <strong>если милишник выбрал его целью — некоторое время
+пытается убегать</strong>, ограниченно по времени, затем смиряется и стреляет.</p>
+<p>Оговорка по арифметике: РДД и Поддержка имеют скорость <strong>75%</strong>, самый медленный мили (Танк) —
+<strong>85%</strong>, Убийца 110%. Бэклайн медленнее <strong>всех</strong> мили-классов, поэтому побег — заведомо
+проигранная гонка. Чтобы это читалось как драма, а не как глупость, ограничение по времени
+обязательно.</p>
+<p><em>Предложение, вердикта нет:</em> пусть бежит <strong>не от врага, а к своим — за танка, к центру строя</strong>.
+Тогда это не побег, а зов о помощи с достижимой целью, и работает на записанное правило
+«бэклайн не кайтит сам, его защищает строй».</p>
+<p><strong>P10 — отклонено.</strong> Как постоянное поведение даёт мелкую суету стрелков. Вопрос закрыт
+окончательно: <strong>снаряды летят сквозь союзников</strong>, физической блокировки нет. Может вернуться
+как уникальная способность отдельных персонажей — но не как общая механика.</p>
+<p><strong>P13 — с оговоркой.</strong> Поведение зависит от того, <strong>кого</strong> призыватель призывает: если он
+поднимает фланкёров, прятаться за ними бессмысленно. Дефолт включён не для всех — конкретный
+юнит переопределяет (см. принцип AI-блоков).</p>
+<hr/>
+<h2 id="изворотливость-убийцы-кувырок-и-рывок--принято">Изворотливость Убийцы: кувырок и рывок — принято<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#изворотливость-убийцы-кувырок-и-рывок--принято" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Дополнение к уже существующей механике <a href="../.././relics/the-verdict" class="internal alias" data-slug="relics/the-verdict">The Verdict</a> — «Изворотливость»
+(активный, 2 заряда, игнорирует следующую автоатаку, КД 5 сек). Трата заряда теперь <strong>позиционное
+событие</strong>:</p>
+<ul>
+<li><strong>кувырок</strong> с уходом с места;</li>
+<li><strong>ускорение на 100% в течение 1 секунды</strong> после него.</li>
+</ul>
+<p>Смысл: уклонение не просто гасит урон, а даёт Убийце занять хорошую позицию — оторваться,
+дойти до нужной цели, зайти в спину.</p>
+<p><strong>Направление кувырка = направление текущего намерения юнита.</strong> Это ключевое правило, и оно
+делает механику всегда полезной:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Ситуация</th><th>Куда кувырок</th></tr></thead><tbody><tr><td>Бьёт цель вплотную, она же его атакует</td><td><strong>от неё</strong></td></tr><tr><td>Движется куда-либо (к цели, в обход, отступая)</td><td><strong>в сторону своего движения</strong></td></tr></tbody></table></div>
+<p>То есть уклонение никогда не сбивает план юнита — оно <strong>ускоряет</strong> его в ту сторону, куда он и
+так шёл. Отдельного сброса цели у противника не требуется: разрыв дистанции происходит сам.</p>
+<p>Каноничен ли рандом: <strong>нет и не нужен</strong> — «Изворотливость» работает на зарядах и кулдауне, то
+есть детерминированно, и принцип «ноль выходного рандома: нет крита, промаха, уклонения»
+(<a href="../../gdd/10-vision/difficulty-skill" class="internal alias" data-slug="gdd/10-vision/difficulty-skill">Difficulty &amp; Skill</a>, <a href="../../gdd/10-vision/pitch" class="internal alias" data-slug="gdd/10-vision/pitch">Pitch</a>) не нарушается.</p>
+<hr/>
+<h2 id="пять-правил-чтобы-позиционика-не-бесила--приняты">Пять правил, чтобы позиционика не бесила — приняты<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#пять-правил-чтобы-позиционика-не-бесила--приняты" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>P14. Движение никогда не откладывает готовый удар.</strong> Кулдаун пришёл — юнит бьёт с того места,
+где стоит, манёвр обрывается немедленно. Простаивающий ДПС читается как поломка.</p>
+<p><strong>P15. Манёвр не начинается, если окно короче его длительности.</strong> Иначе вместо жеста получатся
+дёрганые обрывки.</p>
+<p><strong>P16. Гистерезис против дёрганья.</strong> Решение о перемещении принимается редко и только при
+заметной разнице в оценке.</p>
+<p><strong>P17. У каждого перемещения — видимая причина.</strong> Игрок должен уметь сказать вслух, почему юнит
+пошёл. Движение по невидимому внутреннему скорингу неотличимо от бага.</p>
+<p><strong>P18. Никакого предзнания и проигранных гонок.</strong> Юнит не уклоняется от того, что ещё не
+случилось. (Побег дальника — сознательное исключение, удерживаемое ограничением по времени.)</p>
+<hr/>
+<h2 id="отложено-p19-p22">Отложено: P19-P22<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#отложено-p19-p22" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Предложены и <strong>отложены</strong> (решение 2026-07-26, ночь-2, п.6): по сути это не позиционика, а
+смежные боевые механики, затащенные сюда за компанию. Не отклонены — оставлены записанными
+и вернутся отдельным заходом.</p>
+<ul>
+<li><strong>P19. Смыкание строя</strong> — передний юнит умер, соседи закрывают дыру.</li>
+<li><strong>P20. Добивание</strong> — переключение на почти мёртвую цель рядом.</li>
+<li><strong>P21. Продавливание фронта</strong> — перевешивающая мили-линия оттесняет врага.</li>
+<li><strong>P22. Репозиция после большой способности</strong> — отдача и смена стойки после ульты.</li>
+</ul>
+<p>Оставлены записанными: если тема вернётся, начинать отсюда.</p>
+<hr/>
+<h2 id="цена-которую-надо-заложить">Цена, которую надо заложить<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#цена-которую-надо-заложить" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Перемещение между слотами тратит время, которое юнит не бьёт. <strong>Позиционика режет общий DPS</strong> —
+не как баг, а по своей природе. Это придётся учесть в балансе, иначе бои перестанут укладываться
+в <a href="../../gdd/20-combat/combat-system" class="internal alias" data-slug="gdd/20-combat/combat-system">ориентир 90 секунд</a>.</p>
+<hr/>
+<h2 id="побочная-выгода-темп-боя">Побочная выгода: темп боя<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#побочная-выгода-темп-боя" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Обсуждение началось с другого вопроса — почему бои в референсах (Gladiator Guild Manager,
+Teamfight Manager) при красивых анимациях иногда ощущаются медленными. Вывод: дело не в скорости
+удара, а в <strong>плотности событий</strong> — вяло становится там, где между ударами экран пуст.</p>
+<p>Позиционика закрывает это честно: когда слоты освобождаются, цели умирают, а Убийца ищет спину,
+юниты перестраиваются постоянно и <strong>по делу</strong>. Живой экран получается из механики, поэтому игрок
+читает движение правильно и ложного телеграфа не возникает.</p>
+<p>Смежные рычаги темпа (<code>proposed</code>, вне этого документа): расфазировка первого удара из сида боя
+(отряд перестаёт бить залпами), неоднородность темпа по классам, микро-жизнь в простое.
+Диагностика: <strong>если играть комфортно только на ускорении ×2 — базовый темп сломан</strong>, а ускорение
+это маскирует.</p>
+<hr/>
+<h2 id="не-обсуждали">Не обсуждали<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#не-обсуждали" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>Как позиционика стыкуется со <strong>способностями</strong> (каст с места? прерывание манёвра кастом?).</li>
+<li><strong>Призывы</strong> как позиционный инструмент (стена, отвлечение) — за пределами P13.</li>
+<li><strong>Геометрия арены</strong>: узкие места, препятствия, возвышенности. → <strong>Принято достраивать</strong>
+(2026-07-26): это четвёртая подпорка расстановки, начинаем с одного типа точки интереса.
+Кандидаты и рекомендация — <a href="../../gdd/00-meta/open-forks" class="internal alias" data-slug="gdd/00-meta/open-forks">Meta - Open Forks</a> §A2; тип ждёт вердикта.</li>
+<li>Влияет ли позиционика на <strong>расстановку до боя</strong> (сейчас это ключевое решение игрока).</li>
+<li><strong>Перебивание агро:</strong> что если два танка бьют одну цель — держит первый или перебивает последний.</li>
+<li>Балансные числа: 5 секунд агро, +20%/+40% за тыл, длительность побега дальника.</li>
+<li><strong>Как враги встают вокруг цели, чтобы это выглядело окружением, а не толпой</strong> (заявка Макса
+2026-07-29). Механически слоты боевого контакта это уже решают — вопрос <strong>подачи</strong>: юниты должны
+занимать слоты по дуге и доворачиваться к цели, а не сбиваться в точку. Пограничная тема: слоты —
+симуляция, красивый подход — презентация (контур <code>gamefeel-vfx</code>), и владелец факта «где стоит
+юнит» обязан остаться один — симуляция.</li>
+</ul>
+<hr/>
+<p>Связь: <a href="../../gdd/20-combat/combat-system" class="internal alias" data-slug="gdd/20-combat/combat-system">Combat - System</a> (принцип боя, таймер), <a href="../../gdd/20-combat/stats" class="internal alias" data-slug="gdd/20-combat/stats">Combat - Stats</a>
+(классы, скорости), <a href="../../gdd/relics/the-verdict" class="internal alias" data-slug="gdd/relics/the-verdict">The Verdict (Assassin)</a> (Изворотливость),
+<a href="../../gdd/relics/ai-settings-model" class="internal alias" data-slug="gdd/relics/ai-settings-model">Модель AI-настроек</a> (блоки поведения),
+<a href="../../gdd/10-vision/character-animation" class="internal alias" data-slug="gdd/10-vision/character-animation">Vision - Character Animation</a> (анимации манёвров).</p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-40" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#позиционика-боя" data-for="позиционика-боя">Позиционика боя</a></li><li class="depth-1"><a href="#задача" data-for="задача">Задача</a></li><li class="depth-1"><a href="#архитектурный-принцип-поведение--это-набор-ai-блоков" data-for="архитектурный-принцип-поведение--это-набор-ai-блоков">Архитектурный принцип: поведение — это набор AI-блоков</a></li><li class="depth-1"><a href="#слой-a-слоты-вокруг-цели--принято" data-for="слой-a-слоты-вокруг-цели--принято">Слой A: слоты вокруг цели — принято</a></li><li class="depth-1"><a href="#слой-b-зона-контроля--отклонено" data-for="слой-b-зона-контроля--отклонено">Слой B: зона контроля — ОТКЛОНЕНО</a></li><li class="depth-1"><a href="#слой-c-фланг-и-тыл--принято" data-for="слой-c-фланг-и-тыл--принято">Слой C: фланг и тыл — принято</a></li><li class="depth-1"><a href="#танк-удержание-линии--принято" data-for="танк-удержание-линии--принято">Танк: удержание линии — принято</a></li><li class="depth-1"><a href="#каталог-поведения-по-ролям" data-for="каталог-поведения-по-ролям">Каталог поведения по ролям</a></li><li class="depth-1"><a href="#изворотливость-убийцы-кувырок-и-рывок--принято" data-for="изворотливость-убийцы-кувырок-и-рывок--принято">Изворотливость Убийцы: кувырок и рывок — принято</a></li><li class="depth-1"><a href="#пять-правил-чтобы-позиционика-не-бесила--приняты" data-for="пять-правил-чтобы-позиционика-не-бесила--приняты">Пять правил, чтобы позиционика не бесила — приняты</a></li><li class="depth-1"><a href="#отложено-p19-p22" data-for="отложено-p19-p22">Отложено: P19-P22</a></li><li class="depth-1"><a href="#цена-которую-надо-заложить" data-for="цена-которую-надо-заложить">Цена, которую надо заложить</a></li><li class="depth-1"><a href="#побочная-выгода-темп-боя" data-for="побочная-выгода-темп-боя">Побочная выгода: темп боя</a></li><li class="depth-1"><a href="#не-обсуждали" data-for="не-обсуждали">Не обсуждали</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../../gdd/00-meta/" class="internal">Meta - Index</a></li><li><a href="../../gdd/00-meta/journal-adr" class="internal">Meta - Decision Journal</a></li><li><a href="../../gdd/00-meta/legacy" class="internal">Meta - Legacy</a></li><li><a href="../../gdd/00-meta/open-forks" class="internal">Meta - Open Forks</a></li><li><a href="../../gdd/20-combat/barriers" class="internal">Combat - Barriers</a></li><li><a href="../../gdd/20-combat/combat-system" class="internal">Combat - System</a></li><li><a href="../../gdd/20-combat/stats" class="internal">Combat - Stats</a></li><li><a href="../../gdd/relics/the-fang" class="internal">Relic - Common - The Fang (Nightblade)</a></li><li><a href="../../gdd/relics/the-verdict" class="internal">Relic - Common - The Verdict (Assassin)</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

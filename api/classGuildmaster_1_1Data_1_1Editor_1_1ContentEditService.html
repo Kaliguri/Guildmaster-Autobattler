@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Editor_1_1
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Editor.ContentEditService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService__coll__graph.svg" width="216" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService__coll__graph.svg" width="216" height="291"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -121,23 +121,26 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a2932cde8133dce9f1213047eaca4b06f" id="r_a2932cde8133dce9f1213047eaca4b06f"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a2932cde8133dce9f1213047eaca4b06f">Resolve&lt; T &gt;</a> (string idOrName)</td></tr>
 <tr class="memdesc:a2932cde8133dce9f1213047eaca4b06f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Найти контент по id (<code>domain.name</code>) или, как запасной путь, по имени ассета.  <br /></td></tr>
 <tr class="separator:a2932cde8133dce9f1213047eaca4b06f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50b696288d0bb8e7435d763876335075" id="r_a50b696288d0bb8e7435d763876335075"><td class="memItemLeft" align="right" valign="top">static ScriptableObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a50b696288d0bb8e7435d763876335075">ResolveAnyAsset</a> (string assetName)</td></tr>
+<tr class="memdesc:a50b696288d0bb8e7435d763876335075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Найти ЛЮБОЙ ассет-ScriptableObject по имени — путь к конфигам, у которых нет id, потому что они не ContentDefinition (<code>ClassBalanceConfig</code>, <code>StatsConfig</code>).  <br /></td></tr>
+<tr class="separator:a50b696288d0bb8e7435d763876335075"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c11d7513ada02f8a37fcee224bb1615" id="r_a6c11d7513ada02f8a37fcee224bb1615"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a6c11d7513ada02f8a37fcee224bb1615">ScaleStat</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> unit, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284">StatType</a> stat, float factor)</td></tr>
 <tr class="memdesc:a6c11d7513ada02f8a37fcee224bb1615"><td class="mdescLeft">&#160;</td><td class="mdescRight">Умножить значение модификатора стата <em>stat</em>  на <em>factor</em>  (первое совпадение в <code>_stats</code>).  <br /></td></tr>
 <tr class="separator:a6c11d7513ada02f8a37fcee224bb1615"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47282fa97f89bcdafa2f179aa3a9cca0" id="r_a47282fa97f89bcdafa2f179aa3a9cca0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a47282fa97f89bcdafa2f179aa3a9cca0">SetStat</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> unit, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284">StatType</a> stat, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0de">ModifierOp</a> op, float value)</td></tr>
 <tr class="memdesc:a47282fa97f89bcdafa2f179aa3a9cca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать значение модификатора стата (заменить существующий с любым Op или добавить новый c <em>op</em> ).  <br /></td></tr>
 <tr class="separator:a47282fa97f89bcdafa2f179aa3a9cca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff80dcb72e35af6ac0a72da480353440" id="r_aff80dcb72e35af6ac0a72da480353440"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#aff80dcb72e35af6ac0a72da480353440">SetFloat</a> (ScriptableObject asset, string propertyPath, float value)</td></tr>
-<tr class="memdesc:aff80dcb72e35af6ac0a72da480353440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать float-поле по пути SerializedProperty (например <code>_movingAttackSpeedPenaltyPct</code>).  <br /></td></tr>
-<tr class="separator:aff80dcb72e35af6ac0a72da480353440"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0987145acbc3fa5a51670f27fa44efe" id="r_af0987145acbc3fa5a51670f27fa44efe"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#af0987145acbc3fa5a51670f27fa44efe">AddFloat</a> (ScriptableObject asset, string propertyPath, float delta)</td></tr>
-<tr class="memdesc:af0987145acbc3fa5a51670f27fa44efe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прибавить к float-полю (например кулдаун +1).  <br /></td></tr>
-<tr class="separator:af0987145acbc3fa5a51670f27fa44efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0f8a71b0fa2652cd6ca271cd8f1ba4c" id="r_af0f8a71b0fa2652cd6ca271cd8f1ba4c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#af0f8a71b0fa2652cd6ca271cd8f1ba4c">SetValue</a> (ScriptableObject asset, string propertyPath, float value)</td></tr>
+<tr class="memdesc:af0f8a71b0fa2652cd6ca271cd8f1ba4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать СКАЛЯРНОЕ поле по пути SerializedProperty — float, int, bool или enum (<code>_movingAttackSpeedPenaltyPct</code>, <code>_castConditionCount</code>, <code>_consumesTriggerTag</code>, <code>_ai._autoAttackTargeting</code>).  <br /></td></tr>
+<tr class="separator:af0f8a71b0fa2652cd6ca271cd8f1ba4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a634db7c4dad67d4b091b16b20585de2f" id="r_a634db7c4dad67d4b091b16b20585de2f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a634db7c4dad67d4b091b16b20585de2f">AddValue</a> (ScriptableObject asset, string propertyPath, float delta)</td></tr>
+<tr class="memdesc:a634db7c4dad67d4b091b16b20585de2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прибавить к числовому полю (например кулдаун +1). Для bool/enum не применяется.  <br /></td></tr>
+<tr class="separator:a634db7c4dad67d4b091b16b20585de2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d43ffe41c32d82f524d30fd25ddc320" id="r_a6d43ffe41c32d82f524d30fd25ddc320"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a6d43ffe41c32d82f524d30fd25ddc320">AddAbilityCooldown</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> unit, string abilityId, float delta)</td></tr>
 <tr class="memdesc:a6d43ffe41c32d82f524d30fd25ddc320"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прибавить к базовому кулдауну способности с данным id.  <br /></td></tr>
 <tr class="separator:a6d43ffe41c32d82f524d30fd25ddc320"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9c94283a538fd6b8cc5f78e9369db18" id="r_aa9c94283a538fd6b8cc5f78e9369db18"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#aa9c94283a538fd6b8cc5f78e9369db18">SetEffectComponentFloat</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> effect, string fieldName, float value)</td></tr>
-<tr class="memdesc:aa9c94283a538fd6b8cc5f78e9369db18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать float-поле <em>fieldName</em>  в первом компоненте эффекта, где оно есть (например <code>_internalCooldownSeconds</code> у <code>BulwarkComponent</code> — «кулдаун щита»).  <br /></td></tr>
+<tr class="memdesc:aa9c94283a538fd6b8cc5f78e9369db18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать float-поле <em>fieldName</em>  в первом компоненте эффекта, где оно есть (например <code>_internalCooldownSeconds</code> у <code>BlockComponent</code> — «кулдаун щита»).  <br /></td></tr>
 <tr class="separator:aa9c94283a538fd6b8cc5f78e9369db18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ff5f52e4ec0a97a3eb442d02be2b1ec" id="r_a8ff5f52e4ec0a97a3eb442d02be2b1ec"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a8ff5f52e4ec0a97a3eb442d02be2b1ec">Save</a> ()</td></tr>
 <tr class="memdesc:a8ff5f52e4ec0a97a3eb442d02be2b1ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сбросить все правки на диск.  <br /></td></tr>
@@ -151,6 +154,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Сосед ContentCrudService: тот владеет жизненным циклом ассета (create/duplicate/delete + id), этот — правкой полей внутри ассета (статы, кулдауны, поля эффектов). Всё через SerializedObject</p><ul>
 <li>Undo; каждая правка возвращает Change (было→стало) для аудита. id/схему НЕ трогает. Editor-only, рантайм-SO не мутирует (правка в редакторе = авторинг, не игровая мутация). </li>
 </ul>
+<p><b>Потребитель — агент, а не игровой код.</b> Вызывается из редакторных сессий (Unity MCP <code>execute_code</code>, балансные прогоны, Content Hub), поэтому ноль ссылок из <code>Assets/_Project/Scripts</code> — нормальное состояние, а не мёртвый код. Аудит 2026-07-26 записал его в кандидаты на удаление именно по этому признаку; решение Макса — сервис остаётся, это рабочий инструмент петли баланса.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a6d43ffe41c32d82f524d30fd25ddc320" name="a6d43ffe41c32d82f524d30fd25ddc320"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d43ffe41c32d82f524d30fd25ddc320">&#9670;&#160;</a></span>AddAbilityCooldown()</h2>
@@ -196,8 +200,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af0987145acbc3fa5a51670f27fa44efe" name="af0987145acbc3fa5a51670f27fa44efe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0987145acbc3fa5a51670f27fa44efe">&#9670;&#160;</a></span>AddFloat()</h2>
+<a id="a634db7c4dad67d4b091b16b20585de2f" name="a634db7c4dad67d4b091b16b20585de2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a634db7c4dad67d4b091b16b20585de2f">&#9670;&#160;</a></span>AddValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,7 +210,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a> Guildmaster.Data.Editor.ContentEditService.AddFloat </td>
+          <td class="memname">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a> Guildmaster.Data.Editor.ContentEditService.AddValue </td>
           <td>(</td>
           <td class="paramtype">ScriptableObject&#160;</td>
           <td class="paramname"><em>asset</em>, </td>
@@ -236,7 +240,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Прибавить к float-полю (например кулдаун +1). </p>
+<p>Прибавить к числовому полю (например кулдаун +1). Для bool/enum не применяется. </p>
 
 </div>
 </div>
@@ -321,6 +325,35 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a50b696288d0bb8e7435d763876335075" name="a50b696288d0bb8e7435d763876335075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50b696288d0bb8e7435d763876335075">&#9670;&#160;</a></span>ResolveAnyAsset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static ScriptableObject Guildmaster.Data.Editor.ContentEditService.ResolveAnyAsset </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>assetName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Найти ЛЮБОЙ ассет-ScriptableObject по имени — путь к конфигам, у которых нет id, потому что они не ContentDefinition (<code>ClassBalanceConfig</code>, <code>StatsConfig</code>). </p>
+<p>Заведено под правку классовых коридоров: их числа — такой же предмет балансного вердикта, как сила кита, и они обязаны крутиться тем же пакетом с откатом, а не руками по YAML. Поиск строго по имени ассета: id у конфига нет, а совпадение имён внутри <code>Assets/</code> исключено правилом «один конфиг — один владелец». Возвращает первое совпадение в стабильном порядке по пути. </p>
+
+</div>
+</div>
 <a id="a8ff5f52e4ec0a97a3eb442d02be2b1ec" name="a8ff5f52e4ec0a97a3eb442d02be2b1ec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ff5f52e4ec0a97a3eb442d02be2b1ec">&#9670;&#160;</a></span>Save()</h2>
 
@@ -345,6 +378,11 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Сбросить все правки на диск. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_a8ff5f52e4ec0a97a3eb442d02be2b1ec_icgraph.svg" width="423" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -432,52 +470,8 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Задать float-поле <em>fieldName</em>  в первом компоненте эффекта, где оно есть (например <code>_internalCooldownSeconds</code> у <code>BulwarkComponent</code> — «кулдаун щита»). </p>
+<p>Задать float-поле <em>fieldName</em>  в первом компоненте эффекта, где оно есть (например <code>_internalCooldownSeconds</code> у <code>BlockComponent</code> — «кулдаун щита»). </p>
 <p>Не нужно знать путь массива. </p>
-
-</div>
-</div>
-<a id="aff80dcb72e35af6ac0a72da480353440" name="aff80dcb72e35af6ac0a72da480353440"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff80dcb72e35af6ac0a72da480353440">&#9670;&#160;</a></span>SetFloat()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a> Guildmaster.Data.Editor.ContentEditService.SetFloat </td>
-          <td>(</td>
-          <td class="paramtype">ScriptableObject&#160;</td>
-          <td class="paramname"><em>asset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>propertyPath</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Задать float-поле по пути SerializedProperty (например <code>_movingAttackSpeedPenaltyPct</code>). </p>
 
 </div>
 </div>
@@ -531,6 +525,52 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="af0f8a71b0fa2652cd6ca271cd8f1ba4c" name="af0f8a71b0fa2652cd6ca271cd8f1ba4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0f8a71b0fa2652cd6ca271cd8f1ba4c">&#9670;&#160;</a></span>SetValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a> Guildmaster.Data.Editor.ContentEditService.SetValue </td>
+          <td>(</td>
+          <td class="paramtype">ScriptableObject&#160;</td>
+          <td class="paramname"><em>asset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>propertyPath</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Задать СКАЛЯРНОЕ поле по пути SerializedProperty — float, int, bool или enum (<code>_movingAttackSpeedPenaltyPct</code>, <code>_castConditionCount</code>, <code>_consumesTriggerTag</code>, <code>_ai._autoAttackTargeting</code>). </p>
+<p>Значение всегда приходит числом, потому что Change ведёт аудит в float и обязан уметь записать «было → стало» для любого поля одинаково. Для bool ненулевое значение = true; для enum число — это его сериализованное значение (флаговые enum складываются, как в ассете). </p>
+<p><b>Почему не только float:</b> балансная правка кита регулярно упирается в переключатель, а не в число — «расходует ли способность теги», «сколько целей нужно для каста», «кого бьёт авто-атака». Без них пакет применялся бы наполовину, а вторая половина уезжала бы в ручную правку YAML мимо Undo и аудита.</p>
+
+</div>
+</div>
 <a id="aed9c8786a539560fa29cc6cf18700503" name="aed9c8786a539560fa29cc6cf18700503"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aed9c8786a539560fa29cc6cf18700503">&#9670;&#160;</a></span>WriteChangeLog()</h2>
 
@@ -567,6 +607,11 @@ Here is the call graph for this function:</div>
 
 <p>Записать журнал правок в <code>BalanceReports/balance_changes_*.md</code> (append-friendly отдельными файлами). </p>
 <p>Возвращает путь. Аудит «что и когда крутили» — опора цикла баланса. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_aed9c8786a539560fa29cc6cf18700503_icgraph.svg" width="498" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

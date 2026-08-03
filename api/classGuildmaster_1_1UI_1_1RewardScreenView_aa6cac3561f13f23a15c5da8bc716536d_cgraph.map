@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.RewardScreenView.Build" name="Guildmaster.UI.RewardScreenView.Build">
+<area shape="rect" id="Node000001" title="Построить экран&#45;оверлей награды." alt="" coords="5,5,221,45"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1UI_1_1Tooltips_1_1TooltipRequest.html#a2214830f87b9f502c797630221457d1d" title=" " alt="" coords="269,5,447,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="222,23,256,23,256,28,222,28"/>
+</map>

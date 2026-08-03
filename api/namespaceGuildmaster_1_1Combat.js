@@ -1,28 +1,34 @@
 var namespaceGuildmaster_1_1Combat =
 [
     [ "Abilities", "namespaceGuildmaster_1_1Combat_1_1Abilities.html", "namespaceGuildmaster_1_1Combat_1_1Abilities" ],
-    [ "Commands", "namespaceGuildmaster_1_1Combat_1_1Commands.html", "namespaceGuildmaster_1_1Combat_1_1Commands" ],
     [ "Effects", "namespaceGuildmaster_1_1Combat_1_1Effects.html", "namespaceGuildmaster_1_1Combat_1_1Effects" ],
+    [ "Tape", "namespaceGuildmaster_1_1Combat_1_1Tape.html", "namespaceGuildmaster_1_1Combat_1_1Tape" ],
     [ "AbilitySystem", "classGuildmaster_1_1Combat_1_1AbilitySystem.html", "classGuildmaster_1_1Combat_1_1AbilitySystem" ],
     [ "AreaHit", "structGuildmaster_1_1Combat_1_1AreaHit.html", "structGuildmaster_1_1Combat_1_1AreaHit" ],
     [ "AttackTiming", "classGuildmaster_1_1Combat_1_1AttackTiming.html", "classGuildmaster_1_1Combat_1_1AttackTiming" ],
     [ "AutoAttackSystem", "classGuildmaster_1_1Combat_1_1AutoAttackSystem.html", "classGuildmaster_1_1Combat_1_1AutoAttackSystem" ],
     [ "BattleOutcome", "structGuildmaster_1_1Combat_1_1BattleOutcome.html", "structGuildmaster_1_1Combat_1_1BattleOutcome" ],
     [ "BrainSystem", "classGuildmaster_1_1Combat_1_1BrainSystem.html", "classGuildmaster_1_1Combat_1_1BrainSystem" ],
+    [ "ClassBaseline", "classGuildmaster_1_1Combat_1_1ClassBaseline.html", "classGuildmaster_1_1Combat_1_1ClassBaseline" ],
     [ "CombatPositioning", "classGuildmaster_1_1Combat_1_1CombatPositioning.html", "classGuildmaster_1_1Combat_1_1CombatPositioning" ],
     [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html", "classGuildmaster_1_1Combat_1_1CombatSimulation" ],
+    [ "ConcealmentSystem", "classGuildmaster_1_1Combat_1_1ConcealmentSystem.html", "classGuildmaster_1_1Combat_1_1ConcealmentSystem" ],
     [ "DamagePipeline", "classGuildmaster_1_1Combat_1_1DamagePipeline.html", "classGuildmaster_1_1Combat_1_1DamagePipeline" ],
     [ "DamageRequest", "structGuildmaster_1_1Combat_1_1DamageRequest.html", "structGuildmaster_1_1Combat_1_1DamageRequest" ],
+    [ "DamageResolution", "structGuildmaster_1_1Combat_1_1DamageResolution.html", "structGuildmaster_1_1Combat_1_1DamageResolution" ],
     [ "DamageResult", "structGuildmaster_1_1Combat_1_1DamageResult.html", "structGuildmaster_1_1Combat_1_1DamageResult" ],
     [ "DeathSystem", "classGuildmaster_1_1Combat_1_1DeathSystem.html", "classGuildmaster_1_1Combat_1_1DeathSystem" ],
     [ "DisplacementSystem", "classGuildmaster_1_1Combat_1_1DisplacementSystem.html", "classGuildmaster_1_1Combat_1_1DisplacementSystem" ],
     [ "DisplaceRequest", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html", "structGuildmaster_1_1Combat_1_1DisplaceRequest" ],
+    [ "EffectiveStats", "classGuildmaster_1_1Combat_1_1EffectiveStats.html", "classGuildmaster_1_1Combat_1_1EffectiveStats" ],
     [ "EffectSystem", "classGuildmaster_1_1Combat_1_1EffectSystem.html", "classGuildmaster_1_1Combat_1_1EffectSystem" ],
     [ "EncounterLoader", "classGuildmaster_1_1Combat_1_1EncounterLoader.html", "classGuildmaster_1_1Combat_1_1EncounterLoader" ],
+    [ "EnemyScalers", "classGuildmaster_1_1Combat_1_1EnemyScalers.html", "classGuildmaster_1_1Combat_1_1EnemyScalers" ],
     [ "FleeSteering", "classGuildmaster_1_1Combat_1_1FleeSteering.html", "classGuildmaster_1_1Combat_1_1FleeSteering" ],
     [ "IBattleView", "interfaceGuildmaster_1_1Combat_1_1IBattleView.html", "interfaceGuildmaster_1_1Combat_1_1IBattleView" ],
-    [ "ICombatCommand", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand" ],
     [ "ICombatContext", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html", "interfaceGuildmaster_1_1Combat_1_1ICombatContext" ],
+    [ "ISummonFactory", "interfaceGuildmaster_1_1Combat_1_1ISummonFactory.html", "interfaceGuildmaster_1_1Combat_1_1ISummonFactory" ],
+    [ "ITickLedgerSink", "interfaceGuildmaster_1_1Combat_1_1ITickLedgerSink.html", "interfaceGuildmaster_1_1Combat_1_1ITickLedgerSink" ],
     [ "IUnitBrain", "interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html", "interfaceGuildmaster_1_1Combat_1_1IUnitBrain" ],
     [ "MovementSystem", "classGuildmaster_1_1Combat_1_1MovementSystem.html", "classGuildmaster_1_1Combat_1_1MovementSystem" ],
     [ "PlayerSpawn", "structGuildmaster_1_1Combat_1_1PlayerSpawn.html", "structGuildmaster_1_1Combat_1_1PlayerSpawn" ],
@@ -36,10 +42,16 @@ var namespaceGuildmaster_1_1Combat =
     [ "SeparationSystem", "classGuildmaster_1_1Combat_1_1SeparationSystem.html", "classGuildmaster_1_1Combat_1_1SeparationSystem" ],
     [ "SpatialHash", "classGuildmaster_1_1Combat_1_1SpatialHash.html", "classGuildmaster_1_1Combat_1_1SpatialHash" ],
     [ "Stats", "classGuildmaster_1_1Combat_1_1Stats.html", "classGuildmaster_1_1Combat_1_1Stats" ],
+    [ "SummonSystem", "classGuildmaster_1_1Combat_1_1SummonSystem.html", "classGuildmaster_1_1Combat_1_1SummonSystem" ],
+    [ "TickLedger", "classGuildmaster_1_1Combat_1_1TickLedger.html", "classGuildmaster_1_1Combat_1_1TickLedger" ],
+    [ "UnitStatPreview", "classGuildmaster_1_1Combat_1_1UnitStatPreview.html", "classGuildmaster_1_1Combat_1_1UnitStatPreview" ],
+    [ "WorldBodyBuilder", "classGuildmaster_1_1Combat_1_1WorldBodyBuilder.html", "classGuildmaster_1_1Combat_1_1WorldBodyBuilder" ],
     [ "AttackPhase", "namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676f", [
       [ "Idle", "namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fae599161956d626eda4cb0a5ffb85271c", null ],
       [ "Windup", "namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fa3d501c93b1c2ecdb8ca9ffc8ef9c7055", null ],
-      [ "Recovery", "namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fad8afbc541b39d23648c823057cffe3a5", null ]
+      [ "Recovery", "namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fad8afbc541b39d23648c823057cffe3a5", null ],
+      [ "Channel", "namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fa781dc97dc62331eec3ea9ec4373a3ca8", null ],
+      [ "CombatIdle", "namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fa64e24c0774ed782165eaea49569c3563", null ]
     ] ],
     [ "BattleOutcomeKind", "namespaceGuildmaster_1_1Combat.html#ab2f687afcbfbed06c2eae345b78bfa0c", [
       [ "Ongoing", "namespaceGuildmaster_1_1Combat.html#ab2f687afcbfbed06c2eae345b78bfa0ca7ee7defde6dc3a1d4a4a891b3894e790", null ],
@@ -51,11 +63,6 @@ var namespaceGuildmaster_1_1Combat =
       [ "AutoAttack", "namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70da4ab9f5061aa771d40b1640cbd5e1caaa", null ],
       [ "Periodic", "namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70dacdcc32a064503184053bd2018d1c0e7e", null ],
       [ "Reactive", "namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70dac0d2be90914e0cb1d969da682299d7f7", null ]
-    ] ],
-    [ "DisplaceKind", "namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0be", [
-      [ "Knockback", "namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea5cfc4f35bbc4deb96cfb6d2843084b96", null ],
-      [ "Pull", "namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea718f59718640c6506b3721fbc8bf3a4d", null ],
-      [ "Teleport", "namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea054fc7866c93a2496fd9048c493e6aed", null ]
     ] ],
     [ "PositioningIntent", "namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653b", [
       [ "Approach", "namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba40a68b5da4b9b224764558bb02ecd028", null ],

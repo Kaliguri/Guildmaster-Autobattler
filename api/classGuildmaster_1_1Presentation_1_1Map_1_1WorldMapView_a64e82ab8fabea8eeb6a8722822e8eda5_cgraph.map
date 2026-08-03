@@ -1,0 +1,13 @@
+<map id="Guildmaster.Presentation.Map.WorldMapView.Show" name="Guildmaster.Presentation.Map.WorldMapView.Show">
+<area shape="rect" id="Node000001" title="Показать карту: разложить узлы и рёбра, включить слой." alt="" coords="5,133,196,173"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Map_1_1MapNodeView.html#a91608a1c7625b0aa2983b6d68b1b163b" title="Тон карты и состояние узла. Палитра обязательна — цвета живут только в ней." alt="" coords="272,5,463,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,131,177,93,243,55,261,47,263,52,245,60,180,97,128,135"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1CameraModeController.html#a7baecf8517a4a43e689a6d43e00c6d5d" title="Войти в вид карты акта: своя vcam, свои границы клампа (bounds &#160;— область карты в мире,..." alt="" coords="248,69,487,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="184,131,270,110,271,115,185,136"/>
+<area shape="rect" id="Node000004" href="$structGuildmaster_1_1Presentation_1_1Map_1_1MapLayout.html#a59bb2e59ebe98c29810eef79c1eed210" title="Позиции узлов относительно начала карты. Ряд центрируется по фактической ширине этажа." alt="" coords="272,133,463,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="196,151,258,151,258,156,196,156"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Presentation_1_1Map_1_1MapNodeView.html#adaa836f29fb120a465fe75125f0edd5b" title="Отклик: hover/нажатие. Трогает только визуальный корень — зона хвата не «дышит»." alt="" coords="244,197,491,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="185,171,271,192,270,197,184,176"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Presentation_1_1Map_1_1MapNodeView.html#a3e77d99ad3671f26ff1354963d527111" title="Включает иконку нужного типа, гасит остальные. Неизвестный тип — без иконки." alt="" coords="260,261,475,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="128,171,180,210,245,247,263,254,261,259,243,252,177,214,125,176"/>
+</map>

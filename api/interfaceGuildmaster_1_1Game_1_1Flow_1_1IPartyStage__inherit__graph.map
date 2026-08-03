@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.IPartyStage" name="Guildmaster.Game.Flow.IPartyStage">
+<area shape="rect" id="Node000001" title="Отряд на арене глазами того, кто его не собирает: «поставь заново по текущему забегу»." alt="" coords="5,5,216,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1WorldStageController.html" title="Persist&#45;мир: ставит отряд игрока (team 0) на арену ВНЕ боя." alt="" coords="5,133,216,273"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,99,113,133,108,133,108,99"/>
+</map>

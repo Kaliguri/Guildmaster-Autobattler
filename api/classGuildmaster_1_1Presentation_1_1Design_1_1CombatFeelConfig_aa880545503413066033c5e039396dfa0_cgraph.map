@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Design.CombatFeelConfig.ResolveHitFlashColor" name="Guildmaster.Presentation.Design.CombatFeelConfig.ResolveHitFlashColor">
+<area shape="rect" id="Node000001" title="Цвет hit&#45;flash по типу урона: у типов со своим «вкусом» (яд, свет, тьма) он свой, у остальных — цвет ..." alt="" coords="5,5,252,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes.html#aec2f372be2cc79d487a2f9399ba71bd1" title="Школа брони, которой гасится этот тип." alt="" coords="300,13,515,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,30,286,30,286,35,252,35"/>
+</map>

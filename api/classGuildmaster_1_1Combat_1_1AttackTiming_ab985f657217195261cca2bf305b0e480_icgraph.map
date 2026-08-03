@@ -1,0 +1,19 @@
+<map id="Guildmaster.Combat.AttackTiming.AttackDurationTicks" name="Guildmaster.Combat.AttackTiming.AttackDurationTicks">
+<area shape="rect" id="Node000001" title="Длительность свинга в тиках = min(потолок, intervalTicks)." alt="" coords="808,120,1011,160"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#aa11de38c03dd633f11c20f7b51ccb459" title="Арифметика доли контакта из тех же чисел, что у WindupTicks." alt="" coords="547,5,749,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="859,116,759,66,711,48,713,43,761,62,861,111"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a8d6696d026a5780f7846fe236b4f52c4" title="Тики ВСЕХ контактов свинга (от его старта), дописанные в result ." alt="" coords="20,91,223,131"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="816,120,760,111,614,100,468,98,333,101,223,106,223,101,333,95,468,93,614,95,760,105,817,114"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a151faaab96605f853e207f4c530c8201" title="Хвост&#45;доигрыш клипа удара после кадра контакта = attackDurationTicks − windupTicks." alt="" coords="547,120,749,160"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="794,143,750,143,750,137,794,137"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#aa903062ad68e0504e24b53d400814481" title=" " alt="" coords="547,184,749,224"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="814,166,731,187,730,181,813,161"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a8fe786d7f0ca34d559f4df76d57792cd" title="Замах из ДОЛИ свинга (0..1) — путь для юнитов, у которых нет покадрового клипа." alt="" coords="536,248,760,288"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="873,170,821,205,761,238,731,250,729,245,759,234,819,201,870,166"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a4f00d8a9a07bfec73091d61f4e20b9da" title="Тики замаха, которые получит СЛЕДУЮЩИЙ свинг этого юнита при текущей скорости атаки и клипе." alt="" coords="285,184,488,224"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="533,207,488,207,488,201,533,201"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="315,182,178,133,180,128,317,177"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f5124a8ff7ffd8371a17034c6c5ddd6" title="Обработать автоатаки всех живых юнитов за один тик." alt="" coords="5,184,237,224"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="272,207,237,207,237,201,272,201"/>
+<area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="552,247,468,227,469,221,553,242"/>
+</map>

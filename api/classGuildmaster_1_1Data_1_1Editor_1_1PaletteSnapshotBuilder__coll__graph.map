@@ -1,0 +1,3 @@
+<map id="Guildmaster.Data.Editor.PaletteSnapshotBuilder" name="Guildmaster.Data.Editor.PaletteSnapshotBuilder">
+<area shape="rect" id="Node000001" title="Сборщик снимка палитры: читает tokens.primitives.uss и tokens.semantic.uss, разворачивает ссылки var(..." alt="" coords="5,5,179,145"/>
+</map>

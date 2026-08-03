@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.EncounterLoader.CombineItems" name="Guildmaster.Combat.EncounterLoader.CombineItems">
+<area shape="rect" id="Node000001" title="Предметы слота (Vessel) + баннеры команды (Party) в один список для сборки юнита." alt="" coords="251,5,476,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1WorldBodyBuilder.html#a9713ddc8d2f83613dbd6f0e7c9abfb4f" title="Ростер игрока → тела на арене (team 0)." alt="" coords="5,5,203,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,28,203,28,203,23,237,23"/>
+</map>

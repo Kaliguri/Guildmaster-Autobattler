@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.CombatPositioning.IsRearAttack" name="Guildmaster.Combat.CombatPositioning.IsRearAttack">
+<area shape="rect" id="Node000001" title="Бьёт ли attacker &#160;в ТЫЛ цели: стоит ли он с той стороны, откуда цель пришла (со стороны её собственно..." alt="" coords="365,53,576,93"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RearDamageBonusComponent.html#a1deaebd318de3bbcd01c658a339cd44e" title=" " alt="" coords="5,5,317,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="351,60,317,56,318,50,352,55"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RearStrikeEffectComponent.html#ad5f82611af184b16cdc06293a428e0a9" title=" " alt="" coords="16,84,307,139"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="352,90,307,96,307,91,351,85"/>
+</map>

@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Displace
 </div><!--header-->
 <div class="contents">
 
-<p>Принудительные смещения (§9.9, «Шквальный толчок»): двигает <code>Position</code> летящих юнитов по фиксированному шагу за фикс.  
+<p>Принудительные смещения (§9.9, «Шквальный толчок»): двигает <code>Position</code> летящих юнитов по фиксированному шагу столько тиков, сколько требует дистанция при фиксированной скорости (<a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a8f23b734e3e501100ceb2d9a706a6751" title="Сколько тиков длится полёт: дистанция ÷ скорость.">SimTuning.DisplaceTicks</a>), держит жёсткое оглушение полёта (RuntimeUnit.DisplacedTicksRemaining — не эффект, поэтому иммунно к сопротивлению контролю), и при «ядре» бьёт врагов источника на пройденном сегменте.  
  <a href="classGuildmaster_1_1Combat_1_1DisplacementSystem.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.DisplacementSystem:</div>
@@ -113,9 +113,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2e840a4e4fc1af6cc026149b46a86a99" id="r_a2e840a4e4fc1af6cc026149b46a86a99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1DisplacementSystem.html#a2e840a4e4fc1af6cc026149b46a86a99">Clear</a> ()</td></tr>
 <tr class="memdesc:a2e840a4e4fc1af6cc026149b46a86a99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сбросить все активные полёты (перезапуск боя на месте) — иначе повиснут ссылки на удалённых юнитов.  <br /></td></tr>
 <tr class="separator:a2e840a4e4fc1af6cc026149b46a86a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aada5ffa6c512789c8b4ffe9290ab34c8" id="r_aada5ffa6c512789c8b4ffe9290ab34c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1DisplacementSystem.html#aada5ffa6c512789c8b4ffe9290ab34c8">Add</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html">DisplaceRequest</a> req)</td></tr>
-<tr class="memdesc:aada5ffa6c512789c8b4ffe9290ab34c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поставить смещение в работу. Цель сразу переходит в полётное оглушение.  <br /></td></tr>
-<tr class="separator:aada5ffa6c512789c8b4ffe9290ab34c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a267ce462de6347c69773fefbba1ce48c" id="r_a267ce462de6347c69773fefbba1ce48c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1DisplacementSystem.html#a267ce462de6347c69773fefbba1ce48c">Add</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html">DisplaceRequest</a> req, in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a> tuning)</td></tr>
+<tr class="memdesc:a267ce462de6347c69773fefbba1ce48c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поставить смещение в работу.  <br /></td></tr>
+<tr class="separator:a267ce462de6347c69773fefbba1ce48c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a004bdc76520cf9940b065fd86394829d" id="r_a004bdc76520cf9940b065fd86394829d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1DisplacementSystem.html#a004bdc76520cf9940b065fd86394829d">Tick</a> (<a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> ctx, float dt, in <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a> bounds)</td></tr>
 <tr class="memdesc:a004bdc76520cf9940b065fd86394829d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Продвинуть все активные смещения на один тик.  <br /></td></tr>
 <tr class="separator:a004bdc76520cf9940b065fd86394829d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,12 +127,12 @@ Events</h2></td></tr>
 <tr class="separator:a7d8b3c5a531421c51ec75ad181051808"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Принудительные смещения (§9.9, «Шквальный толчок»): двигает <code>Position</code> летящих юнитов по фиксированному шагу за фикс. </p>
-<p>число тиков, держит жёсткое оглушение полёта (RuntimeUnit.DisplacedTicksRemaining — не эффект, поэтому иммунно к сопротивлению контролю), и при «ядре» бьёт врагов источника на пройденном сегменте. По завершении полёта зовёт OnDisplacementEnded (сигнал для «Вихревого захода»). </p>
+<div class="textblock"><p>Принудительные смещения (§9.9, «Шквальный толчок»): двигает <code>Position</code> летящих юнитов по фиксированному шагу столько тиков, сколько требует дистанция при фиксированной скорости (<a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a8f23b734e3e501100ceb2d9a706a6751" title="Сколько тиков длится полёт: дистанция ÷ скорость.">SimTuning.DisplaceTicks</a>), держит жёсткое оглушение полёта (RuntimeUnit.DisplacedTicksRemaining — не эффект, поэтому иммунно к сопротивлению контролю), и при «ядре» бьёт врагов источника на пройденном сегменте. </p>
+<p>По завершении полёта зовёт OnDisplacementEnded (сигнал для «Вихревого захода»). </p>
 <p>Тикается ПОСЛЕ MovementSystem и ДО перестройки spatial hash — позиции полёта попадают в хэш этого тика. Обход активных смещений по индексу списка → детерминизм (гейт S5 в срез-тестах).</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aada5ffa6c512789c8b4ffe9290ab34c8" name="aada5ffa6c512789c8b4ffe9290ab34c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aada5ffa6c512789c8b4ffe9290ab34c8">&#9670;&#160;</a></span>Add()</h2>
+<a id="a267ce462de6347c69773fefbba1ce48c" name="a267ce462de6347c69773fefbba1ce48c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a267ce462de6347c69773fefbba1ce48c">&#9670;&#160;</a></span>Add()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,8 +144,18 @@ Events</h2></td></tr>
           <td class="memname">void Guildmaster.Combat.DisplacementSystem.Add </td>
           <td>(</td>
           <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html">DisplaceRequest</a>&#160;</td>
-          <td class="paramname"><em>req</em></td><td>)</td>
+          <td class="paramname"><em>req</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a>&#160;</td>
+          <td class="paramname"><em>tuning</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -155,7 +165,8 @@ Events</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Поставить смещение в работу. Цель сразу переходит в полётное оглушение. </p>
+<p>Поставить смещение в работу. </p>
+<p>Цель сразу переходит в полётное оглушение. Длительность полёта считается ИЗ ДИСТАНЦИИ при фиксированной скорости (<a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a8f23b734e3e501100ceb2d9a706a6751" title="Сколько тиков длится полёт: дистанция ÷ скорость.">SimTuning.DisplaceTicks</a>): дальний толчок сам по себе держит цель дольше. Коридор «ядра» шире заданной ширины на <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#add769d2ceaf6b740da663f677ef8955d">SimTuning.CannonballWidthMult</a>. </p>
 
 </div>
 </div>
@@ -233,6 +244,11 @@ Events</h2></td></tr>
   </table>
   </dd>
 </dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1DisplacementSystem_a004bdc76520cf9940b065fd86394829d_cgraph.svg" width="524" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

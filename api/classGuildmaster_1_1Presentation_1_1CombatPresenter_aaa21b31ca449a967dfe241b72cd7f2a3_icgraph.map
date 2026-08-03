@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.CombatPresenter.UnbindBattle" name="Guildmaster.Presentation.CombatPresenter.UnbindBattle">
+<area shape="rect" id="Node000001" title="Бой ушёл: отписаться и забыть его внутренности." alt="" coords="260,5,483,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1CombatPresenter.html#a885076774cbd00f69b4f38c6ed995575" title="Бой начался: подать его симуляцию, ленту и диспетчер событий." alt="" coords="5,5,212,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="246,28,212,28,212,23,246,23"/>
+</map>

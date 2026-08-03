@@ -1,7 +1,5 @@
 var classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService =
 [
-    [ "Delete", "classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#a7df90d46b55f8280cd3dbdb0262fd6bc", null ],
-    [ "Exists", "classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#a7da2cff4855c395cb305c37a29ccdbbb", null ],
-    [ "Load< T >", "classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#ae1b6545e429cd7440c2f7b444d0b9b7c", null ],
-    [ "Save< T >", "classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#a449acd839274f2de82198fe23cb819cd", null ]
+    [ "JsonFileSaveService", "classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#ae0975ab21d60c2ba7e87901c8683cb3d", null ],
+    [ "SavesFolder", "classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#ad4ef66ab1f545d74252f4e0514d4248f", null ]
 ];

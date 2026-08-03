@@ -1,0 +1,28 @@
+var classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape =
+[
+    [ "BattleTape", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a0515259769ae15eae942b6c1d2c5a429", null ],
+    [ "CaptureSnapshots", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#adf34736be0e1377528f1269042e00fb7", null ],
+    [ "CaptureTick", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a308059dad876303af204c36c6a3ed9a7", null ],
+    [ "Clear", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a5ef165115ae57903d859a6099dd9190e", null ],
+    [ "CollectEvents", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a147971847a54f18f260245367366c9aa", null ],
+    [ "FindFirstEventAtOrAfter", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#abf7de6639e9cb9edbe06844ea29d7d9a", null ],
+    [ "GetAbility", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a74c071fa28eac101a006504eabf088a6", null ],
+    [ "GetAreaHit", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a207bea103942ccd88248581d75735667", null ],
+    [ "GetDamage", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a38b567d8b44f9a337dfd72b1879810be", null ],
+    [ "GetEffect", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a6affe9534297666fcd21beae3e52b7ec", null ],
+    [ "GetEvent", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a331f63e721acec346b1d42951b1403ac", null ],
+    [ "GetOutcome", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a2dbdb978b1099173877c96d0e8ef3b14", null ],
+    [ "Record", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#aa8f257c1de3d02f9f9efebf10585d5d4", null ],
+    [ "RecordAbility", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a543841c022fd280e19c67a0a8d365886", null ],
+    [ "RecordAreaHit", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#adbdc327a25f64c1ebb035274e4234eb1", null ],
+    [ "RecordBattleEnded", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a230b0c75eea1cc364c2d0dda0258dc1c", null ],
+    [ "RecordDamage", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a4a9e02082d23fdbdd6cf1da8ff2ae9fc", null ],
+    [ "RecordEffect", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a652d02274062bcfa9dc1304de74064b9", null ],
+    [ "TryGetFrame", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a8033db9b87c3cdbf2961bffbfdb9fdf6", null ],
+    [ "TryGetFrame", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#afc47e8a83d1c4a600c17a080f74da654", null ],
+    [ "NoTick", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a0af8d8683c704a19687698acd0c59238", null ],
+    [ "EventCount", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#af60fcf5500f8a3e217a270bb5ba5882b", null ],
+    [ "FrontTick", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#ac7bcbd90c33e5dfe05a1f1f879a774d3", null ],
+    [ "OldestTick", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a666a9bf0dc0a696ac726adf37d9e8966", null ],
+    [ "WindowTicks", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a13672c98b5950910612529d3b28c3b66", null ]
+];

@@ -98,36 +98,35 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Services_1
 </div><!--header-->
 <div class="contents">
 
-<p>Реалтайм-пульс боевой симуляции: accumulator-паттерн на <code>Time.deltaTime</code>.  
+<p>Реалтайм-пульс боевой симуляции: accumulator-паттерн на <code>Time.unscaledDeltaTime</code>.  
  <a href="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Services.CombatLoopService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService__inherit__graph.svg" width="210" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService__inherit__graph.svg" width="210" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Services.CombatLoopService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService__coll__graph.svg" width="210" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService__coll__graph.svg" width="210" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6788dfb4dd54d1004a5cb10601608f69" id="r_a6788dfb4dd54d1004a5cb10601608f69"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html#a6788dfb4dd54d1004a5cb10601608f69">CombatLoopService</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> simulation)</td></tr>
-<tr class="separator:a6788dfb4dd54d1004a5cb10601608f69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d5417592242c47be296297cbf2b196b" id="r_a8d5417592242c47be296297cbf2b196b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html#a8d5417592242c47be296297cbf2b196b">CombatLoopService</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> simulation, <a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeRecorder.html">Combat.Tape.BattleTapeRecorder</a> tapeRecorder, <a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html">Combat.Tape.BattleTapePlayback</a> playback, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">Data.Definitions.IBattleClock</a> clock)</td></tr>
+<tr class="separator:a8d5417592242c47be296297cbf2b196b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab900cb24a42330e967eeeafc3e638bbf" id="r_ab900cb24a42330e967eeeafc3e638bbf"><td class="memItemLeft" align="right" valign="top">async UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html#ab900cb24a42330e967eeeafc3e638bbf">StartAsync</a> (CancellationToken cancellation)</td></tr>
 <tr class="memdesc:ab900cb24a42330e967eeeafc3e638bbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запускает тиковый цикл.  <br /></td></tr>
 <tr class="separator:ab900cb24a42330e967eeeafc3e638bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afae0c8f6f636435179fddacfe87b3b04" id="r_afae0c8f6f636435179fddacfe87b3b04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html#afae0c8f6f636435179fddacfe87b3b04">Stop</a> ()</td></tr>
-<tr class="memdesc:afae0c8f6f636435179fddacfe87b3b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Остановить цикл принудительно (например, при выгрузке сцены).  <br /></td></tr>
-<tr class="separator:afae0c8f6f636435179fddacfe87b3b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Реалтайм-пульс боевой симуляции: accumulator-паттерн на <code>Time.deltaTime</code>. </p>
-<p><code>Time.deltaTime</code> используется ТОЛЬКО здесь — в CombatSimulation его нет. Реализует IAsyncStartable для авто-запуска через VContainer EntryPoint. Тикует только хост (в мультиплеере); клиент применяет команды и следит за checksum. (вики «10» §5.1). </p>
+<div class="textblock"><p>Реалтайм-пульс боевой симуляции: accumulator-паттерн на <code>Time.unscaledDeltaTime</code>. </p>
+<p>Время Unity читается ТОЛЬКО здесь — в CombatSimulation его нет. Реализует IAsyncStartable для авто-запуска через VContainer EntryPoint. </p>
+<p><b>Собирается только у того, кто считает бой сам</b> — у владельца сеанса, будь он один или с гостями. У гостя симуляции нет вовсе, и вместо этого цикла его скоуп получает GuestPlaybackLoop. Прежде роль спрашивалась здесь каждый кадр, потому что боевой скоуп поднимался на буте, когда сети ещё не было; теперь он рождается внутри сеанса, роль известна при сборке — и ветка из горячего цикла ушла.</p>
+<p><b>Почему UNSCALED:</b> пауза и slowmo — свойства ПОКАЗА, а не просчёта («сим впереди, показ с лагом»). Масштабированное время тормозило бы и расчёт: в финальном slowmo просчёт полз бы вместе с картинкой, хотя именно запас впереди и позволяет режиссуре знать будущее. Показ свою долю кадра берёт от <code>Time.deltaTime</code> — там масштаб как раз нужен.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6788dfb4dd54d1004a5cb10601608f69" name="a6788dfb4dd54d1004a5cb10601608f69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6788dfb4dd54d1004a5cb10601608f69">&#9670;&#160;</a></span>CombatLoopService()</h2>
+<a id="a8d5417592242c47be296297cbf2b196b" name="a8d5417592242c47be296297cbf2b196b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d5417592242c47be296297cbf2b196b">&#9670;&#160;</a></span>CombatLoopService()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,8 +138,30 @@ Public Member Functions</h2></td></tr>
           <td class="memname">Guildmaster.Game.Services.CombatLoopService.CombatLoopService </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a>&#160;</td>
-          <td class="paramname"><em>simulation</em></td><td>)</td>
+          <td class="paramname"><em>simulation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeRecorder.html">Combat::Tape::BattleTapeRecorder</a>&#160;</td>
+          <td class="paramname"><em>tapeRecorder</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html">Combat::Tape::BattleTapePlayback</a>&#160;</td>
+          <td class="paramname"><em>playback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">Data::Definitions::IBattleClock</a>&#160;</td>
+          <td class="paramname"><em>clock</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -179,25 +200,6 @@ Public Member Functions</h2></td></tr>
 
 <p>Запускает тиковый цикл. </p>
 <p>Останавливается когда бой завершён или скоуп уничтожен. </p>
-
-</div>
-</div>
-<a id="afae0c8f6f636435179fddacfe87b3b04" name="afae0c8f6f636435179fddacfe87b3b04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afae0c8f6f636435179fddacfe87b3b04">&#9670;&#160;</a></span>Stop()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Guildmaster.Game.Services.CombatLoopService.Stop </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Остановить цикл принудительно (например, при выгрузке сцены). </p>
 
 </div>
 </div>

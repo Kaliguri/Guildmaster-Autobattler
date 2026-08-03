@@ -1,0 +1,10 @@
+<map id="Guildmaster.Game.Services.JsonFileSaveServiceBase.TryLoad&lt; T &gt;" name="Guildmaster.Game.Services.JsonFileSaveServiceBase.TryLoad&lt; T &gt;">
+<area shape="rect" id="Node000001" title="Загрузить значение по ключу." alt="" coords="5,93,281,133"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html#ad13e72b8cf071c2fffa9680f57d8f7b8" title=" " alt="" coords="329,5,548,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,91,329,55,355,47,357,52,330,60,211,96"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8" title="Ключи первого уровня под указанным префиксом — без него не собрать список профилей и гильдий." alt="" coords="333,93,544,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="282,111,319,111,319,116,282,116"/>
+<area shape="rect" id="Node000004" href="$structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html#ad6d607b888e06058e0a7d0244793007f" title=" " alt="" coords="329,157,548,197"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="237,131,333,152,332,157,236,136"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="385,94,381,84,390,74,409,69,439,67,473,69,491,77,489,82,471,75,439,72,410,74,393,79,386,85,390,92"/>
+</map>

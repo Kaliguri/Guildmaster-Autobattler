@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.UnitView.AddBodyCut" name="Guildmaster.Presentation.UnitView.AddBodyCut">
+<area shape="rect" id="Node000001" title="Записать порез от состоявшегося удара: место в теле, направление вдоль удара, длина по весу." alt="" coords="5,13,196,53"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ae5d0d4c0cd44784bfbb39bba51089989" title="Длина пореза в мировых единицах по весу удара: тяжёлый вскрывает шире." alt="" coords="244,5,495,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,30,230,30,230,35,196,35"/>
+</map>

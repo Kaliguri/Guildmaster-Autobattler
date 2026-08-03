@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.DecayingStatModifierComponent" name="Guildmaster.Combat.Effects.Components.DecayingStatModifierComponent">
+<area shape="rect" id="Node000001" title="Стат&#45;модификатор, который СПАДАЕТ к нулю за время жизни эффекта: в момент наложения работает в полную..." alt="" coords="5,365,245,500"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html" title="Периодический компонент: OnTick каждые Interval секунд (DoT/HoT/реген)." alt="" coords="53,252,198,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,331,128,365,123,365,123,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="33,119,218,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="128,218,128,252,123,252,123,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="60,5,191,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="128,85,128,119,123,119,123,85"/>
+</map>

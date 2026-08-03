@@ -1,0 +1,7 @@
+<map id="Guildmaster.Net.Session.CoopSession" name="Guildmaster.Net.Session.CoopSession">
+<area shape="rect" id="Node000001" title="Кооп&#45;сессия: создать игру одним кликом, позвать друга, пережить разрыв и честно кончиться,..." alt="" coords="62,259,241,519"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html" title="Что интерфейсу нужно знать и уметь про кооп&#45;сессию: создать, позвать, выйти, показать состояние." alt="" coords="5,5,153,211"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,223,121,258,115,259,106,225"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="178,75,269,141"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="214,154,187,259,182,258,209,153"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Flow.BattleHost.OpenEmpty" name="Guildmaster.Game.Flow.BattleHost.OpenEmpty">
+<area shape="rect" id="Node000001" title="Открыть арену БЕЗ пресета: скоуп боя есть, состава нет." alt="" coords="5,37,227,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#aeb20e7c3063d77b632d3f4d6da85e18c" title="Закрыть бой: скоуп уходит вместе со всем, что в нём жило, и арена возвращается миру." alt="" coords="275,5,496,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,42,261,37,261,43,227,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Core_1_1Random_1_1DeterministicHash.html#af78c5cde6fbd4278824c2ce2709849c5" title="64&#45;битный FNV&#45;1a строки. null и пустая строка дают базовое смещение." alt="" coords="287,69,484,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="227,68,273,73,273,79,227,73"/>
+</map>

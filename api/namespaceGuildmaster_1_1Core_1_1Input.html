@@ -106,13 +106,23 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a4c81028c2df2c0050893a9d7c4626ac8" id="r_a4c81028c2df2c0050893a9d7c4626ac8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8">InputContext</a> { <a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8a6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
+<tr class="memitem:a4c81028c2df2c0050893a9d7c4626ac8" id="r_a4c81028c2df2c0050893a9d7c4626ac8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8">InputContext</a> { <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8a6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8ab61541208db7fa7dba42c85224405911">Menu</a> = 1
 , <a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8aea355214fd4bc7c57f471bd92918879b">Deployment</a> = 2
 , <a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8a30ad1054cf7ad7636a26844a6f782e1f">Combat</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8a46f3ea056caa3126b91f3f70beea068c">Map</a> = 4
+<br />
  }</td></tr>
 <tr class="memdesc:a4c81028c2df2c0050893a9d7c4626ac8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Игровой контекст ввода — определяет, какие карты действий активны в данный момент (вики «16» §2).  <a href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8">More...</a><br /></td></tr>
 <tr class="separator:a4c81028c2df2c0050893a9d7c4626ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6908dfab9ee931238621a97101994eeb" id="r_a6908dfab9ee931238621a97101994eeb"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a6908dfab9ee931238621a97101994eeb">InputSuppressSource</a> { <a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a6908dfab9ee931238621a97101994eeba6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a6908dfab9ee931238621a97101994eeba730b1d2ffece9a1c748a54cd0bb0e363">Ui</a> = 1 &lt;&lt; 0
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a6908dfab9ee931238621a97101994eebac9dd64ce83e5f74633b9b42f45311ebd">DevConsole</a> = 1 &lt;&lt; 1
+ }</td></tr>
+<tr class="memdesc:a6908dfab9ee931238621a97101994eeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кто держит глушение геймплейного ввода (IInputService.SetSuppressed).  <a href="namespaceGuildmaster_1_1Core_1_1Input.html#a6908dfab9ee931238621a97101994eeb">More...</a><br /></td></tr>
+<tr class="separator:a6908dfab9ee931238621a97101994eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a4c81028c2df2c0050893a9d7c4626ac8" name="a4c81028c2df2c0050893a9d7c4626ac8"></a>
@@ -137,6 +147,35 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a4c81028c2df2c0050893a9d7c4626ac8aea355214fd4bc7c57f471bd92918879b" name="a4c81028c2df2c0050893a9d7c4626ac8aea355214fd4bc7c57f471bd92918879b"></a>Deployment&#160;</td><td class="fielddoc"><p>Фаза расстановки: камера + размещение юнитов (реализация — будущая фаза). </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a4c81028c2df2c0050893a9d7c4626ac8a30ad1054cf7ad7636a26844a6f782e1f" name="a4c81028c2df2c0050893a9d7c4626ac8a30ad1054cf7ad7636a26844a6f782e1f"></a>Combat&#160;</td><td class="fielddoc"><p>Идёт бой: камера + боевые действия (пауза, рестарт). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4c81028c2df2c0050893a9d7c4626ac8a46f3ea056caa3126b91f3f70beea068c" name="a4c81028c2df2c0050893a9d7c4626ac8a46f3ea056caa3126b91f3f70beea068c"></a>Map&#160;</td><td class="fielddoc"><p>Карта акта: world-камера (пан/зум как в бою) + указатель для клика по узлу. </p>
+<p>Боевых действий нет. Отдельный контекст, а не Menu: карта живёт в мире со своей камерой, а Menu камеру выключает вовсе. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a6908dfab9ee931238621a97101994eeb" name="a6908dfab9ee931238621a97101994eeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6908dfab9ee931238621a97101994eeb">&#9670;&#160;</a></span>InputSuppressSource</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a6908dfab9ee931238621a97101994eeb">Guildmaster.Core.Input.InputSuppressSource</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Кто держит глушение геймплейного ввода (IInputService.SetSuppressed). </p>
+<p>Источники независимы и накапливаются: ввод оживает, когда отпустили все. </p>
+<p>Флаги, а не булево на весь сервис: причина «клавиатуру забрал кто-то другой» бывает у нескольких хозяев одновременно, и с одним общим флагом они затирали друг друга. Живой случай: dev-консоль открыта (глушение стоит) → команда меняет экран → навигатор пересчитывает своё глушение и снимает ЧУЖОЕ → Enter, которым отправили команду, доходит до расстановки и начинает бой.</p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6908dfab9ee931238621a97101994eeba6adf97f83acf6453d4a6a4b1070f3754" name="a6908dfab9ee931238621a97101994eeba6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>Никто не глушит. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6908dfab9ee931238621a97101994eeba730b1d2ffece9a1c748a54cd0bb0e363" name="a6908dfab9ee931238621a97101994eeba730b1d2ffece9a1c748a54cd0bb0e363"></a>Ui&#160;</td><td class="fielddoc"><p>Модальный экран интерфейса (навигатор: всё, что не Sheet). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6908dfab9ee931238621a97101994eebac9dd64ce83e5f74633b9b42f45311ebd" name="a6908dfab9ee931238621a97101994eebac9dd64ce83e5f74633b9b42f45311ebd"></a>DevConsole&#160;</td><td class="fielddoc"><p>Dev-консоль: пока она открыта, клавиатура принадлежит ей. </p>
 </td></tr>
 </table>
 

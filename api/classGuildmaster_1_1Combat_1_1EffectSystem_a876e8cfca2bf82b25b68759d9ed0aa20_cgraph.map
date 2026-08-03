@@ -1,0 +1,11 @@
+<map id="Guildmaster.Combat.EffectSystem.CommitTickChanges" name="Guildmaster.Combat.EffectSystem.CommitTickChanges">
+<area shape="rect" id="Node000001" title="ЗАКОН ВИДИМОСТИ ЭФФЕКТОВ: проявить всё, что эффекты наложили или сняли за этот тик — статы и маску те..." alt="" coords="5,37,216,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1EffectSystem.html#aafdd26efd16e1f27b83bafcb7f970482" title="Проявить отложенное на одном юните." alt="" coords="264,37,461,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,55,250,55,250,60,216,60"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html#a2ba9f65756d1aaa68f725852d6bb0ac5" title="Проявить отложенные изменения: снятия, затем наложения." alt="" coords="509,37,707,77"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="462,55,496,55,496,60,462,60"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Stats.html#ae97b806719021d19ff582f3cc9aee131" title="Добавить группу модификаторов от source ." alt="" coords="755,5,952,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="707,42,741,37,742,43,707,47"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Stats.html#a573ab919e615e636374c98fd43666be6" title="Удалить все модификаторы, добавленные от source ." alt="" coords="755,69,952,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="707,68,742,72,741,77,707,73"/>
+</map>

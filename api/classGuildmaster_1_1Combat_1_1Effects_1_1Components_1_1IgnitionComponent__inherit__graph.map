@@ -1,5 +1,5 @@
 <map id="Guildmaster.Combat.Effects.Components.IgnitionComponent" name="Guildmaster.Combat.Effects.Components.IgnitionComponent">
-<area shape="rect" id="Node000001" title="«Воспламенение» (Огненный мечник): снимает с цели все «Поджоги» и заставляет каждый немедленно нанест..." alt="" coords="5,252,229,352"/>
+<area shape="rect" id="Node000001" title="«Воспламенение» (Огненный мечник): сжигает накопленные на цели «Угли» — наносит _damagePerStack за ка..." alt="" coords="5,252,229,352"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="25,119,210,204"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,217,120,252,115,252,115,217"/>
 <area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="52,5,183,71"/>

@@ -1,30 +1,8 @@
 <map id="Guildmaster.Combat.CombatSimulation.EnqueueUnitSpawn" name="Guildmaster.Combat.CombatSimulation.EnqueueUnitSpawn">
-<area shape="rect" id="Node000001" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="301,381,524,421"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a5766f4f7c6e06576c31a581348415cc5" title="Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5." alt="" coords="5,29,253,69"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="402,368,385,307,356,230,336,189,312,150,284,115,252,83,233,72,236,67,255,79,288,111,316,147,341,187,361,227,390,305,407,367"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a680f847d51ad9dc579b6f590b98edc08" title="Поднять тест&#45;бой N×M юнитов с заданными HP." alt="" coords="5,117,253,157"/>
-<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="396,370,374,325,343,271,302,217,278,193,252,172,231,160,234,155,255,167,281,189,306,213,347,268,379,322,401,368"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a21be39888c757cfac49339b2155c7c81" title="Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия)." alt="" coords="5,205,253,245"/>
-<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="384,373,327,315,291,285,252,260,226,248,228,243,255,255,294,281,331,311,388,369"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ae751b379c26601ad5a4809e67adc7560" title="Заспавнить «Криоманта» (team 0) против кластера болванчиков (team 1) — срез §10.2." alt="" coords="5,293,253,333"/>
-<area shape="poly" id="edge7_Node000001_Node000005" title=" " alt="" coords="345,379,253,348,211,336,212,331,254,343,347,374"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a470f1723cdd1fb9959c9f76bd86dd86d" title="Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10...." alt="" coords="5,381,253,421"/>
-<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="288,404,253,404,253,399,288,399"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a8fd4250ba9c2785bc8ccbc5412100682" title="Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10...." alt="" coords="5,469,253,509"/>
-<area shape="poly" id="edge11_Node000001_Node000007" title=" " alt="" coords="335,428,196,472,194,467,333,423"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a815ae87e5011e8ccad14f052d6a0be51" title="Заспавнить «Лесного следопыта» (team 0) против кластера болванчиков (team 1) — срез §10...." alt="" coords="5,557,253,597"/>
-<area shape="poly" id="edge13_Node000001_Node000008" title=" " alt="" coords="380,432,323,477,255,524,183,560,180,555,252,519,320,473,377,428"/>
-<area shape="rect" id="Node000009" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a8de0618a57171f6dc7dce6d831244179" title="Заспавнить «Светлого пастыря» (team 0) + раненых союзников против болванчиков — срез §10...." alt="" coords="5,645,253,685"/>
-<area shape="poly" id="edge15_Node000001_Node000009" title=" " alt="" coords="396,435,340,521,300,569,255,611,224,632,191,648,189,643,221,627,252,607,296,565,335,518,391,432"/>
-<area shape="rect" id="Node000010" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a871adee3d187d4d0253e6ef92c8d0822" title="Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4." alt="" coords="5,733,253,773"/>
-<area shape="poly" id="edge17_Node000001_Node000010" title=" " alt="" coords="404,435,384,491,353,561,310,634,284,668,255,699,227,720,197,735,194,731,224,715,252,695,280,665,306,631,348,559,379,489,399,434"/>
+<area shape="rect" id="Node000001" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="301,61,524,101"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab4ec10b3c8cb40ff0c983b1fda86385f" title="1×1 зеркально на дев&#45;дуэлянте (enemy.bone_dev) — смотреть скелетный визуал в живом бою." alt="" coords="5,29,253,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,70,253,66,254,61,288,65"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a47196edf5856a85fcc69278b50704da0" title="Призвать тело в бой: собрать по киту и поставить в очередь спавна (см. ICombatContext)." alt="" coords="24,93,235,133"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="288,98,235,104,235,99,288,93"/>
 <area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="178,18,161,11,129,8,102,10,85,15,79,21,82,28,77,30,74,20,82,10,101,5,129,3,162,5,180,13"/>
-<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="178,106,161,99,129,96,102,98,85,103,79,109,82,116,77,118,74,108,82,98,101,93,129,91,162,93,180,101"/>
-<area shape="poly" id="edge6_Node000004_Node000004" title=" " alt="" coords="178,194,161,187,129,184,102,186,85,191,79,197,82,204,77,206,74,196,82,186,101,181,129,179,162,181,180,189"/>
-<area shape="poly" id="edge8_Node000005_Node000005" title=" " alt="" coords="178,282,161,275,129,272,102,274,85,279,79,285,82,292,77,294,74,284,82,274,101,269,129,267,162,269,180,277"/>
-<area shape="poly" id="edge10_Node000006_Node000006" title=" " alt="" coords="178,370,161,363,129,360,102,362,85,367,79,373,82,380,77,382,74,372,82,362,101,357,129,355,162,357,180,365"/>
-<area shape="poly" id="edge12_Node000007_Node000007" title=" " alt="" coords="178,458,161,451,129,448,102,450,85,455,79,461,82,468,77,470,74,460,82,450,101,445,129,443,162,445,180,453"/>
-<area shape="poly" id="edge14_Node000008_Node000008" title=" " alt="" coords="178,546,161,539,129,536,102,538,85,543,79,549,82,556,77,558,74,548,82,538,101,533,129,531,162,533,180,541"/>
-<area shape="poly" id="edge16_Node000009_Node000009" title=" " alt="" coords="178,634,161,627,129,624,102,626,85,631,79,637,82,644,77,646,74,636,82,626,101,621,129,619,162,621,180,629"/>
-<area shape="poly" id="edge18_Node000010_Node000010" title=" " alt="" coords="178,722,161,715,129,712,102,714,85,719,79,725,82,732,77,734,74,724,82,714,101,709,129,707,162,709,180,717"/>
 </map>

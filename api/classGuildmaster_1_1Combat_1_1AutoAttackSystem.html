@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1AutoAtta
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1AutoAttackSystem-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.AutoAttackSystem Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
@@ -108,17 +109,17 @@ Collaboration diagram for Guildmaster.Combat.AutoAttackSystem:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0f41579d23e8074e346e93e793eb0f5b" id="r_a0f41579d23e8074e346e93e793eb0f5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f41579d23e8074e346e93e793eb0f5b">Tick</a> (List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> ctx, float dt)</td></tr>
-<tr class="memdesc:a0f41579d23e8074e346e93e793eb0f5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обработать автоатаки всех живых юнитов за один тик. <em>dt</em>  не используется (тайминг на тиках).  <br /></td></tr>
-<tr class="separator:a0f41579d23e8074e346e93e793eb0f5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f5124a8ff7ffd8371a17034c6c5ddd6" id="r_a0f5124a8ff7ffd8371a17034c6c5ddd6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f5124a8ff7ffd8371a17034c6c5ddd6">Tick</a> (List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> ctx, float dt)</td></tr>
+<tr class="memdesc:a0f5124a8ff7ffd8371a17034c6c5ddd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обработать автоатаки всех живых юнитов за один тик.  <br /></td></tr>
+<tr class="separator:a0f5124a8ff7ffd8371a17034c6c5ddd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Двухфазная авто-атака (вики «14»): кулдаун → <b>замах (windup)</b> → удар на кадре контакта. </p>
 <p>Урон наносится, когда windup-таймер истёк, а не в начале замаха. Всё на int-тиках — детерминизм сохраняется (урон по счётчику тиков), пауза работает автоматически. </p>
 <p>Якорь кулдауна — старт замаха (период damage→damage = интервал). Прерывание (стан/смерть себя) сбрасывает замах и <b>рефандит</b> кулдаун. Цель пропала к удару (мертва/вне радиуса) → удар вхолостую, кулдаун потрачен. Тип атаки (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1" title="Способ доставки автоатаки (вики «11» §2).">AttackType</a>) определяет резолв: мили single/Line или снаряд. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0f41579d23e8074e346e93e793eb0f5b" name="a0f41579d23e8074e346e93e793eb0f5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f41579d23e8074e346e93e793eb0f5b">&#9670;&#160;</a></span>Tick()</h2>
+<a id="a0f5124a8ff7ffd8371a17034c6c5ddd6" name="a0f5124a8ff7ffd8371a17034c6c5ddd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f5124a8ff7ffd8371a17034c6c5ddd6">&#9670;&#160;</a></span>Tick()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -127,7 +128,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Guildmaster.Combat.AutoAttackSystem.Tick </td>
+          <td class="memname">bool Guildmaster.Combat.AutoAttackSystem.Tick </td>
           <td>(</td>
           <td class="paramtype">List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td>
           <td class="paramname"><em>units</em>, </td>
@@ -157,11 +158,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Обработать автоатаки всех живых юнитов за один тик. <em>dt</em>  не используется (тайминг на тиках). </p>
+<p>Обработать автоатаки всех живых юнитов за один тик. </p>
+<p><em>dt</em>  не используется (тайминг на тиках). </p>
+<p>ДВА ПРОХОДА: сначала у всех дозревают замахи и снимаются цифры удара, потом удары прилетают. Пока урон наносился по ходу обхода, ослабление, наложенное ранним ударом, успевало срезать удар того, кто стоит в списке позже. В зеркальном бою это ловилось как разный урон одинаковых бойцов: левый огневик бил в полную силу (146.9), правый — уже ослабленным «Решительным ударом» левого защитника (102.8 = ровно ×0.7). Сила удара берётся из статов на начало фазы — одинаково для всех, независимо от места в списке. Эффекты, наложенные этими ударами, работают со следующего тика, как это и заведено для контроля (<code>CanAct</code>, вики «14»). </p>
+<dl class="section return"><dt>Returns</dt><dd>true, если хоть один удар отыграл блинк и сдвинул тело. Такой сдвиг случается ПОСЛЕ перестройки пространственного хэша, поэтому сетка перестаёт соответствовать позициям, и звать перестройку заново обязан вызывающий. Пойман зеркалом: ассасин, блинкнувший за спину, оставался в хэше на старой клетке, соседи находили его по-разному с двух сторон — и одинаковые отряды разъезжались на тике 29. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AutoAttackSystem_a0f41579d23e8074e346e93e793eb0f5b_cgraph.svg" width="100%" height="520"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AutoAttackSystem_a0f5124a8ff7ffd8371a17034c6c5ddd6_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

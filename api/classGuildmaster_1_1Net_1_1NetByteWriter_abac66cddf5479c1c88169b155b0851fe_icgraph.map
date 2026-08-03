@@ -1,0 +1,9 @@
+<map id="Guildmaster.Net.NetByteWriter.Reset" name="Guildmaster.Net.NetByteWriter.Reset">
+<area shape="rect" id="Node000001" title="Начать писать заново, сохранив выделенный буфер: чанки идут потоком, мусорить нельзя." alt="" coords="609,37,837,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html#ad48cbf94b213e783a3c278e2732634b9" title=" " alt="" coords="345,5,557,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="595,45,557,40,558,35,596,40"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="341,69,561,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="596,75,562,79,561,74,595,70"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,69,293,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="328,92,294,92,294,87,328,87"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Descriptions.DescriptionService.Explain" name="Guildmaster.Data.Descriptions.DescriptionService.Explain">
+<area shape="rect" id="Node000001" title="Разобранный стат с локализованными именами источников — для UI, который рисует разбор сам (панель юни..." alt="" coords="5,5,231,45"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatExplainer.html#a9ae0df2ac43cb82b64b1b372cdf9b41d" title="Разложить стат на базу и вклады источников (план UI&#45;реворка §II.10.1)." alt="" coords="279,5,485,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="231,23,265,23,265,28,231,28"/>
+</map>

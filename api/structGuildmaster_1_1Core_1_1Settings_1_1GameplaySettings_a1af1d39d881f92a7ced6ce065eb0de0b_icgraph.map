@@ -1,6 +1,6 @@
 <map id="Guildmaster.Core.Settings.GameplaySettings.Defaults" name="Guildmaster.Core.Settings.GameplaySettings.Defaults">
-<area shape="rect" id="Node000001" title="Значения первого запуска: вся анимация карточек включена." alt="" coords="287,37,488,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#a001eb2edaccdff7eef9f0ed0f2ed0833" title=" " alt="" coords="8,5,236,45"/>
+<area shape="rect" id="Node000001" title="Значения первого запуска: вся анимация карточек включена, подсказки краткие, камера боя сценарная." alt="" coords="287,37,488,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#a89f13f32edc211f6cdb5037cc549c5a3" title=" " alt="" coords="8,5,236,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="272,46,236,42,236,36,273,41"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#a64e4839c7d60d54e5bd51d23d854b4b4" title="Сбросить к дефолтам GameConfig и применить (на диск НЕ пишет — это делает Save)." alt="" coords="5,69,239,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="273,74,239,78,238,73,272,68"/>

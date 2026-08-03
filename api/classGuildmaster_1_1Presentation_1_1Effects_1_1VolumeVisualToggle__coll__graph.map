@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Effects.VolumeVisualToggle" name="Guildmaster.Presentation.Effects.VolumeVisualToggle">
+<area shape="rect" id="Node000001" title="Делает Volume постобработки переключаемым из общего реестра эффектов: можно погасить весь профиль и с..." alt="" coords="5,119,199,199"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="44,5,160,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,85,105,118,99,118,99,85"/>
+</map>

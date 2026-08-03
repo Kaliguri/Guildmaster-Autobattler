@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Tempo.VisualTempo.Phase" name="Guildmaster.Presentation.Tempo.VisualTempo.Phase">
+<area shape="rect" id="Node000001" title="Фаза внутри доли: 0 в начале, стремится к 1 в конце.division &#160;— какая доля: 1 = целая,..." alt="" coords="244,5,439,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Tempo_1_1VisualTempo.html#aabc5c7bf7d43502df67779ac7033bc4a" title="Мягкая огибающая доли: 0 → 1 → 0 за такт.Готовый множитель для «дышащих» эффектов,..." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.Effects.RuntimeEffect.SetDuration" name="Guildmaster.Combat.Effects.RuntimeEffect.SetDuration">
+<area shape="rect" id="Node000001" title="Назначить срок: и остаток, и полную длительность." alt="" coords="261,5,469,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a5bb3776e5d64046acc0cf7ea8b4294e6" title="Добавить порцию: totalDamage &#160;— весь урон, который она нанесёт за ticks &#160;СИМ&#45;тиков." alt="" coords="5,5,213,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,28,213,28,213,23,248,23"/>
+</map>

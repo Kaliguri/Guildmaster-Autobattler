@@ -1,0 +1,3 @@
+<map id="Guildmaster.Combat.WorldBodyBuilder" name="Guildmaster.Combat.WorldBodyBuilder">
+<area shape="rect" id="Node000001" title="Собирает тела отряда для арены ВНЕ боя: ростер игрока → снимки и паспорта для WorldBodyStage." alt="" coords="5,5,195,105"/>
+</map>

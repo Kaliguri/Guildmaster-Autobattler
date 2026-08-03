@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.ClipMarkers.HitNormalized" name="Guildmaster.Data.Definitions.ClipMarkers.HitNormalized">
+<area shape="rect" id="Node000001" title="Нормированное время первого контакта (0..1). 0 если клипа/маркера/длины нет." alt="" coords="5,5,220,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#ad5d097f5adf3e674b9d2c4bab8e06de2" title="Время первого контакта (сек) или &#45;1, если маркера нет." alt="" coords="268,5,483,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,23,254,23,254,28,220,28"/>
+</map>

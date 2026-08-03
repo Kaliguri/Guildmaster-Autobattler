@@ -1,0 +1,25 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,287,121,313"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1UI_1_1Components_1_1AspectBox.html" title="Блок, который сам держит соотношение сторон: высота выводится из фактической ширины." alt="" coords="184,5,393,45"/>
+<area shape="poly" id="edge364_Node000000_Node000001" title=" " alt="" coords="66,273,76,226,94,168,124,107,144,80,168,55,185,43,188,48,171,59,148,83,129,110,99,170,81,228,71,274"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Components_1_1Chip.html" title="Чип: иконка + подпись как ОДИН элемент." alt="" coords="169,70,408,95"/>
+<area shape="poly" id="edge365_Node000000_Node000002" title=" " alt="" coords="69,273,81,236,101,190,130,144,168,106,191,93,193,98,171,110,134,148,106,193,86,238,74,275"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html" title="Карточка реликвии: рамка + область ВИЗУАЛА + имя + состояния (текущая/выбранная)." alt="" coords="184,120,393,160"/>
+<area shape="poly" id="edge367_Node000000_Node000004" title=" " alt="" coords="76,274,113,221,138,193,168,170,191,158,194,162,171,174,142,197,117,224,80,277"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1UI_1_1Components_1_1SelectRow.html" title="Строка выбора: подпись слева + выпадающий список справа." alt="" coords="184,184,393,224"/>
+<area shape="poly" id="edge368_Node000000_Node000005" title=" " alt="" coords="92,277,127,255,168,234,201,222,203,227,170,238,130,259,94,282"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1UI_1_1Components_1_1SlantedPanel.html" title="Подложка со скошенными торцами (лента верхней панели забега)." alt="" coords="184,248,393,288"/>
+<area shape="poly" id="edge369_Node000000_Node000006" title=" " alt="" coords="134,287,184,280,184,286,135,293"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html" title="Строка слайдера: подпись слева + слайдер + значение в процентах справа." alt="" coords="184,312,393,352"/>
+<area shape="poly" id="edge370_Node000000_Node000007" title=" " alt="" coords="135,307,184,314,184,320,134,313"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1UI_1_1Components_1_1Slot.html" title="Слот: рамка&#45;квадрат с опциональной иконкой." alt="" coords="171,377,406,402"/>
+<area shape="poly" id="edge371_Node000000_Node000008" title=" " alt="" coords="94,318,129,341,170,362,211,374,209,379,168,366,127,346,91,323"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html" title="Строка тумблера: подпись слева (растянута) + чекбокс справа, выровненный в колонку." alt="" coords="184,427,393,467"/>
+<area shape="poly" id="edge372_Node000000_Node000009" title=" " alt="" coords="82,322,120,368,144,391,171,411,197,424,195,429,168,416,140,395,116,371,78,325"/>
+<area shape="rect" id="Node000010" href="$classGuildmaster_1_1UI_1_1Components_1_1TooltipCard.html" title="Содержимое тултипа — ЕДИНЫЙ каркас для всех видов подсказок: шапка (заголовок + мета),..." alt="" coords="184,491,393,531"/>
+<area shape="poly" id="edge373_Node000000_Node000010" title=" " alt="" coords="75,325,89,360,109,401,136,442,171,477,190,488,187,493,168,481,132,445,104,403,84,362,70,327"/>
+<area shape="rect" id="Node000011" href="$classGuildmaster_1_1UI_1_1Components_1_1VesselCard.html" title="Карточка сосуда команды: имя носителя + строка надетого релика (мини&#45;иконка + имя)." alt="" coords="184,555,393,595"/>
+<area shape="poly" id="edge374_Node000000_Node000011" title=" " alt="" coords="71,326,81,372,99,430,129,490,148,517,171,541,188,552,185,557,168,545,144,520,124,493,94,432,76,374,66,327"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1Components_1_1SlantedChip.html" title="Чип со скошенным торцом — крайние табы ленты режимов." alt="" coords="456,63,665,103"/>
+<area shape="poly" id="edge366_Node000002_Node000003" title=" " alt="" coords="422,80,456,80,456,85,422,85"/>
+</map>

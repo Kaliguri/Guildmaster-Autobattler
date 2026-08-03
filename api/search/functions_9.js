@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['keyfor_0',['KeyFor',['../classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#af4bf10403d3bf2f9a972286234fea311',1,'Guildmaster::Data::Editor::ContentLocalization']]],
-  ['kiteflee_1',['KiteFlee',['../classGuildmaster_1_1Combat_1_1FleeSteering.html#aca716a0e509bfe2cccd0942a4e11517f',1,'Guildmaster::Combat::FleeSteering']]]
+  ['jsonfilesaveservice_0',['JsonFileSaveService',['../classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#ae0975ab21d60c2ba7e87901c8683cb3d',1,'Guildmaster::Game::Services::JsonFileSaveService']]],
+  ['jsonfilesaveservicebase_1',['JsonFileSaveServiceBase',['../classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a22774653b5d84b47c91f9c43086021e4',1,'Guildmaster::Game::Services::JsonFileSaveServiceBase']]]
 ];

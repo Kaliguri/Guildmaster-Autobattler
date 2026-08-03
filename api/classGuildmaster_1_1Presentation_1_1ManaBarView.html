@@ -113,10 +113,10 @@ Collaboration diagram for Guildmaster.Presentation.ManaBarView:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afd13431e6bbe9158e47a0e8731260915" id="r_afd13431e6bbe9158e47a0e8731260915"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ManaBarView.html#afd13431e6bbe9158e47a0e8731260915">Bind</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">unit</a>)</td></tr>
-<tr class="memdesc:afd13431e6bbe9158e47a0e8731260915"><td class="mdescLeft">&#160;</td><td class="mdescRight">Привязать к юниту: скрыть для безресурсных, иначе — на текущую долю мгновенно.  <br /></td></tr>
-<tr class="separator:afd13431e6bbe9158e47a0e8731260915"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabbf78172ff358290f9a3e43c9b90a66" id="r_aabbf78172ff358290f9a3e43c9b90a66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ManaBarView.html#aabbf78172ff358290f9a3e43c9b90a66">UpdateBar</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">current</a>, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">max</a>)</td></tr>
+<tr class="memitem:a9b28d45168c109ec94f509cbf812bcb7" id="r_a9b28d45168c109ec94f509cbf812bcb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ManaBarView.html#a9b28d45168c109ec94f509cbf812bcb7">Bind</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html">Combat.Tape.UnitSnapshot</a> unit)</td></tr>
+<tr class="memdesc:a9b28d45168c109ec94f509cbf812bcb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Привязать к юниту: скрыть для безресурсных, иначе — на текущую долю мгновенно.  <br /></td></tr>
+<tr class="separator:a9b28d45168c109ec94f509cbf812bcb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabbf78172ff358290f9a3e43c9b90a66" id="r_aabbf78172ff358290f9a3e43c9b90a66"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ManaBarView.html#aabbf78172ff358290f9a3e43c9b90a66">UpdateBar</a> (float current, float max)</td></tr>
 <tr class="memdesc:aabbf78172ff358290f9a3e43c9b90a66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновить ресурс (поллинг из UnitView каждый кадр).  <br /></td></tr>
 <tr class="separator:aabbf78172ff358290f9a3e43c9b90a66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -125,8 +125,8 @@ Public Member Functions</h2></td></tr>
 <p>Нормировка простая — <code>scale = MaxResource</code> (ресурс не выходит за макс), поэтому частота насечек постоянна для юнита. Chip-дельта показывает свежую трату/добор.</p>
 <p>Скрывается целиком для безресурсных юнитов (<code>MaxResource ≤ 0</code> — болванчики, безресурсные реликвии). Динамика гонится в per-instance материал по рендер-времени (НЕ по сим-тику).</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="afd13431e6bbe9158e47a0e8731260915" name="afd13431e6bbe9158e47a0e8731260915"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd13431e6bbe9158e47a0e8731260915">&#9670;&#160;</a></span>Bind()</h2>
+<a id="a9b28d45168c109ec94f509cbf812bcb7" name="a9b28d45168c109ec94f509cbf812bcb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b28d45168c109ec94f509cbf812bcb7">&#9670;&#160;</a></span>Bind()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -135,9 +135,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.ManaBarView.Bind </td>
+          <td class="memname">void Guildmaster.Presentation.ManaBarView.Bind </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html">Combat::Tape::UnitSnapshot</a>&#160;</td>
           <td class="paramname"><em>unit</em></td><td>)</td>
           <td></td>
         </tr>
@@ -153,7 +153,7 @@ Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1ManaBarView_afd13431e6bbe9158e47a0e8731260915_icgraph.svg" width="440" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1ManaBarView_a9b28d45168c109ec94f509cbf812bcb7_icgraph.svg" width="440" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -168,15 +168,15 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.ManaBarView.UpdateBar </td>
+          <td class="memname">void Guildmaster.Presentation.ManaBarView.UpdateBar </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td>
+          <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>current</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td>
+          <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>max</em>&#160;</td>
         </tr>
         <tr>

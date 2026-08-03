@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Services.GameFlow.RunTextEventAsync" name="Guildmaster.Game.Services.GameFlow.RunTextEventAsync">
+<area shape="rect" id="Node000001" title="Прогнать узел текстового ивента (план 11 §5.1): показать ивент, дождаться выбора, применить последств..." alt="" coords="5,5,228,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#aff54a03842a9198c822ef5b44bb800eb" title="Начать новый забег со СТАНДАРТНОЙ стартовой гильдией (уточн." alt="" coords="276,5,479,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,23,262,23,262,28,228,28"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#a42b5f7b8c98688812518b9d22b64c89f" title="Начать новый забег: свежий RunState с базовой вместимостью реликов из конфига." alt="" coords="527,5,729,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="479,23,513,23,513,28,479,28"/>
+</map>

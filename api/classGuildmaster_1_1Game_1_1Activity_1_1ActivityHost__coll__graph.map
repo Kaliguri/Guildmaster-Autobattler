@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Activity.ActivityHost" name="Guildmaster.Game.Activity.ActivityHost">
+<area shape="rect" id="Node000001" title="Владелец жизненного цикла Занятия: рождает его скоуп на входе в мероприятие (забег,..." alt="" coords="15,119,207,479"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,96,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,84,72,118,66,119,59,85"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IActivityView.html" title="Чтение «какое мероприятие идёт» для тех, кто мероприятия переживает: верхняя панель,..." alt="" coords="121,5,221,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="163,85,155,119,150,118,158,84"/>
+</map>

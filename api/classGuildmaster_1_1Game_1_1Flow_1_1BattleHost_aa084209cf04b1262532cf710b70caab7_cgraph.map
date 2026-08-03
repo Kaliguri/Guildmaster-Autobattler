@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Flow.BattleHost.Restart" name="Guildmaster.Game.Flow.BattleHost.Restart">
+<area shape="rect" id="Node000001" title="Перезапустить тот же бой (ретрай узла, dev&#45;R): новый скоуп на тот же пресет." alt="" coords="5,5,227,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a1662ac4d792e7ef488e347dd9962dcda" title="Открыть бой: родить скоуп со всем боевым внутри." alt="" coords="275,5,496,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,23,261,23,261,28,227,28"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#aeb20e7c3063d77b632d3f4d6da85e18c" title="Закрыть бой: скоуп уходит вместе со всем, что в нём жило, и арена возвращается миру." alt="" coords="544,5,765,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="496,23,530,23,530,28,496,28"/>
+</map>

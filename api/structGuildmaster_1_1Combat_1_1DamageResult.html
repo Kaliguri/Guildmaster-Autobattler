@@ -105,13 +105,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Combat_1_1DamageR
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.DamageResult:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Combat_1_1DamageResult__coll__graph.svg" width="218" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Combat_1_1DamageResult__coll__graph.svg" width="218" height="291"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a664d78252276c81aee6518a223a7b561" id="r_a664d78252276c81aee6518a223a7b561"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#a664d78252276c81aee6518a223a7b561">DamageResult</a> (float hpDamage, float shieldDamage, bool killedTarget, <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a> sourceKind=<a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70da698dcef315bbeccaa57c333577736370">DamageSourceKind.Ability</a>)</td></tr>
-<tr class="separator:a664d78252276c81aee6518a223a7b561"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dc3da66ef155582fdecc54375623b0e" id="r_a9dc3da66ef155582fdecc54375623b0e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#a9dc3da66ef155582fdecc54375623b0e">DamageResult</a> (float hpDamage, float shieldDamage, bool killedTarget, <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a> sourceKind=<a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70da698dcef315bbeccaa57c333577736370">DamageSourceKind.Ability</a>, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> type=DamageType.Undefined, float vulnerability=1f, float mitigated=0f)</td></tr>
+<tr class="separator:a9dc3da66ef155582fdecc54375623b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -121,25 +121,43 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a6283e78732a7da17561c0cc538f94de3" id="r_a6283e78732a7da17561c0cc538f94de3"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#a6283e78732a7da17561c0cc538f94de3">ShieldDamage</a></td></tr>
 <tr class="memdesc:a6283e78732a7da17561c0cc538f94de3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Урон, поглощённый щитом.  <br /></td></tr>
 <tr class="separator:a6283e78732a7da17561c0cc538f94de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08a7132e2d5c9e7bad34f02e8b092a63" id="r_a08a7132e2d5c9e7bad34f02e8b092a63"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#a08a7132e2d5c9e7bad34f02e8b092a63">Mitigated</a></td></tr>
+<tr class="memdesc:a08a7132e2d5c9e7bad34f02e8b092a63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Урон, срезанный до тела: броня, пробивание и обе эффективности.  <br /></td></tr>
+<tr class="separator:a08a7132e2d5c9e7bad34f02e8b092a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1d2b6e49c96453124e9df11b2bb720e" id="r_af1d2b6e49c96453124e9df11b2bb720e"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#af1d2b6e49c96453124e9df11b2bb720e">KilledTarget</a></td></tr>
 <tr class="memdesc:af1d2b6e49c96453124e9df11b2bb720e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цель погибла в результате этого удара.  <br /></td></tr>
 <tr class="separator:af1d2b6e49c96453124e9df11b2bb720e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83cec0c48420b5ad221955963a88ea9d" id="r_a83cec0c48420b5ad221955963a88ea9d"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#a83cec0c48420b5ad221955963a88ea9d">SourceKind</a></td></tr>
 <tr class="memdesc:a83cec0c48420b5ad221955963a88ea9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Откуда пришёл урон (авто-атака/способность/DoT/ответка).  <br /></td></tr>
 <tr class="separator:a83cec0c48420b5ad221955963a88ea9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a251d1c79b9d61f3a302a09265f0ec40e" id="r_a251d1c79b9d61f3a302a09265f0ec40e"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#a251d1c79b9d61f3a302a09265f0ec40e">Type</a></td></tr>
+<tr class="memdesc:a251d1c79b9d61f3a302a09265f0ec40e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип урона — эхо DamageRequest.Type.  <br /></td></tr>
+<tr class="separator:a251d1c79b9d61f3a302a09265f0ec40e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0f744af019a9f54c965b5b25bddc76d" id="r_af0f744af019a9f54c965b5b25bddc76d"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#af0f744af019a9f54c965b5b25bddc76d">Vulnerability</a></td></tr>
+<tr class="memdesc:af0f744af019a9f54c965b5b25bddc76d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель уязвимости цели, вложенный в этот удар — эхо DamageRequest.Vulnerability.  <br /></td></tr>
+<tr class="separator:af0f744af019a9f54c965b5b25bddc76d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a0b8fbc893268617055f36b594e4a4f39" id="r_a0b8fbc893268617055f36b594e4a4f39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52">DamageSchool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#a0b8fbc893268617055f36b594e4a4f39">School</a><code> [get]</code></td></tr>
+<tr class="memdesc:a0b8fbc893268617055f36b594e4a4f39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Школа урона — следствие Type, отдельным полем не хранится.  <br /></td></tr>
+<tr class="separator:a0b8fbc893268617055f36b594e4a4f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee606a37b8e57d2f7c2eaff6452c2239" id="r_aee606a37b8e57d2f7c2eaff6452c2239"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#aee606a37b8e57d2f7c2eaff6452c2239">TotalDamage</a><code> [get]</code></td></tr>
 <tr class="memdesc:aee606a37b8e57d2f7c2eaff6452c2239"><td class="mdescLeft">&#160;</td><td class="mdescRight">Суммарный урон (HP + щит).  <br /></td></tr>
 <tr class="separator:aee606a37b8e57d2f7c2eaff6452c2239"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73c5a82f2e80c33741ca649b36d03c81" id="r_a73c5a82f2e80c33741ca649b36d03c81"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#a73c5a82f2e80c33741ca649b36d03c81">IsDirectHit</a><code> [get]</code></td></tr>
+<tr class="memdesc:a73c5a82f2e80c33741ca649b36d03c81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Урон нанесён ПРЯМЫМ попаданием — ударом или заклинанием (а не тиком DoT и не ответкой).  <br /></td></tr>
+<tr class="separator:a73c5a82f2e80c33741ca649b36d03c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f453e4adee69a4e2edeed95a4d8b109" id="r_a2f453e4adee69a4e2edeed95a4d8b109"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#a2f453e4adee69a4e2edeed95a4d8b109">VulnerabilityBonus</a><code> [get]</code></td></tr>
+<tr class="memdesc:a2f453e4adee69a4e2edeed95a4d8b109"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько из TotalDamage добавили уязвимости цели («Угли»).  <br /></td></tr>
+<tr class="separator:a2f453e4adee69a4e2edeed95a4d8b109"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Результат пайплайна урона после применения к цели. </p>
 <p>Возвращается DamagePipeline.Execute для последующих триггеров (lifesteal, шипы — Фаза 2). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a664d78252276c81aee6518a223a7b561" name="a664d78252276c81aee6518a223a7b561"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a664d78252276c81aee6518a223a7b561">&#9670;&#160;</a></span>DamageResult()</h2>
+<a id="a9dc3da66ef155582fdecc54375623b0e" name="a9dc3da66ef155582fdecc54375623b0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dc3da66ef155582fdecc54375623b0e">&#9670;&#160;</a></span>DamageResult()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -169,7 +187,25 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a>&#160;</td>
-          <td class="paramname"><em>sourceKind</em> = <code><a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70da698dcef315bbeccaa57c333577736370">DamageSourceKind::Ability</a></code>&#160;</td>
+          <td class="paramname"><em>sourceKind</em> = <code><a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70da698dcef315bbeccaa57c333577736370">DamageSourceKind::Ability</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a>&#160;</td>
+          <td class="paramname"><em>type</em> = <code>DamageType::Undefined</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>vulnerability</em> = <code>1f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>mitigated</em> = <code>0f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -219,6 +255,24 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="a08a7132e2d5c9e7bad34f02e8b092a63" name="a08a7132e2d5c9e7bad34f02e8b092a63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08a7132e2d5c9e7bad34f02e8b092a63">&#9670;&#160;</a></span>Mitigated</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Combat.DamageResult.Mitigated</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Урон, срезанный до тела: броня, пробивание и обе эффективности. </p>
+<p>Разница между тем, что замахнулись нанести, и тем, что дошло.</p>
+<p>Нужен, чтобы стенд отвечал на вопрос «чем боец не умер»: танк на броне и танк под хилером живут одинаково долго, а чинить их надо разное. В TotalDamage НЕ входит — это то, чего не случилось. </p>
+
+</div>
+</div>
 <a id="a6283e78732a7da17561c0cc538f94de3" name="a6283e78732a7da17561c0cc538f94de3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6283e78732a7da17561c0cc538f94de3">&#9670;&#160;</a></span>ShieldDamage</h2>
 
@@ -252,7 +306,90 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="a251d1c79b9d61f3a302a09265f0ec40e" name="a251d1c79b9d61f3a302a09265f0ec40e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a251d1c79b9d61f3a302a09265f0ec40e">&#9670;&#160;</a></span>Type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> Guildmaster.Combat.DamageResult.Type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Тип урона — эхо DamageRequest.Type. </p>
+<p>Нужен потребителям целиком: вспышка и искры по типу в презентации, разбор огня и ядов в метриках стенда. </p>
+
+</div>
+</div>
+<a id="af0f744af019a9f54c965b5b25bddc76d" name="af0f744af019a9f54c965b5b25bddc76d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0f744af019a9f54c965b5b25bddc76d">&#9670;&#160;</a></span>Vulnerability</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Combat.DamageResult.Vulnerability</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Множитель уязвимости цели, вложенный в этот удар — эхо DamageRequest.Vulnerability. </p>
+<p>1 = уязвимостей не было. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a73c5a82f2e80c33741ca649b36d03c81" name="a73c5a82f2e80c33741ca649b36d03c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73c5a82f2e80c33741ca649b36d03c81">&#9670;&#160;</a></span>IsDirectHit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.DamageResult.IsDirectHit</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Урон нанесён ПРЯМЫМ попаданием — ударом или заклинанием (а не тиком DoT и не ответкой). </p>
+<p>Зеркало DamageRequest.IsDirectHit: у прямого попадания есть автор, момент и сторона, поэтому только он имеет право на направленный фидбэк (искры, отброс, выпад). </p>
+
+</div>
+</div>
+<a id="a0b8fbc893268617055f36b594e4a4f39" name="a0b8fbc893268617055f36b594e4a4f39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b8fbc893268617055f36b594e4a4f39">&#9670;&#160;</a></span>School</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52">DamageSchool</a> Guildmaster.Combat.DamageResult.School</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Школа урона — следствие Type, отдельным полем не хранится. </p>
+
+</div>
+</div>
 <a id="aee606a37b8e57d2f7c2eaff6452c2239" name="aee606a37b8e57d2f7c2eaff6452c2239"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aee606a37b8e57d2f7c2eaff6452c2239">&#9670;&#160;</a></span>TotalDamage</h2>
 
@@ -274,6 +411,31 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Суммарный урон (HP + щит). </p>
+
+</div>
+</div>
+<a id="a2f453e4adee69a4e2edeed95a4d8b109" name="a2f453e4adee69a4e2edeed95a4d8b109"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f453e4adee69a4e2edeed95a4d8b109">&#9670;&#160;</a></span>VulnerabilityBonus</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Combat.DamageResult.VulnerabilityBonus</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько из TotalDamage добавили уязвимости цели («Угли»). </p>
+<p>Не отдельное слагаемое, а доля внутри уже посчитанного числа: удар без уязвимостей был бы на столько слабее. </p>
 
 </div>
 </div>

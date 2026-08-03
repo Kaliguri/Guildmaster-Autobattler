@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.DamageToShieldComponent" name="Guildmaster.Combat.Effects.Components.DamageToShieldComponent">
+<area shape="rect" id="Node000001" title="Щит, который носитель зарабатывает СВОИМ уроном: доля нанесённого прямого удара уходит в CurrentShiel..." alt="" coords="5,365,289,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="72,252,223,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,331,150,365,145,365,145,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="55,119,240,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="150,218,150,252,145,252,145,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="82,5,213,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="150,85,150,119,145,119,145,85"/>
+</map>

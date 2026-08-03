@@ -1,0 +1,9 @@
+<map id="Guildmaster.Game.Services.GameFlow.RunSingleBattleAsync" name="Guildmaster.Game.Services.GameFlow.RunSingleBattleAsync">
+<area shape="rect" id="Node000001" title="A2&#45;разрез: прогнать один бой как узел забега — запустить его в живой симуляции, дождаться исхода (с р..." alt="" coords="5,37,244,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#a6b735b72a2c9f42774c7c55876833639" title="Снапшот текущего забега на диск (точка автосейва). No&#45;op без активного забега." alt="" coords="292,5,495,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="244,40,278,36,278,42,245,46"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#aff54a03842a9198c822ef5b44bb800eb" title="Начать новый забег со СТАНДАРТНОЙ стартовой гильдией (уточн." alt="" coords="292,69,495,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="245,69,278,73,278,78,244,74"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#a42b5f7b8c98688812518b9d22b64c89f" title="Начать новый забег: свежий RunState с базовой вместимостью реликов из конфига." alt="" coords="543,69,745,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="495,87,529,87,529,92,495,92"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="Guildmaster.UI.Tooltips.TooltipShowEvent.GetPooled" name="Guildmaster.UI.Tooltips.TooltipShowEvent.GetPooled">
+<area shape="rect" id="Node000001" title=" " alt="" coords="344,29,552,69"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="499,18,481,11,448,8,419,10,402,15,395,21,398,28,393,30,390,20,399,10,418,5,448,3,482,5,501,13"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1KeywordLinks.html#a8034281a618995b7e9f02d9a9a112d9d" title="Включить подсказки по ссылкам в тексте элемента." alt="" coords="5,29,296,69"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="330,52,296,52,296,47,330,47"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Components.RelicCardVisualRig.Acquire" name="Guildmaster.UI.Components.RelicCardVisualRig.Acquire">
+<area shape="rect" id="Node000001" title="Завести карточку под юнита; вернуть RT с его анимированным визуалом (idle)." alt="" coords="5,5,215,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitColorRoles.html#a7b6a14f7d171762394bfdfd775198086" title="Цвет ступени приглушения." alt="" coords="263,5,477,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,23,249,23,249,28,215,28"/>
+</map>

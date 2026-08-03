@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Body.BodyVisualState" name="Guildmaster.Presentation.Body.BodyVisualState">
+<area shape="rect" id="Node000001" title="Материальное состояние тела за кадр — всё, что презентация подмешивает поверх спрайта: тинт с альфой ..." alt="" coords="5,133,188,573"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="21,5,172,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,99,99,133,94,133,94,99"/>
+</map>

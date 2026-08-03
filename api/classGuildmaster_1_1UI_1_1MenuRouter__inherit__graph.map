@@ -1,5 +1,5 @@
 <map id="Guildmaster.UI.MenuRouter" name="Guildmaster.UI.MenuRouter">
-<area shape="rect" id="Node000001" title="Реализация IMenuRouter: стек оверлейных экранов над корнем UITK&#45;панели." alt="" coords="5,319,200,584"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1UI_1_1IMenuRouter.html" title="Навигация оверлейных меню поверх игры (стек экранов)." alt="" coords="20,5,185,271"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,285,105,319,100,319,100,285"/>
+<area shape="rect" id="Node000001" title="Строит и проводит экраны забега из UXML&#45;шаблонов, а стек, видимость и глушение геймплейного ввода дел..." alt="" coords="5,119,261,559"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="88,5,179,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,85,136,119,131,119,131,85"/>
 </map>

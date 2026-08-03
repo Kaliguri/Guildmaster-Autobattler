@@ -1,9 +1,7 @@
 <map id="Guildmaster.Data.Definitions.ContentDomains.MakeId" name="Guildmaster.Data.Definitions.ContentDomains.MakeId">
-<area shape="rect" id="Node000001" title="Собрать id domain.lower_snake из имени ассета: (&quot;IceChainsStun&quot;) → effect.ice_chains_stun." alt="" coords="311,77,525,117"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility.html#a46c4d811682a280613dca86eeb3bdea2" title="Уникальный id для def &#160;из имени ассета: domain.name, при занятости — суффикс _2, _3… (плейсхолдер до ..." alt="" coords="11,5,257,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="326,76,262,60,215,48,216,43,263,55,328,71"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1Migrations_1_1Phase4Package3AiPresetMigration.html#aea8ad4919e1032bf6de45219a3b121a4" title=" " alt="" coords="5,70,263,125"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="297,100,263,100,263,95,297,95"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html#a4701ffe250559c2e99f32082bc6e2f12" title="Присвоить id из движка (рантайм&#45;создание def&#39;ов через CreateRuntime, editor&#45;миграции)." alt="" coords="27,149,241,189"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="326,123,214,152,213,147,325,118"/>
+<area shape="rect" id="Node000001" title="Собрать id domain.lower_snake из имени ассета: (&quot;IceChainsStun&quot;) → effect.ice_chains_stun." alt="" coords="299,37,513,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility.html#a46c4d811682a280613dca86eeb3bdea2" title="Уникальный id для def &#160;из имени ассета: domain.name, при занятости — суффикс _2, _3… (плейсхолдер до ..." alt="" coords="5,5,251,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="285,46,251,42,251,37,286,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html#a4701ffe250559c2e99f32082bc6e2f12" title="Присвоить id из движка (рантайм&#45;создание def&#39;ов через CreateRuntime, editor&#45;миграции)." alt="" coords="21,69,235,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="286,74,236,80,235,74,285,69"/>
 </map>

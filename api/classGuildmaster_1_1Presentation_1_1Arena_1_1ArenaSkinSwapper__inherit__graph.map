@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.Arena.ArenaSkinSwapper" name="Guildmaster.Presentation.Arena.ArenaSkinSwapper">
+<area shape="rect" id="Node000001" title="Меняет облик арены поклеточной подменой тайлов (журнал docs/arena&#45;swap&#45;progress.md,..." alt="" coords="43,179,225,439"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,35,121,101"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,113,98,178,93,179,74,115"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Core_1_1Arena_1_1IArenaSwap.html" title="Смена облика арены «А → Б» в цифровом стиле (три акта, см." alt="" coords="145,5,267,131"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="186,145,176,179,170,178,181,143"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.RuntimeUnit.StopSprint" name="Guildmaster.Combat.RuntimeUnit.StopSprint">
+<area shape="rect" id="Node000001" title="Сбросить разбег целиком: набранную долю, накопленное намерение И заряд удара с разбега." alt="" coords="284,5,499,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1MovementSystem.html#a9ecc1ea30095327269a5c4835230a71f" title="Продвинуть позиции всех живых юнитов на один тик." alt="" coords="5,5,236,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="270,28,236,28,236,23,270,23"/>
+</map>

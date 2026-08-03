@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect-members.html">List of all members</a>  </div>
@@ -102,68 +103,761 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <p>Экземпляр эффекта на конкретном юните (POCO, живёт один бой).  
  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#details">More...</a></p>
 <div class="dynheader">
+Inheritance diagram for Guildmaster.Combat.Effects.RuntimeEffect:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Effects.RuntimeEffect:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a501e0c607bfaba1c7d904c5ee4bbc59d" id="r_a501e0c607bfaba1c7d904c5ee4bbc59d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a501e0c607bfaba1c7d904c5ee4bbc59d">AddContribution</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source)</td></tr>
+<tr class="memdesc:a501e0c607bfaba1c7d904c5ee4bbc59d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Засчитать наложение/подкрепление источнику: первое — заводит вкладчика, повторное — растит вес.  <br /></td></tr>
+<tr class="separator:a501e0c607bfaba1c7d904c5ee4bbc59d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb7322a42443e8188834c4f60e9125dc" id="r_abb7322a42443e8188834c4f60e9125dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#abb7322a42443e8188834c4f60e9125dc">SetDuration</a> (int ticks)</td></tr>
+<tr class="memdesc:abb7322a42443e8188834c4f60e9125dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Назначить срок: и остаток, и полную длительность.  <br /></td></tr>
+<tr class="separator:abb7322a42443e8188834c4f60e9125dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a1539e04fd8ee40c455992319cf1c88" id="r_a9a1539e04fd8ee40c455992319cf1c88"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a9a1539e04fd8ee40c455992319cf1c88">TickDownDuration</a> ()</td></tr>
+<tr class="memdesc:a9a1539e04fd8ee40c455992319cf1c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прожить тик. Возвращает <code>true</code>, если срок вышел и эффект пора снимать.  <br /></td></tr>
+<tr class="separator:a9a1539e04fd8ee40c455992319cf1c88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c584dfe148019088ac6cce1c3d4c4e9" id="r_a6c584dfe148019088ac6cce1c3d4c4e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a6c584dfe148019088ac6cce1c3d4c4e9">EndDuration</a> ()</td></tr>
+<tr class="memdesc:a6c584dfe148019088ac6cce1c3d4c4e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Срок вышел досрочно: эффект снимается штатным путём, а не отдельной веткой.  <br /></td></tr>
+<tr class="separator:a6c584dfe148019088ac6cce1c3d4c4e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47a8f9912ae2e189d81935a49d3492ff" id="r_a47a8f9912ae2e189d81935a49d3492ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a47a8f9912ae2e189d81935a49d3492ff">AddStacks</a> (int count)</td></tr>
+<tr class="memdesc:a47a8f9912ae2e189d81935a49d3492ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Набрать стаки (подкрепление эффекта).  <br /></td></tr>
+<tr class="separator:a47a8f9912ae2e189d81935a49d3492ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5554fd4708aa26adef1a86a2991addd4" id="r_a5554fd4708aa26adef1a86a2991addd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a5554fd4708aa26adef1a86a2991addd4">RemoveStacks</a> (int count)</td></tr>
+<tr class="memdesc:a5554fd4708aa26adef1a86a2991addd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Срезать стаки (цена очищения, сход «Углей»). Ниже нуля не уходит.  <br /></td></tr>
+<tr class="separator:a5554fd4708aa26adef1a86a2991addd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9be546daebaf53039d2d2b11fc11ac98" id="r_a9be546daebaf53039d2d2b11fc11ac98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a9be546daebaf53039d2d2b11fc11ac98">CommitStackSnapshot</a> ()</td></tr>
+<tr class="memdesc:a9be546daebaf53039d2d2b11fc11ac98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Проявить набранное и срезанное за тик: снимок догоняет живое число.  <br /></td></tr>
+<tr class="separator:a9be546daebaf53039d2d2b11fc11ac98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bb3776e5d64046acc0cf7ea8b4294e6" id="r_a5bb3776e5d64046acc0cf7ea8b4294e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a5bb3776e5d64046acc0cf7ea8b4294e6">AddPortion</a> (float totalDamage, int ticks)</td></tr>
+<tr class="memdesc:a5bb3776e5d64046acc0cf7ea8b4294e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Добавить порцию: <em>totalDamage</em>  — весь урон, который она нанесёт за <em>ticks</em>  СИМ-тиков.  <br /></td></tr>
+<tr class="separator:a5bb3776e5d64046acc0cf7ea8b4294e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a721a8e0d3e27463c8db550fbe5412cc9" id="r_a721a8e0d3e27463c8db550fbe5412cc9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a721a8e0d3e27463c8db550fbe5412cc9">TickDownPortions</a> ()</td></tr>
+<tr class="memdesc:a721a8e0d3e27463c8db550fbe5412cc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прожить тик всем порциям и вернуть <code>true</code>, если живых не осталось.  <br /></td></tr>
+<tr class="separator:a721a8e0d3e27463c8db550fbe5412cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0af352edc7d0a78a5ebac8ee7d0d532a" id="r_a0af352edc7d0a78a5ebac8ee7d0d532a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a0af352edc7d0a78a5ebac8ee7d0d532a">HoldShield</a> (float amount)</td></tr>
+<tr class="memdesc:a0af352edc7d0a78a5ebac8ee7d0d532a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Держать ровно столько щита (поднятие: величина известна целиком).  <br /></td></tr>
+<tr class="separator:a0af352edc7d0a78a5ebac8ee7d0d532a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e59d021802d09cb87d01b16d2951da8" id="r_a9e59d021802d09cb87d01b16d2951da8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a9e59d021802d09cb87d01b16d2951da8">AddHeldShield</a> (float amount)</td></tr>
+<tr class="memdesc:a9e59d021802d09cb87d01b16d2951da8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Накопить щит сверх удерживаемого (сбор по ходу боя: «Стальной вихрь»).  <br /></td></tr>
+<tr class="separator:a9e59d021802d09cb87d01b16d2951da8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae222e6d654dbf058b6ed49d787010759" id="r_ae222e6d654dbf058b6ed49d787010759"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ae222e6d654dbf058b6ed49d787010759">ReleaseHeldShield</a> ()</td></tr>
+<tr class="memdesc:ae222e6d654dbf058b6ed49d787010759"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отпустить удерживаемое: вернуть величину и обнулить счёт.  <br /></td></tr>
+<tr class="separator:ae222e6d654dbf058b6ed49d787010759"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22f6a505e54728ff51a08293711d045a" id="r_a22f6a505e54728ff51a08293711d045a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a22f6a505e54728ff51a08293711d045a">ChargeReadyTick</a> (int index)</td></tr>
+<tr class="memdesc:a22f6a505e54728ff51a08293711d045a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Абсолютный тик готовности конкретного заряда — для диагностики и тестов.  <br /></td></tr>
+<tr class="separator:a22f6a505e54728ff51a08293711d045a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb76b8686cf1795f4b2bd0574d01b1b3" id="r_aeb76b8686cf1795f4b2bd0574d01b1b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#aeb76b8686cf1795f4b2bd0574d01b1b3">ArmCharges</a> (int count)</td></tr>
+<tr class="memdesc:aeb76b8686cf1795f4b2bd0574d01b1b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Взвести заряды: все стартуют ГОТОВЫМИ (тик готовности 0 не больше любого текущего).  <br /></td></tr>
+<tr class="separator:aeb76b8686cf1795f4b2bd0574d01b1b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10757a9d273ee11dc3acf911b5968aeb" id="r_a10757a9d273ee11dc3acf911b5968aeb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a10757a9d273ee11dc3acf911b5968aeb">TryConsumeCharge</a> (int currentTick, int rechargeTicks)</td></tr>
+<tr class="memdesc:a10757a9d273ee11dc3acf911b5968aeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Потратить один готовый заряд и отправить его на перезарядку.  <br /></td></tr>
+<tr class="separator:a10757a9d273ee11dc3acf911b5968aeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac05d7d23fb5a0653c64d151277f4b5f" id="r_aac05d7d23fb5a0653c64d151277f4b5f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#aac05d7d23fb5a0653c64d151277f4b5f">IsTimerDue</a> (int currentTick)</td></tr>
+<tr class="memdesc:aac05d7d23fb5a0653c64d151277f4b5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пора сработать? Абсолютный тик против текущего — без потиковых декрементов, иначе таймер зависел бы от того, сколько раз его успели опросить.  <br /></td></tr>
+<tr class="separator:aac05d7d23fb5a0653c64d151277f4b5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2358489f5da163660568e554b1e89f89" id="r_a2358489f5da163660568e554b1e89f89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a2358489f5da163660568e554b1e89f89">ScheduleTimer</a> (int dueTick, int intervalTicks)</td></tr>
+<tr class="memdesc:a2358489f5da163660568e554b1e89f89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Взвести таймер: сработать на <em>dueTick</em> , следующий шаг — <em>intervalTicks</em> .  <br /></td></tr>
+<tr class="separator:a2358489f5da163660568e554b1e89f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3b04ab7a3c2257e525f0ea361fde3b7" id="r_ad3b04ab7a3c2257e525f0ea361fde3b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ad3b04ab7a3c2257e525f0ea361fde3b7">RescheduleTimer</a> (int currentTick, int nextIntervalTicks)</td></tr>
+<tr class="memdesc:ad3b04ab7a3c2257e525f0ea361fde3b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Перевзвести на свой же шаг и назначить шаг для следующего раза: сначала ждём текущий интервал, и только потом укорачиваем.  <br /></td></tr>
+<tr class="separator:ad3b04ab7a3c2257e525f0ea361fde3b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a5e428c825c7aae0c5e6f6f051b3d9daa" id="r_a5e428c825c7aae0c5e6f6f051b3d9daa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a5e428c825c7aae0c5e6f6f051b3d9daa">Def</a></td></tr>
 <tr class="memdesc:a5e428c825c7aae0c5e6f6f051b3d9daa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Иммутабельное определение.  <br /></td></tr>
 <tr class="separator:a5e428c825c7aae0c5e6f6f051b3d9daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d99530ebcedac6036bb4d80f4ff7d7c" id="r_a0d99530ebcedac6036bb4d80f4ff7d7c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a0d99530ebcedac6036bb4d80f4ff7d7c">Source</a></td></tr>
-<tr class="memdesc:a0d99530ebcedac6036bb4d80f4ff7d7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кто наложил — атрибуция урона/исцеления, скейл потенции, триггеры.  <br /></td></tr>
+<tr class="memdesc:a0d99530ebcedac6036bb4d80f4ff7d7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кто наложил ПЕРВЫМ — скейл потенции (снимок заморожен, вики «11» §5.1) и триггеры.  <br /></td></tr>
 <tr class="separator:a0d99530ebcedac6036bb4d80f4ff7d7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4f0082e00dc1f4610994f29e7ac616b" id="r_ac4f0082e00dc1f4610994f29e7ac616b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ac4f0082e00dc1f4610994f29e7ac616b">RemainingTicks</a></td></tr>
-<tr class="memdesc:ac4f0082e00dc1f4610994f29e7ac616b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Остаток длительности в тиках. <code>-1</code> = постоянный (пассивка), <code>0</code> = мгновенный.  <br /></td></tr>
-<tr class="separator:ac4f0082e00dc1f4610994f29e7ac616b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12668bf7295125ae3719118df2c31b16" id="r_a12668bf7295125ae3719118df2c31b16"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a12668bf7295125ae3719118df2c31b16">FullDurationTicks</a></td></tr>
-<tr class="memdesc:a12668bf7295125ae3719118df2c31b16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полная длительность в тиках на момент наложения (для StackRule.Refresh).  <br /></td></tr>
-<tr class="separator:a12668bf7295125ae3719118df2c31b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a241d031f0a2f8b12649fd51fef79b85f" id="r_a241d031f0a2f8b12649fd51fef79b85f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a241d031f0a2f8b12649fd51fef79b85f">Stacks</a></td></tr>
-<tr class="memdesc:a241d031f0a2f8b12649fd51fef79b85f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущее число стаков (≥ 1 у активного эффекта).  <br /></td></tr>
-<tr class="separator:a241d031f0a2f8b12649fd51fef79b85f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6367d6ca34fbc334f453fa9d149e401" id="r_ac6367d6ca34fbc334f453fa9d149e401"><td class="memItemLeft" align="right" valign="top">readonly System.Collections.Generic.List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ac6367d6ca34fbc334f453fa9d149e401">ContributorSources</a> = new()</td></tr>
+<tr class="memdesc:ac6367d6ca34fbc334f453fa9d149e401"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кто и сколько раз подкрепил этот эффект — по нему делится атрибуция периодики (реш.  <br /></td></tr>
+<tr class="separator:ac6367d6ca34fbc334f453fa9d149e401"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc85f49f82cb3e118c464abeff0d8fb" id="r_afbc85f49f82cb3e118c464abeff0d8fb"><td class="memItemLeft" align="right" valign="top">readonly System.Collections.Generic.List&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#afbc85f49f82cb3e118c464abeff0d8fb">ContributorWeights</a> = new()</td></tr>
+<tr class="memdesc:afbc85f49f82cb3e118c464abeff0d8fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вес вкладчика: сколько раз он наложил или подкрепил эффект. Параллелен ContributorSources.  <br /></td></tr>
+<tr class="separator:afbc85f49f82cb3e118c464abeff0d8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2557a013070277729452bdfca3af342b" id="r_a2557a013070277729452bdfca3af342b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a2557a013070277729452bdfca3af342b">AppliedTick</a></td></tr>
+<tr class="memdesc:a2557a013070277729452bdfca3af342b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тик, на котором эффект ПОЯВИЛСЯ на цели.  <br /></td></tr>
+<tr class="separator:a2557a013070277729452bdfca3af342b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc4595852ed48c84d08bd15661410844" id="r_abc4595852ed48c84d08bd15661410844"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#abc4595852ed48c84d08bd15661410844">Counter</a></td></tr>
+<tr class="memdesc:abc4595852ed48c84d08bd15661410844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Счётчик срабатываний для компонентов, которым нужен «каждый N-й раз» («каждая третья атака» Драугра).  <br /></td></tr>
+<tr class="separator:abc4595852ed48c84d08bd15661410844"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a597de42814cebe2f249cb692f7802ba6" id="r_a597de42814cebe2f249cb692f7802ba6"><td class="memItemLeft" align="right" valign="top">float[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a597de42814cebe2f249cb692f7802ba6">ScaledPotency</a></td></tr>
 <tr class="memdesc:a597de42814cebe2f249cb692f7802ba6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снимок потенции на компонент (параллельно <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a5a5e39f4549e0caa9e9b9caf273038d8">EffectData.Components</a>), резолвится из статов источника при наложении: per-second rate для DoT/HoT, величина щита и т.  <br /></td></tr>
 <tr class="separator:a597de42814cebe2f249cb692f7802ba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33faf86e1bb27a7509d7d3b07ea1bf3c" id="r_a33faf86e1bb27a7509d7d3b07ea1bf3c"><td class="memItemLeft" align="right" valign="top">int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a33faf86e1bb27a7509d7d3b07ea1bf3c">PeriodicTicks</a></td></tr>
 <tr class="memdesc:a33faf86e1bb27a7509d7d3b07ea1bf3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Счётчик сим-тиков с прошлого срабатывания на периодический компонент (параллельно компонентам).  <br /></td></tr>
 <tr class="separator:a33faf86e1bb27a7509d7d3b07ea1bf3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf5796683cc2c01aec6eb0d914f483d9" id="r_abf5796683cc2c01aec6eb0d914f483d9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#abf5796683cc2c01aec6eb0d914f483d9">ReactiveReadyTick</a></td></tr>
-<tr class="memdesc:abf5796683cc2c01aec6eb0d914f483d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Внутренний кулдаун реактив/pre-damage компонента (§9.3, «Оплот»): абсолютный тик, с которого компонент снова готов сработать.  <br /></td></tr>
-<tr class="separator:abf5796683cc2c01aec6eb0d914f483d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a858659d43320619d859c28a61c1fb7" id="r_a0a858659d43320619d859c28a61c1fb7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a0a858659d43320619d859c28a61c1fb7">PendingShield</a></td></tr>
-<tr class="memdesc:a0a858659d43320619d859c28a61c1fb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фактически поднятая величина щита с runtime-расчётом (§9.3, «Оплот»: <code>flat + ·недостающее HP</code>) — снимок при наложении, чтобы <code>OnExpire</code> снял ровно её (потенцию из статов тут не выразить).  <br /></td></tr>
-<tr class="separator:a0a858659d43320619d859c28a61c1fb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a553d4c7c1818da07ffa01fb2109c703a" id="r_a553d4c7c1818da07ffa01fb2109c703a"><td class="memItemLeft" align="right" valign="top">int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a553d4c7c1818da07ffa01fb2109c703a">ChargeReadyTicks</a></td></tr>
-<tr class="memdesc:a553d4c7c1818da07ffa01fb2109c703a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заряды реактив-компонента (§9.4, «Изворотливость»): на каждый заряд — абсолютный тик готовности (≤ CurrentTick = готов).  <br /></td></tr>
-<tr class="separator:a553d4c7c1818da07ffa01fb2109c703a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:aff4329f23c6e7cf9131b7f6e79217228" id="r_aff4329f23c6e7cf9131b7f6e79217228"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#aff4329f23c6e7cf9131b7f6e79217228">ModifierSourceLocKey</a><code> [get]</code></td></tr>
+<tr class="memdesc:aff4329f23c6e7cf9131b7f6e79217228"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя, под которым эффект показывается игроку в разборе стата («+12 (Ярость)»).  <br /></td></tr>
+<tr class="separator:aff4329f23c6e7cf9131b7f6e79217228"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53e4a764e68812dfe7694b66693e7ca7" id="r_a53e4a764e68812dfe7694b66693e7ca7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a53e4a764e68812dfe7694b66693e7ca7">TotalContribution</a><code> [get]</code></td></tr>
+<tr class="memdesc:a53e4a764e68812dfe7694b66693e7ca7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сумма весов — знаменатель доли. 0 = вкладчиков нет (эффект собран вручную в тесте).  <br /></td></tr>
+<tr class="separator:a53e4a764e68812dfe7694b66693e7ca7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4f0082e00dc1f4610994f29e7ac616b" id="r_ac4f0082e00dc1f4610994f29e7ac616b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ac4f0082e00dc1f4610994f29e7ac616b">RemainingTicks</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac4f0082e00dc1f4610994f29e7ac616b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Остаток длительности в тиках.  <br /></td></tr>
+<tr class="separator:ac4f0082e00dc1f4610994f29e7ac616b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12668bf7295125ae3719118df2c31b16" id="r_a12668bf7295125ae3719118df2c31b16"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a12668bf7295125ae3719118df2c31b16">FullDurationTicks</a><code> [get]</code></td></tr>
+<tr class="memdesc:a12668bf7295125ae3719118df2c31b16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полная длительность в тиках на момент наложения (для StackRule.Refresh).  <br /></td></tr>
+<tr class="separator:a12668bf7295125ae3719118df2c31b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a241d031f0a2f8b12649fd51fef79b85f" id="r_a241d031f0a2f8b12649fd51fef79b85f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a241d031f0a2f8b12649fd51fef79b85f">Stacks</a> = 1<code> [get]</code></td></tr>
+<tr class="memdesc:a241d031f0a2f8b12649fd51fef79b85f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущее число стаков (≥ 0).  <br /></td></tr>
+<tr class="separator:a241d031f0a2f8b12649fd51fef79b85f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c985966e006b6ebbbad0c0de6f8db2d" id="r_a7c985966e006b6ebbbad0c0de6f8db2d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a7c985966e006b6ebbbad0c0de6f8db2d">StacksAtTickStart</a> = 1<code> [get]</code></td></tr>
+<tr class="memdesc:a7c985966e006b6ebbbad0c0de6f8db2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Число стаков, с которым эффект ВОШЁЛ в текущий тик.  <br /></td></tr>
+<tr class="separator:a7c985966e006b6ebbbad0c0de6f8db2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbf2ec934c107c3e05e2a0b07505017c" id="r_acbf2ec934c107c3e05e2a0b07505017c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#acbf2ec934c107c3e05e2a0b07505017c">VisibleStacks</a><code> [get]</code></td></tr>
+<tr class="memdesc:acbf2ec934c107c3e05e2a0b07505017c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Стаки, которыми эффект ВЛИЯЕТ на исход прямо сейчас: снимок начала тика, а у эффекта, который родился внутри этого тика (снимка ещё нет), — его настоящее число.  <br /></td></tr>
+<tr class="separator:acbf2ec934c107c3e05e2a0b07505017c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6399571540b2bb0fab4e0e41b03034c" id="r_ae6399571540b2bb0fab4e0e41b03034c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ae6399571540b2bb0fab4e0e41b03034c">PortionRate</a><code> [get]</code></td></tr>
+<tr class="memdesc:ae6399571540b2bb0fab4e0e41b03034c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько эффект капает В СЕКУНДУ прямо сейчас — сумма живых порций.  <br /></td></tr>
+<tr class="separator:ae6399571540b2bb0fab4e0e41b03034c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99e49340c5d45477790944e8a588480c" id="r_a99e49340c5d45477790944e8a588480c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a99e49340c5d45477790944e8a588480c">PortionCount</a><code> [get]</code></td></tr>
+<tr class="memdesc:a99e49340c5d45477790944e8a588480c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Число живых порций — оно же число стаков для показа и условий.  <br /></td></tr>
+<tr class="separator:a99e49340c5d45477790944e8a588480c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5d00b1706902fb50c41dea0552d8f74" id="r_af5d00b1706902fb50c41dea0552d8f74"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#af5d00b1706902fb50c41dea0552d8f74">HeldShield</a><code> [get]</code></td></tr>
+<tr class="memdesc:af5d00b1706902fb50c41dea0552d8f74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько щита этот эффект УДЕРЖИВАЕТ прямо сейчас (§9.3, «Оплот»: <code>flat + ·недостающее HP</code>) — фактическая величина с runtime-расчётом, потому что из статов её не выразить.  <br /></td></tr>
+<tr class="separator:af5d00b1706902fb50c41dea0552d8f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19eb8d755e957bbd3177afc6a44c5b7d" id="r_a19eb8d755e957bbd3177afc6a44c5b7d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a19eb8d755e957bbd3177afc6a44c5b7d">ChargeCount</a><code> [get]</code></td></tr>
+<tr class="memdesc:a19eb8d755e957bbd3177afc6a44c5b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько зарядов взведено (0 = компонент зарядами не пользуется).  <br /></td></tr>
+<tr class="separator:a19eb8d755e957bbd3177afc6a44c5b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1aa78273c042d1c71374640fb98e7326" id="r_a1aa78273c042d1c71374640fb98e7326"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a1aa78273c042d1c71374640fb98e7326">TimerTick</a><code> [get]</code></td></tr>
+<tr class="memdesc:a1aa78273c042d1c71374640fb98e7326"><td class="mdescLeft">&#160;</td><td class="mdescRight">Служебный таймер компонента: абсолютный тик, на котором ему пора сработать.  <br /></td></tr>
+<tr class="separator:a1aa78273c042d1c71374640fb98e7326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aade0a15aa04aec709f7c3fe990f40de5" id="r_aade0a15aa04aec709f7c3fe990f40de5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#aade0a15aa04aec709f7c3fe990f40de5">TimerIntervalTicks</a><code> [get]</code></td></tr>
+<tr class="memdesc:aade0a15aa04aec709f7c3fe990f40de5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущий шаг служебного таймера в тиках (для кривых, где интервал меняется по ходу).  <br /></td></tr>
+<tr class="separator:aade0a15aa04aec709f7c3fe990f40de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee919d35448b0570140dc9fc64c9b23e" id="r_aee919d35448b0570140dc9fc64c9b23e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#aee919d35448b0570140dc9fc64c9b23e">IsPermanent</a><code> [get]</code></td></tr>
 <tr class="memdesc:aee919d35448b0570140dc9fc64c9b23e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Постоянный эффект (пассивка) — не истекает по таймеру.  <br /></td></tr>
 <tr class="separator:aee919d35448b0570140dc9fc64c9b23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Data_1_1Stats_1_1IModifierSource"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Data_1_1Stats_1_1IModifierSource')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IModifierSource.html">Guildmaster.Data.Stats.IModifierSource</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Экземпляр эффекта на конкретном юните (POCO, живёт один бой). </p>
 <p>Несёт per-unit рантайм- состояние, которого НЕ может быть в общих <code>[SerializeReference]</code>-компонентах EffectData — те шарятся между всеми носителями эффекта и обязаны быть stateless (вики «12» §2.2, «6» §5). </p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a553d4c7c1818da07ffa01fb2109c703a" name="a553d4c7c1818da07ffa01fb2109c703a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a553d4c7c1818da07ffa01fb2109c703a">&#9670;&#160;</a></span>ChargeReadyTicks</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a501e0c607bfaba1c7d904c5ee4bbc59d" name="a501e0c607bfaba1c7d904c5ee4bbc59d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a501e0c607bfaba1c7d904c5ee4bbc59d">&#9670;&#160;</a></span>AddContribution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.AddContribution </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Засчитать наложение/подкрепление источнику: первое — заводит вкладчика, повторное — растит вес. </p>
+
+</div>
+</div>
+<a id="a9e59d021802d09cb87d01b16d2951da8" name="a9e59d021802d09cb87d01b16d2951da8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e59d021802d09cb87d01b16d2951da8">&#9670;&#160;</a></span>AddHeldShield()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.AddHeldShield </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>amount</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Накопить щит сверх удерживаемого (сбор по ходу боя: «Стальной вихрь»). </p>
+
+</div>
+</div>
+<a id="a5bb3776e5d64046acc0cf7ea8b4294e6" name="a5bb3776e5d64046acc0cf7ea8b4294e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bb3776e5d64046acc0cf7ea8b4294e6">&#9670;&#160;</a></span>AddPortion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.AddPortion </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>totalDamage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ticks</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Добавить порцию: <em>totalDamage</em>  — весь урон, который она нанесёт за <em>ticks</em>  СИМ-тиков. </p>
+<p>Перевод «весь урон» → «урон в секунду» живёт здесь, потому что автор порции думает «кровь несёт урон одного удара», а периодика бьёт rate-ом.</p>
+<p><b>Порция без силы законна</b> (слепота, 2026-07-31): её вклад — не цифры, а СТАК, и глубина эффекта выводится из числа порций. Раньше здесь стоял гейт <code>totalDamage &lt;= 0</code>, и порционный эффект без урона не копился вовсе: два наложения слепоты читались как одно. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect_a5bb3776e5d64046acc0cf7ea8b4294e6_cgraph.svg" width="475" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a47a8f9912ae2e189d81935a49d3492ff" name="a47a8f9912ae2e189d81935a49d3492ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47a8f9912ae2e189d81935a49d3492ff">&#9670;&#160;</a></span>AddStacks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.AddStacks </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>count</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Набрать стаки (подкрепление эффекта). </p>
+<p>Потолок держит вызывающий: он знает <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#acdebab57fd4a6b784bd0a7d33d05ddfb">EffectData.MaxStacks</a> и правило слияния. </p>
+
+</div>
+</div>
+<a id="aeb76b8686cf1795f4b2bd0574d01b1b3" name="aeb76b8686cf1795f4b2bd0574d01b1b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb76b8686cf1795f4b2bd0574d01b1b3">&#9670;&#160;</a></span>ArmCharges()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.ArmCharges </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>count</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Взвести заряды: все стартуют ГОТОВЫМИ (тик готовности 0 не больше любого текущего). </p>
+<p>Зовётся при наложении и при подкреплении, которое взводит заново. </p>
+
+</div>
+</div>
+<a id="a22f6a505e54728ff51a08293711d045a" name="a22f6a505e54728ff51a08293711d045a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22f6a505e54728ff51a08293711d045a">&#9670;&#160;</a></span>ChargeReadyTick()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int [] Guildmaster.Combat.Effects.RuntimeEffect.ChargeReadyTicks</td>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.ChargeReadyTick </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Заряды реактив-компонента (§9.4, «Изворотливость»): на каждый заряд — абсолютный тик готовности (≤ CurrentTick = готов). </p>
-<p>Независимая перезарядка. null у эффектов без зарядов. </p>
+<p>Абсолютный тик готовности конкретного заряда — для диагностики и тестов. </p>
+
+</div>
+</div>
+<a id="a9be546daebaf53039d2d2b11fc11ac98" name="a9be546daebaf53039d2d2b11fc11ac98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9be546daebaf53039d2d2b11fc11ac98">&#9670;&#160;</a></span>CommitStackSnapshot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.CommitStackSnapshot </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Проявить набранное и срезанное за тик: снимок догоняет живое число. </p>
+<p>Единственная точка, где это происходит, — конец тика (<code>EffectSystem.CommitPending</code>). Отдельный метод, а не присваивание снаружи: так у границы тика один владелец, и её нельзя сдвинуть случайно. </p>
+
+</div>
+</div>
+<a id="a6c584dfe148019088ac6cce1c3d4c4e9" name="a6c584dfe148019088ac6cce1c3d4c4e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c584dfe148019088ac6cce1c3d4c4e9">&#9670;&#160;</a></span>EndDuration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.EndDuration </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Срок вышел досрочно: эффект снимается штатным путём, а не отдельной веткой. </p>
+<p>Так уходят «Угли», когда осыпался последний стак. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect_a6c584dfe148019088ac6cce1c3d4c4e9_icgraph.svg" width="542" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a0af352edc7d0a78a5ebac8ee7d0d532a" name="a0af352edc7d0a78a5ebac8ee7d0d532a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0af352edc7d0a78a5ebac8ee7d0d532a">&#9670;&#160;</a></span>HoldShield()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.HoldShield </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>amount</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Держать ровно столько щита (поднятие: величина известна целиком). </p>
+
+</div>
+</div>
+<a id="aac05d7d23fb5a0653c64d151277f4b5f" name="aac05d7d23fb5a0653c64d151277f4b5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac05d7d23fb5a0653c64d151277f4b5f">&#9670;&#160;</a></span>IsTimerDue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.Effects.RuntimeEffect.IsTimerDue </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>currentTick</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Пора сработать? Абсолютный тик против текущего — без потиковых декрементов, иначе таймер зависел бы от того, сколько раз его успели опросить. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect_aac05d7d23fb5a0653c64d151277f4b5f_icgraph.svg" width="542" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ae222e6d654dbf058b6ed49d787010759" name="ae222e6d654dbf058b6ed49d787010759"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae222e6d654dbf058b6ed49d787010759">&#9670;&#160;</a></span>ReleaseHeldShield()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Combat.Effects.RuntimeEffect.ReleaseHeldShield </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Отпустить удерживаемое: вернуть величину и обнулить счёт. </p>
+<p>Один глагол на все три случая, где щит перестаёт держаться (истечение, снятие, взрыв), — поэтому «прочитал и забыл забыть» невозможно по построению. </p>
+
+</div>
+</div>
+<a id="a5554fd4708aa26adef1a86a2991addd4" name="a5554fd4708aa26adef1a86a2991addd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5554fd4708aa26adef1a86a2991addd4">&#9670;&#160;</a></span>RemoveStacks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.RemoveStacks </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>count</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Срезать стаки (цена очищения, сход «Углей»). Ниже нуля не уходит. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect_a5554fd4708aa26adef1a86a2991addd4_icgraph.svg" width="548" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ad3b04ab7a3c2257e525f0ea361fde3b7" name="ad3b04ab7a3c2257e525f0ea361fde3b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3b04ab7a3c2257e525f0ea361fde3b7">&#9670;&#160;</a></span>RescheduleTimer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.RescheduleTimer </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>currentTick</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nextIntervalTicks</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Перевзвести на свой же шаг и назначить шаг для следующего раза: сначала ждём текущий интервал, и только потом укорачиваем. </p>
+<p>Иначе первый звонок после льготного окна уезжает уже с множителем, и заявленный первый интервал не отрабатывает ни разу. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect_ad3b04ab7a3c2257e525f0ea361fde3b7_icgraph.svg" width="564" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a2358489f5da163660568e554b1e89f89" name="a2358489f5da163660568e554b1e89f89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2358489f5da163660568e554b1e89f89">&#9670;&#160;</a></span>ScheduleTimer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.ScheduleTimer </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dueTick</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>intervalTicks</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Взвести таймер: сработать на <em>dueTick</em> , следующий шаг — <em>intervalTicks</em> . </p>
+<p>Оба числа ставятся вместе, потому что порознь они бессмысленны: срок без шага не знает, когда прозвонит в следующий раз. </p>
+
+</div>
+</div>
+<a id="abb7322a42443e8188834c4f60e9125dc" name="abb7322a42443e8188834c4f60e9125dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb7322a42443e8188834c4f60e9125dc">&#9670;&#160;</a></span>SetDuration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.SetDuration </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ticks</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Назначить срок: и остаток, и полную длительность. </p>
+<p>Один глагол на наложение и на подкрепление — они всегда ставят оба числа вместе, и разъехаться им нечем. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect_abb7322a42443e8188834c4f60e9125dc_icgraph.svg" width="475" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a9a1539e04fd8ee40c455992319cf1c88" name="a9a1539e04fd8ee40c455992319cf1c88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a1539e04fd8ee40c455992319cf1c88">&#9670;&#160;</a></span>TickDownDuration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.Effects.RuntimeEffect.TickDownDuration </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Прожить тик. Возвращает <code>true</code>, если срок вышел и эффект пора снимать. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect_a9a1539e04fd8ee40c455992319cf1c88_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a721a8e0d3e27463c8db550fbe5412cc9" name="a721a8e0d3e27463c8db550fbe5412cc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a721a8e0d3e27463c8db550fbe5412cc9">&#9670;&#160;</a></span>TickDownPortions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.Effects.RuntimeEffect.TickDownPortions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Прожить тик всем порциям и вернуть <code>true</code>, если живых не осталось. </p>
+<p>Истёкшие уходят независимо друг от друга — в этом и весь смысл порционной модели. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect_a721a8e0d3e27463c8db550fbe5412cc9_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a10757a9d273ee11dc3acf911b5968aeb" name="a10757a9d273ee11dc3acf911b5968aeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10757a9d273ee11dc3acf911b5968aeb">&#9670;&#160;</a></span>TryConsumeCharge()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.Effects.RuntimeEffect.TryConsumeCharge </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>currentTick</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>rechargeTicks</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Потратить один готовый заряд и отправить его на перезарядку. </p>
+<p><code>false</code> = готовых нет, реакция не случается.</p>
+<p>Первый готовый по порядку, а не «самый свежий»: порядок обхода фиксирован, поэтому расход зарядов детерминирован и одинаков у зеркальных сторон. Перезарядка у каждого своя — считается от текущего тика, без потиковых декрементов. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a2557a013070277729452bdfca3af342b" name="a2557a013070277729452bdfca3af342b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2557a013070277729452bdfca3af342b">&#9670;&#160;</a></span>AppliedTick</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.AppliedTick</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Тик, на котором эффект ПОЯВИЛСЯ на цели. </p>
+<p>Ставится один раз, при создании; рефреш и набор стака его не двигают — речь о появлении, а не об обновлении. </p>
+<p><b>Зачем:</b> снятие обязано судить по состоянию НАЧАЛА тика. Список RuntimeUnit.ActiveEffects меняется немедленно (отложены только статы и маска тегов), поэтому диспел без этого поля видел бы наложения того же тика — и исход зависел бы от места юнита в обходе. Пойман зеркалом на тике 181: метку, только что наложенную одним Рейнджером, чужой клинс успевал снять у одной стороны и не успевал у другой.</p>
+
+</div>
+</div>
+<a id="ac6367d6ca34fbc334f453fa9d149e401" name="ac6367d6ca34fbc334f453fa9d149e401"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6367d6ca34fbc334f453fa9d149e401">&#9670;&#160;</a></span>ContributorSources</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly System.Collections.Generic.List&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&gt; Guildmaster.Combat.Effects.RuntimeEffect.ContributorSources = new()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Кто и сколько раз подкрепил этот эффект — по нему делится атрибуция периодики (реш. </p>
+<p>Макса 2026-07-26: «делить пропорционально вкладу в стаки»). Экземпляр эффекта живёт ОДИН на цели, поэтому вопрос «чей это урон» решается здесь, а не разведением экземпляров: горение, которое вдвоём поддерживают двое, приносит каждому свою половину тика. </p>
+<p>Два параллельных списка вместо словаря: вкладчиков единицы, порядок = порядок наложения, а значит обход детерминирован — на нём стоит чек-сумма.</p>
+
+</div>
+</div>
+<a id="afbc85f49f82cb3e118c464abeff0d8fb" name="afbc85f49f82cb3e118c464abeff0d8fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbc85f49f82cb3e118c464abeff0d8fb">&#9670;&#160;</a></span>ContributorWeights</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly System.Collections.Generic.List&lt;int&gt; Guildmaster.Combat.Effects.RuntimeEffect.ContributorWeights = new()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Вес вкладчика: сколько раз он наложил или подкрепил эффект. Параллелен ContributorSources. </p>
+
+</div>
+</div>
+<a id="abc4595852ed48c84d08bd15661410844" name="abc4595852ed48c84d08bd15661410844"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc4595852ed48c84d08bd15661410844">&#9670;&#160;</a></span>Counter</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.Counter</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Счётчик срабатываний для компонентов, которым нужен «каждый N-й раз» («каждая третья атака» Драугра). </p>
+<p>Живёт здесь, потому что компоненты stateless и шарятся между носителями, а счёт принадлежит КОНКРЕТНОМУ экземпляру эффекта на конкретном юните. </p>
 
 </div>
 </div>
@@ -183,38 +877,6 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a12668bf7295125ae3719118df2c31b16" name="a12668bf7295125ae3719118df2c31b16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12668bf7295125ae3719118df2c31b16">&#9670;&#160;</a></span>FullDurationTicks</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.FullDurationTicks</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Полная длительность в тиках на момент наложения (для StackRule.Refresh). </p>
-
-</div>
-</div>
-<a id="a0a858659d43320619d859c28a61c1fb7" name="a0a858659d43320619d859c28a61c1fb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a858659d43320619d859c28a61c1fb7">&#9670;&#160;</a></span>PendingShield</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float Guildmaster.Combat.Effects.RuntimeEffect.PendingShield</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Фактически поднятая величина щита с runtime-расчётом (§9.3, «Оплот»: <code>flat + ·недостающее HP</code>) — снимок при наложении, чтобы <code>OnExpire</code> снял ровно её (потенцию из статов тут не выразить). </p>
-
-</div>
-</div>
 <a id="a33faf86e1bb27a7509d7d3b07ea1bf3c" name="a33faf86e1bb27a7509d7d3b07ea1bf3c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a33faf86e1bb27a7509d7d3b07ea1bf3c">&#9670;&#160;</a></span>PeriodicTicks</h2>
 
@@ -229,39 +891,6 @@ Properties</h2></td></tr>
 
 <p>Счётчик сим-тиков с прошлого срабатывания на периодический компонент (параллельно компонентам). </p>
 <p>Целочисленный — float-аккумулятор дрейфует и ломает детерминизм периодики. </p>
-
-</div>
-</div>
-<a id="abf5796683cc2c01aec6eb0d914f483d9" name="abf5796683cc2c01aec6eb0d914f483d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf5796683cc2c01aec6eb0d914f483d9">&#9670;&#160;</a></span>ReactiveReadyTick</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.ReactiveReadyTick</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Внутренний кулдаун реактив/pre-damage компонента (§9.3, «Оплот»): абсолютный тик, с которого компонент снова готов сработать. </p>
-<p>Сверяется с <code>ctx.Combat.CurrentTick</code> — без потиковых декрементов (детерминизм). 0 = готов с начала боя. </p>
-
-</div>
-</div>
-<a id="ac4f0082e00dc1f4610994f29e7ac616b" name="ac4f0082e00dc1f4610994f29e7ac616b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4f0082e00dc1f4610994f29e7ac616b">&#9670;&#160;</a></span>RemainingTicks</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.RemainingTicks</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Остаток длительности в тиках. <code>-1</code> = постоянный (пассивка), <code>0</code> = мгновенный. </p>
 
 </div>
 </div>
@@ -294,27 +923,84 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Кто наложил — атрибуция урона/исцеления, скейл потенции, триггеры. </p>
-
-</div>
-</div>
-<a id="a241d031f0a2f8b12649fd51fef79b85f" name="a241d031f0a2f8b12649fd51fef79b85f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a241d031f0a2f8b12649fd51fef79b85f">&#9670;&#160;</a></span>Stacks</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.Stacks</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Текущее число стаков (≥ 1 у активного эффекта). </p>
+<p>Кто наложил ПЕРВЫМ — скейл потенции (снимок заморожен, вики «11» §5.1) и триггеры. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a19eb8d755e957bbd3177afc6a44c5b7d" name="a19eb8d755e957bbd3177afc6a44c5b7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19eb8d755e957bbd3177afc6a44c5b7d">&#9670;&#160;</a></span>ChargeCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.ChargeCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько зарядов взведено (0 = компонент зарядами не пользуется). </p>
+
+</div>
+</div>
+<a id="a12668bf7295125ae3719118df2c31b16" name="a12668bf7295125ae3719118df2c31b16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12668bf7295125ae3719118df2c31b16">&#9670;&#160;</a></span>FullDurationTicks</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.FullDurationTicks</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Полная длительность в тиках на момент наложения (для StackRule.Refresh). </p>
+
+</div>
+</div>
+<a id="af5d00b1706902fb50c41dea0552d8f74" name="af5d00b1706902fb50c41dea0552d8f74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5d00b1706902fb50c41dea0552d8f74">&#9670;&#160;</a></span>HeldShield</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Combat.Effects.RuntimeEffect.HeldShield</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько щита этот эффект УДЕРЖИВАЕТ прямо сейчас (§9.3, «Оплот»: <code>flat + ·недостающее HP</code>) — фактическая величина с runtime-расчётом, потому что из статов её не выразить. </p>
+<p>Единственный владелец числа: снятие обязано убрать ровно удержанное, а не пересчитать формулу заново, и взрыв щита обязан считать урон от того же числа. Пишется только глаголами ниже — сеттера снаружи нет, чтобы у величины не завелось второго владельца.</p>
+
+</div>
+</div>
 <a id="aee919d35448b0570140dc9fc64c9b23e" name="aee919d35448b0570140dc9fc64c9b23e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aee919d35448b0570140dc9fc64c9b23e">&#9670;&#160;</a></span>IsPermanent</h2>
 
@@ -336,6 +1022,256 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Постоянный эффект (пассивка) — не истекает по таймеру. </p>
+
+</div>
+</div>
+<a id="aff4329f23c6e7cf9131b7f6e79217228" name="aff4329f23c6e7cf9131b7f6e79217228"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff4329f23c6e7cf9131b7f6e79217228">&#9670;&#160;</a></span>ModifierSourceLocKey</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Guildmaster.Combat.Effects.RuntimeEffect.ModifierSourceLocKey</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Имя, под которым эффект показывается игроку в разборе стата («+12 (Ярость)»). </p>
+<p>Эффект — основной источник стат-модификаторов в бою, поэтому именно он делает разбор читаемым; безымянные источники в тултипе схлопываются в «прочее». </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IModifierSource.html#a957c7b5922e386d66bba4a64af01a334">Guildmaster.Data.Stats.IModifierSource</a>.</p>
+
+</div>
+</div>
+<a id="a99e49340c5d45477790944e8a588480c" name="a99e49340c5d45477790944e8a588480c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99e49340c5d45477790944e8a588480c">&#9670;&#160;</a></span>PortionCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.PortionCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Число живых порций — оно же число стаков для показа и условий. </p>
+
+</div>
+</div>
+<a id="ae6399571540b2bb0fab4e0e41b03034c" name="ae6399571540b2bb0fab4e0e41b03034c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6399571540b2bb0fab4e0e41b03034c">&#9670;&#160;</a></span>PortionRate</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Combat.Effects.RuntimeEffect.PortionRate</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько эффект капает В СЕКУНДУ прямо сейчас — сумма живых порций. </p>
+<p>Аналог ScaledPotency для порционной модели. </p>
+
+</div>
+</div>
+<a id="ac4f0082e00dc1f4610994f29e7ac616b" name="ac4f0082e00dc1f4610994f29e7ac616b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4f0082e00dc1f4610994f29e7ac616b">&#9670;&#160;</a></span>RemainingTicks</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.RemainingTicks</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Остаток длительности в тиках. </p>
+<p><code>-1</code> = постоянный (пассивка), <code>0</code> = мгновенный. Пишется только глаголами ниже: у длительности и её полной величины один вход, поэтому «поставить срок» и «дожить тик» невозможно перепутать местами. </p>
+
+</div>
+</div>
+<a id="a241d031f0a2f8b12649fd51fef79b85f" name="a241d031f0a2f8b12649fd51fef79b85f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a241d031f0a2f8b12649fd51fef79b85f">&#9670;&#160;</a></span>Stacks</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.Stacks = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Текущее число стаков (≥ 0). </p>
+<p>ЖИВОЕ значение — оно уже включает всё, что этот тик успел набрать и срезать, поэтому влиять на исход по нему нельзя: для этого есть VisibleStacks. Пишется только методами этого класса — снаружи сеттера нет намеренно, см. ниже. </p>
+
+</div>
+</div>
+<a id="a7c985966e006b6ebbbad0c0de6f8db2d" name="a7c985966e006b6ebbbad0c0de6f8db2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c985966e006b6ebbbad0c0de6f8db2d">&#9670;&#160;</a></span>StacksAtTickStart</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.StacksAtTickStart = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Число стаков, с которым эффект ВОШЁЛ в текущий тик. </p>
+<p>Обновляется одним проходом в <code>EffectSystem.CommitPending</code> — больше нигде. </p>
+<p><b>Зачем:</b> закон видимости эффектов (см. <code>EffectSystem.CommitTickChanges</code>) до этого поля накрывал статы и маску тегов, но не стаки — а их правят посреди тика. Пойман зеркалом на тике 300: клинс союзного пастыря съедал 5 стаков «Углей» ЦЕНОЙ очищения, и у левой стороны свой пастырь успевал сделать это ДО хода вражеского мечника, а у правой — после. Мечники детонировали 18 и 13 стаков: 354 против 244,8 урона при одинаковом составе эффектов.</p>
+
+</div>
+</div>
+<a id="aade0a15aa04aec709f7c3fe990f40de5" name="aade0a15aa04aec709f7c3fe990f40de5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aade0a15aa04aec709f7c3fe990f40de5">&#9670;&#160;</a></span>TimerIntervalTicks</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.TimerIntervalTicks</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Текущий шаг служебного таймера в тиках (для кривых, где интервал меняется по ходу). </p>
+
+</div>
+</div>
+<a id="a1aa78273c042d1c71374640fb98e7326" name="a1aa78273c042d1c71374640fb98e7326"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1aa78273c042d1c71374640fb98e7326">&#9670;&#160;</a></span>TimerTick</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.TimerTick</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Служебный таймер компонента: абсолютный тик, на котором ему пора сработать. </p>
+<p>Нужен там, где собственный ритм эффекта не совпадает ни с длительностью, ни с периодом тика — например сход «Углей» по ускоряющейся кривой. Сверяется с <code>ctx.Combat.CurrentTick</code>. </p>
+
+</div>
+</div>
+<a id="a53e4a764e68812dfe7694b66693e7ca7" name="a53e4a764e68812dfe7694b66693e7ca7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53e4a764e68812dfe7694b66693e7ca7">&#9670;&#160;</a></span>TotalContribution</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.TotalContribution</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сумма весов — знаменатель доли. 0 = вкладчиков нет (эффект собран вручную в тесте). </p>
+
+</div>
+</div>
+<a id="acbf2ec934c107c3e05e2a0b07505017c" name="acbf2ec934c107c3e05e2a0b07505017c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbf2ec934c107c3e05e2a0b07505017c">&#9670;&#160;</a></span>VisibleStacks</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.VisibleStacks</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Стаки, которыми эффект ВЛИЯЕТ на исход прямо сейчас: снимок начала тика, а у эффекта, который родился внутри этого тика (снимка ещё нет), — его настоящее число. </p>
+<p>Единственный владелец этого правила: читатели стаков зовут его, а не собирают условие сами. </p>
 
 </div>
 </div>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Session.Net.RunCommandCodec.Write" name="Guildmaster.Game.Session.Net.RunCommandCodec.Write">
+<area shape="rect" id="Node000001" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="341,5,561,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,5,293,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="328,28,294,28,294,23,328,23"/>
+</map>

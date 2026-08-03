@@ -108,8 +108,6 @@ Collaboration diagram for Guildmaster.Guild.RunState:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a6430e8894bb829b7b3dbe29890add07b" id="r_a6430e8894bb829b7b3dbe29890add07b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#a6430e8894bb829b7b3dbe29890add07b">SchemaVersion</a> = 1</td></tr>
-<tr class="separator:a6430e8894bb829b7b3dbe29890add07b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfac4f2b1fc0925a644daab62145cda0" id="r_adfac4f2b1fc0925a644daab62145cda0"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#adfac4f2b1fc0925a644daab62145cda0">Seed</a></td></tr>
 <tr class="separator:adfac4f2b1fc0925a644daab62145cda0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af315fd8cbab28b921ffd8aabdfd9c828" id="r_af315fd8cbab28b921ffd8aabdfd9c828"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#af315fd8cbab28b921ffd8aabdfd9c828">CurrentActIndex</a></td></tr>
@@ -137,12 +135,13 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a8f98c130ef9f2ccee5f5dddc12e52fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Карта текущего акта.  <br /></td></tr>
 <tr class="separator:a8f98c130ef9f2ccee5f5dddc12e52fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af86fe0c497067ce59075da8fcd1b794e" id="r_af86fe0c497067ce59075da8fcd1b794e"><td class="memItemLeft" align="right" valign="top">int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#af86fe0c497067ce59075da8fcd1b794e">SlotOwner</a> = Array.Empty&lt;int&gt;()</td></tr>
-<tr class="memdesc:af86fe0c497067ce59075da8fcd1b794e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кооп-шов: индекс игрока-владельца по каждому слоту ростера (соло — все 0). Реализация — Фаза 6.  <br /></td></tr>
+<tr class="memdesc:af86fe0c497067ce59075da8fcd1b794e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кооп-шов: <b>кто ведёт</b> каждый слот ростера — индекс игрока (соло — все нули).  <br /></td></tr>
 <tr class="separator:af86fe0c497067ce59075da8fcd1b794e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Durable-состояние забега (план 11 §3.1, вики «7» §4): единственный источник истины забега, всё по строковым content id. </p>
 <p>Переживает забег и <b>сохраняется</b> (JSON через <code>ISaveService</code>); собирается в боевые <code>RuntimeUnit</code> штатной фабрикой на каждый бой, изменения пишутся обратно. Плоский <code>[Serializable]</code> = сам себе save-DTO (нет SO-ссылок и рантайм-состояния — сплит на отдельный DTO не нужен; появится рантайм-поле — тогда и разделим). Сетевой-ready: реплицируется хостом как есть. </p>
+<p>Версия схемы — в атрибуте <code>[SaveSchema]</code>, а не полем: она свойство ФАЙЛА и живёт в его конверте (ТЗ [[save-system]] §5). Прежнее поле <code>SchemaVersion</code> убрано — оно писалось, никем не читалось и было вторым владельцем того же факта.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="af315fd8cbab28b921ffd8aabdfd9c828" name="af315fd8cbab28b921ffd8aabdfd9c828"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af315fd8cbab28b921ffd8aabdfd9c828">&#9670;&#160;</a></span>CurrentActIndex</h2>
@@ -282,20 +281,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a6430e8894bb829b7b3dbe29890add07b" name="a6430e8894bb829b7b3dbe29890add07b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6430e8894bb829b7b3dbe29890add07b">&#9670;&#160;</a></span>SchemaVersion</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Guild.RunState.SchemaVersion = 1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="adfac4f2b1fc0925a644daab62145cda0" name="adfac4f2b1fc0925a644daab62145cda0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adfac4f2b1fc0925a644daab62145cda0">&#9670;&#160;</a></span>Seed</h2>
 
@@ -322,7 +307,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Кооп-шов: индекс игрока-владельца по каждому слоту ростера (соло — все 0). Реализация — Фаза 6. </p>
+<p>Кооп-шов: <b>кто ведёт</b> каждый слот ростера — индекс игрока (соло — все нули). </p>
+<p><b>Это управление, а не собственность.</b> Сосуды, казна, ростер, реликвии и предметы в коопе ОБЩИЕ; хост раздаёт не имущество, а кого кто ведёт, и раздача меняется в любой момент (HARD-правило ГДД, <code>50-modes-ux/coop/index</code>). Поэтому «владелец слота» — неверные слова, и поле не даёт никаких прав: гость правит любой слот общего отряда, просто через хоста. </p>
 
 </div>
 </div>

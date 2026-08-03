@@ -1,6 +1,6 @@
 var classGuildmaster_1_1Game_1_1Flow_1_1ShopController =
 [
-    [ "ShopController", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a9e755fca97806f975c524b4da33eb4d1", null ],
+    [ "ShopController", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a8e1497565a81d13eb549f1033b5f5d52", null ],
     [ "Buy", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#ae27e588c92fef203395ce3e2c8972335", null ],
     [ "Open", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a5b33f02bfbdb9b813558ef7b49a38985", null ],
     [ "Reroll", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a831775f4225e317a1ad213d829340b23", null ],

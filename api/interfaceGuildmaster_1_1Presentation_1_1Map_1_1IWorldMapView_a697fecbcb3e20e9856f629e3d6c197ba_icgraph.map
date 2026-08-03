@@ -1,0 +1,10 @@
+<map id="Guildmaster.Presentation.Map.IWorldMapView.PreviewTravel" name="Guildmaster.Presentation.Map.IWorldMapView.PreviewTravel">
+<area shape="rect" id="Node000001" title="Прогнать фишку к узлу БЕЗ выбора: анимация играет, но NodeClicked не поднимается." alt="" coords="493,37,743,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1MapDevCommands.html#a11d23f471c4773216d9b6da58a2ab580" title=" " alt="" coords="249,5,445,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="479,44,445,40,446,34,480,38"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1DevTools_1_1MapDevCommands.html#acc9be608218064ada5dd6a48ba9817bf" title=" " alt="" coords="249,69,445,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="480,76,446,80,445,75,479,71"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1MapDevCommands.html#afbfc9496080c410ad2bdac37dbcf8aae" title="Положить команды карты в набор модуля (снимаются вместе с ним)." alt="" coords="5,37,201,77"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="236,43,202,47,201,42,235,37"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="235,77,201,73,202,68,236,72"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.DeploymentView.SetGhost" name="Guildmaster.Presentation.DeploymentView.SetGhost">
+<area shape="rect" id="Node000001" title="Ghost&#45;призрак при drag (QA #9): полупрозрачная копия силуэта юнита, поставленная ногами в feet ." alt="" coords="5,5,201,45"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Presentation_1_1SilhouettePart.html#a8bcd04508e8bfa1badb6066d7be54212" title="Разложить позу в трансформ (позиция / поворот вокруг Z / масштаб со знаком)." alt="" coords="249,5,444,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,23,235,23,235,28,202,28"/>
+</map>

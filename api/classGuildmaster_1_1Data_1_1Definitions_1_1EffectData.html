@@ -92,6 +92,8 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData-members.html">List of all members</a>  </div>
@@ -104,14 +106,26 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Data.Definitions.EffectData:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData__inherit__graph.svg" width="218" height="498"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData__inherit__graph.svg" width="218" height="558"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Definitions.EffectData:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData__coll__graph.svg" width="218" height="498"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData__coll__graph.svg" width="218" height="558"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1EffectData_1_1CleansePrice.html">CleansePrice</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цена очистки: сколько стаков уносит одно развеивание данной силы.  <a href="structGuildmaster_1_1Data_1_1Definitions_1_1EffectData_1_1CleansePrice.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ac50ab405fea7ed65a7bffec499810ee5" id="r_ac50ab405fea7ed65a7bffec499810ee5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#ac50ab405fea7ed65a7bffec499810ee5">CleanseStacks</a> (int currentStacks, int dispelPower)</td></tr>
+<tr class="memdesc:ac50ab405fea7ed65a7bffec499810ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько стаков уносит ОДНО очищение силой <em>dispelPower</em>  (ГДД «Свойства эффекта» §Цена очистки, решения 2026-07-27/5 и /7).  <br /></td></tr>
+<tr class="separator:ac50ab405fea7ed65a7bffec499810ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:afee2cbba71742c7d88393d2347717ddc" id="r_afee2cbba71742c7d88393d2347717ddc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#afee2cbba71742c7d88393d2347717ddc">CreateRuntime</a> (string id, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459">EffectPolarity</a> polarity, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> tags, float baseDuration, bool unremovable, params <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html">IEffectComponent</a>[] components)</td></tr>
@@ -130,12 +144,18 @@ Properties</h2></td></tr>
 <tr class="separator:af111af562686db26ff155f6f6c180d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdebab57fd4a6b784bd0a7d33d05ddfb" id="r_acdebab57fd4a6b784bd0a7d33d05ddfb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#acdebab57fd4a6b784bd0a7d33d05ddfb">MaxStacks</a><code> [get]</code></td></tr>
 <tr class="separator:acdebab57fd4a6b784bd0a7d33d05ddfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a5f3f0d262d41b6cde2e29375bd4113" id="r_a3a5f3f0d262d41b6cde2e29375bd4113"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a3a5f3f0d262d41b6cde2e29375bd4113">StacksPerApplication</a><code> [get]</code></td></tr>
+<tr class="memdesc:a3a5f3f0d262d41b6cde2e29375bd4113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько стаков кладёт одно наложение (≥ 1).  <br /></td></tr>
+<tr class="separator:a3a5f3f0d262d41b6cde2e29375bd4113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59bb05962bd41a29606938b69ec75519" id="r_a59bb05962bd41a29606938b69ec75519"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a59bb05962bd41a29606938b69ec75519">CleanseTier</a><code> [get]</code></td></tr>
 <tr class="separator:a59bb05962bd41a29606938b69ec75519"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34da08cb0aa522f1298524ad8da61ac6" id="r_a34da08cb0aa522f1298524ad8da61ac6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a34da08cb0aa522f1298524ad8da61ac6">Unremovable</a><code> [get]</code></td></tr>
 <tr class="separator:a34da08cb0aa522f1298524ad8da61ac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a5e39f4549e0caa9e9b9caf273038d8" id="r_a5a5e39f4549e0caa9e9b9caf273038d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html">IEffectComponent</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a5a5e39f4549e0caa9e9b9caf273038d8">Components</a><code> [get]</code></td></tr>
 <tr class="separator:a5a5e39f4549e0caa9e9b9caf273038d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4cab863f67197ff894cbdb8ab9ebf53" id="r_ab4cab863f67197ff894cbdb8ab9ebf53"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#ab4cab863f67197ff894cbdb8ab9ebf53">TelegraphSeconds</a><code> [get]</code></td></tr>
+<tr class="memdesc:ab4cab863f67197ff894cbdb8ab9ebf53"><td class="mdescLeft">&#160;</td><td class="mdescRight">За сколько секунд до наложения показ анонсирует этот эффект.  <br /></td></tr>
+<tr class="separator:ab4cab863f67197ff894cbdb8ab9ebf53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56ea92bb51adf9fa3bc6348efe2bfc47" id="r_a56ea92bb51adf9fa3bc6348efe2bfc47"><td class="memItemLeft" align="right" valign="top">Sprite&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a56ea92bb51adf9fa3bc6348efe2bfc47">Icon</a><code> [get]</code></td></tr>
 <tr class="separator:a56ea92bb51adf9fa3bc6348efe2bfc47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3825802d5497c79fed18584fc8d70167" id="r_a3825802d5497c79fed18584fc8d70167"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1TagData.html">TagData</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a3825802d5497c79fed18584fc8d70167">InfoTags</a><code> [get]</code></td></tr>
@@ -156,6 +176,51 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги, базовая длительность, правила стакинга/диспела и полиморфные компоненты поведения (вики «6» §5, «12» §2.1). </p>
 <p>Components типизирован Data-маркером IEffectComponent, но реально хранит Combat-типы через <code>[SerializeReference]</code> (кросс-сборочный шов подтверждён спайком S1, вики «12» §5). Длительность — базовая в секундах; масштабирование эфф-эффектами и конверсия в тики — логика рантайма (<code>EffectSystem</code>, вики «11» §5). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac50ab405fea7ed65a7bffec499810ee5" name="ac50ab405fea7ed65a7bffec499810ee5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac50ab405fea7ed65a7bffec499810ee5">&#9670;&#160;</a></span>CleanseStacks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.EffectData.CleanseStacks </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>currentStacks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dispelPower</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько стаков уносит ОДНО очищение силой <em>dispelPower</em>  (ГДД «Свойства эффекта» §Цена очистки, решения 2026-07-27/5 и /7). </p>
+<p>Цена растёт лестницей: диспел своего тира отщипывает, на уровень выше — заметно больше, на два — сносит половину и больше.</p>
+<p>Нужно там, где стаки копятся без потолка («Угли»): иначе одна очистка стирала накопленное целиком и обесценивала ставку «долгий бой окупается» одним нажатием. Цена не задана — эффект снимается целиком, как было до этого решения (обычное поведение для нестакающихся). </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData_ac50ab405fea7ed65a7bffec499810ee5_icgraph.svg" width="471" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="afee2cbba71742c7d88393d2347717ddc" name="afee2cbba71742c7d88393d2347717ddc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afee2cbba71742c7d88393d2347717ddc">&#9670;&#160;</a></span>CreateRuntime()</h2>
 
@@ -396,6 +461,32 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a3a5f3f0d262d41b6cde2e29375bd4113" name="a3a5f3f0d262d41b6cde2e29375bd4113"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a5f3f0d262d41b6cde2e29375bd4113">&#9670;&#160;</a></span>StacksPerApplication</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.EffectData.StacksPerApplication</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько стаков кладёт одно наложение (≥ 1). </p>
+<p>Позволяет выдать «сразу пять углей» одним применением, вместо пятикратного повтора всей нагрузки способности.</p>
+<p>Живёт у эффекта, а не у способности: «сколько это стаков» — свойство самой порции углей, и одинаково для всех, кто её выдаёт. У способности же повтор нагрузки означает пять отдельных ударов — а вместе с ними пять диспелов и пять срабатываний всего остального, чего никто не заказывал. </p>
+
+</div>
+</div>
 <a id="aad7c6e860dcf1e5e21f8bb31119d6476" name="aad7c6e860dcf1e5e21f8bb31119d6476"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aad7c6e860dcf1e5e21f8bb31119d6476">&#9670;&#160;</a></span>Tags</h2>
 
@@ -415,6 +506,31 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab4cab863f67197ff894cbdb8ab9ebf53" name="ab4cab863f67197ff894cbdb8ab9ebf53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4cab863f67197ff894cbdb8ab9ebf53">&#9670;&#160;</a></span>TelegraphSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Data.Definitions.EffectData.TelegraphSeconds</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>За сколько секунд до наложения показ анонсирует этот эффект. </p>
+<p>Владелец числа — ассет: анимация и вспышка подстраиваются под него, а не наоборот (решение Макса 2026-07-29). </p>
 
 </div>
 </div>

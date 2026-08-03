@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Data.Definitions.AbilityData Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
@@ -103,15 +104,36 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Definitions.AbilityData:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData__coll__graph.svg" width="218" height="291"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData__coll__graph.svg" width="219" height="371"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a4b6bfccbe35062e3fe0eb1f95429acdf" id="r_a4b6bfccbe35062e3fe0eb1f95429acdf"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a4b6bfccbe35062e3fe0eb1f95429acdf">ResolveCooldown</a> (<a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html">IStatReader</a> stats)</td></tr>
+<tr class="memdesc:a4b6bfccbe35062e3fe0eb1f95429acdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кулдаун с учётом конвертаций статов носителя (до умножения на <code>CooldownEff</code>).  <br /></td></tr>
+<tr class="separator:a4b6bfccbe35062e3fe0eb1f95429acdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a243109e4e999472abcb39a4f16600ebb" id="r_a243109e4e999472abcb39a4f16600ebb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a243109e4e999472abcb39a4f16600ebb">ResolveCastSeconds</a> (<a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html">IStatReader</a> stats)</td></tr>
+<tr class="memdesc:a243109e4e999472abcb39a4f16600ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Длительность подготовки с учётом конвертаций: скорость атаки укорачивает каст.  <br /></td></tr>
+<tr class="separator:a243109e4e999472abcb39a4f16600ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a257ca626f9c1c85340a1d020fb8ca2e0" id="r_a257ca626f9c1c85340a1d020fb8ca2e0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a257ca626f9c1c85340a1d020fb8ca2e0">ResolveDamageMultiplier</a> (<a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html">IStatReader</a> stats)</td></tr>
+<tr class="memdesc:a257ca626f9c1c85340a1d020fb8ca2e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель прямого урона с учётом конвертаций («Удар из скрытности» растёт от AS).  <br /></td></tr>
+<tr class="separator:a257ca626f9c1c85340a1d020fb8ca2e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace6a4226bf9d56c7ffcc5a9312792cfd" id="r_ace6a4226bf9d56c7ffcc5a9312792cfd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ace6a4226bf9d56c7ffcc5a9312792cfd">ResolveSummonCount</a> (int previousCasts)</td></tr>
+<tr class="memdesc:ace6a4226bf9d56c7ffcc5a9312792cfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько тел появится с учётом разгона: <em>previousCasts</em>  — сколько раз эта способность уже призывала в этом бою.  <br /></td></tr>
+<tr class="separator:ace6a4226bf9d56c7ffcc5a9312792cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9248c8f681c720c597e370ac3cf824d7" id="r_a9248c8f681c720c597e370ac3cf824d7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a9248c8f681c720c597e370ac3cf824d7">ResolvePayloadRepeats</a> (int previousCasts)</td></tr>
+<tr class="memdesc:a9248c8f681c720c597e370ac3cf824d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько раз применить нагрузку с учётом разгона: <em>previousCasts</em>  — сколько раз эта способность уже кастовала В ЭТОМ БОЮ.  <br /></td></tr>
+<tr class="separator:a9248c8f681c720c597e370ac3cf824d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a1daf2f5631c20c25caa35ecdb2c7aadb" id="r_a1daf2f5631c20c25caa35ecdb2c7aadb"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a1daf2f5631c20c25caa35ecdb2c7aadb">Id</a><code> [get]</code></td></tr>
 <tr class="separator:a1daf2f5631c20c25caa35ecdb2c7aadb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1033e25d9437b7a67b259959e5f6e84d" id="r_a1033e25d9437b7a67b259959e5f6e84d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a1033e25d9437b7a67b259959e5f6e84d">Effects</a><code> [get]</code></td></tr>
 <tr class="separator:a1033e25d9437b7a67b259959e5f6e84d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada1b89d177e857e9bcaa0c452a33a9d4" id="r_ada1b89d177e857e9bcaa0c452a33a9d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ada1b89d177e857e9bcaa0c452a33a9d4">SelfEffects</a><code> [get]</code></td></tr>
+<tr class="memdesc:ada1b89d177e857e9bcaa0c452a33a9d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Эффекты на самого кастующего.  <br /></td></tr>
+<tr class="separator:ada1b89d177e857e9bcaa0c452a33a9d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab44c10d1f694c4206c06dd1f72dbcdaa" id="r_ab44c10d1f694c4206c06dd1f72dbcdaa"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ab44c10d1f694c4206c06dd1f72dbcdaa">BaseCooldown</a><code> [get]</code></td></tr>
 <tr class="separator:ab44c10d1f694c4206c06dd1f72dbcdaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17c152b899a4a307611b1fa571104f10" id="r_a17c152b899a4a307611b1fa571104f10"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a17c152b899a4a307611b1fa571104f10">ResourceCost</a><code> [get]</code></td></tr>
@@ -120,20 +142,28 @@ Properties</h2></td></tr>
 <tr class="separator:ad7f696c9f85df4e7310ecdb087f2298b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbab1afcfafba010b2c4c88a3dbd2700" id="r_afbab1afcfafba010b2c4c88a3dbd2700"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#afbab1afcfafba010b2c4c88a3dbd2700">DamageMultiplier</a><code> [get]</code></td></tr>
 <tr class="separator:afbab1afcfafba010b2c4c88a3dbd2700"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab435f389d078a52d54cdecd2ae2cacbb" id="r_ab435f389d078a52d54cdecd2ae2cacbb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#af81a51ec2b0ebc9ce36f99234efcf91e">DamageSchoolOverride</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ab435f389d078a52d54cdecd2ae2cacbb">SchoolOverride</a><code> [get]</code></td></tr>
-<tr class="separator:ab435f389d078a52d54cdecd2ae2cacbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a8e1fe804c4a7cacbc86dc167523438" id="r_a8a8e1fe804c4a7cacbc86dc167523438"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aeedc377cc311c36aa2cff2f2e1a416b1">DamageAffinityOverride</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a8a8e1fe804c4a7cacbc86dc167523438">AffinityOverride</a><code> [get]</code></td></tr>
-<tr class="separator:a8a8e1fe804c4a7cacbc86dc167523438"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae698491ab694a1b4a444b762c4a606e5" id="r_ae698491ab694a1b4a444b762c4a606e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ae698491ab694a1b4a444b762c4a606e5">DamageType</a><code> [get]</code></td></tr>
+<tr class="memdesc:ae698491ab694a1b4a444b762c4a606e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип урона способности — собственный.  <br /></td></tr>
+<tr class="separator:ae698491ab694a1b4a444b762c4a606e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d67ed5c19899885e136b0bc5351a081" id="r_a9d67ed5c19899885e136b0bc5351a081"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0bec">AreaShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a9d67ed5c19899885e136b0bc5351a081">AreaShape</a><code> [get]</code></td></tr>
 <tr class="separator:a9d67ed5c19899885e136b0bc5351a081"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4326c561eaf90b04edcc35b42b12188f" id="r_a4326c561eaf90b04edcc35b42b12188f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a4326c561eaf90b04edcc35b42b12188f">AreaRadius</a><code> [get]</code></td></tr>
 <tr class="separator:a4326c561eaf90b04edcc35b42b12188f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d9ab23b3a1e441efa3e3cd410c97343" id="r_a2d9ab23b3a1e441efa3e3cd410c97343"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a2d9ab23b3a1e441efa3e3cd410c97343">AreaAtTarget</a><code> [get]</code></td></tr>
+<tr class="memdesc:a2d9ab23b3a1e441efa3e3cd410c97343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Круг применяется вокруг ЦЕЛИ, а не вокруг кастующего.  <br /></td></tr>
+<tr class="separator:a2d9ab23b3a1e441efa3e3cd410c97343"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f4235e317dc7e8ecd728698eca9222c" id="r_a0f4235e317dc7e8ecd728698eca9222c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a0f4235e317dc7e8ecd728698eca9222c">HealFlat</a><code> [get]</code></td></tr>
 <tr class="separator:a0f4235e317dc7e8ecd728698eca9222c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77589d2e7493118ce73b42750e20009d" id="r_a77589d2e7493118ce73b42750e20009d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a77589d2e7493118ce73b42750e20009d">HealPctTargetMissingHp</a><code> [get]</code></td></tr>
 <tr class="separator:a77589d2e7493118ce73b42750e20009d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99bd20464116ca8e42b195d2592ee4f9" id="r_a99bd20464116ca8e42b195d2592ee4f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a99bd20464116ca8e42b195d2592ee4f9">HealEffect</a><code> [get]</code></td></tr>
+<tr class="memdesc:a99bd20464116ca8e42b195d2592ee4f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Эффект-нагрузка лечения: если задан, союзник получает ЕГО (со стаками по множителю лечения) вместо мгновенного восстановления HP.  <br /></td></tr>
+<tr class="separator:a99bd20464116ca8e42b195d2592ee4f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9445e777e9a7badda76b004b66541e62" id="r_a9445e777e9a7badda76b004b66541e62"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a9445e777e9a7badda76b004b66541e62">SelfHealFraction</a><code> [get]</code></td></tr>
+<tr class="memdesc:a9445e777e9a7badda76b004b66541e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Во сколько раз слабее лечение, когда цель — сам кастующий.  <br /></td></tr>
+<tr class="separator:a9445e777e9a7badda76b004b66541e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affc117a4c66868ae3facfeb803835cdb" id="r_affc117a4c66868ae3facfeb803835cdb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#affc117a4c66868ae3facfeb803835cdb">IsHeal</a><code> [get]</code></td></tr>
-<tr class="memdesc:affc117a4c66868ae3facfeb803835cdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Способность лечит (а не бьёт), если задана любая хил-нагрузка.  <br /></td></tr>
+<tr class="memdesc:affc117a4c66868ae3facfeb803835cdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Способность лечит (а не бьёт), если задана любая хил-нагрузка — мгновенная или эффектом.  <br /></td></tr>
 <tr class="separator:affc117a4c66868ae3facfeb803835cdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec1b270f9f54c36482b3d8b8c26e0602" id="r_aec1b270f9f54c36482b3d8b8c26e0602"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0">CastCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#aec1b270f9f54c36482b3d8b8c26e0602">CastCondition</a><code> [get]</code></td></tr>
 <tr class="separator:aec1b270f9f54c36482b3d8b8c26e0602"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,12 +180,58 @@ Properties</h2></td></tr>
 <tr class="separator:aa64427999e388aea2224c8b3d05fc2be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e3a1cefa9dec14e348af59430d7ea97" id="r_a6e3a1cefa9dec14e348af59430d7ea97"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a6e3a1cefa9dec14e348af59430d7ea97">ConsumesTriggerTag</a><code> [get]</code></td></tr>
 <tr class="separator:a6e3a1cefa9dec14e348af59430d7ea97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f68e248efccc9b3998d68c26f7e012a" id="r_a4f68e248efccc9b3998d68c26f7e012a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a4f68e248efccc9b3998d68c26f7e012a">CastSeconds</a><code> [get]</code></td></tr>
+<tr class="memdesc:a4f68e248efccc9b3998d68c26f7e012a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подготовка перед применением, сек (0 = мгновенно).  <br /></td></tr>
+<tr class="separator:a4f68e248efccc9b3998d68c26f7e012a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4288ceb3146fbc1aef13c64b19cfb11c" id="r_a4288ceb3146fbc1aef13c64b19cfb11c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a4288ceb3146fbc1aef13c64b19cfb11c">ChannelSeconds</a><code> [get]</code></td></tr>
+<tr class="memdesc:a4288ceb3146fbc1aef13c64b19cfb11c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Длительность канала, сек (0 = разовое применение после подготовки).  <br /></td></tr>
+<tr class="separator:a4288ceb3146fbc1aef13c64b19cfb11c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27281ffdba981ff1472781acb51caaa0" id="r_a27281ffdba981ff1472781acb51caaa0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a27281ffdba981ff1472781acb51caaa0">ChannelTickSeconds</a><code> [get]</code></td></tr>
+<tr class="memdesc:a27281ffdba981ff1472781acb51caaa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Период срабатывания канала, сек; при ≤ 0 — одна секунда.  <br /></td></tr>
+<tr class="separator:a27281ffdba981ff1472781acb51caaa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d6e64c431916af1e988fb774455ffb9" id="r_a5d6e64c431916af1e988fb774455ffb9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a5d6e64c431916af1e988fb774455ffb9">CanMoveWhileCasting</a><code> [get]</code></td></tr>
+<tr class="memdesc:a5d6e64c431916af1e988fb774455ffb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Способность кастуется на ходу — исключение из «каст держит на месте» (Q9, форма — поле ассета).  <br /></td></tr>
+<tr class="separator:a5d6e64c431916af1e988fb774455ffb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ffe21e95bb6b475bc97ac9a1f2bdfaa" id="r_a4ffe21e95bb6b475bc97ac9a1f2bdfaa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a4ffe21e95bb6b475bc97ac9a1f2bdfaa">TakesTime</a><code> [get]</code></td></tr>
+<tr class="memdesc:a4ffe21e95bb6b475bc97ac9a1f2bdfaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Способность занимает время: есть подготовка или канал (иначе применяется в тот же тик).  <br /></td></tr>
+<tr class="separator:a4ffe21e95bb6b475bc97ac9a1f2bdfaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a003e7ce697bcc2dfcd9b7c8cc010095d" id="r_a003e7ce697bcc2dfcd9b7c8cc010095d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ab39acdcb0147f727f4254c23e2bc404d">CastSource</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a003e7ce697bcc2dfcd9b7c8cc010095d">CastSource</a><code> [get]</code></td></tr>
+<tr class="memdesc:a003e7ce697bcc2dfcd9b7c8cc010095d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Чем исполняется приём — что зажигает показ на телеграфе.  <br /></td></tr>
+<tr class="separator:a003e7ce697bcc2dfcd9b7c8cc010095d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a700818f5183f6de3bf0463b772747a96" id="r_a700818f5183f6de3bf0463b772747a96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1AbilityStatScaling.html">AbilityStatScaling</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a700818f5183f6de3bf0463b772747a96">StatScalings</a><code> [get]</code></td></tr>
+<tr class="memdesc:a700818f5183f6de3bf0463b772747a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Правила конвертации статов в параметры этой способности (M4).  <br /></td></tr>
+<tr class="separator:a700818f5183f6de3bf0463b772747a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e20064d01541e45f4e74664c0bb24d3" id="r_a5e20064d01541e45f4e74664c0bb24d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a5e20064d01541e45f4e74664c0bb24d3">SummonUnit</a><code> [get]</code></td></tr>
+<tr class="memdesc:a5e20064d01541e45f4e74664c0bb24d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кого призывает способность. null = не призывает.  <br /></td></tr>
+<tr class="separator:a5e20064d01541e45f4e74664c0bb24d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21579c3eace9ffd79fe29284294a89ff" id="r_a21579c3eace9ffd79fe29284294a89ff"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a21579c3eace9ffd79fe29284294a89ff">SummonCount</a><code> [get]</code></td></tr>
+<tr class="memdesc:a21579c3eace9ffd79fe29284294a89ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько тел появляется за каст (базовое число, без разгона).  <br /></td></tr>
+<tr class="separator:a21579c3eace9ffd79fe29284294a89ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6562fea5745e91120ed4142f89ba942a" id="r_a6562fea5745e91120ed4142f89ba942a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a6562fea5745e91120ed4142f89ba942a">SummonLimit</a><code> [get]</code></td></tr>
+<tr class="memdesc:a6562fea5745e91120ed4142f89ba942a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Максимум живых призывов от этой способности; 0 = без лимита.  <br /></td></tr>
+<tr class="separator:a6562fea5745e91120ed4142f89ba942a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acee0450ae9c55b6f1c2c686bbe5d98fb" id="r_acee0450ae9c55b6f1c2c686bbe5d98fb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#acee0450ae9c55b6f1c2c686bbe5d98fb">SummonLifetimeSeconds</a><code> [get]</code></td></tr>
+<tr class="memdesc:acee0450ae9c55b6f1c2c686bbe5d98fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Срок жизни призыва в секундах; 0 = бессрочно.  <br /></td></tr>
+<tr class="separator:acee0450ae9c55b6f1c2c686bbe5d98fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa5109c5d433f47ac0a210e099b786e2" id="r_aaa5109c5d433f47ac0a210e099b786e2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#aaa5109c5d433f47ac0a210e099b786e2">SummonDiesWithSummoner</a><code> [get]</code></td></tr>
+<tr class="memdesc:aaa5109c5d433f47ac0a210e099b786e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Призыв уходит вместе с призывателем.  <br /></td></tr>
+<tr class="separator:aaa5109c5d433f47ac0a210e099b786e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad594553e62a61121716563d21080eb9c" id="r_ad594553e62a61121716563d21080eb9c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ad594553e62a61121716563d21080eb9c">Summons</a><code> [get]</code></td></tr>
+<tr class="memdesc:ad594553e62a61121716563d21080eb9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Способность призывает тела на поле.  <br /></td></tr>
+<tr class="separator:ad594553e62a61121716563d21080eb9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac76ddce7c085b374f3de3f56acd02639" id="r_ac76ddce7c085b374f3de3f56acd02639"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ac76ddce7c085b374f3de3f56acd02639">PayloadRepeats</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac76ddce7c085b374f3de3f56acd02639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Базовое число применений нагрузки за каст (1 = обычная способность).  <br /></td></tr>
+<tr class="separator:ac76ddce7c085b374f3de3f56acd02639"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d0ce435341107ae6ab550c820a73b31" id="r_a8d0ce435341107ae6ab550c820a73b31"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a8d0ce435341107ae6ab550c820a73b31">PayloadRepeatGrowth</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8d0ce435341107ae6ab550c820a73b31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прибавка к числу применений за каждый предыдущий каст в бою; 0 = не растёт.  <br /></td></tr>
+<tr class="separator:a8d0ce435341107ae6ab550c820a73b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d69dfc1f6192eb1f8ae10802b16e543" id="r_a9d69dfc1f6192eb1f8ae10802b16e543"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a9d69dfc1f6192eb1f8ae10802b16e543">RepeatSelfEffects</a><code> [get]</code></td></tr>
+<tr class="memdesc:a9d69dfc1f6192eb1f8ae10802b16e543"><td class="mdescLeft">&#160;</td><td class="mdescRight">Повторять ли SelfEffects столько же раз, сколько нагрузку на цель.  <br /></td></tr>
+<tr class="separator:a9d69dfc1f6192eb1f8ae10802b16e543"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebf0e2fca56e3352b89332f9f1c9e709" id="r_aebf0e2fca56e3352b89332f9f1c9e709"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#aebf0e2fca56e3352b89332f9f1c9e709">Displaces</a><code> [get]</code></td></tr>
 <tr class="separator:aebf0e2fca56e3352b89332f9f1c9e709"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adda1c501129f875787ef41e2259db90b" id="r_adda1c501129f875787ef41e2259db90b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#adda1c501129f875787ef41e2259db90b">DisplaceDistance</a><code> [get]</code></td></tr>
 <tr class="separator:adda1c501129f875787ef41e2259db90b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf0c8ea973982d50075e3b487d4fdf83" id="r_abf0c8ea973982d50075e3b487d4fdf83"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#abf0c8ea973982d50075e3b487d4fdf83">DisplaceTicks</a><code> [get]</code></td></tr>
-<tr class="separator:abf0c8ea973982d50075e3b487d4fdf83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2a28dd9413fd46f1d43f0c04b0fa7f3" id="r_aa2a28dd9413fd46f1d43f0c04b0fa7f3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#aa2a28dd9413fd46f1d43f0c04b0fa7f3">DisplaceDamageMult</a><code> [get]</code></td></tr>
 <tr class="separator:aa2a28dd9413fd46f1d43f0c04b0fa7f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68c7f0297600133bd5d5acd5aa35fd62" id="r_a68c7f0297600133bd5d5acd5aa35fd62"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a68c7f0297600133bd5d5acd5aa35fd62">DisplaceWidth</a><code> [get]</code></td></tr>
@@ -169,9 +245,90 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Определение активной способности реликвии: эффекты при касте, кулдаун, стоимость ресурса, способ выбора цели. </p>
 <p>Сериализуется на RelicData (вики «6» §1, «12» §2.4). Пассивки — это RelicData.GrantedEffects с постоянной длительностью, отдельной сущности не требуют. </p>
-</div><h2 class="groupheader">Property Documentation</h2>
-<a id="a8a8e1fe804c4a7cacbc86dc167523438" name="a8a8e1fe804c4a7cacbc86dc167523438"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a8e1fe804c4a7cacbc86dc167523438">&#9670;&#160;</a></span>AffinityOverride</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a243109e4e999472abcb39a4f16600ebb" name="a243109e4e999472abcb39a4f16600ebb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a243109e4e999472abcb39a4f16600ebb">&#9670;&#160;</a></span>ResolveCastSeconds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Data.Definitions.AbilityData.ResolveCastSeconds </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html">IStatReader</a>&#160;</td>
+          <td class="paramname"><em>stats</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Длительность подготовки с учётом конвертаций: скорость атаки укорачивает каст. </p>
+
+</div>
+</div>
+<a id="a4b6bfccbe35062e3fe0eb1f95429acdf" name="a4b6bfccbe35062e3fe0eb1f95429acdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b6bfccbe35062e3fe0eb1f95429acdf">&#9670;&#160;</a></span>ResolveCooldown()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Data.Definitions.AbilityData.ResolveCooldown </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html">IStatReader</a>&#160;</td>
+          <td class="paramname"><em>stats</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Кулдаун с учётом конвертаций статов носителя (до умножения на <code>CooldownEff</code>). </p>
+
+</div>
+</div>
+<a id="a257ca626f9c1c85340a1d020fb8ca2e0" name="a257ca626f9c1c85340a1d020fb8ca2e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a257ca626f9c1c85340a1d020fb8ca2e0">&#9670;&#160;</a></span>ResolveDamageMultiplier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Data.Definitions.AbilityData.ResolveDamageMultiplier </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html">IStatReader</a>&#160;</td>
+          <td class="paramname"><em>stats</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Множитель прямого урона с учётом конвертаций («Удар из скрытности» растёт от AS). </p>
+
+</div>
+</div>
+<a id="a9248c8f681c720c597e370ac3cf824d7" name="a9248c8f681c720c597e370ac3cf824d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9248c8f681c720c597e370ac3cf824d7">&#9670;&#160;</a></span>ResolvePayloadRepeats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.AbilityData.ResolvePayloadRepeats </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>previousCasts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Сколько раз применить нагрузку с учётом разгона: <em>previousCasts</em>  — сколько раз эта способность уже кастовала В ЭТОМ БОЮ. </p>
+<p>Счётчик принадлежит способности носителя, а не цели: залп Арканиста не сбрасывается при смене цели — он тем сильнее, чем дольше идёт бой. Это намеренная кривая (карточка [[the-rift]] §Баланс-флаги), и потолка у неё нет: тормоз — короткая жизнь «Разлада», а не кап. </p>
+
+</div>
+</div>
+<a id="ace6a4226bf9d56c7ffcc5a9312792cfd" name="ace6a4226bf9d56c7ffcc5a9312792cfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace6a4226bf9d56c7ffcc5a9312792cfd">&#9670;&#160;</a></span>ResolveSummonCount()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -180,7 +337,38 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aeedc377cc311c36aa2cff2f2e1a416b1">DamageAffinityOverride</a> Guildmaster.Data.Definitions.AbilityData.AffinityOverride</td>
+          <td class="memname">int Guildmaster.Data.Definitions.AbilityData.ResolveSummonCount </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>previousCasts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько тел появится с учётом разгона: <em>previousCasts</em>  — сколько раз эта способность уже призывала в этом бою. </p>
+<p>Клампится <code>_summonCountCap</code>, если он задан.</p>
+<p>Отдельно от ResolvePayloadRepeats, хотя арифметика та же: призыв применяется ВНЕ цикла нагрузки (тела появляются вместе с любой формой способности), и мешать два разгона в одно поле значило бы, что «залп из трёх стрел» случайно начнёт множить и скелетов. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a2d9ab23b3a1e441efa3e3cd410c97343" name="a2d9ab23b3a1e441efa3e3cd410c97343"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d9ab23b3a1e441efa3e3cd410c97343">&#9670;&#160;</a></span>AreaAtTarget</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Data.Definitions.AbilityData.AreaAtTarget</td>
         </tr>
       </table>
   </td>
@@ -189,6 +377,9 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Круг применяется вокруг ЦЕЛИ, а не вокруг кастующего. </p>
+<p>Заведено под ледяную зону Криоманта: он дальник второй линии, и круг «вокруг себя» ложился бы туда, где врагов нет по построению. Свободный выбор ТОЧКИ на арене (как в карточке) потребовал бы таргетинга по точке, которого у способностей нет вовсе; позиция цели — самая близкая к замыслу форма из тех, что выражаются данными. </p>
 
 </div>
 </div>
@@ -255,6 +446,30 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5d6e64c431916af1e988fb774455ffb9" name="a5d6e64c431916af1e988fb774455ffb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d6e64c431916af1e988fb774455ffb9">&#9670;&#160;</a></span>CanMoveWhileCasting</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Data.Definitions.AbilityData.CanMoveWhileCasting</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Способность кастуется на ходу — исключение из «каст держит на месте» (Q9, форма — поле ассета). </p>
 
 </div>
 </div>
@@ -370,6 +585,104 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="a4f68e248efccc9b3998d68c26f7e012a" name="a4f68e248efccc9b3998d68c26f7e012a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f68e248efccc9b3998d68c26f7e012a">&#9670;&#160;</a></span>CastSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Data.Definitions.AbilityData.CastSeconds</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Подготовка перед применением, сек (0 = мгновенно). </p>
+<p>Цена платится на СТАРТЕ подготовки — решение Макса 2026-07-29: иначе контроль лишь задерживает каст, и телеграф не стоит ничего. </p>
+
+</div>
+</div>
+<a id="a003e7ce697bcc2dfcd9b7c8cc010095d" name="a003e7ce697bcc2dfcd9b7c8cc010095d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a003e7ce697bcc2dfcd9b7c8cc010095d">&#9670;&#160;</a></span>CastSource</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ab39acdcb0147f727f4254c23e2bc404d">CastSource</a> Guildmaster.Data.Definitions.AbilityData.CastSource</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Чем исполняется приём — что зажигает показ на телеграфе. </p>
+<p>Роль, а не узел рига: конкретную часть находит реестр частей юнита, поэтому одно и то же значение верно и для дуалиста, и для щитовика. </p>
+
+</div>
+</div>
+<a id="a4288ceb3146fbc1aef13c64b19cfb11c" name="a4288ceb3146fbc1aef13c64b19cfb11c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4288ceb3146fbc1aef13c64b19cfb11c">&#9670;&#160;</a></span>ChannelSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Data.Definitions.AbilityData.ChannelSeconds</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Длительность канала, сек (0 = разовое применение после подготовки). </p>
+
+</div>
+</div>
+<a id="a27281ffdba981ff1472781acb51caaa0" name="a27281ffdba981ff1472781acb51caaa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27281ffdba981ff1472781acb51caaa0">&#9670;&#160;</a></span>ChannelTickSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Data.Definitions.AbilityData.ChannelTickSeconds</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Период срабатывания канала, сек; при ≤ 0 — одна секунда. </p>
+
+</div>
+</div>
 <a id="a6e3a1cefa9dec14e348af59430d7ea97" name="a6e3a1cefa9dec14e348af59430d7ea97"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6e3a1cefa9dec14e348af59430d7ea97">&#9670;&#160;</a></span>ConsumesTriggerTag</h2>
 
@@ -411,6 +724,31 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae698491ab694a1b4a444b762c4a606e5" name="ae698491ab694a1b4a444b762c4a606e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae698491ab694a1b4a444b762c4a606e5">&#9670;&#160;</a></span>DamageType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> Guildmaster.Data.Definitions.AbilityData.DamageType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Тип урона способности — собственный. </p>
+<p>Наследования от кастера нет: прежний <code>Inherit</code> был единственным способом не назвать тип и выглядеть при этом законно (реформа 2026-07-30). У способностей без прямого урона остаётся <code>Undefined</code> — им тип урона не нужен, и тест покрытия спрашивает его только с тех, у кого множитель больше нуля. </p>
 
 </div>
 </div>
@@ -480,28 +818,6 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="abf0c8ea973982d50075e3b487d4fdf83" name="abf0c8ea973982d50075e3b487d4fdf83"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf0c8ea973982d50075e3b487d4fdf83">&#9670;&#160;</a></span>DisplaceTicks</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Data.Definitions.AbilityData.DisplaceTicks</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a68c7f0297600133bd5d5acd5aa35fd62" name="a68c7f0297600133bd5d5acd5aa35fd62"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a68c7f0297600133bd5d5acd5aa35fd62">&#9670;&#160;</a></span>DisplaceWidth</h2>
 
@@ -543,6 +859,31 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a99bd20464116ca8e42b195d2592ee4f9" name="a99bd20464116ca8e42b195d2592ee4f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99bd20464116ca8e42b195d2592ee4f9">&#9670;&#160;</a></span>HealEffect</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> Guildmaster.Data.Definitions.AbilityData.HealEffect</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Эффект-нагрузка лечения: если задан, союзник получает ЕГО (со стаками по множителю лечения) вместо мгновенного восстановления HP. </p>
+<p>Плоский хил и процент при этом не отменяются — заданы оба, союзник получит и то, и то. </p>
 
 </div>
 </div>
@@ -654,7 +995,81 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Способность лечит (а не бьёт), если задана любая хил-нагрузка. </p>
+<p>Способность лечит (а не бьёт), если задана любая хил-нагрузка — мгновенная или эффектом. </p>
+
+</div>
+</div>
+<a id="a8d0ce435341107ae6ab550c820a73b31" name="a8d0ce435341107ae6ab550c820a73b31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d0ce435341107ae6ab550c820a73b31">&#9670;&#160;</a></span>PayloadRepeatGrowth</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.AbilityData.PayloadRepeatGrowth</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Прибавка к числу применений за каждый предыдущий каст в бою; 0 = не растёт. </p>
+
+</div>
+</div>
+<a id="ac76ddce7c085b374f3de3f56acd02639" name="ac76ddce7c085b374f3de3f56acd02639"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac76ddce7c085b374f3de3f56acd02639">&#9670;&#160;</a></span>PayloadRepeats</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.AbilityData.PayloadRepeats</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Базовое число применений нагрузки за каст (1 = обычная способность). </p>
+
+</div>
+</div>
+<a id="a9d69dfc1f6192eb1f8ae10802b16e543" name="a9d69dfc1f6192eb1f8ae10802b16e543"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d69dfc1f6192eb1f8ae10802b16e543">&#9670;&#160;</a></span>RepeatSelfEffects</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Data.Definitions.AbilityData.RepeatSelfEffects</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Повторять ли SelfEffects столько же раз, сколько нагрузку на цель. </p>
+<p><b>Флаг, а не второе число</b> (вердикт Макса 2026-07-30): у Хранителя углей требование звучит как «столько же, сколько союзнику», то есть величина у обеих половин ОДНА. Отдельное <code>_selfPayloadRepeats</code> завело бы второго владельца этой величины, и при правке залпа половины разошлись бы молча. </p>
+<p><b>Выключено по умолчанию намеренно:</b> щит «Стального вихря» и родня — реактивы, которые вешаются на каст РАЗ и растут от урона всей нагрузки. Повтор дал бы Копейщику пять щитов вместо одного, то есть тихо усилил бы кита, которого никто не трогал.</p>
 
 </div>
 </div>
@@ -680,8 +1095,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ab435f389d078a52d54cdecd2ae2cacbb" name="ab435f389d078a52d54cdecd2ae2cacbb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab435f389d078a52d54cdecd2ae2cacbb">&#9670;&#160;</a></span>SchoolOverride</h2>
+<a id="ada1b89d177e857e9bcaa0c452a33a9d4" name="ada1b89d177e857e9bcaa0c452a33a9d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada1b89d177e857e9bcaa0c452a33a9d4">&#9670;&#160;</a></span>SelfEffects</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -690,7 +1105,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#af81a51ec2b0ebc9ce36f99234efcf91e">DamageSchoolOverride</a> Guildmaster.Data.Definitions.AbilityData.SchoolOverride</td>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> [] Guildmaster.Data.Definitions.AbilityData.SelfEffects</td>
         </tr>
       </table>
   </td>
@@ -699,6 +1114,227 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Эффекты на самого кастующего. </p>
+<p>Заведены отдельным списком, потому что Effects адресован ЦЕЛИ, и у круговых или масс-способностей цели вообще нет — «дай себе щит» иначе выразить нечем, кроме второй способности-пустышки. </p>
+
+</div>
+</div>
+<a id="a9445e777e9a7badda76b004b66541e62" name="a9445e777e9a7badda76b004b66541e62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9445e777e9a7badda76b004b66541e62">&#9670;&#160;</a></span>SelfHealFraction</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Data.Definitions.AbilityData.SelfHealFraction</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Во сколько раз слабее лечение, когда цель — сам кастующий. </p>
+<p>Отдавать выгоднее, чем брать: та же асимметрия, что у пассивки Пастыря (решение 2026-07-28), но для адресной способности.</p>
+<p>Заведено вместо прежнего запрета «ульта не может целиться в себя»: запрет оставлял хилера без единственного инструмента ровно тогда, когда фокус переводили на него. Цена честнее невозможности — спасти себя можно, но вчетверо дороже. </p>
+
+</div>
+</div>
+<a id="a700818f5183f6de3bf0463b772747a96" name="a700818f5183f6de3bf0463b772747a96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a700818f5183f6de3bf0463b772747a96">&#9670;&#160;</a></span>StatScalings</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1AbilityStatScaling.html">AbilityStatScaling</a> [] Guildmaster.Data.Definitions.AbilityData.StatScalings</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Правила конвертации статов в параметры этой способности (M4). </p>
+
+</div>
+</div>
+<a id="a21579c3eace9ffd79fe29284294a89ff" name="a21579c3eace9ffd79fe29284294a89ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21579c3eace9ffd79fe29284294a89ff">&#9670;&#160;</a></span>SummonCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.AbilityData.SummonCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько тел появляется за каст (базовое число, без разгона). </p>
+
+</div>
+</div>
+<a id="aaa5109c5d433f47ac0a210e099b786e2" name="aaa5109c5d433f47ac0a210e099b786e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa5109c5d433f47ac0a210e099b786e2">&#9670;&#160;</a></span>SummonDiesWithSummoner</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Data.Definitions.AbilityData.SummonDiesWithSummoner</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Призыв уходит вместе с призывателем. </p>
+
+</div>
+</div>
+<a id="acee0450ae9c55b6f1c2c686bbe5d98fb" name="acee0450ae9c55b6f1c2c686bbe5d98fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acee0450ae9c55b6f1c2c686bbe5d98fb">&#9670;&#160;</a></span>SummonLifetimeSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Data.Definitions.AbilityData.SummonLifetimeSeconds</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Срок жизни призыва в секундах; 0 = бессрочно. </p>
+
+</div>
+</div>
+<a id="a6562fea5745e91120ed4142f89ba942a" name="a6562fea5745e91120ed4142f89ba942a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6562fea5745e91120ed4142f89ba942a">&#9670;&#160;</a></span>SummonLimit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.AbilityData.SummonLimit</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Максимум живых призывов от этой способности; 0 = без лимита. </p>
+
+</div>
+</div>
+<a id="ad594553e62a61121716563d21080eb9c" name="ad594553e62a61121716563d21080eb9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad594553e62a61121716563d21080eb9c">&#9670;&#160;</a></span>Summons</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Data.Definitions.AbilityData.Summons</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Способность призывает тела на поле. </p>
+
+</div>
+</div>
+<a id="a5e20064d01541e45f4e74664c0bb24d3" name="a5e20064d01541e45f4e74664c0bb24d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e20064d01541e45f4e74664c0bb24d3">&#9670;&#160;</a></span>SummonUnit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> Guildmaster.Data.Definitions.AbilityData.SummonUnit</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Кого призывает способность. null = не призывает. </p>
+
+</div>
+</div>
+<a id="a4ffe21e95bb6b475bc97ac9a1f2bdfaa" name="a4ffe21e95bb6b475bc97ac9a1f2bdfaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ffe21e95bb6b475bc97ac9a1f2bdfaa">&#9670;&#160;</a></span>TakesTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Data.Definitions.AbilityData.TakesTime</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Способность занимает время: есть подготовка или канал (иначе применяется в тот же тик). </p>
 
 </div>
 </div>

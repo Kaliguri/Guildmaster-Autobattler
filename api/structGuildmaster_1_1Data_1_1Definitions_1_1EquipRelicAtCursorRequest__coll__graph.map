@@ -1,9 +1,0 @@
-<map id="Guildmaster.Data.Definitions.EquipRelicAtCursorRequest" name="Guildmaster.Data.Definitions.EquipRelicAtCursorRequest">
-<area shape="rect" id="Node000001" title="Запрос надеть релик на сосуд ПОД КУРСОРОМ (публикует UITK&#45;панель расстановки на дропе карточки релика..." alt="" coords="7,677,223,757"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — реликвия игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,..." alt="" coords="5,435,225,615"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,615,118,661,113,661,113,615"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html" title="Общий боевой кит всего, что выходит на арену (вики «13» §3.1)." alt="" coords="43,120,188,385"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,399,118,434,113,434,113,399"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="51,5,179,71"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="118,85,118,120,113,120,113,85"/>
-</map>

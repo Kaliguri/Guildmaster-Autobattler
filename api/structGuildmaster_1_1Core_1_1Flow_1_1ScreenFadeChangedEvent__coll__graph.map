@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.Flow.ScreenFadeChangedEvent" name="Guildmaster.Core.Flow.ScreenFadeChangedEvent">
+<area shape="rect" id="Node000001" title="Шторка перехода: насколько кадр закрыт (0 — открыт, 1 — закрыт наглухо)." alt="" coords="5,148,215,228"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="63,5,157,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,71,113,131,107,131,107,71"/>
+</map>

@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 </div><!--header-->
 <div class="contents">
 
-<p>«Скрытность» (§9.6, §10.5): в начале боя (OnApply при выдаче пассива) и после СВОЕГО убийства (CombatEvent.UnitKilled, доставляется убийце) — накладывает на носителя баф-эффект стелса (_stealthBuff: DamageTakenEff−, MoveSpeed+, тег Stealth) и взводит усиление следующей авто-атаки (RuntimeUnit.EmpowerDamageMult).  
+<p>«Скрытность» (§9.6, §10.5): в начале боя (OnApply при выдаче пассива) и после СВОЕГО убийства (CombatEvent.UnitKilled, доставляется убийце) — накладывает на носителя баф скрытности (_stealthBuff).  
  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StealthComponent.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.StealthComponent:</div>
@@ -128,8 +128,9 @@ Properties</h2></td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html">Guildmaster.Combat.Effects.IReactiveComponent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>«Скрытность» (§9.6, §10.5): в начале боя (OnApply при выдаче пассива) и после СВОЕГО убийства (CombatEvent.UnitKilled, доставляется убийце) — накладывает на носителя баф-эффект стелса (_stealthBuff: DamageTakenEff−, MoveSpeed+, тег Stealth) и взводит усиление следующей авто-атаки (RuntimeUnit.EmpowerDamageMult). </p>
-<p>Первая авто-атака применяет множитель и снимает стелс (AutoAttackSystem, §9.6). </p>
+<div class="textblock"><p>«Скрытность» (§9.6, §10.5): в начале боя (OnApply при выдаче пассива) и после СВОЕГО убийства (CombatEvent.UnitKilled, доставляется убийце) — накладывает на носителя баф скрытности (_stealthBuff). </p>
+<p><b>Что даёт баф</b> — задано в самом бафе, не здесь: снижение получаемого урона и прибавку скорости держит его <code>StatModifierComponent</code>, а усиление следующей авто-атаки — EmpowerNextAttackComponent. Этот компонент отвечает только за то, КОГДА кит уходит в тень; активка «Уйти в тень» накладывает тот же баф за ману и потому не дублирует ни одного числа.</p>
+<p><b>Когда срабатывает:</b> в начале боя и после КАЖДОГО своего убийства — то есть кит вознаграждается за добивание, а не за отсиживание.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a011385ee9d279cbb70c11b7c34d98b84" name="a011385ee9d279cbb70c11b7c34d98b84"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a011385ee9d279cbb70c11b7c34d98b84">&#9670;&#160;</a></span>OnApply()</h2>

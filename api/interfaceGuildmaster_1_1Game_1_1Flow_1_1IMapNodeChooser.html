@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Game_1_1Flow_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.IMapNodeChooser:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IMapNodeChooser__inherit__graph.svg" width="443" height="239"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IMapNodeChooser__inherit__graph.svg" width="451" height="239"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Flow.IMapNodeChooser:</div>
@@ -113,16 +113,16 @@ Collaboration diagram for Guildmaster.Game.Flow.IMapNodeChooser:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6811ad9ffc50165f176f7701da8e36ad" id="r_a6811ad9ffc50165f176f7701da8e36ad"><td class="memItemLeft" align="right" valign="top">UniTask&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IMapNodeChooser.html#a6811ad9ffc50165f176f7701da8e36ad">ChooseAsync</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html">MapState</a> map, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a> &gt; available)</td></tr>
-<tr class="memdesc:a6811ad9ffc50165f176f7701da8e36ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выбрать один узел из доступных. Возвращает выбранный (или null при отмене/ошибке).  <br /></td></tr>
-<tr class="separator:a6811ad9ffc50165f176f7701da8e36ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24ab41866667a65ed89c48d1d6ad3eaa" id="r_a24ab41866667a65ed89c48d1d6ad3eaa"><td class="memItemLeft" align="right" valign="top">UniTask&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IMapNodeChooser.html#a24ab41866667a65ed89c48d1d6ad3eaa">ChooseAsync</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html">MapState</a> map, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a> &gt; available, CancellationToken ct=default, bool openMap=true)</td></tr>
+<tr class="memdesc:a24ab41866667a65ed89c48d1d6ad3eaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выбрать один узел из доступных.  <br /></td></tr>
+<tr class="separator:a24ab41866667a65ed89c48d1d6ad3eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Шов выбора следующего узла на карте (план [[act-map-run-loop]] §3.2). </p>
 <p>Развязывает петлю акта (<code>ActRunner</code>) от способа выбора: A2 — авто (headless-прогон), A3 — клик по <code>MapScreen</code>. Сетевой-ready: в коопе выбор придёт от хоста через интенты (Фаза 6) — тем же интерфейсом. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6811ad9ffc50165f176f7701da8e36ad" name="a6811ad9ffc50165f176f7701da8e36ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6811ad9ffc50165f176f7701da8e36ad">&#9670;&#160;</a></span>ChooseAsync()</h2>
+<a id="a24ab41866667a65ed89c48d1d6ad3eaa" name="a24ab41866667a65ed89c48d1d6ad3eaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24ab41866667a65ed89c48d1d6ad3eaa">&#9670;&#160;</a></span>ChooseAsync()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,7 +137,19 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a> &gt;&#160;</td>
-          <td class="paramname"><em>available</em>&#160;</td>
+          <td class="paramname"><em>available</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CancellationToken&#160;</td>
+          <td class="paramname"><em>ct</em> = <code>default</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>openMap</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -147,9 +159,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Выбрать один узел из доступных. Возвращает выбранный (или null при отмене/ошибке). </p>
+<p>Выбрать один узел из доступных. </p>
+<p>Возвращает выбранный (или null при отмене/ошибке). <em>ct</em>  прерывает ожидание выбора при выходе из забега (QA #18). <em>openMap</em>  — показать карту сразу (вход в акт) или ждать, пока игрок позовёт её сам из передышки между узлами. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1AutoFirstNodeChooser.html#a2347bc8ce6d83fe55b3151d9a26078fe">Guildmaster.Game.Flow.AutoFirstNodeChooser</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1MapScreenNodeChooser.html#a9f096bc7c61a96911a8b2db0618694cd">Guildmaster.Game.Flow.MapScreenNodeChooser</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1AutoFirstNodeChooser.html#abc581af00e6bd40fcfb771c71e1bc63b">Guildmaster.Game.Flow.AutoFirstNodeChooser</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapNodeChooser.html#afdc2a05b0e23c93a9704a04687e5bab4">Guildmaster.Game.Flow.WorldMapNodeChooser</a>.</p>
 
 </div>
 </div>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Activity.ActivityClockRouter.RequestStart" name="Guildmaster.Game.Activity.ActivityClockRouter.RequestStart">
+<area shape="rect" id="Node000001" title="UI → бой: начать бой из фазы расстановки (кнопка «Начать»). No&#45;op, если некому." alt="" coords="5,5,244,45"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#a769fafb7ea4fc8f96ba51ac744f6381b" title="UI → бой: начать бой из фазы расстановки (кнопка «Начать»). No&#45;op, если некому." alt="" coords="292,5,507,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="244,23,279,23,279,28,244,28"/>
+</map>

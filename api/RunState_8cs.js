@@ -12,6 +12,7 @@ var RunState_8cs =
       [ "Shop", "RunState_8cs.html#a8140c69a5f32631737e488f345f16625a9f82518d468b9fee614fcc92f76bb163", null ],
       [ "Boss", "RunState_8cs.html#a8140c69a5f32631737e488f345f16625a5859831e2b3db23528c710b1451e13fc", null ],
       [ "Chest", "RunState_8cs.html#a8140c69a5f32631737e488f345f16625a080a546abcbea74459f27ba33313993d", null ],
-      [ "Unknown", "RunState_8cs.html#a8140c69a5f32631737e488f345f16625a88183b946cc5f0e8c96b2e66e1c74a7e", null ]
+      [ "Unknown", "RunState_8cs.html#a8140c69a5f32631737e488f345f16625a88183b946cc5f0e8c96b2e66e1c74a7e", null ],
+      [ "Camp", "RunState_8cs.html#a8140c69a5f32631737e488f345f16625aa32c011e43f79a0b7b9337bc183c2dd1", null ]
     ] ]
 ];

@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.PeriodicDamageComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent__inherit__graph.svg" width="327" height="531"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent__inherit__graph.svg" width="327" height="551"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Effects.Components.PeriodicDamageComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent__coll__graph.svg" width="327" height="531"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent__coll__graph.svg" width="327" height="551"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -130,12 +130,17 @@ Properties</h2></td></tr>
 <tr class="separator:a7851792995e5d3d2919783cab4fb967e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1468dc615b3ab981690093e0d4d447eb" id="r_a1468dc615b3ab981690093e0d4d447eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue.html">ScalableValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html#a1468dc615b3ab981690093e0d4d447eb">Potency</a><code> [get]</code></td></tr>
 <tr class="separator:a1468dc615b3ab981690093e0d4d447eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36a5994b1acb82aeb75b94546a1eb27d" id="r_a36a5994b1acb82aeb75b94546a1eb27d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html#a36a5994b1acb82aeb75b94546a1eb27d">DamageType</a><code> [get]</code></td></tr>
+<tr class="memdesc:a36a5994b1acb82aeb75b94546a1eb27d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип урона этого DoT — для агрегации тегов «быстрого чтения».  <br /></td></tr>
+<tr class="separator:a36a5994b1acb82aeb75b94546a1eb27d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html">Guildmaster.Combat.Effects.IPeriodicComponent</a></td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html">Guildmaster.Combat.Effects.IScalablePotency</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Периодический урон (DoT). </p>
 <p>Потенция задаётся как <b>урон в секунду</b> (per-second rate) и масштабируется статами источника через ScalableValue; за один тик применяется <code>Potency × Interval × Stacks</code>. Total масштабируется числом тиков (длительностью), а не запекается — вики «11» §5.1. </p>
+<p><b>Числа:</b> <code>_damagePerSecond</code> — урон В СЕКУНДУ (не за тик!), масштабируется статами источника; <code>_interval</code> — как часто капает, секунды (за раз применяется «в секунду × интервал», поэтому частота не меняет суммарный урон, только его дробность); <code>_damagePctTargetMaxHp</code> — добавка в долях от МАКСИМАЛЬНОГО HP цели, тоже в секунду (анти-танк; у поджога Мечника снята — процент переехал в «Угли», решение 2026-07-26/4); <code>_damageType</code> — тип урона тика (у кровотечения — <code>Bleed</code>, у отравления — один из двух ядов).</p>
+<p><b>Когда срабатывает:</b> каждые <code>_interval</code> секунд, пока эффект висит. Тик DoT — не прямой удар: он не будит шипы и щиты.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a34ab76f002a7de95b9c2d19a09634ce0" name="a34ab76f002a7de95b9c2d19a09634ce0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a34ab76f002a7de95b9c2d19a09634ce0">&#9670;&#160;</a></span>DamagePerSecond()</h2>
@@ -276,6 +281,30 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a36a5994b1acb82aeb75b94546a1eb27d" name="a36a5994b1acb82aeb75b94546a1eb27d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36a5994b1acb82aeb75b94546a1eb27d">&#9670;&#160;</a></span>DamageType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> Guildmaster.Combat.Effects.Components.PeriodicDamageComponent.DamageType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Тип урона этого DoT — для агрегации тегов «быстрого чтения». </p>
+
+</div>
+</div>
 <a id="a7851792995e5d3d2919783cab4fb967e" name="a7851792995e5d3d2919783cab4fb967e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7851792995e5d3d2919783cab4fb967e">&#9670;&#160;</a></span>Interval</h2>
 

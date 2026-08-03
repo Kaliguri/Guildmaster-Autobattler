@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Показ главного меню и ожидание выбора Начать/Продолжить/Выход (план D1).">
+<g id="a_Node000001"><a xlink:title="Показ главного меню и ожидание исхода: заказ игры, вход к другу или выход.">
 <polygon fill="#999999" stroke="transparent" points="158,-60 0,-60 0,0 158,0 158,-60"/>
 <text text-anchor="start" x="5" y="-48" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.IMain</text>
 <text text-anchor="start" x="42" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">MenuPresenter</text>

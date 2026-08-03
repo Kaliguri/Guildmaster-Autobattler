@@ -61,31 +61,32 @@ var sectionId = 'dynsection-0';
 <polygon fill="#999999" stroke="transparent" points="244,-381 89,-381 89,-171 244,-171 244,-381"/>
 <text text-anchor="start" x="94.5" y="-369" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="start" x="145" y="-358" font-family="Helvetica,sans-Serif" font-size="10.00">UnitData</text>
-<text text-anchor="start" x="105" y="-343" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="129.5" y="-343" font-family="Helvetica,sans-Serif" font-size="10.00">DamageSchool</text>
-<text text-anchor="start" x="105" y="-328" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="129.5" y="-328" font-family="Helvetica,sans-Serif" font-size="10.00">Affinity</text>
-<text text-anchor="start" x="105" y="-313" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="129.5" y="-313" font-family="Helvetica,sans-Serif" font-size="10.00">CreatureType</text>
-<text text-anchor="start" x="105" y="-298" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="129.5" y="-298" font-family="Helvetica,sans-Serif" font-size="10.00">AttackType</text>
-<text text-anchor="start" x="105" y="-283" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="129.5" y="-283" font-family="Helvetica,sans-Serif" font-size="10.00">ResourceType</text>
-<text text-anchor="start" x="105" y="-268" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="129.5" y="-268" font-family="Helvetica,sans-Serif" font-size="10.00">Visual</text>
-<text text-anchor="start" x="105" y="-253" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="129.5" y="-253" font-family="Helvetica,sans-Serif" font-size="10.00">ViewPrefab</text>
-<text text-anchor="start" x="105" y="-238" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="129.5" y="-238" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackShape</text>
-<text text-anchor="start" x="105" y="-223" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="129.5" y="-223" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackWidth</text>
-<text text-anchor="start" x="105" y="-208" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="129.5" y="-208" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackEffects</text>
-<text text-anchor="start" x="129.5" y="-193" font-family="Helvetica,sans-Serif" font-size="10.00">and 11 more...</text>
-<text text-anchor="start" x="165" y="-178" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="97.5" y="-343" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="114.5" y="-343" font-family="Helvetica,sans-Serif" font-size="10.00">CombatClass</text>
+<text text-anchor="start" x="97.5" y="-328" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="114.5" y="-328" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackDamageType</text>
+<text text-anchor="start" x="97.5" y="-313" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="114.5" y="-313" font-family="Helvetica,sans-Serif" font-size="10.00">CreatureType</text>
+<text text-anchor="start" x="97.5" y="-298" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="114.5" y="-298" font-family="Helvetica,sans-Serif" font-size="10.00">AttackType</text>
+<text text-anchor="start" x="97.5" y="-283" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="114.5" y="-283" font-family="Helvetica,sans-Serif" font-size="10.00">ResourceType</text>
+<text text-anchor="start" x="97.5" y="-268" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="114.5" y="-268" font-family="Helvetica,sans-Serif" font-size="10.00">Visual</text>
+<text text-anchor="start" x="97.5" y="-253" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="114.5" y="-253" font-family="Helvetica,sans-Serif" font-size="10.00">ViewPrefab</text>
+<text text-anchor="start" x="97.5" y="-238" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="114.5" y="-238" font-family="Helvetica,sans-Serif" font-size="10.00">BodyShade</text>
+<text text-anchor="start" x="97.5" y="-223" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="114.5" y="-223" font-family="Helvetica,sans-Serif" font-size="10.00">VfxTone</text>
+<text text-anchor="start" x="97.5" y="-208" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="114.5" y="-208" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackShape</text>
+<text text-anchor="start" x="114.5" y="-193" font-family="Helvetica,sans-Serif" font-size="10.00">and 20 more...</text>
+<text text-anchor="start" x="97.5" y="-178" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="114.5" y="-178" font-family="Helvetica,sans-Serif" font-size="10.00">HitDamageShare()</text>
 <polygon fill="#666666" stroke="#666666" points="89.5,-353 89.5,-353 244.5,-353 244.5,-353 89.5,-353"/>
-<polygon fill="#666666" stroke="#666666" points="89.5,-188 89.5,-188 127.5,-188 127.5,-188 89.5,-188"/>
-<polygon fill="#666666" stroke="#666666" points="127.5,-188 127.5,-188 244.5,-188 244.5,-188 127.5,-188"/>
+<polygon fill="#666666" stroke="#666666" points="89.5,-188 89.5,-188 112.5,-188 112.5,-188 89.5,-188"/>
+<polygon fill="#666666" stroke="#666666" points="112.5,-188 112.5,-188 244.5,-188 244.5,-188 112.5,-188"/>
 <polygon fill="none" stroke="#666666" points="89,-171 89,-381 244,-381 244,-171 89,-171"/>
 </a>
 </g>
@@ -94,18 +95,22 @@ var sectionId = 'dynsection-0';
 <g id="Node000004" class="node">
 <title>Node4</title>
 <g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData.html" target="_top" xlink:title="Вражеский юнит: боевой кит (UnitData) + мета врага (очки опасности, награда).">
-<polygon fill="white" stroke="transparent" points="155,-105 0,-105 0,-30 155,-30 155,-105"/>
-<text text-anchor="start" x="5.5" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="start" x="49" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">EnemyData</text>
+<polygon fill="white" stroke="transparent" points="155,-120 0,-120 0,-15 155,-15 155,-120"/>
+<text text-anchor="start" x="5.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
+<text text-anchor="start" x="49" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">EnemyData</text>
+<text text-anchor="start" x="22.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="53.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">Species</text>
 <text text-anchor="start" x="22.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="53.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">ThreatPoints</text>
+<text text-anchor="start" x="53.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">Subspecies</text>
 <text text-anchor="start" x="22.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="53.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">GoldBounty</text>
-<text text-anchor="start" x="76" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="#666666" stroke="#666666" points="0.5,-76.5 0.5,-76.5 155.5,-76.5 155.5,-76.5 0.5,-76.5"/>
-<polygon fill="#666666" stroke="#666666" points="0.5,-46.5 0.5,-46.5 51.5,-46.5 51.5,-46.5 0.5,-46.5"/>
-<polygon fill="#666666" stroke="#666666" points="51.5,-46.5 51.5,-46.5 155.5,-46.5 155.5,-46.5 51.5,-46.5"/>
-<polygon fill="none" stroke="#666666" points="0,-30 0,-105 155,-105 155,-30 0,-30"/>
+<text text-anchor="start" x="53.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">ThreatPoints</text>
+<text text-anchor="start" x="22.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="53.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">GoldBounty</text>
+<text text-anchor="start" x="76" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<polygon fill="#666666" stroke="#666666" points="0.5,-91.5 0.5,-91.5 155.5,-91.5 155.5,-91.5 0.5,-91.5"/>
+<polygon fill="#666666" stroke="#666666" points="0.5,-31.5 0.5,-31.5 51.5,-31.5 51.5,-31.5 0.5,-31.5"/>
+<polygon fill="#666666" stroke="#666666" points="51.5,-31.5 51.5,-31.5 155.5,-31.5 155.5,-31.5 51.5,-31.5"/>
+<polygon fill="none" stroke="#666666" points="0,-15 0,-120 155,-120 155,-15 0,-15"/>
 </a>
 </g>
 </g>
@@ -113,7 +118,7 @@ var sectionId = 'dynsection-0';
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M117.55,-161.43C108.75,-141.01 100.18,-121.13 93.25,-105.03"/>
+<path fill="none" stroke="#63b8ff" d="M117.52,-161.35C111.31,-146.94 105.22,-132.81 99.73,-120.08"/>
 <polygon fill="none" stroke="#63b8ff" points="114.44,-163.04 121.61,-170.84 120.87,-160.27 114.44,-163.04"/>
 </a>
 </g>

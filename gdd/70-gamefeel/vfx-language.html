@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Gamefeel - VFX Language | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Gamefeel - VFX Language | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Gamefeel - VFX Language | Guildmaster Wiki"/><meta name="twitter:description" content="Язык боевых эффектов Границы дока. Здесь — как выглядит боевое событие: из каких слоёв собрано, сколько живёт, сколько занимает экрана."/><meta property="og:description" content="Язык боевых эффектов Границы дока. Здесь — как выглядит боевое событие: из каких слоёв собрано, сколько живёт, сколько занимает экрана."/><meta property="og:image:alt" content="Язык боевых эффектов Границы дока. Здесь — как выглядит боевое событие: из каких слоёв собрано, сколько живёт, сколько занимает экрана."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/vfx-language"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/vfx-language"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Язык боевых эффектов Границы дока. Здесь — как выглядит боевое событие: из каких слоёв собрано, сколько живёт, сколько занимает экрана."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="gdd/70-gamefeel/vfx-language"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-215"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-215" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../gdd/">gdd</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../gdd/70-gamefeel/">Gamefeel   Index</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Gamefeel   VFX Language</a></div></nav><h1 class="article-title">Gamefeel - VFX Language</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-31T00:00:00.000Z">31 июл. 2026 г.</time><span>время чтения ~34 мин.</span></p></div></div><article class="popover-hint"><h1 id="язык-боевых-эффектов">Язык боевых эффектов<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#язык-боевых-эффектов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p><strong>Границы дока.</strong> Здесь — <strong>как выглядит боевое событие</strong>: из каких слоёв собрано, сколько живёт,
+сколько занимает экрана. Чем красим — <a href="../../gdd/70-gamefeel/vfx-color" class="internal alias" data-slug="gdd/70-gamefeel/vfx-color">Gamefeel - VFX Color</a>; чем
+рисуем — <a href="../../gdd/70-gamefeel/asset-palette" class="internal alias" data-slug="gdd/70-gamefeel/asset-palette">Gamefeel - Asset Palette</a>; тактильная сторона
+(hitstop, тряска, slowmo) — <a href="../../gdd/70-gamefeel/backlog-gamefeel" class="internal alias" data-slug="gdd/70-gamefeel/backlog-gamefeel">Gamefeel - Backlog</a>.</p>
+<p>Каркас предложен 2026-07-31 и <strong>ждёт вердикта Макса</strong>; словарь событий наполняется по мере
+решений. Принятое отмечается датой прямо в строке.</p>
+</blockquote>
+<hr/>
+<h2 id="зачем-этот-док">Зачем этот док<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#зачем-этот-док" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>До 31.07.2026 у боевых VFX не было спеки — только цвет. Следствие видно в коде: из семи доступных
+ролей у событий жила одна, вспышка удара держалась три кадра, а удар, лечение и каст рисовались
+одной текстурой. Бедность приходит не от размера эффекта, а от того, что событие состоит из одного
+слоя вместо четырёх.</p>
+<p>Внешний канон говорит то же самое двумя голосами: Riot требует различать <strong>primary и secondary</strong>
+элементы и не давать слабой атаке выглядеть как ультимативной; Vlambeer формулирует резче —
+<strong>никакой один эффект не «делает» фидбэк</strong>, вес удара рождается связкой слоёв на одно событие.</p>
+<hr/>
+<h2 id="термины">Термины<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#термины" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Заведены 31.07.2026 по прямой жалобе Макса («у нас терминов нет норм, путаюсь»). Дальше в кластере
+и в коде используются только эти слова.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Термин</th><th>Что это</th><th>Живёт</th></tr></thead><tbody><tr><td><strong>Форма</strong></td><td>главный знак удара: серп, веретено или звезда. Строится по A→B</td><td>4–5 кадров после <code>Hit</code></td></tr><tr><td><strong>Ядро</strong></td><td>радиальная вспышка в точке попадания; единственный свой параметр — радиус</td><td>3 кадра</td></tr><tr><td><strong>Искры</strong></td><td>частицы, летящие ПРОЧЬ от точки удара</td><td>0.15–0.4 с</td></tr><tr><td><strong>Порез</strong></td><td>красная метка на теле цели — вскрытое; <strong>накапливается и остаётся</strong></td><td>до заживления хилом</td></tr><tr><td><strong>Остаток</strong></td><td>пыль, дым, след на земле — то, что закрывает событие</td><td>0.4–0.6 с</td></tr><tr><td><strong>A</strong></td><td>точка начала взмаха; берётся из маркера <code>StrikeStart</code> как ГЕОМЕТРИЯ</td><td>—</td></tr><tr><td><strong>B</strong></td><td>точка попадания; маркер <code>Hit</code>. Середина формы у серпа и веретена, конец у звезды</td><td>—</td></tr><tr><td><strong>Дуга за клинком</strong></td><td>VFX-сектор с центром в плече, заметающий пройденный угол. Живёт на strike-фазе ВЗМАХА, до хита</td><td>strike + 2 кадра</td></tr><tr><td><strong>Серп</strong></td><td>форма хита по A→B (см. §Автоатака мили)</td><td>4–5 кадров после <code>Hit</code></td></tr></tbody></table></div>
+<p>Слово «разрез» больше не используется — вместо него <strong>порез</strong>.</p>
+<h2 id="форму-делает-шейдер-а-не-спрайт-принято-31072026">Форму делает шейдер, а не спрайт (принято 31.07.2026)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#форму-делает-шейдер-а-не-спрайт-принято-31072026" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Эффекты у нас гладкие и параметрические, юнит — пиксельный.</strong> Вердикт Макса: «гладкая форма без
+спрайтов, чисто шейдеры — это круто, я как раз за неклассический пиксель-арт». Это не компромисс, а
+разведение по измерениям:</p>
+<ul>
+<li><strong>Пиксельная текстура эффекта конкурирует с пиксельным юнитом за детализацию</strong> — и проигрывает,
+потому что юнит важнее. Отсюда «мелко и бедно»: мягкие пятна пытались играть в детализацию.</li>
+<li><strong>Свечение живёт в другом измерении — в яркости</strong>, и с артом не спорит, потому что не претендует
+на форму. Bloom с порогом 1.0 настроен ровно на это.</li>
+</ul>
+<p>Практическое следствие: спрайтовые листы эффектов нам почти не нужны. Форму даёт <strong>Shapes</strong>
+(дуги, кольца, линии — параметрически, любым цветом) и <strong>шейдер по спрайту</strong>. Спрайт остаётся только
+там, где нужен характер, который светом не передать.</p>
+<h2 id="четыре-роли-proposed">Четыре роли (<code>proposed</code>)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#четыре-роли-proposed" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Любое боевое событие собирается из одних и тех же ролей. Роль отвечает на свой вопрос и не лезет в
+чужой — иначе слои дублируют друг друга и гасят.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Роль</th><th>На какой вопрос отвечает</th><th>Живёт</th><th>Масштаб</th></tr></thead><tbody><tr><td><strong>Ядро</strong></td><td>«вот здесь, вот сейчас»</td><td>0.05–0.10 с, пик на первом кадре</td><td>0.3–0.5 H</td></tr><tr><td><strong>Форма</strong></td><td>ЧТО произошло — резануло, выстрелило, вскипело</td><td>0.10–0.15 с</td><td>1.0–1.3 H</td></tr><tr><td><strong>Осколки</strong></td><td>откуда и с какой силой</td><td>0.25–0.35 с</td><td>частица 0.1 H, разлёт до 0.8 H</td></tr><tr><td><strong>Остаток</strong></td><td>закрывает след, отпускает взгляд</td><td>0.4–0.6 с, гаснет</td><td>0.5–0.8 H</td></tr></tbody></table></div>
+<p><strong>H — рост юнита-человека</strong>, сегодня ≈ 1 мировая единица (96 px при PPU 100). Масштаб задаётся в
+долях роста, а не в юнитах: сменится сетка спрайтов — числа переживут.</p>
+<p><strong>Форма — та роль, которой у нас нет вовсе.</strong> Именно она несёт смысл: дуга читается как «резануло»
+даже мутной, а мягкое пятно не читается никак, сколько его ни подсвечивай.</p>
+<hr/>
+<h2 id="три-стадии-времени-proposed">Три стадии времени (<code>proposed</code>)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#три-стадии-времени-proposed" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Предчувствие → удар → рассеивание.</strong> Мозгу нужно указать, куда смотреть, перегрузить его в
+ожидаемый момент и дать время обработать. У нас сегодня есть только средняя стадия.</p>
+<p>Правило, которое стоит повесить на стену: <strong>если эффект кажется длинным — он слишком длинный.</strong>
+Боевые эффекты не задерживаются на экране и не мешают читать следующее событие. Плотность арены —
+константа (четыре «Сосуда» плюс враги, кооператив её не раздувает), но и в ней щедрость по
+длительности оплачивается кашей: четыре бойца бьют примерно раз в секунду.</p>
+<p>Показ идёт на 30 Гц, поэтому кадр = 33 мс. Роль короче двух кадров не существует: она мигнёт и
+её не заметят.</p>
+<hr/>
+<h2 id="шкала-важности">Шкала важности<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#шкала-важности" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Слабая атака обязана выглядеть иначе, чем добивание. Шкала снизу вверх — та же, что у цвета:
+<strong>автоатака → способность → каст за ману → смерть</strong>. Растёт по ней не только яркость, но и <strong>число
+задействованных ролей</strong>: рядовому удару хватает ядра и осколков, каст добавляет форму, смерть
+берёт всё четыре.</p>
+<hr/>
+<h2 id="словарь-событий">Словарь событий<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#словарь-событий" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Наполняется по мере решений. Пустая клетка — не «забыли», а «ещё не договорились».</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Событие</th><th>Ядро</th><th>Форма</th><th>Осколки</th><th>Остаток</th><th>Статус</th></tr></thead><tbody><tr><td>Автоатака мили — попадание</td><td>вспышка, параметр = радиус</td><td><strong>серп A→B по архетипу</strong>, старт на кадре <code>Hit</code></td><td>искры от удара</td><td>пыль у ног</td><td>принято 31.07 ↓</td></tr><tr><td>Автоатака мили — промах</td><td>—</td><td>—</td><td>—</td><td>—</td><td>принято: только надпись «evade»</td></tr><tr><td>Блок</td><td>вспышка щита золотом, <strong>тело молчит</strong></td><td>серп, <strong>обрывается о щит</strong></td><td>искры пополам</td><td>—</td><td>принято, оба поведения под тумблером</td></tr><tr><td>Выстрел — вылет</td><td>вспышка дула</td><td>—</td><td>искры дула</td><td>—</td><td>форма у выстрела одна, на попадании</td></tr><tr><td>Выстрел — попадание</td><td>вспышка</td><td><strong>линия-всполох</strong> после хита</td><td>искры от траектории</td><td>—</td><td>принято 31.07</td></tr><tr><td>Лечение</td><td></td><td></td><td></td><td>—</td><td>не решено</td></tr><tr><td>Каст за ману</td><td>всплеск у тела</td><td></td><td></td><td>—</td><td>телеграф — свечение части, принято 31.07 ↓</td></tr><tr><td>Смерть</td><td>вспышка</td><td></td><td>осколки тела</td><td>—</td><td>частично (death-shatter)</td></tr></tbody></table></div>
+<p><strong>Отдельных форм под элементы в словаре не будет</strong> — ни строки «огненный удар», ни «ледяной». Форма
+берётся из способа доставки, элемент приходит цветом.</p>
+<h2 id="искры">Искры<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#искры" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Два потока с разным поведением</strong>, и различает их не цвет, а движение — так они читаются даже когда
+оттенки близки:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Поток</th><th>Что говорит</th><th>Цвет</th><th>Живёт</th><th>Движение</th></tr></thead><tbody><tr><td><strong>Быстрые</strong></td><td>чем ударили</td><td>палитра бьющего</td><td>0.15 с (4–5 кадров)</td><td>прочь по вектору, узкий разброс</td></tr><tr><td><strong>Медленные</strong></td><td>что вскрыли</td><td>красный</td><td>0.4 с (12 кадров)</td><td>шире разброс, падают вниз с гравитацией</td></tr></tbody></table></div>
+<p>Доля быстрых — около 60%.</p>
+<p><strong>Количество идёт пропорцией урону, с потолком.</strong> Стартовая формула: <code>6 + доля_HP × 120</code>, но не больше
+<strong>48 частиц</strong> на удар. Потолок обязателен: без него удар кита превратится в стену.</p>
+<p><strong>Щедрость здесь осознанная</strong> (Макс, 31.07.2026): искры мелкие и живут доли секунды, поэтому их должно
+быть много — вдвое больше моей первой оценки. Если в бою окажется кашей, число режется одной строкой.</p>
+<p><strong>У блока искры пополам</strong> — половина цвета блокирующего, половина цвета атакующего (см. ниже);
+красных при блоке нет вовсе, потому что тело целое.</p>
+<h2 id="порезы-тело-помнит-бой-принято-31072026">Порезы: тело помнит бой (принято 31.07.2026)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#порезы-тело-помнит-бой-принято-31072026" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Красное — это не брызги, а вскрытое.</strong> Эталон: в SAO крови нет, вместо неё светящиеся красные
+прорехи на аватаре. У нас так же — удар оставляет <strong>порез</strong> на теле цели.</p>
+<h3 id="порезы-накапливаются">Порезы накапливаются<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#порезы-накапливаются" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Каждое попадание записывает мелкий порез: слабый, но заметный. Их много — значит юнита сильно
+ранили, и это видно без полосы HP. Порез несёт три вещи: <strong>место, вес (доля HP этого удара) и
+порядок</strong> (номер по времени).</p>
+<h3 id="хил-заживляет-самые-старые">Хил заживляет САМЫЕ СТАРЫЕ<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#хил-заживляет-самые-старые" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Лечение снимает порезы с головы очереди — те, что успели затянуться. Тогда исцеление читается как
+процесс, а не как мгновенный сброс: тело чинится в том порядке, в каком его ломали.</p>
+<h3 id="порез-гладкий-а-не-пиксельный">Порез гладкий, а не пиксельный<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#порез-гладкий-а-не-пиксельный" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Порез рисуется в том же стиле, что весь остальной джус</strong> — гладкая светящаяся линия, не пиксельная
+(Макс, 31.07.2026). Это снимает возражение про сетку 96 px: тонкий светящийся штрих читается там,
+где пиксельная царапина в один пиксель потерялась бы. Направление — по вектору удара.</p>
+<h3 id="заживление-пропорционально-весу-пореза">Заживление пропорционально весу пореза<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#заживление-пропорционально-весу-пореза" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>У пореза есть свой «запас»: столько HP, сколько снял породивший его удар. Хил <strong>уменьшает яркость
+пропорционально</strong> — порез на 1000 при лечении на 400 тускнеет на 40%, и так до нуля, после чего
+исчезает.</p>
+<p>Отсюда две вещи бесплатно: мерцания нет (порез не выключается, а гаснет), и <strong>лечение читается как
+процесс</strong> — видно, что рану затягивают, а не выключают. Заживление быстрое, но не мгновенное.</p>
+<h3 id="порез-от-выстрела--та-же-зазубрина">Порез от выстрела — та же зазубрина<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#порез-от-выстрела--та-же-зазубрина" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Дистанционное попадание оставляет порез <strong>тем же приёмом, что колющий удар</strong>: короткая зазубрина в
+линию рядом с точкой хита. Отдельного правила у выстрела нет — система остаётся единой.</p>
+<h3 id="порезы--это-нарративный-hp-бар-и-так-задумано">Порезы — это нарративный HP-бар, и так задумано<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#порезы--это-нарративный-hp-бар-и-так-задумано" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Число и яркость порезов складываются в состояние тела: сильно раненый юнит <strong>выглядит</strong> изрубленным.
+Это осознанный второй язык про здоровье, диегетичный и в духе эталона.</p>
+<p>Одно следствие стоит держать в голове: индикаторов здоровья становится три — полоса, порезы и пульс
+на низком HP (<code>LowHpThreshold</code>). Третий после порезов может оказаться избыточным; решать это будем,
+когда порезы окажутся в игре.</p>
+<h3 id="цвет--красный-у-всех">Цвет — красный у всех<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#цвет--красный-у-всех" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Пока единая система: у любого юнита внутренности красные, включая костяных и конструктов.
+Разведение по видам (белая костная пыль, каменная крошка, зелёные споры) — возможная будущая правка,
+но не сейчас: единый цвет проще читать и дешевле держать.</p>
+<h3 id="что-это-значит-инженерно">Что это значит инженерно<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#что-это-значит-инженерно" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Порез — это СОСТОЯНИЕ тела, а не событие.</strong> Он живёт не в пуле эффектов, а в
+<code>BodyVisualState</code> через шов <code>IUnitBodyVisual</code>, рядом с тинтом и вспышкой. Отсюда три следствия:</p>
+<ul>
+<li><strong>Лимит списка: 12 порезов</strong> (диапазон Макса 8–12, взят верх — откат до 8 это одно число). Шейдер
+тела получает список: позиция, угол, длина, яркость. Порезы очень мелкие, поэтому дюжина читается
+как «изрублен», а не как шум; моя первая оценка в шесть была занижена. Сверх лимита старые вытесняются, что совпадает с логикой
+заживления и потому не выглядит обрезкой.</li>
+<li><strong>Позиции — из <code>IRngService</code>.</strong> Порез живёт долго и виден всем; случайное место, взятое из
+<code>Random</code>, разошлось бы между клиентами в кооперативе.</li>
+<li><strong>Порез рисуется тем же направлением, что и форма</strong> — вдоль вектора удара. Форма прошла, порез
+остался: одно движение, а не два несвязанных эффекта.</li>
+</ul>
+<h3 id="блок-вскрытия-не-даёт">Блок вскрытия не даёт<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#блок-вскрытия-не-даёт" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Щит принял удар, тело целое — <strong>пореза нет</strong>. Вместо него искры <strong>пополам</strong>: половина цвета
+блокирующего (его щит), половина цвета атакующего (его удар). Так в одном событии видно обе стороны
+размена.</p>
+<h3 id="открытые-вопросы-события">Открытые вопросы события<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#открытые-вопросы-события" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Вопрос</th><th>Состояние</th></tr></thead><tbody><tr><td>1</td><td><strong>Блок: обрыв формы или проход насквозь</strong></td><td>оба за тумблером, по умолчанию обрыв; выбор после проверки в игре</td></tr><tr><td>2</td><td><strong>Три отложенных способа смешения цветов</strong> (вдоль формы, поперёк толщины, слоями)</td><td>не отвергнуты; берём «ядро и кайма», остальные лежат в стенде</td></tr><tr><td>3</td><td><strong>Искры</strong> — количество, срок жизни, красные как кровь по эталону SAO</td><td>следующая тема разбора</td></tr></tbody></table></div>
+<hr/>
+<h2 id="автоатака-мили-принято-31072026">Автоатака мили (принято 31.07.2026)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#автоатака-мили-принято-31072026" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="два-эффекта-в-разное-время-дуга-на-взмахе-серп-на-хите">Два эффекта в разное время: дуга на взмахе, серп на хите<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#два-эффекта-в-разное-время-дуга-на-взмахе-серп-на-хите" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Удар показывается <strong>двумя стадиями</strong>, и это снимает конфликт, который иначе пришлось бы решать
+иерархией: дуга и серп никогда не видны одновременно.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Стадия</th><th>Что рисуется</th><th>Когда</th><th>Кому принадлежит</th></tr></thead><tbody><tr><td><strong>1 · Взмах</strong></td><td><strong>дуга за клинком</strong> — сектор с центром в плече, заметающий пройденный угол</td><td>strike-фаза, ДО хита</td><td>движению оружия</td></tr><tr><td><strong>2 · Хит</strong></td><td><strong>серп</strong> A→B, <strong>ядро</strong>, <strong>искры</strong>, <strong>порез</strong></td><td>от кадра <code>Hit</code></td><td>состоявшемуся удару</td></tr></tbody></table></div>
+<p><strong>Нет контакта — нет СЕРПА</strong> (Макс, 31.07.2026). Дуга при этом есть всегда, когда клинок махнул:
+на промахе видно дугу «в пустоту» и надпись «evade», а серпа, ядра и пореза нет. Серп — заявление
+«удар состоялся», и на промахе он был бы ложью; дуга же говорит только «клинок прошёл здесь», и это
+правда даже при промахе.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Исход</th><th>Дуга (взмах)</th><th>Серп</th><th>Ядро и искры</th><th>Порез</th></tr></thead><tbody><tr><td>Попадание</td><td>есть</td><td>есть, проходит насквозь</td><td>есть</td><td>есть</td></tr><tr><td>Блок</td><td>есть</td><td>есть, <strong>обрывается о щит</strong></td><td>искры пополам</td><td><strong>нет</strong></td></tr><tr><td>Промах / уклонение</td><td><strong>есть</strong></td><td>нет</td><td>нет</td><td>нет</td></tr><tr><td>Холостой замах</td><td><strong>есть</strong></td><td>нет</td><td>нет</td><td>нет</td></tr></tbody></table></div>
+<p><strong>Форма появляется ПОСЛЕ хита — сразу как нанесён урон, не раньше</strong> (Макс, 31.07.2026). Она быстро
+прорастает от A к концу за пару кадров и гаснет; общая жизнь та же, 4–5 кадров, но целиком <strong>после</strong>
+момента контакта.</p>
+<p>Отсюда два следствия, и оба удобные:</p>
+<ul>
+<li><strong>Вопрос «а что если промах» решается сам.</strong> К моменту старта формы результат уже наступил, поэтому
+ничего не нужно ни предсказывать, ни стирать. Окно опережения ленты боя здесь не участвует.</li>
+<li><strong>Маркер <code>StrikeStart</code> нужен как ГЕОМЕТРИЯ, а не как время.</strong> Он даёт точку A — откуда клинок
+пришёл, — но не момент запуска эффекта. Запуск один: кадр <code>Hit</code>.</li>
+</ul>
+<h3 id="блок-обрывает-форму--под-тумблером">Блок обрывает форму — под тумблером<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#блок-обрывает-форму--под-тумблером" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Заблокированный удар в тело не вошёл, поэтому форма <strong>тормозит в точке контакта</strong> вместо прохода
+насквозь: точка хита у неё становится конечной, как у дробящего. Тогда «пробил / не пробил» читается
+самой формой, а не только цветом вспышки.</p>
+<p><strong>Оба поведения живут за тумблером</strong> и сравниваются в бою: обрыв о щит либо обычный проход насквозь.
+Решение по умолчанию — обрыв; окончательный выбор после проверки в игре.</p>
+<h3 id="серия-ударов-сколько-маркеров--столько-форм">Серия ударов: сколько маркеров — столько форм<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#серия-ударов-сколько-маркеров--столько-форм" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Атака из нескольких Ударов рисует форму на каждый контакт. Особого рисунка серии не требуется:
+у таких атак урон на удар мелкий, а размер формы идёт от урона — фигуры получатся мелкими сами,
+без отдельного правила.</p>
+<h3 id="форма-замирает-вместе-с-hitstop">Форма замирает вместе с hitstop<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#форма-замирает-вместе-с-hitstop" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Hitstop морозит пару «источник плюс цель» — форма встаёт вместе с ними, а не проскакивает мимо
+остановленного времени. Удар залипает в воздухе на кадр, и это работает в пользу веса.</p>
+<h3 id="серп-строится-по-двум-точкам-а-не-по-траектории-клинка">Серп строится по ДВУМ ТОЧКАМ, а не по траектории клинка<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#серп-строится-по-двум-точкам-а-не-по-траектории-клинка" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>A — начало взмаха</strong> (момент, когда эффект пошёл, маркер <code>StrikeStart</code>).
+<strong>B — точка хита</strong> (маркер <code>Hit</code>, точка в области корпуса цели).
+Серп — <strong>закруглённая дуга от A к B</strong>. Куда меч уходит дальше и как завершает движение, эффект не
+интересует: это уже возврат, и он ничего не сообщает.</p>
+<p>Слой ровно <strong>один</strong>. Прежняя связка «мазок поперёк + дуга от плеча» отменена: у неё было два разных
+центра, из-за чего понадобилась иерархия primary/secondary — а с построением по A→B центр один и
+проблема исчезает вместе с иерархией.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Что</th><th>Значение</th></tr></thead><tbody><tr><td>Опорные точки</td><td>A = кончик оружия на <code>StrikeStart</code>, B = точка попадания</td></tr><tr><td>Форма</td><td>дуга через B с прогибом; прогиб — параметр, а не следствие анимации</td></tr><tr><td>Живёт</td><td>4-5 кадров, начинается НА кадре <code>Hit</code> и целиком после него</td></tr><tr><td>Толщина</td><td>~0.09 H у середины, сужается к обоим концам</td></tr><tr><td>Где</td><td><strong>в мире</strong>, не едет за бьющим</td></tr><tr><td>Размер, протяжённость, толщина</td><td>от урона</td></tr></tbody></table></div>
+<p><strong>Точка хита лежит в СЕРЕДИНЕ формы, а не в её конце</strong> — у серпа и у веретена (Макс, 31.07.2026).
+Клинок не встаёт в теле: он проходит навылет, поэтому форма продолжается за B на столько же, на
+сколько шла до неё. Серп разваливает цель по диагонали насквозь, веретено протыкает центрально.
+Исключение одно — <strong>дробящий: у него точка хита КОНЕЧНАЯ</strong>, булава там и остаётся, а дальше идёт
+звезда.</p>
+<p>Это не косметика: форма, кончающаяся ровно на цели, читается как «дотянулся», а проходящая
+насквозь — как «рассёк». Первая версия стенда ошибалась именно здесь.</p>
+<p><strong>Почему не трассировка пути клинка:</strong> путь зависит от клипа, а клипы у юнитов разные и правятся.
+Две точки — контракт, который переживёт перерисовку анимации, и его можно посчитать без сэмплирования
+кривой.</p>
+<p><strong>Трейл клинка отклонён</strong> — как более слабая версия дуги за клинком (формулировка Макса). Дугу же
+берём: она рисует пройденный угол сектором от плеча и живёт только на strike-фазе, поэтому в
+постоянное свечение не превращается.</p>
+<h3 id="три-архетипа--это-правила-генерации-а-не-три-готовых-знака">Три архетипа — это ПРАВИЛА ГЕНЕРАЦИИ, а не три готовых знака<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#три-архетипа--это-правила-генерации-а-не-три-готовых-знака" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>HARD (Макс, 31.07.2026).</strong> Режущий — не один и тот же серп на каждый удар, а семейство серпов по
+правилу. Форма процедурна: каждый удар рисует свой знак, но правило гарантирует, что он читается как
+«резануло», а не как что-то новое.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Архетип</th><th>Правило генерации</th><th>Точка хита</th><th>Что остаётся постоянным</th></tr></thead><tbody><tr><td><strong>Режущий</strong></td><td>дуга через B, прогиб и толщина в коридоре, ядро вдоль всей длины</td><td><strong>центр</strong></td><td>закруглённость и то, что это одна непрерывная полоса насквозь</td></tr><tr><td><strong>Колющий</strong></td><td>почти прямая через B, узкая, ядро у точки входа</td><td><strong>центр</strong></td><td>прямизна и центральный прокол</td></tr><tr><td><strong>Дробящий</strong></td><td><strong>слабый короткий серп до B плюс звезда в B</strong></td><td><strong>конец</strong></td><td>движение мягкое, а вспышка-трещина в конце обязательна</td></tr></tbody></table></div>
+<p>Дробящий, таким образом, <strong>двухчастный</strong>: булава ведёт лёгкий след и раскалывает в момент контакта.
+Звезда — 7–9 лучей неравной длины, внутренний радиус растёт, лучи рвутся от центра, как стекло.</p>
+<p><strong>Что процедурность НЕ трогает:</strong> размер несёт вес удара, поэтому генератор не вправе его менять.
+Гуляют прогиб, толщина в коридоре, неровность краёв, число и длина лучей у звезды.</p>
+<h3 id="откуда-берётся-архетип-принято-2026-08-01">Откуда берётся архетип (принято 2026-08-01)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#откуда-берётся-архетип-принято-2026-08-01" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>HARD: из данных юнита, и никогда из дефолта.</strong> Источников ровно два, оба в его SO:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Кто бьёт</th><th>Откуда архетип</th></tr></thead><tbody><tr><td><strong>дальний бой</strong></td><td>из <code>AttackType.Ranged</code>: форма одна на всех — линия-всполох. Тип урона не спрашивается вовсе: у стрелы нет взмаха, и серп ей не положен, даже когда она режущая</td></tr><tr><td><strong>ближний бой</strong></td><td>из типа урона — но лишь потому, что три физических типа ПРЯМО называют способ доставки: рубанули, укололи, ударили тяжёлым</td></tr><tr><td><strong>безоружный</strong></td><td><strong>дробящий</strong>: кулак это тяжёлое, а не острое</td></tr></tbody></table></div>
+<p>Дословно (Макс, 01.08.2026): «Никакого дефолта. Только явное указание (или по типу из SO)».</p>
+<p><strong>Почему запрет жёсткий.</strong> Школа урона не равна способу доставки: «ледяной удар» не говорит, посохом
+бьют или когтем. Подставленный по умолчанию серп — догадка показа, выданная за замысел; невыразимый
+случай обязан <strong>падать тестом</strong> (<code>HitFormCoverageTests</code>) до боя, а не рисоваться наугад. Магический
+ближник, когда появится, объявит свой архетип полем в <code>UnitData</code> — отдельным решением, а не веткой в
+коде.</p>
+<h3 id="числа">Числа<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#числа" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Все линейные размеры — в долях <strong>H</strong> (рост юнита-человека) и <strong>растут пропорционально урону</strong>.
+Категорий «лёгкий» и «тяжёлый» нет: есть непрерывная зависимость от доли снятого HP — и <strong>потолок</strong>,
+иначе кит на десять тысяч урона выдал бы стену вместо эффекта. Протяжённость, толщина и радиус звезды
+едут вместе, сохраняя пропорции: крупнее выглядит сильнее, а не иначе.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Архетип</th><th>Полная длина</th><th>Прогиб</th><th>Полутолщина в середине</th><th>Прочее</th></tr></thead><tbody><tr><td><strong>Режущий</strong></td><td>1.4 H (полудлина A→B = 0.7 H, столько же за B)</td><td>0.20–0.28 H</td><td>0.055–0.075 H</td><td>соотношение ~1:12 — росчерк, а не лента</td></tr><tr><td><strong>Колющий</strong></td><td>1.1 H</td><td>0.015–0.035 H</td><td>0.028–0.036 H</td><td>~1:18, заметно тоньше режущего</td></tr><tr><td><strong>Дробящий</strong></td><td>0.5 H до B</td><td>0.09–0.14 H</td><td>0.048–0.066 H</td><td>звезда радиусом 0.35 H, 7–9 лучей</td></tr><tr><td><strong>Линия-всполох</strong></td><td>вся дистанция выстрела</td><td>0</td><td>0.024–0.032 H</td><td>длина не нормируется: она и есть сообщение</td></tr></tbody></table></div>
+<p>Толщина сужается к обоим остриям до нуля — форма читается как лист с заострёнными концами, а не как
+полоса постоянной ширины. Ядро (белый пересвет) занимает внутренние ~55% толщины.</p>
+<p>Числа — стартовые, назначены по пропорции и ждут приёмки глазами в play-mode; коридоры разброса
+заданы так, чтобы два удара подряд отличались, но архетип не терялся.</p>
+<h3 id="форма--параметрическая-и-рисуем-её-сами">Форма — параметрическая, и рисуем её сами<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#форма--параметрическая-и-рисуем-её-сами" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Серп рисуется шейдером на одном quad, а не спрайтом и не стеком геометрии.</strong> Форма считается в
+пикселе (SDF), а точки A и B, прогиб, толщина, число лучей, мягкость ядра и прогресс жизни приходят
+юниформами. Стек Shapes-мешей дал бы плоскую заливку без свечёного ядра и лишние draw call’ы.</p>
+<h3 id="дальний-бой-линия-всполох--та-же-семья-только-прямая">Дальний бой: линия-всполох — та же семья, только прямая<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#дальний-бой-линия-всполох--та-же-семья-только-прямая" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Дистанционной атаке серп не нужен</strong>, потому что у выстрела нет взмаха: рисовать ему дугу значило бы
+придумывать движение, которого не было. Ей достаточно <strong>линии-всполоха</strong>, и это <strong>тот же
+процедурный колющий</strong>, просто с нулевым прогибом.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Что</th><th>Значение</th></tr></thead><tbody><tr><td>A</td><td>откуда пришёл снаряд</td></tr><tr><td>B</td><td>точка попадания, <strong>в середине</strong> формы — снаряд идёт навылет</td></tr><tr><td>Когда</td><td><strong>после хита</strong>, не в полёте</td></tr><tr><td>Прогиб</td><td>ноль: снаряд летел прямо</td></tr><tr><td>Работа</td><td>ответить «откуда прилетело» плюс общий эффект удара</td></tr></tbody></table></div>
+<p><strong>Единая система на весь бой:</strong> и мили, и дальний строятся по двум точкам с прогибом. У серпа прогиб
+большой, у колющего почти ноль, у линии-всполоха ноль. Разница в числах, а не в коде.</p>
+<h3 id="мимо-брони-отдельного-показа-не-требует">«Мимо брони» отдельного показа не требует<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#мимо-брони-отдельного-показа-не-требует" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Вопрос закрыт (Макс, 31.07.2026): <strong>по самой атаке видно, что это было.</strong> Снаряд света читается как
+снаряд, удар света в ближнем бою — как один из трёх архетипов. Отдельная форма для Света, Тьмы и
+Чистого не заводится, предложение «эффект проступает внутри силуэта» снято.</p>
+<p>Показ эффектов-способностей (не автоатак) — отдельная будущая тема, и заходить в неё рано.</p>
+<h3 id="формы-под-элементы-не-заводятся">Формы под элементы НЕ заводятся<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#формы-под-элементы-не-заводятся" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Магии, огню, льду и прочему отдельные формы не нужны</strong> (вердикт Макса 31.07.2026). Прежнее
+предложение — восемь форм по двум осям — отклонено целиком.</p>
+<p><strong>Причина в разделении осей: форма говорит, КАК доставили, цвет говорит, ЧЕМ ударили.</strong> В ближнем
+бою всегда есть физическая составляющая или понимание, в какой из трёх архетипов удар подставить; в
+дальнем — линия-всполох. Элемент несёт <strong>цвет юнита</strong>, и это работает потому, что юнит тематичен:
+Криомант ледяной именно потому, что он Криомант.</p>
+<p>Выигрыш измеримый: матрица покрывается умножением, а не перечислением. Серп × оранжевый — огненный
+меч, серп × голубой — ледяной. <strong>Новый элемент стоит одну строку палитры, а не новый эффект.</strong></p>
+<p><strong>Гибриды</strong> (юнит с несколькими стихиями) получают цвет <strong>на элемент</strong>, а не один на юнита; удар,
+сочетающий стихию и физику — например огонь плюс режущий — комбинирует два цвета.</p>
+<p><strong>Способ смешения — «ядро и кайма»</strong> (Макс, 31.07.2026): главный элемент светит в ядре, второй идёт
+по краю. Выбран из четырёх нарисованных вариантов потому, что показывает оба цвета одновременно в
+одном месте — на форме, живущей четыре кадра, это надёжнее градиента вдоль. Остальные три (вдоль
+формы, поперёк толщины, слоями) <strong>не отвергнуты</strong>, а отложены: разбор и живые примеры — в стенде
+<code>docs/gamefeel-demos/</code> §Гибриды.</p>
+<p><strong>Ядро всегда остаётся белым пересветом.</strong> Раскрасить его значит потушить оба элемента: самое яркое
+место перестанет быть самым ярким.</p>
+<h3 id="ядро-попадания">Ядро попадания<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ядро-попадания" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Радиальная вспышка, у которой единственный собственный параметр — <strong>радиус</strong>. Своей формы по
+архетипу у неё нет: форму несёт серп, а ядро отвечает за «вот здесь». Цвета — те же, что у атаки, и
+тем же способом смешения (ядро и кайма).</p>
+<p><strong>Магия мазка не получает ни в каком виде.</strong> У магического, светового и тёмного урона нет клинка,
+которым машут; «след лезвия» для них враньё. Им нужна своя форма — кольцо, всплеск, луч, и это
+отдельная строка словаря.</p>
+<h3 id="чем-управляется-каждый-параметр">Чем управляется каждый параметр<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#чем-управляется-каждый-параметр" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Параметр</th><th>Источник</th><th>Почему именно он</th></tr></thead><tbody><tr><td>наклон и направление</td><td>вектор «атакующий → точка попадания»</td><td>тот же, что выбирает точку в области: убийца со спины и копейщик снизу дают разные мазки бесплатно</td></tr><tr><td>архетип формы</td><td>тип урона</td><td>форма сообщает, чем ударили</td></tr><tr><td>длина и толщина</td><td>вес удара (доля HP), <code>EvaluateHitVfxSizeMultiplier</code></td><td>тот же множитель, что у искр</td></tr><tr><td>цвет</td><td>палитра бьющего</td><td>решение 30.07, не пересматривается</td></tr><tr><td>вариация</td><td><code>IRngService</code>, ±10–15%</td><td><strong>только угол и кривизна</strong></td></tr></tbody></table></div>
+<p><strong>Рандом не имеет права спорить с информацией.</strong> Размер несёт вес удара — сделай его ещё и
+случайным, и игрок перестанет читать по нему силу. Разнообразие уже даёт другой канал — точка
+попадания в области; этого достаточно, чтобы восемь ударов подряд не выглядели штампом.</p>
+<h3 id="границы-взмаха-приходят-из-клипа">Границы взмаха приходят из клипа<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#границы-взмаха-приходят-из-клипа" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Точку A даёт маркер <code>StrikeStart</code>, момент запуска — маркер <code>Hit</code>. Маркер <code>StrikeEnd</code> нужен для
+длины проводки в анимации, а не для эффекта.
+<strong>Имена обязаны различаться:</strong> <code>ClipMarkers</code> считает контактами события с именем <code>Hit</code>, и маркер
+взмаха, названный так же, сим засчитал бы за лишний удар — то есть за лишний расчёт урона.
+Офлайн ту же зону размечает <code>RigSweep</code> по скорости кончика оружия — им и сверяться при авторинге.</p>
+<h3 id="точка-попадания--область-а-не-точка">Точка попадания — область, а не точка<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#точка-попадания--область-а-не-точка" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Бить в одну точку (<code>HitPoint</code> на груди) значит получить восемь одинаковых вспышек в одном пикселе.
+Вместо этого — <strong>прямоугольник корпуса</strong>, а внутри него центр тяжести смещается к тому краю, откуда
+пришёл атакующий:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Атакующий</th><th>Откуда бьёт</th><th>Куда приходит</th></tr></thead><tbody><tr><td>Убийца</td><td>со спины</td><td>верх спины, ближе к лопаткам</td></tr><tr><td>Защитник</td><td>в лоб, вплотную</td><td>центр груди</td></tr><tr><td>Копейщик</td><td>снизу, из второй линии</td><td>низ корпуса, ближе к ногам</td></tr><tr><td>Стрелок</td><td>издалека</td><td>там, где вошёл снаряд</td></tr></tbody></table></div>
+<p><strong>Разброс внутри области берётся из <code>IRngService</code>, а не из <code>Random</code>.</strong> Показ не имеет права
+разойтись между клиентами в кооперативе.</p>
+<hr/>
+<h2 id="свечение-части-при-касте-принято-2026-07-31">Свечение части при касте (принято 2026-07-31)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#свечение-части-при-касте-принято-2026-07-31" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Каст показывается тем, что светится ЧАСТЬ-ИСТОЧНИК приёма.</strong> Эталон — SAO: оружие наливается
+светом, когда Система распознала приём. У нас так же, но носитель шире оружия: светится то, <strong>чем
+бьют</strong>, — меч, посох, лук, коготь, кулак, <strong>нога при пинке</strong>, щит при щитовом навыке. Свечение —
+короткий всполох на срабатывании навыка, а не постоянное состояние (<code>2026-07-31/17</code>).</p>
+<h3 id="профиль--как-у-удара-пассив-светит-как-актив">Профиль — как у удара, пассив светит как актив<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#профиль--как-у-удара-пассив-светит-как-актив" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Носитель</th><th>Профиль свечения</th><th>Когда</th></tr></thead><tbody><tr><td><strong>Актив с cast-time</strong></td><td>наливается по кривой за cast-time → пик на кадре выпуска → быстрый спад</td><td>заряд каста</td></tr><tr><td><strong>Актив/пассив мгновенный</strong></td><td>всполох: резкий подъём, мягкий спад</td><td>момент применения</td></tr><tr><td><strong>Блок</strong></td><td>всполох ЩИТА цветом защиты; <strong>тело не вспыхивает вовсе</strong> (Макс, 01.08.2026 — отменяет золотую вспышку тела из <code>2026-07-31/67</code>)</td><td>удар поглощён</td></tr><tr><td><strong>Длительный бафф / аура</strong> (марш и пр.)</td><td><strong>телеграфа сейчас нет</strong> — контур каста снят (<code>2026-07-31/68</code>), развилка в <a href="../../gdd/00-meta/open-forks" class="internal alias" data-slug="gdd/00-meta/open-forks">Open Forks</a></td><td>—</td></tr></tbody></table></div>
+<p><strong>Пассив = активка без маны</strong> (<code>2026-07-31/59</code>), поэтому визуально неотличим от актива и своего
+профиля не имеет.</p>
+<p><strong>Свет не съедает форму</strong> (<code>2026-07-31/66</code>): свечение идёт по яркости самого спрайта, а не заливает
+площадь ровно, иначе на пике часть теряет грани и читается силуэтом. Доля плоского света — ручка
+конфига (<code>CastGlowFlatness</code>).</p>
+<h3 id="цвет--юнита-форма-свечения-не-элементна">Цвет — юнита, форма свечения не элементна<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#цвет--юнита-форма-свечения-не-элементна" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Свечение красится <code>UnitData.VfxColor</code> (<code>2026-07-31/62</code>), навык цвет не переопределяет — та же ось,
+что у всего боевого VFX: цвет говорит, ЧЕМ ударили, а не свечение. Огненный меч у синего бойца
+светится цветом бойца.</p>
+<h3 id="что-это-значит-инженерно-1">Что это значит инженерно<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#что-это-значит-инженерно-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Свечение — СОСТОЯНИЕ тела, а не событие пула</strong> — как порез, живёт в <code>BodyVisualState</code> через
+<code>IUnitBodyVisual</code>, а не в пуле VFX-префабов. Отсюда:</p>
+<ul>
+<li><strong>Адресуется по РОЛИ части.</strong> Части скелета получают роль (оружие / щит / конечность), свечение
+подсвечивает набор ролей поверх общего состояния тела — надстройка, не второй канал: часть обязана
+и светиться сама, и вспыхивать со всеми при ударе. По умолчанию светится часть-носитель приёма.</li>
+<li><strong>Emission в шейдере тела, HDR.</strong> Свечение живёт в измерении яркости (<code>2026-07-31/16</code>); пробивает
+bloom только на HDR ≥ порога — LDR-палитра арта не светится, так и задумано.</li>
+<li><strong>Тайминги и кривые — в <code>CombatFeelConfig</code></strong>, цвет — из палитры юнита, не в feel-SO.</li>
+</ul>
+<p><em>Реализация шва — контур <code>gamefeel-vfx</code>; правда о коде живёт в самом коде.</em></p>
+<hr/>
+<h2 id="статусы-постоянный-слой-принято-2026-07-31">Статусы: постоянный слой (принято 2026-07-31)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#статусы-постоянный-слой-принято-2026-07-31" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>До этого решения статусы в бою были <strong>невидимы</strong>: существовали только дев-кольца
+<code>CombatStatusOverlay</code> по консольной команде. Постоянный эффект нельзя показывать теми же средствами,
+что удар: удар живёт четыре кадра и имеет право звенеть, статус висит секундами на восьми телах
+разом — значит обязан быть тихим и однозначным одновременно.</p>
+<h3 id="цвет-статуса-красится-статусом-а-не-бьющим">Цвет статуса красится СТАТУСОМ, а не бьющим<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#цвет-статуса-красится-статусом-а-не-бьющим" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Ось <code>2026-07-31/62</code> («цвет говорит, ЧЕМ ударили») действует на <strong>событиях</strong>. У <strong>состояния</strong> ось
+разворачивается: игрок читает на теле цели, что с ней происходит, а не кто это сделал. Автор отыгран
+раньше — вспышкой и искрами в момент наложения, там палитра бьющего в силе.</p>
+<p><strong>Критерий раздела: общий статус — язык боя, уникальный личный эффект — язык персонажа.</strong> Эффект,
+который носят несколько юнитов (<code>Burn</code>, <code>Poison</code>, <code>Frostbite</code>, <code>Bleed</code>, стан, сон), красится
+статусом. Эффект, существующий ровно у одного носителя и являющийся частью его личности
+(<code>BlazingBlades</code>, <code>BloodStance</code>, <code>PackInstinct</code>), красится <code>UnitData.VfxColor</code>.</p>
+<p><strong>Гард:</strong> уникальный эффект, висящий на ЧУЖОМ теле, красится статусом невзирая на уникальность —
+иначе метка Следопыта и метка Варлока станут двумя разными понятиями вместо одного «помечен».
+Практически палитрой юнита красятся почти только баффы на себя.</p>
+<h3 id="четыре-канала-в-канале-не-больше-одного-статуса">Четыре канала, в канале не больше одного статуса<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#четыре-канала-в-канале-не-больше-одного-статуса" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Канал</th><th>Где живёт</th><th>Что держит</th></tr></thead><tbody><tr><td><strong>Воля</strong></td><td>поза и темп самого тела</td><td>стан, сон, заморозка</td></tr><tr><td><strong>Тело</strong></td><td>силуэт и его материал</td><td>горение, яд, изморозь, кровотечение, скрытность</td></tr><tr><td><strong>Снаружи</strong></td><td>контур и над головой</td><td>щит, метка, усиление</td></tr><tr><td><strong>Земля</strong></td><td>под ногами</td><td>замедление, корни</td></tr></tbody></table></div>
+<p>Каналы не спорят, потому что заняли <strong>четыре разных места вокруг силуэта</strong>. Воля старше остальных:
+кто выключен — тактически важнее, чем кто горит, поэтому застанённый горящий уходит горением в
+четверть яркости. Младшее в канале <strong>гасится, а не прячется</strong> — выключенный слой читался бы как
+«эффект слетел».</p>
+<h3 id="различитель--вектор-и-темп-а-не-иконка">Различитель — вектор и темп, а не иконка<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#различитель--вектор-и-темп-а-не-иконка" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Движение ловится периферийным зрением раньше цвета и много раньше формы. При тела́х 96 px и статусе,
+висящем секундами, это единственный надёжный канал.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Вектор</th><th>Читается как</th></tr></thead><tbody><tr><td>вверх, быстро</td><td>горит</td></tr><tr><td>вверх, редко и медленно</td><td>отравлен</td></tr><tr><td>вниз</td><td>теряет</td></tr><tr><td><strong>нулевое</strong></td><td>окаменел</td></tr><tr><td>медленный пульс</td><td>выключен, но цел</td></tr><tr><td>дрожь</td><td>выключен и мучается</td></tr><tr><td>по орбите</td><td>помечен извне</td></tr></tbody></table></div>
+<p><strong>Заморозке нужен не эффект, а отнятие движения.</strong> Абсолютный стоп-кадр среди шевелящихся читается
+быстрее любого голубого свечения и стоит ноль частиц.</p>
+<h3 id="словарь-статусов">Словарь статусов<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#словарь-статусов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Статус</th><th>Канал</th><th>Приём</th></tr></thead><tbody><tr><td><strong>Стан</strong></td><td>Воля</td><td>поза обвисла, мелкая дрожь, три коротких штриха по орбите над головой</td></tr><tr><td><strong>Сон</strong></td><td>Воля</td><td>тело оседает, медленный пульс яркости, редкие точки вверх</td></tr><tr><td><strong>Заморозка</strong></td><td>Воля</td><td>анимация в абсолютный стоп, тело белеет к синему, гранёный контур поверх</td></tr><tr><td><strong>Изморозь</strong></td><td>Тело</td><td>синий налёт снизу вверх по силуэту, высота = стаки; дошёл до макушки — Заморозка</td></tr><tr><td><strong>Замедление</strong></td><td>Земля</td><td>вязкая клякса под ногами, тянется за юнитом</td></tr><tr><td><strong>Корни</strong></td><td>Земля</td><td>то же место, форма схватывающая, а не растекающаяся</td></tr><tr><td><strong>Горение</strong></td><td>Тело</td><td>языки от контура вверх</td></tr><tr><td><strong>Угли</strong></td><td>—</td><td><strong>своего знака нет</strong>: больше огненных всполохов на хите, плюс подъём ступени горения (см. ниже)</td></tr><tr><td><strong>Яды</strong> (их много)</td><td>Тело + канал функции</td><td>род — пузыри вверх и зелёный подтон; дебафф-часть — своим каналом (см. ниже)</td></tr><tr><td><strong>Кровотечение</strong></td><td>Тело</td><td><strong>своего знака нет</strong>: порция крови = <strong>текущий порез</strong> (см. ниже)</td></tr><tr><td><strong>Лечение (HoT)</strong></td><td>Снаружи</td><td>искры приходят <strong>извне к телу</strong>: яд выделяет, лечение собирает</td></tr><tr><td><strong>Антихил</strong></td><td>Снаружи</td><td>тот же приход внутрь, но искры гаснут на подлёте и осыпаются — «не доходит»</td></tr><tr><td><strong>Барьер</strong></td><td>Снаружи</td><td>сфера: почти невидима в покое, светится от поглощённого урона, остаток — трещины (§Барьер)</td></tr><tr><td><strong>Метка</strong></td><td>Снаружи</td><td>один знак над головой, медленное вращение</td></tr><tr><td><strong>Скрытность</strong></td><td>Тело</td><td>прозрачность и десатурация, контур остаётся</td></tr><tr><td><strong>Усиление</strong></td><td>Снаружи</td><td>восходящие штрихи плюс свечение оружия (§Свечение части при касте)</td></tr></tbody></table></div>
+<p><strong>Эхо-силуэты статусам не принадлежат</strong> — они остаются за рывками. Эхо по природе след быстрого
+движения; приём, означающий и «очень быстро», и «очень медленно», не означает ничего. Плюс
+замедленный юнит, стоящий на месте, эха не даёт вовсе — а слоу застаёт его чаще всего именно так.</p>
+<h3 id="точность-живёт-в-отдельном-слое-и-он-тумблер">Точность живёт в отдельном слое, и он тумблер<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#точность-живёт-в-отдельном-слое-и-он-тумблер" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Постоянный слой отвечает «что происходит и насколько плохо». <strong>Точное число стаков и длительность —
+информационный слой по клавише <code>Z</code></strong>: тумблер, а не удержание, и <strong>пауза его сама не включает</strong> —
+пауза у нас ещё и кадр, чтобы разглядеть бой. Иначе иконочная ёлка возвращается через постоянно
+включённый слой.</p>
+<h3 id="различитель-заводится-под-разницу-в-последствиях-принято-2026-08-01">Различитель заводится под разницу в ПОСЛЕДСТВИЯХ (принято 2026-08-01)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#различитель-заводится-под-разницу-в-последствиях-принято-2026-08-01" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>У нас нет одного «яда».</strong> Яд — это статус-<strong>форма</strong> «DoT плюс обязательный дебафф», и ядов много: «Гниль»
+Убийцы шредит броню, «Трупный яд» скелетов замедляет и режет лечение, «Ядовитая печать» копит отложенный
+взрыв. Показывать их одинаково нельзя, показывать каждый по-своему — тоже: игрок не запомнит десять
+оттенков зелёного.</p>
+<p>Правило: <strong>различитель заводится под разницу в последствиях, а не в имени или авторе.</strong> Два яда с
+одинаковой функцией выглядят одинаково — игроку от них одно и то же. Три уровня:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Уровень</th><th>Где живёт</th><th>Что несёт</th></tr></thead><tbody><tr><td><strong>Род</strong></td><td>канал «тело»</td><td>«его травят» / «он кровит» — природа, не более</td></tr><tr><td><strong>Функция дебаффа</strong></td><td>канал по смыслу функции</td><td>шред брони — <strong>контур истончается</strong> (защита тает); замедление — земля; антихил — искры не доходят; печать — знак с убывающим сроком</td></tr><tr><td><strong>Число уникальных ядов</strong></td><td>канал «тело»</td><td>каждый яд даёт <strong>свой источник пузырей</strong>; оттенки внутри зелёного. Не косметика: «Взрыв спор» лечит за каждый <strong>уникальный</strong> яд</td></tr></tbody></table></div>
+<p>Точный состав — информационный слой по <code>Z</code>.</p>
+<h3 id="топливо-показывается-через-удар-а-не-знаком-на-теле">Топливо показывается через удар, а не знаком на теле<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#топливо-показывается-через-удар-а-не-знаком-на-теле" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Угли</strong> (множитель огненного урона, бессрочны, до 999) <strong>своего постоянного знака не имеют</strong>. Они
+проявляются двумя способами:</p>
+<ul>
+<li><strong>больше огненных всполохов на хите</strong>, когда по цели бьют огнём — даже если цель не горит, видно, что
+огненный урон по ней растёт;</li>
+<li><strong>поднимают ступень горения</strong>, когда цель горит: ступень несёт <strong>опасность</strong>, а не счётчик стаков, а
+горящий с углями действительно опаснее.</li>
+</ul>
+<p><strong>Угли и «Изморозь» взаимно вычитаются 1 к 1</strong> — значит на теле почти никогда не видно термальную пару
+одновременно, и абсурд «горит и обмерзает» решён в механике, а не в шейдере.</p>
+<h3 id="жизнь-эффекта-рождение-повтор-конец-принято-2026-08-01">Жизнь эффекта: рождение, повтор, конец (принято 2026-08-01)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#жизнь-эффекта-рождение-повтор-конец-принято-2026-08-01" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Шесть событий, которые до этого выглядели одинаково. <strong>Главное правило: снятие сохраняет ФОРМУ и меняет
+только ЦВЕТ</strong> — тогда видно и «что» сняли (по форме эффекта), и «чем» (по цвету). Та же ось, что у
+удара, где форма говорит КАК доставили, а цвет — ЧЕМ ударили.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Событие</th><th>Показ</th><th>Что читается</th></tr></thead><tbody><tr><td><strong>Наложился</strong></td><td>всплеск формы наружу и осадка</td><td>эффекта не было, стал</td></tr><tr><td><strong>Стак +1</strong></td><td><strong>толчок</strong>: форма дёргается наружу и возвращается</td><td>стало <strong>больше</strong></td></tr><tr><td><strong>Обновили срок</strong></td><td><strong>волна</strong> по телу, форма не растёт</td><td>стало <strong>дольше</strong>, но не сильнее</td></tr><tr><td><strong>Клинс</strong></td><td>форма <strong>голубеет</strong>, затем тает</td><td>с тебя сняли плохое</td></tr><tr><td><strong>Диспел баффа</strong></td><td>форма <strong>темнеет</strong> и срывается, без таяния</td><td>с тебя сорвали хорошее</td></tr><tr><td><strong>Истёк сам</strong></td><td>ровное угасание <strong>в своём цвете</strong></td><td>ничего не произошло, время вышло</td></tr></tbody></table></div>
+<p><strong>Голубой — цвет действия, а не кастера:</strong> клинс Пастыря и клинс Друида обязаны читаться одинаково, иначе
+«сняли» перестанет быть одним понятием. Тот же гард, что у цвета статусов.</p>
+<p><strong>Перекраска и растворение идут последовательно</strong>, не разом: сначала цвет (2–3 кадра), потом таяние
+(3–6). Одновременно получилось бы «мигнуло и исчезло», и «что» потерялось бы — ради него приём и заведён.</p>
+<p><strong>Истечение не красится ничем.</strong> Любой цвет превратил бы его в событие, а оно не событие. Симметрично
+барьеру: развеивание ровное, разрушение с осколками.</p>
+<p><strong>«Не влез в потолок» не показываем вовсе.</strong> Глухих потолков у нас почти нет: угли и гниль до 999, кровь
+без потолка, а двадцатый стак «Изморози» — не отказ, а <strong>переход в статую</strong>. Наложение сработало, просто
+иначе, и показывать нечего.</p>
+<h3 id="тик-dot--мягкая-волна-в-цвете-школы-принято-2026-08-01">Тик DoT — мягкая волна в цвете школы (принято 2026-08-01)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#тик-dot--мягкая-волна-в-цвете-школы-принято-2026-08-01" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Постоянный знак получает только тот статус, у кого есть постоянное СОСТОЯНИЕ ТЕЛА:</strong> горит — языки,
+обмёрз — налёт, ранен — порезы. Сам факт «его точит DoT» несёт <strong>волна по силуэту</strong> в момент тика.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th>Волна DoT</th><th>Вспышка удара</th></tr></thead><tbody><tr><td>Цвет</td><td>школы (яд зелёный, огонь оранжевый, кровь красная)</td><td>белая</td></tr><tr><td>Живёт</td><td>~10 кадров</td><td>3 кадра</td></tr><tr><td>Характер</td><td>мягкая, идёт по телу снизу вверх</td><td>резкая, вся разом</td></tr></tbody></table></div>
+<p>Отсюда ответ на «ядов много»: <strong>у яда состояния тела нет — есть тик и дебафф</strong>, поэтому постоянного
+знака ему не полагается вовсе. Все яды дают одну зелёную волну, а различаются <strong>дебафф-частью</strong>, у
+которой визуал уже решён (шред брони, замедление, антихил, печать). Десять разных ядов выглядят
+одинаково ровно потому, что делают для игрока одно и то же.</p>
+<h3 id="кровотечение-порция-крови--это-текущий-порез">Кровотечение: порция крови — это текущий порез<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#кровотечение-порция-крови--это-текущий-порез" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Кровь идёт по <strong>порционной модели</strong>: каждое наложение — своя порция со своей силой и своим сроком, порции
+сходят независимо, потолка нет, а число стаков — производная от их числа. <strong>Ступеней у механики нет</strong>,
+поэтому показ их не назначает:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Что</th><th>Чем показано</th></tr></thead><tbody><tr><td>число ран</td><td><strong>число текущих порезов</strong> на теле</td></tr><tr><td>общая сила</td><td><strong>ступень по DPS</strong> (см. ниже)</td></tr><tr><td>«Разрыв» тратит порции</td><td>порезы гаснут разом, а не по одному</td></tr></tbody></table></div>
+<p>Своего знака кровотечению не нужно: у пореза и так есть свой запас и своё независимое угасание.</p>
+<p><strong>Стадий четыре, и берутся они из DPS-метра крови</strong> — механика при этом не меняется вовсе: порции
+работают как работали, метр только читает их суммарный урон. Пороги — в <strong>долях maxHP цели за секунду</strong>,
+а не в абсолютных единицах, которые устареют с ростом статов за забег.</p>
+<p><strong>Стадию несёт ПРОПИТЫВАНИЕ</strong> (принято 2026-08-01): тело краснеет снизу вверх, на четвёртой стадии залит
+целиком. Подтон намеренно <strong>слабый</strong> — «не съедает силуэт, просто чуть красит»: силуэт остаётся
+носителем класса и оружия, то есть более важного факта.</p>
+<p>Работает <strong>площадью, а не мелкой графикой</strong>, поэтому читается и в свалке из восьми тел, где капли
+терялись бы. Отклонены: капли со струйками (мелко), свечение ран (путается с огнём), пульс (требует
+смотреть на юнита секунду, а в автобое её нет). Все четыре подхода остались в стенде
+<code>docs/gamefeel-demos</code> §Превью эффектов.</p>
+<p>Число порезов при этом остаётся вторым, независимым фактом: <strong>стадия говорит, как быстро он умирает,
+порезы — сколько ран открыто</strong>.</p>
+<h3 id="стак-читается-тремя-ступенями-принято-2026-07-31">Стак читается тремя ступенями (принято 2026-07-31)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#стак-читается-тремя-ступенями-принято-2026-07-31" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Постоянный слой сворачивает число стаков в <strong>три состояния тела: мало / средне / много</strong>. Глаз
+надёжно различает ровно столько; непрерывная шкала формально честнее к модели, но 17 против 20 в бою
+не читается, да ещё и упирается в потолок там, где стаки идут дальше. Точное число берёт
+информационный слой.</p>
+<p><strong>Пороги — абсолютные числа на самом статусе, а не формула от потолка.</strong> Масштаб стаков у каждого свой,
+единой формулы на всех не будет; четыре порога живут в SO статуса. Ступени режут не порядок величины, а
+<strong>игровой смысл</strong>. У «Изморози» пороги <strong>уже заданы механикой</strong> — Замёрз (1–9), Примёрз (10–19),
+Обратился в лёд (20), — и показ берёт их, а не назначает свои.</p>
+<p>Шкала огня (это шкала <strong>«Углей» плюс факт горения</strong>, а не стаков Поджога — у Поджога стаков нет вовсе):</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Ступень</th><th>Стаков</th><th>Смысл</th></tr></thead><tbody><tr><td>1 · мало</td><td>1–9</td><td>норма</td></tr><tr><td>2 · средне</td><td>10–29</td><td>сильно</td></tr><tr><td>3 · много</td><td>30–99</td><td>перекачано</td></tr><tr><td>4 · пасхалка</td><td><strong>100 и выше</strong></td><td>поломка</td></tr></tbody></table></div>
+<p><strong>Переход между ступенями — кроссфейд 0.15 с, а не переключатель.</strong> DoT тикает и добавляется, стаки
+ходят вокруг порога, и на жёсткой границе тело мигало бы между состояниями.</p>
+<p><strong>Четвёртая ступень существует — как пасхалка на сломе, а не как продолжение шкалы.</strong> Абсурдный стак
+не показывается «ещё ярче»: тело меняет <strong>состояние</strong> — языки сходятся в столб выше роста, тело
+уходит в силуэт внутри пересвета. Три гарда:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Гард</th><th>Значение</th></tr></thead><tbody><tr><td>Порог</td><td><strong>100 и выше, открыт вверх</strong> — 999 это пример, а не граница</td></tr><tr><td>Где живёт</td><td>у эффектов без балансного потолка: где потолок есть, сотня недостижима</td></tr><tr><td>Частицы</td><td>тот же потолок, что у искр — растёт характер, не количество</td></tr></tbody></table></div>
+<p>В язык читаемости четвёртая ступень <strong>не входит</strong>: важную информацию на неё вешать нельзя, её почти
+никто никогда не увидит. Тумблер обязателен, как у любого эффекта джуса.</p>
+<h3 id="барьер-щит-который-помнит-удары-принято-2026-07-31">Барьер: щит, который помнит удары (принято 2026-07-31)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#барьер-щит-который-помнит-удары-принято-2026-07-31" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Речь о поглощающем барьере (<code>EffectTag.Shield</code>), не о блоке щитом-предметом — тот решён отдельно
+(вспышка золотом, серп обрывается о щит, пореза нет).</p>
+<p><strong>Барьер висит постоянно, но в покое почти невидим.</strong> Сфера — самая большая площадь из всего, что мы
+рисуем; постоянная яркая сфера перекрыла бы канал «Тело», и горение с порезами оказались бы за
+стеклом. Поэтому в покое — еле заметная кайма, а работать барьер начинает под ударом.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Событие</th><th>Показ</th></tr></thead><tbody><tr><td><strong>Удар поглощён</strong></td><td>подсветка, <strong>тем сильнее, чем больше урон</strong>, и сильнее всего в точке контакта</td></tr><tr><td><strong>Тик эффекта (DoT)</strong></td><td>вспышка по <strong>всей</strong> поверхности, но слабее: бьют не в место, а всюду</td></tr><tr><td><strong>Остаток барьера</strong></td><td><strong>доля проявленного узора трещин</strong> (см. ниже)</td></tr><tr><td><strong>Разрушение</strong> (сломали)</td><td>трещины сходятся, куски скорлупы уходят <strong>радиально прочь от юнита</strong> и быстро гаснут по прозрачности</td></tr><tr><td><strong>Развеивание</strong> (истёк)</td><td>гаснет ровно, вверх, <strong>без осколков</strong></td></tr></tbody></table></div>
+<p>Два финала обязаны читаться по-разному: «сняли» и «кончился» — разные тактические факты. Различитель —
+<strong>наличие осколков</strong>, а не их направление: барьер лопается целиком, а не сдувается в сторону, а кто добил,
+уже сказано вспышкой в точке контакта кадром раньше.</p>
+<h4 id="трещины--это-узор-из-которого-видна-доля">Трещины — это узор, из которого видна доля<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#трещины--это-узор-из-которого-видна-доля" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>Узор генерируется целиком при рождении щита, показ проявляет его часть</strong> — не «восемь трещин», а «от
+части до всего узора». У порезов на теле дискретность несёт смысл (каждый порез — удар); у барьера смысл
+другой, «насколько цел», то есть площадь, а не счёт. Счётные трещины упёрлись бы в лимит на двадцатом
+ударе и перестали показывать разницу.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Правило</th><th>Почему</th></tr></thead><tbody><tr><td>Проявление идёт <strong>от точек удара</strong>, не по индексу</td><td>узор остаётся связным, но помнит, откуда били</td></tr><tr><td>Геометрия <strong>монотонна</strong>, яркость = текущая целостность</td><td>трещины не заживают, но «вот-вот лопнет» при крепком барьере — ложь. Широкая бледная сеть = «били сильно, сейчас крепок»</td></tr><tr><td>Полный узор совпадает с пробитием</td><td>распад идёт <strong>по своим же трещинам</strong>, шкала не требует калибровки</td></tr><tr><td>Узор принадлежит оболочке</td><td>развеялась — унесла свой узор; новый щит приходит с чистым</td></tr></tbody></table></div>
+<h4 id="оболочка--на-тип-вложенность--очередь-трат">Оболочка — на тип, вложенность — очередь трат<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#оболочка--на-тип-вложенность--очередь-трат" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Тип</th><th>Цвет</th><th>Место</th></tr></thead><tbody><tr><td>физический</td><td>оранжевый</td><td>снаружи</td></tr><tr><td>магический</td><td>фиолетовый</td><td>под ним</td></tr><tr><td>обычный</td><td>сероватый</td><td>ближе к телу, тратится последним</td></tr></tbody></table></div>
+<p><strong>Оболочка одна на тип, а не на эффект:</strong> четыре налёта Антимага дают одну фиолетовую, потому что игроку
+нужно «магией не пробить», а не «какой из четырёх сейчас тает». Значит оболочек максимум три. Вложенность
+повторяет очередь трат в симуляции — школьные щиты работают в pre-damage, до вычета общего пула.</p>
+<p><strong>Трещины есть только у оболочек, которые реально ели урон:</strong> пока внешняя цела, до внутренней урон не
+доходил. Отсюда и ответ про перегрузку — одновременно треснутых максимум три, на практике одна-две.</p>
+<p><strong>Стаки барьеров</strong> (Антимаг копит без потолка) идут той же трёхступенчатой шкалой, что стаки
+статусов — толщиной и плотностью каймы.</p>
+<h4 id="блок--это-тот-же-барьер-только-на-04-с-и-с-жестом">Блок — это тот же барьер, только на 0.4 с и с жестом<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#блок--это-тот-же-барьер-только-на-04-с-и-с-жестом" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><code>BlockComponent</code> при срабатывании накладывает <strong>короткий щит-эффект</strong>, который и гасит вызвавший его удар.
+Значит барьер — механизм, а блок — один из способов его получить, и отдельного визуального языка ему не
+нужно.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th>Живёт</th><th>Жест</th><th>Будят</th><th>Читается как</th></tr></thead><tbody><tr><td><strong>Блок</strong></td><td>0.4 с — узор не успевает проявиться</td><td>есть</td><td>только прямые удары, нужна дееспособность</td><td>«отбил»</td></tr><tr><td><strong>Барьер</strong></td><td>секунды</td><td>нет</td><td>всё, включая DoT</td><td>«под защитой»</td></tr></tbody></table></div>
+<p><strong>Жест целится в точку удара</strong> — направление берётся оттуда же, откуда точка попадания, поэтому наведение
+это базовая поза плюс <code>Aim</code> части-щита.</p>
+<p><strong>Блок направленный, барьер — нет</strong> (принято 2026-07-31). Блок проверяет фронтальный сектор <strong>180°</strong> тем
+же правилом, что парирование, поэтому удар со спины его не будит вовсе: оболочка не поднимается, урон
+идёт в тело. Жест от этого становится честным всегда — он есть ровно там, где блок сработал. Барьер
+направления не знает и гасит что угодно, включая тик яда и удар в спину, просто без жеста.</p>
+<p>Жест живёт <strong>на верхнем слое анимации и прерывается</strong>: заряды блока независимы, два жеста могут пойти
+подряд и посреди собственного замаха.</p>
+<h4 id="пробитие-насквозь--исключение-из-формы-обрывающейся-о-щит">Пробитие насквозь — исключение из «формы, обрывающейся о щит»<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#пробитие-насквозь--исключение-из-формы-обрывающейся-о-щит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>Щита 20, удар 100: барьер лопнул, 80 ушло в тело. Тогда <strong>форма НЕ обрывается</strong> и порез есть. Правило
+целиком: обрывается о щит, который выдержал; проходит сквозь тот, который пробит.</p>
+<p><strong>Показу нужен журнал, а не состояние сима.</strong> Барьер живёт в презентации, как порезы: сим присылает
+события (щит поднят — тип и величина · поглощено — тип и сколько · щит ушёл — тип и сколько унёс), а
+оболочки, узоры и их доли собирает показ. Поэтому порядок трат в симуляции менять не пришлось.</p>
+<p><strong>Две связки работают без правок:</strong> серп <strong>обрывается о барьер</strong> так же, как о щит, и <strong>пореза нет</strong> —
+«нет вскрытия, нет пореза» распространяется на барьер само собой.</p>
+<h4 id="форма--эллипс-круглая-без-углов-просторнее-тела">Форма — эллипс: круглая, без углов, просторнее тела<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#форма--эллипс-круглая-без-углов-просторнее-тела" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>Поверхность круглая</strong> — гранёные и стеклянно-фасетные варианты отклонены. Из круглых принят
+<strong>эллипс</strong>: вытянутый по высоте симметричный сфероид. Термин канона — <strong>купол</strong> («конус» не подходит —
+у конуса вершина; «шар» тоже — в проекции он не круглый).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Параметр</th><th>Значение</th></tr></thead><tbody><tr><td>Полуоси</td><td><strong>~0.34 H</strong> в ширину, <strong>~0.68 H</strong> в высоту</td></tr><tr><td>Центр</td><td><strong>0.52 H</strong> от земли</td></tr><tr><td>Низ</td><td>подрезан линией земли — купол стоит, а не парит</td></tr><tr><td>Заливка</td><td>почти нулевая: тело под куполом важнее</td></tr></tbody></table></div>
+<p><strong>Зазор до тела намеренно заметный.</strong> Пустое место у барьера — не дефект, а смысл: барьер <strong>окружает</strong>
+юнита, а не обводит его. Формы, облегающие силуэт плотнее (овоид с сужением к макушке, кокон с прямыми
+боками), отклонены именно за это — они читаются как контур тела, а не как силовое поле.</p>
+<p><strong>В покое видно только силуэт</strong> — тонкую линию контура. Подсветка приходит исключительно с ударом:
+пятно в точке контакта расходится <strong>волной</strong> по поверхности, и чем слабее остаточная вспышка, тем шире
+фронт.</p>
+<p>Узор трещин живёт в геометрии купола и <strong>задаёт линии разлома</strong>, поэтому при пробитии скорлупа
+расходится кусками именно этой формы. Разбор отклонённых вариантов —
+<a href="../../gdd/00-meta/closed-forks" class="internal alias" data-slug="gdd/00-meta/closed-forks">Closed Forks</a>.</p>
+<h3 id="что-это-значит-инженерно-2">Что это значит инженерно<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#что-это-значит-инженерно-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Статус — <strong>состояние</strong>, а не событие пула: живёт в <code>BodyVisualState</code> через <code>IUnitBodyVisual</code>, рядом с
+порезом и свечением части. Пул VFX-префабов нужен только на <strong>момент наложения</strong>. Канал «Земля» —
+единственный, кому нужен свой носитель: спрайт/Shapes на слое <code>GroundFX</code> под юнитом.</p>
+<p><em>Реализация шва — контур <code>gamefeel-vfx</code>; правда о коде живёт в самом коде.</em></p>
+<hr/>
+<h2 id="зоны-круг-линия-и-то-что-стоит-на-арене-proposed-2026-07-31">Зоны: круг, линия и то, что стоит на арене (<code>proposed</code>, 2026-07-31)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#зоны-круг-линия-и-то-что-стоит-на-арене-proposed-2026-07-31" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Формы в механике две — <strong>круг</strong> (вокруг себя либо вокруг цели) и <strong>линия</strong> (перед юнитом в сторону цели).
+Третий вид заведён решением <code>2026-07-31/93</code>: <strong>стоячая зона</strong>, живущая на арене и тикающая, — облако
+спор, ледяное поле, горящая земля.</p>
+<h3 id="три-фазы-акцент-на-подводке">Три фазы, акцент на подводке<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#три-фазы-акцент-на-подводке" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Фаза</th><th>Что рисуем</th><th>Живёт</th></tr></thead><tbody><tr><td><strong>Подводка</strong></td><td>контур зоны, заполняющийся к моменту срабатывания</td><td>cast-time способности</td></tr><tr><td>Срабатывание</td><td>вспышка по контуру и внутрь</td><td>3–4 кадра</td></tr><tr><td>След</td><td>отметина в форме зоны, гаснет</td><td>0.5–1 с</td></tr></tbody></table></div>
+<p><strong>Акцент на подводке принят сознательно</strong> (<code>2026-07-31/94</code>): игрок в автобое не уклоняется, но круг,
+растущий под ногами, делает бой читаемым <strong>в момент</strong>, а не только в разборе. Наш лаг показа делает
+подводку честной — сим уже посчитал, лента её держит, круг не врёт о том, что случится.</p>
+<p><strong>Инженерное следствие:</strong> зональному касту нужен <strong>cast-time</strong>, иначе подводке негде жить. Мгновенный
+зональный каст показывает только вспышку и след.</p>
+<h3 id="контур-несёт-форму-заливка-почти-отсутствует">Контур несёт форму, заливка почти отсутствует<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#контур-несёт-форму-заливка-почти-отсутствует" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Зоны <strong>пересекаются</strong>, а аддитивные заливки складываются: две зоны дают пятно, три — кашу. Поэтому
+работает контур, а заливка живёт на минимуме и только внутри срабатывания.</p>
+<p><strong>Зона лежит в плоскости земли</strong> — круг рисуется эллипсом с той же сплюснутостью, что тень юнита и купол
+барьера. Иначе он читается как сфера в воздухе.</p>
+<h3 id="цвет--по-уже-принятому-правилу">Цвет — по уже принятому правилу<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#цвет--по-уже-принятому-правилу" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Что</th><th>Чем красится</th></tr></thead><tbody><tr><td>зона-удар (взрыв, прокол, ледяное поле от врага)</td><td>палитра <strong>бьющего</strong>: это событие</td></tr><tr><td>зона-аура, зона-бафф по союзникам</td><td>цвет <strong>статуса</strong>: это состояние</td></tr></tbody></table></div>
+<h3 id="чем-стоячая-зона-отличается-в-показе">Чем стоячая зона отличается в показе<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#чем-стоячая-зона-отличается-в-показе" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Она <strong>не имеет фазы подводки</strong> (её никто не «заряжает» — она уже здесь) и <strong>не гаснет по следу</strong>: контур
+держится всё время жизни, а тик по стоящим внутри показывается на телах, а не на земле. Иначе каждый тик
+перерисовывал бы зону и она мигала бы вместо того, чтобы лежать.</p>
+<h2 id="что-здесь-не-живёт">Что здесь НЕ живёт<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#что-здесь-не-живёт" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Цвет и насыщенность</strong> — <a href="../../gdd/70-gamefeel/vfx-color" class="internal alias" data-slug="gdd/70-gamefeel/vfx-color">Gamefeel - VFX Color</a>.</li>
+<li><strong>Какая текстура играет роль</strong> — <a href="../../gdd/70-gamefeel/asset-palette" class="internal alias" data-slug="gdd/70-gamefeel/asset-palette">Gamefeel - Asset Palette</a>.</li>
+<li><strong>Hitstop, тряска, slowmo, замедление на добивании</strong> — тактильно-временной слой,
+<a href="../../gdd/70-gamefeel/backlog-gamefeel" class="internal alias" data-slug="gdd/70-gamefeel/backlog-gamefeel">Gamefeel - Backlog</a> и трек 5
+<a href="../../gdd/10-vision/visual-direction" class="internal alias" data-slug="gdd/10-vision/visual-direction">Vision - Visual Direction</a>.</li>
+<li><strong>Как это устроено в коде</strong> — шов <code>VfxData</code> → префаб → пул → сокет живёт в контуре
+<code>gamefeel-vfx</code>; правда о реализации — в самом коде.</li>
+<li><strong>Идеи без вердикта</strong> — <a href="../../gdd/70-gamefeel/backlog-vfx-particles-shaders" class="internal alias" data-slug="gdd/70-gamefeel/backlog-vfx-particles-shaders">Gamefeel - Backlog
+(Particles &amp; Shaders)</a>.</li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-85" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#язык-боевых-эффектов" data-for="язык-боевых-эффектов">Язык боевых эффектов</a></li><li class="depth-1"><a href="#зачем-этот-док" data-for="зачем-этот-док">Зачем этот док</a></li><li class="depth-1"><a href="#термины" data-for="термины">Термины</a></li><li class="depth-1"><a href="#форму-делает-шейдер-а-не-спрайт-принято-31072026" data-for="форму-делает-шейдер-а-не-спрайт-принято-31072026">Форму делает шейдер, а не спрайт (принято 31.07.2026)</a></li><li class="depth-1"><a href="#четыре-роли-proposed" data-for="четыре-роли-proposed">Четыре роли (proposed)</a></li><li class="depth-1"><a href="#три-стадии-времени-proposed" data-for="три-стадии-времени-proposed">Три стадии времени (proposed)</a></li><li class="depth-1"><a href="#шкала-важности" data-for="шкала-важности">Шкала важности</a></li><li class="depth-1"><a href="#словарь-событий" data-for="словарь-событий">Словарь событий</a></li><li class="depth-1"><a href="#искры" data-for="искры">Искры</a></li><li class="depth-1"><a href="#порезы-тело-помнит-бой-принято-31072026" data-for="порезы-тело-помнит-бой-принято-31072026">Порезы: тело помнит бой (принято 31.07.2026)</a></li><li class="depth-2"><a href="#порезы-накапливаются" data-for="порезы-накапливаются">Порезы накапливаются</a></li><li class="depth-2"><a href="#хил-заживляет-самые-старые" data-for="хил-заживляет-самые-старые">Хил заживляет САМЫЕ СТАРЫЕ</a></li><li class="depth-2"><a href="#порез-гладкий-а-не-пиксельный" data-for="порез-гладкий-а-не-пиксельный">Порез гладкий, а не пиксельный</a></li><li class="depth-2"><a href="#заживление-пропорционально-весу-пореза" data-for="заживление-пропорционально-весу-пореза">Заживление пропорционально весу пореза</a></li><li class="depth-2"><a href="#порез-от-выстрела--та-же-зазубрина" data-for="порез-от-выстрела--та-же-зазубрина">Порез от выстрела — та же зазубрина</a></li><li class="depth-2"><a href="#порезы--это-нарративный-hp-бар-и-так-задумано" data-for="порезы--это-нарративный-hp-бар-и-так-задумано">Порезы — это нарративный HP-бар, и так задумано</a></li><li class="depth-2"><a href="#цвет--красный-у-всех" data-for="цвет--красный-у-всех">Цвет — красный у всех</a></li><li class="depth-2"><a href="#что-это-значит-инженерно" data-for="что-это-значит-инженерно">Что это значит инженерно</a></li><li class="depth-2"><a href="#блок-вскрытия-не-даёт" data-for="блок-вскрытия-не-даёт">Блок вскрытия не даёт</a></li><li class="depth-2"><a href="#открытые-вопросы-события" data-for="открытые-вопросы-события">Открытые вопросы события</a></li><li class="depth-1"><a href="#автоатака-мили-принято-31072026" data-for="автоатака-мили-принято-31072026">Автоатака мили (принято 31.07.2026)</a></li><li class="depth-2"><a href="#два-эффекта-в-разное-время-дуга-на-взмахе-серп-на-хите" data-for="два-эффекта-в-разное-время-дуга-на-взмахе-серп-на-хите">Два эффекта в разное время: дуга на взмахе, серп на хите</a></li><li class="depth-2"><a href="#блок-обрывает-форму--под-тумблером" data-for="блок-обрывает-форму--под-тумблером">Блок обрывает форму — под тумблером</a></li><li class="depth-2"><a href="#серия-ударов-сколько-маркеров--столько-форм" data-for="серия-ударов-сколько-маркеров--столько-форм">Серия ударов: сколько маркеров — столько форм</a></li><li class="depth-2"><a href="#форма-замирает-вместе-с-hitstop" data-for="форма-замирает-вместе-с-hitstop">Форма замирает вместе с hitstop</a></li><li class="depth-2"><a href="#серп-строится-по-двум-точкам-а-не-по-траектории-клинка" data-for="серп-строится-по-двум-точкам-а-не-по-траектории-клинка">Серп строится по ДВУМ ТОЧКАМ, а не по траектории клинка</a></li><li class="depth-2"><a href="#три-архетипа--это-правила-генерации-а-не-три-готовых-знака" data-for="три-архетипа--это-правила-генерации-а-не-три-готовых-знака">Три архетипа — это ПРАВИЛА ГЕНЕРАЦИИ, а не три готовых знака</a></li><li class="depth-2"><a href="#откуда-берётся-архетип-принято-2026-08-01" data-for="откуда-берётся-архетип-принято-2026-08-01">Откуда берётся архетип (принято 2026-08-01)</a></li><li class="depth-2"><a href="#числа" data-for="числа">Числа</a></li><li class="depth-2"><a href="#форма--параметрическая-и-рисуем-её-сами" data-for="форма--параметрическая-и-рисуем-её-сами">Форма — параметрическая, и рисуем её сами</a></li><li class="depth-2"><a href="#дальний-бой-линия-всполох--та-же-семья-только-прямая" data-for="дальний-бой-линия-всполох--та-же-семья-только-прямая">Дальний бой: линия-всполох — та же семья, только прямая</a></li><li class="depth-2"><a href="#мимо-брони-отдельного-показа-не-требует" data-for="мимо-брони-отдельного-показа-не-требует">«Мимо брони» отдельного показа не требует</a></li><li class="depth-2"><a href="#формы-под-элементы-не-заводятся" data-for="формы-под-элементы-не-заводятся">Формы под элементы НЕ заводятся</a></li><li class="depth-2"><a href="#ядро-попадания" data-for="ядро-попадания">Ядро попадания</a></li><li class="depth-2"><a href="#чем-управляется-каждый-параметр" data-for="чем-управляется-каждый-параметр">Чем управляется каждый параметр</a></li><li class="depth-2"><a href="#границы-взмаха-приходят-из-клипа" data-for="границы-взмаха-приходят-из-клипа">Границы взмаха приходят из клипа</a></li><li class="depth-2"><a href="#точка-попадания--область-а-не-точка" data-for="точка-попадания--область-а-не-точка">Точка попадания — область, а не точка</a></li><li class="depth-1"><a href="#свечение-части-при-касте-принято-2026-07-31" data-for="свечение-части-при-касте-принято-2026-07-31">Свечение части при касте (принято 2026-07-31)</a></li><li class="depth-2"><a href="#профиль--как-у-удара-пассив-светит-как-актив" data-for="профиль--как-у-удара-пассив-светит-как-актив">Профиль — как у удара, пассив светит как актив</a></li><li class="depth-2"><a href="#цвет--юнита-форма-свечения-не-элементна" data-for="цвет--юнита-форма-свечения-не-элементна">Цвет — юнита, форма свечения не элементна</a></li><li class="depth-2"><a href="#что-это-значит-инженерно-1" data-for="что-это-значит-инженерно-1">Что это значит инженерно</a></li><li class="depth-1"><a href="#статусы-постоянный-слой-принято-2026-07-31" data-for="статусы-постоянный-слой-принято-2026-07-31">Статусы: постоянный слой (принято 2026-07-31)</a></li><li class="depth-2"><a href="#цвет-статуса-красится-статусом-а-не-бьющим" data-for="цвет-статуса-красится-статусом-а-не-бьющим">Цвет статуса красится СТАТУСОМ, а не бьющим</a></li><li class="depth-2"><a href="#четыре-канала-в-канале-не-больше-одного-статуса" data-for="четыре-канала-в-канале-не-больше-одного-статуса">Четыре канала, в канале не больше одного статуса</a></li><li class="depth-2"><a href="#различитель--вектор-и-темп-а-не-иконка" data-for="различитель--вектор-и-темп-а-не-иконка">Различитель — вектор и темп, а не иконка</a></li><li class="depth-2"><a href="#словарь-статусов" data-for="словарь-статусов">Словарь статусов</a></li><li class="depth-2"><a href="#точность-живёт-в-отдельном-слое-и-он-тумблер" data-for="точность-живёт-в-отдельном-слое-и-он-тумблер">Точность живёт в отдельном слое, и он тумблер</a></li><li class="depth-2"><a href="#различитель-заводится-под-разницу-в-последствиях-принято-2026-08-01" data-for="различитель-заводится-под-разницу-в-последствиях-принято-2026-08-01">Различитель заводится под разницу в ПОСЛЕДСТВИЯХ (принято 2026-08-01)</a></li><li class="depth-2"><a href="#топливо-показывается-через-удар-а-не-знаком-на-теле" data-for="топливо-показывается-через-удар-а-не-знаком-на-теле">Топливо показывается через удар, а не знаком на теле</a></li><li class="depth-2"><a href="#жизнь-эффекта-рождение-повтор-конец-принято-2026-08-01" data-for="жизнь-эффекта-рождение-повтор-конец-принято-2026-08-01">Жизнь эффекта: рождение, повтор, конец (принято 2026-08-01)</a></li><li class="depth-2"><a href="#тик-dot--мягкая-волна-в-цвете-школы-принято-2026-08-01" data-for="тик-dot--мягкая-волна-в-цвете-школы-принято-2026-08-01">Тик DoT — мягкая волна в цвете школы (принято 2026-08-01)</a></li><li class="depth-2"><a href="#кровотечение-порция-крови--это-текущий-порез" data-for="кровотечение-порция-крови--это-текущий-порез">Кровотечение: порция крови — это текущий порез</a></li><li class="depth-2"><a href="#стак-читается-тремя-ступенями-принято-2026-07-31" data-for="стак-читается-тремя-ступенями-принято-2026-07-31">Стак читается тремя ступенями (принято 2026-07-31)</a></li><li class="depth-2"><a href="#барьер-щит-который-помнит-удары-принято-2026-07-31" data-for="барьер-щит-который-помнит-удары-принято-2026-07-31">Барьер: щит, который помнит удары (принято 2026-07-31)</a></li><li class="depth-2"><a href="#что-это-значит-инженерно-2" data-for="что-это-значит-инженерно-2">Что это значит инженерно</a></li><li class="depth-1"><a href="#зоны-круг-линия-и-то-что-стоит-на-арене-proposed-2026-07-31" data-for="зоны-круг-линия-и-то-что-стоит-на-арене-proposed-2026-07-31">Зоны: круг, линия и то, что стоит на арене (proposed, 2026-07-31)</a></li><li class="depth-2"><a href="#три-фазы-акцент-на-подводке" data-for="три-фазы-акцент-на-подводке">Три фазы, акцент на подводке</a></li><li class="depth-2"><a href="#контур-несёт-форму-заливка-почти-отсутствует" data-for="контур-несёт-форму-заливка-почти-отсутствует">Контур несёт форму, заливка почти отсутствует</a></li><li class="depth-2"><a href="#цвет--по-уже-принятому-правилу" data-for="цвет--по-уже-принятому-правилу">Цвет — по уже принятому правилу</a></li><li class="depth-2"><a href="#чем-стоячая-зона-отличается-в-показе" data-for="чем-стоячая-зона-отличается-в-показе">Чем стоячая зона отличается в показе</a></li><li class="depth-1"><a href="#что-здесь-не-живёт" data-for="что-здесь-не-живёт">Что здесь НЕ живёт</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../../gdd/00-meta/" class="internal">Meta - Index</a></li><li><a href="../../gdd/00-meta/journal-adr" class="internal">Meta - Decision Journal</a></li><li><a href="../../gdd/00-meta/open-forks" class="internal">Meta - Open Forks</a></li><li><a href="../../gdd/70-gamefeel/asset-palette" class="internal">Gamefeel - Asset Palette</a></li><li><a href="../../gdd/70-gamefeel/" class="internal">Gamefeel - Index</a></li><li><a href="../../gdd/70-gamefeel/style-sao" class="internal">Gamefeel - Style Reference (SAO)</a></li><li><a href="../../gdd/70-gamefeel/time-and-camera" class="internal">Gamefeel - Time &amp; Camera</a></li><li><a href="../../gdd/70-gamefeel/toolbox" class="internal">Gamefeel - Toolbox</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

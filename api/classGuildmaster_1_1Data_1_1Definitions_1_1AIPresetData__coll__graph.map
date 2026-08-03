@@ -1,5 +1,5 @@
 <map id="Guildmaster.Data.Definitions.AIPresetData" name="Guildmaster.Data.Definitions.AIPresetData">
-<area shape="rect" id="Node000001" title="Пресет поведения AI (roadmap «2–3 пресета на архетип», вики «13» §3.2)." alt="" coords="5,232,212,332"/>
+<area shape="rect" id="Node000001" title="Пресет поведения AI (roadmap «2–3 пресета на архетип», вики «13» §3.2)." alt="" coords="5,232,212,312"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="45,119,173,184"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,198,111,232,106,232,106,198"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="48,5,169,71"/>

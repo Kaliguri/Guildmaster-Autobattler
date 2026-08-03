@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.RunModeBarView.SetMenuActive" name="Guildmaster.UI.RunModeBarView.SetMenuActive">
+<area shape="rect" id="Node000001" title="Держать таб настроек нажатым, пока открыто системное меню (наход." alt="" coords="5,5,212,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Components_1_1Chip.html#a4628f53641d9ab6a52cc269e914307d6" title="Подсветить как выбранный (активный фильтр, надетый тег и т.п.)." alt="" coords="260,5,469,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,23,246,23,246,28,212,28"/>
+</map>

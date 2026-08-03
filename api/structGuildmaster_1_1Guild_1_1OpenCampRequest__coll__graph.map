@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.OpenCampRequest" name="Guildmaster.Guild.OpenCampRequest">
+<area shape="rect" id="Node000001" title="Запрос показать привал: несёт Session (бюджет действий и траты) — экран биндится к нему,..." alt="" coords="13,293,220,393"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1CampSession.html" title="Состояние одного привала: бюджет действий отряда и его траты." alt="" coords="5,5,228,231"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,231,119,277,114,277,114,231"/>
+</map>

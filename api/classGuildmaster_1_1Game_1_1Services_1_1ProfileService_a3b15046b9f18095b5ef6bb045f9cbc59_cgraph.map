@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Services.ProfileService.DeleteGuild" name="Guildmaster.Game.Services.ProfileService.DeleteGuild">
+<area shape="rect" id="Node000001" title="Удалить гильдию вместе с её забегом. Необратимо: это месяцы Летописи." alt="" coords="5,37,212,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#ad309387449e8ac3a361c248528ca8469" title="Создать гильдию в активном профиле и сделать активной. Null, если лимит или нет профиля." alt="" coords="260,5,467,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,42,246,37,247,43,212,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a34e8b2b06d4a9d2e28f8e449269ab5ba" title="Переключиться на гильдию активного профиля. false = гильдии нет." alt="" coords="260,69,467,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,68,247,72,246,77,212,73"/>
+</map>

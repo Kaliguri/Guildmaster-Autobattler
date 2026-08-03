@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.WorldMapController.Start" name="Guildmaster.Game.Flow.WorldMapController.Start">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,224,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html#af61fbe9bc2c08715ed06a54da5c07ec5" title="Показать/скрыть карту (интент табов)." alt="" coords="272,5,491,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,23,258,23,258,28,224,28"/>
+</map>

@@ -103,17 +103,14 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1ContentHub_1_1Edit
 <div class="dynheader">
 Collaboration diagram for Guildmaster.ContentHub.Editor.StatMath:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath__coll__graph.svg" width="230" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath__coll__graph.svg" width="230" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a1434016c0700586f347eeb1897d48eb7" id="r_a1434016c0700586f347eeb1897d48eb7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGuildmaster_1_1Combat_1_1Stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath.html#a1434016c0700586f347eeb1897d48eb7">BuildEffective</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> data, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a> config)</td></tr>
-<tr class="memdesc:a1434016c0700586f347eeb1897d48eb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать эффективный стат-блок реликвии/врага поверх дефолтов конфига.  <br /></td></tr>
-<tr class="separator:a1434016c0700586f347eeb1897d48eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92ff8d6143fdbc9b0269a6d9cfac7cb8" id="r_a92ff8d6143fdbc9b0269a6d9cfac7cb8"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath.html#a92ff8d6143fdbc9b0269a6d9cfac7cb8">AttacksPerSecond</a> (float attackSpeed)</td></tr>
-<tr class="memdesc:a92ff8d6143fdbc9b0269a6d9cfac7cb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Атак/сек с учётом тиковой квантизации сима (через AttackTiming), не сырой AttackSpeed.  <br /></td></tr>
-<tr class="separator:a92ff8d6143fdbc9b0269a6d9cfac7cb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fc2a6cc7d1c128181af4b3249df80aa" id="r_a7fc2a6cc7d1c128181af4b3249df80aa"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGuildmaster_1_1Combat_1_1Stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath.html#a7fc2a6cc7d1c128181af4b3249df80aa">BuildEffective</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> data, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a> config, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html">ClassBalanceConfig</a> classConfig=null)</td></tr>
+<tr class="memdesc:a7fc2a6cc7d1c128181af4b3249df80aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать эффективный стат-блок реликвии/врага поверх дефолтов конфига и классовой базы.  <br /></td></tr>
+<tr class="separator:a7fc2a6cc7d1c128181af4b3249df80aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18912a608f1c5a8f5603310031093828" id="r_a18912a608f1c5a8f5603310031093828"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath.html#a18912a608f1c5a8f5603310031093828">AutoAttackDps</a> (<a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html">IStatReader</a> stats)</td></tr>
 <tr class="memdesc:a18912a608f1c5a8f5603310031093828"><td class="mdescLeft">&#160;</td><td class="mdescRight">«Бумажный» DPS автоатаки без цели: урон × атак/сек × эфф. наносимого урона (броня/митигейт цели не учитываются).  <br /></td></tr>
 <tr class="separator:a18912a608f1c5a8f5603310031093828"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,44 +120,6 @@ Static Public Member Functions</h2></td></tr>
 <p><code><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a70e9cf5d31e2c828b5913df2b51f7b5a" title="Создать RuntimeUnit из SO-данных.">RuntimeUnitFactory.Create</a></code> делает ровно то же — <code>new Stats(config)</code> + <code>AddModifiersFrom(data, data.Stats)</code> — поэтому значения совпадают по построению. </p>
 <p>НЕ включает статы от пассивных <code>GrantedEffects</code> (те применяются через EffectSystem в бою) — хаб показывает SO-слой модификаторов, достаточный для сравнения баланса.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a92ff8d6143fdbc9b0269a6d9cfac7cb8" name="a92ff8d6143fdbc9b0269a6d9cfac7cb8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92ff8d6143fdbc9b0269a6d9cfac7cb8">&#9670;&#160;</a></span>AttacksPerSecond()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static float Guildmaster.ContentHub.Editor.StatMath.AttacksPerSecond </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>attackSpeed</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Атак/сек с учётом тиковой квантизации сима (через AttackTiming), не сырой AttackSpeed. </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath_a92ff8d6143fdbc9b0269a6d9cfac7cb8_cgraph.svg" width="488" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath_a92ff8d6143fdbc9b0269a6d9cfac7cb8_icgraph.svg" width="512" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
 <a id="a18912a608f1c5a8f5603310031093828" name="a18912a608f1c5a8f5603310031093828"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a18912a608f1c5a8f5603310031093828">&#9670;&#160;</a></span>AutoAttackDps()</h2>
 
@@ -194,8 +153,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a1434016c0700586f347eeb1897d48eb7" name="a1434016c0700586f347eeb1897d48eb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1434016c0700586f347eeb1897d48eb7">&#9670;&#160;</a></span>BuildEffective()</h2>
+<a id="a7fc2a6cc7d1c128181af4b3249df80aa" name="a7fc2a6cc7d1c128181af4b3249df80aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fc2a6cc7d1c128181af4b3249df80aa">&#9670;&#160;</a></span>BuildEffective()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -213,7 +172,13 @@ Here is the call graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a>&#160;</td>
-          <td class="paramname"><em>config</em>&#160;</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html">ClassBalanceConfig</a>&#160;</td>
+          <td class="paramname"><em>classConfig</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -223,12 +188,12 @@ Here is the call graph for this function:</div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Собрать эффективный стат-блок реликвии/врага поверх дефолтов конфига. </p>
+<p>Собрать эффективный стат-блок реликвии/врага поверх дефолтов конфига и классовой базы. </p>
 
 </div>
 </div>

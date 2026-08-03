@@ -1,3 +1,9 @@
 <map id="Guildmaster.Guild.MapGenConfig" name="Guildmaster.Guild.MapGenConfig">
-<area shape="rect" id="Node000001" title="Параметры генерации карты акта (MapGenerator, план [[act&#45;map&#45;run&#45;loop]] §3.1)." alt="" coords="5,5,195,265"/>
+<area shape="rect" id="Node000001" title="Параметры генерации карты акта (MapGenerator, план [[act&#45;map&#45;run&#45;loop]] §3.1)." alt="" coords="123,336,313,516"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Guild_1_1ZoneRule.html" title="Правило зоны: этажи FromFloor..ToFloor (включительно) → веса типов." alt="" coords="6,168,203,273"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,272,163,320,158,323,131,275"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Guild_1_1NodeTypeWeight.html" title="Вес одного типа узла в зоне (относительный, суммы 100 не требуется)." alt="" coords="5,5,204,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="107,105,107,151,102,151,102,105"/>
+<area shape="rect" id="Node000004" href="$structGuildmaster_1_1Guild_1_1AnchorRule.html" title="Якорь: на этаже Floor ВСЯ колонка получает тип Type (перекрывает зону)." alt="" coords="228,168,437,273"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="306,275,279,323,274,320,301,272"/>
 </map>

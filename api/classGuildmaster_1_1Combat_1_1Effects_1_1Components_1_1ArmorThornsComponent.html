@@ -99,17 +99,17 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 </div><!--header-->
 <div class="contents">
 
-<p>«Шипастое древо» (Древень): получив ПРЯМОЙ удар, носитель бьёт шипами ВСЕХ врагов вокруг себя.  
+<p><b>«Шипастое древо»</b> — пассивка Древня (карточка [[the-bloom]]).  
  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.ArmorThornsComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent__inherit__graph.svg" width="270" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent__inherit__graph.svg" width="270" height="511"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Effects.Components.ArmorThornsComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent__coll__graph.svg" width="270" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent__coll__graph.svg" width="270" height="511"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -123,13 +123,33 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:afce14463ebcd8e734d8bb3c62992eea2" id="r_afce14463ebcd8e734d8bb3c62992eea2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent.html#afce14463ebcd8e734d8bb3c62992eea2">DamageType</a><code> [get]</code></td></tr>
+<tr class="memdesc:afce14463ebcd8e734d8bb3c62992eea2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип урона шипов (прямые поля источника) — для агрегации тегов «быстрого чтения».  <br /></td></tr>
+<tr class="separator:afce14463ebcd8e734d8bb3c62992eea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbabf441bfa7ef0a5efde2497b28cf64" id="r_abbabf441bfa7ef0a5efde2497b28cf64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066">CombatEvent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent.html#abbabf441bfa7ef0a5efde2497b28cf64">Events</a><code> [get]</code></td></tr>
 <tr class="separator:abbabf441bfa7ef0a5efde2497b28cf64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html">Guildmaster.Combat.Effects.IReactiveComponent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>«Шипастое древо» (Древень): получив ПРЯМОЙ удар, носитель бьёт шипами ВСЕХ врагов вокруг себя. </p>
-<p>Урон шипов масштабируется от БРОНИ носителя (а не от доли полученного удара, как ThornsComponent) — по карточке ГДД «100% статы брони».</p>
+<div class="textblock"><p><b>«Шипастое древо»</b> — пассивка Древня (карточка [[the-bloom]]). </p>
+<p><b>Что делает:</b> получив прямой удар, носитель огрызается шипами по ВСЕМ врагам вокруг себя. Урон не выбирается им — он случается в ответ, поэтому кит тем сильнее, чем гуще на нём висят: один враг почти не наказывается, свалка из четверых разбивается об него.</p>
+<p><b>Числа:</b> </p><ul>
+<li>
+<code>_flatDamage</code> — плоский урон залпа, ОСНОВНАЯ величина (задаёт автор). </li>
+<li>
+<code>_armorRatio</code> — добавка от физической брони носителя (0.1 = +10% статы брони). </li>
+<li>
+<code>_radius</code> — радиус ответки, мировые единицы; растёт от «Разрастания». </li>
+<li>
+<code>_radiusPerGrowthStack</code> — прибавка радиуса за стак «Разрастания» (0.2 = +20% базы). </li>
+<li>
+<code>_cooldownSeconds</code> — микро-КД между залпами: ритм задаёт Древень, а не темп врагов. </li>
+<li>
+<code>_damageType</code> — тип урона шипов (у Древня — Колющий). </li>
+</ul>
+<p>Итог залпа: <code>(_flatDamage + броня × _armorRatio) × стаки</code>. При броне 90 и базе 25 это 34.</p>
+<p><b>Когда срабатывает:</b> реактив на CombatEvent.DamageTaken, только от прямого удара и не чаще микро-КД.</p>
+<p>База введена 2026-07-27: пока урон был чистой бронёй (доля 1.0), каждая купленная единица защиты становилась единицей урона, и танк, вкладывающийся в живучесть, выходил в главные дамагеры игры — 554 урона в секунду по свалке против 226 у самого бьющего кита. </p>
 <p>Два гейта, оба принципиальные: </p><ul>
 <li>
 Только прямой удар (CombatEventData.IsDirectHit) — авто-атака или атакующая способность. Тики DoT крону не будят (иначе яд превращал бы Древня в вечный дамаг-пульс), и свои же шипы тоже: их урон помечен DamageSourceKind.Reactive, поэтому пинг-понга нет. </li>
@@ -203,7 +223,7 @@ Properties</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent_aa8bc5677b1910a0555fb126f2b0b9d29_cgraph.svg" width="550" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent_aa8bc5677b1910a0555fb126f2b0b9d29_cgraph.svg" width="543" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -237,6 +257,30 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="afce14463ebcd8e734d8bb3c62992eea2" name="afce14463ebcd8e734d8bb3c62992eea2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afce14463ebcd8e734d8bb3c62992eea2">&#9670;&#160;</a></span>DamageType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> Guildmaster.Combat.Effects.Components.ArmorThornsComponent.DamageType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Тип урона шипов (прямые поля источника) — для агрегации тегов «быстрого чтения». </p>
+
+</div>
+</div>
 <a id="abbabf441bfa7ef0a5efde2497b28cf64" name="abbabf441bfa7ef0a5efde2497b28cf64"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abbabf441bfa7ef0a5efde2497b28cf64">&#9670;&#160;</a></span>Events</h2>
 

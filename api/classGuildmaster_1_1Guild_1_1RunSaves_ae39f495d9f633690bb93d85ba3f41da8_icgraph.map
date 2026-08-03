@@ -1,0 +1,7 @@
+<map id="Guildmaster.Guild.RunSaves.KeyFor" name="Guildmaster.Guild.RunSaves.KeyFor">
+<area shape="rect" id="Node000001" title="Ключ автосейва забега активной гильдии." alt="" coords="547,5,757,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunSaves.html#acaf686179bcb091c42a149da678e7d13" title="Есть ли автосейв забега на диске — вопрос меню про «Продолжить»." alt="" coords="288,5,499,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="533,28,499,28,499,23,533,23"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1NewGameScreenView.html#a946b422f75df454d0b5b271b0b4f49ad" title="Собрать список домов из профиля: имя плюс ответ на вопрос «идёт ли там забег»." alt="" coords="5,5,240,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="274,28,240,28,240,23,274,23"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.ProvingGroundsConfig" name="Guildmaster.Data.Definitions.ProvingGroundsConfig">
+<area shape="rect" id="Node000001" title="Расклад Ристалища по умолчанию — ОБЕ команды, которые встают на площадку, когда забега нет (ГДД «Mode..." alt="" coords="5,119,212,279"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="48,5,169,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,85,111,118,106,118,106,85"/>
+</map>

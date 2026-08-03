@@ -103,8 +103,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Границы боевого поля — «стены», об которые упирается движение (MovementSystem) и отбрасывание (DisplacementSystem).  <a href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaCellPhase.html">ArenaCellPhase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Состояние одной клетки на данный момент перехода. Все три поля — 0..1.  <a href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaCellPhase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html">ArenaLayoutData</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Неизменяемый снапшот арены на один бой: границы поля + зоны расстановки.  <a href="classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Arena_1_1ArenaSwapSchedule.html">ArenaSwapSchedule</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Расписание перехода: по общему прогрессу и координате клетки выдаёт фазы трёх актов.  <a href="classGuildmaster_1_1Core_1_1Arena_1_1ArenaSwapSchedule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaSwapShape.html">ArenaSwapShape</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Форма перехода арены «А → Б» в цифровом стиле: три акта и разнобой клеток внутри них.  <a href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaSwapShape.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Arena_1_1DeploymentService.html">DeploymentService</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Правила фазы расстановки: можно ли поставить юнита в точку.  <a href="classGuildmaster_1_1Core_1_1Arena_1_1DeploymentService.html#details">More...</a><br /></td></tr>
@@ -112,12 +121,21 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1DeploymentZone.html">DeploymentZone</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Область расстановки внутри арены: прямоугольник + сторона + ранг.  <a href="structGuildmaster_1_1Core_1_1Arena_1_1DeploymentZone.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Arena_1_1IArenaSwap.html">IArenaSwap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Смена облика арены «А → Б» в цифровом стиле (три акта, см.  <a href="interfaceGuildmaster_1_1Core_1_1Arena_1_1IArenaSwap.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html">Rect2D</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осепараллельный прямоугольник (центр + размер) в мировых координатах боя.  <a href="structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:aaac5ac1616e02962c82d7c82ee891681" id="r_aaac5ac1616e02962c82d7c82ee891681"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Arena.html#aaac5ac1616e02962c82d7c82ee891681">ArenaSwapAct</a> { <a class="el" href="namespaceGuildmaster_1_1Core_1_1Arena.html#aaac5ac1616e02962c82d7c82ee891681a8e7c7033189a8505aebc913de0033736">Digitize</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Arena.html#aaac5ac1616e02962c82d7c82ee891681af19dbf2edb3a0bd74b0524d960ff21eb">Load</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Arena.html#aaac5ac1616e02962c82d7c82ee891681a2bd339d85ee3b33e513359ce781b60cc">Restore</a> = 2
+ }</td></tr>
+<tr class="memdesc:aaac5ac1616e02962c82d7c82ee891681"><td class="mdescLeft">&#160;</td><td class="mdescRight">Акт перехода — для запроса «когда эта клетка его проходит» (ArenaSwapSchedule.CrossTime).  <a href="namespaceGuildmaster_1_1Core_1_1Arena.html#aaac5ac1616e02962c82d7c82ee891681">More...</a><br /></td></tr>
+<tr class="separator:aaac5ac1616e02962c82d7c82ee891681"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2f8cdf4db07e9198b14b687d5091dd8" id="r_ad2f8cdf4db07e9198b14b687d5091dd8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Arena.html#ad2f8cdf4db07e9198b14b687d5091dd8">DeploymentSide</a> { <a class="el" href="namespaceGuildmaster_1_1Core_1_1Arena.html#ad2f8cdf4db07e9198b14b687d5091dd8a636da1d35e805b00eae0fcd8333f9234">Player</a>
 , <a class="el" href="namespaceGuildmaster_1_1Core_1_1Arena.html#ad2f8cdf4db07e9198b14b687d5091dd8a8c6d21187fb58b7a079d70030686b33e">Enemy</a>
  }</td></tr>
@@ -130,6 +148,30 @@ Enumerations</h2></td></tr>
 <tr class="separator:a92bfeab96a23ed0ff98de12620540de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="aaac5ac1616e02962c82d7c82ee891681" name="aaac5ac1616e02962c82d7c82ee891681"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaac5ac1616e02962c82d7c82ee891681">&#9670;&#160;</a></span>ArenaSwapAct</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Core_1_1Arena.html#aaac5ac1616e02962c82d7c82ee891681">Guildmaster.Core.Arena.ArenaSwapAct</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Акт перехода — для запроса «когда эта клетка его проходит» (ArenaSwapSchedule.CrossTime). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aaac5ac1616e02962c82d7c82ee891681a8e7c7033189a8505aebc913de0033736" name="aaac5ac1616e02962c82d7c82ee891681a8e7c7033189a8505aebc913de0033736"></a>Digitize&#160;</td><td class="fielddoc"><p>Уход в каркас. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaac5ac1616e02962c82d7c82ee891681af19dbf2edb3a0bd74b0524d960ff21eb" name="aaac5ac1616e02962c82d7c82ee891681af19dbf2edb3a0bd74b0524d960ff21eb"></a>Load&#160;</td><td class="fielddoc"><p>Смена текстуры на новую. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaac5ac1616e02962c82d7c82ee891681a2bd339d85ee3b33e513359ce781b60cc" name="aaac5ac1616e02962c82d7c82ee891681a2bd339d85ee3b33e513359ce781b60cc"></a>Restore&#160;</td><td class="fielddoc"><p>Возврат в реальный вид. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="ad2f8cdf4db07e9198b14b687d5091dd8" name="ad2f8cdf4db07e9198b14b687d5091dd8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad2f8cdf4db07e9198b14b687d5091dd8">&#9670;&#160;</a></span>DeploymentSide</h2>
 

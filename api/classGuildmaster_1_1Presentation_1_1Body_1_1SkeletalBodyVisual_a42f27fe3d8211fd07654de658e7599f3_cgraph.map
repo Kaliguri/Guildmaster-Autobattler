@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Body.SkeletalBodyVisual.RebuildParts" name="Guildmaster.Presentation.Body.SkeletalBodyVisual.RebuildParts">
+<area shape="rect" id="Node000001" title="Пересканировать иерархию: новые части падают в конец списка, исчезнувшие и потерянные ссылки вычищают..." alt="" coords="5,5,272,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a2b730c95ff0f4fff06b07a88dc0f2af3" title="Собрать части из иерархии в into &#160;в порядке обхода дерева." alt="" coords="320,5,583,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="272,23,306,23,306,28,272,28"/>
+</map>

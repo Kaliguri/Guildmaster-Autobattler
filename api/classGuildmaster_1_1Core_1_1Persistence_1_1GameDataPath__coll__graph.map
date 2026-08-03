@@ -1,0 +1,3 @@
+<map id="Guildmaster.Core.Persistence.GameDataPath" name="Guildmaster.Core.Persistence.GameDataPath">
+<area shape="rect" id="Node000001" title="Корень пользовательских данных игры — намеренно не Application.persistentDataPath (ТЗ [[save&#45;system]]..." alt="" coords="5,5,216,125"/>
+</map>

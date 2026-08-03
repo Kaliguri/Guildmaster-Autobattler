@@ -1,8 +1,15 @@
 <map id="/home/runner/work/Guildmaster&#45;Autobattler/Guildmaster&#45;Autobattler/Assets/_Project/Scripts/Presentation" name="/home/runner/work/Guildmaster&#45;Autobattler/Guildmaster&#45;Autobattler/Assets/_Project/Scripts/Presentation">
-<area shape="rect" id="node2" href="dir_a3705c3f05e65784befed34ffa354ea1.html" title="Audio" alt="" coords="317,63,376,88"/>
-<area shape="rect" id="node3" href="dir_35c6934a2e6732bcb139639876f2c76a.html" title="Camera" alt="" coords="219,63,293,88"/>
-<area shape="rect" id="node4" href="dir_7c70fd66adaa7168a43b8c292e32d6a2.html" title="Design" alt="" coords="128,63,195,88"/>
-<area shape="rect" id="node5" href="dir_c5cdb2399620c2b6ca4e584ed784c1e8.html" title="Events" alt="" coords="37,63,104,88"/>
-<area shape="rect" id="clust2" href="dir_9c4489f7376784a5a639cc520f6e7ee8.html" alt="" coords="27,52,515,99"/>
-<area shape="rect" id="clust1" href="dir_860f14a42753bbe44e0d26e0f40689a7.html" title="Scripts" alt="" coords="16,16,525,109"/>
+<area shape="rect" id="node2" href="dir_5832b3d46eaaf25e617d44272497b516.html" title="Arena" alt="" coords="930,63,990,88"/>
+<area shape="rect" id="node3" href="dir_a3705c3f05e65784befed34ffa354ea1.html" title="Audio" alt="" coords="847,63,905,88"/>
+<area shape="rect" id="node4" href="dir_69b133ae4573617710786316382ec991.html" title="Body" alt="" coords="767,63,822,88"/>
+<area shape="rect" id="node5" href="dir_35c6934a2e6732bcb139639876f2c76a.html" title="Camera" alt="" coords="670,63,743,88"/>
+<area shape="rect" id="node6" href="dir_7c70fd66adaa7168a43b8c292e32d6a2.html" title="Design" alt="" coords="579,63,645,88"/>
+<area shape="rect" id="node7" href="dir_fd3f3b05c018ee467857db107aa4a5c7.html" title="Editor" alt="" coords="494,63,554,88"/>
+<area shape="rect" id="node8" href="dir_454be60197d71c8ef9491090b390ddab.html" title="Effects" alt="" coords="403,63,469,88"/>
+<area shape="rect" id="node9" href="dir_c5cdb2399620c2b6ca4e584ed784c1e8.html" title="Events" alt="" coords="312,63,379,88"/>
+<area shape="rect" id="node10" href="dir_12847bcfd0ff0e10b2719660ee6b5b2f.html" title="Map" alt="" coords="237,63,288,88"/>
+<area shape="rect" id="node11" href="dir_7513001d5d11abbc84d42b758f2d4b4f.html" title="Tempo" alt="" coords="147,63,213,88"/>
+<area shape="rect" id="node12" href="dir_0ab2dcb204bc5bae2bc1d8c9c6676d65.html" title="Transition" alt="" coords="37,63,123,88"/>
+<area shape="rect" id="clust2" href="dir_9c4489f7376784a5a639cc520f6e7ee8.html" alt="" coords="27,52,1129,99"/>
+<area shape="rect" id="clust1" href="dir_860f14a42753bbe44e0d26e0f40689a7.html" title="Scripts" alt="" coords="16,16,1140,109"/>
 </map>

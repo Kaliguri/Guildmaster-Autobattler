@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Run - Act Map: Regions &amp; Zones | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Run - Act Map: Regions &amp; Zones | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Run - Act Map: Regions &amp; Zones | Guildmaster Wiki"/><meta name="twitter:description" content="Что здесь."/><meta property="og:description" content="Что здесь."/><meta property="og:image:alt" content="Что здесь."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/gdd/30-run-meta/act-map-regions"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/gdd/30-run-meta/act-map-regions"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Что здесь."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="gdd/30-run-meta/act-map-regions"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-124"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-124" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../gdd/">gdd</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../gdd/30-run-meta/">30 run meta</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Run   Act Map: Regions &amp; Zones</a></div></nav><h1 class="article-title">Run - Act Map: Regions &amp; Zones</h1><p show-comma="true" class="content-meta"><time datetime="2026-08-02T00:00:00.000Z">02 авг. 2026 г.</time><span>время чтения ~16 мин.</span></p></div></div><article class="popover-hint"><blockquote>
+<p><strong>Что здесь.</strong> Карта акта как местность: <strong>области</strong> (куски карты со своей внутренней топологией)
+и <strong>зоны</strong> (кто этой землёй владеет и что здесь работает иначе). Заход открыт 2026-08-02, дизайн
+обсуждается — принятое помечено датой, остальное ждёт вердикта Макса.</p>
+<p>Живые схемы — раздел <strong>Карта → Формы областей</strong> в <a href="../.././../../lab" class="internal alias" data-slug="lab">Лаборатории</a> (<code>#/map-shapes</code>).
+Что спавнится по этажам сейчас — <a href="../../gdd/30-run-meta/events-minigames" class="internal alias" data-slug="gdd/30-run-meta/events-minigames">Run - Events &amp; Minigames</a> §Карта.
+Ход захода — <a href="../.././../../map-zones-progress" class="internal" data-slug="map-zones-progress"><code>docs/map-zones-progress.md</code></a>.</p>
+</blockquote>
+<h2 id="термины-закреплены-2026-08-02">Термины (закреплены 2026-08-02)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#термины-закреплены-2026-08-02" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Сущность</th><th>EN — код и id</th><th>RU</th></tr></thead><tbody><tr><td>область карты</td><td><code>Region</code></td><td>область</td></tr><tr><td>форма области</td><td><code>Relief</code></td><td>рельеф</td></tr><tr><td>зона фракции</td><td><code>Zone</code></td><td>зона</td></tr><tr><td>пояс этажей (бывш. <code>ZoneRule</code>)</td><td><code>Band</code></td><td>пояс</td></tr><tr><td>вставка с закрытым содержимым</td><td><strong><code>Dungeon</code></strong></td><td>подземелье</td></tr><tr><td>веха внутри подземелья</td><td><code>Stage</code></td><td>веха</td></tr><tr><td>привратник у входа</td><td><code>Gatekeeper</code></td><td>привратник</td></tr><tr><td>сквозная линия акта</td><td><strong><code>GrandLine</code></strong></td><td>Великий путь</td></tr><tr><td>рельефы</td><td><code>Vale</code> · <code>Thicket</code> · <code>Trail</code> · <code>Comb</code> · <code>Forks</code> · <code>Muster</code> · <code>Scree</code> · <code>Lair</code></td><td>Долина · Чаща · Тропа · Гребень · Рукава · Перевал · Осыпь · Логово</td></tr></tbody></table></div>
+<p><strong><code>Dungeon</code>, а не <code>Delve</code>:</strong> в играх слово давно значит не подвал, а обособленную локацию с
+испытанием, и понятно с нуля; у <code>Delve</code> же есть побочка от Path of Exile, где это конкретная
+механика бесконечной шахты.</p>
+<p><strong><code>GrandLine</code> — только как имя механики.</strong> Слово занято товарными знаками в игровой нише (США,
+класс 28 — настольные игры и карты; заявка GRAND LINE GAMING, май 2026). Внутриигровой термин это
+не задевает, но в название игры, обновления, витрину Steam, теги и логотип он не выносится.
+<code>Scree</code> для осыпи взят рабочим дефолтом: он и рельеф, и снос вниз, и не сталкивается с «монотонной
+лестницей» в коде.</p>
+<h2 id="модель">Модель<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#модель" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Карта делится не на этажи с разной шириной, а на <strong>области</strong>. Область — кусок местности, занимающий
+диапазон этажей и полосу по ширине, со своей внутренней топологией и своими правилами.</p>
+<p><strong>Область = форма × свойства.</strong> Форма говорит, как внутри ходят дороги; свойства говорят, что про
+область известно и что она делает. Восемь форм и семь свойств дают полсотни разных мест ценой
+пятнадцати сущностей.</p>
+<p><strong>Сущностей три, а не две:</strong> форма (собирается правилами), свойство (модификатор поверх любой формы)
+и <strong>вставка</strong> — готовый авторский подграф. Подземелье это вставка; попытка объявить его «островом со
+свойством сокрытая» отменена 2026-08-02, она теряла главное — авторски выверенную начинку.</p>
+<p>Два ограничения, из которых следует всё остальное (Макс, 2026-08-02):</p>
+<ol>
+<li><strong>Длина у всех маршрутов одна.</strong> Шаг равен этажу, никто никого не обгоняет и не срезает.
+Следствие: форма может менять только связность и группировку узлов, но <strong>не длину пути</strong>.
+Подземелье занимает ровно столько же этажей, сколько параллельная ему обычная дорога.</li>
+<li><strong>Ширина свободна везде, кроме вех</strong> — схода-заставы, ряда сундуков и босса.</li>
+</ol>
+<p><strong>Зоны ложатся третьим слоем и режут области наискось</strong> — граница зоны намеренно не совпадает с
+границей области. Это и есть разница между картой и оглавлением.</p>
+<h2 id="карта--не-архипелаг-уточнение-макса-2026-08-02">Карта — не архипелаг (уточнение Макса 2026-08-02)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#карта--не-архипелаг-уточнение-макса-2026-08-02" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Первый акт — <strong>Далёкий Тракт</strong> (<a href="../../gdd/60-narrative/lore" class="internal alias" data-slug="gdd/60-narrative/lore">Narrative - Lore</a>): торговая дорога через
+земли, где закон кончился, а торговля осталась. Значит карта — <strong>сплошная местность</strong>, а не сеть
+островов в воде. Дословно: «это не то, чтобы реально острова… Да, могут быть моря. Могут быть
+гигатские мосты через них (наши тропы) или чере леса. Но да, это не сеть остовов.»</p>
+<p>Отсюда правки к модели:</p>
+<ul>
+<li><strong>Области различаются покровом, а не водой между ними:</strong> лес, степь, холмы, болото, пашня, камни.
+Граница области — смена местности, а не берег.</li>
+<li><strong>Вода и пропасть — редкий приём.</strong> Там, где они есть, через них перекинут <strong>гигантский мост</strong>, и
+этот мост — наша тропа. Один-два таких перехода на акт, не больше: их сила в исключительности.</li>
+<li><strong>Слово «остров» было названием ТОПОЛОГИИ</strong>, а не морского острова, и сбивало обоих. Форма
+«один вход, один выход» получила имя <strong>Чаща</strong> (<code>Thicket</code>) — выбор Макса 2026-08-02 из шести
+кандидатов (Урочище, Котловина, Затвор, Чаща, Глухомань, Анклав).</li>
+</ul>
+<h2 id="формы">Формы<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#формы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Форма</th><th>Порты вх→вых</th><th style="text-align:right;">Этажей</th><th>Что чувствует игрок</th><th>Статус</th></tr></thead><tbody><tr><td><strong>Поле</strong></td><td>много → много</td><td style="text-align:right;">2–3</td><td>простор, выбор переигрывается каждый шаг</td><td>принято 2026-08-02</td></tr><tr><td><strong>Чаща</strong> (<code>Thicket</code>)</td><td>1 → 1</td><td style="text-align:right;">2–4</td><td>зашёл — идёшь насквозь, коммит на всю длину</td><td>принято 2026-08-02</td></tr><tr><td><strong>Тропа</strong></td><td>1 → 1, ширина <strong>1</strong></td><td style="text-align:right;">1–4</td><td>скучно и предсказуемо, и в этом её польза</td><td>принято 2026-08-02</td></tr><tr><td><strong>Гребёнка</strong></td><td>n → n, полосы не сообщаются</td><td style="text-align:right;">2–3</td><td>выбор делается на входе и не переигрывается</td><td>принято 2026-08-02</td></tr><tr><td><strong>Рукава</strong></td><td>1 → 2, половины не сообщаются</td><td style="text-align:right;">3–4</td><td>«выбери половину акта»</td><td>принято 2026-08-02</td></tr><tr><td><strong>Сход</strong></td><td>всё → 1–2 → всё</td><td style="text-align:right;">1</td><td>сброс маршрута; <strong>застава</strong> = сход с якорным типом</td><td>принято 2026-08-02</td></tr><tr><td><strong>Осыпь</strong> (<code>Scree</code>)</td><td>n → край</td><td style="text-align:right;">2–3</td><td>сносит вбок, вернуться к центру нельзя</td><td>принято 2026-08-02</td></tr><tr><td><strong>Логово</strong></td><td>1–2 → 1</td><td style="text-align:right;">2–3</td><td>земли фракции с вожаком на выходе</td><td>принято 2026-08-02</td></tr><tr><td><del>Мост</del></td><td>1 → 1</td><td style="text-align:right;">1</td><td>—</td><td><strong>не форма</strong>: тропа длиной в этаж</td></tr><tr><td><del>Архипелаг</del></td><td>много → много</td><td style="text-align:right;">2–3</td><td>—</td><td><strong>не форма</strong>: способ расставить узлы («гроздья» у поля)</td></tr></tbody></table></div>
+<p><strong>Тропа шириной один</strong> — уточнение Макса 2026-08-02 поверх моей двойки. Обязательный проход внутри
+тропы допустим ровно потому, что выбор живёт <strong>между областями</strong>: рядом с тропой всегда лежит другая
+область, и правило «никто, кроме заставы, не занимает всю ширину акта» это держит.</p>
+<p><strong>Осыпь, а не «лестница»:</strong> так в коде уже зовётся алгоритм связывания колонок («монотонная
+лестница»), и два смысла на одно слово потом не разлепить. Осыпь — и рельеф, и снос вниз.</p>
+<h2 id="раскладка-воздух-между-узлами-и-пробел-между-областями">Раскладка: воздух между узлами и пробел между областями<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#раскладка-воздух-между-узлами-и-пробел-между-областями" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Требование Макса 2026-08-02, подтверждённое рендером акта в настоящих пропорциях:</p>
+<ul>
+<li><strong>шаг между узлами заметно больше нынешнего</strong> — и по ширине, и по высоте;</li>
+<li><strong>между областями обязателен пробел</strong>, и он не украшение: расстояние между областями и есть
+показ рельефа. Форму области игрок читает потому, что она стоит отдельно от соседей, а не потому,
+что на ней нарисован какой-то знак;</li>
+<li><strong>веер дорог из узла ограничивается</strong> (<code>proposed</code>, вердикта нет): пучок рёбер через полкарты
+режет территорию на ленты и делает карту нечитаемой.</li>
+</ul>
+<p>Подача этих правил — <a href="../../gdd/70-gamefeel/map-presentation" class="internal alias" data-slug="gdd/70-gamefeel/map-presentation">Gamefeel - Map Presentation</a>.</p>
+<h2 id="свойства">Свойства<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#свойства" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Свойство</th><th>Что делает</th></tr></thead><tbody><tr><td><strong>Сокрытая</strong></td><td>содержимое неизвестно до входа, <strong>награда объявлена заранее</strong></td></tr><tr><td><strong>Туманная</strong></td><td>фракция известна, типы узлов внутри — нет</td></tr><tr><td><strong>Гнилая</strong></td><td>дебаф копится по мере прохождения области, снимается на привале</td></tr><tr><td><strong>Спорная</strong></td><td>внутри две фракции вперемешку — линия фронта</td></tr><tr><td><strong>Ничейная</strong></td><td>без фракции, дикий пул; редко и намеренно</td></tr><tr><td><strong>Владение</strong></td><td>эффект зоны сильнее к ядру и слабее к краю</td></tr><tr><td><strong>Тихая</strong></td><td>боёв нет вовсе: караван, ярмарка, две лавки подряд</td></tr></tbody></table></div>
+<h2 id="вставки-подземелья-dungeon">Вставки: подземелья (<code>Dungeon</code>)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#вставки-подземелья-dungeon" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Подземелье — третья сущность, а не форма и не свойство.</strong> Форма собирается правилами, подземелье —
+<strong>готовый авторский подграф из SO</strong>, который генератор вшивает в свободную полосу подходящей длины.
+Карта процедурна, начинка выверена; слабое место Across the Obelisk как раз в том, что у них выверено
+всё, включая расположение. Появляется с середины первого акта.</p>
+<h3 id="структура--фиксированная-макс-2026-08-02">Структура — фиксированная (Макс, 2026-08-02)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#структура--фиксированная-макс-2026-08-02" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Вход → веха → веха → выход.</strong> Длина статичная, вариаций длины нет. Дословно: «Длина подземелья
+статичная - вход, 2 вехи. выход».</p>
+<p><strong>Подземелье — разновидность ивента.</strong> Дословно: «Можно сказать, что все подземелье - это этакая
+разновидность ивента. В начале часто - ивент, потом - сложное испытание». Первая веха обычно —
+текстовый выбор, который <strong>настраивает</strong> вторую; вторая — испытание, к которому этот выбор готовил.</p>
+<p><strong>И берётся не только плохое:</strong> «Берем не только плохое. но иногда и хорошее.» Вход — не всегда
+ловушка; иногда это шанс, за который просят цену.</p>
+<p><strong>Привратник.</strong> У входа стоит <strong>странный старик</strong>: «Странный старик на входе подземелья. Говорит что
+ожидает, но требует плату. Т.е. игрокам не обязательно прыгать в пустоты, но придется норм
+заплатить.» То есть вход в подземелье — это дверь с ценой, а не просто дверь: платишь и знаешь, что
+идёшь в неизвестное.</p>
+<h3 id="сценарии-макс-2026-08-02">Сценарии (Макс, 2026-08-02)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#сценарии-макс-2026-08-02" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Сценарий</th><th>Веха 1 — ивент</th><th>Веха 2 — испытание</th><th>Награда</th></tr></thead><tbody><tr><td><strong>Могучий враг</strong></td><td>пойти на костёр <strong>или</strong> взять выбранный бафф; какая будет элита — говорят здесь</td><td>усиленная элита</td><td>по элите</td></tr><tr><td><strong>Вражда</strong></td><td>выбрать сторону между двумя фракциями; каждая предлагает свою награду за помощь. Третий ответ — «Нападайте вдвоём!!!»</td><td>выбрал сторону → сложный бой <strong>с подкреплением</strong>; выбрал обоих → ОЧЕНЬ сложный бой сразу с двумя фракциями: ×1.5 и без подкрепления, но с баффами для своих юнитов (игрока предупреждают заранее)</td><td>обещанная одной стороной <strong>или</strong> награда за обоих</td></tr><tr><td><strong>Выживание</strong></td><td>выбор сложности и награды, он же задаёт число фаз</td><td>лёгкая — 2 волны, средняя — 3, сложная — 4. <strong>HP не восстанавливаются, позиции сохраняются</strong>, между волнами можно лишь быстро переэкипировать реликвию. Часто бой в окружении или череда: слева, справа</td><td>по выбранной сложности</td></tr><tr><td><strong>Спасение</strong></td><td>взять с собой пару <strong>временных Сосудов</strong> (их можно экипировать перед боем) <strong>или</strong> предмет + реликвию как доп награду. Нарратив: товарищи попали в беду — берём людей либо выкупаем их снаряжение</td><td>бой, где первую волну надо успеть добить <strong>по таймеру</strong>, а вторая — сложная</td><td>слабее состав → риск выше, но доп награда окупается</td></tr></tbody></table></div>
+<p><strong>Чего эти сценарии требуют от движка</strong> (честная цена, ни одного из этого сейчас нет):</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Требование</th><th>Кому нужно</th></tr></thead><tbody><tr><td>волны с сохранением позиций и HP между ними</td><td>Выживание, Спасение</td></tr><tr><td>быстрая переэкипировка реликвии между волнами</td><td>Выживание</td></tr><tr><td>таймер на волну как условие</td><td>Спасение</td></tr><tr><td>временные Сосуды в отряде на один бой</td><td>Спасение</td></tr><tr><td>подкрепление в бою (вторая волна по условию)</td><td>Вражда</td></tr><tr><td>бафф врагам от «союзной» фракции</td><td>Вражда</td></tr><tr><td>спавн с нескольких сторон арены</td><td>Выживание</td></tr></tbody></table></div>
+<p><strong>Прежние мои варианты</strong> (Клетка, Сетка 3×3, Ступени, Гнездо, Склеп) под фиксированную длину не
+ложатся: Клетка поглощена «Могучим врагом», Гнездо — «Выживанием», Сетка 3×3 и Ступени в две вехи не
+влезают. Открытый вопрос: сетка 3×3 из первого описания Макса («3х3 зона») — она отменена новой
+структурой или это была другая сущность.</p>
+<p><strong>Подземелье отделено от карты целиком</strong> (Макс, 2026-08-02): то, что внутри подземелья, — только
+внутри него, <strong>фракции сверху на него не влияют</strong>. Зона может накрывать землю вокруг двери, но её
+модификаторы внутрь не заходят, и пул врагов подземелье носит свой. Показ следует за механикой:
+пятно обрывается на кромке, дверь бесцветна, дыра выглядит «как дырка в бездонную бездну» —
+подробности в <a href="../../gdd/70-gamefeel/map-presentation" class="internal alias" data-slug="gdd/70-gamefeel/map-presentation">Gamefeel - Map Presentation</a>.</p>
+<p>Три правила, без которых ломается:</p>
+<ol>
+<li><strong>Не удлиняет забег</strong> — занимает те же этажи, что параллельная дорога, иначе «шаг = этаж» врёт.</li>
+<li><strong>Дверь видна всегда, начинка — нет.</strong> На входном узле своя иконка и карточка награды; фракция и
+эффекты закрыты. Планировать маршрут игрок обязан уметь заранее.</li>
+<li><strong>Мимо всегда есть дорога.</strong> High risk имеет смысл, только когда рядом есть low risk.</li>
+</ol>
+<h3 id="что-внутри">Что внутри<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#что-внутри" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внутри подземелья работает тот же словарь форм</strong> — в миниатюре и без права выйти. Подземелье
+собирается грамматикой «дверь → одна-две внутренние области → сердце».</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Внутренняя область</th><th>Форма</th><th>Что делает</th></tr></thead><tbody><tr><td><strong>Ход</strong></td><td>тропа</td><td>нагнетание: идёшь и ничего не происходит</td></tr><tr><td><strong>Зал</strong></td><td>поле</td><td>выбор внутри подземелья; редкость, обычно его нет</td></tr><tr><td><strong>Развилка</strong></td><td>рукава</td><td>две ветки сходятся у сердца, какая хуже — неизвестно</td></tr><tr><td><strong>Спуск</strong></td><td>лестница</td><td>сносит к одному выходу</td></tr><tr><td><strong>Кладовая</strong></td><td>узел-сундук под охраной</td><td>добыча, за которую платят отдельно</td></tr><tr><td><strong>Сердце</strong></td><td>логово</td><td>хозяин и объявленная награда</td></tr></tbody></table></div>
+<h3 id="ещё-сценарии--мои-пересобранные-под-структуру-идеи-вердиктов-нет">Ещё сценарии — мои, пересобранные под структуру (идеи, вердиктов нет)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ещё-сценарии--мои-пересобранные-под-структуру-идеи-вердиктов-нет" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Сценарий</th><th>Веха 1 — ивент</th><th>Веха 2 — испытание</th></tr></thead><tbody><tr><td><strong>Улей</strong></td><td>поджечь гнездо (шумно) или красться (тише, но добыча меньше)</td><td>бой; поджёг — подкрепление приходит раньше</td></tr><tr><td><strong>Тюремный блок</strong></td><td>кого вынести из камер: Сосуда, припасы или реликвию</td><td>стража, усиленная ровно на то, что ты взял</td></tr><tr><td><strong>Хранилище</strong></td><td>объявляешь вперёд, сколько сундуков берёшь: один, два, три</td><td>охрана по объявленной жадности</td></tr><tr><td><strong>Алтарь</strong></td><td>сделка: платишь травмой, реликвией или здоровьем</td><td>бой, где заплаченное и работает — против тебя или за тебя</td></tr><tr><td><strong>Лабиринт</strong></td><td>три двери вслепую, за каждой своя награда</td><td>бой, соответствующий выбранной двери</td></tr><tr><td><strong>Штольня</strong></td><td>насколько глубоко копаем</td><td>бой с дебафом по глубине и добычей по ней же</td></tr><tr><td><strong>Сокрытое логово</strong></td><td>старик за отдельную плату говорит, чьё это логово</td><td>босс фракции</td></tr></tbody></table></div>
+<h2 id="редкость-рельеф-обычный-и-рельеф-чудо">Редкость: рельеф обычный и рельеф-чудо<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#редкость-рельеф-обычный-и-рельеф-чудо" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Уточнение Макса 2026-08-02: <strong>редкая форма и есть чудо света</strong> — с позиции карты это особенный
+рельеф. Отдельной категории «чудеса» рядом с формами заводить не нужно.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Частота</th><th>Рельеф</th><th>Сколько на акт</th></tr></thead><tbody><tr><td>Обычный</td><td>поле, остров, тропа</td><td>костяк карты, 6–8 областей</td></tr><tr><td>Редкий</td><td>гребёнка, рукава, сход</td><td>1–2, не подряд</td></tr><tr><td>Чудо</td><td>лестница, логово</td><td>1 гарантированное + шанс на второе</td></tr><tr><td>Вставка</td><td>подземелья</td><td>с середины первого акта, не больше двух</td></tr></tbody></table></div>
+<p><strong>Гарантия важнее веса.</strong> Чистая вероятность превращает «редко» в «никогда»: за десять забегов игрок
+не увидит того, на что ушла неделя работы. Поэтому на акт кладётся одно гарантированное редкое
+место, а вес решает только, какое именно.</p>
+<p><strong>Имена форм — ландшафтные,</strong> раз форма это рельеф: Осыпь (лестница), Гребень (гребёнка), Перевал
+(сход), Рукава, Долина (поле), Остров, Тропа, Логово. Тогда карточка при наведении пишется сама:
+«Осыпь — камни ползут вниз, наверх не вернуться».</p>
+<h3 id="особые-места--банк-идей-вердиктов-нет">Особые места — банк идей (вердиктов нет)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#особые-места--банк-идей-вердиктов-нет" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Это <strong>не рельеф</strong>: у рельефа правило топологическое, а здесь своё игровое правило поверх любой формы.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Место</th><th>Правило</th><th>Чем платишь</th></tr></thead><tbody><tr><td>Разлом</td><td>две зоны наложились: в бою враги обеих фракций</td><td>состав волны непредсказуем</td></tr><tr><td>Караван-сарай</td><td>две лавки и привал, боёв нет</td><td>этажи без наград за бой</td></tr><tr><td>Поле битвы</td><td>узлы уже кем-то пройдены, трофеи на земле</td><td>падальщики приходят на шум</td></tr><tr><td>Обелиск</td><td>бафф на весь остаток акта</td><td>сложность всех боёв растёт</td></tr><tr><td>Мёртвая земля</td><td>гниль копится с каждым узлом</td><td>снимается только на привале</td></tr><tr><td>Клетки</td><td>можно освободить и нанять Сосуда</td><td>он приходит с травмой</td></tr><tr><td>Дорога торговцев</td><td>тропа, где вместо боёв лавки</td><td>золото уходит быстрее, чем копится</td></tr><tr><td>Затопленный ход</td><td>часть узлов скрыта до подхода на шаг</td><td>маршрут строится вслепую</td></tr></tbody></table></div>
+<h2 id="что-открывается-когда-макс-2026-08-02">Что открывается когда (Макс, 2026-08-02)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#что-открывается-когда-макс-2026-08-02" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Карта вышла богатой, поэтому слои включаются постепенно — иначе первый забег обрушит на игрока всё
+сразу.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Слой</th><th>Когда доступен</th></tr></thead><tbody><tr><td><strong>Фракции зон</strong></td><td>сразу, с нулевого возвышения</td></tr><tr><td><strong>Фракции + модификаторы</strong></td><td>с первого возвышения</td></tr><tr><td><strong>Подземелья</strong></td><td>открываются в мете; <strong>опциональные допы</strong>, пути к ним генерятся ДОПОЛНИТЕЛЬНО и откуда угодно — «даже могут появиться не смотря на генержку как ответления на тропе»</td></tr><tr><td><strong>Великий путь</strong></td><td>открывается в мете</td></tr></tbody></table></div>
+<p><strong>Длина от подземелья НЕ меняется</strong> (вердикт Макса 2026-08-02): «подземелье работает в духе “видишь
+вход, видишь выход, но не то, что внутри”». Ветка занимает те же этажи, что и обычная дорога рядом:
+вход на этаже N, выход на N+3, три шага и там, и там. Правило «длина у всех одна» остаётся целым, а
+исключение из него не заводится.</p>
+<h2 id="grand-line--великий-путь-идея-макса-2026-08-02">Grand Line — Великий путь (идея Макса, 2026-08-02)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#grand-line--великий-путь-идея-макса-2026-08-02" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Случайная сквозная дорога от начала акта до конца, прочерченная заранее и видимая с самого начала.
+Следуя ей, отряд получает награды тремя ступенями:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th style="text-align:right;">Ступень</th><th>Условие</th><th>Награда</th></tr></thead><tbody><tr><td style="text-align:right;">1</td><td>около четырёх узлов по линии (<strong>костёр в талии не считается</strong>)</td><td>реликвия как за обычного противника</td></tr><tr><td style="text-align:right;">2</td><td>около половины пути</td><td>предмет, один из трёх</td></tr><tr><td style="text-align:right;">3</td><td>путь <strong>целиком</strong></td><td>реликвия как за элиту</td></tr></tbody></table></div>
+<p>Награды намеренно негромкие: линия должна влиять на стратегию, а не диктовать её. Открывается в
+мете, чтобы не перегружать первые забеги.</p>
+<p><strong>Линия идёт как угодно — и это её цена.</strong> Дословно (Макс, 2026-08-02): «линия идет как угодно.
+Рандом. Ты не можешь уйти куда надо, ты становишься её заложником. Это уже и есть наказание.» Моё
+предложение вести её через опасные узлы <strong>отклонено</strong>: наказание уже встроено — следуя линии, отряд
+теряет право идти туда, куда ему нужно, и никакой дополнительной платы не требуется.</p>
+<p><strong>Ступени 1 и 2 считаются суммарно</strong> (свернул, вернулся — счётчик продолжил), ступень 3 — весь путь
+целиком.</p>
+<p><strong>В коопе линия одна на партию</strong> — иначе разделение отряда превращается в фарм двух линий (<code>proposed</code>).</p>
+<h2 id="дороги-слой-которого-у-нас-нет">Дороги: слой, которого у нас нет<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#дороги-слой-которого-у-нас-нет" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Заказ Макса 2026-08-02: «я именно идеи про ПУТИ… Про выбор путя». Сейчас ребро карты — просто линия
+между узлами: у него нет ни свойств, ни цены, ни содержимого. Между тем выбор игрок делает <strong>именно
+на дороге</strong>, а не в узле, и весь этот слой пустует.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Идея</th><th>Что меняется в выборе</th><th>Цена</th></tr></thead><tbody><tr><td><strong>Тракт и тропинка</strong></td><td>у дороги свой ранг: тракт безопасен и беден, тропа опасна и щедра. Видно самой линией, без иконок</td><td>дёшево</td></tr><tr><td><strong>Привратник</strong></td><td>дорога с объявленной платой: золото, здоровье, реликвия. Обобщение «странного старика» у входа в подземелье</td><td>дёшево</td></tr><tr><td><strong>Заслон</strong></td><td>дорогу перекрыл враг: чтобы пройти — бой прямо на ней, иначе в обход</td><td>средне</td></tr><tr><td><strong>Вслепую</strong></td><td>дорога есть, а куда ведёт — неизвестно до шага</td><td>дёшево</td></tr><tr><td><strong>Режущая дорога</strong></td><td>выбрав её, теряешь доступ к части карты впереди; что закроется — показано заранее</td><td>средне</td></tr><tr><td><strong>Тайная тропа</strong></td><td>видна только с трофейной картой или следопытом в ростере; соединяет несоединённое</td><td>средне</td></tr><tr><td><strong>Пограничная</strong></td><td>идёт по границе двух зон: бой смешанный, зато выбираешь, в чью землю выйти</td><td>средне</td></tr><tr><td><strong>Под наблюдением</strong></td><td>пошёл — следующая встреча знает о тебе; скрытный путь стоит платы</td><td>средне</td></tr><tr><td><strong>Обоз</strong></td><td>только по ней можно провезти груз или временного Сосуда</td><td>средне</td></tr><tr><td><strong>Встреча в пути</strong></td><td>короткое событие на самом ребре</td><td>дёшево</td></tr><tr><td><strong>Клятва на распутье</strong></td><td>обет привязан к дороге, а не к области</td><td>средне</td></tr><tr><td><strong>Тесная дорога (кооп)</strong></td><td>пройти можно только разделившись; или наоборот — только вместе</td><td>дорого</td></tr></tbody></table></div>
+<p><strong>Правило подачи:</strong> ранг и свойство дороги обязаны читаться <strong>линией</strong> — толщиной, фактурой,
+пунктиром, — а не значком рядом. Значок на ребре превращает карту в приборную панель, а линия
+работает на периферийном зрении, пока игрок смотрит на узлы.</p>
+<h2 id="банк-идей-слоя-карты-2026-08-02-вердиктов-нет">Банк идей слоя карты (2026-08-02, вердиктов нет)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#банк-идей-слоя-карты-2026-08-02-вердиктов-нет" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Заказ Макса: идеи такого же уровня оригинальности, что подземелья. Ресёрч соседей по жанру дал мало —
+у Monster Train, Wildfrost, Griftlands и Roguebook новизна живёт в бою и колоде, а карта остаётся
+выбором маршрута. Поэтому идеи растут из <strong>наших</strong> систем: кооп, ростер гильдии, арена, привал,
+Система.</p>
+<h3 id="карта-влияет-на-бой">Карта влияет на бой<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#карта-влияет-на-бой" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Идея</th><th>Что даёт</th><th>Цена</th></tr></thead><tbody><tr><td><strong>Арена видна с карты</strong></td><td>узел показывает поле боя (теснина, мост, открытое поле), и маршрут становится выбором арены под свой состав</td><td>дёшево: арены и зоны расстановки уже есть</td></tr><tr><td><strong>Засада</strong></td><td>враг получает право первой расстановки, награда выше</td><td>дёшево: режим расстановки уже параметризован</td></tr><tr><td><strong>Клятва маршрута</strong></td><td>перед входом в область объявляешь ограничение («без танка»), выполнил — двойная награда</td><td>средне: Обеты уже есть в прокачке Сосуда</td></tr></tbody></table></div>
+<h3 id="живая-карта">Живая карта<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#живая-карта" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Идея</th><th>Что даёт</th><th>Цена</th></tr></thead><tbody><tr><td><strong>Марш</strong></td><td>у фракции свой отряд, который идёт по карте; каждый твой шаг он делает свой</td><td>дорого: вторая фигура на карте и её ИИ</td></tr><tr><td><strong>Захват</strong></td><td>соседняя фракция расширяет зону на непройденные узлы впереди</td><td>средне: рост зоны уже будет в генераторе</td></tr><tr><td><strong>Слух</strong></td><td>выбил элиту — узлы в двух шагах «настороже», зато лавка рядом даёт скидку</td><td>средне: нужен слой состояния узла</td></tr></tbody></table></div>
+<p><strong>HARD-оговорка ко всей группе:</strong> карта видна целиком и служит планированию. Поэтому изменения
+допускаются <strong>только впереди отряда</strong> и <strong>только телеграфированные за шаг</strong>. Меняющаяся за спиной
+карта отнимает ровно ту ценность, ради которой её показывают.</p>
+<h3 id="информация-как-ресурс">Информация как ресурс<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#информация-как-ресурс" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Идея</th><th>Что даёт</th><th>Цена</th></tr></thead><tbody><tr><td><strong>Дозор</strong></td><td>отправляешь Сосуда разведать область; он раскрывает её, но выбывает на два узла</td><td>средне: ростер 8+ делает выбор осмысленным</td></tr><tr><td><strong>Карта-трофей</strong></td><td>с врагов падают фрагменты: раскрывают подземелье или состав волны</td><td>дёшево: новый вид награды</td></tr><tr><td><strong>Слухи на привале</strong></td><td>четвёртое действие привала: узнать фракцию одного сокрытого места</td><td>дёшево: бюджет привала уже есть</td></tr></tbody></table></div>
+<h3 id="кооп--то-чего-нет-ни-у-кого">Кооп — то, чего нет ни у кого<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#кооп--то-чего-нет-ни-у-кого" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Идея</th><th>Что даёт</th><th>Цена</th></tr></thead><tbody><tr><td><strong>Разделиться</strong></td><td>на развилке партия расходится: игроки ведут по половине состава разными дорогами, маршруты сходятся позже</td><td>дорого, но уникально: спор перестаёт быть «кто кого переспорит» и получает третий ответ</td></tr><tr><td><strong>Держать точку</strong></td><td>разделившись, один может ждать на узле и дать второму бонус</td><td>средне</td></tr></tbody></table></div>
+<h3 id="долг-и-власть">Долг и власть<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#долг-и-власть" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Идея</th><th>Что даёт</th><th>Цена</th></tr></thead><tbody><tr><td><strong>Займ гильдии</strong></td><td>берёшь награду сейчас, платишь на выходе из акта</td><td>средне</td></tr><tr><td><strong>Печать гильдмастера</strong></td><td>помечаешь узел: Система выдаёт там нужную добычу, но поднимает сложность</td><td>средне, зато прямо в мета-разворот</td></tr><tr><td><strong>Сбойный узел</strong></td><td>узел, которого Система не индексировала (<code>E4.???</code>); внутри то, чего в акте быть не может</td><td>дёшево механически, дорого нарративно; раз в забег</td></tr><tr><td><strong>Встреча в пути</strong></td><td>короткое событие на РЕБРЕ, а не на узле: караван, раненый Сосуд</td><td>дёшево: рёбра сейчас пустые</td></tr></tbody></table></div>
+<h2 id="зоны">Зоны<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#зоны" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Зона — <strong>карман</strong>, а не пояс этажей: подмножество узлов, которое можно обойти стороной. Владеет
+фракцией (в каноне фракция = <strong>пул генерации волн</strong>, см. <a href="../../gdd/20-combat/stats" class="internal alias" data-slug="gdd/20-combat/stats">Combat - Stats</a>) и
+списком модификаторов с областью применения (враги / все / отряд, дефолт — враги). Имя составное:
+эффект даёт прилагательное, фракция — существительное («Молниеносные Гоблины»).</p>
+<ul>
+<li><strong>Выбор узлов — рост по графу</strong>, а не по геометрии: одновременный обход от 3–5 семян, у каждого
+своя скорость и квота 8–16 узлов. Зона всегда связна и содержит сквозные маршруты.</li>
+<li><strong>Гарантии-инварианты:</strong> через зону есть маршрут; <strong>мимо зоны тоже есть маршрут</strong>; старт и босс вне зон.</li>
+<li><strong>Пятно — атмосфера, правду носит узел.</strong> Узел показывает принадлежность ободком цвета фракции:
+пятно перекрывается, размывается и уходит под туман, а «в чьей я земле» обязано читаться всегда.
+То же правило, что принято для тумана карты (D9).</li>
+<li><strong>Показ эффекта:</strong> цвет = фракция, имя картушем внутри зоны, иконка эффекта у имени, точная
+формулировка в тултипе. Фактура-под-эффект отклонена: требует словаря узоров на каждый эффект.</li>
+<li><strong>Готча локализации:</strong> составное имя согласуется по роду и числу («Молниеносная Стая»), поэтому
+собирается шаблоном с формами, а не конкатенацией.</li>
+</ul>
+<h2 id="правила-инварианты">Правила-инварианты<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#правила-инварианты" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Кандидаты в тесты — их нарушение не видно глазами, но убивает выбор:</p>
+<ul>
+<li><strong>Никакая область, кроме заставы, не занимает всю ширину акта</strong> — рядом обязана лежать альтернатива.</li>
+<li>У каждой области есть вход и выход; недостижимых узлов нет.</li>
+<li>Все маршруты акта равны по числу этажей.</li>
+<li>Планарность: полосы областей не перекрываются, порты соединяются в порядке.</li>
+</ul>
+<h2 id="подача">Подача<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#подача" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>С одного взгляда на карту видно <strong>три вещи</strong>: куда я могу шагнуть, чья это земля (цвет), и что здесь
+особенного (одна метка на область). Остальное — по наведению. Формы читать не нужно: остров с одним
+входом виден силуэтом.</p>
+<p>Разделение областей делается <strong>негативным пространством</strong>, а не вторым слоем пятен: пробел по
+горизонтали, одиночная длинная дорога вместо веера, тонкий процедурный шов на листе.</p>
+<p><strong>Наведение на область даёт карточку</strong> (заказ Макса 2026-08-02): имя места, строка образа, строка
+правила. Отсюда следствие для данных: форма — не только топология, а <strong>контент</strong>, у которого есть
+имя, лок-ключи, лор и вес редкости; носитель — SO. Длину держать жёстко: карточку на карте читают
+две секунды, а не абзац.</p>
+<h2 id="открытые-развилки">Открытые развилки<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#открытые-развилки" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>Сколько форм берём в первую очередь (предложено: поле, остров, тропа, гребёнка, сход).</li>
+<li>Имя формы «Лестница»: остаётся или уходит в Осыпь / Каскад / Спуск.</li>
+<li>Какие чудеса из банка берём и сколько их нужно к первому играбельному акту.</li>
+<li>Бывает ли область без фракции, или «ничейное» — тоже фракция (звери, нежить).</li>
+<li>Объездные рёбра по краю (короткий путь мимо награды) — ломают ли «шаг = этаж».</li>
+<li>Глубина рукавов: два этажа или три-четыре.</li>
+</ul>
+<p>Провенанс решений — <a href="../../gdd/00-meta/journal-adr" class="internal alias" data-slug="gdd/00-meta/journal-adr">Meta - Decision Journal</a> 2026-08-02.</p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-42" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#термины-закреплены-2026-08-02" data-for="термины-закреплены-2026-08-02">Термины (закреплены 2026-08-02)</a></li><li class="depth-0"><a href="#модель" data-for="модель">Модель</a></li><li class="depth-0"><a href="#карта--не-архипелаг-уточнение-макса-2026-08-02" data-for="карта--не-архипелаг-уточнение-макса-2026-08-02">Карта — не архипелаг (уточнение Макса 2026-08-02)</a></li><li class="depth-0"><a href="#формы" data-for="формы">Формы</a></li><li class="depth-0"><a href="#раскладка-воздух-между-узлами-и-пробел-между-областями" data-for="раскладка-воздух-между-узлами-и-пробел-между-областями">Раскладка: воздух между узлами и пробел между областями</a></li><li class="depth-0"><a href="#свойства" data-for="свойства">Свойства</a></li><li class="depth-0"><a href="#вставки-подземелья-dungeon" data-for="вставки-подземелья-dungeon">Вставки: подземелья (Dungeon)</a></li><li class="depth-1"><a href="#структура--фиксированная-макс-2026-08-02" data-for="структура--фиксированная-макс-2026-08-02">Структура — фиксированная (Макс, 2026-08-02)</a></li><li class="depth-1"><a href="#сценарии-макс-2026-08-02" data-for="сценарии-макс-2026-08-02">Сценарии (Макс, 2026-08-02)</a></li><li class="depth-1"><a href="#что-внутри" data-for="что-внутри">Что внутри</a></li><li class="depth-1"><a href="#ещё-сценарии--мои-пересобранные-под-структуру-идеи-вердиктов-нет" data-for="ещё-сценарии--мои-пересобранные-под-структуру-идеи-вердиктов-нет">Ещё сценарии — мои, пересобранные под структуру (идеи, вердиктов нет)</a></li><li class="depth-0"><a href="#редкость-рельеф-обычный-и-рельеф-чудо" data-for="редкость-рельеф-обычный-и-рельеф-чудо">Редкость: рельеф обычный и рельеф-чудо</a></li><li class="depth-1"><a href="#особые-места--банк-идей-вердиктов-нет" data-for="особые-места--банк-идей-вердиктов-нет">Особые места — банк идей (вердиктов нет)</a></li><li class="depth-0"><a href="#что-открывается-когда-макс-2026-08-02" data-for="что-открывается-когда-макс-2026-08-02">Что открывается когда (Макс, 2026-08-02)</a></li><li class="depth-0"><a href="#grand-line--великий-путь-идея-макса-2026-08-02" data-for="grand-line--великий-путь-идея-макса-2026-08-02">Grand Line — Великий путь (идея Макса, 2026-08-02)</a></li><li class="depth-0"><a href="#дороги-слой-которого-у-нас-нет" data-for="дороги-слой-которого-у-нас-нет">Дороги: слой, которого у нас нет</a></li><li class="depth-0"><a href="#банк-идей-слоя-карты-2026-08-02-вердиктов-нет" data-for="банк-идей-слоя-карты-2026-08-02-вердиктов-нет">Банк идей слоя карты (2026-08-02, вердиктов нет)</a></li><li class="depth-1"><a href="#карта-влияет-на-бой" data-for="карта-влияет-на-бой">Карта влияет на бой</a></li><li class="depth-1"><a href="#живая-карта" data-for="живая-карта">Живая карта</a></li><li class="depth-1"><a href="#информация-как-ресурс" data-for="информация-как-ресурс">Информация как ресурс</a></li><li class="depth-1"><a href="#кооп--то-чего-нет-ни-у-кого" data-for="кооп--то-чего-нет-ни-у-кого">Кооп — то, чего нет ни у кого</a></li><li class="depth-1"><a href="#долг-и-власть" data-for="долг-и-власть">Долг и власть</a></li><li class="depth-0"><a href="#зоны" data-for="зоны">Зоны</a></li><li class="depth-0"><a href="#правила-инварианты" data-for="правила-инварианты">Правила-инварианты</a></li><li class="depth-0"><a href="#подача" data-for="подача">Подача</a></li><li class="depth-0"><a href="#открытые-развилки" data-for="открытые-развилки">Открытые развилки</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../../gdd/00-meta/journal-adr" class="internal">Meta - Decision Journal</a></li><li><a href="../../gdd/70-gamefeel/map-presentation" class="internal">Gamefeel - Map Presentation</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

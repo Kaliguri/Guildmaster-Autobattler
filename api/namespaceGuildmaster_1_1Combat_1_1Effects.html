@@ -106,6 +106,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1AttackSplit.html">AttackSplit</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Часть удара, уходящая другой школой урона (карточка The Pyre: по горящей цели половина клинка бьёт Огнём).  <a href="structGuildmaster_1_1Combat_1_1Effects_1_1AttackSplit.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html">CombatEventData</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полезная нагрузка боевого события, диспатчится через внутреннюю FIFO-очередь (Stage 6).  <a href="structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -115,6 +118,15 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Контекст, передаваемый компоненту эффекта (<code>in</code>).  <a href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IAttackMissComponent.html">IAttackMissComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Опциональный шов: эффект на НОСИТЕЛЕ способен отправить его собственную атаку в молоко (слепота).  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IAttackMissComponent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IAttackSplitComponent.html">IAttackSplitComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Компонент на эффекте АТАКУЮЩЕГО, расщепляющий его авто-атаку по школам (условие смотрит на цель).  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IAttackSplitComponent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IOutgoingDamageBonusComponent.html">IOutgoingDamageBonusComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Опциональный шов: компонент носителя усиливает ЕГО удары по цели, отвечающей условию (Криомант больнее бьёт замороженных).  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IOutgoingDamageBonusComponent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html">IPeriodicComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Периодический компонент: <code>OnTick</code> каждые Interval секунд (DoT/HoT/реген).  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,6 +135,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html">IReactiveComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO-очередь.  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRearmOnRefreshComponent.html">IRearmOnRefreshComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Опциональный шов подкрепления: компонент, выдающий ОДНОРАЗОВЫЙ заряд, взводится заново, когда уже висящий эффект накладывают повторно (StackRule.Refresh / StackRule.StackAndRefresh).  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRearmOnRefreshComponent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRequiresAgencyComponent.html">IRequiresAgencyComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Маркер: этому компоненту нужна ДЕЕСПОСОБНОСТЬ носителя — он не срабатывает, пока юнит выведен контролем (<code>CanAct == false</code>: оглушение, сон).  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRequiresAgencyComponent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html">IRuntimeEffectComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Рантайм-контракт поведения эффекта.  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html#details">More...</a><br /></td></tr>
@@ -134,7 +152,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Опциональный шов рестака (07 §3.8 B1–B3): компонент с накопленным ВНЕШНИМ состоянием (пул щита, заряды негейта) сам корректирует свой вклад при смене числа стаков.  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html">PreDamageResult</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар.  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар или изменить его величину.  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html">RuntimeEffect</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Экземпляр эффекта на конкретном юните (POCO, живёт один бой).  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#details">More...</a><br /></td></tr>
@@ -152,6 +170,10 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066aae22ad0343f490e1d4d798f879dc6622">EffectApplied</a> = 1 &lt;&lt; 4
 , <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a429d336ceae2000a8948230c38cc738d">UnitKilled</a> = 1 &lt;&lt; 5
 , <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a1248807988c03e6f257d4238c3bc4136">EffectExpired</a> = 1 &lt;&lt; 6
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066afb70d9705c2930ef40b1173ab1b2094d">AbilityCast</a> = 1 &lt;&lt; 7
+, <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a72d4a0b0cc011d98f0b8fc13a5c5729c">AttackCompleted</a> = 1 &lt;&lt; 8
+, <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a676f582752529cf3b8f4652aff72ae7d">ComboBroken</a> = 1 &lt;&lt; 9
 <br />
  }</td></tr>
 <tr class="memdesc:acbd5655c92bc3943fed6be07e5127066"><td class="mdescLeft">&#160;</td><td class="mdescRight">Внутренние боевые события для реактивных компонентов эффектов (вампиризм/шипы и т.  <a href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066">More...</a><br /></td></tr>
@@ -183,6 +205,16 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="acbd5655c92bc3943fed6be07e5127066a1248807988c03e6f257d4238c3bc4136" name="acbd5655c92bc3943fed6be07e5127066a1248807988c03e6f257d4238c3bc4136"></a>EffectExpired&#160;</td><td class="fielddoc"><p>Эффект истёк/снят с юнита (доставляется ИСТОЧНИКУ эффекта = Source). </p>
 <p>Единый шов «эффект закончился»: реактив фильтрует по тегам истёкшего эффекта (CombatEventData.Tags) и команде юнита, на котором он закончился (CombatEventData.Target). Так реагируют «Вихревой заход» монаха (конец отбрасывания врага) и приземление рывка (конец смещения самого монаха), §10.6. Смещение — это эффект (тег <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a250adeee118a0038bd8a4a34bacaaf89" title="Семейство контроллеров: «подкидывание» — контроль, НЕ скейлится ReceiveDebuffEff (§4....">Guildmaster.Data.Definitions.EffectTag.KnockUp</a>), не жёсткое состояние: только длительность не скейлится (Neutral), всё остальное — через систему эффектов. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="acbd5655c92bc3943fed6be07e5127066afb70d9705c2930ef40b1173ab1b2094d" name="acbd5655c92bc3943fed6be07e5127066afb70d9705c2930ef40b1173ab1b2094d"></a>AbilityCast&#160;</td><td class="fielddoc"><p>Кто-то применил активную способность. </p>
+<p>Доставляется ВСЕМ живым врагам кастующего — потому что реагирует на чужой каст именно противник («Отражающий налёт» Антимага копит щит за каждое вражеское заклинание). Единственное широковещательное событие в очереди. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="acbd5655c92bc3943fed6be07e5127066a72d4a0b0cc011d98f0b8fc13a5c5729c" name="acbd5655c92bc3943fed6be07e5127066a72d4a0b0cc011d98f0b8fc13a5c5729c"></a>AttackCompleted&#160;</td><td class="fielddoc"><p>Носитель ЗАВЕРШИЛ Атаку: она прошла полный путь замах → (канал) → конец рекавери. </p>
+<p>Промах событие даёт, прерванная контролем Атака — нет (вердикт Макса 2026-08-01). Доставляется самому носителю; на нём живут «каждая N-я Атака» и цикл фаз, которые взводят заряд СЛЕДУЮЩЕЙ Атаки.</p>
+<p>Отдельно от DamageDealt потому, что то — событие УДАРА: у многоударного кита оно приходит несколько раз за Атаку, у удара по площади — на каждого задетого, а у промаха не приходит вовсе. Считать им Атаки значит считать что-то другое. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="acbd5655c92bc3943fed6be07e5127066a676f582752529cf3b8f4652aff72ae7d" name="acbd5655c92bc3943fed6be07e5127066a676f582752529cf3b8f4652aff72ae7d"></a>ComboBroken&#160;</td><td class="fielddoc"><p>Комбо носителя порвалось: он пробыл вне атакующего лупа дольше <code>SimTuning.ComboBreakSeconds</code> (ГДД: глоссарий, 2026-07-30/11). </p>
+<p>Счётчик серии уже обнулён; событие нужно тем, у кого от серии остался ВЗВЕДЁННЫЙ заряд — его гасит владелец, а не общий диспел. </p>
 </td></tr>
 </table>
 

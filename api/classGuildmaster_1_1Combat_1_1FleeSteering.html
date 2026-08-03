@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1FleeStee
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.FleeSteering:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1FleeSteering__coll__graph.svg" width="246" height="96"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1FleeSteering__coll__graph.svg" width="246" height="116"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -114,6 +114,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aca716a0e509bfe2cccd0942a4e11517f" id="r_aca716a0e509bfe2cccd0942a4e11517f"><td class="memItemLeft" align="right" valign="top">static Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1FleeSteering.html#aca716a0e509bfe2cccd0942a4e11517f">KiteFlee</a> (Vector2 pos, Vector2 awayDir, Vector2 toTargetDir, float step, in <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a> bounds, in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a> tuning)</td></tr>
 <tr class="memdesc:aca716a0e509bfe2cccd0942a4e11517f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаг ОТХОДА кайтера (flee-фаза PositioningIntent.Kite): радиальный уход от цели (<em>awayDir</em> ) + боковой уход (strafe, дуга вместо пятящегося отхода), скольжение у стены.  <br /></td></tr>
 <tr class="separator:aca716a0e509bfe2cccd0942a4e11517f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66b7ac7b2fc51e9c7b4cb8193d0f74dd" id="r_a66b7ac7b2fc51e9c7b4cb8193d0f74dd"><td class="memItemLeft" align="right" valign="top">static Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1FleeSteering.html#a66b7ac7b2fc51e9c7b4cb8193d0f74dd">HomeDir</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit)</td></tr>
+<tr class="memdesc:a66b7ac7b2fc51e9c7b4cb8193d0f74dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Направление «к своему тылу» по команде: 0 (союзники, левая сторона) → влево, иначе вправо.  <br /></td></tr>
+<tr class="separator:a66b7ac7b2fc51e9c7b4cb8193d0f74dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Единая математика ПОБЕГА (Retreat и flee-фаза Kite): детерминированное steering-поле без RNG. </p>
@@ -127,6 +130,40 @@ Static Public Member Functions</h2></td></tr>
 </ul>
 <p>Когда желаемое направление всё же упирается в стену (стена «переворачивала» бы курс или цель клампится) — гарантированное скольжение ВДОЛЬ стены к центру арены, чтобы юнит не замирал и не продавливался наружу. Веса и радиусы — из SimTuning (бейк, не хардкод). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a66b7ac7b2fc51e9c7b4cb8193d0f74dd" name="a66b7ac7b2fc51e9c7b4cb8193d0f74dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66b7ac7b2fc51e9c7b4cb8193d0f74dd">&#9670;&#160;</a></span>HomeDir()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Vector2 Guildmaster.Combat.FleeSteering.HomeDir </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Направление «к своему тылу» по команде: 0 (союзники, левая сторона) → влево, иначе вправо. </p>
+<p>ЕДИНСТВЕННЫЙ владелец конвенции сторон: где у команды тыл, решается здесь и больше нигде. Публично потому, что тот же факт нужен <code>SeparationSystem</code> — разводить слипшиеся точь-в-точь тела он обязан зеркально, а зеркальность требует знать сторону, а не только порядок Id. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1FleeSteering_a66b7ac7b2fc51e9c7b4cb8193d0f74dd_icgraph.svg" width="100%" height="421"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
 <a id="aca716a0e509bfe2cccd0942a4e11517f" name="aca716a0e509bfe2cccd0942a4e11517f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aca716a0e509bfe2cccd0942a4e11517f">&#9670;&#160;</a></span>KiteFlee()</h2>
 
@@ -244,6 +281,11 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Шаг ОТСТУПЛЕНИЯ (PositioningIntent.Retreat): threat + home + wall, скольжение у стены. </p>
 <p>Возвращает новую (уже клампнутую) позицию юнита. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1FleeSteering_a23dd131b9d260e4185d9b9be7cae90d4_cgraph.svg" width="552" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

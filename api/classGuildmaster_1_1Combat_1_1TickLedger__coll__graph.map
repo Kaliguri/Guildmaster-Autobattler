@@ -1,0 +1,3 @@
+<map id="Guildmaster.Combat.TickLedger" name="Guildmaster.Combat.TickLedger">
+<area shape="rect" id="Node000001" title="Реестр тика: копит урон и лечение, посчитанные за раунд, и применяет их ОДНИМ коммитом." alt="" coords="5,5,228,151"/>
+</map>

@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Кадр первого маркера = round(time × frameRate). 0 если клипа/маркера нет.">
+<g id="a_Node000001"><a xlink:title="Кадр первого контакта = round(time × frameRate). 0 если клипа/маркера нет.">
 <polygon fill="#999999" stroke="#666666" points="161,-30 0,-30 0,0 161,0 161,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ClipMarkers.HitFrame</text>
@@ -31,10 +31,10 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a764ad6b2076d4e9dcebc42e60f69a6a9" target="_top" xlink:title="Время первого маркера (сек) или &#45;1, если маркера нет.">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#ad5d097f5adf3e674b9d2c4bab8e06de2" target="_top" xlink:title="Время первого контакта (сек) или &#45;1, если маркера нет.">
 <polygon fill="white" stroke="#666666" points="358,-30 197,-30 197,0 358,0 358,-30"/>
 <text text-anchor="start" x="205" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="middle" x="277.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ClipMarkers.FirstMarkerTime</text>
+<text text-anchor="middle" x="277.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ClipMarkers.FirstHitTime</text>
 </a>
 </g>
 </g>

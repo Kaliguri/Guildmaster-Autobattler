@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.CameraModeController.ExitMap" name="Guildmaster.Presentation.CameraModeController.ExitMap">
+<area shape="rect" id="Node000001" title="Выйти из вида карты в мировой вид." alt="" coords="5,5,235,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1CameraModeController.html#ad0105c4c68dde17f9cbf25b4f8a5dddc" title="Вернуть кадр карты, из которого ныряли." alt="" coords="283,5,536,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="235,23,269,23,269,28,235,28"/>
+</map>

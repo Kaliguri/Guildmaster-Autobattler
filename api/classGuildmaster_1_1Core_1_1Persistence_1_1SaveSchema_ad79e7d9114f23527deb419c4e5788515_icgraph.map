@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.Persistence.SaveSchema.VersionOf" name="Guildmaster.Core.Persistence.SaveSchema.VersionOf">
+<area shape="rect" id="Node000001" title="Текущая версия схемы для типа." alt="" coords="312,5,531,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#ade0cec6196702bbe2cf11c13d7fc5202" title="Сохранить значение под ключом (перезаписывает). Версия схемы берётся из типа." alt="" coords="5,5,264,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="298,28,264,28,264,23,298,23"/>
+</map>

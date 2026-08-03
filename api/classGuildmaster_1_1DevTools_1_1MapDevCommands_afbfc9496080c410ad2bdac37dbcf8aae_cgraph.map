@@ -1,0 +1,23 @@
+<map id="Guildmaster.DevTools.MapDevCommands.Register" name="Guildmaster.DevTools.MapDevCommands.Register">
+<area shape="rect" id="Node000001" title="Положить команды карты в набор модуля (снимаются вместе с ним)." alt="" coords="5,165,201,205"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1MapDevCommands.html#a11d23f471c4773216d9b6da58a2ab580" title=" " alt="" coords="250,5,446,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,163,174,110,210,81,248,55,261,48,263,53,251,60,213,85,178,114,124,167"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1DevTools_1_1MapDevCommands.html#acc9be608218064ada5dd6a48ba9817bf" title=" " alt="" coords="250,69,446,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="146,163,248,119,268,111,270,116,250,124,148,168"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1DevTools_1_1MapDevCommands.html#a0bdc0a79bbe7ccca288f4c7a127a2c54" title=" " alt="" coords="250,133,446,173"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="201,170,236,165,237,171,202,175"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1DevTools_1_1MapDevCommands.html#af5bea63e3e70c0adc7f81f8e6f53e642" title=" " alt="" coords="250,197,446,237"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="202,195,237,200,236,205,201,201"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1DevTools_1_1MapDevCommands.html#af9dd7edc2b50d758ad7c03b2bd4c0122" title=" " alt="" coords="249,325,447,365"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="124,204,178,257,213,286,251,311,263,318,261,322,248,316,210,290,174,261,120,207"/>
+<area shape="rect" id="Node000010" href="$classGuildmaster_1_1DevTools_1_1MapDevCommands.html#ab6085c0d8371aebd5c09027b62bf9b04" title=" " alt="" coords="250,261,446,301"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="148,203,250,247,270,254,268,259,248,252,146,208"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Presentation_1_1Map_1_1IWorldMapView.html#a697fecbcb3e20e9856f629e3d6c197ba" title="Прогнать фишку к узлу БЕЗ выбора: анимация играет, но NodeClicked не поднимается." alt="" coords="495,37,744,77"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="447,34,482,38,481,44,446,40"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="446,75,481,71,482,76,447,80"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html#af61fbe9bc2c08715ed06a54da5c07ec5" title="Показать/скрыть карту (интент табов)." alt="" coords="510,197,729,237"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="434,171,521,192,520,197,433,176"/>
+<area shape="rect" id="Node000009" href="$interfaceGuildmaster_1_1Presentation_1_1Map_1_1IWorldMapView.html#a434319cff1b32895e7d27aea67752dd2" title="Вернуть фишку на узел, где стоит отряд (или на первый узел карты). Выбор не засчитывается." alt="" coords="505,325,734,365"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="447,343,491,343,491,348,447,348"/>
+<area shape="poly" id="edge11_Node000010_Node000006" title=" " alt="" coords="433,259,520,238,521,243,434,264"/>
+</map>

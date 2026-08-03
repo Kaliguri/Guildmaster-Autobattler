@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Body.IUnitPartLookup.TryGetHeld" name="Guildmaster.Presentation.Body.IUnitPartLookup.TryGetHeld">
+<area shape="rect" id="Node000001" title="Предмет в этом хвате." alt="" coords="264,5,499,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1CastGlowMask.html#a5741b1d602012b8d0f56a64b35929350" title="Какие части зажечь." alt="" coords="5,5,216,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,28,216,28,216,23,250,23"/>
+</map>

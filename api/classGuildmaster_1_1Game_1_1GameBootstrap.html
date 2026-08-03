@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1GameBootst
 </div><!--header-->
 <div class="contents">
 
-<p>Точка старта: поднимает RootLifetimeScope и запускает флоу.  
+<p>Точка старта: поднимает персистентный мир и запускает верхнюю петлю игры (главное меню → забег → меню).  
  <a href="classGuildmaster_1_1Game_1_1GameBootstrap.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.GameBootstrap:</div>
@@ -110,8 +110,9 @@ Collaboration diagram for Guildmaster.Game.GameBootstrap:</div>
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1GameBootstrap__coll__graph.svg" width="254" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Точка старта: поднимает RootLifetimeScope и запускает флоу. </p>
-<p>По умолчанию — legacy-вход (просто грузит BattleScene, бои запускает dev-панель F2). Флаг _runBattleFlowOnBoot + назначенный пресет включают A2-разрез: прогон одного боя через <code>BattleFlow</code> (Prep→Combat→Outcome). Размещается в CoreScene на объекте [Bootstrap]. </p>
+<div class="textblock"><p>Точка старта: поднимает персистентный мир и запускает верхнюю петлю игры (главное меню → забег → меню). </p>
+<p>Dev-флаги ниже подменяют вход разрезом — актом, одиночным боем или текст-ивентом. Размещается в CoreScene на объекте [Bootstrap]. </p>
+<p>Вся игра живёт внутри одной задачи, поэтому она обязана быть защищённой: раньше любое исключение, кроме отмены, убивало петлю навсегда и молча — игра оставалась на экране, не отвечая ни на что (аудит 2026-07-26, C-03). Теперь падение видно в логе, и петля поднимается заново с главного меню ограниченное число раз.</p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Tooltips.TooltipManipulator" name="Guildmaster.UI.Tooltips.TooltipManipulator">
+<area shape="rect" id="Node000001" title="Декларативное «у этого элемента есть тултип» (план §II.10.5 п.2)." alt="" coords="5,119,248,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="81,5,173,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,85,129,118,124,118,124,85"/>
+</map>

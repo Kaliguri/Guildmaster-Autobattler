@@ -1,0 +1,5 @@
+<map id="Guildmaster.DevTools.MapDevCommands.ResetPawn" name="Guildmaster.DevTools.MapDevCommands.ResetPawn">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,203,45"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Presentation_1_1Map_1_1IWorldMapView.html#a434319cff1b32895e7d27aea67752dd2" title="Вернуть фишку на узел, где стоит отряд (или на первый узел карты). Выбор не засчитывается." alt="" coords="251,5,480,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,23,237,23,237,28,203,28"/>
+</map>

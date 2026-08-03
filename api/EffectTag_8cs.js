@@ -14,6 +14,10 @@ var EffectTag_8cs =
       [ "KnockUp", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a250adeee118a0038bd8a4a34bacaaf89", null ],
       [ "Stealth", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a899db408cba5858a0f1701a2caef2628", null ],
       [ "Poison", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a3a9d1818d0d7f5646e63465baf7d366f", null ],
-      [ "Burn", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a11635778f116ce6922f6068638a39028", null ]
+      [ "Burn", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a11635778f116ce6922f6068638a39028", null ],
+      [ "Ember", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438afcb94b14624bcdf327d65d191cd85035", null ],
+      [ "Empowered", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a70084f9751a3e440262a1d3215bf5cf0", null ],
+      [ "Sleep", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a243924bfd56a682be235638b53961e09", null ],
+      [ "Frostbite", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a5d1801a70481550d3de71ee64068b62d", null ]
     ] ]
 ];

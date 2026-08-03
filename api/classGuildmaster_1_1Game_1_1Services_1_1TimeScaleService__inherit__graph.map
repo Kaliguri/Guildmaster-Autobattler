@@ -1,7 +1,7 @@
 <map id="Guildmaster.Game.Services.TimeScaleService" name="Guildmaster.Game.Services.TimeScaleService">
-<area shape="rect" id="Node000001" title="Единственный писатель UnityEngine.Time.timeScale в бою." alt="" coords="5,119,204,419"/>
+<area shape="rect" id="Node000001" title="Единственный писатель UnityEngine.Time.timeScale в бою." alt="" coords="5,119,204,399"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="17,5,89,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="66,84,73,118,68,119,60,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="66,83,74,118,69,119,61,85"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="113,5,203,71"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,85,142,119,137,118,145,84"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,85,141,119,136,118,144,83"/>
 </map>

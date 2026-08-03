@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.ISummonFactory.CreateSummon" name="Guildmaster.Combat.ISummonFactory.CreateSummon">
+<area shape="rect" id="Node000001" title="Собрать призванного юнита." alt="" coords="264,5,487,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a47196edf5856a85fcc69278b50704da0" title="Призвать тело в бой: собрать по киту и поставить в очередь спавна (см. ICombatContext)." alt="" coords="5,5,216,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,28,216,28,216,23,250,23"/>
+</map>

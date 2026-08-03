@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Tape.StageFrameRouter" name="Guildmaster.Combat.Tape.StageFrameRouter">
+<area shape="rect" id="Node000001" title="Единственный вход показа за кадром сцены: пока идёт бой — лента, всё остальное время — тела мира." alt="" coords="55,139,242,399"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Tape_1_1IStageFrameSource.html" title="Кто поставляет показу кадр сцены: кто стоит на арене, где и в какой позе." alt="" coords="5,5,145,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,103,108,137,103,139,91,104"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Tape_1_1IUnitDirectory.html" title="Кто есть кто на арене: id → паспорт." alt="" coords="169,15,275,81"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="210,95,195,139,189,138,205,93"/>
+</map>

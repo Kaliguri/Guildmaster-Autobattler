@@ -1,7 +1,7 @@
 <map id="Guildmaster.Presentation.Audio.AudioCatalog" name="Guildmaster.Presentation.Audio.AudioCatalog">
-<area shape="rect" id="Node000001" title="Каталог соответствий «ключ звука → FMOD&#45;событие» (вики «13» §3.5, §7)." alt="" coords="45,139,228,279"/>
+<area shape="rect" id="Node000001" title="Каталог соответствий «ключ звука → FMOD&#45;событие» (вики «13» §3.5, §7)." alt="" coords="45,139,228,339"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,15,127,81"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,92,108,137,103,140,83,94"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,93,102,137,97,139,80,95"/>
 <area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Presentation_1_1Audio_1_1IAudioCatalog.html" title="Читаемый интерфейс аудио&#45;каталога для AudioResolver — только предикаты наличия, без FMOD&#45;типов,..." alt="" coords="151,5,263,91"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="186,104,170,140,165,138,181,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="189,105,176,139,171,137,184,103"/>
 </map>

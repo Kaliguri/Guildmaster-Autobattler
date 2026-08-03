@@ -1,0 +1,11 @@
+<map id="Guildmaster.Game.Services.ProfileService.DeleteProfile" name="Guildmaster.Game.Services.ProfileService.DeleteProfile">
+<area shape="rect" id="Node000001" title="Удалить профиль вместе со всеми его гильдиями и забегами. Необратимо." alt="" coords="5,37,212,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#aae84a01da73c110933033fda056956b8" title="Создать профиль и сделать активным. Null, если достигнут лимит." alt="" coords="260,5,467,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,42,246,37,247,43,212,47"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#af8d0749776e9b8af49f870decf6c4240" title="Переключиться на профиль. false = профиля нет." alt="" coords="260,69,467,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="212,68,247,72,246,77,212,73"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#ad309387449e8ac3a361c248528ca8469" title="Создать гильдию в активном профиле и сделать активной. Null, если лимит или нет профиля." alt="" coords="515,5,721,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="467,23,501,23,501,28,467,28"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a34e8b2b06d4a9d2e28f8e449269ab5ba" title="Переключиться на гильдию активного профиля. false = гильдии нет." alt="" coords="515,69,721,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="467,87,501,87,501,92,467,92"/>
+</map>

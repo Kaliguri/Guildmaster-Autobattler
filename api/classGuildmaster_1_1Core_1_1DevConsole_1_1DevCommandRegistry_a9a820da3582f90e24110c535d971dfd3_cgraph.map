@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.DevConsole.DevCommandRegistry.CommonPrefix" name="Guildmaster.Core.DevConsole.DevCommandRegistry.CommonPrefix">
+<area shape="rect" id="Node000001" title="Самое длинное имя&#45;продолжение, общее для всех совпадений с prefix , или сам префикс,..." alt="" coords="5,5,272,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1DevConsole_1_1DevCommandRegistry.html#a7dffd582f35a0b4185f7d89199c9b637" title="Команды, чьё имя начинается с prefix , дописанные в result &#160;в алфавитном порядке." alt="" coords="320,5,541,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="272,23,306,23,306,28,272,28"/>
+</map>

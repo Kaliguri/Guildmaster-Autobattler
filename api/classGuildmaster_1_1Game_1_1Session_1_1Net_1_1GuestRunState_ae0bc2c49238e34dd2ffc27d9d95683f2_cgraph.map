@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.Net.GuestRunState.Dispose" name="Guildmaster.Game.Session.Net.GuestRunState.Dispose">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,208,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunSnapshotCodec.html#aa7b6b7c915372871ad31325161f90d37" title="Разобрать снимок." alt="" coords="260,5,471,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,42,246,37,247,43,208,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1NetEnvelope.html#a351e5e1f23aef7a85011900a0faa43a3" title="Разобрать конверт." alt="" coords="256,69,475,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,67,243,71,242,77,208,72"/>
+</map>

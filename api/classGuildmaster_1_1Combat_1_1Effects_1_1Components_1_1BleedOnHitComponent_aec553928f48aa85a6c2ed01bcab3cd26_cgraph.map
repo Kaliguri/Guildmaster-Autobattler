@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.Effects.Components.BleedOnHitComponent.OnEvent" name="Guildmaster.Combat.Effects.Components.BleedOnHitComponent.OnEvent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,267,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="315,20,535,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="267,30,301,30,301,35,267,35"/>
+</map>

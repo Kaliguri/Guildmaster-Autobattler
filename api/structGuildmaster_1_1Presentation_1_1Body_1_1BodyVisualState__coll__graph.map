@@ -1,0 +1,9 @@
+<map id="Guildmaster.Presentation.Body.BodyVisualState" name="Guildmaster.Presentation.Body.BodyVisualState">
+<area shape="rect" id="Node000001" title="Материальное состояние тела за кадр — всё, что презентация подмешивает поверх спрайта: тинт с альфой ..." alt="" coords="48,517,231,937"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,255,156,335"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,348,113,517,108,517,85,349"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Presentation_1_1Body_1_1PartMask.html" title="Набор частей тела одним значением: бит на часть, номер бита — её индекс в теле (IUnitPartLookup...." alt="" coords="180,135,363,455"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,456,211,502,206,501,220,454"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="201,5,341,85"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="274,99,274,134,269,134,269,99"/>
+</map>

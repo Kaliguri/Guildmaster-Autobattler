@@ -1,0 +1,11 @@
+<map id="Guildmaster.UI.Tooltips.KeywordLinks.WithKeywordTooltips&lt; T &gt;" name="Guildmaster.UI.Tooltips.KeywordLinks.WithKeywordTooltips&lt; T &gt;">
+<area shape="rect" id="Node000001" title="Включить подсказки по ссылкам в тексте элемента." alt="" coords="5,117,296,157"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipShowEvent.html#a4b28b78e47afaf03ea1ebc11480f9ffa" title=" " alt="" coords="344,29,552,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,115,365,71,367,76,220,120"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipHideEvent.html#a5c46d76ff4f2443d5b1b1fc85f217520" title=" " alt="" coords="347,117,549,157"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="296,135,333,135,333,140,296,140"/>
+<area shape="rect" id="Node000004" href="$structGuildmaster_1_1UI_1_1Tooltips_1_1TooltipRequest.html#a5789a7849fa8d1e35bb007e349ba6b13" title=" " alt="" coords="359,181,537,221"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="245,155,346,177,345,182,244,160"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="393,30,390,20,399,10,418,5,448,3,482,5,501,13,499,18,481,11,448,8,419,10,402,15,395,21,398,28"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="393,118,390,108,399,98,418,93,448,91,482,93,501,101,499,106,481,99,448,96,419,98,402,103,395,109,398,116"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.Editor.FrameSheet.NewSheet" name="Guildmaster.Presentation.Editor.FrameSheet.NewSheet">
+<area shape="rect" id="Node000001" title="Пустой холст, залитый цветом. Point&#45;фильтрация: лист смотрят попиксельно." alt="" coords="347,37,557,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Editor_1_1FrameSheet.html#a134d42aaadfbd7f149dfd56b283c4312" title="Кадры сеткой, читается как раскадровка — слева направо, сверху вниз." alt="" coords="5,5,299,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="332,47,298,44,299,38,333,42"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Editor_1_1FrameSheet.html#a6c9de142d3cdecf54aac654d91fe11ed" title="Кадры наложением в одну ячейку: старые позы бледные, последняя в полную силу." alt="" coords="16,69,288,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="333,73,289,77,288,72,333,67"/>
+</map>

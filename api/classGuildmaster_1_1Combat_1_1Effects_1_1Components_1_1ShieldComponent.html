@@ -131,6 +131,8 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Поглощающий щит. </p>
 <p>Величина (скейлится статами источника) добавляется к <code>CurrentShield</code> при наложении и снимается остатком при истечении. На стаки — линейно ×Stacks. </p>
+<p><b>Числа:</b> <code>_amount</code> — сколько урона поглотит щит, в единицах HP. Всё остальное решает сам эффект: длительность (короткий щит гасит один удар, длинный копит поглощение), стакинг (стаки складываются линейно) и стойкость к снятию.</p>
+<p><b>Когда срабатывает:</b> при наложении — величина считается один раз и не пересчитывается; при истечении неизрасходованный остаток снимается.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a7c0a825f89175d21ba07ce3ae3ad22be" name="a7c0a825f89175d21ba07ce3ae3ad22be"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7c0a825f89175d21ba07ce3ae3ad22be">&#9670;&#160;</a></span>OnApply()</h2>

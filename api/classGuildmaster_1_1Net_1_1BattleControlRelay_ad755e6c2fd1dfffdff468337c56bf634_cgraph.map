@@ -1,0 +1,5 @@
+<map id="Guildmaster.Net.BattleControlRelay.Dispose" name="Guildmaster.Net.BattleControlRelay.Dispose">
+<area shape="rect" id="Node000001" title="Отписаться от транспорта." alt="" coords="5,5,224,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1NetEnvelope.html#a351e5e1f23aef7a85011900a0faa43a3" title="Разобрать конверт." alt="" coords="272,5,491,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,23,258,23,258,28,224,28"/>
+</map>

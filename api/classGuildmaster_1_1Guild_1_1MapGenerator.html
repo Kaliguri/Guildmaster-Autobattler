@@ -115,7 +115,7 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Строит граф карты акта (MapState) из детерминированного IRngService — план [[act-map-run-loop]] §3.1. </p>
 <p>Топология слева→направо в духе Across the Obelisk: колонки узлов, ветвление и схождение. Один и тот же сид → одинаковая карта на любой платформе (весь рандом идёт через RNG).</p>
-<p>Связь соседних колонок — алгоритмом «монотонной лестницы» (см. ConnectColumns): он гарантирует связность (у каждого узла есть входящее и исходящее ребро), планарность (рёбра не пересекаются крест-накрест) и естественные развилки/схождения. Правила: элитки не раньше MapGenConfig.EliteMinColumn, гарантированно ≥1 магазин до босса. </p>
+<p>Связь соседних колонок — алгоритмом «монотонной лестницы» (см. ConnectColumns): он гарантирует связность (у каждого узла есть входящее и исходящее ребро), планарность (рёбра не пересекаются крест-накрест) и естественные развилки/схождения. Типы узлов — по ЗОНАМ этажей и ЯКОРЯМ (MapGenConfig.Zones/MapGenConfig.Anchors) и БОЛЬШЕ НИКАК: карта — честный результат весов, без пост-правок «а вот тут ещё дорисуем нужный узел» (решение Макса 2026-07-26). Единственная гарантия акта — якорь: он задан данными и виден в конфиге. </p>
 <p><b>Payload узлов не назначается здесь</b> — генератор строит только топологию и типы; конкретный контент (энкаунтер/ивент/пул) выбирает <code>NodeResolver</code> на входе в узел (фаза A2).</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a054078ab44d9a06131a10ac5b5135ead" name="a054078ab44d9a06131a10ac5b5135ead"></a>
@@ -154,14 +154,9 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Строит карту акта из <em>rng</em>  по параметрам <em>config</em> . </p>
 <div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1MapGenerator_a054078ab44d9a06131a10ac5b5135ead_cgraph.svg" width="495" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1MapGenerator_a054078ab44d9a06131a10ac5b5135ead_icgraph.svg" width="500" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1MapGenerator_a054078ab44d9a06131a10ac5b5135ead_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

@@ -1,16 +1,25 @@
 var interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService =
 [
     [ "SetContext", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#abfb55c26f5912da45d6f778d4affad26", null ],
+    [ "SetSuppressed", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a13e2267317767d96437d90cf2bd49cc9", null ],
     [ "CameraPan", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#ace8eee9479a983da7eeda2e5cc7bfe57", null ],
+    [ "CameraPanDrag", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a7942577f489a2d3e9d7e2301e529987d", null ],
     [ "CameraZoomDelta", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#ae2614daad90dc536487ffa8f5c6a9fbb", null ],
     [ "Context", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#aefb63244e2854858b20a403952435dcf", null ],
+    [ "DetailsHeld", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#ad56f6f92de05efe9387c0cf7ca2bdd7c", null ],
     [ "GameplaySuppressed", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a5595966e2ca4ffb59d1d14c8a624f5f1", null ],
     [ "PointerHeld", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a64dd7151a2cca9ea7c512cfba9a1fb02", null ],
+    [ "PointerOverUI", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a7fbeec1400fa2640bfc431012db9bc79", null ],
     [ "PointerScreenPosition", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a9455ad28d5ee6370328136d9b7d61661", null ],
     [ "CycleViewRequested", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a3af6bad4dbd792ea37e6240dec0ea408", null ],
+    [ "DetailsHeldChanged", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a3d58f5a31eb1342e378a194261f23813", null ],
+    [ "DevBattlesToggleRequested", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#ab167f8dd56ce093c7a27712416425edc", null ],
+    [ "DevConsoleToggleRequested", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a11c05cab063cc8cca936bb753cdd4e82", null ],
+    [ "DevLogToggleRequested", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a015bfef2f63d7fba0eb8b6d0c3fda9ad", null ],
     [ "GameSpeedCycleRequested", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a3169aaabda1fde22720d0c2bd6c55f1d", null ],
     [ "MenuToggleRequested", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#abbfc977da2284efc84481963d7ade147", null ],
     [ "PauseToggleRequested", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a7b97242d655b5388789f6dfd8fa6a490", null ],
     [ "PointerPressed", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a5ed78db1def2d00028181af33ca98202", null ],
-    [ "PointerReleased", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a15ae65cafe085886a34aba168d4c56a1", null ]
+    [ "PointerReleased", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a15ae65cafe085886a34aba168d4c56a1", null ],
+    [ "SkipRequested", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a36a3455fdd6a47bd7d33fe522b668660", null ]
 ];

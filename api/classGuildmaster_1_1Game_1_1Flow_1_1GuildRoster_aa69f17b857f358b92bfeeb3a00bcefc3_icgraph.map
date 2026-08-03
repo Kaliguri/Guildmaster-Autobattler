@@ -1,8 +1,16 @@
 <map id="Guildmaster.Game.Flow.GuildRoster.ResolveItems" name="Guildmaster.Game.Flow.GuildRoster.ResolveItems">
-<area shape="rect" id="Node000001" title="Строковые id предметов → массив ItemData (null, если ничего не разрешилось)." alt="" coords="533,5,749,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1NodeResolver.html#a52914788c009090a029b01cd361c2f81" title=" " alt="" coords="5,5,221,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="519,25,485,24,269,24,222,25,222,20,269,19,485,19,520,19"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив." alt="" coords="269,33,485,73"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="520,41,486,45,485,39,520,36"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="256,43,221,39,222,34,256,38"/>
+<area shape="rect" id="Node000001" title="Строковые id предметов → массив ItemData (null, если ничего не разрешилось)." alt="" coords="811,87,1027,127"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1RosterDeployer.html#ae49b8acaf11309c8378e5e021ef9fe8e" title="Поставить отряд забега на арену. No&#45;op&#45;безопасно: пустая гильдия → пустая арена (только сброс)." alt="" coords="275,5,499,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="864,83,815,64,762,48,695,36,626,29,499,25,499,19,626,24,696,31,763,43,817,59,866,78"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Flow_1_1WorldStageController.html#a03f38e64c99e0eaae3074e89d1e2583f" title="Поставить отряд забега на арену заново — из durable&#45;состояния гильдии (полный HP, сохранённое построе..." alt="" coords="277,73,496,113"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="797,112,763,112,655,114,547,112,496,108,496,103,547,107,655,109,763,107,797,106"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Flow_1_1NodeResolver.html#a52914788c009090a029b01cd361c2f81" title=" " alt="" coords="279,147,495,187"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="797,123,495,157,495,152,796,118"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив." alt="" coords="547,57,763,97"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="797,96,762,92,763,87,798,91"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleStartup.html#a6e7e15ee23fa9959af890318ca1908e9" title=" " alt="" coords="5,5,227,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="261,28,227,28,227,23,261,23"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="537,57,490,48,491,43,538,52"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="533,87,496,89,496,84,533,82"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="581,104,449,149,447,144,580,99"/>
 </map>

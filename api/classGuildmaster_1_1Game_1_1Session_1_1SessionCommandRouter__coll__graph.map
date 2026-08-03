@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Session.SessionCommandRouter" name="Guildmaster.Game.Session.SessionCommandRouter">
+<area shape="rect" id="Node000001" title="Единственная дорога к записи в забег для всех, кто пишет: расстановка, награды, магазин,..." alt="" coords="5,219,204,419"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html" title="Глаголы изменения забега — то, что зовёт игра вместо прямых мутаторов RunStateService." alt="" coords="21,5,189,171"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,184,107,218,102,218,102,184"/>
+</map>

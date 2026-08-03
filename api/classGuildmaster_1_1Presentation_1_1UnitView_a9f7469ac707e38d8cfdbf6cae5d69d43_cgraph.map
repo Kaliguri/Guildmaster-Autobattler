@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.UnitView.ApplyFeelConfig" name="Guildmaster.Presentation.UnitView.ApplyFeelConfig">
+<area shape="rect" id="Node000001" title="Подать design&#45;конфиг сочности (длительности/сила/цвет вспышки и сплющивания). CombatPresenter — при с..." alt="" coords="5,5,196,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1HealthBarView.html#ad77967e1dfdae117f6e6f9df304942d6" title="Порог и форма тревожного пульса на низком HP." alt="" coords="244,5,467,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
+</map>

@@ -1,7 +1,7 @@
 <map id="Guildmaster.Presentation.CameraModeController" name="Guildmaster.Presentation.CameraModeController">
-<area shape="rect" id="Node000001" title="Управляет режимами камеры и потребляет IInputService (вики «16» §5)." alt="" coords="41,139,224,299"/>
+<area shape="rect" id="Node000001" title="Управляет режимами камеры и потребляет IInputService (вики «16» §5)." alt="" coords="41,139,224,399"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,15,121,81"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,93,103,137,98,139,79,95"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,93,94,138,89,139,75,95"/>
 <area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html" title="Тряска боевой камеры по запросу режиссёра (CombatFeelDirector)." alt="" coords="146,5,261,91"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="183,105,168,139,163,137,178,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="188,105,177,139,172,137,183,103"/>
 </map>

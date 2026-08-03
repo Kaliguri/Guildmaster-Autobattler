@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Meta - Tech Debt | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Meta - Tech Debt | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Meta - Tech Debt | Guildmaster Wiki"/><meta name="twitter:description" content="Статус: Living — живой реестр, правится при закрытии пункта. Сознательно отложенный технический долг и главная будущая таска."/><meta property="og:description" content="Статус: Living — живой реестр, правится при закрытии пункта. Сознательно отложенный технический долг и главная будущая таска."/><meta property="og:image:alt" content="Статус: Living — живой реестр, правится при закрытии пункта. Сознательно отложенный технический долг и главная будущая таска."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/tech-debt"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/tech-debt"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Статус: Living — живой реестр, правится при закрытии пункта. Сознательно отложенный технический долг и главная будущая таска."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="tech/00-meta/tech-debt"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-594"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-594" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../tech/">tech</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../tech/00-meta/">Meta   Index</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Meta   Tech Debt</a></div></nav><h1 class="article-title">Meta - Tech Debt</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-30T00:00:00.000Z">30 июл. 2026 г.</time><span>время чтения ~23 мин.</span></p></div></div><article class="popover-hint"><p><strong>Статус:</strong> Living — живой реестр, правится при закрытии пункта.</p>
+<hr/>
+<blockquote>
+<p>Сознательно отложенный технический долг и главная будущая таска. <strong>Живой документ</strong> — в отличие
+от <a href="../../tech/00-meta/tech-changelog" class="internal alias" data-slug="tech/00-meta/tech-changelog">Meta - Tech Changelog</a> (архив историй) и папки
+<code>journal/</code> (записи о принятых решениях, append-only).</p>
+<p>Выделено из <code>tech-changelog</code> 2026-07-30 при разделении журнала: история и открытый долг — разной
+природы, у первой нет владельца-в-коде, у второго есть срок жизни.</p>
+</blockquote>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Статусы — снимок на 2026-07-28, после аудита кода 07-26 не сверялись </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Легенда пунктов ниже (<code>✅ подтверждён по коду</code>) означает «баг существует», а не «исправлен» —
+кроме тех, где стоит слово «исправлен». Часть пунктов могла закрыться в аудите 2026-07-26 и в
+последующем рефакторе. <strong>Перед починкой пункта — сверить с живым кодом.</strong> Полная ресверка реестра
+не делалась: это отдельная задача.</p>
+</div>
+</blockquote>
+<p><strong>Нумерация разделов (§3, §4) сохранена от исходного <code>tech-changelog</code></strong> — на подпункты ссылаются
+внешние аудиты (<code>docs/audits/</code>) и якоря внутри этого файла. Переименование порвало бы ссылки без
+выигрыша.</p>
+<hr/>
+<h2 id="3-открытый-техдолг-сознательно-отложено">3. Открытый техдолг (сознательно отложено)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-открытый-техдолг-сознательно-отложено" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Эти пункты <strong>не баги прямо сейчас</strong> — это запланированный долг. Чинить, когда дойдёшь до соответствующей фазы, с тестом на руках.</p>
+<h3 id="30-закрыто-3007-зеркало-расходилось-на-хиле-друида">3.0 ЗАКРЫТО 30.07: зеркало расходилось на хиле Друида<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#30-закрыто-3007-зеркало-расходилось-на-хиле-друида" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>MirrorMatchTests.Mirror_SquadSeries_NeverDiverges(5)</code> падал детерминированно на тике 543: у левого
+Defender висел <code>effect.spore_mend</code>, у правого нет. Причина — <strong>чтение живого списка эффектов вместо
+состояния начала тика</strong>: «Взрыв спор» считал уникальные яды на цели своим обходом <code>ActiveEffects</code>, а
+чужой клинз, прошедший раньше в том же тике, яд уже снимал. Левый Друид успевал детонировать, правый
+бил в пустоту — исход решало место юнита в обходе.</p>
+<p>Починено тем же приёмом, что уже стоял в диспеле: счёт судит по началу тика
+(<code>EffectSystem.CountUniqueTaggedAtTickStart</code>) — эффекты, легшие раньше этого тика, плюс снятые в этом
+тике. Владелец правила один, локальная копия в <code>AbilitySystem</code> удалена. Держит
+<code>PoisonBurnThornsSliceTests.UniqueTagCount_CountsWhatWasThereAtTickStart</code>.</p>
+<p>Разбор — запись журнала «A Cleanse Must Not Rob A Detonation Of The Same Tick» (2026-07-30).</p>
+<h3 id="31--разбухание-combatsimulation-god-object">3.1 ⑩ Разбухание <code>CombatSimulation</code> (god-object)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#31--разбухание-combatsimulation-god-object" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>CombatSimulation</code> совмещает: тик-цикл, реализацию <code>ICombatContext</code>, очередь команд, хаб C#-событий, фабрику снарядов, расчёт checksum (~340+ строк). Пока читаемо, но это место будет пухнуть. <strong>Когда дойдёт</strong> (а не сейчас — иначе преждевременная абстракция): вынести очередь команд и checksum в отдельные классы. Приоритет — низкий, до появления реальной боли.</p>
+<h3 id="32-аллокации-в-statsrebuildcache">3.2 Аллокации в <code>Stats.RebuildCache</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#32-аллокации-в-statsrebuildcache" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Три <code>new float[StatCount]</code> на каждую пересборку кэша статов. В Фазе 1 пересборка одноразовая (модификаторы ставятся раз при создании юнита) — неважно. <strong>В Фазе 2</strong> эффекты будут часто менять статы → пересборки участятся → перевести на переиспользуемые инстанс-буферы. Триггер: подключение стат-меняющих эффектов в контент.</p>
+<h3 id="33-грубый-alpha-интерполяции-презентации">3.3 Грубый <code>alpha</code> интерполяции презентации<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#33-грубый-alpha-интерполяции-презентации" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>CombatPresenter.Update</code> берёт <code>alpha = Time.deltaTime / TickDelta</code> — это не корректная доля интерполяции (правильная — <code>accumulator / TickDelta</code> из <code>CombatLoopService</code>). Движение сглажено, но не идеально по фазе. <strong>Фикс:</strong> пробросить дробную часть аккумулятора из loop в презентер. Косметика, не срочно.</p>
+<h3 id="34-таргетинг-on">3.4 Таргетинг O(n²)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#34-таргетинг-on" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>TargetingSystem</code> ищет ближайшего врага полным перебором. На десятках юнитов это дешевле запроса к <code>SpatialHash</code> — осознанно. <strong>Когда</strong> число юнитов вырастет (Фаза 3) — перевести на <code>SpatialHash.QueryRadius</code> (TODO уже стоит в коде).</p>
+<h3 id="35-валидация-контента-эффектов">3.5 Валидация контента эффектов<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#35-валидация-контента-эффектов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Правка ⑤ убрала утечку мгновенных эффектов рантайм-способом (OnApply→OnExpire). Но лучше бы ещё <strong>запрещать на этапе авторинга</strong> ставить stateful-компоненты на мгновенный эффект (валидация в <code>EffectData</code>/редакторе). Аналогично — предупреждать о бессмысленных комбинациях. Задача редакторного тулинга (Фаза 4, Odin-авторинг).</p>
+<h3 id="36-вампиризм-применяется-ко-всему-урону">3.6 Вампиризм применяется ко всему урону<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#36-вампиризм-применяется-ко-всему-урону" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Правка ② вешает lifesteal на <strong>любой</strong> нанесённый урон (включая DoT/шипы), т.к. у урона пока нет тегов источника. <strong>Сузить</strong> до авто-атак/способностей — когда появятся теги источника урона (Фаза 2).</p>
+<h3 id="37-примирить-lifestealcomponent-под-моделью-b">3.7 Примирить <code>LifestealComponent</code> под моделью B<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#37-примирить-lifestealcomponent-под-моделью-b" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Реактивный <code>LifestealComponent</code> лечит напрямую, минуя стат — под моделью «эффекты кормят статы» он избыточен и создаёт риск двойного учёта (стат-путь + компонент на одном юните). Пока <strong>только помечен</strong> баннером (на нём держится <code>ReactiveEffectTests</code>). <strong>Когда</strong> начнётся авторинг контента: удалить компонент, заменить вампирик-баффы на <code>StatModifierComponent(+Lifesteal)</code>, мигрировать тест (оставить в нём <code>ThornsComponent</code> как пример реактивности). Триггер: первый реальный контент с вампиризмом.</p>
+<h3 id="39-атака-из-нескольких-ударов--сделано-2026-07-3031-открыты-четыре-следствия">3.9 Атака из нескольких Ударов — СДЕЛАНО 2026-07-30/31, открыты четыре следствия<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#39-атака-из-нескольких-ударов--сделано-2026-07-3031-открыты-четыре-следствия" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Реализовано</strong> (коммит <code>858cd5413</code>, журнал <a href="../../journal/2026-07-31-an-attack-may-be-several-hits" class="internal alias" data-slug="journal/2026-07-31-an-attack-may-be-several-hits">«An Attack May Be Several
+Hits»</a>): клип размечается несколькими маркерами
+<code>Hit</code>, <code>AttackTiming.ContactTicks</code> раскладывает их по тикам свинга, <code>AutoAttackSystem.Resolve</code>
+разрешает каждый контакт своим расчётом урона и своими on-hit, доля силы каждого Удара задаётся в
+<code>UnitData._hitDamageShares</code>. Рефанд кулдауна получает только пустой свинг. Первый носитель — Монах,
+два маркера с долями 0.5 / 0.5.</p>
+<p>Раздел оставлен ради вердиктов и открытых следствий ниже; описание «как зашито было» снято, чтобы
+не читалось как текущее состояние.</p>
+<p><strong>Вердикты Макса (2026-07-30), четыре из четырёх:</strong></p>
+<ol>
+<li><strong>Досягаемость проверяется один раз на свинг — так и оставляем.</strong> Промах по убежавшей цели это не
+дефект, а событие: <strong><code>Evade</code></strong>, и оно должно <strong>явно писаться</strong> (боевая цифра / лента, как остальные
+исходы). Дизайнерски это подарок: кайт становится видимой контригрой против длинных серий.</li>
+<li><strong>Контроль прерывает анимацию:</strong> сделал один удар из двух — второй не доигрывает. Требование при
+этом жёсткое: <strong>микростаны не должны рекастить авто-атаку и тем ускорять противника.</strong> Решение — ниже.</li>
+<li><strong>Баланс — отдельным заходом</strong>, когда тему будут реализовывать в тех-плане. Здесь только зафиксировано.</li>
+<li><strong>Детерминизм</strong> — целочисленные тики, подтверждено.</li>
+</ol>
+<p><strong>Решение по (2): якорь интервала — ПЕРВЫЙ контакт свинга.</strong></p>
+<p>Механизм ускорения существует и найден в коде: <code>Interrupt</code> делает рефанд — <code>AttackCooldownTicks = 0</code>
+(<code>AutoAttackSystem.cs:442</code>). Для одиночного удара это честно: свинг не нанёс ничего, значит и не
+потерял ничего. При серии — эксплойт: первый контакт уже записан, микростан рвёт свинг, кулдаун
+обнуляется, юнит выходит из стана и начинает <strong>новый</strong> свинг снова с первого контакта. Частота
+первого удара становится «стан + замах» вместо интервала.</p>
+<p>Правило, снимающее это одной строкой: <strong>рефанд положен только пустому свингу.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Состояние свинга при прерывании</th><th>Что делаем</th></tr></thead><tbody><tr><td>ни одного контакта не разрешено</td><td>как сейчас: <code>AttackCooldownTicks = 0</code>, потери нет</td></tr><tr><td>хотя бы один контакт разрешён</td><td><strong>рефанда нет</strong>; кулдаун идёт от первого контакта свинга</td></tr></tbody></table></div>
+<p>Тогда период «первый контакт → первый контакт следующего свинга» равен интервалу <strong>всегда</strong>, сколько
+бы ударов серии ни съел контроль. Микростан отнимает у жертвы хвост серии, то есть замедляет её —
+ровно то, чего от контроля и ждут.</p>
+<ul>
+<li><strong>Кулдаун остаётся замороженным на время стана</strong> (как сейчас: <code>continue</code> до его декремента).
+Альтернатива «пусть тикает под станом» делает короткие станы бесплатными по темпу и обесценивает
+контроль как механику.</li>
+<li><strong><code>Evade</code> считается состоявшимся контактом.</strong> Связка с вердиктом (1): если промах оставить «пустым»,
+свинг получит рефанд, и <strong>кайт начнёт ускорять атаки того, от кого убегают</strong>. Контакт засчитывается
+по факту разрешения, а не по факту попадания.</li>
+<li>Инвариант «стан не ускоряет атаку» живёт <strong>тестом</strong>, а не комментарием: он кросс-файловый
+(<code>AutoAttackSystem</code> + <code>AttackTiming</code> + длительность контроля из эффектов).</li>
+</ul>
+<p><strong>Ещё вопросы, которые серия трогает молча.</strong> Первые четыре Макс закрыл в тот же день, остальные ждут захода.</p>
+<ol>
+<li><strong>Два контакта в одном тике — РЕШЕНО (2026-07-30).</strong> Кадры контакта считаются в <strong>нормированном
+времени клипа</strong> (<code>ClipMarkers.MarkerNormalized</code> уже это умеет) и умножаются на
+<code>attackDurationTicks</code> — серия сжимается вместе со свингом. Дальше целочисленное округление и
+<strong>раздвижка</strong>: <code>contact[i] = max(contact[i-1] + 1, computed[i])</code>, верхний кламп — последний контакт
+не позже <code>attackDurationTicks − 1</code> (тот же принцип, что у нынешнего клампа замаха: удар не совпадает
+со стартом следующей атаки).
+<ul>
+<li><strong>Почему это обязан быть рантайм-инвариант, а не правило авторинга:</strong> свинг <strong>сжимается</strong>
+(<code>attackDurationTicks = min(MaxAttackAnimTicks=30, intervalTicks)</code>), а скорость атаки — величина
+рантайма, её крутят баффы. Любые два маркера при достаточном сжатии схлопнутся, и валидатор в
+редакторе этого не увидит. Аудит клипов остаётся <strong>второй линией</strong>: предупреждать, если маркеры
+стоят ближе тика уже при эталонном темпе класса.</li>
+<li><strong>Следствие — потолок скорости для многоударных китов:</strong> N контактов требуют минимум N тиков
+свинга, то есть <code>атак/сек ≤ TickRate / N</code>. При наших темпах (0.55–1.0 атак/сек, свинг 30 тиков)
+три контакта влезают с запасом в десять раз; правило записано, чтобы не всплыло внезапно на бафах.</li>
+<li><strong>Отбрасывать лишние контакты молча нельзя:</strong> при вердикте «on-hit на каждом контакте» потерянный
+контакт — это потерянный стак, то есть тихий нерф. Если контакты не влезли, это событие для отчёта
+аудита анимаций.</li>
+</ul>
+</li>
+<li><strong>On-hit на каждом контакте — РЕШЕНО (Макс, 2026-07-30): да, на каждый.</strong> Поджоги, метки, стаки
+льда Криоманта множатся числом ударов сознательно. Прямое следствие — пункт 1: терять контакт нельзя,
+и балансный заход должен считать стаки за свинг, а не за удар.</li>
+<li><strong>Что считается «первой атакой»</strong> для заявки о скейлах первой атаки (<a href="../../gdd/20-combat/stats" class="internal alias" data-slug="gdd/20-combat/stats">Combat -
+Stats</a> §На будущее): бонус «первая атака по цели» при серии либо срабатывает один раз на свинг,
+либо утраивается. <strong>Дефолт скрайба — свинг считается одной атакой</strong>; Макс заявку не помнил, вердикта
+пока нет, но по умолчанию берём этот.</li>
+<li><strong>Каст между контактами — РЕШЕНО (Макс, 2026-07-30): нет, только с новой атаки.</strong> Занесённый свинг
+доигрывает целиком, способность не втискивается между контактами. Подтверждает существующее правило
+M18 и распространяет его на серию.</li>
+<li><strong>Charge-свинг</strong>, стартующий вне досягаемости и въезжающий в неё: дистанция меняется между контактами.</li>
+<li><strong>Hitstop и slowmo</strong> — три замирания подряд внутри одного свинга читаются как лаг; политика
+значимости должна знать про серию.</li>
+<li><strong>Звук</strong> — три сэмпла подряд рискуют звучать пулемётом.</li>
+<li><strong>Вампиризм и «дань»</strong> множатся автоматически — следствие пункта 2, отдельного решения может не
+потребовать, но проверить надо.</li>
+</ol>
+<p><strong>Что осталось открытым:</strong> пункты 3 и 5–8 выше — «первая атака по цели» при серии (дефолт скрайба
+принят по умолчанию), charge-свинг с меняющейся дистанцией между контактами, политика hitstop/slowmo,
+звук и множители вампиризма. Все четыре всплывут на подаче и балансе, а не в симуляции.</p>
+<p><strong>Владельцы правды в коде:</strong> <code>AttackTiming.ContactTicks</code> (раскладка контактов и оба инварианта),
+<code>UnitData.HitDamageShare</code>, тесты <code>WindupAutoAttackTests</code> группы «Атака из нескольких Ударов» и
+<code>AnimationValidationTests.HitDamageShares_MatchMarkerCount</code>. Инвариант «стан не ускоряет атаку»
+держит <code>WindupAutoAttackTests.Stun_AfterHit_DoesNotRushNextAttack</code>.</p>
+<hr/>
+<h3 id="310-четыре-механики-ждут-общих-примитивов-а-три-уже-размножены-копиями">3.10 Четыре механики ждут общих примитивов, а три уже размножены копиями<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#310-четыре-механики-ждут-общих-примитивов-а-три-уже-размножены-копиями" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Сверено по коду 2026-07-31 при разборе заметок Макса о ритме атаки, парировании, блоке, маскировке и
+рекасте. Дизайн-развилки и вопросы — <a href="../../gdd/00-meta/open-forks" class="internal alias" data-slug="gdd/00-meta/open-forks">Meta - Open Forks</a> §1; здесь только то,
+что видно из кода: <strong>где сегодня два владельца одного правила</strong>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Правило</th><th>Где живёт сейчас</th><th>Куда должно уехать</th></tr></thead><tbody><tr><td><del>Рекаст авто-атаки</del></td><td><strong>СДЕЛАНО 2026-07-31:</strong> один глагол <code>RuntimeUnit.RecastAttack</code>, объявляемый флагом <code>EmpowerNextAttackComponent._recastImmediately</code>; ускорение фаз — две ручки <code>SimTuningConfig</code>. Авто-рекаст «по факту урона у активки» удалён, инвариант держит <code>AbilitySystemTests.DamagingAbility_DoesNotSkipTheAttackQueue_RecastMustBeDeclared</code></td><td>—</td></tr><tr><td>Реакция на входящий удар</td><td><strong>три</strong> <code>IPreDamageComponent</code> с зарядами: <code>BlockComponent</code> (переименован из <code>BulwarkComponent</code> 2026-07-31), <code>DodgeComponent</code>, <code>ParryComponent</code> (2026-07-31). Заряды, ICD, фильтр прямого попадания и гейт дееспособности у каждого свои — скопированы трижды</td><td>вынести общий каркас «заряд + триггер + ICD», оставив компонентам только их реакцию. Пока это три копии одного пролога, а не три механики</td></tr><tr><td><del>Микро-стан</del></td><td><strong>СДЕЛАНО 2026-07-31:</strong> общий ассет <code>effect.micro_stun</code> (0.4 с), на него ссылаются и «Вихревой заход», и парирование</td><td>—</td></tr><tr><td>Счёт «каждая N-я атака»</td><td><code>EveryNthAttackComponent</code> считает по событию урона, то есть по <strong>Ударам</strong></td><td>серия уже в движке (§3.9), поэтому долг стал живым: Драугр на многоударном ките триггерит втрое чаще и молча. Считать Атаки</td></tr><tr><td><del>Видимость юнита</del></td><td><strong>СДЕЛАНО 2026-07-31:</strong> <code>ConcealmentSystem</code> считает, кто скрыт; фильтр стоит в единственной точке выбора цели (<code>ProfileBrain.SelectBest</code>). <code>StealthComponent</code> по-прежнему отвечает только за то, <strong>когда</strong> Убийца уходит в тень</td><td>—</td></tr></tbody></table></div>
+<p><strong>Все четыре механики темы сделаны 2026-07-30/31:</strong> ритм (<code>CombatIdle</code>), Атака из нескольких Ударов,
+Блок, рекаст, парирование и Маскировка.</p>
+<p><strong>Два долга, оставшихся от парирования:</strong></p>
+<ul>
+<li><strong>Носителя нет.</strong> Примитив <code>effect.parry</code> не объявлен ни одним китом, то есть в бою не участвует.
+Заявленный носитель — Разбойник-дуэлянт, у которого пока нет карточки
+(<a href="../../gdd/00-meta/open-forks" class="internal alias" data-slug="gdd/00-meta/open-forks">Meta - Open Forks</a>).</li>
+<li><strong>Разгон не плавный.</strong> Дизайн требует входа и выхода «не рывком», а <code>effect.parry_haste</code> даёт
+плоскую прибавку на секунду. Рампа в проекте есть ровно одна — у спринта
+(<code>SimTuning.SprintRampAt</code>), и она живёт в движении, а не в статах. Общий «баф с рампой» — отдельная
+задача, и до неё парирование ускоряет щелчком.</li>
+</ul>
+<p><strong>Долг Маскировки:</strong> носителей, кроме Убийцы, нет — Инвиз стоит на его «Скрытности», а ступени
+Слабая, Средняя и Сильная не объявляет никто. И не решено, что делают враги, когда невидимы <strong>все</strong>:
+сейчас они просто остаются без цели, то есть бой из двух замаскированных отрядов встаёт
+(<a href="../../gdd/00-meta/open-forks" class="internal alias" data-slug="gdd/00-meta/open-forks">Meta - Open Forks</a>).</p>
+<p><strong>Остаток темы — контент, а не механика:</strong> обе новые системы ждут китов-носителей.</p>
+<hr/>
+<h3 id="311-у-скелетного-рига-нет-клипа-смерти--в-слоте-стоит-idle">3.11 У скелетного рига нет клипа смерти — в слоте стоит Idle<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#311-у-скелетного-рига-нет-клипа-смерти--в-слоте-стоит-idle" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Заглушка поставлена сознательно 2026-07-31 (решение Макса), и она видна в игре.</strong> У рига
+(<code>Prefabs/Bones/</code>) есть Idle, Walk, Attack, Attack2, Attack3, AttackCharge, Block, CombatIdle, Sprint,
+Stun — <strong>клипа смерти нет вовсе</strong>. Валидатор контента требует Idle/Run/Attack/Death у каждого
+<code>UnitVisual</code>, поэтому в слот Death у <code>Visuals/BoneStandart.asset</code> положен <code>Idle.anim</code>.</p>
+<p>Что это значит на экране: путь смерти играет клип перед разлётом на осколки
+(<code>UnitView.DriveDeath</code>, фаза <code>Dying</code>), то есть скелетный юнит перед распадом будет стоять в позе покоя
+вместо падения. На дев-бойце это терпимо, на боевом контенте — нет.</p>
+<p><strong>Чинится заходом в Animation Lab:</strong> поза падения по риг-API, контактный лист на смотр, клип в слот
+Death. Пока клипа нет, заглушку <strong>не считать нормой</strong> — она стоит здесь именно затем, чтобы её не
+приняли за настройку.</p>
+<hr/>
+<blockquote>
+<p><strong>§3.21 и §3.22 закрываются заходом по иерархии скоупов</strong>, принятым Максом 02.08.2026 —
+<a href="../../tech/40-planning/scope-hierarchy" class="internal alias" data-slug="tech/40-planning/scope-hierarchy">Planning - Scope Hierarchy</a> §6. Отдельно их не чиним: корень у
+обоих один — у боевого скоупа нет границы боя. Очередь команд сносится в фазе 1 («никакого
+легаси»), сброс у гостя исчезает сам, когда лента начнёт рождаться вместе с боем.</p>
+</blockquote>
+<h3 id="321-очередь-команд-симуляции-осталась-без-единого-пользователя">3.21 Очередь команд симуляции осталась без единого пользователя<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#321-очередь-команд-симуляции-осталась-без-единого-пользователя" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Открылось 02.08.2026 при переписывании сетевой паузы. <code>CombatSimulation.EnqueueCommand</code>,
+<code>ApplyDueCommands</code>, <code>ICombatCommand</code> и обе его реализации (<code>PauseCommand</code>, <code>ResumeCommand</code>) существуют
+с Фазы 1, но <strong>звал их только <code>NetworkCommandRelay</code></strong> — удалённое lockstep-легаси. В продакшн-коде
+пользователей теперь ноль; держат механизм два теста (<code>CombatSimulationTests.PauseCommand_StopsTick</code>
+и соседний), то есть он проверяется ради себя самого.</p>
+<p>Заодно от него зависит ветка в <code>CombatSimulation.Tick</code>: «пока в очереди есть команды, счётчик тиков
+идёт даже на паузе, иначе <code>ResumeCommand</code> с будущим <code>TargetTick</code> никогда не наступит». Без очереди
+эта оговорка не нужна.</p>
+<p><strong>Почему не снесла сразу:</strong> это правка боевого ядра, а не сети, и у неё есть дизайн-сторона —
+отложенная команда на будущий тик была бы швом под приказы игрока в бою (<em>Manual Action Charges</em>,
+<a href="../../gdd/00-meta/roadmap" class="internal alias" data-slug="gdd/00-meta/roadmap">ГД: Roadmap</a> Блок 3, отложены Максом). Решение «снести и завести заново, когда
+понадобится» против «оставить пустой механизм» стоит вердикта, а не срезки в чужом заходе.</p>
+<p><strong>Что известно точно:</strong> пауза игрока — свойство показа (<code>TimeScaleService</code>), сетевая пауза — тоже
+(<code>BattleControlRelay</code>), так что <strong>паузу через очередь команд не вернёт никто</strong>. Если механизм
+оставляем, обе команды всё равно лишние.</p>
+<h3 id="322-повторный-бой-у-гостя-сбрасывать-приёмник-и-реестр-некому">3.22 Повторный бой у гостя: сбрасывать приёмник и реестр некому<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#322-повторный-бой-у-гостя-сбрасывать-приёмник-и-реестр-некому" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Открылось 02.08.2026 при проводе коопа в бой. У гостя нет тикающей <code>CombatSimulation</code>, значит
+<code>OnBattleReset</code> у него не стреляет — а на этом событии висят ровно те сбросы, которые нужны новому
+бою: <code>TapeIntake.Reset</code> (забыть применённые номера чанков) и <code>BattleUnitRegistry.Clear</code> (забыть
+состав). Хост при рестарте начинает нумерацию с нуля, гость примет чанк №0 за дубль и <strong>нового боя
+не увидит вовсе</strong> — тихо, без единой ошибки в консоли.</p>
+<p>На первый бой сессии это не влияет, поэтому и не блокирует: вертикаль проверяется одним боем.</p>
+<p><strong>Способ починки изменился 02.08.2026.</strong> Прежний план — слать сигнал «бой начался заново» и сбрасывать
+обе половины на приёме — больше не нужен: у гостя бой теперь тоже <strong>скоуп</strong>, а новый бой это новый
+скоуп. Приёмник и реестр рождаются вместе с ним, и забывать им нечего по устройству. Значит долг
+закрывается не сообщением про сброс, а сообщением про <strong>границы боя</strong> — «бой открылся / закрылся», —
+которое гостю нужно и само по себе: без него он не знает, когда открывать арену (шаг «мероприятие у
+гостя»).</p>
+<p><strong>Владелец правды:</strong> <code>Net/Tape/TapeIntake.cs</code>, <code>Combat/Tape/BattleUnitRegistry.cs</code>,
+<code>Net/BattleControlRelay.cs</code>; состояние захода — <code>docs/coop-slice-progress.md</code>.</p>
+<h3 id="323-ibattleauthority-спрашивают-каждый-кадр-хотя-роль-уже-известна-на-входе--закрыт-02082026">3.23 <code>IBattleAuthority</code> спрашивают каждый кадр, хотя роль уже известна на входе — ЗАКРЫТ 02.08.2026<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#323-ibattleauthority-спрашивают-каждый-кадр-хотя-роль-уже-известна-на-входе--закрыт-02082026" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>Закрыт в тот же день, что и открылся.</strong> Состав боевого скоупа выбирается ролью сеанса
+(<code>CombatLifetimeScope.RegisterCoop</code>): владелец получает петлю тика, стример, вещателя и объявителя
+состава, гость — приёмник чанков, его насос, приёмник состава и <code>GuestPlaybackLoop</code> вместо цикла.
+<code>IBattleAuthority</code>, <code>NetBattleAuthority</code> и <code>BattleRole</code> удалены; <code>BattleRosterRelay</code>, делавший обе
+стороны в одном классе, разделён на <code>BattleRosterAnnouncer</code> и <code>BattleRosterIntake</code>.
+<strong>Соло отдельной ролью НЕ стало:</strong> это тот же владелец, просто без поднятого транспорта — разница
+между «играю один» и «играю хостом» вся в том, есть ли кому слать. Иначе включение лобби посреди
+забега требовало бы переоткрыть сеанс. Единственная оставшаяся проверка живёт у вещателя и
+спрашивает соединение, а не роль.</p>
+</blockquote>
+<p>Открылось 02.08.2026 вместе со скоупом Сессии. <code>NetBattleAuthority</code> выводит роль узла (соло / хост /
+гость) из транспорта и отвечает на вопрос при каждом обращении; вокруг него живут ветвления в
+<code>CombatLoopService</code>, <code>BattleTapeBroadcast</code>, <code>BattleRosterRelay</code>, <code>TapeIntakePump</code>.</p>
+<p>Обоснование у этого было честное и записано в самом корне: боевой скоуп поднимался на буте, когда
+сети ещё нет, — решить роль регистрацией было нельзя. <strong>Причина отпала.</strong> Бой рождается по требованию
+внутри мероприятия, мероприятие — внутри сессии, а у сессии роль выбрана в момент открытия
+(<code>SessionRole</code>) и за её жизнь не меняется: сменить роль можно только новым сеансом.</p>
+<p>Значит боевой инсталлер может собирать РАЗНЫЙ состав по роли — вещатель ленты у хоста, приёмник у
+гостя, ни того ни другого в соло, — и ветвления исчезают вместе с самим интерфейсом. Заход трогает
+весь Net-слой и потому отложен: он не мешает ни соло, ни текущей кооп-вертикали.</p>
+<p><strong>Владелец правды:</strong> <code>Core/Net/IBattleAuthority.cs</code>, <code>Net/NetBattleAuthority.cs</code>,
+<code>Game/Session/SessionInstaller.cs</code>; план уровней — <code>40-planning/scope-hierarchy</code>.</p>
+<h3 id="38-реестр-внешнего-аудита-2026-07-10">3.8 Реестр внешнего аудита (2026-07-10)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#38-реестр-внешнего-аудита-2026-07-10" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Сведено из пяти аудитов (<code>docs/audits/</code>), дедуплицировано, каждый пункт сверен с рабочим деревом. Статусы: ✅ подтверждён по коду · 🔍 правдоподобно, нужна проверка · ⚠️ устарел/неверен на текущем дереве · 🔗 уже описан выше.</p>
+<p><strong>Подтверждённые баги (это НЕ отложенный долг — реальная корректность):</strong> — B1–B7 <strong>исправлены 2026-07-10</strong>, см. <a href="../../tech/00-meta/tech-changelog#25-changelog-2026-07-10--разбор-аудита-фиксы-b1b7-i1" class="internal alias" data-slug="tech/00-meta/tech-changelog">§2.5</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>ID</th><th>Баг</th><th>Где</th><th>Статус</th><th>Приоритет</th><th>Нашёл</th></tr></thead><tbody><tr><td>B1</td><td>Рестак щита пере-вычитает: <code>Reapply</code> зовёт <code>OnExpire</code> с <strong>новым</strong> <code>Stacks</code>, <code>Mathf.Max(0,…)</code> маскирует, но съедает вклад <strong>второго</strong> источника щита</td><td><code>EffectSystem.cs:375-406</code>, <code>ShieldComponent.cs:27</code></td><td>✅ исправлен §2.5</td><td>P0</td><td>Claude Opus (только она)</td></tr><tr><td>B2</td><td>Рестак Dodge бесплатно перезаряжает все заряды негейта: <code>OnApply</code> безусловно <code>new int[maxCharges]</code>, <code>Reapply</code> его зовёт. Нюанс: только <code>Stack</code>/<code>StackAndRefresh</code>, чистый <code>Refresh</code> не триггерит</td><td><code>DodgeComponent.cs:27</code>, <code>EffectSystem.cs:389-406</code></td><td>✅ исправлен §2.5</td><td>P0</td><td>Claude Opus</td></tr><tr><td>B3</td><td>Корень B1/B2: <code>Reapply</code> = слепой <code>OnExpire→OnApply</code> ради смены числа стаков; per-component state живёт в общем <code>RuntimeEffect</code>. Фикс — <code>OnStacksChanged(old,new)</code> + вынести state</td><td><code>EffectSystem.cs:389-406</code>, <code>RuntimeEffect</code></td><td>✅ исправлен §2.5 (дельта-шов; вынос state отложен)</td><td>P0</td><td>Claude Opus</td></tr><tr><td>B4</td><td>Kite-поля мёртвые: <code>MoveKite</code> использует магическое <code>range*0.6f</code> + <code>AttackRange</code>, а <code>Kite.FleeDist</code>/<code>FallbackDist</code> из <code>AIProfile</code> нигде не читаются. Данные выглядят рабочими — но no-op</td><td><code>MovementSystem.cs:85-100</code>, <code>AIProfile</code></td><td>✅ исправлен §2.5</td><td>P1</td><td>GPT-5.6</td></tr><tr><td>B5</td><td>Broad-phase линейного запроса теряет цели в дальних углах: радиус <code>length</code> вместо <code>length+halfWidth</code> → юнит на <code>(≈length, ≈halfWidth)</code> отсекается до narrow-phase</td><td><code>CombatSimulation.QueryUnitsInLine</code> (~<code>:295</code>)</td><td>✅ исправлен §2.5</td><td>P1</td><td>Claude Opus</td></tr><tr><td>B6</td><td><code>DrainEventQueue</code> после капа <code>MaxEventsPerDrain=512</code> делает silent <code>Clear()</code> — исход боя зависит от «уложились ли в 512». На текущем контенте 512/тик недостижимо → future-major, не critical-сейчас. Фикс: dev-assert + лог</td><td><code>CombatSimulation.cs:441</code></td><td>✅ исправлен §2.5</td><td>P1</td><td>Grok, GPT</td></tr><tr><td>B7</td><td>Iron Spearman: <code>_resourceType: None</code>, но <code>_resourceOnHit:5</code>, <code>MaxResource:30</code>, активка стоит 30 — противоречивый контракт ресурса</td><td><code>IronSpearman.asset</code></td><td>✅ исправлен §2.5 (Rage)</td><td>P1</td><td>GPT-5.6</td></tr></tbody></table></div>
+<p><strong>Консистентность данных (ретрофит дёшев, пока ассетов мало):</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>ID</th><th>Находка</th><th>Статус</th><th>Приоритет</th></tr></thead><tbody><tr><td>C1</td><td>Seed боя через <code>UnityEngine.Random</code>+<code>UtcNow</code> (<code>CombatLifetimeScope.cs:113-117</code>); нарушает «рандом только через <code>IRngService</code>»; блокирует репро/реплей. <code>gm_rng_seed</code> — stub (только лог)</td><td>✅ (TODO в коде)</td><td>P1</td></tr><tr><td>C2</td><td>Нет <code>OnValidate</code>/content-validator на SO — битый контент проходит молча (Kite <code>Fallback>Flee</code>, resource/cost, диапазоны 0..1, uniq id)</td><td>✅</td><td>P1 (расширяет <a href="#3.5%20%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%86%D0%B8%D1%8F%20%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%BD%D1%82%D0%B0%20%D1%8D%D1%84%D1%84%D0%B5%D0%BA%D1%82%D0%BE%D0%B2" class="internal alias"></a>)</td></tr><tr><td>C3</td><td><code>armorK</code> в двух местах: сериализован на <code>CombatLifetimeScope</code> и в <code>StatsConfig</code></td><td><strong>ЗАКРЫТО 30.07</strong> — боевой скоуп больше не владеет <code>StatsConfig</code>, см. §5.4</td><td>—</td></tr><tr><td>C4</td><td>buff/debuff смоделирован трижды (<code>EffectPolarity</code> + <code>EffectTag.Buff/Debuff</code> + <code>DispelTargetPolarity</code>) — два источника правды на ассете</td><td>✅</td><td>P2</td></tr><tr><td>C5</td><td>Два enum таргетинга (<code>AbilityTargetMode</code> vs <code>TargetingMode</code>) + устаревший докблок</td><td>✅</td><td>P2</td></tr><tr><td>C6</td><td>Две модели скейла: <code>ScalableValue</code> (эффекты) vs сырые <code>_damageMultiplier/_healFlat</code> (активки) — payload активок не переиспользует шов</td><td>✅</td><td>P2</td></tr></tbody></table></div>
+<p><strong>Гигиена / мёртвый код / швы:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>ID</th><th>Находка</th><th>Статус</th><th>Приоритет</th></tr></thead><tbody><tr><td>H1</td><td>Мёртвый <code>DamageNumber</code>+<code>DamageNumberSpawner</code> (внутри — set через рефлексию, докстринг врёт про LitMotion); живой путь — <code>FloatingText</code>+пул</td><td>✅</td><td>P2</td></tr><tr><td>H2</td><td><code>ISimEvent</code> — маркер без реализаций (<code>CombatEventData</code> его не реализует)</td><td>✅</td><td>P2</td></tr><tr><td>H3</td><td>Двойной канал наружу: C#-events + MessagePipe; контракты событий объявлены в тяжёлом <code>Guildmaster.Presentation</code> → вынести в нейтральный слой</td><td>✅</td><td>P2</td></tr><tr><td>H4</td><td><code>alpha</code> интерполяции frame-based</td><td>🔗 <a href="#3.3%20%D0%93%D1%80%D1%83%D0%B1%D1%8B%D0%B9%20alpha%20%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%BF%D0%BE%D0%BB%D1%8F%D1%86%D0%B8%D0%B8%20%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D0%B8" class="internal alias"></a> (подтверждён 4/5)</td><td>P1</td></tr><tr><td>H5</td><td><code>Stats.RebuildCache</code> — 3 массива на пересборку</td><td>🔗 <a href="#3.2%20%D0%90%D0%BB%D0%BB%D0%BE%D0%BA%D0%B0%D1%86%D0%B8%D0%B8%20%D0%B2%20Stats.RebuildCache" class="internal alias"></a> (подтверждён)</td><td>P2</td></tr><tr><td>H6</td><td><code>GlobalMessagePipe.SetProvider</code> — мёртвая глобальная поверхность (никто не читает)</td><td>✅</td><td>P2</td></tr><tr><td>H7</td><td><code>RuntimeUnit</code> — открытый мешок mutable-полей во view (инвариант «view только читает» держится на дисциплине)</td><td>✅</td><td>P3</td></tr><tr><td>H8</td><td><code>MarkTransferComponent</code> аллоцирует <code>new List&lt;RuntimeUnit></code> на каждую смерть носителя</td><td>✅</td><td>P2 (по касанию Следопыта)</td></tr><tr><td>H9</td><td>Cooldown активок во float-секундах (<code>AbilitySystem</code>), а не int-тиках — дрейф из принятой tick-дисциплины</td><td>✅</td><td>P3</td></tr><tr><td>H10</td><td>~1 ГБ мусорных worktrees в <code>.claude/worktrees/</code> (detached, от прошлых сессий)</td><td>🔍</td><td>P2</td></tr></tbody></table></div>
+<p><strong>Инфраструктура / инструменты:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>ID</th><th>Находка</th><th>Статус</th><th>Приоритет</th></tr></thead><tbody><tr><td>I1</td><td><code>run-tests.ps1</code> хардкодит Unity <code>6000.0.23f1</code>, проект на <code>6000.4.8f1</code> → локальный прогон падает <code>Unity not found</code>. Читать версию из <code>ProjectVersion.txt</code></td><td>✅ исправлен §2.5</td><td>P0 (5 мин)</td></tr><tr><td>I2</td><td>Билд первой сценой ставит <code>CoreScene</code> (<code>EditorBuildSettings</code>), GPT утверждает что она пустая, а root — в <code>BattleScene</code> → boot-flow не замкнут. Запуск из <code>BattleScene</code> — осознанный dev-harness</td><td>✅ снят 2026-07-26: <code>CoreScene</code> держит <code>[Root]</code> и <code>[Bootstrap]</code>, обе игровые сцены грузятся с бута — flow замкнут (сцены проекта (<code>Assets/_Project/Scenes/</code>))</td><td>P3</td></tr></tbody></table></div>
+<p><strong>Устаревшее в аудитах / неверное на текущем дереве:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>ID</th><th>Клейм</th><th>Реальность</th></tr></thead><tbody><tr><td>X1</td><td>«EditMode красный, падает <code>SerializeReferenceSpikeTests</code> из-за пути <code>Assets/Tests/EditMode</code>» (GPT, Codex)</td><td>✅ <strong>GPT/Codex правы на <code>fd858f8</code></strong> — тест молча падал (путь стал stale после переноса в <code>143535d</code>). Починен в незакоммиченной арена-работе (<code>:20</code> теперь <code>Assets/_Project/Tests/…</code>, suite 184/184). Т.е. старый клейм «171/171 green» был неверен; текущее рабочее дерево зелёное</td></tr><tr><td>X2</td><td>«Арены нет в коде, <code>±200</code> хардкод, spawn из кода» (Composer)</td><td>⚠️ Арена закодирована в рабочем дереве (uncommitted): <code>ArenaLayoutData</code>/<code>ArenaBounds</code>/<code>DeploymentService</code></td></tr><tr><td>X3</td><td><code>§3.4</code> этого дока ссылается на <code>TargetingSystem</code></td><td>⚠️ Класс удалён; таргетинг теперь в <code>ProfileBrain</code>. Дока отстаёт (общая заметка GPT: часть вики устарела — tick order без Brain/Displacement, путь тестов <code>Assets/Tests</code>)</td></tr></tbody></table></div>
+<p><strong>Сетевой долг</strong> (host-auth vs lockstep-наследие <code>NetworkCommandRelay</code>, authority-гейт тика, полный порядок команд <code>(tick,player,seq)</code>, float-checksum) — все 5 подтвердили; относится к <a href="#4-%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F-%D0%B1%D1%83%D0%B4%D1%83%D1%89%D0%B0%D1%8F-%D1%82%D0%B0%D1%81%D0%BA%D0%B0-%D0%B2%D1%8B%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%BE-%D0%BE%D1%82%D0%B4%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE" class="internal alias">4. Главная будущая таска (вынесено отдельно)</a>, не трогаем в одиночке.</p>
+<h3 id="320-бут-экран-геймпадом-не-закрывается-нажатие-молчит-три-ключа-не-заведены">3.20 Бут-экран: геймпадом не закрывается, нажатие молчит, три ключа не заведены<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#320-бут-экран-геймпадом-не-закрывается-нажатие-молчит-три-ключа-не-заведены" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Найдено 31.07.2026 при разборе старта игры; сверено по живому коду, взято в работу не было.</p>
+<ul>
+<li><strong>С геймпада титул не закрыть — это блокер, а не мелочь.</strong> <code>TitleCardScreenView</code> слушает
+<code>PointerDownEvent</code>, <code>ClickEvent</code> и <code>KeyDownEvent</code>; геймпад в UITK приходит навигационными
+событиями, а <code>NavigationSubmitEvent</code> не обрабатывается <strong>нигде в проекте</strong> (ноль вхождений при
+живом <code>InputSystemUIInputModule</code> в <code>CoreScene</code>). Кнопки меню выживают только потому, что UITK-кнопка
+ловит Submit сама. Игрок с геймпадом застревает на первом экране игры.</li>
+<li><strong>Первое действие игрока не отвечает звуком.</strong> Появление титула озвучено
+(<code>menu.title_card.stinger</code> в <code>RunAudioPresenter</code>), а dismiss — нет, хотя остальные экраны звучат
+на действие (<code>camp.action.ui</code>, <code>chest.open.stinger</code>).</li>
+<li><strong><code>ui.boot.title</code> / <code>ui.boot.hint</code> / <code>ui.boot.loading</code> в таблице <code>UI</code> не заведены</strong> — экран держится
+на RU-литералах в коде. <code>ui.boot.legal</code> заведён 31.07, соседние трогать не стали.</li>
+<li>Мельче: спиннер декоративен (реального прогресса загрузки нет — шов понадобится, когда вырастет
+контент), версия показана только в главном меню, курсор системный (<code>defaultCursor</code> пуст), профиль
+создаётся молча как «Профиль 1» — экрана первого запуска нет.</li>
+</ul>
+<p>Открытая возможность оттуда же: <strong>своя двухфазная заставка</strong> вместо Unity-сплэша (знак студии → титул,
+обе фазы скипаются) — см. <a href="../../tech/00-meta/journal/2026-07-31-splash-shows-the-studio-once" class="internal alias" data-slug="tech/00-meta/journal/2026-07-31-splash-shows-the-studio-once">Journal - Splash Shows The Studio Once</a>.</p>
+<hr/>
+<h2 id="4-главная-будущая-таска-вынесено-отдельно">4. Главная будущая таска (вынесено отдельно)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-главная-будущая-таска-вынесено-отдельно" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p>🎯 <strong>Сетевой кооп — host-authoritative (Фаза MP).</strong> Репликация состояния юнитов через NGO, клиент рендерит из реплик-состояния, гейт тика на хосте, релей команд для полного ввода, синхрон паузы, late-join/реконнект, сид боя от хоста. Полный состав — <a href="../../tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep" class="internal alias" data-slug="tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep">Journal - Host-Authoritative, Not Lockstep</a> §4. Сейчас не трогаем (в одиночке сеть спит).</p>
+<p><strong>Уточнено 01.08.2026:</strong> авторитет хоста остался, а «репликация состояния юнитов через NGO каждый тик» из состава <strong>выбыла</strong> — бой едет чанками ленты (§4.1). Что делаем вместо этого и в каком порядке — <a href="../../tech/40-planning/coop-vertical" class="internal alias" data-slug="tech/40-planning/coop-vertical">Planning - Coop Vertical</a>.</p>
+</blockquote>
+<h3 id="41-закрыто-01082026-боевая-лента-раздаётся-чанками--события-плюс-сжатые-снимки">4.1 ЗАКРЫТО 01.08.2026: боевая лента раздаётся чанками — события плюс сжатые снимки<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#41-закрыто-01082026-боевая-лента-раздаётся-чанками--события-плюс-сжатые-снимки" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Вердикт и его цена</strong> — <a href="../../tech/00-meta/journal/2026-08-01-the-tape-ships-as-events-plus-packed-snapshots" class="internal alias" data-slug="tech/00-meta/journal/2026-08-01-the-tape-ships-as-events-plus-packed-snapshots">Journal - The Tape Ships As Events Plus Packed Snapshots</a>;
+формат чанка, лимит и порядок работ — <a href="../../tech/40-planning/coop-vertical" class="internal alias" data-slug="tech/40-planning/coop-vertical">Planning - Coop Vertical</a>.
+Ниже сохранён разбор развилки: он объясняет, почему третий вариант нельзя было отвергнуть
+причиной lockstep-а, и чем в итоге пришлось заплатить.</p>
+<p>Поднят дизайном (кооп-кластер ГДД), <strong>вердикт был за тех-стороной</strong>. Формулировка-источник —
+<a href="../../gdd/50-modes-ux/coop/sync-model" class="internal alias" data-slug="gdd/50-modes-ux/coop/sync-model">Coop - Sync Model</a>, раздел «Класс 1».</p>
+<p>Механизм наполовину есть: локально сим пишет <strong>боевую ленту</strong>, показ читает её с лагом — события лежат
+за весь бой, снимки состояния идут кольцевым окном вокруг момента показа. Сим уже умеет уезжать вперёд
+хоть до конца боя. Вопрос в том, <strong>что именно летит по сети:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Вариант</th><th>Плюс</th><th>Чем упирается</th></tr></thead><tbody><tr><td>состояние каждый тик (как предполагает решение 19.06)</td><td>ничего не менять в модели</td><td>самый дорогой по трафику</td></tr><tr><td><strong>события ленты одним пакетом</strong></td><td>дёшевы и уже хранятся целиком: «кино» раздаётся за секунду до боя</td><td>нужен контракт сериализации события и порядок доставки</td></tr><tr><td>вход + сид, бой проигрывается локально</td><td>минимальный трафик</td><td>тот же <code>float</code>, из-за которого отклонён lockstep</td></tr></tbody></table></div>
+<p><strong>Отличие от lockstep, из-за которого третий вариант нельзя отвергать той же причиной:</strong> здесь
+расхождение — не «кошмар отладки», а разные картинки без последствий для правил, потому что исход
+считает хост. Цена ошибки другая.</p>
+<p><strong>Что обязан соблюсти любой вариант</strong> (дизайн-требования того же раздела): все видят один и тот же бой
+— тайминги, смерти, исход; пауза общая и видно, кто нажал, а скорости показа не существует вовсе;
+камера личная; отстающий по показу догоняет сам, а не тормозит группу; задержка перед боем допустима,
+внутри — нет; пока открыты ставки, лента не уходит игрокам даже фрагментом.</p>
+<hr/>
+<h2 id="5-хвосты-закрытых-заходов">5. Хвосты закрытых заходов<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-хвосты-закрытых-заходов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Пункты пережили заходы, которые их родили; сами журналы заходов удалены 30.07.2026 как леса.</p>
+<h3 id="51-закрыто-3007-реализационные-скиллы-сверены-с-кодом-5-из-5">5.1 ЗАКРЫТО 30.07: реализационные скиллы сверены с кодом (5 из 5)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#51-закрыто-3007-реализационные-скиллы-сверены-с-кодом-5-из-5" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Скиллы <strong>предписывают</strong>, а не описывают, поэтому заморозка справочника их не касается: расхождение с
+кодом здесь настоящий дефект — агент получает инструкцию, которой код не соответствует.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Скилл</th><th>Статус</th></tr></thead><tbody><tr><td><code>uitk</code></td><td><strong>сверен 30.07</strong> — витрина-фантом <code>UiGalleryScreen.uxml</code> заменена на стенд <code>UiPreviewCatalog</code>, сняты <code>IMenuRouter</code> и <code>LoadoutHubView</code></td></tr><tr><td><code>audio</code></td><td><strong>сверен 30.07</strong> — снята заглушка <code>UnityAudioService</code> (удалена 26.07), единственная реализация <code>FmodAudioService</code></td></tr><tr><td><code>data-authoring</code></td><td><strong>сверен 30.07</strong> — папки <code>Data/Editor/Migrations/</code> нет, массовая правка идёт через <code>ContentEditService</code>/<code>ContentEditBatch</code>/<code>ContentCrudService</code></td></tr><tr><td><code>gamefeel-vfx</code></td><td><strong>сверен 30.07</strong> — шов префаб-VFX числился «не построенным», <code>PixelBurst*</code> и <code>NullScreenShake</code> удалены из описания как удалённые из кода</td></tr><tr><td><code>combat-sim</code></td><td><strong>сверен 30.07</strong> — один мёртвый путь (<code>PixelBurstPreset</code>); API-утверждения сошлись с кодом</td></tr></tbody></table></div>
+<p><strong>Пункт закрыт: 5 из 5.</strong> Возвращаться к нему при следующем крупном рефакторе подсистемы — метод
+сверки описан выше и занимает минуты, а не заход.</p>
+<p>Метод, который сработал: вытащить из скилла все имена в бэктиках и все пути, сверить с индексом типов
+кода и с файловой системой. Ловит именно дрейф и не требует читать подсистему целиком. Готча: не
+считать дрейфом Unity/FMOD API, методы (индекс типов их не содержит) и то, что скилл сам помечает как
+удалённое или как ещё не реализованное.</p>
+<h3 id="54-закрыто-3007-дубль-конфигов-снят-переносом-ссылок-в-ассет">5.4 ЗАКРЫТО 30.07: дубль конфигов снят переносом ссылок в ассет<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#54-закрыто-3007-дубль-конфигов-снят-переносом-ссылок-в-ассет" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>StatsConfig</code> и <code>ClassBalanceConfig</code> объявлены полями <strong>в двух скоупах</strong>: Root собирает из них превью
+статов для интерфейса, боевой скоуп берёт константу брони и реген ресурса и отдаёт их фабрике. Сам SO в
+контейнере не лежит нигде — дублируется только сериализованная ссылка сцены, и расхождение держит
+<code>SceneWiringTests</code> (требует один и тот же ассет во всех сценах).</p>
+<p>Свести к одной регистрации мешает то, что боевой скоуп обязан подниматься <strong>без</strong> Root: standalone
+dev-арена запускается отдельной сценой, и без этих полей симуляция не соберётся вовсе. <strong>Решено 30.07 третьим путём:</strong> ссылки на <code>StatsConfig</code>/<code>ClassBalanceConfig</code> уехали
+из сцен в <code>GameConfig</code>, скоупы и бенчи берут их оттуда. Дубль ссылки на один ассет остался, но второго
+владельца факта больше нет. Тем же движением закрылся C3 (<code>armorK</code> в двух местах) и перестали угадывать
+бенчи. Провенанс и цена —
+<a href="../../tech/00-meta/journal/2026-07-30-config-references-live-in-the-asset-not-the-scene" class="internal alias" data-slug="tech/00-meta/journal/2026-07-30-config-references-live-in-the-asset-not-the-scene">Journal - Config References Live In The Asset</a>.
+EditMode 775/775.</p>
+<h3 id="55-инвариант-combat-не-знает-messagepipe-держится-соглашением-а-не-тестом">5.5 Инвариант «Combat не знает MessagePipe» держится соглашением, а не тестом<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#55-инвариант-combat-не-знает-messagepipe-держится-соглашением-а-не-тестом" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Боевая сборка отдаёт наружу голые C#-события и не зависит от пакета шины — проверяется тем, что
+<code>using MessagePipe</code> не встречается в <code>Scripts/Combat</code> ни разу. Первый, кто его там напишет, ничего не
+сломает и не заметит. Нужен guard-тест на границу сборок (по нашему правилу кросс-файловый инвариант
+живёт в тесте). Почему так устроено —
+<a href="../../tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly" class="internal alias" data-slug="tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly">Journal - The Bus Stops At The Combat Assembly</a>.</p>
+<h3 id="56-в-докстрингах-кода-221-ссылка-на-старую-нумерацию-вики">5.6 В докстрингах кода 221 ссылка на старую нумерацию вики<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#56-в-докстрингах-кода-221-ссылка-на-старую-нумерацию-вики" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>«вики &quot;12&quot; §2.4»</code>, <code>«вики &quot;13&quot; §3.1»</code> и подобное — <strong>221 строка в 133 файлах</strong>. Такой раскладки нет с
+16.07.2026 (вики перевезена в Diátaxis-кластеры со слагами), а после 30.07 половина целей ещё и
+заморожена. По правилу «код владеет правдой о коде» такие ссылки не нужны в принципе: это остаток
+модели, где объяснение жило в вики. <strong>Чинить массово</strong> — вырезать упоминание, оставив сам текст
+докстринга; смысл при этом не теряется, потому что текст и так самодостаточен.</p>
+<h3 id="52-дыра-журнала-решений-121607-и-202507">5.2 Дыра журнала решений: 12–16.07 и 20–25.07<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#52-дыра-журнала-решений-121607-и-202507" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>За эти два окна нет ни одного «почему», а развилок было много: persist-мир, UI-реворк, модель урона,
+каскад статов, теги юнита, VFX-шов, карта акта, палитра. Восстановимо, <strong>пока помнится</strong> — потом
+только из кода, где «почему» не лежит. Заход: <code>git log</code> по диапазону → запись-файл на развилку в
+<code>00-meta/journal/</code>. Порог — как в <code>CLAUDE.md</code>.</p>
+<h3 id="53-реестр-внешних-аудитов-остаётся-на-диске">5.3 Реестр внешних аудитов остаётся на диске<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#53-реестр-внешних-аудитов-остаётся-на-диске" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>docs/audits/</code> (216 КБ, три даты) <strong>не удалён осознанно</strong>: он — evidence под открытые пункты §3.8
+(C1–C6, H1–H10). Удалять после того, как эти пункты закроются или будут признаны неверными.</p>
+<h3 id="57-спереди-имеет-двух-владельцев-приватный-infront-и-конвенция-показа">5.7 «Спереди» имеет двух владельцев: приватный <code>InFront</code> и конвенция показа<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#57-спереди-имеет-двух-владельцев-приватный-infront-и-конвенция-показа" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>Facing</code>/<code>InFront</code> живут приватно в <code>ParryComponent</code> (сектор из <code>_frontalDegrees</code>, направление — по цели,
+а если её нет, по движению). Показ выводит «спереди» по своему правилу, и совпадение держится <strong>только
+комментарием</strong> в том же компоненте: «здесь берётся то же правило, чтобы “спереди” в бою совпадало со
+“спереди” на экране». С решением <code>2026-07-31/92</code> (направленный блок) правило понадобится третьему
+потребителю — <code>BlockComponent</code>, — и копия появится сама.</p>
+<p><strong>Чинить так:</strong> вынести направление и фронтальный сектор в общий помощник боевой сборки, оба компонента
+читают его; сверху guard-тест «спереди в симуляции = спереди на экране», потому что это кросс-файловый
+инвариант, а такие у нас живут в тесте, а не в комментарии. Ориентации как состояния в <code>RuntimeUnit</code>
+по-прежнему нет и заводить её не нужно — правило вывода одно, владелец должен быть один.</p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-181" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#3-открытый-техдолг-сознательно-отложено" data-for="3-открытый-техдолг-сознательно-отложено">3. Открытый техдолг (сознательно отложено)</a></li><li class="depth-1"><a href="#30-закрыто-3007-зеркало-расходилось-на-хиле-друида" data-for="30-закрыто-3007-зеркало-расходилось-на-хиле-друида">3.0 ЗАКРЫТО 30.07: зеркало расходилось на хиле Друида</a></li><li class="depth-1"><a href="#31--разбухание-combatsimulation-god-object" data-for="31--разбухание-combatsimulation-god-object">3.1 ⑩ Разбухание CombatSimulation (god-object)</a></li><li class="depth-1"><a href="#32-аллокации-в-statsrebuildcache" data-for="32-аллокации-в-statsrebuildcache">3.2 Аллокации в Stats.RebuildCache</a></li><li class="depth-1"><a href="#33-грубый-alpha-интерполяции-презентации" data-for="33-грубый-alpha-интерполяции-презентации">3.3 Грубый alpha интерполяции презентации</a></li><li class="depth-1"><a href="#34-таргетинг-on" data-for="34-таргетинг-on">3.4 Таргетинг O(n²)</a></li><li class="depth-1"><a href="#35-валидация-контента-эффектов" data-for="35-валидация-контента-эффектов">3.5 Валидация контента эффектов</a></li><li class="depth-1"><a href="#36-вампиризм-применяется-ко-всему-урону" data-for="36-вампиризм-применяется-ко-всему-урону">3.6 Вампиризм применяется ко всему урону</a></li><li class="depth-1"><a href="#37-примирить-lifestealcomponent-под-моделью-b" data-for="37-примирить-lifestealcomponent-под-моделью-b">3.7 Примирить LifestealComponent под моделью B</a></li><li class="depth-1"><a href="#39-атака-из-нескольких-ударов--сделано-2026-07-3031-открыты-четыре-следствия" data-for="39-атака-из-нескольких-ударов--сделано-2026-07-3031-открыты-четыре-следствия">3.9 Атака из нескольких Ударов — СДЕЛАНО 2026-07-30/31, открыты четыре следствия</a></li><li class="depth-1"><a href="#310-четыре-механики-ждут-общих-примитивов-а-три-уже-размножены-копиями" data-for="310-четыре-механики-ждут-общих-примитивов-а-три-уже-размножены-копиями">3.10 Четыре механики ждут общих примитивов, а три уже размножены копиями</a></li><li class="depth-1"><a href="#311-у-скелетного-рига-нет-клипа-смерти--в-слоте-стоит-idle" data-for="311-у-скелетного-рига-нет-клипа-смерти--в-слоте-стоит-idle">3.11 У скелетного рига нет клипа смерти — в слоте стоит Idle</a></li><li class="depth-1"><a href="#321-очередь-команд-симуляции-осталась-без-единого-пользователя" data-for="321-очередь-команд-симуляции-осталась-без-единого-пользователя">3.21 Очередь команд симуляции осталась без единого пользователя</a></li><li class="depth-1"><a href="#322-повторный-бой-у-гостя-сбрасывать-приёмник-и-реестр-некому" data-for="322-повторный-бой-у-гостя-сбрасывать-приёмник-и-реестр-некому">3.22 Повторный бой у гостя: сбрасывать приёмник и реестр некому</a></li><li class="depth-1"><a href="#323-ibattleauthority-спрашивают-каждый-кадр-хотя-роль-уже-известна-на-входе--закрыт-02082026" data-for="323-ibattleauthority-спрашивают-каждый-кадр-хотя-роль-уже-известна-на-входе--закрыт-02082026">3.23 IBattleAuthority спрашивают каждый кадр, хотя роль уже известна на входе — ЗАКРЫТ 02.08.2026</a></li><li class="depth-1"><a href="#38-реестр-внешнего-аудита-2026-07-10" data-for="38-реестр-внешнего-аудита-2026-07-10">3.8 Реестр внешнего аудита (2026-07-10)</a></li><li class="depth-1"><a href="#320-бут-экран-геймпадом-не-закрывается-нажатие-молчит-три-ключа-не-заведены" data-for="320-бут-экран-геймпадом-не-закрывается-нажатие-молчит-три-ключа-не-заведены">3.20 Бут-экран: геймпадом не закрывается, нажатие молчит, три ключа не заведены</a></li><li class="depth-0"><a href="#4-главная-будущая-таска-вынесено-отдельно" data-for="4-главная-будущая-таска-вынесено-отдельно">4. Главная будущая таска (вынесено отдельно)</a></li><li class="depth-1"><a href="#41-закрыто-01082026-боевая-лента-раздаётся-чанками--события-плюс-сжатые-снимки" data-for="41-закрыто-01082026-боевая-лента-раздаётся-чанками--события-плюс-сжатые-снимки">4.1 ЗАКРЫТО 01.08.2026: боевая лента раздаётся чанками — события плюс сжатые снимки</a></li><li class="depth-0"><a href="#5-хвосты-закрытых-заходов" data-for="5-хвосты-закрытых-заходов">5. Хвосты закрытых заходов</a></li><li class="depth-1"><a href="#51-закрыто-3007-реализационные-скиллы-сверены-с-кодом-5-из-5" data-for="51-закрыто-3007-реализационные-скиллы-сверены-с-кодом-5-из-5">5.1 ЗАКРЫТО 30.07: реализационные скиллы сверены с кодом (5 из 5)</a></li><li class="depth-1"><a href="#54-закрыто-3007-дубль-конфигов-снят-переносом-ссылок-в-ассет" data-for="54-закрыто-3007-дубль-конфигов-снят-переносом-ссылок-в-ассет">5.4 ЗАКРЫТО 30.07: дубль конфигов снят переносом ссылок в ассет</a></li><li class="depth-1"><a href="#55-инвариант-combat-не-знает-messagepipe-держится-соглашением-а-не-тестом" data-for="55-инвариант-combat-не-знает-messagepipe-держится-соглашением-а-не-тестом">5.5 Инвариант «Combat не знает MessagePipe» держится соглашением, а не тестом</a></li><li class="depth-1"><a href="#56-в-докстрингах-кода-221-ссылка-на-старую-нумерацию-вики" data-for="56-в-докстрингах-кода-221-ссылка-на-старую-нумерацию-вики">5.6 В докстрингах кода 221 ссылка на старую нумерацию вики</a></li><li class="depth-1"><a href="#52-дыра-журнала-решений-121607-и-202507" data-for="52-дыра-журнала-решений-121607-и-202507">5.2 Дыра журнала решений: 12–16.07 и 20–25.07</a></li><li class="depth-1"><a href="#53-реестр-внешних-аудитов-остаётся-на-диске" data-for="53-реестр-внешних-аудитов-остаётся-на-диске">5.3 Реестр внешних аудитов остаётся на диске</a></li><li class="depth-1"><a href="#57-спереди-имеет-двух-владельцев-приватный-infront-и-конвенция-показа" data-for="57-спереди-имеет-двух-владельцев-приватный-infront-и-конвенция-показа">5.7 «Спереди» имеет двух владельцев: приватный InFront и конвенция показа</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../../gdd/00-meta/roadmap" class="internal">Meta - Roadmap</a></li><li><a href="../../gdd/50-modes-ux/coop/" class="internal">Coop - Overview</a></li><li><a href="../../gdd/50-modes-ux/coop/sync-model" class="internal">Coop - Sync Model</a></li><li><a href="../../tech/00-meta/" class="internal">Meta - Index</a></li><li><a href="../../tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep" class="internal">Journal - Host-Authoritative, Not Lockstep</a></li><li><a href="../../tech/00-meta/journal/2026-07-16-coop-session-pause-is-the-sync-window" class="internal">Journal - Coop Session: Pause Is The Sync Window</a></li><li><a href="../../tech/00-meta/journal/2026-07-30-code-owns-truth-journal-owns-why" class="internal">Journal - Code Owns Truth, Journal Owns Why</a></li><li><a href="../../tech/00-meta/journal/2026-07-30-runtime-unit-is-a-mutable-bag-on-purpose" class="internal">Journal - RuntimeUnit Is A Mutable Bag On Purpose</a></li><li><a href="../../tech/00-meta/journal/2026-07-30-stats-pipeline-neither-reorders-nor-clamps" class="internal">Journal - The Stats Pipeline Neither Reorders Nor Clamps</a></li><li><a href="../../tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly" class="internal">Journal - The Bus Stops At The Combat Assembly</a></li><li><a href="../../tech/00-meta/journal/2026-07-31-the-rig-reads-its-own-marker-like-everyone-else" class="internal">Journal - The Rig Reads Its Own Marker Like Everyone Else</a></li><li><a href="../../tech/00-meta/tech-changelog" class="internal">Meta - Tech Changelog (Archive)</a></li><li><a href="../../tech/40-planning/road-to-playable-build" class="internal">Planning - Road To Playable Build</a></li><li><a href="../../tech/40-planning/scope-hierarchy" class="internal">Planning - Scope Hierarchy</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

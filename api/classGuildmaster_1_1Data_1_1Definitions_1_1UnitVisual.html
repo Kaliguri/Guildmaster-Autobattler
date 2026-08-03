@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Data.Definitions.UnitVisual:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual__inherit__graph.svg" width="218" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual__inherit__graph.svg" width="218" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Definitions.UnitVisual:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual__coll__graph.svg" width="218" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual__coll__graph.svg" width="218" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -120,6 +120,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a94bcd35fb97f73f6fd8eb8ca79b78c8c" id="r_a94bcd35fb97f73f6fd8eb8ca79b78c8c"><td class="memItemLeft" align="right" valign="top">AnimationClip&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#a94bcd35fb97f73f6fd8eb8ca79b78c8c">SkillClip</a> (int slot)</td></tr>
 <tr class="memdesc:a94bcd35fb97f73f6fd8eb8ca79b78c8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Клип каста по слоту скилла (0-based). <code>null</code> = слот пуст или индекс вне диапазона.  <br /></td></tr>
 <tr class="separator:a94bcd35fb97f73f6fd8eb8ca79b78c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a968f11f3dcde49f0d61be259c9d8d1d8" id="r_a968f11f3dcde49f0d61be259c9d8d1d8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#a968f11f3dcde49f0d61be259c9d8d1d8">AttackHitPositions</a> (System.Collections.Generic.List&lt; float &gt; result)</td></tr>
+<tr class="memdesc:a968f11f3dcde49f0d61be259c9d8d1d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Нормированные позиции всех контактов (0..1) в порядке ударов — дописываются в <em>result</em> , возвращается их число.  <br /></td></tr>
+<tr class="separator:a968f11f3dcde49f0d61be259c9d8d1d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -132,21 +135,47 @@ Properties</h2></td></tr>
 <tr class="memitem:a56c7bdd4b44ad4ef8cfed906d062e698" id="r_a56c7bdd4b44ad4ef8cfed906d062e698"><td class="memItemLeft" align="right" valign="top">AnimationClip&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#a56c7bdd4b44ad4ef8cfed906d062e698">HitClip</a><code> [get]</code></td></tr>
 <tr class="memdesc:a56c7bdd4b44ad4ef8cfed906d062e698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Клип разовой реакции на урон (может быть <code>null</code>).  <br /></td></tr>
 <tr class="separator:a56c7bdd4b44ad4ef8cfed906d062e698"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15dd6803ae9d476ed5f07bf808858bdc" id="r_a15dd6803ae9d476ed5f07bf808858bdc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#a15dd6803ae9d476ed5f07bf808858bdc">HasClips</a><code> [get]</code></td></tr>
-<tr class="memdesc:a15dd6803ae9d476ed5f07bf808858bdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли Attack-клип — признак, что визуал готов к проигрыванию через Animator.  <br /></td></tr>
-<tr class="separator:a15dd6803ae9d476ed5f07bf808858bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93850bcf8f6c2f9620c99fa2b153ab57" id="r_a93850bcf8f6c2f9620c99fa2b153ab57"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#a93850bcf8f6c2f9620c99fa2b153ab57">AttackFrameCount</a><code> [get]</code></td></tr>
-<tr class="memdesc:a93850bcf8f6c2f9620c99fa2b153ab57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Число кадров Attack-клипа (знаменатель windup, вики «14»). 0 если клипа нет.  <br /></td></tr>
+<tr class="memdesc:a93850bcf8f6c2f9620c99fa2b153ab57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли Attack-клип — признак, что визуал готов к проигрыванию через Animator.  <br /></td></tr>
 <tr class="separator:a93850bcf8f6c2f9620c99fa2b153ab57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad02f17e505670ee04c0304feb082141b" id="r_ad02f17e505670ee04c0304feb082141b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#ad02f17e505670ee04c0304feb082141b">AttackHitFrame</a><code> [get]</code></td></tr>
 <tr class="memdesc:ad02f17e505670ee04c0304feb082141b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кадр контакта авто-атаки = маркер Attack-клипа (числитель windup). 0 если нет клипа/маркера.  <br /></td></tr>
 <tr class="separator:ad02f17e505670ee04c0304feb082141b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a816f45d1ee08523a7f159013d2d8cb4e" id="r_a816f45d1ee08523a7f159013d2d8cb4e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#a816f45d1ee08523a7f159013d2d8cb4e">AttackHitCount</a><code> [get]</code></td></tr>
+<tr class="memdesc:a816f45d1ee08523a7f159013d2d8cb4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько Ударов в одной Атаке: столько, сколько маркеров в клипе.  <br /></td></tr>
+<tr class="separator:a816f45d1ee08523a7f159013d2d8cb4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Визуальный набор реликвии на AnimationClip-слотах (вики «13» §3.1): состояния Idle/Run/Attack/Death/Hit + клипы скиллов + портрет. </p>
 <p><code>UnitView</code> собирает из них <code>AnimatorOverrideController</code> поверх базового контроллера. </p>
 <p>Живёт в <code><a class="el" href="namespaceGuildmaster_1_1Data.html">Guildmaster.Data</a></code> (не Presentation), потому что сим/фабрика считают windup авто-атаки из AttackFrameCount + AttackHitFrame (вики «14»), а Combat видит только Core+Data. Эти числа выводятся из Attack-клипа и его маркера (ClipMarkers) — клип единственный источник правды, без дублирующих полей. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a968f11f3dcde49f0d61be259c9d8d1d8" name="a968f11f3dcde49f0d61be259c9d8d1d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a968f11f3dcde49f0d61be259c9d8d1d8">&#9670;&#160;</a></span>AttackHitPositions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.UnitVisual.AttackHitPositions </td>
+          <td>(</td>
+          <td class="paramtype">System.Collections.Generic.List&lt; float &gt;&#160;</td>
+          <td class="paramname"><em>result</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Нормированные позиции всех контактов (0..1) в порядке ударов — дописываются в <em>result</em> , возвращается их число. </p>
+<p>Тики из них считает <code>AttackTiming</code>: доли живут в клипе, а перевод в тики зависит от рантайм-скорости атаки. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual_a968f11f3dcde49f0d61be259c9d8d1d8_icgraph.svg" width="476" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a51f9474ef9f72bb520718a6a5da74956" name="a51f9474ef9f72bb520718a6a5da74956"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a51f9474ef9f72bb520718a6a5da74956">&#9670;&#160;</a></span>Clip()</h2>
 
@@ -240,7 +269,33 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Есть ли Attack-клип — признак, что визуал готов к проигрыванию через Animator. </p>
 <p>Число кадров Attack-клипа (знаменатель windup, вики «14»). 0 если клипа нет. </p>
+
+</div>
+</div>
+<a id="a816f45d1ee08523a7f159013d2d8cb4e" name="a816f45d1ee08523a7f159013d2d8cb4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a816f45d1ee08523a7f159013d2d8cb4e">&#9670;&#160;</a></span>AttackHitCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.UnitVisual.AttackHitCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько Ударов в одной Атаке: столько, сколько маркеров в клипе. </p>
+<p><code>0</code> = разметки нет. </p>
 
 </div>
 </div>
@@ -265,30 +320,6 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Кадр контакта авто-атаки = маркер Attack-клипа (числитель windup). 0 если нет клипа/маркера. </p>
-
-</div>
-</div>
-<a id="a15dd6803ae9d476ed5f07bf808858bdc" name="a15dd6803ae9d476ed5f07bf808858bdc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15dd6803ae9d476ed5f07bf808858bdc">&#9670;&#160;</a></span>HasClips</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Guildmaster.Data.Definitions.UnitVisual.HasClips</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Есть ли Attack-клип — признак, что визуал готов к проигрыванию через Animator. </p>
 
 </div>
 </div>

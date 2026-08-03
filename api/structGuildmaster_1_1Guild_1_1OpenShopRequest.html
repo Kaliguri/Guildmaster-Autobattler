@@ -104,13 +104,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Guild_1_1OpenShop
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.OpenShopRequest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenShopRequest__coll__graph.svg" width="246" height="319"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenShopRequest__coll__graph.svg" width="246" height="339"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3a58d5fe2d8efcb1443160174c1d2054" id="r_a3a58d5fe2d8efcb1443160174c1d2054"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenShopRequest.html#a3a58d5fe2d8efcb1443160174c1d2054">OpenShopRequest</a> (<a class="el" href="interfaceGuildmaster_1_1Guild_1_1IShopController.html">IShopController</a> shop, Action onLeave)</td></tr>
-<tr class="separator:a3a58d5fe2d8efcb1443160174c1d2054"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad693ad369633e91551d4c739fc406875" id="r_ad693ad369633e91551d4c739fc406875"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenShopRequest.html#ad693ad369633e91551d4c739fc406875">OpenShopRequest</a> (<a class="el" href="interfaceGuildmaster_1_1Guild_1_1IShopController.html">IShopController</a> shop, Action onLeave, CancellationToken cancellation=default)</td></tr>
+<tr class="separator:ad693ad369633e91551d4c739fc406875"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -118,13 +118,16 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a43077e8407c916699491aeb3c5041ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87ffc71f2e22278a0712962db9cfe002" id="r_a87ffc71f2e22278a0712962db9cfe002"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenShopRequest.html#a87ffc71f2e22278a0712962db9cfe002">OnLeave</a></td></tr>
 <tr class="separator:a87ffc71f2e22278a0712962db9cfe002"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ac552489797c25c5c5f004fa814338e" id="r_a5ac552489797c25c5c5f004fa814338e"><td class="memItemLeft" align="right" valign="top">readonly CancellationToken&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenShopRequest.html#a5ac552489797c25c5c5f004fa814338e">Cancellation</a></td></tr>
+<tr class="memdesc:a5ac552489797c25c5c5f004fa814338e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Токен отмены забега (QA #37): отмена закрывает магазин через навигатор.  <br /></td></tr>
+<tr class="separator:a5ac552489797c25c5c5f004fa814338e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Запрос открыть экран магазина (план B2). </p>
 <p>Публикует петля акта (<code>ShopFlow</code>), слушает UI. Несёт контроллер (UI биндится к нему) и колбэк выхода — ровно один вызов OnLeave (кнопка «Уйти»/ESC). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3a58d5fe2d8efcb1443160174c1d2054" name="a3a58d5fe2d8efcb1443160174c1d2054"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a58d5fe2d8efcb1443160174c1d2054">&#9670;&#160;</a></span>OpenShopRequest()</h2>
+<a id="ad693ad369633e91551d4c739fc406875" name="ad693ad369633e91551d4c739fc406875"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad693ad369633e91551d4c739fc406875">&#9670;&#160;</a></span>OpenShopRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,7 +145,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onLeave</em>&#160;</td>
+          <td class="paramname"><em>onLeave</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CancellationToken&#160;</td>
+          <td class="paramname"><em>cancellation</em> = <code>default</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -160,6 +169,22 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a5ac552489797c25c5c5f004fa814338e" name="a5ac552489797c25c5c5f004fa814338e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ac552489797c25c5c5f004fa814338e">&#9670;&#160;</a></span>Cancellation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly CancellationToken Guildmaster.Guild.OpenShopRequest.Cancellation</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Токен отмены забега (QA #37): отмена закрывает магазин через навигатор. </p>
+
+</div>
+</div>
 <a id="a87ffc71f2e22278a0712962db9cfe002" name="a87ffc71f2e22278a0712962db9cfe002"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a87ffc71f2e22278a0712962db9cfe002">&#9670;&#160;</a></span>OnLeave</h2>
 

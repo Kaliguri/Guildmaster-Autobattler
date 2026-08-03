@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1EffectSy
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="#events">Events</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1EffectSystem-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.EffectSystem Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
@@ -105,7 +106,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1EffectSy
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.EffectSystem:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem__coll__graph.svg" width="200" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem__coll__graph.svg" width="256" height="371"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -113,15 +114,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a28cc7ef6a506f25b6fd780611de0cbc0" id="r_a28cc7ef6a506f25b6fd780611de0cbc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a28cc7ef6a506f25b6fd780611de0cbc0">Tick</a> (IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat, float dt)</td></tr>
 <tr class="memdesc:a28cc7ef6a506f25b6fd780611de0cbc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение.  <br /></td></tr>
 <tr class="separator:a28cc7ef6a506f25b6fd780611de0cbc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdcfb37b332cf8ab88aab0a49b7568b6" id="r_afdcfb37b332cf8ab88aab0a49b7568b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#afdcfb37b332cf8ab88aab0a49b7568b6">Apply</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> def, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
-<tr class="memdesc:afdcfb37b332cf8ab88aab0a49b7568b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Наложить эффект на цель.  <br /></td></tr>
-<tr class="separator:afdcfb37b332cf8ab88aab0a49b7568b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dc63a5a933468cb73972dd7d68d47af" id="r_a5dc63a5a933468cb73972dd7d68d47af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a5dc63a5a933468cb73972dd7d68d47af">Apply</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> def, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat, float durationSecondsOverride=0f, float potencyOverride=0f)</td></tr>
+<tr class="memdesc:a5dc63a5a933468cb73972dd7d68d47af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Наложить эффект на цель.  <br /></td></tr>
+<tr class="separator:a5dc63a5a933468cb73972dd7d68d47af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac752cc7b39872e4fc36e6ddb25fe170d" id="r_ac752cc7b39872e4fc36e6ddb25fe170d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#ac752cc7b39872e4fc36e6ddb25fe170d">Remove</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit, <a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html">RuntimeEffect</a> effect, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
 <tr class="memdesc:ac752cc7b39872e4fc36e6ddb25fe170d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Принудительно снять эффект с корректным <code>OnExpire</code> и пересборкой маски тегов.  <br /></td></tr>
 <tr class="separator:ac752cc7b39872e4fc36e6ddb25fe170d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a185829371095c507b7672006d99010b8" id="r_a185829371095c507b7672006d99010b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a185829371095c507b7672006d99010b8">RunPreDamage</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a> req, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
 <tr class="memdesc:a185829371095c507b7672006d99010b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Синхронный pre-damage проход (§9.3): до DamagePipeline.Execute опросить IPreDamageComponent цели — «Оплот» успевает поднять щит, поглощающий сам триггер-удар.  <br /></td></tr>
 <tr class="separator:a185829371095c507b7672006d99010b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa29e25e05e5d14763d319174dba33366" id="r_aa29e25e05e5d14763d319174dba33366"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#aa29e25e05e5d14763d319174dba33366">TryResolveAttackSplit</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> attacker, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat, out <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1AttackSplit.html">AttackSplit</a> split)</td></tr>
+<tr class="memdesc:aa29e25e05e5d14763d319174dba33366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Расщепляет ли какой-нибудь эффект АТАКУЮЩЕГО его авто-атаку по школам (The Pyre: по горящей цели половина клинка уходит Огнём).  <br /></td></tr>
+<tr class="separator:aa29e25e05e5d14763d319174dba33366"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a081aa4088e5e871eb88788ab58eaa5cd" id="r_a081aa4088e5e871eb88788ab58eaa5cd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a081aa4088e5e871eb88788ab58eaa5cd">ResolveOutgoingDamageBonus</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> attacker, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, bool isAutoAttack, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
+<tr class="memdesc:a081aa4088e5e871eb88788ab58eaa5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько НАКИДЫВАЕТ атакующий за то, каким стало состояние цели (Криомант по замороженным).  <br /></td></tr>
+<tr class="separator:a081aa4088e5e871eb88788ab58eaa5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0b859421bdbe22d18ddb2ef92ab5861" id="r_af0b859421bdbe22d18ddb2ef92ab5861"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#af0b859421bdbe22d18ddb2ef92ab5861">ResolveAttackMiss</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> attacker, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
+<tr class="memdesc:af0b859421bdbe22d18ddb2ef92ab5861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Уходит ли ЭТА атака носителя мимо (слепота).  <br /></td></tr>
+<tr class="separator:af0b859421bdbe22d18ddb2ef92ab5861"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af105ee295c2f8be96b878c5c8b704251" id="r_af105ee295c2f8be96b878c5c8b704251"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#af105ee295c2f8be96b878c5c8b704251">Dispatch</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> carrier, in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html">CombatEventData</a> ev, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
 <tr class="memdesc:af105ee295c2f8be96b878c5c8b704251"><td class="mdescLeft">&#160;</td><td class="mdescRight">Доставить боевое событие реактивным компонентам носителя (вампиризм/шипы).  <br /></td></tr>
 <tr class="separator:af105ee295c2f8be96b878c5c8b704251"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,25 +141,52 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3b6d6263a82d13805d5bfb6498ca1ce2" id="r_a3b6d6263a82d13805d5bfb6498ca1ce2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a3b6d6263a82d13805d5bfb6498ca1ce2">RemoveByTag</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data.Definitions.EffectTag</a> tag, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
 <tr class="memdesc:a3b6d6263a82d13805d5bfb6498ca1ce2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Принудительно снять с юнита ВСЕ эффекты, несущие любой из <em>tag</em>  (игнорируя <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a34da08cb0aa522f1298524ad8da61ac6">EffectData.Unremovable</a> — это не диспел, а системное завершение, напр.  <br /></td></tr>
 <tr class="separator:a3b6d6263a82d13805d5bfb6498ca1ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7245cbbf8dd74d126f0be4279e7c7bb9" id="r_a7245cbbf8dd74d126f0be4279e7c7bb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a7245cbbf8dd74d126f0be4279e7c7bb9">RemoveByDef</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">Data.Definitions.EffectData</a> def, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
+<tr class="memdesc:a7245cbbf8dd74d126f0be4279e7c7bb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Принудительно снять с юнита эффект, выданный ИМЕННО этим определением (игнорируя Data.Definitions.EffectData.Unremovable — это системное завершение, а не диспел).  <br /></td></tr>
+<tr class="separator:a7245cbbf8dd74d126f0be4279e7c7bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a876e8cfca2bf82b25b68759d9ed0aa20" id="r_a876e8cfca2bf82b25b68759d9ed0aa20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a876e8cfca2bf82b25b68759d9ed0aa20">CommitTickChanges</a> (IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units)</td></tr>
+<tr class="memdesc:a876e8cfca2bf82b25b68759d9ed0aa20"><td class="mdescLeft">&#160;</td><td class="mdescRight">ЗАКОН ВИДИМОСТИ ЭФФЕКТОВ: проявить всё, что эффекты наложили или сняли за этот тик — статы и маску тегов.  <br /></td></tr>
+<tr class="separator:a876e8cfca2bf82b25b68759d9ed0aa20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:afba054405a0f16608dfd5d774a58cc90" id="r_afba054405a0f16608dfd5d774a58cc90"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#afba054405a0f16608dfd5d774a58cc90">ResolveDurationTicks</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> def, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target)</td></tr>
-<tr class="memdesc:afba054405a0f16608dfd5d774a58cc90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Длительность эффекта в тиках. -1 = постоянный, 0 = мгновенный, иначе с учётом эфф-эффективностей.  <br /></td></tr>
-<tr class="separator:afba054405a0f16608dfd5d774a58cc90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f6a9451eebfb6883e16e703efb7eb11" id="r_a0f6a9451eebfb6883e16e703efb7eb11"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a0f6a9451eebfb6883e16e703efb7eb11">ResolveDurationTicks</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> def, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, float secondsOverride=0f)</td></tr>
+<tr class="memdesc:a0f6a9451eebfb6883e16e703efb7eb11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Длительность эффекта в тиках.  <br /></td></tr>
+<tr class="separator:a0f6a9451eebfb6883e16e703efb7eb11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafdd26efd16e1f27b83bafcb7f970482" id="r_aafdd26efd16e1f27b83bafcb7f970482"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#aafdd26efd16e1f27b83bafcb7f970482">CommitPending</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit)</td></tr>
+<tr class="memdesc:aafdd26efd16e1f27b83bafcb7f970482"><td class="mdescLeft">&#160;</td><td class="mdescRight">Проявить отложенное на одном юните.  <br /></td></tr>
+<tr class="separator:aafdd26efd16e1f27b83bafcb7f970482"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9274c96894e43dc957fa63d1eb1884c" id="r_ad9274c96894e43dc957fa63d1eb1884c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#ad9274c96894e43dc957fa63d1eb1884c">CountUniqueTaggedAtTickStart</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> tag, int currentTick)</td></tr>
+<tr class="memdesc:ad9274c96894e43dc957fa63d1eb1884c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько РАЗНЫХ эффектов (по <code>Def</code>) с тегом <em>tag</em>  висело на юните на НАЧАЛО тика.  <br /></td></tr>
+<tr class="separator:ad9274c96894e43dc957fa63d1eb1884c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a5ebf9a060e09d0e5933e8a4d6b7de1db" id="r_a5ebf9a060e09d0e5933e8a4d6b7de1db"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a5ebf9a060e09d0e5933e8a4d6b7de1db">PreDamageMultiplier</a><code> [get]</code></td></tr>
+<tr class="memdesc:a5ebf9a060e09d0e5933e8a4d6b7de1db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель входящего урона, накопленный компонентами цели в последнем RunPreDamage (1 = без изменений).  <br /></td></tr>
+<tr class="separator:a5ebf9a060e09d0e5933e8a4d6b7de1db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
 <tr class="memitem:a83d599992f80d903424732e367fc54e6" id="r_a83d599992f80d903424732e367fc54e6"><td class="memItemLeft" align="right" valign="top">System.Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data.Definitions.EffectTag</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a83d599992f80d903424732e367fc54e6">OnEffectExpired</a></td></tr>
 <tr class="memdesc:a83d599992f80d903424732e367fc54e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Эффект закончился на юните: (юнит, источник эффекта, теги эффекта).  <br /></td></tr>
 <tr class="separator:a83d599992f80d903424732e367fc54e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7b0f8a043d539d050f54a0890d841af" id="r_ab7b0f8a043d539d050f54a0890d841af"><td class="memItemLeft" align="right" valign="top">System.Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#ab7b0f8a043d539d050f54a0890d841af">OnEffectApplied</a></td></tr>
+<tr class="memdesc:ab7b0f8a043d539d050f54a0890d841af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Эффект наложен на юнита: (цель, определение, источник).  <br /></td></tr>
+<tr class="separator:ab7b0f8a043d539d050f54a0890d841af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36093cc26c6ad883f304348b870f1268" id="r_a36093cc26c6ad883f304348b870f1268"><td class="memItemLeft" align="right" valign="top">System.Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a36093cc26c6ad883f304348b870f1268">OnEffectEnded</a></td></tr>
+<tr class="memdesc:a36093cc26c6ad883f304348b870f1268"><td class="mdescLeft">&#160;</td><td class="mdescRight">Эффект закончился: (цель, определение, источник).  <br /></td></tr>
+<tr class="separator:a36093cc26c6ad883f304348b870f1268"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addbaa5da2e19e0c756cf8f0afaf3868f" id="r_addbaa5da2e19e0c756cf8f0afaf3868f"><td class="memItemLeft" align="right" valign="top">System.Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#addbaa5da2e19e0c756cf8f0afaf3868f">OnEffectDispelled</a></td></tr>
+<tr class="memdesc:addbaa5da2e19e0c756cf8f0afaf3868f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Эффект СНЯТ диспелом: (цель, определение, кто снял, кто накладывал).  <br /></td></tr>
+<tr class="separator:addbaa5da2e19e0c756cf8f0afaf3868f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Владелец жизненного цикла эффектов: наложение (длительность, стакинг, потенция, маска тегов), тик таймеров и периодики, истечение с корректным teardown. </p>
 <p>Вызывается из CombatSimulation (вики «12» §3.3, §3.5, §6). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="afdcfb37b332cf8ab88aab0a49b7568b6" name="afdcfb37b332cf8ab88aab0a49b7568b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdcfb37b332cf8ab88aab0a49b7568b6">&#9670;&#160;</a></span>Apply()</h2>
+<a id="a5dc63a5a933468cb73972dd7d68d47af" name="a5dc63a5a933468cb73972dd7d68d47af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dc63a5a933468cb73972dd7d68d47af">&#9670;&#160;</a></span>Apply()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -179,7 +216,19 @@ Events</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a>&#160;</td>
-          <td class="paramname"><em>combat</em>&#160;</td>
+          <td class="paramname"><em>combat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>durationSecondsOverride</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>potencyOverride</em> = <code>0f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -195,11 +244,152 @@ Events</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Наложить эффект на цель. </p>
-<p>Резолвит длительность (эфф-эффективности), потенцию (снимок статов источника), обрабатывает стакинг, добавляет RuntimeEffect и зовёт <code>OnApply</code> компонентов. Мгновенный эффект (BaseDuration = 0) не персистится. </p>
+<p>Резолвит длительность (эфф-эффективности), потенцию (снимок статов источника), обрабатывает стакинг, добавляет RuntimeEffect и зовёт <code>OnApply</code> компонентов. Мгновенный эффект (BaseDuration = 0) не персистится.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">durationSecondsOverride</td><td>Срок вместо авторского, если &gt; 0 (обездвиживание холодной линии растёт со стаками). При подкреплении уже висящего эффекта тоже учитывается — иначе рут, продлённый вторым срабатыванием, молча вернулся бы к авторской длительности. </td></tr>
+    <tr><td class="paramname">potencyOverride</td><td>Величина вместо авторской, если &gt; 0 — только для порционных эффектов (StackRule.Portions): силу порции крови приносит удар, а не ассет. </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_afdcfb37b332cf8ab88aab0a49b7568b6_cgraph.svg" width="474" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_a5dc63a5a933468cb73972dd7d68d47af_cgraph.svg" width="474" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aafdd26efd16e1f27b83bafcb7f970482" name="aafdd26efd16e1f27b83bafcb7f970482"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafdd26efd16e1f27b83bafcb7f970482">&#9670;&#160;</a></span>CommitPending()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Guildmaster.Combat.EffectSystem.CommitPending </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Проявить отложенное на одном юните. </p>
+<p>Отдельный вход нужен ВНЕ боевого тика: юнит, которого только что собрала фабрика, обязан родиться с уже действующими пассивками — иначе он выйдет на арену с недобранным запасом HP и погашенными метками (стелс, ауры), а ждать первого тика тут некому. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_aafdd26efd16e1f27b83bafcb7f970482_cgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_aafdd26efd16e1f27b83bafcb7f970482_icgraph.svg" width="100%" height="419"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a876e8cfca2bf82b25b68759d9ed0aa20" name="a876e8cfca2bf82b25b68759d9ed0aa20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a876e8cfca2bf82b25b68759d9ed0aa20">&#9670;&#160;</a></span>CommitTickChanges()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.EffectSystem.CommitTickChanges </td>
+          <td>(</td>
+          <td class="paramtype">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td>
+          <td class="paramname"><em>units</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ЗАКОН ВИДИМОСТИ ЭФФЕКТОВ: проявить всё, что эффекты наложили или сняли за этот тик — статы и маску тегов. </p>
+<p>Зовётся ровно раз, в конце <code>CombatSimulation.Tick</code>.</p>
+<p>Смысл закона: наложенный эффект меняет статы и маску носителя не раньше конца тика — так же, как это давно сделано для флагов контроля (<code>CanAct</code>, вики «14»). Пока правка стата ложилась мгновенно, ослабление, наложенное ранним ударом, успевало срезать удар того, кто в обходе списка позже; у зеркальных сторон порядок обратный, и «место в списке» становилось игровым преимуществом. Единственное исключение — pre-damage реактивы (RunPreDamage): они по определению отвечают на конкретный удар («Оплот» поднимает щит на тот же удар, §9.3) и остаются синхронными. Это исключение сознательное — не «доисправлять» его до единообразия. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_a876e8cfca2bf82b25b68759d9ed0aa20_cgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ad9274c96894e43dc957fa63d1eb1884c" name="ad9274c96894e43dc957fa63d1eb1884c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9274c96894e43dc957fa63d1eb1884c">&#9670;&#160;</a></span>CountUniqueTaggedAtTickStart()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Guildmaster.Combat.EffectSystem.CountUniqueTaggedAtTickStart </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a>&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>currentTick</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько РАЗНЫХ эффектов (по <code>Def</code>) с тегом <em>tag</em>  висело на юните на НАЧАЛО тика. </p>
+<p>Стаки одного эффекта считаются за один.</p>
+<p>Судить по живому списку нельзя: он меняется в течение тика, и «сколько ядов на цели» начинает зависеть от места юнита в обходе. Зеркало ловило это как расхождение на тике 543 — левый Друид детонировал отравленного врага и лечил своих, а к ходу правого чужой клинз уже снял яд, и его «Взрыв спор» уходил в пустоту. Поэтому считаем то же, что видел бы наблюдатель на границе тика: эффекты, легшие РАНЬШЕ этого тика, плюс снятые В ЭТОМ тике (на начало они были). </p>
+<p>Владелец правила один — иначе каждый потребитель заведёт свою версию «был ли эффект», и они разойдутся.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>Носитель эффектов.</td></tr>
+    <tr><td class="paramname">tag</td><td>Тег, по которому считаем (Poison у «Взрыва спор»).</td></tr>
+    <tr><td class="paramname">currentTick</td><td>Текущий тик боя.</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_ad9274c96894e43dc957fa63d1eb1884c_cgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -285,6 +475,11 @@ Here is the call graph for this function:</div>
 
 <p>Снять с цели подходящие эффекты: полярность ∧ теги ∧ <code>CleanseTier ≤ DispelPower</code> ∧ <code>!Unremovable</code>. </p>
 <p>Порядок выбора при <code>MaxCount</code> — insertion order (детерминированно; тонкая настройка приоритета — при балансе, вики «6» §5.4, «12» §9). </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_add433549e9a0dc16bb7e3b582cf951cb_cgraph.svg" width="471" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -333,6 +528,52 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a7245cbbf8dd74d126f0be4279e7c7bb9" name="a7245cbbf8dd74d126f0be4279e7c7bb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7245cbbf8dd74d126f0be4279e7c7bb9">&#9670;&#160;</a></span>RemoveByDef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.EffectSystem.RemoveByDef </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">Data::Definitions::EffectData</a>&#160;</td>
+          <td class="paramname"><em>def</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a>&#160;</td>
+          <td class="paramname"><em>combat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Принудительно снять с юнита эффект, выданный ИМЕННО этим определением (игнорируя Data.Definitions.EffectData.Unremovable — это системное завершение, а не диспел). </p>
+<p>Так владелец заканчивает состояние, которое сам же выдал: разрыв Комбо гасит заряд серии.</p>
+<p>По определению, а не по тегу: RemoveByTag снёс бы вместе с зарядом серии и заряд активки — тег <code>Empowered</code> у них общий, а правила снятия разные (вердикт Макса 2026-08-01). </p>
+
+</div>
+</div>
 <a id="a3b6d6263a82d13805d5bfb6498ca1ce2" name="a3b6d6263a82d13805d5bfb6498ca1ce2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3b6d6263a82d13805d5bfb6498ca1ce2">&#9670;&#160;</a></span>RemoveByTag()</h2>
 
@@ -378,8 +619,47 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="afba054405a0f16608dfd5d774a58cc90" name="afba054405a0f16608dfd5d774a58cc90"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afba054405a0f16608dfd5d774a58cc90">&#9670;&#160;</a></span>ResolveDurationTicks()</h2>
+<a id="af0b859421bdbe22d18ddb2ef92ab5861" name="af0b859421bdbe22d18ddb2ef92ab5861"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0b859421bdbe22d18ddb2ef92ab5861">&#9670;&#160;</a></span>ResolveAttackMiss()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.EffectSystem.ResolveAttackMiss </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>attacker</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a>&#160;</td>
+          <td class="paramname"><em>combat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Уходит ли ЭТА атака носителя мимо (слепота). </p>
+<p>Спрашивается один раз на снятии цифр удара; первый же компонент, ответивший «мимо», решает дело — промах не бывает сильнее промаха. </p>
+
+</div>
+</div>
+<a id="a0f6a9451eebfb6883e16e703efb7eb11" name="a0f6a9451eebfb6883e16e703efb7eb11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f6a9451eebfb6883e16e703efb7eb11">&#9670;&#160;</a></span>ResolveDurationTicks()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -403,7 +683,13 @@ Here is the call graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
-          <td class="paramname"><em>target</em>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>secondsOverride</em> = <code>0f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -418,12 +704,69 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Длительность эффекта в тиках. -1 = постоянный, 0 = мгновенный, иначе с учётом эфф-эффективностей. </p>
+<p>Длительность эффекта в тиках. </p>
+<p>-1 = постоянный, 0 = мгновенный, иначе с учётом эфф-эффективностей. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">secondsOverride</td><td>Длительность вместо <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a1d6c4b554fe357c4b6fd3fc279719816">EffectData.BaseDuration</a>, если &gt; 0. Нужна там, где срок считается по ходу боя, а не задан автором: обездвиживание холодной линии растёт от 0.5 до 1.5 секунд вместе со стаками «Изморози», и завести под каждую точку свой ассет значило бы разложить одну кривую по трём файлам. Tenacity применяется к переданному сроку так же, как к авторскому. </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_afba054405a0f16608dfd5d774a58cc90_icgraph.svg" width="474" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_a0f6a9451eebfb6883e16e703efb7eb11_icgraph.svg" width="474" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a081aa4088e5e871eb88788ab58eaa5cd" name="a081aa4088e5e871eb88788ab58eaa5cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a081aa4088e5e871eb88788ab58eaa5cd">&#9670;&#160;</a></span>ResolveOutgoingDamageBonus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Combat.EffectSystem.ResolveOutgoingDamageBonus </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>attacker</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isAutoAttack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a>&#160;</td>
+          <td class="paramname"><em>combat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько НАКИДЫВАЕТ атакующий за то, каким стало состояние цели (Криомант по замороженным). </p>
+<p>Возвращает долю: 0 = обычный удар, 0.25 = +25%. Вклады разных компонентов складываются — это усиление источника, и ведёт себя как плоские прибавки в статах. </p>
 
 </div>
 </div>
@@ -514,10 +857,149 @@ Here is the caller graph for this function:</div>
 
 <p>Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение. </p>
 <p>Вставляется в тик-цикл перед DeathSystem (DoT может добить). </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_a28cc7ef6a506f25b6fd780611de0cbc0_cgraph.svg" width="495" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_a28cc7ef6a506f25b6fd780611de0cbc0_icgraph.svg" width="534" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aa29e25e05e5d14763d319174dba33366" name="aa29e25e05e5d14763d319174dba33366"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa29e25e05e5d14763d319174dba33366">&#9670;&#160;</a></span>TryResolveAttackSplit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.EffectSystem.TryResolveAttackSplit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>attacker</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a>&#160;</td>
+          <td class="paramname"><em>combat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1AttackSplit.html">AttackSplit</a>&#160;</td>
+          <td class="paramname"><em>split</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Расщепляет ли какой-нибудь эффект АТАКУЮЩЕГО его авто-атаку по школам (The Pyre: по горящей цели половина клинка уходит Огнём). </p>
+<p>Побеждает первый сработавший — порядок по индексу активных эффектов, как и в pre-damage проходе. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a5ebf9a060e09d0e5933e8a4d6b7de1db" name="a5ebf9a060e09d0e5933e8a4d6b7de1db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ebf9a060e09d0e5933e8a4d6b7de1db">&#9670;&#160;</a></span>PreDamageMultiplier</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Combat.EffectSystem.PreDamageMultiplier</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Множитель входящего урона, накопленный компонентами цели в последнем RunPreDamage (1 = без изменений). </p>
+<p>Читается сразу после вызова — состояние живёт до следующего прохода, как и <code>Negated</code>. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Event Documentation</h2>
+<a id="ab7b0f8a043d539d050f54a0890d841af" name="ab7b0f8a043d539d050f54a0890d841af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7b0f8a043d539d050f54a0890d841af">&#9670;&#160;</a></span>OnEffectApplied</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">System.Action&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&gt; Guildmaster.Combat.EffectSystem.OnEffectApplied</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Эффект наложен на юнита: (цель, определение, источник). </p>
+<p>В отличие от OnEffectExpired несёт САМО определение — по нему презентация строит ключ вида <code>effect.frozen.apply</code>. Стрельнёт и на первом наложении, и на стаке/рефреше, и на мгновенном эффекте: игроку одинаково важно услышать, что статус лёг. Sim на это событие не завязана — только наблюдатели. </p>
+
+</div>
+</div>
+<a id="addbaa5da2e19e0c756cf8f0afaf3868f" name="addbaa5da2e19e0c756cf8f0afaf3868f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addbaa5da2e19e0c756cf8f0afaf3868f">&#9670;&#160;</a></span>OnEffectDispelled</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">System.Action&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&gt; Guildmaster.Combat.EffectSystem.OnEffectDispelled</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Эффект СНЯТ диспелом: (цель, определение, кто снял, кто накладывал). </p>
+<p>Отдельно от OnEffectEnded, потому что по нему нельзя отличить «истёк сам» от «сорвали», а разница смысловая: сорванная с союзника чужая порча — заслуга снявшего.</p>
+<p>Четвёртый аргумент (автор снятого эффекта) нужен, чтобы не записать в очистку собственную механику: криомант съедает ульткой свою же «Заморозку», и снявший там совпадает с наложившим. </p>
+
+</div>
+</div>
+<a id="a36093cc26c6ad883f304348b870f1268" name="a36093cc26c6ad883f304348b870f1268"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36093cc26c6ad883f304348b870f1268">&#9670;&#160;</a></span>OnEffectEnded</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">System.Action&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&gt; Guildmaster.Combat.EffectSystem.OnEffectEnded</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Эффект закончился: (цель, определение, источник). </p>
+<p>Пара к OnEffectApplied — то же событие, что OnEffectExpired, но с определением вместо одних тегов. Заведено отдельным швом, чтобы не менять сигнатуру, на которой висят боевые реактивы. </p>
+
+</div>
+</div>
 <a id="a83d599992f80d903424732e367fc54e6" name="a83d599992f80d903424732e367fc54e6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a83d599992f80d903424732e367fc54e6">&#9670;&#160;</a></span>OnEffectExpired</h2>
 

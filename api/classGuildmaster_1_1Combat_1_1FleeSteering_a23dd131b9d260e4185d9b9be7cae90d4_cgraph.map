@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.FleeSteering.Retreat" name="Guildmaster.Combat.FleeSteering.Retreat">
+<area shape="rect" id="Node000001" title="Шаг ОТСТУПЛЕНИЯ (PositioningIntent.Retreat): threat + home + wall, скольжение у стены." alt="" coords="5,5,252,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1FleeSteering.html#a66b7ac7b2fc51e9c7b4cb8193d0f74dd" title="Направление «к своему тылу» по команде: 0 (союзники, левая сторона) → влево, иначе вправо." alt="" coords="300,5,547,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,23,286,23,286,28,252,28"/>
+</map>

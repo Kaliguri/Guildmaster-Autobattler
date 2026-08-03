@@ -92,13 +92,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1DevTools_1_1DevEnc
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classGuildmaster_1_1DevTools_1_1DevEncounterPanel-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.DevTools.DevEncounterPanel Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Dev-панель запуска боёв (UI Toolkit; план шаги 1/3).  
+<p>Dev-просмотрщик UI-экранов (<b>F4</b>): полноэкранная лента экранов со стендовыми данными через UiPreviewCatalog — посмотреть награду, ивент или галерею, не гоняя весь флоу.  
  <a href="classGuildmaster_1_1DevTools_1_1DevEncounterPanel.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.DevTools.DevEncounterPanel:</div>
@@ -110,54 +109,11 @@ Collaboration diagram for Guildmaster.DevTools.DevEncounterPanel:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1DevEncounterPanel__coll__graph.svg" width="198" height="204"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a8958f7e3950d60f80a4570e819979c6c" id="r_a8958f7e3950d60f80a4570e819979c6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1DevEncounterPanel.html#a8958f7e3950d60f80a4570e819979c6c">Construct</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1EncounterLoader.html">EncounterLoader</a> loader, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content)</td></tr>
-<tr class="separator:a8958f7e3950d60f80a4570e819979c6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Dev-панель запуска боёв (UI Toolkit; план шаги 1/3). </p>
-<p>Два списка: <b>Encounters</b> (только враги — player-сторона = временная dev-реликвия) и <b>Battle Presets</b> (враги + свой player-ростер). <b>F2</b> — показать/скрыть. Запускает через EncounterLoader; <b>R</b> (рестарт на месте) идёт через единого владельца GuildmasterCommands (F5-безопасно).</p>
-<p>Повесь на GameObject с UIDocument в BattleScene; на UIDocument назначь <code>GuildmasterPanelSettings</code> (тема даёт gm-токены) и Source Asset = <code>DevBattlePicker.uxml</code> (шелл панели + компактные dev-классы). Код только НАПОЛНЯЕТ список — вёрстка в UXML/USS. VContainer инжектит зависимости; при отсутствии — самоинжект из <code>CombatLifetimeScope</code> в Start. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8958f7e3950d60f80a4570e819979c6c" name="a8958f7e3950d60f80a4570e819979c6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8958f7e3950d60f80a4570e819979c6c">&#9670;&#160;</a></span>Construct()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Guildmaster.DevTools.DevEncounterPanel.Construct </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1EncounterLoader.html">EncounterLoader</a>&#160;</td>
-          <td class="paramname"><em>loader</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a>&#160;</td>
-          <td class="paramname"><em>content</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-</div><!-- contents -->
+<div class="textblock"><p>Dev-просмотрщик UI-экранов (<b>F4</b>): полноэкранная лента экранов со стендовыми данными через UiPreviewCatalog — посмотреть награду, ивент или галерею, не гоняя весь флоу. </p>
+<p><b>Список боёв отсюда снят 31.07</b> — его заменила витрина на F3, а 02.08.2026 не стало и её: команда запуска боя осталась одна (<code>bones</code>), и полка ради одной строки не нужна. Здесь живёт ровно та часть, у которой замены нет, — лента UI-экранов. </p>
+<p>Повесь на GameObject с UIDocument; Editor-only по содержимому — каталог стенда грузит UXML через AssetDatabase, поэтому в билде лента просто не строится.</p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

@@ -1,0 +1,11 @@
+<map id="Guildmaster.Combat.Tape.WorldBody" name="Guildmaster.Combat.Tape.WorldBody">
+<area shape="rect" id="Node000001" title="Одно тело на арене вне боя: где стоит (Body) и кто это (Who)." alt="" coords="77,885,264,965"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html" title="Состояние одного юнита на конец одного тика — то, из чего показ рисует кадр, не заглядывая в живой Ru..." alt="" coords="5,463,192,823"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,822,159,869,154,870,142,824"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Combat_1_1Tape_1_1UnitIdentity.html" title="Паспорт юнита на арене: то, что за время его присутствия не меняется — определение,..." alt="" coords="216,583,403,703"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="286,704,209,863,204,872,199,870,204,860,281,702"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html" title="Общий боевой кит всего, что выходит на арену (вики «13» §3.1)." alt="" coords="206,120,413,400"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="312,400,312,566,307,566,307,400"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="245,5,373,71"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="312,84,312,120,307,120,307,84"/>
+</map>

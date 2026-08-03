@@ -1,7 +1,0 @@
-<map id="Guildmaster.UI.MenuRouter.CloseAll" name="Guildmaster.UI.MenuRouter.CloseAll">
-<area shape="rect" id="Node000001" title="Закрыть все экраны и снять глушение ввода." alt="" coords="259,37,464,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1MenuRouter.html#a7a6fdd18191e2c59babd3bb20a849cd1" title="Закрыть все оверлеи (режим «Бой»/выход в игру из глобального топбара)." alt="" coords="5,5,211,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,45,211,41,211,36,245,40"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1MenuRouter.html#a68ec8319ec4031e0a23243506f9557eb" title="ESC: пусто → открыть системное меню; вложенный экран → назад; корневой → закрыть всё." alt="" coords="5,69,211,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="245,75,211,79,211,74,245,69"/>
-</map>

@@ -1,9 +1,11 @@
 <map id="Guildmaster.ContentHub.Editor.ContentValidationService.ValidateAll" name="Guildmaster.ContentHub.Editor.ContentValidationService.ValidateAll">
-<area shape="rect" id="Node000001" title="Полный проход по индексу — основа Doctor (P4)." alt="" coords="5,13,265,53"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#add953939cb76a60ae2ff9ac0e21e7974" title="Валидация одной записи (id, дубликаты по индексу, null&#45;компоненты эффектов)." alt="" coords="313,13,556,53"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="265,30,299,30,299,35,265,35"/>
+<area shape="rect" id="Node000001" title="Полный проход по индексу — основа Doctor (P4)." alt="" coords="5,53,265,93"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#add953939cb76a60ae2ff9ac0e21e7974" title="Валидация одной записи (id, дубликаты по индексу, null&#45;компоненты эффектов)." alt="" coords="313,53,556,93"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="265,70,299,70,299,75,265,75"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a72ee54dbb17f5b39e75c5c493f0a00c9" title="Чистые проверки id&#45;строки (без обращения к индексу): пустой / формат / домен под тип." alt="" coords="604,5,847,60"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="556,30,590,30,590,35,556,35"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="556,53,590,49,591,54,556,59"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a5d583eeb04b1416bfcf133a221d6f9f2" title="Юнит обязан иметь тело: UnitVisual и ViewPrefab." alt="" coords="604,84,847,139"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="556,86,591,91,590,96,556,91"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#aedef3a39f7ef0281d8b5c0fa1facc356" title="Найти домен для типа (точное совпадение или ближайший зарегистрированный предок)." alt="" coords="895,13,1123,53"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="847,30,881,30,881,35,847,35"/>
 </map>

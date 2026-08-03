@@ -1,0 +1,7 @@
+<map id="Guildmaster.Data.Definitions.DamageTypes.SchoolOf" name="Guildmaster.Data.Definitions.DamageTypes.SchoolOf">
+<area shape="rect" id="Node000001" title="Школа брони, которой гасится этот тип." alt="" coords="300,41,515,81"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitTagResolver.html#a8ea6d151c3ea9111b18f37a101a3cb6f" title="Упорядоченный список тегов юнита." alt="" coords="21,5,236,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="286,48,236,42,237,37,287,43"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aa880545503413066033c5e039396dfa0" title="Цвет hit&#45;flash по типу урона: у типов со своим «вкусом» (яд, свет, тьма) он свой, у остальных — цвет ..." alt="" coords="5,70,252,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="286,80,253,84,252,79,286,74"/>
+</map>

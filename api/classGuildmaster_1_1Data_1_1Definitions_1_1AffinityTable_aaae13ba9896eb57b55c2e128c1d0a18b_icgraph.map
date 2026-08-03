@@ -1,7 +1,0 @@
-<map id="Guildmaster.Data.Definitions.AffinityTable.Multiplier" name="Guildmaster.Data.Definitions.AffinityTable.Multiplier">
-<area shape="rect" id="Node000001" title="Множитель урона со сродством affinity &#160;по цели типа target ." alt="" coords="527,5,741,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1DamagePipeline.html#a92f4da6e6fd513be46129dbf0ec6a32d" title="Выполнить пайплайн: вычислить финальный урон и применить его к DamageRequest.Target." alt="" coords="264,5,479,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="513,28,479,28,479,23,513,23"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6de925024d5473fc9537c6a36e39fe45" title="Применить урон через полный пайплайн." alt="" coords="5,5,216,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="251,28,216,28,216,23,251,23"/>
-</map>

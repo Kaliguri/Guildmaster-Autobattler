@@ -1,7 +1,9 @@
 <map id="Guildmaster.Combat.CombatPositioning.TargetRecedeSpeedPerTick" name="Guildmaster.Combat.CombatPositioning.TargetRecedeSpeedPerTick">
-<area shape="rect" id="Node000001" title="Лучевая скорость ухода цели, мировые ед." alt="" coords="544,5,819,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a57295456ca777e61fdd124729528c22a" title="Успеет ли рутовый замах докрутить по этой цели (слой 2, «сначала подойти ближе с учётом скоростей»)." alt="" coords="285,5,496,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="530,28,496,28,496,23,530,23"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f41579d23e8074e346e93e793eb0f5b" title="Обработать автоатаки всех живых юнитов за один тик. dt &#160;не используется (тайминг на тиках)." alt="" coords="5,5,237,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="271,28,237,28,237,23,271,23"/>
+<area shape="rect" id="Node000001" title="Лучевая скорость ухода цели, мировые ед." alt="" coords="557,37,832,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a9a2af87870dd09118eb739b2e309642f" title="Пора ли начинать замах УДАРА С РАЗБЕГА — то есть въедет ли юнит своим ходом в досягаемость ровно к ка..." alt="" coords="285,5,509,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="543,44,509,40,510,35,544,38"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a57295456ca777e61fdd124729528c22a" title="Успеет ли рутовый замах докрутить по этой цели (слой 2, «сначала подойти ближе с учётом скоростей»)." alt="" coords="292,69,503,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="544,76,503,81,503,75,544,71"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f5124a8ff7ffd8371a17034c6c5ddd6" title="Обработать автоатаки всех живых юнитов за один тик." alt="" coords="5,69,237,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="278,92,237,92,237,87,278,87"/>
 </map>

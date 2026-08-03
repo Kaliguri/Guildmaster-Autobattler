@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Аудит спрайт-паков (Art/Sprites) | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Аудит спрайт-паков (Art/Sprites) | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Аудит спрайт-паков (Art/Sprites) | Guildmaster Wiki"/><meta name="twitter:description" content="Статус: 🟡 Draft Аудит анимированных паков в Assets/_Project/Art/Sprites на пригодность к бою (автобаттлер)."/><meta property="og:description" content="Статус: 🟡 Draft Аудит анимированных паков в Assets/_Project/Art/Sprites на пригодность к бою (автобаттлер)."/><meta property="og:image:alt" content="Статус: 🟡 Draft Аудит анимированных паков в Assets/_Project/Art/Sprites на пригодность к бою (автобаттлер)."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/sprite-packs-audit"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/sprite-packs-audit"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="Статус: 🟡 Draft Аудит анимированных паков в Assets/_Project/Art/Sprites на пригодность к бою (автобаттлер)."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="research/sprite-packs-audit"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-378"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-378" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../research/">research</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Аудит спрайт паков (Art/Sprites)</a></div></nav><h1 class="article-title">Аудит спрайт-паков (Art/Sprites)</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-19T00:00:00.000Z">19 июл. 2026 г.</time><span>время чтения ~14 мин.</span></p></div></div><article class="popover-hint"><p><strong>Статус:</strong> 🟡 Draft</p>
+<p>Аудит анимированных паков в <code>Assets/_Project/Art/Sprites</code> на пригодность к бою (автобаттлер). Оценка по листам/кадрам <strong>без прогона в Play</strong>: наличие циклов, полнота набора, читаемость силуэта, настроение.</p>
+<p>Связанный документ: <a href="../research/sprite-recommendations" class="internal alias" data-slug="research/sprite-recommendations">Рекомендации спрайтов под персонажей ГДД</a>.</p>
+<hr/>
+<h2 id="метод-и-исключения">Метод и исключения<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#метод-и-исключения" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Включено:</strong> паки с боевым минимумом анимаций (хотя бы Idle/Ready + Walk/Run + Attack; желательно Hit/Death).</p>
+<p><strong>Исключено / только пометка:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Что</th><th>Почему</th></tr></thead><tbody><tr><td><code>Characters 500+ (by batareya)</code></td><td>Статичные портреты, без боевых циклов</td></tr><tr><td><code>Goblin Monsters 4 Colors</code></td><td>Сетка статичных силуэтов классов (~10 поз), не анимации</td></tr><tr><td><code>Nneshan</code></td><td>Статичная копейщица, без циклов</td></tr><tr><td><code>vagabond</code></td><td>Один кадр jump/landing, не боевой набор</td></tr><tr><td><code>Martial Hero 3(1)</code></td><td>Дубликат папки <code>Martial Hero 3</code></td></tr><tr><td><code>Monster_Creatures_Fantasy(Version 1.3)</code> в обеих корневых папках</td><td>Только <code>Attack3</code> + снаряд — <strong>неполный</strong> фрагмент</td></tr></tbody></table></div>
+<p><strong>Дубликаты:</strong> <code>Martial Hero 2</code> одинаков в <code>Pixel Art Heroes</code> и <code>New FREE Pixel Art Heroes</code>. <code>Monster_Creatures_Fantasy(Version 1.3)</code> тоже продублирован.</p>
+<p><strong>Стилевые семьи (для склейки ростера):</strong></p>
+<ol>
+<li><strong>LuizMomo / «Heroes»</strong> — крупные листы ~100–250 px высоты, богатый idle, Jump/Fall (платформерный багаж). Хорошо читаются в бою.</li>
+<li><strong>Ansimuz / Tiny RPG</strong> — chibi ~100×100, простые циклы, «cute-retro».</li>
+<li><strong>Per-frame low-fantasy</strong> (viking/skeleton/loreon/imp) — мелкие кадры ~50–100 px, мрачнее, dungeon-toned.</li>
+<li><strong>Bandits / AxeWarriors</strong> — средне-крупные per-frame, западный fantasy / викинг.</li>
+</ol>
+<p>Число кадров — оценка по размеру листа (ширина ÷ высота кадра) или по числу файлов в папке анимации; у нестандартной нарезки — «≈».</p>
+<hr/>
+<h2 id="pixel-art-heroes"><code>Pixel Art Heroes</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#pixel-art-heroes" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="evil-wizard-2--1-юнит">EVil Wizard 2 — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#evil-wizard-2--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> высокий тёмный колдун в фиолетово-золотых робах с капюшоном; посох с магическим пламенем. Мрачный, «босс-маг».</p>
+<h4 id="юнит-evil-wizard-2">Юнит: Evil Wizard 2<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#юнит-evil-wizard-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 8, Run 8, Attack1/2 по 8, Take hit 3, Death 7, Jump/Fall по 2. Качество высокое (плавный idle, читаемый посох).</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-bonewright" class="internal alias" data-slug="gdd/relics/the-bonewright">The Bonewright</a>, <a href="../gdd/relics/the-winter" class="internal alias" data-slug="gdd/relics/the-winter">The Winter</a>, <a href="../gdd/relics/the-storm" class="internal alias" data-slug="gdd/relics/the-storm">The Storm</a>, <a href="../gdd/enemies/bandit-warlock" class="internal alias" data-slug="gdd/enemies/bandit-warlock">Bandit Warlock</a>. Не для мили-танков.</li>
+<li><strong>Сеттинг:</strong> тёмный маг, лич-эстетика, культист, элитный кастер акта.</li>
+</ol>
+<hr/>
+<h3 id="fantasy-warrior--1-юнит">Fantasy Warrior — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#fantasy-warrior--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> воин с длинными белыми волосами, бирюзовая туника, тёмно-синий плащ, изогнутый меч. Dark-heroic.</p>
+<h4 id="юнит-fantasy-warrior">Юнит: Fantasy Warrior<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#юнит-fantasy-warrior" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 10, Run 8, Attack1–3 (7/7/8), Take hit 3, Death 7, Jump/Fall по 3. Очень полный набор, высокий polish.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-pyre" class="internal alias" data-slug="gdd/relics/the-pyre">The Pyre</a>, <a href="../gdd/relics/the-paragon" class="internal alias" data-slug="gdd/relics/the-paragon">The Paragon</a>, <a href="../gdd/relics/the-verdict" class="internal alias" data-slug="gdd/relics/the-verdict">The Verdict</a> (частично). Слабо для копья/лука/магии.</li>
+<li><strong>Сеттинг:</strong> элитный мечник, «избранный», антигерой, капитан гильдии.</li>
+</ol>
+<hr/>
+<h3 id="huntress--1-юнит">Huntress — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#huntress--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> охотница в оливковом капюшоне, копьё с крупным наконечником, жёлтые глаза в тени. Есть отдельные спрайты копья.</p>
+<h4 id="юнит-huntress-копьё">Юнит: Huntress (копьё)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#юнит-huntress-копьё" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 8, Run 8, Attack1–3 (5/5/7), Take hit 3, Death 8, Jump/Fall по 2 + Spear/Spear move. Хорошее качество; копьё — сильный силуэт.</li>
+<li><strong>ГДД:</strong> лучший матч <a href="../gdd/relics/the-spear" class="internal alias" data-slug="gdd/relics/the-spear">The Spear</a>; также <a href="../gdd/relics/the-hunter" class="internal alias" data-slug="gdd/relics/the-hunter">The Hunter</a> (если трактовать как melee-hunter), <a href="../gdd/relics/the-warden" class="internal alias" data-slug="gdd/relics/the-warden">The Warden</a> (эстетика леса/охоты).</li>
+<li><strong>Сеттинг:</strong> амазонка, страж границы, охотница на зверей, эльфийский авангард.</li>
+</ol>
+<hr/>
+<h3 id="huntress-2--1-юнит--стрела">Huntress 2 — 1 юнит (+ стрела)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#huntress-2--1-юнит--стрела" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> белоголовая лучница в зелёной тунике, лук и колчан. Лесная палитра.</p>
+<h4 id="юнит-huntress-2-лук">Юнит: Huntress 2 (лук)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#юнит-huntress-2-лук" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 10, Run 8, Attack 6, Get Hit 3, Death 10, Jump/Fall по 2 + Arrow Move/Static. Полный боевой набор, качество высокое.</li>
+<li><strong>ГДД:</strong> топ для <a href="../gdd/relics/the-hunter" class="internal alias" data-slug="gdd/relics/the-hunter">The Hunter</a>; также <a href="../gdd/enemies/bandit-venombow" class="internal alias" data-slug="gdd/enemies/bandit-venombow">Bandit Venombow</a>, <a href="../gdd/enemies/goblin-archer" class="internal alias" data-slug="gdd/enemies/goblin-archer">Goblin Archer</a> (если перекрасить — слабее, человек).</li>
+<li><strong>Сеттинг:</strong> рейнджер, эльфийка-лучница, лесной скаут, охотница гильдии.</li>
+</ol>
+<hr/>
+<h3 id="martial-hero-2--1-юнит-дубликат-в-new-free">Martial Hero 2 — 1 юнит <em>(дубликат в New FREE)</em><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#martial-hero-2--1-юнит-дубликат-в-new-free" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> боец в синем кимоно, красная oni-маска, катана, чёрный хвост.</p>
+<h4 id="юнит-martial-hero-2">Юнит: Martial Hero 2<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#юнит-martial-hero-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 4, Run 8, Attack1/2 по 4, Take hit 3, Death 7, Jump/Fall по 2. Чуть короче idle/атак, чем у соседей по линейке; силуэт отличный.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-gale" class="internal alias" data-slug="gdd/relics/the-gale">The Gale</a> (восточная тема); частично <a href="../gdd/relics/the-verdict" class="internal alias" data-slug="gdd/relics/the-verdict">The Verdict</a>. Не для европейского рыцаря/жреца.</li>
+<li><strong>Сеттинг:</strong> монах-убийца, самурай, маскированный дуэлянт, «восточный» акт.</li>
+</ol>
+<hr/>
+<h3 id="medieval-warrior-pack-2--1-юнит">Medieval Warrior Pack 2 — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#medieval-warrior-pack-2--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> безоружный боец в красной тунике, стойка боевых искусств (кулаки/тело).</p>
+<h4 id="юнит-medieval-warrior-2">Юнит: Medieval Warrior 2<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#юнит-medieval-warrior-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 8, Run 8, Attack1–4 по 4, Take Hit 4 (+ white silhouette), Death 6, Jump/Fall по 2. Много вариантов удара — плюс для комбо-читаемости.</li>
+<li><strong>ГДД:</strong> сильный матч <a href="../gdd/relics/the-gale" class="internal alias" data-slug="gdd/relics/the-gale">The Gale</a>; слабее для танков с щитом/оружием.</li>
+<li><strong>Сеттинг:</strong> монах, боксёр арены, уличный боец, ученик ордена без оружия.</li>
+</ol>
+<hr/>
+<h3 id="medieval-warrior-pack-3--1-юнит">Medieval Warrior Pack 3 — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#medieval-warrior-pack-3--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> светловолосый воин, navy-одежда, серебряные наплечники, огромный двуручник.</p>
+<h4 id="юнит-medieval-warrior-3">Юнит: Medieval Warrior 3<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#юнит-medieval-warrior-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 10, Run 6, Attack1–3 (4/4/5), Get Hit 3, Death 9, Jump/Fall по 2. Качество высокое; бег чуть короче.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-pyre" class="internal alias" data-slug="gdd/relics/the-pyre">The Pyre</a>, <a href="../gdd/relics/the-paragon" class="internal alias" data-slug="gdd/relics/the-paragon">The Paragon</a>, <a href="../gdd/relics/the-bulwark" class="internal alias" data-slug="gdd/relics/the-bulwark">The Bulwark</a> (если принять двуручник вместо «щитового» танка), <a href="../gdd/enemies/bandit-bruiser" class="internal alias" data-slug="gdd/enemies/bandit-bruiser">Bandit Bruiser</a>.</li>
+<li><strong>Сеттинг:</strong> паладин без шлема, чемпион арены, элитный наёмник.</li>
+</ol>
+<hr/>
+<h3 id="monsters-creatures-fantasy-2--4-юнита">Monsters Creatures Fantasy 2 — 4 юнита<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#monsters-creatures-fantasy-2--4-юнита" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид семьи:</strong> пиксельные данжен-мобы, единый стиль, хорошая читаемость на малом масштабе.</p>
+<h4 id="bat">Bat<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#bat" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> fly, attack, hurt, death, fall, fly-to-fall (по листам, fly ≈12). Качество хорошее.</li>
+<li><strong>ГДД:</strong> ни на реликвию напрямую; саппорт/аддон к некроманту или элитный летучий моб. Не <a href="../gdd/enemies/pack-wolf" class="internal alias" data-slug="gdd/enemies/pack-wolf">Pack Wolf</a>.</li>
+<li><strong>Сеттинг:</strong> склеп, ночной биом, призванный familiar, мелкий летающий враг.</li>
+</ol>
+<h4 id="mimic">Mimic<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#mimic" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle_closed/open/transformed, opening, transform, walk, attack_1/2, hurt, death — очень богатый набор.</li>
+<li><strong>ГДД:</strong> ни на текущего героя; сильный кандидат на ивент-врага / сундук-ловушку (пока нет в ростере врагов).</li>
+<li><strong>Сеттинг:</strong> данж-мимик, проклятый сундук, сюрприз-элит.</li>
+</ol>
+<h4 id="rat">Rat<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#rat" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> idle, run, attack_bite, hurt, rat-death. Достаточно для мелкого моба.</li>
+<li><strong>ГДД:</strong> не текущие фракции; скорее filler-моб / summon.</li>
+<li><strong>Сеттинг:</strong> канализация, зараза, рой.</li>
+</ol>
+<h4 id="slime-в-этом-паке">Slime (в этом паке)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#slime-в-этом-паке" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> idle, walk, attack, hurt, death. Базовый моб-набор.</li>
+<li><strong>ГДД:</strong> нет прямого; см. также большой slime-пак ниже.</li>
+<li><strong>Сеттинг:</strong> стартовый слайм, грибная пещера, природа-акт.</li>
+</ol>
+<hr/>
+<h3 id="monster_creatures_fantasy-version-13--4-юнита-неполный">Monster_Creatures_Fantasy (Version 1.3) — 4 «юнита» <em>(неполный)</em><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#monster_creatures_fantasy-version-13--4-юнита-неполный" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Только <code>Attack3</code> + projectile/bomb/sword. <strong>Для боя не готов</strong> (нет Idle/Run/Hit/Death). Имеет смысл только как референс силуэта или если добрать полный пак с itch/LuizMomo.</p>
+<p>Юниты по виду: Flying eye, Goblin (с бомбой), Mushroom, Skeleton — классические данжен-мобы в том же стиле, что Fantasy 2.</p>
+<hr/>
+<h2 id="new-free-pixel-art-heroes"><code>New FREE Pixel Art Heroes</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#new-free-pixel-art-heroes" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="archerhero--1-юнит">ArcherHero — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#archerhero--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> минималистичный лучник в бирюзовом капюшоне, один «глаз», тёмный лук. Скрытный, graphic-novel.</p>
+<h4 id="юнит-archerhero">Юнит: ArcherHero<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#юнит-archerhero" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle+Run на одном листе (мало кадров idle), Normal/High/Low Attack, Dash, Jumping, death. Набор есть, но <strong>короче и грубее</strong>, чем Huntress 2; нарезка нестандартная.</li>
+<li><strong>ГДД:</strong> запасной для <a href="../gdd/relics/the-hunter" class="internal alias" data-slug="gdd/relics/the-hunter">The Hunter</a>, <a href="../gdd/relics/the-verdict" class="internal alias" data-slug="gdd/relics/the-verdict">The Verdict</a> (капюшон/скрытность), <a href="../gdd/enemies/bandit-venombow" class="internal alias" data-slug="gdd/enemies/bandit-venombow">Bandit Venombow</a>.</li>
+<li><strong>Сеттинг:</strong> ассасин-лучник, ночной охотник, «безликий» рейнджер.</li>
+</ol>
+<hr/>
+<h3 id="axewarriors--1-архетип--3-палитры">AxeWarriors — 1 архетип × 3 палитры<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#axewarriors--1-архетип--3-палитры" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> мускулистый викинг с бородой, топор на плечах, безрукавка. Варианты: <strong>Blond / Brown / Orange</strong> (цвет волос/акцентов) — один дизайн.</p>
+<h4 id="юнит-axe-warrior">Юнит: Axe Warrior<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#юнит-axe-warrior" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации (per-frame):</strong> Idle 6, Run 11, Attack 13, Hurt 3, Death 12 (+ NoBlood), Jump 5. Очень полный и «жирный» набор атак/смерти. Качество высокое.</li>
+<li><strong>ГДД:</strong> топ для <a href="../gdd/relics/the-draugr" class="internal alias" data-slug="gdd/relics/the-draugr">The Draugr</a> (если живой викинг / до нежити); также <a href="../gdd/relics/the-runesmith" class="internal alias" data-slug="gdd/relics/the-runesmith">The Runesmith</a> (слабо — нужен молот), <a href="../gdd/enemies/bandit-bruiser" class="internal alias" data-slug="gdd/enemies/bandit-bruiser">Bandit Bruiser</a>.</li>
+<li><strong>Сеттинг:</strong> северный рейдер, берсерк, варвар, чемпион арены с топором.</li>
+</ol>
+<hr/>
+<h3 id="bandits--2-юнита">Bandits — 2 юнита<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#bandits--2-юнита" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> Light Bandit — борода, светлая туника, меч; Heavy Bandit — синяя туника, капюшон, более широкий рубака. Землястая палитра, «наёмники».</p>
+<h4 id="light-bandit">Light Bandit<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#light-bandit" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 4, Combat Idle 4, Run 8, Attack 8, Hurt 2, Recover 8, Jump 1, Death 1. Атака/бег хорошие; <strong>Death слабый</strong> (1 кадр).</li>
+<li><strong>ГДД:</strong> <a href="../gdd/enemies/bandit-shieldman" class="internal alias" data-slug="gdd/enemies/bandit-shieldman">Bandit Shieldman</a> / общий бандит; также <a href="../gdd/relics/the-pyre" class="internal alias" data-slug="gdd/relics/the-pyre">The Pyre</a> (рискованный мечник), <a href="../gdd/relics/the-verdict" class="internal alias" data-slug="gdd/relics/the-verdict">The Verdict</a>.</li>
+<li><strong>Сеттинг:</strong> лёгкий разбойник, гильдейский новобранец, уличный дуэлянт.</li>
+</ol>
+<h4 id="heavy-bandit">Heavy Bandit<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#heavy-bandit" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Те же анимации</strong>, что у Light. Силуэт тяжелее.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/enemies/bandit-bruiser" class="internal alias" data-slug="gdd/enemies/bandit-bruiser">Bandit Bruiser</a>, <a href="../gdd/relics/the-bulwark" class="internal alias" data-slug="gdd/relics/the-bulwark">The Bulwark</a> (без щита — компромисс), <a href="../gdd/relics/the-runesmith" class="internal alias" data-slug="gdd/relics/the-runesmith">The Runesmith</a> (если принять как «работягу»).</li>
+<li><strong>Сеттинг:</strong> старший бандит, наёмный громила, сержант шайки.</li>
+</ol>
+<hr/>
+<h3 id="evil-wizard--1-юнит">Evil Wizard — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#evil-wizard--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> более простой/ранний тёмный маг (предшественник Wizard 2/3). Фиолетовая магия.</p>
+<h4 id="юнит-evil-wizard-v1">Юнит: Evil Wizard (v1)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#юнит-evil-wizard-v1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 8, Move 8, Attack 8, Take Hit 4, Death 5. Достаточно для кастера; меньше вариативности, чем у Wizard 2/3.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-winter" class="internal alias" data-slug="gdd/relics/the-winter">The Winter</a>, <a href="../gdd/relics/the-storm" class="internal alias" data-slug="gdd/relics/the-storm">The Storm</a>, <a href="../gdd/enemies/bandit-warlock" class="internal alias" data-slug="gdd/enemies/bandit-warlock">Bandit Warlock</a> — запасной вариант.</li>
+<li><strong>Сеттинг:</strong> младший колдун, культист, элит шайки.</li>
+</ol>
+<hr/>
+<h3 id="evil-wizard-3--1-юнит">Evil Wizard 3 — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#evil-wizard-3--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> бледный маг с белым хвостом, красное пальто, посох с черепом. Некромантская эстетика + снаряды.</p>
+<h4 id="юнит-evil-wizard-3">Юнит: Evil Wizard 3<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#юнит-evil-wizard-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 10, Walk/Run по 8, Attack 13, Get hit 3, Death 18, Jump/Fall по 3 + Projectile Moving/Explode. Один из <strong>самых полных</strong> кастер-наборов.</li>
+<li><strong>ГДД:</strong> топ для <a href="../gdd/relics/the-bonewright" class="internal alias" data-slug="gdd/relics/the-bonewright">The Bonewright</a>; также <a href="../gdd/enemies/bandit-warlock" class="internal alias" data-slug="gdd/enemies/bandit-warlock">Bandit Warlock</a>, тёмный вариант <a href="../gdd/relics/the-storm" class="internal alias" data-slug="gdd/relics/the-storm">The Storm</a> / <a href="../gdd/relics/the-winter" class="internal alias" data-slug="gdd/relics/the-winter">The Winter</a>.</li>
+<li><strong>Сеттинг:</strong> некромант, лич-ученик, военный чёрный маг, элитный босс-кастер.</li>
+</ol>
+<hr/>
+<h3 id="forest_monsters_free--1-юнит-2-варианта-vfx">Forest_Monsters_FREE — 1 юнит (×2 варианта VFX)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#forest_monsters_free--1-юнит-2-варианта-vfx" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> живой мухомор (красная шляпка, бежевое тело). Cute-evil. Варианты <strong>with VFX / without VFX</strong>.</p>
+<h4 id="mushroom">Mushroom<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#mushroom" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle ≈9, Run 10, Attack ≈13, AttackWithStun 30, Hit ≈6, Die ≈19, Stun ≈23. Очень насыщенно; качество анимации высокое для моба.</li>
+<li><strong>ГДД:</strong> сильный визуальный якорь для <a href="../gdd/relics/the-bloom" class="internal alias" data-slug="gdd/relics/the-bloom">The Bloom</a> (грибной друид — сам друид человек не идеален, но гриб = summon/альт-форма/враг-синергия); также природа-моб под Bloom.</li>
+<li><strong>Сеттинг:</strong> лесной акт, споры, «милый» элит, summon друида.</li>
+</ol>
+<hr/>
+<h3 id="free_kobold-warrior--1-юнит--2-стиля-контура">FREE_Kobold Warrior — 1 юнит × 2 стиля контура<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#free_kobold-warrior--1-юнит--2-стиля-контура" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> синий кобольд с большими ушами и хвостом, кинжал, шарф. Варианты <strong>with_outline / without_outline</strong>.</p>
+<h4 id="kobold-warrior">Kobold Warrior<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#kobold-warrior" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> IDLE ≈9, RUN ≈12, ATTACK 1 ≈8. <strong>Нет Death/Hit</strong> — для боя дырка; можно заглушить.</li>
+<li><strong>ГДД:</strong> ближе к <a href="../gdd/enemies/goblin-cutthroat" class="internal alias" data-slug="gdd/enemies/goblin-cutthroat">Goblin Cutthroat</a> / мелкий гоблин, чем к герою; не точный гоблин (кобольд).</li>
+<li><strong>Сеттинг:</strong> кобольды как отдельная фракция, шахты, «милый» скирмишер.</li>
+</ol>
+<hr/>
+<h3 id="goblin_fighter--1-юнит">Goblin_Fighter — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#goblin_fighter--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> классический зелёный гоблин с большим изогнутым мечом, наплечники. Один атлас-лист.</p>
+<h4 id="goblin-fighter">Goblin Fighter<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#goblin-fighter" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> на одном листе 1024×640 — idle/run/attack/death (нужна ручная нарезка). По виду smear в атаке хороший; Death присутствует.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/enemies/goblin-warrior" class="internal alias" data-slug="gdd/enemies/goblin-warrior">Goblin Warrior</a>, <a href="../gdd/enemies/goblin-grunt" class="internal alias" data-slug="gdd/enemies/goblin-grunt">Goblin Grunt</a> (апскейл), <a href="../gdd/enemies/goblin-commander" class="internal alias" data-slug="gdd/enemies/goblin-commander">Goblin Commander</a> (если добавить аксессуар).</li>
+<li><strong>Сеттинг:</strong> стандартный melee-гоблин фракции.</li>
+</ol>
+<hr/>
+<h3 id="goose--wizardgooseassets--12-юнита">Goose / Wizardgooseassets — 1–2 «юнита»<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#goose--wizardgooseassets--12-юнита" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> белый гусь; wizard-гусь с яйцами/«turd»-FX (мемный пак).</p>
+<h4 id="goose">Goose<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#goose" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 2, Walk/Run/Flap по 4. Минимально.</li>
+<li><strong>ГДД:</strong> ни на кого из канона. Только ивент/пасхалка.</li>
+<li><strong>Сеттинг:</strong> комедийный ивент, питомец.</li>
+</ol>
+<h4 id="wizard-goose">Wizard Goose<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#wizard-goose" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 11, Run 12, Dash, EggBlast/EggBomb, Lay, Turd* FX. Полнее обычного гуся.</li>
+<li><strong>ГДД:</strong> нет.</li>
+<li><strong>Сеттинг:</strong> мем-босс, joke encounter.</li>
+</ol>
+<hr/>
+<h3 id="hero-knight-2--1-юнит">Hero Knight 2 — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#hero-knight-2--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> рыцарь: серебряный шлем, красная туника, синие наплечники, меч. Классический «герой-солдат».</p>
+<h4 id="hero-knight-2">Hero Knight 2<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#hero-knight-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 11, Run 8, Attack 6, Dash 4, Take Hit 4, Death 9, Jump/Fall по 4. Полный набор, высокое качество.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-bulwark" class="internal alias" data-slug="gdd/relics/the-bulwark">The Bulwark</a>, <a href="../gdd/relics/the-paragon" class="internal alias" data-slug="gdd/relics/the-paragon">The Paragon</a>, <a href="../gdd/relics/the-spear" class="internal alias" data-slug="gdd/relics/the-spear">The Spear</a> (без копья — компромисс), <a href="../gdd/relics/the-shepherd" class="internal alias" data-slug="gdd/relics/the-shepherd">The Shepherd</a> слабо.</li>
+<li><strong>Сеттинг:</strong> рыцарь ордена, гвардеец, стартовый герой-танк.</li>
+</ol>
+<hr/>
+<h3 id="hunterorc--1-юнит">HunterOrc — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#hunterorc--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> орк-лучник, зелёная кожа, красная кожаная броня, лук + projectile-кадры.</p>
+<h4 id="hunter-orc">Hunter Orc<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#hunter-orc" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 4, Walk 8, Attack1 9, Attack2 14, Hurt 4, Death 6 + Projectile×5. Боевой минимум закрыт; idle короткий.</li>
+<li><strong>ГДД:</strong> не герой ростера; враг-орков нет в ГДД. Ближе к «тяжёлому» <a href="../gdd/enemies/goblin-archer" class="internal alias" data-slug="gdd/enemies/goblin-archer">Goblin Archer</a> / отдельной орк-фракции.</li>
+<li><strong>Сеттинг:</strong> орк-охотник, вассал вождя, рейнджер степи.</li>
+</ol>
+<hr/>
+<h3 id="imp_axe_demon--2-юнита">imp_axe_demon — 2 юнита<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#imp_axe_demon--2-юнита" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> <code>demon_axe_red</code> — крупный демон с рогами и двуручным топором; <code>imp_red</code> — меньший бес с дубиной. Одна красная палитра.</p>
+<h4 id="demon-axe">Demon Axe<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#demon-axe" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации (per-frame):</strong> ready, walk/run, attack, hit, jump… (~50 кадров на демона). Хорошая читаемость рогов/топора.</li>
+<li><strong>ГДД:</strong> нет прямого героя; элит/босс; слабо к <a href="../gdd/relics/the-draugr" class="internal alias" data-slug="gdd/relics/the-draugr">The Draugr</a> (демон ≠ драугр).</li>
+<li><strong>Сеттинг:</strong> адский акт, summon демониста, элит golem-акта «зло».</li>
+</ol>
+<h4 id="imp">Imp<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#imp" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li>Тот же стиль, меньше силуэт.</li>
+<li><strong>ГДД:</strong> мелкий summon / моб.</li>
+<li><strong>Сеттинг:</strong> бес, пачка импов.</li>
+</ol>
+<hr/>
+<h3 id="martial-hero--1-юнит">Martial Hero — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#martial-hero--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> ронин в широкополой конической шляпе, бежево-коричневые одежды, синие ножны катаны.</p>
+<h4 id="martial-hero-шляпа">Martial Hero (шляпа)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#martial-hero-шляпа" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 8, Run 8, Attack1/2 по 6, Take Hit 4 (+ white), Death 6, Jump/Fall по 2. Сильный уникальный силуэт.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-gale" class="internal alias" data-slug="gdd/relics/the-gale">The Gale</a>, <a href="../gdd/relics/the-verdict" class="internal alias" data-slug="gdd/relics/the-verdict">The Verdict</a>, странник-версия <a href="../gdd/relics/the-hunter" class="internal alias" data-slug="gdd/relics/the-hunter">The Hunter</a>.</li>
+<li><strong>Сеттинг:</strong> бродячий мастер клинка, восточный акт, «безымянный» герой.</li>
+</ol>
+<hr/>
+<h3 id="martial-hero-2--см-pixel-art-heroes--дубликат">Martial Hero 2 — <em>(см. Pixel Art Heroes — дубликат)</em><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#martial-hero-2--см-pixel-art-heroes--дубликат" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<hr/>
+<h3 id="martial-hero-3--1-юнит">Martial Hero 3 — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#martial-hero-3--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> мускулистый боец без рубашки, тяжёлый дадао на плече, зелёный пояс.</p>
+<h4 id="martial-hero-3">Martial Hero 3<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#martial-hero-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 10, Run 8, Attack1–3 (7/6/9), Take Hit 3, Death 11, Going Up/Down по 3. Отличный набор.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-pyre" class="internal alias" data-slug="gdd/relics/the-pyre">The Pyre</a>, <a href="../gdd/relics/the-draugr" class="internal alias" data-slug="gdd/relics/the-draugr">The Draugr</a> (берсерк-тело), <a href="../gdd/relics/the-paragon" class="internal alias" data-slug="gdd/relics/the-paragon">The Paragon</a>, <a href="../gdd/enemies/bandit-bruiser" class="internal alias" data-slug="gdd/enemies/bandit-bruiser">Bandit Bruiser</a>.</li>
+<li><strong>Сеттинг:</strong> гладиатор, берсерк, чемпион кулачных ям.</li>
+</ol>
+<hr/>
+<h3 id="pack_loreon_knight--1-юнит">pack_loreon_knight — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#pack_loreon_knight--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> скелет в сегментных латах, olive-повязка, короткий меч. Grim dungeon.</p>
+<h4 id="loreon-skeleton-knight">Loreon Skeleton Knight<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#loreon-skeleton-knight" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации (per-frame):</strong> ready 3, walk 4, run 6, attack1/4 по 6, hit 3, jump 5, fall_back 5, stand_up 5. Нет явного длинного death-цикла (есть fall_back). Средний polish.</li>
+<li><strong>ГДД:</strong> summon <a href="../gdd/relics/the-bonewright" class="internal alias" data-slug="gdd/relics/the-bonewright">The Bonewright</a>; также <a href="../gdd/relics/the-draugr" class="internal alias" data-slug="gdd/relics/the-draugr">The Draugr</a> (если «тяжёлая» нежить).</li>
+<li><strong>Сеттинг:</strong> костяной страж, скелет-рыцарь склепа.</li>
+</ol>
+<hr/>
+<h3 id="ranger-cat--1-юнит--2-масштаба">Ranger cat — 1 юнит × 2 масштаба<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ranger-cat--1-юнит--2-масштаба" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> антропоморфная кошка/рысь, зелёный жилет. Варианты <strong>100% (64×48)</strong> и <strong>200% (128×96)</strong> — один дизайн.</p>
+<h4 id="ranger-cat">Ranger Cat<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ranger-cat" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> idle ≈5, run ≈11, attack 1–3 (≈5–8), hit ≈3, jump ≈7–11, dash 1 + hitbox-листы. Полный платформерный набор; нет явного death.</li>
+<li><strong>ГДД:</strong> ни на канон-реликвию (зверолюд не в темах). Возможный альт <a href="../gdd/relics/the-hunter" class="internal alias" data-slug="gdd/relics/the-hunter">The Hunter</a> / ивент.</li>
+<li><strong>Сеттинг:</strong> зверолюд-рейнджер, фея-кот, комедийный герой.</li>
+</ol>
+<hr/>
+<h3 id="skeletonknight--1-юнит">SkeletonKnight — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#skeletonknight--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> скелет-рыцарь в серебряных латах, красный плащ, огромный меч за спиной. Высокий polish.</p>
+<h4 id="skeleton-knight">Skeleton Knight<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#skeleton-knight" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> IDLE ≈15, WALK ≈12, HURT ≈3, DEATH ≈12, DOWN/FWD/SIDE_SWING ≈10, FULL_COMBO ≈29. Очень богатые атаки; отличное качество.</li>
+<li><strong>ГДД:</strong> топ-визуал для <a href="../gdd/relics/the-draugr" class="internal alias" data-slug="gdd/relics/the-draugr">The Draugr</a>; также элитный summon Bonewright / отдельный undead-босс.</li>
+<li><strong>Сеттинг:</strong> драугр-рыцарь, чемпион склепа, проклятый гвардеец.</li>
+</ol>
+<hr/>
+<h3 id="skeleton_sword--1-юнит">skeleton_sword — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#skeleton_sword--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> простой скелет с коротким мечом и одним наплечником. Минималистичный dungeon-mob.</p>
+<h4 id="skeleton-sword">Skeleton Sword<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#skeleton-sword" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> ready, walk, run, attack, hit, jump, dead_near/far, corpse, reborn. Есть <strong>reborn</strong> — плюс для некромантии. Качество скромнее SkeletonKnight.</li>
+<li><strong>ГДД:</strong> идеальный summon для <a href="../gdd/relics/the-bonewright" class="internal alias" data-slug="gdd/relics/the-bonewright">The Bonewright</a>; массовый undead-моб.</li>
+<li><strong>Сеттинг:</strong> рядовой скелет-мечник.</li>
+</ol>
+<hr/>
+<h3 id="slime_pixel_monsters_vol_1--1-архетип--много-цветов">Slime_Pixel_Monsters_Vol_1 — 1 архетип × много цветов<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#slime_pixel_monsters_vol_1--1-архетип--много-цветов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> классический желе-слайм. Цвета: blue, cyan, green, purple, red, silver, yellow (+ outline-варианты в структуре пака).</p>
+<h4 id="slime">Slime<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#slime" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации (per-frame, очень плотные):</strong> idle 56, walk 42, attack_1/2 (84/91), hurt_1/2 по 35, death 70, bounce/slide/revive… Качество анимации <strong>выдающееся</strong> для моба; избыточно для нужд автобаттлера (можно проредить).</li>
+<li><strong>ГДД:</strong> нет героя-слайма; природа/Bloom-синергия как моб; filler акта.</li>
+<li><strong>Сеттинг:</strong> стартовые волны, грибные/болотные зоны, цветовые элиты.</li>
+</ol>
+<hr/>
+<h3 id="swordman-pack--1-юнит">swordman pack — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#swordman-pack--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> пехотинец в открытом шлеме, серые латы, одноручный меч; на листе palette-swatches.</p>
+<h4 id="swordman">Swordman<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#swordman" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> один атлас 384×320 (idle/run/attack/death — ручная нарезка). Smear в атаке хороший.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-pyre" class="internal alias" data-slug="gdd/relics/the-pyre">The Pyre</a>, <a href="../gdd/relics/the-bulwark" class="internal alias" data-slug="gdd/relics/the-bulwark">The Bulwark</a>, бандиты-мечники, generic soldier.</li>
+<li><strong>Сеттинг:</strong> городская стража, солдат королевства, наёмник.</li>
+</ol>
+<hr/>
+<h3 id="tiny-rpg-pack-01--2-юнита">Tiny RPG Pack 01 — 2 юнита<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#tiny-rpg-pack-01--2-юнита" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> chibi Soldier (шлем с гребнем, копьё) и chibi Orc (зелёный, копьё). Cute-retro.</p>
+<h4 id="soldier">Soldier<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#soldier" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle 6, Walk 8, Attack01–03 по 6, Hurt 4, Death 4. Компактно и достаточно.</li>
+<li><strong>ГДД:</strong> мелкий масштаб — скорее UI/иконка или «крошечный» режим; слабо как основной герой рядом с LuizMomo. Для <a href="../gdd/relics/the-spear" class="internal alias" data-slug="gdd/relics/the-spear">The Spear</a> по оружию — да, по стилю — нет.</li>
+<li><strong>Сеттинг:</strong> игрушечная армия, питомец-солдат, отдельный «tiny» визуальный слой.</li>
+</ol>
+<h4 id="orc">Orc<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#orc" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li>Те же циклы.</li>
+<li><strong>ГДД:</strong> нет орков в каноне; tiny-враг.</li>
+<li><strong>Сеттинг:</strong> орк-набег в chibi-стиле.</li>
+</ol>
+<hr/>
+<h3 id="tiny-rpg-pack-02--2-юнита">Tiny RPG Pack 02 — 2 юнита<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#tiny-rpg-pack-02--2-юнита" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> chibi Demon_A (рога, огромный топор) и Blood Monster_A. Есть варианты with shadows.</p>
+<h4 id="demon_a--blood-monster_a">Demon_A / Blood Monster_A<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#demon_a--blood-monster_a" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle/Walk/Attack01–02/Hurt/Death — стандартный tiny-набор.</li>
+<li><strong>ГДД:</strong> нет прямого; мелкий демон-моб.</li>
+<li><strong>Сеттинг:</strong> адский filler, summon.</li>
+</ol>
+<hr/>
+<h3 id="viking_axe_pack--1-юнит">viking_axe_pack — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#viking_axe_pack--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> бородатый воин в мехе/коже, круглый щит (топор в названии пака). Low-fantasy, мрачный.</p>
+<h4 id="viking-axe">Viking Axe<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#viking-axe" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> ready, walk, run, attack, hit, jump, roll, dead. Боевой минимум есть; polish средний.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-draugr" class="internal alias" data-slug="gdd/relics/the-draugr">The Draugr</a>, <a href="../gdd/relics/the-bulwark" class="internal alias" data-slug="gdd/relics/the-bulwark">The Bulwark</a> (щит!), <a href="../gdd/enemies/bandit-shieldman" class="internal alias" data-slug="gdd/enemies/bandit-shieldman">Bandit Shieldman</a>.</li>
+<li><strong>Сеттинг:</strong> северный щитоносец, рейдер, фронтовик варваров.</li>
+</ol>
+<hr/>
+<h3 id="warrior-v13--1-юнит">Warrior-V1.3 — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#warrior-v13--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> женщина-воин, серебряная кираса, фиолетовая накидка, двуручник на спине. Много platformer-анимаций + FX.</p>
+<h4 id="warrior-female">Warrior (female)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#warrior-female" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> idle 6, Run 8, Attack 12, Hurt 4, Death 11, Dash/Dash Attack, Crouch, Slide, WallSlide, Jump/Fall… <strong>Избыток</strong> для автобаттлера, но ядро отличное. Высокий polish.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-pyre" class="internal alias" data-slug="gdd/relics/the-pyre">The Pyre</a>, <a href="../gdd/relics/the-paragon" class="internal alias" data-slug="gdd/relics/the-paragon">The Paragon</a>, <a href="../gdd/relics/the-verdict" class="internal alias" data-slug="gdd/relics/the-verdict">The Verdict</a>, женский альт <a href="../gdd/relics/the-bulwark" class="internal alias" data-slug="gdd/relics/the-bulwark">The Bulwark</a>.</li>
+<li><strong>Сеттинг:</strong> капитан гильдии, рыцарь-женщина, авантюристка.</li>
+</ol>
+<hr/>
+<h3 id="wizard-pack--1-юнит">Wizard Pack — 1 юнит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#wizard-pack--1-юнит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Внешний вид:</strong> доброжелательный старый маг, фиолетовые робы, посох с кристаллом, парящая книга. Не «evil».</p>
+<h4 id="wizard-добрый">Wizard (добрый)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#wizard-добрый" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li><strong>Анимации:</strong> Idle ≈6–7, Run ≈10, Attack1/2 ≈10, Hit ≈5, Death ≈9, Jump/Fall ≈2. Полный кастер-набор, высокое качество.</li>
+<li><strong>ГДД:</strong> <a href="../gdd/relics/the-shepherd" class="internal alias" data-slug="gdd/relics/the-shepherd">The Shepherd</a>, <a href="../gdd/relics/the-winter" class="internal alias" data-slug="gdd/relics/the-winter">The Winter</a>, <a href="../gdd/relics/the-storm" class="internal alias" data-slug="gdd/relics/the-storm">The Storm</a>, <a href="../gdd/relics/the-cadence" class="internal alias" data-slug="gdd/relics/the-cadence">The Cadence</a> (если принять как «арканист»), <a href="../gdd/relics/the-tide" class="internal alias" data-slug="gdd/relics/the-tide">The Tide</a>.</li>
+<li><strong>Сеттинг:</strong> мудрый советник, боевой архимаг «светлой» школы, гильдейский маг.</li>
+</ol>
+<hr/>
+<h2 id="сводка-по-полноте-для-боя">Сводка по полноте для боя<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#сводка-по-полноте-для-боя" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Уровень</th><th>Паки</th></tr></thead><tbody><tr><td>Отлично (Idle+Move+Attack+Hit+Death, polish)</td><td>Fantasy Warrior, Huntress/2, MW2/3, Martial Hero/3, Hero Knight 2, Evil Wizard 2/3, Wizard Pack, SkeletonKnight, AxeWarriors, Warrior-V1.3, Slime vol.1, Forest Mushroom, MCF2 (Bat/Mimic/Rat/Slime)</td></tr><tr><td>Хорошо с оговорками</td><td>Bandits (слабый Death), HunterOrc, Goblin_Fighter (нарезка), loreon/skeleton_sword/viking, Martial Hero 2 (короткие атаки), ArcherHero</td></tr><tr><td>Дырки в наборе</td><td>Kobold (нет Death/Hit), Ranger cat (нет Death), Goose</td></tr><tr><td>Не для боя сейчас</td><td>MCF 1.3 fragment, Nneshan, vagabond, Characters 500+, Goblin Monsters 4 Colors (статика), joke-гуси как герои</td></tr></tbody></table></div>
+<hr/>
+<h2 id="заметки-для-продакшена">Заметки для продакшена<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#заметки-для-продакшена" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>Стили <strong>не смешивать</strong> в одном отряде без единого outline/палитры: LuizMomo рядом с Tiny RPG будет «ломаться».</li>
+<li>Jump/Fall/Dash у многих паков — платформерный багаж; в автобаттлере можно не использовать.</li>
+<li>Per-frame паки (viking/skeleton/axe) проще резать в Unity, spritesheet-паки LuizMomo — через Grid by Cell Count (см. agent-workflows).</li>
+<li><del>Спрайт-паки под <code>Pixel Art Heroes/</code> по git-конвенции пока <strong>не коммитятся</strong> в репо</del> — <strong>неверно, поправлено 2026-07-20:</strong>
+<code>git ls-files Assets/_Project/Art/Sprites</code> даёт 5219 записей, 29 МБ. Пул отслеживается. Из него в игре
+задействовано 12 листов из двух паков (Medieval Warrior Pack 2, Fantasy Warrior) — см.
+<a href="../tech/10-reference/asset-inventory" class="internal alias" data-slug="tech/10-reference/asset-inventory">Reference - Asset Inventory</a>.</li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-178" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#метод-и-исключения" data-for="метод-и-исключения">Метод и исключения</a></li><li class="depth-0"><a href="#pixel-art-heroes" data-for="pixel-art-heroes">Pixel Art Heroes</a></li><li class="depth-1"><a href="#evil-wizard-2--1-юнит" data-for="evil-wizard-2--1-юнит">EVil Wizard 2 — 1 юнит</a></li><li class="depth-1"><a href="#fantasy-warrior--1-юнит" data-for="fantasy-warrior--1-юнит">Fantasy Warrior — 1 юнит</a></li><li class="depth-1"><a href="#huntress--1-юнит" data-for="huntress--1-юнит">Huntress — 1 юнит</a></li><li class="depth-1"><a href="#huntress-2--1-юнит--стрела" data-for="huntress-2--1-юнит--стрела">Huntress 2 — 1 юнит (+ стрела)</a></li><li class="depth-1"><a href="#martial-hero-2--1-юнит-дубликат-в-new-free" data-for="martial-hero-2--1-юнит-дубликат-в-new-free">Martial Hero 2 — 1 юнит (дубликат в New FREE)</a></li><li class="depth-1"><a href="#medieval-warrior-pack-2--1-юнит" data-for="medieval-warrior-pack-2--1-юнит">Medieval Warrior Pack 2 — 1 юнит</a></li><li class="depth-1"><a href="#medieval-warrior-pack-3--1-юнит" data-for="medieval-warrior-pack-3--1-юнит">Medieval Warrior Pack 3 — 1 юнит</a></li><li class="depth-1"><a href="#monsters-creatures-fantasy-2--4-юнита" data-for="monsters-creatures-fantasy-2--4-юнита">Monsters Creatures Fantasy 2 — 4 юнита</a></li><li class="depth-1"><a href="#monster_creatures_fantasy-version-13--4-юнита-неполный" data-for="monster_creatures_fantasy-version-13--4-юнита-неполный">Monster_Creatures_Fantasy (Version 1.3) — 4 «юнита» (неполный)</a></li><li class="depth-0"><a href="#new-free-pixel-art-heroes" data-for="new-free-pixel-art-heroes">New FREE Pixel Art Heroes</a></li><li class="depth-1"><a href="#archerhero--1-юнит" data-for="archerhero--1-юнит">ArcherHero — 1 юнит</a></li><li class="depth-1"><a href="#axewarriors--1-архетип--3-палитры" data-for="axewarriors--1-архетип--3-палитры">AxeWarriors — 1 архетип × 3 палитры</a></li><li class="depth-1"><a href="#bandits--2-юнита" data-for="bandits--2-юнита">Bandits — 2 юнита</a></li><li class="depth-1"><a href="#evil-wizard--1-юнит" data-for="evil-wizard--1-юнит">Evil Wizard — 1 юнит</a></li><li class="depth-1"><a href="#evil-wizard-3--1-юнит" data-for="evil-wizard-3--1-юнит">Evil Wizard 3 — 1 юнит</a></li><li class="depth-1"><a href="#forest_monsters_free--1-юнит-2-варианта-vfx" data-for="forest_monsters_free--1-юнит-2-варианта-vfx">Forest_Monsters_FREE — 1 юнит (×2 варианта VFX)</a></li><li class="depth-1"><a href="#free_kobold-warrior--1-юнит--2-стиля-контура" data-for="free_kobold-warrior--1-юнит--2-стиля-контура">FREE_Kobold Warrior — 1 юнит × 2 стиля контура</a></li><li class="depth-1"><a href="#goblin_fighter--1-юнит" data-for="goblin_fighter--1-юнит">Goblin_Fighter — 1 юнит</a></li><li class="depth-1"><a href="#goose--wizardgooseassets--12-юнита" data-for="goose--wizardgooseassets--12-юнита">Goose / Wizardgooseassets — 1–2 «юнита»</a></li><li class="depth-1"><a href="#hero-knight-2--1-юнит" data-for="hero-knight-2--1-юнит">Hero Knight 2 — 1 юнит</a></li><li class="depth-1"><a href="#hunterorc--1-юнит" data-for="hunterorc--1-юнит">HunterOrc — 1 юнит</a></li><li class="depth-1"><a href="#imp_axe_demon--2-юнита" data-for="imp_axe_demon--2-юнита">imp_axe_demon — 2 юнита</a></li><li class="depth-1"><a href="#martial-hero--1-юнит" data-for="martial-hero--1-юнит">Martial Hero — 1 юнит</a></li><li class="depth-1"><a href="#martial-hero-2--см-pixel-art-heroes--дубликат" data-for="martial-hero-2--см-pixel-art-heroes--дубликат">Martial Hero 2 — (см. Pixel Art Heroes — дубликат)</a></li><li class="depth-1"><a href="#martial-hero-3--1-юнит" data-for="martial-hero-3--1-юнит">Martial Hero 3 — 1 юнит</a></li><li class="depth-1"><a href="#pack_loreon_knight--1-юнит" data-for="pack_loreon_knight--1-юнит">pack_loreon_knight — 1 юнит</a></li><li class="depth-1"><a href="#ranger-cat--1-юнит--2-масштаба" data-for="ranger-cat--1-юнит--2-масштаба">Ranger cat — 1 юнит × 2 масштаба</a></li><li class="depth-1"><a href="#skeletonknight--1-юнит" data-for="skeletonknight--1-юнит">SkeletonKnight — 1 юнит</a></li><li class="depth-1"><a href="#skeleton_sword--1-юнит" data-for="skeleton_sword--1-юнит">skeleton_sword — 1 юнит</a></li><li class="depth-1"><a href="#slime_pixel_monsters_vol_1--1-архетип--много-цветов" data-for="slime_pixel_monsters_vol_1--1-архетип--много-цветов">Slime_Pixel_Monsters_Vol_1 — 1 архетип × много цветов</a></li><li class="depth-1"><a href="#swordman-pack--1-юнит" data-for="swordman-pack--1-юнит">swordman pack — 1 юнит</a></li><li class="depth-1"><a href="#tiny-rpg-pack-01--2-юнита" data-for="tiny-rpg-pack-01--2-юнита">Tiny RPG Pack 01 — 2 юнита</a></li><li class="depth-1"><a href="#tiny-rpg-pack-02--2-юнита" data-for="tiny-rpg-pack-02--2-юнита">Tiny RPG Pack 02 — 2 юнита</a></li><li class="depth-1"><a href="#viking_axe_pack--1-юнит" data-for="viking_axe_pack--1-юнит">viking_axe_pack — 1 юнит</a></li><li class="depth-1"><a href="#warrior-v13--1-юнит" data-for="warrior-v13--1-юнит">Warrior-V1.3 — 1 юнит</a></li><li class="depth-1"><a href="#wizard-pack--1-юнит" data-for="wizard-pack--1-юнит">Wizard Pack — 1 юнит</a></li><li class="depth-0"><a href="#сводка-по-полноте-для-боя" data-for="сводка-по-полноте-для-боя">Сводка по полноте для боя</a></li><li class="depth-0"><a href="#заметки-для-продакшена" data-for="заметки-для-продакшена">Заметки для продакшена</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../research/sprite-recommendations" class="internal">Рекомендации спрайтов под персонажей ГДД</a></li><li><a href="../tech/10-reference/asset-inventory" class="internal">Reference - Asset Inventory</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../postscript.js" type="module"></script></html>

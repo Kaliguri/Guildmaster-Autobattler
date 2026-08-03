@@ -113,34 +113,35 @@ var sectionId = 'dynsection-0';
 <g id="Node000003" class="node">
 <title>Node3</title>
 <g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html" target="_top" xlink:title="Общий боевой кит всего, что выходит на арену (вики «13» §3.1).">
-<polygon fill="white" stroke="transparent" points="137,-482 28,-482 28,-283 137,-283 137,-482"/>
+<polygon fill="white" stroke="transparent" points="152,-482 13,-482 13,-283 152,-283 152,-482"/>
 <text text-anchor="start" x="61" y="-469.5" font-family="Helvetica,sans-Serif" font-size="10.00">UnitData</text>
-<text text-anchor="start" x="32.5" y="-454.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="45.5" y="-454.5" font-family="Helvetica,sans-Serif" font-size="10.00">DamageSchool</text>
-<text text-anchor="start" x="32.5" y="-439.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="45.5" y="-439.5" font-family="Helvetica,sans-Serif" font-size="10.00">Affinity</text>
-<text text-anchor="start" x="32.5" y="-424.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="45.5" y="-424.5" font-family="Helvetica,sans-Serif" font-size="10.00">CreatureType</text>
-<text text-anchor="start" x="32.5" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="45.5" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">AttackType</text>
-<text text-anchor="start" x="32.5" y="-394.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="45.5" y="-394.5" font-family="Helvetica,sans-Serif" font-size="10.00">ResourceType</text>
-<text text-anchor="start" x="32.5" y="-379.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="45.5" y="-379.5" font-family="Helvetica,sans-Serif" font-size="10.00">Visual</text>
-<text text-anchor="start" x="32.5" y="-364.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="45.5" y="-364.5" font-family="Helvetica,sans-Serif" font-size="10.00">ViewPrefab</text>
-<text text-anchor="start" x="32.5" y="-349.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="45.5" y="-349.5" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackShape</text>
-<text text-anchor="start" x="32.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="45.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackWidth</text>
-<text text-anchor="start" x="32.5" y="-319.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="45.5" y="-319.5" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackEffects</text>
-<text text-anchor="start" x="45.5" y="-304.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 11 more...</text>
-<text text-anchor="start" x="81" y="-289.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="#666666" stroke="#666666" points="28.5,-464.5 28.5,-464.5 137.5,-464.5 137.5,-464.5 28.5,-464.5"/>
-<polygon fill="#666666" stroke="#666666" points="28.5,-299.5 28.5,-299.5 43.5,-299.5 43.5,-299.5 28.5,-299.5"/>
-<polygon fill="#666666" stroke="#666666" points="43.5,-299.5 43.5,-299.5 137.5,-299.5 137.5,-299.5 43.5,-299.5"/>
-<polygon fill="none" stroke="#666666" points="28,-283 28,-482 137,-482 137,-283 28,-283"/>
+<text text-anchor="start" x="17.5" y="-454.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-454.5" font-family="Helvetica,sans-Serif" font-size="10.00">CombatClass</text>
+<text text-anchor="start" x="17.5" y="-439.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-439.5" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackDamageType</text>
+<text text-anchor="start" x="17.5" y="-424.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-424.5" font-family="Helvetica,sans-Serif" font-size="10.00">CreatureType</text>
+<text text-anchor="start" x="17.5" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">AttackType</text>
+<text text-anchor="start" x="17.5" y="-394.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-394.5" font-family="Helvetica,sans-Serif" font-size="10.00">ResourceType</text>
+<text text-anchor="start" x="17.5" y="-379.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-379.5" font-family="Helvetica,sans-Serif" font-size="10.00">Visual</text>
+<text text-anchor="start" x="17.5" y="-364.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-364.5" font-family="Helvetica,sans-Serif" font-size="10.00">ViewPrefab</text>
+<text text-anchor="start" x="17.5" y="-349.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-349.5" font-family="Helvetica,sans-Serif" font-size="10.00">BodyShade</text>
+<text text-anchor="start" x="17.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">VfxTone</text>
+<text text-anchor="start" x="17.5" y="-319.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-319.5" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackShape</text>
+<text text-anchor="start" x="30.5" y="-304.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 20 more...</text>
+<text text-anchor="start" x="17.5" y="-289.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-289.5" font-family="Helvetica,sans-Serif" font-size="10.00">HitDamageShare()</text>
+<polygon fill="#666666" stroke="#666666" points="13.5,-464.5 13.5,-464.5 152.5,-464.5 152.5,-464.5 13.5,-464.5"/>
+<polygon fill="#666666" stroke="#666666" points="13.5,-299.5 13.5,-299.5 28.5,-299.5 28.5,-299.5 13.5,-299.5"/>
+<polygon fill="#666666" stroke="#666666" points="28.5,-299.5 28.5,-299.5 152.5,-299.5 152.5,-299.5 28.5,-299.5"/>
+<polygon fill="none" stroke="#666666" points="13,-283 13,-482 152,-482 152,-283 13,-283"/>
 </a>
 </g>
 </g>

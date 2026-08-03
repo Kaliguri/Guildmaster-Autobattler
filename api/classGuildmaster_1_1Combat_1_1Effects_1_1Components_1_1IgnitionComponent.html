@@ -93,12 +93,13 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1IgnitionComponent-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.Effects.Components.IgnitionComponent Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>«Воспламенение» (Огненный мечник): снимает с цели все «Поджоги» и заставляет каждый немедленно нанести свой НЕДОНЕСЁННЫЙ урон — то есть DoT не пропадает, а сгорает разом.  
+<p>«Воспламенение» (Огненный мечник): сжигает накопленные на цели «Угли» — наносит _damagePerStack за каждый стак и сбрасывает их.  
  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1IgnitionComponent.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.IgnitionComponent:</div>
@@ -117,11 +118,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a839c817521545d09f15e84203607c763"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade3bef426d5082b64619386c244984fa" id="r_ade3bef426d5082b64619386c244984fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1IgnitionComponent.html#ade3bef426d5082b64619386c244984fa">OnApply</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a> ctx)</td></tr>
 <tr class="separator:ade3bef426d5082b64619386c244984fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:ae05a2ee669aef0dc67104f645f6b7f47" id="r_ae05a2ee669aef0dc67104f645f6b7f47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1IgnitionComponent.html#ae05a2ee669aef0dc67104f645f6b7f47">DamageType</a><code> [get]</code></td></tr>
+<tr class="memdesc:ae05a2ee669aef0dc67104f645f6b7f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип урона детонации (прямые поля источника) — для агрегации тегов «быстрого чтения».  <br /></td></tr>
+<tr class="separator:ae05a2ee669aef0dc67104f645f6b7f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>«Воспламенение» (Огненный мечник): снимает с цели все «Поджоги» и заставляет каждый немедленно нанести свой НЕДОНЕСЁННЫЙ урон — то есть DoT не пропадает, а сгорает разом. </p>
-<p>Если это добивает цель, мечник получает награду: баф темпа и лечение от недостающего HP (карточка ГДД).</p>
-<p>Считаем ровно то, что DoT не успел натикать: <code>урон/сек × оставшиеся секунды × стаки</code>, причём «урон/сек» берётся у самого PeriodicDamageComponent — тем же методом, что и в тике, поэтому доля от макс. HP цели учитывается автоматически и формула не разъезжается с DoT. </p>
+<div class="textblock"><p>«Воспламенение» (Огненный мечник): сжигает накопленные на цели «Угли» — наносит _damagePerStack за каждый стак и сбрасывает их. </p>
+<p>Если это добивает цель, мечник получает награду: баф темпа и лечение от недостающего HP (карточка ГДД). </p>
+<p><b>Числа:</b> <code>_detonateTag</code> — какой эффект считаем топливом (по умолчанию «Угли»); <code>_damagePerStack</code> — урон за каждый сожжённый стак (15 → при 20 стаках взрыв на 300); <code>_damageType</code> — тип урона взрыва (Огонь, поэтому сами «Угли» его и усиливают).</p>
+<p><b>Когда срабатывает:</b> в момент наложения (эффект мгновенный, длительность 0) — то есть по касту способности.</p>
+<p>Урон считается ДО сброса стаков намеренно: взрыв — огненный урон, значит сами «Угли» его и усиливают (+1% за стак), а снимать их раньше расчёта значило бы обокрасть собственную петлю «копи → трать». Модель принята 2026-07-26/4: детонация читает число стаков, а не остаток DoT. </p>
 <p>Вешается мгновенным эффектом (длительность 0): вся работа в OnApply.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ade3bef426d5082b64619386c244984fa" name="ade3bef426d5082b64619386c244984fa"></a>
@@ -177,6 +186,31 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html#afd0175889dfa2140f7a6cf7af1f0eca9">Guildmaster.Combat.Effects.IRuntimeEffectComponent</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="ae05a2ee669aef0dc67104f645f6b7f47" name="ae05a2ee669aef0dc67104f645f6b7f47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae05a2ee669aef0dc67104f645f6b7f47">&#9670;&#160;</a></span>DamageType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> Guildmaster.Combat.Effects.Components.IgnitionComponent.DamageType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Тип урона детонации (прямые поля источника) — для агрегации тегов «быстрого чтения». </p>
 
 </div>
 </div>

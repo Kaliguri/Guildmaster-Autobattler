@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.CombatPositioning.BehindPosition" name="Guildmaster.Combat.CombatPositioning.BehindPosition">
+<area shape="rect" id="Node000001" title="Точка «за спиной» цели — та, куда встанет attacker , ничего не двигая." alt="" coords="544,5,755,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a3ab4d7585846f6e392b148d21ab73cf6" title="Телепорт атакующего ЗА спину цели: на ДАЛЬНЮЮ от атакующего сторону (по направлению «атакующий → цель..." alt="" coords="285,5,496,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="530,28,496,28,496,23,530,23"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f5124a8ff7ffd8371a17034c6c5ddd6" title="Обработать автоатаки всех живых юнитов за один тик." alt="" coords="5,5,237,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="271,28,237,28,237,23,271,23"/>
+</map>

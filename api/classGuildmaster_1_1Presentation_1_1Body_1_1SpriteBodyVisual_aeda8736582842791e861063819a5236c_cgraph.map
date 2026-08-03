@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.Body.SpriteBodyVisual.PlayShatter" name="Guildmaster.Presentation.Body.SpriteBodyVisual.PlayShatter">
+<area shape="rect" id="Node000001" title="Разлёт на осколки." alt="" coords="5,5,252,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1DeathShatter.html#ae7736ab9646ca98f3ba8eac4616aa470" title="Запустить разлёт из текущего состояния спрайта src ." alt="" coords="300,5,491,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,23,286,23,286,28,252,28"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1ShatterMesh.html#a95e91979b68518905199d0111baf9df8" title="Собрать блочный меш размером size &#160;(лок." alt="" coords="539,5,729,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="491,23,525,23,525,28,491,28"/>
+</map>

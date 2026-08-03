@@ -1,0 +1,5 @@
+var TaggedTargetDamageBonusComponent_8cs =
+[
+    [ "Guildmaster.Combat.Effects.Components.TaggedTargetDamageBonusComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TaggedTargetDamageBonusComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TaggedTargetDamageBonusComponent" ],
+    [ "Guildmaster.Combat.Effects.Components.TaggedTargetDamageBonusComponent.Rule", "structGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TaggedTargetDamageBonusComponent_1_1Rule.html", "structGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TaggedTargetDamageBonusComponent_1_1Rule" ]
+];

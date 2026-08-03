@@ -1,5 +1,7 @@
 <map id="Guildmaster.Game.Services.JsonFileSaveService" name="Guildmaster.Game.Services.JsonFileSaveService">
-<area shape="rect" id="Node000001" title="Соло&#45;бэкенд ISaveService: JSON&#45;файл на диск (Application.persistentDataPath) через JsonUtility." alt="" coords="5,179,204,319"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html" title="Шов персистентности (вики «2», «13» §1): сохранение/загрузка сериализуемых DTO по строковому ключу." alt="" coords="50,5,159,131"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,145,107,178,102,178,102,145"/>
+<area shape="rect" id="Node000001" title="Бэкенд ISaveService для данных ИГРОКА — наш собственный и единственный: JSON&#45;файлы под GameDataPath...." alt="" coords="7,452,205,532"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html" title="Общая механика файлового ISaveService: конверт со версией схемы, атомарная запись,..." alt="" coords="5,219,207,404"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,418,109,452,103,452,103,418"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html" title="Шов персистентности (ТЗ [[save&#45;system]]): сохранение/загрузка сериализуемых DTO по строковому ключу." alt="" coords="43,5,169,171"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="109,184,109,218,103,218,103,184"/>
 </map>

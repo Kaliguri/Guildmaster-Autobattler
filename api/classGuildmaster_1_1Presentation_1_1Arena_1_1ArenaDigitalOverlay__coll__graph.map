@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Arena.ArenaDigitalOverlay" name="Guildmaster.Presentation.Arena.ArenaDigitalOverlay">
+<area shape="rect" id="Node000001" title="Цифровой слой над ареной: каркас по содержимому, тонировка и вспышка в момент подмены тайла (журнал d..." alt="" coords="5,119,193,359"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="41,5,157,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,84,102,119,97,119,97,84"/>
+</map>

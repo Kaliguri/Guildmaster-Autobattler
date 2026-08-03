@@ -1,0 +1,11 @@
+<map id="Guildmaster.Data.Definitions.ClassBalanceConfig.GetArmorBudget" name="Guildmaster.Data.Definitions.ClassBalanceConfig.GetArmorBudget">
+<area shape="rect" id="Node000001" title="Бюджет брони класса — СУММА физической и магической (ГДД «Статы» §Броня, решение 2026&#45;07&#45;26/12)." alt="" coords="831,37,1093,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#ab06b508b3a9d66d1f96f510767d05b88" title="Классовая стат&#45;база как группа ModifierOp.Override&#45;модификаторов для скармливания в Stats ПЕРВОЙ груп..." alt="" coords="513,5,783,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="817,45,783,42,783,36,817,40"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#ac78119f86dab0043ae4ea8215c5edc69" title="Ожидаемый запас прочности класса против ФИЗИЧЕСКОГО урона: HP × (1 + физброня / K),..." alt="" coords="529,69,767,109"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="817,75,767,80,767,75,817,69"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1ClassBaseline.html#a2ba3c16ae54f9d5e47dd9f062361e852" title="Добавить классовую базу юнита первой группой." alt="" coords="271,5,465,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="500,28,466,28,466,23,500,23"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1EffectiveStats.html#af6a8ee1a614abbf360dab44edc68d555" title="Тот же каскад плюс два слоя, которые есть у собранного игроком кита: Судьба сосуда и статовые моды на..." alt="" coords="5,5,223,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="257,28,223,28,223,23,257,23"/>
+</map>

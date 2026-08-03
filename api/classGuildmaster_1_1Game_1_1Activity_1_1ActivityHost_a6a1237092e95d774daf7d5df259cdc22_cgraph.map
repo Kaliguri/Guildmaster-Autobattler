@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Activity.ActivityHost.Open" name="Guildmaster.Game.Activity.ActivityHost.Open">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,205,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost.html#a7339f976af2f900a9d5626990fccb750" title="Закрыть мероприятие: петля, узлы, награды и идущий бой уходят вместе с ним." alt="" coords="261,5,461,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,42,247,37,248,42,206,47"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Data_1_1Definitions_1_1ActivitySetup.html#af71c73fc4cdf38abd16edbf192e68e88" title="Площадка с заказанным составом: дев&#45;срез, а позже — сборка боя игроком." alt="" coords="253,69,468,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="206,67,240,72,239,77,205,72"/>
+</map>

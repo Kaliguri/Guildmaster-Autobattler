@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.Effects.Components.SelfStackOnDealtComponent.OnEvent" name="Guildmaster.Combat.Effects.Components.SelfStackOnDealtComponent.OnEvent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,307,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes.html#a1b490686aa38c59e86509c9691657341" title="Подходит ли входящий урон под фильтр защитного эффекта." alt="" coords="355,13,569,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="307,30,341,30,341,35,307,35"/>
+</map>

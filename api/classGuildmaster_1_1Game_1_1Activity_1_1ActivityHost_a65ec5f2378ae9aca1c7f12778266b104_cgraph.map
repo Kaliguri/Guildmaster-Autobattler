@@ -1,0 +1,9 @@
+<map id="Guildmaster.Game.Activity.ActivityHost.EnsureBattleHost" name="Guildmaster.Game.Activity.ActivityHost.EnsureBattleHost">
+<area shape="rect" id="Node000001" title="Открыть Ристалище, если мероприятия нет, и вернуть владельца боя." alt="" coords="5,37,224,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost.html#a6a1237092e95d774daf7d5df259cdc22" title=" " alt="" coords="272,37,472,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,55,258,55,258,60,224,60"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost.html#a7339f976af2f900a9d5626990fccb750" title="Закрыть мероприятие: петля, узлы, награды и идущий бой уходят вместе с ним." alt="" coords="527,5,727,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="472,42,514,37,514,42,472,47"/>
+<area shape="rect" id="Node000004" href="$structGuildmaster_1_1Data_1_1Definitions_1_1ActivitySetup.html#af71c73fc4cdf38abd16edbf192e68e88" title="Площадка с заказанным составом: дев&#45;срез, а позже — сборка боя игроком." alt="" coords="520,69,735,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="472,67,507,72,506,77,472,72"/>
+</map>

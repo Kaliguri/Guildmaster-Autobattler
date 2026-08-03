@@ -1,5 +1,7 @@
 <map id="Guildmaster.Game.Flow.MainMenuPresenter" name="Guildmaster.Game.Flow.MainMenuPresenter">
-<area shape="rect" id="Node000001" title="Презентер главного меню (план [[act&#45;map&#45;run&#45;loop]] §4 D1): публикует OpenMainMenuRequest и ждёт выбор..." alt="" coords="5,119,212,219"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IMainMenuPresenter.html" title="Показ главного меню и ожидание выбора Начать/Продолжить/Выход (план D1)." alt="" coords="35,5,183,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,84,111,119,106,119,106,84"/>
+<area shape="rect" id="Node000001" title="Презентер главного меню (план [[act&#45;map&#45;run&#45;loop]] §4 D1): публикует OpenMainMenuRequest и ждёт выбор..." alt="" coords="48,119,255,239"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IMainMenuPresenter.html" title="Показ главного меню и ожидание исхода: заказ игры, вход к другу или выход." alt="" coords="5,5,153,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,82,123,117,118,119,100,84"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="178,5,269,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,84,185,119,180,117,198,82"/>
 </map>

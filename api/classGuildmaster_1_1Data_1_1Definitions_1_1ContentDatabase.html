@@ -114,6 +114,7 @@ Collaboration diagram for Guildmaster.Data.Definitions.ContentDatabase:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:af545a79a3f8652937022508b597b238d" id="r_af545a79a3f8652937022508b597b238d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase.html#af545a79a3f8652937022508b597b238d">SchemaVersion</a><code> [get]</code></td></tr>
+<tr class="memdesc:af545a79a3f8652937022508b597b238d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Версия контент-схемы.  <br /></td></tr>
 <tr class="separator:af545a79a3f8652937022508b597b238d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad28b9929e885ab0bf310282a100220ce" id="r_ad28b9929e885ab0bf310282a100220ce"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html">ContentDefinition</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase.html#ad28b9929e885ab0bf310282a100220ce">Entries</a><code> [get]</code></td></tr>
 <tr class="memdesc:ad28b9929e885ab0bf310282a100220ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все зарегистрированные определения (Sync-managed; порядок — по id для стабильного диффа).  <br /></td></tr>
@@ -122,7 +123,7 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Реестр всего контент-контента проекта (вики «13» §3.6). </p>
 <p>Единственный экземпляр; регистрируется в <code>RootLifetimeScope</code> и оборачивается рантайм-индексом ContentRegistry при сборке контейнера. </p>
-<p>РЕШЕНИЕ (отклонение от §3.6): один плоский список Entries вместо списка-на-домен. Рантайм-API (IContentDatabase) типо-обобщён (<code>All&lt;T&gt;</code>), полнота проверяется одним инвариантом «каждый ContentDefinition-ассет ∈ Entries», а число доменов растёт (Фаза 5) без правки схемы БД. Список наполняется только <code>Tools/Guildmaster/Sync Content Database</code>. </p>
+<p>РЕШЕНИЕ (отклонение от §3.6): один плоский список Entries вместо списка-на-домен. Рантайм-API (IContentDatabase) типо-обобщён (<code>All&lt;T&gt;</code>), полнота проверяется одним инвариантом «каждый ContentDefinition-ассет ∈ Entries», а число доменов растёт (Фаза 5) без правки схемы БД. Список наполняется только <code>Alebardium/Data/Sync Content Database</code>. </p>
 </div><h2 class="groupheader">Property Documentation</h2>
 <a id="ad28b9929e885ab0bf310282a100220ce" name="ad28b9929e885ab0bf310282a100220ce"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad28b9929e885ab0bf310282a100220ce">&#9670;&#160;</a></span>Entries</h2>
@@ -167,6 +168,9 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Версия контент-схемы. </p>
+<p>Читателей в игре пока нет, и аудит 2026-07-26 снял геттер как мёртвый — но это задел под заявленное: тех-док требует её в контракте Workshop-UGC и в заголовке реплея (контракт Workshop-UGC и заголовок реплея). Возвращён вместе с объяснением, чтобы поле не висело «присвоено и не используется» и чтобы следующая метла не сносила его снова. </p>
 
 </div>
 </div>

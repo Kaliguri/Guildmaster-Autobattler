@@ -104,45 +104,45 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Guild_1_1MapGenCon
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.MapGenConfig:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1MapGenConfig__coll__graph.svg" width="200" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1MapGenConfig__coll__graph.svg" width="443" height="522"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac437cccf987a9dd9e8a875f0d222bc1d" id="r_ac437cccf987a9dd9e8a875f0d222bc1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html">MapGenConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#ac437cccf987a9dd9e8a875f0d222bc1d">Validated</a> ()</td></tr>
-<tr class="memdesc:ac437cccf987a9dd9e8a875f0d222bc1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Валидирует и клампит поля к разумным границам (защита от кривого SO/ручного конфига).  <br /></td></tr>
+<tr class="memdesc:ac437cccf987a9dd9e8a875f0d222bc1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Валидированная КОПИЯ: клампит поля к разумным границам (защита от кривого SO/ручного конфига).  <br /></td></tr>
 <tr class="separator:ac437cccf987a9dd9e8a875f0d222bc1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:af3206f93a35e140481e2acde426ad12b" id="r_af3206f93a35e140481e2acde426ad12b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#af3206f93a35e140481e2acde426ad12b">Columns</a> = 9</td></tr>
-<tr class="memdesc:af3206f93a35e140481e2acde426ad12b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Глубина акта: всего колонок, включая Start (первая) и Boss (последняя). Дефолт 9 (прицел ~15).  <br /></td></tr>
+<tr class="memitem:af3206f93a35e140481e2acde426ad12b" id="r_af3206f93a35e140481e2acde426ad12b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#af3206f93a35e140481e2acde426ad12b">Columns</a> = 15</td></tr>
+<tr class="memdesc:af3206f93a35e140481e2acde426ad12b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Глубина акта: всего колонок, включая Start (первая) и Boss (последняя). Дефолт 15 (Start+13+Boss).  <br /></td></tr>
 <tr class="separator:af3206f93a35e140481e2acde426ad12b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95841f2b153d43dda65c5fa3e04ace3c" id="r_a95841f2b153d43dda65c5fa3e04ace3c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a95841f2b153d43dda65c5fa3e04ace3c">MinColumnWidth</a> = 2</td></tr>
-<tr class="memdesc:a95841f2b153d43dda65c5fa3e04ace3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мин. ширина промежуточной колонки (параллельных узлов). ≥2 гарантирует ветвление/схождение.  <br /></td></tr>
+<tr class="memitem:a4a6290103cf948c6896944fd1aa57e51" id="r_a4a6290103cf948c6896944fd1aa57e51"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a4a6290103cf948c6896944fd1aa57e51">EdgeColumnWidth</a> = 3</td></tr>
+<tr class="memdesc:a4a6290103cf948c6896944fd1aa57e51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ширина «горловин» акта: сколько параллельных узлов на первых и последних этажах.  <br /></td></tr>
+<tr class="separator:a4a6290103cf948c6896944fd1aa57e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeee6d0fac3246552ef12507048bdf585" id="r_aeee6d0fac3246552ef12507048bdf585"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#aeee6d0fac3246552ef12507048bdf585">EdgeColumns</a> = 1</td></tr>
+<tr class="memdesc:aeee6d0fac3246552ef12507048bdf585"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько этажей с КАЖДОГО края держать на EdgeColumnWidth (не считая Start/Boss).  <br /></td></tr>
+<tr class="separator:aeee6d0fac3246552ef12507048bdf585"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95841f2b153d43dda65c5fa3e04ace3c" id="r_a95841f2b153d43dda65c5fa3e04ace3c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a95841f2b153d43dda65c5fa3e04ace3c">MinColumnWidth</a> = 5</td></tr>
+<tr class="memdesc:a95841f2b153d43dda65c5fa3e04ace3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мин. ширина колонки в середине акта (между горловинами). Роллится на КАЖДЫЙ этаж отдельно.  <br /></td></tr>
 <tr class="separator:a95841f2b153d43dda65c5fa3e04ace3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37b3c58b31b92c31a23eef69778543da" id="r_a37b3c58b31b92c31a23eef69778543da"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a37b3c58b31b92c31a23eef69778543da">MaxColumnWidth</a> = 3</td></tr>
-<tr class="memdesc:a37b3c58b31b92c31a23eef69778543da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Макс. ширина промежуточной колонки.  <br /></td></tr>
+<tr class="memitem:a37b3c58b31b92c31a23eef69778543da" id="r_a37b3c58b31b92c31a23eef69778543da"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a37b3c58b31b92c31a23eef69778543da">MaxColumnWidth</a> = 7</td></tr>
+<tr class="memdesc:a37b3c58b31b92c31a23eef69778543da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Макс. ширина колонки в середине акта. Диапазон Min..Max — и есть разброс ширины акта.  <br /></td></tr>
 <tr class="separator:a37b3c58b31b92c31a23eef69778543da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50ec5f964bec6b5f03eecc2db763709c" id="r_a50ec5f964bec6b5f03eecc2db763709c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a50ec5f964bec6b5f03eecc2db763709c">EliteMinColumn</a> = 2</td></tr>
-<tr class="memdesc:a50ec5f964bec6b5f03eecc2db763709c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Индекс колонки, раньше которой элитки не ставятся (первая пара колонок — «мягкий вход»).  <br /></td></tr>
-<tr class="separator:a50ec5f964bec6b5f03eecc2db763709c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c4cfc005c41c9f8c33b3900da4243fd" id="r_a2c4cfc005c41c9f8c33b3900da4243fd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a2c4cfc005c41c9f8c33b3900da4243fd">WeightBattle</a> = 42</td></tr>
-<tr class="separator:a2c4cfc005c41c9f8c33b3900da4243fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23a12b8a9622591f60f7cb7b75bc6b67" id="r_a23a12b8a9622591f60f7cb7b75bc6b67"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a23a12b8a9622591f60f7cb7b75bc6b67">WeightElite</a> = 10</td></tr>
-<tr class="separator:a23a12b8a9622591f60f7cb7b75bc6b67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ee704483abb7e356fe2491e6122e1b8" id="r_a5ee704483abb7e356fe2491e6122e1b8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a5ee704483abb7e356fe2491e6122e1b8">WeightTextEvent</a> = 20</td></tr>
-<tr class="separator:a5ee704483abb7e356fe2491e6122e1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ed4772d6655b7dfaf23f5947a580b17" id="r_a7ed4772d6655b7dfaf23f5947a580b17"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a7ed4772d6655b7dfaf23f5947a580b17">WeightShop</a> = 8</td></tr>
-<tr class="separator:a7ed4772d6655b7dfaf23f5947a580b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d493b32283682f6ddb78250ead6fe93" id="r_a9d493b32283682f6ddb78250ead6fe93"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a9d493b32283682f6ddb78250ead6fe93">WeightChest</a> = 12</td></tr>
-<tr class="separator:a9d493b32283682f6ddb78250ead6fe93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeccc0f2fc8540ee0656955f5bc3dfb3b" id="r_aeccc0f2fc8540ee0656955f5bc3dfb3b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#aeccc0f2fc8540ee0656955f5bc3dfb3b">WeightUnknown</a> = 8</td></tr>
-<tr class="separator:aeccc0f2fc8540ee0656955f5bc3dfb3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5547193e24663f28fbcb598a0d45800" id="r_ad5547193e24663f28fbcb598a0d45800"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#ad5547193e24663f28fbcb598a0d45800">MaxEdgesPerNode</a> = 4</td></tr>
+<tr class="memdesc:ad5547193e24663f28fbcb598a0d45800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Потолок путей, выходящих из узла (и входящих в него).  <br /></td></tr>
+<tr class="separator:ad5547193e24663f28fbcb598a0d45800"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa73b1a42cbfe80aaed9f00ee8d4b81e2" id="r_aa73b1a42cbfe80aaed9f00ee8d4b81e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Guild_1_1ZoneRule.html">ZoneRule</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#aa73b1a42cbfe80aaed9f00ee8d4b81e2">Zones</a> = DefaultZones()</td></tr>
+<tr class="memdesc:aa73b1a42cbfe80aaed9f00ee8d4b81e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Зонные правила: диапазон этажей (индекс колонки) → разрешённые типы с весами.  <br /></td></tr>
+<tr class="separator:aa73b1a42cbfe80aaed9f00ee8d4b81e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49ff37fc491db0a4498022e019e7d76a" id="r_a49ff37fc491db0a4498022e019e7d76a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Guild_1_1AnchorRule.html">AnchorRule</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#a49ff37fc491db0a4498022e019e7d76a">Anchors</a> = DefaultAnchors()</td></tr>
+<tr class="memdesc:a49ff37fc491db0a4498022e019e7d76a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Якоря: фиксированный этаж → тип для ВСЕЙ колонки (гарант. сундук-ряд / привал перед боссом).  <br /></td></tr>
+<tr class="separator:a49ff37fc491db0a4498022e019e7d76a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Параметры генерации карты акта (MapGenerator, план [[act-map-run-loop]] §3.1). </p>
-<p>Чистый POCO без Unity-зависимостей — генератор тестируется headless. Оркестратор/фаза B подтянут значения из <code>ActConfig</code>-SO; здесь — согласованные с Максом дефолты (2026-07-17): 9 колонок с прицелом на ~15. </p>
+<p>Чистый POCO без Unity-зависимостей (кроме сериализуемых структур) — генератор тестируется headless. Носитель для авторинга — <code>ActConfig</code>-SO (оборачивает этот класс); здесь — дефолты, согласованные с Максом (2026-07-19, оверхол карты; 2026-07-20 — ряд привалов): 15 колонок = Start + 13 испытаний + Boss; типы узлов — по ЗОНАМ этажей с ЯКОРЯМИ (фиксированный этаж → тип целой колонки). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac437cccf987a9dd9e8a875f0d222bc1d" name="ac437cccf987a9dd9e8a875f0d222bc1d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac437cccf987a9dd9e8a875f0d222bc1d">&#9670;&#160;</a></span>Validated()</h2>
@@ -167,11 +167,28 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Валидирует и клампит поля к разумным границам (защита от кривого SO/ручного конфига). </p>
+<p>Валидированная КОПИЯ: клампит поля к разумным границам (защита от кривого SO/ручного конфига). </p>
+<p>Именно копия, а не <code>this</code>. Носитель этого POCO — сериализованное поле <code>ActConfig</code>, то есть ассет на диске: клампя себя на месте, метод переписывал бы авторский конфиг тихо и необратимо, а генератор зовёт его на каждую генерацию карты. Пока ассет не был подключён к сцене, порча была недостижима — и стала бы живой ровно в момент подключения (аудит 2026-07-26, R1-49/AC-3/T-5).</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a49ff37fc491db0a4498022e019e7d76a" name="a49ff37fc491db0a4498022e019e7d76a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49ff37fc491db0a4498022e019e7d76a">&#9670;&#160;</a></span>Anchors</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structGuildmaster_1_1Guild_1_1AnchorRule.html">AnchorRule</a> [] Guildmaster.Guild.MapGenConfig.Anchors = DefaultAnchors()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Якоря: фиксированный этаж → тип для ВСЕЙ колонки (гарант. сундук-ряд / привал перед боссом). </p>
+
+</div>
+</div>
 <a id="af3206f93a35e140481e2acde426ad12b" name="af3206f93a35e140481e2acde426ad12b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af3206f93a35e140481e2acde426ad12b">&#9670;&#160;</a></span>Columns</h2>
 
@@ -179,28 +196,46 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Guildmaster.Guild.MapGenConfig.Columns = 9</td>
+          <td class="memname">int Guildmaster.Guild.MapGenConfig.Columns = 15</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Глубина акта: всего колонок, включая Start (первая) и Boss (последняя). Дефолт 9 (прицел ~15). </p>
+<p>Глубина акта: всего колонок, включая Start (первая) и Boss (последняя). Дефолт 15 (Start+13+Boss). </p>
 
 </div>
 </div>
-<a id="a50ec5f964bec6b5f03eecc2db763709c" name="a50ec5f964bec6b5f03eecc2db763709c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50ec5f964bec6b5f03eecc2db763709c">&#9670;&#160;</a></span>EliteMinColumn</h2>
+<a id="aeee6d0fac3246552ef12507048bdf585" name="aeee6d0fac3246552ef12507048bdf585"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeee6d0fac3246552ef12507048bdf585">&#9670;&#160;</a></span>EdgeColumns</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Guildmaster.Guild.MapGenConfig.EliteMinColumn = 2</td>
+          <td class="memname">int Guildmaster.Guild.MapGenConfig.EdgeColumns = 1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Индекс колонки, раньше которой элитки не ставятся (первая пара колонок — «мягкий вход»). </p>
+<p>Сколько этажей с КАЖДОГО края держать на EdgeColumnWidth (не считая Start/Boss). </p>
+<p>Один: горловина — это ровно вход и выход акта, дальше сразу широкая часть (решение Макса). </p>
+
+</div>
+</div>
+<a id="a4a6290103cf948c6896944fd1aa57e51" name="a4a6290103cf948c6896944fd1aa57e51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a6290103cf948c6896944fd1aa57e51">&#9670;&#160;</a></span>EdgeColumnWidth</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Guild.MapGenConfig.EdgeColumnWidth = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ширина «горловин» акта: сколько параллельных узлов на первых и последних этажах. </p>
+<p>Акт начинается узко, раздаётся вширь к середине и снова сужается к боссу — силуэт читается как путь, а не как однородная решётка (решение Макса 2026-07-20). </p>
 
 </div>
 </div>
@@ -211,12 +246,29 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Guildmaster.Guild.MapGenConfig.MaxColumnWidth = 3</td>
+          <td class="memname">int Guildmaster.Guild.MapGenConfig.MaxColumnWidth = 7</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Макс. ширина промежуточной колонки. </p>
+<p>Макс. ширина колонки в середине акта. Диапазон Min..Max — и есть разброс ширины акта. </p>
+
+</div>
+</div>
+<a id="ad5547193e24663f28fbcb598a0d45800" name="ad5547193e24663f28fbcb598a0d45800"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5547193e24663f28fbcb598a0d45800">&#9670;&#160;</a></span>MaxEdgesPerNode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Guild.MapGenConfig.MaxEdgesPerNode = 4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Потолок путей, выходящих из узла (и входящих в него). </p>
+<p>Один-четыре исхода — нормальный выбор (решение Макса 2026-07-20: развилка это и есть содержание карты, в том числе выбор биома), но веер шире четырёх перестаёт читаться и превращает карту в кашу. </p>
 
 </div>
 </div>
@@ -227,96 +279,29 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Guildmaster.Guild.MapGenConfig.MinColumnWidth = 2</td>
+          <td class="memname">int Guildmaster.Guild.MapGenConfig.MinColumnWidth = 5</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Мин. ширина промежуточной колонки (параллельных узлов). ≥2 гарантирует ветвление/схождение. </p>
+<p>Мин. ширина колонки в середине акта (между горловинами). Роллится на КАЖДЫЙ этаж отдельно. </p>
 
 </div>
 </div>
-<a id="a2c4cfc005c41c9f8c33b3900da4243fd" name="a2c4cfc005c41c9f8c33b3900da4243fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c4cfc005c41c9f8c33b3900da4243fd">&#9670;&#160;</a></span>WeightBattle</h2>
+<a id="aa73b1a42cbfe80aaed9f00ee8d4b81e2" name="aa73b1a42cbfe80aaed9f00ee8d4b81e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa73b1a42cbfe80aaed9f00ee8d4b81e2">&#9670;&#160;</a></span>Zones</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Guildmaster.Guild.MapGenConfig.WeightBattle = 42</td>
+          <td class="memname"><a class="el" href="structGuildmaster_1_1Guild_1_1ZoneRule.html">ZoneRule</a> [] Guildmaster.Guild.MapGenConfig.Zones = DefaultZones()</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="a9d493b32283682f6ddb78250ead6fe93" name="a9d493b32283682f6ddb78250ead6fe93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d493b32283682f6ddb78250ead6fe93">&#9670;&#160;</a></span>WeightChest</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Guild.MapGenConfig.WeightChest = 12</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a23a12b8a9622591f60f7cb7b75bc6b67" name="a23a12b8a9622591f60f7cb7b75bc6b67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23a12b8a9622591f60f7cb7b75bc6b67">&#9670;&#160;</a></span>WeightElite</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Guild.MapGenConfig.WeightElite = 10</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7ed4772d6655b7dfaf23f5947a580b17" name="a7ed4772d6655b7dfaf23f5947a580b17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ed4772d6655b7dfaf23f5947a580b17">&#9670;&#160;</a></span>WeightShop</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Guild.MapGenConfig.WeightShop = 8</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a5ee704483abb7e356fe2491e6122e1b8" name="a5ee704483abb7e356fe2491e6122e1b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ee704483abb7e356fe2491e6122e1b8">&#9670;&#160;</a></span>WeightTextEvent</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Guild.MapGenConfig.WeightTextEvent = 20</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aeccc0f2fc8540ee0656955f5bc3dfb3b" name="aeccc0f2fc8540ee0656955f5bc3dfb3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeccc0f2fc8540ee0656955f5bc3dfb3b">&#9670;&#160;</a></span>WeightUnknown</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Guild.MapGenConfig.WeightUnknown = 8</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Зонные правила: диапазон этажей (индекс колонки) → разрешённые типы с весами. </p>
+<p>Первая покрывающая этаж зона выигрывает. Этаж вне всех зон и якорей → безопасный дефолт (Бой). Перекрываются якорями. </p>
 
 </div>
 </div>

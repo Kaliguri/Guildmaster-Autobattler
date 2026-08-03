@@ -1,0 +1,7 @@
+<map id="Guildmaster.Core.Net.IReadyGate" name="Guildmaster.Core.Net.IReadyGate">
+<area shape="rect" id="Node000001" title="Общее согласие: действие происходит, когда его подтвердили ВСЕ игроки сессии." alt="" coords="95,5,329,171"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestReadyGate.html" title="Гостевая половина общего согласия: отправляет своё «готов» и показывает счёт, присланный хостом." alt="" coords="5,229,200,469"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,185,155,230,151,227,170,183"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostReadyGate.html" title="Владельческая половина общего согласия: считает подтвердивших и выполняет действие,..." alt="" coords="224,219,419,479"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,182,269,218,264,220,249,184"/>
+</map>

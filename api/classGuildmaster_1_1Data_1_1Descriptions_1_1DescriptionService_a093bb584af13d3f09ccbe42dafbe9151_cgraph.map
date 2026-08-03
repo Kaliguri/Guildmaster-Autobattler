@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Descriptions.DescriptionService.KeywordForm" name="Guildmaster.Data.Descriptions.DescriptionService.KeywordForm">
+<area shape="rect" id="Node000001" title="Форма имени ключевого слова в падеже (gen/acc/plural; null — именительный)." alt="" coords="5,5,243,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#a43230f86bbf343084ad4409455cccd1d" title="Ключ имени в падеже по строковому id (kw.burn + gen → kw.burn.name.gen)." alt="" coords="291,5,505,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="243,23,277,23,277,28,243,28"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="Guildmaster.Net.NetByteWriter.WriteUShort" name="Guildmaster.Net.NetByteWriter.WriteUShort">
+<area shape="rect" id="Node000001" title=" " alt="" coords="885,37,1113,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1Presence_1_1PresenceCodec.html#a04306e7ce91e932b8113a1dad8f06e7a" title=" " alt="" coords="626,5,821,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="871,45,821,39,821,34,872,40"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a783d9e388e2924706fd0549a4eeeca73" title="Строка как длина + UTF&#45;8." alt="" coords="609,69,837,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="872,75,838,79,837,73,872,69"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="341,69,561,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="595,92,562,92,562,87,595,87"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,69,293,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="328,92,294,92,294,87,328,87"/>
+</map>

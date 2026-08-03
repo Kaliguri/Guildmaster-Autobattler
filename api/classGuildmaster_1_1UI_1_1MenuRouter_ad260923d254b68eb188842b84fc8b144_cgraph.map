@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.MenuRouter.ShowTestZone" name="Guildmaster.UI.MenuRouter.ShowTestZone">
+<area shape="rect" id="Node000001" title="Войти в UI тест&#45;зоны: Sheet&#45;пространство «Бой» поверх стека (карта под ним прячется)." alt="" coords="5,5,211,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Diagnostics_1_1UiTrace.html#a381bc26565593761feb0c79fcfe7b8a8" title=" " alt="" coords="259,5,444,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,23,245,23,245,28,211,28"/>
+</map>

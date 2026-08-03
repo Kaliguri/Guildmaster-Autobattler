@@ -104,13 +104,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Guild_1_1OpenOutc
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.OpenOutcomeRequest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest__coll__graph.svg" width="239" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest__coll__graph.svg" width="239" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae8d29d2f4d84aa6c216faeb03dffd30e" id="r_ae8d29d2f4d84aa6c216faeb03dffd30e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#ae8d29d2f4d84aa6c216faeb03dffd30e">OpenOutcomeRequest</a> (bool victory, Action onToMenu)</td></tr>
-<tr class="separator:ae8d29d2f4d84aa6c216faeb03dffd30e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74db60377ac304a191ceb62105a2f094" id="r_a74db60377ac304a191ceb62105a2f094"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#a74db60377ac304a191ceb62105a2f094">OpenOutcomeRequest</a> (bool victory, Action onToMenu, Action onContinue=null)</td></tr>
+<tr class="separator:a74db60377ac304a191ceb62105a2f094"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -120,13 +120,16 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a9c40bca1b23c4c91882a2bd7e0baa0ca" id="r_a9c40bca1b23c4c91882a2bd7e0baa0ca"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#a9c40bca1b23c4c91882a2bd7e0baa0ca">OnToMenu</a></td></tr>
 <tr class="memdesc:a9c40bca1b23c4c91882a2bd7e0baa0ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк «В меню» (ровно один вызов).  <br /></td></tr>
 <tr class="separator:a9c40bca1b23c4c91882a2bd7e0baa0ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa266ba600c5818484ea022a0974e07c4" id="r_aa266ba600c5818484ea022a0974e07c4"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#aa266ba600c5818484ea022a0974e07c4">OnContinue</a></td></tr>
+<tr class="memdesc:aa266ba600c5818484ea022a0974e07c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк «Продолжить»; <code>null</code> — продолжать нечем, и кнопки не будет.  <br /></td></tr>
+<tr class="separator:aa266ba600c5818484ea022a0974e07c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Запрос показать экран исхода забега (план [[act-map-run-loop]] §4 C2): победа (босс пройден) или поражение (пул перезапусков пуст). </p>
 <p>Публикует <code>GameFlow</code> после акта, слушает UI. Ровно один вызов OnToMenu. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae8d29d2f4d84aa6c216faeb03dffd30e" name="ae8d29d2f4d84aa6c216faeb03dffd30e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8d29d2f4d84aa6c216faeb03dffd30e">&#9670;&#160;</a></span>OpenOutcomeRequest()</h2>
+<a id="a74db60377ac304a191ceb62105a2f094" name="a74db60377ac304a191ceb62105a2f094"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74db60377ac304a191ceb62105a2f094">&#9670;&#160;</a></span>OpenOutcomeRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +147,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onToMenu</em>&#160;</td>
+          <td class="paramname"><em>onToMenu</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onContinue</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -162,6 +171,23 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa266ba600c5818484ea022a0974e07c4" name="aa266ba600c5818484ea022a0974e07c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa266ba600c5818484ea022a0974e07c4">&#9670;&#160;</a></span>OnContinue</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly Action Guildmaster.Guild.OpenOutcomeRequest.OnContinue</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Колбэк «Продолжить»; <code>null</code> — продолжать нечем, и кнопки не будет. </p>
+<p>После забега продолжать действительно нечего: акт кончился. На площадке — наоборот: состав и расстановка целы, и повторить бой тем же строем это норма, а не исключение. Разница живёт здесь, а не в двух экранах: экран один, и различает их наличие действия. </p>
+
+</div>
+</div>
 <a id="a9c40bca1b23c4c91882a2bd7e0baa0ca" name="a9c40bca1b23c4c91882a2bd7e0baa0ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c40bca1b23c4c91882a2bd7e0baa0ca">&#9670;&#160;</a></span>OnToMenu</h2>
 

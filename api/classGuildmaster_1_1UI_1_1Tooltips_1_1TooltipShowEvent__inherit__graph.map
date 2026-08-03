@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Tooltips.TooltipShowEvent" name="Guildmaster.UI.Tooltips.TooltipShowEvent">
+<area shape="rect" id="Node000001" title="«Наведено на элемент, у которого есть тултип» — всплывающее событие панели." alt="" coords="35,119,204,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,233,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,85,122,118,117,118,117,85"/>
+</map>

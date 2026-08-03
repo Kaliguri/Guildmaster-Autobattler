@@ -99,40 +99,69 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1De
 </div><!--header-->
 <div class="contents">
 
-<p>Первый SO дизайн-системы боя: палитра цветов боевого UI.  
+<p>Цвета боевого UI: полосы HP по принадлежности юнита к СМОТРЯЩЕМУ (свои — одним цветом, чужие — другим) и полоса щита.  
  <a href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.Design.CombatColorPalette:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette__inherit__graph.svg" width="204" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette__inherit__graph.svg" width="204" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.Design.CombatColorPalette:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette__coll__graph.svg" width="204" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette__coll__graph.svg" width="204" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5cbcda65921a79d5a1bd02fa39f7260b" id="r_a5cbcda65921a79d5a1bd02fa39f7260b"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html#a5cbcda65921a79d5a1bd02fa39f7260b">HealthBarColor</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">isAllyOfViewer</a>)</td></tr>
+<tr class="memitem:a5cbcda65921a79d5a1bd02fa39f7260b" id="r_a5cbcda65921a79d5a1bd02fa39f7260b"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html#a5cbcda65921a79d5a1bd02fa39f7260b">HealthBarColor</a> (bool isAllyOfViewer)</td></tr>
 <tr class="memdesc:a5cbcda65921a79d5a1bd02fa39f7260b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цвет HP-бара по признаку «союзник ли юнит для смотрящего».  <br /></td></tr>
 <tr class="separator:a5cbcda65921a79d5a1bd02fa39f7260b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9ce6ade6a8daa254c6bf21dbcb82a49" id="r_ae9ce6ade6a8daa254c6bf21dbcb82a49"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html#ae9ce6ade6a8daa254c6bf21dbcb82a49">UnitMain</a> (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ae6f84ac35804ce5b1502093c30f520d3">Data.Definitions.UnitTone</a> tone)</td></tr>
+<tr class="memdesc:ae9ce6ade6a8daa254c6bf21dbcb82a49"><td class="mdescLeft">&#160;</td><td class="mdescRight">ГЛАВНЫЙ цвет свечения юнита — там, где цвет ровно один: тело снаряда, его след, контур каста.  <br /></td></tr>
+<tr class="separator:ae9ce6ade6a8daa254c6bf21dbcb82a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9a16c6e0868ad8da16ab6abbeeeb5c0" id="r_ae9a16c6e0868ad8da16ab6abbeeeb5c0"><td class="memItemLeft" align="right" valign="top">Gradient&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html#ae9a16c6e0868ad8da16ab6abbeeeb5c0">UnitSpread</a> (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ae6f84ac35804ce5b1502093c30f520d3">Data.Definitions.UnitTone</a> tone)</td></tr>
+<tr class="memdesc:ae9a16c6e0868ad8da16ab6abbeeeb5c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">ДИАПАЗОН разброса частиц юнита: конец 0 — пересвет в его же оттенке, конец 1 — насыщенный цвет.  <br /></td></tr>
+<tr class="separator:ae9a16c6e0868ad8da16ab6abbeeeb5c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dd2581988f556eb877ab5e893b4dc28" id="r_a2dd2581988f556eb877ab5e893b4dc28"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html#a2dd2581988f556eb877ab5e893b4dc28">BodyTint</a> (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#adbfd05fcfcc6e150c47638f97126266c">Data.Definitions.BodyShade</a> shade)</td></tr>
+<tr class="memdesc:a2dd2581988f556eb877ab5e893b4dc28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цвет тела по ступени приглушения.  <br /></td></tr>
+<tr class="separator:a2dd2581988f556eb877ab5e893b4dc28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a83d84062f85577734ebbc8969598f1bc" id="r_a83d84062f85577734ebbc8969598f1bc"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html#a83d84062f85577734ebbc8969598f1bc">AllyHp</a><code> [get]</code></td></tr>
-<tr class="separator:a83d84062f85577734ebbc8969598f1bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb8bc6d812b9802f005594721bb672fc" id="r_adb8bc6d812b9802f005594721bb672fc"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html#adb8bc6d812b9802f005594721bb672fc">EnemyHp</a><code> [get]</code></td></tr>
-<tr class="separator:adb8bc6d812b9802f005594721bb672fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaca9fff797b7ca63850306de8c136f30" id="r_aaca9fff797b7ca63850306de8c136f30"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html#aaca9fff797b7ca63850306de8c136f30">Shield</a><code> [get]</code></td></tr>
+<tr class="memdesc:aaca9fff797b7ca63850306de8c136f30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полоса щита (absorb-пул над HP). Одна на всех, принадлежность не меняет её.  <br /></td></tr>
 <tr class="separator:aaca9fff797b7ca63850306de8c136f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ef7fb32388c2cafd567b6c5863ff96d" id="r_a7ef7fb32388c2cafd567b6c5863ff96d"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html#a7ef7fb32388c2cafd567b6c5863ff96d">BlockFlash</a><code> [get]</code></td></tr>
+<tr class="memdesc:a7ef7fb32388c2cafd567b6c5863ff96d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вспышка ТЕЛА в момент, когда щит поглотил удар.  <br /></td></tr>
+<tr class="separator:a7ef7fb32388c2cafd567b6c5863ff96d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Первый SO дизайн-системы боя: палитра цветов боевого UI. </p>
-<p>Пока — только цвета HP-бара по принадлежности юнита к СМОТРЯЩЕМУ (союзник / враг): классическая читаемость «свои — одним цветом, чужие — другим». Единый источник правды для цвета HP-бара; презентация тянет цвет отсюда, а не хардкодит его на префабе. </p>
-<p>English: first combat-UI design-system ScriptableObject. For now holds only the HP-bar colors by the unit's relation to the local viewer (ally / enemy). Single source of truth for HP-bar color — presentation reads it from here instead of hardcoding on the prefab. </p>
-<p>Расширяется позже (цвета ресурс-бара, статус-иконок, дельты урона/хила и т.п.) — не сейчас (YAGNI).</p>
+<div class="textblock"><p>Цвета боевого UI: полосы HP по принадлежности юнита к СМОТРЯЩЕМУ (свои — одним цветом, чужие — другим) и полоса щита. </p>
+<p>Единственный вход презентации за этими цветами; хардкодить их на префабе нельзя (T-12/T-13 — тема, которая возвращалась дважды). </p>
+<p><b>Своих значений здесь больше нет.</b> Цвет живёт в палитре проекта (<code>UI/Theme/tokens.*.uss</code> → <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html" title="Палитра проекта в виде, доступном МИРУ.">Guildmaster.Data.Definitions.GuildmasterPalette</a>), а этот ассет только называет роли. Иначе бой и интерфейс расходятся молча — ровно так уже случилось с картой акта, где три цвета уехали от токенов, которые сами же называли.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2dd2581988f556eb877ab5e893b4dc28" name="a2dd2581988f556eb877ab5e893b4dc28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dd2581988f556eb877ab5e893b4dc28">&#9670;&#160;</a></span>BodyTint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Color Guildmaster.Presentation.Design.CombatColorPalette.BodyTint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#adbfd05fcfcc6e150c47638f97126266c">Data.Definitions.BodyShade</a>&#160;</td>
+          <td class="paramname"><em>shade</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Цвет тела по ступени приглушения. </p>
+<p><code>None</code> — белый, то есть арт как нарисован; тинт умножается на спрайт и служит ровно одному: развести тех, кто делит один арт. </p>
+
+</div>
+</div>
 <a id="a5cbcda65921a79d5a1bd02fa39f7260b" name="a5cbcda65921a79d5a1bd02fa39f7260b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5cbcda65921a79d5a1bd02fa39f7260b">&#9670;&#160;</a></span>HealthBarColor()</h2>
 
@@ -142,7 +171,7 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">Color Guildmaster.Presentation.Design.CombatColorPalette.HealthBarColor </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>isAllyOfViewer</em></td><td>)</td>
           <td></td>
         </tr>
@@ -153,9 +182,60 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="ae9ce6ade6a8daa254c6bf21dbcb82a49" name="ae9ce6ade6a8daa254c6bf21dbcb82a49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9ce6ade6a8daa254c6bf21dbcb82a49">&#9670;&#160;</a></span>UnitMain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Color Guildmaster.Presentation.Design.CombatColorPalette.UnitMain </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ae6f84ac35804ce5b1502093c30f520d3">Data.Definitions.UnitTone</a>&#160;</td>
+          <td class="paramname"><em>tone</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ГЛАВНЫЙ цвет свечения юнита — там, где цвет ровно один: тело снаряда, его след, контур каста. </p>
+<p>База берётся по роли из палитры и поднимается в HDR: ровно 1.0 порог bloom не пробивает. </p>
+
+</div>
+</div>
+<a id="ae9a16c6e0868ad8da16ab6abbeeeb5c0" name="ae9a16c6e0868ad8da16ab6abbeeeb5c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9a16c6e0868ad8da16ab6abbeeeb5c0">&#9670;&#160;</a></span>UnitSpread()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Gradient Guildmaster.Presentation.Design.CombatColorPalette.UnitSpread </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ae6f84ac35804ce5b1502093c30f520d3">Data::Definitions::UnitTone</a>&#160;</td>
+          <td class="paramname"><em>tone</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ДИАПАЗОН разброса частиц юнита: конец 0 — пересвет в его же оттенке, конец 1 — насыщенный цвет. </p>
+<p>Частица берёт случайное значение между ними, и рой выходит живым, а не одинаково белым. </p>
+<p>Читается ТОЛЬКО по концам (и частицы, и шейдер осколков берут <code>Evaluate(0/1)</code>) — промежуточные ключи ставить бессмысленно.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a83d84062f85577734ebbc8969598f1bc" name="a83d84062f85577734ebbc8969598f1bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83d84062f85577734ebbc8969598f1bc">&#9670;&#160;</a></span>AllyHp</h2>
+<a id="a7ef7fb32388c2cafd567b6c5863ff96d" name="a7ef7fb32388c2cafd567b6c5863ff96d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ef7fb32388c2cafd567b6c5863ff96d">&#9670;&#160;</a></span>BlockFlash</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,7 +244,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Color Guildmaster.Presentation.Design.CombatColorPalette.AllyHp</td>
+          <td class="memname">Color Guildmaster.Presentation.Design.CombatColorPalette.BlockFlash</td>
         </tr>
       </table>
   </td>
@@ -174,27 +254,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="adb8bc6d812b9802f005594721bb672fc" name="adb8bc6d812b9802f005594721bb672fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb8bc6d812b9802f005594721bb672fc">&#9670;&#160;</a></span>EnemyHp</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Color Guildmaster.Presentation.Design.CombatColorPalette.EnemyHp</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p>Вспышка ТЕЛА в момент, когда щит поглотил удар. </p>
+<p>Отдельная роль от Shield: цвет интерфейса защиты (полоса, цифра поглощённого) и цвет события на юните — разные факты, и сводить их в один токен значит запрещать им разойтись. Яркость обычная: вспышка на теле соревнуется с попаданиями, а не с bloom. </p>
 
 </div>
 </div>
@@ -217,6 +278,8 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Полоса щита (absorb-пул над HP). Одна на всех, принадлежность не меняет её. </p>
 
 </div>
 </div>

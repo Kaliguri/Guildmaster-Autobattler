@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Balance_1_1Editor_
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench-members.html">List of all members</a>  </div>
@@ -99,27 +100,32 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Balance_1_1Editor_
 </div><!--header-->
 <div class="contents">
 
-<p>Фаза 2 — round-robin дуэли всех реликвий 1v1 + рейтинг Bradley-Terry.  
+<p>Фаза 2 — round-robin бои всех реликвий + рейтинг Bradley-Terry.  
  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Balance.Editor.DuelMatrixBench:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench__coll__graph.svg" width="206" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench__coll__graph.svg" width="206" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a78c5a21baf60e0572716eb8023bc8a8e" id="r_a78c5a21baf60e0572716eb8023bc8a8e"><td class="memItemLeft" align="right" valign="top">static string string md&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html#a78c5a21baf60e0572716eb8023bc8a8e">Run</a> ()</td></tr>
 <tr class="separator:a78c5a21baf60e0572716eb8023bc8a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5057de23343ace1e25e5a857ea5249be" id="r_a5057de23343ace1e25e5a857ea5249be"><td class="memItemLeft" align="right" valign="top">static string string md&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html#a5057de23343ace1e25e5a857ea5249be">RunTrio</a> ()</td></tr>
+<tr class="separator:a5057de23343ace1e25e5a857ea5249be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17c14c02d3c1acdf132e5905ccedd3f6" id="r_a17c14c02d3c1acdf132e5905ccedd3f6"><td class="memItemLeft" align="right" valign="top">static string string md&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html#a17c14c02d3c1acdf132e5905ccedd3f6">RunSquad</a> ()</td></tr>
+<tr class="separator:a17c14c02d3c1acdf132e5905ccedd3f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a66295e2d368341c9877f9e6081a96eab" id="r_a66295e2d368341c9877f9e6081a96eab"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html#a66295e2d368341c9877f9e6081a96eab">csv</a></td></tr>
-<tr class="separator:a66295e2d368341c9877f9e6081a96eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acecf6211373690f286d00e98804913dc" id="r_acecf6211373690f286d00e98804913dc"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html#acecf6211373690f286d00e98804913dc">csv</a></td></tr>
+<tr class="separator:acecf6211373690f286d00e98804913dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Фаза 2 — round-robin дуэли всех реликвий 1v1 + рейтинг Bradley-Terry. </p>
+<div class="textblock"><p>Фаза 2 — round-robin бои всех реликвий + рейтинг Bradley-Terry. </p>
 <p>Каждая упорядоченная пара (i слева vs j справа) гоняется отдельно → каждая неупорядоченная пара сыграна дважды (обе стороны), что усредняет возможное преимущество левой/правой позиции. Выдаёт сводку (Wins/WinRate/Strength) и матрицу матчапов. Оговорка: бой RNG-free → исходы детерминированы (1/0), win-rate дискретный. </p>
+<p>Три формата — один и тот же прогон с разным числом союзных манекенов вокруг испытуемого: 1v1 (кит в вакууме), 3v3 и 5v5. Командные форматы существуют потому, что дуэль не умеет мерить китов, чья работа — не убивать: хилер, баффер и держатель фронта в вакууме всегда выглядят мусором.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a78c5a21baf60e0572716eb8023bc8a8e" name="a78c5a21baf60e0572716eb8023bc8a8e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a78c5a21baf60e0572716eb8023bc8a8e">&#9670;&#160;</a></span>Run()</h2>
@@ -139,16 +145,15 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a66295e2d368341c9877f9e6081a96eab" name="a66295e2d368341c9877f9e6081a96eab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66295e2d368341c9877f9e6081a96eab">&#9670;&#160;</a></span>csv</h2>
+<a id="a17c14c02d3c1acdf132e5905ccedd3f6" name="a17c14c02d3c1acdf132e5905ccedd3f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17c14c02d3c1acdf132e5905ccedd3f6">&#9670;&#160;</a></span>RunSquad()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,7 +162,58 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">string Guildmaster.Balance.Editor.DuelMatrixBench.csv</td>
+          <td class="memname">static string string md Guildmaster.Balance.Editor.DuelMatrixBench.RunSquad </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5057de23343ace1e25e5a857ea5249be" name="a5057de23343ace1e25e5a857ea5249be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5057de23343ace1e25e5a857ea5249be">&#9670;&#160;</a></span>RunTrio()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string string md Guildmaster.Balance.Editor.DuelMatrixBench.RunTrio </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="acecf6211373690f286d00e98804913dc" name="acecf6211373690f286d00e98804913dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acecf6211373690f286d00e98804913dc">&#9670;&#160;</a></span>csv</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string Guildmaster.Balance.Editor.DuelMatrixBench.csv</td>
         </tr>
       </table>
   </td>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.Settings.IDisplayService" name="Guildmaster.Core.Settings.IDisplayService">
+<area shape="rect" id="Node000001" title="Настройки дисплея за швом: разрешение, режим окна, частота обновления." alt="" coords="11,5,199,285"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html" title="Реализация IDisplayService." alt="" coords="5,333,204,633"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,299,107,333,102,333,102,299"/>
+</map>

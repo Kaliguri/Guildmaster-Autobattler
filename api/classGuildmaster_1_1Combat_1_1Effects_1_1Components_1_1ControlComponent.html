@@ -137,6 +137,8 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Контроль: запрещает действия носителю на время эффекта. </p>
 <p>Сами флаги (<code>CanAct/CanMove/CanCast</code>) пересчитывает EffectSystem из активных контрол-эффектов каждый тик — так перекрывающиеся контроли и независимое истечение разрешаются без счётчиков. Без diminishing returns (вики «6» §5.3). </p>
+<p><b>Числа:</b> здесь их нет — только три выключателя, и из их сочетания собирается вид контроля: <code>_preventAct</code> (оглушение — нельзя ничего), <code>_preventMove</code> (обездвиживание — бьёт стоя), <code>_preventCast</code> (немота — бьёт и ходит, но без способностей). Силу и время задаёт сам эффект: длительность в <code>EffectData</code>, стойкость к снятию — тир очистки.</p>
+<p><b>Когда срабатывает:</b> пока эффект висит; флаги пересчитываются каждый тик.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0fad23922a16d4b3e47d2a6518a84215" name="a0fad23922a16d4b3e47d2a6518a84215"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0fad23922a16d4b3e47d2a6518a84215">&#9670;&#160;</a></span>ControlComponent() <span class="overload">[1/2]</span></h2>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.GuestPlayerIntentSource" name="Guildmaster.Game.Flow.GuestPlayerIntentSource">
+<area shape="rect" id="Node000001" title="Гость: авторитета нет никогда." alt="" coords="5,119,217,199"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IPlayerIntentSource.html" title="Источник интентов игрока (план 11 §2): хост исполняет флоу, клиенты шлют интенты." alt="" coords="41,5,182,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,85,114,118,109,118,109,85"/>
+</map>

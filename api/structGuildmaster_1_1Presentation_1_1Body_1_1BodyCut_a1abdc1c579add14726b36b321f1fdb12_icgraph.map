@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Body.BodyCut.Healed" name="Guildmaster.Presentation.Body.BodyCut.Healed">
+<area shape="rect" id="Node000001" title="Порез, у которого запас уменьшен на healed ." alt="" coords="244,5,435,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1BodyCutLedger.html#a15f4d76b565f15b4cfac42817b0f5326" title="Залечить на amount &#160;HP, начиная с самых старых ран." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
+</map>

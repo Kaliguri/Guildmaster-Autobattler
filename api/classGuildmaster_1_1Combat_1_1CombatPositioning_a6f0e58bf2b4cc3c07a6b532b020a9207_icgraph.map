@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.CombatPositioning.SelfClosingSpeedPerTick" name="Guildmaster.Combat.CombatPositioning.SelfClosingSpeedPerTick">
+<area shape="rect" id="Node000001" title="Скорость СБЛИЖЕНИЯ собственным ходом, мировые ед." alt="" coords="277,5,536,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a9a2af87870dd09118eb739b2e309642f" title="Пора ли начинать замах УДАРА С РАЗБЕГА — то есть въедет ли юнит своим ходом в досягаемость ровно к ка..." alt="" coords="5,5,229,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="264,28,230,28,230,23,264,23"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.ManaBarView.Bind" name="Guildmaster.Presentation.ManaBarView.Bind">
+<area shape="rect" id="Node000001" title="Привязать к юниту: скрыть для безресурсных, иначе — на текущую долю мгновенно." alt="" coords="244,5,435,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a96987cc79e0a478aadefb7a653e81359" title="Связать вид с юнитом ленты: state &#160;— его состояние на показываемом тике, definition &#160;— его определени..." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
+</map>

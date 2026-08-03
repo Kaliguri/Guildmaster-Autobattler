@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.EncounterLoader.PlaceParty" name="Guildmaster.Combat.EncounterLoader.PlaceParty">
+<area shape="rect" id="Node000001" title="Поставить отряд игрока (team 0) в начале боя." alt="" coords="547,5,772,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1RosterDeployer.html#ae49b8acaf11309c8378e5e021ef9fe8e" title="Поставить отряд забега на арену. No&#45;op&#45;безопасно: пустая гильдия → пустая арена (только сброс)." alt="" coords="275,5,499,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="533,28,499,28,499,23,533,23"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleStartup.html#a6e7e15ee23fa9959af890318ca1908e9" title=" " alt="" coords="5,5,227,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="261,28,227,28,227,23,261,23"/>
+</map>

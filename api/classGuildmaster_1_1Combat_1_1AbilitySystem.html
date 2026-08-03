@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1AbilityS
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#events">Events</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1AbilitySystem-members.html">List of all members</a>  </div>
@@ -110,16 +111,23 @@ Collaboration diagram for Guildmaster.Combat.AbilitySystem:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aaf936034ee2d2b14afc73a060e1875f4" id="r_aaf936034ee2d2b14afc73a060e1875f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AbilitySystem.html#aaf936034ee2d2b14afc73a060e1875f4">Tick</a> (IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> ctx, float dt)</td></tr>
+<tr class="memdesc:aaf936034ee2d2b14afc73a060e1875f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тик способностей: кулдауны, решения о кастах, затем сами касты.  <br /></td></tr>
 <tr class="separator:aaf936034ee2d2b14afc73a060e1875f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cedfa4ba0cd96a1b321dbbde5983bc8" id="r_a0cedfa4ba0cd96a1b321dbbde5983bc8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AbilitySystem.html#a0cedfa4ba0cd96a1b321dbbde5983bc8">TryCast</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> caster, int abilityIndex, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> ctx)</td></tr>
-<tr class="memdesc:a0cedfa4ba0cd96a1b321dbbde5983bc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Попытаться скастовать способность <em>abilityIndex</em> .  <br /></td></tr>
+<tr class="memdesc:a0cedfa4ba0cd96a1b321dbbde5983bc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Попытаться скастовать способность <em>abilityIndex</em>  НЕМЕДЛЕННО (решение + применение одним вызовом).  <br /></td></tr>
 <tr class="separator:a0cedfa4ba0cd96a1b321dbbde5983bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
-<tr class="memitem:a31ce06e9c54aaaa0ca2902b6c6fc9fba" id="r_a31ce06e9c54aaaa0ca2902b6c6fc9fba"><td class="memItemLeft" align="right" valign="top">System.Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AbilitySystem.html#a31ce06e9c54aaaa0ca2902b6c6fc9fba">OnAbilityCast</a></td></tr>
-<tr class="memdesc:a31ce06e9c54aaaa0ca2902b6c6fc9fba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает).  <br /></td></tr>
-<tr class="separator:a31ce06e9c54aaaa0ca2902b6c6fc9fba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee7ccd77dbda09ca424627ac1bfd5ad8" id="r_aee7ccd77dbda09ca424627ac1bfd5ad8"><td class="memItemLeft" align="right" valign="top">System.Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html">AbilityData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AbilitySystem.html#aee7ccd77dbda09ca424627ac1bfd5ad8">OnAbilityCast</a></td></tr>
+<tr class="memdesc:aee7ccd77dbda09ca424627ac1bfd5ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает).  <br /></td></tr>
+<tr class="separator:aee7ccd77dbda09ca424627ac1bfd5ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a393dee0b978cc74d557485b9911c4a40" id="r_a393dee0b978cc74d557485b9911c4a40"><td class="memItemLeft" align="right" valign="top">System.Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html">AbilityData</a>, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AbilitySystem.html#a393dee0b978cc74d557485b9911c4a40">OnAbilityCastStarted</a></td></tr>
+<tr class="memdesc:a393dee0b978cc74d557485b9911c4a40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начата подготовка или канал (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a4ffe21e95bb6b475bc97ac9a1f2bdfaa" title="Способность занимает время: есть подготовка или канал (иначе применяется в тот же тик).">AbilityData.TakesTime</a>): кастующий и длительность подготовки в тиках.  <br /></td></tr>
+<tr class="separator:a393dee0b978cc74d557485b9911c4a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7c0d6284f795a855ef91e325143e9ec" id="r_af7c0d6284f795a855ef91e325143e9ec"><td class="memItemLeft" align="right" valign="top">System.Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AbilitySystem.html#af7c0d6284f795a855ef91e325143e9ec">OnAbilityCastInterrupted</a></td></tr>
+<tr class="memdesc:af7c0d6284f795a855ef91e325143e9ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Каст или канал оборван, не доиграв: контроль, полёт, смерть или потеря цели.  <br /></td></tr>
+<tr class="separator:af7c0d6284f795a855ef91e325143e9ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Тик способностей: убывание кулдаунов и детерминированный плейсхолдер-каст готовых активок (полный выбор «когда/что кастовать» — AI Фазы 3, вики «12» §1, §9). </p>
@@ -164,11 +172,9 @@ Events</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AbilitySystem_aaf936034ee2d2b14afc73a060e1875f4_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
+
+<p>Тик способностей: кулдауны, решения о кастах, затем сами касты. </p>
+<p>РЕШЕНИЯ ОТДЕЛЕНЫ ОТ ПРИМЕНЕНИЯ, и это принципиально. Пока каст применялся сразу по ходу обхода, наложенный им контроль тут же лишал права каста всех, кто стоит в списке позже, — а список у зеркальных сторон обратный. Два готовых в один тик криоманта решали исход тем, кто заспавнен первым: левый вешал «Оковы», правый ловил стан и терял свой каст навсегда (пойман зондом на тике 240 — у левых «Заморозка», у правых уже стан от чужого криоманта). Теперь оба решают по состоянию НАЧАЛА тика и оба кастуют: одновременная готовность разрешается одновременно, а не по месту в списке. Тот же приём, что в <code>MovementSystem</code> и <code>SeparationSystem</code>. </p>
 
 </div>
 </div>
@@ -218,35 +224,60 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Попытаться скастовать способность <em>abilityIndex</em> . </p>
-<p>Возвращает false, если не готова / не хватает ресурса / нет валидной цели. </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AbilitySystem_a0cedfa4ba0cd96a1b321dbbde5983bc8_cgraph.svg" width="482" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AbilitySystem_a0cedfa4ba0cd96a1b321dbbde5983bc8_icgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<p>Попытаться скастовать способность <em>abilityIndex</em>  НЕМЕДЛЕННО (решение + применение одним вызовом). </p>
+<p>Возвращает false, если не готова / не хватает ресурса / нет валидной цели. Внутри тика так не кастуют — там решения собираются со всех и применяются после (см. Tick); этот вход остаётся для прямого каста из тестов и dev-команд. </p>
+<p>У способности с подготовкой (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a4ffe21e95bb6b475bc97ac9a1f2bdfaa" title="Способность занимает время: есть подготовка или канал (иначе применяется в тот же тик).">AbilityData.TakesTime</a>) <code>true</code> означает «каст НАЧАТ», а не «нагрузка применена»: цена списана, счётчик взведён, а сама нагрузка придёт через свои тики. Проверять результат такого каста нужно после прогона тиков.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Event Documentation</h2>
-<a id="a31ce06e9c54aaaa0ca2902b6c6fc9fba" name="a31ce06e9c54aaaa0ca2902b6c6fc9fba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31ce06e9c54aaaa0ca2902b6c6fc9fba">&#9670;&#160;</a></span>OnAbilityCast</h2>
+<a id="aee7ccd77dbda09ca424627ac1bfd5ad8" name="aee7ccd77dbda09ca424627ac1bfd5ad8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee7ccd77dbda09ca424627ac1bfd5ad8">&#9670;&#160;</a></span>OnAbilityCast</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">System.Action&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&gt; Guildmaster.Combat.AbilitySystem.OnAbilityCast</td>
+          <td class="memname">System.Action&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html">AbilityData</a>&gt; Guildmaster.Combat.AbilitySystem.OnAbilityCast</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает). </p>
+<p>Определение приходит вместе с кастующим: показу нужно знать, ЧЕМ исполнен приём (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a003e7ce697bcc2dfcd9b7c8cc010095d" title="Чем исполняется приём — что зажигает показ на телеграфе.">AbilityData.CastSource</a>), а по одному id юнита это не восстановить. </p>
+
+</div>
+</div>
+<a id="af7c0d6284f795a855ef91e325143e9ec" name="af7c0d6284f795a855ef91e325143e9ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7c0d6284f795a855ef91e325143e9ec">&#9670;&#160;</a></span>OnAbilityCastInterrupted</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">System.Action&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&gt; Guildmaster.Combat.AbilitySystem.OnAbilityCastInterrupted</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Каст или канал оборван, не доиграв: контроль, полёт, смерть или потеря цели. </p>
+
+</div>
+</div>
+<a id="a393dee0b978cc74d557485b9911c4a40" name="a393dee0b978cc74d557485b9911c4a40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a393dee0b978cc74d557485b9911c4a40">&#9670;&#160;</a></span>OnAbilityCastStarted</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">System.Action&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html">AbilityData</a>, int&gt; Guildmaster.Combat.AbilitySystem.OnAbilityCastStarted</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Начата подготовка или канал (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a4ffe21e95bb6b475bc97ac9a1f2bdfaa" title="Способность занимает время: есть подготовка или канал (иначе применяется в тот же тик).">AbilityData.TakesTime</a>): кастующий и длительность подготовки в тиках. </p>
+<p>Мгновенные способности этого события не дают — у них подводить нечего. </p>
 
 </div>
 </div>

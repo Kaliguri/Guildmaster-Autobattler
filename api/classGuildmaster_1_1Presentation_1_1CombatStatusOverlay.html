@@ -114,36 +114,62 @@ Collaboration diagram for Guildmaster.Presentation.CombatStatusOverlay:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7bb2b3aeb78689fa094f37fdd832a71d" id="r_a7bb2b3aeb78689fa094f37fdd832a71d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html#a7bb2b3aeb78689fa094f37fdd832a71d">Initialize</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">simulation</a>)</td></tr>
-<tr class="memdesc:a7bb2b3aeb78689fa094f37fdd832a71d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Инициализация рантайм-создателем (CombatPresenter): подать симуляцию для чтения состояния.  <br /></td></tr>
-<tr class="separator:a7bb2b3aeb78689fa094f37fdd832a71d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b8703c0d3c1ad5cb7206b37b05b195" id="r_a90b8703c0d3c1ad5cb7206b37b05b195"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html#a90b8703c0d3c1ad5cb7206b37b05b195">Initialize</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> simulation, <a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html">Combat.Tape.BattleTapePlayback</a> playback, <a class="el" href="classGuildmaster_1_1Presentation_1_1DevOverlayMode.html">DevOverlayMode</a> mode)</td></tr>
+<tr class="memdesc:a90b8703c0d3c1ad5cb7206b37b05b195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Инициализация рантайм-создателем (CombatPresenter): подать оба источника состояния и владельца режима.  <br /></td></tr>
+<tr class="separator:a90b8703c0d3c1ad5cb7206b37b05b195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a43912a179e9bb9dbb7770fb4b49f46af" id="r_a43912a179e9bb9dbb7770fb4b49f46af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html#a43912a179e9bb9dbb7770fb4b49f46af">IsEnabled</a><code> [get, set]</code></td></tr>
+<tr class="memitem:a43912a179e9bb9dbb7770fb4b49f46af" id="r_a43912a179e9bb9dbb7770fb4b49f46af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html#a43912a179e9bb9dbb7770fb4b49f46af">IsEnabled</a><code> [get, set]</code></td></tr>
 <tr class="separator:a43912a179e9bb9dbb7770fb4b49f46af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Dev-подсветка статусов юнитов кольцами Shapes: метка/стан/щит/заморозка/усиление. </p>
-<p>Каждый кадр читает состояние симуляции и рисует вокруг живых юнитов концентрические кольца (immediate-mode с пулом Disc-Ring). Чистая презентация — сим не трогает. Создаётся в рантайме CombatPresenter (никаких правок префабов/сцены); тогглится IsEnabled (команда <code>gm_toggle_status</code>). Не финальный VFX — инструмент наглядности среза. </p>
+<p>Каждый кадр читает состояние боя и рисует вокруг живых юнитов концентрические кольца (immediate-mode с пулом Disc-Ring). Чистая презентация — сим не трогает. Создаётся в рантайме CombatPresenter (никаких правок префабов/сцены); тогглится IsEnabled (команда <code>gm_toggle_status</code>). Не финальный VFX — инструмент наглядности среза. </p>
+<p><b>Источник состояния — по умолчанию ПОКАЗАННЫЙ кадр</b> (DevOverlayMode): кольца обязаны быть на тех юнитах, которых видит игрок. Живой сим впереди на окно опережения, и в его координатах кольца висели бы в пустоте. Режим переключаем (<code>gm_overlay_source</code>) и подписан на экране — иначе разъезд читается как баг, а не как выбранный режим.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7bb2b3aeb78689fa094f37fdd832a71d" name="a7bb2b3aeb78689fa094f37fdd832a71d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7bb2b3aeb78689fa094f37fdd832a71d">&#9670;&#160;</a></span>Initialize()</h2>
+<a id="a90b8703c0d3c1ad5cb7206b37b05b195" name="a90b8703c0d3c1ad5cb7206b37b05b195"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b8703c0d3c1ad5cb7206b37b05b195">&#9670;&#160;</a></span>Initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.CombatStatusOverlay.Initialize </td>
+          <td class="memname">void Guildmaster.Presentation.CombatStatusOverlay.Initialize </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a>&#160;</td>
-          <td class="paramname"><em>simulation</em></td><td>)</td>
+          <td class="paramname"><em>simulation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html">Combat::Tape::BattleTapePlayback</a>&#160;</td>
+          <td class="paramname"><em>playback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Presentation_1_1DevOverlayMode.html">DevOverlayMode</a>&#160;</td>
+          <td class="paramname"><em>mode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Инициализация рантайм-создателем (CombatPresenter): подать симуляцию для чтения состояния. </p>
+<p>Инициализация рантайм-создателем (CombatPresenter): подать оба источника состояния и владельца режима. </p>
+<p>Сим нужен даже в режиме показа — на него переключаются руками. </p>
 
 </div>
 </div>
@@ -158,7 +184,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a> Guildmaster.Presentation.CombatStatusOverlay.IsEnabled</td>
+          <td class="memname">bool Guildmaster.Presentation.CombatStatusOverlay.IsEnabled</td>
         </tr>
       </table>
   </td>

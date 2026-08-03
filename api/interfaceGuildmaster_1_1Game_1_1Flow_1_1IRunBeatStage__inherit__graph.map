@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.IRunBeatStage" name="Guildmaster.Game.Flow.IRunBeatStage">
+<area shape="rect" id="Node000001" title="Что происходит с МИРОМ на стыках узлов забега." alt="" coords="5,5,208,105"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1RunBeatStage.html" title="Соло&#45;реализация: возврат мира — команда в живой боевой скоуп (IBattleSession.RequestReset),..." alt="" coords="7,153,206,273"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,119,109,153,104,153,104,119"/>
+</map>

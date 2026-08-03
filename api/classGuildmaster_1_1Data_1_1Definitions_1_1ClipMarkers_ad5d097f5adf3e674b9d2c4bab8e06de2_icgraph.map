@@ -1,0 +1,7 @@
+<map id="Guildmaster.Data.Definitions.ClipMarkers.FirstHitTime" name="Guildmaster.Data.Definitions.ClipMarkers.FirstHitTime">
+<area shape="rect" id="Node000001" title="Время первого контакта (сек) или &#45;1, если маркера нет." alt="" coords="268,37,483,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#ab85199f88e9e8c16535a9a5360138056" title="Кадр первого контакта = round(time × frameRate). 0 если клипа/маркера нет." alt="" coords="5,5,220,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="254,45,220,41,221,36,255,40"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a748b778ffb185fb87759417ff185ffc2" title="Нормированное время первого контакта (0..1). 0 если клипа/маркера/длины нет." alt="" coords="5,69,220,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="255,75,221,79,220,74,254,69"/>
+</map>

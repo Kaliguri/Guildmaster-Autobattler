@@ -1,12 +1,16 @@
 var classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig =
 [
+    [ "CreateDefault", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a7feabfaff77d5b1937486c119c6f1bc0", null ],
     [ "BattleGoldReward", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a8d05524febecb76d983218a7fe4cb28b", null ],
-    [ "DefaultLocale", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a0803161aa31fdee6aaa2e3d6361d8194", null ],
+    [ "ClassBalance", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ab3da034f7648ec99aa3055b09a4df331", null ],
     [ "DefaultMasterVolume", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a057b8ba6fcb4cd3d9a8312c502111590", null ],
     [ "DefaultMusicVolume", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ace78569fefe75af6daab76e8ebfa3a8b", null ],
     [ "DefaultSfxVolume", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a229a933687c3a48a5c2ffddc4e92d638", null ],
     [ "GuildSize", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a68b847c118e0a2b943a3d354653330a1", null ],
     [ "LocalPlayerTeam", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a49e22d89c51d9560d46fdc0042bf0472", null ],
+    [ "MaxGuildsPerProfile", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a32e2aa96c37bbff9b28e6aa27f8e9cb3", null ],
+    [ "MaxProfiles", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a27f1813965d3a96f9af84c15baf2f226", null ],
+    [ "MaxRosterCapacity", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a5971d919724780c308563eb0ebbdbf35", null ],
     [ "PartyBannerSlots", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#af390edfc6e969f2436e7d2e2cd707b0d", null ],
     [ "PriceCommon", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ab9ce05565d427dac2f0de0c7239c8f78", null ],
     [ "PriceCursed", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a9a68d1be11384a91090718b67206222e", null ],
@@ -19,5 +23,8 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig =
     [ "ShopRerollCost", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#adda06f2cc32ffcfffe23ebd7ec9ef7f9", null ],
     [ "StartGold", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ac6af8ae26b0e7671edb3418c8ecf646c", null ],
     [ "StartingRelicId", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#acc3d8431eb8b55733c748c4ea8ab1f3f", null ],
-    [ "VesselItemSlots", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a8c8d118636ff1c50e53def5183282153", null ]
+    [ "StartingRosterCapacity", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a9383ebd28347dbb7c93692a3478a05fa", null ],
+    [ "Stats", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ac7659e29eb4197af130dd4d096d2d6e1", null ],
+    [ "VesselItemSlots", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a8c8d118636ff1c50e53def5183282153", null ],
+    [ "VeteranHireUnlockDeaths", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a6b4b9a4bc6e47536ca0729e3d093f233", null ]
 ];

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.Body.CastGlowMask.Resolve" name="Guildmaster.Presentation.Body.CastGlowMask.Resolve">
+<area shape="rect" id="Node000001" title="Какие части зажечь." alt="" coords="5,41,216,81"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitPartLookup.html#ab10a07d7296662f98a2f3df9e6b3f767" title="Предмет в этом хвате." alt="" coords="268,5,503,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,45,254,40,255,45,217,50"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitPartLookup.html#a2d3f0c7b7785644bb24fbe7dcc70b783" title="Чем юнит исполняет приём ЭТОЙ рукой: предмет в её хвате, а если рука пуста — сама кисть (кулак)." alt="" coords="264,70,507,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,73,251,77,250,82,216,78"/>
+</map>

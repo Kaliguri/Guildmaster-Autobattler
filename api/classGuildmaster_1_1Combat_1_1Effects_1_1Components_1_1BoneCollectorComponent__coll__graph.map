@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.BoneCollectorComponent" name="Guildmaster.Combat.Effects.Components.BoneCollectorComponent">
+<area shape="rect" id="Node000001" title="«Собиратель костей» Некроманта (карточка [[the&#45;bonewright]]): пассивка НОСИТЕЛЯ, которая слышит смерт..." alt="" coords="5,365,272,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="63,252,214,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,331,141,365,136,365,136,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="46,119,231,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="141,218,141,252,136,252,136,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="73,5,204,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="141,85,141,119,136,119,136,85"/>
+</map>

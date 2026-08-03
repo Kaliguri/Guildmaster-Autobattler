@@ -1,0 +1,23 @@
+<map id="Guildmaster.Game.Session.Net.RemoteRunCommands.RequestSave" name="Guildmaster.Game.Session.Net.RemoteRunCommands.RequestSave">
+<area shape="rect" id="Node000001" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,137,293,177"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1NetEnvelope.html#ab63149981494a5e93e74be15ff682502" title="Уложить нагрузку в конверт." alt="" coords="341,115,595,141"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="293,141,327,138,328,144,294,147"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="358,165,578,205"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="294,167,344,172,344,177,293,173"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#abac66cddf5479c1c88169b155b0851fe" title="Начать писать заново, сохранив выделенный буфер: чанки идут потоком, мусорить нельзя." alt="" coords="643,5,871,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="573,163,593,150,604,139,610,128,616,104,622,80,630,67,641,55,647,50,651,55,644,59,634,70,627,82,621,105,615,130,608,142,596,154,575,167"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#af256f1c6c9d97a315975b2a95fdbd8e1" title=" " alt="" coords="643,69,871,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="558,163,593,150,617,134,641,119,660,111,662,116,644,124,620,139,596,154,559,168"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a8bc0e1ef3017080877528c6687b49da7" title=" " alt="" coords="643,133,871,173"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="578,170,629,165,629,170,579,176"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a95cc428a4b10b22230fd106a7e22635d" title=" " alt="" coords="643,197,871,237"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="579,195,629,201,629,206,578,200"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a766f2eecb93cc1180c521ababf677c66" title="Восемь байт, младшая половина первой — тем же порядком, что и всё остальное." alt="" coords="643,261,871,301"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="521,203,644,247,670,255,668,260,642,252,520,208"/>
+<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a783d9e388e2924706fd0549a4eeeca73" title="Строка как длина + UTF&#45;8." alt="" coords="643,325,871,365"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="493,204,558,257,600,286,644,311,660,318,658,323,641,316,597,290,555,261,489,208"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a17310f0432ca43b4cfdae9591b4a7c89" title=" " alt="" coords="919,261,1147,301"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="871,279,905,279,905,284,871,284"/>
+<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#ab09035f497e2a2eaebc8991801f7f3bb" title=" " alt="" coords="919,325,1147,365"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="871,343,905,343,905,348,871,348"/>
+</map>

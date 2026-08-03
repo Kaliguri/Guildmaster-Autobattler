@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1De
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Presentation.Design.CombatFeelConfig Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
@@ -103,103 +104,617 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1De
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.Design.CombatFeelConfig:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig__inherit__graph.svg" width="194" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig__inherit__graph.svg" width="236" height="564"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.Design.CombatFeelConfig:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig__coll__graph.svg" width="194" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig__coll__graph.svg" width="236" height="564"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:addae4d36a509603a20dd347adb68de40" id="r_addae4d36a509603a20dd347adb68de40"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#addae4d36a509603a20dd347adb68de40">EvaluateHitstopSeconds</a> (float hpDamageFrac)</td></tr>
+<tr class="memdesc:addae4d36a509603a20dd347adb68de40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hitstop в секундах по доле HP-урона от MaxHP (кривая веса + lerp min..max).  <br /></td></tr>
+<tr class="separator:addae4d36a509603a20dd347adb68de40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22953ef4ca8fd81d2638a66b9cd2d171" id="r_a22953ef4ca8fd81d2638a66b9cd2d171"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a22953ef4ca8fd81d2638a66b9cd2d171">EvaluateNumberScale</a> (float hpDamageFrac)</td></tr>
+<tr class="memdesc:a22953ef4ca8fd81d2638a66b9cd2d171"><td class="mdescLeft">&#160;</td><td class="mdescRight">Масштаб боевой цифры по доле HP-урона от MaxHP цели: 1 на царапине, <code>NumberMaxScale</code> на ударе в <code>NumberFullFrac</code> и тяжелее.  <br /></td></tr>
+<tr class="separator:a22953ef4ca8fd81d2638a66b9cd2d171"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5d0d4c0cd44784bfbb39bba51089989" id="r_ae5d0d4c0cd44784bfbb39bba51089989"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ae5d0d4c0cd44784bfbb39bba51089989">EvaluateCutLength</a> (float hpDamageFrac)</td></tr>
+<tr class="memdesc:ae5d0d4c0cd44784bfbb39bba51089989"><td class="mdescLeft">&#160;</td><td class="mdescRight">Длина пореза в мировых единицах по весу удара: тяжёлый вскрывает шире.  <br /></td></tr>
+<tr class="separator:ae5d0d4c0cd44784bfbb39bba51089989"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5e9ac9ead2e13ea05798ba39f6d36a4" id="r_ad5e9ac9ead2e13ea05798ba39f6d36a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1HitFormArchetypeConfig.html">HitFormArchetypeConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad5e9ac9ead2e13ea05798ba39f6d36a4">HitFormArchetype</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1caabb0a57eb911cd211aa9b39edca3e">Effects.HitFormKind</a> kind)</td></tr>
+<tr class="memdesc:ad5e9ac9ead2e13ea05798ba39f6d36a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Правило генерации архетипа.  <br /></td></tr>
+<tr class="separator:ad5e9ac9ead2e13ea05798ba39f6d36a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a275a3ffa8d89096c0a1326ac25713271" id="r_a275a3ffa8d89096c0a1326ac25713271"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a275a3ffa8d89096c0a1326ac25713271">EvaluateHitFormSize</a> (float hpDamageFrac)</td></tr>
+<tr class="memdesc:a275a3ffa8d89096c0a1326ac25713271"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель РАЗМЕРА формы по доле снятого HP.  <br /></td></tr>
+<tr class="separator:a275a3ffa8d89096c0a1326ac25713271"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f78239c06b581d861f37cf1a76b44a8" id="r_a7f78239c06b581d861f37cf1a76b44a8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a7f78239c06b581d861f37cf1a76b44a8">EvaluateHitVfxSizeMultiplier</a> (float hpDamageFrac)</td></tr>
+<tr class="memdesc:a7f78239c06b581d861f37cf1a76b44a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель РАЗМЕРА hit-spark по доле HP-урона от MaxHP (HeavyHitFrac = полная сила).  <br /></td></tr>
+<tr class="separator:a7f78239c06b581d861f37cf1a76b44a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b529ca746b13b5f1f4e0784586dc735" id="r_a6b529ca746b13b5f1f4e0784586dc735"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a6b529ca746b13b5f1f4e0784586dc735">EvaluateHitSparkCount</a> (float hpDamageFrac)</td></tr>
+<tr class="memdesc:a6b529ca746b13b5f1f4e0784586dc735"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько искр даёт удар: <code>база + доля_HP × шаг</code>, но не больше потолка.  <br /></td></tr>
+<tr class="separator:a6b529ca746b13b5f1f4e0784586dc735"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af509a24e923e94aff6eb41486c921a29" id="r_af509a24e923e94aff6eb41486c921a29"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#af509a24e923e94aff6eb41486c921a29">EvaluateHitVfxCount</a> (float hpDamageFrac)</td></tr>
+<tr class="memdesc:af509a24e923e94aff6eb41486c921a29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель бёрстов префаба, дающий нужное АБСОЛЮТНОЕ количество искр.  <br /></td></tr>
+<tr class="separator:af509a24e923e94aff6eb41486c921a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa880545503413066033c5e039396dfa0" id="r_aa880545503413066033c5e039396dfa0"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aa880545503413066033c5e039396dfa0">ResolveHitFlashColor</a> (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> type)</td></tr>
+<tr class="memdesc:aa880545503413066033c5e039396dfa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цвет hit-flash по типу урона: у типов со своим «вкусом» (яд, свет, тьма) он свой, у остальных — цвет их школы.  <br /></td></tr>
+<tr class="separator:aa880545503413066033c5e039396dfa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a49db65588e27a517e7df2378d47a9adf" id="r_a49db65588e27a517e7df2378d47a9adf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a49db65588e27a517e7df2378d47a9adf">EnableContactDust</a><code> [get]</code></td></tr>
+<tr class="separator:a49db65588e27a517e7df2378d47a9adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19ff79fabe5a9a2f883ef7f4010143a7" id="r_a19ff79fabe5a9a2f883ef7f4010143a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a19ff79fabe5a9a2f883ef7f4010143a7">EnableHitNudge</a><code> [get]</code></td></tr>
+<tr class="separator:a19ff79fabe5a9a2f883ef7f4010143a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8edd6bca73677058f8286448e95ccda7" id="r_a8edd6bca73677058f8286448e95ccda7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a8edd6bca73677058f8286448e95ccda7">EnableFacingFlipSquash</a><code> [get]</code></td></tr>
+<tr class="separator:a8edd6bca73677058f8286448e95ccda7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecffc095ce70dbbfe3d01d1825cbc76b" id="r_aecffc095ce70dbbfe3d01d1825cbc76b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aecffc095ce70dbbfe3d01d1825cbc76b">EnableTargetAcquireTell</a><code> [get]</code></td></tr>
+<tr class="separator:aecffc095ce70dbbfe3d01d1825cbc76b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b1db7001705dc1d2859701733842f4b" id="r_a3b1db7001705dc1d2859701733842f4b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3b1db7001705dc1d2859701733842f4b">EnableIdleBreath</a><code> [get]</code></td></tr>
+<tr class="separator:a3b1db7001705dc1d2859701733842f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b45fd11174962c0c25374e8be546005" id="r_a0b45fd11174962c0c25374e8be546005"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0b45fd11174962c0c25374e8be546005">EnableAttackAnticipation</a><code> [get]</code></td></tr>
+<tr class="separator:a0b45fd11174962c0c25374e8be546005"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabf4e363f48c8752259b86f7f45ee0f5" id="r_aabf4e363f48c8752259b86f7f45ee0f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aabf4e363f48c8752259b86f7f45ee0f5">EnableAttackerLunge</a><code> [get]</code></td></tr>
+<tr class="separator:aabf4e363f48c8752259b86f7f45ee0f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7a9480ba7270969a074b9b9b6ec2647" id="r_ad7a9480ba7270969a074b9b9b6ec2647"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad7a9480ba7270969a074b9b9b6ec2647">EnableImpactFrame</a><code> [get]</code></td></tr>
+<tr class="separator:ad7a9480ba7270969a074b9b9b6ec2647"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fc55bffad3b56760fd1c6bba40bc1e8" id="r_a5fc55bffad3b56760fd1c6bba40bc1e8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a5fc55bffad3b56760fd1c6bba40bc1e8">EnableDeathAnticipation</a><code> [get]</code></td></tr>
+<tr class="separator:a5fc55bffad3b56760fd1c6bba40bc1e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5879a9d9dc1527e707eae67c1d1855c2" id="r_a5879a9d9dc1527e707eae67c1d1855c2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a5879a9d9dc1527e707eae67c1d1855c2">EnableFloatingTextArc</a><code> [get]</code></td></tr>
+<tr class="separator:a5879a9d9dc1527e707eae67c1d1855c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b917fa7e0e615c3166f7cf2d08d7adb" id="r_a4b917fa7e0e615c3166f7cf2d08d7adb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4b917fa7e0e615c3166f7cf2d08d7adb">EnableHpBarPunch</a><code> [get]</code></td></tr>
+<tr class="separator:a4b917fa7e0e615c3166f7cf2d08d7adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4ffdd4d47e0f439cd89dbe1df0fa8bf" id="r_ad4ffdd4d47e0f439cd89dbe1df0fa8bf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad4ffdd4d47e0f439cd89dbe1df0fa8bf">EnableHealFlash</a><code> [get]</code></td></tr>
+<tr class="separator:ad4ffdd4d47e0f439cd89dbe1df0fa8bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67075d2f81657b166eacd1c752ebcce9" id="r_a67075d2f81657b166eacd1c752ebcce9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a67075d2f81657b166eacd1c752ebcce9">EnableCastGlow</a><code> [get]</code></td></tr>
+<tr class="separator:a67075d2f81657b166eacd1c752ebcce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47326b0e1f9e87f34d4abf26a89cc3ee" id="r_a47326b0e1f9e87f34d4abf26a89cc3ee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a47326b0e1f9e87f34d4abf26a89cc3ee">EnableBlockGlow</a><code> [get]</code></td></tr>
+<tr class="separator:a47326b0e1f9e87f34d4abf26a89cc3ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7752aa1d798c824945479ba729712c77" id="r_a7752aa1d798c824945479ba729712c77"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a7752aa1d798c824945479ba729712c77">EnableHitFlash</a><code> [get]</code></td></tr>
+<tr class="separator:a7752aa1d798c824945479ba729712c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1717ac3bb4b50405e4ed3b2464301e62" id="r_a1717ac3bb4b50405e4ed3b2464301e62"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a1717ac3bb4b50405e4ed3b2464301e62">EnableHitSquash</a><code> [get]</code></td></tr>
+<tr class="separator:a1717ac3bb4b50405e4ed3b2464301e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a526d71559be87f91b0158a5ec292a277" id="r_a526d71559be87f91b0158a5ec292a277"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a526d71559be87f91b0158a5ec292a277">EnableTelegraphFlash</a><code> [get]</code></td></tr>
+<tr class="separator:a526d71559be87f91b0158a5ec292a277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af0c5a3a015a62b1c183d6f56ebdd5a" id="r_a9af0c5a3a015a62b1c183d6f56ebdd5a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a9af0c5a3a015a62b1c183d6f56ebdd5a">EnableGuardPose</a><code> [get]</code></td></tr>
+<tr class="separator:a9af0c5a3a015a62b1c183d6f56ebdd5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bd0eeb0c410c8a71baaa9f2fab34b16" id="r_a5bd0eeb0c410c8a71baaa9f2fab34b16"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a5bd0eeb0c410c8a71baaa9f2fab34b16">EnableDeathShatter</a><code> [get]</code></td></tr>
+<tr class="separator:a5bd0eeb0c410c8a71baaa9f2fab34b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0f6c46682accb7dc02943de30e57eca" id="r_ad0f6c46682accb7dc02943de30e57eca"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad0f6c46682accb7dc02943de30e57eca">HealFlashColor</a><code> [get]</code></td></tr>
+<tr class="separator:ad0f6c46682accb7dc02943de30e57eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc5efc986c8ff118e33e26d02faacbb7" id="r_abc5efc986c8ff118e33e26d02faacbb7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#abc5efc986c8ff118e33e26d02faacbb7">HealFlashPeak</a><code> [get]</code></td></tr>
+<tr class="separator:abc5efc986c8ff118e33e26d02faacbb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e05056eaefac144caae9c2b9386f10b" id="r_a8e05056eaefac144caae9c2b9386f10b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a8e05056eaefac144caae9c2b9386f10b">CastOutlineDuration</a><code> [get]</code></td></tr>
+<tr class="separator:a8e05056eaefac144caae9c2b9386f10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d97f0bfbf41a280db0c1e74a4334db6" id="r_a2d97f0bfbf41a280db0c1e74a4334db6"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a2d97f0bfbf41a280db0c1e74a4334db6">CastOutlineStrength</a><code> [get]</code></td></tr>
+<tr class="separator:a2d97f0bfbf41a280db0c1e74a4334db6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab705104508bed3834b71b550b01e1743" id="r_ab705104508bed3834b71b550b01e1743"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ab705104508bed3834b71b550b01e1743">CastGlowStrength</a><code> [get]</code></td></tr>
+<tr class="separator:ab705104508bed3834b71b550b01e1743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37a01680fec896e46bc1c3e868632733" id="r_a37a01680fec896e46bc1c3e868632733"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a37a01680fec896e46bc1c3e868632733">CastGlowBloomIntensity</a><code> [get]</code></td></tr>
+<tr class="separator:a37a01680fec896e46bc1c3e868632733"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e69e7ca0b60e4de7bc05b01134fce20" id="r_a4e69e7ca0b60e4de7bc05b01134fce20"><td class="memItemLeft" align="right" valign="top">AnimationCurve&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4e69e7ca0b60e4de7bc05b01134fce20">CastGlowChargeCurve</a><code> [get]</code></td></tr>
+<tr class="separator:a4e69e7ca0b60e4de7bc05b01134fce20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f5e8193d8a88cb8ce2217e521e2e9a6" id="r_a8f5e8193d8a88cb8ce2217e521e2e9a6"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a8f5e8193d8a88cb8ce2217e521e2e9a6">CastGlowRelease</a><code> [get]</code></td></tr>
+<tr class="separator:a8f5e8193d8a88cb8ce2217e521e2e9a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81a5ec6d61de74c49bc6f2801a12ccab" id="r_a81a5ec6d61de74c49bc6f2801a12ccab"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a81a5ec6d61de74c49bc6f2801a12ccab">CastGlowPulseRise</a><code> [get]</code></td></tr>
+<tr class="separator:a81a5ec6d61de74c49bc6f2801a12ccab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08c908d6e1119bacfbbf806aceab8db7" id="r_a08c908d6e1119bacfbbf806aceab8db7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a08c908d6e1119bacfbbf806aceab8db7">CastGlowFlatness</a><code> [get]</code></td></tr>
+<tr class="separator:a08c908d6e1119bacfbbf806aceab8db7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affb6afc29592225c6a066afb7111e602" id="r_affb6afc29592225c6a066afb7111e602"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#affb6afc29592225c6a066afb7111e602">LowHpThreshold</a><code> [get]</code></td></tr>
+<tr class="separator:affb6afc29592225c6a066afb7111e602"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dcace7448c26874ee0b709f969edd3e" id="r_a3dcace7448c26874ee0b709f969edd3e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3dcace7448c26874ee0b709f969edd3e">LowHpPulsePeriod</a><code> [get]</code></td></tr>
+<tr class="separator:a3dcace7448c26874ee0b709f969edd3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0892f66bbb6da9c5d5e3700a811dddeb" id="r_a0892f66bbb6da9c5d5e3700a811dddeb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0892f66bbb6da9c5d5e3700a811dddeb">LowHpPulseAmount</a><code> [get]</code></td></tr>
+<tr class="separator:a0892f66bbb6da9c5d5e3700a811dddeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf7eab62953942ce512749013821122e" id="r_adf7eab62953942ce512749013821122e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#adf7eab62953942ce512749013821122e">ContactDustCooldown</a><code> [get]</code></td></tr>
+<tr class="separator:adf7eab62953942ce512749013821122e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a940b44b3538e36b243bd083f1dad5544" id="r_a940b44b3538e36b243bd083f1dad5544"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a940b44b3538e36b243bd083f1dad5544">HitNudgeDistance</a><code> [get]</code></td></tr>
+<tr class="separator:a940b44b3538e36b243bd083f1dad5544"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e8f7a1f879f39aa8cf9e90b42777512" id="r_a1e8f7a1f879f39aa8cf9e90b42777512"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a1e8f7a1f879f39aa8cf9e90b42777512">HitNudgeDuration</a><code> [get]</code></td></tr>
+<tr class="separator:a1e8f7a1f879f39aa8cf9e90b42777512"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dd67c70823d7c47f272eed804eb2cc8" id="r_a9dd67c70823d7c47f272eed804eb2cc8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a9dd67c70823d7c47f272eed804eb2cc8">FacingFlipSquashAmount</a><code> [get]</code></td></tr>
+<tr class="separator:a9dd67c70823d7c47f272eed804eb2cc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e4870876839feb745cf04dc33b718e5" id="r_a3e4870876839feb745cf04dc33b718e5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3e4870876839feb745cf04dc33b718e5">FacingFlipDuration</a><code> [get]</code></td></tr>
+<tr class="separator:a3e4870876839feb745cf04dc33b718e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bcd191fa4090a0df9d6c9db584b42eb" id="r_a4bcd191fa4090a0df9d6c9db584b42eb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4bcd191fa4090a0df9d6c9db584b42eb">TargetAcquireTwitch</a><code> [get]</code></td></tr>
+<tr class="separator:a4bcd191fa4090a0df9d6c9db584b42eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41611e786db5a59b3a9958970587f90a" id="r_a41611e786db5a59b3a9958970587f90a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a41611e786db5a59b3a9958970587f90a">TargetAcquireDuration</a><code> [get]</code></td></tr>
+<tr class="separator:a41611e786db5a59b3a9958970587f90a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e8604a58b803b199edaf36f2323fceb" id="r_a7e8604a58b803b199edaf36f2323fceb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a7e8604a58b803b199edaf36f2323fceb">IdleBreathAmplitude</a><code> [get]</code></td></tr>
+<tr class="separator:a7e8604a58b803b199edaf36f2323fceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12f5fcfd0c2d46562f83ed2561593348" id="r_a12f5fcfd0c2d46562f83ed2561593348"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a12f5fcfd0c2d46562f83ed2561593348">IdleBreathPeriod</a><code> [get]</code></td></tr>
+<tr class="separator:a12f5fcfd0c2d46562f83ed2561593348"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3270e7824e55227a01d9a6b05f4ad81c" id="r_a3270e7824e55227a01d9a6b05f4ad81c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3270e7824e55227a01d9a6b05f4ad81c">AnticipationDistance</a><code> [get]</code></td></tr>
+<tr class="separator:a3270e7824e55227a01d9a6b05f4ad81c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0b5e56eca99ded6368ff16676a017d7" id="r_ad0b5e56eca99ded6368ff16676a017d7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad0b5e56eca99ded6368ff16676a017d7">AnticipationDuration</a><code> [get]</code></td></tr>
+<tr class="separator:ad0b5e56eca99ded6368ff16676a017d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7300c1525a74a6b7554939c073e0ae0" id="r_af7300c1525a74a6b7554939c073e0ae0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#af7300c1525a74a6b7554939c073e0ae0">LungeDistance</a><code> [get]</code></td></tr>
+<tr class="separator:af7300c1525a74a6b7554939c073e0ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11915725a5d8f2d7d725f51c6101b0ac" id="r_a11915725a5d8f2d7d725f51c6101b0ac"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a11915725a5d8f2d7d725f51c6101b0ac">LungeDuration</a><code> [get]</code></td></tr>
+<tr class="separator:a11915725a5d8f2d7d725f51c6101b0ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fdb33782bdc031e2a2d536a2b02e336" id="r_a6fdb33782bdc031e2a2d536a2b02e336"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a6fdb33782bdc031e2a2d536a2b02e336">ImpactFrameHold</a><code> [get]</code></td></tr>
+<tr class="separator:a6fdb33782bdc031e2a2d536a2b02e336"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0f95f77cae07faf4ef1ce611cc94c46" id="r_ab0f95f77cae07faf4ef1ce611cc94c46"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ab0f95f77cae07faf4ef1ce611cc94c46">DeathAnticipateDuration</a><code> [get]</code></td></tr>
+<tr class="separator:ab0f95f77cae07faf4ef1ce611cc94c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7972441fea3e08bf9bc481685c3586fd" id="r_a7972441fea3e08bf9bc481685c3586fd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a7972441fea3e08bf9bc481685c3586fd">DeathAnticipateShake</a><code> [get]</code></td></tr>
+<tr class="separator:a7972441fea3e08bf9bc481685c3586fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a350cc0abc4122f88b369f38861e332ad" id="r_a350cc0abc4122f88b369f38861e332ad"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a350cc0abc4122f88b369f38861e332ad">NumberArcGravity</a><code> [get]</code></td></tr>
+<tr class="separator:a350cc0abc4122f88b369f38861e332ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8807eb0a19c22e0876c03d6d7592fa57" id="r_a8807eb0a19c22e0876c03d6d7592fa57"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a8807eb0a19c22e0876c03d6d7592fa57">HpBarPunchAmount</a><code> [get]</code></td></tr>
+<tr class="separator:a8807eb0a19c22e0876c03d6d7592fa57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f500c274629dc7f9538381160e42907" id="r_a4f500c274629dc7f9538381160e42907"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4f500c274629dc7f9538381160e42907">HpBarPunchDuration</a><code> [get]</code></td></tr>
+<tr class="separator:a4f500c274629dc7f9538381160e42907"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeca73f16d73b4a08344dd740326a7b7" id="r_afeca73f16d73b4a08344dd740326a7b7"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#afeca73f16d73b4a08344dd740326a7b7">FlashColor</a><code> [get]</code></td></tr>
 <tr class="separator:afeca73f16d73b4a08344dd740326a7b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18a557e1855f59c8650c198426152481" id="r_a18a557e1855f59c8650c198426152481"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a18a557e1855f59c8650c198426152481">FlashDuration</a><code> [get]</code></td></tr>
+<tr class="memitem:a18a557e1855f59c8650c198426152481" id="r_a18a557e1855f59c8650c198426152481"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a18a557e1855f59c8650c198426152481">FlashDuration</a><code> [get]</code></td></tr>
 <tr class="separator:a18a557e1855f59c8650c198426152481"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefd25d5df53ead07689b2a9a202ea963" id="r_aefd25d5df53ead07689b2a9a202ea963"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aefd25d5df53ead07689b2a9a202ea963">SquashAmount</a><code> [get]</code></td></tr>
+<tr class="memitem:aefd25d5df53ead07689b2a9a202ea963" id="r_aefd25d5df53ead07689b2a9a202ea963"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aefd25d5df53ead07689b2a9a202ea963">SquashAmount</a><code> [get]</code></td></tr>
 <tr class="separator:aefd25d5df53ead07689b2a9a202ea963"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b9f9f37edcf15ce45af50536d6f1e31" id="r_a0b9f9f37edcf15ce45af50536d6f1e31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0b9f9f37edcf15ce45af50536d6f1e31">SquashDuration</a><code> [get]</code></td></tr>
+<tr class="memitem:a0b9f9f37edcf15ce45af50536d6f1e31" id="r_a0b9f9f37edcf15ce45af50536d6f1e31"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0b9f9f37edcf15ce45af50536d6f1e31">SquashDuration</a><code> [get]</code></td></tr>
 <tr class="separator:a0b9f9f37edcf15ce45af50536d6f1e31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dce450fbc7f573edf37cc4d71fd51d8" id="r_a2dce450fbc7f573edf37cc4d71fd51d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a2dce450fbc7f573edf37cc4d71fd51d8">HitstopMin</a><code> [get]</code></td></tr>
-<tr class="separator:a2dce450fbc7f573edf37cc4d71fd51d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab47fe137492ca6b673e9e052185c6048" id="r_ab47fe137492ca6b673e9e052185c6048"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ab47fe137492ca6b673e9e052185c6048">HitstopMax</a><code> [get]</code></td></tr>
-<tr class="separator:ab47fe137492ca6b673e9e052185c6048"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad325fa62337ab44e40dfe3a7e68e9c43" id="r_ad325fa62337ab44e40dfe3a7e68e9c43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad325fa62337ab44e40dfe3a7e68e9c43">HitstopFullFrac</a><code> [get]</code></td></tr>
-<tr class="separator:ad325fa62337ab44e40dfe3a7e68e9c43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53b58f51a48767919b9d335e8f6052c9" id="r_a53b58f51a48767919b9d335e8f6052c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a53b58f51a48767919b9d335e8f6052c9">ShakePositionFraction</a><code> [get]</code></td></tr>
+<tr class="memitem:a53b58f51a48767919b9d335e8f6052c9" id="r_a53b58f51a48767919b9d335e8f6052c9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a53b58f51a48767919b9d335e8f6052c9">ShakePositionFraction</a><code> [get]</code></td></tr>
 <tr class="separator:a53b58f51a48767919b9d335e8f6052c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f4c02865080edc19018f1536fbbe4f1" id="r_a9f4c02865080edc19018f1536fbbe4f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a9f4c02865080edc19018f1536fbbe4f1">ShakeRotationStrength</a><code> [get]</code></td></tr>
+<tr class="memitem:a9f4c02865080edc19018f1536fbbe4f1" id="r_a9f4c02865080edc19018f1536fbbe4f1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a9f4c02865080edc19018f1536fbbe4f1">ShakeRotationStrength</a><code> [get]</code></td></tr>
 <tr class="separator:a9f4c02865080edc19018f1536fbbe4f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a02aff2556db58e1e34274152404a2c" id="r_a0a02aff2556db58e1e34274152404a2c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0a02aff2556db58e1e34274152404a2c">ShakeFrequency</a><code> [get]</code></td></tr>
+<tr class="memitem:a0a02aff2556db58e1e34274152404a2c" id="r_a0a02aff2556db58e1e34274152404a2c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0a02aff2556db58e1e34274152404a2c">ShakeFrequency</a><code> [get]</code></td></tr>
 <tr class="separator:a0a02aff2556db58e1e34274152404a2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5e27aec3be823da91d66168a60c7df0" id="r_ab5e27aec3be823da91d66168a60c7df0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ab5e27aec3be823da91d66168a60c7df0">ShakeDecayPerSec</a><code> [get]</code></td></tr>
+<tr class="memitem:ab5e27aec3be823da91d66168a60c7df0" id="r_ab5e27aec3be823da91d66168a60c7df0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ab5e27aec3be823da91d66168a60c7df0">ShakeDecayPerSec</a><code> [get]</code></td></tr>
 <tr class="separator:ab5e27aec3be823da91d66168a60c7df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a362854756df6da0f8704273bacf158" id="r_a4a362854756df6da0f8704273bacf158"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4a362854756df6da0f8704273bacf158">KillShake</a><code> [get]</code></td></tr>
+<tr class="memitem:a4a362854756df6da0f8704273bacf158" id="r_a4a362854756df6da0f8704273bacf158"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4a362854756df6da0f8704273bacf158">KillShake</a><code> [get]</code></td></tr>
 <tr class="separator:a4a362854756df6da0f8704273bacf158"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9aebb8f0eb484c23f439381e4d3e318" id="r_ac9aebb8f0eb484c23f439381e4d3e318"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ac9aebb8f0eb484c23f439381e4d3e318">BattleEndShake</a><code> [get]</code></td></tr>
+<tr class="memitem:ac9aebb8f0eb484c23f439381e4d3e318" id="r_ac9aebb8f0eb484c23f439381e4d3e318"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ac9aebb8f0eb484c23f439381e4d3e318">BattleEndShake</a><code> [get]</code></td></tr>
 <tr class="separator:ac9aebb8f0eb484c23f439381e4d3e318"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a005302e12bb8603374d57ad4db9d0427" id="r_a005302e12bb8603374d57ad4db9d0427"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a005302e12bb8603374d57ad4db9d0427">HeavyHitFrac</a><code> [get]</code></td></tr>
+<tr class="memitem:a005302e12bb8603374d57ad4db9d0427" id="r_a005302e12bb8603374d57ad4db9d0427"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a005302e12bb8603374d57ad4db9d0427">HeavyHitFrac</a><code> [get]</code></td></tr>
 <tr class="separator:a005302e12bb8603374d57ad4db9d0427"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affec023cad3bbca6641bb1c4bcdce094" id="r_affec023cad3bbca6641bb1c4bcdce094"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#affec023cad3bbca6641bb1c4bcdce094">HeavyShakeMin</a><code> [get]</code></td></tr>
+<tr class="memitem:affec023cad3bbca6641bb1c4bcdce094" id="r_affec023cad3bbca6641bb1c4bcdce094"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#affec023cad3bbca6641bb1c4bcdce094">HeavyShakeMin</a><code> [get]</code></td></tr>
 <tr class="separator:affec023cad3bbca6641bb1c4bcdce094"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a853765d777f9c98a648b10aa5e5de071" id="r_a853765d777f9c98a648b10aa5e5de071"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a853765d777f9c98a648b10aa5e5de071">HeavyShakeMax</a><code> [get]</code></td></tr>
+<tr class="memitem:a853765d777f9c98a648b10aa5e5de071" id="r_a853765d777f9c98a648b10aa5e5de071"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a853765d777f9c98a648b10aa5e5de071">HeavyShakeMax</a><code> [get]</code></td></tr>
 <tr class="separator:a853765d777f9c98a648b10aa5e5de071"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99d7e318d4867c3f9ca605ac9994404f" id="r_a99d7e318d4867c3f9ca605ac9994404f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a99d7e318d4867c3f9ca605ac9994404f">NumberMaxScale</a><code> [get]</code></td></tr>
-<tr class="separator:a99d7e318d4867c3f9ca605ac9994404f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15ec3433c1b971d7774f16dd120e8104" id="r_a15ec3433c1b971d7774f16dd120e8104"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a15ec3433c1b971d7774f16dd120e8104">NumberFullFrac</a><code> [get]</code></td></tr>
+<tr class="memitem:a15ec3433c1b971d7774f16dd120e8104" id="r_a15ec3433c1b971d7774f16dd120e8104"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a15ec3433c1b971d7774f16dd120e8104">NumberFullFrac</a><code> [get]</code></td></tr>
+<tr class="memdesc:a15ec3433c1b971d7774f16dd120e8104"><td class="mdescLeft">&#160;</td><td class="mdescRight">Доля HP-урона, на которой цифра достигает максимума — точка насыщения кривой выше.  <br /></td></tr>
 <tr class="separator:a15ec3433c1b971d7774f16dd120e8104"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e20c356b7e00cb6886e2a79223c9cba" id="r_a0e20c356b7e00cb6886e2a79223c9cba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0e20c356b7e00cb6886e2a79223c9cba">ShatterFlashIn</a><code> [get]</code></td></tr>
+<tr class="memitem:a0e20c356b7e00cb6886e2a79223c9cba" id="r_a0e20c356b7e00cb6886e2a79223c9cba"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0e20c356b7e00cb6886e2a79223c9cba">ShatterFlashIn</a><code> [get]</code></td></tr>
 <tr class="separator:a0e20c356b7e00cb6886e2a79223c9cba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27a31dafc98b4264bc8e599013dae355" id="r_a27a31dafc98b4264bc8e599013dae355"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a27a31dafc98b4264bc8e599013dae355">ShatterDuration</a><code> [get]</code></td></tr>
+<tr class="memitem:a27a31dafc98b4264bc8e599013dae355" id="r_a27a31dafc98b4264bc8e599013dae355"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a27a31dafc98b4264bc8e599013dae355">ShatterDuration</a><code> [get]</code></td></tr>
 <tr class="separator:a27a31dafc98b4264bc8e599013dae355"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7a7160fdac2c0b31315675fde35725a" id="r_aa7a7160fdac2c0b31315675fde35725a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aa7a7160fdac2c0b31315675fde35725a">ShatterExplode</a><code> [get]</code></td></tr>
+<tr class="memitem:aa7a7160fdac2c0b31315675fde35725a" id="r_aa7a7160fdac2c0b31315675fde35725a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aa7a7160fdac2c0b31315675fde35725a">ShatterExplode</a><code> [get]</code></td></tr>
 <tr class="separator:aa7a7160fdac2c0b31315675fde35725a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0eb273b58f16a746f6c0cc5c5399191a" id="r_a0eb273b58f16a746f6c0cc5c5399191a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0eb273b58f16a746f6c0cc5c5399191a">ShatterGravity</a><code> [get]</code></td></tr>
+<tr class="memitem:a0eb273b58f16a746f6c0cc5c5399191a" id="r_a0eb273b58f16a746f6c0cc5c5399191a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0eb273b58f16a746f6c0cc5c5399191a">ShatterGravity</a><code> [get]</code></td></tr>
 <tr class="separator:a0eb273b58f16a746f6c0cc5c5399191a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a102027c7ffe865e22545196431bdd7ff" id="r_a102027c7ffe865e22545196431bdd7ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a102027c7ffe865e22545196431bdd7ff">ShatterSpin</a><code> [get]</code></td></tr>
+<tr class="memitem:a102027c7ffe865e22545196431bdd7ff" id="r_a102027c7ffe865e22545196431bdd7ff"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a102027c7ffe865e22545196431bdd7ff">ShatterSpin</a><code> [get]</code></td></tr>
 <tr class="separator:a102027c7ffe865e22545196431bdd7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a874db807ace7f39fab101a22290a68bb" id="r_a874db807ace7f39fab101a22290a68bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a874db807ace7f39fab101a22290a68bb">ShatterSpread</a><code> [get]</code></td></tr>
+<tr class="memitem:a874db807ace7f39fab101a22290a68bb" id="r_a874db807ace7f39fab101a22290a68bb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a874db807ace7f39fab101a22290a68bb">ShatterSpread</a><code> [get]</code></td></tr>
 <tr class="separator:a874db807ace7f39fab101a22290a68bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11b845b69d8f800d1ec2ebd42576ecf8" id="r_a11b845b69d8f800d1ec2ebd42576ecf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a11b845b69d8f800d1ec2ebd42576ecf8">ShatterBlockPixels</a><code> [get]</code></td></tr>
+<tr class="memitem:a11b845b69d8f800d1ec2ebd42576ecf8" id="r_a11b845b69d8f800d1ec2ebd42576ecf8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a11b845b69d8f800d1ec2ebd42576ecf8">ShatterBlockPixels</a><code> [get]</code></td></tr>
 <tr class="separator:a11b845b69d8f800d1ec2ebd42576ecf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0f6cf1931b316ce42c33ffa49a818de" id="r_ae0f6cf1931b316ce42c33ffa49a818de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html">PixelBurstPreset</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ae0f6cf1931b316ce42c33ffa49a818de">HitSpark</a><code> [get]</code></td></tr>
-<tr class="separator:ae0f6cf1931b316ce42c33ffa49a818de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96a50a1c214704226eee1fb57d537fbe" id="r_a96a50a1c214704226eee1fb57d537fbe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html">PixelBurstPreset</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a96a50a1c214704226eee1fb57d537fbe">Muzzle</a><code> [get]</code></td></tr>
-<tr class="separator:a96a50a1c214704226eee1fb57d537fbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3568c5255abe179df9d0b16c6f307e97" id="r_a3568c5255abe179df9d0b16c6f307e97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html">PixelBurstPreset</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3568c5255abe179df9d0b16c6f307e97">ImpactDust</a><code> [get]</code></td></tr>
-<tr class="separator:a3568c5255abe179df9d0b16c6f307e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a445a79cbe6345c27f87b79dbaa2789a0" id="r_a445a79cbe6345c27f87b79dbaa2789a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html">PixelBurstPreset</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a445a79cbe6345c27f87b79dbaa2789a0">Heal</a><code> [get]</code></td></tr>
-<tr class="separator:a445a79cbe6345c27f87b79dbaa2789a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d075ce4940e3c5bcb3569b4e1a90761" id="r_a3d075ce4940e3c5bcb3569b4e1a90761"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3d075ce4940e3c5bcb3569b4e1a90761">KillSlowFactor</a><code> [get]</code></td></tr>
+<tr class="memitem:a07583a19355118bc22e8e88db4044431" id="r_a07583a19355118bc22e8e88db4044431"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a07583a19355118bc22e8e88db4044431">ShatterTumble</a><code> [get]</code></td></tr>
+<tr class="separator:a07583a19355118bc22e8e88db4044431"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8793ea31479dc33609eebe178c06bf06" id="r_a8793ea31479dc33609eebe178c06bf06"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a8793ea31479dc33609eebe178c06bf06">ShatterUpBias</a><code> [get]</code></td></tr>
+<tr class="separator:a8793ea31479dc33609eebe178c06bf06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74a3716f4e3c3a7a82abb0ba4945ad80" id="r_a74a3716f4e3c3a7a82abb0ba4945ad80"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a74a3716f4e3c3a7a82abb0ba4945ad80">ShatterFlashOut</a><code> [get]</code></td></tr>
+<tr class="separator:a74a3716f4e3c3a7a82abb0ba4945ad80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd55f68faf7dd6b921646eaf3aef0de7" id="r_acd55f68faf7dd6b921646eaf3aef0de7"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#acd55f68faf7dd6b921646eaf3aef0de7">ShardWhiteColor</a><code> [get]</code></td></tr>
+<tr class="separator:acd55f68faf7dd6b921646eaf3aef0de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ae0d7e1315c7efdee8d7d99288bfb1b" id="r_a5ae0d7e1315c7efdee8d7d99288bfb1b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a5ae0d7e1315c7efdee8d7d99288bfb1b">ShardWhiteShare</a><code> [get]</code></td></tr>
+<tr class="separator:a5ae0d7e1315c7efdee8d7d99288bfb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a510e903efaf8a08a91f892e242c46dbd" id="r_a510e903efaf8a08a91f892e242c46dbd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a510e903efaf8a08a91f892e242c46dbd">ShatterFadePower</a><code> [get]</code></td></tr>
+<tr class="separator:a510e903efaf8a08a91f892e242c46dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3db98550557fb6b5dcc4203f3ba281f8" id="r_a3db98550557fb6b5dcc4203f3ba281f8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3db98550557fb6b5dcc4203f3ba281f8">ShatterLifeVariance</a><code> [get]</code></td></tr>
+<tr class="separator:a3db98550557fb6b5dcc4203f3ba281f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08b8cdc05bef6110b94412ada1da091c" id="r_a08b8cdc05bef6110b94412ada1da091c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a08b8cdc05bef6110b94412ada1da091c">ShatterGlow</a><code> [get]</code></td></tr>
+<tr class="separator:a08b8cdc05bef6110b94412ada1da091c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13fc1ac2f341392fb19c67e942833b25" id="r_a13fc1ac2f341392fb19c67e942833b25"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a13fc1ac2f341392fb19c67e942833b25">ShatterEmberBoost</a><code> [get]</code></td></tr>
+<tr class="separator:a13fc1ac2f341392fb19c67e942833b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a685ecb2c3a473887b857859f67a0a00d" id="r_a685ecb2c3a473887b857859f67a0a00d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a685ecb2c3a473887b857859f67a0a00d">ShatterLuma</a><code> [get]</code></td></tr>
+<tr class="separator:a685ecb2c3a473887b857859f67a0a00d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e22ffaee8732c9d9c60bb8a7437bfe0" id="r_a5e22ffaee8732c9d9c60bb8a7437bfe0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a5e22ffaee8732c9d9c60bb8a7437bfe0">ShatterHold</a><code> [get]</code></td></tr>
+<tr class="separator:a5e22ffaee8732c9d9c60bb8a7437bfe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01a4e55bc3348cf12752fa4ca098f0e1" id="r_a01a4e55bc3348cf12752fa4ca098f0e1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a01a4e55bc3348cf12752fa4ca098f0e1">ShatterMinTimeScale</a><code> [get]</code></td></tr>
+<tr class="separator:a01a4e55bc3348cf12752fa4ca098f0e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a891816bb9158bc4f3207e2b416d4f47f" id="r_a891816bb9158bc4f3207e2b416d4f47f"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a891816bb9158bc4f3207e2b416d4f47f">DeathFlashColor</a><code> [get]</code></td></tr>
+<tr class="separator:a891816bb9158bc4f3207e2b416d4f47f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eedaff85d39ac078f0759b5895ffecf" id="r_a5eedaff85d39ac078f0759b5895ffecf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a5eedaff85d39ac078f0759b5895ffecf">PlayDeathClip</a><code> [get]</code></td></tr>
+<tr class="separator:a5eedaff85d39ac078f0759b5895ffecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa800eea5fc77b58d499c6f4f1c491f27" id="r_aa800eea5fc77b58d499c6f4f1c491f27"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aa800eea5fc77b58d499c6f4f1c491f27">DeathHologramDuration</a><code> [get]</code></td></tr>
+<tr class="separator:aa800eea5fc77b58d499c6f4f1c491f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80eb2e2b784cf192e446c1710ae2a37b" id="r_a80eb2e2b784cf192e446c1710ae2a37b"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a80eb2e2b784cf192e446c1710ae2a37b">HologramColor</a><code> [get]</code></td></tr>
+<tr class="separator:a80eb2e2b784cf192e446c1710ae2a37b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad62916b83698d84a9e2b2104a07c71ca" id="r_ad62916b83698d84a9e2b2104a07c71ca"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad62916b83698d84a9e2b2104a07c71ca">HologramBodyAlpha</a><code> [get]</code></td></tr>
+<tr class="separator:ad62916b83698d84a9e2b2104a07c71ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab568ee417075391c18e09741387304fd" id="r_ab568ee417075391c18e09741387304fd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ab568ee417075391c18e09741387304fd">HologramScanScale</a><code> [get]</code></td></tr>
+<tr class="separator:ab568ee417075391c18e09741387304fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeee71c4cfde1152766ea1d3f2f33704e" id="r_aeee71c4cfde1152766ea1d3f2f33704e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aeee71c4cfde1152766ea1d3f2f33704e">HologramScanAmount</a><code> [get]</code></td></tr>
+<tr class="separator:aeee71c4cfde1152766ea1d3f2f33704e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46faac9f36a64c530047422204c25a2f" id="r_a46faac9f36a64c530047422204c25a2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a46faac9f36a64c530047422204c25a2f">VfxHitSpark</a><code> [get]</code></td></tr>
+<tr class="separator:a46faac9f36a64c530047422204c25a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa72ec01e2f1616bb235404777d1cbfb8" id="r_aa72ec01e2f1616bb235404777d1cbfb8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aa72ec01e2f1616bb235404777d1cbfb8">VfxMuzzle</a><code> [get]</code></td></tr>
+<tr class="separator:aa72ec01e2f1616bb235404777d1cbfb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a156ee14201bbc73039b457e244d459f3" id="r_a156ee14201bbc73039b457e244d459f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a156ee14201bbc73039b457e244d459f3">VfxImpactDust</a><code> [get]</code></td></tr>
+<tr class="separator:a156ee14201bbc73039b457e244d459f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af91505858511794c88992a72ee5152f7" id="r_af91505858511794c88992a72ee5152f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#af91505858511794c88992a72ee5152f7">VfxContactDust</a><code> [get]</code></td></tr>
+<tr class="separator:af91505858511794c88992a72ee5152f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad73b5c69cf0ac40eebfd80d655de4464" id="r_ad73b5c69cf0ac40eebfd80d655de4464"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad73b5c69cf0ac40eebfd80d655de4464">VfxHeal</a><code> [get]</code></td></tr>
+<tr class="separator:ad73b5c69cf0ac40eebfd80d655de4464"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d8efa1523706bcd862b713cf6912195" id="r_a3d8efa1523706bcd862b713cf6912195"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3d8efa1523706bcd862b713cf6912195">VfxCastBurst</a><code> [get]</code></td></tr>
+<tr class="separator:a3d8efa1523706bcd862b713cf6912195"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbf8a0e5acf0f726801723e2fb12dc5c" id="r_afbf8a0e5acf0f726801723e2fb12dc5c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#afbf8a0e5acf0f726801723e2fb12dc5c">EnableHitForm</a><code> [get]</code></td></tr>
+<tr class="separator:afbf8a0e5acf0f726801723e2fb12dc5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a765d097b3224da1e17e1dd5b63024009" id="r_a765d097b3224da1e17e1dd5b63024009"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a765d097b3224da1e17e1dd5b63024009">EnableHitFormBreakOnShield</a><code> [get]</code></td></tr>
+<tr class="separator:a765d097b3224da1e17e1dd5b63024009"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e38696ad103445e8b0b639df2eb5326" id="r_a0e38696ad103445e8b0b639df2eb5326"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0e38696ad103445e8b0b639df2eb5326">VfxHitForm</a><code> [get]</code></td></tr>
+<tr class="separator:a0e38696ad103445e8b0b639df2eb5326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cf3e95671bda303db6f2d0ec81c0baf" id="r_a5cf3e95671bda303db6f2d0ec81c0baf"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a5cf3e95671bda303db6f2d0ec81c0baf">HitFormUnitHeight</a><code> [get]</code></td></tr>
+<tr class="separator:a5cf3e95671bda303db6f2d0ec81c0baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acadf4c4810584e718f2f71b2e898e81c" id="r_acadf4c4810584e718f2f71b2e898e81c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#acadf4c4810584e718f2f71b2e898e81c">HitFormLife</a><code> [get]</code></td></tr>
+<tr class="separator:acadf4c4810584e718f2f71b2e898e81c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49ac2150e05f64323339ecbdbe292d0b" id="r_a49ac2150e05f64323339ecbdbe292d0b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a49ac2150e05f64323339ecbdbe292d0b">HitFormGrowShare</a><code> [get]</code></td></tr>
+<tr class="separator:a49ac2150e05f64323339ecbdbe292d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d51012f0b578c361e511810924ad976" id="r_a9d51012f0b578c361e511810924ad976"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a9d51012f0b578c361e511810924ad976">HitFormTailLag</a><code> [get]</code></td></tr>
+<tr class="separator:a9d51012f0b578c361e511810924ad976"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf6d5c99bbe7800862f18286d5b6e511" id="r_adf6d5c99bbe7800862f18286d5b6e511"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#adf6d5c99bbe7800862f18286d5b6e511">HitFormCoreWidth</a><code> [get]</code></td></tr>
+<tr class="separator:adf6d5c99bbe7800862f18286d5b6e511"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8533e3484f73c6abac58da6480615afd" id="r_a8533e3484f73c6abac58da6480615afd"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a8533e3484f73c6abac58da6480615afd">HitFormCoreColor</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8533e3484f73c6abac58da6480615afd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цвет пересвета в ядре формы — тот же холодный пересвет, что у осколков и смерти.  <br /></td></tr>
+<tr class="separator:a8533e3484f73c6abac58da6480615afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd2d57f9218711f17805a13b5230df6d" id="r_abd2d57f9218711f17805a13b5230df6d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#abd2d57f9218711f17805a13b5230df6d">EnableBodyCuts</a><code> [get]</code></td></tr>
+<tr class="separator:abd2d57f9218711f17805a13b5230df6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69c92c98d054e529f149b8e0438b679c" id="r_a69c92c98d054e529f149b8e0438b679c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a69c92c98d054e529f149b8e0438b679c">CutWidthUnits</a><code> [get]</code></td></tr>
+<tr class="separator:a69c92c98d054e529f149b8e0438b679c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00349cd85dd600356a151a26892201fd" id="r_a00349cd85dd600356a151a26892201fd"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a00349cd85dd600356a151a26892201fd">CutColor</a><code> [get]</code></td></tr>
+<tr class="memdesc:a00349cd85dd600356a151a26892201fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цвет пореза: роль вскрытого из палитры, поднятая множителем яркости.  <br /></td></tr>
+<tr class="separator:a00349cd85dd600356a151a26892201fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5d8df51a937c418439e2bb979e6c9f9" id="r_ac5d8df51a937c418439e2bb979e6c9f9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ac5d8df51a937c418439e2bb979e6c9f9">EnableSwingArc</a><code> [get]</code></td></tr>
+<tr class="separator:ac5d8df51a937c418439e2bb979e6c9f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4296400f4bf3dcdb761475ff12c97d67" id="r_a4296400f4bf3dcdb761475ff12c97d67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4296400f4bf3dcdb761475ff12c97d67">VfxSwingArc</a><code> [get]</code></td></tr>
+<tr class="separator:a4296400f4bf3dcdb761475ff12c97d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fa6dacb1eea9f145e984e8d49555c4e" id="r_a8fa6dacb1eea9f145e984e8d49555c4e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a8fa6dacb1eea9f145e984e8d49555c4e">SwingArcInnerShare</a><code> [get]</code></td></tr>
+<tr class="separator:a8fa6dacb1eea9f145e984e8d49555c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dec5e2d92045712e8e1592f420ad6e1" id="r_a6dec5e2d92045712e8e1592f420ad6e1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a6dec5e2d92045712e8e1592f420ad6e1">SwingArcTailBias</a><code> [get]</code></td></tr>
+<tr class="separator:a6dec5e2d92045712e8e1592f420ad6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69b9729dccd99de378a0cf91889a1d91" id="r_a69b9729dccd99de378a0cf91889a1d91"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a69b9729dccd99de378a0cf91889a1d91">SwingArcFadeOut</a><code> [get]</code></td></tr>
+<tr class="separator:a69b9729dccd99de378a0cf91889a1d91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a574e1d7cd9d07909f53f1a63a0f32921" id="r_a574e1d7cd9d07909f53f1a63a0f32921"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a574e1d7cd9d07909f53f1a63a0f32921">KillSlowLeadSeconds</a><code> [get]</code></td></tr>
+<tr class="separator:a574e1d7cd9d07909f53f1a63a0f32921"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d075ce4940e3c5bcb3569b4e1a90761" id="r_a3d075ce4940e3c5bcb3569b4e1a90761"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3d075ce4940e3c5bcb3569b4e1a90761">KillSlowFactor</a><code> [get]</code></td></tr>
 <tr class="separator:a3d075ce4940e3c5bcb3569b4e1a90761"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d30045568bf0b60d24f3dfc4f8a3426" id="r_a4d30045568bf0b60d24f3dfc4f8a3426"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4d30045568bf0b60d24f3dfc4f8a3426">KillSlowRelease</a><code> [get]</code></td></tr>
+<tr class="memitem:a4d30045568bf0b60d24f3dfc4f8a3426" id="r_a4d30045568bf0b60d24f3dfc4f8a3426"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4d30045568bf0b60d24f3dfc4f8a3426">KillSlowRelease</a><code> [get]</code></td></tr>
 <tr class="separator:a4d30045568bf0b60d24f3dfc4f8a3426"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5e4d2cdcf4c1252646e17ef272c8c6e" id="r_ad5e4d2cdcf4c1252646e17ef272c8c6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad5e4d2cdcf4c1252646e17ef272c8c6e">KillSlowCooldown</a><code> [get]</code></td></tr>
+<tr class="memitem:ad5e4d2cdcf4c1252646e17ef272c8c6e" id="r_ad5e4d2cdcf4c1252646e17ef272c8c6e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad5e4d2cdcf4c1252646e17ef272c8c6e">KillSlowCooldown</a><code> [get]</code></td></tr>
 <tr class="separator:ad5e4d2cdcf4c1252646e17ef272c8c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d03c0e8507e1da46b35d03b90797c05" id="r_a7d03c0e8507e1da46b35d03b90797c05"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a7d03c0e8507e1da46b35d03b90797c05">FinisherPause</a><code> [get]</code></td></tr>
+<tr class="memitem:a7d03c0e8507e1da46b35d03b90797c05" id="r_a7d03c0e8507e1da46b35d03b90797c05"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a7d03c0e8507e1da46b35d03b90797c05">FinisherPause</a><code> [get]</code></td></tr>
 <tr class="separator:a7d03c0e8507e1da46b35d03b90797c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0c12491e9f718ec2b3c442734b308c9" id="r_ac0c12491e9f718ec2b3c442734b308c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ac0c12491e9f718ec2b3c442734b308c9">FinisherDeathFactor</a><code> [get]</code></td></tr>
+<tr class="memitem:ac0c12491e9f718ec2b3c442734b308c9" id="r_ac0c12491e9f718ec2b3c442734b308c9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ac0c12491e9f718ec2b3c442734b308c9">FinisherDeathFactor</a><code> [get]</code></td></tr>
 <tr class="separator:ac0c12491e9f718ec2b3c442734b308c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3de8be2996406719d77ace955abdb701" id="r_a3de8be2996406719d77ace955abdb701"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3de8be2996406719d77ace955abdb701">FinisherDeathDuration</a><code> [get]</code></td></tr>
+<tr class="memitem:a3de8be2996406719d77ace955abdb701" id="r_a3de8be2996406719d77ace955abdb701"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3de8be2996406719d77ace955abdb701">FinisherDeathDuration</a><code> [get]</code></td></tr>
 <tr class="separator:a3de8be2996406719d77ace955abdb701"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9373c2aefd03570d513f6d8c41341426" id="r_a9373c2aefd03570d513f6d8c41341426"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a9373c2aefd03570d513f6d8c41341426">FinisherShatterFactor</a><code> [get]</code></td></tr>
+<tr class="memitem:a9373c2aefd03570d513f6d8c41341426" id="r_a9373c2aefd03570d513f6d8c41341426"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a9373c2aefd03570d513f6d8c41341426">FinisherShatterFactor</a><code> [get]</code></td></tr>
 <tr class="separator:a9373c2aefd03570d513f6d8c41341426"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11b530ab7c6218d2883f15f985d577cc" id="r_a11b530ab7c6218d2883f15f985d577cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a11b530ab7c6218d2883f15f985d577cc">FinisherShatterDuration</a><code> [get]</code></td></tr>
+<tr class="memitem:a11b530ab7c6218d2883f15f985d577cc" id="r_a11b530ab7c6218d2883f15f985d577cc"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a11b530ab7c6218d2883f15f985d577cc">FinisherShatterDuration</a><code> [get]</code></td></tr>
 <tr class="separator:a11b530ab7c6218d2883f15f985d577cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bae640918b3d45ab8119da38dc6257d" id="r_a2bae640918b3d45ab8119da38dc6257d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a2bae640918b3d45ab8119da38dc6257d">FinisherReturn</a><code> [get]</code></td></tr>
+<tr class="memitem:a2bae640918b3d45ab8119da38dc6257d" id="r_a2bae640918b3d45ab8119da38dc6257d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a2bae640918b3d45ab8119da38dc6257d">FinisherReturn</a><code> [get]</code></td></tr>
 <tr class="separator:a2bae640918b3d45ab8119da38dc6257d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b472154cb1daa6d1c35931dd3d446db" id="r_a5b472154cb1daa6d1c35931dd3d446db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">AnimationCurve</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a5b472154cb1daa6d1c35931dd3d446db">FinisherReturnCurve</a><code> [get]</code></td></tr>
+<tr class="memitem:a5b472154cb1daa6d1c35931dd3d446db" id="r_a5b472154cb1daa6d1c35931dd3d446db"><td class="memItemLeft" align="right" valign="top">AnimationCurve&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a5b472154cb1daa6d1c35931dd3d446db">FinisherReturnCurve</a><code> [get]</code></td></tr>
 <tr class="separator:a5b472154cb1daa6d1c35931dd3d446db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a154b308649372a5167ea62ce708bbf80" id="r_a154b308649372a5167ea62ce708bbf80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a154b308649372a5167ea62ce708bbf80">FinisherHoldSeconds</a><code> [get]</code></td></tr>
+<tr class="memitem:a154b308649372a5167ea62ce708bbf80" id="r_a154b308649372a5167ea62ce708bbf80"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a154b308649372a5167ea62ce708bbf80">FinisherHoldSeconds</a><code> [get]</code></td></tr>
 <tr class="memdesc:a154b308649372a5167ea62ce708bbf80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полная длительность финишер-таймлайна (пауза + death + shatter + возврат) — финишер держит кадр столько же.  <br /></td></tr>
 <tr class="separator:a154b308649372a5167ea62ce708bbf80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Единый конфиг «сочности» боя (design-система): все параметры impact-слоя в одном ассете, чтобы дизайнер крутил их без кода — включая ФОРМЫ (кривая возврата slowmo). </p>
 <p>Потребители тянут значения отсюда, а не хардкодят: <code>UnitView</code> (вспышка/сплющивание), <code>CombatPresenter</code> (hitstop, финишер), <code>ScreenShake</code> (тряска), <code>CombatFeelDirector</code> (slowmo/шейк по событиям). </p>
-<p>VFX-секция добавится, когда подключим партиклы (пока YAGNI).</p>
-</div><h2 class="groupheader">Property Documentation</h2>
+<p>Микро-feel (пыль/nudge/flip/дыхание/тинт вспышки) — тумблеры в секции «Micro Feel — toggles»: выключил здесь = эффект мёртв везде, без правок кода.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae5d0d4c0cd44784bfbb39bba51089989" name="ae5d0d4c0cd44784bfbb39bba51089989"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5d0d4c0cd44784bfbb39bba51089989">&#9670;&#160;</a></span>EvaluateCutLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.EvaluateCutLength </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>hpDamageFrac</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Длина пореза в мировых единицах по весу удара: тяжёлый вскрывает шире. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig_ae5d0d4c0cd44784bfbb39bba51089989_icgraph.svg" width="500" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a275a3ffa8d89096c0a1326ac25713271" name="a275a3ffa8d89096c0a1326ac25713271"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a275a3ffa8d89096c0a1326ac25713271">&#9670;&#160;</a></span>EvaluateHitFormSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.EvaluateHitFormSize </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>hpDamageFrac</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Множитель РАЗМЕРА формы по доле снятого HP. </p>
+<p>Непрерывная зависимость с потолком: категорий «лёгкий» и «тяжёлый» у формы нет, но и стены на удар кита быть не должно. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig_a275a3ffa8d89096c0a1326ac25713271_icgraph.svg" width="514" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a6b529ca746b13b5f1f4e0784586dc735" name="a6b529ca746b13b5f1f4e0784586dc735"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b529ca746b13b5f1f4e0784586dc735">&#9670;&#160;</a></span>EvaluateHitSparkCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Presentation.Design.CombatFeelConfig.EvaluateHitSparkCount </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>hpDamageFrac</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько искр даёт удар: <code>база + доля_HP × шаг</code>, но не больше потолка. </p>
+<p>Щедрость здесь осознанная (Макс, 31.07.2026): искры мелкие и живут доли секунды, поэтому их должно быть много. Потолок при этом обязателен — без него удар кита на десять тысяч выдал бы стену вместо эффекта. </p>
+
+</div>
+</div>
+<a id="addae4d36a509603a20dd347adb68de40" name="addae4d36a509603a20dd347adb68de40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addae4d36a509603a20dd347adb68de40">&#9670;&#160;</a></span>EvaluateHitstopSeconds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.EvaluateHitstopSeconds </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>hpDamageFrac</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Hitstop в секундах по доле HP-урона от MaxHP (кривая веса + lerp min..max). </p>
+
+</div>
+</div>
+<a id="af509a24e923e94aff6eb41486c921a29" name="af509a24e923e94aff6eb41486c921a29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af509a24e923e94aff6eb41486c921a29">&#9670;&#160;</a></span>EvaluateHitVfxCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.EvaluateHitVfxCount </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>hpDamageFrac</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Множитель бёрстов префаба, дающий нужное АБСОЛЮТНОЕ количество искр. </p>
+<p>Пропорцию между потоками (быстрые к медленным) держит префаб, абсолют приходит отсюда — ровно как с размером. </p>
+
+</div>
+</div>
+<a id="a7f78239c06b581d861f37cf1a76b44a8" name="a7f78239c06b581d861f37cf1a76b44a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f78239c06b581d861f37cf1a76b44a8">&#9670;&#160;</a></span>EvaluateHitVfxSizeMultiplier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.EvaluateHitVfxSizeMultiplier </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>hpDamageFrac</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Множитель РАЗМЕРА hit-spark по доле HP-урона от MaxHP (HeavyHitFrac = полная сила). </p>
+<p>Единственный рантайм-множитель размера эффектов; база — <code><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html#a2e056739494562ae389b07c3dfda2ae8" title="Размер самой крупной частицы эффекта в мировых единицах.">VfxData.SizeUnits</a></code>. </p>
+
+</div>
+</div>
+<a id="a22953ef4ca8fd81d2638a66b9cd2d171" name="a22953ef4ca8fd81d2638a66b9cd2d171"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22953ef4ca8fd81d2638a66b9cd2d171">&#9670;&#160;</a></span>EvaluateNumberScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.EvaluateNumberScale </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>hpDamageFrac</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Масштаб боевой цифры по доле HP-урона от MaxHP цели: 1 на царапине, <code>NumberMaxScale</code> на ударе в <code>NumberFullFrac</code> и тяжелее. </p>
+<p>Кривая КОРНЕВАЯ, а не прямая: в бою почти все удары лежат в нижней трети шкалы, и на прямой они выглядели бы одинаково мелкими — весь запас размера доставался бы редкому киту. Корень отдаёт половину роста уже на четверти порога, так что разница «поцарапал / врезал» читается там, где она реально происходит. </p>
+
+</div>
+</div>
+<a id="ad5e9ac9ead2e13ea05798ba39f6d36a4" name="ad5e9ac9ead2e13ea05798ba39f6d36a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5e9ac9ead2e13ea05798ba39f6d36a4">&#9670;&#160;</a></span>HitFormArchetype()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1HitFormArchetypeConfig.html">HitFormArchetypeConfig</a> Guildmaster.Presentation.Design.CombatFeelConfig.HitFormArchetype </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1caabb0a57eb911cd211aa9b39edca3e">Effects.HitFormKind</a>&#160;</td>
+          <td class="paramname"><em>kind</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Правило генерации архетипа. </p>
+<p>Тотальна по построению: новый архетип, забытый здесь, вернёт режущего — но добавить его молча не выйдет, потому что <code>HitFormKind</code> закрыт каноном («форма говорит, КАК доставили»), и пятый архетип потребует решения Макса, а не строки в switch. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig_ad5e9ac9ead2e13ea05798ba39f6d36a4_icgraph.svg" width="510" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aa880545503413066033c5e039396dfa0" name="aa880545503413066033c5e039396dfa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa880545503413066033c5e039396dfa0">&#9670;&#160;</a></span>ResolveHitFlashColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Color Guildmaster.Presentation.Design.CombatFeelConfig.ResolveHitFlashColor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Цвет hit-flash по типу урона: у типов со своим «вкусом» (яд, свет, тьма) он свой, у остальных — цвет их школы. </p>
+<p>При выключенном School Flash — FlashColor. Здесь выбирается РОЛЬ, значение приходит из палитры проекта.</p>
+<p>Оба яда светят одинаково: игрок читает «отравили», а не «отравили физически». Кровотечение пока идёт цветом физической школы — своей роли в палитре у него нет, и заводить её должен Макс, а не молчаливый фолбэк. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig_aa880545503413066033c5e039396dfa0_cgraph.svg" width="520" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a3270e7824e55227a01d9a6b05f4ad81c" name="a3270e7824e55227a01d9a6b05f4ad81c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3270e7824e55227a01d9a6b05f4ad81c">&#9670;&#160;</a></span>AnticipationDistance</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.AnticipationDistance</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad0b5e56eca99ded6368ff16676a017d7" name="ad0b5e56eca99ded6368ff16676a017d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0b5e56eca99ded6368ff16676a017d7">&#9670;&#160;</a></span>AnticipationDuration</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.AnticipationDuration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ac9aebb8f0eb484c23f439381e4d3e318" name="ac9aebb8f0eb484c23f439381e4d3e318"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac9aebb8f0eb484c23f439381e4d3e318">&#9670;&#160;</a></span>BattleEndShake</h2>
 
@@ -210,7 +725,890 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.BattleEndShake</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.BattleEndShake</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a37a01680fec896e46bc1c3e868632733" name="a37a01680fec896e46bc1c3e868632733"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37a01680fec896e46bc1c3e868632733">&#9670;&#160;</a></span>CastGlowBloomIntensity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.CastGlowBloomIntensity</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4e69e7ca0b60e4de7bc05b01134fce20" name="a4e69e7ca0b60e4de7bc05b01134fce20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e69e7ca0b60e4de7bc05b01134fce20">&#9670;&#160;</a></span>CastGlowChargeCurve</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">AnimationCurve Guildmaster.Presentation.Design.CombatFeelConfig.CastGlowChargeCurve</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a08c908d6e1119bacfbbf806aceab8db7" name="a08c908d6e1119bacfbbf806aceab8db7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08c908d6e1119bacfbbf806aceab8db7">&#9670;&#160;</a></span>CastGlowFlatness</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.CastGlowFlatness</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a81a5ec6d61de74c49bc6f2801a12ccab" name="a81a5ec6d61de74c49bc6f2801a12ccab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81a5ec6d61de74c49bc6f2801a12ccab">&#9670;&#160;</a></span>CastGlowPulseRise</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.CastGlowPulseRise</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8f5e8193d8a88cb8ce2217e521e2e9a6" name="a8f5e8193d8a88cb8ce2217e521e2e9a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f5e8193d8a88cb8ce2217e521e2e9a6">&#9670;&#160;</a></span>CastGlowRelease</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.CastGlowRelease</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab705104508bed3834b71b550b01e1743" name="ab705104508bed3834b71b550b01e1743"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab705104508bed3834b71b550b01e1743">&#9670;&#160;</a></span>CastGlowStrength</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.CastGlowStrength</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8e05056eaefac144caae9c2b9386f10b" name="a8e05056eaefac144caae9c2b9386f10b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e05056eaefac144caae9c2b9386f10b">&#9670;&#160;</a></span>CastOutlineDuration</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.CastOutlineDuration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2d97f0bfbf41a280db0c1e74a4334db6" name="a2d97f0bfbf41a280db0c1e74a4334db6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d97f0bfbf41a280db0c1e74a4334db6">&#9670;&#160;</a></span>CastOutlineStrength</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.CastOutlineStrength</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adf7eab62953942ce512749013821122e" name="adf7eab62953942ce512749013821122e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf7eab62953942ce512749013821122e">&#9670;&#160;</a></span>ContactDustCooldown</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ContactDustCooldown</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a00349cd85dd600356a151a26892201fd" name="a00349cd85dd600356a151a26892201fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00349cd85dd600356a151a26892201fd">&#9670;&#160;</a></span>CutColor</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Color Guildmaster.Presentation.Design.CombatFeelConfig.CutColor</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Цвет пореза: роль вскрытого из палитры, поднятая множителем яркости. </p>
+<p>HDR живёт здесь, а не в токенах — там оттенок, тут сила свечения. </p>
+
+</div>
+</div>
+<a id="a69c92c98d054e529f149b8e0438b679c" name="a69c92c98d054e529f149b8e0438b679c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69c92c98d054e529f149b8e0438b679c">&#9670;&#160;</a></span>CutWidthUnits</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.CutWidthUnits</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab0f95f77cae07faf4ef1ce611cc94c46" name="ab0f95f77cae07faf4ef1ce611cc94c46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0f95f77cae07faf4ef1ce611cc94c46">&#9670;&#160;</a></span>DeathAnticipateDuration</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.DeathAnticipateDuration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7972441fea3e08bf9bc481685c3586fd" name="a7972441fea3e08bf9bc481685c3586fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7972441fea3e08bf9bc481685c3586fd">&#9670;&#160;</a></span>DeathAnticipateShake</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.DeathAnticipateShake</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a891816bb9158bc4f3207e2b416d4f47f" name="a891816bb9158bc4f3207e2b416d4f47f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a891816bb9158bc4f3207e2b416d4f47f">&#9670;&#160;</a></span>DeathFlashColor</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Color Guildmaster.Presentation.Design.CombatFeelConfig.DeathFlashColor</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa800eea5fc77b58d499c6f4f1c491f27" name="aa800eea5fc77b58d499c6f4f1c491f27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa800eea5fc77b58d499c6f4f1c491f27">&#9670;&#160;</a></span>DeathHologramDuration</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.DeathHologramDuration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0b45fd11174962c0c25374e8be546005" name="a0b45fd11174962c0c25374e8be546005"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b45fd11174962c0c25374e8be546005">&#9670;&#160;</a></span>EnableAttackAnticipation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableAttackAnticipation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aabf4e363f48c8752259b86f7f45ee0f5" name="aabf4e363f48c8752259b86f7f45ee0f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabf4e363f48c8752259b86f7f45ee0f5">&#9670;&#160;</a></span>EnableAttackerLunge</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableAttackerLunge</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a47326b0e1f9e87f34d4abf26a89cc3ee" name="a47326b0e1f9e87f34d4abf26a89cc3ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47326b0e1f9e87f34d4abf26a89cc3ee">&#9670;&#160;</a></span>EnableBlockGlow</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableBlockGlow</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abd2d57f9218711f17805a13b5230df6d" name="abd2d57f9218711f17805a13b5230df6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd2d57f9218711f17805a13b5230df6d">&#9670;&#160;</a></span>EnableBodyCuts</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableBodyCuts</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a67075d2f81657b166eacd1c752ebcce9" name="a67075d2f81657b166eacd1c752ebcce9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67075d2f81657b166eacd1c752ebcce9">&#9670;&#160;</a></span>EnableCastGlow</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableCastGlow</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a49db65588e27a517e7df2378d47a9adf" name="a49db65588e27a517e7df2378d47a9adf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49db65588e27a517e7df2378d47a9adf">&#9670;&#160;</a></span>EnableContactDust</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableContactDust</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5fc55bffad3b56760fd1c6bba40bc1e8" name="a5fc55bffad3b56760fd1c6bba40bc1e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fc55bffad3b56760fd1c6bba40bc1e8">&#9670;&#160;</a></span>EnableDeathAnticipation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableDeathAnticipation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5bd0eeb0c410c8a71baaa9f2fab34b16" name="a5bd0eeb0c410c8a71baaa9f2fab34b16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bd0eeb0c410c8a71baaa9f2fab34b16">&#9670;&#160;</a></span>EnableDeathShatter</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableDeathShatter</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8edd6bca73677058f8286448e95ccda7" name="a8edd6bca73677058f8286448e95ccda7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8edd6bca73677058f8286448e95ccda7">&#9670;&#160;</a></span>EnableFacingFlipSquash</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableFacingFlipSquash</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5879a9d9dc1527e707eae67c1d1855c2" name="a5879a9d9dc1527e707eae67c1d1855c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5879a9d9dc1527e707eae67c1d1855c2">&#9670;&#160;</a></span>EnableFloatingTextArc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableFloatingTextArc</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9af0c5a3a015a62b1c183d6f56ebdd5a" name="a9af0c5a3a015a62b1c183d6f56ebdd5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9af0c5a3a015a62b1c183d6f56ebdd5a">&#9670;&#160;</a></span>EnableGuardPose</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableGuardPose</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad4ffdd4d47e0f439cd89dbe1df0fa8bf" name="ad4ffdd4d47e0f439cd89dbe1df0fa8bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4ffdd4d47e0f439cd89dbe1df0fa8bf">&#9670;&#160;</a></span>EnableHealFlash</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableHealFlash</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7752aa1d798c824945479ba729712c77" name="a7752aa1d798c824945479ba729712c77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7752aa1d798c824945479ba729712c77">&#9670;&#160;</a></span>EnableHitFlash</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableHitFlash</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afbf8a0e5acf0f726801723e2fb12dc5c" name="afbf8a0e5acf0f726801723e2fb12dc5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbf8a0e5acf0f726801723e2fb12dc5c">&#9670;&#160;</a></span>EnableHitForm</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableHitForm</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a765d097b3224da1e17e1dd5b63024009" name="a765d097b3224da1e17e1dd5b63024009"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a765d097b3224da1e17e1dd5b63024009">&#9670;&#160;</a></span>EnableHitFormBreakOnShield</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableHitFormBreakOnShield</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a19ff79fabe5a9a2f883ef7f4010143a7" name="a19ff79fabe5a9a2f883ef7f4010143a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19ff79fabe5a9a2f883ef7f4010143a7">&#9670;&#160;</a></span>EnableHitNudge</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableHitNudge</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1717ac3bb4b50405e4ed3b2464301e62" name="a1717ac3bb4b50405e4ed3b2464301e62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1717ac3bb4b50405e4ed3b2464301e62">&#9670;&#160;</a></span>EnableHitSquash</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableHitSquash</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4b917fa7e0e615c3166f7cf2d08d7adb" name="a4b917fa7e0e615c3166f7cf2d08d7adb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b917fa7e0e615c3166f7cf2d08d7adb">&#9670;&#160;</a></span>EnableHpBarPunch</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableHpBarPunch</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3b1db7001705dc1d2859701733842f4b" name="a3b1db7001705dc1d2859701733842f4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b1db7001705dc1d2859701733842f4b">&#9670;&#160;</a></span>EnableIdleBreath</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableIdleBreath</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad7a9480ba7270969a074b9b9b6ec2647" name="ad7a9480ba7270969a074b9b9b6ec2647"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7a9480ba7270969a074b9b9b6ec2647">&#9670;&#160;</a></span>EnableImpactFrame</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableImpactFrame</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac5d8df51a937c418439e2bb979e6c9f9" name="ac5d8df51a937c418439e2bb979e6c9f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5d8df51a937c418439e2bb979e6c9f9">&#9670;&#160;</a></span>EnableSwingArc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableSwingArc</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aecffc095ce70dbbfe3d01d1825cbc76b" name="aecffc095ce70dbbfe3d01d1825cbc76b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecffc095ce70dbbfe3d01d1825cbc76b">&#9670;&#160;</a></span>EnableTargetAcquireTell</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableTargetAcquireTell</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a526d71559be87f91b0158a5ec292a277" name="a526d71559be87f91b0158a5ec292a277"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a526d71559be87f91b0158a5ec292a277">&#9670;&#160;</a></span>EnableTelegraphFlash</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.EnableTelegraphFlash</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3e4870876839feb745cf04dc33b718e5" name="a3e4870876839feb745cf04dc33b718e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e4870876839feb745cf04dc33b718e5">&#9670;&#160;</a></span>FacingFlipDuration</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.FacingFlipDuration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9dd67c70823d7c47f272eed804eb2cc8" name="a9dd67c70823d7c47f272eed804eb2cc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dd67c70823d7c47f272eed804eb2cc8">&#9670;&#160;</a></span>FacingFlipSquashAmount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.FacingFlipSquashAmount</td>
         </tr>
       </table>
   </td>
@@ -232,7 +1630,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.FinisherDeathDuration</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.FinisherDeathDuration</td>
         </tr>
       </table>
   </td>
@@ -254,7 +1652,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.FinisherDeathFactor</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.FinisherDeathFactor</td>
         </tr>
       </table>
   </td>
@@ -276,7 +1674,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.FinisherHoldSeconds</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.FinisherHoldSeconds</td>
         </tr>
       </table>
   </td>
@@ -300,7 +1698,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.FinisherPause</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.FinisherPause</td>
         </tr>
       </table>
   </td>
@@ -322,7 +1720,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.FinisherReturn</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.FinisherReturn</td>
         </tr>
       </table>
   </td>
@@ -344,7 +1742,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">AnimationCurve</a> Guildmaster.Presentation.Design.CombatFeelConfig.FinisherReturnCurve</td>
+          <td class="memname">AnimationCurve Guildmaster.Presentation.Design.CombatFeelConfig.FinisherReturnCurve</td>
         </tr>
       </table>
   </td>
@@ -366,7 +1764,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.FinisherShatterDuration</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.FinisherShatterDuration</td>
         </tr>
       </table>
   </td>
@@ -388,7 +1786,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.FinisherShatterFactor</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.FinisherShatterFactor</td>
         </tr>
       </table>
   </td>
@@ -432,7 +1830,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.FlashDuration</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.FlashDuration</td>
         </tr>
       </table>
   </td>
@@ -444,8 +1842,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a445a79cbe6345c27f87b79dbaa2789a0" name="a445a79cbe6345c27f87b79dbaa2789a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a445a79cbe6345c27f87b79dbaa2789a0">&#9670;&#160;</a></span>Heal</h2>
+<a id="ad0f6c46682accb7dc02943de30e57eca" name="ad0f6c46682accb7dc02943de30e57eca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0f6c46682accb7dc02943de30e57eca">&#9670;&#160;</a></span>HealFlashColor</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -454,7 +1852,29 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html">PixelBurstPreset</a> Guildmaster.Presentation.Design.CombatFeelConfig.Heal</td>
+          <td class="memname">Color Guildmaster.Presentation.Design.CombatFeelConfig.HealFlashColor</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abc5efc986c8ff118e33e26d02faacbb7" name="abc5efc986c8ff118e33e26d02faacbb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc5efc986c8ff118e33e26d02faacbb7">&#9670;&#160;</a></span>HealFlashPeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HealFlashPeak</td>
         </tr>
       </table>
   </td>
@@ -476,7 +1896,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.HeavyHitFrac</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HeavyHitFrac</td>
         </tr>
       </table>
   </td>
@@ -498,7 +1918,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.HeavyShakeMax</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HeavyShakeMax</td>
         </tr>
       </table>
   </td>
@@ -520,7 +1940,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.HeavyShakeMin</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HeavyShakeMin</td>
         </tr>
       </table>
   </td>
@@ -532,8 +1952,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ae0f6cf1931b316ce42c33ffa49a818de" name="ae0f6cf1931b316ce42c33ffa49a818de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0f6cf1931b316ce42c33ffa49a818de">&#9670;&#160;</a></span>HitSpark</h2>
+<a id="a8533e3484f73c6abac58da6480615afd" name="a8533e3484f73c6abac58da6480615afd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8533e3484f73c6abac58da6480615afd">&#9670;&#160;</a></span>HitFormCoreColor</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -542,7 +1962,31 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html">PixelBurstPreset</a> Guildmaster.Presentation.Design.CombatFeelConfig.HitSpark</td>
+          <td class="memname">Color Guildmaster.Presentation.Design.CombatFeelConfig.HitFormCoreColor</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Цвет пересвета в ядре формы — тот же холодный пересвет, что у осколков и смерти. </p>
+
+</div>
+</div>
+<a id="adf6d5c99bbe7800862f18286d5b6e511" name="adf6d5c99bbe7800862f18286d5b6e511"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf6d5c99bbe7800862f18286d5b6e511">&#9670;&#160;</a></span>HitFormCoreWidth</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HitFormCoreWidth</td>
         </tr>
       </table>
   </td>
@@ -554,8 +1998,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ad325fa62337ab44e40dfe3a7e68e9c43" name="ad325fa62337ab44e40dfe3a7e68e9c43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad325fa62337ab44e40dfe3a7e68e9c43">&#9670;&#160;</a></span>HitstopFullFrac</h2>
+<a id="a49ac2150e05f64323339ecbdbe292d0b" name="a49ac2150e05f64323339ecbdbe292d0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49ac2150e05f64323339ecbdbe292d0b">&#9670;&#160;</a></span>HitFormGrowShare</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -564,7 +2008,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.HitstopFullFrac</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HitFormGrowShare</td>
         </tr>
       </table>
   </td>
@@ -576,8 +2020,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ab47fe137492ca6b673e9e052185c6048" name="ab47fe137492ca6b673e9e052185c6048"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab47fe137492ca6b673e9e052185c6048">&#9670;&#160;</a></span>HitstopMax</h2>
+<a id="acadf4c4810584e718f2f71b2e898e81c" name="acadf4c4810584e718f2f71b2e898e81c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acadf4c4810584e718f2f71b2e898e81c">&#9670;&#160;</a></span>HitFormLife</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -586,7 +2030,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.HitstopMax</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HitFormLife</td>
         </tr>
       </table>
   </td>
@@ -598,8 +2042,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a2dce450fbc7f573edf37cc4d71fd51d8" name="a2dce450fbc7f573edf37cc4d71fd51d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2dce450fbc7f573edf37cc4d71fd51d8">&#9670;&#160;</a></span>HitstopMin</h2>
+<a id="a9d51012f0b578c361e511810924ad976" name="a9d51012f0b578c361e511810924ad976"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d51012f0b578c361e511810924ad976">&#9670;&#160;</a></span>HitFormTailLag</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -608,7 +2052,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.HitstopMin</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HitFormTailLag</td>
         </tr>
       </table>
   </td>
@@ -620,8 +2064,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a3568c5255abe179df9d0b16c6f307e97" name="a3568c5255abe179df9d0b16c6f307e97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3568c5255abe179df9d0b16c6f307e97">&#9670;&#160;</a></span>ImpactDust</h2>
+<a id="a5cf3e95671bda303db6f2d0ec81c0baf" name="a5cf3e95671bda303db6f2d0ec81c0baf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cf3e95671bda303db6f2d0ec81c0baf">&#9670;&#160;</a></span>HitFormUnitHeight</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -630,7 +2074,249 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html">PixelBurstPreset</a> Guildmaster.Presentation.Design.CombatFeelConfig.ImpactDust</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HitFormUnitHeight</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a940b44b3538e36b243bd083f1dad5544" name="a940b44b3538e36b243bd083f1dad5544"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a940b44b3538e36b243bd083f1dad5544">&#9670;&#160;</a></span>HitNudgeDistance</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HitNudgeDistance</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1e8f7a1f879f39aa8cf9e90b42777512" name="a1e8f7a1f879f39aa8cf9e90b42777512"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e8f7a1f879f39aa8cf9e90b42777512">&#9670;&#160;</a></span>HitNudgeDuration</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HitNudgeDuration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad62916b83698d84a9e2b2104a07c71ca" name="ad62916b83698d84a9e2b2104a07c71ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad62916b83698d84a9e2b2104a07c71ca">&#9670;&#160;</a></span>HologramBodyAlpha</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HologramBodyAlpha</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a80eb2e2b784cf192e446c1710ae2a37b" name="a80eb2e2b784cf192e446c1710ae2a37b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80eb2e2b784cf192e446c1710ae2a37b">&#9670;&#160;</a></span>HologramColor</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Color Guildmaster.Presentation.Design.CombatFeelConfig.HologramColor</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeee71c4cfde1152766ea1d3f2f33704e" name="aeee71c4cfde1152766ea1d3f2f33704e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeee71c4cfde1152766ea1d3f2f33704e">&#9670;&#160;</a></span>HologramScanAmount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HologramScanAmount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab568ee417075391c18e09741387304fd" name="ab568ee417075391c18e09741387304fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab568ee417075391c18e09741387304fd">&#9670;&#160;</a></span>HologramScanScale</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HologramScanScale</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8807eb0a19c22e0876c03d6d7592fa57" name="a8807eb0a19c22e0876c03d6d7592fa57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8807eb0a19c22e0876c03d6d7592fa57">&#9670;&#160;</a></span>HpBarPunchAmount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HpBarPunchAmount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4f500c274629dc7f9538381160e42907" name="a4f500c274629dc7f9538381160e42907"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f500c274629dc7f9538381160e42907">&#9670;&#160;</a></span>HpBarPunchDuration</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.HpBarPunchDuration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7e8604a58b803b199edaf36f2323fceb" name="a7e8604a58b803b199edaf36f2323fceb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e8604a58b803b199edaf36f2323fceb">&#9670;&#160;</a></span>IdleBreathAmplitude</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.IdleBreathAmplitude</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a12f5fcfd0c2d46562f83ed2561593348" name="a12f5fcfd0c2d46562f83ed2561593348"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12f5fcfd0c2d46562f83ed2561593348">&#9670;&#160;</a></span>IdleBreathPeriod</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.IdleBreathPeriod</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6fdb33782bdc031e2a2d536a2b02e336" name="a6fdb33782bdc031e2a2d536a2b02e336"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fdb33782bdc031e2a2d536a2b02e336">&#9670;&#160;</a></span>ImpactFrameHold</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ImpactFrameHold</td>
         </tr>
       </table>
   </td>
@@ -652,7 +2338,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.KillShake</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.KillShake</td>
         </tr>
       </table>
   </td>
@@ -674,7 +2360,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.KillSlowCooldown</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.KillSlowCooldown</td>
         </tr>
       </table>
   </td>
@@ -696,7 +2382,29 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.KillSlowFactor</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.KillSlowFactor</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a574e1d7cd9d07909f53f1a63a0f32921" name="a574e1d7cd9d07909f53f1a63a0f32921"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a574e1d7cd9d07909f53f1a63a0f32921">&#9670;&#160;</a></span>KillSlowLeadSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.KillSlowLeadSeconds</td>
         </tr>
       </table>
   </td>
@@ -718,7 +2426,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.KillSlowRelease</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.KillSlowRelease</td>
         </tr>
       </table>
   </td>
@@ -730,8 +2438,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a96a50a1c214704226eee1fb57d537fbe" name="a96a50a1c214704226eee1fb57d537fbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96a50a1c214704226eee1fb57d537fbe">&#9670;&#160;</a></span>Muzzle</h2>
+<a id="a0892f66bbb6da9c5d5e3700a811dddeb" name="a0892f66bbb6da9c5d5e3700a811dddeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0892f66bbb6da9c5d5e3700a811dddeb">&#9670;&#160;</a></span>LowHpPulseAmount</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -740,7 +2448,117 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html">PixelBurstPreset</a> Guildmaster.Presentation.Design.CombatFeelConfig.Muzzle</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.LowHpPulseAmount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3dcace7448c26874ee0b709f969edd3e" name="a3dcace7448c26874ee0b709f969edd3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dcace7448c26874ee0b709f969edd3e">&#9670;&#160;</a></span>LowHpPulsePeriod</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.LowHpPulsePeriod</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="affb6afc29592225c6a066afb7111e602" name="affb6afc29592225c6a066afb7111e602"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affb6afc29592225c6a066afb7111e602">&#9670;&#160;</a></span>LowHpThreshold</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.LowHpThreshold</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af7300c1525a74a6b7554939c073e0ae0" name="af7300c1525a74a6b7554939c073e0ae0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7300c1525a74a6b7554939c073e0ae0">&#9670;&#160;</a></span>LungeDistance</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.LungeDistance</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a11915725a5d8f2d7d725f51c6101b0ac" name="a11915725a5d8f2d7d725f51c6101b0ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11915725a5d8f2d7d725f51c6101b0ac">&#9670;&#160;</a></span>LungeDuration</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.LungeDuration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a350cc0abc4122f88b369f38861e332ad" name="a350cc0abc4122f88b369f38861e332ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a350cc0abc4122f88b369f38861e332ad">&#9670;&#160;</a></span>NumberArcGravity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.NumberArcGravity</td>
         </tr>
       </table>
   </td>
@@ -762,7 +2580,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.NumberFullFrac</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.NumberFullFrac</td>
         </tr>
       </table>
   </td>
@@ -772,10 +2590,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Доля HP-урона, на которой цифра достигает максимума — точка насыщения кривой выше. </p>
+
 </div>
 </div>
-<a id="a99d7e318d4867c3f9ca605ac9994404f" name="a99d7e318d4867c3f9ca605ac9994404f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99d7e318d4867c3f9ca605ac9994404f">&#9670;&#160;</a></span>NumberMaxScale</h2>
+<a id="a5eedaff85d39ac078f0759b5895ffecf" name="a5eedaff85d39ac078f0759b5895ffecf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5eedaff85d39ac078f0759b5895ffecf">&#9670;&#160;</a></span>PlayDeathClip</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -784,7 +2604,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.NumberMaxScale</td>
+          <td class="memname">bool Guildmaster.Presentation.Design.CombatFeelConfig.PlayDeathClip</td>
         </tr>
       </table>
   </td>
@@ -806,7 +2626,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.ShakeDecayPerSec</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShakeDecayPerSec</td>
         </tr>
       </table>
   </td>
@@ -828,7 +2648,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.ShakeFrequency</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShakeFrequency</td>
         </tr>
       </table>
   </td>
@@ -850,7 +2670,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.ShakePositionFraction</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShakePositionFraction</td>
         </tr>
       </table>
   </td>
@@ -872,7 +2692,51 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.ShakeRotationStrength</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShakeRotationStrength</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acd55f68faf7dd6b921646eaf3aef0de7" name="acd55f68faf7dd6b921646eaf3aef0de7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd55f68faf7dd6b921646eaf3aef0de7">&#9670;&#160;</a></span>ShardWhiteColor</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Color Guildmaster.Presentation.Design.CombatFeelConfig.ShardWhiteColor</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5ae0d7e1315c7efdee8d7d99288bfb1b" name="a5ae0d7e1315c7efdee8d7d99288bfb1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ae0d7e1315c7efdee8d7d99288bfb1b">&#9670;&#160;</a></span>ShardWhiteShare</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShardWhiteShare</td>
         </tr>
       </table>
   </td>
@@ -894,7 +2758,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">int</a> Guildmaster.Presentation.Design.CombatFeelConfig.ShatterBlockPixels</td>
+          <td class="memname">int Guildmaster.Presentation.Design.CombatFeelConfig.ShatterBlockPixels</td>
         </tr>
       </table>
   </td>
@@ -916,7 +2780,29 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.ShatterDuration</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterDuration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a13fc1ac2f341392fb19c67e942833b25" name="a13fc1ac2f341392fb19c67e942833b25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13fc1ac2f341392fb19c67e942833b25">&#9670;&#160;</a></span>ShatterEmberBoost</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterEmberBoost</td>
         </tr>
       </table>
   </td>
@@ -938,7 +2824,29 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.ShatterExplode</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterExplode</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a510e903efaf8a08a91f892e242c46dbd" name="a510e903efaf8a08a91f892e242c46dbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a510e903efaf8a08a91f892e242c46dbd">&#9670;&#160;</a></span>ShatterFadePower</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterFadePower</td>
         </tr>
       </table>
   </td>
@@ -960,7 +2868,51 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.ShatterFlashIn</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterFlashIn</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a74a3716f4e3c3a7a82abb0ba4945ad80" name="a74a3716f4e3c3a7a82abb0ba4945ad80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74a3716f4e3c3a7a82abb0ba4945ad80">&#9670;&#160;</a></span>ShatterFlashOut</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterFlashOut</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a08b8cdc05bef6110b94412ada1da091c" name="a08b8cdc05bef6110b94412ada1da091c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08b8cdc05bef6110b94412ada1da091c">&#9670;&#160;</a></span>ShatterGlow</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterGlow</td>
         </tr>
       </table>
   </td>
@@ -982,7 +2934,95 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.ShatterGravity</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterGravity</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5e22ffaee8732c9d9c60bb8a7437bfe0" name="a5e22ffaee8732c9d9c60bb8a7437bfe0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e22ffaee8732c9d9c60bb8a7437bfe0">&#9670;&#160;</a></span>ShatterHold</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterHold</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3db98550557fb6b5dcc4203f3ba281f8" name="a3db98550557fb6b5dcc4203f3ba281f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3db98550557fb6b5dcc4203f3ba281f8">&#9670;&#160;</a></span>ShatterLifeVariance</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterLifeVariance</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a685ecb2c3a473887b857859f67a0a00d" name="a685ecb2c3a473887b857859f67a0a00d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a685ecb2c3a473887b857859f67a0a00d">&#9670;&#160;</a></span>ShatterLuma</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterLuma</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a01a4e55bc3348cf12752fa4ca098f0e1" name="a01a4e55bc3348cf12752fa4ca098f0e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01a4e55bc3348cf12752fa4ca098f0e1">&#9670;&#160;</a></span>ShatterMinTimeScale</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterMinTimeScale</td>
         </tr>
       </table>
   </td>
@@ -1004,7 +3044,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.ShatterSpin</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterSpin</td>
         </tr>
       </table>
   </td>
@@ -1026,7 +3066,51 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.ShatterSpread</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterSpread</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a07583a19355118bc22e8e88db4044431" name="a07583a19355118bc22e8e88db4044431"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07583a19355118bc22e8e88db4044431">&#9670;&#160;</a></span>ShatterTumble</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterTumble</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8793ea31479dc33609eebe178c06bf06" name="a8793ea31479dc33609eebe178c06bf06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8793ea31479dc33609eebe178c06bf06">&#9670;&#160;</a></span>ShatterUpBias</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.ShatterUpBias</td>
         </tr>
       </table>
   </td>
@@ -1048,7 +3132,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.SquashAmount</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.SquashAmount</td>
         </tr>
       </table>
   </td>
@@ -1070,7 +3154,293 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> Guildmaster.Presentation.Design.CombatFeelConfig.SquashDuration</td>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.SquashDuration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a69b9729dccd99de378a0cf91889a1d91" name="a69b9729dccd99de378a0cf91889a1d91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69b9729dccd99de378a0cf91889a1d91">&#9670;&#160;</a></span>SwingArcFadeOut</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.SwingArcFadeOut</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8fa6dacb1eea9f145e984e8d49555c4e" name="a8fa6dacb1eea9f145e984e8d49555c4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fa6dacb1eea9f145e984e8d49555c4e">&#9670;&#160;</a></span>SwingArcInnerShare</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.SwingArcInnerShare</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6dec5e2d92045712e8e1592f420ad6e1" name="a6dec5e2d92045712e8e1592f420ad6e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dec5e2d92045712e8e1592f420ad6e1">&#9670;&#160;</a></span>SwingArcTailBias</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.SwingArcTailBias</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a41611e786db5a59b3a9958970587f90a" name="a41611e786db5a59b3a9958970587f90a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41611e786db5a59b3a9958970587f90a">&#9670;&#160;</a></span>TargetAcquireDuration</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.TargetAcquireDuration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4bcd191fa4090a0df9d6c9db584b42eb" name="a4bcd191fa4090a0df9d6c9db584b42eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bcd191fa4090a0df9d6c9db584b42eb">&#9670;&#160;</a></span>TargetAcquireTwitch</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.Design.CombatFeelConfig.TargetAcquireTwitch</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3d8efa1523706bcd862b713cf6912195" name="a3d8efa1523706bcd862b713cf6912195"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d8efa1523706bcd862b713cf6912195">&#9670;&#160;</a></span>VfxCastBurst</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a> Guildmaster.Presentation.Design.CombatFeelConfig.VfxCastBurst</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af91505858511794c88992a72ee5152f7" name="af91505858511794c88992a72ee5152f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af91505858511794c88992a72ee5152f7">&#9670;&#160;</a></span>VfxContactDust</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a> Guildmaster.Presentation.Design.CombatFeelConfig.VfxContactDust</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad73b5c69cf0ac40eebfd80d655de4464" name="ad73b5c69cf0ac40eebfd80d655de4464"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad73b5c69cf0ac40eebfd80d655de4464">&#9670;&#160;</a></span>VfxHeal</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a> Guildmaster.Presentation.Design.CombatFeelConfig.VfxHeal</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0e38696ad103445e8b0b639df2eb5326" name="a0e38696ad103445e8b0b639df2eb5326"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e38696ad103445e8b0b639df2eb5326">&#9670;&#160;</a></span>VfxHitForm</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a> Guildmaster.Presentation.Design.CombatFeelConfig.VfxHitForm</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a46faac9f36a64c530047422204c25a2f" name="a46faac9f36a64c530047422204c25a2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46faac9f36a64c530047422204c25a2f">&#9670;&#160;</a></span>VfxHitSpark</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a> Guildmaster.Presentation.Design.CombatFeelConfig.VfxHitSpark</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a156ee14201bbc73039b457e244d459f3" name="a156ee14201bbc73039b457e244d459f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a156ee14201bbc73039b457e244d459f3">&#9670;&#160;</a></span>VfxImpactDust</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a> Guildmaster.Presentation.Design.CombatFeelConfig.VfxImpactDust</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa72ec01e2f1616bb235404777d1cbfb8" name="aa72ec01e2f1616bb235404777d1cbfb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa72ec01e2f1616bb235404777d1cbfb8">&#9670;&#160;</a></span>VfxMuzzle</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a> Guildmaster.Presentation.Design.CombatFeelConfig.VfxMuzzle</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4296400f4bf3dcdb761475ff12c97d67" name="a4296400f4bf3dcdb761475ff12c97d67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4296400f4bf3dcdb761475ff12c97d67">&#9670;&#160;</a></span>VfxSwingArc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a> Guildmaster.Presentation.Design.CombatFeelConfig.VfxSwingArc</td>
         </tr>
       </table>
   </td>

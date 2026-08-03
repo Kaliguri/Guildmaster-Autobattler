@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Services.SettingsService.SetLanguage" name="Guildmaster.Game.Services.SettingsService.SetLanguage">
+<area shape="rect" id="Node000001" title="Запомнить выбранный язык." alt="" coords="5,5,216,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#a1e17f2e840d3ea4b449283f26ee91b92" title="Сохранить текущие значения на диск (ключ prefs)." alt="" coords="264,5,471,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,23,250,23,250,28,216,28"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.Effects.Components.ParryWindowComponent.OnPreDamage" name="Guildmaster.Combat.Effects.Components.ParryWindowComponent.OnPreDamage">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,277,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ParryComponent.html#aeeac2e505ee01572ed0aa565d8dfd2e2" title="Удар, который парирование вообще способно встретить: прямое попадание (авто&#45;атака или способность) от..." alt="" coords="325,13,617,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="278,30,312,30,312,35,278,35"/>
+</map>

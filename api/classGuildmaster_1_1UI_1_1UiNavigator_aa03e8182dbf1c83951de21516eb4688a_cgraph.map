@@ -1,0 +1,15 @@
+<map id="Guildmaster.UI.UiNavigator.ShowAsync&lt; TResult &gt;" name="Guildmaster.UI.UiNavigator.ShowAsync&lt; TResult &gt;">
+<area shape="rect" id="Node000001" title="Показать result&#45;экран и дождаться его резолва." alt="" coords="5,133,209,173"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1UiNavigator.html#a166b588d657eabc55eff135792fdb19a" title="Добавить экран поверх стека." alt="" coords="257,141,492,166"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,151,244,151,244,156,209,156"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1UiScreen.html#ae57fd93056750a59598046aaec9cacb6" title="Построить Root (клон UXML + проводка). Вызывается навигатором один раз при Push, если Root ещё пуст." alt="" coords="549,5,735,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="394,138,457,98,539,55,557,48,559,52,541,60,459,103,396,143"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Diagnostics_1_1UiTrace.html#a381bc26565593761feb0c79fcfe7b8a8" title=" " alt="" coords="549,69,735,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="428,138,544,110,545,115,430,143"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1UI_1_1UiScreen.html#a44c69222408d920d8638bd2c9a15abcc" title="Экран перекрыт другим сверху." alt="" coords="549,133,735,173"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="492,151,536,151,536,156,492,156"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1UI_1_1UiScreen.html#a8f4a7acc1487d9534ebe4b5d39a34957" title="Экран добавлен в слой (стал частью стека)." alt="" coords="549,197,735,237"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="430,164,545,192,544,197,428,169"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1UI_1_1UiNavigator.html#a1feefbc536943703b36817235b504dd4" title="Пересчитать глушение ввода и контекст из (верх стека, фаза боя) — II.3." alt="" coords="540,261,744,301"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="396,164,459,204,541,247,559,254,557,259,539,252,457,208,394,169"/>
+</map>

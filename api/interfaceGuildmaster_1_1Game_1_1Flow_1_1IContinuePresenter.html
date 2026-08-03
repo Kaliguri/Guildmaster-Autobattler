@@ -98,30 +98,72 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Game_1_1Flow_1
 </div><!--header-->
 <div class="contents">
 
-<p>Показ единой кнопки «Продолжить» и ожидание нажатия (план A4).  
+<p>Показ кнопок «бита» между узлами и (для гейта) ожидание нажатия (план A4).  
  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.IContinuePresenter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter__inherit__graph.svg" width="247" height="239"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter__inherit__graph.svg" width="247" height="279"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Flow.IContinuePresenter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter__coll__graph.svg" width="247" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter__coll__graph.svg" width="247" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a38d28a603cdf31119d366225c5e1bb59" id="r_a38d28a603cdf31119d366225c5e1bb59"><td class="memItemLeft" align="right" valign="top">UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter.html#a38d28a603cdf31119d366225c5e1bb59">WaitForContinueAsync</a> (string labelKey=null)</td></tr>
-<tr class="memdesc:a38d28a603cdf31119d366225c5e1bb59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать «Продолжить» (правый нижний угол) и дождаться нажатия. labelKey пуст → дефолт.  <br /></td></tr>
-<tr class="separator:a38d28a603cdf31119d366225c5e1bb59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a688841a1e0ca499d563bf6338f359792" id="r_a688841a1e0ca499d563bf6338f359792"><td class="memItemLeft" align="right" valign="top">UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter.html#a688841a1e0ca499d563bf6338f359792">WaitForContinueAsync</a> (string labelKey=null, CancellationToken ct=default)</td></tr>
+<tr class="memdesc:a688841a1e0ca499d563bf6338f359792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гейт: показать одну кнопку и ЖДАТЬ нажатия.  <br /></td></tr>
+<tr class="separator:a688841a1e0ca499d563bf6338f359792"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52d3a89a1f69c4fd278b3e90e13c318c" id="r_a52d3a89a1f69c4fd278b3e90e13c318c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter.html#a52d3a89a1f69c4fd278b3e90e13c318c">ShowRestBeat</a> (Action onContinue, Action onFormation, CancellationToken ct)</td></tr>
+<tr class="memdesc:a52d3a89a1f69c4fd278b3e90e13c318c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Передышка: показать две кнопки и СРАЗУ вернуть управление — узел уже засчитан, петля ничего не ждёт.  <br /></td></tr>
+<tr class="separator:a52d3a89a1f69c4fd278b3e90e13c318c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Показ единой кнопки «Продолжить» и ожидание нажатия (план A4). </p>
+<div class="textblock"><p>Показ кнопок «бита» между узлами и (для гейта) ожидание нажатия (план A4). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a38d28a603cdf31119d366225c5e1bb59" name="a38d28a603cdf31119d366225c5e1bb59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38d28a603cdf31119d366225c5e1bb59">&#9670;&#160;</a></span>WaitForContinueAsync()</h2>
+<a id="a52d3a89a1f69c4fd278b3e90e13c318c" name="a52d3a89a1f69c4fd278b3e90e13c318c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52d3a89a1f69c4fd278b3e90e13c318c">&#9670;&#160;</a></span>ShowRestBeat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Flow.IContinuePresenter.ShowRestBeat </td>
+          <td>(</td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onContinue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onFormation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CancellationToken&#160;</td>
+          <td class="paramname"><em>ct</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Передышка: показать две кнопки и СРАЗУ вернуть управление — узел уже засчитан, петля ничего не ждёт. </p>
+<p>Экран живёт, пока <em>ct</em>  не отменят (узел выбран / забег брошен); нажатие любой кнопки тоже его снимает. Оба места достижимы и табами — кнопки лишь короткий путь. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ContinuePresenter.html#a31ef5b9ddef3687fa062c0110d5ba733">Guildmaster.Game.Flow.ContinuePresenter</a>.</p>
+
+</div>
+</div>
+<a id="a688841a1e0ca499d563bf6338f359792" name="a688841a1e0ca499d563bf6338f359792"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a688841a1e0ca499d563bf6338f359792">&#9670;&#160;</a></span>WaitForContinueAsync()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -130,15 +172,26 @@ Public Member Functions</h2></td></tr>
           <td class="memname">UniTask Guildmaster.Game.Flow.IContinuePresenter.WaitForContinueAsync </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>labelKey</em> = <code>null</code></td><td>)</td>
+          <td class="paramname"><em>labelKey</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">CancellationToken&#160;</td>
+          <td class="paramname"><em>ct</em> = <code>default</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Показать «Продолжить» (правый нижний угол) и дождаться нажатия. labelKey пуст → дефолт. </p>
+<p>Гейт: показать одну кнопку и ЖДАТЬ нажатия. </p>
+<p>labelKey пуст → дефолт «Продолжить». <em>ct</em>  прерывает ожидание при выходе из забега (QA #18). </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ContinuePresenter.html#a35664e210c7e8d90d2b4481191554587">Guildmaster.Game.Flow.ContinuePresenter</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ContinuePresenter.html#a100bbce2b628613e7bf07d3b1d80dad8">Guildmaster.Game.Flow.ContinuePresenter</a>.</p>
 
 </div>
 </div>

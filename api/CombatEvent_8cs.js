@@ -9,6 +9,9 @@ var CombatEvent_8cs =
       [ "UnitDied", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066aefa198417da5fbc0a75b54484ad97b4f", null ],
       [ "EffectApplied", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066aae22ad0343f490e1d4d798f879dc6622", null ],
       [ "UnitKilled", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a429d336ceae2000a8948230c38cc738d", null ],
-      [ "EffectExpired", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a1248807988c03e6f257d4238c3bc4136", null ]
+      [ "EffectExpired", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a1248807988c03e6f257d4238c3bc4136", null ],
+      [ "AbilityCast", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066afb70d9705c2930ef40b1173ab1b2094d", null ],
+      [ "AttackCompleted", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a72d4a0b0cc011d98f0b8fc13a5c5729c", null ],
+      [ "ComboBroken", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a676f582752529cf3b8f4652aff72ae7d", null ]
     ] ]
 ];

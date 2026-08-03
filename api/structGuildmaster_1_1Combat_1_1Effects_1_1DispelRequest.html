@@ -109,8 +109,8 @@ Collaboration diagram for Guildmaster.Combat.Effects.DispelRequest:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac092e9b8b99382497991fe8f0411a498" id="r_ac092e9b8b99382497991fe8f0411a498"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#ac092e9b8b99382497991fe8f0411a498">DispelRequest</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20">DispelTargetPolarity</a> polarity, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> tags, int dispelPower, int maxCount)</td></tr>
-<tr class="separator:ac092e9b8b99382497991fe8f0411a498"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29d104bb723232249d2548337a184416" id="r_a29d104bb723232249d2548337a184416"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#a29d104bb723232249d2548337a184416">DispelRequest</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20">DispelTargetPolarity</a> polarity, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> tags, int dispelPower, int maxCount, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source=null, bool consumesOwnTrigger=false)</td></tr>
+<tr class="separator:a29d104bb723232249d2548337a184416"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -129,13 +129,19 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:acb301de01e1d9811d144c3da205281bb" id="r_acb301de01e1d9811d144c3da205281bb"><td class="memItemLeft" align="right" valign="top">readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#acb301de01e1d9811d144c3da205281bb">MaxCount</a></td></tr>
 <tr class="memdesc:acb301de01e1d9811d144c3da205281bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько максимум снять (0 = все подходящие).  <br /></td></tr>
 <tr class="separator:acb301de01e1d9811d144c3da205281bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92559718e9fe550a4ce72ff37e75c3af" id="r_a92559718e9fe550a4ce72ff37e75c3af"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#a92559718e9fe550a4ce72ff37e75c3af">Source</a></td></tr>
+<tr class="memdesc:a92559718e9fe550a4ce72ff37e75c3af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кто снимает.  <br /></td></tr>
+<tr class="separator:a92559718e9fe550a4ce72ff37e75c3af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7278ebd6992a06f2704d901f5fab6d5" id="r_aa7278ebd6992a06f2704d901f5fab6d5"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#aa7278ebd6992a06f2704d901f5fab6d5">ConsumesOwnTrigger</a></td></tr>
+<tr class="memdesc:aa7278ebd6992a06f2704d901f5fab6d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Это РАСХОД собственного триггера, а не снятие чужого: «Ледяные оковы» съедают «Заморозку», превращая её в стан; «Взрыв спор» тратит тег Яда, который сам же детонировал.  <br /></td></tr>
+<tr class="separator:aa7278ebd6992a06f2704d901f5fab6d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Запрос на снятие эффектов с цели. </p>
 <p>Разрешение: совпадение полярности И тегов И <code>CleanseTier ≤ DispelPower</code> И <code>!Unremovable</code> (вики «6» §5.4). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac092e9b8b99382497991fe8f0411a498" name="ac092e9b8b99382497991fe8f0411a498"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac092e9b8b99382497991fe8f0411a498">&#9670;&#160;</a></span>DispelRequest()</h2>
+<a id="a29d104bb723232249d2548337a184416" name="a29d104bb723232249d2548337a184416"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29d104bb723232249d2548337a184416">&#9670;&#160;</a></span>DispelRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,7 +177,19 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>maxCount</em>&#160;</td>
+          <td class="paramname"><em>maxCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>source</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>consumesOwnTrigger</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -189,6 +207,23 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa7278ebd6992a06f2704d901f5fab6d5" name="aa7278ebd6992a06f2704d901f5fab6d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7278ebd6992a06f2704d901f5fab6d5">&#9670;&#160;</a></span>ConsumesOwnTrigger</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly bool Guildmaster.Combat.Effects.DispelRequest.ConsumesOwnTrigger</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Это РАСХОД собственного триггера, а не снятие чужого: «Ледяные оковы» съедают «Заморозку», превращая её в стан; «Взрыв спор» тратит тег Яда, который сам же детонировал. </p>
+<p>Отличие принципиальное. Обычное снятие обязано судить по состоянию НАЧАЛА тика, иначе исход зависит от места юнита в обходе (зеркало ловило это на тике 181). Расход же — вторая половина одной операции: способность только что наложила своё и тут же забирает триггер, и требовать от неё «подожди следующего тика» значило бы ломать механику ради инварианта, который в этом месте ничего не охраняет — порядок здесь задан внутри одного вызова.</p>
+
+</div>
+</div>
 <a id="aa020877e8cb81b74fc25f85246623ca7" name="aa020877e8cb81b74fc25f85246623ca7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa020877e8cb81b74fc25f85246623ca7">&#9670;&#160;</a></span>DispelPower</h2>
 
@@ -234,6 +269,23 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Какую полярность снимать (Any / Buff / Debuff). </p>
+
+</div>
+</div>
+<a id="a92559718e9fe550a4ce72ff37e75c3af" name="a92559718e9fe550a4ce72ff37e75c3af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92559718e9fe550a4ce72ff37e75c3af">&#9670;&#160;</a></span>Source</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> Guildmaster.Combat.Effects.DispelRequest.Source</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Кто снимает. </p>
+<p>Нужен, чтобы отличить помощь команде от собственной механики: снятая с союзника чужая порча — это утилита снявшего, а съеденный своей же ульткой собственный дебафф (крио конвертирует «Заморозку» в стан) — не очистка вовсе. null = системное снятие без автора. </p>
 
 </div>
 </div>

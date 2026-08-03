@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Abilitie
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Abilities.AbilityRuntime:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime__coll__graph.svg" width="220" height="454"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime__coll__graph.svg" width="220" height="554"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -120,6 +120,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a7e4d83b9f92db4d81f68da3ebc04d085" id="r_a7e4d83b9f92db4d81f68da3ebc04d085"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html#a7e4d83b9f92db4d81f68da3ebc04d085">CooldownRemaining</a></td></tr>
 <tr class="memdesc:a7e4d83b9f92db4d81f68da3ebc04d085"><td class="mdescLeft">&#160;</td><td class="mdescRight">Остаток кулдауна, сек. ≤ 0 — готова.  <br /></td></tr>
 <tr class="separator:a7e4d83b9f92db4d81f68da3ebc04d085"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86fec4bb9fa8b44ce01b59b50586e7a4" id="r_a86fec4bb9fa8b44ce01b59b50586e7a4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html#a86fec4bb9fa8b44ce01b59b50586e7a4">CastsThisBattle</a></td></tr>
+<tr class="memdesc:a86fec4bb9fa8b44ce01b59b50586e7a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько раз способность кастовала В ЭТОМ БОЮ.  <br /></td></tr>
+<tr class="separator:a86fec4bb9fa8b44ce01b59b50586e7a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -149,6 +152,24 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a86fec4bb9fa8b44ce01b59b50586e7a4" name="a86fec4bb9fa8b44ce01b59b50586e7a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86fec4bb9fa8b44ce01b59b50586e7a4">&#9670;&#160;</a></span>CastsThisBattle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Abilities.AbilityRuntime.CastsThisBattle</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Сколько раз способность кастовала В ЭТОМ БОЮ. </p>
+<p>Питает разгон числа применений нагрузки (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a9248c8f681c720c597e370ac3cf824d7" title="Сколько раз применить нагрузку с учётом разгона: previousCasts  — сколько раз эта способность уже кас...">AbilityData.ResolvePayloadRepeats</a>): залп Арканиста растёт на стрелу за каст.</p>
+<p>Живёт здесь, а не на юните и не на эффекте: разгон — свойство КОНКРЕТНОЙ способности, и у кита с двумя растущими активками счётчики обязаны быть раздельными. Обнуляется вместе с рантаймом, то есть с началом нового боя — межбоевого накопления нет по замыслу. </p>
+
+</div>
+</div>
 <a id="a7e4d83b9f92db4d81f68da3ebc04d085" name="a7e4d83b9f92db4d81f68da3ebc04d085"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7e4d83b9f92db4d81f68da3ebc04d085">&#9670;&#160;</a></span>CooldownRemaining</h2>
 

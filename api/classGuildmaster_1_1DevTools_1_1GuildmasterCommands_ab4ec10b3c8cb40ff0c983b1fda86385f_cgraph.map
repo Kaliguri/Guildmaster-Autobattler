@@ -1,0 +1,17 @@
+<map id="Guildmaster.DevTools.GuildmasterCommands.SpawnBoneDuel" name="Guildmaster.DevTools.GuildmasterCommands.SpawnBoneDuel">
+<area shape="rect" id="Node000001" title="1×1 зеркально на дев&#45;дуэлянте (enemy.bone_dev) — смотреть скелетный визуал в живом бою." alt="" coords="5,125,253,165"/>
+<area shape="poly" id="edge8_Node000001_Node000001" title=" " alt="" coords="77,126,74,116,82,106,101,101,129,99,162,101,180,109,178,114,161,107,129,104,102,106,85,111,79,117,82,124"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a70e9cf5d31e2c828b5913df2b51f7b5a" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="305,93,520,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,129,291,124,292,130,254,134"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6ef3762989e4fb8bf6e6f2229baa2b5c" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="301,157,524,197"/>
+<area shape="poly" id="edge7_Node000001_Node000009" title=" " alt="" coords="254,157,288,161,288,166,253,162"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1EffectiveStats.html#a286b2033607a4e2cd4121ef74fe6f125" title="Собрать стат&#45;блок юнита поверх дефолтов конфига." alt="" coords="573,29,791,69"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="497,91,583,70,585,75,498,96"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1EffectSystem.html#aafdd26efd16e1f27b83bafcb7f970482" title="Проявить отложенное на одном юните." alt="" coords="583,93,781,133"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="520,111,570,111,570,116,520,116"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="572,158,792,183"/>
+<area shape="poly" id="edge6_Node000002_Node000008" title=" " alt="" coords="508,131,609,152,608,158,507,136"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="634,30,632,20,639,10,656,5,682,3,712,6,728,13,726,18,710,11,682,8,657,10,642,15,637,21,640,28"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Stats.html#a2ba9f65756d1aaa68f725852d6bb0ac5" title="Проявить отложенные изменения: снятия, затем наложения." alt="" coords="840,93,1037,133"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="781,111,826,111,826,116,781,116"/>
+</map>

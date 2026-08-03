@@ -1,0 +1,13 @@
+<map id="Guildmaster.UI.UiNavigator.Push" name="Guildmaster.UI.UiNavigator.Push">
+<area shape="rect" id="Node000001" title="Добавить экран поверх стека." alt="" coords="5,141,240,166"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1UiScreen.html#ae57fd93056750a59598046aaec9cacb6" title="Построить Root (клон UXML + проводка). Вызывается навигатором один раз при Push, если Root ещё пуст." alt="" coords="297,5,483,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,138,205,98,287,55,305,48,307,52,289,60,207,103,144,143"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Diagnostics_1_1UiTrace.html#a381bc26565593761feb0c79fcfe7b8a8" title=" " alt="" coords="297,69,483,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="176,138,292,110,293,115,178,143"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1UiScreen.html#a44c69222408d920d8638bd2c9a15abcc" title="Экран перекрыт другим сверху." alt="" coords="297,133,483,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="240,151,284,151,284,156,240,156"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1UI_1_1UiScreen.html#a8f4a7acc1487d9534ebe4b5d39a34957" title="Экран добавлен в слой (стал частью стека)." alt="" coords="297,197,483,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="178,164,293,192,292,197,176,169"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1UI_1_1UiNavigator.html#a1feefbc536943703b36817235b504dd4" title="Пересчитать глушение ввода и контекст из (верх стека, фаза боя) — II.3." alt="" coords="288,261,492,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="144,164,207,204,289,247,307,254,305,259,287,252,205,208,142,169"/>
+</map>

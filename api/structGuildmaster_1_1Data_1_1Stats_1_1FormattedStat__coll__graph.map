@@ -1,0 +1,9 @@
+<map id="Guildmaster.Data.Stats.FormattedStat" name="Guildmaster.Data.Stats.FormattedStat">
+<area shape="rect" id="Node000001" title="Стат&#45;значение, подготовленное к показу: разбор плюс уже ЛОКАЛИЗОВАННЫЕ имена источников." alt="" coords="98,436,361,541"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Data_1_1Stats_1_1StatValue.html" title="Разложенное значение стата: во что оно собралось и из чего." alt="" coords="21,193,216,373"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,372,196,420,191,423,165,375"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Data_1_1Stats_1_1StatTerm.html" title="Вклад одного модификатора в итоговое значение стата." alt="" coords="5,5,232,131"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,131,121,177,116,177,116,131"/>
+<area shape="rect" id="Node000004" href="$structGuildmaster_1_1Data_1_1Stats_1_1UnitLabels.html" title="Подписи единиц измерения." alt="" coords="241,213,437,353"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="304,355,267,423,263,420,299,353"/>
+</map>

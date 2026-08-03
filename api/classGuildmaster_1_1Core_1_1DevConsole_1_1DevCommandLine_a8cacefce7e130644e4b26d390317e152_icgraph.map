@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.DevConsole.DevCommandLine.Tokenize" name="Guildmaster.Core.DevConsole.DevCommandLine.Tokenize">
+<area shape="rect" id="Node000001" title="Разбить строку на токены: разделитель — пробелы, кавычки склеивают слова в один токен (gm_say &quot;два сл..." alt="" coords="276,5,497,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1DevConsole_1_1DevCommandRegistry.html#a463940bf398e2be6a88558dc5a9aee2e" title="Разобрать строку и выполнить команду." alt="" coords="5,5,228,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,28,228,28,228,23,262,23"/>
+</map>

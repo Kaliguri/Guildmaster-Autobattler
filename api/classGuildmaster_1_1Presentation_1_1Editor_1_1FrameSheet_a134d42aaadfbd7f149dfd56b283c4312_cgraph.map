@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Editor.FrameSheet.ComposeContactSheet" name="Guildmaster.Presentation.Editor.FrameSheet.ComposeContactSheet">
+<area shape="rect" id="Node000001" title="Кадры сеткой, читается как раскадровка — слева направо, сверху вниз." alt="" coords="5,5,299,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Editor_1_1FrameSheet.html#a06d5abc216843678298baf06d525c99a" title="Пустой холст, залитый цветом. Point&#45;фильтрация: лист смотрят попиксельно." alt="" coords="347,5,557,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="299,23,333,23,333,28,299,28"/>
+</map>

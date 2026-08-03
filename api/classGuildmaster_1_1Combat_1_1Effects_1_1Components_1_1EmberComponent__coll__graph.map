@@ -1,0 +1,15 @@
+<map id="Guildmaster.Combat.Effects.Components.EmberComponent" name="Guildmaster.Combat.Effects.Components.EmberComponent">
+<area shape="rect" id="Node000001" title="«Угли» (карточка [[burn]]): стаки на ЦЕЛИ, каждый усиливает входящий по ней урон огнём." alt="" coords="163,365,380,525"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html" title="Синхронный перехват ДО вычета HP (§9.3): вызывается из EffectSystem.RunPreDamage перед DamagePipeline..." alt="" coords="5,252,175,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,325,182,363,179,367,135,329"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="179,119,364,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="199,214,139,254,136,249,196,209"/>
+<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html" title="Периодический компонент: OnTick каждые Interval секунд (DoT/HoT/реген)." alt="" coords="199,252,344,317"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="274,218,274,252,269,252,269,218"/>
+<area shape="rect" id="Node000006" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html" title="Опциональный шов рестака (07 §3.8 B1–B3): компонент с накопленным ВНЕШНИМ состоянием (пул щита,..." alt="" coords="369,252,526,317"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="345,210,403,249,400,254,342,214"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="206,5,337,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="274,85,274,119,269,119,269,85"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="274,331,274,365,269,365,269,331"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="404,329,361,367,358,363,400,325"/>
+</map>

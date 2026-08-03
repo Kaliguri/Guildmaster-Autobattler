@@ -99,16 +99,19 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 </div><!--header-->
 <div class="contents">
 
-<p>Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар.  
+<p>Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар или изменить его величину.  
  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Effects.PreDamageResult:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult__coll__graph.svg" width="211" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult__coll__graph.svg" width="211" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a29a23f3c0a5967a3f5dda246b5dddec8" id="r_a29a23f3c0a5967a3f5dda246b5dddec8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#a29a23f3c0a5967a3f5dda246b5dddec8">AddMultiplier</a> (float factor)</td></tr>
+<tr class="memdesc:a29a23f3c0a5967a3f5dda246b5dddec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Домножить множитель входящего урона (уязвимости копятся, а не перетирают друг друга).  <br /></td></tr>
+<tr class="separator:a29a23f3c0a5967a3f5dda246b5dddec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae78a0afc9b06e3549b87c9e74c121b36" id="r_ae78a0afc9b06e3549b87c9e74c121b36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#ae78a0afc9b06e3549b87c9e74c121b36">Reset</a> ()</td></tr>
 <tr class="separator:ae78a0afc9b06e3549b87c9e74c121b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -117,15 +120,54 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ab647c407a4619a42587251888fc7f167" id="r_ab647c407a4619a42587251888fc7f167"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#ab647c407a4619a42587251888fc7f167">Negated</a></td></tr>
 <tr class="memdesc:ab647c407a4619a42587251888fc7f167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удар отменён (урон не наносится) — «Изворотливость» ассасина.  <br /></td></tr>
 <tr class="separator:ab647c407a4619a42587251888fc7f167"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaa40b32b229c5ca761f1566af156f8e" id="r_acaa40b32b229c5ca761f1566af156f8e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#acaa40b32b229c5ca761f1566af156f8e">DamageMultiplier</a> = 1f</td></tr>
+<tr class="memdesc:acaa40b32b229c5ca761f1566af156f8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель входящего урона, накопленный компонентами цели (1 = без изменений).  <br /></td></tr>
+<tr class="separator:acaa40b32b229c5ca761f1566af156f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар. </p>
+<div class="textblock"><p>Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар или изменить его величину. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a29a23f3c0a5967a3f5dda246b5dddec8" name="a29a23f3c0a5967a3f5dda246b5dddec8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29a23f3c0a5967a3f5dda246b5dddec8">&#9670;&#160;</a></span>AddMultiplier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.PreDamageResult.AddMultiplier </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>factor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Домножить множитель входящего урона (уязвимости копятся, а не перетирают друг друга). </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult_a29a23f3c0a5967a3f5dda246b5dddec8_icgraph.svg" width="615" height="459"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="ae78a0afc9b06e3549b87c9e74c121b36" name="ae78a0afc9b06e3549b87c9e74c121b36"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae78a0afc9b06e3549b87c9e74c121b36">&#9670;&#160;</a></span>Reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.Combat.Effects.PreDamageResult.Reset </td>
@@ -134,11 +176,33 @@ Public Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="acaa40b32b229c5ca761f1566af156f8e" name="acaa40b32b229c5ca761f1566af156f8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaa40b32b229c5ca761f1566af156f8e">&#9670;&#160;</a></span>DamageMultiplier</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Combat.Effects.PreDamageResult.DamageMultiplier = 1f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Множитель входящего урона, накопленный компонентами цели (1 = без изменений). </p>
+<p>Компоненты НЕ присваивают его, а домножают через AddMultiplier — иначе два уязвимости на одной цели затирали бы друг друга. Применяется в DamagePipeline.Execute ДО брони: это уязвимость самой цели, а не пробивание источника. Носители: «Угли» (+1% урона огнём за стак), будущее «+25% урона молнии по Мокрому». </p>
+
+</div>
+</div>
 <a id="ab647c407a4619a42587251888fc7f167" name="ab647c407a4619a42587251888fc7f167"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab647c407a4619a42587251888fc7f167">&#9670;&#160;</a></span>Negated</h2>
 

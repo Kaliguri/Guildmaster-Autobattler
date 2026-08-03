@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.PooledVfx.Cancel" name="Guildmaster.Presentation.PooledVfx.Cancel">
+<area shape="rect" id="Node000001" title="Прервать и вернуть в пул (battle reset)." alt="" coords="244,5,435,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1CombatVfx.html#ad13f0ec7a05342ef18f55aac1bb0e916" title="Погасить всё летящее (battle reset) и вернуть в пулы." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
+</map>

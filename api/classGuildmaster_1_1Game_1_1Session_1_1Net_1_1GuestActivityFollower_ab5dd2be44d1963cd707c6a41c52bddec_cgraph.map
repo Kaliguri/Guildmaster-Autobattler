@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.Net.GuestActivityFollower.Dispose" name="Guildmaster.Game.Session.Net.GuestActivityFollower.Dispose">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,252,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html#afccad3ebce222271d8aee8f8ac5d3a6e" title="Разобрать состояние." alt="" coords="300,5,529,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,41,286,37,286,42,253,46"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1NetEnvelope.html#a351e5e1f23aef7a85011900a0faa43a3" title="Разобрать конверт." alt="" coords="305,69,524,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="253,68,292,73,291,78,252,74"/>
+</map>

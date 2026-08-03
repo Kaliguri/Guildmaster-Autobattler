@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Descriptions.KeywordMarkup.Strip" name="Guildmaster.Data.Descriptions.KeywordMarkup.Strip">
+<area shape="rect" id="Node000001" title="Убрать ссылки, оставив термин в скобках: «[Скрытность]»." alt="" coords="291,5,516,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1DescriptionService.html#a71c957c5f1f1f4c996f0d76c7f6084d9" title="Описание БЕЗ ссылок: термины остаются видны как [Скрытность], но не кликаются." alt="" coords="5,5,243,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="277,28,243,28,243,23,277,23"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Data.Stats.IStatExplainer" name="Guildmaster.Data.Stats.IStatExplainer">
+<area shape="rect" id="Node000001" title="Статы, умеющие рассказать, из чего они собрались." alt="" coords="5,119,204,199"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="12,247,197,412"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="107,213,107,246,102,246,102,213"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html" title="Только&#45;чтение собранных статов." alt="" coords="59,5,150,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,85,107,118,102,118,102,85"/>
+</map>

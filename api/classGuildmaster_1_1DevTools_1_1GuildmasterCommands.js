@@ -1,6 +1,7 @@
 var classGuildmaster_1_1DevTools_1_1GuildmasterCommands =
 [
-    [ "Construct", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ae7b7f36506f72809c71e07f08fd6b715", null ],
+    [ "Construct", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a2e00185de01e2b8cf7ba4c92b950528b", null ],
+    [ "ProvingGrounds", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a5ed2767b35124958ca2a1965a52e1974", null ],
     [ "Restart", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a223c0b90fe8f830bb71e3ed9196b4f9b", null ],
     [ "RestartLastBattle", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a0e8ffc130d2adb84e307f5c10d183490", null ],
     [ "SepAlly", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#af21577e0f97d9648fddbf8ae2bed00b3", null ],
@@ -12,16 +13,9 @@ var classGuildmaster_1_1DevTools_1_1GuildmasterCommands =
     [ "SetLastBattle", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab565e7b0719ecbd4cf5289726e9ec43b", null ],
     [ "SetRngSeed", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a97c2560d6ac8662a17c250f67c67468a", null ],
     [ "SkipBattle", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ad2371ad3aa2e954271e07b2ac7622176", null ],
-    [ "SpawnAssassin", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a5766f4f7c6e06576c31a581348415cc5", null ],
-    [ "SpawnBattle", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a680f847d51ad9dc579b6f590b98edc08", null ],
-    [ "SpawnCrowd", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a21be39888c757cfac49339b2155c7c81", null ],
-    [ "SpawnCryomancer", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ae751b379c26601ad5a4809e67adc7560", null ],
-    [ "SpawnDefender", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a470f1723cdd1fb9959c9f76bd86dd86d", null ],
-    [ "SpawnMonk", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a8fd4250ba9c2785bc8ccbc5412100682", null ],
-    [ "SpawnRanger", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a815ae87e5011e8ccad14f052d6a0be51", null ],
-    [ "SpawnShepherd", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a8de0618a57171f6dc7dce6d831244179", null ],
-    [ "SpawnSpearman", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a871adee3d187d4d0253e6ef92c8d0822", null ],
+    [ "SpawnBoneDuel", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab4ec10b3c8cb40ff0c983b1fda86385f", null ],
     [ "ToggleDebugDraw", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a38b9066022dfe44f572bd75a05b1be08", null ],
+    [ "ToggleOverlaySource", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a3dc341c3b2857716e5423f17484f7055", null ],
     [ "ToggleStatusOverlay", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab36b53eec55cacb691a055d7d587954e", null ],
     [ "TuningRebake", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a54a2f9a23293d456f41aa104ba5a6d0b", null ]
 ];

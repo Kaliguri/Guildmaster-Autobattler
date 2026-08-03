@@ -125,7 +125,7 @@ Static Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a8442f7cebd65d32895ce03dc0263f405" id="r_a8442f7cebd65d32895ce03dc0263f405"><td class="memItemLeft" align="right" valign="top">static IEnumerable&lt; Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths.html#a8442f7cebd65d32895ce03dc0263f405">CreatableTypes</a><code> [get]</code></td></tr>
-<tr class="memdesc:a8442f7cebd65d32895ce03dc0263f405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все типы контента, которые менеджер умеет создавать (в порядке объявления).  <br /></td></tr>
+<tr class="memdesc:a8442f7cebd65d32895ce03dc0263f405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все типы контента, которые менеджер умеет создавать — из реестра доменов.  <br /></td></tr>
 <tr class="separator:a8442f7cebd65d32895ce03dc0263f405"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -195,6 +195,12 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Полный путь целевой папки для типа (создаётся при необходимости). </p>
+<p>Тип без домена или домен без папки — это незаполненный реестр, а не повод молча создать ассет в стороне, поэтому Misc остаётся видимым исходом, но домен для него уже обязан существовать. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths_a741f6a09412e7b7240fa071bd2cb9ae7_cgraph.svg" width="468" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -247,7 +253,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Все типы контента, которые менеджер умеет создавать (в порядке объявления). </p>
+<p>Все типы контента, которые менеджер умеет создавать — из реестра доменов. </p>
 
 </div>
 </div>

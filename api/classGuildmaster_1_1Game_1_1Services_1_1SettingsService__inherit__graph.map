@@ -1,7 +1,7 @@
 <map id="Guildmaster.Game.Services.SettingsService" name="Guildmaster.Game.Services.SettingsService">
-<area shape="rect" id="Node000001" title="Реализация ISettingsService." alt="" coords="85,279,284,559"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html" title="Единый источник пользовательских настроек + персист (ES3) + живое применение в аудио." alt="" coords="5,5,204,231"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,243,150,278,145,279,136,245"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="227,85,305,151"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="256,165,225,279,220,278,251,164"/>
+<area shape="rect" id="Node000001" title="Реализация ISettingsService." alt="" coords="89,359,301,699"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html" title="Единый источник пользовательских настроек + персист (за ISaveService, ключ prefs) + живое применение ..." alt="" coords="5,5,217,311"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,324,159,358,154,359,146,325"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="241,125,318,191"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="272,205,236,359,231,358,267,203"/>
 </map>

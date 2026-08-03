@@ -115,6 +115,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Интегрирует позиции живых юнитов. </p>
 <p>Ручная математика — без Rigidbody2D и без Time.deltaTime (dt передаётся снаружи из CombatLoopService). Ветвится по RuntimeUnit.Positioning (§9.7): Approach (Ф1), Kite (полоса дистанции), Retreat (побег через FleeSteering: от центроида врагов к своему тылу, с избеганием стен). Стрельба на ходу (§9.8) снимает рут замаха. </p>
+<p>Шаг считается в ДВА прохода: сначала все намерения — от общего состояния мира на начало тика, затем применение. См. Tick: одного прохода тут быть не может. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9ecc1ea30095327269a5c4835230a71f" name="a9ecc1ea30095327269a5c4835230a71f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ecc1ea30095327269a5c4835230a71f">&#9670;&#160;</a></span>Tick()</h2>
@@ -171,10 +172,12 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<p>ДВА ПРОХОДА, и это принципиально. Пока шаг ложился прямо в <code>Position</code> по ходу обхода, юнит видел уже сдвинутыми тех, кто стоит в списке раньше него, и нетронутыми — тех, кто позже. Курс на цель считался от разного состояния мира в зависимости от места в списке, а у зеркальных сторон это место обратное: левая команда целилась в ещё не сдвинувшегося врага, правая — в уже сдвинувшегося, вектор выходил чуть круче, и равные команды расходились с первого же тика (пойман зондом: Y −0.5566 против −0.5543). Считаем намерения от ОДНОГО снимка мира, применяем после обхода — та же правка, что уже сделана в <code>SeparationSystem</code>, и по той же причине. </p>
+<p><code>PreviousPosition</code> при расчёте ещё держит позицию начала ПРОШЛОГО тика — на этом стоит оценка убегания цели (<code>TargetRecedeSpeedPerTick</code>): в первом проходе она читает шаг прошлого тика, одинаковый для всех, а не «успел ли сосед сходить». Обновляется во втором. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1MovementSystem_a9ecc1ea30095327269a5c4835230a71f_cgraph.svg" width="510" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1MovementSystem_a9ecc1ea30095327269a5c4835230a71f_cgraph.svg" width="510" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

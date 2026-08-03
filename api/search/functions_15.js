@@ -1,10 +1,16 @@
 var searchData=
 [
-  ['waitforcontinueasync_0',['waitforcontinueasync',['../interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter.html#a38d28a603cdf31119d366225c5e1bb59',1,'Guildmaster.Game.Flow.IContinuePresenter.WaitForContinueAsync()'],['../classGuildmaster_1_1Game_1_1Flow_1_1ContinuePresenter.html#a35664e210c7e8d90d2b4481191554587',1,'Guildmaster.Game.Flow.ContinuePresenter.WaitForContinueAsync()']]],
-  ['waitoutcomeasync_1',['waitoutcomeasync',['../interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#afb46c9ea489e6d01e860c989df278ab5',1,'Guildmaster.Game.Flow.IBattleSession.WaitOutcomeAsync()'],['../classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ad0456076745fc3021a62a197eaab929e',1,'Guildmaster.Game.Flow.BattleSession.WaitOutcomeAsync()']]],
-  ['whenallready_2',['whenallready',['../interfaceGuildmaster_1_1Game_1_1Flow_1_1IReadyGate.html#aba812f52ec623d44ad9d00c0a3143333',1,'Guildmaster.Game.Flow.IReadyGate.WhenAllReady()'],['../classGuildmaster_1_1Game_1_1Flow_1_1SoloReadyGate.html#ab22f5c3fa67dc229291daf447191f000',1,'Guildmaster.Game.Flow.SoloReadyGate.WhenAllReady()']]],
-  ['win_3',['Win',['../structGuildmaster_1_1Combat_1_1BattleOutcome.html#af8e654e0057390dc7e00aca7bbe89d6e',1,'Guildmaster::Combat::BattleOutcome']]],
-  ['windupticks_4',['WindupTicks',['../classGuildmaster_1_1Combat_1_1AttackTiming.html#a0b4ea555d2297b9817a0763eed8ae822',1,'Guildmaster::Combat::AttackTiming']]],
-  ['windupticksfor_5',['WindupTicksFor',['../classGuildmaster_1_1Combat_1_1AttackTiming.html#a627a13ac427fbcb0bb8a5f2fc98891db',1,'Guildmaster::Combat::AttackTiming']]],
-  ['writechangelog_6',['WriteChangeLog',['../classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#aed9c8786a539560fa29cc6cf18700503',1,'Guildmaster::Data::Editor::ContentEditService']]]
+  ['validate_0',['Validate',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#add953939cb76a60ae2ff9ac0e21e7974',1,'Guildmaster::ContentHub::Editor::ContentValidationService']]],
+  ['validateall_1',['ValidateAll',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a1c36ea089884779b8af2d682df2f8a27',1,'Guildmaster::ContentHub::Editor::ContentValidationService']]],
+  ['validated_2',['Validated',['../classGuildmaster_1_1Guild_1_1MapGenConfig.html#ac437cccf987a9dd9e8a875f0d222bc1d',1,'Guildmaster::Guild::MapGenConfig']]],
+  ['validateidstring_3',['ValidateIdString',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a72ee54dbb17f5b39e75c5c493f0a00c9',1,'Guildmaster::ContentHub::Editor::ContentValidationService']]],
+  ['validateunitvisual_4',['ValidateUnitVisual',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a5d583eeb04b1416bfcf133a221d6f9f2',1,'Guildmaster::ContentHub::Editor::ContentValidationService']]],
+  ['validationissue_5',['ValidationIssue',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ValidationIssue.html#acd5f30fccca3cbafc97dba4e1b7d9d1a',1,'Guildmaster::ContentHub::Editor::ValidationIssue']]],
+  ['value_6',['Value',['../classGuildmaster_1_1Data_1_1Stats_1_1StatFormat.html#ac7e347515e7e57517c5c04e4ac32e356',1,'Guildmaster::Data::Stats::StatFormat']]],
+  ['versionof_7',['VersionOf',['../classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchema.html#ad79e7d9114f23527deb419c4e5788515',1,'Guildmaster::Core::Persistence::SaveSchema']]],
+  ['versionof_3c_20t_20_3e_8',['VersionOf&lt; T &gt;',['../classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchema.html#ae1e5efaf6cc658ca08cb8d024a2c2987',1,'Guildmaster::Core::Persistence::SaveSchema']]],
+  ['vessel_9',['Vessel',['../structGuildmaster_1_1UI_1_1Tooltips_1_1TooltipRequest.html#a90c06160a434a0a4012b2f561d149300',1,'Guildmaster::UI::Tooltips::TooltipRequest']]],
+  ['vesselcard_10',['VesselCard',['../classGuildmaster_1_1UI_1_1Components_1_1VesselCard.html#abea9202e67767fa13a400587c162cea6',1,'Guildmaster::UI::Components::VesselCard']]],
+  ['vesselitems_11',['VesselItems',['../classGuildmaster_1_1Guild_1_1RunStateService.html#ab17de7003e09f7779d188fd7c6f35fc8',1,'Guildmaster::Guild::RunStateService']]],
+  ['visualtempo_12',['VisualTempo',['../classGuildmaster_1_1Presentation_1_1Tempo_1_1VisualTempo.html#a7acacaa1b6c687a6e51263aa6b5f6f6c',1,'Guildmaster::Presentation::Tempo::VisualTempo']]]
 ];

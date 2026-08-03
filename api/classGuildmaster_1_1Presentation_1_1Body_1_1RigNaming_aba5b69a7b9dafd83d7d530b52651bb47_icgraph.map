@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.Body.RigNaming.BoneOf" name="Guildmaster.Presentation.Body.RigNaming.BoneOf">
+<area shape="rect" id="Node000001" title="Кость, которую рисует этот рендерер: узел НАД контейнером арта." alt="" coords="284,37,475,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ab021260903ed9cd3a547e102acd6b633" title="Имя кости, которую рисует этот рендерер (Arm_Down, Sword)." alt="" coords="11,5,231,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="270,47,230,42,231,36,271,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#a12736fd9d5a9305241142fd104832812" title="Собрать реестр по частям скелетного тела." alt="" coords="5,69,236,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="271,73,236,78,236,72,270,68"/>
+</map>

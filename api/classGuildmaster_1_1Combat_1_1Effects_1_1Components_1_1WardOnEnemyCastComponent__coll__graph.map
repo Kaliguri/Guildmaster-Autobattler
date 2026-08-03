@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.WardOnEnemyCastComponent" name="Guildmaster.Combat.Effects.Components.WardOnEnemyCastComponent">
+<area shape="rect" id="Node000001" title="«Отражающий налёт» Антимага (карточка [[the&#45;aegis]]): пассивка, выдающая носителю _ward каждый раз,..." alt="" coords="5,365,305,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="80,252,231,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,331,158,365,153,365,153,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="63,119,248,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="158,218,158,252,153,252,153,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="90,5,221,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="158,85,158,119,153,119,153,85"/>
+</map>

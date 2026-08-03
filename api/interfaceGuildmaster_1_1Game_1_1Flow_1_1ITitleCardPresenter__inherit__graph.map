@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.ITitleCardPresenter" name="Guildmaster.Game.Flow.ITitleCardPresenter">
+<area shape="rect" id="Node000001" title="Показ boot title card до главного меню и ожидание закрытия." alt="" coords="5,5,212,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1TitleCardPresenter.html" title="Презентер boot title card: публикует OpenTitleCardRequest и ждёт dismiss." alt="" coords="7,133,210,233"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,99,111,133,106,133,106,99"/>
+</map>

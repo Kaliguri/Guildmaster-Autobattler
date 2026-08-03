@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.AttackCycleComponent" name="Guildmaster.Combat.Effects.Components.AttackCycleComponent">
+<area shape="rect" id="Node000001" title="Цикл ударов (земляной голем): удары носителя идут по кругу, и каждой фазе цикла свой заряд — первый у..." alt="" coords="5,365,259,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="57,252,207,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,331,135,365,129,365,129,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="39,119,225,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="135,218,135,252,129,252,129,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="67,5,197,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="135,85,135,119,129,119,129,85"/>
+</map>

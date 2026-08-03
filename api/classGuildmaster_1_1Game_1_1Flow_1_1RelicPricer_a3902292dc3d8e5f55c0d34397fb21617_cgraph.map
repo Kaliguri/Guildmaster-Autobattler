@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.RelicPricer.PriceFor" name="Guildmaster.Game.Flow.RelicPricer.PriceFor">
+<area shape="rect" id="Node000001" title="Цена по силе кита и id (тестируемо без конструирования RelicData)." alt="" coords="5,5,220,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1Random_1_1DeterministicHash.html#af78c5cde6fbd4278824c2ce2709849c5" title="64&#45;битный FNV&#45;1a строки. null и пустая строка дают базовое смещение." alt="" coords="268,5,465,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,23,254,23,254,28,220,28"/>
+</map>

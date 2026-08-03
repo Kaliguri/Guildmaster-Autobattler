@@ -1,0 +1,3 @@
+<map id="Guildmaster.Data.Definitions.AttackChannel" name="Guildmaster.Data.Definitions.AttackChannel">
+<area shape="rect" id="Node000001" title="Канал авто&#45;атаки: удар растянут в поток тиков урона, который идёт МЕЖДУ замахом и хвостом (AttackPhas..." alt="" coords="5,5,212,165"/>
+</map>

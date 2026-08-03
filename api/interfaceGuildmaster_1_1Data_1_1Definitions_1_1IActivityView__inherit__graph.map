@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.IActivityView" name="Guildmaster.Data.Definitions.IActivityView">
+<area shape="rect" id="Node000001" title="Чтение «какое мероприятие идёт» для тех, кто мероприятия переживает: верхняя панель,..." alt="" coords="5,5,212,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost.html" title="Владелец жизненного цикла Занятия: рождает его скоуп на входе в мероприятие (забег,..." alt="" coords="13,133,205,493"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,99,111,133,106,133,106,99"/>
+</map>

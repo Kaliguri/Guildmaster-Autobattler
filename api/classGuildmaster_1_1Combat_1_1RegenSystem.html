@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1RegenSys
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1RegenSystem-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.RegenSystem Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -109,8 +110,14 @@ Collaboration diagram for Guildmaster.Combat.RegenSystem:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac1d56f58c6a7d2df6944d27069384cb2" id="r_ac1d56f58c6a7d2df6944d27069384cb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RegenSystem.html#ac1d56f58c6a7d2df6944d27069384cb2">Tick</a> (List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, float dt)</td></tr>
-<tr class="memdesc:ac1d56f58c6a7d2df6944d27069384cb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применить регенерацию ко всем живым юнитам за один тик.  <br /></td></tr>
+<tr class="memdesc:ac1d56f58c6a7d2df6944d27069384cb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применить регенерацию HP и ресурса ко всем живым юнитам за один тик.  <br /></td></tr>
 <tr class="separator:ac1d56f58c6a7d2df6944d27069384cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a15e2d47e94e176383518bdca6e09e442" id="r_a15e2d47e94e176383518bdca6e09e442"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RegenSystem.html#a15e2d47e94e176383518bdca6e09e442">ResourcePerSecond</a> = 5f</td></tr>
+<tr class="memdesc:a15e2d47e94e176383518bdca6e09e442"><td class="mdescLeft">&#160;</td><td class="mdescRight">БАЗОВАЯ скорость набора ресурса, единиц в секунду — одинаковая у всех (решение 2026-07-27).  <br /></td></tr>
+<tr class="separator:a15e2d47e94e176383518bdca6e09e442"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Регенерация HP живых юнитов за тик: <code>(HpRegenFlat + HpRegenPct × MaxHP) × dt</code>, с клампом по MaxHP. </p>
@@ -151,12 +158,27 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Применить регенерацию ко всем живым юнитам за один тик. </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RegenSystem_ac1d56f58c6a7d2df6944d27069384cb2_cgraph.svg" width="480" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<p>Применить регенерацию HP и ресурса ко всем живым юнитам за один тик. </p>
+
 </div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a15e2d47e94e176383518bdca6e09e442" name="a15e2d47e94e176383518bdca6e09e442"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15e2d47e94e176383518bdca6e09e442">&#9670;&#160;</a></span>ResourcePerSecond</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Combat.RegenSystem.ResourcePerSecond = 5f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>БАЗОВАЯ скорость набора ресурса, единиц в секунду — одинаковая у всех (решение 2026-07-27). </p>
+<p>Публичное поле: стартовое значение засевает боевой скоуп из <code>StatsConfig</code> (единственный источник), здесь — код-дефолт для headless-конструирования без конфига. </p>
+<p>Итоговая скорость юнита — <code>(база + ResourceRegenFlat) × ResourceGainEff</code>, то есть «одинаково у всех» с 2026-07-31 верно только про базу: эффекты могут её сдвигать плоско.</p>
+<p>Ресурс капает по времени, а не с попаданий: пока он набирался ударами, скорость атаки была двойным бустом (быстрее бьёшь → чаще ульта), а темп способности зависел ещё и от того, дотянулся ли кит до цели. Механизм набора с удара (<code>UnitData.ResourceOnHit</code>) намеренно оставлен в коде — он понадобится Ярости, когда её заведут. </p>
 
 </div>
 </div>

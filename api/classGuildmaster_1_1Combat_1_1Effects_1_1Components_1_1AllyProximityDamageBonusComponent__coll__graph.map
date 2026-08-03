@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.AllyProximityDamageBonusComponent" name="Guildmaster.Combat.Effects.Components.AllyProximityDamageBonusComponent">
+<area shape="rect" id="Node000001" title="Стая бьёт злее (волк стаи): носитель наносит больше урона за КАЖДОГО живого союзника в радиусе вокруг..." alt="" coords="5,365,288,500"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IOutgoingDamageBonusComponent.html" title="Опциональный шов: компонент носителя усиливает ЕГО удары по цели, отвечающей условию (Криомант больне..." alt="" coords="23,252,270,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,331,149,365,144,365,144,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="54,119,239,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="149,218,149,252,144,252,144,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="81,5,212,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="149,85,149,119,144,119,144,85"/>
+</map>

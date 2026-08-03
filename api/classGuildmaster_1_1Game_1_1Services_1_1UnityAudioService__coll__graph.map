@@ -1,5 +1,0 @@
-<map id="Guildmaster.Game.Services.UnityAudioService" name="Guildmaster.Game.Services.UnityAudioService">
-<area shape="rect" id="Node000001" title="Заглушка IAudioService на Unity Audio." alt="" coords="5,219,204,399"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html" title="Фасад звуковой подсистемы." alt="" coords="20,5,189,171"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,185,107,219,102,219,102,185"/>
-</map>

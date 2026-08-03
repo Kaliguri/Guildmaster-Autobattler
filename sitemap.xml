@@ -1,438 +1,1314 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/README</loc>
-    <lastmod>2026-07-18T18:12:15.122Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.448Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/closed-forks</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/glossary</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/inbox/2026-07-30</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/journal-adr</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/legacy</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/open-forks</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/open</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/roadmap</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/concept</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/difficulty-skill</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/guildmaster</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/lore</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/pillars</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/vision</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/visual-direction</loc>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/audio-subbuses</loc>
     <lastmod>2026-07-18T00:00:00.000Z</lastmod>
   </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/backlog-atmosphere-light-post</loc>
+    <lastmod>2026-07-18T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/backlog-audio-sfx</loc>
+    <lastmod>2026-07-18T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/backlog-ui-juice</loc>
+    <lastmod>2026-07-18T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/character-animation</loc>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/concept</loc>
+    <lastmod>2026-07-19T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/difficulty-skill</loc>
+    <lastmod>2026-07-27T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/guildmaster</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/pillars</loc>
+    <lastmod>2026-07-19T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/pitch</loc>
+    <lastmod>2026-07-27T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/vision</loc>
+    <lastmod>2026-07-19T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/10-vision/visual-direction</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/barriers</loc>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
+  </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/combat-system</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/bleed</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/burn</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/cc-primitives</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/charm</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/cleanse</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/combo-rules</loc>
-    <lastmod>2026-07-18T18:12:15.123Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/displace</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/divider-theory</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/frenzy</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/frost</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/heal</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/implementation-status</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/mark</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/poison</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/property-reference</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/shield</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/sleep</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/stat-modifiers</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/state-tags</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/stealth</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/template-effect-card</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/effects/triggers</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/positioning</loc>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/20-combat/stats</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/30-run-meta/act-map-regions</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/30-run-meta/events-minigames</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/30-run-meta/guild-development</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/30-run-meta/injuries-mettle</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-27T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/30-run-meta/meta-progression</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-27T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/30-run-meta/procedural-lore</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-27T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/30-run-meta/vessel-progression</loc>
+    <lastmod>2026-07-27T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/authoring/effect</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/authoring/</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-18T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/authoring/item</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-18T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/authoring/relic-upgrades</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/authoring/unit-enemy</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/authoring/unit-relic</loc>
-    <lastmod>2026-07-18T18:12:15.124Z</lastmod>
+    <lastmod>2026-07-18T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/authoring/unit</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/banners</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/items-banners</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-18T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/items/common-items</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/items/divider-theory</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/items/fey-cloak</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/items/implementation-status</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/40-content/relics-overview</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-27T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/controls</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
   </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/multiplayer</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/coop/arbiters</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/coop/</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/coop/interplay</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/coop/minigames</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/coop/presence</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/coop/sync-model</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/coop/wagers</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/guild-courtyard</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/proving-grounds</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/50-modes-ux/ui-feedback</loc>
+    <lastmod>2026-07-20T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/60-narrative/devices</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/60-narrative/</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/60-narrative/lore</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/60-narrative/meta-narrative</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/60-narrative/seeds</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/60-narrative/system-language</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/60-narrative/texts</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/arena-floor</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/asset-palette</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/backlog-gamefeel</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/backlog-vfx-particles-shaders</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/map-presentation</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/style-sao</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/time-and-camera</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/toolbox</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/vfx-color</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/70-gamefeel/vfx-language</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/bandit-assassin</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/bandit-bruiser</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/bandit-duelist</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/bandit-shieldman</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/bandit-venombow</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/bandit-warlock</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/bosses/boss-bandit-nest</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/bosses/boss-deserter-army</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/bosses/boss-goblin-warband</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/bosses/</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/divider-theory</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/earth-golem</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/factions/bandits</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/factions/beasts</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/factions/goblins</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/factions/golems</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/factions/</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/goblin-archer</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/goblin-commander</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/goblin-cutthroat</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/goblin-grunt</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/goblin-jester</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/goblin-mocker</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/goblin-shaman</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/goblin-warrior</loc>
-    <lastmod>2026-07-18T18:12:15.125Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/goblin-wolfrider</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/implementation-status</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/pack-wolf</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/species/bandits</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/species/beasts</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/species/divider-theory</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/species/goblins</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/species/golems</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/species/</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/species/revenant-caravan</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/enemies/template-enemy-card</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/ai-settings-model</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/divider-theory</loc>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/draft-ideas</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/implementation-status</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/template-relic-card</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-aegis</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-bloom</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-bond</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-bonewright</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-bulwark</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-cadence</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-draugr</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-fang</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-gale</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-hearth</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-hunter</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-lull</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-martyr</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-mirror</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-paragon</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-pyre</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-rift</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-runesmith</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-shepherd</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-spear</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-storm</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-thorn</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-tide</loc>
-    <lastmod>2026-07-18T18:12:15.126Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-tithe</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-torrent</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-verdict</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-warden</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/the-winter</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/trash-bundle-of-herbs</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/trash-chipped-skull</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/trash-cracked-amulet</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/trash-cracked-shield</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/trash-crooked-bow</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/trash-notched-sword</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/relics/trash-worn-knife</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/roster/character-registry</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/roster/</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/roster/relic-tag-assignments</loc>
+    <lastmod>2026-07-24T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/roster/roster-balance</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/roster/roster-gaps</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/roster/tag-reference</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-07-29T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/gdd/roster/unit-tag-glossary</loc>
+    <lastmod>2026-07-24T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.456Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/asset-audit/cainos-honeti</loc>
+    <lastmod>2026-07-20T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/asset-audit/feel-shapes</loc>
+    <lastmod>2026-07-20T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/asset-audit/fonts-and-misc</loc>
+    <lastmod>2026-07-20T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/asset-audit/kenney</loc>
+    <lastmod>2026-07-20T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/asset-audit/project-art</loc>
+    <lastmod>2026-07-20T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/00.-%D0%A1%D0%B2%D0%BE%D0%B4%D0%BA%D0%B0-%D0%B8-%D0%B2%D1%8B%D0%B2%D0%BE%D0%B4%D1%8B</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.456Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Backpack-Hero</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.456Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Despots-Game</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Drawrves</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Gladiator-Guild-Manager</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Guildrun</loc>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Hadean-Tactics</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Legion-Bound</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Legion-TD-2</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Mage-and-Monsters</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Mechabellum</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Teamfight-Manager-2</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Teamfight-Manager</loc>
-    <lastmod>2026-07-18T18:12:15.127Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/The-Last-Flame</loc>
-    <lastmod>2026-07-18T18:12:15.128Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/There-Are-No-Orcs</loc>
-    <lastmod>2026-07-18T18:12:15.128Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Time-Walker-Dark-World</loc>
-    <lastmod>2026-07-18T18:12:15.128Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/depth</loc>
-    <lastmod>2026-07-18T18:12:15.128Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/randomness-appendix</loc>
-    <lastmod>2026-07-18T18:12:15.128Z</lastmod>
+    <lastmod>2026-08-03T02:55:58.457Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/sprite-packs-audit</loc>
+    <lastmod>2026-07-19T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/research/sprite-recommendations</loc>
+    <lastmod>2026-07-19T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/</loc>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep</loc>
+    <lastmod>2026-06-19T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-11-phase-4-departures-from-the-design</loc>
+    <lastmod>2026-07-11T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-16-coop-session-pause-is-the-sync-window</loc>
     <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-a-cleanse-must-not-rob-a-detonation-of-the-same-tick</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-a-marker-at-zero-is-a-missing-swing</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-a-rear-strike-without-a-facing</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-a-restart-is-the-same-battle-not-a-new-roll</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-a-skill-that-lives-in-one-stance-gates-itself</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-a-volley-is-repeats-not-a-bigger-number</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-a-wound-carries-its-own-strength-and-its-own-clock</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-acceptance-pictures-learn-the-layer-stack</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-agency-gated-reactives</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-asset-names-are-pascalcase-the-rule-followed-reality</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-attack-form-is-a-snapshot-the-stance-sets</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-body-tint-only-tells-twins-apart</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-bone-parts-sprite-atlas</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-bones-count-every-skeleton-and-land-as-blunt</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-channelled-attack-is-a-phase-not-a-rhythm</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-code-owns-truth-journal-owns-why</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-commands-carry-a-target-tick</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-config-references-live-in-the-asset-not-the-scene</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-cryomancer-joins-the-frost-line</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-damage-type-is-one-axis</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-death-is-heard-by-the-arena-not-just-the-corpse</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-determinism-is-a-load-bearing-wall</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-effect-state-behind-verbs</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-effects-are-ordered-by-id-and-attributed-by-weight</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-feedback-colors-were-a-duplicate-already</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-feel-toggle-census-in-a-test</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-gotchas-go-to-the-skill-that-prescribes</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-icombatcontext-is-an-interface-with-one-implementation</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-input-maps-are-built-in-code</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-lfs-does-not-pay-here</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-loc-tables-belong-to-the-editor</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-offscreen-render-lies-about-sorting</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-one-broadcast-event-and-a-shield-that-filters</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-one-resolver-for-the-stat-cascade</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-payload-repeat-and-per-stack-bonus</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-poison-tag-stays-but-a-test-holds-it-to-the-type</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-quality-settings-msaa-is-inert-under-urp</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-refund-belongs-only-to-an-empty-swing</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-rest-ready-strike-and-the-elbow-that-only-looked-bent</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-runtime-unit-is-a-mutable-bag-on-purpose</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-sleep-is-an-agro-rule-not-an-effect-property</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-sorting-claim-retracted-until-measured-in-play</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-sprite-filtering-bilinear-no-mips</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-sprite-sorting-has-two-levels</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-stack-count-has-one-door</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-stats-pipeline-neither-reorders-nor-clamps</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-attack-rides-a-layer-and-the-pelvis-adds-up</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-charge-swing-starts-outside-reach</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-charged-blow-is-not-always-stealth</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-cold-line-and-two-seams-it-demanded</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-form-picks-the-target-not-the-kit</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-monk-mixes-steel-with-ice</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-sim-is-not-unit-shaped</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-sockets-were-set-for-the-other-body</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-swing-ceiling-becomes-per-unit-data</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-swing-stops-owning-the-legs</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-the-world-replicates-the-view-does-not</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-two-controllers-and-the-live-one-is-combat</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-two-units-parts-never-interleave</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-unit-colors-live-in-tokens</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-visibility-law-covers-stacks</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-visual-part-containers-split-art-from-bone</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-why-the-rules-are-this-strict-lessons-from-fewseconds</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-a-charge-is-spent-where-it-is-armed</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-a-list-of-sixteen-corpses-is-not-an-empty-list</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-a-parry-is-a-block-that-answers</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-a-recast-cuts-the-tail-not-the-raised-swing</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-a-recast-speeds-the-phases-up-it-does-not-remove-them</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-a-white-body-eats-its-own-effects</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-an-active-strike-is-a-claim-not-a-hit</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-an-attack-may-be-several-hits</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-armor-percent-penetration-and-swing-counted-cycles</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-attribution-row-weight-and-credit-line</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-battle-volume-sits-under-the-map-volume</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-blindness-counts-swings-not-hits</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-block-trigger-lives-in-the-ai-profile</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-boot-loading-screen</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-brand-attribution-row-logos</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-camera-is-one-with-two-modes</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-cast-glow-addresses-part-by-role</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-cast-glow-wiring-weapon-slice</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-combat-numbers-get-their-own-tmp-font</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-concealment-is-a-state-not-a-tag</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-console-input-latin-and-uitk-clipping</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-constant-screen-size-for-world-ui</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-defence-turns-gold-and-the-block-flare-comes-from-brightness</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-dev-console-registry-over-reflection</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-dev-panels-wait-for-the-container</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-empty-volume-profile-clamped-every-hdr-colour</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-first-run-takes-language-from-system</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-glow-modulated-by-the-art-keeps-the-form</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-heal-effect-was-wired-into-one-branch-only</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-map-post-profile-without-a-tonemapper</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-particle-size-was-choked-by-the-lifetime-curve</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-parts-are-read-from-the-rig-not-labelled</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-pose-state-transitions-blend-not-snap</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-post-fx-lab-leaves-no-trace-in-the-scene</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-pre-damage-moved-to-commit</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-quantum-console-replaced-by-our-own</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-rasterizing-vector-icons-without-a-rasterizer</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-renaming-a-serializereference-type-needs-movedfrom</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-resource-regen-gets-a-flat-stat-and-a-target-filter</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-species-multiplier-caps-elite-hp</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-splash-shows-the-studio-once</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-swing-area-belongs-to-the-charge</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-block-flash-fires-on-absorption-not-on-a-full-block</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-block-flash-was-gated-on-a-full-block-that-never-came</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-block-reads-as-a-shadow-around-the-shield</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-channel-reloads-in-the-tick-it-fires</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-compiler-answers-without-the-editor</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-contact-marker-is-called-hit</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-dev-body-gets-ash-and-a-metric-that-misses-hue</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-editor-gets-slower-the-longer-it-lives</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-editor-recompiled-on-every-keystroke-of-four-agents</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-gap-between-swings-became-a-state</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-rig-reads-its-own-marker-like-everyone-else</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-shield-flash-moves-from-the-warning-to-the-event</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-skill-names-what-it-strikes-with</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-the-windup-starts-outside-reach-for-everyone</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-tmp-outline-needs-a-shader-keyword</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-vfx-materials-said-additive-but-blended-premultiplied</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-07-31-vfx-size-gets-one-owner-and-a-registry-in-pixels</loc>
+    <lastmod>2026-07-31T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-a-chunk-carries-a-second-not-a-battle</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-a-dev-panel-was-erasing-the-whole-frame</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-a-new-figure-goes-into-the-old-rig</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-a-parry-reward-lands-with-the-window-not-the-riposte</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-an-assembly-boundary-guards-the-run-log</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-aseprite-batch-export-fails-quietly</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-coop-tests-live-on-a-page-that-outlived-its-game</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-draw-order-is-keyed-per-renderer</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-figure-pixel-is-one-hundredth-of-a-unit</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-lab-site-is-a-typed-spa</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-measure-the-neighbour-not-the-spec</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-new-content-needs-one-dot-and-a-registry-sync</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-no-default-archetype-the-test-catches-it</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-place-parts-with-the-rest-pose-removed</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-rebuilding-a-list-eats-the-double-click</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-scale-the-visual-node-not-the-import</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-smoothness-lives-on-the-receiving-end</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-the-archetype-comes-from-delivery-not-from-school</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-the-hit-draws-itself-in-a-pixel</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-the-lab-shows-snapshots-not-copies</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-the-network-becomes-debuggable-before-it-exists</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-the-ruler-gets-a-third-currency-and-loses-a-second-owner</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-the-series-counts-attacks-and-owns-its-charges</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-the-share-is-a-remainder-not-a-measurement</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-the-tape-is-handed-out-in-chunks-and-asked-back-by-number</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-the-tape-ships-as-events-plus-packed-snapshots</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-the-tape-sorts-by-moment-not-by-turn-order</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-three-dev-shelves-one-frame</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-trash-relics-are-authored-against-the-quantized-tempo</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-01-weapons-do-not-follow-a-tier-change</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-a-red-editor-assembly-can-hide-for-three-commits</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-a-scope-is-closed-by-dispose-not-by-destroy</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-a-session-begins-where-ownership-is-decided</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-a-stand-in-that-fires-first-is-an-owner</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-a-venue-stands-up-by-its-own-kind</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-act-map-runs-outside-unity</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-an-order-published-before-its-listener-exists-is-lost</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-deleting-the-transport-took-the-steam-init-with-it</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-green-locally-unbuildable-from-a-clean-clone</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-half-reset-state-makes-an-idempotent-entry-do-nothing</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-our-tools-become-agent-tools</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-procedural-cost-depends-on-the-visual-language</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-randomness-has-three-tiers-not-two</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-state-from-events-goes-stale-when-its-source-dies</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-activity-gets-its-own-scope-and-the-clock-gets-a-router</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-battle-is-born-and-buried-by-one-owner</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-battle-must-assemble-where-there-is-no-save</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-bom-decides-whether-a-script-runs-at-all</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-child-scope-asks-the-parent-instead-of-baking-its-own-arena</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-guest-does-not-tick-and-the-role-is-asked-every-frame</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-guest-follows-the-place-and-asks-for-it-himself</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-guest-is-given-the-state-not-the-recipe</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-levels-of-life-are-named-and-the-battle-scope-is-not-the-world</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-life-cycle-of-a-place-gets-a-playmode-test</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-map-frame-must-not-be-adopted-by-the-world-view</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-place-belongs-to-the-activity</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-role-picks-the-battle-composition-and-the-question-disappears</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-scene-presenters-take-the-battle-as-a-loan</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-session-owns-the-save-and-readers-only-get-a-view</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-shared-pause-belongs-to-the-view-not-to-the-simulation</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-show-asks-the-arena-who-is-standing-on-it</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-simulation-belongs-to-the-battle-and-the-world-holds-bodies</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-stack-shrinks-to-steam-and-the-high-level-netcode-goes</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-tag-names-the-version-so-nobody-has-to-remember</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-the-transport-asks-ngo-for-its-limit-and-the-chunk-splits-to-fit</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-three-lanes-compute-assemble-draw</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-ui-gets-two-voices-and-a-second-shape</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-weapon-archetype-prefab-variants-spear-seam</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-what-the-boundary-made-dead</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-02-where-we-are-is-told-at-the-door-not-guessed</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-a-bodyless-unit-is-caught-while-authoring</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-a-gotcha-about-a-tool-belongs-on-the-tool</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-clouds-are-a-field-not-a-pile-of-circles</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-firing-is-not-the-same-as-a-count-that-reached-zero</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-lab-shot-mode-and-still-scenes</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-shipping-happens-here-checking-happens-in-the-cloud</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-six-goblins-and-four-shades</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-speed-comes-from-the-local-build-not-from-skipping-checks</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-stand-in-bodies-for-the-last-twenty-units</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-the-arena-gets-two-sides-and-a-button-that-waits-for-everyone</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-the-boot-screen-covers-the-loading-instead-of-following-it</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-the-digit-answers-a-question-the-player-can-answer</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-the-guest-had-the-state-but-nobody-told-the-view</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-the-invite-button-waited-for-an-event-that-never-came</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/journal/2026-08-03-two-doors-into-the-game-instead-of-four-into-the-same-room</loc>
+    <lastmod>2026-08-03T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/tech-changelog</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/arena</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/00-meta/tech-debt</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/assemblies</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/asset-inventory</loc>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
   </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/combat-model</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/audio-inventory</loc>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
   </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/data-layer</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/code-standards</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
   </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/input-camera</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/saves</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/editor-tools</loc>
+    <lastmod>2026-07-20T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/scene-sorting</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
   </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/tech-stack</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/ui-typography</loc>
+    <lastmod>2026-07-27T00:00:00.000Z</lastmod>
   </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/20-explanation/data-stats-damage</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/20-explanation/di-events</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/20-explanation/effects-abilities</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/20-explanation/</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/20-explanation/netcode</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/20-explanation/presentation</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/20-explanation/run-flow</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
-  </url><url>
-    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/20-explanation/simulation</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/10-reference/vfx-color</loc>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/30-how-to/adding-assets</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/30-how-to/audit-procedure</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/30-how-to/docs-site</loc>
     <lastmod>2026-07-16T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/30-how-to/project-setup</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-30T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/act-map-run-loop</loc>
-    <lastmod>2026-07-17T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/attack-timing</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/barriers</loc>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/content-hub</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/coop-vertical</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/deployment-encounters</loc>
     <lastmod>2026-07-16T00:00:00.000Z</lastmod>
@@ -441,40 +1317,55 @@
     <lastmod>2026-07-18T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/phase-1-combat-core</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/phase-2-effects</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/phase-3-ai-relics</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/phase-4-content</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/road-to-playable-build</loc>
+    <lastmod>2026-08-01T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/roadmap</loc>
-    <lastmod>2026-07-17T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/save-system</loc>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/scope-hierarchy</loc>
+    <lastmod>2026-08-02T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/seed</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
+  </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/sfx-round-2</loc>
+    <lastmod>2026-07-26T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/sfx</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/simbench</loc>
-    <lastmod>2026-07-17T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/stabilization</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/stat-system</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/steam-workshop</loc>
     <lastmod>2026-07-16T00:00:00.000Z</lastmod>
   </url><url>
+    <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/tick-resolution</loc>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
+  </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/vertical-slice</loc>
-    <lastmod>2026-07-16T00:00:00.000Z</lastmod>
+    <lastmod>2026-07-28T00:00:00.000Z</lastmod>
   </url><url>
     <loc>https://kaliguri.github.io/Guildmaster-Autobattler/tech/40-planning/visual-harness</loc>
     <lastmod>2026-07-16T00:00:00.000Z</lastmod>

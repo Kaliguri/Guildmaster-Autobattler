@@ -98,38 +98,45 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Core_1_1Persis
 </div><!--header-->
 <div class="contents">
 
-<p>Шов персистентности (вики «2», «13» §1): сохранение/загрузка сериализуемых DTO по строковому ключу.  
+<p>Шов персистентности (ТЗ [[save-system]]): сохранение/загрузка сериализуемых DTO по строковому ключу.  
  <a href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Core.Persistence.ISaveService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService__inherit__graph.svg" width="222" height="339"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService__inherit__graph.svg" width="448" height="567"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Persistence.ISaveService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService__coll__graph.svg" width="222" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService__coll__graph.svg" width="222" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a275e7c5ce65ba89626a17a51ab6c50bb" id="r_a275e7c5ce65ba89626a17a51ab6c50bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a275e7c5ce65ba89626a17a51ab6c50bb">Save&lt; T &gt;</a> (string key, T value)</td></tr>
-<tr class="memdesc:a275e7c5ce65ba89626a17a51ab6c50bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сохранить значение под ключом (перезаписывает).  <br /></td></tr>
+<tr class="memitem:a275e7c5ce65ba89626a17a51ab6c50bb" id="r_a275e7c5ce65ba89626a17a51ab6c50bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a275e7c5ce65ba89626a17a51ab6c50bb">Save&lt; T &gt;</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">string</a> key, T <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">value</a>)</td></tr>
+<tr class="memdesc:a275e7c5ce65ba89626a17a51ab6c50bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сохранить значение под ключом (перезаписывает). Версия схемы берётся из типа.  <br /></td></tr>
 <tr class="separator:a275e7c5ce65ba89626a17a51ab6c50bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c7655439fd7941e8f332ebf9095400f" id="r_a7c7655439fd7941e8f332ebf9095400f"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a7c7655439fd7941e8f332ebf9095400f">Load&lt; T &gt;</a> (string key)</td></tr>
-<tr class="memdesc:a7c7655439fd7941e8f332ebf9095400f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Загрузить значение по ключу; <code>default</code> (null), если ключа нет.  <br /></td></tr>
-<tr class="separator:a7c7655439fd7941e8f332ebf9095400f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c3b47666cbfba6afcf2f4b1e6f2cee5" id="r_a9c3b47666cbfba6afcf2f4b1e6f2cee5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a9c3b47666cbfba6afcf2f4b1e6f2cee5">Exists</a> (string key)</td></tr>
-<tr class="memdesc:a9c3b47666cbfba6afcf2f4b1e6f2cee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли сохранение под ключом.  <br /></td></tr>
+<tr class="memitem:ab7e94ca5b66fb06170226594d5f11a79" id="r_ab7e94ca5b66fb06170226594d5f11a79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html">SaveLoadResult</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#ab7e94ca5b66fb06170226594d5f11a79">TryLoad&lt; T &gt;</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">string</a> key)</td></tr>
+<tr class="memdesc:ab7e94ca5b66fb06170226594d5f11a79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Загрузить значение по ключу.  <br /></td></tr>
+<tr class="separator:ab7e94ca5b66fb06170226594d5f11a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c3b47666cbfba6afcf2f4b1e6f2cee5" id="r_a9c3b47666cbfba6afcf2f4b1e6f2cee5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a9c3b47666cbfba6afcf2f4b1e6f2cee5">Exists</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">string</a> key)</td></tr>
+<tr class="memdesc:a9c3b47666cbfba6afcf2f4b1e6f2cee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли файл под ключом. Дешёвая проверка наличия — о пригодности отвечает TryLoad&lt;T&gt;.  <br /></td></tr>
 <tr class="separator:a9c3b47666cbfba6afcf2f4b1e6f2cee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd1c8a1e9779dd86c902d9a13442d2ac" id="r_afd1c8a1e9779dd86c902d9a13442d2ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#afd1c8a1e9779dd86c902d9a13442d2ac">Delete</a> (string key)</td></tr>
-<tr class="memdesc:afd1c8a1e9779dd86c902d9a13442d2ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить сохранение под ключом (no-op, если нет).  <br /></td></tr>
+<tr class="memitem:afd1c8a1e9779dd86c902d9a13442d2ac" id="r_afd1c8a1e9779dd86c902d9a13442d2ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#afd1c8a1e9779dd86c902d9a13442d2ac">Delete</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">string</a> key)</td></tr>
+<tr class="memdesc:afd1c8a1e9779dd86c902d9a13442d2ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить сохранение под ключом (no-op, если нет). Бэкап удаляется вместе с ним.  <br /></td></tr>
 <tr class="separator:afd1c8a1e9779dd86c902d9a13442d2ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a015fee9293fb2b1def959d6e6e268749" id="r_a015fee9293fb2b1def959d6e6e268749"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a015fee9293fb2b1def959d6e6e268749">DeleteTree</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">string</a> <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">prefix</a>)</td></tr>
+<tr class="memdesc:a015fee9293fb2b1def959d6e6e268749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить поддерево целиком — ключ здесь означает каталог, а не файл.  <br /></td></tr>
+<tr class="separator:a015fee9293fb2b1def959d6e6e268749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1948ea9219f00d98c91413d8b77548f1" id="r_a1948ea9219f00d98c91413d8b77548f1"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">List</a> (string prefix)</td></tr>
+<tr class="memdesc:a1948ea9219f00d98c91413d8b77548f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ключи первого уровня под указанным префиксом — без него не собрать список профилей и гильдий.  <br /></td></tr>
+<tr class="separator:a1948ea9219f00d98c91413d8b77548f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Шов персистентности (вики «2», «13» §1): сохранение/загрузка сериализуемых DTO по строковому ключу. </p>
-<p>Единственная точка между игрой и диском — реализация прячет бэкенд (сейчас JSON-файл в persistentDataPath; ES3 + Steam Cloud — отложенная замена за этим же интерфейсом, seams-vs-defer). </p>
-<p>Значение <em>T</em>  — plain <code>[Serializable]</code> DTO (публичные поля, строковые content id, без SO-ссылок), сериализуется движком. Не класть сюда рантайм-состояние.</p>
+<div class="textblock"><p>Шов персистентности (ТЗ [[save-system]]): сохранение/загрузка сериализуемых DTO по строковому ключу. </p>
+<p>Единственная точка между игрой и диском — реализация прячет бэкенд (JSON-файл под <code>GameDataPath.Root/Saves</code>, наш собственный: реш. 2026-07-26). Шов сохраняем: за ним же встанет Steam Cloud и, если понадобится, другой формат. </p>
+<p><b>Ключ — это путь</b> внутри дерева сохранений: <code>prefs</code>, <code>profiles/{profileId}/profile</code>, <code>profiles/{profileId}/guilds/{guildId}/run</code>. Разделитель — прямой слэш, расширение добавляет реализация.</p>
+<p>Значение <em>T</em>  — plain <code>[Serializable]</code> DTO (публичные поля, строковые content id, без SO-ссылок), версия схемы объявляется атрибутом SaveSchemaAttribute. Не класть сюда рантайм-состояние.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="afd1c8a1e9779dd86c902d9a13442d2ac" name="afd1c8a1e9779dd86c902d9a13442d2ac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd1c8a1e9779dd86c902d9a13442d2ac">&#9670;&#160;</a></span>Delete()</h2>
@@ -138,18 +145,41 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Guildmaster.Core.Persistence.ISaveService.Delete </td>
+          <td class="memname"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">void</a> Guildmaster.Core.Persistence.ISaveService.Delete </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">string</a>&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Удалить сохранение под ключом (no-op, если нет). </p>
+<p>Удалить сохранение под ключом (no-op, если нет). Бэкап удаляется вместе с ним. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#a7df90d46b55f8280cd3dbdb0262fd6bc">Guildmaster.Game.Services.JsonFileSaveService</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#aa6d00114abcd21c539a3dc13cd863344">Guildmaster.Game.Services.JsonFileSaveServiceBase</a>.</p>
+
+</div>
+</div>
+<a id="a015fee9293fb2b1def959d6e6e268749" name="a015fee9293fb2b1def959d6e6e268749"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a015fee9293fb2b1def959d6e6e268749">&#9670;&#160;</a></span>DeleteTree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">void</a> Guildmaster.Core.Persistence.ISaveService.DeleteTree </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">string</a>&#160;</td>
+          <td class="paramname"><em>prefix</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Удалить поддерево целиком — ключ здесь означает каталог, а не файл. </p>
+<p>Нужен для удаления профиля: точечный Delete снёс бы только сам <code>profile</code>, оставив гильдии и их забеги висеть мусором, который никто больше не покажет и не подберёт. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#acada6acbb548c8d14d8398565927b053">Guildmaster.Game.Services.JsonFileSaveServiceBase</a>.</p>
 
 </div>
 </div>
@@ -160,40 +190,46 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Guildmaster.Core.Persistence.ISaveService.Exists </td>
+          <td class="memname"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">bool</a> Guildmaster.Core.Persistence.ISaveService.Exists </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">string</a>&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Есть ли сохранение под ключом. </p>
+<p>Есть ли файл под ключом. Дешёвая проверка наличия — о пригодности отвечает TryLoad&lt;T&gt;. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#a7da2cff4855c395cb305c37a29ccdbbb">Guildmaster.Game.Services.JsonFileSaveService</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a5379bdc5c22e5dcc39d8eb2ecb1eaf38">Guildmaster.Game.Services.JsonFileSaveServiceBase</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService_a9c3b47666cbfba6afcf2f4b1e6f2cee5_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
 
 </div>
 </div>
-<a id="a7c7655439fd7941e8f332ebf9095400f" name="a7c7655439fd7941e8f332ebf9095400f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c7655439fd7941e8f332ebf9095400f">&#9670;&#160;</a></span>Load&lt; T &gt;()</h2>
+<a id="a1948ea9219f00d98c91413d8b77548f1" name="a1948ea9219f00d98c91413d8b77548f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1948ea9219f00d98c91413d8b77548f1">&#9670;&#160;</a></span>List()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">T Guildmaster.Core.Persistence.ISaveService.Load&lt; T &gt; </td>
+          <td class="memname">IReadOnlyList&lt; string &gt; Guildmaster.Core.Persistence.ISaveService.List </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>key</em></td><td>)</td>
+          <td class="paramname"><em>prefix</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Загрузить значение по ключу; <code>default</code> (null), если ключа нет. </p>
+<p>Ключи первого уровня под указанным префиксом — без него не собрать список профилей и гильдий. </p>
+<p>Префикс <code>profiles</code> вернёт идентификаторы профилей. Порядок не гарантирован. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#ae1b6545e429cd7440c2f7b444d0b9b7c">Guildmaster.Game.Services.JsonFileSaveService</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">Guildmaster.Game.Services.JsonFileSaveServiceBase</a>.</p>
 
 </div>
 </div>
@@ -204,9 +240,9 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Guildmaster.Core.Persistence.ISaveService.Save&lt; T &gt; </td>
+          <td class="memname"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">void</a> Guildmaster.Core.Persistence.ISaveService.Save&lt; T &gt; </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">string</a>&#160;</td>
           <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
@@ -223,9 +259,32 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Сохранить значение под ключом (перезаписывает). </p>
+<p>Сохранить значение под ключом (перезаписывает). Версия схемы берётся из типа. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#a449acd839274f2de82198fe23cb819cd">Guildmaster.Game.Services.JsonFileSaveService</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#ade0cec6196702bbe2cf11c13d7fc5202">Guildmaster.Game.Services.JsonFileSaveServiceBase</a>.</p>
+
+</div>
+</div>
+<a id="ab7e94ca5b66fb06170226594d5f11a79" name="ab7e94ca5b66fb06170226594d5f11a79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7e94ca5b66fb06170226594d5f11a79">&#9670;&#160;</a></span>TryLoad&lt; T &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html">SaveLoadResult</a>&lt; T &gt; Guildmaster.Core.Persistence.ISaveService.TryLoad&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a1948ea9219f00d98c91413d8b77548f1">string</a>&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Загрузить значение по ключу. </p>
+<p>Возвращает <b>исход</b>, а не голое значение: «нет сейва» и «сейв из более новой версии игры» требуют разной реакции, и молчаливый <code>default</code> их склеивал бы — с риском затереть чужой прогресс следующим автосейвом. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a78defbe99217038a164fcdb275618d26">Guildmaster.Game.Services.JsonFileSaveServiceBase</a>.</p>
 
 </div>
 </div>

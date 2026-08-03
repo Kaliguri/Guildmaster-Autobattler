@@ -1,0 +1,7 @@
+<map id="Guildmaster.Data.Definitions.IDeclaresDamageTypes" name="Guildmaster.Data.Definitions.IDeclaresDamageTypes">
+<area shape="rect" id="Node000001" title="Компонент эффекта, который добавляет носителю статический источник урона — то есть собственный тип ур..." alt="" coords="33,119,239,199"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AttackStanceComponent.html" title="Боевые СТОЙКИ по дистанции: носитель переключает форму своей авто&#45;атаки, когда цель входит в ближнюю ..." alt="" coords="5,247,267,427"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="139,213,139,247,133,247,133,213"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="71,5,201,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,85,139,118,133,118,133,85"/>
+</map>

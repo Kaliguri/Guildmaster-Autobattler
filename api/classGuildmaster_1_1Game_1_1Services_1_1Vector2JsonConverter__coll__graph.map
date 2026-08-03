@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Services.Vector2JsonConverter" name="Guildmaster.Game.Services.Vector2JsonConverter">
+<area shape="rect" id="Node000001" title="Сериализация Vector2 как {&quot;x&quot;:…,&quot;y&quot;:…}." alt="" coords="5,119,204,219"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="13,5,197,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,84,107,119,102,119,102,84"/>
+</map>

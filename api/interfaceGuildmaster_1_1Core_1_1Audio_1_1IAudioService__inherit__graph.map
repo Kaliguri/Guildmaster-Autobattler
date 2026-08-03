@@ -1,7 +1,5 @@
 <map id="Guildmaster.Core.Audio.IAudioService" name="Guildmaster.Core.Audio.IAudioService">
-<area shape="rect" id="Node000001" title="Фасад звуковой подсистемы." alt="" coords="109,5,322,185"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html" title="FMOD&#45;реализация IAudioService (вики impl «09» §П3)." alt="" coords="5,233,204,433"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,199,154,234,149,232,165,197"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html" title="Заглушка IAudioService на Unity Audio." alt="" coords="228,243,427,423"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="266,197,288,242,283,244,261,199"/>
+<area shape="rect" id="Node000001" title="Фасад звуковой подсистемы." alt="" coords="5,5,219,225"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html" title="FMOD&#45;реализация IAudioService (вики impl «09» §П3)." alt="" coords="13,273,211,513"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,239,115,273,109,273,109,239"/>
 </map>

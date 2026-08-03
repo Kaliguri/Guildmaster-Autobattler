@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.RearStrikeEffectComponent" name="Guildmaster.Combat.Effects.Components.RearStrikeEffectComponent">
+<area shape="rect" id="Node000001" title="«Гниль» Ночного лезвия (карточка [[the&#45;fang]]): пассивка носителя, которая за удар В ТЫЛ добавляет це..." alt="" coords="5,365,284,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="69,252,220,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,331,147,365,142,365,142,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="52,119,237,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="147,218,147,252,142,252,142,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="79,5,210,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="147,85,147,119,142,119,142,85"/>
+</map>

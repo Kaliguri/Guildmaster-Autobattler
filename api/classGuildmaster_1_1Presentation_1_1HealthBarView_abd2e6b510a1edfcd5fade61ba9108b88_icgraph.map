@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.HealthBarView.Punch" name="Guildmaster.Presentation.HealthBarView.Punch">
+<area shape="rect" id="Node000001" title="Микро&#45;punch масштаба бара при уроне (ghost/trail уже в Update)." alt="" coords="271,5,461,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#aabb318f2225fa3100f09e5a07a8afaea" title="Реакция цели на урон: вспышка (цвет из feel/школы), сплющивание, опц." alt="" coords="5,5,223,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="257,28,223,28,223,23,257,23"/>
+</map>

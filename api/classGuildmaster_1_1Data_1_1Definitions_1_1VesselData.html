@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 </div><!--header-->
 <div class="contents">
 
-<p>«Пилот» — носитель реликвии.  
+<p>«Сосуд» — человек, носящий Реликвию.  
  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Data.Definitions.VesselData:</div>
@@ -115,8 +115,9 @@ Collaboration diagram for Guildmaster.Data.Definitions.VesselData:</div>
 Properties</h2></td></tr>
 <tr class="memitem:a88a45070ffedc089bc20cb30f3d79ecb" id="r_a88a45070ffedc089bc20cb30f3d79ecb"><td class="memItemLeft" align="right" valign="top">string[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html#a88a45070ffedc089bc20cb30f3d79ecb">Tags</a><code> [get]</code></td></tr>
 <tr class="separator:a88a45070ffedc089bc20cb30f3d79ecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bad620a3a7c555a0c3126c51c0cbe9b" id="r_a7bad620a3a7c555a0c3126c51c0cbe9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html">StatModifier</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html#a7bad620a3a7c555a0c3126c51c0cbe9b">PerkModifiers</a><code> [get]</code></td></tr>
-<tr class="separator:a7bad620a3a7c555a0c3126c51c0cbe9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aacfe18ec2056fcd3429bb6f4004e8a" id="r_a5aacfe18ec2056fcd3429bb6f4004e8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html">StatModifier</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html#a5aacfe18ec2056fcd3429bb6f4004e8a">FateModifiers</a><code> [get]</code></td></tr>
+<tr class="memdesc:a5aacfe18ec2056fcd3429bb6f4004e8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Модификаторы Судьбы авторского «Сосуда» (см. поле — это не драфтовый перк).  <br /></td></tr>
+<tr class="separator:a5aacfe18ec2056fcd3429bb6f4004e8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition"><td colspan="2" onclick="javascript:toggleInherit('properties_classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html">Guildmaster.Data.Definitions.ContentDefinition</a></td></tr>
 <tr class="memitem:ac71161e8f7fe750c080d69002b91fdb8 inherit properties_classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition" id="r_ac71161e8f7fe750c080d69002b91fdb8"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html#ac71161e8f7fe750c080d69002b91fdb8">Id</a><code> [get]</code></td></tr>
 <tr class="memdesc:ac71161e8f7fe750c080d69002b91fdb8 inherit properties_classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition"><td class="mdescLeft">&#160;</td><td class="mdescRight">Канонический content id (<code>domain.name</code>, вики «13» §2.2).  <br /></td></tr>
@@ -130,12 +131,12 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a4701ffe250559c2e99f32082bc6e2f12 inherit pro_methods_classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>«Пилот» — носитель реликвии. </p>
-<p>Несёт идентичность и (Фаза 2/4) перки-модификаторы, которые накладываются на стат-сборку поверх реликвии (вики «10» §4.2).</p>
-<p>СКЕЛЕТ Фазы 1: только идентичность. Перки — Фаза 2/4.</p>
+<div class="textblock"><p>«Сосуд» — человек, носящий Реликвию. </p>
+<p>Своих боевых статов у него нет: весь кит приходит от Реликвии, а Сосуд несёт идентичность и нарратив (ГДД «Питч» §7, «Процедурный лор»). </p>
+<p><b>Ассет — только для авторских Сосудов:</b> прегенов и сюжетных. Сосуды забега процедурные — они рождаются из сида и живут в сейве (досье = сид + индексы фрагментов, летопись переносится между забегами), поэтому ассетами не авторятся и в контент-БД не лежат. Пустая папка <code>Vessels/</code> — это «авторских ещё не написали», а не «слой мёртв».</p>
 </div><h2 class="groupheader">Property Documentation</h2>
-<a id="a7bad620a3a7c555a0c3126c51c0cbe9b" name="a7bad620a3a7c555a0c3126c51c0cbe9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7bad620a3a7c555a0c3126c51c0cbe9b">&#9670;&#160;</a></span>PerkModifiers</h2>
+<a id="a5aacfe18ec2056fcd3429bb6f4004e8a" name="a5aacfe18ec2056fcd3429bb6f4004e8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5aacfe18ec2056fcd3429bb6f4004e8a">&#9670;&#160;</a></span>FateModifiers</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +145,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html">StatModifier</a> [] Guildmaster.Data.Definitions.VesselData.PerkModifiers</td>
+          <td class="memname"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html">StatModifier</a> [] Guildmaster.Data.Definitions.VesselData.FateModifiers</td>
         </tr>
       </table>
   </td>
@@ -153,6 +154,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Модификаторы Судьбы авторского «Сосуда» (см. поле — это не драфтовый перк). </p>
 
 </div>
 </div>

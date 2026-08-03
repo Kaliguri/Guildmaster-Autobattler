@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.EncounterUnit.PositionOf" name="Guildmaster.Data.Definitions.EncounterUnit.PositionOf">
+<area shape="rect" id="Node000001" title="Позиция копии copyIndex &#160;(0..Count&#45;1): сам якорь для одиночки, вертикальный кластер вокруг якоря для ..." alt="" coords="279,5,493,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1EncounterLoader.html#a314ddd848e9a3967a71ff04d1e292e00" title="Заспавнить вражескую сторону (team 1) из энкаунтера — БЕЗ сброса боя." alt="" coords="5,5,231,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="265,28,231,28,231,23,265,23"/>
+</map>

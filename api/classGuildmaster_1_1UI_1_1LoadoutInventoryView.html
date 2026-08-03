@@ -108,16 +108,16 @@ Collaboration diagram for Guildmaster.UI.LoadoutInventoryView:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a0c77fedc9b3a69d4d55fb6e032d49a21" id="r_a0c77fedc9b3a69d4d55fb6e032d49a21"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutInventoryView.html#a0c77fedc9b3a69d4d55fb6e032d49a21">Build</a> (VisualTreeAsset screenUxml, VisualTreeAsset cardUxml, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; relics, int gold, Func&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, string &gt; titleOf, Func&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, string &gt; narrativeOf, Func&lt; string, string &gt; localize, int lockedSlots=0, bool cardAnimations=true, bool cardAttackAnimation=true)</td></tr>
-<tr class="separator:a0c77fedc9b3a69d4d55fb6e032d49a21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f99c6aa4f12e322a999f2da3917067e" id="r_a8f99c6aa4f12e322a999f2da3917067e"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutInventoryView.html#a8f99c6aa4f12e322a999f2da3917067e">Build</a> (VisualTreeAsset screenUxml, VisualTreeAsset cardUxml, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; relics, int gold, Func&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, string &gt; titleOf, Func&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, string &gt; narrativeOf, Func&lt; string, string &gt; localize, int lockedSlots=0, bool cardAnimations=true, bool cardAttackAnimation=true, Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a12d0b679c877521b9eb27e95f192d9e5">RelicDragPhase</a> &gt; onRelicDrag=null, Func&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1TagData.html">TagData</a> &gt; &gt; tagsOf=null, Func&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1UnitStatLine.html">UnitStatLine</a> &gt; &gt; statsOf=null, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a> palette=null)</td></tr>
+<tr class="separator:a8f99c6aa4f12e322a999f2da3917067e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Сборка нового лоадаут/инвентарь-экрана (редизайн, Ф3a каркас) из UXML-шаблона. </p>
-<p>Полноэкранный трёхколоночник: боевая зона-«дырка» слева | грид таро-карточек реликвий | панель деталей (видео 16:9, способности, улучшения, нарратив). Общий код для роутера и превью-стенда, по образцу LoadoutHubView. </p>
+<p>Полноэкранный трёхколоночник: боевая зона-«дырка» слева | грид таро-карточек реликвий | панель деталей (видео 16:9, способности, улучшения, нарратив). Общий код для роутера и превью-стенда. </p>
 <p>Ф3a — КАРКАС: живая зона/видео/способности/улучшения — плейсхолдеры; наполнение боевой зоны (camera.rect), hover-анимации и ПКМ-модалки — следующие фазы. Разметка/стиль — только из <code>LoadoutInventoryScreen.uxml</code> + <code>RelicArcanaCard.uxml</code> + классы дизайн-системы. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0c77fedc9b3a69d4d55fb6e032d49a21" name="a0c77fedc9b3a69d4d55fb6e032d49a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c77fedc9b3a69d4d55fb6e032d49a21">&#9670;&#160;</a></span>Build()</h2>
+<a id="a8f99c6aa4f12e322a999f2da3917067e" name="a8f99c6aa4f12e322a999f2da3917067e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f99c6aa4f12e322a999f2da3917067e">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -183,7 +183,31 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>cardAttackAnimation</em> = <code>true</code>&#160;</td>
+          <td class="paramname"><em>cardAttackAnimation</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a12d0b679c877521b9eb27e95f192d9e5">RelicDragPhase</a> &gt;&#160;</td>
+          <td class="paramname"><em>onRelicDrag</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Func&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1TagData.html">TagData</a> &gt; &gt;&#160;</td>
+          <td class="paramname"><em>tagsOf</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Func&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1UnitStatLine.html">UnitStatLine</a> &gt; &gt;&#160;</td>
+          <td class="paramname"><em>statsOf</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a>&#160;</td>
+          <td class="paramname"><em>palette</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -198,9 +222,9 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <div class="dynheader">
-Here is the caller graph for this function:</div>
+Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1LoadoutInventoryView_a0c77fedc9b3a69d4d55fb6e032d49a21_icgraph.svg" width="502" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1LoadoutInventoryView_a8f99c6aa4f12e322a999f2da3917067e_cgraph.svg" width="506" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

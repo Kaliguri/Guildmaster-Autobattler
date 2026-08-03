@@ -1,12 +1,18 @@
 var namespaceGuildmaster_1_1Combat_1_1Effects =
 [
     [ "Components", "namespaceGuildmaster_1_1Combat_1_1Effects_1_1Components.html", "namespaceGuildmaster_1_1Combat_1_1Effects_1_1Components" ],
+    [ "AttackSplit", "structGuildmaster_1_1Combat_1_1Effects_1_1AttackSplit.html", "structGuildmaster_1_1Combat_1_1Effects_1_1AttackSplit" ],
     [ "CombatEventData", "structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html", "structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData" ],
     [ "DispelRequest", "structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html", "structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest" ],
     [ "EffectContext", "structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html", "structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext" ],
+    [ "IAttackMissComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IAttackMissComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IAttackMissComponent" ],
+    [ "IAttackSplitComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IAttackSplitComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IAttackSplitComponent" ],
+    [ "IOutgoingDamageBonusComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IOutgoingDamageBonusComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IOutgoingDamageBonusComponent" ],
     [ "IPeriodicComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent" ],
     [ "IPreDamageComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent" ],
     [ "IReactiveComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent" ],
+    [ "IRearmOnRefreshComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRearmOnRefreshComponent.html", null ],
+    [ "IRequiresAgencyComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRequiresAgencyComponent.html", null ],
     [ "IRuntimeEffectComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent" ],
     [ "IScalablePotency", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency" ],
     [ "IStackableComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent" ],
@@ -20,6 +26,9 @@ var namespaceGuildmaster_1_1Combat_1_1Effects =
       [ "UnitDied", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066aefa198417da5fbc0a75b54484ad97b4f", null ],
       [ "EffectApplied", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066aae22ad0343f490e1d4d798f879dc6622", null ],
       [ "UnitKilled", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a429d336ceae2000a8948230c38cc738d", null ],
-      [ "EffectExpired", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a1248807988c03e6f257d4238c3bc4136", null ]
+      [ "EffectExpired", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a1248807988c03e6f257d4238c3bc4136", null ],
+      [ "AbilityCast", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066afb70d9705c2930ef40b1173ab1b2094d", null ],
+      [ "AttackCompleted", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a72d4a0b0cc011d98f0b8fc13a5c5729c", null ],
+      [ "ComboBroken", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a676f582752529cf3b8f4652aff72ae7d", null ]
     ] ]
 ];

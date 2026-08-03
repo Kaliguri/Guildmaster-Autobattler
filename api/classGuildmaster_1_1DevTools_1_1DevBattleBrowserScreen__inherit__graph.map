@@ -1,0 +1,8 @@
+<map id="Guildmaster.DevTools.DevBattleBrowserScreen" name="Guildmaster.DevTools.DevBattleBrowserScreen">
+<area shape="rect" id="Node000001" title="Витрина боёв (F3): поиск по всему, что можно запустить, — энкаунтеры и пресеты из контент&#45;БД плюс сре..." alt="" coords="129,439,330,599"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1UiScreen.html" title="Базовый экран навигатора (см." alt="" coords="5,5,205,391"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,402,201,438,196,440,182,404"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="218,152,228,171,232,198,225,233,217,245,207,254,204,250,213,242,220,231,227,198,223,173,213,154"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1UI_1_1DevConsole_1_1IDevOverlayScreen.html" title="Маркер dev&#45;полки (командная консоль, лог, витрина боёв)." alt="" coords="253,158,456,238"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="337,252,263,439,258,437,332,250"/>
+</map>

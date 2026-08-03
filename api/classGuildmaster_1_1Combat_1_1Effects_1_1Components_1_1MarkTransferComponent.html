@@ -130,6 +130,8 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>«Метка охотника» (§9.5): реактив на CombatEvent.UnitDied. </p>
 <p>Когда носитель метки (враг Следопыта) гибнет — перевешивает эффект на ближайшего живого врага источника с обновлением длительности (свежий <code>ApplyEffect</code>). Если врагов не осталось — метка гаснет вместе с трупом. Диспатчится даже мёртвому носителю (см. <code>CombatSimulation.DrainEventQueue</code>). </p>
+<p><b>Числа:</b> своих нет — компонент лишь правило «метка переезжает на смерти носителя». Что метка ДАЁТ (уязвимость, приоритет цели) и сколько живёт — в самом эффекте; выбор нового носителя — ближайший живой враг источника, без настроек.</p>
+<p><b>Когда срабатывает:</b> на CombatEvent.UnitDied носителя метки.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab2f4ed462f4952403193223d91fc4311" name="ab2f4ed462f4952403193223d91fc4311"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2f4ed462f4952403193223d91fc4311">&#9670;&#160;</a></span>OnApply()</h2>

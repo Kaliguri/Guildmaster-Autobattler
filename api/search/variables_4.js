@@ -1,11 +1,25 @@
 var searchData=
 [
-  ['edges_0',['Edges',['../classGuildmaster_1_1Guild_1_1MapNode.html#a87d06b6e49d7193b009af879b6fe3297',1,'Guildmaster::Guild::MapNode']]],
-  ['effect_1',['Effect',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a349bb91267ada333275778ffd99d3779',1,'Guildmaster::Combat::Effects::EffectContext']]],
-  ['effecttagmask_2',['EffectTagMask',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a699cc5426b400f63658ab3b2f65aae66',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['elitemincolumn_3',['EliteMinColumn',['../classGuildmaster_1_1Guild_1_1MapGenConfig.html#a50ec5f964bec6b5f03eecc2db763709c',1,'Guildmaster::Guild::MapGenConfig']]],
-  ['empowerdamagemult_4',['EmpowerDamageMult',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af7cdab4bcc1b402cb19e28eae70937ef',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['enabled_5',['enabled',['../structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html#a586a04a80b4662f577eef3c44c7664c4',1,'Guildmaster.Data.Definitions.Retreat.Enabled'],['../structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html#abf98e74afccf22f069e93eca34391235',1,'Guildmaster.Data.Definitions.Kite.Enabled']]],
-  ['entry_6',['Entry',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ValidationIssue.html#a7b3bf2cfb82caddff7cf7d5c9d63d69c',1,'Guildmaster::ContentHub::Editor::ValidationIssue']]],
-  ['event_7',['event',['../structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html#a753c64c71fd52c2af012ad3133f1f3d6',1,'Guildmaster.Data.Definitions.OpenTextEventRequest.Event'],['../structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1Entry.html#a982ed27ede25278e4f44a883735ca877',1,'Guildmaster.Presentation.Audio.AudioCatalog.Entry.Event'],['../structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1ActionDefault.html#a5aa71c290bb921aae9e2c45d4baf8a46',1,'Guildmaster.Presentation.Audio.AudioCatalog.ActionDefault.Event']]]
+  ['edgecolumns_0',['EdgeColumns',['../classGuildmaster_1_1Guild_1_1MapGenConfig.html#aeee6d0fac3246552ef12507048bdf585',1,'Guildmaster::Guild::MapGenConfig']]],
+  ['edgecolumnwidth_1',['EdgeColumnWidth',['../classGuildmaster_1_1Guild_1_1MapGenConfig.html#a4a6290103cf948c6896944fd1aa57e51',1,'Guildmaster::Guild::MapGenConfig']]],
+  ['edges_2',['Edges',['../classGuildmaster_1_1Guild_1_1MapNode.html#a87d06b6e49d7193b009af879b6fe3297',1,'Guildmaster::Guild::MapNode']]],
+  ['effect_3',['Effect',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a349bb91267ada333275778ffd99d3779',1,'Guildmaster::Combat::Effects::EffectContext']]],
+  ['effectsremovedthistick_4',['EffectsRemovedThisTick',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a210db00844dd9a69191d5460dbe02aa5',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['effecttagmask_5',['effecttagmask',['../structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a9d623f2083f6d83667083d3f6454bcf0',1,'Guildmaster.Combat.Tape.UnitSnapshot.EffectTagMask'],['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a699cc5426b400f63658ab3b2f65aae66',1,'Guildmaster.Combat.RuntimeUnit.EffectTagMask']]],
+  ['effecttags_6',['EffectTags',['../classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkFormat_1_1UnitField.html#a3d3405759e2bd13b98e0e7c88609df0b',1,'Guildmaster::Net::Tape::TapeChunkFormat::UnitField']]],
+  ['empowerbonuscount_7',['EmpowerBonusCount',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a848723ae3ab4c91e249afc81b1502304',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['empowerbonuseffects_8',['EmpowerBonusEffects',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a93f3d5e9ed0dbfcf0777f1068eb17ff2',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['empowerconsumetag_9',['EmpowerConsumeTag',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa104c5c44cf4037d8e5775c05cd1d74f',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['empowerdamagemult_10',['EmpowerDamageMult',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af7cdab4bcc1b402cb19e28eae70937ef',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['empowerflatpen_11',['EmpowerFlatPen',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a757e6fdd9b9048c8cd8e9246e9f5a606',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['empowerknockback_12',['EmpowerKnockback',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af5e805184e1d6a81a9b0f0a30ff09a06',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['empowersplashradius_13',['EmpowerSplashRadius',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#add83e48d45e8e7f5149ac8d4618566e7',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['empowersplitshare_14',['EmpowerSplitShare',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a560778c060e552c40a70ded31479f407',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['empowersplittype_15',['EmpowerSplitType',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4583767f7db004dff635d1d8bf20e5c0',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['empty_16',['Empty',['../classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#a27e257252480defd8aaeee9458b60dcb',1,'Guildmaster::Presentation::Body::UnitPartRegistry']]],
+  ['enabled_17',['enabled',['../structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html#a586a04a80b4662f577eef3c44c7664c4',1,'Guildmaster.Data.Definitions.Retreat.Enabled'],['../structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html#abf98e74afccf22f069e93eca34391235',1,'Guildmaster.Data.Definitions.Kite.Enabled'],['../classGuildmaster_1_1Diagnostics_1_1UiTrace.html#a25d1ba0a2946f47e728866a8d06c4899',1,'Guildmaster.Diagnostics.UiTrace.Enabled']]],
+  ['endsathit_18',['EndsAtHit',['../structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html#aad105837cbd20e00c1ca1456b207e822',1,'Guildmaster::Presentation::Effects::HitFormParams']]],
+  ['entry_19',['Entry',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ValidationIssue.html#a7b3bf2cfb82caddff7cf7d5c9d63d69c',1,'Guildmaster::ContentHub::Editor::ValidationIssue']]],
+  ['event_20',['event',['../structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html#a753c64c71fd52c2af012ad3133f1f3d6',1,'Guildmaster.Data.Definitions.OpenTextEventRequest.Event'],['../structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1Entry.html#a982ed27ede25278e4f44a883735ca877',1,'Guildmaster.Presentation.Audio.AudioCatalog.Entry.Event'],['../structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1ActionDefault.html#a5aa71c290bb921aae9e2c45d4baf8a46',1,'Guildmaster.Presentation.Audio.AudioCatalog.ActionDefault.Event']]],
+  ['eventmarker_21',['EventMarker',['../classGuildmaster_1_1Presentation_1_1Editor_1_1FrameSheet_1_1Options.html#a16adf9d1e4c3aeeed588a8719aeb7614',1,'Guildmaster::Presentation::Editor::FrameSheet::Options']]]
 ];

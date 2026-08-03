@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.UnitTagResolver.Resolve" name="Guildmaster.Data.Definitions.UnitTagResolver.Resolve">
+<area shape="rect" id="Node000001" title="Упорядоченный список тегов юнита." alt="" coords="5,5,220,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes.html#aec2f372be2cc79d487a2f9399ba71bd1" title="Школа брони, которой гасится этот тип." alt="" coords="268,5,483,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,23,254,23,254,28,220,28"/>
+</map>

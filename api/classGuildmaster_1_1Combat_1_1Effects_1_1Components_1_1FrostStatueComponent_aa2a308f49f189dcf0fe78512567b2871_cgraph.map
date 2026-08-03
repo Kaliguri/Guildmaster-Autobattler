@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.FrostStatueComponent.OnPreDamage" name="Guildmaster.Combat.Effects.Components.FrostStatueComponent.OnPreDamage">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,267,110"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#a29a23f3c0a5967a3f5dda246b5dddec8" title="Домножить множитель входящего урона (уязвимости копятся, а не перетирают друг друга)." alt="" coords="315,5,545,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="266,55,313,45,314,51,267,60"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="320,70,540,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="267,80,306,80,306,85,267,85"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes.html#a6f21df49315bc063560a2d45e1077961" title="Гасится физбронёй." alt="" coords="323,120,537,160"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="267,106,314,115,313,120,266,111"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Data.Stats.StatConversion.ApplyAll" name="Guildmaster.Data.Stats.StatConversion.ApplyAll">
+<area shape="rect" id="Node000001" title="Свести список правил на одно базовое число, по порядку из данных." alt="" coords="5,5,208,45"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Data_1_1Stats_1_1StatConversion.html#a2330070b70d249b10891b1e58b80b4f6" title="Применить правило. Читатель null, нулевой PerUnit или стат ниже базы — база без изменений." alt="" coords="256,5,459,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,23,242,23,242,28,208,28"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html#aa36c56b6a329fa2e04ad74183fa59fac" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="507,5,713,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="459,23,493,23,493,28,459,28"/>
+</map>

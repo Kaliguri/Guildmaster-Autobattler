@@ -1,0 +1,19 @@
+<map id="Guildmaster.Data.Descriptions.DescriptionService.DescribeFull" name="Guildmaster.Data.Descriptions.DescriptionService.DescribeFull">
+<area shape="rect" id="Node000001" title="Полное описание ({id}.desc.full) — статья справочника; нет полного текста → краткое." alt="" coords="5,99,233,139"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1DescriptionService.html#aff6508fa14e8b0d181c3e4ebb6e1597a" title="Описание контента ({id}.desc) с подстановкой именованных величин." alt="" coords="281,69,507,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="233,104,267,100,268,106,234,109"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1DescriptionService.html#a093bb584af13d3f09ccbe42dafbe9151" title="Форма имени ключевого слова в падеже (gen/acc/plural; null — именительный)." alt="" coords="555,5,792,45"/>
+<area shape="poly" id="edge8_Node000001_Node000004" title=" " alt="" coords="162,96,218,74,281,55,347,42,414,33,541,24,541,30,415,39,347,47,282,60,220,79,164,101"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1KeywordMarkup.html#a10b0d3ae2a1349b4b4f87cfdf3154227" title="Развернуть разметку в rich text." alt="" coords="561,133,786,173"/>
+<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="234,123,547,143,547,148,233,128"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#a800cb94228e497b86dce4e8ece488659" title="Ключ полного описания ({id}.desc.full) — статья справочника." alt="" coords="287,184,501,224"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="185,136,317,177,315,182,184,141"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#a4925b9cd9a659f48d1c9e209374ee836" title="Ключ описания контента ({id}.desc)." alt="" coords="566,69,781,109"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="507,87,552,87,552,92,507,92"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="482,67,572,46,573,51,483,72"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="483,107,573,128,572,133,482,112"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#a43230f86bbf343084ad4409455cccd1d" title="Ключ имени в падеже по строковому id (kw.burn + gen → kw.burn.name.gen)." alt="" coords="845,5,1060,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="792,23,832,23,832,28,792,28"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1KeywordMarkup.html#a1c52c271a122523ecfacb07b7669e0e7" title="Короткая запись burn → полный id kw.burn; полный id остаётся как есть." alt="" coords="840,133,1065,173"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="786,151,826,151,826,156,786,156"/>
+</map>

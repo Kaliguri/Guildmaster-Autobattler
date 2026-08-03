@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Descriptions.DescriptionService" name="Guildmaster.Data.Descriptions.DescriptionService">
+<area shape="rect" id="Node000001" title="Реализация IDescriptionService поверх локализации и разбора статов." alt="" coords="5,259,223,499"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Data_1_1Descriptions_1_1IDescriptionService.html" title="Сборка player&#45;facing текста и чисел (план UI&#45;реворка §II.10.1–II.10.4)." alt="" coords="29,5,199,211"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,225,117,259,111,259,111,225"/>
+</map>

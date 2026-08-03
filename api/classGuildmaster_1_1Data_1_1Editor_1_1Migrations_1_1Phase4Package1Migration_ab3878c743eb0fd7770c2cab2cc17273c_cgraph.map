@@ -1,9 +1,0 @@
-<map id="Guildmaster.Data.Editor.Migrations.Phase4Package1Migration.Run" name="Guildmaster.Data.Editor.Migrations.Phase4Package1Migration.Run">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,300,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a0f1c481144d212691dd43e8322040151" title="Найти/создать БД, заполнить всеми контент&#45;ассетами (сортировка по id), сохранить." alt="" coords="348,37,549,77"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="300,55,334,55,334,60,300,60"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility.html#a760ae23288991c3a17d526a9309ff1b9" title="Все ContentDefinition&#45;ассеты проекта." alt="" coords="634,5,815,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="549,43,620,35,621,40,550,48"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a7303fc4567b36f6b619add6c08137180" title="Существующая БД (первая найденная) или новая в DatabasePath." alt="" coords="597,69,852,109"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="550,66,584,70,583,76,549,72"/>
-</map>

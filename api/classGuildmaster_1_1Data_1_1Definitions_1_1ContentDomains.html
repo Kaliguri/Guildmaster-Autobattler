@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Data.Definitions.ContentDomains Class Reference</div></div>
 </div><!--header-->
@@ -103,7 +104,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Definitions.ContentDomains:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains__coll__graph.svg" width="218" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains__coll__graph.svg" width="218" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -114,12 +115,21 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ab39605eab85b1334b6640bd8245c99a1" id="r_ab39605eab85b1334b6640bd8245c99a1"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#ab39605eab85b1334b6640bd8245c99a1">GetDomain</a> (Type type)</td></tr>
 <tr class="memdesc:ab39605eab85b1334b6640bd8245c99a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Домен типа или исключение (отсутствие маппинга = ошибка конфигурации, не тихий дефолт).  <br /></td></tr>
 <tr class="separator:ab39605eab85b1334b6640bd8245c99a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d27c69a78f21c9ce7cedd37d2a5a524" id="r_a2d27c69a78f21c9ce7cedd37d2a5a524"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#a2d27c69a78f21c9ce7cedd37d2a5a524">IsValidId</a> (string id)</td></tr>
+<tr class="memdesc:a2d27c69a78f21c9ce7cedd37d2a5a524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Проверить, что строка — корректный content id: <code>domain.lower_snake</code>, только <code>[a-z0-9_]</code>, ровно одна точка.  <br /></td></tr>
+<tr class="separator:a2d27c69a78f21c9ce7cedd37d2a5a524"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b4278ee1315bb56b8c5ccb07f38cd12" id="r_a5b4278ee1315bb56b8c5ccb07f38cd12"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#a5b4278ee1315bb56b8c5ccb07f38cd12">MakeId</a> (Type type, string assetName)</td></tr>
 <tr class="memdesc:a5b4278ee1315bb56b8c5ccb07f38cd12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать id <code>domain.lower_snake</code> из имени ассета: <code>("IceChainsStun")</code> → <code>effect.ice_chains_stun</code>.  <br /></td></tr>
 <tr class="separator:a5b4278ee1315bb56b8c5ccb07f38cd12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a839c80b87eaac3be308850598dab2e18" id="r_a839c80b87eaac3be308850598dab2e18"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#a839c80b87eaac3be308850598dab2e18">ToSnakeCase</a> (string name)</td></tr>
 <tr class="memdesc:a839c80b87eaac3be308850598dab2e18"><td class="mdescLeft">&#160;</td><td class="mdescRight">PascalCase / пробелы / прочие разделители → <code>lower_snake</code> (только [a-z0-9_]).  <br /></td></tr>
 <tr class="separator:a839c80b87eaac3be308850598dab2e18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a960866b34d8a52fc9b32b6ebcf56da90" id="r_a960866b34d8a52fc9b32b6ebcf56da90"><td class="memItemLeft" align="right" valign="top">static IEnumerable&lt; Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#a960866b34d8a52fc9b32b6ebcf56da90">RegisteredTypes</a><code> [get]</code></td></tr>
+<tr class="memdesc:a960866b34d8a52fc9b32b6ebcf56da90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все зарегистрированные типы контента, в порядке объявления.  <br /></td></tr>
+<tr class="separator:a960866b34d8a52fc9b32b6ebcf56da90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Маппинг тип контента → префикс домена id и генерация id вида <code>domain.lower_snake</code> из имени ассета (вики «13» §2.2). </p>
@@ -155,6 +165,35 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains_ab39605eab85b1334b6640bd8245c99a1_icgraph.svg" width="100%" height="392"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<a id="a2d27c69a78f21c9ce7cedd37d2a5a524" name="a2d27c69a78f21c9ce7cedd37d2a5a524"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d27c69a78f21c9ce7cedd37d2a5a524">&#9670;&#160;</a></span>IsValidId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Guildmaster.Data.Definitions.ContentDomains.IsValidId </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Проверить, что строка — корректный content id: <code>domain.lower_snake</code>, только <code>[a-z0-9_]</code>, ровно одна точка. </p>
+<p>Владелец правила — этот класс: он же его и применяет в MakeId, поэтому валидация контента обязана спрашивать здесь, а не держать вторую регулярку у себя (аудит 2026-07-26, волна 3 — она уже жила копией в тестах контента). </p>
 
 </div>
 </div>
@@ -196,7 +235,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains_a5b4278ee1315bb56b8c5ccb07f38cd12_icgraph.svg" width="531" height="195"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains_a5b4278ee1315bb56b8c5ccb07f38cd12_icgraph.svg" width="519" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -267,8 +306,34 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains_aedef3a39f7ef0281d8b5c0fa1facc356_icgraph.svg" width="100%" height="398"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains_aedef3a39f7ef0281d8b5c0fa1facc356_icgraph.svg" width="100%" height="446"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a960866b34d8a52fc9b32b6ebcf56da90" name="a960866b34d8a52fc9b32b6ebcf56da90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a960866b34d8a52fc9b32b6ebcf56da90">&#9670;&#160;</a></span>RegisteredTypes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IEnumerable&lt;Type&gt; Guildmaster.Data.Definitions.ContentDomains.RegisteredTypes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Все зарегистрированные типы контента, в порядке объявления. </p>
+<p>Единственный ответ на вопрос «какие типы контента существуют»: редакторный слой (папки, меню создания) выводит свои списки отсюда, а не заводит собственный — иначе тип, добавленный сюда, тихо теряется в редакторе (аудит 2026-07-26, T-24: у путей был свой реестр на 13 типов против 17 здесь). </p>
 
 </div>
 </div>

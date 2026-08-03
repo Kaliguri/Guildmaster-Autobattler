@@ -1,0 +1,8 @@
+<map id="Guildmaster.UI.DevConsole.DevLogScreen" name="Guildmaster.UI.DevConsole.DevLogScreen">
+<area shape="rect" id="Node000001" title="Лог&#45;консоль (F2): хвост сообщений движка без строки ввода." alt="" coords="115,439,312,579"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1UiScreen.html" title="Базовый экран навигатора (см." alt="" coords="5,5,205,391"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,403,192,437,187,439,174,405"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="218,153,228,172,232,198,225,232,208,252,204,248,220,230,227,198,223,174,213,156"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1UI_1_1DevConsole_1_1IDevOverlayScreen.html" title="Маркер dev&#45;полки (командная консоль, лог, витрина боёв)." alt="" coords="253,165,392,231"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="309,245,240,439,235,437,304,243"/>
+</map>

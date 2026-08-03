@@ -1,0 +1,17 @@
+<map id="Guildmaster.Combat.Effects.IOutgoingDamageBonusComponent" name="Guildmaster.Combat.Effects.IOutgoingDamageBonusComponent">
+<area shape="rect" id="Node000001" title="Опциональный шов: компонент носителя усиливает ЕГО удары по цели, отвечающей условию (Криомант больне..." alt="" coords="663,252,910,332"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyProximityDamageBonusComponent.html" title="Стая бьёт злее (волк стаи): носитель наносит больше урона за КАЖДОГО живого союзника в радиусе вокруг..." alt="" coords="5,380,288,515"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="650,312,481,339,390,359,301,383,289,386,287,381,299,377,389,354,480,334,649,307"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DuelDamageBonusComponent.html" title="Дуэль один на один (разбойник&#45;дуэлянт): носитель бьёт сильнее, пока рядом с ним не больше одного прот..." alt="" coords="313,387,613,507"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="693,340,589,390,587,385,691,335"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RearDamageBonusComponent.html" title="Удар в тыл больнее (гоблин&#45;убийца): носитель наносит больше урона цели, в тыловой конус которой он ст..." alt="" coords="637,387,937,507"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="789,346,789,387,784,387,784,346"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SelfStackDamageBonusComponent.html" title="Урон носителя растёт от того, сколько стаков _marker он накопил НА СЕБЕ." alt="" coords="961,380,1217,515"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="877,336,962,379,960,384,874,341"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TaggedTargetDamageBonusComponent.html" title="«Больнее по тем, кого сам обработал» (§10.3): носитель наносит больше урона цели, несущей нужные теги..." alt="" coords="1242,380,1523,515"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="924,310,1072,337,1230,377,1243,382,1241,387,1229,383,1071,342,923,315"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="694,119,879,204"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="789,218,789,252,784,252,784,218"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="721,5,852,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="789,85,789,119,784,119,784,85"/>
+</map>

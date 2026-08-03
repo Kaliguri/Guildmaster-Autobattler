@@ -1,0 +1,8 @@
+<map id="Guildmaster.Combat.AttackTiming.ContactSubTick" name="Guildmaster.Combat.AttackTiming.ContactSubTick">
+<area shape="rect" id="Node000001" title="Доля тика, в которую попадает кадр контакта, — остаток, который целочисленный WindupTicks отбрасывает..." alt="" coords="5,29,208,69"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="59,30,56,20,64,10,81,5,107,3,137,6,153,13,151,18,135,11,107,8,82,10,66,15,61,21,64,28"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="256,7,476,33"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="208,35,242,31,243,37,209,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a22bc798f12c716f8ccda8585b205691b" title="Интервал между атаками в сим&#45;тиках." alt="" coords="265,57,467,97"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="209,58,251,62,251,68,208,63"/>
+</map>

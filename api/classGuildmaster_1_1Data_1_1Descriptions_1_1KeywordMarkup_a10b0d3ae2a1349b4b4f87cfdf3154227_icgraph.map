@@ -1,0 +1,8 @@
+<map id="Guildmaster.Data.Descriptions.KeywordMarkup.Render" name="Guildmaster.Data.Descriptions.KeywordMarkup.Render">
+<area shape="rect" id="Node000001" title="Развернуть разметку в rich text." alt="" coords="555,35,780,75"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1DescriptionService.html#aff6508fa14e8b0d181c3e4ebb6e1597a" title="Описание контента ({id}.desc) с подстановкой именованных величин." alt="" coords="281,5,507,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="541,44,506,40,507,35,541,38"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1DescriptionService.html#ab594a53f6a1edc6e9b60817501956791" title="Полное описание ({id}.desc.full) — статья справочника; нет полного текста → краткое." alt="" coords="5,35,233,75"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="541,60,507,60,281,60,233,59,233,54,281,55,507,55,541,54"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="268,41,234,45,233,40,268,36"/>
+</map>

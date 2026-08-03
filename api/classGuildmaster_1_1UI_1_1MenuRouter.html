@@ -92,92 +92,141 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1MenuRouter.h
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#events">Events</a> &#124;
 <a href="classGuildmaster_1_1UI_1_1MenuRouter-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.UI.MenuRouter Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Реализация IMenuRouter: стек оверлейных экранов над корнем UITK-панели.  
+<p>Строит и проводит экраны забега из UXML-шаблонов, а стек, видимость и глушение геймплейного ввода делегирует UiNavigator (UI-реворк Ф2).  
  <a href="classGuildmaster_1_1UI_1_1MenuRouter.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.UI.MenuRouter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter__inherit__graph.svg" width="206" height="590"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter__inherit__graph.svg" width="267" height="564"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.MenuRouter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter__coll__graph.svg" width="206" height="590"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter__coll__graph.svg" width="267" height="564"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a177d8f2d5447f3f6fafceda526a5fb20" id="r_a177d8f2d5447f3f6fafceda526a5fb20"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a177d8f2d5447f3f6fafceda526a5fb20">MenuRouter</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">IInputService</a> input, <a class="el" href="classGuildmaster_1_1UI_1_1SettingsViewModel.html">SettingsViewModel</a> settingsVm, <a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html">LoadoutViewModel</a> loadoutVm, <a class="el" href="classGuildmaster_1_1UI_1_1LoadoutHubViewModel.html">LoadoutHubViewModel</a> hubVm, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html">ILocalizationService</a> loc)</td></tr>
-<tr class="separator:a177d8f2d5447f3f6fafceda526a5fb20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35b03784958779e26edc7f25ddc2dc75" id="r_a35b03784958779e26edc7f25ddc2dc75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a35b03784958779e26edc7f25ddc2dc75">Initialize</a> (VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml, VisualTreeAsset loadoutUxml=null, VisualTreeAsset rewardUxml=null, VisualTreeAsset eventUxml=null, VisualTreeAsset mapUxml=null, VisualTreeAsset continueUxml=null, VisualTreeAsset shopUxml=null, VisualTreeAsset chestUxml=null, VisualTreeAsset outcomeUxml=null, VisualTreeAsset mainMenuUxml=null, VisualTreeAsset loadoutHubUxml=null, VisualTreeAsset loadoutInventoryUxml=null, VisualTreeAsset arcanaCardUxml=null)</td></tr>
-<tr class="memdesc:a35b03784958779e26edc7f25ddc2dc75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Бутстрап отдаёт корень панели и UXML-шаблоны экранов (ссылки из сцены, не DI).  <br /></td></tr>
-<tr class="separator:a35b03784958779e26edc7f25ddc2dc75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e32a740b73d7fbf3a9256836140697a" id="r_a2e32a740b73d7fbf3a9256836140697a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a2e32a740b73d7fbf3a9256836140697a">MenuRouter</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">IInputService</a> input, <a class="el" href="classGuildmaster_1_1UI_1_1UiNavigator.html">UiNavigator</a> nav, <a class="el" href="classGuildmaster_1_1UI_1_1SettingsViewModel.html">SettingsViewModel</a> settingsVm, <a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html">LoadoutViewModel</a> loadoutVm, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html">ILocalizationService</a> loc, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl.html">IRunControl</a> runControl, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1MainMenuVisibilityChangedEvent.html">MainMenuVisibilityChangedEvent</a> &gt; mainMenuVisPub, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">Core.Audio.IAudioService</a> audio, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a> palette, <a class="el" href="classGuildmaster_1_1Core_1_1DevConsole_1_1DevCommandRegistry.html">Core.DevConsole.DevCommandRegistry</a> registry, <a class="el" href="classGuildmaster_1_1Core_1_1DevConsole_1_1DevConsoleLog.html">Core.DevConsole.DevConsoleLog</a> devLog, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html">Core.Net.ICoopSessionControl</a> coop, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">Core.Persistence.IProfileService</a> profiles, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">Core.Persistence.ISaveService</a> save, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent.html">Core.Net.ReadyGateChangedEvent</a> &gt; readySub)</td></tr>
+<tr class="separator:a2e32a740b73d7fbf3a9256836140697a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcfe07fecc055bb3eb09aae32c7240c2" id="r_afcfe07fecc055bb3eb09aae32c7240c2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#afcfe07fecc055bb3eb09aae32c7240c2">TryLeaveMainMenuForProvingGrounds</a> ()</td></tr>
+<tr class="memdesc:afcfe07fecc055bb3eb09aae32c7240c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Закрыть главное меню выбором «Ристалище», если оно сейчас на экране.  <br /></td></tr>
+<tr class="separator:afcfe07fecc055bb3eb09aae32c7240c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae597d6e6da82300e3bb2e6267574feba" id="r_ae597d6e6da82300e3bb2e6267574feba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ae597d6e6da82300e3bb2e6267574feba">TryLeaveMainMenuForCoopGuest</a> ()</td></tr>
+<tr class="memdesc:ae597d6e6da82300e3bb2e6267574feba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Закрыть главное меню, потому что нас приняли в чужую игру.  <br /></td></tr>
+<tr class="separator:ae597d6e6da82300e3bb2e6267574feba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28191e6c9d33c6fee6311331c66ca8b8" id="r_a28191e6c9d33c6fee6311331c66ca8b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a28191e6c9d33c6fee6311331c66ca8b8">Initialize</a> (VisualElement screensLayer, VisualElement modalLayer, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml, VisualTreeAsset loadoutUxml=null, VisualTreeAsset rewardUxml=null, VisualTreeAsset eventUxml=null, VisualTreeAsset continueUxml=null, VisualTreeAsset shopUxml=null, VisualTreeAsset chestUxml=null, VisualTreeAsset outcomeUxml=null, VisualTreeAsset mainMenuUxml=null, VisualTreeAsset loadoutInventoryUxml=null, VisualTreeAsset arcanaCardUxml=null, VisualTreeAsset campUxml=null, VisualTreeAsset titleCardUxml=null, Sprite titleCardSeal=null, VisualTreeAsset devConsoleUxml=null, VisualTreeAsset devLogUxml=null, VisualTreeAsset newGameUxml=null)</td></tr>
+<tr class="memdesc:a28191e6c9d33c6fee6311331c66ca8b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Бутстрап отдаёт слои-контейнеры (Ф4) и UXML-шаблоны экранов (ссылки из сцены, не DI).  <br /></td></tr>
+<tr class="separator:a28191e6c9d33c6fee6311331c66ca8b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acec1b0172c30e27eac1f7992dd3dc04e" id="r_acec1b0172c30e27eac1f7992dd3dc04e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#acec1b0172c30e27eac1f7992dd3dc04e">Dispose</a> ()</td></tr>
+<tr class="memdesc:acec1b0172c30e27eac1f7992dd3dc04e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять подписки роутера.  <br /></td></tr>
+<tr class="separator:acec1b0172c30e27eac1f7992dd3dc04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdaa22739b232ec8640606775823f8a5" id="r_acdaa22739b232ec8640606775823f8a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#acdaa22739b232ec8640606775823f8a5">OpenLoadout</a> (<a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenLoadoutRequest.html">OpenLoadoutRequest</a> req)</td></tr>
 <tr class="memdesc:acdaa22739b232ec8640606775823f8a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть loadout-экран для юнита (по дабл-клику в фазе расстановки; публикуется как OpenLoadoutRequest, бутстрап зовёт сюда).  <br /></td></tr>
 <tr class="separator:acdaa22739b232ec8640606775823f8a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe06f2b921bd42a134666ee43c7ff343" id="r_abe06f2b921bd42a134666ee43c7ff343"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#abe06f2b921bd42a134666ee43c7ff343">OpenSettings</a> ()</td></tr>
-<tr class="memdesc:abe06f2b921bd42a134666ee43c7ff343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть настройки оверлеем поверх текущего экрана (топбар «Опции» во время забега). Закрытие — Pop, забег не рвётся.  <br /></td></tr>
-<tr class="separator:abe06f2b921bd42a134666ee43c7ff343"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a245ca12ce365317c6c98e82be264fa4c" id="r_a245ca12ce365317c6c98e82be264fa4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a245ca12ce365317c6c98e82be264fa4c">OpenHub</a> ()</td></tr>
-<tr class="memdesc:a245ca12ce365317c6c98e82be264fa4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лоадаут-хаб (кольцо реликвий, Фаза 2): обзор гильдии + навешивание собранных реликвий на сосуды.  <br /></td></tr>
-<tr class="separator:a245ca12ce365317c6c98e82be264fa4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3da3c250576c978e2d3d63fc86132400" id="r_a3da3c250576c978e2d3d63fc86132400"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a3da3c250576c978e2d3d63fc86132400">OpenInventory</a> (int gold, Action onClose)</td></tr>
-<tr class="memdesc:a3da3c250576c978e2d3d63fc86132400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Новый полноэкранный лоадаут/инвентарь (редизайн, Ф3a): грид таро-карточек реликвий + детали.  <br /></td></tr>
-<tr class="separator:a3da3c250576c978e2d3d63fc86132400"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a6fdd18191e2c59babd3bb20a849cd1" id="r_a7a6fdd18191e2c59babd3bb20a849cd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a7a6fdd18191e2c59babd3bb20a849cd1">CloseOverlays</a> ()</td></tr>
-<tr class="memdesc:a7a6fdd18191e2c59babd3bb20a849cd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Закрыть все оверлеи (режим «Бой»/выход в игру из глобального топбара).  <br /></td></tr>
-<tr class="separator:a7a6fdd18191e2c59babd3bb20a849cd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade9fb89482262fa767da061055467b27" id="r_ade9fb89482262fa767da061055467b27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ade9fb89482262fa767da061055467b27">ShowInventory</a> (int gold, Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a12d0b679c877521b9eb27e95f192d9e5">RelicDragPhase</a> &gt; onRelicDrag=null)</td></tr>
+<tr class="memdesc:ade9fb89482262fa767da061055467b27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать инвентарь (радио-режим): Sheet-тело поверх геймплея. Идемпотентно (уже открыт → no-op).  <br /></td></tr>
+<tr class="separator:ade9fb89482262fa767da061055467b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9470bb010ed32739bc43fe4cc7be23f3" id="r_a9470bb010ed32739bc43fe4cc7be23f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a9470bb010ed32739bc43fe4cc7be23f3">HideInventory</a> ()</td></tr>
+<tr class="memdesc:a9470bb010ed32739bc43fe4cc7be23f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять инвентарь (радио-режим). Идемпотентно (не открыт → no-op). Remove из любого места стека.  <br /></td></tr>
+<tr class="separator:a9470bb010ed32739bc43fe4cc7be23f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad260923d254b68eb188842b84fc8b144" id="r_ad260923d254b68eb188842b84fc8b144"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ad260923d254b68eb188842b84fc8b144">ShowTestZone</a> ()</td></tr>
+<tr class="memdesc:ad260923d254b68eb188842b84fc8b144"><td class="mdescLeft">&#160;</td><td class="mdescRight">Войти в UI тест-зоны: Sheet-пространство «Бой» поверх стека (карта под ним прячется).  <br /></td></tr>
+<tr class="separator:ad260923d254b68eb188842b84fc8b144"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2b7bd4c590e87c81ec1f5c84d698d84" id="r_af2b7bd4c590e87c81ec1f5c84d698d84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#af2b7bd4c590e87c81ec1f5c84d698d84">HideTestZone</a> ()</td></tr>
+<tr class="memdesc:af2b7bd4c590e87c81ec1f5c84d698d84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выйти из UI тест-зоны: снять Sheet-пространство из любого места стека (даже под инвентарём).  <br /></td></tr>
+<tr class="separator:af2b7bd4c590e87c81ec1f5c84d698d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94f12669781e9b60db71cdb925b9160d" id="r_a94f12669781e9b60db71cdb925b9160d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a94f12669781e9b60db71cdb925b9160d">ShowMapSpace</a> ()</td></tr>
+<tr class="memdesc:a94f12669781e9b60db71cdb925b9160d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Войти в пространство world-карты: прозрачный Sheet с тегом режима «карта».  <br /></td></tr>
+<tr class="separator:a94f12669781e9b60db71cdb925b9160d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2efe12b26f74ed7a90ae3415ddba6865" id="r_a2efe12b26f74ed7a90ae3415ddba6865"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a2efe12b26f74ed7a90ae3415ddba6865">HideMapSpace</a> ()</td></tr>
+<tr class="memdesc:a2efe12b26f74ed7a90ae3415ddba6865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выйти из пространства world-карты: снять Sheet из любого места стека.  <br /></td></tr>
+<tr class="separator:a2efe12b26f74ed7a90ae3415ddba6865"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68ec8319ec4031e0a23243506f9557eb" id="r_a68ec8319ec4031e0a23243506f9557eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a68ec8319ec4031e0a23243506f9557eb">ToggleSystemMenu</a> ()</td></tr>
-<tr class="memdesc:a68ec8319ec4031e0a23243506f9557eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESC: пусто → открыть системное меню; вложенный экран → назад; корневой → закрыть всё.  <br /></td></tr>
 <tr class="separator:a68ec8319ec4031e0a23243506f9557eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa78f908f2bd7c7994d89f528cce385c" id="r_afa78f908f2bd7c7994d89f528cce385c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#afa78f908f2bd7c7994d89f528cce385c">CloseAll</a> ()</td></tr>
-<tr class="memdesc:afa78f908f2bd7c7994d89f528cce385c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Закрыть все экраны и снять глушение ввода.  <br /></td></tr>
-<tr class="separator:afa78f908f2bd7c7994d89f528cce385c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac35e2db9bdea2750e910c78d290ccd69" id="r_ac35e2db9bdea2750e910c78d290ccd69"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ac35e2db9bdea2750e910c78d290ccd69">ToggleDevConsole</a> ()</td></tr>
+<tr class="memdesc:ac35e2db9bdea2750e910c78d290ccd69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть/закрыть dev-консоль (Трек К).  <br /></td></tr>
+<tr class="separator:ac35e2db9bdea2750e910c78d290ccd69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab91838df5c8feaef36370ecd72f0be98" id="r_ab91838df5c8feaef36370ecd72f0be98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ab91838df5c8feaef36370ecd72f0be98">CloseDevOverlays</a> ()</td></tr>
+<tr class="memdesc:ab91838df5c8feaef36370ecd72f0be98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять все открытые dev-полки (командная консоль, лог, витрина боёв).  <br /></td></tr>
+<tr class="separator:ab91838df5c8feaef36370ecd72f0be98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06b06c0368510c158b5f7613fcd94c3e" id="r_a06b06c0368510c158b5f7613fcd94c3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a06b06c0368510c158b5f7613fcd94c3e">ToggleDevLog</a> ()</td></tr>
+<tr class="memdesc:a06b06c0368510c158b5f7613fcd94c3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть/закрыть лог-консоль (F2): хвост сообщений движка, без строки ввода.  <br /></td></tr>
+<tr class="separator:a06b06c0368510c158b5f7613fcd94c3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af504f46c2b15d531ee0a261b277deb5a" id="r_af504f46c2b15d531ee0a261b277deb5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#af504f46c2b15d531ee0a261b277deb5a">OpenReward</a> (<a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html">OpenRewardRequest</a> req)</td></tr>
-<tr class="memdesc:af504f46c2b15d531ee0a261b277deb5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть экран награды после боя (A3).  <br /></td></tr>
 <tr class="separator:af504f46c2b15d531ee0a261b277deb5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad75cea58b1691f1375c50ddb27f6de9c" id="r_ad75cea58b1691f1375c50ddb27f6de9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ad75cea58b1691f1375c50ddb27f6de9c">OpenTextEvent</a> (<a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html">OpenTextEventRequest</a> req)</td></tr>
-<tr class="memdesc:ad75cea58b1691f1375c50ddb27f6de9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть экран текстового ивента (StS-style).  <br /></td></tr>
 <tr class="separator:ad75cea58b1691f1375c50ddb27f6de9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b615a0c72602a242169e95b16b5ab0f" id="r_a9b615a0c72602a242169e95b16b5ab0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a9b615a0c72602a242169e95b16b5ab0f">OpenMap</a> (<a class="el" href="structGuildmaster_1_1Guild_1_1OpenMapRequest.html">OpenMapRequest</a> req)</td></tr>
-<tr class="memdesc:a9b615a0c72602a242169e95b16b5ab0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть экран карты акта для выбора следующего узла (A3).  <br /></td></tr>
-<tr class="separator:a9b615a0c72602a242169e95b16b5ab0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6136b2d73e263694f8c4641840296cea" id="r_a6136b2d73e263694f8c4641840296cea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a6136b2d73e263694f8c4641840296cea">ShowNodeFarewell</a> (<a class="el" href="structGuildmaster_1_1Guild_1_1OpenNodeFarewellRequest.html">OpenNodeFarewellRequest</a> req)</td></tr>
+<tr class="separator:a6136b2d73e263694f8c4641840296cea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a942c0180c336aab815549a6de6b0f664" id="r_a942c0180c336aab815549a6de6b0f664"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a942c0180c336aab815549a6de6b0f664">ShowContinue</a> (<a class="el" href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html">OpenContinueRequest</a> req)</td></tr>
-<tr class="memdesc:a942c0180c336aab815549a6de6b0f664"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать единую кнопку «Продолжить» (A4) в правом нижнем углу.  <br /></td></tr>
 <tr class="separator:a942c0180c336aab815549a6de6b0f664"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75745499df8add53b677b22b2ae1ef76" id="r_a75745499df8add53b677b22b2ae1ef76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a75745499df8add53b677b22b2ae1ef76">OpenShop</a> (<a class="el" href="structGuildmaster_1_1Guild_1_1OpenShopRequest.html">OpenShopRequest</a> req)</td></tr>
-<tr class="memdesc:a75745499df8add53b677b22b2ae1ef76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть экран магазина (B2).  <br /></td></tr>
 <tr class="separator:a75745499df8add53b677b22b2ae1ef76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae0f6d6efa1aca7fbee2a95d39bf38dd" id="r_aae0f6d6efa1aca7fbee2a95d39bf38dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#aae0f6d6efa1aca7fbee2a95d39bf38dd">OpenChest</a> (<a class="el" href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html">OpenChestRequest</a> req)</td></tr>
-<tr class="memdesc:aae0f6d6efa1aca7fbee2a95d39bf38dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть экран сундука (B3).  <br /></td></tr>
 <tr class="separator:aae0f6d6efa1aca7fbee2a95d39bf38dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81c9d383730cb586afd48d65d613bcc4" id="r_a81c9d383730cb586afd48d65d613bcc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a81c9d383730cb586afd48d65d613bcc4">OpenCamp</a> (<a class="el" href="structGuildmaster_1_1Guild_1_1OpenCampRequest.html">OpenCampRequest</a> req)</td></tr>
+<tr class="separator:a81c9d383730cb586afd48d65d613bcc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73c597c57e8a9ce9169ab8812c920586" id="r_a73c597c57e8a9ce9169ab8812c920586"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a73c597c57e8a9ce9169ab8812c920586">ShowTitleCard</a> (<a class="el" href="structGuildmaster_1_1Guild_1_1OpenTitleCardRequest.html">OpenTitleCardRequest</a> req)</td></tr>
+<tr class="separator:a73c597c57e8a9ce9169ab8812c920586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe50bcdc7782d02fdbc92410faa7f64a" id="r_abe50bcdc7782d02fdbc92410faa7f64a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#abe50bcdc7782d02fdbc92410faa7f64a">ShowOutcome</a> (<a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html">OpenOutcomeRequest</a> req)</td></tr>
-<tr class="memdesc:abe50bcdc7782d02fdbc92410faa7f64a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать экран исхода забега (C2).  <br /></td></tr>
 <tr class="separator:abe50bcdc7782d02fdbc92410faa7f64a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a307c609fb2b9237070078e48f5b13a54" id="r_a307c609fb2b9237070078e48f5b13a54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a307c609fb2b9237070078e48f5b13a54">OpenMainMenu</a> (<a class="el" href="structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html">OpenMainMenuRequest</a> req)</td></tr>
-<tr class="memdesc:a307c609fb2b9237070078e48f5b13a54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать главное меню (D1).  <br /></td></tr>
 <tr class="separator:a307c609fb2b9237070078e48f5b13a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a8335cc58120d44d5bb616991184c7b28" id="r_a8335cc58120d44d5bb616991184c7b28"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a8335cc58120d44d5bb616991184c7b28">WireSettingsTabs</a> (VisualElement screen)</td></tr>
+<tr class="separator:a8335cc58120d44d5bb616991184c7b28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a6ef889541f1956714d983caa61fe6596" id="r_a6ef889541f1956714d983caa61fe6596"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a6ef889541f1956714d983caa61fe6596">IsOpen</a><code> [get]</code></td></tr>
-<tr class="memdesc:a6ef889541f1956714d983caa61fe6596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыт ли хоть один экран.  <br /></td></tr>
 <tr class="separator:a6ef889541f1956714d983caa61fe6596"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header properties_interfaceGuildmaster_1_1UI_1_1IMenuRouter"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1UI_1_1IMenuRouter')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html">Guildmaster.UI.IMenuRouter</a></td></tr>
+<tr class="memitem:ab9290ee01cf6946a1305c33d87dbd0f2" id="r_ab9290ee01cf6946a1305c33d87dbd0f2"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ab9290ee01cf6946a1305c33d87dbd0f2">Changed</a></td></tr>
+<tr class="memdesc:ab9290ee01cf6946a1305c33d87dbd0f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Меняется на каждый Push/Pop/резолв навигатора (Ф4): бутстрап подписывается вместо поллинга структуры стека в <code>Update</code> — по нему пересчитываются подсветка таба и backdrop (снос части K3/K4).  <br /></td></tr>
+<tr class="separator:ab9290ee01cf6946a1305c33d87dbd0f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fc213411b5c52166820127b4c2b23bd" id="r_a8fc213411b5c52166820127b4c2b23bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a8fc213411b5c52166820127b4c2b23bd">IsInventoryOpen</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8fc213411b5c52166820127b4c2b23bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыт ли инвентарь (для backdrop-логики бутстрапа — единый источник вместо флага).  <br /></td></tr>
+<tr class="separator:a8fc213411b5c52166820127b4c2b23bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2216381b420fdde89c52aa43677b388" id="r_ab2216381b420fdde89c52aa43677b388"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ab2216381b420fdde89c52aa43677b388">HasMapInStack</a><code> [get]</code></td></tr>
+<tr class="memdesc:ab2216381b420fdde89c52aa43677b388"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли карта петли акта в стеке (result-экран выбора узла) — скрытая под геймплеем или видимая.  <br /></td></tr>
+<tr class="separator:ab2216381b420fdde89c52aa43677b388"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2eac4fc23fa60ea33da6e38a56d8100" id="r_ae2eac4fc23fa60ea33da6e38a56d8100"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ae2eac4fc23fa60ea33da6e38a56d8100">IsMapSpaceOpen</a><code> [get]</code></td></tr>
+<tr class="memdesc:ae2eac4fc23fa60ea33da6e38a56d8100"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показана ли world-карта: её пространство есть в стеке.  <br /></td></tr>
+<tr class="separator:ae2eac4fc23fa60ea33da6e38a56d8100"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acde39cddf4d380904f8c8e6aa753d973" id="r_acde39cddf4d380904f8c8e6aa753d973"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#acde39cddf4d380904f8c8e6aa753d973">HasVisiblePage</a><code> [get]</code></td></tr>
+<tr class="memdesc:acde39cddf4d380904f8c8e6aa753d973"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лежит ли на экране непрозрачная страница (ивент/магазин/сундук/награда/исход) — ей нужен задник-стол вместо просвечивающего мира (QA #50).  <br /></td></tr>
+<tr class="separator:acde39cddf4d380904f8c8e6aa753d973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad334d1fc87e6e2b6f242f950d92c54ff" id="r_ad334d1fc87e6e2b6f242f950d92c54ff"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ad334d1fc87e6e2b6f242f950d92c54ff">ActiveScreenMode</a><code> [get]</code></td></tr>
+<tr class="memdesc:ad334d1fc87e6e2b6f242f950d92c54ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Режим-таб верхнего оверлея (QA #21), из констант UiScreen. Единый источник подсветки топбара.  <br /></td></tr>
+<tr class="separator:ad334d1fc87e6e2b6f242f950d92c54ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2e5e98de7447f34d15d7dcd01167eb1" id="r_aa2e5e98de7447f34d15d7dcd01167eb1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#aa2e5e98de7447f34d15d7dcd01167eb1">IsSystemMenuOpen</a><code> [get]</code></td></tr>
+<tr class="memdesc:aa2e5e98de7447f34d15d7dcd01167eb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыто ли системное меню (пауза или что-либо поверх неё).  <br /></td></tr>
+<tr class="separator:aa2e5e98de7447f34d15d7dcd01167eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
+Events</h2></td></tr>
+<tr class="memitem:ac0b56862bdba8743066382fef29a8e6b" id="r_ac0b56862bdba8743066382fef29a8e6b"><td class="memItemLeft" align="right" valign="top">Action&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ac0b56862bdba8743066382fef29a8e6b">DevConsoleVisibilityChanged</a></td></tr>
+<tr class="memdesc:ac0b56862bdba8743066382fef29a8e6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Консоль показана (<code>true</code>) или снята (<code>false</code>).  <br /></td></tr>
+<tr class="separator:ac0b56862bdba8743066382fef29a8e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Реализация IMenuRouter: стек оверлейных экранов над корнем UITK-панели. </p>
-<p>Строит и проводит экраны (Pause + Settings) из UXML-шаблонов, отданных Initialize бутстрапом. На открытии первого экрана глушит локальный геймплейный ввод (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a5595966e2ca4ffb59d1d14c8a624f5f1" title="Глушитель геймплейного ввода поверх активных карт (ортогонально Context): пока true — пан/зум читаютс...">IInputService.GameplaySuppressed</a> + контекст Menu) и восстанавливает на закрытии. Ручной биндинг слайдер⇄VM (надёжнее рантайм-биндинга для трёх контролов). Настройки применяются живьём; Cancel/Save — на кнопках, ESC = навигация назад (без неявного отката). </p>
+<div class="textblock"><p>Строит и проводит экраны забега из UXML-шаблонов, а стек, видимость и глушение геймплейного ввода делегирует UiNavigator (UI-реворк Ф2). </p>
+<p>Каждый экран получает честный ScreenKind — по нему навигатор ВЫЧИСЛЯЕТ видимость нижних и suppress, вместо прежней ручной синхронизации (<code>_menuModeActive</code>/<code>_prevContext</code>/CSS-классов-флагов). Настройки применяются живьём; Cancel/Save — на кнопках, ESC = навигация назад. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a177d8f2d5447f3f6fafceda526a5fb20" name="a177d8f2d5447f3f6fafceda526a5fb20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a177d8f2d5447f3f6fafceda526a5fb20">&#9670;&#160;</a></span>MenuRouter()</h2>
+<a id="a2e32a740b73d7fbf3a9256836140697a" name="a2e32a740b73d7fbf3a9256836140697a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e32a740b73d7fbf3a9256836140697a">&#9670;&#160;</a></span>MenuRouter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,6 +243,12 @@ Properties</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1UI_1_1UiNavigator.html">UiNavigator</a>&#160;</td>
+          <td class="paramname"><em>nav</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1UI_1_1SettingsViewModel.html">SettingsViewModel</a>&#160;</td>
           <td class="paramname"><em>settingsVm</em>, </td>
         </tr>
@@ -206,14 +261,68 @@ Properties</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutHubViewModel.html">LoadoutHubViewModel</a>&#160;</td>
-          <td class="paramname"><em>hubVm</em>, </td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html">ILocalizationService</a>&#160;</td>
+          <td class="paramname"><em>loc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html">ILocalizationService</a>&#160;</td>
-          <td class="paramname"><em>loc</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl.html">IRunControl</a>&#160;</td>
+          <td class="paramname"><em>runControl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1MainMenuVisibilityChangedEvent.html">MainMenuVisibilityChangedEvent</a> &gt;&#160;</td>
+          <td class="paramname"><em>mainMenuVisPub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">Core::Audio::IAudioService</a>&#160;</td>
+          <td class="paramname"><em>audio</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a>&#160;</td>
+          <td class="paramname"><em>palette</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Core_1_1DevConsole_1_1DevCommandRegistry.html">Core::DevConsole::DevCommandRegistry</a>&#160;</td>
+          <td class="paramname"><em>registry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Core_1_1DevConsole_1_1DevConsoleLog.html">Core::DevConsole::DevConsoleLog</a>&#160;</td>
+          <td class="paramname"><em>devLog</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html">Core::Net::ICoopSessionControl</a>&#160;</td>
+          <td class="paramname"><em>coop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">Core::Persistence::IProfileService</a>&#160;</td>
+          <td class="paramname"><em>profiles</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">Core::Persistence::ISaveService</a>&#160;</td>
+          <td class="paramname"><em>save</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent.html">Core::Net::ReadyGateChangedEvent</a> &gt;&#160;</td>
+          <td class="paramname"><em>readySub</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -231,8 +340,8 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="afa78f908f2bd7c7994d89f528cce385c" name="afa78f908f2bd7c7994d89f528cce385c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa78f908f2bd7c7994d89f528cce385c">&#9670;&#160;</a></span>CloseAll()</h2>
+<a id="ab91838df5c8feaef36370ecd72f0be98" name="ab91838df5c8feaef36370ecd72f0be98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab91838df5c8feaef36370ecd72f0be98">&#9670;&#160;</a></span>CloseDevOverlays()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -241,7 +350,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Guildmaster.UI.MenuRouter.CloseAll </td>
+          <td class="memname">void Guildmaster.UI.MenuRouter.CloseDevOverlays </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -254,19 +363,39 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Закрыть все экраны и снять глушение ввода. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#a9e849da98ad96cc9f930d07c8fae2745">Guildmaster.UI.IMenuRouter</a>.</p>
+<p>Снять все открытые dev-полки (командная консоль, лог, витрина боёв). </p>
+<p>Полки взаимоисключающи: вторая поверх первой — это две простыни внахлёст, в которых не читается ни одна.</p>
+<p>Ищем по маркеру IDevOverlayScreen, а не по типам: витрину боёв показывает dev-модуль, и роутер о ней ничего не знает — знать и не должен. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_afa78f908f2bd7c7994d89f528cce385c_icgraph.svg" width="470" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_ab91838df5c8feaef36370ecd72f0be98_icgraph.svg" width="470" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a7a6fdd18191e2c59babd3bb20a849cd1" name="a7a6fdd18191e2c59babd3bb20a849cd1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a6fdd18191e2c59babd3bb20a849cd1">&#9670;&#160;</a></span>CloseOverlays()</h2>
+<a id="acec1b0172c30e27eac1f7992dd3dc04e" name="acec1b0172c30e27eac1f7992dd3dc04e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acec1b0172c30e27eac1f7992dd3dc04e">&#9670;&#160;</a></span>Dispose()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.Dispose </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Снять подписки роутера. </p>
+<p>Зовёт VContainer при уничтожении контейнера — своей строки вызова нет и не должно быть. </p>
+
+</div>
+</div>
+<a id="a9470bb010ed32739bc43fe4cc7be23f3" name="a9470bb010ed32739bc43fe4cc7be23f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9470bb010ed32739bc43fe4cc7be23f3">&#9670;&#160;</a></span>HideInventory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -275,7 +404,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Guildmaster.UI.MenuRouter.CloseOverlays </td>
+          <td class="memname">void Guildmaster.UI.MenuRouter.HideInventory </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -288,18 +417,81 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Закрыть все оверлеи (режим «Бой»/выход в игру из глобального топбара). </p>
-<p>No-op если ничего не открыто (иначе ExitMenuMode на пустом стеке восстанавливал бы контекст ввода вслепую — источник вылета). </p>
+<p>Снять инвентарь (радио-режим). Идемпотентно (не открыт → no-op). Remove из любого места стека. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_a7a6fdd18191e2c59babd3bb20a849cd1_cgraph.svg" width="470" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_a9470bb010ed32739bc43fe4cc7be23f3_cgraph.svg" width="450" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a35b03784958779e26edc7f25ddc2dc75" name="a35b03784958779e26edc7f25ddc2dc75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35b03784958779e26edc7f25ddc2dc75">&#9670;&#160;</a></span>Initialize()</h2>
+<a id="a2efe12b26f74ed7a90ae3415ddba6865" name="a2efe12b26f74ed7a90ae3415ddba6865"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2efe12b26f74ed7a90ae3415ddba6865">&#9670;&#160;</a></span>HideMapSpace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.HideMapSpace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Выйти из пространства world-карты: снять Sheet из любого места стека. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_a2efe12b26f74ed7a90ae3415ddba6865_cgraph.svg" width="450" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="af2b7bd4c590e87c81ec1f5c84d698d84" name="af2b7bd4c590e87c81ec1f5c84d698d84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2b7bd4c590e87c81ec1f5c84d698d84">&#9670;&#160;</a></span>HideTestZone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.HideTestZone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Выйти из UI тест-зоны: снять Sheet-пространство из любого места стека (даже под инвентарём). </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_af2b7bd4c590e87c81ec1f5c84d698d84_cgraph.svg" width="450" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a28191e6c9d33c6fee6311331c66ca8b8" name="a28191e6c9d33c6fee6311331c66ca8b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28191e6c9d33c6fee6311331c66ca8b8">&#9670;&#160;</a></span>Initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -311,7 +503,13 @@ Here is the call graph for this function:</div>
           <td class="memname">void Guildmaster.UI.MenuRouter.Initialize </td>
           <td>(</td>
           <td class="paramtype">VisualElement&#160;</td>
-          <td class="paramname"><em>root</em>, </td>
+          <td class="paramname"><em>screensLayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VisualElement&#160;</td>
+          <td class="paramname"><em>modalLayer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -347,12 +545,6 @@ Here is the call graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">VisualTreeAsset&#160;</td>
-          <td class="paramname"><em>mapUxml</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">VisualTreeAsset&#160;</td>
           <td class="paramname"><em>continueUxml</em> = <code>null</code>, </td>
         </tr>
         <tr>
@@ -383,19 +575,49 @@ Here is the call graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">VisualTreeAsset&#160;</td>
-          <td class="paramname"><em>loadoutHubUxml</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">VisualTreeAsset&#160;</td>
           <td class="paramname"><em>loadoutInventoryUxml</em> = <code>null</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">VisualTreeAsset&#160;</td>
-          <td class="paramname"><em>arcanaCardUxml</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>arcanaCardUxml</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VisualTreeAsset&#160;</td>
+          <td class="paramname"><em>campUxml</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VisualTreeAsset&#160;</td>
+          <td class="paramname"><em>titleCardUxml</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Sprite&#160;</td>
+          <td class="paramname"><em>titleCardSeal</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VisualTreeAsset&#160;</td>
+          <td class="paramname"><em>devConsoleUxml</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VisualTreeAsset&#160;</td>
+          <td class="paramname"><em>devLogUxml</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VisualTreeAsset&#160;</td>
+          <td class="paramname"><em>newGameUxml</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -410,7 +632,33 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Бутстрап отдаёт корень панели и UXML-шаблоны экранов (ссылки из сцены, не DI). </p>
+<p>Бутстрап отдаёт слои-контейнеры (Ф4) и UXML-шаблоны экранов (ссылки из сцены, не DI). </p>
+
+</div>
+</div>
+<a id="a81c9d383730cb586afd48d65d613bcc4" name="a81c9d383730cb586afd48d65d613bcc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81c9d383730cb586afd48d65d613bcc4">&#9670;&#160;</a></span>OpenCamp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.OpenCamp </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenCampRequest.html">OpenCampRequest</a>&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -437,88 +685,6 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Открыть экран сундука (B3). </p>
-<p>Гарантирует ровно один вызов <a class="el" href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html#a2e3de85542dc8c4d65d0e2a726292118" title="Колбэк открытия крышки (ровно один вызов) — флоу показывает награду.">Guildmaster.Guild.OpenChestRequest.OnOpen</a> — включая закрытие без клика по крышке. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#ac799335080289f28bc701d426a7d6563">Guildmaster.UI.IMenuRouter</a>.</p>
-
-</div>
-</div>
-<a id="a245ca12ce365317c6c98e82be264fa4c" name="a245ca12ce365317c6c98e82be264fa4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a245ca12ce365317c6c98e82be264fa4c">&#9670;&#160;</a></span>OpenHub()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Guildmaster.UI.MenuRouter.OpenHub </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Лоадаут-хаб (кольцо реликвий, Фаза 2): обзор гильдии + навешивание собранных реликвий на сосуды. </p>
-<p>Открывается кнопкой «Хаб» в топбаре, пушится оверлеем поверх карты. Реликвии переносятся драгом (тащишь из запаса на сосуд → надеть; с сосуда в запас → снять). Правки durable (RunState) — контент ребилдится на каждое действие (хаб дёшев). </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_a245ca12ce365317c6c98e82be264fa4c_cgraph.svg" width="466" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a3da3c250576c978e2d3d63fc86132400" name="a3da3c250576c978e2d3d63fc86132400"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3da3c250576c978e2d3d63fc86132400">&#9670;&#160;</a></span>OpenInventory()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Guildmaster.UI.MenuRouter.OpenInventory </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>gold</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onClose</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Новый полноэкранный лоадаут/инвентарь (редизайн, Ф3a): грид таро-карточек реликвий + детали. </p>
-<p>Открывается кнопкой «Хаб» в топбаре (заменил старый хаб-оверлей). <em>onClose</em>  зовётся на ЛЮБОМ закрытии (Pop/Esc/CloseAll) через DetachFromPanelEvent — бутстрап по нему возвращает ран-топбар. Реликвии — весь контент (фильтр по владению — Фаза 5); gold из RunState. </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_a3da3c250576c978e2d3d63fc86132400_cgraph.svg" width="502" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -547,7 +713,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Открыть loadout-экран для юнита (по дабл-клику в фазе расстановки; публикуется как OpenLoadoutRequest, бутстрап зовёт сюда). </p>
-<p>Пушится как обычный оверлей поверх боя. </p>
+<p>Пушится как полноэкранный оверлей. </p>
 
 </div>
 </div>
@@ -575,42 +741,6 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Показать главное меню (D1). </p>
-<p>Гарантирует ровно один вызов <a class="el" href="structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html#ab926f50c17123d01d262a5337dc155e2" title="Колбэк выбора Начать/Продолжить/Выход (ровно один вызов).">Guildmaster.Guild.OpenMainMenuRequest.OnChoice</a> (Начать/Продолжить/Выход); «Настройки» открываются поверх меню и его не закрывают. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#a1ed60a612123544de786dc3612bd304a">Guildmaster.UI.IMenuRouter</a>.</p>
-
-</div>
-</div>
-<a id="a9b615a0c72602a242169e95b16b5ab0f" name="a9b615a0c72602a242169e95b16b5ab0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b615a0c72602a242169e95b16b5ab0f">&#9670;&#160;</a></span>OpenMap()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Guildmaster.UI.MenuRouter.OpenMap </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenMapRequest.html">OpenMapRequest</a>&#160;</td>
-          <td class="paramname"><em>req</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Открыть экран карты акта для выбора следующего узла (A3). </p>
-<p>Гарантирует ровно один вызов <a class="el" href="structGuildmaster_1_1Guild_1_1OpenMapRequest.html#aa8d657574f27a09ea0d00d14e16b6005" title="Колбэк выбора (ровно один вызов): id выбранного узла, либо null = экран закрыт без выбора.">Guildmaster.Guild.OpenMapRequest.OnChosen</a> — закрытие без выбора шлёт null, чтобы петля акта не зависла (трактуется как прерывание). </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#a7c132bb7ff96149e21ae4a8eb1d4e4e3">Guildmaster.UI.IMenuRouter</a>.</p>
-
 </div>
 </div>
 <a id="af504f46c2b15d531ee0a261b277deb5a" name="af504f46c2b15d531ee0a261b277deb5a"></a>
@@ -636,40 +766,6 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Открыть экран награды после боя (A3). </p>
-<p>Гарантирует ровно один вызов <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#ae27ad82170510e262f95d007ac36a5cb" title="Колбэк результата выбора (ровно один вызов): взятый релик + опц. сброшенный, либо пропуск.">Guildmaster.Data.Definitions.OpenRewardRequest.OnResolved</a> — включая закрытие без выбора (= пропуск), чтобы флоу забега не завис в ожидании. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#ab818951ca677c638421e2c564fba057d">Guildmaster.UI.IMenuRouter</a>.</p>
-
-</div>
-</div>
-<a id="abe06f2b921bd42a134666ee43c7ff343" name="abe06f2b921bd42a134666ee43c7ff343"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe06f2b921bd42a134666ee43c7ff343">&#9670;&#160;</a></span>OpenSettings()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Guildmaster.UI.MenuRouter.OpenSettings </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Открыть настройки оверлеем поверх текущего экрана (топбар «Опции» во время забега). Закрытие — Pop, забег не рвётся. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#a415bf5a6369705e5926510382809abdb">Guildmaster.UI.IMenuRouter</a>.</p>
 
 </div>
 </div>
@@ -697,11 +793,6 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Открыть экран магазина (B2). </p>
-<p>Гарантирует ровно один вызов <a class="el" href="structGuildmaster_1_1Guild_1_1OpenShopRequest.html#a87ffc71f2e22278a0712962db9cfe002">Guildmaster.Guild.OpenShopRequest.OnLeave</a> — включая закрытие без нажатия «Уйти». </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#a0076004e0280ebf024b71c608ab23c66">Guildmaster.UI.IMenuRouter</a>.</p>
-
 </div>
 </div>
 <a id="ad75cea58b1691f1375c50ddb27f6de9c" name="ad75cea58b1691f1375c50ddb27f6de9c"></a>
@@ -727,11 +818,6 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Открыть экран текстового ивента (StS-style). </p>
-<p>Гарантирует ровно один вызов <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html#ae9e1fc8a386d7c4ab6d89cc54c0d0489" title="Колбэк выбора (ровно один вызов): индекс варианта в TextEventData.Choices.">Guildmaster.Data.Definitions.OpenTextEventRequest.OnChosen</a> — закрытие без выбора шлёт индекс -1 (пропуск), чтобы флоу не завис. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#a4736e742c441452f818862e547e123cf">Guildmaster.UI.IMenuRouter</a>.</p>
 
 </div>
 </div>
@@ -759,10 +845,106 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Показать единую кнопку «Продолжить» (A4) в правом нижнем углу. </p>
-<p>Гарантирует ровно один вызов <a class="el" href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#a240ca32bcd2c2f328e06a8034dcef7b8" title="Колбэк нажатия (ровно один вызов) — петля продвигается и открывает карту.">Guildmaster.Guild.OpenContinueRequest.OnContinue</a> — включая закрытие без нажатия, чтобы петля акта не зависла. </p>
+</div>
+</div>
+<a id="ade9fb89482262fa767da061055467b27" name="ade9fb89482262fa767da061055467b27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade9fb89482262fa767da061055467b27">&#9670;&#160;</a></span>ShowInventory()</h2>
 
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#aef3b1ed4eaa95da20d1abe80df0ccdf1">Guildmaster.UI.IMenuRouter</a>.</p>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.ShowInventory </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>gold</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a12d0b679c877521b9eb27e95f192d9e5">RelicDragPhase</a> &gt;&#160;</td>
+          <td class="paramname"><em>onRelicDrag</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Показать инвентарь (радио-режим): Sheet-тело поверх геймплея. Идемпотентно (уже открыт → no-op). </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_ade9fb89482262fa767da061055467b27_cgraph.svg" width="450" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a94f12669781e9b60db71cdb925b9160d" name="a94f12669781e9b60db71cdb925b9160d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94f12669781e9b60db71cdb925b9160d">&#9670;&#160;</a></span>ShowMapSpace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.ShowMapSpace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Войти в пространство world-карты: прозрачный Sheet с тегом режима «карта». </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_a94f12669781e9b60db71cdb925b9160d_cgraph.svg" width="450" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a6136b2d73e263694f8c4641840296cea" name="a6136b2d73e263694f8c4641840296cea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6136b2d73e263694f8c4641840296cea">&#9670;&#160;</a></span>ShowNodeFarewell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.ShowNodeFarewell </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenNodeFarewellRequest.html">OpenNodeFarewellRequest</a>&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -790,10 +972,129 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Показать экран исхода забега (C2). </p>
-<p>Гарантирует ровно один вызов <a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#a9c40bca1b23c4c91882a2bd7e0baa0ca" title="Колбэк «В меню» (ровно один вызов).">Guildmaster.Guild.OpenOutcomeRequest.OnToMenu</a> — включая закрытие без нажатия. </p>
+</div>
+</div>
+<a id="ad260923d254b68eb188842b84fc8b144" name="ad260923d254b68eb188842b84fc8b144"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad260923d254b68eb188842b84fc8b144">&#9670;&#160;</a></span>ShowTestZone()</h2>
 
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#afb0d78f860dd9013ddeb45041ed9d9f3">Guildmaster.UI.IMenuRouter</a>.</p>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.ShowTestZone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Войти в UI тест-зоны: Sheet-пространство «Бой» поверх стека (карта под ним прячется). </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_ad260923d254b68eb188842b84fc8b144_cgraph.svg" width="450" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a73c597c57e8a9ce9169ab8812c920586" name="a73c597c57e8a9ce9169ab8812c920586"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73c597c57e8a9ce9169ab8812c920586">&#9670;&#160;</a></span>ShowTitleCard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.ShowTitleCard </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenTitleCardRequest.html">OpenTitleCardRequest</a>&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac35e2db9bdea2750e910c78d290ccd69" name="ac35e2db9bdea2750e910c78d290ccd69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac35e2db9bdea2750e910c78d290ccd69">&#9670;&#160;</a></span>ToggleDevConsole()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.ToggleDevConsole </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Открыть/закрыть dev-консоль (Трек К). </p>
+<p>Экран живёт ОДНИМ инстансом между показами: в нём история команд, и пересоздание стирало бы её при каждом закрытии.</p>
+<p>Консоль не подчиняется правилу «в главном меню оверлеев нет» (в отличие от ESC-меню): её открывают в том числе чтобы разобраться, почему игра не дошла дальше главного меню. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_ac35e2db9bdea2750e910c78d290ccd69_cgraph.svg" width="470" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a06b06c0368510c158b5f7613fcd94c3e" name="a06b06c0368510c158b5f7613fcd94c3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06b06c0368510c158b5f7613fcd94c3e">&#9670;&#160;</a></span>ToggleDevLog()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.ToggleDevLog </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Открыть/закрыть лог-консоль (F2): хвост сообщений движка, без строки ввода. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_a06b06c0368510c158b5f7613fcd94c3e_cgraph.svg" width="470" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -820,18 +1121,239 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>ESC: пусто → открыть системное меню; вложенный экран → назад; корневой → закрыть всё. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#a1364045fc9099763d52fbe5489b89ee0">Guildmaster.UI.IMenuRouter</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_a68ec8319ec4031e0a23243506f9557eb_cgraph.svg" width="470" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+</div>
+<a id="ae597d6e6da82300e3bb2e6267574feba" name="ae597d6e6da82300e3bb2e6267574feba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae597d6e6da82300e3bb2e6267574feba">&#9670;&#160;</a></span>TryLeaveMainMenuForCoopGuest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.UI.MenuRouter.TryLeaveMainMenuForCoopGuest </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Закрыть главное меню, потому что нас приняли в чужую игру. </p>
+<p>Возвращает <code>false</code>, только если закрывать нечего и запомнить намерение тоже не выйдет.</p>
+<p><b>Меню закрывается не кликом, а событием сети,</b> и это не костыль: выбор игрок уже сделал — в оверлее друзей Steam, возможно ещё до запуска игры. Оставить его в меню значило бы показывать «Начать / Продолжить» человеку, который вообще-то уже в чужой партии. </p>
+<p>Тот же приём, что у Ристалища (TryLeaveMainMenuForProvingGrounds): пока меню не открылось, намерение ждёт и торопит бут-экран — приглашение, принятое на заставке, иначе молча потерялось бы.</p>
+
+</div>
+</div>
+<a id="afcfe07fecc055bb3eb09aae32c7240c2" name="afcfe07fecc055bb3eb09aae32c7240c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcfe07fecc055bb3eb09aae32c7240c2">&#9670;&#160;</a></span>TryLeaveMainMenuForProvingGrounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.UI.MenuRouter.TryLeaveMainMenuForProvingGrounds </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Закрыть главное меню выбором «Ристалище», если оно сейчас на экране. </p>
+<p>Возвращает false, если меню не показано — тогда решение принимает верхний цикл игры, а не UI. </p>
+
+</div>
+</div>
+<a id="a8335cc58120d44d5bb616991184c7b28" name="a8335cc58120d44d5bb616991184c7b28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8335cc58120d44d5bb616991184c7b28">&#9670;&#160;</a></span>WireSettingsTabs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Guildmaster.UI.MenuRouter.WireSettingsTabs </td>
+          <td>(</td>
+          <td class="paramtype">VisualElement&#160;</td>
+          <td class="paramname"><em>screen</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="ad334d1fc87e6e2b6f242f950d92c54ff" name="ad334d1fc87e6e2b6f242f950d92c54ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad334d1fc87e6e2b6f242f950d92c54ff">&#9670;&#160;</a></span>ActiveScreenMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Guildmaster.UI.MenuRouter.ActiveScreenMode</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Режим-таб верхнего оверлея (QA #21), из констант UiScreen. Единый источник подсветки топбара. </p>
+
+</div>
+</div>
+<a id="ab9290ee01cf6946a1305c33d87dbd0f2" name="ab9290ee01cf6946a1305c33d87dbd0f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9290ee01cf6946a1305c33d87dbd0f2">&#9670;&#160;</a></span>Changed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.UI.MenuRouter.Changed</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">add</span><span class="mlabel">remove</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Меняется на каждый Push/Pop/резолв навигатора (Ф4): бутстрап подписывается вместо поллинга структуры стека в <code>Update</code> — по нему пересчитываются подсветка таба и backdrop (снос части K3/K4). </p>
+
+</div>
+</div>
+<a id="ab2216381b420fdde89c52aa43677b388" name="ab2216381b420fdde89c52aa43677b388"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2216381b420fdde89c52aa43677b388">&#9670;&#160;</a></span>HasMapInStack</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.UI.MenuRouter.HasMapInStack</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Есть ли карта петли акта в стеке (result-экран выбора узла) — скрытая под геймплеем или видимая. </p>
+<p>Отличает «вернуться на карту петли» (выйти из боя) от read-only просмотра (нет карты петли). </p>
+
+</div>
+</div>
+<a id="acde39cddf4d380904f8c8e6aa753d973" name="acde39cddf4d380904f8c8e6aa753d973"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acde39cddf4d380904f8c8e6aa753d973">&#9670;&#160;</a></span>HasVisiblePage</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.UI.MenuRouter.HasVisiblePage</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Лежит ли на экране непрозрачная страница (ивент/магазин/сундук/награда/исход) — ей нужен задник-стол вместо просвечивающего мира (QA #50). </p>
+
+</div>
+</div>
+<a id="a8fc213411b5c52166820127b4c2b23bd" name="a8fc213411b5c52166820127b4c2b23bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fc213411b5c52166820127b4c2b23bd">&#9670;&#160;</a></span>IsInventoryOpen</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.UI.MenuRouter.IsInventoryOpen</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Открыт ли инвентарь (для backdrop-логики бутстрапа — единый источник вместо флага). </p>
+
+</div>
+</div>
+<a id="ae2eac4fc23fa60ea33da6e38a56d8100" name="ae2eac4fc23fa60ea33da6e38a56d8100"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2eac4fc23fa60ea33da6e38a56d8100">&#9670;&#160;</a></span>IsMapSpaceOpen</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.UI.MenuRouter.IsMapSpaceOpen</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Показана ли world-карта: её пространство есть в стеке. </p>
+<p>Фон забега при этом гасится — карта теперь рисуется В МИРЕ, и непрозрачный backdrop просто закрыл бы её собой. </p>
+
+</div>
+</div>
 <a id="a6ef889541f1956714d983caa61fe6596" name="a6ef889541f1956714d983caa61fe6596"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6ef889541f1956714d983caa61fe6596">&#9670;&#160;</a></span>IsOpen</h2>
 
@@ -852,9 +1374,48 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Открыт ли хоть один экран. </p>
+</div>
+</div>
+<a id="aa2e5e98de7447f34d15d7dcd01167eb1" name="aa2e5e98de7447f34d15d7dcd01167eb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2e5e98de7447f34d15d7dcd01167eb1">&#9670;&#160;</a></span>IsSystemMenuOpen</h2>
 
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#adc944982513972b15903fcc392b91a01">Guildmaster.UI.IMenuRouter</a>.</p>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.UI.MenuRouter.IsSystemMenuOpen</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Открыто ли системное меню (пауза или что-либо поверх неё). </p>
+<p>Топбар держит по этому флагу таб настроек нажатым, пока меню на экране (наход. Макса, раунд 2, п.6). </p>
+
+</div>
+</div>
+<h2 class="groupheader">Event Documentation</h2>
+<a id="ac0b56862bdba8743066382fef29a8e6b" name="ac0b56862bdba8743066382fef29a8e6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0b56862bdba8743066382fef29a8e6b">&#9670;&#160;</a></span>DevConsoleVisibilityChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;bool&gt; Guildmaster.UI.MenuRouter.DevConsoleVisibilityChanged</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Консоль показана (<code>true</code>) или снята (<code>false</code>). </p>
+<p>Слушают те, кому мало глушения ввода: dev-модуль ставит на это время паузу симуляции, иначе бой доигрывает за полкой невидимым. </p>
 
 </div>
 </div>

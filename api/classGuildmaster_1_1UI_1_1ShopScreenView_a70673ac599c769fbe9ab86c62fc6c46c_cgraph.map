@@ -1,9 +1,11 @@
 <map id="Guildmaster.UI.ShopScreenView.Build" name="Guildmaster.UI.ShopScreenView.Build">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,204,95"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,87,204,127"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1IShopController.html#aa869d6dc9d18e8bc7abdb002464ece04" title="Купить слот витрины по индексу." alt="" coords="252,5,523,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,53,251,41,303,31,304,36,253,46,196,58"/>
-<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Guild_1_1IShopController.html#a3784c153adbd58e212a8956a91ce4780" title="Перекатить всю витрину за RerollCost. false = не хватило золота." alt="" coords="264,55,511,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="204,73,250,73,250,78,204,78"/>
-<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Guild_1_1IShopController.html#ad0a51a41d14da144d4e9c5b477f56588" title="Продать реликвию из запаса (освободить место). false = такой в запасе нет." alt="" coords="252,120,523,145"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="196,93,253,105,304,115,303,120,251,110,195,98"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,85,195,62,251,41,289,31,290,36,253,46,197,67,146,90"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1UI_1_1Tooltips_1_1TooltipRequest.html#a2214830f87b9f502c797630221457d1d" title=" " alt="" coords="299,55,476,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="204,93,285,84,285,90,205,99"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Guild_1_1IShopController.html#a3784c153adbd58e212a8956a91ce4780" title="Перекатить всю витрину за RerollCost. false = не хватило золота." alt="" coords="264,119,511,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="205,116,251,121,250,126,204,121"/>
+<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Guild_1_1IShopController.html#ad0a51a41d14da144d4e9c5b477f56588" title="Продать реликвию из запаса (освободить место). false = такой в запасе нет." alt="" coords="252,184,523,209"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="146,125,197,148,253,169,290,179,289,184,251,174,195,153,144,130"/>
 </map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.ConcealmentSystem.RadiusOf" name="Guildmaster.Combat.ConcealmentSystem.RadiusOf">
+<area shape="rect" id="Node000001" title="Радиус обнаружения ступени." alt="" coords="300,5,547,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1ConcealmentSystem.html#a7df17457781f46985a1da28e77a142c3" title=" " alt="" coords="5,5,252,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="286,28,252,28,252,23,286,23"/>
+</map>

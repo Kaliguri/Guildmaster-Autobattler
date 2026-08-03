@@ -102,6 +102,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ActRunner.html">ActRunner</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Петля обхода акта (план [[act-map-run-loop]] §3.2, шаг A2).  <a href="classGuildmaster_1_1Game_1_1Services_1_1ActRunner.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1BattleTapeDiagnostics.html">BattleTapeDiagnostics</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dev-диагностика ленты боя: говорит вслух, что показ делает прямо сейчас.  <a href="classGuildmaster_1_1Game_1_1Services_1_1BattleTapeDiagnostics.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment.html">CinematicSegment</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Одна ступень режиссёрской cinematic-секвенции (TimeScaleService.PlayCinematicSequence).  <a href="structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -109,7 +112,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Режиссёр «сочности» боя: единая политика ЗНАЧИМОСТИ поверх sim-событий.  <a href="classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html">CombatLoopService</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Реалтайм-пульс боевой симуляции: accumulator-паттерн на <code>Time.deltaTime</code>.  <a href="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Реалтайм-пульс боевой симуляции: accumulator-паттерн на <code>Time.unscaledDeltaTime</code>.  <a href="classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html">DisplayService</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Реализация IDisplayService.  <a href="classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html">FmodAudioService</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">FMOD-реализация IAudioService (вики impl «09» §П3).  <a href="classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html#details">More...</a><br /></td></tr>
@@ -117,26 +123,53 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html">GameFlow</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оркестратор макро-флоу игры (план 11 §2, §4).  <a href="classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1GuestPlaybackLoop.html">GuestPlaybackLoop</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Боевой «цикл» гостя: тика нет, есть только требование к отставанию показа.  <a href="classGuildmaster_1_1Game_1_1Services_1_1GuestPlaybackLoop.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html">ISceneLoader</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шов загрузки/выгрузки боевой сцены (план 11 §2, вики «10» §8).  <a href="interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шов загрузки сцен сессии (план 11 §2, вики «10» §8).  <a href="interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html">JsonFileSaveService</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Соло-бэкенд ISaveService: JSON-файл на диск (Application.persistentDataPath) через JsonUtility.  <a href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Бэкенд ISaveService для данных ИГРОКА — наш собственный и единственный: JSON-файлы под <code><a class="el" href="classGuildmaster_1_1Core_1_1Persistence_1_1GameDataPath.html#a224c7070d771a148a6676b8e29b5b55b" title="Корень данных игрока.">GameDataPath.Root</a>/Saves</code> (ТЗ [[save-system]] §4).  <a href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html">JsonFileSaveServiceBase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Общая механика файлового ISaveService: конверт со версией схемы, атомарная запись, бэкап, карантин повреждённого файла, дерево ключей-путей.  <a href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1LocaleStartup.html">LocaleStartup</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выбирает язык на старте сессии: сохранённый — применить, невыбранный — взять у СИСТЕМЫ, а не дефолт проекта.  <a href="classGuildmaster_1_1Game_1_1Services_1_1LocaleStartup.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html">LocalizationService</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Реализация ILocalizationService поверх Unity String Tables (вики «13» §5).  <a href="classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html">LocalJsonFileSaveService</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Бэкенд ILocalSaveService — данные КОМПЬЮТЕРА, а не игрока: каталог <code>persistentDataPath/Local</code>, лежащий <b>вне</b> <code>Saves/</code> и потому вне маски Steam Cloud (ТЗ [[save-system]] §3–4).  <a href="classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1NetPauseBridge.html">NetPauseBridge</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Единственное место, где объявленная пауза становится настоящей: состояние приходит от BattleControlRelay, применяет его TimeScaleService.  <a href="classGuildmaster_1_1Game_1_1Services_1_1NetPauseBridge.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html">ProfileService</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Реализация IProfileService поверх ISaveService.  <a href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1RunAudioPresenter.html">RunAudioPresenter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Звук ЗАБЕГА вне боя: экраны, карта, переходы, меню и музыка.  <a href="classGuildmaster_1_1Game_1_1Services_1_1RunAudioPresenter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SaveJson.html">SaveJson</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Правила сериализации durable-состояния — один владелец на все дороги, по которым оно уезжает из памяти: файл сейва и снимок забега, отправляемый гостю по сети.  <a href="classGuildmaster_1_1Game_1_1Services_1_1SaveJson.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html">SceneLoader</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Загрузка и выгрузка сцен.  <a href="classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Загрузка сцен сессии.  <a href="classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html">SettingsService</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Реализация ISettingsService.  <a href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1StatValueFormatter.html">StatValueFormatter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Smart-Format форматтер разобранных статов: делает <code>«Наносит {dmg} урона»</code> рабочим шаблоном, куда слой описаний подаёт FormattedStat (план UI-реворка §II.10.2).  <a href="classGuildmaster_1_1Game_1_1Services_1_1StatValueFormatter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html">TimeScaleService</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Единственный писатель UnityEngine.Time.timeScale в бою.  <a href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html">UnityAudioService</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заглушка IAudioService на Unity Audio.  <a href="classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1Vector2JsonConverter.html">Vector2JsonConverter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сериализация Vector2 как <code>{"x":…,"y":…}</code>.  <a href="classGuildmaster_1_1Game_1_1Services_1_1Vector2JsonConverter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

@@ -1,0 +1,5 @@
+<map id="Guildmaster.DevTools.GuildmasterCommands.ToggleOverlaySource" name="Guildmaster.DevTools.GuildmasterCommands.ToggleOverlaySource">
+<area shape="rect" id="Node000001" title="Переключить источник dev&#45;оверлеев: показанный кадр (по умолчанию) или живой сим." alt="" coords="5,5,253,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1DevOverlayMode.html#a5cbc135c80759555fd3ecb6a75d4947b" title="Переключить источник и вернуть новый — для dev&#45;команды." alt="" coords="301,5,492,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="254,23,288,23,288,28,254,28"/>
+</map>

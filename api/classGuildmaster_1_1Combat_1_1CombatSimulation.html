@@ -123,9 +123,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac7aab9f602bf9130070f6f808e6b9f4f" id="r_ac7aab9f602bf9130070f6f808e6b9f4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac7aab9f602bf9130070f6f808e6b9f4f">Tick</a> (float dt)</td></tr>
 <tr class="memdesc:ac7aab9f602bf9130070f6f808e6b9f4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выполнить один детерминированный шаг симуляции.  <br /></td></tr>
 <tr class="separator:ac7aab9f602bf9130070f6f808e6b9f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6de925024d5473fc9537c6a36e39fe45" id="r_a6de925024d5473fc9537c6a36e39fe45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6de925024d5473fc9537c6a36e39fe45">DealDamage</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a> req)</td></tr>
-<tr class="memdesc:a6de925024d5473fc9537c6a36e39fe45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применить урон через полный пайплайн.  <br /></td></tr>
-<tr class="separator:a6de925024d5473fc9537c6a36e39fe45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4197fcd89d55a99489f2ef77c8540e39" id="r_a4197fcd89d55a99489f2ef77c8540e39"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a4197fcd89d55a99489f2ef77c8540e39">DealDamage</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a> request)</td></tr>
+<tr class="memdesc:a4197fcd89d55a99489f2ef77c8540e39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применить урон через полный пайплайн.  <br /></td></tr>
+<tr class="separator:a4197fcd89d55a99489f2ef77c8540e39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d1ca71fd259ff92f63207e40c23daf5" id="r_a2d1ca71fd259ff92f63207e40c23daf5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a2d1ca71fd259ff92f63207e40c23daf5">ResolveAttackMiss</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> attacker)</td></tr>
+<tr class="memdesc:a2d1ca71fd259ff92f63207e40c23daf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Уходит ли следующая авто-атака <em>attacker</em>  мимо (слепота).Спрашивается на снятии цифр удара — до заявки урона, чтобы промахнувшийся не накладывал и своих on-hit.  <br /></td></tr>
+<tr class="separator:a2d1ca71fd259ff92f63207e40c23daf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a438aff6d2cdfb1b06dd8bb4c1cf2a120" id="r_a438aff6d2cdfb1b06dd8bb4c1cf2a120"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a438aff6d2cdfb1b06dd8bb4c1cf2a120">ReportAttackMissed</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> attacker, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target)</td></tr>
+<tr class="memdesc:a438aff6d2cdfb1b06dd8bb4c1cf2a120"><td class="mdescLeft">&#160;</td><td class="mdescRight">Промах слепого подаётся тем же сигналом, что уклонение: для игрока это одна и та же цифра «мимо» над целью, и второй канал показа означал бы вторую подачу одного факта.  <br /></td></tr>
+<tr class="separator:a438aff6d2cdfb1b06dd8bb4c1cf2a120"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3edf9fdf873a5ebddd75420669bdb8c2" id="r_a3edf9fdf873a5ebddd75420669bdb8c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3edf9fdf873a5ebddd75420669bdb8c2">Heal</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, float amount, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source)</td></tr>
 <tr class="memdesc:a3edf9fdf873a5ebddd75420669bdb8c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Исцелить юнита. Не выходит за MaxHP.  <br /></td></tr>
 <tr class="separator:a3edf9fdf873a5ebddd75420669bdb8c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,6 +147,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7ffdb85ea967ca31ce9f970371df906a" id="r_a7ffdb85ea967ca31ce9f970371df906a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a7ffdb85ea967ca31ce9f970371df906a">ApplyEffect</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> def, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source)</td></tr>
 <tr class="memdesc:a7ffdb85ea967ca31ce9f970371df906a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применить эффект к цели. Тело — Фаза 2; в Фазе 1 — стаб (no-op).  <br /></td></tr>
 <tr class="separator:a7ffdb85ea967ca31ce9f970371df906a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e8e550dde4f84639f712a36708c70ea" id="r_a3e8e550dde4f84639f712a36708c70ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3e8e550dde4f84639f712a36708c70ea">ApplyEffect</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> def, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, float durationSeconds)</td></tr>
+<tr class="memdesc:a3e8e550dde4f84639f712a36708c70ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">То же наложение, но со сроком, посчитанным по ходу боя (в секундах, &gt; 0).  <br /></td></tr>
+<tr class="separator:a3e8e550dde4f84639f712a36708c70ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a671506f23175d5c05c5c09277375f7f0" id="r_a671506f23175d5c05c5c09277375f7f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a671506f23175d5c05c5c09277375f7f0">ApplyEffect</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> def, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, float durationSeconds, float potency)</td></tr>
+<tr class="memdesc:a671506f23175d5c05c5c09277375f7f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Наложение с ВЕЛИЧИНОЙ, посчитанной накладывающим: <em>potency</em>  задаёт силу вместо авторской из ассета.  <br /></td></tr>
+<tr class="separator:a671506f23175d5c05c5c09277375f7f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96609f5e3bf5177b8fb1959d275f1b44" id="r_a96609f5e3bf5177b8fb1959d275f1b44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a96609f5e3bf5177b8fb1959d275f1b44">ReportAreaHit</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1AreaHit.html">AreaHit</a> hit)</td></tr>
 <tr class="memdesc:a96609f5e3bf5177b8fb1959d275f1b44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сообщить презентации о сработавшей зоне удара (dev-оверлей зон, вики «13» шаг 4).  <br /></td></tr>
 <tr class="separator:a96609f5e3bf5177b8fb1959d275f1b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,10 +165,26 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3ce7981b50aa372c5f42ee55bc2e48cb" id="r_a3ce7981b50aa372c5f42ee55bc2e48cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3ce7981b50aa372c5f42ee55bc2e48cb">Dispel</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html">Effects.DispelRequest</a> req)</td></tr>
 <tr class="memdesc:a3ce7981b50aa372c5f42ee55bc2e48cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять с цели подходящие эффекты (purge/cleanse, вики «6» §5.4).  <br /></td></tr>
 <tr class="separator:a3ce7981b50aa372c5f42ee55bc2e48cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55b03979e93593b4069a77017eb537b6" id="r_a55b03979e93593b4069a77017eb537b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a55b03979e93593b4069a77017eb537b6">RemoveEffect</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> def)</td></tr>
+<tr class="memdesc:a55b03979e93593b4069a77017eb537b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять с юнита эффект, выданный именно этим определением — системно, мимо диспела и без оглядки на <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a34da08cb0aa522f1298524ad8da61ac6">EffectData.Unremovable</a>.  <br /></td></tr>
+<tr class="separator:a55b03979e93593b4069a77017eb537b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b499ccec78dc4fcbf78f25b3ec95125" id="r_a9b499ccec78dc4fcbf78f25b3ec95125"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a9b499ccec78dc4fcbf78f25b3ec95125">NotifyAttackCompleted</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit)</td></tr>
+<tr class="memdesc:a9b499ccec78dc4fcbf78f25b3ec95125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Атака завершена.  <br /></td></tr>
+<tr class="separator:a9b499ccec78dc4fcbf78f25b3ec95125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a73acc18a82c288a4031322a37afe5d" id="r_a3a73acc18a82c288a4031322a37afe5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3a73acc18a82c288a4031322a37afe5d">NotifyComboBroken</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit)</td></tr>
+<tr class="memdesc:a3a73acc18a82c288a4031322a37afe5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Комбо юнита порвалось (он пробыл вне атакующего лупа дольше <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a37d98fc0a7885ceeffbd4e7bf769f101">Core.Simulation.SimTuning.ComboBreakSeconds</a>).Ставит внутреннее событие <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a676f582752529cf3b8f4652aff72ae7d" title="Комбо носителя порвалось: он пробыл вне атакующего лупа дольше SimTuning.ComboBreakSeconds (ГДД: глос...">Effects.CombatEvent.ComboBroken</a> носителю — тому, кто держит взведённый заряд серии.  <br /></td></tr>
+<tr class="separator:a3a73acc18a82c288a4031322a37afe5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a157186e78ad05b8a98cda26df20bd813" id="r_a157186e78ad05b8a98cda26df20bd813"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a157186e78ad05b8a98cda26df20bd813">ReportAbilityCast</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> caster)</td></tr>
+<tr class="memdesc:a157186e78ad05b8a98cda26df20bd813"><td class="mdescLeft">&#160;</td><td class="mdescRight">Каст объявлен: событие уходит в очередь ЗАЯВЛЕНИЙ, а разослать его врагам — работа дренажа (см.  <br /></td></tr>
+<tr class="separator:a157186e78ad05b8a98cda26df20bd813"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b6c37ccc44bda27fbcbfd19c09591c6" id="r_a0b6c37ccc44bda27fbcbfd19c09591c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a0b6c37ccc44bda27fbcbfd19c09591c6">TeleportBehind</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target)</td></tr>
+<tr class="memdesc:a0b6c37ccc44bda27fbcbfd19c09591c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заявка на переход за спину — применяется в конце раунда, см. ApplyPendingTeleports.  <br /></td></tr>
+<tr class="separator:a0b6c37ccc44bda27fbcbfd19c09591c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1642b518cd60e4ef9037e3636dcd887" id="r_ab1642b518cd60e4ef9037e3636dcd887"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ab1642b518cd60e4ef9037e3636dcd887">Displace</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html">DisplaceRequest</a> req)</td></tr>
 <tr class="memdesc:ab1642b518cd60e4ef9037e3636dcd887"><td class="mdescLeft">&#160;</td><td class="mdescRight">Принудительно сместить цель (отбрасывание/«ядро», §9.9). Исполняет DisplacementSystem.  <br /></td></tr>
 <tr class="separator:ab1642b518cd60e4ef9037e3636dcd887"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3092fa6133f040d7b2b7af1c28540c4" id="r_ae3092fa6133f040d7b2b7af1c28540c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae3092fa6133f040d7b2b7af1c28540c4">SetPaused</a> (bool paused)</td></tr>
+<tr class="memdesc:ae3092fa6133f040d7b2b7af1c28540c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заморозить симуляцию СЦЕНАРИЕМ — расстановка, передышка, тест-полигон.  <br /></td></tr>
 <tr class="separator:ae3092fa6133f040d7b2b7af1c28540c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa568b7c4c558f73eb3185e20d9393217" id="r_aa568b7c4c558f73eb3185e20d9393217"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#aa568b7c4c558f73eb3185e20d9393217">SetArena</a> (<a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a> arena, <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html">Rect2D</a>? cameraZone=null)</td></tr>
 <tr class="memdesc:aa568b7c4c558f73eb3185e20d9393217"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сменить арену НА МЕСТЕ, без пересоздания сима (persist-мир: тест-зона ↔ боевая арена).  <br /></td></tr>
@@ -167,15 +195,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ef3762989e4fb8bf6e6f2229baa2b5c" id="r_a6ef3762989e4fb8bf6e6f2229baa2b5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6ef3762989e4fb8bf6e6f2229baa2b5c">EnqueueUnitSpawn</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit)</td></tr>
 <tr class="memdesc:a6ef3762989e4fb8bf6e6f2229baa2b5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию).  <br /></td></tr>
 <tr class="separator:a6ef3762989e4fb8bf6e6f2229baa2b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fd5cd93593dde5fce087c97bfc30d46" id="r_a8fd5cd93593dde5fce087c97bfc30d46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8fd5cd93593dde5fce087c97bfc30d46">EnqueueCommand</a> (<a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html">ICombatCommand</a> command)</td></tr>
-<tr class="memdesc:a8fd5cd93593dde5fce087c97bfc30d46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Добавить команду в отсортированную очередь.  <br /></td></tr>
-<tr class="separator:a8fd5cd93593dde5fce087c97bfc30d46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a618a514ab2b07c7d4a59db9f3da8b571" id="r_a618a514ab2b07c7d4a59db9f3da8b571"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a618a514ab2b07c7d4a59db9f3da8b571">BindSummonFactory</a> (<a class="el" href="interfaceGuildmaster_1_1Combat_1_1ISummonFactory.html">ISummonFactory</a> factory)</td></tr>
+<tr class="memdesc:a618a514ab2b07c7d4a59db9f3da8b571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подать фабрику призывов (M10).  <br /></td></tr>
+<tr class="separator:a618a514ab2b07c7d4a59db9f3da8b571"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47196edf5856a85fcc69278b50704da0" id="r_a47196edf5856a85fcc69278b50704da0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a47196edf5856a85fcc69278b50704da0">Summon</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">Data.Definitions.UnitData</a> data, int team, Vector2 position, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> summoner)</td></tr>
+<tr class="memdesc:a47196edf5856a85fcc69278b50704da0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Призвать тело в бой: собрать по киту и поставить в очередь спавна (см. ICombatContext).  <br /></td></tr>
+<tr class="separator:a47196edf5856a85fcc69278b50704da0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d647c0229bc77cc9701a4272f36623c" id="r_a6d647c0229bc77cc9701a4272f36623c"><td class="memItemLeft" align="right" valign="top">ulong&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6d647c0229bc77cc9701a4272f36623c">ComputeChecksum</a> ()</td></tr>
-<tr class="memdesc:a6d647c0229bc77cc9701a4272f36623c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Детерминированный слепок состояния симуляции: хэш позиций, HP и текущего тика.  <br /></td></tr>
+<tr class="memdesc:a6d647c0229bc77cc9701a4272f36623c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Детерминированный слепок состояния симуляции: тик, состояние RNG, юниты (позиция, HP, щит, ресурс, фаза атаки), их активные эффекты и снаряды в полёте.  <br /></td></tr>
 <tr class="separator:a6d647c0229bc77cc9701a4272f36623c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae075b207bd2df17fd716f5eb298a4d57" id="r_ae075b207bd2df17fd716f5eb298a4d57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae075b207bd2df17fd716f5eb298a4d57">FlushSpawns</a> ()</td></tr>
 <tr class="memdesc:ae075b207bd2df17fd716f5eb298a4d57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Влить отложенные спавны в живой список БЕЗ тика систем (фаза расстановки, шаг 4): юниты должны присутствовать и быть видимыми/двигаемыми, пока бой на паузе.  <br /></td></tr>
 <tr class="separator:ae075b207bd2df17fd716f5eb298a4d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_interfaceGuildmaster_1_1Combat_1_1ICombatContext"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_interfaceGuildmaster_1_1Combat_1_1ICombatContext')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">Guildmaster.Combat.ICombatContext</a></td></tr>
+<tr class="memitem:acaa5407ceed2e557a40373d9e14e99f4 inherit pub_methods_interfaceGuildmaster_1_1Combat_1_1ICombatContext" id="r_acaa5407ceed2e557a40373d9e14e99f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#acaa5407ceed2e557a40373d9e14e99f4">Summon</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">Data.Definitions.UnitData</a> data, int team, UnityEngine.Vector2 position, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> summoner)</td></tr>
+<tr class="memdesc:acaa5407ceed2e557a40373d9e14e99f4 inherit pub_methods_interfaceGuildmaster_1_1Combat_1_1ICombatContext"><td class="mdescLeft">&#160;</td><td class="mdescRight">Призвать тело в бой (M10): собрать юнита из кита и поставить на поле.  <br /></td></tr>
+<tr class="separator:acaa5407ceed2e557a40373d9e14e99f4 inherit pub_methods_interfaceGuildmaster_1_1Combat_1_1ICombatContext"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -200,6 +235,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a6a7d8e090ee8dcca46ee0aaf705e7d24" id="r_a6a7d8e090ee8dcca46ee0aaf705e7d24"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6a7d8e090ee8dcca46ee0aaf705e7d24">Units</a><code> [get]</code></td></tr>
 <tr class="memdesc:a6a7d8e090ee8dcca46ee0aaf705e7d24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все юниты боя (живые и мёртвые — мозг сам фильтрует по <code>IsDead</code>/команде).  <br /></td></tr>
 <tr class="separator:a6a7d8e090ee8dcca46ee0aaf705e7d24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd77779f77c4f4c8973d527771b98f64" id="r_acd77779f77c4f4c8973d527771b98f64"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html">Projectile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#acd77779f77c4f4c8973d527771b98f64">Projectiles</a><code> [get]</code></td></tr>
+<tr class="memdesc:acd77779f77c4f4c8973d527771b98f64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Живые снаряды — их снимает лента боя, чтобы показ не летел по будущему.  <br /></td></tr>
+<tr class="separator:acd77779f77c4f4c8973d527771b98f64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade014db043568a48011caded693155c1" id="r_ade014db043568a48011caded693155c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Combat_1_1BattleOutcome.html">BattleOutcome</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ade014db043568a48011caded693155c1">Outcome</a><code> [get]</code></td></tr>
 <tr class="separator:ade014db043568a48011caded693155c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95b013883f25014e70b5ec816df42285" id="r_a95b013883f25014e70b5ec816df42285"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a95b013883f25014e70b5ec816df42285">IsPaused</a><code> [get]</code></td></tr>
@@ -249,7 +287,9 @@ Events</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Детерминированная тиковая симуляция боя. </p>
 <p>Реализует ICombatContext — единственная точка мутации состояния боя из систем и (Фаза 2) компонентов эффектов. </p>
-<p>Порядок систем за тик: ApplyCommands → Brain (AI) → Ability → Movement → Displacement → Separation → SpatialHashRebuild → AutoAttack → Projectiles → Regen → Effects → DrainEvents → Death → CheckOutcome → currentTick++. </p>
+<p>Порядок систем за тик: ApplyCommands → Brain (AI) → Ability → Movement → Displacement → Separation → SpatialHashRebuild → AutoAttack → Projectiles → Regen → Effects → <b>ResolveCombatRounds</b> (применение урона/лечения + доставка событий, раундами) → <b>CommitEffects</b> → Death → CheckOutcome → currentTick++. </p>
+<p><b>Урон и лечение применяются разом.</b> Системы за тик только ЗАЯВЛЯЮТ их (расчёт чист: статы заморожены законом видимости), а TickLedger складывает заявки по каждой цели и применяет одним коммитом: щит поглощает сумму, дельты HP складываются, доли делятся между источниками пропорционально. Пока удары ложились в HP по одному, лечение упиралось в потолок раньше, чем приходил предназначенный цели урон, и одинаковые стороны расходились на пустом месте. </p>
+<p><b>Закон видимости эффектов:</b> наложенный эффект меняет статы и маску тегов носителя не раньше шага CommitEffects, то есть со следующего тика — как это давно сделано для флагов контроля. Исключение — pre-damage реактивы («Оплот» ловит тот же удар, что его разбудил). Без этого закона эффект, наложенный ранним по списку юнитом, менял расчёты тех, кто идёт позже, и порядок обхода становился игровым преимуществом (см. <code>EffectSystem.CommitTickChanges</code>). </p>
 <p>(вики «10» §5.1). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad93a3eda61fc3dac619027e365ae9132" name="ad93a3eda61fc3dac619027e365ae9132"></a>
@@ -368,7 +408,7 @@ Events</h2></td></tr>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a7ffdb85ea967ca31ce9f970371df906a" name="a7ffdb85ea967ca31ce9f970371df906a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ffdb85ea967ca31ce9f970371df906a">&#9670;&#160;</a></span>ApplyEffect()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ffdb85ea967ca31ce9f970371df906a">&#9670;&#160;</a></span>ApplyEffect() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -413,6 +453,140 @@ Events</h2></td></tr>
 
 </div>
 </div>
+<a id="a3e8e550dde4f84639f712a36708c70ea" name="a3e8e550dde4f84639f712a36708c70ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e8e550dde4f84639f712a36708c70ea">&#9670;&#160;</a></span>ApplyEffect() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.ApplyEffect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>&#160;</td>
+          <td class="paramname"><em>def</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>durationSeconds</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>То же наложение, но со сроком, посчитанным по ходу боя (в секундах, &gt; 0). </p>
+<p>Нужно там, где длительность — функция состояния цели, а не решение автора ассета: обездвиживание холодной линии растёт от 0.5 до 1.5 секунд вместе со стаками «Изморози». Заводить под каждую точку кривой свой ассет значило бы разложить одно число по трём файлам. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#ae1e521076c7a0af7c0b0d7994136aae8">Guildmaster.Combat.ICombatContext</a>.</p>
+
+</div>
+</div>
+<a id="a671506f23175d5c05c5c09277375f7f0" name="a671506f23175d5c05c5c09277375f7f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a671506f23175d5c05c5c09277375f7f0">&#9670;&#160;</a></span>ApplyEffect() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.ApplyEffect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>&#160;</td>
+          <td class="paramname"><em>def</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>durationSeconds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>potency</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Наложение с ВЕЛИЧИНОЙ, посчитанной накладывающим: <em>potency</em>  задаёт силу вместо авторской из ассета. </p>
+<p>Нужно порционным эффектам (Data.Definitions.StackRule.Portions): у кровотечения силу приносит удар, и она у каждой формы своя — поток отдаёт кровью весь урон, выпады добавляют её сверху долей.</p>
+<p>Симметрична перегрузке со сроком выше и появилась по той же причине: величина бывает функцией состояния носителя, а не решением автора ассета. Разложить «сколько крови пускает этот кит» по отдельным ассетам крови значило бы развести ОДНУ линию на несколько владельцев силы, после чего правка линии перестала бы доходить до половины носителей. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#afc4d67d13c82395c7ea35816a03ac919">Guildmaster.Combat.ICombatContext</a>.</p>
+
+</div>
+</div>
+<a id="a618a514ab2b07c7d4a59db9f3da8b571" name="a618a514ab2b07c7d4a59db9f3da8b571"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a618a514ab2b07c7d4a59db9f3da8b571">&#9670;&#160;</a></span>BindSummonFactory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.BindSummonFactory </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ISummonFactory.html">ISummonFactory</a>&#160;</td>
+          <td class="paramname"><em>factory</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Подать фабрику призывов (M10). </p>
+<p>Разводится снаружи — сборка юнитов из SO живёт вне боевого ядра, и бою нужен из неё ровно один метод. Отдельный вызов, а не параметр конструктора: бой без призывов полностью рабочий (балансные бенчи задают состав заранее), и обязательная зависимость заставила бы каждый прогон таскать фабрику ради механики, которой в нём нет. </p>
+
+</div>
+</div>
 <a id="a6d647c0229bc77cc9701a4272f36623c" name="a6d647c0229bc77cc9701a4272f36623c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d647c0229bc77cc9701a4272f36623c">&#9670;&#160;</a></span>ComputeChecksum()</h2>
 
@@ -436,13 +610,14 @@ Events</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Детерминированный слепок состояния симуляции: хэш позиций, HP и текущего тика. </p>
-<p>Используется Net.SimSyncProbe для проверки рассинхрона. </p>
+<p>Детерминированный слепок состояния симуляции: тик, состояние RNG, юниты (позиция, HP, щит, ресурс, фаза атаки), их активные эффекты и снаряды в полёте. </p>
+<p>Используется Net.SimSyncProbe для проверки рассинхрона.</p>
+<p>Эффекты, щит, ресурс и снаряды добавлены по аудиту 2026-07-26 (RC-8). Прежний слепок брал позицию, HP и тайминги атаки — то есть расхождение, начавшееся в эффектах (яд тикнул у хоста и не тикнул у клиента, стак обновился по-разному, снаряд разошёлся траекторией), становилось видно только когда оно доедет до HP, а к тому моменту причина уже далеко позади. Дёшево: перебор без аллокаций, зовётся по требованию пробы, а не каждый тик. </p>
 
 </div>
 </div>
-<a id="a6de925024d5473fc9537c6a36e39fe45" name="a6de925024d5473fc9537c6a36e39fe45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6de925024d5473fc9537c6a36e39fe45">&#9670;&#160;</a></span>DealDamage()</h2>
+<a id="a4197fcd89d55a99489f2ef77c8540e39" name="a4197fcd89d55a99489f2ef77c8540e39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4197fcd89d55a99489f2ef77c8540e39">&#9670;&#160;</a></span>DealDamage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -469,9 +644,9 @@ Events</h2></td></tr>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a5468cdcedd25be5819c524aa2be5e812">Guildmaster.Combat.ICombatContext</a>.</p>
 <div class="dynheader">
-Here is the call graph for this function:</div>
+Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a6de925024d5473fc9537c6a36e39fe45_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a4197fcd89d55a99489f2ef77c8540e39_icgraph.svg" width="480" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -533,34 +708,11 @@ Here is the call graph for this function:</div>
 <p>Принудительно сместить цель (отбрасывание/«ядро», §9.9). Исполняет DisplacementSystem. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a45899e7c43e59d7ae0165ce10b1a406e">Guildmaster.Combat.ICombatContext</a>.</p>
-
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_ab1642b518cd60e4ef9037e3636dcd887_cgraph.svg" width="480" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-</div>
-<a id="a8fd5cd93593dde5fce087c97bfc30d46" name="a8fd5cd93593dde5fce087c97bfc30d46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fd5cd93593dde5fce087c97bfc30d46">&#9670;&#160;</a></span>EnqueueCommand()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Guildmaster.Combat.CombatSimulation.EnqueueCommand </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html">ICombatCommand</a>&#160;</td>
-          <td class="paramname"><em>command</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Добавить команду в отсортированную очередь. </p>
 
 </div>
 </div>
@@ -584,7 +736,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a6ef3762989e4fb8bf6e6f2229baa2b5c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a6ef3762989e4fb8bf6e6f2229baa2b5c_icgraph.svg" width="530" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -660,6 +812,37 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a9b499ccec78dc4fcbf78f25b3ec95125" name="a9b499ccec78dc4fcbf78f25b3ec95125"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b499ccec78dc4fcbf78f25b3ec95125">&#9670;&#160;</a></span>NotifyAttackCompleted()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.NotifyAttackCompleted </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Атака завершена. </p>
+<p>Событие идёт в очередь ПОСЛЕДСТВИЙ, а не заявлений: заряд следующей Атаки взводится после того, как всё случившееся в этой уже применилось. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#ab904c33bc4aa9a13c3bf4c46a1e8f713">Guildmaster.Combat.ICombatContext</a>.</p>
+
+</div>
+</div>
 <a id="a1817a9ac10c8ae12430fe3a2294edd4e" name="a1817a9ac10c8ae12430fe3a2294edd4e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1817a9ac10c8ae12430fe3a2294edd4e">&#9670;&#160;</a></span>NotifyAttackInterrupted()</h2>
 
@@ -713,6 +896,36 @@ Here is the call graph for this function:</div>
 <p>Fire-and-forget — не мутирует симуляцию. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a61ec3a61e56c37bea02600055200205c">Guildmaster.Combat.ICombatContext</a>.</p>
+
+</div>
+</div>
+<a id="a3a73acc18a82c288a4031322a37afe5d" name="a3a73acc18a82c288a4031322a37afe5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a73acc18a82c288a4031322a37afe5d">&#9670;&#160;</a></span>NotifyComboBroken()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.NotifyComboBroken </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Комбо юнита порвалось (он пробыл вне атакующего лупа дольше <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a37d98fc0a7885ceeffbd4e7bf769f101">Core.Simulation.SimTuning.ComboBreakSeconds</a>).Ставит внутреннее событие <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a676f582752529cf3b8f4652aff72ae7d" title="Комбо носителя порвалось: он пробыл вне атакующего лупа дольше SimTuning.ComboBreakSeconds (ГДД: глос...">Effects.CombatEvent.ComboBroken</a> носителю — тому, кто держит взведённый заряд серии. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a52d0c6c3a104540bcef716a214feacb3">Guildmaster.Combat.ICombatContext</a>.</p>
 
 </div>
 </div>
@@ -879,6 +1092,80 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a55b03979e93593b4069a77017eb537b6" name="a55b03979e93593b4069a77017eb537b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55b03979e93593b4069a77017eb537b6">&#9670;&#160;</a></span>RemoveEffect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.RemoveEffect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>&#160;</td>
+          <td class="paramname"><em>def</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Снять с юнита эффект, выданный именно этим определением — системно, мимо диспела и без оглядки на <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a34da08cb0aa522f1298524ad8da61ac6">EffectData.Unremovable</a>. </p>
+<p>Нужно владельцу, который сам выдал состояние и сам его заканчивает: разрыв Комбо гасит заряд, взведённый серией.</p>
+<p>По определению, а не по тегу: тег <code>Empowered</code> носят и заряды активок, а их разрыв серии трогать не должен (вердикт Макса 2026-08-01) — «сбили» и «отошёл» это разные истории, и карточка Скрытности прямо разрешает отбегать, сохраняя заряд. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a8d3c0382c843d3171d7ad8368ebcbab0">Guildmaster.Combat.ICombatContext</a>.</p>
+
+</div>
+</div>
+<a id="a157186e78ad05b8a98cda26df20bd813" name="a157186e78ad05b8a98cda26df20bd813"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a157186e78ad05b8a98cda26df20bd813">&#9670;&#160;</a></span>ReportAbilityCast()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.ReportAbilityCast </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>caster</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Каст объявлен: событие уходит в очередь ЗАЯВЛЕНИЙ, а разослать его врагам — работа дренажа (см. </p>
+<p>DrainAnnouncements). Здесь оно ставится ОДНОЙ записью, потому что состав живых врагов должен читаться в момент доставки, а не в момент заявки.</p>
+<p>Именно заявлений, а не последствий: реакция на каст обязана успеть до того, как нагрузка этого каста применится (см. _announceQueue). </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a8938c7e828e1f365ee87871ee8d4851c">Guildmaster.Combat.ICombatContext</a>.</p>
+
+</div>
+</div>
 <a id="a96609f5e3bf5177b8fb1959d275f1b44" name="a96609f5e3bf5177b8fb1959d275f1b44"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a96609f5e3bf5177b8fb1959d275f1b44">&#9670;&#160;</a></span>ReportAreaHit()</h2>
 
@@ -899,6 +1186,39 @@ Here is the caller graph for this function:</div>
 <p>Fire-and-forget — не мутирует симуляцию и не влияет на детерминизм. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#ac724e42e655e77612ab64f06872e08c8">Guildmaster.Combat.ICombatContext</a>.</p>
+
+</div>
+</div>
+<a id="a438aff6d2cdfb1b06dd8bb4c1cf2a120" name="a438aff6d2cdfb1b06dd8bb4c1cf2a120"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a438aff6d2cdfb1b06dd8bb4c1cf2a120">&#9670;&#160;</a></span>ReportAttackMissed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.ReportAttackMissed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>attacker</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Промах слепого подаётся тем же сигналом, что уклонение: для игрока это одна и та же цифра «мимо» над целью, и второй канал показа означал бы вторую подачу одного факта. </p>
+<p>Разница «кто виноват» показу сегодня недоступна — расхождение помечено в статусе врагов. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a3f584f7709454f2c748d36161a8e1370">Guildmaster.Combat.ICombatContext</a>.</p>
 
 </div>
 </div>
@@ -927,6 +1247,28 @@ Here is the caller graph for this function:</div>
 
 <p>Сбросить бой для перезапуска НА МЕСТЕ (dev-R): чистим всех юнитов/снаряды/очереди и возвращаем исход в BattleOutcome.Ongoing. </p>
 <p>Сцена/камера НЕ трогаются — их не перезагружаем. Тик-цикл (CombatLoopService) простаивает, пока не-Ongoing, и сам возобновится после сброса. Дальше вызывающий заново расставляет бой (тот же сетап) через EnqueueUnitSpawn. </p>
+
+</div>
+</div>
+<a id="a2d1ca71fd259ff92f63207e40c23daf5" name="a2d1ca71fd259ff92f63207e40c23daf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d1ca71fd259ff92f63207e40c23daf5">&#9670;&#160;</a></span>ResolveAttackMiss()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.CombatSimulation.ResolveAttackMiss </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>attacker</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Уходит ли следующая авто-атака <em>attacker</em>  мимо (слепота).Спрашивается на снятии цифр удара — до заявки урона, чтобы промахнувшийся не накладывал и своих on-hit. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a28399e566d7b6dcc18deacab740d1bdf">Guildmaster.Combat.ICombatContext</a>.</p>
 
 </div>
 </div>
@@ -985,6 +1327,10 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Заморозить симуляцию СЦЕНАРИЕМ — расстановка, передышка, тест-полигон. </p>
+<p>Детерминированно: пауза вступает со следующего тика, а счётчик тиков продолжает идти, пока в очереди есть команды. </p>
+<p>Это НЕ пауза игрока. Ту держит <code>TimeScaleService</code> (Time.timeScale), и она останавливает сим косвенно — через обнулённый <code>Time.deltaTime</code>, из которого <code>CombatLoopService</code> копит тики. Два разных факта с похожими именами: сведение их в один ломает и расстановку, и тумблер Space (аудит 2026-07-26, T-4).</p>
+
 </div>
 </div>
 <a id="a85465a46ea9d2ce38e263814ef54b9c2" name="a85465a46ea9d2ce38e263814ef54b9c2"></a>
@@ -1014,6 +1360,106 @@ Here is the caller graph for this function:</div>
 <p>Создать снаряд в симуляции. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#af77b3fed804337cb57884a18b5bff033">Guildmaster.Combat.ICombatContext</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a85465a46ea9d2ce38e263814ef54b9c2_cgraph.svg" width="484" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a47196edf5856a85fcc69278b50704da0" name="a47196edf5856a85fcc69278b50704da0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47196edf5856a85fcc69278b50704da0">&#9670;&#160;</a></span>Summon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> Guildmaster.Combat.CombatSimulation.Summon </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">Data::Definitions::UnitData</a>&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>team</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>summoner</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Призвать тело в бой: собрать по киту и поставить в очередь спавна (см. ICombatContext). </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a47196edf5856a85fcc69278b50704da0_cgraph.svg" width="492" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a0b6c37ccc44bda27fbcbfd19c09591c6" name="a0b6c37ccc44bda27fbcbfd19c09591c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b6c37ccc44bda27fbcbfd19c09591c6">&#9670;&#160;</a></span>TeleportBehind()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.TeleportBehind </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Заявка на переход за спину — применяется в конце раунда, см. ApplyPendingTeleports. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a2786e514a0b3cefe4e61a4bb256b66da">Guildmaster.Combat.ICombatContext</a>.</p>
 
 </div>
 </div>
@@ -1189,6 +1635,30 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="acd77779f77c4f4c8973d527771b98f64" name="acd77779f77c4f4c8973d527771b98f64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd77779f77c4f4c8973d527771b98f64">&#9670;&#160;</a></span>Projectiles</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IReadOnlyList&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html">Projectile</a>&gt; Guildmaster.Combat.CombatSimulation.Projectiles</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Живые снаряды — их снимает лента боя, чтобы показ не летел по будущему. </p>
 
 </div>
 </div>

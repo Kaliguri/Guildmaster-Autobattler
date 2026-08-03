@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Tape.UnitSnapshot.From" name="Guildmaster.Combat.Tape.UnitSnapshot.From">
+<area shape="rect" id="Node000001" title="Снять состояние с живого юнита. Единственное место, где сим встречается с лентой." alt="" coords="5,27,200,67"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="248,5,468,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,34,234,30,235,35,201,39"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a22bc798f12c716f8ccda8585b205691b" title="Интервал между атаками в сим&#45;тиках." alt="" coords="257,55,459,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,55,243,60,243,65,200,61"/>
+</map>

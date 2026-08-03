@@ -110,13 +110,20 @@ Collaboration diagram for Guildmaster.Combat.DamageRequest:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abc2e5bd866bcfe573cce45a3c5176057" id="r_abc2e5bd866bcfe573cce45a3c5176057"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#abc2e5bd866bcfe573cce45a3c5176057">DamageRequest</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, float rawDamage, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52">DamageSchool</a> school, float armorK, <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a> sourceKind=<a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70da698dcef315bbeccaa57c333577736370">DamageSourceKind.Ability</a>, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70">DamageAffinity</a> affinity=DamageAffinity.None)</td></tr>
-<tr class="separator:abc2e5bd866bcfe573cce45a3c5176057"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac38d9e2d36f79718a5923908bff36b32" id="r_ac38d9e2d36f79718a5923908bff36b32"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#ac38d9e2d36f79718a5923908bff36b32">DamageRequest</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, float rawDamage, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> type, float armorK, <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a> sourceKind=<a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70da698dcef315bbeccaa57c333577736370">DamageSourceKind.Ability</a>, float vulnerability=1f, float bonusFlatPen=0f, float bonusPctPen=0f)</td></tr>
+<tr class="memdesc:ac38d9e2d36f79718a5923908bff36b32"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Тип урона. </td></tr>
+  </table>
+  </dd>
+</dl>
+ <br /></td></tr>
+<tr class="separator:ac38d9e2d36f79718a5923908bff36b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aedb988a33e70c9dcf237eb2be1b1fcb8" id="r_aedb988a33e70c9dcf237eb2be1b1fcb8"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#aedb988a33e70c9dcf237eb2be1b1fcb8">Source</a></td></tr>
-<tr class="memdesc:aedb988a33e70c9dcf237eb2be1b1fcb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Источник урона (для чтения DamageDealtEff, PhysPen/ElementalPen и lifesteal).  <br /></td></tr>
+<tr class="memdesc:aedb988a33e70c9dcf237eb2be1b1fcb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Источник урона (для чтения DamageDealtEff, PhysPen/MagicPen и lifesteal).  <br /></td></tr>
 <tr class="separator:aedb988a33e70c9dcf237eb2be1b1fcb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a775472a539a802ce1e5ee945bf0490df" id="r_a775472a539a802ce1e5ee945bf0490df"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a775472a539a802ce1e5ee945bf0490df">Target</a></td></tr>
 <tr class="memdesc:a775472a539a802ce1e5ee945bf0490df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цель урона.  <br /></td></tr>
@@ -124,21 +131,33 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a644419348de6eb2c2a193b221ff917d3" id="r_a644419348de6eb2c2a193b221ff917d3"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a644419348de6eb2c2a193b221ff917d3">RawDamage</a></td></tr>
 <tr class="memdesc:a644419348de6eb2c2a193b221ff917d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Базовый урон до модификаторов пайплайна.  <br /></td></tr>
 <tr class="separator:a644419348de6eb2c2a193b221ff917d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a775ef2213ec81949fb24a95f0b7b2b80" id="r_a775ef2213ec81949fb24a95f0b7b2b80"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52">DamageSchool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a775ef2213ec81949fb24a95f0b7b2b80">School</a></td></tr>
-<tr class="memdesc:a775ef2213ec81949fb24a95f0b7b2b80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Школа урона — определяет, какая броня используется (Physical/Elemental/True).  <br /></td></tr>
-<tr class="separator:a775ef2213ec81949fb24a95f0b7b2b80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cf49eaeb8d3172d9e2a852537359c89" id="r_a2cf49eaeb8d3172d9e2a852537359c89"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a2cf49eaeb8d3172d9e2a852537359c89">Type</a></td></tr>
+<tr class="memdesc:a2cf49eaeb8d3172d9e2a852537359c89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип урона — обязателен и задаётся источником явно (реформа 2026-07-30).  <br /></td></tr>
+<tr class="separator:a2cf49eaeb8d3172d9e2a852537359c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96e593ead08f6d85d2f0097cba8ba0f6" id="r_a96e593ead08f6d85d2f0097cba8ba0f6"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a96e593ead08f6d85d2f0097cba8ba0f6">ArmorK</a></td></tr>
 <tr class="memdesc:a96e593ead08f6d85d2f0097cba8ba0f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Константа K из StatsConfig (mult = K / (K + effArmor)).  <br /></td></tr>
 <tr class="separator:a96e593ead08f6d85d2f0097cba8ba0f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ecadebdd5fb84d10c62ff04062e8b50" id="r_a5ecadebdd5fb84d10c62ff04062e8b50"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a5ecadebdd5fb84d10c62ff04062e8b50">SourceKind</a></td></tr>
 <tr class="memdesc:a5ecadebdd5fb84d10c62ff04062e8b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Откуда пришёл урон — гейт для реактивов «на удар».  <br /></td></tr>
 <tr class="separator:a5ecadebdd5fb84d10c62ff04062e8b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1f71c1ef8ffbf615bc691b224a94cae" id="r_ae1f71c1ef8ffbf615bc691b224a94cae"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70">DamageAffinity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#ae1f71c1ef8ffbf615bc691b224a94cae">Affinity</a></td></tr>
-<tr class="memdesc:ae1f71c1ef8ffbf615bc691b224a94cae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сродство урона (Яд/Свет/Тьма). Бронёй не гасится — множитель по типу существа цели (AffinityTable).  <br /></td></tr>
-<tr class="separator:ae1f71c1ef8ffbf615bc691b224a94cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87daa205b31e75f80ec5310392b425d0" id="r_a87daa205b31e75f80ec5310392b425d0"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a87daa205b31e75f80ec5310392b425d0">Vulnerability</a></td></tr>
+<tr class="memdesc:a87daa205b31e75f80ec5310392b425d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель уязвимости ЦЕЛИ, уже вложенный в RawDamage («Угли» усиливают огонь по подожжённому).  <br /></td></tr>
+<tr class="separator:a87daa205b31e75f80ec5310392b425d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66f1055634da51c88a3e0c803e9fc491" id="r_a66f1055634da51c88a3e0c803e9fc491"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a66f1055634da51c88a3e0c803e9fc491">BonusFlatPen</a></td></tr>
+<tr class="memdesc:a66f1055634da51c88a3e0c803e9fc491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разовое плоское пробивание брони поверх статов источника — для ударов, которые игнорируют часть защиты один раз («Атака из скрытности» Убийцы игнорирует 20 ед.  <br /></td></tr>
+<tr class="separator:a66f1055634da51c88a3e0c803e9fc491"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fc0d6bb6912d6a3a7fbdda7f22a772c" id="r_a5fc0d6bb6912d6a3a7fbdda7f22a772c"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a5fc0d6bb6912d6a3a7fbdda7f22a772c">BonusPctPen</a></td></tr>
+<tr class="memdesc:a5fc0d6bb6912d6a3a7fbdda7f22a772c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разовое ПРОЦЕНТНОЕ пробивание брони поверх статов источника, долей: 0.5 = удар считает броню вдвое меньшей («Волчий разгон» наездника игнорирует половину защиты).  <br /></td></tr>
+<tr class="separator:a5fc0d6bb6912d6a3a7fbdda7f22a772c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a1ee5326b059483ee02dc99a90f6bc4d2" id="r_a1ee5326b059483ee02dc99a90f6bc4d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52">DamageSchool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a1ee5326b059483ee02dc99a90f6bc4d2">School</a><code> [get]</code></td></tr>
+<tr class="memdesc:a1ee5326b059483ee02dc99a90f6bc4d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Школа урона — какая броня гасит удар.  <br /></td></tr>
+<tr class="separator:a1ee5326b059483ee02dc99a90f6bc4d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22a337bfa66a5168c8be59f7282546b4" id="r_a22a337bfa66a5168c8be59f7282546b4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a22a337bfa66a5168c8be59f7282546b4">IsFire</a><code> [get]</code></td></tr>
+<tr class="memdesc:a22a337bfa66a5168c8be59f7282546b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Урон стихии огня — то, что копит «Угли» и усиливается ими.  <br /></td></tr>
+<tr class="separator:a22a337bfa66a5168c8be59f7282546b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37a724da80daf2cc575b4fded69f0e7c" id="r_a37a724da80daf2cc575b4fded69f0e7c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html#a37a724da80daf2cc575b4fded69f0e7c">IsAutoAttack</a><code> [get]</code></td></tr>
 <tr class="memdesc:a37a724da80daf2cc575b4fded69f0e7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Урон авто-атаки. «Изворотливость» убийцы уклоняется только от таких.  <br /></td></tr>
 <tr class="separator:a37a724da80daf2cc575b4fded69f0e7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,8 +169,8 @@ Properties</h2></td></tr>
 <div class="textblock"><p>Входные данные пайплайна урона. </p>
 <p>Чистая структура — никакого состояния или ссылок на сервисы (вики «10» §5.4). DamagePipeline.Execute мутирует HP/Shield цели. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abc2e5bd866bcfe573cce45a3c5176057" name="abc2e5bd866bcfe573cce45a3c5176057"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc2e5bd866bcfe573cce45a3c5176057">&#9670;&#160;</a></span>DamageRequest()</h2>
+<a id="ac38d9e2d36f79718a5923908bff36b32" name="ac38d9e2d36f79718a5923908bff36b32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac38d9e2d36f79718a5923908bff36b32">&#9670;&#160;</a></span>DamageRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -180,8 +199,8 @@ Properties</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52">DamageSchool</a>&#160;</td>
-          <td class="paramname"><em>school</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -198,8 +217,20 @@ Properties</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70">DamageAffinity</a>&#160;</td>
-          <td class="paramname"><em>affinity</em> = <code>DamageAffinity::None</code>&#160;</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>vulnerability</em> = <code>1f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>bonusFlatPen</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>bonusPctPen</em> = <code>0f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -214,25 +245,18 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Тип урона. </td></tr>
+  </table>
+  </dd>
+</dl>
+</p>
+<p>Дефолта нет намеренно: каждый источник обязан назвать его явно, иначе пропуск снова стал бы невидимым (реформа 2026-07-30). </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ae1f71c1ef8ffbf615bc691b224a94cae" name="ae1f71c1ef8ffbf615bc691b224a94cae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1f71c1ef8ffbf615bc691b224a94cae">&#9670;&#160;</a></span>Affinity</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70">DamageAffinity</a> Guildmaster.Combat.DamageRequest.Affinity</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Сродство урона (Яд/Свет/Тьма). Бронёй не гасится — множитель по типу существа цели (AffinityTable). </p>
-
-</div>
-</div>
 <a id="a96e593ead08f6d85d2f0097cba8ba0f6" name="a96e593ead08f6d85d2f0097cba8ba0f6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a96e593ead08f6d85d2f0097cba8ba0f6">&#9670;&#160;</a></span>ArmorK</h2>
 
@@ -246,6 +270,41 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Константа K из StatsConfig (mult = K / (K + effArmor)). </p>
+
+</div>
+</div>
+<a id="a66f1055634da51c88a3e0c803e9fc491" name="a66f1055634da51c88a3e0c803e9fc491"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66f1055634da51c88a3e0c803e9fc491">&#9670;&#160;</a></span>BonusFlatPen</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Combat.DamageRequest.BonusFlatPen</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Разовое плоское пробивание брони поверх статов источника — для ударов, которые игнорируют часть защиты один раз («Атака из скрытности» Убийцы игнорирует 20 ед. </p>
+<p>брони). Стат <code>PhysPen</code>/<code>MagicPen</code> так не выразить: он постоянный, а это свойство удара. </p>
+
+</div>
+</div>
+<a id="a5fc0d6bb6912d6a3a7fbdda7f22a772c" name="a5fc0d6bb6912d6a3a7fbdda7f22a772c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fc0d6bb6912d6a3a7fbdda7f22a772c">&#9670;&#160;</a></span>BonusPctPen</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Combat.DamageRequest.BonusPctPen</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Разовое ПРОЦЕНТНОЕ пробивание брони поверх статов источника, долей: 0.5 = удар считает броню вдвое меньшей («Волчий разгон» наездника игнорирует половину защиты). </p>
+<p>Статами <code>PhysPenPct</code>/<code>MagicPenPct</code> так не выразить — они постоянные, а это свойство удара.</p>
+<p>Процент и плоское пробивание НЕ взаимозаменяемы: процент отвечает «толстой» броне, плоское — тонкой, и разгон, которому карточка обещает половину защиты, плоским числом выразим только подгонкой под конкретных врагов. Складывается с процентом из статов умножением остатков (см. <code>DamagePipeline</code>), поэтому суммарное пробивание никогда не превышает 100%. </p>
 
 </div>
 </div>
@@ -265,22 +324,6 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a775ef2213ec81949fb24a95f0b7b2b80" name="a775ef2213ec81949fb24a95f0b7b2b80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a775ef2213ec81949fb24a95f0b7b2b80">&#9670;&#160;</a></span>School</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52">DamageSchool</a> Guildmaster.Combat.DamageRequest.School</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Школа урона — определяет, какая броня используется (Physical/Elemental/True). </p>
-
-</div>
-</div>
 <a id="aedb988a33e70c9dcf237eb2be1b1fcb8" name="aedb988a33e70c9dcf237eb2be1b1fcb8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aedb988a33e70c9dcf237eb2be1b1fcb8">&#9670;&#160;</a></span>Source</h2>
 
@@ -293,7 +336,7 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Источник урона (для чтения DamageDealtEff, PhysPen/ElementalPen и lifesteal). </p>
+<p>Источник урона (для чтения DamageDealtEff, PhysPen/MagicPen и lifesteal). </p>
 
 </div>
 </div>
@@ -326,6 +369,40 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Цель урона. </p>
+
+</div>
+</div>
+<a id="a2cf49eaeb8d3172d9e2a852537359c89" name="a2cf49eaeb8d3172d9e2a852537359c89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cf49eaeb8d3172d9e2a852537359c89">&#9670;&#160;</a></span>Type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> Guildmaster.Combat.DamageRequest.Type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Тип урона — обязателен и задаётся источником явно (реформа 2026-07-30). </p>
+<p>Несёт и школу брони (через School), и идентичность для реактивов: «Угли» копятся с DamageType.Fire, хрупкая ледяная статуя добавляет +20% DamageType.Blunt. </p>
+
+</div>
+</div>
+<a id="a87daa205b31e75f80ec5310392b425d0" name="a87daa205b31e75f80ec5310392b425d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87daa205b31e75f80ec5310392b425d0">&#9670;&#160;</a></span>Vulnerability</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Combat.DamageRequest.Vulnerability</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Множитель уязвимости ЦЕЛИ, уже вложенный в RawDamage («Угли» усиливают огонь по подожжённому). </p>
+<p>Пайплайн его не применяет — он приходит домноженным; поле нужно, чтобы результат смог сказать, сколько из нанесённого числа дали уязвимости. 1 = чистый урон. </p>
 
 </div>
 </div>
@@ -376,6 +453,55 @@ Properties</h2></td></tr>
 
 <p>Прямой удар — авто-атака или атакующая способность. </p>
 <p>Именно он будит реактивы «на удар» (шипы Древня, щиты): доты и ответки реактивов не будят, иначе получается каскад. </p>
+
+</div>
+</div>
+<a id="a22a337bfa66a5168c8be59f7282546b4" name="a22a337bfa66a5168c8be59f7282546b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22a337bfa66a5168c8be59f7282546b4">&#9670;&#160;</a></span>IsFire</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.DamageRequest.IsFire</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Урон стихии огня — то, что копит «Угли» и усиливается ими. </p>
+
+</div>
+</div>
+<a id="a1ee5326b059483ee02dc99a90f6bc4d2" name="a1ee5326b059483ee02dc99a90f6bc4d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ee5326b059483ee02dc99a90f6bc4d2">&#9670;&#160;</a></span>School</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52">DamageSchool</a> Guildmaster.Combat.DamageRequest.School</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Школа урона — какая броня гасит удар. </p>
+<p>Не поле, а следствие Type: задать её в обход типа нельзя, поэтому «физический огонь» невыразим. </p>
 
 </div>
 </div>

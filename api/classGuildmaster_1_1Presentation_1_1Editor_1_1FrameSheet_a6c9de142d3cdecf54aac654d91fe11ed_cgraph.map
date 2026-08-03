@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Editor.FrameSheet.ComposeOnionSkin" name="Guildmaster.Presentation.Editor.FrameSheet.ComposeOnionSkin">
+<area shape="rect" id="Node000001" title="Кадры наложением в одну ячейку: старые позы бледные, последняя в полную силу." alt="" coords="5,5,277,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Editor_1_1FrameSheet.html#a06d5abc216843678298baf06d525c99a" title="Пустой холст, залитый цветом. Point&#45;фильтрация: лист смотрят попиксельно." alt="" coords="325,5,536,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="278,23,312,23,312,28,278,28"/>
+</map>

@@ -98,25 +98,29 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1OutcomeScree
 </div><!--header-->
 <div class="contents">
 
-<p>Сборка экрана исхода забега (план [[act-map-run-loop]] §4 C2): заголовок Победа/Поражение + «В меню».  
+<p>Сборка экрана исхода (план [[act-map-run-loop]] §4 C2): заголовок Победа/Поражение и выход.  
  <a href="classGuildmaster_1_1UI_1_1OutcomeScreenView.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.OutcomeScreenView:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1OutcomeScreenView__coll__graph.svg" width="262" height="76"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1OutcomeScreenView__coll__graph.svg" width="262" height="96"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:abcd8cb230bfd25ec550b2abd5d0e6d65" id="r_abcd8cb230bfd25ec550b2abd5d0e6d65"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1OutcomeScreenView.html#abcd8cb230bfd25ec550b2abd5d0e6d65">Build</a> (VisualTreeAsset uxml, bool victory, Func&lt; string, string &gt; localize, Action onToMenu)</td></tr>
-<tr class="separator:abcd8cb230bfd25ec550b2abd5d0e6d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af740ed8d890e373ea54547f29b2f0168" id="r_af740ed8d890e373ea54547f29b2f0168"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1OutcomeScreenView.html#af740ed8d890e373ea54547f29b2f0168">Build</a> (VisualTreeAsset uxml, bool victory, Func&lt; string, string &gt; localize, Action onToMenu, Action onContinue=null)</td></tr>
+<tr class="separator:af740ed8d890e373ea54547f29b2f0168"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb9ffafb781d5e2b078480dc5d97d442" id="r_afb9ffafb781d5e2b078480dc5d97d442"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1OutcomeScreenView.html#afb9ffafb781d5e2b078480dc5d97d442">SetContinueCount</a> (VisualElement root, Func&lt; string, string &gt; localize, int ready, int required, bool locallyReady)</td></tr>
+<tr class="memdesc:afb9ffafb781d5e2b078480dc5d97d442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать на «Продолжить», скольких ещё ждём.  <br /></td></tr>
+<tr class="separator:afb9ffafb781d5e2b078480dc5d97d442"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Сборка экрана исхода забега (план [[act-map-run-loop]] §4 C2): заголовок Победа/Поражение + «В меню». </p>
-<p>Общий код для роутера и превью-стенда. Разметка/стиль — из <code>OutcomeScreen.uxml</code> + дизайн-система. </p>
+<div class="textblock"><p>Сборка экрана исхода (план [[act-map-run-loop]] §4 C2): заголовок Победа/Поражение и выход. </p>
+<p>Общий код для роутера и превью-стенда. Разметка/стиль — из <code>OutcomeScreen.uxml</code> + дизайн-система.</p>
+<p><b>«Продолжить» показывается не всегда.</b> После забега продолжать нечего — акт кончился, и единственный выход ведёт в меню. На площадке наоборот: состав и расстановка целы, драться тем же строем снова — обычное дело, а не исключение. Поэтому кнопку решает вызывающий: <code>null</code> означает «здесь продолжать нечем», и кнопки не будет вовсе. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="abcd8cb230bfd25ec550b2abd5d0e6d65" name="abcd8cb230bfd25ec550b2abd5d0e6d65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abcd8cb230bfd25ec550b2abd5d0e6d65">&#9670;&#160;</a></span>Build()</h2>
+<a id="af740ed8d890e373ea54547f29b2f0168" name="af740ed8d890e373ea54547f29b2f0168"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af740ed8d890e373ea54547f29b2f0168">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -146,7 +150,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onToMenu</em>&#160;</td>
+          <td class="paramname"><em>onToMenu</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onContinue</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -160,6 +170,64 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="afb9ffafb781d5e2b078480dc5d97d442" name="afb9ffafb781d5e2b078480dc5d97d442"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb9ffafb781d5e2b078480dc5d97d442">&#9670;&#160;</a></span>SetContinueCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Guildmaster.UI.OutcomeScreenView.SetContinueCount </td>
+          <td>(</td>
+          <td class="paramtype">VisualElement&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Func&lt; string, string &gt;&#160;</td>
+          <td class="paramname"><em>localize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ready</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>required</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>locallyReady</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Показать на «Продолжить», скольких ещё ждём. </p>
+<p>В одиночку счёт не рисуется: «(1/1)» не сообщает ничего, а место на кнопке занимает.</p>
+<p>Отдельный метод, а не параметр сборки: счёт меняется, пока экран открыт, — второй игрок подтверждает уже после того, как первый увидел итог. Подпись обязана меняться вместе с ним, иначе подтвердивший смотрит на кнопку, которая молчит. </p>
 
 </div>
 </div>

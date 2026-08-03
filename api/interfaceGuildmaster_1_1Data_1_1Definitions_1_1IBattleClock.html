@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Data_1_1Defini
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#events">Events</a> &#124;
 <a href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Data.Definitions.IBattleClock Interface Reference</div></div>
 </div><!--header-->
@@ -126,6 +127,12 @@ Properties</h2></td></tr>
 <tr class="memitem:a1414fbba3d688cc485572b6229ca4d42" id="r_a1414fbba3d688cc485572b6229ca4d42"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#a1414fbba3d688cc485572b6229ca4d42">ElapsedSeconds</a><code> [get]</code></td></tr>
 <tr class="memdesc:a1414fbba3d688cc485572b6229ca4d42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прошедшее время текущего боя, сек (0, если боя нет).  <br /></td></tr>
 <tr class="separator:a1414fbba3d688cc485572b6229ca4d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
+Events</h2></td></tr>
+<tr class="memitem:a32ad59655ceb01c9eeb318faeee918e1" id="r_a32ad59655ceb01c9eeb318faeee918e1"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#a32ad59655ceb01c9eeb318faeee918e1">PhaseChanged</a></td></tr>
+<tr class="memdesc:a32ad59655ceb01c9eeb318faeee918e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза сменилась (расстановка ↔ бой ↔ нет боя).  <br /></td></tr>
+<tr class="separator:a32ad59655ceb01c9eeb318faeee918e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Read-side абстракция боевого таймера/фазы для UI-слоя (план 12 Фаза 2). </p>
@@ -148,7 +155,12 @@ Properties</h2></td></tr>
 
 <p>UI → бой: начать бой из фазы расстановки (кнопка «Начать»). No-op, если некому. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a1996312ca2f53a29871e9b904c586793">Guildmaster.Game.Flow.BattleSession</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Activity_1_1ActivityClockRouter.html#a6857da04b11a9eae6fea36fc25ee9ec4">Guildmaster.Game.Activity.ActivityClockRouter</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a1996312ca2f53a29871e9b904c586793">Guildmaster.Game.Flow.BattleSession</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock_a769fafb7ea4fc8f96ba51ac744f6381b_icgraph.svg" width="512" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -175,7 +187,7 @@ Properties</h2></td></tr>
 
 <p>Прошедшее время текущего боя, сек (0, если боя нет). </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab29f51f9bcfd9d2343e8eb852e474f8c">Guildmaster.Game.Flow.BattleSession</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Activity_1_1ActivityClockRouter.html#af4deb61106f2af24053f24b23789fbc3">Guildmaster.Game.Activity.ActivityClockRouter</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab29f51f9bcfd9d2343e8eb852e474f8c">Guildmaster.Game.Flow.BattleSession</a>.</p>
 
 </div>
 </div>
@@ -201,7 +213,25 @@ Properties</h2></td></tr>
 
 <p>Текущая фаза боя (пусто/расстановка/бой). Панель опрашивает каждый кадр. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a38d9ff1853a968e168b7de6008644f9c">Guildmaster.Game.Flow.BattleSession</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Activity_1_1ActivityClockRouter.html#a72e4eb8d951a4cc0e82093647fe334d0">Guildmaster.Game.Activity.ActivityClockRouter</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a38d9ff1853a968e168b7de6008644f9c">Guildmaster.Game.Flow.BattleSession</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Event Documentation</h2>
+<a id="a32ad59655ceb01c9eeb318faeee918e1" name="a32ad59655ceb01c9eeb318faeee918e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32ad59655ceb01c9eeb318faeee918e1">&#9670;&#160;</a></span>PhaseChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.Data.Definitions.IBattleClock.PhaseChanged</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Фаза сменилась (расстановка ↔ бой ↔ нет боя). </p>
+<p>Навигатор подписывается и пересчитывает глушение/ контекст ввода из новой фазы — вместо ручного <code>SetContext</code> в боевом слое (снос K8, план II.3). Поднимается только на РЕАЛЬНОЙ смене значения (тот же phase дважды = без события). </p>
 
 </div>
 </div>

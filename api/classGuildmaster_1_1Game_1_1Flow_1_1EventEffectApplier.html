@@ -108,8 +108,8 @@ Collaboration diagram for Guildmaster.Game.Flow.EventEffectApplier:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4babe441088eb842644836a74bc74b7d" id="r_a4babe441088eb842644836a74bc74b7d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html#a4babe441088eb842644836a74bc74b7d">EventEffectApplier</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a> runStates)</td></tr>
-<tr class="separator:a4babe441088eb842644836a74bc74b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4e4d4b2b578aed55bcb84b1d4bf1553" id="r_ab4e4d4b2b578aed55bcb84b1d4bf1553"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html#ab4e4d4b2b578aed55bcb84b1d4bf1553">EventEffectApplier</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a> runStates, <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html">Guildmaster.Guild.Commands.IRunCommands</a> commands)</td></tr>
+<tr class="separator:ab4e4d4b2b578aed55bcb84b1d4bf1553"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c37ee8fd3d5a48d414369a913080aae" id="r_a8c37ee8fd3d5a48d414369a913080aae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html#a8c37ee8fd3d5a48d414369a913080aae">Apply</a> (IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html">EventEffect</a> &gt; effects)</td></tr>
 <tr class="memdesc:a8c37ee8fd3d5a48d414369a913080aae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применить список последствий по порядку. Пишет автосейв, если что-то изменилось.  <br /></td></tr>
 <tr class="separator:a8c37ee8fd3d5a48d414369a913080aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,20 +118,38 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Применяет последствия выбора текстового ивента (EventEffect) к RunState через RunStateService — единый центр-switch (план 11 §5.1). </p>
 <p>Тривиальное (золото, релик, вместимость) применяется реально; ещё не проведённое в бой (предмет) и произвольное (Custom) — пока дебаг-лог (как просил Макс: «хотя бы дебаг-лог»), но с честным хуком под будущую механику. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a4babe441088eb842644836a74bc74b7d" name="a4babe441088eb842644836a74bc74b7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4babe441088eb842644836a74bc74b7d">&#9670;&#160;</a></span>EventEffectApplier()</h2>
+<a id="ab4e4d4b2b578aed55bcb84b1d4bf1553" name="ab4e4d4b2b578aed55bcb84b1d4bf1553"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4e4d4b2b578aed55bcb84b1d4bf1553">&#9670;&#160;</a></span>EventEffectApplier()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Guildmaster.Game.Flow.EventEffectApplier.EventEffectApplier </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a>&#160;</td>
-          <td class="paramname"><em>runStates</em></td><td>)</td>
+          <td class="paramname"><em>runStates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html">Guildmaster::Guild::Commands::IRunCommands</a>&#160;</td>
+          <td class="paramname"><em>commands</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

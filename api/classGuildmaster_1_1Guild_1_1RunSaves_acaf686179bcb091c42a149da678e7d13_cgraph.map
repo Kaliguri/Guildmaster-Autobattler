@@ -1,0 +1,7 @@
+<map id="Guildmaster.Guild.RunSaves.Exists" name="Guildmaster.Guild.RunSaves.Exists">
+<area shape="rect" id="Node000001" title="Есть ли автосейв забега на диске — вопрос меню про «Продолжить»." alt="" coords="5,37,216,77"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a9c3b47666cbfba6afcf2f4b1e6f2cee5" title="Есть ли файл под ключом. Дешёвая проверка наличия — о пригодности отвечает TryLoad&lt;T&gt;." alt="" coords="264,5,483,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,42,250,38,251,43,217,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Guild_1_1RunSaves.html#ae39f495d9f633690bb93d85ba3f41da8" title="Ключ автосейва забега активной гильдии." alt="" coords="268,69,479,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,68,254,72,254,77,216,73"/>
+</map>

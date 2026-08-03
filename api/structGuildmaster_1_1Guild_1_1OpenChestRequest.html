@@ -104,43 +104,80 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Guild_1_1OpenChes
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.OpenChestRequest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenChestRequest__coll__graph.svg" width="218" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenChestRequest__coll__graph.svg" width="218" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a515b632052151a42f5f348423eaf51ef" id="r_a515b632052151a42f5f348423eaf51ef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html#a515b632052151a42f5f348423eaf51ef">OpenChestRequest</a> (Action onOpen)</td></tr>
-<tr class="separator:a515b632052151a42f5f348423eaf51ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88279fbd5678803a1608d14486d8c083" id="r_a88279fbd5678803a1608d14486d8c083"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html#a88279fbd5678803a1608d14486d8c083">OpenChestRequest</a> (Action onOpen, CancellationToken cancellation=default)</td></tr>
+<tr class="separator:a88279fbd5678803a1608d14486d8c083"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a2e3de85542dc8c4d65d0e2a726292118" id="r_a2e3de85542dc8c4d65d0e2a726292118"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html#a2e3de85542dc8c4d65d0e2a726292118">OnOpen</a></td></tr>
 <tr class="memdesc:a2e3de85542dc8c4d65d0e2a726292118"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк открытия крышки (ровно один вызов) — флоу показывает награду.  <br /></td></tr>
 <tr class="separator:a2e3de85542dc8c4d65d0e2a726292118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac38c9ed1cd2a9160128b1905fc7a5f52" id="r_ac38c9ed1cd2a9160128b1905fc7a5f52"><td class="memItemLeft" align="right" valign="top">readonly CancellationToken&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html#ac38c9ed1cd2a9160128b1905fc7a5f52">Cancellation</a></td></tr>
+<tr class="memdesc:ac38c9ed1cd2a9160128b1905fc7a5f52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Токен отмены забега (QA #37): отмена закрывает сундук через навигатор.  <br /></td></tr>
+<tr class="separator:ac38c9ed1cd2a9160128b1905fc7a5f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Запрос показать фасад сундука (план [[act-map-run-loop]] §4 B3): ЛКМ по крышке → OnOpen (флоу дальше катит награду 1-из-3). </p>
 <p>Публикует <code>ChestFlow</code>, слушает UI. Ровно один вызов. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a515b632052151a42f5f348423eaf51ef" name="a515b632052151a42f5f348423eaf51ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a515b632052151a42f5f348423eaf51ef">&#9670;&#160;</a></span>OpenChestRequest()</h2>
+<a id="a88279fbd5678803a1608d14486d8c083" name="a88279fbd5678803a1608d14486d8c083"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88279fbd5678803a1608d14486d8c083">&#9670;&#160;</a></span>OpenChestRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Guildmaster.Guild.OpenChestRequest.OpenChestRequest </td>
           <td>(</td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onOpen</em></td><td>)</td>
+          <td class="paramname"><em>onOpen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">CancellationToken&#160;</td>
+          <td class="paramname"><em>cancellation</em> = <code>default</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ac38c9ed1cd2a9160128b1905fc7a5f52" name="ac38c9ed1cd2a9160128b1905fc7a5f52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac38c9ed1cd2a9160128b1905fc7a5f52">&#9670;&#160;</a></span>Cancellation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly CancellationToken Guildmaster.Guild.OpenChestRequest.Cancellation</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Токен отмены забега (QA #37): отмена закрывает сундук через навигатор. </p>
+
+</div>
+</div>
 <a id="a2e3de85542dc8c4d65d0e2a726292118" name="a2e3de85542dc8c4d65d0e2a726292118"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e3de85542dc8c4d65d0e2a726292118">&#9670;&#160;</a></span>OnOpen</h2>
 

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.EffectSystem.Dispel" name="Guildmaster.Combat.EffectSystem.Dispel">
+<area shape="rect" id="Node000001" title="Снять с цели подходящие эффекты: полярность ∧ теги ∧ CleanseTier ≤ DispelPower ∧ !..." alt="" coords="5,37,203,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#ac50ab405fea7ed65a7bffec499810ee5" title="Сколько стаков уносит ОДНО очищение силой dispelPower &#160;(ГДД «Свойства эффекта» §Цена очистки,..." alt="" coords="251,5,465,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,42,237,38,237,43,203,48"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a5554fd4708aa26adef1a86a2991addd4" title="Срезать стаки (цена очищения, сход «Углей»). Ниже нуля не уходит." alt="" coords="251,69,465,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,67,237,71,237,77,203,72"/>
+</map>

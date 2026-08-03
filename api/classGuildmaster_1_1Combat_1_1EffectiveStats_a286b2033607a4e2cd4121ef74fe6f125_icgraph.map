@@ -1,0 +1,11 @@
+<map id="Guildmaster.Combat.EffectiveStats.Build" name="Guildmaster.Combat.EffectiveStats.Build">
+<area shape="rect" id="Node000001" title="Собрать стат&#45;блок юнита поверх дефолтов конфига." alt="" coords="564,49,781,89"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="718,38,702,31,673,28,647,30,632,35,626,41,629,48,624,50,621,40,629,30,646,25,673,23,703,25,720,33"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a70e9cf5d31e2c828b5913df2b51f7b5a" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="301,49,516,89"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="551,72,516,72,516,67,551,67"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a50f5fe5c50d54b6d2c1fdbcabd79bc09" title="Собрать призванного юнита (M10): та же сборка, что у всех, плюс множители силы призывов от призывател..." alt="" coords="22,5,237,45"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="287,53,237,45,237,40,288,48"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab4ec10b3c8cb40ff0c983b1fda86385f" title="1×1 зеркально на дев&#45;дуэлянте (enemy.bone_dev) — смотреть скелетный визуал в живом бою." alt="" coords="5,93,253,133"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="288,91,254,96,253,91,288,86"/>
+<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="177,82,160,75,129,72,102,74,86,79,80,85,83,92,78,94,75,84,83,74,101,69,129,67,161,69,179,77"/>
+</map>

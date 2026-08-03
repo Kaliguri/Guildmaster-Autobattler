@@ -1,3 +1,3 @@
 <map id="Guildmaster.UI.SettingsViewModel" name="Guildmaster.UI.SettingsViewModel">
-<area shape="rect" id="Node000001" title="ViewModel экрана настроек — посредник между ISettingsService (модель) и View (UXML)." alt="" coords="5,5,205,365"/>
+<area shape="rect" id="Node000001" title="ViewModel экрана настроек — посредник между моделью и View (UXML)." alt="" coords="5,5,217,645"/>
 </map>

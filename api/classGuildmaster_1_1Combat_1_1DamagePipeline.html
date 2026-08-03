@@ -108,16 +108,17 @@ Collaboration diagram for Guildmaster.Combat.DamagePipeline:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a92f4da6e6fd513be46129dbf0ec6a32d" id="r_a92f4da6e6fd513be46129dbf0ec6a32d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html">DamageResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1DamagePipeline.html#a92f4da6e6fd513be46129dbf0ec6a32d">Execute</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a> req)</td></tr>
-<tr class="memdesc:a92f4da6e6fd513be46129dbf0ec6a32d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выполнить пайплайн: вычислить финальный урон и применить его к DamageRequest.Target.  <br /></td></tr>
-<tr class="separator:a92f4da6e6fd513be46129dbf0ec6a32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eb992f9b00c2d20a99b9837d0a08104" id="r_a9eb992f9b00c2d20a99b9837d0a08104"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1DamagePipeline.html#a9eb992f9b00c2d20a99b9837d0a08104">Resolve</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a> req, out float mitigated)</td></tr>
+<tr class="memdesc:a9eb992f9b00c2d20a99b9837d0a08104"><td class="mdescLeft">&#160;</td><td class="mdescRight">Посчитать урон, который дойдёт до цели, ДО поглощения щитом.  <br /></td></tr>
+<tr class="separator:a9eb992f9b00c2d20a99b9837d0a08104"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Детерминированный конвейер урона. </p>
-<p>Все методы статические и чистые (in-параметры, мутация только HP/Shield цели через DamageRequest). Порядок: raw → DamageDealtEff → броня/пробивание (школа) → сродство × тип существа → DamageTakenEff → щит → HP (вики «10» §5.4, «6» §6; ГДД «8» §«Школа vs сродство»). </p>
+<p>Все методы статические и чистые. Порядок: raw → DamageDealtEff → броня/пробивание (школа) → сродство × тип существа → DamageTakenEff (вики «10» §5.4, «6» §6; ГДД «8» §«Школа vs сродство»).</p>
+<p>Пайплайн ТОЛЬКО СЧИТАЕТ и ничего не применяет: щит и HP правит <code>TickLedger</code> на коммите тика. Разделение держится на законе видимости эффектов — статы источника и цели заморожены на весь тик, поэтому расчёт не зависит от того, в каком порядке удары дошли до пайплайна, и его можно выполнить сразу, а применение отложить (см. <code>tick-resolution</code>). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a92f4da6e6fd513be46129dbf0ec6a32d" name="a92f4da6e6fd513be46129dbf0ec6a32d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92f4da6e6fd513be46129dbf0ec6a32d">&#9670;&#160;</a></span>Execute()</h2>
+<a id="a9eb992f9b00c2d20a99b9837d0a08104" name="a9eb992f9b00c2d20a99b9837d0a08104"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9eb992f9b00c2d20a99b9837d0a08104">&#9670;&#160;</a></span>Resolve()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -126,11 +127,21 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html">DamageResult</a> Guildmaster.Combat.DamagePipeline.Execute </td>
+          <td class="memname">static float Guildmaster.Combat.DamagePipeline.Resolve </td>
           <td>(</td>
           <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a>&#160;</td>
-          <td class="paramname"><em>req</em></td><td>)</td>
+          <td class="paramname"><em>req</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">out float&#160;</td>
+          <td class="paramname"><em>mitigated</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -140,24 +151,16 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Выполнить пайплайн: вычислить финальный урон и применить его к DamageRequest.Target. </p>
+<p>Посчитать урон, который дойдёт до цели, ДО поглощения щитом. </p>
+<p>Ничего не мутирует.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">req</td><td>Запрос урона с источником, целью и параметрами.</td></tr>
+    <tr><td class="paramname">mitigated</td><td>Сколько срезали броня и эффективности — то, чего не случилось.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Детализированный результат для триггеров (lifesteal, шипы — Фаза 2).</dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1DamagePipeline_a92f4da6e6fd513be46129dbf0ec6a32d_cgraph.svg" width="488" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1DamagePipeline_a92f4da6e6fd513be46129dbf0ec6a32d_icgraph.svg" width="484" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<dl class="section return"><dt>Returns</dt><dd>Эффективный урон (≥ 0) после эффективностей, брони и пробивания.</dd></dl>
 
 </div>
 </div>

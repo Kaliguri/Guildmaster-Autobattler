@@ -1,0 +1,7 @@
+<map id="Guildmaster.Net.NetByteWriter.WriteLong" name="Guildmaster.Net.NetByteWriter.WriteLong">
+<area shape="rect" id="Node000001" title="Восемь байт, младшая половина первой — тем же порядком, что и всё остальное." alt="" coords="609,5,837,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="341,5,561,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="595,28,562,28,562,23,595,23"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,5,293,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="328,28,294,28,294,23,328,23"/>
+</map>

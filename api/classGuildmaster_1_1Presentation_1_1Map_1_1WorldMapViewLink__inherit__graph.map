@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Map.WorldMapViewLink" name="Guildmaster.Presentation.Map.WorldMapViewLink">
+<area shape="rect" id="Node000001" title="Линк к world&#45;слою карты для потребителей, которые живут ВЫШЕ мирового DI&#45;скоупа." alt="" coords="5,199,188,399"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Presentation_1_1Map_1_1IWorldMapView.html" title="World&#45;слой карты акта: рисует узлы и рёбра в мире и отдаёт наружу клик по доступному узлу." alt="" coords="32,5,161,151"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,164,99,198,94,198,94,164"/>
+</map>

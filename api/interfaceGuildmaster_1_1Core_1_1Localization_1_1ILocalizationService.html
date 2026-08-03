@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Core_1_1Locali
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Core.Localization.ILocalizationService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService__inherit__graph.svg" width="224" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService__inherit__graph.svg" width="224" height="459"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Localization.ILocalizationService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService__coll__graph.svg" width="224" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService__coll__graph.svg" width="224" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -121,6 +121,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a35d7be261a41496cf96d9ea4f3ec1829" id="r_a35d7be261a41496cf96d9ea4f3ec1829"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html#a35d7be261a41496cf96d9ea4f3ec1829">GetString</a> (string table, string key)</td></tr>
 <tr class="memdesc:a35d7be261a41496cf96d9ea4f3ec1829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строка из указанной String Table (<code>Content</code> / <code>UI</code>) по ключу.  <br /></td></tr>
 <tr class="separator:a35d7be261a41496cf96d9ea4f3ec1829"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0566ac712ef18b67955779863016acdc" id="r_a0566ac712ef18b67955779863016acdc"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html#a0566ac712ef18b67955779863016acdc">GetString</a> (string key, IReadOnlyDictionary&lt; string, object &gt; args)</td></tr>
+<tr class="memdesc:a0566ac712ef18b67955779863016acdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строка из таблицы <code>Content</code> с подстановкой именованных аргументов (Smart String: <code>«Наносит {dmg} урона»</code>).  <br /></td></tr>
+<tr class="separator:a0566ac712ef18b67955779863016acdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a693d319434541b7c534ec94a91066c32" id="r_a693d319434541b7c534ec94a91066c32"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html#a693d319434541b7c534ec94a91066c32">GetString</a> (string table, string key, IReadOnlyDictionary&lt; string, object &gt; args)</td></tr>
+<tr class="memdesc:a693d319434541b7c534ec94a91066c32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строка из указанной таблицы с подстановкой именованных аргументов.  <br /></td></tr>
+<tr class="separator:a693d319434541b7c534ec94a91066c32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d14deb9ebacba4ec5ff8c5d310c9c34" id="r_a9d14deb9ebacba4ec5ff8c5d310c9c34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html#a9d14deb9ebacba4ec5ff8c5d310c9c34">SetLocale</a> (string localeCode)</td></tr>
 <tr class="memdesc:a9d14deb9ebacba4ec5ff8c5d310c9c34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сменить активную локаль по коду; no-op, если код неизвестен.  <br /></td></tr>
 <tr class="separator:a9d14deb9ebacba4ec5ff8c5d310c9c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,7 +152,7 @@ Events</h2></td></tr>
 <p>Потребители (UI) подключатся в Фазе 7 — сейчас это только сервис + DI-регистрация.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aafe36e31367831690cfa4bc7e7b4913d" name="aafe36e31367831690cfa4bc7e7b4913d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafe36e31367831690cfa4bc7e7b4913d">&#9670;&#160;</a></span>GetString() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aafe36e31367831690cfa4bc7e7b4913d">&#9670;&#160;</a></span>GetString() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -167,8 +173,40 @@ Events</h2></td></tr>
 
 </div>
 </div>
+<a id="a0566ac712ef18b67955779863016acdc" name="a0566ac712ef18b67955779863016acdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0566ac712ef18b67955779863016acdc">&#9670;&#160;</a></span>GetString() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Guildmaster.Core.Localization.ILocalizationService.GetString </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IReadOnlyDictionary&lt; string, object &gt;&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Строка из таблицы <code>Content</code> с подстановкой именованных аргументов (Smart String: <code>«Наносит {dmg} урона»</code>). </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html#a2d411901fabdcc32821b16aefe67f3ac">Guildmaster.Game.Services.LocalizationService</a>.</p>
+
+</div>
+</div>
 <a id="a35d7be261a41496cf96d9ea4f3ec1829" name="a35d7be261a41496cf96d9ea4f3ec1829"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35d7be261a41496cf96d9ea4f3ec1829">&#9670;&#160;</a></span>GetString() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a35d7be261a41496cf96d9ea4f3ec1829">&#9670;&#160;</a></span>GetString() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,6 +234,45 @@ Events</h2></td></tr>
 <p>Строка из указанной String Table (<code>Content</code> / <code>UI</code>) по ключу. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html#a09137279194e0e872e268cc43a2175cd">Guildmaster.Game.Services.LocalizationService</a>.</p>
+
+</div>
+</div>
+<a id="a693d319434541b7c534ec94a91066c32" name="a693d319434541b7c534ec94a91066c32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a693d319434541b7c534ec94a91066c32">&#9670;&#160;</a></span>GetString() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Guildmaster.Core.Localization.ILocalizationService.GetString </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IReadOnlyDictionary&lt; string, object &gt;&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Строка из указанной таблицы с подстановкой именованных аргументов. </p>
+<p>Именно ИМЕНОВАННЫХ, не позиционных: описание способности содержит несколько величин, и позиционные <code>{0}</code>/<code>{1}</code> в переводе неизбежно перепутают местами — переводчик не видит, что есть что. Плюс порядок слов в разных языках разный, и привязка слота к смыслу (а не к позиции) — единственная переживающая перевод форма. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html#a4554be60e1633c24370d59ed1e169062">Guildmaster.Game.Services.LocalizationService</a>.</p>
 
 </div>
 </div>

@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Au
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.Audio.AudioCatalog:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog__inherit__graph.svg" width="270" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog__inherit__graph.svg" width="270" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.Audio.AudioCatalog:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog__coll__graph.svg" width="270" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog__coll__graph.svg" width="270" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -122,21 +122,30 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aec07fefb6129c24b0e0c0205abe3aae7" id="r_aec07fefb6129c24b0e0c0205abe3aae7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#aec07fefb6129c24b0e0c0205abe3aae7">Contains</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">string</a> key)</td></tr>
+<tr class="memitem:aec07fefb6129c24b0e0c0205abe3aae7" id="r_aec07fefb6129c24b0e0c0205abe3aae7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#aec07fefb6129c24b0e0c0205abe3aae7">Contains</a> (string key)</td></tr>
 <tr class="memdesc:aec07fefb6129c24b0e0c0205abe3aae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли точная запись под ключ <code>{contentId}.{action}</code>.  <br /></td></tr>
 <tr class="separator:aec07fefb6129c24b0e0c0205abe3aae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ab3baffc75f5a45bf6aa93ad4d73c6e" id="r_a7ab3baffc75f5a45bf6aa93ad4d73c6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a7ab3baffc75f5a45bf6aa93ad4d73c6e">HasDefault</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1">AudioAction</a> action)</td></tr>
+<tr class="memitem:a1ed00f33962a3b37cf0a3357a7525402" id="r_a1ed00f33962a3b37cf0a3357a7525402"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a1ed00f33962a3b37cf0a3357a7525402">HasSound</a> (string key)</td></tr>
+<tr class="memdesc:a1ed00f33962a3b37cf0a3357a7525402"><td class="mdescLeft">&#160;</td><td class="mdescRight">Играет ли что-нибудь по этому ключу: есть точная запись или дефолт действия, и ссылка не пуста.  <br /></td></tr>
+<tr class="separator:a1ed00f33962a3b37cf0a3357a7525402"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e7645bec29244b3350fa718912866a0" id="r_a3e7645bec29244b3350fa718912866a0"><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a3e7645bec29244b3350fa718912866a0">KeysWithoutEvent</a> ()</td></tr>
+<tr class="memdesc:a3e7645bec29244b3350fa718912866a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ключи записей, за которыми нет FMOD-события (в игре это тихий no-op).  <br /></td></tr>
+<tr class="separator:a3e7645bec29244b3350fa718912866a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24ab3438b594d733abca7326e965ca05" id="r_a24ab3438b594d733abca7326e965ca05"><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a24ab3438b594d733abca7326e965ca05">EntryKeys</a> ()</td></tr>
+<tr class="memdesc:a24ab3438b594d733abca7326e965ca05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ключи всех точных записей — без доступа к их FMOD-ссылкам.  <br /></td></tr>
+<tr class="separator:a24ab3438b594d733abca7326e965ca05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ab3baffc75f5a45bf6aa93ad4d73c6e" id="r_a7ab3baffc75f5a45bf6aa93ad4d73c6e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a7ab3baffc75f5a45bf6aa93ad4d73c6e">HasDefault</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1">AudioAction</a> action)</td></tr>
 <tr class="memdesc:a7ab3baffc75f5a45bf6aa93ad4d73c6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли дефолт для действия (fallback, когда точной записи нет).  <br /></td></tr>
 <tr class="separator:a7ab3baffc75f5a45bf6aa93ad4d73c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebea6b38c0014e89399defa4f4dff563" id="r_aebea6b38c0014e89399defa4f4dff563"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#aebea6b38c0014e89399defa4f4dff563">TryGetEvent</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">string</a> key, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">out</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">EventReference</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">evt</a>)</td></tr>
+<tr class="memitem:aebea6b38c0014e89399defa4f4dff563" id="r_aebea6b38c0014e89399defa4f4dff563"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#aebea6b38c0014e89399defa4f4dff563">TryGetEvent</a> (string key, out EventReference evt)</td></tr>
 <tr class="memdesc:aebea6b38c0014e89399defa4f4dff563"><td class="mdescLeft">&#160;</td><td class="mdescRight">Резолвнутый ключ (AudioResolver.Resolve) → FMOD-событие: точная запись (<code>{contentId}. </code> <br /></td></tr>
 <tr class="separator:aebea6b38c0014e89399defa4f4dff563"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:aca6a8a2a166d5468977bb2ad811212b5" id="r_aca6a8a2a166d5468977bb2ad811212b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">IReadOnlyList</a>&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1Entry.html">Entry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#aca6a8a2a166d5468977bb2ad811212b5">Entries</a><code> [get]</code></td></tr>
+<tr class="memitem:aca6a8a2a166d5468977bb2ad811212b5" id="r_aca6a8a2a166d5468977bb2ad811212b5"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1Entry.html">Entry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#aca6a8a2a166d5468977bb2ad811212b5">Entries</a><code> [get]</code></td></tr>
 <tr class="separator:aca6a8a2a166d5468977bb2ad811212b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64db238e0579f60e3863a9e4cf465d02" id="r_a64db238e0579f60e3863a9e4cf465d02"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">IReadOnlyList</a>&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1ActionDefault.html">ActionDefault</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a64db238e0579f60e3863a9e4cf465d02">Defaults</a><code> [get]</code></td></tr>
+<tr class="memitem:a64db238e0579f60e3863a9e4cf465d02" id="r_a64db238e0579f60e3863a9e4cf465d02"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1ActionDefault.html">ActionDefault</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a64db238e0579f60e3863a9e4cf465d02">Defaults</a><code> [get]</code></td></tr>
 <tr class="separator:a64db238e0579f60e3863a9e4cf465d02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -153,9 +162,9 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a> Guildmaster.Presentation.Audio.AudioCatalog.Contains </td>
+          <td class="memname">bool Guildmaster.Presentation.Audio.AudioCatalog.Contains </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">string</a>&#160;</td>
+          <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td></td>
         </tr>
@@ -173,6 +182,33 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="a24ab3438b594d733abca7326e965ca05" name="a24ab3438b594d733abca7326e965ca05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24ab3438b594d733abca7326e965ca05">&#9670;&#160;</a></span>EntryKeys()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IEnumerable&lt; string &gt; Guildmaster.Presentation.Audio.AudioCatalog.EntryKeys </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ключи всех точных записей — без доступа к их FMOD-ссылкам. </p>
+
+</div>
+</div>
 <a id="a7ab3baffc75f5a45bf6aa93ad4d73c6e" name="a7ab3baffc75f5a45bf6aa93ad4d73c6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ab3baffc75f5a45bf6aa93ad4d73c6e">&#9670;&#160;</a></span>HasDefault()</h2>
 
@@ -183,7 +219,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a> Guildmaster.Presentation.Audio.AudioCatalog.HasDefault </td>
+          <td class="memname">bool Guildmaster.Presentation.Audio.AudioCatalog.HasDefault </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1">AudioAction</a>&#160;</td>
           <td class="paramname"><em>action</em></td><td>)</td>
@@ -203,6 +239,54 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="a1ed00f33962a3b37cf0a3357a7525402" name="a1ed00f33962a3b37cf0a3357a7525402"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ed00f33962a3b37cf0a3357a7525402">&#9670;&#160;</a></span>HasSound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Audio.AudioCatalog.HasSound </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Играет ли что-нибудь по этому ключу: есть точная запись или дефолт действия, и ссылка не пуста. </p>
+<p>Обёртка над TryGetEvent для тех, кому нельзя видеть FMOD-типы (тесты, валидаторы) — EventReference живёт в сборке FMODUnity, и тащить её в каждую сборку-потребителя ради одной проверки незачем. </p>
+
+</div>
+</div>
+<a id="a3e7645bec29244b3350fa718912866a0" name="a3e7645bec29244b3350fa718912866a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e7645bec29244b3350fa718912866a0">&#9670;&#160;</a></span>KeysWithoutEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IEnumerable&lt; string &gt; Guildmaster.Presentation.Audio.AudioCatalog.KeysWithoutEvent </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ключи записей, за которыми нет FMOD-события (в игре это тихий no-op). </p>
+
+</div>
+</div>
 <a id="aebea6b38c0014e89399defa4f4dff563" name="aebea6b38c0014e89399defa4f4dff563"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aebea6b38c0014e89399defa4f4dff563">&#9670;&#160;</a></span>TryGetEvent()</h2>
 
@@ -213,15 +297,15 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a> Guildmaster.Presentation.Audio.AudioCatalog.TryGetEvent </td>
+          <td class="memname">bool Guildmaster.Presentation.Audio.AudioCatalog.TryGetEvent </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">string</a>&#160;</td>
+          <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">out</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">EventReference</a>&#160;</td>
+          <td class="paramtype">out EventReference&#160;</td>
           <td class="paramname"><em>evt</em>&#160;</td>
         </tr>
         <tr>
@@ -258,7 +342,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">IReadOnlyList</a>&lt;<a class="el" href="structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1ActionDefault.html">ActionDefault</a>&gt; Guildmaster.Presentation.Audio.AudioCatalog.Defaults</td>
+          <td class="memname">IReadOnlyList&lt;<a class="el" href="structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1ActionDefault.html">ActionDefault</a>&gt; Guildmaster.Presentation.Audio.AudioCatalog.Defaults</td>
         </tr>
       </table>
   </td>
@@ -280,7 +364,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">IReadOnlyList</a>&lt;<a class="el" href="structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1Entry.html">Entry</a>&gt; Guildmaster.Presentation.Audio.AudioCatalog.Entries</td>
+          <td class="memname">IReadOnlyList&lt;<a class="el" href="structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1Entry.html">Entry</a>&gt; Guildmaster.Presentation.Audio.AudioCatalog.Entries</td>
         </tr>
       </table>
   </td>

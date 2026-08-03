@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Effects.Components.SchoolShieldComponent.OnPreDamage" name="Guildmaster.Combat.Effects.Components.SchoolShieldComponent.OnPreDamage">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,30,276,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#a29a23f3c0a5967a3f5dda246b5dddec8" title="Домножить множитель входящего урона (уязвимости копятся, а не перетирают друг друга)." alt="" coords="324,5,555,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="276,40,310,36,311,42,276,45"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes.html#a1b490686aa38c59e86509c9691657341" title="Подходит ли входящий урон под фильтр защитного эффекта." alt="" coords="332,69,547,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="276,69,319,74,318,79,276,74"/>
+</map>

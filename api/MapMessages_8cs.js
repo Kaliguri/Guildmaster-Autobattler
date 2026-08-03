@@ -1,4 +1,5 @@
 var MapMessages_8cs =
 [
-    [ "Guildmaster.Guild.OpenMapRequest", "structGuildmaster_1_1Guild_1_1OpenMapRequest.html", "structGuildmaster_1_1Guild_1_1OpenMapRequest" ]
+    [ "Guildmaster.Guild.SetWorldMapRequest", "structGuildmaster_1_1Guild_1_1SetWorldMapRequest.html", "structGuildmaster_1_1Guild_1_1SetWorldMapRequest" ],
+    [ "Guildmaster.Guild.WorldMapSpaceChangedEvent", "structGuildmaster_1_1Guild_1_1WorldMapSpaceChangedEvent.html", "structGuildmaster_1_1Guild_1_1WorldMapSpaceChangedEvent" ]
 ];

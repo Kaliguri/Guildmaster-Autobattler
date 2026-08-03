@@ -1,0 +1,13 @@
+<map id="Guildmaster.Combat.Effects.Components.AttackStanceComponent.AttackStance" name="Guildmaster.Combat.Effects.Components.AttackStanceComponent.AttackStance">
+<area shape="rect" id="Node000001" title="Одна боевая форма: полный профиль авто&#45;атаки." alt="" coords="207,617,472,752"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Data_1_1Definitions_1_1AttackChannel.html" title="Канал авто&#45;атаки: удар растянут в поток тиков урона, который идёт МЕЖДУ замахом и хвостом (AttackPhas..." alt="" coords="5,315,212,475"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,473,225,553,268,603,264,607,221,556,161,476"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html" title="Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги,..." alt="" coords="236,235,443,555"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="342,555,342,601,337,601,337,555"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="275,120,403,185"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="342,199,342,234,337,234,337,199"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="279,5,400,71"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="342,85,342,120,337,120,337,85"/>
+<area shape="rect" id="Node000006" href="$structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html" title="Один стат&#45;модификатор: что меняем, как и на сколько." alt="" coords="467,335,662,455"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="536,456,495,525,444,595,433,608,429,604,440,592,491,522,532,453"/>
+</map>

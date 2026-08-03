@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.BattleHost.Open" name="Guildmaster.Game.Flow.BattleHost.Open">
+<area shape="rect" id="Node000001" title="Открыть бой: родить скоуп со всем боевым внутри." alt="" coords="5,5,227,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#aeb20e7c3063d77b632d3f4d6da85e18c" title="Закрыть бой: скоуп уходит вместе со всем, что в нём жило, и арена возвращается миру." alt="" coords="275,5,496,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,23,261,23,261,28,227,28"/>
+</map>

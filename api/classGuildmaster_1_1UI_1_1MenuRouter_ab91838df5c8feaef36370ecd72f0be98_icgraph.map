@@ -1,0 +1,7 @@
+<map id="Guildmaster.UI.MenuRouter.CloseDevOverlays" name="Guildmaster.UI.MenuRouter.CloseDevOverlays">
+<area shape="rect" id="Node000001" title="Снять все открытые dev&#45;полки (командная консоль, лог, витрина боёв)." alt="" coords="259,37,464,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1MenuRouter.html#ac35e2db9bdea2750e910c78d290ccd69" title="Открыть/закрыть dev&#45;консоль (Трек К)." alt="" coords="5,5,211,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,45,211,41,211,36,245,40"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1MenuRouter.html#a06b06c0368510c158b5f7613fcd94c3e" title="Открыть/закрыть лог&#45;консоль (F2): хвост сообщений движка, без строки ввода." alt="" coords="5,69,211,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="245,75,211,79,211,74,245,69"/>
+</map>

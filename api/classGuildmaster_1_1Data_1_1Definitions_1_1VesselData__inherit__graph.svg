@@ -21,18 +21,18 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="«Пилот» — носитель реликвии.">
+<g id="a_Node000001"><a xlink:title="«Сосуд» — человек, носящий Реликвию.">
 <polygon fill="#999999" stroke="transparent" points="155,-75 0,-75 0,0 155,0 155,-75"/>
 <text text-anchor="start" x="5.5" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="start" x="50.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">VesselData</text>
-<text text-anchor="start" x="21" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tags</text>
-<text text-anchor="start" x="21" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">PerkModifiers</text>
+<text text-anchor="start" x="21.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tags</text>
+<text text-anchor="start" x="21.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">FateModifiers</text>
 <text text-anchor="start" x="76" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-46.5 0.5,-46.5 155.5,-46.5 155.5,-46.5 0.5,-46.5"/>
-<polygon fill="#666666" stroke="#666666" points="0.5,-16.5 0.5,-16.5 48.5,-16.5 48.5,-16.5 0.5,-16.5"/>
-<polygon fill="#666666" stroke="#666666" points="48.5,-16.5 48.5,-16.5 155.5,-16.5 155.5,-16.5 48.5,-16.5"/>
+<polygon fill="#666666" stroke="#666666" points="0.5,-16.5 0.5,-16.5 49.5,-16.5 49.5,-16.5 0.5,-16.5"/>
+<polygon fill="#666666" stroke="#666666" points="49.5,-16.5 49.5,-16.5 155.5,-16.5 155.5,-16.5 49.5,-16.5"/>
 <polygon fill="none" stroke="#666666" points="0,0 0,-75 155,-75 155,0 0,0"/>
 </a>
 </g>

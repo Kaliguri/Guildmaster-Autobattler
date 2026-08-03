@@ -130,6 +130,9 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>«Вихревой заход» (§9.6, §10.6): реактив на конец эффекта смещения (CombatEvent.EffectExpired с тегом EffectTag.KnockUp, доставляется источнику смещения). </p>
 <p>Срабатывает, когда закончилось отбрасывание ВРАГА (по команде смещённого) — монах телепортируется ему в спину и взводит усиление следующей авто-атаки (×2). Конец собственного рывка монаха (смещённый = свой) сюда НЕ проходит (та же ветка обрабатывается приземлением рывка). Без кулдауна — комбо-механика. Садимся ЗА спиной цели: на ДАЛЬНЮЮ от монаха сторону (направление отбрасывания). </p>
+<p><b>Числа:</b> <code>_empowerMult</code> — во сколько раз сильнее авто-атака после захода (2 = вдвое, разовая). Дистанция телепорта не настраивается: монах садится вплотную за спиной отброшенного — это и есть смысл механики, а не параметр.</p>
+<p><b>Когда срабатывает:</b> в момент, когда закончилось отбрасывание ВРАГА, начатое носителем. Собственный рывок монаха сюда не проходит — им занят WhirlDashLandingComponent.</p>
+<p>Дееспособности НЕ требует — по той же причине, что и приземление рывка: заход состоит из смещений, а смещение снимает дееспособность у летящего, поэтому гейт отменял бы фазы СВОЕЙ же способности. Комбо начато дееспособным монахом; прерывать его должен внешний контроль в свою фазу, а не собственный рывок (поймано тестом захода 2026-07-29). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac01fe0c60954266a0a7b24632b86b6dc" name="ac01fe0c60954266a0a7b24632b86b6dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac01fe0c60954266a0a7b24632b86b6dc">&#9670;&#160;</a></span>OnApply()</h2>
@@ -197,7 +200,7 @@ Properties</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent_aaf46f1b8729265d7c867f144b4163d3f_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent_aaf46f1b8729265d7c867f144b4163d3f_cgraph.svg" width="536" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

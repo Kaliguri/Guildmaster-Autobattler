@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.RunSaves.Exists" name="Guildmaster.Guild.RunSaves.Exists">
+<area shape="rect" id="Node000001" title="Есть ли автосейв забега на диске — вопрос меню про «Продолжить»." alt="" coords="288,5,499,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1NewGameScreenView.html#a946b422f75df454d0b5b271b0b4f49ad" title="Собрать список домов из профиля: имя плюс ответ на вопрос «идёт ли там забег»." alt="" coords="5,5,240,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="274,28,240,28,240,23,274,23"/>
+</map>

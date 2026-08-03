@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.Net.GuestPartyFollower" name="Guildmaster.Game.Session.Net.GuestPartyFollower">
+<area shape="rect" id="Node000001" title="Гостевая половина показа отряда: ставит бойцов на арену вслед за снимком забега." alt="" coords="5,119,200,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="11,5,88,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,83,82,117,77,119,64,85"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="112,5,203,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="142,84,129,119,124,117,137,82"/>
+</map>

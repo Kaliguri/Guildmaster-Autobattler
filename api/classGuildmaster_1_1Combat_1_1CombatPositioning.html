@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1CombatPo
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.CombatPositioning:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning__coll__graph.svg" width="226" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning__coll__graph.svg" width="226" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -123,9 +123,21 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a57295456ca777e61fdd124729528c22a" id="r_a57295456ca777e61fdd124729528c22a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#a57295456ca777e61fdd124729528c22a">CanLandWindup</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> self, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, int windupTicks, in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a> tuning)</td></tr>
 <tr class="memdesc:a57295456ca777e61fdd124729528c22a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Успеет ли рутовый замах докрутить по этой цели (слой 2, «сначала подойти ближе с учётом скоростей»).  <br /></td></tr>
 <tr class="separator:a57295456ca777e61fdd124729528c22a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f0e58bf2b4cc3c07a6b532b020a9207" id="r_a6f0e58bf2b4cc3c07a6b532b020a9207"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#a6f0e58bf2b4cc3c07a6b532b020a9207">SelfClosingSpeedPerTick</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> self, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target)</td></tr>
+<tr class="memdesc:a6f0e58bf2b4cc3c07a6b532b020a9207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Скорость СБЛИЖЕНИЯ собственным ходом, мировые ед.  <br /></td></tr>
+<tr class="separator:a6f0e58bf2b4cc3c07a6b532b020a9207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a2af87870dd09118eb739b2e309642f" id="r_a9a2af87870dd09118eb739b2e309642f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#a9a2af87870dd09118eb739b2e309642f">CanCloseIntoReach</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> self, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, int windupTicks, in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a> tuning)</td></tr>
+<tr class="memdesc:a9a2af87870dd09118eb739b2e309642f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пора ли начинать замах УДАРА С РАЗБЕГА — то есть въедет ли юнит своим ходом в досягаемость ровно к кадру контакта.  <br /></td></tr>
+<tr class="separator:a9a2af87870dd09118eb739b2e309642f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ab4d7585846f6e392b148d21ab73cf6" id="r_a3ab4d7585846f6e392b148d21ab73cf6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#a3ab4d7585846f6e392b148d21ab73cf6">TeleportBehind</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> attacker, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target)</td></tr>
 <tr class="memdesc:a3ab4d7585846f6e392b148d21ab73cf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Телепорт атакующего ЗА спину цели: на ДАЛЬНЮЮ от атакующего сторону (по направлению «атакующий → цель»), на расстоянии половины радиуса атаки — чтобы встать вплотную и в радиусе.  <br /></td></tr>
 <tr class="separator:a3ab4d7585846f6e392b148d21ab73cf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afca5f76971a79eade081102c296c0b85" id="r_afca5f76971a79eade081102c296c0b85"><td class="memItemLeft" align="right" valign="top">static Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#afca5f76971a79eade081102c296c0b85">BehindPosition</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> attacker, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target)</td></tr>
+<tr class="memdesc:afca5f76971a79eade081102c296c0b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Точка «за спиной» цели — та, куда встанет <em>attacker</em> , ничего не двигая.  <br /></td></tr>
+<tr class="separator:afca5f76971a79eade081102c296c0b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abba2779e25e6946004a97395883b64d6" id="r_abba2779e25e6946004a97395883b64d6"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#abba2779e25e6946004a97395883b64d6">IsRearAttack</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> attacker, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, float minCos=0.5f)</td></tr>
+<tr class="memdesc:abba2779e25e6946004a97395883b64d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Бьёт ли <em>attacker</em>  в ТЫЛ цели: стоит ли он с той стороны, откуда цель пришла (со стороны её собственного края арены), в конусе <em>minCos</em>  от этого направления.  <br /></td></tr>
+<tr class="separator:abba2779e25e6946004a97395883b64d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Общие позиционные хелперы боя — детерминированная векторная математика без RNG. </p>
@@ -175,7 +187,56 @@ Static Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_aefa09ee7a570ca7a9f220d0cbe5528d4_icgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_aefa09ee7a570ca7a9f220d0cbe5528d4_icgraph.svg" width="100%" height="434"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="afca5f76971a79eade081102c296c0b85" name="afca5f76971a79eade081102c296c0b85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afca5f76971a79eade081102c296c0b85">&#9670;&#160;</a></span>BehindPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Vector2 Guildmaster.Combat.CombatPositioning.BehindPosition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>attacker</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Точка «за спиной» цели — та, куда встанет <em>attacker</em> , ничего не двигая. </p>
+<p>Отдельно от перемещения, потому что заявки на переход считаются от ОДНОГО снимка мира и лишь потом применяются: иначе второй переход целится за спину тела, которое уже уехало. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_afca5f76971a79eade081102c296c0b85_cgraph.svg" width="490" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_afca5f76971a79eade081102c296c0b85_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -216,6 +277,64 @@ Here is the caller graph for this function:</div>
 
 <p>Радиус тела юнита (мировые ед.) = Size × <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a3568e3c880cb09160c26299043b6e4ce">SimTuning.BodyRadiusPerSize</a>. </p>
 <p>Тот же расчёт, что и в <code>SeparationSystem</code> — метрики обязаны совпадать (см. ниже). </p>
+
+</div>
+</div>
+<a id="a9a2af87870dd09118eb739b2e309642f" name="a9a2af87870dd09118eb739b2e309642f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a2af87870dd09118eb739b2e309642f">&#9670;&#160;</a></span>CanCloseIntoReach()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Guildmaster.Combat.CombatPositioning.CanCloseIntoReach </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>windupTicks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a>&#160;</td>
+          <td class="paramname"><em>tuning</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Пора ли начинать замах УДАРА С РАЗБЕГА — то есть въедет ли юнит своим ходом в досягаемость ровно к кадру контакта. </p>
+<p>Считает <code>dist − closing·windup ≤ reach</code>: замах стартует ЗА границей досягаемости, на «тормозном пути» длиной в собственный замах, и остаток дистанции закрывается бегом. Без этого удар с разбега невозможен по построению — гейт пускал свинг лишь из reach, поэтому юнит добегал, вставал и только потом бил.</p>
+<p><b>Сближение считается ПЕССИМИСТИЧНО:</b> свой ход плюсуется, уход цели вычитается, а вот её движение НАВСТРЕЧУ не засчитывается вовсе. Полная относительная скорость выглядит честнее, но в сшибке двух линий она удваивала бы дистанцию старта — и стоило цели затормозить (свой замах рутует её), юнит не доезжал половину пути и бил по воздуху в двух шагах от врага. Ошибка в «слишком рано» стоит промаха, ошибка в «слишком поздно» — лишь того, что последние тики замаха юнит стоит: AttackReachCenter он уже прошёл, и удар засчитается. </p>
+<p>Цель уже в досягаемости → false: это обычный гейт (InAttackRange + CanLandWindup), и второй путь к тому же решению был бы вторым владельцем.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a9a2af87870dd09118eb739b2e309642f_cgraph.svg" width="558" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -334,6 +453,107 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="abba2779e25e6946004a97395883b64d6" name="abba2779e25e6946004a97395883b64d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abba2779e25e6946004a97395883b64d6">&#9670;&#160;</a></span>IsRearAttack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Guildmaster.Combat.CombatPositioning.IsRearAttack </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>attacker</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>minCos</em> = <code>0::5f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Бьёт ли <em>attacker</em>  в ТЫЛ цели: стоит ли он с той стороны, откуда цель пришла (со стороны её собственного края арены), в конусе <em>minCos</em>  от этого направления. </p>
+<p>Дефолт 0.5 — конус ±60°: «в спину», а не «сбоку».</p>
+<p><b>Тыл считается от конвенции сторон, а не от разворота юнита.</b> Своего «лица» у юнита в симуляции нет (ни поля, ни угла) — общий слой C позиционики (фланг/тыл для всех, ГДД <code>positioning</code> §Слой C) в коде отсутствует. Пока его нет, направление «назад» берётся оттуда же, откуда его берёт побег: у команды есть свой край арены, и путь в спину — это обход строя. В сшибке двух линий это совпадает с интуицией и не требует ни разворотов, ни истории движения, то есть остаётся детерминированным. </p>
+<p>Из этого следует ограничение: удар в спину цели, которая сама зашла за твою линию, считаться тыловым не будет. Это цена прокси, и она осознанная — заведение настоящего «лица» меняет баланс ВСЕХ юнитов, а не одного кита.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_abba2779e25e6946004a97395883b64d6_cgraph.svg" width="516" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_abba2779e25e6946004a97395883b64d6_icgraph.svg" width="582" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a6f0e58bf2b4cc3c07a6b532b020a9207" name="a6f0e58bf2b4cc3c07a6b532b020a9207"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f0e58bf2b4cc3c07a6b532b020a9207">&#9670;&#160;</a></span>SelfClosingSpeedPerTick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Guildmaster.Combat.CombatPositioning.SelfClosingSpeedPerTick </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Скорость СБЛИЖЕНИЯ собственным ходом, мировые ед. </p>
+<p>/тик (≥ 0): проекция своего шага за прошлый тик (<code>Position − PreviousPosition</code>) на ось «self → target». Зеркало TargetRecedeSpeedPerTick и по той же причине бесплатно и детерминированно: <code>Movement</code> идёт до <code>AutoAttack</code>, поэтому дельта свежая и одинаковая для всех. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a6f0e58bf2b4cc3c07a6b532b020a9207_icgraph.svg" width="542" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a8acd5fc82a7974b455f42d1279121279" name="a8acd5fc82a7974b455f42d1279121279"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8acd5fc82a7974b455f42d1279121279">&#9670;&#160;</a></span>TargetRecedeSpeedPerTick()</h2>
 
@@ -373,7 +593,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a8acd5fc82a7974b455f42d1279121279_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a8acd5fc82a7974b455f42d1279121279_icgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -417,12 +637,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a3ab4d7585846f6e392b148d21ab73cf6_cgraph.svg" width="490" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a3ab4d7585846f6e392b148d21ab73cf6_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a3ab4d7585846f6e392b148d21ab73cf6_icgraph.svg" width="532" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a3ab4d7585846f6e392b148d21ab73cf6_icgraph.svg" width="502" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

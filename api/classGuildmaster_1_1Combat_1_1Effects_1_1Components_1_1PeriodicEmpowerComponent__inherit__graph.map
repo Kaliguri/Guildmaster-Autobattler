@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.PeriodicEmpowerComponent" name="Guildmaster.Combat.Effects.Components.PeriodicEmpowerComponent">
+<area shape="rect" id="Node000001" title="«Восходящий удар» Монаха воды (карточка [[the&#45;torrent]]): пассивка, которая раз в Interval секунд выд..." alt="" coords="5,365,293,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html" title="Периодический компонент: OnTick каждые Interval секунд (DoT/HoT/реген)." alt="" coords="77,252,222,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,331,152,365,147,365,147,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="57,119,242,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="152,218,152,252,147,252,147,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="84,5,215,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="152,85,152,119,147,119,147,85"/>
+</map>

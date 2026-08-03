@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.CameraModeController.ExitMap" name="Guildmaster.Presentation.CameraModeController.ExitMap">
+<area shape="rect" id="Node000001" title="Выйти из вида карты в мировой вид." alt="" coords="244,5,473,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Map_1_1WorldMapView.html#a59b09056e46de24381af906a15cbec10" title="Скрыть слой карты. Обязателен при отмене забега (QA #37), иначе карта останется висеть в мире." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
+</map>

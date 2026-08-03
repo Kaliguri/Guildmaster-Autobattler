@@ -1,15 +1,11 @@
 <map id="Guildmaster.Data.Editor.ContentDatabaseSync.FindOrCreate" name="Guildmaster.Data.Editor.ContentDatabaseSync.FindOrCreate">
-<area shape="rect" id="Node000001" title="Существующая БД (первая найденная) или новая в DatabasePath." alt="" coords="597,133,852,173"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a0f1c481144d212691dd43e8322040151" title="Найти/создать БД, заполнить всеми контент&#45;ассетами (сортировка по id), сохранить." alt="" coords="348,133,549,173"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="584,156,550,156,550,151,584,151"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#af795537cb7f5fe633278ac7399267fc0" title="Создать новый ассет типа type &#160;в его папке с уникальным id. Синхронизирует БД." alt="" coords="53,5,252,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="410,127,359,92,299,60,251,44,253,39,301,55,362,87,413,123"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#a2f24dca1ff0462435f25c366e6104a2b" title="Дублировать ассет с новым уникальным id (вики «13» §2.3 п.4). Синхронизирует БД." alt="" coords="44,69,261,109"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="341,133,245,112,246,107,343,128"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Editor_1_1Migrations_1_1Phase4Package1Migration.html#ab3878c743eb0fd7770c2cab2cc17273c" title=" " alt="" coords="5,133,300,173"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="334,156,300,156,300,151,334,151"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Editor_1_1Migrations_1_1Phase4Package3AiPresetMigration.html#aea8ad4919e1032bf6de45219a3b121a4" title=" " alt="" coords="24,198,281,253"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="353,179,266,201,265,195,352,174"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#abd2df813040020ae837b6ccd5b904e48" title="Удалить ассет, если он ни на что не ссылается." alt="" coords="44,277,261,317"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="418,185,366,227,334,248,301,266,262,281,260,276,299,262,332,244,363,223,415,180"/>
+<area shape="rect" id="Node000001" title="Существующая БД (первая найденная) или новая в DatabasePath." alt="" coords="520,69,775,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a0f1c481144d212691dd43e8322040151" title="Найти/создать БД, заполнить всеми контент&#45;ассетами (сортировка по id), сохранить." alt="" coords="271,69,472,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="506,92,472,92,472,87,506,87"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#af795537cb7f5fe633278ac7399267fc0" title="Создать новый ассет типа type &#160;в его папке с уникальным id. Синхронизирует БД." alt="" coords="15,5,213,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="276,69,194,48,196,43,278,63"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#a2f24dca1ff0462435f25c366e6104a2b" title="Дублировать ассет с новым уникальным id (вики «13» §2.3 п.4). Синхронизирует БД." alt="" coords="5,69,223,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="257,92,223,92,223,87,257,87"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#abd2df813040020ae837b6ccd5b904e48" title="Удалить ассет, если он ни на что не ссылается." alt="" coords="5,133,223,173"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="278,115,196,136,194,131,276,110"/>
 </map>

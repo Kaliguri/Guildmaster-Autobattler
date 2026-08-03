@@ -92,19 +92,16 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Data_1_1Editor
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Data.Editor Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespaceGuildmaster_1_1Data_1_1Editor_1_1Migrations" id="r_namespaceGuildmaster_1_1Data_1_1Editor_1_1Migrations"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Editor_1_1Migrations.html">Migrations</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentCohorts.html">ContentCohorts</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Готовые выборки контента для массовых правок баланса: «все Танки», «все ближники», «все гоблины».  <a href="classGuildmaster_1_1Data_1_1Editor_1_1ContentCohorts.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html">ContentCrudService</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CRUD контента без GUI-вызовов (вики «13» §9): создание в folder-per-type с автогенерацией id, дубликация с РЕГЕНЕРАЦИЕЙ id, удаление с проверкой использований, синхронизация БД после операций.  <a href="classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,6 +110,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentDefinitionEditor.html">ContentDefinitionEditor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Odin-инспектор для всех ContentDefinition-наследников: id-drawer (read-only + Edit Id, вики «13» §2.3), пикеры полиморфных <code>[SerializeReference]</code>-полей (напр.  <a href="classGuildmaster_1_1Data_1_1Editor_1_1ContentDefinitionEditor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditBatch.html">ContentEditBatch</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пакет балансных правок из файла: применяется целиком и целиком же откатывается.  <a href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditBatch.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html">ContentEditService</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Авторинг ЗНАЧЕНИЙ контента (баланс) — write-сторона к read-инструментам (SimBench, Content Hub «Balance»).  <a href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#details">More...</a><br /></td></tr>
@@ -125,6 +125,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths.html">ContentPaths</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Folder-per-type раскладка контент-ассетов (вики «13» §0).  <a href="classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1PaletteSnapshotBuilder.html">PaletteSnapshotBuilder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сборщик снимка палитры: читает <code>tokens.primitives.uss</code> и <code>tokens.semantic.uss</code>, разворачивает ссылки <code>var(&ndash;gm-…)</code> до конкретных цветов и складывает результат в GuildmasterPalette — чтобы мир (карта, VFX, перекрасчик) читал ту же палитру, что и интерфейс, а не свою копию рядом.  <a href="classGuildmaster_1_1Data_1_1Editor_1_1PaletteSnapshotBuilder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

@@ -1,0 +1,3 @@
+<map id="Guildmaster.Balance.Editor.TraceBench" name="Guildmaster.Balance.Editor.TraceBench">
+<area shape="rect" id="Node000001" title="Разбор ОДНОГО боя: тот же прогон, что в бенчах, но с лентой событий вместо агрегатов (BattleTrace)." alt="" coords="5,5,200,105"/>
+</map>

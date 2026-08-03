@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Effects.Components.ParryComponent.IsParryable" name="Guildmaster.Combat.Effects.Components.ParryComponent.IsParryable">
+<area shape="rect" id="Node000001" title="Удар, который парирование вообще способно встретить: прямое попадание (авто&#45;атака или способность) от..." alt="" coords="325,53,617,93"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ParryComponent.html#ac8bd9267c60e54d685c5274d4d64ecb3" title=" " alt="" coords="12,5,271,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="311,56,271,51,271,46,312,51"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ParryWindowComponent.html#a701b0b667343cbb727378daf182270c1" title=" " alt="" coords="5,84,277,139"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="312,94,278,98,277,93,311,89"/>
+</map>

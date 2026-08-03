@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Map.MapNodeView.SetVisualScale" name="Guildmaster.Presentation.Map.MapNodeView.SetVisualScale">
+<area shape="rect" id="Node000001" title="Отклик: hover/нажатие. Трогает только визуальный корень — зона хвата не «дышит»." alt="" coords="244,5,491,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Map_1_1WorldMapView.html#a64e82ab8fabea8eeb6a8722822e8eda5" title="Показать карту: разложить узлы и рёбра, включить слой." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
+</map>

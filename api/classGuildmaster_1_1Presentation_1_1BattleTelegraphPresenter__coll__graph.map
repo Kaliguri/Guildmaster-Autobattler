@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.BattleTelegraphPresenter" name="Guildmaster.Presentation.BattleTelegraphPresenter">
+<area shape="rect" id="Node000001" title="Телеграфы: подводки к событиям, которые ЕЩЁ НЕ ПОКАЗАНЫ." alt="" coords="5,119,208,259"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="19,5,91,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,83,85,117,80,119,68,84"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="115,5,205,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="147,84,134,119,129,117,142,83"/>
+</map>

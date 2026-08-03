@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Design.CombatFeelConfig.EvaluateCutLength" name="Guildmaster.Presentation.Design.CombatFeelConfig.EvaluateCutLength">
+<area shape="rect" id="Node000001" title="Длина пореза в мировых единицах по весу удара: тяжёлый вскрывает шире." alt="" coords="244,5,495,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a2e3a4caf22ddb1d742236d37a8b3c81f" title="Записать порез от состоявшегося удара: место в теле, направление вдоль удара, длина по весу." alt="" coords="5,13,196,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,35,196,35,196,30,230,30"/>
+</map>

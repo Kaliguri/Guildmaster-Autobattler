@@ -1,21 +1,36 @@
 var namespaceGuildmaster_1_1Data_1_1Stats =
 [
+    [ "FormattedStat", "structGuildmaster_1_1Data_1_1Stats_1_1FormattedStat.html", "structGuildmaster_1_1Data_1_1Stats_1_1FormattedStat" ],
+    [ "IModifierSource", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IModifierSource.html", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IModifierSource" ],
+    [ "IStatExplainer", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatExplainer.html", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatExplainer" ],
     [ "IStatReader", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader" ],
+    [ "IUnitStatPreview", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IUnitStatPreview.html", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IUnitStatPreview" ],
     [ "ScalableValue", "structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue.html", "structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue" ],
     [ "ScalingTerm", "structGuildmaster_1_1Data_1_1Stats_1_1ScalingTerm.html", "structGuildmaster_1_1Data_1_1Stats_1_1ScalingTerm" ],
+    [ "StatConversion", "structGuildmaster_1_1Data_1_1Stats_1_1StatConversion.html", "structGuildmaster_1_1Data_1_1Stats_1_1StatConversion" ],
+    [ "StatFormat", "classGuildmaster_1_1Data_1_1Stats_1_1StatFormat.html", "classGuildmaster_1_1Data_1_1Stats_1_1StatFormat" ],
+    [ "StatKinds", "classGuildmaster_1_1Data_1_1Stats_1_1StatKinds.html", "classGuildmaster_1_1Data_1_1Stats_1_1StatKinds" ],
     [ "StatModifier", "structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html", "structGuildmaster_1_1Data_1_1Stats_1_1StatModifier" ],
+    [ "StatTerm", "structGuildmaster_1_1Data_1_1Stats_1_1StatTerm.html", "structGuildmaster_1_1Data_1_1Stats_1_1StatTerm" ],
+    [ "StatValue", "structGuildmaster_1_1Data_1_1Stats_1_1StatValue.html", "structGuildmaster_1_1Data_1_1Stats_1_1StatValue" ],
+    [ "UnitLabels", "structGuildmaster_1_1Data_1_1Stats_1_1UnitLabels.html", "structGuildmaster_1_1Data_1_1Stats_1_1UnitLabels" ],
+    [ "UnitStatLine", "structGuildmaster_1_1Data_1_1Stats_1_1UnitStatLine.html", "structGuildmaster_1_1Data_1_1Stats_1_1UnitStatLine" ],
     [ "ModifierOp", "namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0de", [
       [ "Flat", "namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea745e3db6a7ffd50e1a72b39482f0882d", null ],
       [ "PercentAdd", "namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea262a238a3da28a9ce8691194cf49d482", null ],
       [ "PercentMult", "namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea2cc82caaddc987b7de92f0308b925ca5", null ],
       [ "Override", "namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea6da8e67225fdcfa78c3ea5dc3154b849", null ]
     ] ],
+    [ "ScalingForm", "namespaceGuildmaster_1_1Data_1_1Stats.html#ab6dfcec86bc5d04611514cbed7cb1f01", [
+      [ "Linear", "namespaceGuildmaster_1_1Data_1_1Stats.html#ab6dfcec86bc5d04611514cbed7cb1f01a32a843da6ea40ab3b17a3421ccdf671b", null ],
+      [ "Inverse", "namespaceGuildmaster_1_1Data_1_1Stats.html#ab6dfcec86bc5d04611514cbed7cb1f01a9f87f02f2da8f99c571b2a1c2a96132b", null ]
+    ] ],
     [ "StatType", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284", [
       [ "MaxHP", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a7328467362e04fb994455aeb50ac0449", null ],
       [ "HpRegenFlat", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a35881155d4e7c3d6a18cd465fb28b7ac", null ],
       [ "HpRegenPct", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ac62b34ef590567826318ecd2d6caac70", null ],
       [ "PhysArmor", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a54f06c7358d259caa316edeed3a493f5", null ],
-      [ "ElementalArmor", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a411dc7e45b792a64a0d4b710eb7d7e4d", null ],
+      [ "MagicArmor", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a477daea460acacedc6e634a2211f9095", null ],
       [ "DamageTakenEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a813d2113d6b4f81806d7cd857beaf5ef", null ],
       [ "HealShieldTakenEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a95c911efdf204dd827fd41da53208b99", null ],
       [ "AutoAttackDamage", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a509dd58938824e6e3f298bde91ddc731", null ],
@@ -24,8 +39,8 @@ var namespaceGuildmaster_1_1Data_1_1Stats =
       [ "AbilityPower", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a115fccbacfdb86a46d17035b4073ca90", null ],
       [ "PhysPen", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ad1742c8675710f479dde6c0866b960f5", null ],
       [ "PhysPenPct", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a3109e6905a75ddc57761f609264efa85", null ],
-      [ "ElementalPen", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ac28ccab8e21ab62566155e9ae0410132", null ],
-      [ "ElementalPenPct", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284afa813f0a1a6b81d414ea5735e65c245c", null ],
+      [ "MagicPen", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aa70f25585e17da9922476a0b5e39d4ff", null ],
+      [ "MagicPenPct", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aacf956ece1e8110477cd8351ae2da7d0", null ],
       [ "DamageDealtEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284acf93b2f799ec1e1047d697999f70f0ad", null ],
       [ "Lifesteal", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a9d82a0f406f346bcb6fcd036e1b98175", null ],
       [ "HealShieldDealtEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a76d7b7902f4538e031c6e44e9adcaa4f", null ],
@@ -40,6 +55,27 @@ var namespaceGuildmaster_1_1Data_1_1Stats =
       [ "CooldownEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aa886a2d2c0b83d00d1eea1ac4f1c99e4", null ],
       [ "MaxResource", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284af68a53a3ca5bacdb91f4eda90883f5ee", null ],
       [ "StartResource", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a7fdc6c0e1455e6b04e10d4333e8a07da", null ],
-      [ "ResourceGainEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a143f98d287cb622e9f790376ba67377d", null ]
+      [ "ResourceGainEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a143f98d287cb622e9f790376ba67377d", null ],
+      [ "SummonHealthEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a8de1dce4a01b7df86880284797514d83", null ],
+      [ "SummonDamageEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab39aedf70f89324e3d7533599d3fdab0", null ],
+      [ "ResourceRegenFlat", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab08c69f0634666c90d66606b35a39e5c", null ]
+    ] ],
+    [ "UnitClass", "namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6", [
+      [ "Bruiser", "namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6a8be80102e06b904744ba56c822c70a4b", null ],
+      [ "Tank", "namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6ae4419464d570c4b497ba1979e790b104", null ],
+      [ "Assassin", "namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6a9b2dd2ace4fae2ba85df02e3ebf3f89e", null ],
+      [ "Ranged", "namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6ac2f329a17c18a701dbe1e96e03858728", null ],
+      [ "Support", "namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6adb5eb84117d06047c97c9a0191b5fffe", null ],
+      [ "Summoner", "namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6ab1768159dc49c7173bc4ae0969af3d25", null ],
+      [ "Healer", "namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6a6e56f394da8a56773678be26f5d4d3b0", null ]
+    ] ],
+    [ "ValueKind", "namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323ed", [
+      [ "Flat", "namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323eda745e3db6a7ffd50e1a72b39482f0882d", null ],
+      [ "Percent", "namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323edaadaaee4b22041c27198d410c68d952c9", null ],
+      [ "Multiplier", "namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323edaee34a21131a5636ee8dcf521e2369bee", null ],
+      [ "Seconds", "namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323eda8f19a8c7566af54ea8981029730e5465", null ],
+      [ "PerSecond", "namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323edaa4edd0f660fa7ca6d5c348ecad4c04bc", null ],
+      [ "Distance", "namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323eda0aa6f4210bf373c95eda00232e93cd98", null ],
+      [ "Count", "namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323edae93f994f01c537c4e2f7d8528c3eb5e9", null ]
     ] ]
 ];

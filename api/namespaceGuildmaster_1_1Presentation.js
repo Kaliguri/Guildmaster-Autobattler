@@ -1,9 +1,17 @@
 var namespaceGuildmaster_1_1Presentation =
 [
+    [ "Arena", "namespaceGuildmaster_1_1Presentation_1_1Arena.html", "namespaceGuildmaster_1_1Presentation_1_1Arena" ],
     [ "Audio", "namespaceGuildmaster_1_1Presentation_1_1Audio.html", "namespaceGuildmaster_1_1Presentation_1_1Audio" ],
+    [ "Body", "namespaceGuildmaster_1_1Presentation_1_1Body.html", "namespaceGuildmaster_1_1Presentation_1_1Body" ],
     [ "Design", "namespaceGuildmaster_1_1Presentation_1_1Design.html", "namespaceGuildmaster_1_1Presentation_1_1Design" ],
+    [ "Editor", "namespaceGuildmaster_1_1Presentation_1_1Editor.html", "namespaceGuildmaster_1_1Presentation_1_1Editor" ],
+    [ "Effects", "namespaceGuildmaster_1_1Presentation_1_1Effects.html", "namespaceGuildmaster_1_1Presentation_1_1Effects" ],
+    [ "Map", "namespaceGuildmaster_1_1Presentation_1_1Map.html", "namespaceGuildmaster_1_1Presentation_1_1Map" ],
+    [ "Tempo", "namespaceGuildmaster_1_1Presentation_1_1Tempo.html", "namespaceGuildmaster_1_1Presentation_1_1Tempo" ],
+    [ "Transition", "namespaceGuildmaster_1_1Presentation_1_1Transition.html", "namespaceGuildmaster_1_1Presentation_1_1Transition" ],
     [ "BattleEndedEvent", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent" ],
     [ "BattleFocusBinder", "classGuildmaster_1_1Presentation_1_1BattleFocusBinder.html", "classGuildmaster_1_1Presentation_1_1BattleFocusBinder" ],
+    [ "BattleTelegraphPresenter", "classGuildmaster_1_1Presentation_1_1BattleTelegraphPresenter.html", "classGuildmaster_1_1Presentation_1_1BattleTelegraphPresenter" ],
     [ "CameraModeController", "classGuildmaster_1_1Presentation_1_1CameraModeController.html", "classGuildmaster_1_1Presentation_1_1CameraModeController" ],
     [ "CombatAreaFlash", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash" ],
     [ "CombatDebugDraw", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw" ],
@@ -12,29 +20,33 @@ var namespaceGuildmaster_1_1Presentation =
     [ "CombatPresenter", "classGuildmaster_1_1Presentation_1_1CombatPresenter.html", "classGuildmaster_1_1Presentation_1_1CombatPresenter" ],
     [ "CombatStatusOverlay", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay" ],
     [ "CombatVfx", "classGuildmaster_1_1Presentation_1_1CombatVfx.html", "classGuildmaster_1_1Presentation_1_1CombatVfx" ],
+    [ "ConstantScreenScale", "classGuildmaster_1_1Presentation_1_1ConstantScreenScale.html", "classGuildmaster_1_1Presentation_1_1ConstantScreenScale" ],
     [ "DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent" ],
     [ "DeathShatter", "classGuildmaster_1_1Presentation_1_1DeathShatter.html", "classGuildmaster_1_1Presentation_1_1DeathShatter" ],
     [ "DeploymentView", "classGuildmaster_1_1Presentation_1_1DeploymentView.html", "classGuildmaster_1_1Presentation_1_1DeploymentView" ],
+    [ "DevOverlayMode", "classGuildmaster_1_1Presentation_1_1DevOverlayMode.html", "classGuildmaster_1_1Presentation_1_1DevOverlayMode" ],
     [ "EmptyFocusPointSource", "classGuildmaster_1_1Presentation_1_1EmptyFocusPointSource.html", "classGuildmaster_1_1Presentation_1_1EmptyFocusPointSource" ],
     [ "FloatingText", "classGuildmaster_1_1Presentation_1_1FloatingText.html", "classGuildmaster_1_1Presentation_1_1FloatingText" ],
     [ "HealthBarView", "classGuildmaster_1_1Presentation_1_1HealthBarView.html", "classGuildmaster_1_1Presentation_1_1HealthBarView" ],
     [ "IFocusPointSource", "interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource.html", "interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource" ],
     [ "IScreenShake", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake" ],
     [ "ManaBarView", "classGuildmaster_1_1Presentation_1_1ManaBarView.html", "classGuildmaster_1_1Presentation_1_1ManaBarView" ],
-    [ "NullScreenShake", "classGuildmaster_1_1Presentation_1_1NullScreenShake.html", "classGuildmaster_1_1Presentation_1_1NullScreenShake" ],
-    [ "PixelBurst", "classGuildmaster_1_1Presentation_1_1PixelBurst.html", "classGuildmaster_1_1Presentation_1_1PixelBurst" ],
-    [ "PixelBurstMesh", "classGuildmaster_1_1Presentation_1_1PixelBurstMesh.html", "classGuildmaster_1_1Presentation_1_1PixelBurstMesh" ],
+    [ "PooledVfx", "classGuildmaster_1_1Presentation_1_1PooledVfx.html", "classGuildmaster_1_1Presentation_1_1PooledVfx" ],
     [ "ProjectileView", "classGuildmaster_1_1Presentation_1_1ProjectileView.html", "classGuildmaster_1_1Presentation_1_1ProjectileView" ],
     [ "ScreenShake", "classGuildmaster_1_1Presentation_1_1ScreenShake.html", "classGuildmaster_1_1Presentation_1_1ScreenShake" ],
     [ "ShatterMesh", "classGuildmaster_1_1Presentation_1_1ShatterMesh.html", "classGuildmaster_1_1Presentation_1_1ShatterMesh" ],
+    [ "SilhouettePart", "structGuildmaster_1_1Presentation_1_1SilhouettePart.html", "structGuildmaster_1_1Presentation_1_1SilhouettePart" ],
     [ "UnitAnimationSelector", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector" ],
-    [ "UnitDiedEvent", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent" ],
-    [ "UnitSpawnedEvent", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent" ],
+    [ "UnitSilhouette", "structGuildmaster_1_1Presentation_1_1UnitSilhouette.html", "structGuildmaster_1_1Presentation_1_1UnitSilhouette" ],
     [ "UnitView", "classGuildmaster_1_1Presentation_1_1UnitView.html", "classGuildmaster_1_1Presentation_1_1UnitView" ],
-    [ "YSortSprite", "classGuildmaster_1_1Presentation_1_1YSortSprite.html", null ],
     [ "CameraMode", "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319", [
       [ "Action", "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53", null ],
       [ "Overview", "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a3b878279a04dc47d60932cb294d96259", null ],
-      [ "Dev", "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a55f37d1fd483f6a85379640fe51aafa8", null ]
+      [ "Dev", "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a55f37d1fd483f6a85379640fe51aafa8", null ],
+      [ "Map", "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a46f3ea056caa3126b91f3f70beea068c", null ]
+    ] ],
+    [ "DevOverlaySource", "namespaceGuildmaster_1_1Presentation.html#afa8883774f1d063bb0a3409202ff0539", [
+      [ "Presentation", "namespaceGuildmaster_1_1Presentation.html#afa8883774f1d063bb0a3409202ff0539ac7bc3fddddb62d5b656adc30cea77a55", null ],
+      [ "Simulation", "namespaceGuildmaster_1_1Presentation.html#afa8883774f1d063bb0a3409202ff0539a4f502b57d2835715eaa382c7d4c32e94", null ]
     ] ]
 ];

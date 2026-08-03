@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Stats.IModifierSource" name="Guildmaster.Data.Stats.IModifierSource">
+<area shape="rect" id="Node000001" title="Источник стат&#45;модификатора, умеющий назвать себя игроку." alt="" coords="5,5,232,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html" title="Экземпляр эффекта на конкретном юните (POCO, живёт один бой)." alt="" coords="19,133,219,833"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,99,121,133,116,133,116,99"/>
+</map>

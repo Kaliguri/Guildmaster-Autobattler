@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Stats.Explain" name="Guildmaster.Combat.Stats.Explain">
+<area shape="rect" id="Node000001" title="Разложить стат на базу и вклады источников — для показа игроку (план UI&#45;реворка §II...." alt="" coords="5,27,203,67"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="251,5,471,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,33,237,29,237,35,203,39"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Stats_1_1StatKinds.html#a9c596ee8cd39f7c088dd6af7e28029c2" title="Как показывать этот стат игроку." alt="" coords="259,55,462,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,55,246,60,245,65,203,61"/>
+</map>

@@ -1,17 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IEventFlow.html" title="Полиморфный узел забега (вики «7» §3, план 11 §3.2): бой / текст&#45;ивент / магазин / риск — каждый новы..." alt="" coords="5,177,260,203"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html" title="Узел забега «бой» (план 11 §3.2, §4 A2): оборачивает готовую боевую клетку в IEventFlow." alt="" coords="309,5,561,31"/>
-<area shape="poly" id="edge48_Node000000_Node000001" title=" " alt="" coords="152,165,217,102,260,69,307,41,342,28,343,33,309,46,263,73,220,106,156,169"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleNodeFlow.html" title="Обёртка боевого узла (план [[act&#45;map&#45;run&#45;loop]]): прогоняет внутренний бой (BattleFlow) и при победе ..." alt="" coords="324,55,545,95"/>
-<area shape="poly" id="edge49_Node000000_Node000002" title=" " alt="" coords="168,168,232,137,307,105,345,93,347,98,309,110,234,141,170,173"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html" title="Узел забега «сундук» (план [[act&#45;map&#45;run&#45;loop]] §4 B3): показывает фасад сундука, ждёт клик по крышке..." alt="" coords="309,120,560,145"/>
-<area shape="poly" id="edge50_Node000000_Node000003" title=" " alt="" coords="213,172,367,143,368,148,214,177"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Flow_1_1CompletedStubFlow.html" title="Узел&#45;заглушка: сразу EventResult.Completed (плейсхолдер для ещё не готовых типов)." alt="" coords="308,170,561,210"/>
-<area shape="poly" id="edge51_Node000000_Node000004" title=" " alt="" coords="273,187,308,187,308,193,273,193"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Flow_1_1RandomEventFlow.html" title="Узел «?» (план [[act&#45;map&#45;run&#45;loop]] §4 B4): тип роллится НА ВХОДЕ через IRngService и делегируется со..." alt="" coords="317,234,553,274"/>
-<area shape="poly" id="edge52_Node000000_Node000005" title=" " alt="" coords="207,203,340,231,339,237,206,208"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Flow_1_1ShopFlow.html" title="Узел забега «магазин» (план [[act&#45;map&#45;run&#45;loop]] §4 B2): открывает витрину (IShopController...." alt="" coords="312,299,557,324"/>
-<area shape="poly" id="edge53_Node000000_Node000006" title=" " alt="" coords="166,208,230,247,309,284,352,296,351,301,307,288,227,251,163,213"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow.html" title="Узел забега «текстовый ивент» (план 11 §3.4, §5.1) в стиле Slay the Spire: показывает TextEventData (..." alt="" coords="330,349,539,389"/>
-<area shape="poly" id="edge54_Node000000_Node000007" title=" " alt="" coords="157,211,221,272,264,305,309,333,340,346,338,351,307,338,260,309,218,276,153,215"/>
+<area shape="rect" id="Node000000" href="$structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent.html" title="Сколько игроков подтвердили действие и сколько нужно." alt="" coords="5,5,212,45"/>
 </map>

@@ -133,6 +133,8 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Периодическое исцеление (HoT). </p>
 <p>Потенция — <b>хил в секунду</b>; за тик применяется <code>Potency × Interval × Stacks</code> через ICombatContext.Heal (там действуют HealShield-эффективности). Total масштабируется длительностью (вики «11» §5.1). </p>
+<p><b>Числа:</b> <code>_healPerSecond</code> — лечение В СЕКУНДУ (не за тик), масштабируется статами источника; <code>_interval</code> — как часто капает, секунды. Частота не меняет суммарный хил, только его дробность: реже, но крупнее — заметнее глазу и уязвимее к добиванию между тиками.</p>
+<p><b>Когда срабатывает:</b> каждые <code>_interval</code> секунд, пока эффект висит.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab5ff06fddbf09ff1e29889b9d2e16a42" name="ab5ff06fddbf09ff1e29889b9d2e16a42"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab5ff06fddbf09ff1e29889b9d2e16a42">&#9670;&#160;</a></span>OnApply()</h2>

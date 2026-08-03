@@ -1,0 +1,11 @@
+<map id="Guildmaster.Game.Services.ProfileService.CreateGuild" name="Guildmaster.Game.Services.ProfileService.CreateGuild">
+<area shape="rect" id="Node000001" title="Создать гильдию в активном профиле и сделать активной. Null, если лимит или нет профиля." alt="" coords="515,69,721,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#aae84a01da73c110933033fda056956b8" title="Создать профиль и сделать активным. Null, если достигнут лимит." alt="" coords="260,37,467,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="501,77,467,73,467,68,502,72"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a3b15046b9f18095b5ef6bb045f9cbc59" title="Удалить гильдию вместе с её забегом. Необратимо: это месяцы Летописи." alt="" coords="260,101,467,141"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="502,107,467,111,467,106,501,101"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a7f84f0d344102b43ce971e9f4eb33b00" title="Удалить профиль вместе со всеми его гильдиями и забегами. Необратимо." alt="" coords="5,5,212,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="246,45,212,41,213,36,247,40"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a9691b45c86b777b0da8c6880967b14a6" title="Поднять прошлый выбор игрока, а на чистой установке завести первый профиль с гильдией." alt="" coords="5,69,212,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="247,75,213,79,212,74,246,69"/>
+</map>

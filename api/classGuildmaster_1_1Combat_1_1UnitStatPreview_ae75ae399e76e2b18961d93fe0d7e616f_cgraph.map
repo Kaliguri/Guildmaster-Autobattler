@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.UnitStatPreview.Basic" name="Guildmaster.Combat.UnitStatPreview.Basic">
+<area shape="rect" id="Node000001" title="Базовая семёрка «быстрого чтения» (реш." alt="" coords="5,35,219,75"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#aa8ff44eba75969d093da4ff8a6e6edba" title="Атак в секунду — то, что игра ДЕЙСТВИТЕЛЬНО производит: TickRate / IntervalTicks, то есть с тиковой к..." alt="" coords="275,5,478,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,40,261,35,262,41,219,46"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="267,70,487,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="219,63,253,67,253,72,218,69"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a22bc798f12c716f8ccda8585b205691b" title="Интервал между атаками в сим&#45;тиках." alt="" coords="535,5,737,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="478,23,521,23,521,28,478,28"/>
+</map>

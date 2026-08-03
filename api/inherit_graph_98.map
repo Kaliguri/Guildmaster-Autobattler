@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html" title="Запись об одной правке: ассет, поле, было→стало, применилась ли (иначе — почему пропущено)." alt="" coords="5,5,204,45"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html" title="Фасад звуковой подсистемы." alt="" coords="5,5,227,45"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html" title="FMOD&#45;реализация IAudioService (вики impl «09» §П3)." alt="" coords="275,5,481,45"/>
+<area shape="poly" id="edge59_Node000000_Node000001" title=" " alt="" coords="240,23,274,23,274,28,240,28"/>
 </map>

@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.EffectSystem.CommitPending" name="Guildmaster.Combat.EffectSystem.CommitPending">
+<area shape="rect" id="Node000001" title="Проявить отложенное на одном юните." alt="" coords="5,37,203,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#a2ba9f65756d1aaa68f725852d6bb0ac5" title="Проявить отложенные изменения: снятия, затем наложения." alt="" coords="251,37,448,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,55,237,55,237,60,203,60"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html#ae97b806719021d19ff582f3cc9aee131" title="Добавить группу модификаторов от source ." alt="" coords="496,5,693,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="448,42,482,37,483,43,449,47"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Stats.html#a573ab919e615e636374c98fd43666be6" title="Удалить все модификаторы, добавленные от source ." alt="" coords="496,69,693,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="449,68,483,72,482,77,448,73"/>
+</map>

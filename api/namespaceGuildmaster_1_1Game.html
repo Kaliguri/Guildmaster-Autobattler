@@ -100,6 +100,8 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Game.html','')
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
+<tr class="memitem:namespaceGuildmaster_1_1Game_1_1Activity" id="r_namespaceGuildmaster_1_1Game_1_1Activity"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Activity.html">Activity</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceGuildmaster_1_1Game_1_1Editor" id="r_namespaceGuildmaster_1_1Game_1_1Editor"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Editor.html">Editor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceGuildmaster_1_1Game_1_1Flow" id="r_namespaceGuildmaster_1_1Game_1_1Flow"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Flow.html">Flow</a></td></tr>
@@ -110,6 +112,8 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceGuildmaster_1_1Game_1_1Services" id="r_namespaceGuildmaster_1_1Game_1_1Services"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Services.html">Services</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceGuildmaster_1_1Game_1_1Session" id="r_namespaceGuildmaster_1_1Game_1_1Session"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Session.html">Session</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -117,16 +121,19 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Авторинг арены в сцене/префабе: задаёт границы поля и зоны расстановки, рисует их гизмо.  <a href="classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1CombatLifetimeScope.html">CombatLifetimeScope</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Дочерний DI-скоуп BattleScene.  <a href="classGuildmaster_1_1Game_1_1CombatLifetimeScope.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DI-скоуп боевых систем: RNG боя, системы, симуляция, презентация.  <a href="classGuildmaster_1_1Game_1_1CombatLifetimeScope.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1DeploymentController.html">DeploymentController</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оркестратор интерактивной фазы расстановки (план шаг 4).  <a href="classGuildmaster_1_1Game_1_1DeploymentController.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1GameBootstrap.html">GameBootstrap</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Точка старта: поднимает RootLifetimeScope и запускает флоу.  <a href="classGuildmaster_1_1Game_1_1GameBootstrap.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Точка старта: поднимает персистентный мир и запускает верхнюю петлю игры (главное меню → забег → меню).  <a href="classGuildmaster_1_1Game_1_1GameBootstrap.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1RootLifetimeScope.html">RootLifetimeScope</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Корневой DI-скоуп, живёт всю сессию вместе с CoreScene.  <a href="classGuildmaster_1_1Game_1_1RootLifetimeScope.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>ScopeWiring</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Один ответ на «поле скоупа не назначено в сцене». <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1WorldLifetimeScope.html">WorldLifetimeScope</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Персистентный DI-скоуп «мира»: живёт всю сессию (WorldScene грузится аддитивно на буте и не выгружается), дочерний к RootLifetimeScope.  <a href="classGuildmaster_1_1Game_1_1WorldLifetimeScope.html#details">More...</a><br /></td></tr>

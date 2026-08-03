@@ -103,12 +103,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.DodgeComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent__inherit__graph.svg" width="363" height="511"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent__inherit__graph.svg" width="586" height="511"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Effects.Components.DodgeComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent__coll__graph.svg" width="363" height="511"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent__coll__graph.svg" width="586" height="511"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -125,7 +125,12 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>«Изворотливость» (§9.3, §9.4, §10.5): pre-damage реактив с зарядами. </p>
-<p>Полностью отменяет входящую АВТОАТАКУ (DamageRequest.IsAutoAttack) — любую, даже слабую; урон способностей/DoT/шипов не гасит. Дополнительно фильтруется триггером блока F (из <code>self.Unit.Ai.PassiveTrigger</code>) и тратит один заряд; заряды восстанавливаются независимо. Состояние зарядов — per-effect в RuntimeEffect.ChargeReadyTicks. </p>
+<p>Полностью отменяет входящую АВТОАТАКУ (DamageRequest.IsAutoAttack) — любую, даже слабую; урон способностей/DoT/шипов не гасит. Дополнительно фильтруется триггером блока F (из <code>self.Unit.Ai.PassiveTrigger</code>) и тратит один заряд; заряды восстанавливаются независимо. Состояние зарядов — per-effect в RuntimeEffect.TryConsumeCharge. </p>
+<p><b>Трата заряда — это КУВЫРОК</b> (решение 2026-07-26): носитель уходит с места на _rollDistance и получает _hasteBuff — ускорение после переката. Уклонение не просто гасит урон, а даёт занять позицию: оторваться, дойти, зайти в спину.</p>
+<p><b>Направление = направление собственного намерения.</b> Двигался этим тиком — кувырок по ходу движения (к цели, в обход, отступая); стоял и бил — кувырок ОТ атакующего. Уклонение никогда не сбивает план юнита, а ускоряет его, поэтому отдельного «отскока назад» нет.</p>
+<p><b>Числа:</b> <code>_maxCharges</code> — сколько автоатак подряд можно отменить; <code>_rechargeSeconds</code> — за сколько восстанавливается ОДИН заряд; <code>_rollDistance</code> — на сколько единиц уносит перекат; <code>_rollSpeedPerSecond</code> — как быстро (вместе с дистанцией задаёт длительность переката); <code>_hasteBuff</code> — баф ускорения, его величины живут в нём. Величины урона здесь нет намеренно: уклонение не смягчает удар, а отменяет его целиком.</p>
+<p><b>Когда срабатывает:</b> в pre-damage, до расчёта урона — отменённый удар не наносит ничего и не будит реактивы «на удар» (шипы об уклонившегося не колются).</p>
+<p>Требует дееспособности (IRequiresAgencyComponent): «Изворотливость» — это кувырок с уходом с места, то есть ДЕЙСТВИЕ. Оглушённый ассасин уклоняться не может (решение Макса 2026-07-29). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5d3b26a7cd26098b8f26e8d38cb8bf56" name="a5d3b26a7cd26098b8f26e8d38cb8bf56"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d3b26a7cd26098b8f26e8d38cb8bf56">&#9670;&#160;</a></span>OnApply()</h2>

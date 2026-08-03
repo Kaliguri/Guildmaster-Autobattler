@@ -1,0 +1,7 @@
+<map id="Guildmaster.Core.Persistence.SaveLoadResult.Missing" name="Guildmaster.Core.Persistence.SaveLoadResult.Missing">
+<area shape="rect" id="Node000001" title=" " alt="" coords="329,37,548,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#a5a2ba3a5b9256ba76486ddeaee2a1d44" title="Загрузить забег из автосейва." alt="" coords="42,5,245,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="315,47,245,39,245,34,316,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a78defbe99217038a164fcdb275618d26" title="Загрузить значение по ключу." alt="" coords="5,69,281,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="316,73,282,77,281,72,315,68"/>
+</map>

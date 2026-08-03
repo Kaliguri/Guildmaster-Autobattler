@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Services.SettingsService.ResetToDefaults" name="Guildmaster.Game.Services.SettingsService.ResetToDefaults">
 <area shape="rect" id="Node000001" title="Сбросить к дефолтам GameConfig и применить (на диск НЕ пишет — это делает Save)." alt="" coords="5,5,239,45"/>
-<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Core_1_1Settings_1_1GameplaySettings.html#a1af1d39d881f92a7ced6ce065eb0de0b" title="Значения первого запуска: вся анимация карточек включена." alt="" coords="287,5,488,45"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Core_1_1Settings_1_1GameplaySettings.html#a1af1d39d881f92a7ced6ce065eb0de0b" title="Значения первого запуска: вся анимация карточек включена, подсказки краткие, камера боя сценарная." alt="" coords="287,5,488,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="239,23,273,23,273,28,239,28"/>
 </map>

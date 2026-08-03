@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.EffectSystem.Tick" name="Guildmaster.Combat.EffectSystem.Tick">
+<area shape="rect" id="Node000001" title="Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение." alt="" coords="5,37,203,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a9a1539e04fd8ee40c455992319cf1c88" title="Прожить тик. Возвращает true, если срок вышел и эффект пора снимать." alt="" coords="251,5,489,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,43,237,39,237,44,203,48"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a721a8e0d3e27463c8db550fbe5412cc9" title="Прожить тик всем порциям и вернуть true, если живых не осталось." alt="" coords="253,69,487,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,67,239,71,239,76,203,72"/>
+</map>

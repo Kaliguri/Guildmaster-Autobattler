@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.EffectData.CleanseStacks" name="Guildmaster.Data.Definitions.EffectData.CleanseStacks">
+<area shape="rect" id="Node000001" title="Сколько стаков уносит ОДНО очищение силой dispelPower &#160;(ГДД «Свойства эффекта» §Цена очистки,..." alt="" coords="251,5,465,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1EffectSystem.html#add433549e9a0dc16bb7e3b582cf951cb" title="Снять с цели подходящие эффекты: полярность ∧ теги ∧ CleanseTier ≤ DispelPower ∧ !..." alt="" coords="5,5,203,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,28,203,28,203,23,237,23"/>
+</map>

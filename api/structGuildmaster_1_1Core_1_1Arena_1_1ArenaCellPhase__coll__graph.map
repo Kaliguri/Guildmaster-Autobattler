@@ -1,0 +1,3 @@
+<map id="Guildmaster.Core.Arena.ArenaCellPhase" name="Guildmaster.Core.Arena.ArenaCellPhase">
+<area shape="rect" id="Node000001" title="Состояние одной клетки на данный момент перехода. Все три поля — 0..1." alt="" coords="5,5,216,185"/>
+</map>

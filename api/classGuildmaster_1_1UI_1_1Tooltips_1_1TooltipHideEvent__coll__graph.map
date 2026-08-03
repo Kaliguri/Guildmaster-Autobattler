@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Tooltips.TooltipHideEvent" name="Guildmaster.UI.Tooltips.TooltipHideEvent">
+<area shape="rect" id="Node000001" title="«Курсор ушёл с элемента с тултипом» — просьба убрать окно (если оно про этот якорь)." alt="" coords="32,119,201,219"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,228,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,84,119,119,114,119,114,84"/>
+</map>

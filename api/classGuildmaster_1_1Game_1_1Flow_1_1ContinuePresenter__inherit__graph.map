@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Flow.ContinuePresenter" name="Guildmaster.Game.Flow.ContinuePresenter">
-<area shape="rect" id="Node000001" title="Презентер кнопки «Продолжить» (план [[act&#45;map&#45;run&#45;loop]] §4 A4): публикует OpenContinueRequest в UI и..." alt="" coords="5,119,237,219"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter.html" title="Показ единой кнопки «Продолжить» и ожидание нажатия (план A4)." alt="" coords="29,5,214,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,84,124,119,119,119,119,84"/>
+<area shape="rect" id="Node000001" title="Презентер кнопок бита (план [[act&#45;map&#45;run&#45;loop]] §4 A4): публикует OpenContinueRequest в UI." alt="" coords="5,139,237,259"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter.html" title="Показ кнопок «бита» между узлами и (для гейта) ожидание нажатия (план A4)." alt="" coords="29,5,214,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,105,124,138,119,138,119,105"/>
 </map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.Arena.IArenaSwap" name="Guildmaster.Core.Arena.IArenaSwap">
+<area shape="rect" id="Node000001" title="Смена облика арены «А → Б» в цифровом стиле (три акта, см." alt="" coords="5,5,256,131"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Arena_1_1ArenaSkinSwapper.html" title="Меняет облик арены поклеточной подменой тайлов (журнал docs/arena&#45;swap&#45;progress.md,..." alt="" coords="39,179,222,439"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,145,133,178,128,178,128,145"/>
+</map>

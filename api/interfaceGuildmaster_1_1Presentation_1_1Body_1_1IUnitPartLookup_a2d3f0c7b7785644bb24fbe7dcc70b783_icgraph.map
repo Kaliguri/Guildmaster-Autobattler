@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Body.IUnitPartLookup.TryGetStrikeSource" name="Guildmaster.Presentation.Body.IUnitPartLookup.TryGetStrikeSource">
+<area shape="rect" id="Node000001" title="Чем юнит исполняет приём ЭТОЙ рукой: предмет в её хвате, а если рука пуста — сама кисть (кулак)." alt="" coords="264,5,507,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1CastGlowMask.html#a5741b1d602012b8d0f56a64b35929350" title="Какие части зажечь." alt="" coords="5,13,216,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,35,216,35,216,30,250,30"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.FrostStatueComponent" name="Guildmaster.Combat.Effects.Components.FrostStatueComponent">
+<area shape="rect" id="Node000001" title="Верхняя ступень холодной линии — статуя (карточка [[frost]] §Обратился в лёд)." alt="" coords="5,365,255,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html" title="Синхронный перехват ДО вычета HP (§9.3): вызывается из EffectSystem.RunPreDamage перед DamagePipeline..." alt="" coords="45,252,215,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,331,133,365,127,365,127,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="37,119,223,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="133,218,133,252,127,252,127,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="65,5,195,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="133,85,133,119,127,119,127,85"/>
+</map>

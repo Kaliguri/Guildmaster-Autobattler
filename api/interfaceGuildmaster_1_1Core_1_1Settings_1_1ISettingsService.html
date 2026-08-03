@@ -100,17 +100,17 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Core_1_1Settin
 </div><!--header-->
 <div class="contents">
 
-<p>Единый источник пользовательских настроек + персист (ES3) + живое применение в аудио.  
+<p>Единый источник пользовательских настроек + персист (за ISaveService, ключ prefs) + живое применение в аудио.  
  <a href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Core.Settings.ISettingsService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService__inherit__graph.svg" width="210" height="579"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Settings.ISettingsService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService__coll__graph.svg" width="210" height="251"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService__coll__graph.svg" width="223" height="331"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -130,11 +130,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1133406067f187a6250b2c2c6cbf2e8e" id="r_a1133406067f187a6250b2c2c6cbf2e8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#a1133406067f187a6250b2c2c6cbf2e8e">SetCardAttackAnimation</a> (bool enabled)</td></tr>
 <tr class="memdesc:a1133406067f187a6250b2c2c6cbf2e8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Включить/выключить анимацию атаки выбранной карточки (при включённой анимации). Поднимает Changed.  <br /></td></tr>
 <tr class="separator:a1133406067f187a6250b2c2c6cbf2e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a743e58b3cef2ce9b5b35f5e27db374fa" id="r_a743e58b3cef2ce9b5b35f5e27db374fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#a743e58b3cef2ce9b5b35f5e27db374fa">SetAlwaysDetailedTooltips</a> (bool enabled)</td></tr>
+<tr class="memdesc:a743e58b3cef2ce9b5b35f5e27db374fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Всегда показывать подробности в подсказках (Shift тогда временно даёт краткий вид, §II.10.4).  <br /></td></tr>
+<tr class="separator:a743e58b3cef2ce9b5b35f5e27db374fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7180fef65fd6906b7c614a122fabbae3" id="r_a7180fef65fd6906b7c614a122fabbae3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#a7180fef65fd6906b7c614a122fabbae3">SetFreeCombatCamera</a> (bool free)</td></tr>
+<tr class="memdesc:a7180fef65fd6906b7c614a122fabbae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запомнить, что бой игрок смотрит свободной камерой, а не сценарной.  <br /></td></tr>
+<tr class="separator:a7180fef65fd6906b7c614a122fabbae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72f0300fbf0ac3bf226f1a91150830cd" id="r_a72f0300fbf0ac3bf226f1a91150830cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#a72f0300fbf0ac3bf226f1a91150830cd">SetLanguage</a> (string localeCode)</td></tr>
+<tr class="memdesc:a72f0300fbf0ac3bf226f1a91150830cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запомнить выбранный язык.  <br /></td></tr>
+<tr class="separator:a72f0300fbf0ac3bf226f1a91150830cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60e11114c1594a17dfa1ebb1937c6064" id="r_a60e11114c1594a17dfa1ebb1937c6064"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#a60e11114c1594a17dfa1ebb1937c6064">Load</a> ()</td></tr>
-<tr class="memdesc:a60e11114c1594a17dfa1ebb1937c6064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Загрузить с диска (ES3) или взять дефолты GameConfig, затем применить в аудио.  <br /></td></tr>
+<tr class="memdesc:a60e11114c1594a17dfa1ebb1937c6064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Загрузить с диска (ключ <code>prefs</code>) или взять дефолты GameConfig, затем применить в аудио.  <br /></td></tr>
 <tr class="separator:a60e11114c1594a17dfa1ebb1937c6064"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a014bf619baf6860dcd8e675fb3410bd6" id="r_a014bf619baf6860dcd8e675fb3410bd6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#a014bf619baf6860dcd8e675fb3410bd6">Save</a> ()</td></tr>
-<tr class="memdesc:a014bf619baf6860dcd8e675fb3410bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сохранить текущие значения на диск (ES3).  <br /></td></tr>
+<tr class="memdesc:a014bf619baf6860dcd8e675fb3410bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сохранить текущие значения на диск (ключ <code>prefs</code>).  <br /></td></tr>
 <tr class="separator:a014bf619baf6860dcd8e675fb3410bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a899774374710e1c97c1eeca9003a07fd" id="r_a899774374710e1c97c1eeca9003a07fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#a899774374710e1c97c1eeca9003a07fd">ResetToDefaults</a> ()</td></tr>
 <tr class="memdesc:a899774374710e1c97c1eeca9003a07fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сбросить к дефолтам GameConfig и применить (на диск НЕ пишет — это делает Save).  <br /></td></tr>
@@ -148,6 +157,9 @@ Properties</h2></td></tr>
 <tr class="memitem:af372e89079612dd0d136463aa09d0420" id="r_af372e89079612dd0d136463aa09d0420"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Core_1_1Settings_1_1GameplaySettings.html">GameplaySettings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#af372e89079612dd0d136463aa09d0420">Gameplay</a><code> [get]</code></td></tr>
 <tr class="memdesc:af372e89079612dd0d136463aa09d0420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущие геймплей-настройки презентации (анимация карточек и т.п.).  <br /></td></tr>
 <tr class="separator:af372e89079612dd0d136463aa09d0420"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0c31b22ad68ac7c7c58de9eabfb4db0" id="r_ac0c31b22ad68ac7c7c58de9eabfb4db0"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#ac0c31b22ad68ac7c7c58de9eabfb4db0">LanguageCode</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac0c31b22ad68ac7c7c58de9eabfb4db0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Код локали, выбранной игроком (<code>en</code> / <code>ru</code>), либо ПУСТАЯ строка — «ещё не выбирал».  <br /></td></tr>
+<tr class="separator:ac0c31b22ad68ac7c7c58de9eabfb4db0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
@@ -156,7 +168,7 @@ Events</h2></td></tr>
 <tr class="separator:a2627c80951b6e65d24cbab333ce4d5b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Единый источник пользовательских настроек + персист (ES3) + живое применение в аудио. </p>
+<div class="textblock"><p>Единый источник пользовательских настроек + персист (за ISaveService, ключ prefs) + живое применение в аудио. </p>
 <p>Дефолты первого запуска — из GameConfig. Настройки локальны для клиента (кооп не задевают). </p>
 <p>UX: сеттеры применяют значение СРАЗУ (слышно при драге слайдера) и поднимают Changed; на диск пишет только Save. Снапшот для Cancel держит вызывающий (ViewModel): запомнил Audio до правок, при отмене — вернул через сеттеры.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -175,7 +187,7 @@ Events</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Загрузить с диска (ES3) или взять дефолты GameConfig, затем применить в аудио. </p>
+<p>Загрузить с диска (ключ <code>prefs</code>) или взять дефолты GameConfig, затем применить в аудио. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#a4cbbb8d16bb6ce9b80c122fd2b1d384e">Guildmaster.Game.Services.SettingsService</a>.</p>
 
@@ -217,9 +229,31 @@ Events</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Сохранить текущие значения на диск (ES3). </p>
+<p>Сохранить текущие значения на диск (ключ <code>prefs</code>). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#a1e17f2e840d3ea4b449283f26ee91b92">Guildmaster.Game.Services.SettingsService</a>.</p>
+
+</div>
+</div>
+<a id="a743e58b3cef2ce9b5b35f5e27db374fa" name="a743e58b3cef2ce9b5b35f5e27db374fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a743e58b3cef2ce9b5b35f5e27db374fa">&#9670;&#160;</a></span>SetAlwaysDetailedTooltips()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Settings.ISettingsService.SetAlwaysDetailedTooltips </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Всегда показывать подробности в подсказках (Shift тогда временно даёт краткий вид, §II.10.4). </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#abed22717334bbe268e85c3fb4e94fbc3">Guildmaster.Game.Services.SettingsService</a>.</p>
 
 </div>
 </div>
@@ -264,6 +298,52 @@ Events</h2></td></tr>
 <p>Включить/выключить анимацию атаки выбранной карточки (при включённой анимации). Поднимает Changed. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#afdd3e554587e94aa207566b47616096f">Guildmaster.Game.Services.SettingsService</a>.</p>
+
+</div>
+</div>
+<a id="a7180fef65fd6906b7c614a122fabbae3" name="a7180fef65fd6906b7c614a122fabbae3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7180fef65fd6906b7c614a122fabbae3">&#9670;&#160;</a></span>SetFreeCombatCamera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Settings.ISettingsService.SetFreeCombatCamera </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>free</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Запомнить, что бой игрок смотрит свободной камерой, а не сценарной. </p>
+<p>Экрана настроек у этого выбора нет — его пишет камера сразу после Tab, поэтому за сеттером тут же идёт Save. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#a99eb79bf042c5d54c344df2ac0294904">Guildmaster.Game.Services.SettingsService</a>.</p>
+
+</div>
+</div>
+<a id="a72f0300fbf0ac3bf226f1a91150830cd" name="a72f0300fbf0ac3bf226f1a91150830cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72f0300fbf0ac3bf226f1a91150830cd">&#9670;&#160;</a></span>SetLanguage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Settings.ISettingsService.SetLanguage </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>localeCode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Запомнить выбранный язык. </p>
+<p>Как и у камеры, экрана под этот выбор пока нет: его пишет старт сессии, определив язык системы, — поэтому сеттер сам уходит на диск, чтобы «язык подобрали один раз» не превращалось в «подбираем каждый запуск». Применяет локаль НЕ он, а <code>LocaleStartup</code> по Changed: настройки не знают про Unity Localization. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#ab20fe121241cf958ac41425458ba3aea">Guildmaster.Game.Services.SettingsService</a>.</p>
 
 </div>
 </div>
@@ -383,6 +463,33 @@ Events</h2></td></tr>
 <p>Текущие геймплей-настройки презентации (анимация карточек и т.п.). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#af60eec15b48979cc4cae5d18d1b6d36a">Guildmaster.Game.Services.SettingsService</a>.</p>
+
+</div>
+</div>
+<a id="ac0c31b22ad68ac7c7c58de9eabfb4db0" name="ac0c31b22ad68ac7c7c58de9eabfb4db0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c31b22ad68ac7c7c58de9eabfb4db0">&#9670;&#160;</a></span>LanguageCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Guildmaster.Core.Settings.ISettingsService.LanguageCode</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Код локали, выбранной игроком (<code>en</code> / <code>ru</code>), либо ПУСТАЯ строка — «ещё не выбирал». </p>
+<p>Пустота обязана отличаться от кода: по ней первый запуск понимает, что язык надо взять у системы, а не навязать дефолт проекта. После первого выбора здесь всегда код. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#a2b3e77eee46abc22ffecf8c1918a44e4">Guildmaster.Game.Services.SettingsService</a>.</p>
 
 </div>
 </div>

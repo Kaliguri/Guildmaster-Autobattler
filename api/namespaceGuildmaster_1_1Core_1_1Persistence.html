@@ -92,17 +92,85 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Core_1_1Persis
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Core.Persistence Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">ISaveService</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шов персистентности (вики «2», «13» §1): сохранение/загрузка сериализуемых DTO по строковому ключу.  <a href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Persistence_1_1GameDataPath.html">GameDataPath</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Корень пользовательских данных игры — <b>намеренно не Application.persistentDataPath</b> (ТЗ [[save-system]] §4).  <a href="classGuildmaster_1_1Core_1_1Persistence_1_1GameDataPath.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ILocalSaveService.html">ILocalSaveService</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Хранилище <b>машинно-локальных</b> данных: тот же контракт, что у ISaveService, но другой каталог — вне <code>Saves/</code>, то есть <b>вне маски Steam Cloud</b> (ТЗ [[save-system]] §3–4).  <a href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ILocalSaveService.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владелец иерархии сохранений: <b>профиль → гильдии → забег</b> (ТЗ [[save-system]] §3).  <a href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">ISaveService</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шов персистентности (ТЗ [[save-system]]): сохранение/загрузка сериализуемых DTO по строковому ключу.  <a href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html">ProfileSummary</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Профиль в списке выбора: то, что нужно показать, без загрузки его содержимого.  <a href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html">SaveLoadResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Результат загрузки с диагностикой.  <a href="structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchema.html">SaveSchema</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Резолв версии схемы по типу DTO. Рефлексия кешируется — вызывается на каждом сейве.  <a href="classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchema.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute.html">SaveSchemaAttribute</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Версия схемы сохраняемого DTO (ТЗ [[save-system]] §5).  <a href="classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a5e3962a921c4fe1cfd4e40adaaba6a90" id="r_a5e3962a921c4fe1cfd4e40adaaba6a90"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90">SaveLoadStatus</a> { <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90aa60852f204ed8028c1c58808b746d115">Ok</a>
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90a2aee0be2678ee90fd327cc186826438e">Missing</a>
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90a15ff2bcedc465304bd186b34a01e251e">Corrupted</a>
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90a13ccd8b0552f185d8f2b245224b2c16c">TooNew</a>
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90ab4080bdf74febf04d578ff105cce9d3f">Unsupported</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a5e3962a921c4fe1cfd4e40adaaba6a90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Исход попытки загрузки (ТЗ [[save-system]] §5).  <a href="namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90">More...</a><br /></td></tr>
+<tr class="separator:a5e3962a921c4fe1cfd4e40adaaba6a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a5e3962a921c4fe1cfd4e40adaaba6a90" name="a5e3962a921c4fe1cfd4e40adaaba6a90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e3962a921c4fe1cfd4e40adaaba6a90">&#9670;&#160;</a></span>SaveLoadStatus</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90">Guildmaster.Core.Persistence.SaveLoadStatus</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Исход попытки загрузки (ТЗ [[save-system]] §5). </p>
+<p>Именно исход, а не «значение или null»: вызывающему нужно различать «сейва нет» и «сейв есть, но мы не имеем права его трогать» — от этого зависит, показывать ли кнопку «Продолжить» и что сказать игроку. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5e3962a921c4fe1cfd4e40adaaba6a90aa60852f204ed8028c1c58808b746d115" name="a5e3962a921c4fe1cfd4e40adaaba6a90aa60852f204ed8028c1c58808b746d115"></a>Ok&#160;</td><td class="fielddoc"><p>Загружено, значение валидно. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5e3962a921c4fe1cfd4e40adaaba6a90a2aee0be2678ee90fd327cc186826438e" name="a5e3962a921c4fe1cfd4e40adaaba6a90a2aee0be2678ee90fd327cc186826438e"></a>Missing&#160;</td><td class="fielddoc"><p>Файла нет. Не ошибка: первый запуск, новый профиль. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5e3962a921c4fe1cfd4e40adaaba6a90a15ff2bcedc465304bd186b34a01e251e" name="a5e3962a921c4fe1cfd4e40adaaba6a90a15ff2bcedc465304bd186b34a01e251e"></a>Corrupted&#160;</td><td class="fielddoc"><p>Файл есть, но не читается. Уехал в <code>.corrupt</code>, бэкап не помог. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5e3962a921c4fe1cfd4e40adaaba6a90a13ccd8b0552f185d8f2b245224b2c16c" name="a5e3962a921c4fe1cfd4e40adaaba6a90a13ccd8b0552f185d8f2b245224b2c16c"></a>TooNew&#160;</td><td class="fielddoc"><p>Сейв записан более новой версией игры. </p>
+<p><b>Не грузим и не затираем</b> — иначе откат на прошлый билд через Steam beta-branch съел бы прогресс молча. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5e3962a921c4fe1cfd4e40adaaba6a90ab4080bdf74febf04d578ff105cce9d3f" name="a5e3962a921c4fe1cfd4e40adaaba6a90ab4080bdf74febf04d578ff105cce9d3f"></a>Unsupported&#160;</td><td class="fielddoc"><p>Схема старее текущей, а поднять её нечем (миграций нет или цепочка оборвана намеренно). </p>
+<p>Для забега это допустимо по решению S4, для профиля — нет. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

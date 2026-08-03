@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Tape.IUnitDirectory" name="Guildmaster.Combat.Tape.IUnitDirectory">
+<area shape="rect" id="Node000001" title="Кто есть кто на арене: id → паспорт." alt="" coords="216,5,403,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Tape_1_1BattleUnitRegistry.html" title="Паспорта юнитов боя: боевая сторона IUnitDirectory." alt="" coords="5,183,192,343"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="249,96,206,135,161,185,157,182,202,131,245,92"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Tape_1_1StageFrameRouter.html" title="Единственный вход показа за кадром сцены: пока идёт бой — лента, всё остальное время — тела мира." alt="" coords="216,133,403,393"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="312,99,312,133,307,133,307,99"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Tape_1_1WorldBodyStage.html" title="Тела на арене вне боя: кто стоит во дворе гильдии, на Ристалище и в строю между забегами." alt="" coords="427,173,613,353"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="373,92,417,131,453,171,449,175,413,135,370,96"/>
+</map>

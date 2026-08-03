@@ -110,8 +110,8 @@ Collaboration diagram for Guildmaster.Combat.Effects.EffectContext:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7774b968b4299c5263162e9db75ed251" id="r_a7774b968b4299c5263162e9db75ed251"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a7774b968b4299c5263162e9db75ed251">EffectContext</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat, <a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html">RuntimeEffect</a> effect, float potency, float dt)</td></tr>
-<tr class="separator:a7774b968b4299c5263162e9db75ed251"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55232b41b679821f0d73c64dad112737" id="r_a55232b41b679821f0d73c64dad112737"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a55232b41b679821f0d73c64dad112737">EffectContext</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat, <a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html">RuntimeEffect</a> effect, float potency, float dt, float share=1f, bool liveStacks=false)</td></tr>
+<tr class="separator:a55232b41b679821f0d73c64dad112737"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -133,6 +133,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aa2904c591528f79f7cfacaffb14e7a62" id="r_aa2904c591528f79f7cfacaffb14e7a62"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#aa2904c591528f79f7cfacaffb14e7a62">Dt</a></td></tr>
 <tr class="memdesc:aa2904c591528f79f7cfacaffb14e7a62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаг времени, сек. Для периодики применяемое = Potency × Interval.  <br /></td></tr>
 <tr class="separator:aa2904c591528f79f7cfacaffb14e7a62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a36993fbd5e9a77e5ff745a00e92031" id="r_a0a36993fbd5e9a77e5ff745a00e92031"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a0a36993fbd5e9a77e5ff745a00e92031">Share</a></td></tr>
+<tr class="memdesc:a0a36993fbd5e9a77e5ff745a00e92031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Доля этого прохода в тике периодики (0..1).  <br /></td></tr>
+<tr class="separator:a0a36993fbd5e9a77e5ff745a00e92031"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -140,15 +143,15 @@ Properties</h2></td></tr>
 <tr class="memdesc:a8721b50da3ff3e7837848dd785d4ec62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Детерминированный RNG боя (через шов).  <br /></td></tr>
 <tr class="separator:a8721b50da3ff3e7837848dd785d4ec62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0145d880f0ab48633a5417ba4cc9e26" id="r_ae0145d880f0ab48633a5417ba4cc9e26"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#ae0145d880f0ab48633a5417ba4cc9e26">Stacks</a><code> [get]</code></td></tr>
-<tr class="memdesc:ae0145d880f0ab48633a5417ba4cc9e26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Число стаков эффекта (≥ 1).  <br /></td></tr>
+<tr class="memdesc:ae0145d880f0ab48633a5417ba4cc9e26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Число стаков эффекта (≥ 1) — СНИМОК на начало тика, потому что стаками компонент влияет на мир, а закон видимости не пускает внутритиковые правки в исход (см.  <br /></td></tr>
 <tr class="separator:ae0145d880f0ab48633a5417ba4cc9e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Контекст, передаваемый компоненту эффекта (<code>in</code>). </p>
 <p>Даёт доступ к цели, источнику, шву влияния на мир (ICombatContext), снимку потенции для текущего компонента и числу стаков. Так компоненты остаются stateless и юнит-тестируемы с мок-контекстом (вики «6» §5.1, «12» §3.2). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7774b968b4299c5263162e9db75ed251" name="a7774b968b4299c5263162e9db75ed251"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7774b968b4299c5263162e9db75ed251">&#9670;&#160;</a></span>EffectContext()</h2>
+<a id="a55232b41b679821f0d73c64dad112737" name="a55232b41b679821f0d73c64dad112737"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55232b41b679821f0d73c64dad112737">&#9670;&#160;</a></span>EffectContext()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,7 +193,19 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>dt</em>&#160;</td>
+          <td class="paramname"><em>dt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>share</em> = <code>1f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>liveStacks</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -272,6 +287,23 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="a0a36993fbd5e9a77e5ff745a00e92031" name="a0a36993fbd5e9a77e5ff745a00e92031"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a36993fbd5e9a77e5ff745a00e92031">&#9670;&#160;</a></span>Share</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Combat.Effects.EffectContext.Share</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Доля этого прохода в тике периодики (0..1). </p>
+<p>Эффект живёт одним экземпляром на цели, но поддерживать его могут несколько юнитов — тогда тик прогоняется по вкладчикам, и каждый получает свою долю урона на СВОЙ счёт (реш. Макса 2026-07-26). Один вкладчик — доля 1, то есть поведение ровно прежнее. </p>
+
+</div>
+</div>
 <a id="a0e5ed3a5cd4bf5038c0a9f032aa0aaaf" name="a0e5ed3a5cd4bf5038c0a9f032aa0aaaf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0e5ed3a5cd4bf5038c0a9f032aa0aaaf">&#9670;&#160;</a></span>Source</h2>
 
@@ -349,7 +381,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Число стаков эффекта (≥ 1). </p>
+<p>Число стаков эффекта (≥ 1) — СНИМОК на начало тика, потому что стаками компонент влияет на мир, а закон видимости не пускает внутритиковые правки в исход (см. </p>
+<p>RuntimeEffect.StacksAtTickStart). Живое значение отдаётся только пути пересчёта вклада — там оно и нужно. </p>
 
 </div>
 </div>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.Effects.RuntimeEffect.IsTimerDue" name="Guildmaster.Combat.Effects.RuntimeEffect.IsTimerDue">
+<area shape="rect" id="Node000001" title="Пора сработать? Абсолютный тик против текущего — без потиковых декрементов, иначе таймер зависел бы о..." alt="" coords="328,5,536,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent.html#abc70bdbb77a4854369222ab638469db4" title=" " alt="" coords="5,5,280,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="314,28,280,28,280,23,314,23"/>
+</map>

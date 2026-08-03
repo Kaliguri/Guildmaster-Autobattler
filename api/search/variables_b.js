@@ -1,18 +1,15 @@
 var searchData=
 [
-  ['map_0',['map',['../structGuildmaster_1_1Guild_1_1OpenMapRequest.html#a2092ee19f0c8cdaa9f32391ecad55328',1,'Guildmaster.Guild.OpenMapRequest.Map'],['../classGuildmaster_1_1Guild_1_1RunState.html#a8f98c130ef9f2ccee5f5dddc12e52fd4',1,'Guildmaster.Guild.RunState.Map']]],
-  ['markerfunction_1',['MarkerFunction',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a01eeddc0d91b22cfd797bb315f3b5811',1,'Guildmaster::Data::Definitions::ClipMarkers']]],
-  ['master_2',['Master',['../structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html#ad98bea5f2c025184ed7eab79b26dfeeb',1,'Guildmaster::Core::Settings::AudioVolumeSettings']]],
-  ['max_3',['Max',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#a0b7a7a38c58cb179e8c211b2dc16fd19',1,'Guildmaster::ContentHub::Editor::StatCohort::Agg']]],
-  ['maxattackanimticks_4',['MaxAttackAnimTicks',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a129143e126b52371be6845abae80aa05',1,'Guildmaster::Core::Simulation::SimConstants']]],
-  ['maxcatchupticksperframe_5',['MaxCatchUpTicksPerFrame',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a8d6237eec05d62b3bf98445eacd29cbb',1,'Guildmaster::Core::Simulation::SimConstants']]],
-  ['maxcolumnwidth_6',['MaxColumnWidth',['../classGuildmaster_1_1Guild_1_1MapGenConfig.html#a37b3c58b31b92c31a23eef69778543da',1,'Guildmaster::Guild::MapGenConfig']]],
-  ['maxcount_7',['MaxCount',['../structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#acb301de01e1d9811d144c3da205281bb',1,'Guildmaster::Combat::Effects::DispelRequest']]],
-  ['maxpierces_8',['MaxPierces',['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a05bbcf10908d114d889e5e48f49bdd88',1,'Guildmaster::Combat::ProjectileSpawn']]],
-  ['median_9',['Median',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#a146dda59ff1a89c52dd846162fa25e7a',1,'Guildmaster::ContentHub::Editor::StatCohort::Agg']]],
-  ['message_10',['Message',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ValidationIssue.html#acc73e6ed313e5ef20f10d6fef380e788',1,'Guildmaster::ContentHub::Editor::ValidationIssue']]],
-  ['min_11',['Min',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#ac0216bea761d79917d914846da8d701a',1,'Guildmaster::ContentHub::Editor::StatCohort::Agg']]],
-  ['mincolumnwidth_12',['MinColumnWidth',['../classGuildmaster_1_1Guild_1_1MapGenConfig.html#a95841f2b153d43dda65c5fa3e04ace3c',1,'Guildmaster::Guild::MapGenConfig']]],
-  ['minwindupticks_13',['MinWindupTicks',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#ac4fd96970ed2ea6969d5bcebc78703ea',1,'Guildmaster::Core::Simulation::SimConstants']]],
-  ['music_14',['Music',['../structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html#a3ddf57b8e41610eba7ed8760400e0185',1,'Guildmaster::Core::Settings::AudioVolumeSettings']]]
+  ['labelfallback_0',['LabelFallback',['../structGuildmaster_1_1Data_1_1Stats_1_1UnitStatLine.html#a3c350d67b690628d0e64544eeb3358a3',1,'Guildmaster::Data::Stats::UnitStatLine']]],
+  ['labelkey_1',['labelkey',['../structGuildmaster_1_1Data_1_1Stats_1_1UnitStatLine.html#a20990f85cd48222d295322083a40979c',1,'Guildmaster.Data.Stats.UnitStatLine.LabelKey'],['../structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#a0f797230859574793089d56395602c15',1,'Guildmaster.Guild.OpenContinueRequest.LabelKey']]],
+  ['lastguildid_2',['LastGuildId',['../classGuildmaster_1_1Guild_1_1ProfileState.html#a0d8fdc07c5b9456ce7a3ac9bdfbbc500',1,'Guildmaster::Guild::ProfileState']]],
+  ['length_3',['length',['../structGuildmaster_1_1Combat_1_1AreaHit.html#aef8a0bf99097b5e580cb0aa501751907',1,'Guildmaster.Combat.AreaHit.Length'],['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyCut.html#a999e9a5ccc89d885963395a74e0756a6',1,'Guildmaster.Presentation.Body.BodyCut.Length'],['../structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html#a972fb14a70a3b0e96665a8400f2b1298',1,'Guildmaster.Presentation.Effects.HitFormParams.Length'],['../structGuildmaster_1_1Presentation_1_1Map_1_1MapIntroTiming_1_1Edge.html#a54ce619118bbebbb76b90696a28618bd',1,'Guildmaster.Presentation.Map.MapIntroTiming.Edge.Length']]],
+  ['life_4',['Life',['../structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html#aaf3f5c4b8c35f436b53da4baaf06a4c7',1,'Guildmaster::Presentation::Effects::HitFormParams']]],
+  ['limit_5',['limit',['../classGuildmaster_1_1Presentation_1_1Body_1_1BodyCutLedger.html#a58bb88b5e68b24c40c240fa2de5798f0',1,'Guildmaster.Presentation.Body.BodyCutLedger.Limit'],['../classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipChain.html#a1ba54fc7a4ef5db9d9bc3607c092d6c3',1,'Guildmaster.UI.Tooltips.TooltipChain.Limit']]],
+  ['load_6',['Load',['../structGuildmaster_1_1Core_1_1Arena_1_1ArenaCellPhase.html#ad956e0762e71020ebda8ff55cea2f16f',1,'Guildmaster::Core::Arena::ArenaCellPhase']]],
+  ['local_7',['local',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyCut.html#a045927829fb31563e79cdb50e5728919',1,'Guildmaster.Presentation.Body.BodyCut.Local'],['../structGuildmaster_1_1Presentation_1_1SilhouettePart.html#a3bb6a2dc13911f6e4725681cc124bebd',1,'Guildmaster.Presentation.SilhouettePart.Local']]],
+  ['localfolder_8',['LocalFolder',['../classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html#a8af81c18f6f5dbb7f0c0313746e90903',1,'Guildmaster::Game::Services::LocalJsonFileSaveService']]],
+  ['locallyready_9',['LocallyReady',['../structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent.html#aa6be39ec4a8dcd1ee37c3861cc520b8f',1,'Guildmaster::Core::Net::ReadyGateChangedEvent']]],
+  ['localplayerid_10',['LocalPlayerId',['../structGuildmaster_1_1Guild_1_1Commands_1_1RunCommand.html#ab7442b5c34e29201a8b280718190c9a0',1,'Guildmaster::Guild::Commands::RunCommand']]],
+  ['lookaheadticks_11',['LookaheadTicks',['../classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a84d073b342d11e9058a22285ef4dd543',1,'Guildmaster::Combat::Tape::BattleTapePlayback']]]
 ];

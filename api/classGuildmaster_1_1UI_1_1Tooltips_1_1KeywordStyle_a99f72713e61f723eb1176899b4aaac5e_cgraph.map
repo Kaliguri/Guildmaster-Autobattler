@@ -1,0 +1,7 @@
+<map id="Guildmaster.UI.Tooltips.KeywordStyle.Attach" name="Guildmaster.UI.Tooltips.KeywordStyle.Attach">
+<area shape="rect" id="Node000001" title="Повесить доноров на слой UI. Без этого стиль отдаёт только полужирный." alt="" coords="5,37,183,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1KeywordStyle.html#a89ef66cdd96b17fc435e89cff5c7d77f" title="Класс&#45;донор раздела: он же задаёт цвет термина в теме." alt="" coords="231,5,408,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,42,217,37,218,42,183,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1KeywordStyle.html#a75ee67e3bdfa8eadf7643d16d84d3b79" title=" " alt="" coords="231,69,408,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="183,67,218,72,217,77,182,73"/>
+</map>

@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Аудит - наша папка Art | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Аудит - наша папка Art | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Аудит - наша папка Art | Guildmaster Wiki"/><meta name="twitter:description" content="Приложение к Reference - Asset Inventory. Собрано разведкой 2026-07-20."/><meta property="og:description" content="Приложение к Reference - Asset Inventory. Собрано разведкой 2026-07-20."/><meta property="og:image:alt" content="Приложение к Reference - Asset Inventory. Собрано разведкой 2026-07-20."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/asset-audit/project-art"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/asset-audit/project-art"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Приложение к Reference - Asset Inventory. Собрано разведкой 2026-07-20."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="research/asset-audit/project-art"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-359"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-359" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/">research</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/asset-audit/">asset audit</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Аудит   наша папка Art</a></div></nav><h1 class="article-title">Аудит - наша папка Art</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-20T00:00:00.000Z">20 июл. 2026 г.</time><span>время чтения ~11 мин.</span></p></div></div><article class="popover-hint"><blockquote>
+<p>Приложение к <a href="../../tech/10-reference/asset-inventory" class="internal alias" data-slug="tech/10-reference/asset-inventory">Reference - Asset Inventory</a>. Собрано разведкой 2026-07-20.</p>
+</blockquote>
+<h1 id="наша-папка-art">Наша папка Art<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#наша-папка-art" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<p>Инвентаризация <code>Assets/_Project/Art/</code> — папки, которую делаем мы сами (в отличие от покупных/скачанных паков в <code>Assets/Honeti</code>, <code>Assets/Kenney</code>, <code>Assets/Feel</code>, <code>Assets/Cainos</code>).</p>
+<p><strong>Что внутри по объёму:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Подпапка</th><th>Файлов (без .meta)</th><th>На диске</th><th>В git</th></tr></thead><tbody><tr><td>Sprites</td><td>2449</td><td>29 MB</td><td>да, 5219 записей</td></tr><tr><td>Arena</td><td>127</td><td>879 KB</td><td>да, 256</td></tr><tr><td>UI</td><td>19</td><td>145 KB</td><td>да, 41</td></tr><tr><td>Shaders</td><td>16</td><td>108 KB</td><td>да, 32</td></tr><tr><td>Materials</td><td>4</td><td>24 KB</td><td>да, 8</td></tr><tr><td>Animations</td><td>0 (только <code>.gitkeep</code>)</td><td>0</td><td>1</td></tr></tbody></table></div>
+<p>Главный дисбаланс виден сразу: 29 из 30 мегабайт папки — это пул скачанных спрайт-паков, из которого в игре реально задействовано <strong>12 файлов</strong>. Всё, что мы нарисовали/написали руками, занимает меньше 1 MB.</p>
+<hr/>
+<h2 id="sprites">Sprites<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#sprites" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Верхнеуровневая карта. Детальный разбор боевой пригодности — в <a href="../.././sprite-packs-audit" class="internal alias" data-slug="sprite-packs-audit">sprite-packs-audit</a> и <a href="../.././sprite-recommendations" class="internal alias" data-slug="sprite-recommendations">sprite-recommendations</a>, здесь не дублируется.</p>
+<p>Две корневые папки — <code>Pixel Art Heroes</code> (114 файлов) и <code>New FREE Pixel Art Heroes</code> (2334). Деление историческое: это два разных «залива» с itch, а не осмысленная классификация. Часть паков лежит в обеих (см. дубликаты ниже).</p>
+<h3 id="pixel-art-heroes"><code>Pixel Art Heroes/</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#pixel-art-heroes" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Папка</th><th>Файлов</th><th>Стилевая семья</th><th>Разбор</th></tr></thead><tbody><tr><td>EVil Wizard 2</td><td>9</td><td>LuizMomo / Heroes</td><td>разобрана</td></tr><tr><td>Fantasy Warrior</td><td>10</td><td>LuizMomo / Heroes</td><td>разобрана — <strong>используется в игре</strong></td></tr><tr><td>Huntress</td><td>12</td><td>LuizMomo / Heroes</td><td>разобрана</td></tr><tr><td>Huntress 2</td><td>11</td><td>LuizMomo / Heroes</td><td>разобрана</td></tr><tr><td>Martial Hero 2</td><td>9</td><td>LuizMomo / Heroes</td><td>разобрана (дубликат)</td></tr><tr><td>Medieval Warrior Pack 2</td><td>12</td><td>LuizMomo / Heroes</td><td>разобрана — <strong>используется в игре</strong></td></tr><tr><td>Medieval Warrior Pack 3</td><td>11</td><td>LuizMomo / Heroes</td><td>разобрана</td></tr><tr><td>Monster_Creatures_Fantasy(Version 1.3)</td><td>8</td><td>LuizMomo / мобы</td><td>помечена как неполный фрагмент (дубликат)</td></tr><tr><td>Monsters Creatures Fantasy 2</td><td>27</td><td>LuizMomo / мобы</td><td>разобрана (Bat/Mimic/Rat/Slime)</td></tr><tr><td>Nneshan</td><td>4</td><td>одиночный</td><td>исключена (статика)</td></tr></tbody></table></div>
+<h3 id="new-free-pixel-art-heroes"><code>New FREE Pixel Art Heroes/</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#new-free-pixel-art-heroes" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Папка</th><th>Файлов</th><th>Стилевая семья</th><th>Разбор</th></tr></thead><tbody><tr><td>ArcherHero</td><td>8</td><td>graphic-novel одиночный</td><td>разобрана</td></tr><tr><td>AxeWarriors</td><td>189</td><td>Bandits / AxeWarriors (per-frame)</td><td>разобрана (3 палитры одного архетипа)</td></tr><tr><td>Bandits</td><td>83</td><td>Bandits / AxeWarriors</td><td>разобрана</td></tr><tr><td>Characters 500+ (by batareya)</td><td>526</td><td>портреты</td><td>исключена (статика). <strong>8.8 MB — крупнейший кусок папки</strong></td></tr><tr><td>Evil Wizard</td><td>6</td><td>LuizMomo</td><td>разобрана</td></tr><tr><td>Evil Wizard 3</td><td>12</td><td>LuizMomo</td><td>разобрана</td></tr><tr><td>FREE_Kobold Warrior 2D Pixel Art</td><td>8</td><td>одиночный, cute</td><td>разобрана (дырки: нет Death/Hit)</td></tr><tr><td>Forest_Monsters_FREE</td><td>14</td><td>LuizMomo / мобы</td><td>разобрана</td></tr><tr><td>Goblin Monsters 4 Colors</td><td>45</td><td>статичные силуэты</td><td>исключена (не анимации)</td></tr><tr><td>Goblin_Fighter</td><td>2</td><td>атлас-лист</td><td>разобрана</td></tr><tr><td>Goose</td><td>8</td><td>мем</td><td>разобрана (пасхалка)</td></tr><tr><td>Hero Knight 2</td><td>9</td><td>LuizMomo</td><td>разобрана</td></tr><tr><td>HunterOrc</td><td>12</td><td>LuizMomo</td><td>разобрана</td></tr><tr><td>Martial Hero</td><td>10</td><td>LuizMomo</td><td>разобрана</td></tr><tr><td>Martial Hero 2</td><td>9</td><td>LuizMomo</td><td>разобрана (дубликат)</td></tr><tr><td>Martial Hero 3</td><td>11</td><td>LuizMomo</td><td>разобрана</td></tr><tr><td>Martial Hero 3(1)</td><td>11</td><td>LuizMomo</td><td><strong>чистый дубликат</strong> предыдущей</td></tr><tr><td>Monster_Creatures_Fantasy(Version 1.3)</td><td>8</td><td>LuizMomo / мобы</td><td>неполный фрагмент (дубликат)</td></tr><tr><td>Ranger cat - spritesheets</td><td>32</td><td>одиночный, зверолюд</td><td>разобрана (два масштаба одного дизайна)</td></tr><tr><td>SkeletonKnight</td><td>10</td><td>high-polish undead</td><td>разобрана</td></tr><tr><td>Slime_Pixel_Monsters_Vol_1_COLOR_OUTLINE</td><td>759</td><td>per-frame мобы</td><td>разобрана. <strong>5.7 MB, избыточная плотность кадров</strong></td></tr><tr><td>Tiny RPG Pack 01 (Soldier&amp;Orc)</td><td>38</td><td>Ansimuz / Tiny RPG</td><td>разобрана</td></tr><tr><td>Tiny RPG Pack 02 (Demon_A&amp;Blood Monster_A)</td><td>32</td><td>Ansimuz / Tiny RPG</td><td>разобрана</td></tr><tr><td>Warrior-V1.3</td><td>143</td><td>LuizMomo, платформерный набор</td><td>разобрана</td></tr><tr><td>Wizard Pack</td><td>8</td><td>LuizMomo</td><td>разобрана</td></tr><tr><td>Wizardgooseassets</td><td>14</td><td>мем</td><td>разобрана</td></tr><tr><td>imp_axe_demon</td><td>101</td><td>per-frame low-fantasy</td><td>разобрана</td></tr><tr><td>pack_loreon_knight</td><td>47</td><td>per-frame low-fantasy</td><td>разобрана</td></tr><tr><td>skeleton_sword</td><td>53</td><td>per-frame low-fantasy</td><td>разобрана</td></tr><tr><td>swordman pack</td><td>1</td><td>атлас-лист</td><td>разобрана</td></tr><tr><td>vagabond</td><td>77</td><td>одиночный</td><td>исключена (нет боевого набора). <strong>1.2 MB за один кадр jump/landing</strong></td></tr><tr><td>viking_axe_pack</td><td>48</td><td>per-frame low-fantasy</td><td>разобрана</td></tr></tbody></table></div>
+<p>Не разобранных папок нет — оба документа покрывают весь пул. Но покрытие «разобрана» означает «оценена на пригодность», а не «используется».</p>
+<h3 id="что-из-пула-реально-живое">Что из пула реально живое<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#что-из-пула-реально-живое" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Из <strong>2770 ассетов</strong> (по GUID) в игре задействовано <strong>12 листов из 2 паков</strong>:</p>
+<ul>
+<li><code>Pixel Art Heroes/Medieval Warrior Pack 2/Sprites/</code> — Idle, Run, Attack1–4, Take Hit, Death (7 листов). Идёт в <code>Prefabs/UnitView.prefab</code> и в клипы <code>ScriptableObjects/Visuals/MedievalWarrior/*.anim</code>.</li>
+<li><code>Pixel Art Heroes/Fantasy Warrior/Sprites/</code> — Idle, Run, Attack1, Death (4 листа). Идёт в <code>ScriptableObjects/Visuals/FantasyWarrior.asset</code> + клипы.</li>
+</ul>
+<p>Остальные ~2758 файлов не имеет ни одной ссылки. Это не мусор в смысле «удалить сегодня» — это <strong>референс-пул под будущий ростер</strong>, и оба research-документа именно им и оперируют. Но он лежит в git и весит 29 MB.</p>
+<p>Отдельно к удалению без потерь:</p>
+<ul>
+<li><code>Martial Hero 3(1)</code> — побайтный дубликат <code>Martial Hero 3</code>.</li>
+<li>второй экземпляр <code>Monster_Creatures_Fantasy(Version 1.3)</code> (лежит в обеих корневых папках, и обе версии — неполный фрагмент без Idle/Hit/Death).</li>
+<li>второй экземпляр <code>Martial Hero 2</code>.</li>
+<li><code>Characters 500+ (by batareya)</code> (8.8 MB) и <code>vagabond</code> (1.2 MB) — по обоим разборам не боевые; 10 MB репозитория за материал, который в лучшем случае референс.</li>
+</ul>
+<p>Ещё: аудит утверждает «спрайт-паки по git-конвенции пока не коммитятся». Это <strong>не так</strong> — <code>git ls-files</code> показывает 5219 записей под <code>Art/Sprites</code>. Либо конвенцию не применили, либо документ устарел. Стоит развести явно.</p>
+<p>Если вектор действительно уходит в скелетную анимацию (Spine / Unity 2D Animation), весь этот пул превращается из «кандидатов в ростер» в «референс силуэтов», и держать его в репо становится тем более трудно оправдать.</p>
+<hr/>
+<h2 id="animations">Animations<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#animations" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Пусто. Только <code>.gitkeep</code>.</p>
+<p><strong>Не используется</strong> — точнее, папка-заглушка, которая никогда не наполнялась. При этом анимации в проекте есть, но лежат в другом месте: <code>Assets/_Project/ScriptableObjects/Visuals/</code> (<code>UnitBase.controller</code>, <code>FantasyWarrior/*.anim</code>, <code>MedievalWarrior/*.anim</code>).</p>
+<p>Это прямая структурная ошибка: <code>.anim</code> и <code>.controller</code> — это арт-ассеты, а не ScriptableObject’ы, и в <code>ScriptableObjects/</code> им не место. Либо переносить их в <code>Art/Animations/</code>, либо удалять пустую папку и признавать, что визуальные клипы живут рядом с VisualData. Сейчас — худший вариант: заведена папка под цель, цель реализована мимо неё.</p>
+<hr/>
+<h2 id="materials">Materials<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#materials" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Четыре материала, все живые.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Файл</th><th>Шейдер</th><th>Где используется</th><th>Статус</th></tr></thead><tbody><tr><td><code>MAT_SegmentedHealthBar.mat</code></td><td><code>Guildmaster/UI/SegmentedHealthBar</code></td><td><code>Prefabs/UI/HealthBar.prefab</code></td><td>живое</td></tr><tr><td><code>MAT_SegmentedManaBar.mat</code></td><td>тот же шейдер, без щита</td><td><code>Prefabs/UI/ManaBar.prefab</code></td><td>живое</td></tr><tr><td><code>MAT_Sprite_HitFlash.mat</code></td><td><code>Guildmaster/Sprite/HitFlash</code></td><td><code>Prefabs/UnitView.prefab</code> (на Body-спрайте, <code>_FlashAmount</code> гонится через MPB из <code>UnitView.cs</code>)</td><td>живое</td></tr><tr><td><code>TMP_NameLabel_Outline.mat</code></td><td>TMP SDF</td><td><code>Prefabs/UI/NameLabel.prefab</code>, <code>Prefabs/UI/FloatingText.prefab</code></td><td>живое</td></tr></tbody></table></div>
+<p>Замечание к структуре: ещё <strong>четыре материала лежат не здесь, а в <code>Art/Shaders/</code></strong> (MapBackdrop, MapFog, MapIcon, MapTable). Папка <code>Materials</code> при этом существует и ровно для этого предназначена. Развести.</p>
+<hr/>
+<h2 id="shaders">Shaders<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#shaders" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Восемь шейдеров + четыре <code>.hlsl</code>-инклуда + четыре материала (которым здесь не место, см. выше). Заголовочные комментарии написаны по делу — из них видно не только «что», но и «почему именно так».</p>
+<h3 id="карта-акта-свежий-слой-ветка-featact-map-overhaul">Карта акта (свежий слой, ветка <code>feat/act-map-overhaul</code>)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#карта-акта-свежий-слой-ветка-featact-map-overhaul" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Файл</th><th>Что делает</th><th>Статус</th></tr></thead><tbody><tr><td><code>SH_Map_Backdrop.shader</code> (68 стр.)</td><td>Лист «старой бумаги» под узлами. Готовой текстуры пергамента нет, фактура собирается из <strong>одного</strong> grayscale-шума (<code>Feel/MMTools/.../MMCloudsNoise.png</code>), взятого дважды с разным тайлингом: крупно — волокно, мелко — зерно. Рваный край считается в шейдере по периметру. Виньетка тут же, а не постобработкой — иначе боевой Volume задел бы арену.</td><td>живое: <code>MapBackdrop.mat</code> → <code>Configs/MapStyle.asset</code></td></tr><tr><td><code>SH_Map_Table.shader</code> (64 стр.)</td><td>Поверхность <strong>под</strong> листом, видна за рваными краями. Тайл — <code>Kenney/kenney_pattern-pack/pattern_63.png</code>, пятно света — <code>Kenney/kenney_light-masks-1.0/circle_a_streaks_noise.png</code>. Непрозрачный и самый дальний по Z: он закрывает пустоту, которую камера иначе заливает цветом очистки.</td><td>живое: <code>MapTable.mat</code> → <code>MapStyle.asset</code></td></tr><tr><td><code>SH_Map_Icon.shader</code> (77 стр.)</td><td>Иконки узлов в едином цветовом решении: спрайт обесцвечивается и красится по рампе тень→свет (gradient map). Разномастные иконки Honeti читаются как один набор. Состояние узла приходит через <code>SpriteRenderer.color</code> = vertex color. Обвязка (<code>_Flip</code>, <code>_MainTex_ST</code>, инстансинг) скопирована с HitFlash.</td><td>живое: <code>MapIcon.mat</code> → <code>Prefabs/Map/MapNode.prefab</code></td></tr><tr><td><code>SH_Map_Fog.shader</code> (66 стр.)</td><td>Атмосферный туман над непройденной частью акта: два слоя шума ползут в разные стороны, растворение — дизерингом по матрице Байера (гладкая дымка поверх пиксельных иконок читалась бы как фильтр из другой игры).</td><td><strong>дремлющее, но не мусор.</strong> Материал по-прежнему прописан в <code>MapStyle.asset</code>, код <code>WorldMapView.PlaceFog</code> жив; эффект гасится тумблером <code>VisualToggles</code> по решению Макса («вообще не то, мб позже вернёмся»). Удалять нельзя — это осознанно отложенное, а не забытое</td></tr><tr><td><code>MapBackdropCommon.hlsl</code> / <code>MapFogCommon.hlsl</code> / <code>MapIconCommon.hlsl</code> / <code>MapTableCommon.hlsl</code></td><td>Тела пасс, вынесенные в общие файлы, чтобы правка не разъезжалась между пассами 2D и Forward</td><td>живое (подключаются <code>#include</code>, не GUID-ссылкой — поэтому в grep по GUID выглядят как «0 ссылок», это ложная тревога)</td></tr></tbody></table></div>
+<p>Готча, зафиксированная прямо в комментарии <code>MapIconCommon.hlsl</code>: в <code>SH_Sprite_HitFlash</code> код продублирован между пассами и не вынесен в инклуд. Пока не аукнулось, но помечено как мина.</p>
+<h3 id="бой--vfx">Бой / VFX<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#бой--vfx" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Файл</th><th>Что делает</th><th>Статус</th></tr></thead><tbody><tr><td><code>SH_Sprite_HitFlash.shader</code> (177 стр.)</td><td>Точная копия официального URP 2D <code>Sprite-Unlit-Default</code> + одна строка вспышки. Базироваться на официальном критично: он несёт <code>_Flip</code> (flipX/flipY!), <code>_MainTex_ST</code>, инстансинг — прежний «голый» шейдер их не имел, и спрайт рисовался криво. <code>_FlashAmount</code> подмешивает цвет <strong>поверх</strong> итогового (не множитель), поэтому «в белый» реально заливает, в отличие от <code>SpriteRenderer.color</code>.</td><td>живое через <code>MAT_Sprite_HitFlash.mat</code></td></tr><tr><td><code>SH_Sprite_Shatter.shader</code> (153 стр.)</td><td>Разлёт спрайта на треугольники одним дро-коллом. Меш — квад, триангулированный на разъединённые треугольники (<code>ShatterMesh</code>); каждый несёт центроид и случайные параметры. Vertex двигает тройку вершин как жёсткое целое: псевдо-3D кувыркание + 2D-спин + дрейф + гравитация. Цвет в три фазы: impact-вспышка → возврат исходного → выцветание в emissive-бирюзу (bloom подхватит).</td><td>живое, но <strong>через <code>Shader.Find</code>, а не через материал-ассет</strong>: <code>Presentation/DeathShatter.cs:182</code></td></tr><tr><td><code>SH_Pixel_Burst.shader</code> (103 стр.)</td><td>Пиксельный «брызг» частиц одним дро-коллом (hit-spark / muzzle / dust / heal). Общий меш <code>PixelBurstMesh</code> с запечёнными на частицу углом разлёта, рандомами скорости/жизни и порогом отсева.</td><td>живое, тоже через <code>Shader.Find</code>: <code>Presentation/PixelBurst.cs:98</code></td></tr><tr><td><code>SegmentedHealthBar.shader</code> (149 стр.)</td><td>Сегментированный HP/щит-бар для uGUI (world-space, надголовный). Всё за проход по UV.x: HP → щит → chip-дельта (догоняющий trail) → пустота. Насечки фиксированного <strong>значения</strong>: при росте EHP они сгущаются, а ширина бара не меняется (трюк LoL).</td><td>живое через оба MAT_Segmented*.mat</td></tr></tbody></table></div>
+<p>Оба <code>Shader.Find</code>-шейдера — тот случай, когда grep по GUID даёт ноль, а ассет живее всех живых. Отдельная готча: <code>Shader.Find</code> не тянет шейдер в билд автоматически, если он не в <code>Always Included Shaders</code> или не в материале-ассете. Проверить, что они не отвалятся в плеере, стоит отдельно — по коду этого не видно.</p>
+<hr/>
+<h2 id="ui">UI<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ui" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>19 файлов в трёх местах. Пиксель-арт, производный от покупного пака Honeti.</p>
+<h3 id="uihoneti-gm--9-файлов-всё-живое"><code>UI/Honeti-gm/</code> — 9 файлов, <strong>всё живое</strong><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#uihoneti-gm--9-файлов-всё-живое" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Результат работы Editor-тула Palette Remapper (<code>Scripts/EditorTools/PaletteRemap/PaletteRemapWindow.cs</code>, дефолтная выходная папка прописана буквально на эту директорию). Оригиналы Honeti перекрашены в нашу палитру — сверил побайтно, все девять <strong>отличаются</strong> от исходников, то есть ремап реально применён.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Файл</th><th>Размер</th><th>Что это по факту</th></tr></thead><tbody><tr><td><code>WindowStroke_gm.png</code></td><td>48×48</td><td>Рамка панели: тонкий тёплый золотисто-коричневый кант с внутренней тенью, центр прозрачный. 9-slice. Самый нагруженный ассет темы — панели, диалоги, поля поиска, топбар</td></tr><tr><td><code>GoldOutlined_gm.png</code></td><td>16×16</td><td>Кнопка secondary: скруглённый прямоугольник, оливково-золотой контур в 1px, заливки нет</td></tr><tr><td><code>GoldOutlinedHover_gm.png</code></td><td>16×16</td><td>То же, светлее — hover</td></tr><tr><td><code>GoldOutlinedDown_gm.png</code></td><td>16×16</td><td>То же, притоплено — press</td></tr><tr><td><code>Gold2_gm.png</code></td><td>16×16</td><td>Кнопка primary: сплошная латунная заливка с bevel</td></tr><tr><td><code>Gold2Hover_gm.png</code> / <code>Gold2Down_gm.png</code></td><td>16×16</td><td>Её состояния</td></tr><tr><td><code>Inactive1_gm.png</code></td><td>16×16</td><td>Disabled / неактивный таб — тусклая плашка</td></tr><tr><td><code>Separator_gm.png</code></td><td>4×4</td><td>Разделитель</td></tr></tbody></table></div>
+<p>Подключены <strong>не через GUID, а по URL-пути</strong> в <code>UI/Theme/components.uss</code> — около 30 правил. Из-за этого поиск по GUID показывает по ним ноль ссылок; это ложное срабатывание, не мусор. Побочный эффект настоящий: переименование или перенос папки молча ломает тему, без ошибки компиляции.</p>
+<p>Дыра: <code>components.uss</code> в двух местах (строки 1018 и 1440) тянет иконки <strong>напрямую из покупного пака</strong> — <code>Honeti/PixelArtGUI/Textures/Icons/16/HeartRed.png</code> и <code>.../LockGold.png</code>, мимо ремапа. Эти две иконки останутся в исходных цветах Honeti, когда всё вокруг перекрашено. Либо прогнать через тул, либо осознанно оставить.</p>
+<h3 id="uiicons-gmmap--9-иконок-узлов-карты"><code>UI/Icons-gm/Map/</code> — 9 иконок узлов карты<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#uiicons-gmmap--9-иконок-узлов-карты" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Вопреки суффиксу <code>-gm</code>, это <strong>побайтные копии оригиналов Honeti</strong>, а не перекраска (проверил <code>cmp</code> — все девять идентичны файлам из <code>Honeti/PixelArtGUI/Textures/Icons/32/</code>, кроме <code>Help.png</code>, который взят из <code>/16/</code>). И это правильно: перекраску делает <code>SH_Map_Icon</code> на лету через gradient map, потому что тон карты крутят десятки раз и перегенерировать набор на каждый поворот было бы дорого. Суффикс <code>-gm</code> тут вводит в заблуждение — он обещает ремап, которого нет.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Файл</th><th>Что на картинке</th><th>Узел</th><th>Статус</th></tr></thead><tbody><tr><td><code>CompassOutlined.png</code> 32×32</td><td>Латунный компас с синим лимбом и красной стрелкой</td><td><code>Icon_Start</code></td><td>живое</td></tr><tr><td><code>Sword01Outlined.png</code> 32×32</td><td>Прямой меч синеватой стали, золотая гарда, остриём вверх</td><td><code>Icon_Battle</code></td><td>живое</td></tr><tr><td><code>Sword03Outlined.png</code> 32×32</td><td>Меч крупнее и богаче: красное лезвие, золотая крестовина</td><td><code>Icon_Elite</code></td><td>живое</td></tr><tr><td><code>SkullOutlined.png</code> 32×32</td><td>Голубовато-серый череп анфас</td><td><code>Icon_Boss</code></td><td>живое</td></tr><tr><td><code>ScrollOutlined.png</code> 32×32</td><td>Свёрнутый пергаментный свиток</td><td><code>Icon_TextEvent</code></td><td>живое</td></tr><tr><td><code>Chest01Outlined.png</code> 32×32</td><td>Сундук с золотыми оковками, закрыт</td><td><code>Icon_Chest</code></td><td>живое</td></tr><tr><td><code>PouchGreenCoinsGoldOutlined.png</code> 32×32</td><td>Зелёный кошель с золотыми монетами</td><td><code>Icon_Shop</code></td><td>живое</td></tr><tr><td><code>Help.png</code> <strong>16×16</strong></td><td>Бледный «?» — почти белый, без внутренней тени</td><td><code>Icon_Unknown</code></td><td>живое, но проблемное</td></tr><tr><td><code>Helmet02Outlined.png</code> 32×32</td><td>Сине-стальной шлем с забралом и гребнем</td><td>—</td><td><strong>не используется</strong></td></tr></tbody></table></div>
+<p>Все восемь используемых прописаны в <code>Prefabs/Map/MapNode.prefab</code> (у него дети <code>Icon_Start</code>, <code>Icon_Battle</code>, <code>Icon_Elite</code>, <code>Icon_Boss</code>, <code>Icon_TextEvent</code>, <code>Icon_Chest</code>, <code>Icon_Shop</code>, <code>Icon_Unknown</code> — по одному на каждое значение <code>MapNodeType</code> из <code>Scripts/Guild/RunState.cs</code>).</p>
+<p>Две реальные проблемы:</p>
+<ol>
+<li><strong><code>Help.png</code> — 16×16 против 32×32 у всех остальных.</strong> Взят не из той папки исходников. В ряду одинаковых узлов «?» будет либо вдвое мельче, либо растянут вдвое с разъездом пиксельной сетки. Чинится в одно действие: скопировать <code>Honeti/PixelArtGUI/Textures/Icons/32/Help.png</code>. Дополнительно: иконка почти сплошь белая, а <code>SH_Map_Icon</code> красит по <strong>яркости</strong> исходника — значит она ляжет целиком в <code>_LightColor</code> и останется плоской, без рельефа тень→свет, который вытягивает остальные иконки. Стоит взять вариант с контуром/тенью.</li>
+<li><strong><code>Helmet02Outlined.png</code> — сирота.</strong> Ни одной ссылки во всём <code>Assets/</code>. По смыслу это был кандидат на Elite, проигравший <code>Sword03Outlined</code>. Мусор — удалять.</li>
+</ol>
+<h3 id="uiwhitefillpng--1616"><code>UI/WhiteFill.png</code> — 16×16<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#uiwhitefillpng--1616" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Ровный белый квадрат, лежит в корне <code>UI/</code> без папки. <strong>Живое</strong>: используется как база под шейдерную заливку в <code>Prefabs/UI/HealthBar.prefab</code> и <code>Prefabs/UI/ManaBar.prefab</code> (<code>SegmentedHealthBar</code> рисует всё сам, спрайт нужен только чтобы <code>Image</code> было что растягивать). Технический ассет; лежать в корне рядом с тематическими папками ему не стоило бы, но это косметика.</p>
+<hr/>
+<h2 id="arena">Arena<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#arena" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>127 файлов, все — <strong>один автоматический побочный продукт</strong>, ничего нарисованного руками.</p>
+<pre><code>Arena/
+└── Grayscale/
+    ├── TX Tileset Grass Gray.png   (256×256, атлас травы/земли/мостовой)
+    ├── TX Tileset Wall Gray.png    (512×512, атлас стен и парапетов)
+    └── Tiles/                      125 × TileBase (.asset)
+</code></pre>
+<p><strong>Что на картинках по факту:</strong></p>
+<ul>
+<li><code>TX Tileset Grass Gray.png</code> — обесцвеченный тайлсет Cainos: в верхней половине редкие мелкие детали-разбросы (травинки, камешки) на ровном сером; в нижней — блоки плитки/мостовой с фаской и трещинами и клинья переходов. Контраст очень низкий, всё сидит в узкой средней зоне серого.</li>
+<li><code>TX Tileset Wall Gray.png</code> — кирпичная кладка в сером: угловые блоки с проёмами, длинные стеновые панели, вертикальные тонкие парапеты, отдельный элемент с зарешёченным окном. Читается заметно лучше пола — кладка даёт рисунок.</li>
+</ul>
+<p><strong>Живое, полностью.</strong> 125 <code>.asset</code> — это <code>TileBase</code>-обёртки, каждая ссылается на свой спрайт из этих двух PNG; они уложены в <code>Scenes/WorldScene.unity</code> (grayscale-дубль тайлмапов). Переключением между цветным и серым корнем занимается <code>Presentation/TestZoneArenaSkin.cs</code> (<code>_colorRoot</code> / <code>_grayRoot</code>), реагируя на <code>TestZoneChangedEvent</code> — это визуал тест-зоны «Бой» вне боя.</p>
+<p>Замечания:</p>
+<ul>
+<li>Папка называется <code>Arena</code>, а содержит <strong>только</strong> <code>Grayscale</code>. Собственного арта арены у нас нет вообще — цветной пол берётся прямо из покупного пака Cainos. То есть <code>Arena/</code> сейчас не «наша арена», а «наш дериватив чужой арены». Имя обещает больше, чем есть.</li>
+<li>125 сгенерированных <code>.asset</code> в git — приемлемо (они маленькие), но это машинный вывод. Если тайлсет когда-нибудь перегенерируют, всё переедет разом; полезно, чтобы скрипт генерации лежал рядом и был назван в истории (сейчас он упомянут только в коммитах <code>63dec900</code> / <code>08b7077e</code>).</li>
+<li>Grayscale-пол вышел очень блёклым и малоконтрастным. Под заявленную эстетику тест-зоны это скорее плюс (фон должен отступать), но если серый режим когда-нибудь понадобится как полноценная арена — читаемости не хватит.</li>
+</ul>
+<hr/>
+<h2 id="сводка">Сводка<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#сводка" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Живое и работает:</strong></p>
+<ul>
+<li>все 4 материала в <code>Materials/</code>;</li>
+<li>все 8 шейдеров + 4 инклуда + 4 материала в <code>Shaders/</code> (fog — дремлет по решению, не мусор);</li>
+<li>вся <code>Honeti-gm/</code> (9 файлов, через USS по путям);</li>
+<li>8 из 9 иконок в <code>Icons-gm/Map/</code>;</li>
+<li><code>WhiteFill.png</code>;</li>
+<li>вся <code>Arena/Grayscale/</code> (127 файлов);</li>
+<li>12 листов из 2 спрайт-паков.</li>
+</ul>
+<p><strong>Мусор / кандидаты на удаление:</strong></p>
+<ul>
+<li><code>Art/UI/Icons-gm/Map/Helmet02Outlined.png</code> — сирота, ноль ссылок;</li>
+<li><code>Sprites/.../Martial Hero 3(1)</code> — побайтный дубликат;</li>
+<li>вторые экземпляры <code>Martial Hero 2</code> и <code>Monster_Creatures_Fantasy(Version 1.3)</code>;</li>
+<li><code>Characters 500+ (by batareya)</code> (8.8 MB) и <code>vagabond</code> (1.2 MB) — не боевые по обоим разборам;</li>
+<li><code>Art/Animations/</code> — пустая папка-обещание, которое реализовали в другом месте.</li>
+</ul>
+<p><strong>Дыры и расхождения:</strong></p>
+<ol>
+<li><code>Help.png</code> 16×16 в наборе 32×32 + плоская белая заливка под gradient-map шейдер.</li>
+<li>4 материала карты лежат в <code>Shaders/</code>, а не в <code>Materials/</code>.</li>
+<li><code>.anim</code> и <code>.controller</code> лежат в <code>ScriptableObjects/Visuals/</code>, а не в <code>Art/Animations/</code>.</li>
+<li><code>components.uss</code> тянет две иконки (<code>HeartRed</code>, <code>LockGold</code>) напрямую из пака Honeti, мимо палитрового ремапа — они останутся в чужих цветах.</li>
+<li>Суффикс <code>-gm</code> у <code>Icons-gm/</code> обещает перекраску, которой там нет (она в шейдере). Имя врёт.</li>
+<li><code>SH_Pixel_Burst</code> и <code>SH_Sprite_Shatter</code> подключаются через <code>Shader.Find</code> — проверить, что они попадают в билд (Always Included Shaders или материал-ассет), иначе в плеере отвалятся молча.</li>
+<li><code>sprite-packs-audit.md</code> утверждает, что паки не коммитятся; фактически в git 5219 записей и 29 MB.</li>
+<li>Дублирование кода между пассами в <code>SH_Sprite_HitFlash</code> — помечено самим автором в комментарии <code>MapIconCommon.hlsl</code> как мина на будущее.</li>
+</ol></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-159" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#наша-папка-art" data-for="наша-папка-art">Наша папка Art</a></li><li class="depth-1"><a href="#sprites" data-for="sprites">Sprites</a></li><li class="depth-2"><a href="#pixel-art-heroes" data-for="pixel-art-heroes">Pixel Art Heroes/</a></li><li class="depth-2"><a href="#new-free-pixel-art-heroes" data-for="new-free-pixel-art-heroes">New FREE Pixel Art Heroes/</a></li><li class="depth-2"><a href="#что-из-пула-реально-живое" data-for="что-из-пула-реально-живое">Что из пула реально живое</a></li><li class="depth-1"><a href="#animations" data-for="animations">Animations</a></li><li class="depth-1"><a href="#materials" data-for="materials">Materials</a></li><li class="depth-1"><a href="#shaders" data-for="shaders">Shaders</a></li><li class="depth-2"><a href="#карта-акта-свежий-слой-ветка-featact-map-overhaul" data-for="карта-акта-свежий-слой-ветка-featact-map-overhaul">Карта акта (свежий слой, ветка feat/act-map-overhaul)</a></li><li class="depth-2"><a href="#бой--vfx" data-for="бой--vfx">Бой / VFX</a></li><li class="depth-1"><a href="#ui" data-for="ui">UI</a></li><li class="depth-2"><a href="#uihoneti-gm--9-файлов-всё-живое" data-for="uihoneti-gm--9-файлов-всё-живое">UI/Honeti-gm/ — 9 файлов, всё живое</a></li><li class="depth-2"><a href="#uiicons-gmmap--9-иконок-узлов-карты" data-for="uiicons-gmmap--9-иконок-узлов-карты">UI/Icons-gm/Map/ — 9 иконок узлов карты</a></li><li class="depth-2"><a href="#uiwhitefillpng--1616" data-for="uiwhitefillpng--1616">UI/WhiteFill.png — 16×16</a></li><li class="depth-1"><a href="#arena" data-for="arena">Arena</a></li><li class="depth-1"><a href="#сводка" data-for="сводка">Сводка</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../../tech/10-reference/asset-inventory" class="internal">Reference - Asset Inventory</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

@@ -1,0 +1,17 @@
+<map id="Guildmaster.DevTools.ArenaDevCommands.Register" name="Guildmaster.DevTools.ArenaDevCommands.Register">
+<area shape="rect" id="Node000001" title="Положить команды арены в набор модуля (снимаются вместе с ним)." alt="" coords="5,101,212,141"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1ArenaDevCommands.html#a33a75604de27b10f7675aa83b3039791" title=" " alt="" coords="260,5,467,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,99,259,55,281,47,282,52,261,60,155,104"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1DevTools_1_1ArenaDevCommands.html#af5ec3fdb9c77de9df04c79c15a35d1a4" title=" " alt="" coords="260,69,467,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="212,106,246,101,247,107,212,111"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1DevTools_1_1ArenaDevCommands.html#afe577db3dcddf0c4cfd61e1c8bfffbca" title=" " alt="" coords="260,133,467,173"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="212,132,247,136,246,141,212,137"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1DevTools_1_1ArenaDevCommands.html#a38f419f757722c9dd030d6d196448b7a" title=" " alt="" coords="260,197,467,237"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="155,139,261,183,282,190,281,195,259,188,153,144"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Arena_1_1ArenaSkinSwapper.html#a044da18846e906c1e5459b9d006e90e8" title="Резко ускорить текущий переход (Space)." alt="" coords="539,5,761,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="467,23,526,23,526,28,467,28"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Presentation_1_1Arena_1_1ArenaSkinSwapper.html#af17829699e2b1bda7669be0aea03f863" title="Мгновенно надеть скин без анимации: загрузка сейва, первый вход в мир, dev&#45;команды." alt="" coords="515,69,785,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="467,87,501,87,501,92,467,92"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Presentation_1_1Arena_1_1ArenaSkinSwapper.html#a853319b561f814e2ce97514ecd717c02" title="Перевести арену на скин skinId ." alt="" coords="541,197,759,237"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="467,215,527,215,527,220,467,220"/>
+</map>

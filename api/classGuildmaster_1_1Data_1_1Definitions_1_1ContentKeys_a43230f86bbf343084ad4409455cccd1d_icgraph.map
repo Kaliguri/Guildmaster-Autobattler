@@ -1,0 +1,12 @@
+<map id="Guildmaster.Data.Definitions.ContentKeys.FormKey" name="Guildmaster.Data.Definitions.ContentKeys.FormKey">
+<area shape="rect" id="Node000001" title="Ключ имени в падеже по строковому id (kw.burn + gen → kw.burn.name.gen)." alt="" coords="852,63,1067,103"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1DescriptionService.html#a093bb584af13d3f09ccbe42dafbe9151" title="Форма имени ключевого слова в падеже (gen/acc/plural; null — именительный)." alt="" coords="567,63,804,103"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="838,85,804,85,804,80,838,80"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1DescriptionService.html#aff6508fa14e8b0d181c3e4ebb6e1597a" title="Описание контента ({id}.desc) с подстановкой именованных величин." alt="" coords="287,5,513,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="571,62,500,48,501,43,572,57"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1DescriptionService.html#ab594a53f6a1edc6e9b60817501956791" title="Полное описание ({id}.desc.full) — статья справочника; нет полного текста → краткое." alt="" coords="5,35,233,75"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="553,79,233,63,234,58,553,74"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1DescriptionService.html#a71c957c5f1f1f4c996f0d76c7f6084d9" title="Описание БЕЗ ссылок: термины остаются видны как [Скрытность], но не кликаются." alt="" coords="281,120,519,160"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="572,108,501,123,500,117,571,103"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="274,41,234,45,233,40,274,36"/>
+</map>

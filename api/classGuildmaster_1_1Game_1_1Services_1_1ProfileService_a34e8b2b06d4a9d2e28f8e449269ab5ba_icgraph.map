@@ -1,0 +1,11 @@
+<map id="Guildmaster.Game.Services.ProfileService.SelectGuild" name="Guildmaster.Game.Services.ProfileService.SelectGuild">
+<area shape="rect" id="Node000001" title="Переключиться на гильдию активного профиля. false = гильдии нет." alt="" coords="515,37,721,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a3b15046b9f18095b5ef6bb045f9cbc59" title="Удалить гильдию вместе с её забегом. Необратимо: это месяцы Летописи." alt="" coords="260,5,467,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="501,45,467,41,467,36,502,40"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#af8d0749776e9b8af49f870decf6c4240" title="Переключиться на профиль. false = профиля нет." alt="" coords="260,69,467,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="502,75,467,79,467,74,501,69"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a7f84f0d344102b43ce971e9f4eb33b00" title="Удалить профиль вместе со всеми его гильдиями и забегами. Необратимо." alt="" coords="5,37,212,77"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="246,77,212,73,213,68,247,72"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a9691b45c86b777b0da8c6880967b14a6" title="Поднять прошлый выбор игрока, а на чистой установке завести первый профиль с гильдией." alt="" coords="5,101,212,141"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="247,107,213,111,212,106,246,101"/>
+</map>

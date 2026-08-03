@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Effects.VisualToggles.Set" name="Guildmaster.Presentation.Effects.VisualToggles.Set">
+<area shape="rect" id="Node000001" title="Включить/выключить. false = такого эффекта нет." alt="" coords="259,5,449,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1VisualToggles.html#a1210f8ebaab47fdfbaed303bcadbf878" title="Переключить. null = такого эффекта нет." alt="" coords="5,5,211,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,28,211,28,211,23,245,23"/>
+</map>

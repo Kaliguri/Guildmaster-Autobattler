@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Ba
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#events">Events</a> &#124;
 <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Game.Flow.BattleSession Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -114,12 +115,6 @@ Collaboration diagram for Guildmaster.Game.Flow.BattleSession:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af960dc3a609a787a51997bb9be4a266a" id="r_af960dc3a609a787a51997bb9be4a266a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#af960dc3a609a787a51997bb9be4a266a">SetPending</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html">BattlePresetData</a> preset)</td></tr>
-<tr class="memdesc:af960dc3a609a787a51997bb9be4a266a"><td class="mdescLeft">&#160;</td><td class="mdescRight">root → child: поставить бой в очередь (перед загрузкой боевой сцены). Взводит ожидание исхода.  <br /></td></tr>
-<tr class="separator:af960dc3a609a787a51997bb9be4a266a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f904064e36376e870be2d93a4d508e2" id="r_a3f904064e36376e870be2d93a4d508e2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a3f904064e36376e870be2d93a4d508e2">TryConsumePending</a> (out <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html">BattlePresetData</a> preset)</td></tr>
-<tr class="memdesc:a3f904064e36376e870be2d93a4d508e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">child → session: забрать запрос (single-shot). false = запуск не из флоу (dev-панель вручную).  <br /></td></tr>
-<tr class="separator:a3f904064e36376e870be2d93a4d508e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0456076745fc3021a62a197eaab929e" id="r_ad0456076745fc3021a62a197eaab929e"><td class="memItemLeft" align="right" valign="top">UniTask&lt; <a class="el" href="structGuildmaster_1_1Combat_1_1BattleOutcome.html">BattleOutcome</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ad0456076745fc3021a62a197eaab929e">WaitOutcomeAsync</a> (CancellationToken ct)</td></tr>
 <tr class="memdesc:ad0456076745fc3021a62a197eaab929e"><td class="mdescLeft">&#160;</td><td class="mdescRight">root: дождаться исхода текущего боя (следующий ReportOutcome после взвода).  <br /></td></tr>
 <tr class="separator:ad0456076745fc3021a62a197eaab929e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,6 +127,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a69f4198d92d8cff462732088d65fba47" id="r_a69f4198d92d8cff462732088d65fba47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a69f4198d92d8cff462732088d65fba47">UnbindRestart</a> ()</td></tr>
 <tr class="memdesc:a69f4198d92d8cff462732088d65fba47"><td class="mdescLeft">&#160;</td><td class="mdescRight">child → session: снять делегат рестарта (при выгрузке боевого скоупа).  <br /></td></tr>
 <tr class="separator:a69f4198d92d8cff462732088d65fba47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d601a24a7257c266553c45a3a7ae468" id="r_a2d601a24a7257c266553c45a3a7ae468"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a2d601a24a7257c266553c45a3a7ae468">BindLaunch</a> (Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html">BattlePresetData</a> &gt; launch)</td></tr>
+<tr class="memdesc:a2d601a24a7257c266553c45a3a7ae468"><td class="mdescLeft">&#160;</td><td class="mdescRight">child → session: как запустить бой на месте (доспавн врагов + снять паузу). Привязывает боевой скоуп на старте.  <br /></td></tr>
+<tr class="separator:a2d601a24a7257c266553c45a3a7ae468"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6a222242dc267641d3a2151480dcde6" id="r_ab6a222242dc267641d3a2151480dcde6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab6a222242dc267641d3a2151480dcde6">UnbindLaunch</a> ()</td></tr>
+<tr class="memdesc:ab6a222242dc267641d3a2151480dcde6"><td class="mdescLeft">&#160;</td><td class="mdescRight">child → session: снять делегат launch (при выгрузке боевого скоупа, если она когда-то будет).  <br /></td></tr>
+<tr class="separator:ab6a222242dc267641d3a2151480dcde6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cd1b525a7cf7c4fc16ac0e0a3209553" id="r_a9cd1b525a7cf7c4fc16ac0e0a3209553"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a9cd1b525a7cf7c4fc16ac0e0a3209553">RequestLaunch</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html">BattlePresetData</a> preset)</td></tr>
+<tr class="memdesc:a9cd1b525a7cf7c4fc16ac0e0a3209553"><td class="mdescLeft">&#160;</td><td class="mdescRight">root → child: запустить бой в живом скоупе (persist-мир).  <br /></td></tr>
+<tr class="separator:a9cd1b525a7cf7c4fc16ac0e0a3209553"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ef2edea137d8d5e332fb17c0290fca3" id="r_a0ef2edea137d8d5e332fb17c0290fca3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a0ef2edea137d8d5e332fb17c0290fca3">BindReset</a> (Action reset)</td></tr>
+<tr class="memdesc:a0ef2edea137d8d5e332fb17c0290fca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">child → session: как вернуть вне-боевое состояние (враги прочь, отряд к строю, пауза).  <br /></td></tr>
+<tr class="separator:a0ef2edea137d8d5e332fb17c0290fca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7de6cd0ba788c2e7a3765b3d2f28b64" id="r_ab7de6cd0ba788c2e7a3765b3d2f28b64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab7de6cd0ba788c2e7a3765b3d2f28b64">UnbindReset</a> ()</td></tr>
+<tr class="memdesc:ab7de6cd0ba788c2e7a3765b3d2f28b64"><td class="mdescLeft">&#160;</td><td class="mdescRight">child → session: снять делегат сброса (при выгрузке боевого скоупа).  <br /></td></tr>
+<tr class="separator:ab7de6cd0ba788c2e7a3765b3d2f28b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0cbde88e9ff03c8a64380d600000f88" id="r_ab0cbde88e9ff03c8a64380d600000f88"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab0cbde88e9ff03c8a64380d600000f88">RequestReset</a> ()</td></tr>
+<tr class="memdesc:ab0cbde88e9ff03c8a64380d600000f88"><td class="mdescLeft">&#160;</td><td class="mdescRight">root → child: после боя вернуть арену во вне-боевое состояние (persist-мир): убрать врагов, пере-поставить отряд из <code>RunState.Guild</code>, пауза.  <br /></td></tr>
+<tr class="separator:ab0cbde88e9ff03c8a64380d600000f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cddca68c4be4f1284b6af1355290f43" id="r_a4cddca68c4be4f1284b6af1355290f43"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a4cddca68c4be4f1284b6af1355290f43">RequestRestart</a> ()</td></tr>
 <tr class="memdesc:a4cddca68c4be4f1284b6af1355290f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">root → child: перезапустить бой (ретрай). Взводит новое ожидание. false = некому (нет боя).  <br /></td></tr>
 <tr class="separator:a4cddca68c4be4f1284b6af1355290f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,6 +179,21 @@ Properties</h2></td></tr>
 <tr class="memdesc:ab29f51f9bcfd9d2343e8eb852e474f8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прошедшее время текущего боя, сек (0, если боя нет).  <br /></td></tr>
 <tr class="separator:ab29f51f9bcfd9d2343e8eb852e474f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">Guildmaster.Data.Definitions.IBattleClock</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
+Events</h2></td></tr>
+<tr class="memitem:a8e49805d3f815852d757da2906af5c0a" id="r_a8e49805d3f815852d757da2906af5c0a"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a8e49805d3f815852d757da2906af5c0a">ReplayRequested</a></td></tr>
+<tr class="separator:a8e49805d3f815852d757da2906af5c0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2c46f27b2584fcb0766e30596e93bba" id="r_ab2c46f27b2584fcb0766e30596e93bba"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab2c46f27b2584fcb0766e30596e93bba">PhaseChanged</a></td></tr>
+<tr class="separator:ab2c46f27b2584fcb0766e30596e93bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header events_interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession"><td colspan="2" onclick="javascript:toggleInherit('events_interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession')"><img src="closed.png" alt="-"/>&#160;Events inherited from <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html">Guildmaster.Game.Flow.IBattleSession</a></td></tr>
+<tr class="memitem:a962990482543b0048748293ff840c802 inherit events_interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession" id="r_a962990482543b0048748293ff840c802"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a962990482543b0048748293ff840c802">ReplayRequested</a></td></tr>
+<tr class="memdesc:a962990482543b0048748293ff840c802 inherit events_interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владельцу узла: «отмотай себя к бою».  <br /></td></tr>
+<tr class="separator:a962990482543b0048748293ff840c802 inherit events_interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header events_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td colspan="2" onclick="javascript:toggleInherit('events_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock')"><img src="closed.png" alt="-"/>&#160;Events inherited from <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">Guildmaster.Data.Definitions.IBattleClock</a></td></tr>
+<tr class="memitem:a32ad59655ceb01c9eeb318faeee918e1 inherit events_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock" id="r_a32ad59655ceb01c9eeb318faeee918e1"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#a32ad59655ceb01c9eeb318faeee918e1">PhaseChanged</a></td></tr>
+<tr class="memdesc:a32ad59655ceb01c9eeb318faeee918e1 inherit events_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза сменилась (расстановка ↔ бой ↔ нет боя).  <br /></td></tr>
+<tr class="separator:a32ad59655ceb01c9eeb318faeee918e1 inherit events_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Соло-реализация IBattleSession (план 11 §2). </p>
@@ -190,6 +218,50 @@ Properties</h2></td></tr>
 <p>child → session: привязать источник времени боя (<code><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a2d25dff7fc28636a75a14b8b9e5653b1" title="Сколько боевого времени прошло, сек.">CombatSimulation.ElapsedSeconds</a></code>). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a613dbdd8f0b3d041e80d79d1db4a5400">Guildmaster.Game.Flow.IBattleSession</a>.</p>
+
+</div>
+</div>
+<a id="a2d601a24a7257c266553c45a3a7ae468" name="a2d601a24a7257c266553c45a3a7ae468"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d601a24a7257c266553c45a3a7ae468">&#9670;&#160;</a></span>BindLaunch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Flow.BattleSession.BindLaunch </td>
+          <td>(</td>
+          <td class="paramtype">Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html">BattlePresetData</a> &gt;&#160;</td>
+          <td class="paramname"><em>launch</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>child → session: как запустить бой на месте (доспавн врагов + снять паузу). Привязывает боевой скоуп на старте. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a741f84449b0e5c8b9c407e9346f7c07d">Guildmaster.Game.Flow.IBattleSession</a>.</p>
+
+</div>
+</div>
+<a id="a0ef2edea137d8d5e332fb17c0290fca3" name="a0ef2edea137d8d5e332fb17c0290fca3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ef2edea137d8d5e332fb17c0290fca3">&#9670;&#160;</a></span>BindReset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Flow.BattleSession.BindReset </td>
+          <td>(</td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>reset</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>child → session: как вернуть вне-боевое состояние (враги прочь, отряд к строю, пауза). </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a86ee2a891c0b338b66e7d49ad2f5f431">Guildmaster.Game.Flow.IBattleSession</a>.</p>
 
 </div>
 </div>
@@ -242,6 +314,9 @@ Properties</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.Game.Flow.BattleSession.ReportOutcome </td>
@@ -251,11 +326,77 @@ Properties</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>child → session: сообщить исход (из <code>BattleEndedEvent</code>). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a56c49df7bba0c8f122afa0f6b768550b">Guildmaster.Game.Flow.IBattleSession</a>.</p>
+
+</div>
+</div>
+<a id="a9cd1b525a7cf7c4fc16ac0e0a3209553" name="a9cd1b525a7cf7c4fc16ac0e0a3209553"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cd1b525a7cf7c4fc16ac0e0a3209553">&#9670;&#160;</a></span>RequestLaunch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Flow.BattleSession.RequestLaunch </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html">BattlePresetData</a>&#160;</td>
+          <td class="paramname"><em>preset</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>root → child: запустить бой в живом скоупе (persist-мир). </p>
+<p>Взводит новое ожидание исхода. false = некому запускать (боевой скоуп ещё не поднят). </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#aecd4c25939ea3775685139f54eaff43e">Guildmaster.Game.Flow.IBattleSession</a>.</p>
+
+</div>
+</div>
+<a id="ab0cbde88e9ff03c8a64380d600000f88" name="ab0cbde88e9ff03c8a64380d600000f88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0cbde88e9ff03c8a64380d600000f88">&#9670;&#160;</a></span>RequestReset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Flow.BattleSession.RequestReset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>root → child: после боя вернуть арену во вне-боевое состояние (persist-мир): убрать врагов, пере-поставить отряд из <code>RunState.Guild</code>, пауза. </p>
+<p>false = некому (скоуп не поднят). </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#abb36c926b067010534878874b92967d7">Guildmaster.Game.Flow.IBattleSession</a>.</p>
 
 </div>
 </div>
@@ -339,41 +480,14 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="af960dc3a609a787a51997bb9be4a266a" name="af960dc3a609a787a51997bb9be4a266a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af960dc3a609a787a51997bb9be4a266a">&#9670;&#160;</a></span>SetPending()</h2>
+<a id="a8efed7165633ba6875a3f10f5be1e22c" name="a8efed7165633ba6875a3f10f5be1e22c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8efed7165633ba6875a3f10f5be1e22c">&#9670;&#160;</a></span>SetPhase()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Guildmaster.Game.Flow.BattleSession.SetPending </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html">BattlePresetData</a>&#160;</td>
-          <td class="paramname"><em>preset</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>root → child: поставить бой в очередь (перед загрузкой боевой сцены). Взводит ожидание исхода. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a3a99d05b00402f6c6ef3cc7dbb7b2598">Guildmaster.Game.Flow.IBattleSession</a>.</p>
-
-</div>
-</div>
-<a id="a8efed7165633ba6875a3f10f5be1e22c" name="a8efed7165633ba6875a3f10f5be1e22c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8efed7165633ba6875a3f10f5be1e22c">&#9670;&#160;</a></span>SetPhase()</h2>
-
-<div class="memitem">
-<div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.Game.Flow.BattleSession.SetPhase </td>
@@ -383,31 +497,6 @@ Properties</h2></td></tr>
           <td></td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-<p>child → session: сменить фазу (расстановка → бой). Панель опрашивает <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#ad8e294c9ebea9f52a6d087b164a8c363" title="Текущая фаза боя (пусто/расстановка/бой). Панель опрашивает каждый кадр.">IBattleClock.Phase</a>. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a1f914f2674e41bb06bcfde721cd8878c">Guildmaster.Game.Flow.IBattleSession</a>.</p>
-
-</div>
-</div>
-<a id="a3f904064e36376e870be2d93a4d508e2" name="a3f904064e36376e870be2d93a4d508e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f904064e36376e870be2d93a4d508e2">&#9670;&#160;</a></span>TryConsumePending()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Guildmaster.Game.Flow.BattleSession.TryConsumePending </td>
-          <td>(</td>
-          <td class="paramtype">out <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html">BattlePresetData</a>&#160;</td>
-          <td class="paramname"><em>preset</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
@@ -415,9 +504,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>child → session: забрать запрос (single-shot). false = запуск не из флоу (dev-панель вручную). </p>
+<p>child → session: сменить фазу (расстановка → бой). Панель опрашивает <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#ad8e294c9ebea9f52a6d087b164a8c363" title="Текущая фаза боя (пусто/расстановка/бой). Панель опрашивает каждый кадр.">IBattleClock.Phase</a>. </p>
 
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#aa3fa06f2ca54b4e4c16bc0014b3ef87c">Guildmaster.Game.Flow.IBattleSession</a>.</p>
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a1f914f2674e41bb06bcfde721cd8878c">Guildmaster.Game.Flow.IBattleSession</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession_a8efed7165633ba6875a3f10f5be1e22c_icgraph.svg" width="502" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -447,6 +541,53 @@ Properties</h2></td></tr>
 <p>child → session: снять часы при выгрузке боевого скоупа (сбрасывает фазу в BattlePhase.None). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a89439511115ae42e529bdb2c9c8aae5d">Guildmaster.Game.Flow.IBattleSession</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession_a69c50b2bf068f71629de593f34b56ac5_cgraph.svg" width="502" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ab6a222242dc267641d3a2151480dcde6" name="ab6a222242dc267641d3a2151480dcde6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6a222242dc267641d3a2151480dcde6">&#9670;&#160;</a></span>UnbindLaunch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Flow.BattleSession.UnbindLaunch </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>child → session: снять делегат launch (при выгрузке боевого скоупа, если она когда-то будет). </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#acab92f522376f127d8222e3ae4aaf7fd">Guildmaster.Game.Flow.IBattleSession</a>.</p>
+
+</div>
+</div>
+<a id="ab7de6cd0ba788c2e7a3765b3d2f28b64" name="ab7de6cd0ba788c2e7a3765b3d2f28b64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7de6cd0ba788c2e7a3765b3d2f28b64">&#9670;&#160;</a></span>UnbindReset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Flow.BattleSession.UnbindReset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>child → session: снять делегат сброса (при выгрузке боевого скоупа). </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a80b6258be3831963d3c4d9aa903e1c44">Guildmaster.Game.Flow.IBattleSession</a>.</p>
 
 </div>
 </div>
@@ -572,6 +713,37 @@ Properties</h2></td></tr>
 <p>Текущая фаза боя (пусто/расстановка/бой). Панель опрашивает каждый кадр. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#ad8e294c9ebea9f52a6d087b164a8c363">Guildmaster.Data.Definitions.IBattleClock</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Event Documentation</h2>
+<a id="ab2c46f27b2584fcb0766e30596e93bba" name="ab2c46f27b2584fcb0766e30596e93bba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2c46f27b2584fcb0766e30596e93bba">&#9670;&#160;</a></span>PhaseChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.Game.Flow.BattleSession.PhaseChanged</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p></p>
+
+</div>
+</div>
+<a id="a8e49805d3f815852d757da2906af5c0a" name="a8e49805d3f815852d757da2906af5c0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e49805d3f815852d757da2906af5c0a">&#9670;&#160;</a></span>ReplayRequested</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.Game.Flow.BattleSession.ReplayRequested</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

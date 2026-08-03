@@ -93,45 +93,70 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Services_1
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Game.Services.JsonFileSaveService Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Соло-бэкенд ISaveService: JSON-файл на диск (Application.persistentDataPath) через JsonUtility.  
+<p>Бэкенд ISaveService для данных ИГРОКА — наш собственный и единственный: JSON-файлы под <code><a class="el" href="classGuildmaster_1_1Core_1_1Persistence_1_1GameDataPath.html#a224c7070d771a148a6676b8e29b5b55b" title="Корень данных игрока.">GameDataPath.Root</a>/Saves</code> (ТЗ [[save-system]] §4).  
  <a href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Services.JsonFileSaveService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService__inherit__graph.svg" width="210" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService__inherit__graph.svg" width="212" height="538"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Services.JsonFileSaveService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService__coll__graph.svg" width="210" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService__coll__graph.svg" width="212" height="538"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a449acd839274f2de82198fe23cb819cd" id="r_a449acd839274f2de82198fe23cb819cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#a449acd839274f2de82198fe23cb819cd">Save&lt; T &gt;</a> (string key, T value)</td></tr>
-<tr class="memdesc:a449acd839274f2de82198fe23cb819cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сохранить значение под ключом (перезаписывает).  <br /></td></tr>
-<tr class="separator:a449acd839274f2de82198fe23cb819cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1b6545e429cd7440c2f7b444d0b9b7c" id="r_ae1b6545e429cd7440c2f7b444d0b9b7c"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#ae1b6545e429cd7440c2f7b444d0b9b7c">Load&lt; T &gt;</a> (string key)</td></tr>
-<tr class="memdesc:ae1b6545e429cd7440c2f7b444d0b9b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Загрузить значение по ключу; <code>default</code> (null), если ключа нет.  <br /></td></tr>
-<tr class="separator:ae1b6545e429cd7440c2f7b444d0b9b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7da2cff4855c395cb305c37a29ccdbbb" id="r_a7da2cff4855c395cb305c37a29ccdbbb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#a7da2cff4855c395cb305c37a29ccdbbb">Exists</a> (string key)</td></tr>
-<tr class="memdesc:a7da2cff4855c395cb305c37a29ccdbbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли сохранение под ключом.  <br /></td></tr>
-<tr class="separator:a7da2cff4855c395cb305c37a29ccdbbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7df90d46b55f8280cd3dbdb0262fd6bc" id="r_a7df90d46b55f8280cd3dbdb0262fd6bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#a7df90d46b55f8280cd3dbdb0262fd6bc">Delete</a> (string key)</td></tr>
-<tr class="memdesc:a7df90d46b55f8280cd3dbdb0262fd6bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить сохранение под ключом (no-op, если нет).  <br /></td></tr>
-<tr class="separator:a7df90d46b55f8280cd3dbdb0262fd6bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0975ab21d60c2ba7e87901c8683cb3d" id="r_ae0975ab21d60c2ba7e87901c8683cb3d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#ae0975ab21d60c2ba7e87901c8683cb3d">JsonFileSaveService</a> ()</td></tr>
+<tr class="separator:ae0975ab21d60c2ba7e87901c8683cb3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html">Guildmaster.Game.Services.JsonFileSaveServiceBase</a></td></tr>
+<tr class="memitem:ade0cec6196702bbe2cf11c13d7fc5202 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase" id="r_ade0cec6196702bbe2cf11c13d7fc5202"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#ade0cec6196702bbe2cf11c13d7fc5202">Save&lt; T &gt;</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">string</a> key, T <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">value</a>)</td></tr>
+<tr class="memdesc:ade0cec6196702bbe2cf11c13d7fc5202 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сохранить значение под ключом (перезаписывает). Версия схемы берётся из типа.  <br /></td></tr>
+<tr class="separator:ade0cec6196702bbe2cf11c13d7fc5202 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78defbe99217038a164fcdb275618d26 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase" id="r_a78defbe99217038a164fcdb275618d26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html">SaveLoadResult</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a78defbe99217038a164fcdb275618d26">TryLoad&lt; T &gt;</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">string</a> key)</td></tr>
+<tr class="memdesc:a78defbe99217038a164fcdb275618d26 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Загрузить значение по ключу.  <br /></td></tr>
+<tr class="separator:a78defbe99217038a164fcdb275618d26 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5379bdc5c22e5dcc39d8eb2ecb1eaf38 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase" id="r_a5379bdc5c22e5dcc39d8eb2ecb1eaf38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a5379bdc5c22e5dcc39d8eb2ecb1eaf38">Exists</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">string</a> key)</td></tr>
+<tr class="memdesc:a5379bdc5c22e5dcc39d8eb2ecb1eaf38 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли файл под ключом. Дешёвая проверка наличия — о пригодности отвечает TryLoad&lt;T&gt;.  <br /></td></tr>
+<tr class="separator:a5379bdc5c22e5dcc39d8eb2ecb1eaf38 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6d00114abcd21c539a3dc13cd863344 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase" id="r_aa6d00114abcd21c539a3dc13cd863344"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#aa6d00114abcd21c539a3dc13cd863344">Delete</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">string</a> key)</td></tr>
+<tr class="memdesc:aa6d00114abcd21c539a3dc13cd863344 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить сохранение под ключом (no-op, если нет). Бэкап удаляется вместе с ним.  <br /></td></tr>
+<tr class="separator:aa6d00114abcd21c539a3dc13cd863344 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acada6acbb548c8d14d8398565927b053 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase" id="r_acada6acbb548c8d14d8398565927b053"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#acada6acbb548c8d14d8398565927b053">DeleteTree</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">string</a> <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">prefix</a>)</td></tr>
+<tr class="memdesc:acada6acbb548c8d14d8398565927b053 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить поддерево целиком — ключ здесь означает каталог, а не файл.  <br /></td></tr>
+<tr class="separator:acada6acbb548c8d14d8398565927b053 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bb318fb80055081d8fc88ca97608df8 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase" id="r_a1bb318fb80055081d8fc88ca97608df8"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">List</a> (string prefix)</td></tr>
+<tr class="memdesc:a1bb318fb80055081d8fc88ca97608df8 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ключи первого уровня под указанным префиксом — без него не собрать список профилей и гильдий.  <br /></td></tr>
+<tr class="separator:a1bb318fb80055081d8fc88ca97608df8 inherit pub_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ad4ef66ab1f545d74252f4e0514d4248f" id="r_ad4ef66ab1f545d74252f4e0514d4248f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">const</a> <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">string</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html#ad4ef66ab1f545d74252f4e0514d4248f">SavesFolder</a> = &quot;Saves&quot;</td></tr>
+<tr class="memdesc:ad4ef66ab1f545d74252f4e0514d4248f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Корень синхронизируемых сохранений. По этой маске настроен Auto-Cloud.  <br /></td></tr>
+<tr class="separator:ad4ef66ab1f545d74252f4e0514d4248f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html">Guildmaster.Game.Services.JsonFileSaveServiceBase</a></td></tr>
+<tr class="memitem:a22774653b5d84b47c91f9c43086021e4 inherit pro_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase" id="r_a22774653b5d84b47c91f9c43086021e4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a22774653b5d84b47c91f9c43086021e4">JsonFileSaveServiceBase</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">string</a> <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">rootFolder</a>)</td></tr>
+<tr class="separator:a22774653b5d84b47c91f9c43086021e4 inherit pro_methods_classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Соло-бэкенд ISaveService: JSON-файл на диск (Application.persistentDataPath) через JsonUtility. </p>
-<p>Без зависимости от Easy Save 3 (у ES3 нет asmdef → из <code><a class="el" href="namespaceGuildmaster.html">Guildmaster</a>.*</code> не вызвать). ES3 + Steam Cloud — плановая замена бэкенда за тем же интерфейсом (вики «2»), тела не трогая. JsonUtility сериализует <code>[Serializable]</code>-DTO с публичными полями. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7df90d46b55f8280cd3dbdb0262fd6bc" name="a7df90d46b55f8280cd3dbdb0262fd6bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7df90d46b55f8280cd3dbdb0262fd6bc">&#9670;&#160;</a></span>Delete()</h2>
+<div class="textblock"><p>Бэкенд ISaveService для данных ИГРОКА — наш собственный и единственный: JSON-файлы под <code><a class="el" href="classGuildmaster_1_1Core_1_1Persistence_1_1GameDataPath.html#a224c7070d771a148a6676b8e29b5b55b" title="Корень данных игрока.">GameDataPath.Root</a>/Saves</code> (ТЗ [[save-system]] §4). </p>
+<p>Сюда ложатся забег, профили, гильдии и предпочтения — всё, что должно доехать на второй компьютер. </p>
+<p>Готовый плагин сюда не звали намеренно (реш. 2026-07-26): мы сохраняем данные, а не объекты — durable-состояние это плоский DTO по строковым id, — поэтому сильные стороны таких плагинов (графы объектов, ссылки на UnityEngine.Object, полиморфизм) решают проблему, которой у нас нет. Easy Save 3 лежал в проекте референсом и удалён 31.07.2026 вместе с пакетом visualscripting, который тянул за собой.</p>
+<p><b>Каталог <code>Saves/</code> — контракт со Steam Cloud:</b> Auto-Cloud синхронизирует его по маске <code>*.json</code> рекурсивно. Поэтому суффиксы служебных файлов идут ПОСЛЕ расширения (<code>run.json.bak</code>, не <code>run.bak.json</code>) — так они не подпадают под маску и мусор не едет в облако. Местами не менять.</p>
+<p>Настройки дисплея сюда НЕ кладутся — им место в LocalJsonFileSaveService.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae0975ab21d60c2ba7e87901c8683cb3d" name="ae0975ab21d60c2ba7e87901c8683cb3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0975ab21d60c2ba7e87901c8683cb3d">&#9670;&#160;</a></span>JsonFileSaveService()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -140,10 +165,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Guildmaster.Game.Services.JsonFileSaveService.Delete </td>
+          <td class="memname">Guildmaster.Game.Services.JsonFileSaveService.JsonFileSaveService </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>key</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -154,36 +178,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Удалить сохранение под ключом (no-op, если нет). </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#afd1c8a1e9779dd86c902d9a13442d2ac">Guildmaster.Core.Persistence.ISaveService</a>.</p>
-
 </div>
 </div>
-<a id="a7da2cff4855c395cb305c37a29ccdbbb" name="a7da2cff4855c395cb305c37a29ccdbbb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7da2cff4855c395cb305c37a29ccdbbb">&#9670;&#160;</a></span>Exists()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Guildmaster.Game.Services.JsonFileSaveService.Exists </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>key</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Есть ли сохранение под ключом. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a9c3b47666cbfba6afcf2f4b1e6f2cee5">Guildmaster.Core.Persistence.ISaveService</a>.</p>
-
-</div>
-</div>
-<a id="ae1b6545e429cd7440c2f7b444d0b9b7c" name="ae1b6545e429cd7440c2f7b444d0b9b7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1b6545e429cd7440c2f7b444d0b9b7c">&#9670;&#160;</a></span>Load&lt; T &gt;()</h2>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ad4ef66ab1f545d74252f4e0514d4248f" name="ad4ef66ab1f545d74252f4e0514d4248f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4ef66ab1f545d74252f4e0514d4248f">&#9670;&#160;</a></span>SavesFolder</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -192,63 +191,17 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T Guildmaster.Game.Services.JsonFileSaveService.Load&lt; T &gt; </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>key</em></td><td>)</td>
-          <td></td>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">const</a> <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8">string</a> Guildmaster.Game.Services.JsonFileSaveService.SavesFolder = &quot;Saves&quot;</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Загрузить значение по ключу; <code>default</code> (null), если ключа нет. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a7c7655439fd7941e8f332ebf9095400f">Guildmaster.Core.Persistence.ISaveService</a>.</p>
-
-</div>
-</div>
-<a id="a449acd839274f2de82198fe23cb819cd" name="a449acd839274f2de82198fe23cb819cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a449acd839274f2de82198fe23cb819cd">&#9670;&#160;</a></span>Save&lt; T &gt;()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Guildmaster.Game.Services.JsonFileSaveService.Save&lt; T &gt; </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Сохранить значение под ключом (перезаписывает). </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html#a275e7c5ce65ba89626a17a51ab6c50bb">Guildmaster.Core.Persistence.ISaveService</a>.</p>
+<p>Корень синхронизируемых сохранений. По этой маске настроен Auto-Cloud. </p>
 
 </div>
 </div>

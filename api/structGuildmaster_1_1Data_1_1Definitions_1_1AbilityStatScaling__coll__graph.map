@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.AbilityStatScaling" name="Guildmaster.Data.Definitions.AbilityStatScaling">
+<area shape="rect" id="Node000001" title="Правило «стат носителя → параметр ЕГО способности» (M4): та же формула, что везде (StatConversion),..." alt="" coords="5,228,212,308"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Data_1_1Stats_1_1StatConversion.html" title="Правило «стат носителя → число»." alt="" coords="11,5,206,165"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,166,111,212,106,212,106,166"/>
+</map>

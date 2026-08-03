@@ -1,0 +1,10 @@
+<map id="Guildmaster.Game.Flow.BattleHost.Open" name="Guildmaster.Game.Flow.BattleHost.Open">
+<area shape="rect" id="Node000001" title="Открыть бой: родить скоуп со всем боевым внутри." alt="" coords="571,63,792,103"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#aa084209cf04b1262532cf710b70caab7" title="Перезапустить тот же бой (ретрай узла, dev&#45;R): новый скоуп на тот же пресет." alt="" coords="288,5,509,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="568,62,497,48,498,43,569,57"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a8d94e1846cab44422a938b6625e53c88" title=" " alt="" coords="5,35,227,75"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="557,79,227,63,227,57,557,74"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab565e7b0719ecbd4cf5289726e9ec43b" title="Задать «последний бой» для R извне (dev&#45;панель энкаунтеров) — единый владелец R остаётся здесь,..." alt="" coords="275,120,523,160"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="569,108,498,123,497,117,568,103"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="275,41,227,46,226,41,274,36"/>
+</map>

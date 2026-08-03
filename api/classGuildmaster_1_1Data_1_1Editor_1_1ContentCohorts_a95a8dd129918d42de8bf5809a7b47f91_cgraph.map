@@ -1,0 +1,7 @@
+<map id="Guildmaster.Data.Editor.ContentCohorts.AllUnits" name="Guildmaster.Data.Editor.ContentCohorts.AllUnits">
+<area shape="rect" id="Node000001" title="ВСЕ боевые юниты — реликвии и враги вместе." alt="" coords="5,37,187,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCohorts.html#a8c4dc62e5df274d7145748688c97161c" title="Враги." alt="" coords="235,5,417,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,42,221,37,222,43,188,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCohorts.html#a6c083df93133b0962c9c75f75a9b25ed" title="Реликвии игрока." alt="" coords="235,69,417,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="188,67,222,72,221,77,187,73"/>
+</map>

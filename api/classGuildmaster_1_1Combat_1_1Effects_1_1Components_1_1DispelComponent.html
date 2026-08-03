@@ -121,6 +121,9 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Диспел: при наложении снимает с носителя подходящие эффекты (вики «6» §5.4). </p>
 <p>Покрывает purge (баффы врага) и cleanse (дебаффы союзника) через <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20" title="Фильтр полярности для диспела: что снимать.">DispelTargetPolarity</a>. Обычно живёт в мгновенном эффекте (BaseDuration = 0). </p>
+<p><b>Числа:</b> <code>_targetPolarity</code> — что снимаем (дебаффы союзнику / баффы врагу / любое); <code>_targetTags</code> — сузить до категории (None = любая); <code>_dispelPower</code> — СИЛА: снимает эффекты с тиром ≤ этого числа (1 — базовые, 2 — плюс жёсткий контроль, 3 — особые); <code>_maxCount</code> — сколько эффектов максимум за раз (0 = все подходящие).</p>
+<p><b>Готча:</b> «снять эффект» ≠ «снять всё накопленное». У эффекта может быть своя цена очистки в стаках (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#ac50ab405fea7ed65a7bffec499810ee5" title="Сколько стаков уносит ОДНО очищение силой dispelPower  (ГДД «Свойства эффекта» §Цена очистки,...">EffectData.CleanseStacks</a>): «Угли» отдают 10 стаков или четверть и живут дальше. Так что <code>_maxCount</code> считает ЭФФЕКТЫ, а не стаки.</p>
+<p><b>Когда срабатывает:</b> в момент наложения несущего эффекта, один раз.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aed4e5891308dd7ac1f0f3fc658b26729" name="aed4e5891308dd7ac1f0f3fc658b26729"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aed4e5891308dd7ac1f0f3fc658b26729">&#9670;&#160;</a></span>OnApply()</h2>

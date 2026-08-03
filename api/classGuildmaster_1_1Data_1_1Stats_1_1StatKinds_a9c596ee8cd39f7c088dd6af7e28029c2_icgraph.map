@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Stats.StatKinds.KindOf" name="Guildmaster.Data.Stats.StatKinds.KindOf">
+<area shape="rect" id="Node000001" title="Как показывать этот стат игроку." alt="" coords="251,5,453,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ab312856dbf4fc14b3ad4687a91b9f6f6" title="Разложить стат на базу и вклады источников — для показа игроку (план UI&#45;реворка §II...." alt="" coords="5,5,203,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,28,203,28,203,23,237,23"/>
+</map>

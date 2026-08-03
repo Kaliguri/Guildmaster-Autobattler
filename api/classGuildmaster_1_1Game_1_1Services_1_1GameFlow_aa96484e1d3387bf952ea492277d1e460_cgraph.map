@@ -1,0 +1,15 @@
+<map id="Guildmaster.Game.Services.GameFlow.RunActAsync" name="Guildmaster.Game.Services.GameFlow.RunActAsync">
+<area shape="rect" id="Node000001" title="A2&#45;разрез забега: сгенерировать карту акта (если нет) и прогнать петлю обхода через ActRunner (делеги..." alt="" coords="5,101,212,141"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#a6b735b72a2c9f42774c7c55876833639" title="Снапшот текущего забега на диск (точка автосейва). No&#45;op без активного забега." alt="" coords="260,5,463,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,99,259,55,280,47,282,52,261,60,155,104"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#ade85486b137b5ce32d7773fc078ac12a" title="Сгенерировать карту текущего акта, если её ещё нет (план [[act&#45;map&#45;run&#45;loop]] §3.1)." alt="" coords="260,69,463,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,106,246,101,247,107,212,111"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#ae03f4a2a1736095f55fdf6b8fc053c19" title="Удалить автосейв (конец/сброс забега)." alt="" coords="260,133,463,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="212,132,247,136,246,141,212,137"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#aff54a03842a9198c822ef5b44bb800eb" title="Начать новый забег со СТАНДАРТНОЙ стартовой гильдией (уточн." alt="" coords="260,197,463,237"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="155,139,261,183,282,190,280,195,259,188,153,144"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Guild_1_1MapGenerator.html#a054078ab44d9a06131a10ac5b5135ead" title="Строит карту акта из rng &#160;по параметрам config ." alt="" coords="511,69,749,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="463,87,497,87,497,92,463,92"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#a42b5f7b8c98688812518b9d22b64c89f" title="Начать новый забег: свежий RunState с базовой вместимостью реликов из конфига." alt="" coords="529,197,731,237"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="463,215,515,215,515,220,463,220"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Guildmaster.UI.Tooltips.TooltipSystem.Detach" name="Guildmaster.UI.Tooltips.TooltipSystem.Detach">
+<area shape="rect" id="Node000001" title="Отвязать от панели (смена UIDocument, выключение системы)." alt="" coords="231,37,408,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipSystem.html#a482a9ba91c78147daf997f1d45f3a949" title="Привязать систему к панели: корень ловит всплывающие запросы, слой держит окна." alt="" coords="5,5,183,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,45,182,41,183,35,218,40"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipSystem.html#ad3c23a3aef48cbaade1eb74fdc353ead" title=" " alt="" coords="5,69,183,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="218,74,183,79,182,74,217,69"/>
+</map>

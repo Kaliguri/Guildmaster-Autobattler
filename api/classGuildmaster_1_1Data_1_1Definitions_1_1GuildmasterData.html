@@ -98,23 +98,21 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 </div><!--header-->
 <div class="contents">
 
-<p>Гильдмастер (GDD 4, вики «13» §3.2): начальные заклинания, пассивный бонус гильдии, уникальные особенности, стартовые реликвии (по id) и ресурс.  
+<p>Гильдмастер (GDD 4, вики «13» §3.2): пассивный бонус гильдии, уникальные особенности, стартовые реликвии (по id) и ресурс.  
  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Data.Definitions.GuildmasterData:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData__inherit__graph.svg" width="218" height="438"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData__inherit__graph.svg" width="218" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Definitions.GuildmasterData:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData__coll__graph.svg" width="218" height="438"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData__coll__graph.svg" width="218" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a4dd5a4e0ac1d77c90195192f8a5c25ad" id="r_a4dd5a4e0ac1d77c90195192f8a5c25ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html">AbilityData</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html#a4dd5a4e0ac1d77c90195192f8a5c25ad">Spells</a><code> [get]</code></td></tr>
-<tr class="separator:a4dd5a4e0ac1d77c90195192f8a5c25ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a094c0fd0526cba4a28fdd2da0a69f4bf" id="r_a094c0fd0526cba4a28fdd2da0a69f4bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html">StatModifier</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html#a094c0fd0526cba4a28fdd2da0a69f4bf">Mods</a><code> [get]</code></td></tr>
 <tr class="separator:a094c0fd0526cba4a28fdd2da0a69f4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae93b17d67c0eec4288e9b585b862b186" id="r_ae93b17d67c0eec4288e9b585b862b186"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html#ae93b17d67c0eec4288e9b585b862b186">UniqueEffects</a><code> [get]</code></td></tr>
@@ -140,7 +138,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a4701ffe250559c2e99f32082bc6e2f12 inherit pro_methods_classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Гильдмастер (GDD 4, вики «13» §3.2): начальные заклинания, пассивный бонус гильдии, уникальные особенности, стартовые реликвии (по id) и ресурс. </p>
+<div class="textblock"><p>Гильдмастер (GDD 4, вики «13» §3.2): пассивный бонус гильдии, уникальные особенности, стартовые реликвии (по id) и ресурс. </p>
+<p>Заклинаний у Гильдмастера НЕТ: ввода игрока во время боя не существует, бой — чистый результат подготовки (решение 2026-07, см. ГДД <code>combat-system</code>). Поле <code>_spells</code> пережило вырезание механики и снято 2026-07-26 — его никто не читал.</p>
 </div><h2 class="groupheader">Property Documentation</h2>
 <a id="a6b8e30990d0fe693895a2c8f4edd2259" name="a6b8e30990d0fe693895a2c8f4edd2259"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6b8e30990d0fe693895a2c8f4edd2259">&#9670;&#160;</a></span>InfoTags</h2>
@@ -197,28 +196,6 @@ Additional Inherited Members</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">Sprite Guildmaster.Data.Definitions.GuildmasterData.Portrait</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4dd5a4e0ac1d77c90195192f8a5c25ad" name="a4dd5a4e0ac1d77c90195192f8a5c25ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4dd5a4e0ac1d77c90195192f8a5c25ad">&#9670;&#160;</a></span>Spells</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html">AbilityData</a> [] Guildmaster.Data.Definitions.GuildmasterData.Spells</td>
         </tr>
       </table>
   </td>

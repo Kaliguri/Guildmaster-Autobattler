@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Аудит - Feel и Shapes | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Аудит - Feel и Shapes | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Аудит - Feel и Shapes | Guildmaster Wiki"/><meta name="twitter:description" content="Приложение к Reference - Asset Inventory. Собрано разведкой 2026-07-20."/><meta property="og:description" content="Приложение к Reference - Asset Inventory. Собрано разведкой 2026-07-20."/><meta property="og:image:alt" content="Приложение к Reference - Asset Inventory. Собрано разведкой 2026-07-20."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/asset-audit/feel-shapes"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/asset-audit/feel-shapes"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Приложение к Reference - Asset Inventory. Собрано разведкой 2026-07-20."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="research/asset-audit/feel-shapes"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-356"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-356" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/">research</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/asset-audit/">asset audit</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Аудит   Feel и Shapes</a></div></nav><h1 class="article-title">Аудит - Feel и Shapes</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-20T00:00:00.000Z">20 июл. 2026 г.</time><span>время чтения ~10 мин.</span></p></div></div><article class="popover-hint"><blockquote>
+<p>Приложение к <a href="../../tech/10-reference/asset-inventory" class="internal alias" data-slug="tech/10-reference/asset-inventory">Reference - Asset Inventory</a>. Собрано разведкой 2026-07-20.</p>
+</blockquote>
+<h2 id="feel-и-shapes-ресурсы-не-код">Feel и Shapes (ресурсы, не код)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#feel-и-shapes-ресурсы-не-код" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Аудит от 2026-07-20, ветка <code>feat/act-map-overhaul</code>. Смотрели только СОДЕРЖИМОЕ (текстуры, материалы, шейдеры, префабы, шрифты), код обоих пакетов вне зоны.</p>
+<p>Размеры на диске: <code>Assets/Feel/MMTools</code> — 42 МБ, <code>Assets/Feel/MMFeedbacks</code> — 5.3 МБ, <code>Assets/Shapes</code> — 11 МБ.
+Важно: папки <code>FeelDemos</code>, <code>FeelDemosURP</code>, <code>FeelDemosHDRP</code> в проекте <strong>пустые</strong> (0 байт) — демо-сцены и их VFX-префабы при импорте отброшены. Значит готовых «эффектов из коробки» у Feel в проекте нет: есть сырьё (текстуры) и шейдеры, а не собранные партикл-системы.</p>
+<hr/>
+<h3 id="1-feel--mmtools--где-что-лежит">1. Feel / MMTools — где что лежит<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-feel--mmtools--где-что-лежит" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Категория</th><th>Путь</th><th>Состав</th></tr></thead><tbody><tr><td>Шумы</td><td><code>Assets/Feel/MMTools/Accessories/MMVFX/MMNoise/</code></td><td>13 grayscale-текстур (512² и 1024²)</td></tr><tr><td>Градиентные рампы</td><td><code>Assets/Feel/MMTools/Accessories/MMVFX/MMRamps/</code></td><td>8 штук, 256×256</td></tr><tr><td>Кисти (мазки)</td><td><code>Assets/Feel/MMTools/Accessories/MMVFX/MMBrushes/</code></td><td>6 штук, 512×512, tileable</td></tr><tr><td>Спрайты частиц</td><td><code>Assets/Feel/MMTools/Accessories/MMVFX/MMParticles/</code></td><td>16 штук, 512×512, чёрный фон + белая форма</td></tr><tr><td>Bloom dirt (грязь линзы)</td><td><code>Assets/Feel/MMTools/Accessories/MMVFX/MMBloomDirt/</code></td><td>4 штуки, 1920×1080 и 3840×2160, ЦВЕТНЫЕ</td></tr><tr><td>Ripple (искажение)</td><td><code>Assets/Feel/MMTools/Accessories/MMVFX/MMRipple/</code></td><td>11 normal-map + 11 материалов + <code>MMRipple.prefab</code></td></tr><tr><td>Палитра</td><td><code>Assets/Feel/MMTools/Accessories/MMVFX/MMPalette/MMLowPolyPalette.png</code></td><td>512², атлас цветовых плашек для low-poly UV-развёрток</td></tr><tr><td>Шейдеры</td><td><code>Assets/Feel/MMTools/Accessories/MMShaders/</code></td><td>15 <code>.shader</code></td></tr><tr><td>Конус света</td><td><code>Assets/Feel/MMTools/Accessories/MMVision/</code></td><td><code>MMConeOfLight.shader</code> + <code>ConeOfVisionAlpha.png</code></td></tr><tr><td>Прототип-текстуры</td><td><code>Assets/Feel/MMTools/Accessories/MMPrototypeTextures/</code></td><td>20 «крестики/точки/рамка/квадраты» ×5 цветов + 21 материал (BRP!) + чекер + пластик PBR</td></tr><tr><td>GUI-мелочь</td><td><code>Assets/Feel/MMTools/Accessories/MMGUI/</code></td><td><code>MMFaderRoundMask.png</code>, <code>MMTools_GUI_1x1.png</code>, 2 материала маски для круглого фейдера</td></tr><tr><td>Прочее (служебное)</td><td><code>MMSceneLoading/Sprites</code>, <code>MMAchievements/Sprites</code>, <code>MMDebugMenu/Sprites</code></td><td>лоадер, ачивка, дебаг-меню; в игру не годятся</td></tr></tbody></table></div>
+<p>Полезных VFX-<strong>префабов</strong> в Feel практически нет — единственный <code>MMVFX/MMRipple/MMRipple.prefab</code> (плоскость с ripple-материалом). Остальные префабы — это UI дебаг-меню, floating text (<code>MMFeedbacks/MMFeedbacks/MMFloatingText/Prefabs/*</code>, есть пиксельный вариант) и болванки Volume для URP/HDRP/PPv2 (<code>MMFeedbacks/MMFeedbacksForThirdParty/URP/Resources/MMDefaultURPVolume.prefab</code>).</p>
+<hr/>
+<h3 id="2-таблица-шумов">2. Таблица шумов<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-таблица-шумов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Все — 8-битный PNG, <code>colortype=2</code> (RGB-контейнер), но фактически <strong>grayscale</strong>: R=G=B. У шумов в импорте <code>sRGBTexture: 0</code> (линейные — правильно для масок).</p>
+<p>Столбец «tileable» — по замеру шва: сравнивал разницу крайних столбцов/строк против разницы двух далёких столбцов внутри картинки.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Файл</th><th>Путь (<code>Assets/Feel/MMTools/Accessories/MMVFX/MMNoise/</code>)</th><th>Разрешение</th><th>Что на нём</th><th>Tileable</th><th>Где применим</th></tr></thead><tbody><tr><td>MMCloudsNoise</td><td><code>MMCloudsNoise.png</code></td><td>512²</td><td>Клубящиеся кучевые облака, мягкие пухлые комки, средний тон тёмный (~0.35), высокая деталь. Классический «дым/облака»</td><td>да (шов 2.2 против базы 25)</td><td><strong>УЖЕ В ДЕЛЕ</strong> — фактура бумаги карты. Дым, дымка, потёки</td></tr><tr><td>MMPerlinNoise</td><td><code>MMPerlinNoise.png</code></td><td>512²</td><td>Не «классический перлин»: мелкое высокочастотное зерно, почти белый шум с лёгким размытием, контраст высокий</td><td>да (5.0 / 47)</td><td>Плёночное зерно, шершавость бумаги, dissolve с грубым краем</td></tr><tr><td>MMSimplexNoise</td><td><code>MMSimplexNoise.png</code></td><td>512²</td><td>Мягкий низкочастотный fBm — плавные пятна средней частоты, ровный серый средний тон. Самый «спокойный» из набора</td><td>да (0.8 / 55)</td><td>Дымка, медленное колыхание, вариация освещения, маска пятен</td></tr><tr><td>MMFlowNoise</td><td><code>MMFlowNoise.png</code></td><td>512²</td><td>Волокнистые горизонтальные волны-струи, направленный «поток» слева направо. Светлый средний тон</td><td>да (3.2 / 49)</td><td><strong>Разводы бумаги/водяные знаки, потоки дыма, ленты пыли</strong></td></tr><tr><td>MMFireNoise</td><td><code>MMFireNoise.png</code></td><td>1024²</td><td>Пузырчато-комковатый fBm, светлые прожилки-«перемычки» между тёмными кляксами. Плотный, детальный</td><td>да (2.3 / 58)</td><td>Огонь, пар, пузырящаяся масса, тяжёлые кляксы</td></tr><tr><td>MMFireDirectionalNoise</td><td><code>MMFireDirectionalNoise.png</code></td><td>1024²</td><td>Резко-контрастные диагональные завихрения, «взбитая» турбулентность с направлением 45°. Почти чёрно-белый</td><td>да (4.5 / 88)</td><td>Резкий дым, ветер, полосы турбулентности</td></tr><tr><td>MMFireDirectionalAltNoise</td><td><code>MMFireDirectionalAltNoise.png</code></td><td>1024²</td><td>Тот же тип, но низкоконтрастный (база разницы всего 15) — мягкий вариант</td><td>да</td><td>Слабое колыхание там, где «резкий» вариант слишком грубый</td></tr><tr><td>MMCellNoise</td><td><code>MMCellNoise.png</code></td><td>1024²</td><td>Клеточная структура: светлые пузыри-ячейки, разделённые ЧЁРНЫМИ перемычками (инверсный воронуа). Похоже на пену/мыльные пузыри</td><td>да (4.6 / 62)</td><td>Трещины, кракелюр, чешуя, пена</td></tr><tr><td>MMVoronoiNoise</td><td><code>MMVoronoiNoise.png</code></td><td>1024²</td><td>Классический воронуа: чёрные ядра ячеек, БЕЛЫЕ границы, плавный градиент к центру</td><td>да (1.4 / 67)</td><td>Магический круг, каустика, кристаллы, паутина трещин</td></tr><tr><td>MMBrushNoise</td><td><code>MMBrushNoise.png</code></td><td>512²</td><td>Тёмные диагональные облака с рваной «мазанной» кромкой, средний тон очень тёмный (~0.2)</td><td>да (2.0 / 41)</td><td>Чернильные потёки, тени, маска затемнения</td></tr><tr><td>MMBlueNoise</td><td><code>MMBlueNoise.png</code></td><td>512²</td><td>Синий шум: равномерно распределённые точки без кластеров, средний серый</td><td>по построению да; попиксельный шов метрику ломает</td><td><strong>Дизеринг, стохастическая прозрачность, сэмплинг тени</strong></td></tr><tr><td>MMBayerNoise</td><td><code>MMBayerNoise.png</code></td><td>512²</td><td>Регулярная матрица Байера (упорядоченный дизер), крупная шашка ~32 px/клетка</td><td>по построению да</td><td><strong>Ordered dithering</strong> — ретро-градиенты, пиксельная растяжка тона</td></tr><tr><td>MMWhiteNoise</td><td><code>MMWhiteNoise.png</code></td><td>512²</td><td>Чистый белый шум, попиксельно</td><td>по построению</td><td>TV-помехи, зерно, случайные сиды</td></tr></tbody></table></div>
+<p>Единственный шум с чёткой «тканой» структурой в наборе — <code>MMFlowNoise</code>; отдельной текстуры «холст/бумага» в Feel НЕТ.</p>
+<hr/>
+<h3 id="3-таблица-рамп">3. Таблица рамп<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-таблица-рамп" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Все 256×256, RGB, <code>sRGBTexture: 1</code>. Градиент строго по горизонтали (X = t), высота — просто протяжка. Пригодны как lookup-текстура для gradient map / toon-рампы / раскраски партиклов.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Файл</th><th>Путь (<code>.../MMVFX/MMRamps/</code>)</th><th>Разрешение</th><th>Что на нём</th><th>Tileable</th><th>Где применим</th></tr></thead><tbody><tr><td>MMRamp0</td><td><code>MMRamp0.png</code></td><td>256²</td><td>Тёмно-сливовый/винный → лососевый → кремово-бежевый. <strong>Тёплая пергаментная гамма</strong></td><td>по X нет (края разные)</td><td><strong>Ремап карты: тени-чернила → бумага.</strong> Gradient map для сепии</td></tr><tr><td>MMRamp1</td><td><code>MMRamp1.png</code></td><td>256²</td><td>Голубой → синий → чёрный провал → оранжевый → жёлто-белый. Резкий hot/cold</td><td>нет</td><td>Огонь/лёд, дуальный урон, тепловая карта</td></tr><tr><td>MMRamp2</td><td><code>MMRamp2.png</code></td><td>256²</td><td>Синий-стальной → тёмная середина → бледно-жёлтый → белый. «Ночь → свеча»</td><td>нет</td><td>Ночная сцена с тёплым источником; годится под «тёмный стол + лампа»</td></tr><tr><td>MMRamp3</td><td><code>MMRamp3.png</code></td><td>256²</td><td>5 ступеней чистого серого от чёрного до белого (постеризация)</td><td>нет</td><td>Toon-рампа, ступенчатая тень, квантование тона</td></tr><tr><td>MMRamp4</td><td><code>MMRamp4.png</code></td><td>256²</td><td>Ровно половина чёрная, половина белая — жёсткий порог</td><td>нет</td><td>Cutout-маска, hard toon, wipe-переход</td></tr><tr><td>MMRamp5</td><td><code>MMRamp5.png</code></td><td>256²</td><td>5 ступеней светлого серого (0.55 → 1.0), без чёрного</td><td>нет</td><td>Мягкая toon-рампа, лёгкое затенение</td></tr><tr><td>MMRamp6</td><td><code>MMRamp6.png</code></td><td>256²</td><td>Почти чёрный фиолетовый (долгая полка) → розовато-серый → светло-серый</td><td>нет</td><td>Глубокая тень с фиолетовым подтоном; атмосферный туман</td></tr><tr><td>MMRamp7</td><td><code>MMRamp7.png</code></td><td>256²</td><td>Полная радуга HSV</td><td>нет</td><td>Дебаг-визуализация, радужный/магический эффект</td></tr></tbody></table></div>
+<hr/>
+<h3 id="4-кисти-и-частицы">4. Кисти и частицы<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-кисти-и-частицы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Кисти</strong> (<code>.../MMVFX/MMBrushes/MMBrush0..5.png</code>, 512², grayscale, ВСЕ tileable — швы 0.8–11 против базы 31–78):</p>
+<ul>
+<li><code>MMBrush0</code> — постеризованные «континенты», крупные плоские пятна с рваной каёмкой, 5–6 тональных ступеней.</li>
+<li><code>MMBrush1</code> — самый «сухая кисть»: диагональные щетинистые мазки с рваными царапинами и резким контрастом. Ближе всего к чернилам по сухой бумаге.</li>
+<li><code>MMBrush4</code> — мягкие дымные клубы с зубчатым краем, низкий контраст (база 31 — самая ровная из шести).</li>
+<li>Остальные — вариации того же: постеризованный мазок разной крупности.</li>
+</ul>
+<p>Все шесть — по сути стилизованные «нарисованные» шумы. Именно они, а не MMNoise, дают рукотворный/чернильный характер.</p>
+<p><strong>Частицы</strong> (<code>.../MMVFX/MMParticles/</code>, все 512², белая форма на ЧЁРНОМ фоне — то есть под аддитивный бленд, не под альфу):
+<code>BlackSun</code>, <code>Bolt</code>, <code>Dust</code>, <code>Eclipse</code>, <code>Explosion</code>, <code>Flare</code>, <code>Flash</code>, <code>Gamma</code>, <code>Hit</code>, <code>Jab</code>, <code>Light</code>, <code>Slash</code>, <code>Smoke</code>, <code>Star</code>, <code>Storm</code>, <code>Whirlwind</code>.</p>
+<p>Смотрел лично:</p>
+<ul>
+<li><code>MMParticlesDust</code> — очень мягкое, почти неразличимое размытое пятно (пик всего ~0.25 яркости). Классическая пылинка/мягкий пуфф.</li>
+<li><code>MMParticlesSmoke</code> — рваный клуб дыма с языками, средняя яркость ~0.3, ассиметричный.</li>
+<li><code>MMParticlesLight</code> — жёсткий белый диск + широкое гало + рассеянные искры вокруг. Готовый «ореол лампы».</li>
+<li><code>MMParticlesFlare</code> — точечный блик с длинной горизонтальной анаморфной чертой (J.J.-Abrams-flare).</li>
+</ul>
+<p><strong>Bloom dirt</strong> (<code>.../MMVFX/MMBloomDirt/MMBloomDirt1..4.png</code>) — единственные ЦВЕТНЫЕ текстуры набора, 1920×1080 и 3840×2160. Смотрел <code>MMBloomDirt3</code>: боке-кружки, царапины, пылинки и хроматические ободки — фотореалистичная грязь на линзе. Кладутся в URP Bloom → Dirtiness Texture.</p>
+<hr/>
+<h3 id="5-шейдеры-feel-что-живо-в-urp-2d-что-мёртво">5. Шейдеры Feel: что живо в URP 2D, что мёртво<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-шейдеры-feel-что-живо-в-urp-2d-что-мёртво" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Ключевой критерий — <code>#pragma surface</code> (surface shader = только Built-in RP, в URP не собирается) против vert/frag-пасса. Все vert/frag тут на <code>UnityCG.cginc</code> + <code>CGPROGRAM</code> — в URP формально компилируются (Unity держит совместимость), но освещения/теней URP не получают: это unlit-эффекты, что для 2D как раз нормально.</p>
+<p><strong>Бесполезны (surface shaders, Built-in only):</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Шейдер</th><th>Почему</th></tr></thead><tbody><tr><td><code>MMStandardEmission.shader</code></td><td>чистый <code>#pragma surface</code>, только BRP</td></tr><tr><td><code>MMStochastic.shader</code></td><td><code>#pragma surface surf Standard</code></td></tr><tr><td><code>MMWorldspace.shader</code></td><td><code>#pragma surface surf Lambert</code></td></tr><tr><td><code>MMToon.shader</code>, <code>MMAdvancedToon.shader</code></td><td>Amplify-генерённые surface + доп. пассы; в URP розовые</td></tr><tr><td><code>MMMatcap.shader</code>, <code>MMControlledEmission.shader</code>, <code>MM2DReflection.shader</code></td><td>surface-основа (несмотря на имя «2D»)</td></tr><tr><td><code>MMVFX.shader</code></td><td>флагманский Amplify VFX-шейдер, но 2 surface-пасса → BRP only</td></tr></tbody></table></div>
+<p><strong>Применимы в URP 2D (unlit vert/frag, без surface):</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Шейдер</th><th>Что делает</th><th>Оговорка</th></tr></thead><tbody><tr><td><code>MMBoilingLine.shader</code></td><td>«кипящая» дрожащая линия/контур, теги <code>Transparent</code>, <code>CanUseSpriteAtlas=True</code></td><td>прямо про 2D-спрайты, самый уместный</td></tr><tr><td><code>MMUINoAlpha.shader</code></td><td>UI-шейдер, игнорирующий альфу</td><td>uGUI, не UITK</td></tr><tr><td><code>MMZTestAlways.shader</code> / <code>MMZTestAlwaysAdditive.shader</code></td><td>рисование поверх всего (ZTest Always), второй — аддитивно</td><td>удобно для оверлеев поверх карты</td></tr><tr><td><code>MMConeOfLight.shader</code> (<code>MMVision/</code>)</td><td>конус света, <code>Blend DstColor One</code> (умножение+добавка), ZTest Always</td><td><strong>прямой кандидат под луч лампы над картой</strong></td></tr><tr><td><code>MMSkybox.shader</code></td><td>скайбокс</td><td>2D не нужен</td></tr><tr><td><code>MMRipple.shader</code></td><td>искажение экрана нормалью</td><td><strong><code>GrabPass</code> — в URP НЕ РАБОТАЕТ.</strong> Весь набор <code>MMRipple/*.mat</code> + <code>MMRipple.prefab</code> фактически мёртв; сами normal-map’ы (11 штук: круги, спираль, пила, розетка, квадрат, волны, пузырь) можно переиспользовать в своём URP-шейдере через <code>_CameraOpaqueTexture</code></td></tr></tbody></table></div>
+<p>Отдельно: 21 материал <code>MMPrototypeTextures/MMBRP_Materials/*.mat</code> — на Built-in Standard, в URP розовые. Сами PNG прототип-текстур пригодны, материалы — на выброс.</p>
+<hr/>
+<h3 id="6-shapes--что-там-кроме-кода">6. Shapes — что там кроме кода<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-shapes--что-там-кроме-кода" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Категория</th><th>Путь</th><th>Что это</th></tr></thead><tbody><tr><td>Сгенерённые материалы</td><td><code>Assets/Shapes/Shaders/Generated Materials/</code></td><td><strong>341 материал</strong> (682 файла с .meta): для каждого примитива (Disc, Line 2D/3D, Polyline 2D, Rect, Regular Polygon, Triangle, Quad, Polygon, Torus, Sphere, Cone, Cuboid, Texture) × 11 блендов (Opaque, Transparent, Additive, Multiplicative, Subtractive, Screen, Lighten, Darken, ColorBurn, ColorDodge, LinearBurn) × keyword-варианты (INNER_RADIUS, SECTOR, CAP_ROUND/SQUARE, JOIN_MITER/BEVEL/ROUND, CORNER_RADIUS, BORDERED)</td></tr><tr><td>Сгенерённые шейдеры</td><td><code>Assets/Shapes/Shaders/Generated Shaders/</code></td><td>парные шейдеры к материалам</td></tr><tr><td>Ядро шейдеров</td><td><code>Assets/Shapes/Shaders/Core/*.cginc</code> + <code>Shapes.cginc</code>, <code>Shapes Math.cginc</code>, <code>DashUtils.cginc</code>, <code>FillUtils.cginc</code></td><td>процедурный SDF-рендер фигур с антиалиасингом; правится под свои эффекты</td></tr><tr><td>Шрифт</td><td><code>Assets/Shapes/Textures/Inconsolata/Inconsolata-SemiBold.ttf</code> + <code>Inconsolata-SemiBold SDF.asset</code> (+ OFL-лицензия)</td><td>готовый TMP SDF-ассет моноширинного шрифта. Годится под дебаг/цифры, но <strong>под правило проекта (Static-bake EN+RU) его надо перебейкивать — кириллицы в нём наверняка нет</strong></td></tr><tr><td>Меш-примитивы</td><td><code>Assets/Shapes/Models/shapes_primitives.fbx</code></td><td>болванки под 3D-фигуры</td></tr><tr><td>Конфиг</td><td><code>Assets/Shapes/Resources/Shapes Config.asset</code>, <code>Shapes Assets.asset</code>, <code>Shapes Import State.asset</code></td><td>глобальные настройки (в т.ч. выбор рендер-пайплайна)</td></tr><tr><td>Иконки редактора</td><td><code>Assets/Shapes/Textures/*.png</code> (~30 шт: icon-disc, line-cap-<em>, line-dash-</em>, rect-style-*, regpol-N)</td><td>только инспектор, в игру не годятся</td></tr><tr><td>Сэмплы</td><td><code>Assets/Shapes/Samples/</code> — 6 сцен (Shapes Gallery, FPS HUD, Color Picker, IMCanvas, Procedural Tree, Spinning Color Discs) + <code>Enemy.prefab</code>, <code>Capsules.mat</code>, <code>Ground.mat</code></td><td>Gallery полезна как визуальный каталог возможностей; остальное — 3D-демки</td></tr></tbody></table></div>
+<p>Материалы Shapes брать вручную не надо — компоненты выбирают их сами по бленду и keywords.</p>
+<hr/>
+<h3 id="7-что-уже-используется-в-assets_project">7. Что уже используется в <code>Assets/_Project</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-что-уже-используется-в-assets_project" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Проверял двумя способами: перекрёстная сверка guid’ов из всех <code>.mat/.prefab/.unity/.asset</code> проекта против <code>.meta</code> обоих пакетов, плюс grep по коду.</p>
+<p><strong>Из Feel — ровно ОДИН боевой ресурс:</strong></p>
+<ul>
+<li><code>Assets/Feel/MMTools/Accessories/MMVFX/MMNoise/MMCloudsNoise.png</code> (guid <code>75b254a55f7e3f347ac8f2b5db9b11d9</code>) — прописан в <code>_MainTex</code> материала <code>Assets/_Project/Art/Shaders/MapBackdrop.mat</code>. <strong>Это и есть искомый шум задника карты.</strong>
+Шейдер <code>SH_Map_Backdrop.shader</code> объявляет одну текстуру <code>_MainTex (&quot;Шум (grayscale)&quot;, 2D)</code>, а <code>MapBackdropCommon.hlsl</code> сэмплит её <strong>четыре раза с разным тайлингом и сдвигом</strong>, выжимая из одного шума всю фактуру листа:
+<ul>
+<li><code>i.uv * _WeaveTiling</code> (2.6) → крупная «ткань» бумаги;</li>
+<li><code>i.uv * _GrainTiling</code> (18) + сдвиг (0.37, 0.61) → мелкое зерно;</li>
+<li><code>i.uv * _EdgeNoiseScale</code> (9) и <code>* 9 * 2.7</code> + сдвиг (0.13, 0.71) → рваная кромка листа.
+Текущие значения материала: <code>_BaseColor</code> (0.80, 0.73, 0.56), <code>_EdgeColor</code> (0.40, 0.32, 0.20), <code>_StainColor</code> (0.63, 0.55, 0.38), <code>_WeaveStrength</code> 0.62, <code>_GrainStrength</code> 0.18, <code>_EdgeBurn</code> 0.75, <code>_EdgeRagged</code> 0.05, <code>_Vignette</code> 0.3.</li>
+</ul>
+</li>
+<li>Ещё всплыл <code>MMTools/Foundation/MMAchievements/Sprites/AchievementIcon.png</code> — служебная иконка, скорее случайная ссылка, не контент.</li>
+<li><strong>Кода Feel/MoreMountains в <code>_Project</code> нет вообще</strong> (<code>grep -rl &quot;MoreMountains&quot; Assets/_Project --include=*.cs</code> — пусто). Feel в проекте живёт как склад текстур, а не как система фидбэков.</li>
+</ul>
+<p><strong>Из Shapes — рабочий инструмент презентационного слоя,</strong> <code>using Shapes</code> в пяти файлах:</p>
+<ul>
+<li><code>Assets/_Project/Scripts/Presentation/Map/WorldMapView.cs</code> — пути карты строятся ЦЕПОЧКАМИ <code>Disc</code>-точек (пунктир Shapes на кривой «рвал ритм»), есть пул <code>_dotPool</code> на 256, префаб точки <code>_dotPrefab</code>, пешка игрока — тоже <code>Disc</code>. В комментариях зафиксированы две готчи: Shapes рисуется на sorting layer Default (самый низ) и допускает лишь ОДИН ShapeRenderer на GameObject, поэтому глубина решается Z, а не слоями.</li>
+<li><code>Assets/_Project/Scripts/Presentation/Map/MapNodeView.cs</code> — подложка узла как Shapes-фигура, цвет из палитры карты.</li>
+<li><code>Assets/_Project/Scripts/Presentation/CombatAreaFlash.cs</code> — вспышки зон боя: раздельные пулы <code>Disc</code> и <code>Line</code>, форма фиксируется при создании.</li>
+<li><code>Assets/_Project/Scripts/Presentation/CombatStatusOverlay.cs</code> — кольца статусов, пул <code>Disc</code> с <code>DiscType.Ring</code>, <code>DiscGeometry.Flat2D</code>.</li>
+<li><code>Assets/_Project/Scripts/Presentation/DeploymentView.cs</code> — рамки зон расстановки (<code>Line</code>, Flat2D, Square caps) и круги-опоры под юнитами (<code>Disc</code>).</li>
+<li>В сериализованных ассетах закреплены <code>Disc Transparent.mat</code> и <code>Disc Transparent (INNER_RADIUS).mat</code> + <code>Shapes Assets.asset</code>.</li>
+</ul>
+<hr/>
+<h3 id="8-под-карту-акта-что-закрывается-без-покупок">8. Под карту акта: что закрывается без покупок<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-под-карту-акта-что-закрывается-без-покупок" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Целевая картинка: лист старой бумаги на тёмном столе под лампой, тёплые чернильно-пергаментные тона; в планах — пыль в луче света, дымка, чернильные потёки.</p>
+<p><strong>Пыль в луче света</strong></p>
+<ul>
+<li>Спрайт частицы: <code>MMParticles/MMParticlesDust.png</code> (мягкая размытая пылинка, ровно то что надо) — на ParticleSystem с аддитивным блендом, редкий спавн, медленный дрейф вверх-вбок. Для более заметных пылинок — <code>MMParticlesStar.png</code>, для блика — <code>MMParticlesFlare.png</code>.</li>
+<li>Сам конус света: <code>MMVision/MMConeOfLight.shader</code> — unlit vert/frag, <code>Blend DstColor One</code>, ZTest Always, есть <code>_Contrast</code> и <code>_Color</code>. Единственный шейдер Feel, прямо решающий «луч». Плюс маска <code>MMVision/ConeOfVisionAlpha.png</code>.</li>
+<li>Ореол лампы над листом: <code>MMParticles/MMParticlesLight.png</code> (диск + гало + искры) — статичным квадом на аддитиве.</li>
+<li>Грязь в свете лампы: <code>MMBloomDirt/MMBloomDirt3.png</code> (1920×1080) или <code>MMBloomDirt1/2/4</code> (4K) → в URP Volume Bloom → Dirtiness Texture. Даёт «объектив запылён» бесплатно, без частиц. Оговорка: текстуры цветные с хроматическими ободками и явно фотографические — под стилизованный пиксель-арт могут быть слишком «фотошными», силу держать низкой.</li>
+</ul>
+<p><strong>Дымка / атмосфера вокруг листа</strong></p>
+<ul>
+<li><code>MMNoise/MMSimplexNoise.png</code> — самый спокойный низкочастотный fBm, tileable, ровно под медленно ползущую дымку двумя слоями с разной скоростью.</li>
+<li><code>MMNoise/MMFlowNoise.png</code> — направленные волокна-струи, tileable; хорош если дымка должна тянуться в одну сторону (сквозняк над столом).</li>
+<li><code>MMNoise/MMCloudsNoise.png</code> — тот же, что уже в задник; переиспользование даст визуальное единство, но и риск «одинаковой» фактуры на листе и в воздухе.</li>
+<li>Для «дизера» дымки, если хочется ретро-растра вместо гладкого градиента: <code>MMNoise/MMBayerNoise.png</code> (упорядоченный дизер, крупная матрица) или <code>MMNoise/MMBlueNoise.png</code> (равномерный, без узора). В прошлой итерации карты дизерная фаза уже была — эти текстуры дают её без процедурного кода.</li>
+</ul>
+<p><strong>Чернильные потёки</strong></p>
+<ul>
+<li><code>MMBrushes/MMBrush1.png</code> — сухая щетинистая кисть с рваными царапинами, самая «чернильная» из шести. Как маска альфы или множитель поверх листа.</li>
+<li><code>MMBrushes/MMBrush0.png</code> — постеризованные плоские пятна с рваным краем: кляксы/размывы.</li>
+<li><code>MMNoise/MMBrushNoise.png</code> — тёмные диагональные облака с мазаной кромкой (средний тон ~0.2), готовая маска затемнения/потёка.</li>
+<li><code>MMNoise/MMCellNoise.png</code> — чёрные перемычки между светлыми ячейками = кракелюр/трещины на старой бумаге, если лист захочется состарить сильнее.</li>
+<li>Все кисти tileable, так что тянутся по большому листу без швов.</li>
+</ul>
+<p><strong>Тёплая тональная гамма</strong></p>
+<ul>
+<li><code>MMRamps/MMRamp0.png</code> — сливовая тень → лососевый → кремовая бумага. Прямая gradient-map под наш чернильно-пергаментный тон: скармливать grayscale-результат как X-координату.</li>
+<li><code>MMRamps/MMRamp2.png</code> — сталь-синий → тёплый жёлто-белый: буквально «тёмный стол → пятно лампы».</li>
+<li><code>MMRamps/MMRamp6.png</code> — глубокая фиолетово-чёрная тень с долгой полкой: под затемнение за пределами луча.</li>
+</ul>
+<p><strong>Векторная часть — Shapes, уже в деле</strong>
+Дополнительно к текущим точкам путей: <code>Disc</code> с блендом Multiplicative/ColorBurn (материалы уже сгенерены) даст «чернила, впитавшиеся в бумагу», а не наклейку поверх — под подложки узлов и обводки это точнее, чем Transparent. Кольцевой <code>Disc</code> (<code>DiscType.Ring</code>) с ColorBurn — печать/штамп на листе.</p>
+<p><strong>Чего в Feel/Shapes НЕТ и придётся делать самим</strong></p>
+<ul>
+<li>Текстуры собственно бумаги/холста/волокна (только <code>MMFlowNoise</code> косвенно).</li>
+<li>Готовых собранных VFX-префабов (демо-папки пусты) — любую систему частиц собирать с нуля из спрайтов.</li>
+<li>Vignette/градиент виньетки — но это уже решено внутри <code>SH_Map_Backdrop</code> параметром <code>_Vignette</code>.</li>
+<li>Пост-эффект искажения (<code>MMRipple</code> мёртв в URP из-за GrabPass) — если захочется «дрожащего воздуха» над лампой, нужен свой шейдер на <code>_CameraOpaqueTexture</code>, зато 11 готовых normal-map из <code>MMVFX/MMRipple/</code> можно взять как источник искажения.</li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-156" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#feel-и-shapes-ресурсы-не-код" data-for="feel-и-shapes-ресурсы-не-код">Feel и Shapes (ресурсы, не код)</a></li><li class="depth-1"><a href="#1-feel--mmtools--где-что-лежит" data-for="1-feel--mmtools--где-что-лежит">1. Feel / MMTools — где что лежит</a></li><li class="depth-1"><a href="#2-таблица-шумов" data-for="2-таблица-шумов">2. Таблица шумов</a></li><li class="depth-1"><a href="#3-таблица-рамп" data-for="3-таблица-рамп">3. Таблица рамп</a></li><li class="depth-1"><a href="#4-кисти-и-частицы" data-for="4-кисти-и-частицы">4. Кисти и частицы</a></li><li class="depth-1"><a href="#5-шейдеры-feel-что-живо-в-urp-2d-что-мёртво" data-for="5-шейдеры-feel-что-живо-в-urp-2d-что-мёртво">5. Шейдеры Feel: что живо в URP 2D, что мёртво</a></li><li class="depth-1"><a href="#6-shapes--что-там-кроме-кода" data-for="6-shapes--что-там-кроме-кода">6. Shapes — что там кроме кода</a></li><li class="depth-1"><a href="#7-что-уже-используется-в-assets_project" data-for="7-что-уже-используется-в-assets_project">7. Что уже используется в Assets/_Project</a></li><li class="depth-1"><a href="#8-под-карту-акта-что-закрывается-без-покупок" data-for="8-под-карту-акта-что-закрывается-без-покупок">8. Под карту акта: что закрывается без покупок</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../../tech/00-meta/journal/2026-07-30-lfs-does-not-pay-here" class="internal">Journal - LFS Does Not Pay Here</a></li><li><a href="../../tech/10-reference/asset-inventory" class="internal">Reference - Asset Inventory</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

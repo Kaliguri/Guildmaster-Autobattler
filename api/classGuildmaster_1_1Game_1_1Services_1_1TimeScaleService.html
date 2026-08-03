@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Services_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Services.TimeScaleService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService__inherit__graph.svg" width="210" height="424"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService__inherit__graph.svg" width="210" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Services.TimeScaleService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService__coll__graph.svg" width="210" height="424"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService__coll__graph.svg" width="210" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -119,9 +119,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a10f4e0eea008862af8196d86b2a2b785" id="r_a10f4e0eea008862af8196d86b2a2b785"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a10f4e0eea008862af8196d86b2a2b785">SetGameSpeed</a> (float speed)</td></tr>
 <tr class="memdesc:a10f4e0eea008862af8196d86b2a2b785"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать игровую скорость. Пол 0.01 — чтобы не поймать нечаянный стоп мимо паузы.  <br /></td></tr>
 <tr class="separator:a10f4e0eea008862af8196d86b2a2b785"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e13d5a7189b0c75ef363fb9799586e2" id="r_a0e13d5a7189b0c75ef363fb9799586e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a0e13d5a7189b0c75ef363fb9799586e2">SetCinematic</a> (float factor)</td></tr>
-<tr class="memdesc:a0e13d5a7189b0c75ef363fb9799586e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать cinematic-множитель напрямую (0..4): &lt;1 — slowmo. Отменяет активный пульс.  <br /></td></tr>
-<tr class="separator:a0e13d5a7189b0c75ef363fb9799586e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a031582c0e575e27827ec9b4736937455" id="r_a031582c0e575e27827ec9b4736937455"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a031582c0e575e27827ec9b4736937455">CinematicPulse</a> (float factor, float holdSeconds, float releaseSeconds, AnimationCurve releaseCurve=null)</td></tr>
 <tr class="memdesc:a031582c0e575e27827ec9b4736937455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кинематографический пульс: мгновенно уйти в slowmo (<em>factor</em> ), ДЕРЖАТЬ его <em>holdSeconds</em> , затем вернуться к 1 за <em>releaseSeconds</em>  по форме <em>releaseCurve</em>  (норм.  <br /></td></tr>
 <tr class="separator:a031582c0e575e27827ec9b4736937455"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -320,34 +317,6 @@ Properties</h2></td></tr>
 
 <p>Сбросить cinematic-состояние при перезапуске боя (dev-R): снять slowmo/пульс/секвенцию и вернуть множитель к 1. </p>
 <p>Игровую скорость и паузу игрока НЕ трогаем (это его выбор, переживает рестарт). Без этого застрявший finisher-slowmo перетирал бы Time.timeScale и новый бой шёл в замедлении. </p>
-
-</div>
-</div>
-<a id="a0e13d5a7189b0c75ef363fb9799586e2" name="a0e13d5a7189b0c75ef363fb9799586e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e13d5a7189b0c75ef363fb9799586e2">&#9670;&#160;</a></span>SetCinematic()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Guildmaster.Game.Services.TimeScaleService.SetCinematic </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>factor</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Задать cinematic-множитель напрямую (0..4): &lt;1 — slowmo. Отменяет активный пульс. </p>
 
 </div>
 </div>

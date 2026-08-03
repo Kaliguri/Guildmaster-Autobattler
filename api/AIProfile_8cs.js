@@ -5,7 +5,8 @@ var AIProfile_8cs =
     [ "Guildmaster.Data.Definitions.Kite", "structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html", "structGuildmaster_1_1Data_1_1Definitions_1_1Kite" ],
     [ "AutoAttackMode", "AIProfile_8cs.html#a925836248f5be4ad63a124b9590397da", [
       [ "Damage", "AIProfile_8cs.html#a925836248f5be4ad63a124b9590397daab9f24e83531326204197015b2f43a93f", null ],
-      [ "Heal", "AIProfile_8cs.html#a925836248f5be4ad63a124b9590397daaf357105e6becc3076a3da9b43465051a", null ]
+      [ "Heal", "AIProfile_8cs.html#a925836248f5be4ad63a124b9590397daaf357105e6becc3076a3da9b43465051a", null ],
+      [ "None", "AIProfile_8cs.html#a925836248f5be4ad63a124b9590397daa6adf97f83acf6453d4a6a4b1070f3754", null ]
     ] ],
     [ "PassiveTrigger", "AIProfile_8cs.html#ac59314485558032c61c7eab5c58b6612", [
       [ "None", "AIProfile_8cs.html#ac59314485558032c61c7eab5c58b6612a6adf97f83acf6453d4a6a4b1070f3754", null ],

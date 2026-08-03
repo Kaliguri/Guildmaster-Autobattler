@@ -1,0 +1,5 @@
+<map id="Guildmaster.DevTools.MapDevCommands.GoTo" name="Guildmaster.DevTools.MapDevCommands.GoTo">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,201,45"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Presentation_1_1Map_1_1IWorldMapView.html#a697fecbcb3e20e9856f629e3d6c197ba" title="Прогнать фишку к узлу БЕЗ выбора: анимация играет, но NodeClicked не поднимается." alt="" coords="249,5,499,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,23,235,23,235,28,201,28"/>
+</map>

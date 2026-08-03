@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.SchoolDamageResistComponent" name="Guildmaster.Combat.Effects.Components.SchoolDamageResistComponent">
+<area shape="rect" id="Node000001" title="Сопротивление урону ОДНОЙ школы (и, если задан, одной стихии): пока эффект висит, подходящий входящий..." alt="" coords="5,365,319,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html" title="Синхронный перехват ДО вычета HP (§9.3): вызывается из EffectSystem.RunPreDamage перед DamagePipeline..." alt="" coords="77,252,247,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,331,165,365,159,365,159,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="69,119,255,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="165,218,165,252,159,252,159,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="97,5,227,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="165,85,165,119,159,119,159,85"/>
+</map>

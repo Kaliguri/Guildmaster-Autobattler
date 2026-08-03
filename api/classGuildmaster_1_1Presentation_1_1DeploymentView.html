@@ -92,13 +92,14 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1De
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classGuildmaster_1_1Presentation_1_1DeploymentView-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Presentation.DeploymentView Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Рантайм-оверлей фазы расстановки (шаг 4) на Shapes: рамки player-зон, ghost-превью перетаскивания (диск, зелёный/красный по валидности) и outline наведённого/выбранного юнита (кольцо).  
+<p>Рантайм-оверлей фазы расстановки (шаг 4) на Shapes + спрайт-призрак: рамки зон (свои зелёные, вражьи красные — QA #10), круги-опоры («footprint») под ногами КАЖДОГО юнита (QA #20/#3, всегда видны, ярче на наведении, ярко+валидность у ног призрака при drag — QA #4) и ghost-призрак — полупрозрачная копия силуэта юнита, следующая за курсором при drag (QA #9).  
  <a href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.DeploymentView:</div>
@@ -111,28 +112,61 @@ Collaboration diagram for Guildmaster.Presentation.DeploymentView:</div>
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1DeploymentView__coll__graph.svg" width="194" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ac521cccdf0b96138986f29f9b6ac408b" id="r_ac521cccdf0b96138986f29f9b6ac408b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408b">RingState</a> { <a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408ba960b44c579bc2f6818d2daaf9e4c16f0">Normal</a>
+, <a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408baeee0168be69b854c20621fc6f01cc3fc">Hover</a>
+, <a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408ba696db15c1bc775dcaf065b1859c8b5cf">DragValid</a>
+, <a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408ba52679488e65b5513445e866b32a387ae">DragInvalid</a>
+ }</td></tr>
+<tr class="memdesc:ac521cccdf0b96138986f29f9b6ac408b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Состояние круга-опоры под юнитом: покой / наведён / тащу-можно / тащу-нельзя (QA #20/#4).  <a href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408b">More...</a><br /></td></tr>
+<tr class="separator:ac521cccdf0b96138986f29f9b6ac408b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a30fcc7ccc60e88bce8cbe9edbb00307b" id="r_a30fcc7ccc60e88bce8cbe9edbb00307b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#a30fcc7ccc60e88bce8cbe9edbb00307b">Init</a> (<a class="el" href="classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html">ArenaLayoutData</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">layout</a>)</td></tr>
-<tr class="memdesc:a30fcc7ccc60e88bce8cbe9edbb00307b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать оверлей из данных арены (рамки player-зон + ghost/outline-диски). Зовётся один раз.  <br /></td></tr>
+<tr class="memitem:a30fcc7ccc60e88bce8cbe9edbb00307b" id="r_a30fcc7ccc60e88bce8cbe9edbb00307b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#a30fcc7ccc60e88bce8cbe9edbb00307b">Init</a> (<a class="el" href="classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html">ArenaLayoutData</a> layout)</td></tr>
+<tr class="memdesc:a30fcc7ccc60e88bce8cbe9edbb00307b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать оверлей из данных арены (рамки зон + спрайт-призрак). Зовётся один раз.  <br /></td></tr>
 <tr class="separator:a30fcc7ccc60e88bce8cbe9edbb00307b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f1ef09cee0f9d35593249f3c19ca503" id="r_a6f1ef09cee0f9d35593249f3c19ca503"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#a6f1ef09cee0f9d35593249f3c19ca503">SetActive</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">active</a>)</td></tr>
+<tr class="memitem:a6f1ef09cee0f9d35593249f3c19ca503" id="r_a6f1ef09cee0f9d35593249f3c19ca503"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#a6f1ef09cee0f9d35593249f3c19ca503">SetActive</a> (bool active)</td></tr>
 <tr class="memdesc:a6f1ef09cee0f9d35593249f3c19ca503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать/скрыть весь оверлей (вход/выход из фазы расстановки).  <br /></td></tr>
 <tr class="separator:a6f1ef09cee0f9d35593249f3c19ca503"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe41165f809ba8236277924e5fa61f3d" id="r_abe41165f809ba8236277924e5fa61f3d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#abe41165f809ba8236277924e5fa61f3d">SetExtendedHighlight</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">on</a>)</td></tr>
-<tr class="memdesc:abe41165f809ba8236277924e5fa61f3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подсветить Extended-зоны (перетаскивается юнит с правом на Extended).  <br /></td></tr>
+<tr class="memitem:abe41165f809ba8236277924e5fa61f3d" id="r_abe41165f809ba8236277924e5fa61f3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#abe41165f809ba8236277924e5fa61f3d">SetExtendedHighlight</a> (bool on)</td></tr>
+<tr class="memdesc:abe41165f809ba8236277924e5fa61f3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подсветить свои Extended-зоны (перетаскивается юнит с правом на Extended).  <br /></td></tr>
 <tr class="separator:abe41165f809ba8236277924e5fa61f3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21aab79df52159f81815489504eb7a85" id="r_a21aab79df52159f81815489504eb7a85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#a21aab79df52159f81815489504eb7a85">SetGhost</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">active</a>, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">Vector2</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">pos</a>, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">radius</a>, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">valid</a>)</td></tr>
-<tr class="memdesc:a21aab79df52159f81815489504eb7a85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ghost-превью в точке drop: зелёный (валидно) / красный (нельзя ставить).  <br /></td></tr>
-<tr class="separator:a21aab79df52159f81815489504eb7a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac60544e9526627edb2fbc4d14f5e6b9a" id="r_ac60544e9526627edb2fbc4d14f5e6b9a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac60544e9526627edb2fbc4d14f5e6b9a">SetOutline</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">active</a>, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">Vector2</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">pos</a>, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">radius</a>)</td></tr>
-<tr class="memdesc:ac60544e9526627edb2fbc4d14f5e6b9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кольцо-outline вокруг наведённого/выбранного юнита.  <br /></td></tr>
-<tr class="separator:ac60544e9526627edb2fbc4d14f5e6b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bddd571ce3643d276bf263398efbede" id="r_a5bddd571ce3643d276bf263398efbede"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#a5bddd571ce3643d276bf263398efbede">SetGhost</a> (bool active, Vector2 feet, in <a class="el" href="structGuildmaster_1_1Presentation_1_1UnitSilhouette.html">UnitSilhouette</a> silhouette, bool valid)</td></tr>
+<tr class="memdesc:a5bddd571ce3643d276bf263398efbede"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ghost-призрак при drag (QA #9): полупрозрачная копия силуэта юнита, поставленная ногами в <em>feet</em> .  <br /></td></tr>
+<tr class="separator:a5bddd571ce3643d276bf263398efbede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f7f8ec9d0398fc863ab32b10a6e31e6" id="r_a7f7f8ec9d0398fc863ab32b10a6e31e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#a7f7f8ec9d0398fc863ab32b10a6e31e6">SetUnitRings</a> (IReadOnlyList&lt;(Vector2 center, float radius, <a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408b">RingState</a> state)&gt; rings)</td></tr>
+<tr class="memdesc:a7f7f8ec9d0398fc863ab32b10a6e31e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Круги-опоры под ногами team-0 юнитов (QA #20/#3/#4): показывают «место» юнита на поле, видны ВСЕГДА (читаемость).  <br /></td></tr>
+<tr class="separator:a7f7f8ec9d0398fc863ab32b10a6e31e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Рантайм-оверлей фазы расстановки (шаг 4) на Shapes: рамки player-зон, ghost-превью перетаскивания (диск, зелёный/красный по валидности) и outline наведённого/выбранного юнита (кольцо). </p>
-<p>Компонентный режим Shapes (как CombatAreaFlash): по одному <code>ShapeRenderer</code> на GameObject, слой сортировки <code>DevOverlay</code>, z=-1 (над спрайтами). Создаётся и управляется из <code>DeploymentController</code> (<a class="el" href="namespaceGuildmaster_1_1Game.html">Guildmaster.Game</a>) — в сцене заранее не нужен. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+<div class="textblock"><p>Рантайм-оверлей фазы расстановки (шаг 4) на Shapes + спрайт-призрак: рамки зон (свои зелёные, вражьи красные — QA #10), круги-опоры («footprint») под ногами КАЖДОГО юнита (QA #20/#3, всегда видны, ярче на наведении, ярко+валидность у ног призрака при drag — QA #4) и ghost-призрак — полупрозрачная копия силуэта юнита, следующая за курсором при drag (QA #9). </p>
+<p>Компонентный режим Shapes (как CombatAreaFlash): по одному <code>ShapeRenderer</code> на GameObject, слой сортировки <code>DevOverlay</code>, z=-1 (над спрайтами). Управляется из <code>DeploymentController</code> (<a class="el" href="namespaceGuildmaster_1_1Game.html">Guildmaster.Game</a>). </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="ac521cccdf0b96138986f29f9b6ac408b" name="ac521cccdf0b96138986f29f9b6ac408b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac521cccdf0b96138986f29f9b6ac408b">&#9670;&#160;</a></span>RingState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408b">Guildmaster.Presentation.DeploymentView.RingState</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Состояние круга-опоры под юнитом: покой / наведён / тащу-можно / тащу-нельзя (QA #20/#4). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac521cccdf0b96138986f29f9b6ac408ba960b44c579bc2f6818d2daaf9e4c16f0" name="ac521cccdf0b96138986f29f9b6ac408ba960b44c579bc2f6818d2daaf9e4c16f0"></a>Normal&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac521cccdf0b96138986f29f9b6ac408baeee0168be69b854c20621fc6f01cc3fc" name="ac521cccdf0b96138986f29f9b6ac408baeee0168be69b854c20621fc6f01cc3fc"></a>Hover&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac521cccdf0b96138986f29f9b6ac408ba696db15c1bc775dcaf065b1859c8b5cf" name="ac521cccdf0b96138986f29f9b6ac408ba696db15c1bc775dcaf065b1859c8b5cf"></a>DragValid&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac521cccdf0b96138986f29f9b6ac408ba52679488e65b5513445e866b32a387ae" name="ac521cccdf0b96138986f29f9b6ac408ba52679488e65b5513445e866b32a387ae"></a>DragInvalid&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a30fcc7ccc60e88bce8cbe9edbb00307b" name="a30fcc7ccc60e88bce8cbe9edbb00307b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a30fcc7ccc60e88bce8cbe9edbb00307b">&#9670;&#160;</a></span>Init()</h2>
 
@@ -143,7 +177,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.DeploymentView.Init </td>
+          <td class="memname">void Guildmaster.Presentation.DeploymentView.Init </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html">ArenaLayoutData</a>&#160;</td>
           <td class="paramname"><em>layout</em></td><td>)</td>
@@ -157,7 +191,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Собрать оверлей из данных арены (рамки player-зон + ghost/outline-диски). Зовётся один раз. </p>
+<p>Собрать оверлей из данных арены (рамки зон + спрайт-призрак). Зовётся один раз. </p>
 
 </div>
 </div>
@@ -168,9 +202,9 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.DeploymentView.SetActive </td>
+          <td class="memname">void Guildmaster.Presentation.DeploymentView.SetActive </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>active</em></td><td>)</td>
           <td></td>
         </tr>
@@ -191,9 +225,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.DeploymentView.SetExtendedHighlight </td>
+          <td class="memname">void Guildmaster.Presentation.DeploymentView.SetExtendedHighlight </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>on</em></td><td>)</td>
           <td></td>
         </tr>
@@ -205,12 +239,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Подсветить Extended-зоны (перетаскивается юнит с правом на Extended). </p>
+<p>Подсветить свои Extended-зоны (перетаскивается юнит с правом на Extended). </p>
 
 </div>
 </div>
-<a id="a21aab79df52159f81815489504eb7a85" name="a21aab79df52159f81815489504eb7a85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21aab79df52159f81815489504eb7a85">&#9670;&#160;</a></span>SetGhost()</h2>
+<a id="a5bddd571ce3643d276bf263398efbede" name="a5bddd571ce3643d276bf263398efbede"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bddd571ce3643d276bf263398efbede">&#9670;&#160;</a></span>SetGhost()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -219,27 +253,27 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.DeploymentView.SetGhost </td>
+          <td class="memname">void Guildmaster.Presentation.DeploymentView.SetGhost </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>active</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">Vector2</a>&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>feet</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td>
-          <td class="paramname"><em>radius</em>, </td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Presentation_1_1UnitSilhouette.html">UnitSilhouette</a>&#160;</td>
+          <td class="paramname"><em>silhouette</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>valid</em>&#160;</td>
         </tr>
         <tr>
@@ -255,17 +289,18 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Ghost-превью в точке drop: зелёный (валидно) / красный (нельзя ставить). </p>
+<p>Ghost-призрак при drag (QA #9): полупрозрачная копия силуэта юнита, поставленная ногами в <em>feet</em> . </p>
+<p>Части рисуются со своими позами из силуэта — у составного юнита призрак повторяет ТЕКУЩУЮ позу тела, а не один кадр торса. Тинт по валидности drop (зелёный/красный). active=false — прячет призрак. </p>
 <div class="dynheader">
-Here is the caller graph for this function:</div>
+Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1DeploymentView_a21aab79df52159f81815489504eb7a85_icgraph.svg" width="483" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1DeploymentView_a5bddd571ce3643d276bf263398efbede_cgraph.svg" width="450" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ac60544e9526627edb2fbc4d14f5e6b9a" name="ac60544e9526627edb2fbc4d14f5e6b9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac60544e9526627edb2fbc4d14f5e6b9a">&#9670;&#160;</a></span>SetOutline()</h2>
+<a id="a7f7f8ec9d0398fc863ab32b10a6e31e6" name="a7f7f8ec9d0398fc863ab32b10a6e31e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f7f8ec9d0398fc863ab32b10a6e31e6">&#9670;&#160;</a></span>SetUnitRings()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -274,27 +309,11 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.DeploymentView.SetOutline </td>
+          <td class="memname">void Guildmaster.Presentation.DeploymentView.SetUnitRings </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a>&#160;</td>
-          <td class="paramname"><em>active</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">IReadOnlyList&lt;(Vector2 center, float radius, <a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408b">RingState</a> state)&gt;&#160;</td>
+          <td class="paramname"><em>rings</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">Vector2</a>&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td>
-          <td class="paramname"><em>radius</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -304,12 +323,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Кольцо-outline вокруг наведённого/выбранного юнита. </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1DeploymentView_ac60544e9526627edb2fbc4d14f5e6b9a_icgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<p>Круги-опоры под ногами team-0 юнитов (QA #20/#3/#4): показывают «место» юнита на поле, видны ВСЕГДА (читаемость). </p>
+<p>Наведённый — ярче/толще (реакция). Перетаскиваемый передаётся с состоянием DragValid/ DragInvalid и позицией у ног ПРИЗРАКА (следует за курсором) — так видно, кого тащишь и можно ли поставить. Пул переиспользуется покадрово, лишние круги гасятся. </p>
 
 </div>
 </div>

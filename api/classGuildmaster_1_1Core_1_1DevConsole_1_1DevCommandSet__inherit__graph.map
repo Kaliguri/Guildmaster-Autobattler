@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.DevConsole.DevCommandSet" name="Guildmaster.Core.DevConsole.DevCommandSet">
+<area shape="rect" id="Node000001" title="Набор команд одного модуля: регистрирует их в общем реестре и снимает все разом при Dispose." alt="" coords="5,119,219,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="67,5,157,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,85,115,118,109,118,109,85"/>
+</map>

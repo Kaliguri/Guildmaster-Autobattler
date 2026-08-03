@@ -1,0 +1,3 @@
+<map id="Guildmaster.Presentation.Map.IWorldMapView" name="Guildmaster.Presentation.Map.IWorldMapView">
+<area shape="rect" id="Node000001" title="World&#45;слой карты акта: рисует узлы и рёбра в мире и отдаёт наружу клик по доступному узлу." alt="" coords="5,5,188,165"/>
+</map>

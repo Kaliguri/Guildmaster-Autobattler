@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Tempo.IVisualTempo" name="Guildmaster.Presentation.Tempo.IVisualTempo">
+<area shape="rect" id="Node000001" title="ЕДИНЫЙ такт визуала: общий метроном, от которого пляшут все ритмичные анимации — биение доступных узл..." alt="" coords="5,5,188,125"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Tempo_1_1VisualTempo.html" title="Такт от часов — временный источник, пока музыка не научится его задавать." alt="" coords="5,173,188,313"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,139,99,173,94,173,94,139"/>
+</map>

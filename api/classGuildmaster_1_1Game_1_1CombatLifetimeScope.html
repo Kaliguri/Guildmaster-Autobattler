@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1CombatLife
 </div><!--header-->
 <div class="contents">
 
-<p>Дочерний DI-скоуп BattleScene.  
+<p>DI-скоуп боевых систем: RNG боя, системы, симуляция, презентация.  
  <a href="classGuildmaster_1_1Game_1_1CombatLifetimeScope.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.CombatLifetimeScope:</div>
@@ -117,8 +117,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a0d31e1969671fe0afb03acc205e2e153"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Дочерний DI-скоуп BattleScene. </p>
-<p>Живёт один бой. Регистрирует все боевые сервисы: RNG боя, системы, симуляцию, презентацию. Является дочерним от RootLifetimeScope (вики «10» §8.2). </p>
+<div class="textblock"><p>DI-скоуп боевых систем: RNG боя, системы, симуляция, презентация. </p>
+<p>Живёт в <code>CombatSystemsScene</code> и дочерний к WorldLifetimeScope — камера и арена резолвятся из предка, без дублей Main Camera/Brain (вики «Scenes», «16» §5).</p>
+<p>Вопреки имени, по одному бою НЕ пересоздаётся: сцена грузится один раз на буте и не выгружается, а бой начинается командой в живую симуляцию. Значит боевое состояние между узлами не чистится сносом скоупа — за возврат отвечает <code>BattleBootstrap.ResetToWorld</code>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0d31e1969671fe0afb03acc205e2e153" name="a0d31e1969671fe0afb03acc205e2e153"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d31e1969671fe0afb03acc205e2e153">&#9670;&#160;</a></span>Configure()</h2>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Services.JsonFileSaveServiceBase" name="Guildmaster.Game.Services.JsonFileSaveServiceBase">
+<area shape="rect" id="Node000001" title="Общая механика файлового ISaveService: конверт со версией схемы, атомарная запись,..." alt="" coords="5,219,207,419"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html" title="Шов персистентности (ТЗ [[save&#45;system]]): сохранение/загрузка сериализуемых DTO по строковому ключу." alt="" coords="43,5,169,171"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,184,109,218,103,218,103,184"/>
+</map>

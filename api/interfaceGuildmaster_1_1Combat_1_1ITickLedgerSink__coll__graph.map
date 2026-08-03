@@ -1,0 +1,3 @@
+<map id="Guildmaster.Combat.ITickLedgerSink" name="Guildmaster.Combat.ITickLedgerSink">
+<area shape="rect" id="Node000001" title="Куда реестр отдаёт разрешённые изменения: события наружу и внутренние события для реактивов." alt="" coords="5,5,188,125"/>
+</map>

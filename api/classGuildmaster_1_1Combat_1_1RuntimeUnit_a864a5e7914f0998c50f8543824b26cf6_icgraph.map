@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.RuntimeUnit.RecastAttack" name="Guildmaster.Combat.RuntimeUnit.RecastAttack">
+<area shape="rect" id="Node000001" title="Рекаст: следующая атака выходит вне очереди." alt="" coords="316,13,531,53"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html#aaf46f1b8729265d7c867f144b4163d3f" title=" " alt="" coords="5,5,268,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="302,35,268,35,268,30,302,30"/>
+</map>

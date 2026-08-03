@@ -1,4 +1,4 @@
 var classGuildmaster_1_1Combat_1_1DamagePipeline =
 [
-    [ "Execute", "classGuildmaster_1_1Combat_1_1DamagePipeline.html#a92f4da6e6fd513be46129dbf0ec6a32d", null ]
+    [ "Resolve", "classGuildmaster_1_1Combat_1_1DamagePipeline.html#a9eb992f9b00c2d20a99b9837d0a08104", null ]
 ];

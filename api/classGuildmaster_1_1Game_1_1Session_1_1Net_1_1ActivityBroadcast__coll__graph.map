@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.Net.ActivityBroadcast" name="Guildmaster.Game.Session.Net.ActivityBroadcast">
+<area shape="rect" id="Node000001" title="Владельческая половина «где мы»: объявляет гостям вид мероприятия, границы арены и фазу боя." alt="" coords="5,119,200,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="15,5,87,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,83,83,117,78,119,65,85"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="111,5,201,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="141,85,128,119,123,117,136,83"/>
+</map>

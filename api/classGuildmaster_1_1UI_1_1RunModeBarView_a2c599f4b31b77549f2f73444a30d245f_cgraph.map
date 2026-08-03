@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.RunModeBarView.SetProvingGroundsMode" name="Guildmaster.UI.RunModeBarView.SetProvingGroundsMode">
+<area shape="rect" id="Node000001" title="Переписать панель под Ристалище: слева имя площадки вместо гильдии, акта и вехи, справа — без золота ..." alt="" coords="5,5,223,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1RunModeBarView.html#a96704d3d8d3c90e1acb81d56d09ca8f0" title="Включить/выключить режим на лету (Ристалище гасит «Карту» — идти по акту оттуда некуда)." alt="" coords="271,5,477,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,23,257,23,257,28,223,28"/>
+</map>

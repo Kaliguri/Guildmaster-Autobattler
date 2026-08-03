@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Editor.ContentEditService.WriteChangeLog" name="Guildmaster.Data.Editor.ContentEditService.WriteChangeLog">
+<area shape="rect" id="Node000001" title="Записать журнал правок в BalanceReports/balance_changes_*.md (append&#45;friendly отдельными файлами)." alt="" coords="235,5,492,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentEditBatch.html#af6d7059d842f0a1dcd7a9a1f8d9be8f2" title="Применить пресет." alt="" coords="5,5,187,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,28,187,28,187,23,221,23"/>
+</map>

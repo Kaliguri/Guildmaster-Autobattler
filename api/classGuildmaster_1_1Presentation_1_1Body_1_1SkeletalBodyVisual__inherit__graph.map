@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.Body.SkeletalBodyVisual" name="Guildmaster.Presentation.Body.SkeletalBodyVisual">
+<area shape="rect" id="Node000001" title="Тело из ЧАСТЕЙ — скелетный юнит: полтора десятка SpriteRenderer под одним корнем." alt="" coords="52,399,235,879"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,145,121,211"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,224,104,398,99,399,69,224"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html" title="«Тело юнита» глазами презентации: то, что можно покрасить, засветить, отсортировать,..." alt="" coords="145,5,301,351"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="194,365,188,399,182,398,188,364"/>
+</map>

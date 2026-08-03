@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Effects.Components.RearStrikeEffectComponent.OnEvent" name="Guildmaster.Combat.Effects.Components.RearStrikeEffectComponent.OnEvent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,296,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#abba2779e25e6946004a97395883b64d6" title="Бьёт ли attacker &#160;в ТЫЛ цели: стоит ли он с той стороны, откуда цель пришла (со стороны её собственно..." alt="" coords="344,13,555,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="296,30,330,30,330,35,296,35"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1FleeSteering.html#a66b7ac7b2fc51e9c7b4cb8193d0f74dd" title="Направление «к своему тылу» по команде: 0 (союзники, левая сторона) → влево, иначе вправо." alt="" coords="603,13,849,53"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="555,30,589,30,589,35,555,35"/>
+</map>

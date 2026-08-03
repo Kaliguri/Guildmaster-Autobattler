@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.ContentKeys.FullDescKey" name="Guildmaster.Data.Definitions.ContentKeys.FullDescKey">
+<area shape="rect" id="Node000001" title="Ключ полного описания ({id}.desc.full) — статья справочника." alt="" coords="281,5,496,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1DescriptionService.html#ab594a53f6a1edc6e9b60817501956791" title="Полное описание ({id}.desc.full) — статья справочника; нет полного текста → краткое." alt="" coords="5,5,233,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="268,28,233,28,233,23,268,23"/>
+</map>

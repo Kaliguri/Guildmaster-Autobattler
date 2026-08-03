@@ -93,7 +93,8 @@ $(document).ready(function(){initNavTree('LoadoutMessages_8cs.html',''); initRes
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">LoadoutMessages.cs File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -106,8 +107,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html">Guildmaster.Data.Definitions.EquipRelicRequest</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос надеть релик на юнита (публикует loadout-UI по «Принять»/«Сохранить», слушает фаза расстановки — она владеет ростером и пересобирает превью).  <a href="structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicAtCursorRequest.html">Guildmaster.Data.Definitions.EquipRelicAtCursorRequest</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос надеть релик на сосуд ПОД КУРСОРОМ (публикует UITK-панель расстановки на дропе карточки релика в поле).  <a href="structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicAtCursorRequest.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1RelicDragEvent.html">Guildmaster.Data.Definitions.RelicDragEvent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Перетаскивание карточки реликвии из грида инвентаря на юнита в мире (QA #5).  <a href="structGuildmaster_1_1Data_1_1Definitions_1_1RelicDragEvent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -118,6 +119,15 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceGuildmaster_1_1Data_1_1Definitions" id="r_namespaceGuildmaster_1_1Data_1_1Definitions"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html">Guildmaster.Data.Definitions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a12d0b679c877521b9eb27e95f192d9e5" id="r_a12d0b679c877521b9eb27e95f192d9e5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a12d0b679c877521b9eb27e95f192d9e5">Guildmaster.Data.Definitions.RelicDragPhase</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a12d0b679c877521b9eb27e95f192d9e5aa6122a65eaa676f700ae68d393054a37">Guildmaster.Data.Definitions.Start</a>
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a12d0b679c877521b9eb27e95f192d9e5a6bc362dbf494c61ea117fe3c71ca48a5">Guildmaster.Data.Definitions.Move</a>
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a12d0b679c877521b9eb27e95f192d9e5a3e679cff5b3a6f6f8f32aead541a0a12">Guildmaster.Data.Definitions.Drop</a>
+ }</td></tr>
+<tr class="memdesc:a12d0b679c877521b9eb27e95f192d9e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза перетаскивания карточки реликвии из инвентаря к юниту на поле (QA #5).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a12d0b679c877521b9eb27e95f192d9e5">More...</a><br /></td></tr>
+<tr class="separator:a12d0b679c877521b9eb27e95f192d9e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

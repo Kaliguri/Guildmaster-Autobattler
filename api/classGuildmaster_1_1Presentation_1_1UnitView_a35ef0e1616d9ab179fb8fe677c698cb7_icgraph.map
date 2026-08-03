@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.UnitView.TryGetSwingProgress" name="Guildmaster.Presentation.UnitView.TryGetSwingProgress">
+<area shape="rect" id="Node000001" title="Идёт ли сейчас взмах и насколько он прошёл (0..1) — окно между маркерами StrikeStart и StrikeEnd." alt="" coords="244,5,465,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a4d85b5b40fb1674777d31c39f219c31e" title="Геометрия текущего взмаха для дуги: вокруг чего он идёт (плечо бьющей руки), где сейчас кончик оружия..." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
+</map>

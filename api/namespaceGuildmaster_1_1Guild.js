@@ -1,26 +1,60 @@
 var namespaceGuildmaster_1_1Guild =
 [
+    [ "Commands", "namespaceGuildmaster_1_1Guild_1_1Commands.html", "namespaceGuildmaster_1_1Guild_1_1Commands" ],
+    [ "ActConfig", "classGuildmaster_1_1Guild_1_1ActConfig.html", "classGuildmaster_1_1Guild_1_1ActConfig" ],
+    [ "AnchorRule", "structGuildmaster_1_1Guild_1_1AnchorRule.html", "structGuildmaster_1_1Guild_1_1AnchorRule" ],
+    [ "CampaignRecord", "classGuildmaster_1_1Guild_1_1CampaignRecord.html", "classGuildmaster_1_1Guild_1_1CampaignRecord" ],
+    [ "CampSession", "classGuildmaster_1_1Guild_1_1CampSession.html", "classGuildmaster_1_1Guild_1_1CampSession" ],
+    [ "ChronicleEntry", "classGuildmaster_1_1Guild_1_1ChronicleEntry.html", "classGuildmaster_1_1Guild_1_1ChronicleEntry" ],
+    [ "GameStartRequest", "structGuildmaster_1_1Guild_1_1GameStartRequest.html", "structGuildmaster_1_1Guild_1_1GameStartRequest" ],
+    [ "GuildBook", "classGuildmaster_1_1Guild_1_1GuildBook.html", "classGuildmaster_1_1Guild_1_1GuildBook" ],
+    [ "GuildState", "classGuildmaster_1_1Guild_1_1GuildState.html", "classGuildmaster_1_1Guild_1_1GuildState" ],
+    [ "IRunStateView", "interfaceGuildmaster_1_1Guild_1_1IRunStateView.html", "interfaceGuildmaster_1_1Guild_1_1IRunStateView" ],
+    [ "ISessionRunState", "interfaceGuildmaster_1_1Guild_1_1ISessionRunState.html", null ],
     [ "IShopController", "interfaceGuildmaster_1_1Guild_1_1IShopController.html", "interfaceGuildmaster_1_1Guild_1_1IShopController" ],
+    [ "MainMenuOutcome", "structGuildmaster_1_1Guild_1_1MainMenuOutcome.html", "structGuildmaster_1_1Guild_1_1MainMenuOutcome" ],
     [ "MapGenConfig", "classGuildmaster_1_1Guild_1_1MapGenConfig.html", "classGuildmaster_1_1Guild_1_1MapGenConfig" ],
     [ "MapGenerator", "classGuildmaster_1_1Guild_1_1MapGenerator.html", "classGuildmaster_1_1Guild_1_1MapGenerator" ],
     [ "MapNode", "classGuildmaster_1_1Guild_1_1MapNode.html", "classGuildmaster_1_1Guild_1_1MapNode" ],
     [ "MapState", "classGuildmaster_1_1Guild_1_1MapState.html", "classGuildmaster_1_1Guild_1_1MapState" ],
     [ "MapTraversal", "classGuildmaster_1_1Guild_1_1MapTraversal.html", "classGuildmaster_1_1Guild_1_1MapTraversal" ],
+    [ "NodeTypeWeight", "structGuildmaster_1_1Guild_1_1NodeTypeWeight.html", "structGuildmaster_1_1Guild_1_1NodeTypeWeight" ],
+    [ "OpenCampRequest", "structGuildmaster_1_1Guild_1_1OpenCampRequest.html", "structGuildmaster_1_1Guild_1_1OpenCampRequest" ],
     [ "OpenChestRequest", "structGuildmaster_1_1Guild_1_1OpenChestRequest.html", "structGuildmaster_1_1Guild_1_1OpenChestRequest" ],
     [ "OpenContinueRequest", "structGuildmaster_1_1Guild_1_1OpenContinueRequest.html", "structGuildmaster_1_1Guild_1_1OpenContinueRequest" ],
     [ "OpenMainMenuRequest", "structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html", "structGuildmaster_1_1Guild_1_1OpenMainMenuRequest" ],
-    [ "OpenMapRequest", "structGuildmaster_1_1Guild_1_1OpenMapRequest.html", "structGuildmaster_1_1Guild_1_1OpenMapRequest" ],
+    [ "OpenNodeFarewellRequest", "structGuildmaster_1_1Guild_1_1OpenNodeFarewellRequest.html", "structGuildmaster_1_1Guild_1_1OpenNodeFarewellRequest" ],
     [ "OpenOutcomeRequest", "structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html", "structGuildmaster_1_1Guild_1_1OpenOutcomeRequest" ],
     [ "OpenShopRequest", "structGuildmaster_1_1Guild_1_1OpenShopRequest.html", "structGuildmaster_1_1Guild_1_1OpenShopRequest" ],
+    [ "OpenTitleCardRequest", "structGuildmaster_1_1Guild_1_1OpenTitleCardRequest.html", "structGuildmaster_1_1Guild_1_1OpenTitleCardRequest" ],
+    [ "ProfileState", "classGuildmaster_1_1Guild_1_1ProfileState.html", "classGuildmaster_1_1Guild_1_1ProfileState" ],
     [ "RosterSlot", "classGuildmaster_1_1Guild_1_1RosterSlot.html", "classGuildmaster_1_1Guild_1_1RosterSlot" ],
+    [ "RunRecord", "classGuildmaster_1_1Guild_1_1RunRecord.html", "classGuildmaster_1_1Guild_1_1RunRecord" ],
+    [ "RunSaves", "classGuildmaster_1_1Guild_1_1RunSaves.html", "classGuildmaster_1_1Guild_1_1RunSaves" ],
     [ "RunState", "classGuildmaster_1_1Guild_1_1RunState.html", "classGuildmaster_1_1Guild_1_1RunState" ],
     [ "RunStateService", "classGuildmaster_1_1Guild_1_1RunStateService.html", "classGuildmaster_1_1Guild_1_1RunStateService" ],
+    [ "SetWorldMapRequest", "structGuildmaster_1_1Guild_1_1SetWorldMapRequest.html", "structGuildmaster_1_1Guild_1_1SetWorldMapRequest" ],
     [ "ShopItem", "classGuildmaster_1_1Guild_1_1ShopItem.html", "classGuildmaster_1_1Guild_1_1ShopItem" ],
     [ "ShopStashItem", "classGuildmaster_1_1Guild_1_1ShopStashItem.html", "classGuildmaster_1_1Guild_1_1ShopStashItem" ],
-    [ "MainMenuChoice", "namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8", [
-      [ "StartRun", "namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8a6a02dcd71ef52c111aacd6a6a06d0248", null ],
-      [ "Continue", "namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8aa0bfb8e59e6c13fc8d990781f77694fe", null ],
-      [ "Quit", "namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8a0d82790b0612935992bd564a17ce37d6", null ]
+    [ "VesselState", "classGuildmaster_1_1Guild_1_1VesselState.html", "classGuildmaster_1_1Guild_1_1VesselState" ],
+    [ "WorldMapSpaceChangedEvent", "structGuildmaster_1_1Guild_1_1WorldMapSpaceChangedEvent.html", "structGuildmaster_1_1Guild_1_1WorldMapSpaceChangedEvent" ],
+    [ "ZoneRule", "structGuildmaster_1_1Guild_1_1ZoneRule.html", "structGuildmaster_1_1Guild_1_1ZoneRule" ],
+    [ "CampAction", "namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5", [
+      [ "Empower", "namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5a7b7ce2c6a8819b2518bfbc866e61e9cb", null ],
+      [ "CopyRelic", "namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5a0c9448b77dd8ea19e8b822aad5538123", null ],
+      [ "Cleanse", "namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5a193e273631e6be745d97374c41d5129c", null ],
+      [ "HireVessel", "namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5aba8fc80d80fe1c14f5a93e867d637c08", null ],
+      [ "MoveOn", "namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5abe79922aaf92f857f6742a26e0ff57b2", null ]
+    ] ],
+    [ "GameMode", "namespaceGuildmaster_1_1Guild.html#a38e8510cb3d9bbba3df18a5873f0a2e3", [
+      [ "Campaign", "namespaceGuildmaster_1_1Guild.html#a38e8510cb3d9bbba3df18a5873f0a2e3af00a1d99f6f47917006e88a803ecde1f", null ],
+      [ "ProvingGrounds", "namespaceGuildmaster_1_1Guild.html#a38e8510cb3d9bbba3df18a5873f0a2e3a9fe532a8e21e77137aa57d4eb33bdac3", null ],
+      [ "Pvp", "namespaceGuildmaster_1_1Guild.html#a38e8510cb3d9bbba3df18a5873f0a2e3a9964e9b26ed7cb1ecd1ee847b98f7ac1", null ]
+    ] ],
+    [ "MainMenuAction", "namespaceGuildmaster_1_1Guild.html#a4a1eebf8d11d1dc26e1abd53f5a525dd", [
+      [ "StartGame", "namespaceGuildmaster_1_1Guild.html#a4a1eebf8d11d1dc26e1abd53f5a525dda8a7b88cd602849e993a8ba3cdef39462", null ],
+      [ "Quit", "namespaceGuildmaster_1_1Guild.html#a4a1eebf8d11d1dc26e1abd53f5a525dda0d82790b0612935992bd564a17ce37d6", null ],
+      [ "JoinCoop", "namespaceGuildmaster_1_1Guild.html#a4a1eebf8d11d1dc26e1abd53f5a525ddada629bf55ae36016fa088469ee8ff66f", null ]
     ] ],
     [ "MapNodeType", "namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625", [
       [ "Start", "namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625aa6122a65eaa676f700ae68d393054a37", null ],
@@ -30,7 +64,8 @@ var namespaceGuildmaster_1_1Guild =
       [ "Shop", "namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a9f82518d468b9fee614fcc92f76bb163", null ],
       [ "Boss", "namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a5859831e2b3db23528c710b1451e13fc", null ],
       [ "Chest", "namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a080a546abcbea74459f27ba33313993d", null ],
-      [ "Unknown", "namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a88183b946cc5f0e8c96b2e66e1c74a7e", null ]
+      [ "Unknown", "namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a88183b946cc5f0e8c96b2e66e1c74a7e", null ],
+      [ "Camp", "namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625aa32c011e43f79a0b7b9337bc183c2dd1", null ]
     ] ],
     [ "ShopBuyOutcome", "namespaceGuildmaster_1_1Guild.html#afcea6b7c65659bfd1d6925299e6e0f09", [
       [ "Bought", "namespaceGuildmaster_1_1Guild.html#afcea6b7c65659bfd1d6925299e6e0f09afe5a7fc9d9c907efdf6a384a71cd53fc", null ],

@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Editor_1_1
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Editor.ContentLocalization:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization__coll__graph.svg" width="244" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization__coll__graph.svg" width="244" height="311"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -130,14 +130,20 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a01b49ed448fc51920f564b44d9b7f071" id="r_a01b49ed448fc51920f564b44d9b7f071"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#a01b49ed448fc51920f564b44d9b7f071">CreateMissingKeysForDomain</a> (Type type)</td></tr>
 <tr class="memdesc:a01b49ed448fc51920f564b44d9b7f071"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создать недостающие ключи для всех ассетов домена данного типа. Возвращает число созданных.  <br /></td></tr>
 <tr class="separator:a01b49ed448fc51920f564b44d9b7f071"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4cbf4cba1df119a3b2cc3c0b435204e" id="r_ab4cbf4cba1df119a3b2cc3c0b435204e"><td class="memItemLeft" align="right" valign="top">static IEnumerable&lt; KeyValuePair&lt; string, string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#ab4cbf4cba1df119a3b2cc3c0b435204e">AllValues</a> (string localeCode)</td></tr>
+<tr class="memdesc:ab4cbf4cba1df119a3b2cc3c0b435204e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все пары «ключ → значение» локали.  <br /></td></tr>
+<tr class="separator:ab4cbf4cba1df119a3b2cc3c0b435204e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79ed1530b4bea195086ea4edced4e242" id="r_a79ed1530b4bea195086ea4edced4e242"><td class="memItemLeft" align="right" valign="top">static IEnumerable&lt;(string Key, string Value, bool IsSmart)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#a79ed1530b4bea195086ea4edced4e242">AllEntries</a> (string tableName, string localeCode)</td></tr>
+<tr class="memdesc:a79ed1530b4bea195086ea4edced4e242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Записи произвольной таблицы с флагом Smart.  <br /></td></tr>
+<tr class="separator:a79ed1530b4bea195086ea4edced4e242"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a4006937db29477b0e9bb94cf95e9ba95" id="r_a4006937db29477b0e9bb94cf95e9ba95"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#a4006937db29477b0e9bb94cf95e9ba95">TableName</a> = &quot;Content&quot;</td></tr>
+<tr class="memitem:a4006937db29477b0e9bb94cf95e9ba95" id="r_a4006937db29477b0e9bb94cf95e9ba95"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#a4006937db29477b0e9bb94cf95e9ba95">TableName</a> = ContentKeys.TableName</td></tr>
 <tr class="separator:a4006937db29477b0e9bb94cf95e9ba95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa593e78a4dab3f6fa93787d9c7c50e1" id="r_afa593e78a4dab3f6fa93787d9c7c50e1"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#afa593e78a4dab3f6fa93787d9c7c50e1">NameSuffix</a> = &quot;name&quot;</td></tr>
+<tr class="memitem:afa593e78a4dab3f6fa93787d9c7c50e1" id="r_afa593e78a4dab3f6fa93787d9c7c50e1"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#afa593e78a4dab3f6fa93787d9c7c50e1">NameSuffix</a> = ContentKeys.NameSuffix</td></tr>
 <tr class="separator:afa593e78a4dab3f6fa93787d9c7c50e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab429247d42080d99d7b60f4b2b5f6a3b" id="r_ab429247d42080d99d7b60f4b2b5f6a3b"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#ab429247d42080d99d7b60f4b2b5f6a3b">DescSuffix</a> = &quot;desc&quot;</td></tr>
+<tr class="memitem:ab429247d42080d99d7b60f4b2b5f6a3b" id="r_ab429247d42080d99d7b60f4b2b5f6a3b"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#ab429247d42080d99d7b60f4b2b5f6a3b">DescSuffix</a> = ContentKeys.DescSuffix</td></tr>
 <tr class="separator:ab429247d42080d99d7b60f4b2b5f6a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
@@ -149,6 +155,74 @@ Properties</h2></td></tr>
 <div class="textblock"><p>Редакторный мост «контент ↔ String Table <code>Content</code>» (вики «13» §5–6). </p>
 <p>Ключи — <code>{id}.name</code> / <code>{id}.desc</code>; здесь чтение/запись по локалям, создание недостающих ключей (по ассету и по домену) и ЕДИНАЯ политика обязательных суффиксов — её же берёт валидация (§8 п.4), чтобы «что создаём» и «что проверяем» не разъезжались. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a79ed1530b4bea195086ea4edced4e242" name="a79ed1530b4bea195086ea4edced4e242"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79ed1530b4bea195086ea4edced4e242">&#9670;&#160;</a></span>AllEntries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static IEnumerable&lt;(string Key, string Value, bool IsSmart)&gt; Guildmaster.Data.Editor.ContentLocalization.AllEntries </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>tableName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>localeCode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Записи произвольной таблицы с флагом Smart. </p>
+<p>Флаг критичен: строка с плейсхолдером <code>{dmg}</code> без него не форматируется, а РУШИТСЯ в пустоту (аргументы уходят в <code>string.Format</code>, тот падает на именованном слоте) — и дырка видна только в игре. </p>
+
+</div>
+</div>
+<a id="ab4cbf4cba1df119a3b2cc3c0b435204e" name="ab4cbf4cba1df119a3b2cc3c0b435204e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4cbf4cba1df119a3b2cc3c0b435204e">&#9670;&#160;</a></span>AllValues()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static IEnumerable&lt; KeyValuePair&lt; string, string &gt; &gt; Guildmaster.Data.Editor.ContentLocalization.AllValues </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>localeCode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Все пары «ключ → значение» локали. </p>
+<p>Отдаём простыми строками, чтобы читателям (валидация контента в тестах) не приходилось тянуть сборку редактора локализации ради перечисления. </p>
+
+</div>
+</div>
 <a id="a5a698e10cdbf750c91148888ce8f83d9" name="a5a698e10cdbf750c91148888ce8f83d9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5a698e10cdbf750c91148888ce8f83d9">&#9670;&#160;</a></span>CreateMissingKeys()</h2>
 
@@ -426,7 +500,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const string Guildmaster.Data.Editor.ContentLocalization.DescSuffix = &quot;desc&quot;</td>
+          <td class="memname">const string Guildmaster.Data.Editor.ContentLocalization.DescSuffix = ContentKeys.DescSuffix</td>
         </tr>
       </table>
   </td>
@@ -448,7 +522,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const string Guildmaster.Data.Editor.ContentLocalization.NameSuffix = &quot;name&quot;</td>
+          <td class="memname">const string Guildmaster.Data.Editor.ContentLocalization.NameSuffix = ContentKeys.NameSuffix</td>
         </tr>
       </table>
   </td>
@@ -470,7 +544,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const string Guildmaster.Data.Editor.ContentLocalization.TableName = &quot;Content&quot;</td>
+          <td class="memname">const string Guildmaster.Data.Editor.ContentLocalization.TableName = ContentKeys.TableName</td>
         </tr>
       </table>
   </td>

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.Arena.ArenaSkinSwapper.Rush" name="Guildmaster.Presentation.Arena.ArenaSkinSwapper.Rush">
+<area shape="rect" id="Node000001" title="Резко ускорить текущий переход (Space)." alt="" coords="515,5,736,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1ArenaDevCommands.html#a33a75604de27b10f7675aa83b3039791" title=" " alt="" coords="260,5,467,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="501,28,467,28,467,23,501,23"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1ArenaDevCommands.html#a12825ada0fafaca535e2e472b565a6e3" title="Положить команды арены в набор модуля (снимаются вместе с ним)." alt="" coords="5,5,212,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="247,28,212,28,212,23,247,23"/>
+</map>

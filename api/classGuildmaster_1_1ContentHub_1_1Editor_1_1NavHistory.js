@@ -7,6 +7,5 @@ var classGuildmaster_1_1ContentHub_1_1Editor_1_1NavHistory =
     [ "CanBack", "classGuildmaster_1_1ContentHub_1_1Editor_1_1NavHistory.html#a04b131cb7f792d70616229d0eed37ff2", null ],
     [ "CanForward", "classGuildmaster_1_1ContentHub_1_1Editor_1_1NavHistory.html#aa61bbafe46f1eddfb2ecced019892668", null ],
     [ "Count", "classGuildmaster_1_1ContentHub_1_1Editor_1_1NavHistory.html#a9d0684bec356c111a701f6b7b324b643", null ],
-    [ "Current", "classGuildmaster_1_1ContentHub_1_1Editor_1_1NavHistory.html#a202439ec4ba38ebd6b6df54881161a88", null ],
-    [ "HasCurrent", "classGuildmaster_1_1ContentHub_1_1Editor_1_1NavHistory.html#afca6665652f4582b88cd641e3fd9a73a", null ]
+    [ "Current", "classGuildmaster_1_1ContentHub_1_1Editor_1_1NavHistory.html#a202439ec4ba38ebd6b6df54881161a88", null ]
 ];

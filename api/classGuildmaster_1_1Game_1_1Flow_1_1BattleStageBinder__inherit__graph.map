@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Flow.BattleStageBinder" name="Guildmaster.Game.Flow.BattleStageBinder">
+<area shape="rect" id="Node000001" title="Подключает ленту боя к показу на время жизни боевого скоупа и отключает её, когда бой уходит." alt="" coords="5,119,219,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="20,5,97,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,83,92,117,87,119,73,85"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="121,5,212,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="152,84,138,119,133,117,147,82"/>
+</map>

@@ -1,7 +1,12 @@
 var searchData=
 [
-  ['labeltext_0',['labeltext',['../classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html#aa46a99b280b7c83ccb2fe6948e876ec9',1,'Guildmaster.UI.Components.SliderRow.LabelText'],['../classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html#ae5fcbcdec8ccc164c4419d780a34fd03',1,'Guildmaster.UI.Components.ToggleRow.LabelText']]],
-  ['lastencounterid_1',['LastEncounterId',['../classGuildmaster_1_1Combat_1_1EncounterLoader.html#a97e2564fafd86a8d1a4e43c28e7ac004',1,'Guildmaster::Combat::EncounterLoader']]],
-  ['localplayerteam_2',['LocalPlayerTeam',['../classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a49e22d89c51d9560d46fdc0042bf0472',1,'Guildmaster::Data::Definitions::GameConfig']]],
-  ['lowvalue_3',['LowValue',['../classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html#a246d6b1ce7ee4f9e141bd236873eaa26',1,'Guildmaster::UI::Components::SliderRow']]]
+  ['key_0',['Key',['../structGuildmaster_1_1Guild_1_1Commands_1_1RunCommand.html#a1ec59f5cf54e64b0c26d6bc8e798a95d',1,'Guildmaster::Guild::Commands::RunCommand']]],
+  ['killshake_1',['KillShake',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4a362854756df6da0f8704273bacf158',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['killslowcooldown_2',['KillSlowCooldown',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad5e4d2cdcf4c1252646e17ef272c8c6e',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['killslowfactor_3',['KillSlowFactor',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3d075ce4940e3c5bcb3569b4e1a90761',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['killslowleadseconds_4',['KillSlowLeadSeconds',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a574e1d7cd9d07909f53f1a63a0f32921',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['killslowrelease_5',['KillSlowRelease',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4d30045568bf0b60d24f3dfc4f8a3426',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['kind_6',['kind',['../classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html#a5decb6bac8752935ce4bdaa25c6724a1',1,'Guildmaster.Data.Definitions.EventEffect.Kind'],['../classGuildmaster_1_1DevTools_1_1DevBattleBrowserScreen.html#aa61666fc99e3b9f080e3528ede6e95af',1,'Guildmaster.DevTools.DevBattleBrowserScreen.Kind'],['../classGuildmaster_1_1Presentation_1_1Body_1_1UnitHeldItem.html#a2f5d1902853de8f036ccbb53e0a8e0f1',1,'Guildmaster.Presentation.Body.UnitHeldItem.Kind'],['../classGuildmaster_1_1UI_1_1DevConsole_1_1DevConsoleScreen.html#a94d07da4c0531d89c5998d7b54601f2f',1,'Guildmaster.UI.DevConsole.DevConsoleScreen.Kind'],['../classGuildmaster_1_1UI_1_1DevConsole_1_1DevLogScreen.html#a02f34c8f3a8d5028989aad896af3ab02',1,'Guildmaster.UI.DevConsole.DevLogScreen.Kind'],['../classGuildmaster_1_1UI_1_1UiScreen.html#a6cf3544d20fdb3d6096f4f3823e73f26',1,'Guildmaster.UI.UiScreen.Kind']]],
+  ['kite_7',['Kite',['../classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a6f7f8aead68bb092a42878bf57340cfb',1,'Guildmaster::Data::Definitions::AIProfile']]],
+  ['kitpower_8',['KitPower',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#ab0e06c2f00682072cf7c0428912339ac',1,'Guildmaster::Data::Definitions::RelicData']]]
 ];

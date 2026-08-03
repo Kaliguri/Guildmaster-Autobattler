@@ -113,8 +113,8 @@ Collaboration diagram for Guildmaster.Game.Flow.ShopFlow:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a18c55f46dc982599bc3f46fbccf35d43" id="r_a18c55f46dc982599bc3f46fbccf35d43"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopFlow.html#a18c55f46dc982599bc3f46fbccf35d43">ShopFlow</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html">ShopController</a> shop, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenShopRequest.html">OpenShopRequest</a> &gt; openShopPub)</td></tr>
-<tr class="separator:a18c55f46dc982599bc3f46fbccf35d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab68a77a5cfa47f81b1ba52ef384b13b6" id="r_ab68a77a5cfa47f81b1ba52ef384b13b6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopFlow.html#ab68a77a5cfa47f81b1ba52ef384b13b6">ShopFlow</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html">ShopController</a> shop, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenShopRequest.html">OpenShopRequest</a> &gt; openShopPub, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenNodeFarewellRequest.html">OpenNodeFarewellRequest</a> &gt; farewellPub=null)</td></tr>
+<tr class="separator:ab68a77a5cfa47f81b1ba52ef384b13b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09f8677a69d94ed2d39501a427e7d3eb" id="r_a09f8677a69d94ed2d39501a427e7d3eb"><td class="memItemLeft" align="right" valign="top">async UniTask&lt; <a class="el" href="structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html">EventResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopFlow.html#a09f8677a69d94ed2d39501a427e7d3eb">Run</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html">RunContext</a> ctx)</td></tr>
 <tr class="separator:a09f8677a69d94ed2d39501a427e7d3eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -122,8 +122,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Узел забега «магазин» (план [[act-map-run-loop]] §4 B2): открывает витрину (IShopController.Open через ShopController), публикует запрос в UI, ждёт, пока игрок уйдёт, и возвращает EventResult.Completed. </p>
 <p>Покупки/реролл/продажа идут через контроллер прямо во время показа. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a18c55f46dc982599bc3f46fbccf35d43" name="a18c55f46dc982599bc3f46fbccf35d43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a18c55f46dc982599bc3f46fbccf35d43">&#9670;&#160;</a></span>ShopFlow()</h2>
+<a id="ab68a77a5cfa47f81b1ba52ef384b13b6" name="ab68a77a5cfa47f81b1ba52ef384b13b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab68a77a5cfa47f81b1ba52ef384b13b6">&#9670;&#160;</a></span>ShopFlow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -141,7 +141,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenShopRequest.html">OpenShopRequest</a> &gt;&#160;</td>
-          <td class="paramname"><em>openShopPub</em>&#160;</td>
+          <td class="paramname"><em>openShopPub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenNodeFarewellRequest.html">OpenNodeFarewellRequest</a> &gt;&#160;</td>
+          <td class="paramname"><em>farewellPub</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

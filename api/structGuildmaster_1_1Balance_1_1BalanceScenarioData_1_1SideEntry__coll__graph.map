@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,514,200,561,195,563,173,516"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="159,120,287,185"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="203,199,184,236,179,233,198,196"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="236,325,443,425"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Сосуд» — человек, носящий Реликвию." alt="" coords="236,325,443,425"/>
 <area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="249,196,316,323,311,326,244,199"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="163,5,284,71"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="226,85,226,120,221,120,221,85"/>

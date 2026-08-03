@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Meta - Open Forks | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Meta - Open Forks | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Meta - Open Forks | Guildmaster Wiki"/><meta name="twitter:description" content="Развилки без вердикта Здесь живёт только НЕрешённое — всё, что ждёт слова Макса, и сырые требования к системам без канон-дома."/><meta property="og:description" content="Развилки без вердикта Здесь живёт только НЕрешённое — всё, что ждёт слова Макса, и сырые требования к системам без канон-дома."/><meta property="og:image:alt" content="Развилки без вердикта Здесь живёт только НЕрешённое — всё, что ждёт слова Макса, и сырые требования к системам без канон-дома."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/open-forks"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/open-forks"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Развилки без вердикта Здесь живёт только НЕрешённое — всё, что ждёт слова Макса, и сырые требования к системам без канон-дома."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="gdd/00-meta/open-forks"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-20"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-20" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../gdd/">gdd</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../gdd/00-meta/">Meta   Index</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Meta   Open Forks</a></div></nav><h1 class="article-title">Meta - Open Forks</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-31T00:00:00.000Z">31 июл. 2026 г.</time><span>время чтения ~33 мин.</span></p></div></div><article class="popover-hint"><h1 id="развилки-без-вердикта">Развилки без вердикта<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#развилки-без-вердикта" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p><strong>Здесь живёт только НЕрешённое</strong> — всё, что ждёт слова Макса, и сырые требования к системам без
+канон-дома. Роли разведены так:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Что</th><th>Где живёт</th></tr></thead><tbody><tr><td>черновые мысли Макса, как он их написал</td><td><a href="../../gdd/00-meta/open" class="internal alias" data-slug="gdd/00-meta/open">Meta - Inbox</a> и его архив <code>inbox/</code></td></tr><tr><td>принятое решение — что и почему</td><td><a href="../../gdd/00-meta/journal-adr" class="internal alias" data-slug="gdd/00-meta/journal-adr">Meta - Decision Journal</a></td></tr><tr><td>разбор вариантов закрытой развилки</td><td><a href="../../gdd/00-meta/closed-forks" class="internal alias" data-slug="gdd/00-meta/closed-forks">Meta - Closed Forks</a></td></tr><tr><td>снятая механика целиком</td><td><a href="../../gdd/00-meta/legacy" class="internal alias" data-slug="gdd/00-meta/legacy">Meta - Legacy</a></td></tr><tr><td>тема, требующая отдельного захода</td><td><a href="../../gdd/00-meta/roadmap" class="internal alias" data-slug="gdd/00-meta/roadmap">Meta - Roadmap</a></td></tr></tbody></table></div>
+<p>Разделы: <strong>развилки без вердикта</strong> (1), <strong>карта разнесённого сырья</strong> (2), <strong>неутверждённое по
+карточкам</strong> (2.5), <strong>инкубатор требований</strong> (3).</p>
+<p>Правило: как только развилка закрывается — вердикт уезжает в журнал, разбор в <code>closed-forks</code>,
+отсюда пункт <strong>исчезает</strong>. Идея, оформленная в канон, тоже исчезает — остаётся только ссылка.</p>
+</blockquote>
+<hr/>
+<h1 id="1-развилки-без-вердикта">1. Развилки без вердикта<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-развилки-без-вердикта" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<h2 id="нужен-ли-четвёртый-размерный-тир-под-крупных-врагов">Нужен ли четвёртый размерный тир под крупных врагов<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#нужен-ли-четвёртый-размерный-тир-под-крупных-врагов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Открылось 2026-08-01</strong> решением «человек-герой = тир 128» (<a href="../../gdd/00-meta/journal-adr" class="internal alias" data-slug="gdd/00-meta/journal-adr">журнал</a>). Размерная
+шкала была <strong>64 мелкий · 96 крупный · 128 большой</strong>, человек стоял на 96. Теперь человек занял 128,
+и верхний ярлык освободился: юниты, которые должны выглядеть <strong>крупнее человека</strong> — тролль, огр,
+всадник, боссы — упираться в тот же 128 не могут, иначе разница в размере перестанет читаться.</p>
+<p>Варианты, ни один не выбран:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Вариант</th><th>Что значит</th></tr></thead><tbody><tr><td><strong>Четвёртый тир (например 192)</strong></td><td>шкала 64 · 96 · 128 · 192; крупные враги получают свой размер, но это новый набор габаритов частей на каждую часть тела</td></tr><tr><td><strong>Крупные враги — нецелый апскейл 128</strong></td><td>ничего не рисуем заново, но пиксель поедет: у нас стилизованный пиксель-арт, нецелый скейл разрешён, и тут он вылезет на силуэте</td></tr><tr><td><strong>Крупные враги = 128, разница через силуэт</strong></td><td>масса, рога, горб вместо роста; дешевле всего, но «большой» перестаёт читаться в бою рядом с человеком</td></tr></tbody></table></div>
+<p>Решать не срочно: ни одного крупного врага в работе нет. Но выбор влияет на то, сколько строк
+получит таблица частей, поэтому чем раньше, тем меньше переписывания.
+<strong>Владелец сетки</strong> — <code>docs/view-angle-progress.md</code>, раздел «Сетка размеров частей».</p>
+<h2 id="ритм-атаки-удар--атака--комбо">Ритм атаки: Удар / Атака / Комбо<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ритм-атаки-удар--атака--комбо" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Заметка Макса 2026-07-30</strong> (<a href="../../gdd/00-meta/inbox/2026-07-30" class="internal alias" data-slug="gdd/00-meta/inbox/2026-07-30">оригинал</a>). Три уровня вместо одного:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Уровень</th><th>EN</th><th>Что это</th></tr></thead><tbody><tr><td><strong>Удар</strong></td><td><code>hit</code></td><td>одно попадание, «классическая автоатака». На каждый Удар — один хит</td></tr><tr><td><strong>Атака</strong></td><td><code>attack</code></td><td>серия Ударов. <strong>Может быть прервана</strong></td></tr><tr><td><strong>Комбо</strong></td><td><code>combo</code></td><td>серия Атак. Нет состояния атаки дольше <strong>1.5 сек</strong> (застанили, врага рядом нет) — Комбо прерывается и начинается заново</td></tr></tbody></table></div>
+<p><strong>Почему это важно шире, чем кажется.</strong> Сейчас в движке у автоатаки есть фазы (<code>_windupShare</code>,
+<code>_attackRecoverySeconds</code>), но нет понятия «Атака из нескольких Ударов». На этот язык уже опираются две
+заявки: пассивка <a href="../../gdd/relics/the-gale" class="internal alias" data-slug="gdd/relics/the-gale">Монаха</a> «атака состоит из двух ударов по 50% урона» — это
+Атака из двух Ударов, и парирование (ниже), которое блокирует именно <strong>Удар</strong>.</p>
+<p><strong>Что решить</strong> (сверено с кодом 2026-07-31; дефолт скрайба — <code>proposed</code>, вердикт за Максом):</p>
+<ol>
+<li><strong><code>AttackSpeed</code> — Атаки/сек или Удары/сек?</strong> <code>proposed</code>: Атаки/сек. Интервал отмеряет период между
+началами Атак, число Ударов внутри — свойство кита; иначе двухударный кит получает двойной DPS даром.</li>
+<li><strong>[ЗАКРЫТО <code>2026-08-01/12</code>] «Каждая третья атака» у Драугра — третий Удар или третья Атака?</strong>
+Вердикт Макса: <strong>Атака</strong>, и засчитывается она путём (замах → рекавери), а не попаданием — промах
+серию двигает. Реализовано: <code>EveryNthAttackComponent</code> и цикл голема считают
+<code>RuntimeUnit.ComboAttacks</code>, событие — <code>CombatEvent.AttackCompleted</code>.
+<strong>Остаточный долг, названный вслух:</strong> слепота (<code>BlindComponent</code>) по-прежнему считает Удары
+(<code>RuntimeUnit.HitsMade</code>) — она гасит отдельный контакт, и перевод на Атаки отправил бы мимо весь
+поток канального кита разом. Переводить — отдельным решением.</li>
+<li><strong>Что прерывает Атаку — любой контроль или только полный вывод из строя?</strong> <code>proposed</code>: любой контроль,
+отнимающий дееспособность (тот же маркер, что гейтит «Оплот» и «Изворотливость»); слоу и прочие
+дебаффы — нет.</li>
+<li><strong>[ЗАКРЫТО <code>2026-08-01/12</code>] Нужно ли Комбо прямо сейчас?</strong> Нужно, и носители были всё это время:
+цикл ударов голема и «каждая третья» Драугра — это и есть серия Атак, просто до 2026-08-01 они
+считали по своим счётчикам за весь бой и не сбрасывались ничем. Комбо реализовано:
+<code>RuntimeUnit.ComboAttacks</code> + разрыв на 1.5 с вне атакующего лупа (<code>SimTuning.ComboBreakSeconds</code>),
+разрыв гасит заряды серии и не трогает чужие (<code>2026-08-01/13</code>).</li>
+</ol>
+<h2 id="парирование--кому-его-выдать">Парирование — кому его выдать<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#парирование--кому-его-выдать" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Механика реализована 2026-07-31</strong> (примитив <code>effect.parry</code>: окно 0.3 с, микро-стан по целившимся
+спереди, ответ рекастом ×2, разгон против длиннорукого). Решения — <a href="../../gdd/00-meta/journal-adr" class="internal alias" data-slug="gdd/00-meta/journal-adr">журнал</a>, запись
+2026-07-31 (ночь, 10).</p>
+<p><strong>Закрыто 2026-08-01: носитель есть.</strong> <a href="../../gdd/enemies/bandit-duelist" class="internal alias" data-slug="gdd/enemies/bandit-duelist">Разбойник-дуэлянт</a> собран и
+объявляет <code>effect.bandit_parry</code> — общий примитив плюс награда-щит <code>200</code> на <code>3 сек</code>, для которой в
+<code>ParryComponent</code> появилось поле <code>_onParryReward</code>. Среди реликвий парирование по-прежнему не объявляет
+никто, но это уже не «механика без потребителя»: в бою она есть.</p>
+<h2 id="маскировка--что-осталось-после-реализации">Маскировка — что осталось после реализации<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#маскировка--что-осталось-после-реализации" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Механика реализована 2026-07-31</strong> (четыре ступени, радиусы 6 / 4 / 2, Инвиз расстоянием не
+снимается; обнаружение командное и не залипающее; скрытого не выбирают целью, удар по нему гаснет,
+своя атака и каст выдают). Решения — <a href="../../gdd/00-meta/journal-adr" class="internal alias" data-slug="gdd/00-meta/journal-adr">журнал</a>, запись 2026-07-31 (ночь, 11).</p>
+<p><strong>Не решено:</strong></p>
+<ol>
+<li><strong>Слабая и Сильная ступени без носителя.</strong> Инвиз стоит на «Скрытности» Убийцы, Средняя — на
+гоблине-убийце и <a href="../../gdd/enemies/bandit-assassin" class="internal alias" data-slug="gdd/enemies/bandit-assassin">разбойнике-убийце</a> (2026-08-01). Крайние ступени
+шкалы по-прежнему не объявляет никто.</li>
+<li><strong>Что делают враги, когда невидимы ВСЕ.</strong> Сейчас они просто остаются без цели: не идут никуда и не
+бьют. Для боя из двух замаскированных отрядов это патовая сцена, и правило поиска («идти к тылу
+врага», «разойтись веером») пока не придумано.</li>
+<li><strong>Видны ли замаскированные враги в фазе расстановки.</strong> <code>proposed</code>: да, все. Правило «на узле видна
+только сложность» относится к узлу карты; расстановка вслепую наказывает за то, чего нельзя было
+предусмотреть.</li>
+</ol>
+<h2 id="качество-реликвий-и-дополнительные-статы">Качество реликвий и дополнительные статы<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#качество-реликвий-и-дополнительные-статы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Заметка Макса 2026-07-30.</strong></p>
+<p><strong>Качество</strong> — пять ступеней с шансами: <strong>S 5% · A 20% · B 50% · C 20% · D 5%</strong>. Качество задаёт
+<strong>запас дополнительных статов</strong>: S — 300%, A — 150%, <strong>B — 100% (стандарт)</strong>, C — 50%, D — 0%.
+При улучшении реликвии берётся <strong>высшее</strong> качество.</p>
+<p><strong>Дополнительные статы</strong> — рандомные статы, работающие как очки. Пул: HP, сила атаки, сила умений,
+скорость атаки, защита (маг и физ), сила призыва, скорость передвижения. Падают <strong>в зависимости от
+класса</strong>: есть общий пул (HP, защита) плюс классовый (сила призыва — призывателю).</p>
+<p><strong>Стат «сила предметов»</strong> — усиливает бонусы от надетых предметов. Его потребитель уже придуман:
+релик-инженер (ниже).</p>
+<blockquote>
+<p><strong>Тема не обсуждалась — ждёт отдельной сессии</strong> (Макс, 2026-07-30). Здесь лежит только его заметка;
+выводов о том, как качество соотносится с классовыми коридорами и балансом, <strong>никто не делал</strong>, и
+делать их до разговора не нужно.</p>
+</blockquote>
+<h2 id="новый-контент-ждущий-карточек">Новый контент, ждущий карточек<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#новый-контент-ждущий-карточек" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Заметки Макса 2026-07-30.</strong> Пять сущностей описаны одной строкой каждая — до карточек им нужен
+дизайн-проход:</p>
+<ul>
+<li><del><strong>Гоблин-проказник (белая повязка)</strong></del> — <strong>закрыт 2026-07-31</strong>: титул «Гоблин-шутник», карточка
+<a href="../../gdd/enemies/goblin-jester" class="internal alias" data-slug="gdd/enemies/goblin-jester">Goblins - Common - Goblin Jester</a>, решения — <a href="../../gdd/00-meta/journal-adr" class="internal alias" data-slug="gdd/00-meta/journal-adr">журнал</a>,
+запись 2026-07-31 (вечер, 23).</li>
+<li><del><strong>Гоблин-проказник (синяя повязка)</strong></del> — <strong>закрыт 2026-07-31</strong>: титул «Гоблин-кривляка», карточка
+<a href="../../gdd/enemies/goblin-mocker" class="internal alias" data-slug="gdd/enemies/goblin-mocker">Goblins - Common - Goblin Mocker</a>, решения — <a href="../../gdd/00-meta/journal-adr" class="internal alias" data-slug="gdd/00-meta/journal-adr">журнал</a>,
+запись 2026-07-31 (вечер, 26). Мана-дрейн против безресурсных китов решён <strong>фильтром цели</strong>
+(<code>NearestEnemyWithResource</code>), а не правкой Арканы: безресурсный боец просто не выбирается.</li>
+<li><del><strong>Разбойник-дуэлянт</strong></del> — <strong>закрыт 2026-08-01</strong>: карточка
+<a href="../../gdd/enemies/bandit-duelist" class="internal alias" data-slug="gdd/enemies/bandit-duelist">Bandits - Common - Bandit Duelist</a>, все три правила заведены как заявлены.</li>
+<li><del><strong>Разбойник-убийца</strong></del> — <strong>закрыт 2026-08-01</strong>: карточка
+<a href="../../gdd/enemies/bandit-assassin" class="internal alias" data-slug="gdd/enemies/bandit-assassin">Bandits - Common - Bandit Assassin</a>. Кровь живёт <code>3 сек</code>, а не 5 —
+срок берётся из общего <code>effect.bleed</code>, чтобы у длительности порции остался один владелец.</li>
+<li><strong>Разбойник — стилер предметов</strong> — гибрид дальник + ближник. <strong>Отложен, но будет</strong> («Стилер будет, но
+потом» — Макс, 2026-08-01): в работу сейчас не берём, из списка не убираем. Первым делом при заходе —
+решить, что именно он крадёт: предметы живут вне боя, поэтому честная кража требует шва «исход боя
+меняет состояние забега», которого нет. Разбор трёх вариантов (глушить предметы на время, красть
+золото награды, «кража» как диспел с переносом) — <a href="../../gdd/00-meta/closed-forks" class="internal alias" data-slug="gdd/00-meta/closed-forks">там же</a>.</li>
+<li><strong>Релик-инженер</strong> — урон молнией, брузер, <strong>бафает предметы</strong> (потребитель стата «сила предметов»).</li>
+<li><strong>Носитель линейной атаки</strong> (<code>2026-07-31/95</code>, вердикт Макса: «линейная атака нужна»). Форма
+<code>AreaShape.Line</code> в данных есть с Фазы 3, но её не объявляет ни один кит — то есть ветка механики стоит
+непроверенной. Прокол сквозь ряд читается иначе, чем взрыв вокруг, поэтому форма ценна сама по себе:
+это второй геометрический почерк после круга. <strong>Кто носитель — решает Макс;</strong> ближе всех по фантазии
+копьё и таранный рывок, но у Копейщика ульта уже круговая.</li>
+</ul>
+<h2 id="шёпот-толпы--разбор-поражения-в-юмористическом-ключе">«Шёпот толпы» — разбор поражения в юмористическом ключе<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#шёпот-толпы--разбор-поражения-в-юмористическом-ключе" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Статус:</strong> идея принята к проработке, детали не определены. Обдумать в отдельной сессии.</p>
+<p><strong>Проблема, которую решает:</strong> в автобое игрок смотрит на сражение и проигрывает, не понимая, <strong>что
+именно</strong> пошло не так. Мозг в этой ситуации по умолчанию списывает поражение на рандом — не потому,
+что рандома много (его в бою нет вообще, см. <a href="../../gdd/20-combat/combat-system" class="internal alias" data-slug="gdd/20-combat/combat-system">Combat - System</a>), а потому что
+альтернативного объяснения игроку никто не дал. Ощущение нечестности — это дефицит информации,
+а не избыток случайности.</p>
+<p><strong>Идея:</strong> система подсказок после боя, <strong>завёрнутая в лор и юмор</strong>. Не сухая аналитика, а <strong>толпа на
+трибунах, которая шепчется и обсуждает, почему гильдия слила</strong>. Реплики зрителей — это и есть
+подсказки: разные болтуны замечают разные вещи, кто-то попадает в точку, кто-то несёт чушь, кто-то
+злорадствует.</p>
+<p>Примеры тона (черновой):</p>
+<ul>
+<li>«Их целитель стоял в первом ряду. В первом ряду! Кто вообще так делает?»</li>
+<li>«Убийца дошёл до их мага за три секунды. Три секунды, я считал.»</li>
+<li>«Драугр полбоя убегал. Может, у него порог отступления слишком высокий?»</li>
+</ul>
+<p><strong>Почему это сильно:</strong> технически подсказки — это чтение боевого лога (симуляция детерминированная,
+лог даётся даром: кто умер первым и от кого, кто кого фокусил, чья ульта не прокастовалась, сколько
+времени юнит бегал вместо боя). Но подан он как <strong>часть мира</strong>, а не как таблица. Это одновременно
+закрывает атрибуцию («я проиграл из-за своего решения, а не из-за кубика»), работает на «дух
+вечеринки» из <a href="../../gdd/10-vision/concept" class="internal alias" data-slug="gdd/10-vision/concept">Vision - Concept</a> и не превращает игру в спредшит.</p>
+<p><strong>Что решить:</strong> источник реплик (заскриптованные шаблоны от событий боя vs пул фраз с условиями),
+доля «неверных» подсказок (шум = юмор, но не должен вводить в заблуждение новичка), место показа
+(экран исхода боя), поведение в коопе.</p>
+<p>Смежное: этим же закрывается требование «Battle Log и пост-бой разбор» из ресёрча — <em>Hadean Tactics</em>
+лечил непрозрачность автобоя логом, а не упрощением боя; отсутствие разбора — прямая причина
+обвинения <em>Teamfight Manager</em> в «Team Fight Dice Roll».</p>
+<h2 id="мета-нарратив-игра-которая-знает-что-она-игра">Мета-нарратив: «игра, которая знает, что она игра»<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#мета-нарратив-игра-которая-знает-что-она-игра" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>ПЕРЕЕХАЛ 2026-07-29</strong> в кластер нарратива — <a href="../../gdd/60-narrative/meta-narrative" class="internal alias" data-slug="gdd/60-narrative/meta-narrative">Narrative - Meta</a>.
+Здесь тема лежала третьим владельцем наравне с журналом и питчем, что нарушало правило единого
+источника правды. Реестр посевов, у которого дома не было вовсе, теперь живёт в
+<a href="../../gdd/60-narrative/seeds" class="internal alias" data-slug="gdd/60-narrative/seeds">Narrative - Seeds</a>.</p>
+<p>Открытым по теме остаётся: <strong>градус</strong> (редкая пасхалка или тон-ДНК), <strong>глубина мрака</strong>, стык с
+«Шёпотом толпы» и <a href="../../gdd/30-run-meta/procedural-lore" class="internal alias" data-slug="gdd/30-run-meta/procedural-lore">сид-генерируемой личностью</a> — развилки перечислены в самом файле.</p>
+<p>Слой <strong>«Две Силы»</strong> из этого перечня убран 2026-07-30: он <strong>отменён</strong> вердиктом Макса (журнал №39),
+разбор — <a href="../../gdd/00-meta/closed-forks" class="internal alias" data-slug="gdd/00-meta/closed-forks">Closed Forks</a> §Слой «Две Силы»; безопасная форма того же импульса
+живёт как «Из мастерской» (2026-07-27/24). Пункт числился открытым уже после собственного закрытия.</p>
+<h2 id="эффект-меняющий-правило-чужого-эффекта">Эффект, меняющий правило ЧУЖОГО эффекта<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#эффект-меняющий-правило-чужого-эффекта" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Отложено до играбельности (вердикт Макса 2026-07-26).</strong> Сам вопрос «пассивки меняют правила или
+крутят числа» закрыт — <a href="../../gdd/00-meta/closed-forks" class="internal alias" data-slug="gdd/00-meta/closed-forks">Closed Forks</a>.</p>
+<p>Сейчас герои общаются через <strong>состояние цели</strong>: producer вешает тег («Мокрый»), consumer его
+эксплуатирует. Следующий уровень, на котором держит глубину <em>The Last Flame</em>, — общение через
+<strong>чужой эффект</strong>: «твои поджоги тикают вдвое чаще», «кровотечения на цели кормят твои удары».
+Это и есть то, что заставляет драфт решать при четырёх «Сосудах», а не собирать четыре
+самодостаточных кита.</p>
+<p>Цена: движок эффектов должен уметь <strong>модифицировать чужие рантайм-эффекты</strong>, а не только читать теги.
+Судить об этом умозрительно нельзя — вернуться, когда будет что пощупать руками.</p>
+<h2 id="расстановка-какой-тип-точки-интереса-делаем-первым">Расстановка: какой тип точки интереса делаем первым<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#расстановка-какой-тип-точки-интереса-делаем-первым" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Решено (Макс, 2026-07-26): четвёртую подпорку расстановки достраиваем</strong>, начиная с ОДНОГО типа
+точки интереса. Причина: на пустом прямоугольнике все точки равноценны, и без геометрии расстановка
+рискует выродиться в «танк вперёд, лучник назад» даже при трёх готовых подпорках.</p>
+<p>Три подпорки из четырёх уже стоят:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Подпорка</th><th>У нас</th><th>Откуда</th></tr></thead><tbody><tr><td>Кого схватят первым</td><td><strong>есть</strong></td><td>слоты боевого контакта, агро-автоатака танка (5 сек), перехват идущего мимо — <a href="../../gdd/20-combat/positioning" class="internal" data-slug="gdd/20-combat/positioning">positioning</a></td></tr><tr><td>Разброс скоростей</td><td><strong>есть</strong></td><td>боевые классы: 75 / 85 / 100 / 110% — <a href="../../gdd/20-combat/stats" class="internal" data-slug="gdd/20-combat/stats">stats</a></td></tr><tr><td>AoE наказывает кучность</td><td><strong>наполовину</strong></td><td>«Проводимость» даёт молнии бонус по плотному кластеру (<a href="../../gdd/20-combat/effects" class="internal" data-slug="gdd/20-combat/effects">effects</a>), но как <strong>рычаг расстановки</strong> нигде не заявлено</td></tr><tr><td>Точки интереса на арене</td><td><strong>нет</strong></td><td>«узкие места, препятствия, возвышенности» лежат в <a href="../../gdd/20-combat/positioning" class="internal" data-slug="gdd/20-combat/positioning">positioning</a> §Не обсуждали</td></tr></tbody></table></div>
+<p><strong>Вердикта по типу пока нет.</strong> Кандидаты:</p>
+<p><strong>1. Бутылочное горлышко — узкий проход. (Рекомендация скрайба.)</strong>
+Число доступных слотов подхода физически падает, окружение невозможно, танк держит проход <strong>без
+всякой зоны контроля</strong> (её мы отклонили — <a href="../../gdd/20-combat/positioning" class="internal" data-slug="gdd/20-combat/positioning">positioning</a> §Слой B). Не добавляет бою нового измерения,
+а <strong>умножает уже принятые</strong> слоты и бонус за фланг/тыл. Решение при расстановке читается одной фразой:
+«кто держит проход». Контригра появляется сама — скучившиеся у горловины ловят AoE, то есть попутно
+оживает недоделанная третья подпорка. В симуляции нужна только навигационная преграда.</p>
+<p><strong>2. Укрытие, блокирующее снаряды.</strong>
+Прямой рычаг против бэклайна и самый «тактичный» на вид. Но ломает принятое правило «снаряды летят
+сквозь союзников» (<a href="../../gdd/20-combat/positioning" class="internal" data-slug="gdd/20-combat/positioning">positioning</a>) и требует лучевых проверок в тике — самая дорогая из четырёх.</p>
+<p><strong>3. Возвышенность.</strong>
+Дешевле всех в реализации (зона-модификатор дальности/урона). Два минуса: в низком топ-дауне высота
+читается плохо, и по сути это «+X% дальности», то есть <strong>число, а не правило</strong>.</p>
+<p><strong>4. Точка силы / алтарь.</strong>
+Круг, баффающий стоящего рядом. Просто в симуляции, но слабо сцеплено с остальным боем: «встань в
+круг» не взаимодействует ни со слотами, ни с агро, ни с фланговым бонусом.</p>
+<p><strong>Заодно решить при выборе:</strong> оформить ли AoE как явный рычаг против кучности (сейчас это случайное
+свойство «Проводимости», а не заявленный принцип, на который опираются авторы эффектов).</p>
+<h2 id="анти-дубли-витрины-наград">Анти-дубли витрины наград<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#анти-дубли-витрины-наград" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Единственный пункт, оставшийся открытым от «защиты от невезения» (решение 2026-07-27/2 — страховка
+через инструменты контроля, см. <a href="../../gdd/00-meta/closed-forks" class="internal alias" data-slug="gdd/00-meta/closed-forks">Closed Forks</a>).</p>
+<p>Нужны ли <strong>сверх</strong> рероллов ещё и правила витрины: не показывать три реликвии одной роли, не
+повторять недавно отклонённое. Риск обеих правок — они работают скрыто, а мы выбрали явные рычаги.</p>
+<h2 id="читаемость-подготовки-статический-фидбэк-и-авто-пауза">Читаемость подготовки: статический фидбэк и авто-пауза<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#читаемость-подготовки-статический-фидбэк-и-авто-пауза" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Два приёма из ресёрча, по которым решения нет. Оба дешёвые и оба не трогают честность боя.</p>
+<p><strong>Статический фидбэк подготовки — ДО боя.</strong> <em>Backpack Hero</em>: наведение подсвечивает все затронутые
+клетки, игрок видит, что конструкция сошлась, <strong>не запуская бой</strong>. Самый сильный приём из всего
+ресёрча. Наш аналог: при наведении на «Сосуда» — подсветка радиусов, зон поражения, кого он будет
+фокусить; живой пересчёт цифр при смене реликвии («было → стало»).</p>
+<p><strong>Авто-пауза по событиям.</strong> Первая ульта, смерть «Сосуда», срабатывание реликвии. Даёт вовлечённость
+<strong>без единого игрового решения</strong> — то есть не портит честность. У <em>GGM</em> сделана только для меню,
+и это упущение.</p>
+<h2 id="чем-построено-небо-арены">Чем построено небо арены<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#чем-построено-небо-арены" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Открылось 2026-08-03</strong> в работе над полом арены. Облака генерируются процедурно, но способ решает
+не отделку, а то, ЧТО игрок читает в кадре. Три варианта живьём — Лаборатория, раздел <code>#/floor</code>,
+блок «Чем построено облако». Ни один не принят.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Вариант</th><th>Что это</th><th>Чем плох</th></tr></thead><tbody><tr><td><strong>Доли</strong></td><td>масса из трёх-пяти полукружий, каждое лепится ступенями тона</td><td>круг узнаётся всегда: дуга постоянной кривизны читается воздушным шаром. Отсюда «мультяшно», и никакой контур этого не лечит</td></tr><tr><td><strong>Потолок</strong></td><td>поле fbm с варпом, силуэт вырезан порогом, четыре плоских тона</td><td>перистая пелена далеко ВВЕРХУ. Верно для «мы под облаками», неверно для острова над бездной</td></tr><tr><td><strong>Гряда</strong></td><td>кучевые купола на общем плоском дне, профиль высоты из огибающей клубов</td><td>рабочий фаворит. Пока однообразна по высоте: настоящее небо даёт один-два доминирующих купола и мелочь вокруг</td></tr></tbody></table></div>
+<p>Дословно (Макс, 03.08.2026): «А более визуальные, более в нашем стиле? А то щас облака будто мы “не
+на уровне облаков”, а они сильно выше нас».</p>
+<p><strong>Вместе с этим не решено и про контур облаков.</strong> Три варианта сняты на закате (без контура ·
+тёмный цветной · чёрный жёсткий), мой голос — без контура: небо самый дальний план, обводка тянет
+его вперёд и ломает воздушную перспективу. У гряды вопрос отпадает сам: там роль контура играет
+тёмная ступень тона у кромки. Механика — <a href="../../gdd/70-gamefeel/arena-floor" class="internal alias" data-slug="gdd/70-gamefeel/arena-floor">Gamefeel - Arena Floor</a>,
+инженерная сторона —
+<a href="../../tech/00-meta/journal/2026-08-03-clouds-are-a-field-not-a-pile-of-circles" class="internal alias" data-slug="tech/00-meta/journal/2026-08-03-clouds-are-a-field-not-a-pile-of-circles">журнал 03.08</a>.</p>
+<h2 id="генерировать-ли-иконки-процедурно">Генерировать ли иконки процедурно<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#генерировать-ли-иконки-процедурно" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Отложено Максом 02.08.2026 при вводе трёх полос процедурной генерации
+(<a href="../../tech/10-reference/code-standards" class="internal alias" data-slug="tech/10-reference/code-standards">Code Standards</a> §8): «насчет проценудрных иконок я бы мб
+подумал, но точно не сейчас, сначала - пайплайн». До вердикта иконки лежат в полосе «рисуем»,
+процедурно не генерируются.</p>
+<p><strong>За.</strong> UI-художника у нас нет, а иконок нужно много и в нескольких семействах: статусы, четыре оси
+тегов юнита, стихии, типы узлов карты. Приём у нас уже отработан на формах удара — там форма
+целиком считается шейдером, и это тот же класс задачи. Плюсом идут разрешение-независимость, цвет из
+палитры автоматически и анимация параметром вместо отдельного кадра.</p>
+<p><strong>Против.</strong> Иконка — это <strong>язык, а не текстура</strong>: игрок учит её как слово, и узнаваемость важнее
+качества. Формула даёт ровные, похожие друг на друга знаки, а различимость с одного взгляда живёт
+как раз на неровностях и на нарушении системы. Риск — семейство иконок, где всё красиво и ничто не
+отличается.</p>
+<p>Развилка не «да или нет», а <strong>где проходит шов</strong>: возможен средний путь — силуэт рисует человек,
+а оправа, фон, свечение и состояние (активна/на кулдауне/истекает) считаются. Тогда узнаваемость
+остаётся авторской, а вариативность и стилевая сходимость — процедурными.</p>
+<hr/>
+<h1 id="2-сырьё-макса--разобрано-2026-07-29">2. Сырьё Макса — разобрано 2026-07-29<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-сырьё-макса--разобрано-2026-07-29" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p>Заметки, накиданные Максом 2026-07-28/29, <strong>разобраны и разнесены</strong>. Ниже — карта, куда что уехало;
+сами тексты не дублируются (правило единственного владельца). Раздел останется как указатель, пока
+по всем пунктам не будут закрыты вердикты, и исчезнет вместе с последним из них.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Что было</th><th>Куда уехало</th><th>Состояние</th></tr></thead><tbody><tr><td>Лёд, 20 стаков</td><td><a href="../../gdd/20-combat/effects/frost" class="internal alias" data-slug="gdd/20-combat/effects/frost">Effect - Frost</a> — «Изморозь» + три состояния</td><td>структура принята, <strong>числа ждут приёмки</strong></td></tr><tr><td>Аркана: мана, реген, отнятие, немота</td><td><a href="../../gdd/20-combat/effects" class="internal alias" data-slug="gdd/20-combat/effects">Combat - Effects</a> §Аркана + <a href="../../gdd/20-combat/effects/cc-primitives" class="internal alias" data-slug="gdd/20-combat/effects/cc-primitives">немота</a></td><td><code>proposed</code>; открыт вопрос мана-дрейна против безресурсных</td></tr><tr><td>Девять новых боевых сущностей</td><td><a href="../../gdd/relics/draft-ideas" class="internal alias" data-slug="gdd/relics/draft-ideas">Relic - Draft Ideas</a> §Разбор 2026-07-29</td><td>вердикты по каждой <strong>ждут Макса</strong></td></tr><tr><td>Спелл-стилер (d6)</td><td>там же + журнал</td><td><strong>принят как явное исключение</strong> из правила нулевого выходного рандома</td></tr><tr><td>Водяной брузер вместо The Tide</td><td><a href="../../gdd/relics/the-torrent" class="internal alias" data-slug="gdd/relics/the-torrent">The Torrent</a>; старый — <a href="../../gdd/00-meta/legacy" class="internal alias" data-slug="gdd/00-meta/legacy">легаси</a></td><td>принято; имя <code>proposed</code></td></tr><tr><td>Пастырь: развеивание 2→1 · Кузнец → Уникальная</td><td>карточки <a href="../../gdd/relics/the-shepherd" class="internal alias" data-slug="gdd/relics/the-shepherd">Пастыря</a> и <a href="../../gdd/relics/the-runesmith" class="internal alias" data-slug="gdd/relics/the-runesmith">Кузнеца</a></td><td>принято, прежние значения <code>superseded</code></td></tr><tr><td>Криомант-ульта · Друид · гоблин-наездник · кувырок</td><td>врезки в карточках + <a href="../../gdd/relics/draft-ideas" class="internal alias" data-slug="gdd/relics/draft-ideas">инкубатор</a></td><td><code>proposed</code></td></tr><tr><td>Три босса фракций</td><td><a href="../../gdd/enemies/bosses/" class="internal alias" data-slug="gdd/enemies/bosses/index">Enemies - Bosses</a> + <a href="../../gdd/00-meta/roadmap" class="internal alias" data-slug="gdd/00-meta/roadmap">Roadmap</a> §Блок 2.55</td><td>карточки-теория + реестр швов</td></tr><tr><td>Дикие звери + друиды-кураторы</td><td><a href="../../gdd/enemies/species/beasts" class="internal alias" data-slug="gdd/enemies/species/beasts">Species - Beasts</a> §Заявка</td><td>заявка</td></tr><tr><td>Призрачный Корован, скелеты</td><td><a href="../../gdd/enemies/species/revenant-caravan" class="internal alias" data-slug="gdd/enemies/species/revenant-caravan">Species - Revenant Caravan</a></td><td>заявка</td></tr><tr><td>Командиры и их наборы</td><td><a href="../../gdd/10-vision/guildmaster" class="internal alias" data-slug="gdd/10-vision/guildmaster">Vision - Guildmaster &amp; Captain</a></td><td><strong>термины закрыты 2026-07-29:</strong> <code>Command</code>/«Приказ» и <code>Crew</code>/«Экипаж», персона остаётся Капитаном</td></tr><tr><td>Модификаторы забега и баны</td><td>Roadmap §Движущаяся мета</td><td>направление принято ранее, <strong>форма опознана как Pact of Punishment</strong></td></tr><tr><td>Наёмники</td><td>Roadmap §Наёмники</td><td>рекомендация: только как стартовый набор Капитана</td></tr><tr><td><del>Таймер расстановки 30 сек</del></td><td><a href="../../gdd/enemies/bosses/" class="internal alias" data-slug="gdd/enemies/bosses/index">Enemies - Bosses</a> §В чём испытание</td><td><strong>ПРИНЯТ 2026-07-29</strong> на узлах со стадиями; возражение снято правилом «истечение = играем как стоим»</td></tr><tr><td>Кубики d6 в спорах · головоломки</td><td><a href="../../gdd/30-run-meta/events-minigames" class="internal alias" data-slug="gdd/30-run-meta/events-minigames">Run - Events &amp; Minigames</a></td><td>заявки</td></tr><tr><td>Одноразовые «усилители» · предметы на призывы</td><td><a href="../../gdd/40-content/items-banners" class="internal alias" data-slug="gdd/40-content/items-banners">Content - Items &amp; Banners</a></td><td>заявки; «одноразовость» переосмыслена как бюджет триггера</td></tr><tr><td>Деньги за выживших</td><td><a href="../../gdd/30-run-meta/meta-progression" class="internal alias" data-slug="gdd/30-run-meta/meta-progression">Run - Meta Progression</a> §Открытые</td><td><strong>возражение скрайба</strong>: платит за осторожность</td></tr><tr><td>Статы силы призывов · скейлы первой атаки</td><td><a href="../../gdd/20-combat/stats" class="internal alias" data-slug="gdd/20-combat/stats">Combat - Stats</a> §На будущее</td><td>открытые вопросы</td></tr><tr><td>«Красиво окружают, а не толпятся»</td><td><a href="../../gdd/20-combat/positioning" class="internal alias" data-slug="gdd/20-combat/positioning">Combat - Positioning</a> §Не обсуждали</td><td>заявка</td></tr><tr><td>Окно «Отряд» · диалоговая система</td><td>Roadmap §Блок 2.5</td><td>заявки</td></tr><tr><td>Визуал магазина, кемпа, сундука</td><td><a href="../../gdd/10-vision/backlog-atmosphere-light-post" class="internal alias" data-slug="gdd/10-vision/backlog-atmosphere-light-post">Свет, пост, атмосфера</a> §6</td><td>заявка; синхронное кручение — кооп-фича</td></tr><tr><td>Гоблин-боблин / сумка хранения</td><td>Roadmap §Блок 2.6</td><td>заявка</td></tr></tbody></table></div>
+<h1 id="25-неутверждённое-по-карточкам-контента">2.5. Неутверждённое по карточкам контента<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#25-неутверждённое-по-карточкам-контента" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<p>Разнесено из карточек 2026-07-30 (правило «карточка держит только механику», журнал 2026-07-30/1).
+Здесь то, что <strong>ждёт слова Макса</strong>: имена, класс, незаданные поля, числа-предложения скрайба. Что не
+реализовано — в <a href="../../gdd/relics/implementation-status" class="internal alias" data-slug="gdd/relics/implementation-status">Relic - Implementation Status</a>, что замерить — в
+<code>docs/balance-issues.md</code>.</p>
+<h2 id="требует-вердикта-в-первую-очередь">Требует вердикта в первую очередь<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#требует-вердикта-в-первую-очередь" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>
+<p><strong>Улучшаются ли треш-реликвии.</strong> Семь болванок заведены 2026-08-01, но Шага 6 (шесть улучшений) у
+них нет ни у одной, и это НЕ решение — вопрос просто не задавался. Развилка честная: улучшения
+превращают временный заполнитель в кит, который жалко менять, — а тир задуман как то, что бросают.
+Против этого — общая механика левелов идёт по копиям и не знает исключений, так что «треш не
+качается» придётся отдельно объяснять и игроку, и коду. Пока в карточках раздела улучшений нет вовсе.</p>
+</li>
+<li>
+<p><strong>Имена и тексты болванок — черновые.</strong> <code>Треснувший щит</code>, <code>Зазубренный меч</code>, <code>Стёртый нож</code>,
+<code>Кривой лук</code>, <code>Треснувший амулет</code>, <code>Щербатый череп</code>, <code>Пучок трав</code> плюс описания в ключах
+<code>relic.trash_*.desc</code> написаны мной без нарративного контура. Тон и имена — епархия Макса и
+кластера <a href="../../gdd/60-narrative/" class="internal alias" data-slug="gdd/60-narrative/index">нарратива</a>; правка ключей ничего в механике не задевает.</p>
+</li>
+<li>
+<p><strong>Как назвать третий тир врага.</strong> Ось расширена до четырёх 2026-08-01 (Треш / Обычный / Элита /
+Специальный), и по слову Макса имя третьего открыто: «элитка (или как-то иначе назвать. Это не главный
+бой в элитном сражении, а просто сильный юнит)». Пока стоит «Элита» — рабочее имя, не приёмка.
+Кандидаты без вердикта: «Ветеран» (слышно силу без намёка на энкаунтер), «Сильный», «Ударный».</p>
+</li>
+<li>
+<p><strong>Раскладка пятнадцати готовых врагов по четырём тирам.</strong> До 2026-08-01 тиров было три, и все
+карточки размечены старой осью: одиннадцать <code>Обычный</code>, четыре <code>Элита</code>. Тир <strong>Треш</strong> не носит никто —
+значит либо часть «обычек» на самом деле треш (кандидаты: гоблин-грунт и гоблин-лучник — у обоих нет
+ни одного навыка), либо треш появится только с новым контентом. Раскладку предлагаю такую, но это
+<code>proposed</code>, не сделано:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Тир</th><th>Кто</th><th>Почему</th></tr></thead><tbody><tr><td>Треш</td><td>гоблин-грунт, гоблин-лучник</td><td>навыков нет вовсе — ровно определение тира</td></tr><tr><td>Обычный</td><td>воин, убийца, шутник, кривляка, волк стаи, три разбойника + дуэлянт и убийца</td><td>одна-три простых пассивки или активка без выбора цели</td></tr><tr><td>Элита</td><td>командир, маг, наездник, варлок, земляной голем</td><td>по одному-двум правилам, меняющим приоритет</td></tr><tr><td>Специальный</td><td>три босса фракций</td><td>уже так и живут, только ось называлась «Босс»</td></tr></tbody></table></div>
+</li>
+<li>
+<p><strong><a href="../../gdd/relics/the-paragon" class="internal alias" data-slug="gdd/relics/the-paragon">The Paragon</a> ждёт реворка</strong> (твоё слово 2026-07-28): стоимость «Идеальной
+формы» не задана, школа урона автоатаки тоже, детали персонажа не проработаны.</p>
+</li>
+<li>
+<p><strong>Чем теперь телеграфится длительный бафф.</strong> Контур каста снят твоим словом (<code>2026-07-31/68</code>), а
+именно он был телеграфом маршей и аур по <code>2026-07-31/61</code> — значит сейчас у них нет никакого. Два
+пути: отдать им свечение ТЕЛОМ (значение «всё тело» у <code>AbilityData.CastSource</code> уже заведено, но ни
+один навык его не ставит) или вернуть контур адресно — только длительным, оставив обычному касту
+чистое свечение части. Пока не решено, длительные баффы молчат.</p>
+</li>
+</ul>
+<p><em>Закрыто 2026-07-30 (вечер):</em> активка Грозы — одиночный разряд после подготовки (<code>2026-07-30/4</code>);
+архетип «Берсерк» из ростера уходит (<code>2026-07-30/5</code>).</p>
+<p><em>Закрыто 2026-07-31 (ночь):</em> градация стака на постоянном слое статусов — три ступени, плюс четвёртая
+как пасхалка на сломе (<code>2026-07-31/77</code>, <code>2026-07-31/78</code>); форма и поверхность барьера — эллипс без
+углов, зазор до тела заметный (<code>2026-07-31/89</code>, <code>2026-07-31/90</code>, разбор отклонённого —
+<a href="../../gdd/00-meta/closed-forks" class="internal alias" data-slug="gdd/00-meta/closed-forks">Closed Forks</a>); направленный блок — сектор 180°, как у парирования
+(<code>2026-07-31/92</code>, замер цены — <code>BAL-021</code>).</p>
+<h2 id="числа-двух-форм-десятины--поставлены-рабочими-ждут-приёмки">Числа двух форм Десятины — поставлены рабочими, ждут приёмки<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#числа-двух-форм-десятины--поставлены-рабочими-ждут-приёмки" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Формы разведены в движке 2026-07-30 (журнал <code>2026-07-30/13</code>), но четыре числа карточка не задавала, и я
+поставила их рабочими, чтобы кит вообще заиграл:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Число</th><th>Поставлено</th><th>Чем обосновано</th></tr></thead><tbody><tr><td>Занос потока</td><td><strong>1 сек</strong></td><td>«сильно дольше обычного» — твоя формулировка; больше секунды кит почти не бьёт</td></tr><tr><td>Длительность потока</td><td><strong>3 сек</strong></td><td>вчетверо длиннее заноса: срыв больно, но не обнуляет атаку</td></tr><tr><td>Сворачивание потока</td><td><strong>0.7 сек</strong></td><td>вместе с заносом даёт ~36% времени вне урона — это и есть цена канала</td></tr><tr><td>Дальность ближней формы</td><td><strong>1</strong></td><td>как у всего ближнего боя в ростере (у копейщика и монаха 2 — там древко и вихрь)</td></tr></tbody></table></div>
+<p>Темп обеих форм — <strong>0.75</strong>, урон <strong>160</strong>: «одна норма на оба режима» из карточки соблюдена буквально.</p>
+<h2 id="числа-пассивок-врагов--поставлены-рабочими-ждут-приёмки">Числа пассивок врагов — поставлены рабочими, ждут приёмки<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#числа-пассивок-врагов--поставлены-рабочими-ждут-приёмки" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Механика пятерых заведена в движок 2026-07-31 (Фаза 2 ростера). Барьеры и антихил взяты из карточек
+слово в слово; четыре числа карточки не задавали, и я поставила их рабочими, чтобы киты заиграли:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Число</th><th>Поставлено</th><th>Чем обосновано</th></tr></thead><tbody><tr><td>Бонус гоблина-убийцы в тыл</td><td><strong>+50%</strong></td><td>карточка говорит «доп урон в спину» без величины; половина удара — заметная награда за обход, но не убийство с одного захода</td></tr><tr><td>Ступень маскировки убийцы</td><td><strong>средняя</strong> (радиус обнаружения ~4)</td><td>«видно лишь в радиусе вокруг него» — не инвиз; серой массе сильная ступень даёт слишком много</td></tr><tr><td>Радиус стаи волка</td><td><strong>3</strong></td><td>карточка оставляла на балансировку; в карточку вписано как число по правилу §HARD</td></tr><tr><td>Яд отравленного арбалета</td><td><strong>15/сек, 4 сек, до 3 стаков</strong></td><td>карточка задаёт только «ядовитый дот» и силу антихила; ровные числа под первый замер</td></tr></tbody></table></div>
+<p>Радиусы маскировки — общая ручка <code>SimTuningConfig</code>, не свойство кита: менять их значит менять всем.</p>
+<p>Последние четыре механики ростера заведены 2026-07-31 (Фаза 2C). Из карточек взяты: 3 сферы, откат 4 сек,
+<code>+100%</code> скорости и <code>×2</code> урона у мага; цикл 1-2-3, отброс и замедление <code>80%</code> на <code>1 сек</code> у голема; «до 500%
+от скорости» и игнор <code>50%</code> брони у разгона; «урон обоим и стан» у швырка. Рабочими поставлены:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Число</th><th>Поставлено</th><th>Чем обосновано</th></tr></thead><tbody><tr><td>Радиус сферы мага</td><td><strong>1.5</strong></td><td>«небольшое аое» из карточки: задевает соседа в строю, но не полстроя</td></tr><tr><td>Размашистый удар голема</td><td>радиус <strong>2</strong>, множитель <strong>1</strong></td><td>вторая фаза цикла бьёт шире, но не сильнее — сила у третьей</td></tr><tr><td>Тяжёлый удар голема</td><td><strong>×2</strong>, отброс <strong>2</strong></td><td>карточка задаёт отброс и замедление, но не величину удара</td></tr><tr><td>Разгон наездника</td><td>дистанция <strong>6</strong>, коридор <strong>1.2</strong></td><td>шести единиц хватает пройти строй насквозь и встать за ним</td></tr><tr><td>Швырок союзника</td><td><strong>×1.5</strong> от силы атаки, кд <strong>12 сек</strong></td><td>одно число обоим (вердикт Макса); кд длинный — приём разовый по духу карточки</td></tr><tr><td>Дальность броска</td><td><strong>5</strong>, коридор <strong>1</strong></td><td>бросок короче разгона: это удар по строю, а не проезд через него</td></tr></tbody></table></div>
+<p>Активки заведены тем же порядком (Фаза 2B). Из карточек взяты: <code>+20%</code>/5 сек клича, стан 1 сек и кд 6,
+<code>20%</code> метки, кд 4 у лечения варлока, 1000 и кд 15 у оберега голема. Рабочими поставлены:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Число</th><th>Поставлено</th><th>Чем обосновано</th></tr></thead><tbody><tr><td>Радиус и кд «Командного клича»</td><td><strong>4</strong> и <strong>10 сек</strong></td><td>радиус — плотность гоблинского фронта; кд вдвое длиннее самого бафа, иначе клич висит всегда</td></tr><tr><td>Кд и срок «Метки добычи»</td><td><strong>8 сек</strong> и <strong>4 сек</strong></td><td>метка должна гаснуть между применениями, иначе рут превращается в постоянный</td></tr><tr><td>Щит «Защитного барьера» шамана</td><td><strong>150</strong>, 5 сек, кд <strong>8 сек</strong></td><td>карточка оставляла на балансировку; 150 — примерно треть HP гоблина-воина</td></tr><tr><td>Темп лечения варлока</td><td><strong>30/сек</strong></td><td>за 8 сек карточки даёт 240 HP — четверть HP разбойника</td></tr><tr><td>Срок оберега голема</td><td><strong>8 сек</strong></td><td>карточка задаёт запас и кд, но не окно; 8 из 15 держит щит примерно половину времени</td></tr><tr><td>Множитель разгона наездника</td><td><strong>база 1.0 + 1.5 за единицу скорости</strong></td><td>«до 500%» из карточки: при штатной скорости <code>3.63</code> даёт <code>×4.95</code>, а замедление режет пропорционально</td></tr></tbody></table></div>
+<h2 id="числа-проказников--поставлены-рабочими-ждут-приёмки">Числа проказников — поставлены рабочими, ждут приёмки<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#числа-проказников--поставлены-рабочими-ждут-приёмки" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Оба проказника в движке 2026-07-31. Из твоих слов взяты: <code>2</code> стака слепоты на <code>3 сек</code> раз в <code>8 сек</code>
+у шутника; <code>-4</code> единицы набора ресурса, канал <code>4 сек</code>, откат <code>6 сек</code> у кривляки. Рабочими поставлены:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Число</th><th>Поставлено</th><th>Чем обосновано</th></tr></thead><tbody><tr><td>Срок дебаффа кривляки после обрыва канала</td><td><strong>1.5 сек</strong></td><td>канал подновляет дебафф раз в секунду, значит срок обязан быть длиннее тика; полторы секунды гасят его почти сразу после смерти носителя, но не мигают внутри канала</td></tr><tr><td>Урон и темп атаки кривляки</td><td><strong>30</strong> и <strong>0.7</strong></td><td>взяты у шутника без правок: тот же класс и вид, а различаться проказники должны навыком, не статами</td></tr></tbody></table></div>
+<p><strong>Замерить плотность канала (<code>BAL-023</code>).</strong> «Откат <code>6 сек</code>» в движке тикает <strong>от старта каста</strong>, а не от
+конца канала, поэтому цикл выходит 4 секунды канала + 2 передышки, и с хвостом дебаффа жертва под ним
+примерно 5.5 секунд из 6 — почти непрерывно. Это ближе к варианту «держит постоянно», который ты
+отклонил. Развилка на замер: поднять откат до <code>10 сек</code> (передышка ровно 6) или оставить как названо.</p>
+<h2 id="числа-двух-разбойников--поставлены-рабочими-ждут-приёмки">Числа двух разбойников — поставлены рабочими, ждут приёмки<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#числа-двух-разбойников--поставлены-рабочими-ждут-приёмки" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Дуэлянт и убийца в движке 2026-08-01. Из заявки взяты слово в слово: щит <code>200</code> на <code>3 сек</code> за
+парирование, <code>+50%</code> урона в дуэли, кровь <code>30%</code> от силы атаки, маскировка средней ступени. Рабочими
+поставлены:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Число</th><th>Поставлено</th><th>Чем обосновано</th></tr></thead><tbody><tr><td>Радиус дуэли</td><td><strong>3</strong></td><td>столько же, сколько радиус стаи волка: «рядом» должно значить одно и то же во всём ростере</td></tr><tr><td>Заряды и откат парирования дуэлянта</td><td><strong>1</strong> заряд, <strong>6 сек</strong></td><td>числа общего примитива, кит их не переопределяет</td></tr><tr><td>Статы дуэлянта</td><td>урон <strong>80</strong>, темп <strong>0.9</strong>, броня <strong>4</strong></td><td>между брузером (90 / 0.7 / 8) и убийцей: фехтовальщик быстрее и легче тяжёлого</td></tr><tr><td>Статы убийцы</td><td>урон <strong>70</strong>, темп <strong>1.2</strong>, броня <strong>0</strong></td><td>тот же профиль, что у гоблина-убийцы (65 / 1.3 / 0), но крупнее — вид разбойников не такой хрупкий</td></tr><tr><td>Класс дуэлянта / убийцы</td><td><strong>Брузер</strong> / <strong>Убийца</strong></td><td>дуэлянт стоит в размене, убийца врывается в тыл; отсюда HP <code>1400</code> против <code>1050</code></td></tr></tbody></table></div>
+<p><strong>Замерить (<code>BAL-024</code>).</strong> Парирование гасит ВСЕ удары окна, а щит <code>200</code> приходит сверху — против
+многоударных китов дуэлянт может оказаться сильно крепче задуманного. Мерить его выживаемость против
+Монаха (две атаки по 50%) и против одноударного кита: разрыв покажет, не превратился ли «стандарт» в
+элиту по факту.</p>
+<h2 id="улучшения--в-работу-не-берутся">Улучшения — в работу не берутся<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#улучшения--в-работу-не-берутся" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Вердикт Макса 2026-07-30:</strong> систему улучшений мы сейчас не делаем, поэтому пустые и устаревшие
+улучшения в карточках вопросом не считаются. У <a href="../../gdd/relics/the-tithe" class="internal alias" data-slug="gdd/relics/the-tithe">Tithe</a> два улучшения T1
+обнулились (их числа стали базовыми значениями навыков) — так и оставлено; у
+<a href="../../gdd/relics/the-lull" class="internal alias" data-slug="gdd/relics/the-lull">Lull</a> шесть улучшений лежат как черновик. Разбирать это будем, когда система
+появится.</p>
+<h2 id="имена-арканы-предложенные-скрайбом">Имена-арканы, предложенные скрайбом<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#имена-арканы-предложенные-скрайбом" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Финальное слово за Максом по всем: <strong>The Aegis</strong>, <strong>The Rift</strong> (плюс имя стак-эффекта «Разлад»),
+<strong>The Fang</strong>, <strong>The Torrent</strong> (заменяется одним словом, если не нравится), <strong>The Hearth</strong>, <strong>The Lull</strong>,
+<strong>The Paragon</strong>, <strong>The Runesmith</strong> (имя в лоб = класс, нарушает закон нейминга).
+Закрыто 2026-07-30: бывший <strong>The Cairn (Geomancer)</strong> стал <strong>The Tithe (Hemomancer)</strong>.
+Подпись класса Драугра сменена <code>Berserker</code> → <code>Frostbound</code>. Имя и титул слепого гоблина-босса не
+придуманы.</p>
+<h2 id="класс-не-задан">Класс не задан<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#класс-не-задан" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><code>combat_class</code> стоит по подсказке из прежнего поля <code>roles</code>, а не по решению:
+<a href="../../gdd/relics/the-bonewright" class="internal alias" data-slug="gdd/relics/the-bonewright">Bonewright</a> (было «Саммонер»), <a href="../../gdd/relics/the-bond" class="internal alias" data-slug="gdd/relics/the-bond">Bond</a> («Саммонер»),
+<a href="../../gdd/relics/the-storm" class="internal alias" data-slug="gdd/relics/the-storm">Storm</a> («РДД»), <a href="../../gdd/relics/the-warden" class="internal alias" data-slug="gdd/relics/the-warden">Warden</a> («Саммонер»),
+<a href="../../gdd/relics/the-paragon" class="internal alias" data-slug="gdd/relics/the-paragon">Paragon</a> («Дилер, Танк-дилер»), <a href="../../gdd/relics/the-runesmith" class="internal alias" data-slug="gdd/relics/the-runesmith">Runesmith</a>
+(«Танк»). Подсказка не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце.</p>
+<h2 id="улучшения-не-заданы">Улучшения не заданы<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#улучшения-не-заданы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Полностью: <a href="../../gdd/relics/the-torrent" class="internal alias" data-slug="gdd/relics/the-torrent">Torrent</a> (есть список кандидатов из легаси),
+<a href="../../gdd/relics/the-runesmith" class="internal alias" data-slug="gdd/relics/the-runesmith">Runesmith</a>, <a href="../../gdd/relics/the-paragon" class="internal alias" data-slug="gdd/relics/the-paragon">Paragon</a>,
+<a href="../../gdd/relics/the-bloom" class="internal alias" data-slug="gdd/relics/the-bloom">Bloom</a>. Частично: <a href="../../gdd/relics/the-thorn" class="internal alias" data-slug="gdd/relics/the-thorn">Thorn</a> (задано одно из шести).
+<strong>Tier 2 — предложения скрайба, не утверждены</strong> у Aegis, Rift, Fang, Hearth, Lull, Cairn, Draugr.
+Числа улучшений <a href="../../gdd/relics/the-pyre" class="internal alias" data-slug="gdd/relics/the-pyre">Pyre</a> — к ревизии при реализации; «стаки ожога» там читаются
+как стаки «Угли».</p>
+<h2 id="ранние-черновики-идеи-не-по-шаблону-шаг-17">Ранние черновики-идеи, не по шаблону Шаг 1–7<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ранние-черновики-идеи-не-по-шаблону-шаг-17" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><a href="../../gdd/relics/the-martyr" class="internal alias" data-slug="gdd/relics/the-martyr">The Martyr</a> и <a href="../../gdd/relics/the-warden" class="internal alias" data-slug="gdd/relics/the-warden">The Warden</a>: не заданы позиция,
+дальность, доставка атаки, школа урона. У Martyr тип — Проклятая. У Warden зафиксировано, что яд живёт
+только в улучшениях, не в базовом наборе.</p>
+<h2 id="числа-предложения-ждущие-приёмки">Числа-предложения, ждущие приёмки<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#числа-предложения-ждущие-приёмки" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Стоимости активок и темпы: Aegis (30), Rift (15), Fang (25, темп 5 сек), Torrent (35, наследовано от
+The Tide), Hearth (30), Lull (50), Draugr (40), Bonewright (40, каст раз в 8 с), Bond (50, 10 с),
+Cadence (40, 8 с), Storm (60, 12 с), Runesmith (30, 6 с). Величины: щит Rift 150, щит Aegis 120 и
+масштаб 0.4, шред Fang −3 за стак, кап сопротивления Hearth 50%, стаки «Изморози» за удар у Криоманта
+и Драугра (по 1 — «если что, потом увеличим»), отсутствие капа на числе стрел Rift, отсутствие активки
+у Cairn. Разряд Грозы — <strong>×4 автоатаки при подготовке 1.5 сек</strong>: множитель и время предложены скрайбом
+под потолок ростера (у Драугра ×5 при трёх условиях, у Грозы условие одно).</p>
+<h2 id="фантомы-найденные-при-чистке">Фантомы, найденные при чистке<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#фантомы-найденные-при-чистке" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>У <a href="../../gdd/relics/the-paragon" class="internal alias" data-slug="gdd/relics/the-paragon">Paragon</a> и <a href="../../gdd/relics/the-runesmith" class="internal alias" data-slug="gdd/relics/the-runesmith">Runesmith</a> пометка обещала
+«кандидаты имён в конце карточки» — <strong>кандидатов там нет</strong>. Либо придумать, либо снять обещание.</li>
+</ul>
+<h2 id="открытое-по-боссам">Открытое по боссам<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#открытое-по-боссам" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Дезертировавшая Армия:</strong> какие именно оси профиля он читает (главный тип урона назван, дальше —
+роли, связки, средняя дистанция)? Каждая ось это отдельная реплика и отдельный бафф, поэтому список
+конечный. Единая армия или части — от ответа зависит, один это босс-бой или серия. «Отряды кавы,
+лучников, разведчиков» — подвиды нового Вида: заводить вместе с боссом или отдельно.</li>
+<li><strong>Гоблинская Банда:</strong> числа стадии 1 (толщина щита задаёт, сколько двое держат босса; опасность
+големов — сколько времени у второй пары) — балансным проходом.</li>
+<li><strong>Разбойничье Гнездо:</strong> что значит «выбираем направление побега» — арена, сторона подкрепления или
+таймер? Дым ассасина — зоны и видимости как механики нет вовсе. Ловушка требует объекта на арене,
+которого в симуляции нет (та же проблема, что у «Водяного капкана» в легаси). В коопе «подождать
+минуту» — решение за всех четверых: нужен механизм согласия.</li>
+</ul>
+<hr/>
+<h1 id="3-инкубатор-требований-систем-без-канон-дома">3. Инкубатор требований (систем без канон-дома)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-инкубатор-требований-систем-без-канон-дома" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p>Сырые требования к системам, канон-док которых ещё не написан. Это <strong>не открытые развилки</strong> —
+здесь копится фактура, чтобы при заходе по системе ничего не потерять.</p>
+</blockquote>
+<h2 id="стоячие-зоны-на-арене-решено-заводить-2026-07-31">Стоячие зоны на арене (решено заводить 2026-07-31)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#стоячие-зоны-на-арене-решено-заводить-2026-07-31" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Решение принято</strong> (<code>2026-07-31/93</code>): облако спор, ледяное поле, горящая земля — зона живёт на арене,
+тикает и задевает тех, кто внутри. Причина — единственный способ дать позиционную игру в бою без
+управления: решает <strong>расстановка</strong>, то есть решение, принятое до боя. Канон-дома у механики ещё нет,
+поэтому фактура копится здесь.</p>
+<p><strong>Что это НЕ:</strong> не эффект на юните. У неё своя геометрия и своё место в мире, она переживает смерть
+автора и задевает того, кто в неё вошёл, — значит это отдельная сущность симуляции.</p>
+<p><strong>Что придётся решить при заходе:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Вопрос</th><th>Почему важен</th></tr></thead><tbody><tr><td><strong>Кого задевает</strong> — врагов автора, всех, по фильтру тега</td><td>«горящая земля бьёт всех» и «бьёт врагов» — разные механики и разный визуал</td></tr><tr><td><strong>Как часто тикает</strong> и совпадает ли тик с тиком DoT</td><td>иначе два разных периода урона в одном бою</td></tr><tr><td><strong>Что при входе и выходе</strong> — накладывает статус или бьёт напрямую</td><td>от этого зависит, виден ли эффект на теле после выхода из зоны</td></tr><tr><td><strong>Стакаются ли</strong> две зоны одного типа</td><td>наложение облаков спор от двух Друидов</td></tr><tr><td><strong>Переживает ли смерть автора</strong></td><td>почти наверняка да, и это её отличие от аур</td></tr><tr><td><strong>Влияет ли на движение</strong> — обходит ли AI опасную зону</td><td>самая дорогая часть: это правка боевого AI, а не показ</td></tr><tr><td><strong>Как попадает в ленту</strong></td><td>показ рисует зону из ленты; без записи в ленту её не нарисовать</td></tr></tbody></table></div>
+<p><strong>Показ уже спроектирован</strong> — <a href="../../gdd/70-gamefeel/vfx-language" class="internal alias" data-slug="gdd/70-gamefeel/vfx-language">VFX Language</a> §Зоны: у стоячей зоны нет
+фазы подводки и нет гаснущего следа, контур держится всё время жизни, а тик показывается на телах, не на
+земле.</p>
+<h2 id="теги-геройских-реликвий-для-удобства">Теги геройских реликвий (для удобства)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#теги-геройских-реликвий-для-удобства" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>маг, физ, урон, постепенный урон, берст урон, выживаемость, исцеление, контроль и т.п.</p>
+<blockquote>
+<p>Для классификации/поиска реликвий в компендиуме и UI. Связано с <code>EffectTag</code> боевой модели, но это
+<strong>контент-теги реликвии</strong>, а не теги эффекта — уточнить при авторинге.</p>
+</blockquote>
+<h2 id="настройка-ai-шаблоны">Настройка AI (шаблоны)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#настройка-ai-шаблоны" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p>⚙️ <strong>Сырой источник</strong> для AI-движка (Filter / Score / Override). Канон-док по AI не написан;
+пока копим требования здесь. Roadmap знает об этом пласте.</p>
+</blockquote>
+<p>настраивается конкретная геройская реликвия или заклинание. в бою нельзя. только вне боя.
+есть 2-3 заготовки от разрабов для каждой геройской реликвии и возможность создать свои заготовки, что должны сохраняться между забегами</p>
+<p>геройская реликвия может содержать в себе настройки конкретно для персонажа, а может ещё и для заклинаний (игрок сам выбирает), также экспортнуть можно как всё, только спеллы из профиля и только логика без спеллов и т.д.</p>
+<p>можно сохранять настройки для заклинаний в отдельности</p>
+<p>в заготовках своих ты можешь выбрать для какого героя (героев) оно должно отображаться в первую очередь — или они являются универсальными.</p>
+<p>заготовками можно делиться (как файлами или, если игроки находятся в забеге в лобби — даже вызывать интерфейс в духе “Х игрок передаёт вам 3 реликвии? Добавить? Добавить все / Добавить выбранные / Отказаться”)</p>
+<h3 id="профили-и-score">Профили и Score<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#профили-и-score" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>некоторые параметры — абсолютные (он всегда делает), некоторые — Score (например для оценки цели). нужен ai в котором игрок сможет посмотреть Score на каждую цель в бою (ага, на вражеского снайпера 200 скор по моим настройкам). некоторые Score можно сделать абсолютными по желанию игрока.</p>
+<p>score можно настраивать минимальный и максимальный для некоторых ситуаций. Например, отступление в зависимости от расстояния врага. Минимум — 100 (т.е. зашёл за Х — сразу 100), максимум — 200 (чтобы перебить какой-то AI например). Должны быть заготовки для score, чтобы игроку не пришлось настраивать всё по цифрам самому.</p>
+<h4 id="0-score-действий">0. Score действий<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#0-score-действий" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>что делать? (бить, бежать, кастовать 1 скилл или 2, просто стоять и т.п.)</p>
+<p>нельзя перебивать каст автоатаки или заклинания в процессе каста</p>
+<p>лучше делать касты сами по себе мгновенными, но если между ними делать паузы — лучше добавить не “время каста” а “время отдыха” после автоатаки, каста и т.п.</p>
+<h4 id="1-отступление-при-лоу-хп">1. Отступление при лоу хп<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-отступление-при-лоу-хп" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>отступление при Х хп (можно настроить — от % или числа) от противников, пока не наберётся Y хп (можно тоже настроить)</p>
+<h4 id="2-фокус-цели-отдельно-для-автоатак-и-каждого-направленного-заклинания">2. Фокус цели (отдельно для автоатак и каждого направленного заклинания)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-фокус-цели-отдельно-для-автоатак-и-каждого-направленного-заклинания" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>Можно выбрать противника по макс. хп, текущему хп (наибольшее, наименьшее), по дальности, по уровню защиты физ и маг брони, выбрать конкретных юнитов для фокуса, по наличию Х эффекта)</p>
+<p>надо мочь настраивать параметры для фокус цели. надо чтобы можно было выбрать конкретный “список таргетов”, выбрать чтобы цели из списка — он к ним или специально подходил, или бил тех, кого видит, либо чтобы мог подойти, если недалеко</p>
+<p>“бей ближайшего врага без эффекта заморозки с наименьшей маг бронёй и большим количеством макс хп, но в первую очередь игрока”.</p>
+<p>как-то продумать логику так, чтобы игрок смог настраивать то, что хотел, выбирать какие аспекты — самые важные, а какие — более второстепенные.</p>
+<h4 id="3-условия-каста-заклинаний">3. Условия каста заклинаний<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-условия-каста-заклинаний" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>например, кастовать умение, чтобы оно задело наибольшее кол-во целей, но минимум 2. кастовать в любом случае, если меньше 10% хп. кастовать умение, если ресурса (маны, например или ярости) — более 50%</p>
+<p>или бежать кастовать умение по цели (даже если вне радиуса), если у него меньше 20% хп, или кастовать если меньше 50% хп и он в радиусе только на цели из Х списка.</p>
+<p>во многих местах надо мочь чтобы игрок смог выбирать как % так и целочисленное (хп, ресурс и т.д.)</p>
+<h4 id="4-позиционирование">4. Позиционирование<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-позиционирование" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>состоит из базовой цели (идти к или даже просто “стоять”) и доп. условий</p>
+<p>например, отступление если кто-то подходит из врагов ближе чем на Х. Или даже из союзников</p>
+<p>держится всегда с союзником Х в радиусе Y (надо мин. разницу задать чтобы не было “гистерезиса”)</p>
+<p>поддержка — автоматически смещается к лоу хп целям и т.п.</p>
+<p>это скорее “передвижение”, надо продумать какие режимы передвижения будут</p>
+<h3 id="структура-ai-filter--score--override">Структура AI: Filter / Score / Override<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#структура-ai-filter--score--override" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Filter</strong> — «Кого вообще можно рассматривать?» (только враги / только живые / в радиусе Х / без эффекта Х / из списка / HP &lt; X)</li>
+<li><strong>Score</strong> — «Кто из допустимых целей лучше?» (чем ближе — лучше; чем ниже HP — лучше; ниже броня — лучше; цель из списка — +Score; босс — +Score)</li>
+<li><strong>Override</strong> — «Что перебивает обычный выбор?» (self HP &lt; 10% → отступать; союзник HP &lt; 15% → хилить; враг HP &lt; 5% и в радиусе → добить; опасный враг ближе Х → отойти; способность задевает 4+ целей → кастовать)</li>
+</ul>
+<p>для аое выбираем не цель, а точку применения (оптимизировать, чтобы не перебирать слишком много точек: сначала точки с юнитами, середина между 2 целями, центр кластера и т.д.)</p>
+<h3 id="оптимизация-ai">Оптимизация AI<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#оптимизация-ai" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>кэшировать списки команд (скомпилировать AI-профиль); логику прогонять раз в ~0.1 сек (10 Гц) — проверка условий для смены текущих состояний/действий.</p>
+<h3 id="уровни-ai-настройки-classic--extra">Уровни AI-настройки (Classic / Extra)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#уровни-ai-настройки-classic--extra" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>всего 2 мода, зависит от выбранного хостом для игры. ai профили могут быть разного уровня (classic и extra). Экстра-настройки (созданные в экстра) нельзя юзать если игра в классик-моде.</p>
+<p>Если выбран для игры экстра-мод, а у игрока симпл-мод — у игрока UI симпл-мода. Нельзя “перепрыгивать” вверх, но уходить вниз — вполне. Игрок может менять свои настройки отображения во время игры (в мп — не выше уровня настройки AI созданной игры).</p>
+<p>Когда игрок хочет поменять ai — появляется окошко симпл-мода (только рекоменд. 2-3 профиля от разрабов) на большую часть экрана + небольшая кнопка снизу “творить и созидать” (переводит в классик/экстра-мод). Классик — не столь большая свобода; экстра — большая свобода, но сложный, открывается лишь если хотя бы раз пройти с классик-модом.</p>
+<p>надо продумать, что будет доступно в классике, а что — в экстра.</p>
+<h2 id="компендиум">Компендиум<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#компендиум" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>должен быть компендиум со всеми героями, их заклинаниями и т.д. из меню игрок может это отсортировать, найти интересное ему и именно для него начать делать ai-профиль, если захочет.</p>
+<h2 id="повтор-боя-и-сравнение-профилей">Повтор боя и сравнение профилей<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#повтор-боя-и-сравнение-профилей" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>надо заложить в архитектуру возможность записать бой: прокручивать, ускорять, ставить на паузу, просматривать игровую статистику (урон за бой, дпс, Score на целях для Х заклинания и т.п.).</p>
+<p>должна быть возможность проверять эффективность боя при разных профилях (до 4 шт). Например, игрок проиграл, смотрит повтор, хочет понять как сделать профили лучше — настраивает несколько разных профилей (1 — оригинал, 2 — изменить ai мага и менчика, 3 — изменить ai всех, 4 — изменить ai мага по особенному) и “прогоняет” как пройдёт бой с такими разными профилями.</p>
+<blockquote>
+<p>Технически опирается на детерминизм симуляции (лог команд + сид). См.
+флоу забега (код <code>Assets/_Project/Scripts/Game/Flow/</code>).</p>
+</blockquote>
+<h2 id="полигон-для-проверки-ai-test-arena">Полигон для проверки AI (test-arena)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#полигон-для-проверки-ai-test-arena" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>выбрать противников, карты, доп. условия. сохранять “префаб юнита” (например гоблина с х2 хп или игрового персонажа с такими-то перками/предметами). создавать кастомные битвы для быстрой проверки (арена с заготовленными настройками/противниками, например где у всех 0.1% от макс. хп).</p>
+<blockquote>
+<p>Собирается вместе с <code>test-arena (lite)</code> — там впервые появляется AI, которое надо отлаживать глазами.</p>
+</blockquote>
+<h2 id="поддержка-steam-workshop">Поддержка Steam Workshop<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#поддержка-steam-workshop" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>пользователи могут создавать своих персонажей, выкладывать свои AI-профили, кастомные битвы.
+См. <a href="../../tech/40-planning/steam-workshop" class="internal alias" data-slug="tech/40-planning/steam-workshop">Тех: Steam Workshop и UGC</a>.</p>
+<h2 id="статистика-и-баланс">Статистика и баланс<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#статистика-и-баланс" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>статистика с игры + таблицы для баланса (релики, спеллы; дпс/хил/выживаемость — парсинг для реликов и спеллов). что ещё потребуется — уточнить.</p>
+<h2 id="ui-и-визуал-заметки">UI и визуал (заметки)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ui-и-визуал-заметки" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><del>UI Toolkit для сложных экранов; uGUI / world-space — для боевого HUD (или всё на UI Toolkit?).
+Сделать дизайн-систему.</del> — <strong>закрыто (вердикт Макса 2026-07-30): гибрид именно в этой раскладке, и
+дизайн-система токенов уже сделана.</strong> Обе половины заметки стали фактом кода, см.
+<a href="../../gdd/00-meta/roadmap" class="internal alias" data-slug="gdd/00-meta/roadmap">Meta - Roadmap</a> §Прочее.</li>
+<li>Claude designer + Figma для UI Toolkit — возможно ли, норм ли идея? <strong>Единственное, что здесь осталось
+открытым</strong>; при готовой системе токенов ценность неочевидна.</li>
+</ul>
+<hr/>
+<h2 id="перенесённое-в-канон-остались-только-ссылки">Перенесённое в канон (остались только ссылки)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#перенесённое-в-канон-остались-только-ссылки" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Статы боевых юнитов</strong> → <a href="../../gdd/20-combat/stats" class="internal alias" data-slug="gdd/20-combat/stats">Combat - Stats</a>; техспека (30 статов, операции, клампы) —
+<a href="../../tech/40-planning/stat-system" class="internal alias" data-slug="tech/40-planning/stat-system">Тех: Стат-система</a>.</li>
+<li><strong>Судьбы и перки «Сосудов»</strong> → <a href="../../gdd/40-content/relics-overview" class="internal alias" data-slug="gdd/40-content/relics-overview">Content - Relics</a> §«Сосуды» и
+<a href="../../gdd/30-run-meta/vessel-progression" class="internal alias" data-slug="gdd/30-run-meta/vessel-progression">Run - Vessel Progression</a> (Судьба — квест уровня «Сосуда» в ЗАБЕГЕ,
+решение 2026-07-27/17).</li>
+<li><strong>Боевые классы, их HP и скорость</strong> → <a href="../../gdd/20-combat/stats" class="internal" data-slug="gdd/20-combat/stats">stats</a> §Классы и базовый баланс (решение 2026-07-24).</li>
+<li><strong>Целевой DPS автоатаки по классам</strong> → <a href="../../gdd/20-combat/stats" class="internal" data-slug="gdd/20-combat/stats">stats</a> §Урон автоатаки (решение 2026-07-26/1-2).</li>
+<li><strong>Опыт и уровни «Сосуда», Обеты</strong> → <a href="../../gdd/30-run-meta/vessel-progression" class="internal" data-slug="gdd/30-run-meta/vessel-progression">vessel-progression</a> (решение 2026-07-27).</li>
+<li><strong>Роли игроков (Тактик / Поддержка / Разведчик)</strong> → <a href="../../gdd/50-modes-ux/coop/minigames" class="internal alias" data-slug="gdd/50-modes-ux/coop/minigames">Coop - Minigames &amp; Roles</a> §Роли и
+семи-кооп (переехало 2026-07-30; развилка не закрыта, но живёт теперь в кооп-кластере вместе с
+вердиктом скрайба и альтернативой — Обетами Гильдмастера).</li>
+</ul>
+<h2 id="что-ресёрч-не-покрыл">Что ресёрч НЕ покрыл<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#что-ресёрч-не-покрыл" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Коопа нет ни у одной из 14 разобранных игр.</strong> Ниша пустая — но и чужих граблей нет. Все выводы
+про кооп — экстраполяция.</li>
+<li>Не разобраны: Balatro, Into the Breach, FTL, Super Auto Pets, Backpack Battles, The Bazaar,
+Monster Train, Inscryption.</li>
+</ul>
+<blockquote>
+<p><strong>Риски жанра</strong> (AI тупит на глазах, расстановка не читается, автопилот на входе, OP-комбо, мусор
+в пуле, изобилие, урезание меты, рандом раздаёт силу) живут в одном месте —
+<a href="../../gdd/00-meta/roadmap" class="internal alias" data-slug="gdd/00-meta/roadmap">Meta - Roadmap</a> §Блок 4. Здесь дублировались, дубль снят 2026-07-29.</p>
+</blockquote></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-5" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#развилки-без-вердикта" data-for="развилки-без-вердикта">Развилки без вердикта</a></li><li class="depth-0"><a href="#1-развилки-без-вердикта" data-for="1-развилки-без-вердикта">1. Развилки без вердикта</a></li><li class="depth-1"><a href="#нужен-ли-четвёртый-размерный-тир-под-крупных-врагов" data-for="нужен-ли-четвёртый-размерный-тир-под-крупных-врагов">Нужен ли четвёртый размерный тир под крупных врагов</a></li><li class="depth-1"><a href="#ритм-атаки-удар--атака--комбо" data-for="ритм-атаки-удар--атака--комбо">Ритм атаки: Удар / Атака / Комбо</a></li><li class="depth-1"><a href="#парирование--кому-его-выдать" data-for="парирование--кому-его-выдать">Парирование — кому его выдать</a></li><li class="depth-1"><a href="#маскировка--что-осталось-после-реализации" data-for="маскировка--что-осталось-после-реализации">Маскировка — что осталось после реализации</a></li><li class="depth-1"><a href="#качество-реликвий-и-дополнительные-статы" data-for="качество-реликвий-и-дополнительные-статы">Качество реликвий и дополнительные статы</a></li><li class="depth-1"><a href="#новый-контент-ждущий-карточек" data-for="новый-контент-ждущий-карточек">Новый контент, ждущий карточек</a></li><li class="depth-1"><a href="#шёпот-толпы--разбор-поражения-в-юмористическом-ключе" data-for="шёпот-толпы--разбор-поражения-в-юмористическом-ключе">«Шёпот толпы» — разбор поражения в юмористическом ключе</a></li><li class="depth-1"><a href="#мета-нарратив-игра-которая-знает-что-она-игра" data-for="мета-нарратив-игра-которая-знает-что-она-игра">Мета-нарратив: «игра, которая знает, что она игра»</a></li><li class="depth-1"><a href="#эффект-меняющий-правило-чужого-эффекта" data-for="эффект-меняющий-правило-чужого-эффекта">Эффект, меняющий правило ЧУЖОГО эффекта</a></li><li class="depth-1"><a href="#расстановка-какой-тип-точки-интереса-делаем-первым" data-for="расстановка-какой-тип-точки-интереса-делаем-первым">Расстановка: какой тип точки интереса делаем первым</a></li><li class="depth-1"><a href="#анти-дубли-витрины-наград" data-for="анти-дубли-витрины-наград">Анти-дубли витрины наград</a></li><li class="depth-1"><a href="#читаемость-подготовки-статический-фидбэк-и-авто-пауза" data-for="читаемость-подготовки-статический-фидбэк-и-авто-пауза">Читаемость подготовки: статический фидбэк и авто-пауза</a></li><li class="depth-1"><a href="#чем-построено-небо-арены" data-for="чем-построено-небо-арены">Чем построено небо арены</a></li><li class="depth-1"><a href="#генерировать-ли-иконки-процедурно" data-for="генерировать-ли-иконки-процедурно">Генерировать ли иконки процедурно</a></li><li class="depth-0"><a href="#2-сырьё-макса--разобрано-2026-07-29" data-for="2-сырьё-макса--разобрано-2026-07-29">2. Сырьё Макса — разобрано 2026-07-29</a></li><li class="depth-0"><a href="#25-неутверждённое-по-карточкам-контента" data-for="25-неутверждённое-по-карточкам-контента">2.5. Неутверждённое по карточкам контента</a></li><li class="depth-1"><a href="#требует-вердикта-в-первую-очередь" data-for="требует-вердикта-в-первую-очередь">Требует вердикта в первую очередь</a></li><li class="depth-1"><a href="#числа-двух-форм-десятины--поставлены-рабочими-ждут-приёмки" data-for="числа-двух-форм-десятины--поставлены-рабочими-ждут-приёмки">Числа двух форм Десятины — поставлены рабочими, ждут приёмки</a></li><li class="depth-1"><a href="#числа-пассивок-врагов--поставлены-рабочими-ждут-приёмки" data-for="числа-пассивок-врагов--поставлены-рабочими-ждут-приёмки">Числа пассивок врагов — поставлены рабочими, ждут приёмки</a></li><li class="depth-1"><a href="#числа-проказников--поставлены-рабочими-ждут-приёмки" data-for="числа-проказников--поставлены-рабочими-ждут-приёмки">Числа проказников — поставлены рабочими, ждут приёмки</a></li><li class="depth-1"><a href="#числа-двух-разбойников--поставлены-рабочими-ждут-приёмки" data-for="числа-двух-разбойников--поставлены-рабочими-ждут-приёмки">Числа двух разбойников — поставлены рабочими, ждут приёмки</a></li><li class="depth-1"><a href="#улучшения--в-работу-не-берутся" data-for="улучшения--в-работу-не-берутся">Улучшения — в работу не берутся</a></li><li class="depth-1"><a href="#имена-арканы-предложенные-скрайбом" data-for="имена-арканы-предложенные-скрайбом">Имена-арканы, предложенные скрайбом</a></li><li class="depth-1"><a href="#класс-не-задан" data-for="класс-не-задан">Класс не задан</a></li><li class="depth-1"><a href="#улучшения-не-заданы" data-for="улучшения-не-заданы">Улучшения не заданы</a></li><li class="depth-1"><a href="#ранние-черновики-идеи-не-по-шаблону-шаг-17" data-for="ранние-черновики-идеи-не-по-шаблону-шаг-17">Ранние черновики-идеи, не по шаблону Шаг 1–7</a></li><li class="depth-1"><a href="#числа-предложения-ждущие-приёмки" data-for="числа-предложения-ждущие-приёмки">Числа-предложения, ждущие приёмки</a></li><li class="depth-1"><a href="#фантомы-найденные-при-чистке" data-for="фантомы-найденные-при-чистке">Фантомы, найденные при чистке</a></li><li class="depth-1"><a href="#открытое-по-боссам" data-for="открытое-по-боссам">Открытое по боссам</a></li><li class="depth-0"><a href="#3-инкубатор-требований-систем-без-канон-дома" data-for="3-инкубатор-требований-систем-без-канон-дома">3. Инкубатор требований (систем без канон-дома)</a></li><li class="depth-1"><a href="#стоячие-зоны-на-арене-решено-заводить-2026-07-31" data-for="стоячие-зоны-на-арене-решено-заводить-2026-07-31">Стоячие зоны на арене (решено заводить 2026-07-31)</a></li><li class="depth-1"><a href="#теги-геройских-реликвий-для-удобства" data-for="теги-геройских-реликвий-для-удобства">Теги геройских реликвий (для удобства)</a></li><li class="depth-1"><a href="#настройка-ai-шаблоны" data-for="настройка-ai-шаблоны">Настройка AI (шаблоны)</a></li><li class="depth-2"><a href="#профили-и-score" data-for="профили-и-score">Профили и Score</a></li><li class="depth-2"><a href="#структура-ai-filter--score--override" data-for="структура-ai-filter--score--override">Структура AI: Filter / Score / Override</a></li><li class="depth-2"><a href="#оптимизация-ai" data-for="оптимизация-ai">Оптимизация AI</a></li><li class="depth-2"><a href="#уровни-ai-настройки-classic--extra" data-for="уровни-ai-настройки-classic--extra">Уровни AI-настройки (Classic / Extra)</a></li><li class="depth-1"><a href="#компендиум" data-for="компендиум">Компендиум</a></li><li class="depth-1"><a href="#повтор-боя-и-сравнение-профилей" data-for="повтор-боя-и-сравнение-профилей">Повтор боя и сравнение профилей</a></li><li class="depth-1"><a href="#полигон-для-проверки-ai-test-arena" data-for="полигон-для-проверки-ai-test-arena">Полигон для проверки AI (test-arena)</a></li><li class="depth-1"><a href="#поддержка-steam-workshop" data-for="поддержка-steam-workshop">Поддержка Steam Workshop</a></li><li class="depth-1"><a href="#статистика-и-баланс" data-for="статистика-и-баланс">Статистика и баланс</a></li><li class="depth-1"><a href="#ui-и-визуал-заметки" data-for="ui-и-визуал-заметки">UI и визуал (заметки)</a></li><li class="depth-1"><a href="#перенесённое-в-канон-остались-только-ссылки" data-for="перенесённое-в-канон-остались-только-ссылки">Перенесённое в канон (остались только ссылки)</a></li><li class="depth-1"><a href="#что-ресёрч-не-покрыл" data-for="что-ресёрч-не-покрыл">Что ресёрч НЕ покрыл</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../../gdd/00-meta/closed-forks" class="internal">Meta - Closed Forks</a></li><li><a href="../../gdd/00-meta/inbox/2026-07-30" class="internal">Meta - Inbox Archive - 2026-07-30</a></li><li><a href="../../gdd/00-meta/" class="internal">Meta - Index</a></li><li><a href="../../gdd/00-meta/journal-adr" class="internal">Meta - Decision Journal</a></li><li><a href="../../gdd/00-meta/legacy" class="internal">Meta - Legacy</a></li><li><a href="../../gdd/00-meta/open" class="internal">Meta - Inbox</a></li><li><a href="../../gdd/00-meta/roadmap" class="internal">Meta - Roadmap</a></li><li><a href="../../gdd/10-vision/backlog-atmosphere-light-post" class="internal">Vision - Light, Post, Atmosphere &amp; Transitions Backlog</a></li><li><a href="../../gdd/10-vision/difficulty-skill" class="internal">Vision - Difficulty &amp; Skill</a></li><li><a href="../../gdd/10-vision/pitch" class="internal">Vision - Pitch</a></li><li><a href="../../gdd/10-vision/visual-direction" class="internal">Vision - Visual Direction</a></li><li><a href="../../gdd/20-combat/combat-system" class="internal">Combat - System</a></li><li><a href="../../gdd/20-combat/effects/implementation-status" class="internal">Effect - Implementation Status</a></li><li><a href="../../gdd/20-combat/positioning" class="internal">Combat - Positioning</a></li><li><a href="../../gdd/30-run-meta/events-minigames" class="internal">Run - Events &amp; Minigames</a></li><li><a href="../../gdd/30-run-meta/guild-development" class="internal">Run - Guild Development</a></li><li><a href="../../gdd/30-run-meta/vessel-progression" class="internal">Run - Vessel Progression</a></li><li><a href="../../gdd/40-content/authoring/unit-enemy" class="internal">Content - Authoring - Unit (Enemy)</a></li><li><a href="../../gdd/50-modes-ux/coop/" class="internal">Coop - Overview</a></li><li><a href="../../gdd/50-modes-ux/coop/minigames" class="internal">Coop - Minigames &amp; Roles</a></li><li><a href="../../gdd/60-narrative/" class="internal">Narrative - Index</a></li><li><a href="../../gdd/60-narrative/lore" class="internal">Narrative - Lore</a></li><li><a href="../../gdd/60-narrative/meta-narrative" class="internal">Narrative - Meta</a></li><li><a href="../../gdd/70-gamefeel/arena-floor" class="internal">Gamefeel - Arena Floor</a></li><li><a href="../../gdd/70-gamefeel/vfx-language" class="internal">Gamefeel - VFX Language</a></li><li><a href="../../gdd/enemies/bosses/boss-bandit-nest" class="internal">Bandits - Boss - Bandit Nest</a></li><li><a href="../../gdd/enemies/bosses/boss-deserter-army" class="internal">Enemies - Boss - Deserter Army</a></li><li><a href="../../gdd/enemies/bosses/boss-goblin-warband" class="internal">Goblins - Boss - Goblin Warband</a></li><li><a href="../../gdd/enemies/bosses/" class="internal">Enemies - Bosses</a></li><li><a href="../../gdd/enemies/template-enemy-card" class="internal">Enemies - Card Template</a></li><li><a href="../../gdd/relics/implementation-status" class="internal">Relic - Implementation Status</a></li><li><a href="../../gdd/relics/template-relic-card" class="internal">Relic - Card Template</a></li><li><a href="../../gdd/relics/the-aegis" class="internal">Relic - Common - The Aegis (Antimage)</a></li><li><a href="../../gdd/relics/the-bloom" class="internal">Relic - Common - The Bloom (Druid)</a></li><li><a href="../../gdd/relics/the-bond" class="internal">Relic - Common - The Bond (Shaman)</a></li><li><a href="../../gdd/relics/the-bonewright" class="internal">Relic - Common - The Bonewright (Necromancer)</a></li><li><a href="../../gdd/relics/the-bulwark" class="internal">Relic - Common - The Bulwark (Guardian)</a></li><li><a href="../../gdd/relics/the-cadence" class="internal">Relic - Common - The Cadence (Bard)</a></li><li><a href="../../gdd/relics/the-draugr" class="internal">Relic - Common - The Draugr (Frostbound)</a></li><li><a href="../../gdd/relics/the-fang" class="internal">Relic - Common - The Fang (Nightblade)</a></li><li><a href="../../gdd/relics/the-gale" class="internal">Relic - Common - The Gale (Monk)</a></li><li><a href="../../gdd/relics/the-hearth" class="internal">Relic - Common - The Hearth (Emberkeeper)</a></li><li><a href="../../gdd/relics/the-hunter" class="internal">Relic - Common - The Hunter (Ranger)</a></li><li><a href="../../gdd/relics/the-lull" class="internal">Relic - Common - The Lull (Dreameater)</a></li><li><a href="../../gdd/relics/the-martyr" class="internal">Relic - Common - The Martyr</a></li><li><a href="../../gdd/relics/the-mirror" class="internal">Relic - Unique - The Mirror (Doppelganger)</a></li><li><a href="../../gdd/relics/the-paragon" class="internal">Relic - Unique - The Paragon (Juggernaut)</a></li><li><a href="../../gdd/relics/the-pyre" class="internal">Relic - Common - The Pyre (Swordsman)</a></li><li><a href="../../gdd/relics/the-rift" class="internal">Relic - Common - The Rift (Arcanist)</a></li><li><a href="../../gdd/relics/the-runesmith" class="internal">Relic - Unique - The Runesmith (Smith)</a></li><li><a href="../../gdd/relics/the-shepherd" class="internal">Relic - Common - The Shepherd (Priest)</a></li><li><a href="../../gdd/relics/the-spear" class="internal">Relic - Common - The Spear (Spearman)</a></li><li><a href="../../gdd/relics/the-storm" class="internal">Relic - Common - The Storm (Stormcaller)</a></li><li><a href="../../gdd/relics/the-thorn" class="internal">Relic - Common - The Thorn (Treant)</a></li><li><a href="../../gdd/relics/the-tithe" class="internal">Relic - Common - The Tithe (Hemomancer)</a></li><li><a href="../../gdd/relics/the-torrent" class="internal">Relic - Common - The Torrent (Water Monk)</a></li><li><a href="../../gdd/relics/the-verdict" class="internal">Relic - Common - The Verdict (Assassin)</a></li><li><a href="../../gdd/relics/the-warden" class="internal">Relic - Common - The Warden</a></li><li><a href="../../gdd/relics/the-winter" class="internal">Relic - Common - The Winter (Cryomancer)</a></li><li><a href="../../gdd/relics/trash-bundle-of-herbs" class="internal">Relic - Trash - Bundle of Herbs (Healer)</a></li><li><a href="../../gdd/relics/trash-chipped-skull" class="internal">Relic - Trash - Chipped Skull (Summoner)</a></li><li><a href="../../gdd/relics/trash-cracked-amulet" class="internal">Relic - Trash - Cracked Amulet (Support)</a></li><li><a href="../../gdd/relics/trash-cracked-shield" class="internal">Relic - Trash - Cracked Shield (Tank)</a></li><li><a href="../../gdd/relics/trash-crooked-bow" class="internal">Relic - Trash - Crooked Bow (Ranged)</a></li><li><a href="../../gdd/relics/trash-notched-sword" class="internal">Relic - Trash - Notched Sword (Bruiser)</a></li><li><a href="../../gdd/relics/trash-worn-knife" class="internal">Relic - Trash - Worn Knife (Assassin)</a></li><li><a href="../../gdd/roster/roster-balance" class="internal">Roster - Balance</a></li><li><a href="../../research/depth" class="internal">Где живёт глубина (PVE-автобаттлер без микро)</a></li><li><a href="../../tech/00-meta/tech-debt" class="internal">Meta - Tech Debt</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

@@ -1,0 +1,11 @@
+<map id="Guildmaster.Combat.ClassBaseline.Apply" name="Guildmaster.Combat.ClassBaseline.Apply">
+<area shape="rect" id="Node000001" title="Добавить классовую базу юнита первой группой." alt="" coords="5,37,200,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ae97b806719021d19ff582f3cc9aee131" title="Добавить группу модификаторов от source ." alt="" coords="284,5,481,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,44,270,35,271,41,201,49"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#ab06b508b3a9d66d1f96f510767d05b88" title="Классовая стат&#45;база как группа ModifierOp.Override&#45;модификаторов для скармливания в Stats ПЕРВОЙ груп..." alt="" coords="248,69,517,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,66,234,70,234,75,200,71"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#a377b6b7de1d6706dec62a7cbba3e350a" title="Бюджет брони класса — СУММА физической и магической (ГДД «Статы» §Броня, решение 2026&#45;07&#45;26/12)." alt="" coords="565,37,828,77"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="517,73,552,69,552,75,518,78"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#adcc5178b8efe420078d250c3ec5185a5" title=" " alt="" coords="573,101,820,141"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="518,100,560,105,559,110,517,106"/>
+</map>

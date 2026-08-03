@@ -99,34 +99,50 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Guild_1_1OpenCont
 </div><!--header-->
 <div class="contents">
 
-<p>Запрос показать единую кнопку «Продолжить» (план [[act-map-run-loop]] §4 A4) — консистентный «бит» между разрешённым узлом и возвратом на карту.  
+<p>Запрос показать кнопки «бита» между узлами (план [[act-map-run-loop]] §4 A4).  
  <a href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.OpenContinueRequest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenContinueRequest__coll__graph.svg" width="238" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenContinueRequest__coll__graph.svg" width="238" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a499ef36d153d7b581e1229cd67709012" id="r_a499ef36d153d7b581e1229cd67709012"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#a499ef36d153d7b581e1229cd67709012">OpenContinueRequest</a> (string labelKey, Action onContinue)</td></tr>
-<tr class="separator:a499ef36d153d7b581e1229cd67709012"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e8bf6b78e823208e90f67981661d7d1" id="r_a9e8bf6b78e823208e90f67981661d7d1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#a9e8bf6b78e823208e90f67981661d7d1">OpenContinueRequest</a> (string labelKey, Action onContinue, CancellationToken cancellation=default, Action onFormation=null, string formationLabelKey=null)</td></tr>
+<tr class="separator:a9e8bf6b78e823208e90f67981661d7d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a0f797230859574793089d56395602c15" id="r_a0f797230859574793089d56395602c15"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#a0f797230859574793089d56395602c15">LabelKey</a></td></tr>
-<tr class="memdesc:a0f797230859574793089d56395602c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лок-ключ подписи кнопки (пусто → дефолт «Продолжить»).  <br /></td></tr>
+<tr class="memdesc:a0f797230859574793089d56395602c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лок-ключ подписи главной кнопки (пусто → дефолт «Продолжить»).  <br /></td></tr>
 <tr class="separator:a0f797230859574793089d56395602c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a240ca32bcd2c2f328e06a8034dcef7b8" id="r_a240ca32bcd2c2f328e06a8034dcef7b8"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#a240ca32bcd2c2f328e06a8034dcef7b8">OnContinue</a></td></tr>
-<tr class="memdesc:a240ca32bcd2c2f328e06a8034dcef7b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк нажатия (ровно один вызов) — петля продвигается и открывает карту.  <br /></td></tr>
+<tr class="memdesc:a240ca32bcd2c2f328e06a8034dcef7b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк нажатия главной кнопки (ровно один вызов).  <br /></td></tr>
 <tr class="separator:a240ca32bcd2c2f328e06a8034dcef7b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98a4be8e8cf4d826162bfe52d0f28e8a" id="r_a98a4be8e8cf4d826162bfe52d0f28e8a"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#a98a4be8e8cf4d826162bfe52d0f28e8a">OnFormation</a></td></tr>
+<tr class="memdesc:a98a4be8e8cf4d826162bfe52d0f28e8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк второй кнопки («К построению»). null = кнопки нет (режим гейта).  <br /></td></tr>
+<tr class="separator:a98a4be8e8cf4d826162bfe52d0f28e8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb609e6b67534c8744e65a93629fd94f" id="r_acb609e6b67534c8744e65a93629fd94f"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#acb609e6b67534c8744e65a93629fd94f">FormationLabelKey</a></td></tr>
+<tr class="memdesc:acb609e6b67534c8744e65a93629fd94f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лок-ключ подписи второй кнопки (пусто → дефолт «К построению»).  <br /></td></tr>
+<tr class="separator:acb609e6b67534c8744e65a93629fd94f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae51098bd6675553a0b50887b5e3cbad7" id="r_ae51098bd6675553a0b50887b5e3cbad7"><td class="memItemLeft" align="right" valign="top">readonly CancellationToken&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#ae51098bd6675553a0b50887b5e3cbad7">Cancellation</a></td></tr>
+<tr class="memdesc:ae51098bd6675553a0b50887b5e3cbad7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Токен отмены (QA #37): отмена забега или выбор узла снимают кнопки через навигатор.  <br /></td></tr>
+<tr class="separator:ae51098bd6675553a0b50887b5e3cbad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Запрос показать единую кнопку «Продолжить» (план [[act-map-run-loop]] §4 A4) — консистентный «бит» между разрешённым узлом и возвратом на карту. </p>
-<p>Публикует петля акта (<code>ContinuePresenter</code>), слушает UI (<code>MenuRouter</code> рисует кнопку в правом нижнем углу). Ровно один вызов OnContinue. </p>
+<div class="textblock"><p>Запрос показать кнопки «бита» между узлами (план [[act-map-run-loop]] §4 A4). </p>
+<p>Публикует петля акта (<code>ContinuePresenter</code>), слушает UI (<code>MenuRouter</code> рисует их в правом нижнем углу). </p>
+<p>Два применения одной формы:</p>
+<ul>
+<li>
+<b>Гейт</b> — одна кнопка, петля ЖДЁТ нажатия (мост «бой добит → пойдём к награде»). </li>
+<li>
+<b>Передышка</b> — две кнопки, петля НЕ ждёт: узел уже засчитан, игрок стоит в живом мире и сам решает, идти ли на карту («Продолжить») или править строй («К построению»). Кнопки — удобный шорткат, те же места достижимы табами; экран снимается по Cancellation, когда узел выбран. </li>
+</ul>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a499ef36d153d7b581e1229cd67709012" name="a499ef36d153d7b581e1229cd67709012"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a499ef36d153d7b581e1229cd67709012">&#9670;&#160;</a></span>OpenContinueRequest()</h2>
+<a id="a9e8bf6b78e823208e90f67981661d7d1" name="a9e8bf6b78e823208e90f67981661d7d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e8bf6b78e823208e90f67981661d7d1">&#9670;&#160;</a></span>OpenContinueRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +160,25 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onContinue</em>&#160;</td>
+          <td class="paramname"><em>onContinue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CancellationToken&#160;</td>
+          <td class="paramname"><em>cancellation</em> = <code>default</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onFormation</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>formationLabelKey</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -162,6 +196,38 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ae51098bd6675553a0b50887b5e3cbad7" name="ae51098bd6675553a0b50887b5e3cbad7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae51098bd6675553a0b50887b5e3cbad7">&#9670;&#160;</a></span>Cancellation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly CancellationToken Guildmaster.Guild.OpenContinueRequest.Cancellation</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Токен отмены (QA #37): отмена забега или выбор узла снимают кнопки через навигатор. </p>
+
+</div>
+</div>
+<a id="acb609e6b67534c8744e65a93629fd94f" name="acb609e6b67534c8744e65a93629fd94f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb609e6b67534c8744e65a93629fd94f">&#9670;&#160;</a></span>FormationLabelKey</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly string Guildmaster.Guild.OpenContinueRequest.FormationLabelKey</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Лок-ключ подписи второй кнопки (пусто → дефолт «К построению»). </p>
+
+</div>
+</div>
 <a id="a0f797230859574793089d56395602c15" name="a0f797230859574793089d56395602c15"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f797230859574793089d56395602c15">&#9670;&#160;</a></span>LabelKey</h2>
 
@@ -174,7 +240,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Лок-ключ подписи кнопки (пусто → дефолт «Продолжить»). </p>
+<p>Лок-ключ подписи главной кнопки (пусто → дефолт «Продолжить»). </p>
 
 </div>
 </div>
@@ -190,7 +256,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Колбэк нажатия (ровно один вызов) — петля продвигается и открывает карту. </p>
+<p>Колбэк нажатия главной кнопки (ровно один вызов). </p>
+
+</div>
+</div>
+<a id="a98a4be8e8cf4d826162bfe52d0f28e8a" name="a98a4be8e8cf4d826162bfe52d0f28e8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98a4be8e8cf4d826162bfe52d0f28e8a">&#9670;&#160;</a></span>OnFormation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly Action Guildmaster.Guild.OpenContinueRequest.OnFormation</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Колбэк второй кнопки («К построению»). null = кнопки нет (режим гейта). </p>
 
 </div>
 </div>

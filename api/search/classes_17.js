@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ysortsprite_0',['YSortSprite',['../classGuildmaster_1_1Presentation_1_1YSortSprite.html',1,'Guildmaster::Presentation']]]
+  ['zonerule_0',['ZoneRule',['../structGuildmaster_1_1Guild_1_1ZoneRule.html',1,'Guildmaster::Guild']]]
 ];

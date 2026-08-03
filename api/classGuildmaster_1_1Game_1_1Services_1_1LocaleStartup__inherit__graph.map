@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Services.LocaleStartup" name="Guildmaster.Game.Services.LocaleStartup">
+<area shape="rect" id="Node000001" title="Выбирает язык на старте сессии: сохранённый — применить, невыбранный — взять у СИСТЕМЫ,..." alt="" coords="5,119,204,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="13,5,90,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,83,84,117,79,119,66,85"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="114,5,205,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="144,84,131,119,126,117,139,82"/>
+</map>

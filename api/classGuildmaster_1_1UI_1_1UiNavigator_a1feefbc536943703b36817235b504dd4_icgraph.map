@@ -1,0 +1,15 @@
+<map id="Guildmaster.UI.UiNavigator.SyncInput" name="Guildmaster.UI.UiNavigator.SyncInput">
+<area shape="rect" id="Node000001" title="Пересчитать глушение ввода и контекст из (верх стека, фаза боя) — II.3." alt="" coords="540,127,744,167"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1UiNavigator.html#af691393a733e372b3f125d7c54345e4b" title=" " alt="" coords="273,5,477,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="600,121,549,89,491,60,458,48,460,43,493,55,552,85,602,116"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1UiNavigator.html#a634c5d2d4dfc406f1585af4ed9426c9b" title="Отписка от смены фазы (Singleton → зовёт VContainer при разрушении скоупа)." alt="" coords="273,69,477,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="534,126,468,112,469,107,535,121"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1UiNavigator.html#a21e218bb0ac3b5afaf061c5ec278e92a" title="Снять верхний экран. Result&#45;экран без выбора резолвится своим DefaultResult." alt="" coords="261,134,489,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="526,149,489,149,489,144,526,144"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1UI_1_1UiNavigator.html#aaaf50f3ce32e7e30f539f7f2b23c694f" title="Снять все экраны (бывший CloseAll). Result&#45;экраны резолвятся дефолтом." alt="" coords="273,184,477,224"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="535,172,469,187,468,181,534,167"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1UI_1_1UiNavigator.html#a166b588d657eabc55eff135792fdb19a" title="Добавить экран поверх стека." alt="" coords="257,249,492,274"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="604,177,553,209,493,238,452,251,451,246,491,234,550,204,601,172"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1UI_1_1UiNavigator.html#aa03e8182dbf1c83951de21516eb4688a" title="Показать result&#45;экран и дождаться его резолва." alt="" coords="5,241,209,281"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="244,264,210,264,210,259,244,259"/>
+</map>

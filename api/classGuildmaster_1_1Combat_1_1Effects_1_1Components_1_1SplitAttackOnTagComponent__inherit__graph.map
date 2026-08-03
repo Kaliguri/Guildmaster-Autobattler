@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.SplitAttackOnTagComponent" name="Guildmaster.Combat.Effects.Components.SplitAttackOnTagComponent">
+<area shape="rect" id="Node000001" title="Расщепляет авто&#45;атаку носителя по школам, когда на цели висит нужный тег (The Pyre: по уже горящей це..." alt="" coords="5,365,292,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IAttackSplitComponent.html" title="Компонент на эффекте АТАКУЮЩЕГО, расщепляющий его авто&#45;атаку по школам (условие смотрит на цель)." alt="" coords="67,252,231,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,331,151,365,146,365,146,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="56,119,241,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="151,218,151,252,146,252,146,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="83,5,214,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="151,85,151,119,146,119,146,85"/>
+</map>

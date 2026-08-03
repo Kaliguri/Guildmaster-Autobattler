@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.StoneTitheComponent" name="Guildmaster.Combat.Effects.Components.StoneTitheComponent">
+<area shape="rect" id="Node000001" title="«Каменная десятина» Геоманта (карточка [[the&#45;cairn]]): один раз в начале боя носитель забирает у союз..." alt="" coords="5,365,251,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html" title="Периодический компонент: OnTick каждые Interval секунд (DoT/HoT/реген)." alt="" coords="55,252,201,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,331,131,365,125,365,125,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="35,119,221,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="131,218,131,252,125,252,125,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="63,5,193,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="131,85,131,119,125,119,125,85"/>
+</map>

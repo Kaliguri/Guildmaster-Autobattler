@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.ZoneRule" name="Guildmaster.Guild.ZoneRule">
+<area shape="rect" id="Node000001" title="Правило зоны: этажи FromFloor..ToFloor (включительно) → веса типов." alt="" coords="6,168,203,273"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Guild_1_1NodeTypeWeight.html" title="Вес одного типа узла в зоне (относительный, суммы 100 не требуется)." alt="" coords="5,5,204,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,105,107,151,102,151,102,105"/>
+</map>

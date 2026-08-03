@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.ClipMarkers.FirstTimeOf" name="Guildmaster.Data.Definitions.ClipMarkers.FirstTimeOf">
+<area shape="rect" id="Node000001" title="Время первого маркера этого вида (сек) или &#45;1, если такого в клипе нет." alt="" coords="320,5,535,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#aa5d508e46407319ccf34fde84f5cbb37" title="Окно ВЗМАХА в нормированном времени клипа: от StrikeStartFunction до StrikeEndFunction." alt="" coords="5,5,272,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="306,28,272,28,272,23,306,23"/>
+</map>

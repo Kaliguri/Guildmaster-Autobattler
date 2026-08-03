@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.AttackTiming.AttacksPerSecond" name="Guildmaster.Combat.AttackTiming.AttacksPerSecond">
+<area shape="rect" id="Node000001" title="Атак в секунду — то, что игра ДЕЙСТВИТЕЛЬНО производит: TickRate / IntervalTicks, то есть с тиковой к..." alt="" coords="280,37,483,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath.html#a18912a608f1c5a8f5603310031093828" title="«Бумажный» DPS автоатаки без цели: урон × атак/сек × эфф. наносимого урона (броня/митигейт цели не уч..." alt="" coords="5,5,232,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="266,46,232,42,233,36,267,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1UnitStatPreview.html#ae75ae399e76e2b18961d93fe0d7e616f" title="Базовая семёрка «быстрого чтения» (реш." alt="" coords="12,69,225,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="267,74,226,79,225,74,266,69"/>
+</map>

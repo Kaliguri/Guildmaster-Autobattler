@@ -28,8 +28,7 @@ var ContentEnums_8cs =
       [ "Role", "ContentEnums_8cs.html#a1ad7c124bf03fa0b4a000cd1effd2113abbbabdbe1b262f75d99d62880b953be1", null ],
       [ "DamageType", "ContentEnums_8cs.html#a1ad7c124bf03fa0b4a000cd1effd2113ac6cd5611ab5d356412d10cfdf1d0c67b", null ],
       [ "Playstyle", "ContentEnums_8cs.html#a1ad7c124bf03fa0b4a000cd1effd2113a95c846c435277fef4a1d64748633b49f", null ],
-      [ "Mechanic", "ContentEnums_8cs.html#a1ad7c124bf03fa0b4a000cd1effd2113a64eb669723cae1983f03e34cca705c80", null ],
-      [ "Other", "ContentEnums_8cs.html#a1ad7c124bf03fa0b4a000cd1effd2113a6311ae17c1ee52b36e68aaf4ad066387", null ]
+      [ "Mechanic", "ContentEnums_8cs.html#a1ad7c124bf03fa0b4a000cd1effd2113a64eb669723cae1983f03e34cca705c80", null ]
     ] ],
     [ "TraitPolarity", "ContentEnums_8cs.html#a47d79e60de086a94265b32b9833971e1", [
       [ "Positive", "ContentEnums_8cs.html#a47d79e60de086a94265b32b9833971e1a3289297424e01eda5b788c083bbf3147", null ],

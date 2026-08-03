@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Services.GuestPlaybackLoop" name="Guildmaster.Game.Services.GuestPlaybackLoop">
+<area shape="rect" id="Node000001" title="Боевой «цикл» гостя: тика нет, есть только требование к отставанию показа." alt="" coords="5,119,204,219"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="69,5,141,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,84,107,119,102,119,102,84"/>
+</map>

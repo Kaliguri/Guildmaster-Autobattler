@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.CombatVfx.SpawnForm" name="Guildmaster.Presentation.CombatVfx.SpawnForm">
+<area shape="rect" id="Node000001" title="Заспавнить ФОРМУ УДАРА — эффект, которому мало одной точки: он строится по A→B и несёт свои параметры..." alt="" coords="5,5,196,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1PooledVfx.html#a6eeeff84a09776d2bb92e32357a7c594" title="Проиграть в мировой точке." alt="" coords="244,5,435,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
+</map>

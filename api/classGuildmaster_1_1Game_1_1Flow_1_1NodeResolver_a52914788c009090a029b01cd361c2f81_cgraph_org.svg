@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html#adeb5e24cf78ea3766468b3dc1fb58f05" target="_top" xlink:title="Собрать ТРАНЗИЕНТНЫЙ пресет боя в рантайме (узел забега): враги — из авторского пресета,...">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html#a6578cc8bff2c6f410a4739e847dd3d54" target="_top" xlink:title="Собрать ТРАНЗИЕНТНЫЙ пресет боя в рантайме (узел забега): враги — из авторского пресета,...">
 <polygon fill="white" stroke="#666666" points="374,-100 198,-100 198,-70 374,-70 374,-100"/>
 <text text-anchor="start" x="206" y="-88" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="middle" x="286" y="-77" font-family="Helvetica,sans-Serif" font-size="10.00">BattlePresetData.CreateRuntime</text>

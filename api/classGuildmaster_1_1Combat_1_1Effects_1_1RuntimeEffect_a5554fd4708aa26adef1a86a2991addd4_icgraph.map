@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Effects.RuntimeEffect.RemoveStacks" name="Guildmaster.Combat.Effects.RuntimeEffect.RemoveStacks">
+<area shape="rect" id="Node000001" title="Срезать стаки (цена очищения, сход «Углей»). Ниже нуля не уходит." alt="" coords="328,37,543,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1EffectSystem.html#add433549e9a0dc16bb7e3b582cf951cb" title="Снять с цели подходящие эффекты: полярность ∧ теги ∧ CleanseTier ≤ DispelPower ∧ !..." alt="" coords="44,5,241,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="314,47,241,39,242,33,315,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent.html#abc70bdbb77a4854369222ab638469db4" title=" " alt="" coords="5,69,280,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="314,73,281,77,280,72,314,68"/>
+</map>

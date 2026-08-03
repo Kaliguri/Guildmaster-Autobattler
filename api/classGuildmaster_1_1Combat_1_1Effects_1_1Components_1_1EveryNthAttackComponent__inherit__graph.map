@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.EveryNthAttackComponent" name="Guildmaster.Combat.Effects.Components.EveryNthAttackComponent">
+<area shape="rect" id="Node000001" title="«Каждая N&#45;я Атака особая» (карточка [[the&#45;draugr]]): пассивка считает Атаки носителя и взводит _charg..." alt="" coords="5,365,283,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="69,252,219,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,331,147,365,141,365,141,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="51,119,237,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="147,218,147,252,141,252,141,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="79,5,209,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="147,85,147,119,141,119,141,85"/>
+</map>

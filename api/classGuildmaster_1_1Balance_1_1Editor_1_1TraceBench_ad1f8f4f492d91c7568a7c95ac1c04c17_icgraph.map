@@ -1,0 +1,5 @@
+<map id="Guildmaster.Balance.Editor.TraceBench.RunSelection" name="Guildmaster.Balance.Editor.TraceBench.RunSelection">
+<area shape="rect" id="Node000001" title="Прогнать бой по выделению и записать ленту." alt="" coords="256,5,459,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Balance_1_1Editor_1_1BalanceCli.html#a61b032e06bdae134f58ea866f2276b8b" title="Разбор одного боя лентой событий: &#45;executeMethod …BalanceCli.Trace &#45;assets &quot;Ranger,..." alt="" coords="5,5,208,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="242,28,208,28,208,23,242,23"/>
+</map>

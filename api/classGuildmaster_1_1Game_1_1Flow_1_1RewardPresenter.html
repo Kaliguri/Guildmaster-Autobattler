@@ -113,19 +113,19 @@ Collaboration diagram for Guildmaster.Game.Flow.RewardPresenter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6ff50f074e3699e16f3807707bfb11ab" id="r_a6ff50f074e3699e16f3807707bfb11ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardPresenter.html#a6ff50f074e3699e16f3807707bfb11ab">RewardPresenter</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html">RewardService</a> rewards, <a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a> runStates, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html">OpenRewardRequest</a> &gt; openRewardPub)</td></tr>
-<tr class="separator:a6ff50f074e3699e16f3807707bfb11ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab06a98ceb819aff7ac2adb0f8691cbd8" id="r_ab06a98ceb819aff7ac2adb0f8691cbd8"><td class="memItemLeft" align="right" valign="top">async UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardPresenter.html#ab06a98ceb819aff7ac2adb0f8691cbd8">PresentAsync</a> (<a class="el" href="namespaceGuildmaster_1_1Game_1_1Flow.html#a74c941f3354c00f52e95f5a61b2725f1">RewardTier</a> tier)</td></tr>
-<tr class="memdesc:ab06a98ceb819aff7ac2adb0f8691cbd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Скатать витрину тира, показать её, дождаться выбора и применить к RunState.  <br /></td></tr>
-<tr class="separator:ab06a98ceb819aff7ac2adb0f8691cbd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3be909a8a8113b736af3afea72d4c620" id="r_a3be909a8a8113b736af3afea72d4c620"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardPresenter.html#a3be909a8a8113b736af3afea72d4c620">RewardPresenter</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html">RewardService</a> rewards, <a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a> runStates, <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html">Guildmaster.Guild.Commands.IRunCommands</a> commands, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html">OpenRewardRequest</a> &gt; openRewardPub)</td></tr>
+<tr class="separator:a3be909a8a8113b736af3afea72d4c620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadd344adc9869066f3289ee051d79141" id="r_aadd344adc9869066f3289ee051d79141"><td class="memItemLeft" align="right" valign="top">async UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardPresenter.html#aadd344adc9869066f3289ee051d79141">PresentAsync</a> (<a class="el" href="namespaceGuildmaster_1_1Game_1_1Flow.html#a74c941f3354c00f52e95f5a61b2725f1">RewardTier</a> tier, CancellationToken ct=default)</td></tr>
+<tr class="memdesc:aadd344adc9869066f3289ee051d79141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Скатать витрину тира, показать её, дождаться выбора и применить к RunState.  <br /></td></tr>
+<tr class="separator:aadd344adc9869066f3289ee051d79141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Презентер награды (план 11 §4 A3): катит витрину через RewardService, публикует запрос в UI (OpenRewardRequest), ждёт выбор игрока и пишет его в RunState через RunStateService (единая точка вместимости реликов, §5.4). </p>
 <p>Вынесен из <code>GameFlow</code>, чтобы показ награды переиспользовали и петля акта (<code>ActRunner</code>), и legacy-вход одного боя. </p>
 <p>Требует слушателя OpenRewardRequest (UiRootBootstrap в CoreScene) — иначе выбор не придёт.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6ff50f074e3699e16f3807707bfb11ab" name="a6ff50f074e3699e16f3807707bfb11ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ff50f074e3699e16f3807707bfb11ab">&#9670;&#160;</a></span>RewardPresenter()</h2>
+<a id="a3be909a8a8113b736af3afea72d4c620" name="a3be909a8a8113b736af3afea72d4c620"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3be909a8a8113b736af3afea72d4c620">&#9670;&#160;</a></span>RewardPresenter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,6 +144,12 @@ Public Member Functions</h2></td></tr>
           <td></td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a>&#160;</td>
           <td class="paramname"><em>runStates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html">Guildmaster::Guild::Commands::IRunCommands</a>&#160;</td>
+          <td class="paramname"><em>commands</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -167,8 +173,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab06a98ceb819aff7ac2adb0f8691cbd8" name="ab06a98ceb819aff7ac2adb0f8691cbd8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab06a98ceb819aff7ac2adb0f8691cbd8">&#9670;&#160;</a></span>PresentAsync()</h2>
+<a id="aadd344adc9869066f3289ee051d79141" name="aadd344adc9869066f3289ee051d79141"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadd344adc9869066f3289ee051d79141">&#9670;&#160;</a></span>PresentAsync()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -180,8 +186,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname">async UniTask Guildmaster.Game.Flow.RewardPresenter.PresentAsync </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Flow.html#a74c941f3354c00f52e95f5a61b2725f1">RewardTier</a>&#160;</td>
-          <td class="paramname"><em>tier</em></td><td>)</td>
+          <td class="paramname"><em>tier</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">CancellationToken&#160;</td>
+          <td class="paramname"><em>ct</em> = <code>default</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -192,8 +208,9 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Скатать витрину тира, показать её, дождаться выбора и применить к RunState. </p>
+<p><em>ct</em>  прерывает ожидание при выходе из забега (QA #37). </p>
 
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter.html#a68060f301a887042ebc89ba986628dab">Guildmaster.Game.Flow.IRewardPresenter</a>.</p>
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter.html#ab5339cdfb5a7b3b23300b44bb2b58962">Guildmaster.Game.Flow.IRewardPresenter</a>.</p>
 
 </div>
 </div>

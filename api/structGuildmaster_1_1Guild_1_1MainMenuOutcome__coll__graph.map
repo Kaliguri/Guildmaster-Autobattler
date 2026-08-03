@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.MainMenuOutcome" name="Guildmaster.Guild.MainMenuOutcome">
+<area shape="rect" id="Node000001" title="Исход главного меню: что игрок выбрал и с чем входит." alt="" coords="7,228,209,348"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Guild_1_1GameStartRequest.html" title="Заказ на вход в игру, собранный игроком в меню: режим, дом и открытость для друзей." alt="" coords="5,5,211,165"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,166,111,211,105,211,105,166"/>
+</map>

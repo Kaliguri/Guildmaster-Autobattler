@@ -1,0 +1,16 @@
+<map id="Guildmaster.Combat.AttackTiming.WindupTicksFor" name="Guildmaster.Combat.AttackTiming.WindupTicksFor">
+<area shape="rect" id="Node000001" title="Тики замаха, которые получит СЛЕДУЮЩИЙ свинг этого юнита при текущей скорости атаки и клипе." alt="" coords="5,119,208,159"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="258,5,478,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,117,186,78,255,41,280,32,282,37,257,46,189,83,135,121"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a22bc798f12c716f8ccda8585b205691b" title="Интервал между атаками в сим&#45;тиках." alt="" coords="267,55,469,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="188,117,272,96,273,101,190,122"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a8db23a6ac07992286291ec08f127c80f" title="Тики замаха до кадра контакта." alt="" coords="267,119,469,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="208,137,253,137,253,142,208,142"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#aa903062ad68e0504e24b53d400814481" title=" " alt="" coords="267,183,469,223"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="190,157,273,177,272,183,188,162"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a8fe786d7f0ca34d559f4df76d57792cd" title="Замах из ДОЛИ свинга (0..1) — путь для юнитов, у которых нет покадрового клипа." alt="" coords="256,247,480,287"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="135,157,190,195,257,233,275,240,273,245,255,238,187,200,132,162"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#ab985f657217195261cca2bf305b0e480" title="Длительность свинга в тиках = min(потолок, intervalTicks)." alt="" coords="528,215,731,255"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="470,213,515,219,514,224,469,218"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="480,251,514,247,515,252,480,256"/>
+</map>

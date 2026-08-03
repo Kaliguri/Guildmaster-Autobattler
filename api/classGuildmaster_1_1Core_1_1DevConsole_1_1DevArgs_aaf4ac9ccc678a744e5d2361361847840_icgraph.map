@@ -1,0 +1,15 @@
+<map id="Guildmaster.Core.DevConsole.DevArgs.Raw" name="Guildmaster.Core.DevConsole.DevArgs.Raw">
+<area shape="rect" id="Node000001" title="Сырое слово или null, если его нет. Не бросает — для необязательных аргументов." alt="" coords="275,165,496,205"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1DevConsole_1_1DevArgs.html#afdffbdee01f7751dad170b40577638ac" title="Булево." alt="" coords="5,5,227,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="353,157,297,107,262,82,225,60,198,48,200,43,228,55,265,77,300,103,357,153"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Core_1_1DevConsole_1_1DevArgs.html#a8bb3cff631af9f9175ea2ce273a729ae" title="Значение перечисления по имени, регистр не значим. В сообщении об ошибке — список допустимых." alt="" coords="5,69,227,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="325,162,226,124,189,112,191,107,228,119,327,158"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Core_1_1DevConsole_1_1DevArgs.html#a36aa6fd21a4952fcbfe858dc9d74f52e" title=" " alt="" coords="5,133,227,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="261,173,227,169,227,164,261,168"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Core_1_1DevConsole_1_1DevArgs.html#a8076c2c6e53bed2d64666d3112bf1b06" title=" " alt="" coords="5,197,227,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="261,203,227,207,227,202,261,197"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Core_1_1DevConsole_1_1DevArgs.html#a1e68236e3081ca7f0d13283c0e41ccad" title="Строка. Обязательный аргумент: нет — исключение." alt="" coords="5,261,227,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="327,213,228,252,191,264,189,259,226,247,325,208"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Core_1_1DevConsole_1_1DevArgs.html#aaf36cea06757681e664bfaaa84800d6a" title="Беззнаковое 64&#45;битное — сиды RNG. Отдельно от GetInt: сид не помещается в int." alt="" coords="5,325,227,365"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="357,217,300,267,265,293,228,316,200,328,198,323,225,311,262,289,297,263,353,213"/>
+</map>

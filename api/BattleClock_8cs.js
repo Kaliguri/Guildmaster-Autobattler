@@ -4,6 +4,7 @@ var BattleClock_8cs =
     [ "BattlePhase", "BattleClock_8cs.html#a8dfef43b870791c6c04b4600ff66103a", [
       [ "None", "BattleClock_8cs.html#a8dfef43b870791c6c04b4600ff66103aa6adf97f83acf6453d4a6a4b1070f3754", null ],
       [ "Deployment", "BattleClock_8cs.html#a8dfef43b870791c6c04b4600ff66103aaea355214fd4bc7c57f471bd92918879b", null ],
-      [ "Fighting", "BattleClock_8cs.html#a8dfef43b870791c6c04b4600ff66103aaef492f571a74192b637adada68fdd94a", null ]
+      [ "Fighting", "BattleClock_8cs.html#a8dfef43b870791c6c04b4600ff66103aaef492f571a74192b637adada68fdd94a", null ],
+      [ "Interlude", "BattleClock_8cs.html#a8dfef43b870791c6c04b4600ff66103aa3cfb3f0cb9369e6e2e4c01428f34f87e", null ]
     ] ]
 ];

@@ -1,6 +1,6 @@
 <map id="Guildmaster.Game.Flow.NodeResolver.Resolve" name="Guildmaster.Game.Flow.NodeResolver.Resolve">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,69,221,109"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html#adeb5e24cf78ea3766468b3dc1fb58f05" title="Собрать ТРАНЗИЕНТНЫЙ пресет боя в рантайме (узел забега): враги — из авторского пресета,..." alt="" coords="269,5,504,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html#a6578cc8bff2c6f410a4739e847dd3d54" title="Собрать ТРАНЗИЕНТНЫЙ пресет боя в рантайме (узел забега): враги — из авторского пресета,..." alt="" coords="269,5,504,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,67,287,46,288,51,200,72"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив." alt="" coords="279,69,495,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="222,87,265,87,265,92,222,92"/>

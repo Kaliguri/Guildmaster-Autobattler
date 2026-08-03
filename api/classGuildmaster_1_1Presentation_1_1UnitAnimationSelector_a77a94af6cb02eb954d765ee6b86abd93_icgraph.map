@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.UnitAnimationSelector.ScrubProgress" name="Guildmaster.Presentation.UnitAnimationSelector.ScrubProgress">
+<area shape="rect" id="Node000001" title="Прогресс скраба клипа [0..1] по счётчику сим&#45;тиков — с учётом доли ВНУТРИ показываемого тика." alt="" coords="336,5,600,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html#ae123b8b7340bc67cea87b69d6a35bbb9" title="Позиция клипа свинга внутри КАНАЛА авто&#45;атаки [0..1)." alt="" coords="5,5,288,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="322,28,288,28,288,23,322,23"/>
+</map>

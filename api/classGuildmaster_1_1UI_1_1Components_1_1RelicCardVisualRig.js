@@ -1,6 +1,6 @@
 var classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig =
 [
-    [ "RelicCardVisualRig", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#a6e8cb3225799736c65c4155d6531ef63", null ],
+    [ "RelicCardVisualRig", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#a7accf7d7151c32709c8038aab483df13", null ],
     [ "Acquire", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#a359976053c496a69976b9d4c983915ea", null ],
     [ "AttackLengthSeconds", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#a1e0a53463792122bc4202eb37701c77d", null ],
     [ "Dispose", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#a89319bb6e16db7a32f18e8fa2a82e879", null ],

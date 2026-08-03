@@ -1,0 +1,9 @@
+<map id="Guildmaster.Core.Random.DeterministicHash.Of" name="Guildmaster.Core.Random.DeterministicHash.Of">
+<area shape="rect" id="Node000001" title="64&#45;битный FNV&#45;1a строки. null и пустая строка дают базовое смещение." alt="" coords="275,69,472,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a4e996de02abf01246da5a70105ddd415" title="Открыть арену БЕЗ пресета: скоуп боя есть, состава нет." alt="" coords="5,5,227,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="278,69,196,48,198,43,280,63"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1RelicPricer.html#a3902292dc3d8e5f55c0d34397fb21617" title="Цена по силе кита и id (тестируемо без конструирования RelicData)." alt="" coords="9,69,223,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="261,92,224,92,224,87,261,87"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#ac6da0a245ae4168f6db592d8aa142d57" title="64&#45;битный отпечаток текущего состояния генератора.Для checksum рассинхрона (SimSyncProbe,..." alt="" coords="17,133,215,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="280,115,198,136,196,131,278,110"/>
+</map>

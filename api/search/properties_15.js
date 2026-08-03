@@ -1,4 +1,26 @@
 var searchData=
 [
-  ['zones_0',['Zones',['../classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html#a800c95f0d7f27f36cfc3b95d2afcbe24',1,'Guildmaster::Core::Arena::ArenaLayoutData']]]
+  ['value_0',['value',['../classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html#a4bc966f26852d79b95841ed59cf83730',1,'Guildmaster.UI.Components.SliderRow.Value'],['../classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html#a679a47966e9abb40359d0a2386f535dc',1,'Guildmaster.UI.Components.ToggleRow.Value'],['../structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html#a8ac9e97cd9141126242f7f928ff27fd7',1,'Guildmaster.Core.Persistence.SaveLoadResult.Value']]],
+  ['version_1',['Version',['../classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute.html#ad9aecdeca84da67b7de47f3601383d64',1,'Guildmaster::Core::Persistence::SaveSchemaAttribute']]],
+  ['vessel_2',['Vessel',['../structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html#a29dd3398bde0b376aac191cc176aec3a',1,'Guildmaster::Data::Definitions::PlayerSlot']]],
+  ['vesselitemslots_3',['VesselItemSlots',['../classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a8c8d118636ff1c50e53def5183282153',1,'Guildmaster::Data::Definitions::GameConfig']]],
+  ['vesselname_4',['VesselName',['../classGuildmaster_1_1UI_1_1Components_1_1VesselCard.html#a6aa587fe1d5de690b4eb524582206862',1,'Guildmaster::UI::Components::VesselCard']]],
+  ['veteranhireunlockdeaths_5',['VeteranHireUnlockDeaths',['../classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a6b4b9a4bc6e47536ca0729e3d093f233',1,'Guildmaster::Data::Definitions::GameConfig']]],
+  ['vfxcastburst_6',['VfxCastBurst',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a3d8efa1523706bcd862b713cf6912195',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['vfxcontactdust_7',['VfxContactDust',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#af91505858511794c88992a72ee5152f7',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['vfxheal_8',['VfxHeal',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#ad73b5c69cf0ac40eebfd80d655de4464',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['vfxhitform_9',['VfxHitForm',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a0e38696ad103445e8b0b639df2eb5326',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['vfxhitspark_10',['VfxHitSpark',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a46faac9f36a64c530047422204c25a2f',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['vfximpactdust_11',['VfxImpactDust',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a156ee14201bbc73039b457e244d459f3',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['vfxmuzzle_12',['VfxMuzzle',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#aa72ec01e2f1616bb235404777d1cbfb8',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['vfxswingarc_13',['VfxSwingArc',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a4296400f4bf3dcdb761475ff12c97d67',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]],
+  ['vfxtone_14',['VfxTone',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#ae215f24e827b1f1b71397863d19e250f',1,'Guildmaster::Data::Definitions::UnitData']]],
+  ['viewcount_15',['ViewCount',['../classGuildmaster_1_1Presentation_1_1CombatPresenter.html#a4043a4e6cf68fda111efc0912149791b',1,'Guildmaster::Presentation::CombatPresenter']]],
+  ['viewprefab_16',['ViewPrefab',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a8f9387e57aa937bf1ebf94efce9fd241',1,'Guildmaster::Data::Definitions::UnitData']]],
+  ['viewtick_17',['ViewTick',['../classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a2266f82574810b7a5113d44296303df8',1,'Guildmaster::Combat::Tape::BattleTapePlayback']]],
+  ['visiblestacks_18',['VisibleStacks',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#acbf2ec934c107c3e05e2a0b07505017c',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
+  ['visual_19',['Visual',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#aa9edd77bd03c31aff370a3183fd645ee',1,'Guildmaster::Data::Definitions::UnitData']]],
+  ['visualradius_20',['VisualRadius',['../classGuildmaster_1_1Presentation_1_1Map_1_1MapNodeView.html#a35148210b25b028ead795450ba9b942d',1,'Guildmaster::Presentation::Map::MapNodeView']]],
+  ['visualslot_21',['VisualSlot',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a411acc6f595da12fa057f0c2a38400bd',1,'Guildmaster::Data::Definitions::AbilityData']]],
+  ['vulnerabilitybonus_22',['VulnerabilityBonus',['../structGuildmaster_1_1Combat_1_1DamageResult.html#a2f453e4adee69a4e2edeed95a4d8b109',1,'Guildmaster::Combat::DamageResult']]]
 ];

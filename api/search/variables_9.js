@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['key_0',['Key',['../structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1Entry.html#a9cf5df37ee8d11e167767d33ddb1d322',1,'Guildmaster::Presentation::Audio::AudioCatalog::Entry']]],
-  ['killedtarget_1',['KilledTarget',['../structGuildmaster_1_1Combat_1_1DamageResult.html#af1d2b6e49c96453124e9df11b2bb720e',1,'Guildmaster::Combat::DamageResult']]],
-  ['kind_2',['kind',['../structGuildmaster_1_1Combat_1_1BattleOutcome.html#ac1f0dc5c42ecbef0042aa1ad41c8c767',1,'Guildmaster.Combat.BattleOutcome.Kind'],['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a06639607691bd124b551780cfe2a6131',1,'Guildmaster.Combat.DisplaceRequest.Kind']]],
-  ['kitefleefactor_3',['KiteFleeFactor',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a2f00aef01b437cf8e6e4fd4a808d804f',1,'Guildmaster::Core::Simulation::SimTuning']]],
-  ['kitestrafeweight_4',['KiteStrafeWeight',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a1e1fef608ce5b31def7d47b511016dcd',1,'Guildmaster::Core::Simulation::SimTuning']]]
+  ['jitterx_0',['JitterX',['../structGuildmaster_1_1Presentation_1_1Map_1_1MapLayout.html#a019594125b8966fb655012bee5199ed4',1,'Guildmaster::Presentation::Map::MapLayout']]],
+  ['jittery_1',['JitterY',['../structGuildmaster_1_1Presentation_1_1Map_1_1MapLayout.html#ad58d18d8a638b0efc0e9ed303d3eddca',1,'Guildmaster::Presentation::Map::MapLayout']]],
+  ['joinedutc_2',['JoinedUtc',['../classGuildmaster_1_1Guild_1_1VesselState.html#ab7686746ea2d3b87ef437af8f11cf23d',1,'Guildmaster::Guild::VesselState']]],
+  ['jointprefix_3',['JointPrefix',['../classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ab6c256a5ec195e5158f7615ecbbabc24',1,'Guildmaster::Presentation::Body::RigNaming']]]
 ];

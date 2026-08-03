@@ -92,7 +92,8 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Core_1_1Settin
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Core.Settings Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -102,13 +103,54 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html">AudioVolumeSettings</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пользовательские настройки громкости, значения [0..1].  <a href="structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Settings_1_1DisplaySettings.html">DisplaySettings</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Машинно-локальные настройки дисплея (ТЗ [[save-system]] §3).  <a href="classGuildmaster_1_1Core_1_1Settings_1_1DisplaySettings.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Settings_1_1GameplaySettings.html">GameplaySettings</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пользовательские настройки геймплей-презентации (не аудио).  <a href="structGuildmaster_1_1Core_1_1Settings_1_1GameplaySettings.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html">ISettingsService</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Единый источник пользовательских настроек + персист (ES3) + живое применение в аудио.  <a href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1IDisplayService.html">IDisplayService</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Настройки дисплея за швом: разрешение, режим окна, частота обновления.  <a href="interfaceGuildmaster_1_1Core_1_1Settings_1_1IDisplayService.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html">ISettingsService</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Единый источник пользовательских настроек + персист (за ISaveService, ключ prefs) + живое применение в аудио.  <a href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a210a92564d24219483ed8e3f8b6ae355" id="r_a210a92564d24219483ed8e3f8b6ae355"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Settings.html#a210a92564d24219483ed8e3f8b6ae355">WindowMode</a> { <a class="el" href="namespaceGuildmaster_1_1Core_1_1Settings.html#a210a92564d24219483ed8e3f8b6ae355a5275a0f3d3419b0b79efa2272e9b6cce">ExclusiveFullscreen</a>
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Settings.html#a210a92564d24219483ed8e3f8b6ae355a744907dcb405cd10f2e654b00ce99e89">BorderlessWindow</a>
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Settings.html#a210a92564d24219483ed8e3f8b6ae355ab13311ab51c4c34757f67f26580018dd">Windowed</a>
+ }</td></tr>
+<tr class="memdesc:a210a92564d24219483ed8e3f8b6ae355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Режим окна — три варианта, которые игрок реально выбирает.  <a href="namespaceGuildmaster_1_1Core_1_1Settings.html#a210a92564d24219483ed8e3f8b6ae355">More...</a><br /></td></tr>
+<tr class="separator:a210a92564d24219483ed8e3f8b6ae355"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a210a92564d24219483ed8e3f8b6ae355" name="a210a92564d24219483ed8e3f8b6ae355"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a210a92564d24219483ed8e3f8b6ae355">&#9670;&#160;</a></span>WindowMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Core_1_1Settings.html#a210a92564d24219483ed8e3f8b6ae355">Guildmaster.Core.Settings.WindowMode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Режим окна — три варианта, которые игрок реально выбирает. </p>
+<p>Платформенный <code>FullScreenMode.MaximizedWindow</code> (macOS) наружу не выводим: мы на Windows, а лишний пункт в списке пришлось бы объяснять. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a210a92564d24219483ed8e3f8b6ae355a5275a0f3d3419b0b79efa2272e9b6cce" name="a210a92564d24219483ed8e3f8b6ae355a5275a0f3d3419b0b79efa2272e9b6cce"></a>ExclusiveFullscreen&#160;</td><td class="fielddoc"><p>Эксклюзивный полноэкранный. <b>Единственный режим, где можно менять частоту обновления.</b> </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a210a92564d24219483ed8e3f8b6ae355a744907dcb405cd10f2e654b00ce99e89" name="a210a92564d24219483ed8e3f8b6ae355a744907dcb405cd10f2e654b00ce99e89"></a>BorderlessWindow&#160;</td><td class="fielddoc"><p>Полноэкранное окно без рамок. Дружелюбно к alt-tab, поэтому режим по умолчанию. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a210a92564d24219483ed8e3f8b6ae355ab13311ab51c4c34757f67f26580018dd" name="a210a92564d24219483ed8e3f8b6ae355ab13311ab51c4c34757f67f26580018dd"></a>Windowed&#160;</td><td class="fielddoc"><p>Обычное окно с рамкой. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

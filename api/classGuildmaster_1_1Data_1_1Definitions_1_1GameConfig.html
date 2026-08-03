@@ -92,13 +92,14 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 
 <div class="header">
   <div class="summary">
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Data.Definitions.GameConfig Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Общие дефолты игры (вики «13» §3.4): начальные пользовательские настройки (громкости, локаль) и мета-правила.  
+<p>Общие правила и экономика игры (вики «13» §3.4) плюс громкости первого запуска.  
  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Data.Definitions.GameConfig:</div>
@@ -111,6 +112,12 @@ Collaboration diagram for Guildmaster.Data.Definitions.GameConfig:</div>
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig__coll__graph.svg" width="218" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a7feabfaff77d5b1937486c119c6f1bc0" id="r_a7feabfaff77d5b1937486c119c6f1bc0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a7feabfaff77d5b1937486c119c6f1bc0">CreateDefault</a> ()</td></tr>
+<tr class="memdesc:a7feabfaff77d5b1937486c119c6f1bc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заготовка значений: инстанс в памяти, заполненный тем, с чего начинают новый ассет.  <br /></td></tr>
+<tr class="separator:a7feabfaff77d5b1937486c119c6f1bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a057b8ba6fcb4cd3d9a8312c502111590" id="r_a057b8ba6fcb4cd3d9a8312c502111590"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a057b8ba6fcb4cd3d9a8312c502111590">DefaultMasterVolume</a><code> [get]</code></td></tr>
@@ -119,8 +126,6 @@ Properties</h2></td></tr>
 <tr class="separator:ace78569fefe75af6daab76e8ebfa3a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a229a933687c3a48a5c2ffddc4e92d638" id="r_a229a933687c3a48a5c2ffddc4e92d638"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a229a933687c3a48a5c2ffddc4e92d638">DefaultSfxVolume</a><code> [get]</code></td></tr>
 <tr class="separator:a229a933687c3a48a5c2ffddc4e92d638"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0803161aa31fdee6aaa2e3d6361d8194" id="r_a0803161aa31fdee6aaa2e3d6361d8194"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a0803161aa31fdee6aaa2e3d6361d8194">DefaultLocale</a><code> [get]</code></td></tr>
-<tr class="separator:a0803161aa31fdee6aaa2e3d6361d8194"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49e22d89c51d9560d46fdc0042bf0472" id="r_a49e22d89c51d9560d46fdc0042bf0472"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a49e22d89c51d9560d46fdc0042bf0472">LocalPlayerTeam</a><code> [get]</code></td></tr>
 <tr class="separator:a49e22d89c51d9560d46fdc0042bf0472"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c8d118636ff1c50e53def5183282153" id="r_a8c8d118636ff1c50e53def5183282153"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a8c8d118636ff1c50e53def5183282153">VesselItemSlots</a><code> [get]</code></td></tr>
@@ -153,11 +158,57 @@ Properties</h2></td></tr>
 <tr class="separator:a68b847c118e0a2b943a3d354653330a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc3d8431eb8b55733c748c4ea8ab1f3f" id="r_acc3d8431eb8b55733c748c4ea8ab1f3f"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#acc3d8431eb8b55733c748c4ea8ab1f3f">StartingRelicId</a><code> [get]</code></td></tr>
 <tr class="separator:acc3d8431eb8b55733c748c4ea8ab1f3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27f1813965d3a96f9af84c15baf2f226" id="r_a27f1813965d3a96f9af84c15baf2f226"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a27f1813965d3a96f9af84c15baf2f226">MaxProfiles</a><code> [get]</code></td></tr>
+<tr class="separator:a27f1813965d3a96f9af84c15baf2f226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32e2aa96c37bbff9b28e6aa27f8e9cb3" id="r_a32e2aa96c37bbff9b28e6aa27f8e9cb3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a32e2aa96c37bbff9b28e6aa27f8e9cb3">MaxGuildsPerProfile</a><code> [get]</code></td></tr>
+<tr class="separator:a32e2aa96c37bbff9b28e6aa27f8e9cb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9383ebd28347dbb7c93692a3478a05fa" id="r_a9383ebd28347dbb7c93692a3478a05fa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a9383ebd28347dbb7c93692a3478a05fa">StartingRosterCapacity</a><code> [get]</code></td></tr>
+<tr class="separator:a9383ebd28347dbb7c93692a3478a05fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5971d919724780c308563eb0ebbdbf35" id="r_a5971d919724780c308563eb0ebbdbf35"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a5971d919724780c308563eb0ebbdbf35">MaxRosterCapacity</a><code> [get]</code></td></tr>
+<tr class="separator:a5971d919724780c308563eb0ebbdbf35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b4b9a4bc6e47536ca0729e3d093f233" id="r_a6b4b9a4bc6e47536ca0729e3d093f233"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a6b4b9a4bc6e47536ca0729e3d093f233">VeteranHireUnlockDeaths</a><code> [get]</code></td></tr>
+<tr class="separator:a6b4b9a4bc6e47536ca0729e3d093f233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7659e29eb4197af130dd4d096d2d6e1" id="r_ac7659e29eb4197af130dd4d096d2d6e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ac7659e29eb4197af130dd4d096d2d6e1">Stats</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac7659e29eb4197af130dd4d096d2d6e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Балансные конфиги, на которые ссылается игра.  <br /></td></tr>
+<tr class="separator:ac7659e29eb4197af130dd4d096d2d6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3da034f7648ec99aa3055b09a4df331" id="r_ab3da034f7648ec99aa3055b09a4df331"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html">ClassBalanceConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ab3da034f7648ec99aa3055b09a4df331">ClassBalance</a><code> [get]</code></td></tr>
+<tr class="separator:ab3da034f7648ec99aa3055b09a4df331"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Общие дефолты игры (вики «13» §3.4): начальные пользовательские настройки (громкости, локаль) и мета-правила. </p>
-<p>ФАКТИЧЕСКИЕ настройки игрока живут в файле настроек (ES3) — сюда не пишутся. Потребителей пока нет (Фаза 6/7 UI/аудио подключатся) — сейчас только тип, ассет, DI. </p>
-</div><h2 class="groupheader">Property Documentation</h2>
+<div class="textblock"><p>Общие правила и экономика игры (вики «13» §3.4) плюс громкости первого запуска. </p>
+<p>ФАКТИЧЕСКИЕ настройки игрока живут в файле настроек — сюда не пишутся. </p>
+<p><b>Единственный владелец значений — ассет</b> (<code>Configs/GameConfig.asset</code>), поэтому инициализаторов у полей здесь нет. Так и задумано: дефолт в C# на игру не влияет — Unity читает сериализованное значение, — но при чтении кода выглядит как правда. Однажды это уже разошлось: код обещал вместимость коллекции 8, ассет держал 12, играли по 12. Осмысленность значений проверяет <code>ConfigValidationTests</code>, поэтому пустой конфиг не пройдёт молча.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7feabfaff77d5b1937486c119c6f1bc0" name="a7feabfaff77d5b1937486c119c6f1bc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7feabfaff77d5b1937486c119c6f1bc0">&#9670;&#160;</a></span>CreateDefault()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a> Guildmaster.Data.Definitions.GameConfig.CreateDefault </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Заготовка значений: инстанс в памяти, заполненный тем, с чего начинают новый ассет. </p>
+<p>Нужна авторингу и тестам, которым конфиг требуется, но не важен по существу. </p>
+<p>Это НЕ дублирование ассета, а его единственная альтернатива в коде: пока значения жили инициализаторами полей, каждое из них имело двух владельцев — и они разъехались (код обещал вместимость 8 против 12 в ассете, тест уверял про 4 слота предмета против 3). Здесь дефолты собраны в одном месте и явно названы заготовкой; играет всегда ассет.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
 <a id="a8d05524febecb76d983218a7fe4cb28b" name="a8d05524febecb76d983218a7fe4cb28b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8d05524febecb76d983218a7fe4cb28b">&#9670;&#160;</a></span>BattleGoldReward</h2>
 
@@ -180,8 +231,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a0803161aa31fdee6aaa2e3d6361d8194" name="a0803161aa31fdee6aaa2e3d6361d8194"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0803161aa31fdee6aaa2e3d6361d8194">&#9670;&#160;</a></span>DefaultLocale</h2>
+<a id="ab3da034f7648ec99aa3055b09a4df331" name="ab3da034f7648ec99aa3055b09a4df331"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3da034f7648ec99aa3055b09a4df331">&#9670;&#160;</a></span>ClassBalance</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,7 +241,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">string Guildmaster.Data.Definitions.GameConfig.DefaultLocale</td>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html">ClassBalanceConfig</a> Guildmaster.Data.Definitions.GameConfig.ClassBalance</td>
         </tr>
       </table>
   </td>
@@ -301,6 +352,72 @@ Properties</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">int Guildmaster.Data.Definitions.GameConfig.LocalPlayerTeam</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a32e2aa96c37bbff9b28e6aa27f8e9cb3" name="a32e2aa96c37bbff9b28e6aa27f8e9cb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32e2aa96c37bbff9b28e6aa27f8e9cb3">&#9670;&#160;</a></span>MaxGuildsPerProfile</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.GameConfig.MaxGuildsPerProfile</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a27f1813965d3a96f9af84c15baf2f226" name="a27f1813965d3a96f9af84c15baf2f226"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27f1813965d3a96f9af84c15baf2f226">&#9670;&#160;</a></span>MaxProfiles</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.GameConfig.MaxProfiles</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5971d919724780c308563eb0ebbdbf35" name="a5971d919724780c308563eb0ebbdbf35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5971d919724780c308563eb0ebbdbf35">&#9670;&#160;</a></span>MaxRosterCapacity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.GameConfig.MaxRosterCapacity</td>
         </tr>
       </table>
   </td>
@@ -576,6 +693,55 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="a9383ebd28347dbb7c93692a3478a05fa" name="a9383ebd28347dbb7c93692a3478a05fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9383ebd28347dbb7c93692a3478a05fa">&#9670;&#160;</a></span>StartingRosterCapacity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.GameConfig.StartingRosterCapacity</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac7659e29eb4197af130dd4d096d2d6e1" name="ac7659e29eb4197af130dd4d096d2d6e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7659e29eb4197af130dd4d096d2d6e1">&#9670;&#160;</a></span>Stats</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a> Guildmaster.Data.Definitions.GameConfig.Stats</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Балансные конфиги, на которые ссылается игра. </p>
+<p><b>Единственное место, где выбран играющий экземпляр</b> — и скоупы, и editor-бенчи берут их отсюда.</p>
+<p>Ссылки собраны здесь не для удобства, а чтобы у факта «какой <code>StatsConfig</code> играет» был один владелец. Раньше эти поля сериализовались в <code>RootLifetimeScope</code> И в <code>CombatLifetimeScope</code> (боевая сцена обязана подниматься без Root — standalone dev-арена), то есть в двух сценах, и совпадали только под присмотром теста. Хуже было у бенчей: они брали «первый по алфавиту ассет типа <code>StatsConfig</code>», поэтому второй такой ассет молча увёл бы балансные отчёты на конфиг, которым игра не играет. </p>
+<p>Пусто у инстанса из CreateDefault — в памяти ассетов нет. Потребителям рантайма конфиги обязательны, поэтому они запрашивают их через <code>ScopeWiring.Require</code> и падают громко, а не подставляют молча.</p>
+
+</div>
+</div>
 <a id="a8c8d118636ff1c50e53def5183282153" name="a8c8d118636ff1c50e53def5183282153"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8c8d118636ff1c50e53def5183282153">&#9670;&#160;</a></span>VesselItemSlots</h2>
 
@@ -587,6 +753,28 @@ Properties</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">int Guildmaster.Data.Definitions.GameConfig.VesselItemSlots</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6b4b9a4bc6e47536ca0729e3d093f233" name="a6b4b9a4bc6e47536ca0729e3d093f233"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b4b9a4bc6e47536ca0729e3d093f233">&#9670;&#160;</a></span>VeteranHireUnlockDeaths</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.GameConfig.VeteranHireUnlockDeaths</td>
         </tr>
       </table>
   </td>

@@ -103,17 +103,32 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1AutoFirstNodeChooser.html">AutoFirstNodeChooser</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A2-реализация: авто-выбор первого доступного узла (без UI) — забег проходится headless по «верхнему» маршруту.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1AutoFirstNodeChooser.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleBootstrap.html">BattleBootstrap</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Дочерний EntryPoint боевого скоупа (план 11 §4 A2): связывает готовую боевую клетку с макро-флоу через IBattleSession.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattleBootstrap.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html">BattleFlow</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел забега «бой» (план 11 §3.2, §4 A2): оборачивает готовую боевую клетку в IEventFlow.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html">BattleHost</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Единственный владелец жизненного цикла боя: рождает боевой скоуп на входе в бой и хоронит его на выходе.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleNodeFlow.html">BattleNodeFlow</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обёртка боевого узла (план [[act-map-run-loop]]): прогоняет внутренний бой (BattleFlow) и при победе начисляет золото + катит награду тира.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattleNodeFlow.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattlePresenterBinder.html">BattlePresenterBinder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Раздаёт боевые внутренности сценным презентерам на время жизни боя и забирает их обратно.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattlePresenterBinder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleScopeParams.html">BattleScopeParams</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">С чем родился этот бой: какой пресет играем и с каким сидом.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattleScopeParams.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html">BattleSession</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Соло-реализация IBattleSession (план 11 §2).  <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleStageBinder.html">BattleStageBinder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подключает ленту боя к показу на время жизни боевого скоупа и отключает её, когда бой уходит.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattleStageBinder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleStartup.html">BattleStartup</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собирает бой, ради которого родился его скоуп: ставит отряд из <code><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844" title="Ростер гильдии — 4 сосуда.">RunState.Guild</a></code>, доспавнивает врагов пресета и уводит в фазу расстановки.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattleStartup.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1CampFlow.html">CampFlow</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел забега «привал»: отряд привозит бюджет действий (CampSession) и тратит его на несколько трат ПОДРЯД, пока не уйдёт сам или пока бюджет не кончится.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1CampFlow.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html">ChestFlow</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел забега «сундук» (план [[act-map-run-loop]] §4 B3): показывает фасад сундука, ждёт клик по крышке, затем катит награду 1-из-3 через IRewardPresenter (переиспользуем витрину).  <a href="classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html#details">More...</a><br /></td></tr>
@@ -122,7 +137,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел-заглушка: сразу EventResult.Completed (плейсхолдер для ещё не готовых типов).  <a href="classGuildmaster_1_1Game_1_1Flow_1_1CompletedStubFlow.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ContinuePresenter.html">ContinuePresenter</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Презентер кнопки «Продолжить» (план [[act-map-run-loop]] §4 A4): публикует OpenContinueRequest в UI и ждёт нажатия.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1ContinuePresenter.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Презентер кнопок бита (план [[act-map-run-loop]] §4 A4): публикует OpenContinueRequest в UI.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1ContinuePresenter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html">EventEffectApplier</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применяет последствия выбора текстового ивента (EventEffect) к RunState через RunStateService — единый центр-switch (план 11 §5.1).  <a href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html#details">More...</a><br /></td></tr>
@@ -130,20 +145,26 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html">EventResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Результат исполнения узла карты.  <a href="structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1GuestPlayerIntentSource.html">GuestPlayerIntentSource</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гость: авторитета нет никогда.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1GuestPlayerIntentSource.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html">GuildRoster</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мост durable-гильдии игрока (RunState, строковые id) → player-ростер боя (Data-ссылки).  <a href="classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html">IActMapPresence</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Карта акта глазами того, кто её не рисует: показана ли она и надо ли её показать.  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html">IBattleSession</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (<code>CombatLifetimeScope</code>, живёт один бой).  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter.html">IContinuePresenter</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показ единой кнопки «Продолжить» и ожидание нажатия (план A4).  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показ кнопок «бита» между узлами и (для гейта) ожидание нажатия (план A4).  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IEventFlow.html">IEventFlow</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полиморфный узел забега (вики «7» §3, план 11 §3.2): бой / текст-ивент / магазин / риск — каждый новый тип реализует этот интерфейс, центральный switch не трогаем.  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IEventFlow.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IMainMenuPresenter.html">IMainMenuPresenter</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показ главного меню и ожидание выбора Начать/Продолжить/Выход (план D1).  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IMainMenuPresenter.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показ главного меню и ожидание исхода: заказ игры, вход к другу или выход.  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IMainMenuPresenter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IMapNodeChooser.html">IMapNodeChooser</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шов выбора следующего узла на карте (план [[act-map-run-loop]] §3.2).  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IMapNodeChooser.html#details">More...</a><br /></td></tr>
@@ -154,6 +175,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IOutcomePresenter.html">IOutcomePresenter</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показ экрана исхода забега (победа/поражение) и ожидание «В меню» (план C2).  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IOutcomePresenter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IPartyStage.html">IPartyStage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отряд на арене глазами того, кто его не собирает: «поставь заново по текущему забегу».  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IPartyStage.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IPlayerIntentSource.html">IPlayerIntentSource</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Источник интентов игрока (план 11 §2): хост исполняет флоу, клиенты шлют интенты.  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IPlayerIntentSource.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,11 +187,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter.html">IRewardPresenter</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показ экрана награды после узла (витрина 1-из-N → запись выбора в RunState).  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRunBeatStage.html">IRunBeatStage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что происходит с МИРОМ на стыках узлов забега.  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRunBeatStage.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1ITitleCardPresenter.html">ITitleCardPresenter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показ boot title card до главного меню и ожидание закрытия.  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1ITitleCardPresenter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter.html">MainMenuPresenter</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Презентер главного меню (план [[act-map-run-loop]] §4 D1): публикует OpenMainMenuRequest и ждёт выбор.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1MapScreenNodeChooser.html">MapScreenNodeChooser</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A3-реализация IMapNodeChooser: выбор узла через экран карты.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1MapScreenNodeChooser.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1NodeResolver.html">NodeResolver</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Резолвер узлов карты (план [[act-map-run-loop]] §3.2): таблица <a class="el" href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625" title="Тип узла карты акта (план 11 §3.3, [[act-map-run-loop]] §3.1).">MapNodeType</a> → IEventFlow.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1NodeResolver.html#details">More...</a><br /></td></tr>
@@ -187,8 +214,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html">RewardService</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Генератор витрины наград (план 11 §4 A3, «сердце рогалика»): катит N (обычно 3) РАЗНЫХ реликвий из контент-БД.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RosterDeployer.html">RosterDeployer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Persist-мир: единая точка «поставить отряд забега на чистую арену».  <a href="classGuildmaster_1_1Game_1_1Flow_1_1RosterDeployer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunBeatStage.html">RunBeatStage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Соло-реализация: возврат мира — команда в живой боевой скоуп (IBattleSession.RequestReset), кнопки — через IContinuePresenter, а сами кнопки лишь публикуют интенты, которые и так висят на табах: «Продолжить» = открыть карту, «К построению» = встать в расстановку на боевой арене.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1RunBeatStage.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html">RunContext</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Контекст исполнения узла (план 11 §3.2): durable-состояние забега + RNG + сетевые швы.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Game_1_1Flow_1_1RunPartyReadyEvent.html">RunPartyReadyEvent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сигнал «отряд забега готов встать на арену» (persist-мир, план 12 Ф2).  <a href="structGuildmaster_1_1Game_1_1Flow_1_1RunPartyReadyEvent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html">ShopController</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Логика магазина (план [[act-map-run-loop]] §4 B2), реализация IShopController.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#details">More...</a><br /></td></tr>
@@ -204,6 +240,18 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow.html">TextEventFlow</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел забега «текстовый ивент» (план 11 §3.4, §5.1) в стиле Slay the Spire: показывает TextEventData (заголовок/тело/картинка/варианты), ждёт выбор игрока и применяет последствия выбранного варианта к RunState через EventEffectApplier.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1TitleCardPresenter.html">TitleCardPresenter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Презентер boot title card: публикует OpenTitleCardRequest и ждёт dismiss.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1TitleCardPresenter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html">WorldMapController</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ЕДИНЫЙ владелец показа карты акта в мире.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapNodeChooser.html">WorldMapNodeChooser</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза D-реализация IMapNodeChooser: выбор узла на world-карте.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapNodeChooser.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldStageController.html">WorldStageController</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Persist-мир: ставит отряд игрока (team 0) на арену ВНЕ боя.  <a href="classGuildmaster_1_1Game_1_1Flow_1_1WorldStageController.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>

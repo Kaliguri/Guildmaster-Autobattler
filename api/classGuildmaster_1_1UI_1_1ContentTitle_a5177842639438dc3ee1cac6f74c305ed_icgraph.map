@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.ContentTitle.TitleCase" name="Guildmaster.UI.ContentTitle.TitleCase">
+<area shape="rect" id="Node000001" title="Слова с заглавных, _ считается пробелом: flame_swordsman → Flame Swordsman." alt="" coords="260,5,467,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1ContentTitle.html#a2a58c8ab7ec193fc72209b63c21187e7" title="Титул в стиле аркана таро (решение по ГДД): relic.flame_swordsman → The Flame Swordsman." alt="" coords="5,5,212,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,28,212,28,212,23,247,23"/>
+</map>

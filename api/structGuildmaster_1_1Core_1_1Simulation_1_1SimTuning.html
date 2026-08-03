@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Core_1_1Simulatio
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Core.Simulation.SimTuning Struct Reference</div></div>
 </div><!--header-->
@@ -110,8 +111,17 @@ Collaboration diagram for Guildmaster.Core.Simulation.SimTuning:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aecda6e81cb87a8119d8f09b0dafd3976" id="r_aecda6e81cb87a8119d8f09b0dafd3976"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#aecda6e81cb87a8119d8f09b0dafd3976">SimTuning</a> (float bodyRadiusPerSize, float separationStrength, int separationIterations, float separationSameTeamScale, float projectileHitRadiusFactor, float projectileDespawnMargin, float kiteFleeFactor, float globalSearchRadius, float fleeThreatWeight, float fleeHomeWeight, float fleeWallWeight, float fleeWallMargin, float fleeThreatRadius, float kiteStrafeWeight)</td></tr>
-<tr class="separator:aecda6e81cb87a8119d8f09b0dafd3976"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbef7f112a99ddc759c69a94e8a784cb" id="r_acbef7f112a99ddc759c69a94e8a784cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#acbef7f112a99ddc759c69a94e8a784cb">SimTuning</a> (float bodyRadiusPerSize, float separationStrength, int separationIterations, float separationSameTeamScale, float projectileHitRadiusFactor, float projectileDespawnMargin, float kiteFleeFactor, float globalSearchRadius, float fleeThreatWeight, float fleeHomeWeight, float fleeWallWeight, float fleeWallMargin, float fleeThreatRadius, float kiteStrafeWeight, float displaceSpeedPerSecond, float cannonballWidthMult, float wallImpactDamageMult, float wallImpactStunSeconds, float overtimeStartSeconds, float overtimeDamagePerSecond, float sprintSpeedMult, float sprintEnterGap, float sprintExitGap, float sprintWalkSeconds, float sprintRampSeconds, float recastRecoverySpeed, float recastWindupSpeed, float concealWeakRadius, float concealMediumRadius, float concealStrongRadius, float comboBreakSeconds)</td></tr>
+<tr class="separator:acbef7f112a99ddc759c69a94e8a784cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63756f956c2de88d21914bd62eb0ce6c" id="r_a63756f956c2de88d21914bd62eb0ce6c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a63756f956c2de88d21914bd62eb0ce6c">SprintRampAt</a> (int wantTicks)</td></tr>
+<tr class="memdesc:a63756f956c2de88d21914bd62eb0ce6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Доля разгона [0..1] после <em>wantTicks</em>  тиков непрерывного намерения бежать: ноль всю «прогулочную» часть, потом линейный набор до единицы.  <br /></td></tr>
+<tr class="separator:a63756f956c2de88d21914bd62eb0ce6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f23b734e3e501100ceb2d9a706a6751" id="r_a8f23b734e3e501100ceb2d9a706a6751"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a8f23b734e3e501100ceb2d9a706a6751">DisplaceTicks</a> (float distance, float speedPerSecond=0f)</td></tr>
+<tr class="memdesc:a8f23b734e3e501100ceb2d9a706a6751"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько тиков длится полёт: дистанция ÷ скорость.  <br /></td></tr>
+<tr class="separator:a8f23b734e3e501100ceb2d9a706a6751"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af616872f7b83d575195ac7b14039c6cf" id="r_af616872f7b83d575195ac7b14039c6cf"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#af616872f7b83d575195ac7b14039c6cf">OvertimeDamageMultiplier</a> (float elapsedSeconds)</td></tr>
+<tr class="memdesc:af616872f7b83d575195ac7b14039c6cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель наносимого урона на данной секунде боя: 1 до порога, дальше линейный рост.  <br /></td></tr>
+<tr class="separator:af616872f7b83d575195ac7b14039c6cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -143,12 +153,52 @@ Public Attributes</h2></td></tr>
 <tr class="separator:aa59d98e538eeb91a05980b1ccb5bd2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e1fef608ce5b31def7d47b511016dcd" id="r_a1e1fef608ce5b31def7d47b511016dcd"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a1e1fef608ce5b31def7d47b511016dcd">KiteStrafeWeight</a></td></tr>
 <tr class="separator:a1e1fef608ce5b31def7d47b511016dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a888ad47f31dbbd784ef50688e20294dd" id="r_a888ad47f31dbbd784ef50688e20294dd"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a888ad47f31dbbd784ef50688e20294dd">DisplaceSpeedPerSecond</a></td></tr>
+<tr class="separator:a888ad47f31dbbd784ef50688e20294dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add769d2ceaf6b740da663f677ef8955d" id="r_add769d2ceaf6b740da663f677ef8955d"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#add769d2ceaf6b740da663f677ef8955d">CannonballWidthMult</a></td></tr>
+<tr class="separator:add769d2ceaf6b740da663f677ef8955d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6941dccc943d2d378d82d1227e7cb02a" id="r_a6941dccc943d2d378d82d1227e7cb02a"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a6941dccc943d2d378d82d1227e7cb02a">WallImpactDamageMult</a></td></tr>
+<tr class="separator:a6941dccc943d2d378d82d1227e7cb02a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e01ee58f9f5783a4096e80f0337409c" id="r_a7e01ee58f9f5783a4096e80f0337409c"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a7e01ee58f9f5783a4096e80f0337409c">WallImpactStunSeconds</a></td></tr>
+<tr class="separator:a7e01ee58f9f5783a4096e80f0337409c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8617f23cf9cc201244bee8a0e348d154" id="r_a8617f23cf9cc201244bee8a0e348d154"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a8617f23cf9cc201244bee8a0e348d154">OvertimeStartSeconds</a></td></tr>
+<tr class="separator:a8617f23cf9cc201244bee8a0e348d154"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefbda60b2ac0c9156bb1078ed4e01daa" id="r_aefbda60b2ac0c9156bb1078ed4e01daa"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#aefbda60b2ac0c9156bb1078ed4e01daa">OvertimeDamagePerSecond</a></td></tr>
+<tr class="separator:aefbda60b2ac0c9156bb1078ed4e01daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e38503a48b482d0967a03d6e11eed0a" id="r_a0e38503a48b482d0967a03d6e11eed0a"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a0e38503a48b482d0967a03d6e11eed0a">SprintSpeedMult</a></td></tr>
+<tr class="separator:a0e38503a48b482d0967a03d6e11eed0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab71c1225fcdd037c0dec5bbc430e5440" id="r_ab71c1225fcdd037c0dec5bbc430e5440"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#ab71c1225fcdd037c0dec5bbc430e5440">SprintEnterGap</a></td></tr>
+<tr class="separator:ab71c1225fcdd037c0dec5bbc430e5440"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97a4c177d34d0b575d5f00664cabe6ef" id="r_a97a4c177d34d0b575d5f00664cabe6ef"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a97a4c177d34d0b575d5f00664cabe6ef">SprintExitGap</a></td></tr>
+<tr class="separator:a97a4c177d34d0b575d5f00664cabe6ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2795ce2b056d77e885026ba4205f9c7" id="r_ad2795ce2b056d77e885026ba4205f9c7"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#ad2795ce2b056d77e885026ba4205f9c7">SprintWalkSeconds</a></td></tr>
+<tr class="separator:ad2795ce2b056d77e885026ba4205f9c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ab063e615bdf9cb95044378c0fd3f42" id="r_a3ab063e615bdf9cb95044378c0fd3f42"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a3ab063e615bdf9cb95044378c0fd3f42">SprintRampSeconds</a></td></tr>
+<tr class="separator:a3ab063e615bdf9cb95044378c0fd3f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeace751602e148db075468b8e8389496" id="r_aeace751602e148db075468b8e8389496"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#aeace751602e148db075468b8e8389496">RecastRecoverySpeed</a></td></tr>
+<tr class="separator:aeace751602e148db075468b8e8389496"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5308f1f91fe6df83fd3b6a0c2ced9b7e" id="r_a5308f1f91fe6df83fd3b6a0c2ced9b7e"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a5308f1f91fe6df83fd3b6a0c2ced9b7e">RecastWindupSpeed</a></td></tr>
+<tr class="separator:a5308f1f91fe6df83fd3b6a0c2ced9b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af56ac63a795b03c01e06c6aff91293ae" id="r_af56ac63a795b03c01e06c6aff91293ae"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#af56ac63a795b03c01e06c6aff91293ae">ConcealWeakRadius</a></td></tr>
+<tr class="separator:af56ac63a795b03c01e06c6aff91293ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76290cdbf03d8ddf7bad9727da543987" id="r_a76290cdbf03d8ddf7bad9727da543987"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a76290cdbf03d8ddf7bad9727da543987">ConcealMediumRadius</a></td></tr>
+<tr class="separator:a76290cdbf03d8ddf7bad9727da543987"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59a76fd7cd6a422f68a0f5c859abcfaa" id="r_a59a76fd7cd6a422f68a0f5c859abcfaa"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a59a76fd7cd6a422f68a0f5c859abcfaa">ConcealStrongRadius</a></td></tr>
+<tr class="separator:a59a76fd7cd6a422f68a0f5c859abcfaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37d98fc0a7885ceeffbd4e7bf769f101" id="r_a37d98fc0a7885ceeffbd4e7bf769f101"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a37d98fc0a7885ceeffbd4e7bf769f101">ComboBreakSeconds</a></td></tr>
+<tr class="separator:a37d98fc0a7885ceeffbd4e7bf769f101"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:adfc9cb32fba760a175edc59d4b399ea7" id="r_adfc9cb32fba760a175edc59d4b399ea7"><td class="memItemLeft" align="right" valign="top">static readonly <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#adfc9cb32fba760a175edc59d4b399ea7">Default</a></td></tr>
 <tr class="memdesc:adfc9cb32fba760a175edc59d4b399ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Код-дефолты (исторические значения фиксированных констант — контракт баланса).  <br /></td></tr>
 <tr class="separator:adfc9cb32fba760a175edc59d4b399ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a7058a98853f1c52df840606fabd74996" id="r_a7058a98853f1c52df840606fabd74996"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a7058a98853f1c52df840606fabd74996">ComboBreakTicks</a><code> [get]</code></td></tr>
+<tr class="memdesc:a7058a98853f1c52df840606fabd74996"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько тиков подряд вне атакующего лупа рвут Комбо.  <br /></td></tr>
+<tr class="separator:a7058a98853f1c52df840606fabd74996"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Иммутабельный снапшот балансных тюнинг-ручек симуляции, снятый со <code>SimTuningConfig</code> на старте боя (вики «13» §3.4, §4). </p>
@@ -156,8 +206,8 @@ Static Public Attributes</h2></td></tr>
 <p>Default — единый код-сид этих значений: сюда же смотрят свежесозданный <code>SimTuningConfig</code>, dev-гизмо презентации и тесты-страховки неизменности баланса. </p>
 <p>НЕ здесь (осознанные отклонения от §3.4, шов готов принять их позже): <code>TickRate</code>/ <code>AiTickRate</code> — структурные (детерминизм, назначение BrainPhase; см. SimConstants); <code>MaxAttackAnimTicks</code>/<code>MinWindupTicks</code> — в чистом статик-хелпере AttackTiming (широкие юнит-тесты); <code>DefaultPassiveThresholdPct</code> — compile-time дефолт сериализованного поля AIProfile. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aecda6e81cb87a8119d8f09b0dafd3976" name="aecda6e81cb87a8119d8f09b0dafd3976"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aecda6e81cb87a8119d8f09b0dafd3976">&#9670;&#160;</a></span>SimTuning()</h2>
+<a id="acbef7f112a99ddc759c69a94e8a784cb" name="acbef7f112a99ddc759c69a94e8a784cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbef7f112a99ddc759c69a94e8a784cb">&#9670;&#160;</a></span>SimTuning()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -247,7 +297,109 @@ Static Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>kiteStrafeWeight</em>&#160;</td>
+          <td class="paramname"><em>kiteStrafeWeight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>displaceSpeedPerSecond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>cannonballWidthMult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>wallImpactDamageMult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>wallImpactStunSeconds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>overtimeStartSeconds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>overtimeDamagePerSecond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>sprintSpeedMult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>sprintEnterGap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>sprintExitGap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>sprintWalkSeconds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>sprintRampSeconds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>recastRecoverySpeed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>recastWindupSpeed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>concealWeakRadius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>concealMediumRadius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>concealStrongRadius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>comboBreakSeconds</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -264,6 +416,104 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8f23b734e3e501100ceb2d9a706a6751" name="a8f23b734e3e501100ceb2d9a706a6751"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f23b734e3e501100ceb2d9a706a6751">&#9670;&#160;</a></span>DisplaceTicks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Core.Simulation.SimTuning.DisplaceTicks </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>distance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>speedPerSecond</em> = <code>0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько тиков длится полёт: дистанция ÷ скорость. </p>
+<p><em>speedPerSecond</em>  ≤ 0 — берётся общий дефолт DisplaceSpeedPerSecond, поэтому источник с иным характером толчка (медленный тяжёлый бросок) задаёт свою скорость, а не свою длительность. Минимум один тик: нулевой полёт не поднял бы событие конца смещения, на котором висят реактивы. </p>
+
+</div>
+</div>
+<a id="af616872f7b83d575195ac7b14039c6cf" name="af616872f7b83d575195ac7b14039c6cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af616872f7b83d575195ac7b14039c6cf">&#9670;&#160;</a></span>OvertimeDamageMultiplier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Core.Simulation.SimTuning.OvertimeDamageMultiplier </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>elapsedSeconds</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Множитель наносимого урона на данной секунде боя: 1 до порога, дальше линейный рост. </p>
+<p>Лечения и щитов НЕ касается — в этом весь смысл правила. </p>
+
+</div>
+</div>
+<a id="a63756f956c2de88d21914bd62eb0ce6c" name="a63756f956c2de88d21914bd62eb0ce6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63756f956c2de88d21914bd62eb0ce6c">&#9670;&#160;</a></span>SprintRampAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Core.Simulation.SimTuning.SprintRampAt </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>wantTicks</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Доля разгона [0..1] после <em>wantTicks</em>  тиков непрерывного намерения бежать: ноль всю «прогулочную» часть, потом линейный набор до единицы. </p>
+<p>Формула живёт здесь, а не в движении, потому что её же читают тесты и dev-инструменты — второй копии быть не должно. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a3568e3c880cb09160c26299043b6e4ce" name="a3568e3c880cb09160c26299043b6e4ce"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3568e3c880cb09160c26299043b6e4ce">&#9670;&#160;</a></span>BodyRadiusPerSize</h2>
@@ -273,6 +523,76 @@ Static Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.BodyRadiusPerSize</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="add769d2ceaf6b740da663f677ef8955d" name="add769d2ceaf6b740da663f677ef8955d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add769d2ceaf6b740da663f677ef8955d">&#9670;&#160;</a></span>CannonballWidthMult</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.CannonballWidthMult</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a37d98fc0a7885ceeffbd4e7bf769f101" name="a37d98fc0a7885ceeffbd4e7bf769f101"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37d98fc0a7885ceeffbd4e7bf769f101">&#9670;&#160;</a></span>ComboBreakSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.ComboBreakSeconds</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a76290cdbf03d8ddf7bad9727da543987" name="a76290cdbf03d8ddf7bad9727da543987"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76290cdbf03d8ddf7bad9727da543987">&#9670;&#160;</a></span>ConcealMediumRadius</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.ConcealMediumRadius</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a59a76fd7cd6a422f68a0f5c859abcfaa" name="a59a76fd7cd6a422f68a0f5c859abcfaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59a76fd7cd6a422f68a0f5c859abcfaa">&#9670;&#160;</a></span>ConcealStrongRadius</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.ConcealStrongRadius</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af56ac63a795b03c01e06c6aff91293ae" name="af56ac63a795b03c01e06c6aff91293ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af56ac63a795b03c01e06c6aff91293ae">&#9670;&#160;</a></span>ConcealWeakRadius</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.ConcealWeakRadius</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -298,24 +618,22 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> <a class="code hl_function" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#aecda6e81cb87a8119d8f09b0dafd3976">SimTuning</a>(</div>
-<div class="line">            bodyRadiusPerSize:         0.3f,</div>
-<div class="line">            separationStrength:        0.5f,</div>
-<div class="line">            separationIterations:      1,</div>
-<div class="line">            separationSameTeamScale:   0.35f,</div>
-<div class="line">            projectileHitRadiusFactor: 0.25f,</div>
-<div class="line">            projectileDespawnMargin:   5f,</div>
-<div class="line">            kiteFleeFactor:            0.6f,</div>
-<div class="line">            globalSearchRadius:        500f,</div>
-<div class="line">            fleeThreatWeight:          1f,</div>
-<div class="line">            fleeHomeWeight:            0.5f,</div>
-<div class="line">            fleeWallWeight:            1.5f,</div>
-<div class="line">            fleeWallMargin:            2.5f,</div>
-<div class="line">            fleeThreatRadius:          6f,</div>
-<div class="line">            kiteStrafeWeight:          0.35f)</div>
-<div class="ttc" id="astructGuildmaster_1_1Core_1_1Simulation_1_1SimTuning_html_aecda6e81cb87a8119d8f09b0dafd3976"><div class="ttname"><a href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#aecda6e81cb87a8119d8f09b0dafd3976">Guildmaster.Core.Simulation.SimTuning.SimTuning</a></div><div class="ttdeci">SimTuning(float bodyRadiusPerSize, float separationStrength, int separationIterations, float separationSameTeamScale, float projectileHitRadiusFactor, float projectileDespawnMargin, float kiteFleeFactor, float globalSearchRadius, float fleeThreatWeight, float fleeHomeWeight, float fleeWallWeight, float fleeWallMargin, float fleeThreatRadius, float kiteStrafeWeight)</div><div class="ttdef"><b>Definition</b> SimTuning.cs:45</div></div>
-</div><!-- fragment -->
+
 <p>Код-дефолты (исторические значения фиксированных констант — контракт баланса). </p>
+
+</div>
+</div>
+<a id="a888ad47f31dbbd784ef50688e20294dd" name="a888ad47f31dbbd784ef50688e20294dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a888ad47f31dbbd784ef50688e20294dd">&#9670;&#160;</a></span>DisplaceSpeedPerSecond</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.DisplaceSpeedPerSecond</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -431,6 +749,34 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="aefbda60b2ac0c9156bb1078ed4e01daa" name="aefbda60b2ac0c9156bb1078ed4e01daa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefbda60b2ac0c9156bb1078ed4e01daa">&#9670;&#160;</a></span>OvertimeDamagePerSecond</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.OvertimeDamagePerSecond</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8617f23cf9cc201244bee8a0e348d154" name="a8617f23cf9cc201244bee8a0e348d154"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8617f23cf9cc201244bee8a0e348d154">&#9670;&#160;</a></span>OvertimeStartSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.OvertimeStartSeconds</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="acd93afba60423ea23fe8c385098a123f" name="acd93afba60423ea23fe8c385098a123f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd93afba60423ea23fe8c385098a123f">&#9670;&#160;</a></span>ProjectileDespawnMargin</h2>
 
@@ -453,6 +799,34 @@ Static Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.ProjectileHitRadiusFactor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeace751602e148db075468b8e8389496" name="aeace751602e148db075468b8e8389496"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeace751602e148db075468b8e8389496">&#9670;&#160;</a></span>RecastRecoverySpeed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.RecastRecoverySpeed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5308f1f91fe6df83fd3b6a0c2ced9b7e" name="a5308f1f91fe6df83fd3b6a0c2ced9b7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5308f1f91fe6df83fd3b6a0c2ced9b7e">&#9670;&#160;</a></span>RecastWindupSpeed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.RecastWindupSpeed</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -498,6 +872,130 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab71c1225fcdd037c0dec5bbc430e5440" name="ab71c1225fcdd037c0dec5bbc430e5440"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab71c1225fcdd037c0dec5bbc430e5440">&#9670;&#160;</a></span>SprintEnterGap</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.SprintEnterGap</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a97a4c177d34d0b575d5f00664cabe6ef" name="a97a4c177d34d0b575d5f00664cabe6ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97a4c177d34d0b575d5f00664cabe6ef">&#9670;&#160;</a></span>SprintExitGap</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.SprintExitGap</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3ab063e615bdf9cb95044378c0fd3f42" name="a3ab063e615bdf9cb95044378c0fd3f42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ab063e615bdf9cb95044378c0fd3f42">&#9670;&#160;</a></span>SprintRampSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.SprintRampSeconds</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0e38503a48b482d0967a03d6e11eed0a" name="a0e38503a48b482d0967a03d6e11eed0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e38503a48b482d0967a03d6e11eed0a">&#9670;&#160;</a></span>SprintSpeedMult</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.SprintSpeedMult</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad2795ce2b056d77e885026ba4205f9c7" name="ad2795ce2b056d77e885026ba4205f9c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2795ce2b056d77e885026ba4205f9c7">&#9670;&#160;</a></span>SprintWalkSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.SprintWalkSeconds</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6941dccc943d2d378d82d1227e7cb02a" name="a6941dccc943d2d378d82d1227e7cb02a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6941dccc943d2d378d82d1227e7cb02a">&#9670;&#160;</a></span>WallImpactDamageMult</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.WallImpactDamageMult</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7e01ee58f9f5783a4096e80f0337409c" name="a7e01ee58f9f5783a4096e80f0337409c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e01ee58f9f5783a4096e80f0337409c">&#9670;&#160;</a></span>WallImpactStunSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.WallImpactStunSeconds</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a7058a98853f1c52df840606fabd74996" name="a7058a98853f1c52df840606fabd74996"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7058a98853f1c52df840606fabd74996">&#9670;&#160;</a></span>ComboBreakTicks</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Core.Simulation.SimTuning.ComboBreakTicks</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько тиков подряд вне атакующего лупа рвут Комбо. </p>
+<p>Пол в один тик: ручка, выставленная в ноль, означала бы «серия рвётся мгновенно», то есть Комбо не существует — такое отключение делается не тюнингом, а удалением механики. </p>
 
 </div>
 </div>

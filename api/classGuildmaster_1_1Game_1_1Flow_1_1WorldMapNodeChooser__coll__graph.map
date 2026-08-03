@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.WorldMapNodeChooser" name="Guildmaster.Game.Flow.WorldMapNodeChooser">
+<area shape="rect" id="Node000001" title="Фаза D&#45;реализация IMapNodeChooser: выбор узла на world&#45;карте." alt="" coords="5,119,216,219"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IMapNodeChooser.html" title="Шов выбора следующего узла на карте (план [[act&#45;map&#45;run&#45;loop]] §3.2)." alt="" coords="44,5,177,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,84,113,119,108,119,108,84"/>
+</map>

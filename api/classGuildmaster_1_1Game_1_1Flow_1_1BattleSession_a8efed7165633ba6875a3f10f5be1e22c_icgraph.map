@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.BattleSession.SetPhase" name="Guildmaster.Game.Flow.BattleSession.SetPhase">
+<area shape="rect" id="Node000001" title="child → session: сменить фазу (расстановка → бой). Панель опрашивает IBattleClock...." alt="" coords="275,5,496,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a69c50b2bf068f71629de593f34b56ac5" title="child → session: снять часы при выгрузке боевого скоупа (сбрасывает фазу в BattlePhase...." alt="" coords="5,5,227,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="261,28,227,28,227,23,261,23"/>
+</map>

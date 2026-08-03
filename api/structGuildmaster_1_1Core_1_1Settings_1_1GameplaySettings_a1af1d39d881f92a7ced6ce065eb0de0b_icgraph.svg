@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Значения первого запуска: вся анимация карточек включена.">
+<g id="a_Node000001"><a xlink:title="Значения первого запуска: вся анимация карточек включена, подсказки краткие, камера боя сценарная.">
 <polygon fill="#999999" stroke="#666666" points="362,-54 211,-54 211,-24 362,-24 362,-54"/>
 <text text-anchor="start" x="219" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Core.Settings.</text>
 <text text-anchor="middle" x="286.5" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">GameplaySettings.Defaults</text>
@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#a001eb2edaccdff7eef9f0ed0f2ed0833" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#a89f13f32edc211f6cdb5037cc549c5a3" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="173,-78 2,-78 2,-48 173,-48 173,-78"/>
 <text text-anchor="start" x="10" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Services.</text>
 <text text-anchor="middle" x="87.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">SettingsService.SettingsService</text>

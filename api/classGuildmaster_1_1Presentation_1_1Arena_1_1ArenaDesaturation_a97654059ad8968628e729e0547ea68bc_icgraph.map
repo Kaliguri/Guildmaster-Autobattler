@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Arena.ArenaDesaturation.SetGrey" name="Guildmaster.Presentation.Arena.ArenaDesaturation.SetGrey">
+<area shape="rect" id="Node000001" title="Перекрасить арену в серое или вернуть её цвет. Мгновенно — плавность даёт цифровой слой." alt="" coords="317,5,560,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Arena_1_1ArenaDesaturation.html#a16517355944cb7ddba0c4f3b01343946" title="Перекрасить арену ПОКЛЕТОЧНО, вслед за цифровым слоем: клетки меняют цвет вразнобой по той же карте,..." alt="" coords="5,5,269,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="304,28,269,28,269,23,304,23"/>
+</map>

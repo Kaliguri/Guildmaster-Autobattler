@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.CombatAreaFlash.BindBattle" name="Guildmaster.Presentation.CombatAreaFlash.BindBattle">
+<area shape="rect" id="Node000001" title="Бой начался: подписаться на его показанные зоны удара." alt="" coords="5,5,216,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html#ae04009419e33350b1f0d186baafa0982" title="Бой ушёл: отписаться и погасить всё, что ещё догорало." alt="" coords="264,5,491,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,23,250,23,250,28,216,28"/>
+</map>

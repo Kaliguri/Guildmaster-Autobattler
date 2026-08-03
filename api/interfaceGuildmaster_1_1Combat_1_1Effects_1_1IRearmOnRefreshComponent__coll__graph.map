@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Effects.IRearmOnRefreshComponent" name="Guildmaster.Combat.Effects.IRearmOnRefreshComponent">
+<area shape="rect" id="Node000001" title="Опциональный шов подкрепления: компонент, выдающий ОДНОРАЗОВЫЙ заряд, взводится заново,..." alt="" coords="5,252,209,332"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="15,119,200,204"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,218,110,252,105,252,105,218"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="42,5,173,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="110,85,110,119,105,119,105,85"/>
+</map>

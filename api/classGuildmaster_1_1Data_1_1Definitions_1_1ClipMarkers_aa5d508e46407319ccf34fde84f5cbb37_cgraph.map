@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.ClipMarkers.StrikeWindowNormalized" name="Guildmaster.Data.Definitions.ClipMarkers.StrikeWindowNormalized">
+<area shape="rect" id="Node000001" title="Окно ВЗМАХА в нормированном времени клипа: от StrikeStartFunction до StrikeEndFunction." alt="" coords="5,5,272,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a3cb383258e645dabdf86e6859359ebd4" title="Время первого маркера этого вида (сек) или &#45;1, если такого в клипе нет." alt="" coords="320,5,535,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="272,23,306,23,306,28,272,28"/>
+</map>

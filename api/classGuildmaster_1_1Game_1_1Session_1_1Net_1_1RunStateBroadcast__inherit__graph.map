@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.Net.RunStateBroadcast" name="Guildmaster.Game.Session.Net.RunStateBroadcast">
+<area shape="rect" id="Node000001" title="Владельческая половина коопа на уровне забега: раздаёт гостям состояние снимком и принимает от них ин..." alt="" coords="5,119,200,259"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="15,5,87,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,83,81,117,76,119,64,84"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="111,5,201,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="143,84,130,119,125,117,138,83"/>
+</map>

@@ -1,0 +1,16 @@
+<map id="Guildmaster.Combat.EffectiveStats.Build" name="Guildmaster.Combat.EffectiveStats.Build">
+<area shape="rect" id="Node000001" title="Тот же каскад плюс два слоя, которые есть у собранного игроком кита: Судьба сосуда и статовые моды на..." alt="" coords="5,37,223,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1EnemyScalers.html#a960768f47107b7bd2dabe233470cb66f" title=" " alt="" coords="271,5,476,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="222,41,257,37,257,42,223,47"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1ClassBaseline.html#a2ba3c16ae54f9d5e47dd9f062361e852" title="Добавить классовую базу юнита первой группой." alt="" coords="276,69,471,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="223,68,263,73,262,78,222,73"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html#ae97b806719021d19ff582f3cc9aee131" title="Добавить группу модификаторов от source ." alt="" coords="560,5,757,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="476,23,546,23,546,28,476,28"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="463,67,555,46,556,51,464,72"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#ab06b508b3a9d66d1f96f510767d05b88" title="Классовая стат&#45;база как группа ModifierOp.Override&#45;модификаторов для скармливания в Stats ПЕРВОЙ груп..." alt="" coords="524,69,793,109"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="471,87,510,87,510,92,471,92"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#a377b6b7de1d6706dec62a7cbba3e350a" title="Бюджет брони класса — СУММА физической и магической (ГДД «Статы» §Броня, решение 2026&#45;07&#45;26/12)." alt="" coords="841,37,1104,77"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="793,73,828,69,828,75,794,78"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#adcc5178b8efe420078d250c3ec5185a5" title=" " alt="" coords="849,101,1096,141"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="794,100,836,105,835,110,793,106"/>
+</map>

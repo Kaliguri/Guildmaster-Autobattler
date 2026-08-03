@@ -1,5 +1,7 @@
 <map id="Guildmaster.Combat.MovementSystem.Tick" name="Guildmaster.Combat.MovementSystem.Tick">
-<area shape="rect" id="Node000001" title="Продвинуть позиции всех живых юнитов на один тик." alt="" coords="5,5,236,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="284,13,504,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,23,271,23,271,28,236,28"/>
+<area shape="rect" id="Node000001" title="Продвинуть позиции всех живых юнитов на один тик." alt="" coords="5,27,236,67"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="284,5,504,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,32,270,29,271,34,236,38"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a0fcefcc3b029e204a046af4cd4f4fec1" title="Сбросить разбег целиком: набранную долю, накопленное намерение И заряд удара с разбега." alt="" coords="287,55,501,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="236,56,274,60,273,66,236,62"/>
 </map>

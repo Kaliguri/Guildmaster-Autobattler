@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Au
 </div><!--header-->
 <div class="contents">
 
-<p>Аудио-презентер (вики impl «09» §П4): POCO-entry-point, подписан НАПРЯМУЮ на C#-события боевой симуляции и системы способностей (тот же приём, что <code>CombatFeelDirector</code> — он тоже держит CombatSimulation).  
+<p>Аудио-презентер (вики impl «09» §П4): POCO-entry-point, подписан НАПРЯМУЮ на C#-события боевой симуляции, системы способностей и системы эффектов (тот же приём, что <code>CombatFeelDirector</code>).  
  <a href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.Audio.AudioPresenter:</div>
@@ -113,19 +113,20 @@ Collaboration diagram for Guildmaster.Presentation.Audio.AudioPresenter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aee04db0d8aff8b48a30e1c1dc09c7e06" id="r_aee04db0d8aff8b48a30e1c1dc09c7e06"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html#aee04db0d8aff8b48a30e1c1dc09c7e06">AudioPresenter</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">IAudioService</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">audio</a>, <a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html">AudioCatalog</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">catalog</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">sim</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1AbilitySystem.html">AbilitySystem</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">abilities</a>, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html">ILocalPlayer</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">localPlayer</a>)</td></tr>
-<tr class="separator:aee04db0d8aff8b48a30e1c1dc09c7e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51351a7d2d36020ce800a154641b3bb8" id="r_a51351a7d2d36020ce800a154641b3bb8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html#a51351a7d2d36020ce800a154641b3bb8">Start</a> ()</td></tr>
+<tr class="memitem:aac8d4d98c165a664178a5a5f57024570" id="r_aac8d4d98c165a664178a5a5f57024570"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html#aac8d4d98c165a664178a5a5f57024570">AudioPresenter</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">IAudioService</a> audio, <a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html">AudioCatalog</a> catalog, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html">ILocalPlayer</a> localPlayer, <a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html">Combat.Tape.BattleTapeDispatcher</a> dispatcher, <a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html">Combat.Tape.BattleTapePlayback</a> playback, <a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleUnitRegistry.html">Combat.Tape.BattleUnitRegistry</a> registry)</td></tr>
+<tr class="separator:aac8d4d98c165a664178a5a5f57024570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51351a7d2d36020ce800a154641b3bb8" id="r_a51351a7d2d36020ce800a154641b3bb8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html#a51351a7d2d36020ce800a154641b3bb8">Start</a> ()</td></tr>
 <tr class="separator:a51351a7d2d36020ce800a154641b3bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7f1129e8bde6e191c1d548771b3b25b" id="r_ac7f1129e8bde6e191c1d548771b3b25b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html#ac7f1129e8bde6e191c1d548771b3b25b">Dispose</a> ()</td></tr>
+<tr class="memitem:ac7f1129e8bde6e191c1d548771b3b25b" id="r_ac7f1129e8bde6e191c1d548771b3b25b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html#ac7f1129e8bde6e191c1d548771b3b25b">Dispose</a> ()</td></tr>
 <tr class="separator:ac7f1129e8bde6e191c1d548771b3b25b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Аудио-презентер (вики impl «09» §П4): POCO-entry-point, подписан НАПРЯМУЮ на C#-события боевой симуляции и системы способностей (тот же приём, что <code>CombatFeelDirector</code> — он тоже держит CombatSimulation). </p>
-<p>Резолвит ключ <code>{contentId}.{action}</code> через AudioResolver и отдаёт в IAudioService. Точечные звуки реликвий/эффектов (<code>relic.cryomancer.attack</code>, <code>relic.*.cast</code>) подхватываются резолвером автоматически — достаточно выстрелить нужным действием на нужном юните. Пока НЕ озвучены (нужны хуки/id — отдельный заход): эффекты apply/expire с конкретным id, DoT/HoT-тик, UI (пауза/скорость/расстановка), стингер старта боя, feel-слои (heavy_hit/death_shatter). </p>
+<div class="textblock"><p>Аудио-презентер (вики impl «09» §П4): POCO-entry-point, подписан НАПРЯМУЮ на C#-события боевой симуляции, системы способностей и системы эффектов (тот же приём, что <code>CombatFeelDirector</code>). </p>
+<p>Резолвит ключ <code>{contentId}.{action}</code> через AudioResolver и отдаёт в IAudioService. Точечные звуки реликвий/эффектов (<code>relic.cryomancer.attack</code>, <code>effect.frozen.apply</code>) подхватываются резолвером автоматически — достаточно выстрелить нужным действием с нужным id.</p>
+<p>Чего тут НЕТ намеренно: feel-слой (килл-стингер, тяжёлый удар, финишер) живёт в <code>CombatFeelDirector</code> — там уже посчитаны пороги и кулдауны, и звук обязан идти под теми же воротами, что slowmo/тряска. Экраны и карта — в <code>RunAudioPresenter</code> (root-скоуп, переживает бой). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aee04db0d8aff8b48a30e1c1dc09c7e06" name="aee04db0d8aff8b48a30e1c1dc09c7e06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee04db0d8aff8b48a30e1c1dc09c7e06">&#9670;&#160;</a></span>AudioPresenter()</h2>
+<a id="aac8d4d98c165a664178a5a5f57024570" name="aac8d4d98c165a664178a5a5f57024570"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac8d4d98c165a664178a5a5f57024570">&#9670;&#160;</a></span>AudioPresenter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,20 +149,26 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a>&#160;</td>
-          <td class="paramname"><em>sim</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1AbilitySystem.html">AbilitySystem</a>&#160;</td>
-          <td class="paramname"><em>abilities</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html">ILocalPlayer</a>&#160;</td>
-          <td class="paramname"><em>localPlayer</em>&#160;</td>
+          <td class="paramname"><em>localPlayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html">Combat::Tape::BattleTapeDispatcher</a>&#160;</td>
+          <td class="paramname"><em>dispatcher</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html">Combat::Tape::BattleTapePlayback</a>&#160;</td>
+          <td class="paramname"><em>playback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleUnitRegistry.html">Combat::Tape::BattleUnitRegistry</a>&#160;</td>
+          <td class="paramname"><em>registry</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -189,7 +196,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.Audio.AudioPresenter.Dispose </td>
+          <td class="memname">void Guildmaster.Presentation.Audio.AudioPresenter.Dispose </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -214,7 +221,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.Audio.AudioPresenter.Start </td>
+          <td class="memname">void Guildmaster.Presentation.Audio.AudioPresenter.Start </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

@@ -114,15 +114,15 @@ Collaboration diagram for Guildmaster.UI.Components.RelicCardVisualRig:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6e8cb3225799736c65c4155d6531ef63" id="r_a6e8cb3225799736c65c4155d6531ef63"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#a6e8cb3225799736c65c4155d6531ef63">RelicCardVisualRig</a> (int size=256, float fallbackHeight=2.0f, float framePadding=1.2f)</td></tr>
-<tr class="memdesc:a6e8cb3225799736c65c4155d6531ef63"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
+<tr class="memitem:a7accf7d7151c32709c8038aab483df13" id="r_a7accf7d7151c32709c8038aab483df13"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#a7accf7d7151c32709c8038aab483df13">RelicCardVisualRig</a> (int size=256, float fallbackHeight=2.0f, float framePadding=1.2f, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a> palette=null)</td></tr>
+<tr class="memdesc:a7accf7d7151c32709c8038aab483df13"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">size</td><td>Сторона квадратной RT в пикселях. </td></tr>
   </table>
   </dd>
 </dl>
  <br /></td></tr>
-<tr class="separator:a6e8cb3225799736c65c4155d6531ef63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a7accf7d7151c32709c8038aab483df13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a359976053c496a69976b9d4c983915ea" id="r_a359976053c496a69976b9d4c983915ea"><td class="memItemLeft" align="right" valign="top">RenderTexture&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#a359976053c496a69976b9d4c983915ea">Acquire</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> data)</td></tr>
 <tr class="memdesc:a359976053c496a69976b9d4c983915ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Завести карточку под юнита; вернуть RT с его анимированным визуалом (idle).  <br /></td></tr>
 <tr class="separator:a359976053c496a69976b9d4c983915ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,8 +145,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Риг визуала пик-карточек: рендерит боевой <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a8f9387e57aa937bf1ebf94efce9fd241">UnitData.ViewPrefab</a> юнита в RenderTexture для показа в RelicCard (план 10 §5 — анимированный спрайт вместо иконки). </p>
 <p>Скрытый «стейдж» далеко от игровой сцены + ортокамера НА КАРТОЧКУ (URP авто-рендерит включённые камеры в их targetTexture — ручной Camera.Render() в SRP не годится). Сам <code>UnitView</code> глушится (он сцеплен с симом) — Animator гоняется напрямую: Idle по умолчанию, Attack при выборе. Нет ViewPrefab → RT пустая (карточка сама падает на портрет-фолбэк). Владелец экрана держит риг и зовёт Dispose при закрытии. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6e8cb3225799736c65c4155d6531ef63" name="a6e8cb3225799736c65c4155d6531ef63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e8cb3225799736c65c4155d6531ef63">&#9670;&#160;</a></span>RelicCardVisualRig()</h2>
+<a id="a7accf7d7151c32709c8038aab483df13" name="a7accf7d7151c32709c8038aab483df13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7accf7d7151c32709c8038aab483df13">&#9670;&#160;</a></span>RelicCardVisualRig()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -170,7 +170,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>framePadding</em> = <code>1::2f</code>&#160;</td>
+          <td class="paramname"><em>framePadding</em> = <code>1::2f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a>&#160;</td>
+          <td class="paramname"><em>palette</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -196,6 +202,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">fallbackHeight</td><td>Высота кадра, если у юнита нет рекомендованного габарита.</td></tr>
     <tr><td class="paramname">framePadding</td><td>Запас над рекоменд-габаритом (1.2 = +20% воздуха вокруг фигуры).</td></tr>
+    <tr><td class="paramname">palette</td><td>Снимок палитры проекта: из него берётся цвет ступени приглушения тела, чтобы карточка красила юнита ТЕМ ЖЕ путём, что бой. Пусто — тела не красим (у большинства юнитов ступень и так None, а гадать цвет карточке нечем). </td></tr>
   </table>
   </dd>
 </dl>
@@ -228,6 +235,11 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Завести карточку под юнита; вернуть RT с его анимированным визуалом (idle). </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig_a359976053c496a69976b9d4c983915ea_cgraph.svg" width="483" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Data.Editor.ContentEditBatch.Apply" name="Guildmaster.Data.Editor.ContentEditBatch.Apply">
+<area shape="rect" id="Node000001" title="Применить пресет." alt="" coords="5,37,187,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a8ff5f52e4ec0a97a3eb442d02be2b1ec" title="Сбросить все правки на диск." alt="" coords="272,5,455,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,44,258,35,258,41,187,49"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#aed9c8786a539560fa29cc6cf18700503" title="Записать журнал правок в BalanceReports/balance_changes_*.md (append&#45;friendly отдельными файлами)." alt="" coords="235,69,492,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="187,66,221,70,221,75,187,71"/>
+</map>

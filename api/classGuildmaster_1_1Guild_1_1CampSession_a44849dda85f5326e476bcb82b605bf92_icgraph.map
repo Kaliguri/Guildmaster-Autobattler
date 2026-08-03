@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.CampSession.TryPerform" name="Guildmaster.Guild.CampSession.TryPerform">
+<area shape="rect" id="Node000001" title="Выполнить действие." alt="" coords="259,5,493,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1CampScreenView.html#a02d6ca384fd6663d8540cbddddd60f2b" title="Построить экран привала." alt="" coords="5,5,211,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,28,211,28,211,23,245,23"/>
+</map>

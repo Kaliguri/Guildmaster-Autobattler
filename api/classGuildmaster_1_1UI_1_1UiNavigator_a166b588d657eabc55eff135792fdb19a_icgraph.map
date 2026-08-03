@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.UiNavigator.Push" name="Guildmaster.UI.UiNavigator.Push">
+<area shape="rect" id="Node000001" title="Добавить экран поверх стека." alt="" coords="257,13,492,38"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1UiNavigator.html#aa03e8182dbf1c83951de21516eb4688a" title="Показать result&#45;экран и дождаться его резолва." alt="" coords="5,5,209,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="244,28,210,28,210,23,244,23"/>
+</map>

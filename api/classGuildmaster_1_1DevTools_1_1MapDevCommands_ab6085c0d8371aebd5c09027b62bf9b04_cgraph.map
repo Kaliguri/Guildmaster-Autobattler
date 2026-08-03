@@ -1,0 +1,5 @@
+<map id="Guildmaster.DevTools.MapDevCommands.Show" name="Guildmaster.DevTools.MapDevCommands.Show">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,201,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html#af61fbe9bc2c08715ed06a54da5c07ec5" title="Показать/скрыть карту (интент табов)." alt="" coords="249,5,468,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,23,236,23,236,28,202,28"/>
+</map>

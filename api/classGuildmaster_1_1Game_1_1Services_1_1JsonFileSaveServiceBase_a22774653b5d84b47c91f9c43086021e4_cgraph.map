@@ -1,0 +1,8 @@
+<map id="Guildmaster.Game.Services.JsonFileSaveServiceBase.JsonFileSaveServiceBase" name="Guildmaster.Game.Services.JsonFileSaveServiceBase.JsonFileSaveServiceBase">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,42,244,97"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1SaveJson.html#aabc32d8c6d436484a9525f3798bf8305" title="Готовый сериализатор с этими правилами." alt="" coords="294,5,501,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="244,47,280,42,281,47,244,53"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html#a1bb318fb80055081d8fc88ca97608df8" title="Ключи первого уровня под указанным префиксом — без него не собрать список профилей и гильдий." alt="" coords="292,93,503,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="244,86,279,92,278,97,244,91"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="347,94,344,84,352,74,370,69,397,67,429,69,446,77,444,82,428,75,397,72,371,74,355,79,349,85,352,92"/>
+</map>

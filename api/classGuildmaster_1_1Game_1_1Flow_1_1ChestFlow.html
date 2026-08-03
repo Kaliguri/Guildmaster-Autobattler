@@ -113,8 +113,8 @@ Collaboration diagram for Guildmaster.Game.Flow.ChestFlow:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af1447810bf630b41952bcb61a9359b58" id="r_af1447810bf630b41952bcb61a9359b58"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html#af1447810bf630b41952bcb61a9359b58">ChestFlow</a> (IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html">OpenChestRequest</a> &gt; openChestPub, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter.html">IRewardPresenter</a> reward)</td></tr>
-<tr class="separator:af1447810bf630b41952bcb61a9359b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af35f96fe46c47a18449792da663d1abb" id="r_af35f96fe46c47a18449792da663d1abb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html#af35f96fe46c47a18449792da663d1abb">ChestFlow</a> (IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html">OpenChestRequest</a> &gt; openChestPub, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter.html">IRewardPresenter</a> reward, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenNodeFarewellRequest.html">OpenNodeFarewellRequest</a> &gt; farewellPub=null)</td></tr>
+<tr class="separator:af35f96fe46c47a18449792da663d1abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0640ac9308de95ed145c458f74ab89a6" id="r_a0640ac9308de95ed145c458f74ab89a6"><td class="memItemLeft" align="right" valign="top">async UniTask&lt; <a class="el" href="structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html">EventResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html#a0640ac9308de95ed145c458f74ab89a6">Run</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html">RunContext</a> ctx)</td></tr>
 <tr class="separator:a0640ac9308de95ed145c458f74ab89a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -122,8 +122,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Узел забега «сундук» (план [[act-map-run-loop]] §4 B3): показывает фасад сундука, ждёт клик по крышке, затем катит награду 1-из-3 через IRewardPresenter (переиспользуем витрину). </p>
 <p>Возвращает EventResult.Completed. Единая кнопка «Продолжить» после — от петли акта (A4). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af1447810bf630b41952bcb61a9359b58" name="af1447810bf630b41952bcb61a9359b58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1447810bf630b41952bcb61a9359b58">&#9670;&#160;</a></span>ChestFlow()</h2>
+<a id="af35f96fe46c47a18449792da663d1abb" name="af35f96fe46c47a18449792da663d1abb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af35f96fe46c47a18449792da663d1abb">&#9670;&#160;</a></span>ChestFlow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -141,7 +141,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter.html">IRewardPresenter</a>&#160;</td>
-          <td class="paramname"><em>reward</em>&#160;</td>
+          <td class="paramname"><em>reward</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenNodeFarewellRequest.html">OpenNodeFarewellRequest</a> &gt;&#160;</td>
+          <td class="paramname"><em>farewellPub</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

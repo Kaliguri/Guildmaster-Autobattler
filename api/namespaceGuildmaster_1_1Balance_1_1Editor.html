@@ -102,11 +102,26 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>BalanceAssets</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Загрузка контент-ассетов для бенчей — напрямую через AssetDatabase (editor-only тул, рантайм-<code>IContentDatabase</code>/DI не поднимаем). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1BalanceCli.html">BalanceCli</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вход стенда из командной строки: <code>Unity -batchmode -executeMethod <a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1BalanceCli.html#a60b634606c7b9f1be45c8e751e111391">Guildmaster.Balance.Editor.BalanceCli.Run</a></code>.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1BalanceCli.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>BalanceMenu</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пункты меню стенда баланса (<code>Tools/Balance/*</code>). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1BalanceNorms.html">BalanceNorms</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снимок КЛАССОВЫХ НОРМ — линейка, по которой сайт отчётов читает замеры.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1BalanceNorms.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>BalanceRound</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полный круг бенчей — что и в каком порядке гоняется, когда сказано «прогони баланс». <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>BalanceSite</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пересобирает локальный сайт отчётов (<code>scripts/balance-site.py</code>) после прогона бенча и умеет открыть его в браузере. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>BattleReport</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Итог одного боя: исход, длительность, timeout и метрики отслеживаемых юнитов. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>BattleTrace</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лента событий одного боя: кто, когда, что и кому сделал — построчно, в порядке случившегося. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>BradleyTerry</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оценка силы по парным исходам (Bradley-Terry, MM-итерации). <br /></td></tr>
@@ -114,17 +129,35 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1ContentAuditor.html">ContentAuditor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза 0 — статический аудитор контента.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1ContentAuditor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1ContentCards.html">ContentCards</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Карточки контента для сайта отчётов: как кита ЗОВУТ и что он умеет — русское имя, описание, роль, теги и разбор способностей.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1ContentCards.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1DpsBench.html">DpsBench</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза 1 — DPS-бенч.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1DpsBench.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html">DuelMatrixBench</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза 2 — round-robin дуэли всех реликвий 1v1 + рейтинг Bradley-Terry.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза 2 — round-robin бои всех реликвий + рейтинг Bradley-Terry.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1EncounterBench.html">EncounterBench</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">PvE-линза стенда: отряд игрока против АВТОРЕННЫХ энкаунтеров (EncounterData), а не против зеркального ростера.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1EncounterBench.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>EncounterFacts</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Статика энкаунтера: во что он оценён автором и сколько в нём мяса. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>EncounterSetup</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сборка вражеской стороны из EncounterData для стенда: разрешение <code>enemy. </code><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>Lineups</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строи команд для командных бенчей и общая раздача бойцов по слотам. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>MetricCollector</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собирает боевые метрики, подписавшись на outward C#-события сима (<a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a845becdf4b3273fef21b64bc92512c14" title="Нанесён урон: источник, цель, результат. Совпадает с кадром контакта (конец замаха,...">CombatSimulation.OnDamageDealt</a> и др.) — тот самый развязанный от презентации шов. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1PairSynergyBench.html">PairSynergyBench</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Синергия пар: работают ли два кита вместе лучше, чем порознь.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1PairSynergyBench.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>ReportWriter</b></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пишет отчёты бенчей в gitignored-папку <code>BalanceReports/</code> в корне проекта: CSV (для спредшита) и Markdown (для беглого чтения). <br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пишет отчёты бенчей в <code>BalanceReports/</code> в корне проекта: CSV (для спредшита) и Markdown (для беглого чтения). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1ScenarioBench.html">ScenarioBench</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прогон кастом-сценария (BalanceScenarioData): состав A vs состав B до исхода/потолка, с per-unit метриками.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1ScenarioBench.html#details">More...</a><br /></td></tr>
@@ -135,11 +168,20 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>SimEnvironment</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Одноразовое headless-окружение одного боя: детерминированный CombatSimulation без презентации + общий EffectSystem + фабрика юнитов. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>Slot</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Слот боевого строя: какую роль он закрывает и где стоит (координаты стороны 0; сторона 1 зеркалится по X). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1SquadSwapBench.html">SquadSwapBench</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Замена в живом отряде: штатная четвёрка из РЕАЛЬНЫХ китов против своего зеркала, и в одной из копий боец своей роли заменён на испытуемого.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1SquadSwapBench.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1SurvivabilityBench.html">SurvivabilityBench</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза 1 — бенч выживаемости.  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1SurvivabilityBench.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>SyntheticUnits</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Синтетические манекены для бенчей — строятся напрямую как RuntimeUnit (<code>new Stats(null)</code> + плоские моды), без SO и фабрики (образец — <code>CombatSimulationTests.MakeMeleeUnit</code>). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Balance_1_1Editor_1_1TraceBench.html">TraceBench</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разбор ОДНОГО боя: тот же прогон, что в бенчах, но с лентой событий вместо агрегатов (BattleTrace).  <a href="classGuildmaster_1_1Balance_1_1Editor_1_1TraceBench.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>TrackedUnit</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Юнит под наблюдением бенча: рантайм-объект + читаемая метка + архетип (для группировки в отчёте). <br /></td></tr>

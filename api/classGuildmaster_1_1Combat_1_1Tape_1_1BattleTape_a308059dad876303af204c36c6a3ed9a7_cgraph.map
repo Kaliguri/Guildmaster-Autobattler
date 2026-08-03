@@ -1,0 +1,11 @@
+<map id="Guildmaster.Combat.Tape.BattleTape.CaptureTick" name="Guildmaster.Combat.Tape.BattleTape.CaptureTick">
+<area shape="rect" id="Node000001" title="Записать состояние тика." alt="" coords="5,37,200,77"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Combat_1_1Tape_1_1ProjectileSnapshot.html#a169b0848ad0983e310aecfb4474303e4" title=" " alt="" coords="248,5,443,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,42,234,37,235,43,201,47"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a485356d77b895e011470412b625c38d1" title="Снять состояние с живого юнита. Единственное место, где сим встречается с лентой." alt="" coords="248,69,443,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,68,235,72,234,77,200,73"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="491,47,711,73"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="443,76,477,72,477,77,443,81"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a22bc798f12c716f8ccda8585b205691b" title="Интервал между атаками в сим&#45;тиках." alt="" coords="499,97,702,137"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="443,97,486,102,485,107,443,103"/>
+</map>

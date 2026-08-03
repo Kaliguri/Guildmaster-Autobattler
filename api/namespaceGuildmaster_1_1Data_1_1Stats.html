@@ -100,8 +100,20 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Data_1_1Stats.
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1FormattedStat.html">FormattedStat</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Стат-значение, подготовленное к показу: разбор плюс уже ЛОКАЛИЗОВАННЫЕ имена источников.  <a href="structGuildmaster_1_1Data_1_1Stats_1_1FormattedStat.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IModifierSource.html">IModifierSource</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Источник стат-модификатора, умеющий назвать себя игроку.  <a href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IModifierSource.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatExplainer.html">IStatExplainer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Статы, умеющие рассказать, из чего они собрались.  <a href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatExplainer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html">IStatReader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Только-чтение собранных статов.  <a href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IUnitStatPreview.html">IUnitStatPreview</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шов «покажи базовые статы этого кита» для интерфейса.  <a href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IUnitStatPreview.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue.html">ScalableValue</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Величина, масштабируемая от статов источника: <code>Base + Σ(reader.Get(term.Stat) × term.Ratio)</code>.  <a href="structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue.html#details">More...</a><br /></td></tr>
@@ -109,8 +121,29 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1ScalingTerm.html">ScalingTerm</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Одно слагаемое масштабирования: доля Ratio от стата Stat.  <a href="structGuildmaster_1_1Data_1_1Stats_1_1ScalingTerm.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1StatConversion.html">StatConversion</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Правило «стат носителя → число».  <a href="structGuildmaster_1_1Data_1_1Stats_1_1StatConversion.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Stats_1_1StatFormat.html">StatFormat</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Превращение разобранного стата в строку (план UI-реворка §II.10.1, §II.10.4).  <a href="classGuildmaster_1_1Data_1_1Stats_1_1StatFormat.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Stats_1_1StatKinds.html">StatKinds</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Размерность каждого стата (вики «11.  <a href="classGuildmaster_1_1Data_1_1Stats_1_1StatKinds.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html">StatModifier</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Один стат-модификатор: что меняем, как и на сколько.  <a href="structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1StatTerm.html">StatTerm</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вклад одного модификатора в итоговое значение стата.  <a href="structGuildmaster_1_1Data_1_1Stats_1_1StatTerm.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1StatValue.html">StatValue</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разложенное значение стата: во что оно собралось и из чего.  <a href="structGuildmaster_1_1Data_1_1Stats_1_1StatValue.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1UnitLabels.html">UnitLabels</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подписи единиц измерения.  <a href="structGuildmaster_1_1Data_1_1Stats_1_1UnitLabels.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1UnitStatLine.html">UnitStatLine</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Одна строка стат-сводки для интерфейса: ключ локализации подписи + уже отформатированное значение.  <a href="structGuildmaster_1_1Data_1_1Stats_1_1UnitStatLine.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -122,13 +155,18 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:aae132bbc024dc11a826cb55da0cae0de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Операция стат-модификатора.  <a href="namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0de">More...</a><br /></td></tr>
 <tr class="separator:aae132bbc024dc11a826cb55da0cae0de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6dfcec86bc5d04611514cbed7cb1f01" id="r_ab6dfcec86bc5d04611514cbed7cb1f01"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ab6dfcec86bc5d04611514cbed7cb1f01">ScalingForm</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ab6dfcec86bc5d04611514cbed7cb1f01a32a843da6ea40ab3b17a3421ccdf671b">Linear</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ab6dfcec86bc5d04611514cbed7cb1f01a9f87f02f2da8f99c571b2a1c2a96132b">Inverse</a> = 1
+ }</td></tr>
+<tr class="memdesc:ab6dfcec86bc5d04611514cbed7cb1f01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Как стат превращается в прибавку к числу.  <a href="namespaceGuildmaster_1_1Data_1_1Stats.html#ab6dfcec86bc5d04611514cbed7cb1f01">More...</a><br /></td></tr>
+<tr class="separator:ab6dfcec86bc5d04611514cbed7cb1f01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af58d5e4a0de07916fbc3155322d6e284" id="r_af58d5e4a0de07916fbc3155322d6e284"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284">StatType</a> { <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a7328467362e04fb994455aeb50ac0449">MaxHP</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a35881155d4e7c3d6a18cd465fb28b7ac">HpRegenFlat</a> = 1
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ac62b34ef590567826318ecd2d6caac70">HpRegenPct</a> = 2
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a54f06c7358d259caa316edeed3a493f5">PhysArmor</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a411dc7e45b792a64a0d4b710eb7d7e4d">ElementalArmor</a> = 4
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a477daea460acacedc6e634a2211f9095">MagicArmor</a> = 4
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a813d2113d6b4f81806d7cd857beaf5ef">DamageTakenEff</a> = 5
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a95c911efdf204dd827fd41da53208b99">HealShieldTakenEff</a> = 6
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a509dd58938824e6e3f298bde91ddc731">AutoAttackDamage</a> = 7
@@ -139,8 +177,8 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ad1742c8675710f479dde6c0866b960f5">PhysPen</a> = 11
 , <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a3109e6905a75ddc57761f609264efa85">PhysPenPct</a> = 12
-, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ac28ccab8e21ab62566155e9ae0410132">ElementalPen</a> = 13
-, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284afa813f0a1a6b81d414ea5735e65c245c">ElementalPenPct</a> = 14
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aa70f25585e17da9922476a0b5e39d4ff">MagicPen</a> = 13
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aacf956ece1e8110477cd8351ae2da7d0">MagicPenPct</a> = 14
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284acf93b2f799ec1e1047d697999f70f0ad">DamageDealtEff</a> = 15
 , <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a9d82a0f406f346bcb6fcd036e1b98175">Lifesteal</a> = 16
@@ -160,10 +198,40 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a7fdc6c0e1455e6b04e10d4333e8a07da">StartResource</a> = 28
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a143f98d287cb622e9f790376ba67377d">ResourceGainEff</a> = 29
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a8de1dce4a01b7df86880284797514d83">SummonHealthEff</a> = 30
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab39aedf70f89324e3d7533599d3fdab0">SummonDamageEff</a> = 31
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab08c69f0634666c90d66606b35a39e5c">ResourceRegenFlat</a> = 32
 <br />
  }</td></tr>
-<tr class="memdesc:af58d5e4a0de07916fbc3155322d6e284"><td class="mdescLeft">&#160;</td><td class="mdescRight">Канонический список боевых статов (ровно 30).  <a href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284">More...</a><br /></td></tr>
+<tr class="memdesc:af58d5e4a0de07916fbc3155322d6e284"><td class="mdescLeft">&#160;</td><td class="mdescRight">Канонический список боевых статов: 30 из вики «11.  <a href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284">More...</a><br /></td></tr>
 <tr class="separator:af58d5e4a0de07916fbc3155322d6e284"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dba18b4b8400b8224681c79ab6323ed" id="r_a0dba18b4b8400b8224681c79ab6323ed"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323ed">ValueKind</a> { <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323eda745e3db6a7ffd50e1a72b39482f0882d">Flat</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323edaadaaee4b22041c27198d410c68d952c9">Percent</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323edaee34a21131a5636ee8dcf521e2369bee">Multiplier</a> = 2
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323eda8f19a8c7566af54ea8981029730e5465">Seconds</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323edaa4edd0f660fa7ca6d5c348ecad4c04bc">PerSecond</a> = 4
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323eda0aa6f4210bf373c95eda00232e93cd98">Distance</a> = 5
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323edae93f994f01c537c4e2f7d8528c3eb5e9">Count</a> = 6
+<br />
+ }</td></tr>
+<tr class="memdesc:a0dba18b4b8400b8224681c79ab6323ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Смысловая размерность стата — определяет, КАК число показывается игроку («47», «25 », «1.2/сек»).  <a href="namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323ed">More...</a><br /></td></tr>
+<tr class="separator:a0dba18b4b8400b8224681c79ab6323ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1f914f4acb777be5bab6ffa86f03ca6" id="r_ad1f914f4acb777be5bab6ffa86f03ca6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6">UnitClass</a> { <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6a8be80102e06b904744ba56c822c70a4b">Bruiser</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6ae4419464d570c4b497ba1979e790b104">Tank</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6a9b2dd2ace4fae2ba85df02e3ebf3f89e">Assassin</a> = 2
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6ac2f329a17c18a701dbe1e96e03858728">Ranged</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6adb5eb84117d06047c97c9a0191b5fffe">Support</a> = 4
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6ab1768159dc49c7173bc4ae0969af3d25">Summoner</a> = 5
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6a6e56f394da8a56773678be26f5d4d3b0">Healer</a> = 6
+<br />
+ }</td></tr>
+<tr class="memdesc:ad1f914f4acb777be5bab6ffa86f03ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Боевой класс юнита — типизированная ось, задающая базовый баланс HP и скорости передвижения (ГДД «Combat - Stats» §Классы, решение 2026-07-24).  <a href="namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6">More...</a><br /></td></tr>
+<tr class="separator:ad1f914f4acb777be5bab6ffa86f03ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="aae132bbc024dc11a826cb55da0cae0de" name="aae132bbc024dc11a826cb55da0cae0de"></a>
@@ -194,6 +262,29 @@ Enumerations</h2></td></tr>
 
 </div>
 </div>
+<a id="ab6dfcec86bc5d04611514cbed7cb1f01" name="ab6dfcec86bc5d04611514cbed7cb1f01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6dfcec86bc5d04611514cbed7cb1f01">&#9670;&#160;</a></span>ScalingForm</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ab6dfcec86bc5d04611514cbed7cb1f01">Guildmaster.Data.Stats.ScalingForm</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Как стат превращается в прибавку к числу. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab6dfcec86bc5d04611514cbed7cb1f01a32a843da6ea40ab3b17a3421ccdf671b" name="ab6dfcec86bc5d04611514cbed7cb1f01a32a843da6ea40ab3b17a3421ccdf671b"></a>Linear&#160;</td><td class="fielddoc"><p>Прямая: <code>итог = база + PerUnit × превышение</code>. Для чисел, которые должны РАСТИ. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab6dfcec86bc5d04611514cbed7cb1f01a9f87f02f2da8f99c571b2a1c2a96132b" name="ab6dfcec86bc5d04611514cbed7cb1f01a9f87f02f2da8f99c571b2a1c2a96132b"></a>Inverse&#160;</td><td class="fielddoc"><p>Обратная: <code>итог = база / (1 + PerUnit × превышение)</code>. </p>
+<p>Для чисел, которые должны УБЫВАТЬ (кулдаун, время каста). Форма выбрана ради того, что она никогда не даёт ноль — значит и капа не требует (решения по Убийце и Магу молний, 2026-07-28). </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="af58d5e4a0de07916fbc3155322d6e284" name="af58d5e4a0de07916fbc3155322d6e284"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af58d5e4a0de07916fbc3155322d6e284">&#9670;&#160;</a></span>StatType</h2>
 
@@ -206,15 +297,15 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Канонический список боевых статов (ровно 30). </p>
-<p>Источник правды — вики «11. Стат-система (полный список статов)». Все значения присвоены явно и стабильны: Unity сериализует enum по int, поэтому порядок/номера менять НЕЛЬЗЯ (сломает .asset).</p>
+<p>Канонический список боевых статов: 30 из вики «11. </p>
+<p>Стат-система (полный список статов)» плюс дописанные по решениям Макса (сила призывов, скорость набора ресурса) — всего 33. Все значения присвоены явно и стабильны: Unity сериализует enum по int, поэтому порядок/номера менять НЕЛЬЗЯ (сломает .asset).</p>
 <p>Фаза 1 реально использует 19 статов (авто-атаки без эффектов/способностей/ресурсов) — помечены [Ф1]. Остальные объявлены сразу (список финализирован), но дефолты/клампы/логика для них подключаются в своих фазах. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a7328467362e04fb994455aeb50ac0449" name="af58d5e4a0de07916fbc3155322d6e284a7328467362e04fb994455aeb50ac0449"></a>MaxHP&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a35881155d4e7c3d6a18cd465fb28b7ac" name="af58d5e4a0de07916fbc3155322d6e284a35881155d4e7c3d6a18cd465fb28b7ac"></a>HpRegenFlat&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284ac62b34ef590567826318ecd2d6caac70" name="af58d5e4a0de07916fbc3155322d6e284ac62b34ef590567826318ecd2d6caac70"></a>HpRegenPct&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a54f06c7358d259caa316edeed3a493f5" name="af58d5e4a0de07916fbc3155322d6e284a54f06c7358d259caa316edeed3a493f5"></a>PhysArmor&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a411dc7e45b792a64a0d4b710eb7d7e4d" name="af58d5e4a0de07916fbc3155322d6e284a411dc7e45b792a64a0d4b710eb7d7e4d"></a>ElementalArmor&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a477daea460acacedc6e634a2211f9095" name="af58d5e4a0de07916fbc3155322d6e284a477daea460acacedc6e634a2211f9095"></a>MagicArmor&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a813d2113d6b4f81806d7cd857beaf5ef" name="af58d5e4a0de07916fbc3155322d6e284a813d2113d6b4f81806d7cd857beaf5ef"></a>DamageTakenEff&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a95c911efdf204dd827fd41da53208b99" name="af58d5e4a0de07916fbc3155322d6e284a95c911efdf204dd827fd41da53208b99"></a>HealShieldTakenEff&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a509dd58938824e6e3f298bde91ddc731" name="af58d5e4a0de07916fbc3155322d6e284a509dd58938824e6e3f298bde91ddc731"></a>AutoAttackDamage&#160;</td><td class="fielddoc"></td></tr>
@@ -223,8 +314,8 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a115fccbacfdb86a46d17035b4073ca90" name="af58d5e4a0de07916fbc3155322d6e284a115fccbacfdb86a46d17035b4073ca90"></a>AbilityPower&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284ad1742c8675710f479dde6c0866b960f5" name="af58d5e4a0de07916fbc3155322d6e284ad1742c8675710f479dde6c0866b960f5"></a>PhysPen&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a3109e6905a75ddc57761f609264efa85" name="af58d5e4a0de07916fbc3155322d6e284a3109e6905a75ddc57761f609264efa85"></a>PhysPenPct&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284ac28ccab8e21ab62566155e9ae0410132" name="af58d5e4a0de07916fbc3155322d6e284ac28ccab8e21ab62566155e9ae0410132"></a>ElementalPen&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284afa813f0a1a6b81d414ea5735e65c245c" name="af58d5e4a0de07916fbc3155322d6e284afa813f0a1a6b81d414ea5735e65c245c"></a>ElementalPenPct&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284aa70f25585e17da9922476a0b5e39d4ff" name="af58d5e4a0de07916fbc3155322d6e284aa70f25585e17da9922476a0b5e39d4ff"></a>MagicPen&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284aacf956ece1e8110477cd8351ae2da7d0" name="af58d5e4a0de07916fbc3155322d6e284aacf956ece1e8110477cd8351ae2da7d0"></a>MagicPenPct&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284acf93b2f799ec1e1047d697999f70f0ad" name="af58d5e4a0de07916fbc3155322d6e284acf93b2f799ec1e1047d697999f70f0ad"></a>DamageDealtEff&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a9d82a0f406f346bcb6fcd036e1b98175" name="af58d5e4a0de07916fbc3155322d6e284a9d82a0f406f346bcb6fcd036e1b98175"></a>Lifesteal&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a76d7b7902f4538e031c6e44e9adcaa4f" name="af58d5e4a0de07916fbc3155322d6e284a76d7b7902f4538e031c6e44e9adcaa4f"></a>HealShieldDealtEff&#160;</td><td class="fielddoc"></td></tr>
@@ -240,6 +331,79 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284af68a53a3ca5bacdb91f4eda90883f5ee" name="af58d5e4a0de07916fbc3155322d6e284af68a53a3ca5bacdb91f4eda90883f5ee"></a>MaxResource&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a7fdc6c0e1455e6b04e10d4333e8a07da" name="af58d5e4a0de07916fbc3155322d6e284a7fdc6c0e1455e6b04e10d4333e8a07da"></a>StartResource&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a143f98d287cb622e9f790376ba67377d" name="af58d5e4a0de07916fbc3155322d6e284a143f98d287cb622e9f790376ba67377d"></a>ResourceGainEff&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284a8de1dce4a01b7df86880284797514d83" name="af58d5e4a0de07916fbc3155322d6e284a8de1dce4a01b7df86880284797514d83"></a>SummonHealthEff&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284ab39aedf70f89324e3d7533599d3fdab0" name="af58d5e4a0de07916fbc3155322d6e284ab39aedf70f89324e3d7533599d3fdab0"></a>SummonDamageEff&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af58d5e4a0de07916fbc3155322d6e284ab08c69f0634666c90d66606b35a39e5c" name="af58d5e4a0de07916fbc3155322d6e284ab08c69f0634666c90d66606b35a39e5c"></a>ResourceRegenFlat&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="ad1f914f4acb777be5bab6ffa86f03ca6" name="ad1f914f4acb777be5bab6ffa86f03ca6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1f914f4acb777be5bab6ffa86f03ca6">&#9670;&#160;</a></span>UnitClass</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6">Guildmaster.Data.Stats.UnitClass</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Боевой класс юнита — типизированная ось, задающая базовый баланс HP и скорости передвижения (ГДД «Combat - Stats» §Классы, решение 2026-07-24). </p>
+<p>Класс — механический вход (от него считаются числа через <code>ClassBalanceConfig</code>), а не только ярлык для UI; из него же авто-выводится role-тег юнита.</p>
+<p>Эталон 100% — Bruiser (золотая середина). Значение <code>0</code> = Bruiser: юнит без явно заданного класса получает нейтральную базу-эталон. Номера присвоены явно и стабильны — Unity сериализует enum по int, сдвиг сломает уже настроенные поля юнитов. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad1f914f4acb777be5bab6ffa86f03ca6a8be80102e06b904744ba56c822c70a4b" name="ad1f914f4acb777be5bab6ffa86f03ca6a8be80102e06b904744ba56c822c70a4b"></a>Bruiser&#160;</td><td class="fielddoc"><p>Золотая середина: 100% HP / 100% скорости. Эталон баланса и дефолт поля. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad1f914f4acb777be5bab6ffa86f03ca6ae4419464d570c4b497ba1979e790b104" name="ad1f914f4acb777be5bab6ffa86f03ca6ae4419464d570c4b497ba1979e790b104"></a>Tank&#160;</td><td class="fielddoc"><p>Держит фронт: 150% HP / 85% скорости. Живучий и медленный. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad1f914f4acb777be5bab6ffa86f03ca6a9b2dd2ace4fae2ba85df02e3ebf3f89e" name="ad1f914f4acb777be5bab6ffa86f03ca6a9b2dd2ace4fae2ba85df02e3ebf3f89e"></a>Assassin&#160;</td><td class="fielddoc"><p>Мили-ДД: 75% HP / 110% скорости. Хрупкий и быстрый, врывается в бэклайн. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad1f914f4acb777be5bab6ffa86f03ca6ac2f329a17c18a701dbe1e96e03858728" name="ad1f914f4acb777be5bab6ffa86f03ca6ac2f329a17c18a701dbe1e96e03858728"></a>Ranged&#160;</td><td class="fielddoc"><p>Дальний урон: 65% HP / 75% скорости. Самый хрупкий, самый медленный. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad1f914f4acb777be5bab6ffa86f03ca6adb5eb84117d06047c97c9a0191b5fffe" name="ad1f914f4acb777be5bab6ffa86f03ca6adb5eb84117d06047c97c9a0191b5fffe"></a>Support&#160;</td><td class="fielddoc"><p>Хил/баффы: 65% HP / 75% скорости. Держится строем. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad1f914f4acb777be5bab6ffa86f03ca6ab1768159dc49c7173bc4ae0969af3d25" name="ad1f914f4acb777be5bab6ffa86f03ca6ab1768159dc49c7173bc4ae0969af3d25"></a>Summoner&#160;</td><td class="fielddoc"><p>Повелитель армии: 65% HP / 75% скорости. Сам слаб, силён призывами. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad1f914f4acb777be5bab6ffa86f03ca6a6e56f394da8a56773678be26f5d4d3b0" name="ad1f914f4acb777be5bab6ffa86f03ca6a6e56f394da8a56773678be26f5d4d3b0"></a>Healer&#160;</td><td class="fielddoc"><p>Целитель: 50% HP / 75% скорости — <b>самый хрупкий класс в игре</b>. </p>
+<p>Чистая утилита выживаемости (лечение, щиты, снятие) и почти никакого урона.</p>
+<p>Заведён 2026-07-28, отделён от Support: Поддержка — это дебафферы и контроллеры, которые давят на врага (Друид с ядом), а Целитель держит своих и без команды не существует вовсе. Разводить их одной нормой значило мерить двух разных китов одной линейкой. Хрупкость намеренно предельная: единственная защита целителя — строй. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a0dba18b4b8400b8224681c79ab6323ed" name="a0dba18b4b8400b8224681c79ab6323ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dba18b4b8400b8224681c79ab6323ed">&#9670;&#160;</a></span>ValueKind</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323ed">Guildmaster.Data.Stats.ValueKind</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Смысловая размерность стата — определяет, КАК число показывается игроку («47», «25 », «1.2/сек»). </p>
+<p>Форматирование решается данными, а не <code>ToString()</code> по месту вызова, иначе одно и то же значение выглядит по-разному на разных экранах (план UI-реворка §II.10.1). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0dba18b4b8400b8224681c79ab6323eda745e3db6a7ffd50e1a72b39482f0882d" name="a0dba18b4b8400b8224681c79ab6323eda745e3db6a7ffd50e1a72b39482f0882d"></a>Flat&#160;</td><td class="fielddoc"><p>Абсолютная величина: урон, HP, броня. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0dba18b4b8400b8224681c79ab6323edaadaaee4b22041c27198d410c68d952c9" name="a0dba18b4b8400b8224681c79ab6323edaadaaee4b22041c27198d410c68d952c9"></a>Percent&#160;</td><td class="fielddoc"><p>Доля от 0 до 1, показывается процентом: вампиризм, % пробивание. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0dba18b4b8400b8224681c79ab6323edaee34a21131a5636ee8dcf521e2369bee" name="a0dba18b4b8400b8224681c79ab6323edaee34a21131a5636ee8dcf521e2369bee"></a>Multiplier&#160;</td><td class="fielddoc"><p>Множитель вокруг 1.0: эффективности урона/лечения/кулдауна. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0dba18b4b8400b8224681c79ab6323eda8f19a8c7566af54ea8981029730e5465" name="a0dba18b4b8400b8224681c79ab6323eda8f19a8c7566af54ea8981029730e5465"></a>Seconds&#160;</td><td class="fielddoc"><p>Секунды. </p>
+<p>Статов такой размерности сейчас нет — размерность нужна описаниям способностей (длительности эффектов), которые питает тот же слой. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0dba18b4b8400b8224681c79ab6323edaa4edd0f660fa7ca6d5c348ecad4c04bc" name="a0dba18b4b8400b8224681c79ab6323edaa4edd0f660fa7ca6d5c348ecad4c04bc"></a>PerSecond&#160;</td><td class="fielddoc"><p>Величина в секунду: скорость атаки, реген, скорость снаряда/движения. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0dba18b4b8400b8224681c79ab6323eda0aa6f4210bf373c95eda00232e93cd98" name="a0dba18b4b8400b8224681c79ab6323eda0aa6f4210bf373c95eda00232e93cd98"></a>Distance&#160;</td><td class="fielddoc"><p>Мировые единицы: дальность атаки. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0dba18b4b8400b8224681c79ab6323edae93f994f01c537c4e2f7d8528c3eb5e9" name="a0dba18b4b8400b8224681c79ab6323edae93f994f01c537c4e2f7d8528c3eb5e9"></a>Count&#160;</td><td class="fielddoc"><p>Целочисленный счёт: число пробиваемых целей. </p>
+</td></tr>
 </table>
 
 </div>

@@ -1,9 +1,9 @@
 <map id="Guildmaster.ContentHub.Editor.StatMath.AutoAttackDps" name="Guildmaster.ContentHub.Editor.StatMath.AutoAttackDps">
 <area shape="rect" id="Node000001" title="«Бумажный» DPS автоатаки без цели: урон × атак/сек × эфф. наносимого урона (броня/митигейт цели не уч..." alt="" coords="5,37,232,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath.html#a92ff8d6143fdbc9b0269a6d9cfac7cb8" title="Атак/сек с учётом тиковой квантизации сима (через AttackTiming), не сырой AttackSpeed." alt="" coords="280,5,507,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,41,266,37,267,43,233,47"/>
-<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html#aa36c56b6a329fa2e04ad74183fa59fac" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="290,69,497,109"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="233,68,277,73,276,78,232,73"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a22bc798f12c716f8ccda8585b205691b" title="Интервал между атаками в сим&#45;тиках." alt="" coords="555,5,757,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="507,23,541,23,541,28,507,28"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#aa8ff44eba75969d093da4ff8a6e6edba" title="Атак в секунду — то, что игра ДЕЙСТВИТЕЛЬНО производит: TickRate / IntervalTicks, то есть с тиковой к..." alt="" coords="282,5,485,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,41,268,37,269,42,233,46"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html#aa36c56b6a329fa2e04ad74183fa59fac" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="280,69,487,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="233,68,267,73,266,78,232,74"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a22bc798f12c716f8ccda8585b205691b" title="Интервал между атаками в сим&#45;тиках." alt="" coords="535,5,737,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="485,23,521,23,521,28,485,28"/>
 </map>

@@ -104,13 +104,16 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Ru
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Flow.RunContext:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1RunContext__coll__graph.svg" width="210" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1RunContext__coll__graph.svg" width="210" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aabd93a8406fe6f7aa9e94f46a92cc126" id="r_aabd93a8406fe6f7aa9e94f46a92cc126"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html#aabd93a8406fe6f7aa9e94f46a92cc126">RunContext</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html">RunState</a> runState, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html">IRngService</a> rng, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IReadyGate.html">IReadyGate</a> readyGate, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IPlayerIntentSource.html">IPlayerIntentSource</a> intents)</td></tr>
-<tr class="separator:aabd93a8406fe6f7aa9e94f46a92cc126"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a952ce875e605148726074372108ac9f8" id="r_a952ce875e605148726074372108ac9f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html#a952ce875e605148726074372108ac9f8">RunContext</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html">RunState</a> runState, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html">IRngService</a> rng, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IReadyGate.html">IReadyGate</a> readyGate, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IPlayerIntentSource.html">IPlayerIntentSource</a> intents, CancellationToken cancellation=default, CancellationToken? nodeCancellation=null)</td></tr>
+<tr class="separator:a952ce875e605148726074372108ac9f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a827f0c84032fa6df9419ac34dd72721c" id="r_a827f0c84032fa6df9419ac34dd72721c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html">RunContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html#a827f0c84032fa6df9419ac34dd72721c">ForNode</a> (CancellationToken nodeCancellation)</td></tr>
+<tr class="memdesc:a827f0c84032fa6df9419ac34dd72721c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тот же контекст с собственным временем жизни узла — то, что петля даёт исполняемому флоу.  <br /></td></tr>
+<tr class="separator:a827f0c84032fa6df9419ac34dd72721c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -122,13 +125,19 @@ Properties</h2></td></tr>
 <tr class="separator:a686af62eb66294aafdc12fda28dcb126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dfe0be6e0318cc367d88f61d073d604" id="r_a6dfe0be6e0318cc367d88f61d073d604"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IPlayerIntentSource.html">IPlayerIntentSource</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html#a6dfe0be6e0318cc367d88f61d073d604">Intents</a><code> [get]</code></td></tr>
 <tr class="separator:a6dfe0be6e0318cc367d88f61d073d604"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8c1877940cfd9771be4734d01f20257" id="r_ab8c1877940cfd9771be4734d01f20257"><td class="memItemLeft" align="right" valign="top">CancellationToken&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html#ab8c1877940cfd9771be4734d01f20257">Cancellation</a><code> [get]</code></td></tr>
+<tr class="memdesc:ab8c1877940cfd9771be4734d01f20257"><td class="mdescLeft">&#160;</td><td class="mdescRight">Токен отмены забега (QA #18 «В главное меню»): взводится <code>GameFlow</code>, прерывает висящие await'ы петли (выбор узла/«Продолжить»/исход боя).  <br /></td></tr>
+<tr class="separator:ab8c1877940cfd9771be4734d01f20257"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae426973aef65c736d5d27eea58903830" id="r_ae426973aef65c736d5d27eea58903830"><td class="memItemLeft" align="right" valign="top">CancellationToken&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html#ae426973aef65c736d5d27eea58903830">NodeCancellation</a><code> [get]</code></td></tr>
+<tr class="memdesc:ae426973aef65c736d5d27eea58903830"><td class="mdescLeft">&#160;</td><td class="mdescRight">Токен ЖИЗНИ УЗЛА: взводится петлей акта на входе в узел и снимается только когда игрок вошёл в СЛЕДУЮЩИЙ (QA #49).  <br /></td></tr>
+<tr class="separator:ae426973aef65c736d5d27eea58903830"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Контекст исполнения узла (план 11 §3.2): durable-состояние забега + RNG + сетевые швы. </p>
 <p>UI-сервисы добавляются по мере надобности (награды/ивенты/магазин — A3/B3). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aabd93a8406fe6f7aa9e94f46a92cc126" name="aabd93a8406fe6f7aa9e94f46a92cc126"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabd93a8406fe6f7aa9e94f46a92cc126">&#9670;&#160;</a></span>RunContext()</h2>
+<a id="a952ce875e605148726074372108ac9f8" name="a952ce875e605148726074372108ac9f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a952ce875e605148726074372108ac9f8">&#9670;&#160;</a></span>RunContext()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -158,7 +167,19 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IPlayerIntentSource.html">IPlayerIntentSource</a>&#160;</td>
-          <td class="paramname"><em>intents</em>&#160;</td>
+          <td class="paramname"><em>intents</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CancellationToken&#160;</td>
+          <td class="paramname"><em>cancellation</em> = <code>default</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CancellationToken?&#160;</td>
+          <td class="paramname"><em>nodeCancellation</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -175,7 +196,58 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a827f0c84032fa6df9419ac34dd72721c" name="a827f0c84032fa6df9419ac34dd72721c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a827f0c84032fa6df9419ac34dd72721c">&#9670;&#160;</a></span>ForNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html">RunContext</a> Guildmaster.Game.Flow.RunContext.ForNode </td>
+          <td>(</td>
+          <td class="paramtype">CancellationToken&#160;</td>
+          <td class="paramname"><em>nodeCancellation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Тот же контекст с собственным временем жизни узла — то, что петля даёт исполняемому флоу. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1RunContext_a827f0c84032fa6df9419ac34dd72721c_icgraph.svg" width="472" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="ab8c1877940cfd9771be4734d01f20257" name="ab8c1877940cfd9771be4734d01f20257"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8c1877940cfd9771be4734d01f20257">&#9670;&#160;</a></span>Cancellation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CancellationToken Guildmaster.Game.Flow.RunContext.Cancellation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Токен отмены забега (QA #18 «В главное меню»): взводится <code>GameFlow</code>, прерывает висящие await'ы петли (выбор узла/«Продолжить»/исход боя). </p>
+<p>default = без отмены (dev/тесты). </p>
+
+</div>
+</div>
 <a id="a6dfe0be6e0318cc367d88f61d073d604" name="a6dfe0be6e0318cc367d88f61d073d604"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6dfe0be6e0318cc367d88f61d073d604">&#9670;&#160;</a></span>Intents</h2>
 
@@ -195,6 +267,31 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae426973aef65c736d5d27eea58903830" name="ae426973aef65c736d5d27eea58903830"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae426973aef65c736d5d27eea58903830">&#9670;&#160;</a></span>NodeCancellation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CancellationToken Guildmaster.Game.Flow.RunContext.NodeCancellation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Токен ЖИЗНИ УЗЛА: взводится петлей акта на входе в узел и снимается только когда игрок вошёл в СЛЕДУЮЩИЙ (QA #49). </p>
+<p>Нужен экранам, которые обязаны пережить собственный флоу: текст-результат ивента остаётся на экране всю передышку, а не гаснет по клику. Всегда «не длиннее» забега (linked); default = Cancellation для dev-разрезов без петли. </p>
 
 </div>
 </div>

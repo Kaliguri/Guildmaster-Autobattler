@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Core_1_1Input_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Core.Input.IInputService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__inherit__graph.svg" width="222" height="459"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Input.IInputService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__coll__graph.svg" width="216" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__coll__graph.svg" width="216" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -118,13 +118,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abfb55c26f5912da45d6f778d4affad26" id="r_abfb55c26f5912da45d6f778d4affad26"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#abfb55c26f5912da45d6f778d4affad26">SetContext</a> (<a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8">InputContext</a> context)</td></tr>
 <tr class="memdesc:abfb55c26f5912da45d6f778d4affad26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Переключить контекст: гасит старые карты действий и включает нужные.  <br /></td></tr>
 <tr class="separator:abfb55c26f5912da45d6f778d4affad26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13e2267317767d96437d90cf2bd49cc9" id="r_a13e2267317767d96437d90cf2bd49cc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a13e2267317767d96437d90cf2bd49cc9">SetSuppressed</a> (<a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a6908dfab9ee931238621a97101994eeb">InputSuppressSource</a> source, bool suppressed)</td></tr>
+<tr class="memdesc:a13e2267317767d96437d90cf2bd49cc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Взять/отпустить глушение от имени источника.  <br /></td></tr>
+<tr class="separator:a13e2267317767d96437d90cf2bd49cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:aefb63244e2854858b20a403952435dcf" id="r_aefb63244e2854858b20a403952435dcf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8">InputContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#aefb63244e2854858b20a403952435dcf">Context</a><code> [get]</code></td></tr>
 <tr class="memdesc:aefb63244e2854858b20a403952435dcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущий контекст — какие карты действий активны.  <br /></td></tr>
 <tr class="separator:aefb63244e2854858b20a403952435dcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5595966e2ca4ffb59d1d14c8a624f5f1" id="r_a5595966e2ca4ffb59d1d14c8a624f5f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a5595966e2ca4ffb59d1d14c8a624f5f1">GameplaySuppressed</a><code> [get, set]</code></td></tr>
+<tr class="memitem:a5595966e2ca4ffb59d1d14c8a624f5f1" id="r_a5595966e2ca4ffb59d1d14c8a624f5f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a5595966e2ca4ffb59d1d14c8a624f5f1">GameplaySuppressed</a><code> [get]</code></td></tr>
 <tr class="memdesc:a5595966e2ca4ffb59d1d14c8a624f5f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Глушитель геймплейного ввода поверх активных карт (ортогонально Context): пока <code>true</code> — пан/зум читаются как ноль, а дискретные события (пауза, смена вида) не поднимаются.  <br /></td></tr>
 <tr class="separator:a5595966e2ca4ffb59d1d14c8a624f5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace8eee9479a983da7eeda2e5cc7bfe57" id="r_ace8eee9479a983da7eeda2e5cc7bfe57"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#ace8eee9479a983da7eeda2e5cc7bfe57">CameraPan</a><code> [get]</code></td></tr>
@@ -133,12 +136,21 @@ Properties</h2></td></tr>
 <tr class="memitem:ae2614daad90dc536487ffa8f5c6a9fbb" id="r_ae2614daad90dc536487ffa8f5c6a9fbb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#ae2614daad90dc536487ffa8f5c6a9fbb">CameraZoomDelta</a><code> [get]</code></td></tr>
 <tr class="memdesc:ae2614daad90dc536487ffa8f5c6a9fbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Дельта зума за кадр (колесо мыши): &gt;0 — приблизить, &lt;0 — отдалить.  <br /></td></tr>
 <tr class="separator:ae2614daad90dc536487ffa8f5c6a9fbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7942577f489a2d3e9d7e2301e529987d" id="r_a7942577f489a2d3e9d7e2301e529987d"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a7942577f489a2d3e9d7e2301e529987d">CameraPanDrag</a><code> [get]</code></td></tr>
+<tr class="memdesc:a7942577f489a2d3e9d7e2301e529987d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пан камеры перетаскиванием СРЕДНЕЙ кнопкой мыши (MMB): дельта мыши за кадр в пикселях, пока MMB зажата; иначе Vector2.zero.  <br /></td></tr>
+<tr class="separator:a7942577f489a2d3e9d7e2301e529987d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fbeec1400fa2640bfc431012db9bc79" id="r_a7fbeec1400fa2640bfc431012db9bc79"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a7fbeec1400fa2640bfc431012db9bc79">PointerOverUI</a><code> [get]</code></td></tr>
+<tr class="memdesc:a7fbeec1400fa2640bfc431012db9bc79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Курсор над непрозрачной UITK-панелью (hit-тест <code>panel.Pick</code>).  <br /></td></tr>
+<tr class="separator:a7fbeec1400fa2640bfc431012db9bc79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9455ad28d5ee6370328136d9b7d61661" id="r_a9455ad28d5ee6370328136d9b7d61661"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a9455ad28d5ee6370328136d9b7d61661">PointerScreenPosition</a><code> [get]</code></td></tr>
 <tr class="memdesc:a9455ad28d5ee6370328136d9b7d61661"><td class="mdescLeft">&#160;</td><td class="mdescRight">Позиция указателя на экране (пиксели), для screen→world при пикинге/drag. Поллинг каждый кадр.  <br /></td></tr>
 <tr class="separator:a9455ad28d5ee6370328136d9b7d61661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64dd7151a2cca9ea7c512cfba9a1fb02" id="r_a64dd7151a2cca9ea7c512cfba9a1fb02"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a64dd7151a2cca9ea7c512cfba9a1fb02">PointerHeld</a><code> [get]</code></td></tr>
 <tr class="memdesc:a64dd7151a2cca9ea7c512cfba9a1fb02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Указатель зажат (ЛКМ) — для протяжки. Поллинг. Ноль/false при GameplaySuppressed.  <br /></td></tr>
 <tr class="separator:a64dd7151a2cca9ea7c512cfba9a1fb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad56f6f92de05efe9387c0cf7ca2bdd7c" id="r_ad56f6f92de05efe9387c0cf7ca2bdd7c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#ad56f6f92de05efe9387c0cf7ca2bdd7c">DetailsHeld</a><code> [get]</code></td></tr>
+<tr class="memdesc:ad56f6f92de05efe9387c0cf7ca2bdd7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Клавиша подробностей (Shift) зажата.  <br /></td></tr>
+<tr class="separator:ad56f6f92de05efe9387c0cf7ca2bdd7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
@@ -154,12 +166,27 @@ Events</h2></td></tr>
 <tr class="memitem:a7b97242d655b5388789f6dfd8fa6a490" id="r_a7b97242d655b5388789f6dfd8fa6a490"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a7b97242d655b5388789f6dfd8fa6a490">PauseToggleRequested</a></td></tr>
 <tr class="memdesc:a7b97242d655b5388789f6dfd8fa6a490"><td class="mdescLeft">&#160;</td><td class="mdescRight">Переключить паузу боя (Space): пауза ↔ продолжить.  <br /></td></tr>
 <tr class="separator:a7b97242d655b5388789f6dfd8fa6a490"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36a3455fdd6a47bd7d33fe522b668660" id="r_a36a3455fdd6a47bd7d33fe522b668660"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a36a3455fdd6a47bd7d33fe522b668660">SkipRequested</a></td></tr>
+<tr class="memdesc:a36a3455fdd6a47bd7d33fe522b668660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пропустить/ускорить идущую подачу (переход арены и т.  <br /></td></tr>
+<tr class="separator:a36a3455fdd6a47bd7d33fe522b668660"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3169aaabda1fde22720d0c2bd6c55f1d" id="r_a3169aaabda1fde22720d0c2bd6c55f1d"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a3169aaabda1fde22720d0c2bd6c55f1d">GameSpeedCycleRequested</a></td></tr>
 <tr class="memdesc:a3169aaabda1fde22720d0c2bd6c55f1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Циклически сменить скорость боя (.): 1x → 2x → 3x → 1x.  <br /></td></tr>
 <tr class="separator:a3169aaabda1fde22720d0c2bd6c55f1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbfc977da2284efc84481963d7ade147" id="r_abbfc977da2284efc84481963d7ade147"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#abbfc977da2284efc84481963d7ade147">MenuToggleRequested</a></td></tr>
 <tr class="memdesc:abbfc977da2284efc84481963d7ade147"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть/закрыть системное меню (Escape).  <br /></td></tr>
 <tr class="separator:abbfc977da2284efc84481963d7ade147"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11c05cab063cc8cca936bb753cdd4e82" id="r_a11c05cab063cc8cca936bb753cdd4e82"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a11c05cab063cc8cca936bb753cdd4e82">DevConsoleToggleRequested</a></td></tr>
+<tr class="memdesc:a11c05cab063cc8cca936bb753cdd4e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть/закрыть КОМАНДНУЮ dev-консоль (<code>F1</code>).  <br /></td></tr>
+<tr class="separator:a11c05cab063cc8cca936bb753cdd4e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a015bfef2f63d7fba0eb8b6d0c3fda9ad" id="r_a015bfef2f63d7fba0eb8b6d0c3fda9ad"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a015bfef2f63d7fba0eb8b6d0c3fda9ad">DevLogToggleRequested</a></td></tr>
+<tr class="memdesc:a015bfef2f63d7fba0eb8b6d0c3fda9ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть/закрыть ЛОГ-консоль (<code>F2</code>) — хвост сообщений движка без строки ввода.  <br /></td></tr>
+<tr class="separator:a015bfef2f63d7fba0eb8b6d0c3fda9ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab167f8dd56ce093c7a27712416425edc" id="r_ab167f8dd56ce093c7a27712416425edc"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#ab167f8dd56ce093c7a27712416425edc">DevBattlesToggleRequested</a></td></tr>
+<tr class="memdesc:ab167f8dd56ce093c7a27712416425edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть/закрыть витрину боёв (<code>F3</code>): список того, что можно запустить прямо сейчас.  <br /></td></tr>
+<tr class="separator:ab167f8dd56ce093c7a27712416425edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d58f5a31eb1342e378a194261f23813" id="r_a3d58f5a31eb1342e378a194261f23813"><td class="memItemLeft" align="right" valign="top">Action&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a3d58f5a31eb1342e378a194261f23813">DetailsHeldChanged</a></td></tr>
+<tr class="memdesc:a3d58f5a31eb1342e378a194261f23813"><td class="mdescLeft">&#160;</td><td class="mdescRight">Изменилось состояние удержания подробностей: <code>true</code> — зажали, <code>false</code> — отпустили.  <br /></td></tr>
+<tr class="separator:a3d58f5a31eb1342e378a194261f23813"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Единая точка ввода игрока (вики «16» §2). </p>
@@ -188,6 +215,39 @@ Events</h2></td></tr>
 
 </div>
 </div>
+<a id="a13e2267317767d96437d90cf2bd49cc9" name="a13e2267317767d96437d90cf2bd49cc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13e2267317767d96437d90cf2bd49cc9">&#9670;&#160;</a></span>SetSuppressed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Input.IInputService.SetSuppressed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a6908dfab9ee931238621a97101994eeb">InputSuppressSource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>suppressed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Взять/отпустить глушение от имени источника. </p>
+<p>Идемпотентно: повтор того же состояния — no-op. Источники независимы, и ввод оживает, лишь когда отпустили ВСЕ. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#ac92c227515f1775577870cafa37d206b">Guildmaster.Game.Input.InputService</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="ace8eee9479a983da7eeda2e5cc7bfe57" name="ace8eee9479a983da7eeda2e5cc7bfe57"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ace8eee9479a983da7eeda2e5cc7bfe57">&#9670;&#160;</a></span>CameraPan</h2>
@@ -212,6 +272,33 @@ Events</h2></td></tr>
 <p>Панорамирование камеры: WASD + стрелки, нормализовано в [-1..1] по осям. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a45d47e37cab62d3116d144af9ab6bb9c">Guildmaster.Game.Input.InputService</a>.</p>
+
+</div>
+</div>
+<a id="a7942577f489a2d3e9d7e2301e529987d" name="a7942577f489a2d3e9d7e2301e529987d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7942577f489a2d3e9d7e2301e529987d">&#9670;&#160;</a></span>CameraPanDrag</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector2 Guildmaster.Core.Input.IInputService.CameraPanDrag</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Пан камеры перетаскиванием СРЕДНЕЙ кнопкой мыши (MMB): дельта мыши за кадр в пикселях, пока MMB зажата; иначе Vector2.zero. </p>
+<p>Ноль при GameplaySuppressed. Потребитель (камера) сам переводит пиксели в мир по текущему зуму. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#af296fd0bf6bec73233de9cacfdb8a9c5">Guildmaster.Game.Input.InputService</a>.</p>
 
 </div>
 </div>
@@ -267,6 +354,33 @@ Events</h2></td></tr>
 
 </div>
 </div>
+<a id="ad56f6f92de05efe9387c0cf7ca2bdd7c" name="ad56f6f92de05efe9387c0cf7ca2bdd7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad56f6f92de05efe9387c0cf7ca2bdd7c">&#9670;&#160;</a></span>DetailsHeld</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Core.Input.IInputService.DetailsHeld</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Клавиша подробностей (Shift) зажата. </p>
+<p>Живёт здесь, а не читается клавиатурой по месту: подсказки существуют во всех контекстах, а после ребиндов (Трек Х) источник истины о том, какая это клавиша, должен остаться ровно один. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a842e52a458bf079d3747666212f818f9">Guildmaster.Game.Input.InputService</a>.</p>
+
+</div>
+</div>
 <a id="a5595966e2ca4ffb59d1d14c8a624f5f1" name="a5595966e2ca4ffb59d1d14c8a624f5f1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5595966e2ca4ffb59d1d14c8a624f5f1">&#9670;&#160;</a></span>GameplaySuppressed</h2>
 
@@ -282,13 +396,14 @@ Events</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Глушитель геймплейного ввода поверх активных карт (ортогонально Context): пока <code>true</code> — пан/зум читаются как ноль, а дискретные события (пауза, смена вида) не поднимаются. </p>
-<p>Ставит внешний модальный слой, забирающий клавиатуру: dev-консоль QFSW сейчас, модальное меню — в будущем. Нужен, чтобы набор текста в консоли не протекал в геймплей. </p>
+<p>Нужен, чтобы чужой захват клавиатуры не протекал в геймплей. </p>
+<p>Величина ПРОИЗВОДНАЯ: заглушено, пока держит хотя бы один источник (SetSuppressed). Прямого сеттера нет намеренно — с ним источники затирали друг друга: смена экрана снимала глушение, поставленное открытой dev-консолью, и Enter, которым отправляли команду, уходил в расстановку и начинал бой.</p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a2b972ff3543569ced32601310333958e">Guildmaster.Game.Input.InputService</a>.</p>
 
@@ -317,6 +432,33 @@ Events</h2></td></tr>
 <p>Указатель зажат (ЛКМ) — для протяжки. Поллинг. Ноль/false при GameplaySuppressed. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a63fb3e49a680ac7472258dd30abb5740">Guildmaster.Game.Input.InputService</a>.</p>
+
+</div>
+</div>
+<a id="a7fbeec1400fa2640bfc431012db9bc79" name="a7fbeec1400fa2640bfc431012db9bc79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fbeec1400fa2640bfc431012db9bc79">&#9670;&#160;</a></span>PointerOverUI</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Core.Input.IInputService.PointerOverUI</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Курсор над непрозрачной UITK-панелью (hit-тест <code>panel.Pick</code>). </p>
+<p>Шов развязки UI↔мир: над панелью (карточки/детали инвентаря) ввод идёт в UI, над «дыркой» (прозрачная боевая зона) — в мир. Потребители геймплейного пикинга/пана проверяют этот флаг, чтобы клик по панели не протекал в игру. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a50a4e31b45e4229276b04601ca12c90b">Guildmaster.Game.Input.InputService</a>.</p>
 
 </div>
 </div>
@@ -360,6 +502,73 @@ Events</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Циклическое переключение вида камеры (Tab): Action → Overview → [Dev]. </p>
+
+</div>
+</div>
+<a id="a3d58f5a31eb1342e378a194261f23813" name="a3d58f5a31eb1342e378a194261f23813"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d58f5a31eb1342e378a194261f23813">&#9670;&#160;</a></span>DetailsHeldChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;bool&gt; Guildmaster.Core.Input.IInputService.DetailsHeldChanged</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Изменилось состояние удержания подробностей: <code>true</code> — зажали, <code>false</code> — отпустили. </p>
+
+</div>
+</div>
+<a id="ab167f8dd56ce093c7a27712416425edc" name="ab167f8dd56ce093c7a27712416425edc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab167f8dd56ce093c7a27712416425edc">&#9670;&#160;</a></span>DevBattlesToggleRequested</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.Core.Input.IInputService.DevBattlesToggleRequested</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Открыть/закрыть витрину боёв (<code>F3</code>): список того, что можно запустить прямо сейчас. </p>
+<p>Живёт рядом с консолями по той же причине — это дев-инструмент поверх любого экрана. </p>
+
+</div>
+</div>
+<a id="a11c05cab063cc8cca936bb753cdd4e82" name="a11c05cab063cc8cca936bb753cdd4e82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11c05cab063cc8cca936bb753cdd4e82">&#9670;&#160;</a></span>DevConsoleToggleRequested</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.Core.Input.IInputService.DevConsoleToggleRequested</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Открыть/закрыть КОМАНДНУЮ dev-консоль (<code>F1</code>). </p>
+<p>Как и меню, живёт вне контекст-карт и НЕ глушится GameplaySuppressed — иначе открытая консоль, которая сама же держит глушение (InputSuppressSource.DevConsole), не закрывалась бы своей клавишей. </p>
+
+</div>
+</div>
+<a id="a015bfef2f63d7fba0eb8b6d0c3fda9ad" name="a015bfef2f63d7fba0eb8b6d0c3fda9ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a015bfef2f63d7fba0eb8b6d0c3fda9ad">&#9670;&#160;</a></span>DevLogToggleRequested</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.Core.Input.IInputService.DevLogToggleRequested</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Открыть/закрыть ЛОГ-консоль (<code>F2</code>) — хвост сообщений движка без строки ввода. </p>
+<p>Разведены с командной намеренно (решение Макса 31.07): в командной нужен разговор «спросил — ответили», а поток логов его затапливает. </p>
 
 </div>
 </div>
@@ -441,6 +650,23 @@ Events</h2></td></tr>
 </div><div class="memdoc">
 
 <p>ЛКМ отпущена в этом кадре (drop/конец клика). </p>
+
+</div>
+</div>
+<a id="a36a3455fdd6a47bd7d33fe522b668660" name="a36a3455fdd6a47bd7d33fe522b668660"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36a3455fdd6a47bd7d33fe522b668660">&#9670;&#160;</a></span>SkipRequested</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.Core.Input.IInputService.SkipRequested</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Пропустить/ускорить идущую подачу (переход арены и т. </p>
+<p>п.). Отдельно от паузы: пауза живёт в карте боя, а подача играет как раз ВНЕ боя — на общей клавише скип туда просто не доходил. </p>
 
 </div>
 </div>

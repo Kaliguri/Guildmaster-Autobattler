@@ -121,6 +121,8 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Накладывает стат-модификаторы на носителя на время жизни эффекта. </p>
 <p>Источник снятия — сам RuntimeEffect, поэтому моды уходят разом на <code>OnExpire</code>. При стаках величина линейно умножается на число стаков (вики «6» §5.5). </p>
+<p><b>Числа:</b> <code>_modifiers</code> — список правок статов, у каждой свой стат, операция (плоско / процент / перекрыть) и величина. Это рабочая лошадь всех бафов и дебафов: замедление, разгон темпа, прибавка брони и запаса — всё делается здесь, а не отдельными компонентами.</p>
+<p><b>Когда срабатывает:</b> моды висят, пока висит эффект; при смене числа стаков вклад пересчитывается целиком.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a4e3a01fd8f9b2aaa042d36ae62f36688" name="a4e3a01fd8f9b2aaa042d36ae62f36688"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4e3a01fd8f9b2aaa042d36ae62f36688">&#9670;&#160;</a></span>OnApply()</h2>
@@ -145,6 +147,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p><b>Готча:</b> правка стата ОТЛОЖЕНА до конца тика (<code>Stats.Commit</code>) — так велит закон видимости эффектов. Наложенный этим тиком баф или ослабление вступает в силу со следующего, и потому одинаково для всех: иначе исход решало бы то, чей ход в обходе списка раньше.</p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html#ac38e374b510929093284b08bde4c2b96">Guildmaster.Combat.Effects.IRuntimeEffectComponent</a>.</p>
 

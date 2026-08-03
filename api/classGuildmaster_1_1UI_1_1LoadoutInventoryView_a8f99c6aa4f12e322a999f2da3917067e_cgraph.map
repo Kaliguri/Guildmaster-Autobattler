@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.LoadoutInventoryView.Build" name="Guildmaster.UI.LoadoutInventoryView.Build">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,243,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Components_1_1Chip.html#a4628f53641d9ab6a52cc269e914307d6" title="Подсветить как выбранный (активный фильтр, надетый тег и т.п.)." alt="" coords="291,5,500,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="243,23,277,23,277,28,243,28"/>
+</map>

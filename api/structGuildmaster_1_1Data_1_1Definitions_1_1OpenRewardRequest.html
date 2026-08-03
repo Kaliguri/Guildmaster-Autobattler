@@ -104,13 +104,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Data_1_1Definitio
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Definitions.OpenRewardRequest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest__coll__graph.svg" width="218" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest__coll__graph.svg" width="218" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a837fa565dfd08a9f9d473f62c9696bf7" id="r_a837fa565dfd08a9f9d473f62c9696bf7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#a837fa565dfd08a9f9d473f62c9696bf7">OpenRewardRequest</a> (IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; choices, bool inventoryFull, IReadOnlyList&lt; string &gt; currentInventory, Action&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html">RewardChoiceResult</a> &gt; onResolved)</td></tr>
-<tr class="separator:a837fa565dfd08a9f9d473f62c9696bf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa43a6e086843e3f334ed2b3d3253844" id="r_aaa43a6e086843e3f334ed2b3d3253844"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#aaa43a6e086843e3f334ed2b3d3253844">OpenRewardRequest</a> (IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; choices, bool inventoryFull, IReadOnlyList&lt; string &gt; currentInventory, Action&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html">RewardChoiceResult</a> &gt; onResolved, CancellationToken cancellation=default)</td></tr>
+<tr class="separator:aaa43a6e086843e3f334ed2b3d3253844"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -126,13 +126,16 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ae27ad82170510e262f95d007ac36a5cb" id="r_ae27ad82170510e262f95d007ac36a5cb"><td class="memItemLeft" align="right" valign="top">readonly Action&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html">RewardChoiceResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#ae27ad82170510e262f95d007ac36a5cb">OnResolved</a></td></tr>
 <tr class="memdesc:ae27ad82170510e262f95d007ac36a5cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк результата выбора (ровно один вызов): взятый релик + опц. сброшенный, либо пропуск.  <br /></td></tr>
 <tr class="separator:ae27ad82170510e262f95d007ac36a5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a411269e683c49d2c3bd3d10b946b8049" id="r_a411269e683c49d2c3bd3d10b946b8049"><td class="memItemLeft" align="right" valign="top">readonly CancellationToken&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#a411269e683c49d2c3bd3d10b946b8049">Cancellation</a></td></tr>
+<tr class="memdesc:a411269e683c49d2c3bd3d10b946b8049"><td class="mdescLeft">&#160;</td><td class="mdescRight">Токен отмены забега (QA #37): отмена закрывает награду через навигатор.  <br /></td></tr>
+<tr class="separator:a411269e683c49d2c3bd3d10b946b8049"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Запрос показать экран награды после боя (публикует флоу забега, слушает UI). </p>
 <p>Несёт витрину реликов и OnResolved-колбэк выбора — так Data-слой не зависит от UniTask (флоу оборачивает колбэк в await сам). Тем же приёмом, что OpenLoadoutRequest: пейлоад — только Data-типы. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a837fa565dfd08a9f9d473f62c9696bf7" name="a837fa565dfd08a9f9d473f62c9696bf7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a837fa565dfd08a9f9d473f62c9696bf7">&#9670;&#160;</a></span>OpenRewardRequest()</h2>
+<a id="aaa43a6e086843e3f334ed2b3d3253844" name="aaa43a6e086843e3f334ed2b3d3253844"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa43a6e086843e3f334ed2b3d3253844">&#9670;&#160;</a></span>OpenRewardRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -162,7 +165,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html">RewardChoiceResult</a> &gt;&#160;</td>
-          <td class="paramname"><em>onResolved</em>&#160;</td>
+          <td class="paramname"><em>onResolved</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CancellationToken&#160;</td>
+          <td class="paramname"><em>cancellation</em> = <code>default</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -180,6 +189,22 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a411269e683c49d2c3bd3d10b946b8049" name="a411269e683c49d2c3bd3d10b946b8049"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a411269e683c49d2c3bd3d10b946b8049">&#9670;&#160;</a></span>Cancellation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly CancellationToken Guildmaster.Data.Definitions.OpenRewardRequest.Cancellation</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Токен отмены забега (QA #37): отмена закрывает награду через навигатор. </p>
+
+</div>
+</div>
 <a id="abe89e38b9f7253f9f19cd0a4b7e2ec00" name="abe89e38b9f7253f9f19cd0a4b7e2ec00"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe89e38b9f7253f9f19cd0a4b7e2ec00">&#9670;&#160;</a></span>Choices</h2>
 

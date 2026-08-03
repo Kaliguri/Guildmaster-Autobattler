@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.Effects.Components.FeedOnDamageComponent.OnEvent" name="Guildmaster.Combat.Effects.Components.FeedOnDamageComponent.OnEvent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,296,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes.html#a1b490686aa38c59e86509c9691657341" title="Подходит ли входящий урон под фильтр защитного эффекта." alt="" coords="344,13,559,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="296,30,330,30,330,35,296,35"/>
+</map>

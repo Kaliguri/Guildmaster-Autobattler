@@ -1,0 +1,7 @@
+<map id="Guildmaster.Net.Transport.INetTransport" name="Guildmaster.Net.Transport.INetTransport">
+<area shape="rect" id="Node000001" title="Шов транспорта: отправить байты, получить байты, узнать о приходе и уходе пиров." alt="" coords="120,5,325,205"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html" title="Обёртка над транспортом, портящая канал ПО СИДУ: задержка, разброс задержки (он же переупорядочивание..." alt="" coords="5,263,211,563"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,219,166,264,161,262,178,217"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html" title="Транспорт поверх Steam Networking Sockets: хост поднимает relay&#45;сокет, гость подключается к нему по S..." alt="" coords="235,253,440,573"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="267,217,280,252,275,254,262,219"/>
+</map>

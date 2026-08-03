@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.UiNavigator.Dispose" name="Guildmaster.UI.UiNavigator.Dispose">
+<area shape="rect" id="Node000001" title="Отписка от смены фазы (Singleton → зовёт VContainer при разрушении скоупа)." alt="" coords="5,5,209,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1UiNavigator.html#a1feefbc536943703b36817235b504dd4" title="Пересчитать глушение ввода и контекст из (верх стека, фаза боя) — II.3." alt="" coords="257,5,461,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,23,244,23,244,28,209,28"/>
+</map>

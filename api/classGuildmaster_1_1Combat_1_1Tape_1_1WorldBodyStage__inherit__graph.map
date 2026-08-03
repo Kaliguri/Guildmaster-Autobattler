@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Tape.WorldBodyStage" name="Guildmaster.Combat.Tape.WorldBodyStage">
+<area shape="rect" id="Node000001" title="Тела на арене вне боя: кто стоит во дворе гильдии, на Ристалище и в строю между забегами." alt="" coords="55,139,242,319"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Tape_1_1IStageFrameSource.html" title="Кто поставляет показу кадр сцены: кто стоит на арене, где и в какой позе." alt="" coords="5,5,145,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,103,115,137,110,140,95,105"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Tape_1_1IUnitDirectory.html" title="Кто есть кто на арене: id → паспорт." alt="" coords="169,15,275,81"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="206,94,188,140,183,138,201,92"/>
+</map>

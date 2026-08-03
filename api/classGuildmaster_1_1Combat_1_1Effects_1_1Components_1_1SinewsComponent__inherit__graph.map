@@ -1,0 +1,12 @@
+<map id="Guildmaster.Combat.Effects.Components.SinewsComponent" name="Guildmaster.Combat.Effects.Components.SinewsComponent">
+<area shape="rect" id="Node000001" title="«Жилы» Десятины: пока носитель здоров, он рвёт себя ради темпа — бьёт быстрее, но каждый удар стоит е..." alt="" coords="53,365,274,525"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html" title="Периодический компонент: OnTick каждые Interval секунд (DoT/HoT/реген)." alt="" coords="5,252,151,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,328,123,363,118,366,99,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="71,119,256,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="128,217,103,253,98,250,124,214"/>
+<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="175,252,325,317"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="203,214,229,250,225,253,199,217"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="98,5,229,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="166,85,166,119,161,119,161,85"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="229,331,209,366,204,363,224,328"/>
+</map>

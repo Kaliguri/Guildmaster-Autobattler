@@ -1,5 +1,25 @@
 var searchData=
 [
-  ['hassave_0',['HasSave',['../structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html#a68e397970fbda043ae3183cc8c47edf7',1,'Guildmaster::Guild::OpenMainMenuRequest']]],
-  ['hpdamage_1',['HpDamage',['../structGuildmaster_1_1Combat_1_1DamageResult.html#a1c38e37d8555f62ede39114c7523c2ca',1,'Guildmaster::Combat::DamageResult']]]
+  ['halfthickness_0',['HalfThickness',['../structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html#a08f1eec539ba5dfa1575bf63a4699d6e',1,'Guildmaster::Presentation::Effects::HitFormParams']]],
+  ['hasrun_1',['HasRun',['../structGuildmaster_1_1UI_1_1NewGameScreenView_1_1GuildEntry.html#ae5fe35e2c1f1b98703dd4eb7c3a8bb9f',1,'Guildmaster::UI::NewGameScreenView::GuildEntry']]],
+  ['headerbytes_2',['HeaderBytes',['../classGuildmaster_1_1Net_1_1NetEnvelope.html#a691238908636a1807845bb9dac60c93e',1,'Guildmaster::Net::NetEnvelope']]],
+  ['healmult_3',['HealMult',['../structGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig_1_1ClassProfile.html#a5d1cc2d2c86603a5b2f7a3e1a12dd25f',1,'Guildmaster::Data::Definitions::ClassBalanceConfig::ClassProfile']]],
+  ['height_4',['Height',['../classGuildmaster_1_1Core_1_1Settings_1_1DisplaySettings.html#a782d3d71c2a78b9560d074551ac1dac1',1,'Guildmaster::Core::Settings::DisplaySettings']]],
+  ['heldid_5',['HeldId',['../structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a9ccbed2c63f87e8d8adfb837db0aebc5',1,'Guildmaster::Net::Presence::PresenceState']]],
+  ['hideopponent_6',['hideopponent',['../structGuildmaster_1_1Data_1_1Definitions_1_1ActivitySetup.html#a3d1059afc70da47df305c154e0912423',1,'Guildmaster.Data.Definitions.ActivitySetup.HideOpponent'],['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState.html#a4529507777447c9c3c4285606c794d2d',1,'Guildmaster.Game.Session.Net.ActivityState.HideOpponent']]],
+  ['hiredpenaltyrunsleft_7',['HiredPenaltyRunsLeft',['../classGuildmaster_1_1Guild_1_1VesselState.html#a1f0cf6445b65a055d5e5db2a85998460',1,'Guildmaster::Guild::VesselState']]],
+  ['hiredveteran_8',['HiredVeteran',['../classGuildmaster_1_1Guild_1_1VesselState.html#a788d637ea0cd6f8a03860651b11caac0',1,'Guildmaster::Guild::VesselState']]],
+  ['hitfunction_9',['HitFunction',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a742468eb1671fee16474f55b2c6d7a8c',1,'Guildmaster::Data::Definitions::ClipMarkers']]],
+  ['hitsmade_10',['HitsMade',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a568a226a9ef8971ceb899405df46c66e',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['holdseconds_11',['HoldSeconds',['../structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape.html#a44d16528bccbd51de75d82c03125af56',1,'Guildmaster::Core::Flow::ScreenTransitionShape']]],
+  ['holo_12',['Holo',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#abf688568eb9ac8100db9c1b7ff51345a',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
+  ['holoalpha_13',['HoloAlpha',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#a8ec34d78fda0e9b5f159c9372e9f9588',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
+  ['holocolor_14',['HoloColor',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#a07cc90f47dab7c4a79801628ed6758a9',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
+  ['holoscanamount_15',['HoloScanAmount',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#af3894c8aa7efe44e1d05700a17e530e5',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
+  ['holoscanscale_16',['HoloScanScale',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#a3fe590c1b45734aed4ed9387385b4471',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
+  ['hostpeerid_17',['HostPeerId',['../classGuildmaster_1_1Net_1_1Transport_1_1NetPeer.html#a0add79d2b19319d4292d17b48bdad5ed',1,'Guildmaster::Net::Transport::NetPeer']]],
+  ['hoveredid_18',['HoveredId',['../structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a8fe6a4ce100b6bb20cd5c135dd5a461e',1,'Guildmaster::Net::Presence::PresenceState']]],
+  ['hp_19',['hp',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#aac7e036ce2e42aacb11e6aebdbe2c68e',1,'Guildmaster::Data::Definitions::ClassBalanceConfig']]],
+  ['hpdamage_20',['HpDamage',['../structGuildmaster_1_1Combat_1_1DamageResult.html#a1c38e37d8555f62ede39114c7523c2ca',1,'Guildmaster::Combat::DamageResult']]],
+  ['hpmult_21',['HpMult',['../structGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig_1_1ClassProfile.html#a931282c28341dbb6b1691996ba993545',1,'Guildmaster::Data::Definitions::ClassBalanceConfig::ClassProfile']]]
 ];

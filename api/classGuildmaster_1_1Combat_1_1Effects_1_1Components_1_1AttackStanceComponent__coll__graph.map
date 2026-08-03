@@ -1,0 +1,12 @@
+<map id="Guildmaster.Combat.Effects.Components.AttackStanceComponent" name="Guildmaster.Combat.Effects.Components.AttackStanceComponent">
+<area shape="rect" id="Node000001" title="Боевые СТОЙКИ по дистанции: носитель переключает форму своей авто&#45;атаки, когда цель входит в ближнюю ..." alt="" coords="39,365,301,545"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html" title="Периодический компонент: OnTick каждые Interval секунд (DoT/HoT/реген)." alt="" coords="5,252,151,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,328,124,364,119,366,99,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="12,119,197,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,218,88,252,82,251,90,217"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="105,5,235,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="149,84,129,120,125,117,144,81"/>
+<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IDeclaresDamageTypes.html" title="Компонент эффекта, который добавляет носителю статический источник урона — то есть собственный тип ур..." alt="" coords="175,252,351,317"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="195,82,211,118,237,189,257,251,252,253,232,191,206,120,190,84"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="242,331,222,366,217,364,237,328"/>
+</map>

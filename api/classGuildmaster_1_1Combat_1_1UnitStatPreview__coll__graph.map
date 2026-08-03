@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.UnitStatPreview" name="Guildmaster.Combat.UnitStatPreview">
+<area shape="rect" id="Node000001" title="Реализация шва IUnitStatPreview: считает статы кита ТЕМ ЖЕ путём, что и бой (контракт «таблица не врё..." alt="" coords="5,119,211,219"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IUnitStatPreview.html" title="Шов «покажи базовые статы этого кита» для интерфейса." alt="" coords="47,5,169,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,84,111,119,105,119,105,84"/>
+</map>
