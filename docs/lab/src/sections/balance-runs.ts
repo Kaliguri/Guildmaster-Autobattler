@@ -184,6 +184,10 @@ function render(host: HTMLElement): void {
         : `Отчёты недоступны: ${balance.error ?? "нет ответа"}. Нужен ./scripts/lab-serve.ps1 -Watch`;
       return;
     }
+    // Ссылка вида #/balance-runs?mode=squad_duel открывает сразу нужный режим: разговор идёт про
+    // конкретную таблицу, и «зайди и переключи вкладку» — это ссылка не на неё.
+    const asked = /mode=([^&]+)/.exec(location.hash);
+    if (asked?.[1]) view.mode = decodeURIComponent(asked[1]);
     draw(host);
   });
 }
