@@ -1,4 +1,4 @@
-using Guildmaster.Core.Audio;
+﻿using Guildmaster.Core.Audio;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Session;
@@ -140,6 +140,19 @@ namespace Guildmaster.Tests.EditMode.Run
         /// заглушками: VContainer проверяет разрешимость всей ветки на <c>Build</c>, а дефолтные
         /// значения параметров конструктора он не подставляет.
         /// </remarks>
+        /// <summary>Указатель без камеры: в EditMode мира нет, и присутствию нечего отправлять.</summary>
+        private sealed class TestPointer : Guildmaster.Core.Input.IPointerWorld
+        {
+            public UnityEngine.Vector2 Position   => UnityEngine.Vector2.zero;
+            public bool                IsAvailable => false;
+        }
+
+        /// <summary>Платформа без платформы: имя есть, Steam-а нет.</summary>
+        private sealed class TestPlatform : Guildmaster.Core.Players.IPlatformIdentity
+        {
+            public string PlayerName => "Игрок";
+        }
+
         private static IObjectResolver BuildSession(SessionRole role)
         {
             var builder = new ContainerBuilder();
@@ -147,6 +160,14 @@ namespace Guildmaster.Tests.EditMode.Run
             builder.RegisterInstance<IProfileService>(new FixedProfileService());
             builder.RegisterInstance(ScriptableObject.CreateInstance<GameConfig>());
             builder.RegisterInstance<IAudioService>(new SilentAudio());
+
+            // Личность платформы: сеанс представляет игрока по имени, и в EditMode Steam-а нет. Шов
+            // узкий ровно затем, чтобы подменяться одной строкой.
+            builder.RegisterInstance<Guildmaster.Core.Players.IPlatformIdentity>(new TestPlatform());
+
+            // Указатель в мире: присутствие спрашивает, где курсор. В EditMode камеры нет, и шов честно
+            // отвечает «недоступен» — курсор просто не отправляется.
+            builder.RegisterInstance<Guildmaster.Core.Input.IPointerWorld>(new TestPointer());
 
             // Транспорт и владелец мероприятий приходят из предков: раздача состояния и объявление
             // «где мы» живут в сеансе, потому что это обязанность роли.
