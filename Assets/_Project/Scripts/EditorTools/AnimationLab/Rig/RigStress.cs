@@ -103,9 +103,7 @@ namespace Guildmaster.AnimationLab.Editor
                     float rest = joint.RestZ;
                     var angles = new[] { range.Lo, rest, range.Hi };
 
-                    // Кадрирование считаем по КРАЙНИМ позам: рамка, подобранная по покою, срезает
-                    // ровно то, ради чего тест и затевался.
-                    var bounds = MeasureAcross(unit, node, angles, rest);
+                    var bounds = MeasureAcross(unit, node, angles, rest, FindPiece(unit, joint, anchors, parent: true));
                     cam.orthographicSize = Mathf.Max(bounds.extents.x, bounds.extents.y) * Mathf.Max(1f, options.Padding);
                     cam.transform.position = new Vector3(bounds.center.x, bounds.center.y, -10f);
 
@@ -163,20 +161,9 @@ namespace Guildmaster.AnimationLab.Editor
         static float MeasureOverlap(GameObject unit, Camera cam, RenderTexture rt, int size,
                                     RigProfile.Joint joint, List<RigAnchors.Anchor> anchors)
         {
-            SpriteRenderer child = null, parent = null;
-            foreach (var a in anchors)
-            {
-                if (!a.DeclaresPivot || !a.BelongsToBone) continue;
-                if (a.JointId == joint.Id && child == null) child = a.Visual;
-            }
+            var child = OwnPiece(anchors, joint.Id);
             if (child == null) return -1f;
-
-            var parentJointNode = FindParentJoint(unit.transform, child.transform);
-            foreach (var a in anchors)
-            {
-                if (!a.DeclaresPivot || !a.BelongsToBone) continue;
-                if (a.Joint == parentJointNode && a.Visual != child) { parent = a.Visual; break; }
-            }
+            var parent = ParentPiece(unit.transform, anchors, child);
             if (parent == null) return -1f;
 
             var all = unit.GetComponentsInChildren<SpriteRenderer>(true);
@@ -218,6 +205,33 @@ namespace Guildmaster.AnimationLab.Editor
                 mask[i] = pixels[i].r + pixels[i].g + pixels[i].b > 0.08f;   // фон чёрный, рисунок — нет
             Object.DestroyImmediate(tex);
             return mask;
+        }
+
+        /// <summary>Кусок, принадлежащий самому суставу.</summary>
+        static SpriteRenderer OwnPiece(List<RigAnchors.Anchor> anchors, string jointId)
+        {
+            foreach (var a in anchors)
+                if (a.DeclaresPivot && a.BelongsToBone && a.JointId == jointId) return a.Visual;
+            return null;
+        }
+
+        /// <summary>Кусок сустава выше по цепочке — вторая половина шва, который проверяется.</summary>
+        static SpriteRenderer ParentPiece(Transform root, List<RigAnchors.Anchor> anchors, SpriteRenderer child)
+        {
+            var parentJoint = FindParentJoint(root, child.transform);
+            foreach (var a in anchors)
+                if (a.DeclaresPivot && a.BelongsToBone && a.Joint == parentJoint && a.Visual != child)
+                    return a.Visual;
+            return null;
+        }
+
+        static Transform FindPiece(GameObject unit, RigProfile.Joint joint, List<RigAnchors.Anchor> anchors, bool parent)
+        {
+            var own = OwnPiece(anchors, joint.Id);
+            if (own == null) return null;
+            if (!parent) return own.transform;
+            var up = ParentPiece(unit.transform, anchors, own);
+            return up != null ? up.transform : null;
         }
 
         static Transform FindParentJoint(Transform root, Transform visual)
@@ -273,14 +287,24 @@ namespace Guildmaster.AnimationLab.Editor
             return list;
         }
 
-        static Bounds MeasureAcross(GameObject unit, Transform node, float[] angles, float rest)
+        /// <summary>
+        /// Рамка вокруг ТОГО, ЧТО ГНЁМ: цепочка под суставом плюс кусок родителя ради шва. Кадр по
+        /// всему юниту делает тестируемую руку мелкой деталью, а вопрос теста — как ведёт себя стык.
+        /// Считается по КРАЙНИМ позам: рамка по покою срезала бы ровно то, ради чего тест затевался.
+        /// </summary>
+        static Bounds MeasureAcross(GameObject unit, Transform node, float[] angles, float rest, Transform parentPiece)
         {
-            var bounds = new Bounds(node.position, Vector3.one * 0.05f);
+            var bounds = new Bounds(node.position, Vector3.one * 0.03f);
             foreach (var angle in angles)
             {
                 SetZ(node, angle);
-                foreach (var renderer in unit.GetComponentsInChildren<Renderer>(false))
+                foreach (var renderer in node.GetComponentsInChildren<Renderer>(false))
                     bounds.Encapsulate(renderer.bounds);
+                if (parentPiece != null)
+                {
+                    var parentRenderer = parentPiece.GetComponent<Renderer>();
+                    if (parentRenderer != null) bounds.Encapsulate(parentRenderer.bounds);
+                }
             }
             SetZ(node, rest);
             return bounds;
