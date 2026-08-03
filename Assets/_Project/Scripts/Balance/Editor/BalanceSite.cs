@@ -1,6 +1,8 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -81,14 +83,28 @@ namespace Guildmaster.Balance.Editor
                 using Process p = Process.Start(psi);
                 if (p == null) return false;
 
-                string stdout = p.StandardOutput.ReadToEnd();
-                string stderr = p.StandardError.ReadToEnd();
+                // Оба потока читаем асинхронно. Синхронный ReadToEnd по очереди — классический дедлок
+                // пайпов: пока мы ждём конца stdout, питон блокируется на записи в переполненный stderr
+                // (буфер около четырёх килобайт — это один длинный traceback или поток warning'ов), и
+                // ждут оба. Таймаут не спасал: WaitForExit стоял НИЖЕ чтения и до него не доходило.
+                // Приходит такое в конце полного круга бенчей, то есть после нескольких минут прогона.
+                var outText = new StringBuilder();
+                var errText = new StringBuilder();
+                p.OutputDataReceived += (_, e) => { if (e.Data != null) outText.AppendLine(e.Data); };
+                p.ErrorDataReceived  += (_, e) => { if (e.Data != null) errText.AppendLine(e.Data); };
+                p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
+
                 if (!p.WaitForExit(TimeoutMs))
                 {
                     p.Kill();
                     Debug.LogError($"[BalanceSite] Сборщик не уложился в {TimeoutMs / 1000} с и был прерван.");
                     return true;   // интерпретатор нашёлся — перебирать остальные незачем
                 }
+
+                p.WaitForExit();   // без аргумента: дожидается слива асинхронных буферов, иначе хвост потеряется
+                string stdout = outText.ToString();
+                string stderr = errText.ToString();
 
                 if (p.ExitCode == 0)
                 {
@@ -102,9 +118,11 @@ namespace Guildmaster.Balance.Editor
 
                 return true;
             }
-            catch (Exception)
+            catch (Win32Exception)
             {
                 // Такого интерпретатора в PATH нет — это не ошибка, просто пробуем следующее имя.
+                // Ловим ровно этот случай: прежний catch (Exception) глотал ЛЮБОЙ сбой как «нет
+                // интерпретатора» и молча уходил перебирать следующий, пряча настоящую поломку.
                 return false;
             }
         }
