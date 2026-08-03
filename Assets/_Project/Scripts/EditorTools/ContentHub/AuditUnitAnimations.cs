@@ -147,23 +147,33 @@ namespace Guildmaster.ContentHub.Editor
                 }
             }
 
-            foreach (var (sp, i) in sprites.Select((s, i) => (s, i)))
+            // Блит под try/finally: между «взвели isReadable» и «вернули обратно» стоит чтение пикселей,
+            // и оно умеет падать — например, у ассета, чей импортёр не TextureImporter (атлас, .psb):
+            // readable не взвелось, а GetPixels кидает «Texture is not readable». Без finally флаги
+            // остались бы взведёнными, а .meta чужих текстур — изменёнными до ручной правки.
+            // Соседние тулы (BuildUnitViewPrefabs.FilterOpaque, ExportUnitVisualCatalog) уже так и делают.
+            try
             {
-                string path = AssetDatabase.GetAssetPath(sp);
-                var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
-                var r = sp.rect;
-                var px = tex.GetPixels((int)r.x, (int)r.y, (int)r.width, (int)r.height);
-                int ox = (fw - (int)r.width) / 2;
-                int oy = (fh - (int)r.height) / 2;
-                collage.SetPixels(i * fw + ox, oy, (int)r.width, (int)r.height, px);
+                foreach (var (sp, i) in sprites.Select((s, i) => (s, i)))
+                {
+                    string path = AssetDatabase.GetAssetPath(sp);
+                    var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+                    var r = sp.rect;
+                    var px = tex.GetPixels((int)r.x, (int)r.y, (int)r.width, (int)r.height);
+                    int ox = (fw - (int)r.width) / 2;
+                    int oy = (fh - (int)r.height) / 2;
+                    collage.SetPixels(i * fw + ox, oy, (int)r.width, (int)r.height, px);
+                }
             }
-
-            foreach (var path in readable)
+            finally
             {
-                var timp = AssetImporter.GetAtPath(path) as TextureImporter;
-                if (timp == null) continue;
-                timp.isReadable = false;
-                timp.SaveAndReimport();
+                foreach (var path in readable)
+                {
+                    var timp = AssetImporter.GetAtPath(path) as TextureImporter;
+                    if (timp == null) continue;
+                    timp.isReadable = false;
+                    timp.SaveAndReimport();
+                }
             }
 
             collage.Apply();
