@@ -85,13 +85,13 @@ SORT file.name ASC
 (`_damageMultiplier: 2`), «Стальной вихрь» Копейщика уже несёт замедление и щит (`WhirlSlow` +
 `WhirlShield`), кувырок Убийцы реализован (`_rollSpeedPerSecond: 12`) и его усиленная атака ещё и
 **переносит за спину** (`_blinkBehind: 1`), «Длань жизни» Пастыря несёт диспел (`HandOfLifeCleanse`),
-а у Геоманта на автоатаке висят и `Bleed`, и `StoneCrush`.
+а у Кровоманта на автоатаке висят и `Bleed`, и `StoneCrush`.
 
 ## Кодовые долги от вердиктов 2026-07-30 — ЗАКРЫТЫ
 
 Четыре правки Макса не легли в данные и потребовали кода. **Сделано 2026-07-30**, каждая величина стала
 полем: `AbilityData._repeatSelfEffects` (Hearth — 5 стаков и на себя),
-`StoneTitheComponent._healShareOfTaken` (Cairn — лечение на 100% забранного, при 30% в максимум),
+`TitheComponent._healShareOfTaken` (Десятина — лечение на 100% забранного, при 30% в максимум),
 `RearStrikeEffectComponent._bonusStacks` (Fang — 2 стака с тыла), `Rule.BonusPerStack` + `Rule.MaxBonus`
 в `TaggedTargetDamageBonusComponent` (Winter — +5% за стак льда до +100%). Развилки — запись
 [«Payload Repeat And Per-Stack Bonus»](../../tech/00-meta/journal/2026-07-30-payload-repeat-and-per-stack-bonus.md);

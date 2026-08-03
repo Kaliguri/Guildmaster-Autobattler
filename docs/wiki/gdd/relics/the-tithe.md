@@ -29,7 +29,7 @@ themes:
   - Мистика
 needs_review: []
 impl: partial
-asset: [relic.geomancer]
+asset: [relic.hemomancer]
 impl_note: "формы разведены 2026-07-30; «Жилы» не реализованы — см. implementation-status"
 ---
  Ьы

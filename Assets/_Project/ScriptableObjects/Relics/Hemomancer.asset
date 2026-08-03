@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d7cba09029dfbf4fb4a5fa3399a44f1, type: 3}
-  m_Name: Geomancer
+  m_Name: Hemomancer
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
-  _id: relic.geomancer
+  _id: relic.hemomancer
   _combatClass: 3
   _autoAttackDamageType: 4
   _creatureType: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ab815b5e6e657074ab85e622db5f22f2, type: 2}
   - {fileID: 11400000, guid: 8dc33c508dab67647bed54196fa40858, type: 2}
   _tags:
-  - geomancer
+  - hemomancer
   - hybrid
   - common
   _kitPower: 0

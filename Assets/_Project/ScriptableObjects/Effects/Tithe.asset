@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
-  m_Name: StoneTithe
+  m_Name: Tithe
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
-  _id: effect.stone_tithe
+  _id: effect.tithe
   _polarity: 0
   _tags: 1
   _baseDuration: -1
   _stacking: 0
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 0
   _unremovable: 1
-  _stacksPerApplication: 1
   _cleansePrice:
   - Flat: 0
     Pct: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 7815026876324511982
-      type: {class: StoneTitheComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      type: {class: TitheComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _startAtHpPct: 0.01
         _tithePctCurrentHp: 0.2

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
-    /// «Каменная десятина» Геоманта (карточка [[the-cairn]]): один раз в начале боя носитель забирает у
+    /// «Десятина» Кровоманта (карточка [[the-tithe]]): один раз в начале боя носитель забирает у
     /// союзников вокруг долю их ТЕКУЩЕГО HP и прибавляет себе половину забранного к максимуму.
     /// <para><b>Числа:</b> <c>_tithePctCurrentHp</c> — сколько берётся с каждого союзника (0.2 = 20% его
     /// текущего HP); <c>_keepShare</c> — доля забранного, уходящая носителю в МАКСИМУМ (0.3);
@@ -32,10 +32,13 @@ namespace Guildmaster.Combat.Effects.Components
     /// что нужно: он встаёт на ноги сразу, но его потолок растёт втрое медленнее.</para>
     /// </remarks>
     [Serializable]
-    public sealed class StoneTitheComponent : IPeriodicComponent
+    // Имя без «Каменной»: кит — Кровомант, а не Геомант (03.08.2026). Прежнее имя класса держится
+    // атрибутом, иначе SerializeReference в ассете эффекта не найдёт тип и компонент станет null.
+    [UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceClassName: "StoneTitheComponent")]
+    public sealed class TitheComponent : IPeriodicComponent
     {
         [Tooltip("На какой доле максимума носитель начинает бой (0.01 = 1%). 0 = начинает как обычно, полным. " +
-                 "Каменный аскет стартует почти мёртвым и добирает поеданием союзников — его живучесть " +
+                 "Кровомант стартует почти мёртвым и добирает поеданием союзников — его живучесть " +
                  "определяется составом команды, а не карточкой.")]
         [Range(0f, 1f)]
         [SerializeField] private float _startAtHpPct;

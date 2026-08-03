@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -74,7 +74,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             ctx.UnitsInWorld.Add(carrier);
             ctx.UnitsInWorld.Add(ally);
 
-            var tithe = new StoneTitheComponent()
+            var tithe = new TitheComponent()
                 .With("_startAtHpPct", 0.01f)
                 .With("_tithePctCurrentHp", 0.2f)
                 .With("_keepShare", 0.3f)

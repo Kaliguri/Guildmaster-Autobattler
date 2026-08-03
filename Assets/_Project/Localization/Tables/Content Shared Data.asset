@@ -1103,14 +1103,6 @@ MonoBehaviour:
     m_Key: effect.harvest_grip.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 7000417282285568
-    m_Key: relic.geomancer.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7000417320034304
-    m_Key: relic.geomancer.desc
-    m_Metadata:
-      m_Items: []
   - m_Id: 7000417324228608
     m_Key: effect.bleed.name
     m_Metadata:
@@ -1125,14 +1117,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 7000417324228611
     m_Key: effect.stone_crush.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7000417324228612
-    m_Key: effect.stone_tithe.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7000417324228613
-    m_Key: effect.stone_tithe.desc
     m_Metadata:
       m_Items: []
   - m_Id: 7000417324228614
@@ -1581,6 +1565,70 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8537203523444738
     m_Key: effect.wet.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8554436475740160
+    m_Key: enemy.bone_storybook.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8554436513488896
+    m_Key: enemy.bone_storybook.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8610537514721280
+    m_Key: cursor.chunky.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8610537577635840
+    m_Key: cursor.chunky.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8610538609434624
+    m_Key: cursor.classic.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8610538609434625
+    m_Key: cursor.classic.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8610539087585280
+    m_Key: cursor.shard.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8610539087585281
+    m_Key: cursor.shard.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8610539557347328
+    m_Key: cursor.toon.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8610539557347329
+    m_Key: cursor.toon.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8610540018720768
+    m_Key: cursor.wedge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8610540018720769
+    m_Key: cursor.wedge.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8611003560615936
+    m_Key: effect.tithe.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8611003594170368
+    m_Key: effect.tithe.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8611003594170369
+    m_Key: relic.hemomancer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8611003594170370
+    m_Key: relic.hemomancer.desc
     m_Metadata:
       m_Items: []
   m_Metadata:

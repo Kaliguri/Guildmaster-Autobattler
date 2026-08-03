@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76c12617c141ae7408be7a4ad946fab3, type: 3}
-  m_Name: Geomancer
+  m_Name: Hemomancer
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.AIPresetData
-  _id: ai_preset.geomancer
+  _id: ai_preset.hemomancer
   _profile:
     _autoAttackTargeting: 0
     _autoAttackMode: 0
@@ -27,4 +27,3 @@ MonoBehaviour:
       FallbackDist: 3
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
-  _archetypeTags: []
