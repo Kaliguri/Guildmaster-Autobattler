@@ -248,7 +248,9 @@ namespace Guildmaster.UI.Tooltips
             Window evicted = _chain.Add(window, out bool wasEvicted);
             if (wasEvicted && evicted != null) DestroyWindow(evicted);
 
-            ApplySticky(window);
+            // ApplySticky здесь НЕ зовём: окно создано с Sticky = true, и CreateWindow уже применил
+            // залипание. Повтор не бесплатен — внутри WithKeywordTooltips, а он безусловно вешает пару
+            // колбэков на ссылки термина, и каждое наведение слало бы по два запроса подсказки.
             PlaceByAnchor(window, source.Root);
             _sound?.PlayUi("tooltip_show");
         }
