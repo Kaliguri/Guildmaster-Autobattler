@@ -109,8 +109,7 @@ namespace Guildmaster.DevTools
 
             // Как и в консоли, клавиши ловим на корне: иначе Tab и стрелки уходят в навигацию по фокусу.
             Root.RegisterCallback<KeyDownEvent>(OnKeyDown, TrickleDown.TrickleDown);
-            Root.RegisterCallback<NavigationMoveEvent>(evt => { evt.StopPropagation(); evt.PreventDefault(); },
-                TrickleDown.TrickleDown);
+            Root.RegisterCallback<NavigationMoveEvent>(Consume, TrickleDown.TrickleDown);
 
             // Фокус ставим сами и через schedule — та же причина, что в консоли: к моменту
             // GetInitialFocus панель ещё не приняла элемент, и поле остаётся без фокуса.
@@ -383,10 +382,19 @@ namespace Guildmaster.DevTools
             return label;
         }
 
-        private static void Consume(EventBase evt)
+        /// <summary>
+        /// Гасит событие целиком: и дальнейшее распространение, и навигацию по умолчанию.
+        /// </summary>
+        /// <remarks>
+        /// Второе делал <c>PreventDefault</c>, объявленный устаревшим. Замена ему не одна:
+        /// распространение останавливает <c>StopPropagation</c>, а навигацию по фокусу отменяет
+        /// только <c>focusController.IgnoreEvent</c> — без него Tab и стрелки уводят фокус из
+        /// браузера боёв, как и до появления этой заглушки.
+        /// </remarks>
+        private void Consume(EventBase evt)
         {
             evt.StopPropagation();
-            evt.PreventDefault();
+            Root?.focusController?.IgnoreEvent(evt);
         }
     }
 }
