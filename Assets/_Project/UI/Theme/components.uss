@@ -2312,7 +2312,10 @@
     flex-direction: row;
     align-items: center;
     background-color: rgba(0, 0, 0, 0);
-    border-radius: var(--gm-radius-1);
+    /* Было var(--gm-radius-1) — такого токена в теме нет (есть только --gm-radius-0), поэтому
+       скругление молча не применялось. Ставим 0 осознанно: острые углы — объявленное правило
+       темы, а заводить вторую ступень радиуса ради одного чипа — отдельное решение по виду. */
+    border-radius: var(--gm-radius-0);
     padding: var(--gm-space-1) var(--gm-space-2);
     /* Плавной подсветки НЕТ намеренно: в UI Toolkit анимация состояния — известный триггер
        залипания :hover/:active (баг движка, репорты с 2022, официально «в grab bag» без ETA;
@@ -2900,7 +2903,7 @@
     right: 0;
     bottom: 0;
     padding-bottom: var(--gm-space-0);
-    color: rgba(230, 220, 200, 0.28);
+    color: var(--gm-color-text-ghost);
     -unity-text-align: middle-left;
 }
 
@@ -2992,13 +2995,15 @@
 }
 
 .gm-console .unity-scroller .unity-base-slider__tracker {
-    background-color: rgba(255, 255, 255, 0.04);
+    background-color: var(--gm-color-console-track);
     border-width: 0;
     margin: 0;
 }
 
 .gm-console .unity-scroller .unity-base-slider__dragger {
-    background-color: var(--gm-color-brass-700);
+    /* Роль ручки, а не примитив: тут стояло var(--gm-color-brass-700) — токена с таким именем в
+       теме нет вообще (есть --gm-brass-700), поэтому правило молча не применялось. */
+    background-color: var(--gm-color-handle-border);
     border-width: 0;
     width: 6px;
     margin-left: 2px;
@@ -3195,7 +3200,8 @@
 .gm-console__tool:hover {
     background-color: rgba(0, 0, 0, 0);
     color: var(--gm-color-text);
-    border-bottom-color: var(--gm-color-brass-700);
+    /* Было var(--gm-color-brass-700) — несуществующий токен, подчёркивание не рисовалось. */
+    border-bottom-color: var(--gm-color-hover-border);
 }
 
 .gm-console__tool:active {
@@ -3207,7 +3213,8 @@
 .gm-console__tool:focus {
     background-color: rgba(0, 0, 0, 0);
     border-color: rgba(0, 0, 0, 0);
-    border-bottom-color: var(--gm-color-brass-700);
+    /* Было var(--gm-color-brass-700) — несуществующий токен; фокус не был виден вовсе. */
+    border-bottom-color: var(--gm-color-focus-ring);
 }
 
 /* --- Колонки таблицы: одна ширина у шапки и у строк ---
