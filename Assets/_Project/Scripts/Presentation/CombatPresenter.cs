@@ -301,6 +301,11 @@ namespace Guildmaster.Presentation
 
             // Летящие VFX-префабы — погасить и вернуть в пул.
             if (_vfx != null) _vfx.DespawnAll();
+
+            // О нехватке данных для визуала говорится один раз на факт — но «один раз» живёт в пределах
+            // боя. Иначе после первого прогона консоль замолчит до перезапуска редактора, и следующий
+            // состав будет молча терять эффекты.
+            VisualDefects.Reset();
         }
 
         /// <summary>Создать dev-слой статус-колец в рантайме (без правок сцены/префабов) и подать симуляцию.</summary>
@@ -416,7 +421,8 @@ namespace Guildmaster.Presentation
                     float ang = p.Velocity.sqrMagnitude > 1e-6f
                         ? Mathf.Atan2(p.Velocity.y, p.Velocity.x) * Mathf.Rad2Deg
                         : 0f;
-                    _vfx.Spawn(_feel.VfxMuzzle, srcView.ShotPoint, ang, tint: VfxPaletteFor(p.SourceId));
+                    _vfx.Spawn(_feel.VfxMuzzle, srcView.ShotPoint, ang, tint: VfxPaletteFor(p.SourceId),
+                               slot: nameof(_feel.VfxMuzzle));
                 }
             }
 
@@ -474,7 +480,8 @@ namespace Guildmaster.Presentation
             view.PlayCastOutline(VfxColorFor(casterId));   // контур — один цвет, без разброса
 
             if (_vfx != null && _feel != null && _feel.VfxCastBurst != null)
-                _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: VfxPaletteFor(casterId));
+                _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: VfxPaletteFor(casterId),
+                           slot: nameof(_feel.VfxCastBurst));
 
             // Мгновенный приём (Cast пришёл без подготовки) — свечение источника всполохом. Была подготовка —
             // заряд уже дошёл до пика и сам идёт в спад, второй раз не трогаем (иначе оружие моргнёт с нуля).
@@ -719,7 +726,8 @@ namespace Guildmaster.Presentation
 
                 _vfx.Spawn(_feel.VfxHitSpark, AnchorFor(targetId, target.Position), blockDir,
                            _feel.EvaluateHitVfxSizeMultiplier(frac), _feel.EvaluateHitVfxCount(frac),
-                           BlockSparkPalette(sourceId, targetId), wound: false);
+                           BlockSparkPalette(sourceId, targetId), wound: false,
+                           slot: nameof(_feel.VfxHitSpark));
             }
 
             if (_vfx != null && _feel != null && view != null && result.IsDirectHit && !blocked)
@@ -732,10 +740,11 @@ namespace Guildmaster.Presentation
 
                 _vfx.Spawn(_feel.VfxHitSpark, anchor, sparkDir,
                            _feel.EvaluateHitVfxSizeMultiplier(frac), _feel.EvaluateHitVfxCount(frac),
-                           VfxPaletteFor(sourceId));   // искры — палитры бьющего
+                           VfxPaletteFor(sourceId),    // искры — палитры бьющего
+                           slot: nameof(_feel.VfxHitSpark));
 
                 if (sourceIsMelee)
-                    _vfx.Spawn(_feel.VfxImpactDust, view.FeetPoint);
+                    _vfx.Spawn(_feel.VfxImpactDust, view.FeetPoint, slot: nameof(_feel.VfxImpactDust));
             }
 
             // ФОРМА УДАРА — главный знак попадания. Спавнится ПОСЛЕ хита, на этом самом кадре: к моменту
@@ -804,9 +813,24 @@ namespace Guildmaster.Presentation
             {
                 a = tip;
             }
-            else if (hasSource)
+            else if (sourceView != null || hasSource)
             {
-                a = new Vector3(source.Position.x, source.Position.y, b.z);
+                // Деградация: удар состоялся, а откуда пришёл клинок — неизвестно. Для стрелка это
+                // невозможно (точка выстрела обязательна), значит виноват мили — либо клип не размечен
+                // взмахом, либо тело не отдаёт оружие. Причину уже крикнул UnitView; здесь называется
+                // ПОСЛЕДСТВИЕ, потому что с экрана видно именно его.
+                if (!ranged)
+                    VisualDefects.Report($"hit-form-origin:{DefectKeyOf(sourceId)}",
+                        $"[CombatPresenter] у мили-удара юнита {DefectKeyOf(sourceId)} нет точки, откуда " +
+                        "пришёл клинок — форма удара строится от КОРПУСА бьющего, а не от оружия.");
+
+                // Корпус, а не позиция сима: она стоит в ногах, и форма уходила под тела — то есть удар
+                // в ближнем бою читался как «ничего не произошло». Высота удара у нас корпусная (там же
+                // цифры и искры), поэтому и заявление о нём начинается оттуда же. Позиция сима остаётся
+                // последним словом ровно для случая «вида нет вовсе».
+                a = sourceView != null
+                    ? sourceView.HitPoint
+                    : new Vector3(source.Position.x, source.Position.y, b.z);
             }
             else
             {
@@ -830,7 +854,7 @@ namespace Guildmaster.Presentation
                 rim: GlowColorFor(sourceId),   // кайма — палитра бьющего: цвет говорит, ЧЕМ ударили
                 seed, endsAtHit, freeze);
 
-            _vfx.SpawnForm(_feel.VfxHitForm, in form);
+            _vfx.SpawnForm(_feel.VfxHitForm, in form, slot: nameof(_feel.VfxHitForm));
         }
 
         private void HandleHealed(int sourceId, int targetId, float amount)
@@ -848,7 +872,8 @@ namespace Guildmaster.Presentation
                 tView.OnHealed();                                    // тело отвечает на лечение, а не только цифра
                 tView.HealBodyCuts(amount);                          // и раны затягиваются — с самых старых
                 if (_vfx != null && _feel != null)
-                    _vfx.Spawn(_feel.VfxHeal, tView.HitPoint, tint: VfxPaletteFor(sourceId));  // палитра лечащего
+                    _vfx.Spawn(_feel.VfxHeal, tView.HitPoint, tint: VfxPaletteFor(sourceId),   // палитра лечащего
+                               slot: nameof(_feel.VfxHeal));
             }
         }
 
@@ -902,6 +927,12 @@ namespace Guildmaster.Presentation
             snapshot = default;
             return false;
         }
+
+        /// <summary>Кит, а не экземпляр: дефект показа принадлежит определению, и говорится о нём один раз.</summary>
+        private string DefectKeyOf(int unitId) =>
+            _stage.TryGet(unitId, out Combat.Tape.UnitIdentity id) && id.Definition != null
+                ? id.Definition.Id.ToString()
+                : "unit#" + unitId;
 
         private bool IsMelee(int unitId) =>
             _stage.TryGet(unitId, out Combat.Tape.UnitIdentity id) && id.Definition != null
@@ -968,7 +999,8 @@ namespace Guildmaster.Presentation
             if (!_feel.EnableSwingArc) return;
 
             _vfx.SpawnArc(_feel.VfxSwingArc, view, GlowColorFor(view.UnitId),
-                          _feel.SwingArcInnerShare, _feel.SwingArcTailBias, _feel.SwingArcFadeOut);
+                          _feel.SwingArcInnerShare, _feel.SwingArcTailBias, _feel.SwingArcFadeOut,
+                          slot: nameof(_feel.VfxSwingArc));
         }
 
         /// <summary>Contact-dust: пыль у ног при старте/стопе бега (VfxData → префаб, тумблер в feel-конфиге).</summary>
@@ -976,7 +1008,7 @@ namespace Guildmaster.Presentation
         {
             if (_vfx == null || _feel == null || view == null) return;
             if (!_feel.EnableContactDust) return;
-            _vfx.Spawn(_feel.VfxContactDust, view.FeetPoint);
+            _vfx.Spawn(_feel.VfxContactDust, view.FeetPoint, slot: nameof(_feel.VfxContactDust));
         }
 
         /// <summary>Лениво собрать пул всплывающих цифр из префаба (zero-alloc в бою, пункт QA #5).</summary>

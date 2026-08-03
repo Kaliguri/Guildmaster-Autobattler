@@ -30,9 +30,10 @@ namespace Guildmaster.Presentation
         /// целое, и красным взяться неоткуда.
         /// </param>
         public void Spawn(VfxData data, Vector3 worldPos, float? dirDegOverride = null, float sizeMultiplier = 1f,
-                          float countScale = 1f, Gradient tint = null, bool wound = true)
+                          float countScale = 1f, Gradient tint = null, bool wound = true,
+                          string slot = null)
         {
-            if (data == null || data.Prefab == null) return;
+            if (!Ready(data, slot)) return;
             if (!data.Prefab.TryGetComponent(out PooledVfx _))
             {
                 Debug.LogError($"[CombatVfx] Prefab '{data.Prefab.name}' for '{data.Id}' has no PooledVfx on root.", data.Prefab);
@@ -63,9 +64,9 @@ namespace Guildmaster.Presentation
         /// <see cref="Effects.HitFormParams.Length"/> — вес удара выражается длиной, а не масштабом
         /// префаба, и второй владелец размера здесь был бы прямым нарушением контракта <c>VfxData</c>.
         /// </remarks>
-        public void SpawnForm(VfxData data, in Effects.HitFormParams form)
+        public void SpawnForm(VfxData data, in Effects.HitFormParams form, string slot = null)
         {
-            if (data == null || data.Prefab == null) return;
+            if (!Ready(data, slot)) return;
             if (!data.Prefab.TryGetComponent(out PooledVfx _))
             {
                 Debug.LogError($"[CombatVfx] Prefab '{data.Prefab.name}' for '{data.Id}' has no PooledVfx on root.", data.Prefab);
@@ -105,10 +106,14 @@ namespace Guildmaster.Presentation
         /// </summary>
         /// <param name="source">Кто машет — у него дуга спрашивает геометрию каждый кадр.</param>
         public void SpawnArc(VfxData data, Effects.ISwingArcSource source, Color colour,
-                             float innerShare, float tailBias, float fadeOutSeconds)
+                             float innerShare, float tailBias, float fadeOutSeconds, string slot = null)
         {
-            if (data == null || data.Prefab == null || source == null) return;
-            if (!data.Prefab.TryGetComponent(out PooledVfx _)) return;
+            if (!Ready(data, slot) || source == null) return;
+            if (!data.Prefab.TryGetComponent(out PooledVfx _))
+            {
+                Debug.LogError($"[CombatVfx] Prefab '{data.Prefab.name}' for '{data.Id}' has no PooledVfx on root.", data.Prefab);
+                return;
+            }
             if (!data.Prefab.TryGetComponent(out Effects.SwingArcVfx _))
             {
                 Debug.LogError($"[CombatVfx] Prefab '{data.Prefab.name}' for '{data.Id}' has no SwingArcVfx — " +
@@ -135,6 +140,27 @@ namespace Guildmaster.Presentation
 
         /// <summary>Потолок жизни дуги, сек: страховка на случай, если взмах оборвался вместе с юнитом.</summary>
         private const float ArcSafetyLifetime = 4f;
+
+        /// <summary>
+        /// Есть ли чем рисовать этот эффект. Незаполненный слот в feel-конфиге — дефект разводки, а не
+        /// «эффект выключен»: у выключения есть свой тумблер, и он спрашивается ДО вызова.
+        /// </summary>
+        /// <param name="slot">
+        /// Имя поля, которым эффект попросили (<c>VfxSwingArc</c>): в консоли обязано быть видно
+        /// НЕЗАПОЛНЕННОЕ ПОЛЕ, а не безымянный «какой-то VFX». Передаётся вызывающим через
+        /// <c>nameof</c> — компилятор подставить его не может (<c>CallerArgumentExpression</c> в этой
+        /// версии рантайма недоступен).
+        /// </param>
+        private static bool Ready(VfxData data, string slot)
+        {
+            if (data != null && data.Prefab != null) return true;
+
+            VisualDefects.Report($"vfx-slot:{slot ?? "?"}",
+                $"[CombatVfx] эффект '{slot ?? "слот не назван"}' не разведён: " +
+                (data == null ? "поле пустое" : $"у VfxData '{data.Id}' нет префаба") +
+                " — показывать этот удар нечем.", data);
+            return false;
+        }
 
         /// <summary>Погасить всё летящее (battle reset) и вернуть в пулы.</summary>
         public void DespawnAll()

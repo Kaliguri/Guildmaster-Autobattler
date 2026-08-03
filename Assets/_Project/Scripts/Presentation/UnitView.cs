@@ -172,6 +172,12 @@ namespace Guildmaster.Presentation
         private bool                     _hasState;
         private Data.Definitions.UnitData _definition;
 
+        /// <summary>
+        /// Ключ, под которым о дефекте визуала говорится один раз (<see cref="VisualDefects"/>). Это
+        /// ОПРЕДЕЛЕНИЕ, а не экземпляр: вид переиспользуется пулом, и «дефект вида» на деле дефект кита.
+        /// </summary>
+        private string DefectKey => _definition != null ? _definition.Id.ToString() : name;
+
         // Снимок цели того же тика — нужен только развороту и вздрогу при смене цели.
         private Combat.Tape.UnitSnapshot _targetState;
         private bool                     _hasTargetState;
@@ -540,10 +546,16 @@ namespace Guildmaster.Presentation
 
             _attackHitNormalized = ClipMarkers.HitNormalized(attack);
 
-            // Разметка взмаха необязательна: без неё удар теряет дугу и точку A, но не ломается. Молчать
-            // здесь можно ровно потому, что маркер контакта выше уже проверен — «клип не разведён вовсе»
-            // отловлен, а «взмах не размечен» это осознанное состояние покадрового бестиария.
+            // Разметка взмаха не ломает удар, но забирает у него ВЕСЬ язык ближнего боя: без окна нет ни
+            // дуги за клинком, ни точки, откуда пришёл удар, — форма строится от ног бьющего. Раньше это
+            // молчало как «осознанное состояние покадрового бестиария»; молчание и стоило того, что
+            // отсутствие эффекта читалось с экрана как задумка (Макс, 03.08.2026).
             _hasStrikeWindow = ClipMarkers.StrikeWindowNormalized(attack, out _strikeFrom, out _strikeTo);
+            if (!_hasStrikeWindow)
+                VisualDefects.Report($"strike-window:{attack.GetInstanceID()}",
+                    $"[UnitView] клип атаки '{attack.name}' не размечен взмахом (нужны AnimationEvent " +
+                    $"'{ClipMarkers.StrikeStartFunction}' и '{ClipMarkers.StrikeEndFunction}') — у этого удара " +
+                    "не будет дуги за клинком, а форма удара пойдёт от ног бьющего, а не от оружия.", attack);
         }
 
         // --- Взмах ------------------------------------------------------------------------------------
@@ -587,12 +599,32 @@ namespace Guildmaster.Presentation
             if (!_hasStrikeWindow || _hasStrikeOrigin || clipTime < _strikeFrom) return;
 
             // Кончиком считаем то, чем юнит бьёт: предмет в руке, а у безоружного — саму кисть. Нечем
-            // ударить (тела нет, части не разведены) — точки A не будет, и форма деградирует на вектор
-            // «атакующий → цель». Это фолбэк ВНЕШНЕГО отказа: у покадрового юнита частей не существует.
+            // ударить — точки A не будет, и форма деградирует на вектор «атакующий → цель». Клип при этом
+            // ЗАЯВИЛ взмах своей разметкой, поэтому здесь уже не «честное отсутствие контента», а
+            // расхождение разметки с телом: о нём говорим вслух.
             var body = Body;
-            if (body?.Parts == null) return;
-            if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source)) return;
-            if (!UnitPartGeometry.TryGetTip(source, out Vector3 tip)) return;
+            if (body?.Parts == null)
+            {
+                VisualDefects.Report($"strike-body:{DefectKey}",
+                    $"[UnitView] {name}: клип атаки размечен взмахом, но тела с частями у вида нет — " +
+                    "ни дуги за клинком, ни точки удара от оружия не будет.", this);
+                return;
+            }
+            if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source))
+            {
+                VisualDefects.Report($"strike-source:{DefectKey}",
+                    $"[UnitView] {name}: взмах начался, но тело не отдаёт, ЧЕМ бьют — нет ни предмета в " +
+                    "хвате (UnitHeldItem на кости под 'Rotation Point (Grip)'), ни кисти. Удар останется " +
+                    "без дуги, а форма пойдёт от ног.", this);
+                return;
+            }
+            if (!UnitPartGeometry.TryGetTip(source, out Vector3 tip))
+            {
+                VisualDefects.Report($"strike-tip:{DefectKey}",
+                    $"[UnitView] {name}: ударная часть '{source.Bone}' есть, но кончика у неё нет — " +
+                    "у рендерера пуст спрайт. Удар останется без дуги и без точки, откуда пришёл.", this);
+                return;
+            }
 
             _strikeOrigin    = tip;
             _hasStrikeOrigin = true;
@@ -675,8 +707,17 @@ namespace Guildmaster.Presentation
                           : source.Slot == HandSlot.Right ? BodySide.Right
                           : source.Side;
 
-            if (!body.Parts.TryGetBone(RigNaming.ShoulderBone, side, out UnitPart shoulder)) return false;
-            if (shoulder.Renderer == null) return false;
+            if (!body.Parts.TryGetBone(RigNaming.ShoulderBone, side, out UnitPart shoulder)
+                || shoulder.Renderer == null)
+            {
+                // Дуга уже заказана презентером — значит взмах состоялся, а вести её не вокруг чего.
+                // Молча вернуть false здесь значило бы погасить эффект в первом же кадре и оставить
+                // впечатление, что дуги у этого кита «не бывает».
+                VisualDefects.Report($"swing-pivot:{DefectKey}",
+                    $"[UnitView] {name}: дуга за клинком заказана, но плеча '{RigNaming.ShoulderBone}' " +
+                    $"({side}) в теле нет — вращать сектор не вокруг чего, дуги не будет.", this);
+                return false;
+            }
 
             pivot = shoulder.Renderer.transform.position;
             return true;

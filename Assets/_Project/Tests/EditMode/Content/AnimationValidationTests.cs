@@ -97,6 +97,53 @@ namespace Guildmaster.Tests.EditMode.Content
             }
         }
 
+        /// <summary>
+        /// Разметка взмаха бывает либо полной, либо никакой. Половина её — это не «часть данных», а
+        /// неразмеченный клип: <c>ClipMarkers.StrikeWindowNormalized</c> отвечает на неё «окна нет», и
+        /// автор, поставивший один маркер из двух, увидит ровно то же, что и не ставивший ничего —
+        /// пропавшую дугу за клинком и форму удара, выходящую из ног. Ошибки при этом нигде нет.
+        /// </summary>
+        [Test]
+        public void Visuals_StrikeWindow_IsWholeOrAbsent()
+        {
+            foreach (UnitVisual vis in AllVisuals())
+            {
+                AnimationClip attack = vis.AttackClip;
+                if (attack == null) continue;
+
+                bool hasStart = ClipMarkers.FirstTimeOf(attack, ClipMarkers.StrikeStartFunction) >= 0f;
+                bool hasEnd   = ClipMarkers.FirstTimeOf(attack, ClipMarkers.StrikeEndFunction)   >= 0f;
+
+                Assert.AreEqual(hasStart, hasEnd,
+                    $"UnitVisual '{vis.name}': в клипе '{attack.name}' размечена ПОЛОВИНА взмаха " +
+                    $"({ClipMarkers.StrikeStartFunction}={hasStart}, {ClipMarkers.StrikeEndFunction}={hasEnd}), " +
+                    $"{AssetDatabase.GetAssetPath(vis)}. Взмах читается только целиком: половина = " +
+                    "клип без дуги и без точки, откуда пришёл удар.");
+            }
+        }
+
+        /// <summary>
+        /// Контакт лежит ВНУТРИ размеченного взмаха. Маркер удара за пределами окна означает, что клинок
+        /// достаёт цель тогда, когда по разметке он ещё собирается или уже возвращается: дуга нарисуется
+        /// не там, где случился удар, и форма выйдет из точки, которой в этот момент не существовало.
+        /// </summary>
+        [Test]
+        public void Visuals_HitMarker_LiesInsideStrikeWindow()
+        {
+            foreach (UnitVisual vis in AllVisuals())
+            {
+                AnimationClip attack = vis.AttackClip;
+                if (attack == null) continue;
+                if (!ClipMarkers.StrikeWindowNormalized(attack, out float from, out float to)) continue;
+
+                float hit = ClipMarkers.HitNormalized(attack);
+                Assert.IsTrue(hit >= from && hit <= to,
+                    $"UnitVisual '{vis.name}': контакт клипа '{attack.name}' стоит на {hit:F3} " +
+                    $"нормированного времени, а взмах размечен {from:F3}..{to:F3} " +
+                    $"({AssetDatabase.GetAssetPath(vis)}).");
+            }
+        }
+
         [Test]
         public void Visuals_SkillClipsMarkerWithinClip()
         {
