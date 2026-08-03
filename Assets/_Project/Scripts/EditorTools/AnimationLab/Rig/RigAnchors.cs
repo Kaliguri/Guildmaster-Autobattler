@@ -53,6 +53,15 @@ namespace Guildmaster.AnimationLab.Editor
             /// </summary>
             public bool DeclaresPivot;
 
+            /// <summary>
+            /// Кусок лежит в контейнере СВОЕЙ кости (<c>Visual Part (Arm_Down)</c> под костью
+            /// <c>Arm_Down</c>) — значит именно он задаёт, где сустав. Куски вроде кисти висят на чужой
+            /// кости, потому что своего узла вращения у них ещё нет, и целиться на них суставу нельзя:
+            /// замер 03.08 дал кисть в 27 px от локтя против предплечья в 30, и «ближайший побеждает»
+            /// увёл локоть в запястье.
+            /// </summary>
+            public bool BelongsToBone;
+
             public string SpriteName => Visual != null && Visual.sprite != null ? Visual.sprite.name : "(null)";
 
             public override string ToString() =>
@@ -96,6 +105,7 @@ namespace Guildmaster.AnimationLab.Editor
                         OffsetPixels = offset * (sr.sprite != null ? sr.sprite.pixelsPerUnit : 100f),
                         Scale = sr.transform.lossyScale.x,
                         DeclaresPivot = HasDeclaredPivot(sr.sprite),
+                        BelongsToBone = SitsOnOwnBone(sr.transform),
                     });
                 }
             }
@@ -142,6 +152,22 @@ namespace Guildmaster.AnimationLab.Editor
                 histogram[key] = count + 1;
             }
             return histogram;
+        }
+
+        /// <summary>
+        /// Контейнер этого спрайта стоит на кости, чьё имя он и носит: <c>Visual Part (Arm_Down)</c>
+        /// под <c>Arm_Down</c>. Конвенция имён — единственный признак, отличающий «кусок этой кости» от
+        /// «куска, подвешенного сюда за неимением своего узла».
+        /// </summary>
+        static bool SitsOnOwnBone(Transform visual)
+        {
+            for (var node = visual; node != null; node = node.parent)
+            {
+                if (!RigNaming.IsContainer(node)) continue;
+                var bone = node.parent;
+                return bone != null && RigNaming.BoneNameFromContainer(node.name) == bone.name;
+            }
+            return false;
         }
 
         static void CollectVisuals(Transform node, Dictionary<Transform, string> stops, List<SpriteRenderer> into)

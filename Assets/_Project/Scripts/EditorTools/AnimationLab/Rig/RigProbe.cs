@@ -346,7 +346,7 @@ namespace Guildmaster.AnimationLab.Editor
         /// геометрию признают отдельной, а до тех пор вопрос к нему ровно один — «насколько он от
         /// родителя уехал».
         /// </summary>
-        static RigProfile FindProfileFor(GameObject prefab)
+        internal static RigProfile FindProfileFor(GameObject prefab)
         {
             var profiles = new List<RigProfile>();
             foreach (var guid in AssetDatabase.FindAssets("t:RigProfile"))
