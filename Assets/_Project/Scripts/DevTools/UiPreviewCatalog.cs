@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
@@ -34,6 +34,8 @@ namespace Guildmaster.DevTools
             ["outcome"]      = BuildOutcome,
             ["mainmenu"]     = BuildMainMenu,
             ["newgame"]      = BuildNewGame,
+            ["guilds"]       = BuildGuildSelect,
+            ["hub"]          = BuildHub,
             ["titlecard"]    = BuildTitleCard,
             ["devconsole"]   = BuildDevConsole,
             ["gallery"]      = BuildGallery,
@@ -313,24 +315,43 @@ namespace Guildmaster.DevTools
                 uxml, RuValue, () => { }, () => { }, () => { }, () => { }));
         }
 
-        /// <summary>
-        /// Экран «Создать игру»: три режима, дома, галочка лобби. Стенд показывает то состояние, в
-        /// котором экран и встречают, — два дома, из них один с идущим забегом.
-        /// </summary>
+        /// <summary>Экран «Создать игру»: три режима и галочка лобби.</summary>
         private static void BuildNewGame(VisualElement root)
         {
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/NewGameScreen.uxml");
             if (uxml == null) { AddError(root, "NewGameScreen.uxml не найден"); return; }
 
+            root.Add(Guildmaster.UI.NewGameScreenView.Build(
+                uxml, steamReady: true, RuValue, (_, _) => { }, () => { }));
+        }
+
+        /// <summary>
+        /// Экран выбора дома. Стенд показывает то состояние, в котором экран и встречают, — два дома,
+        /// из них один с идущим забегом, и свободные слоты под остальные.
+        /// </summary>
+        private static void BuildGuildSelect(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/GuildSelectScreen.uxml");
+            if (uxml == null) { AddError(root, "GuildSelectScreen.uxml не найден"); return; }
+
             // Ни профиля, ни диска стенд не трогает: он смотрит РАЗМЕТКУ, а не чужие сохранения.
-            var guilds = new System.Collections.Generic.List<Guildmaster.UI.NewGameScreenView.GuildEntry>
+            var guilds = new System.Collections.Generic.List<Guildmaster.UI.GuildSelectScreenView.GuildEntry>
             {
                 new("g1", "Гильдия 1", hasRun: true),
                 new("g2", "Гильдия 2", hasRun: false),
             };
 
-            root.Add(Guildmaster.UI.NewGameScreenView.Build(
-                uxml, guilds, guildsFull: false, steamReady: true, RuValue, _ => { }, () => { }));
+            root.Add(Guildmaster.UI.GuildSelectScreenView.Build(
+                uxml, guilds, slotLimit: 4, RuValue, _ => { }, () => { }));
+        }
+
+        /// <summary>Двор гильдии — пока заглушка с меткой и единственной кнопкой.</summary>
+        private static void BuildHub(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/HubScreen.uxml");
+            if (uxml == null) { AddError(root, "HubScreen.uxml не найден"); return; }
+
+            root.Add(Guildmaster.UI.HubScreenView.Build(uxml, "Гильдия 1", RuValue, () => { }));
         }
 
         private static void BuildTitleCard(VisualElement root)

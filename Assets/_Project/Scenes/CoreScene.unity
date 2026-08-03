@@ -161,6 +161,8 @@ MonoBehaviour:
   _outcomeScreen: {fileID: 9197481963319205126, guid: 23b1ecddbec3ffa47bcda35390fcd78b, type: 3}
   _mainMenuScreen: {fileID: 9197481963319205126, guid: 6b74acde43d6f2845a61d543591cccb0, type: 3}
   _newGameScreen: {fileID: 9197481963319205126, guid: ed989ac3ff3a5054e81a6b252d84b56f, type: 3}
+  _guildSelectScreen: {fileID: 9197481963319205126, guid: 0c68b34cb6a400141ac8522476387f1c, type: 3}
+  _hubScreen: {fileID: 9197481963319205126, guid: 4ae38b80868d3af439581b290fa56e3a, type: 3}
   _profileScreen: {fileID: 9197481963319205126, guid: a6c7af50123e90142a263edb5ff020e8, type: 3}
   _confirmDialog: {fileID: 9197481963319205126, guid: 21832a172eca03742bb90e476dbb4b49, type: 3}
   _titleCardScreen: {fileID: 9197481963319205126, guid: 42ddcfc3ca1fe3f46927e1220ca2a335, type: 3}

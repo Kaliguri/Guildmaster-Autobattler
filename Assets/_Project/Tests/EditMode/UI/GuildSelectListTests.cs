@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Guildmaster.Tests.EditMode.UI
 {
     /// <summary>
-    /// Чтение домов для экрана «Создать игру» не должно менять игроку активный дом.
+    /// Чтение домов для экрана выбора дома не должно менять игроку активный дом.
     /// </summary>
     /// <remarks>
     /// Ловушка в устройстве службы профилей: ключ забега строится только для АКТИВНОЙ гильдии,
@@ -16,14 +16,14 @@ namespace Guildmaster.Tests.EditMode.UI
     /// последний дом списка, — и заметил бы он это, только начав играть не тем составом.
     /// Инвариант живёт между вью и службой профилей, поэтому держится тестом, а не комментарием.
     /// </remarks>
-    public sealed class NewGameGuildListTests
+    public sealed class GuildSelectListTests
     {
         [Test]
         public void ReadGuilds_RestoresActiveGuild()
         {
             var profiles = new FakeProfiles("g2", "g1", "g2", "g3");
 
-            NewGameScreenView.ReadGuilds(profiles, save: null);
+            GuildSelectScreenView.ReadGuilds(profiles, save: null);
 
             Assert.AreEqual("g2", profiles.ActiveGuild.Id,
                 "просмотр списка домов сменил активный дом — забег уехал бы в чужой слот сохранения");
@@ -34,7 +34,7 @@ namespace Guildmaster.Tests.EditMode.UI
         {
             var profiles = new FakeProfiles("g1", "g1", "g2");
 
-            List<NewGameScreenView.GuildEntry> guilds = NewGameScreenView.ReadGuilds(profiles, save: null);
+            List<GuildSelectScreenView.GuildEntry> guilds = GuildSelectScreenView.ReadGuilds(profiles, save: null);
 
             Assert.AreEqual(2, guilds.Count);
             Assert.AreEqual("g1", guilds[0].Id);
@@ -44,7 +44,7 @@ namespace Guildmaster.Tests.EditMode.UI
         [Test]
         public void ReadGuilds_WithoutProfiles_IsEmpty()
         {
-            Assert.IsEmpty(NewGameScreenView.ReadGuilds(null, save: null));
+            Assert.IsEmpty(GuildSelectScreenView.ReadGuilds(null, save: null));
         }
 
         /// <summary>Служба профилей без диска: помнит только, какой дом сейчас активен.</summary>

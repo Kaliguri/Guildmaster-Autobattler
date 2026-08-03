@@ -50,6 +50,7 @@ namespace Guildmaster.Game.Services
         private readonly IOutcomePresenter   _outcomePresenter;
         private readonly IMainMenuPresenter  _mainMenuPresenter;
         private readonly IProfilePresenter   _profilePresenter;
+        private readonly IHubPresenter       _hubPresenter;
         private readonly ActConfig           _actConfig;
         private readonly IRngService         _rng;
         private readonly ILocalPlayer        _localPlayer;
@@ -72,6 +73,7 @@ namespace Guildmaster.Game.Services
             IOutcomePresenter   outcomePresenter,
             IMainMenuPresenter  mainMenuPresenter,
             IProfilePresenter   profilePresenter,
+            IHubPresenter       hubPresenter,
             ActConfig           actConfig,
             IRngService         rng,
             ILocalPlayer        localPlayer,
@@ -89,6 +91,7 @@ namespace Guildmaster.Game.Services
             _outcomePresenter = outcomePresenter;
             _mainMenuPresenter = mainMenuPresenter;
             _profilePresenter  = profilePresenter;
+            _hubPresenter      = hubPresenter;
             _actConfig       = actConfig;
             _rng             = rng;
             _localPlayer     = localPlayer;
@@ -212,6 +215,12 @@ namespace Guildmaster.Game.Services
 
             if (request.Mode != GameMode.Campaign)
             {
+                // Сеанс нужен и здесь, хотя забега нет: мероприятие рождается ВНУТРИ сеанса, и без него
+                // площадке не от кого родиться — SessionHost.CreateChild возвращал null, а игрок видел
+                // синий экран (наход. Макса 04.08.2026). Прежде сеанс открывала только Кампания, потому
+                // что открывал его RequireRun, а площадке забег не нужен.
+                _sessions.Open(Session.SessionRole.Owner);
+
                 // Площадка и матч — не забег: ни сейва, ни акта, ни карты. Открываем, ждём выхода и
                 // возвращаемся к меню тем же витком.
                 await ShowProvingGroundsAsync(request.Mode == GameMode.Pvp
@@ -247,6 +256,12 @@ namespace Guildmaster.Game.Services
             {
                 runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
             }
+
+            // Двор гильдии: дом выбран, забег заряжен — но уходит игрок из него сам. Хаб стоит ЗДЕСЬ, а
+            // не внутри RunActAsync: акт — это уже дорога, а двор — то, откуда на неё выходят, и всё
+            // междузабежное (ростер, найм, лавка) будет жить тут же. Пока заглушка (ГДД
+            // [[guild-hub-courtyard]]).
+            if (_hubPresenter != null) await _hubPresenter.ShowAsync();
 
             // QA #18: «В главное меню» из системного меню отменяет забег → OperationCanceledException
             // всплывает из петли акта; ловим и уходим на новый виток while (показ главного меню). Сейв

@@ -63,8 +63,14 @@ namespace Guildmaster.UI
         [Tooltip("UXML главного меню (Создать игру / Присоединиться / Настройки / Выход).")]
         [SerializeField] private VisualTreeAsset _mainMenuScreen;
 
-        [Tooltip("UXML экрана «Создать игру»: режим, гильдия, галочка лобби. Поверх главного меню.")]
+        [Tooltip("UXML экрана «Создать игру»: три режима и галочка лобби. Поверх главного меню.")]
         [SerializeField] private VisualTreeAsset _newGameScreen;
+
+        [Tooltip("UXML экрана выбора дома: слоты гильдий. Следующий шаг после режима «Кампания».")]
+        [SerializeField] private VisualTreeAsset _guildSelectScreen;
+
+        [Tooltip("UXML Двора гильдии: дом, из которого уходят в забег. Пока заглушка с одной кнопкой.")]
+        [SerializeField] private VisualTreeAsset _hubScreen;
 
         [Tooltip("UXML экрана профиля: слоты, ник, цвет, курсор. Открывается из меню и обязательно на " +
                  "чистой установке — без профиля забегу некуда писаться.")]
@@ -123,6 +129,7 @@ namespace Guildmaster.UI
         private ISubscriber<OpenOutcomeRequest> _openOutcomeSub;
         private ISubscriber<OpenMainMenuRequest> _openMainMenuSub;
         private ISubscriber<OpenProfileRequest>  _openProfileSub;
+        private ISubscriber<OpenHubRequest>      _openHubSub;
         private ISubscriber<OpenTitleCardRequest> _openTitleCardSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
@@ -134,6 +141,7 @@ namespace Guildmaster.UI
         private IDisposable _openOutcomeSubscription;
         private IDisposable _openMainMenuSubscription;
         private IDisposable _openProfileSubscription;
+        private IDisposable _openHubSubscription;
         private ISubscriber<Core.Flow.OpenProvingGroundsRequest> _openProvingGroundsSub;
         private IDisposable _openProvingGroundsSubscription;
         private IDisposable _openTitleCardSubscription;
@@ -198,6 +206,7 @@ namespace Guildmaster.UI
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
             ISubscriber<OpenMainMenuRequest> openMainMenuSub,
             ISubscriber<OpenProfileRequest> openProfileSub,
+            ISubscriber<OpenHubRequest> openHubSub,
             ISubscriber<Core.Flow.OpenProvingGroundsRequest> openProvingGroundsSub,
             IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
@@ -248,6 +257,7 @@ namespace Guildmaster.UI
             _openOutcomeSub = openOutcomeSub;
             _openMainMenuSub = openMainMenuSub;
             _openProfileSub  = openProfileSub;
+            _openHubSub      = openHubSub;
             _openProvingGroundsSub = openProvingGroundsSub;
         }
 
@@ -281,7 +291,7 @@ namespace Guildmaster.UI
             // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
             // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
             _uiSound?.Attach(_doc.rootVisualElement);
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen, _newGameScreen, _profileScreen, _confirmDialog);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen, _newGameScreen, _profileScreen, _confirmDialog, _guildSelectScreen, _hubScreen);
             _input.MenuToggleRequested += OnMenuToggle;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -312,6 +322,8 @@ namespace Guildmaster.UI
             _openMainMenuSubscription = _openMainMenuSub?.Subscribe(req => _router.OpenMainMenu(req));
             // Профиль: и обязательный показ до меню, и кнопка из меню идут одним запросом.
             _openProfileSubscription = _openProfileSub?.Subscribe(req => _router.OpenProfile(req));
+            // Двор гильдии — запрос из GameFlow между выбором дома и актом.
+            _openHubSubscription = _openHubSub?.Subscribe(req => _router.OpenHub(req));
 
             // Запрос Ристалища закрывает главное меню тем же путём, что кнопка: резолв экрана через
             // навигатор гасит и панель, и стол под ней. Если меню не показано — здесь no-op, решение
@@ -779,6 +791,7 @@ namespace Guildmaster.UI
             _openOutcomeSubscription?.Dispose();
             _openMainMenuSubscription?.Dispose();
             _openProfileSubscription?.Dispose();
+            _openHubSubscription?.Dispose();
             _openProvingGroundsSubscription?.Dispose();
             _openTitleCardSubscription?.Dispose();
 

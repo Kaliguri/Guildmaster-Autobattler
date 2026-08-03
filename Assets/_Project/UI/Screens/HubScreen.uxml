@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu gm-panel--sheet">
+            <gm:PanelFrame name="hub-frame" corner="0" />
+            <!-- Титул — имя дома: игрок вернулся к СВОЕЙ гильдии, и узнать её он должен первым делом.
+                 Текст проставляется кодом. -->
+            <ui:Label name="hub-title" text="Двор гильдии" class="gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+
+            <ui:VisualElement class="gm-panel__body gm-hub__body">
+                <!-- Заглушка объявляет себя вслух: пустой двор с одной кнопкой без метки читался бы
+                     как поломка, а не как «сюда ещё не завезли». Уйдёт вместе с содержимым двора
+                     (ГДД guild-hub-courtyard). -->
+                <ui:Label name="hub-stub" text="IN PROGRESS" class="gm-hub__stub" />
+                <gm:PlateButton name="btn-start-run" text="Начать забег" class="gm-button gm-button--primary" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

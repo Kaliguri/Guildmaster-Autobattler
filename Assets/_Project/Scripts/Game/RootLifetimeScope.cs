@@ -270,6 +270,8 @@ namespace Guildmaster.Game
             builder.Register<MainMenuPresenter>(Lifetime.Singleton).As<IMainMenuPresenter>();
             // Профиль: кем игрок заходит. Требуется до меню, открывается и по кнопке из него.
             builder.Register<ProfilePresenter>(Lifetime.Singleton).As<IProfilePresenter>();
+            // Двор гильдии: дом, из которого уходят в забег. Стоит между выбором дома и актом.
+            builder.Register<HubPresenter>(Lifetime.Singleton).As<IHubPresenter>();
 
 
             // Линк к world-слою карты: держим ЗДЕСЬ (в корне), потому что петля акта живёт здесь, а сам слой —

@@ -79,6 +79,8 @@ namespace Guildmaster.UI
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
         private VisualTreeAsset _newGameUxml;
+        private VisualTreeAsset _guildSelectUxml;
+        private VisualTreeAsset _hubUxml;
         private VisualTreeAsset _profileUxml;
         private VisualTreeAsset _confirmUxml;
 
@@ -86,6 +88,7 @@ namespace Guildmaster.UI
         // держит их функциями, а не тянет сервисы вглубь экрана: экран — разметка, а не владелец правил.
         private readonly CursorSkinCatalog _cursorSkins;
         private readonly int               _profileSlotLimit;
+        private readonly int               _guildSlotLimit;
         private readonly Func<string>      _steamName;
         private readonly Action<string>    _cursorApply;
 
@@ -117,6 +120,7 @@ namespace Guildmaster.UI
         {
             _cursorSkins     = gameConfig?.CursorSkins;
             _profileSlotLimit = gameConfig != null ? gameConfig.MaxProfiles : 1;
+            _guildSlotLimit   = gameConfig != null ? gameConfig.MaxGuildsPerProfile : 1;
             _steamName       = () => platform != null ? platform.PlayerName : "Игрок";
             _cursorApply     = id => cursors?.Apply(id);
             _readySub = readySub;
@@ -241,9 +245,12 @@ namespace Guildmaster.UI
             VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null,
             VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null,
             VisualTreeAsset newGameUxml = null, VisualTreeAsset profileUxml = null,
-            VisualTreeAsset confirmUxml = null)
+            VisualTreeAsset confirmUxml = null,
+            VisualTreeAsset guildSelectUxml = null, VisualTreeAsset hubUxml = null)
         {
             _newGameUxml = newGameUxml;
+            _guildSelectUxml = guildSelectUxml;
+            _hubUxml = hubUxml;
             _profileUxml = profileUxml;
             _confirmUxml = confirmUxml;
             _devConsoleUxml = devConsoleUxml;
@@ -309,10 +316,13 @@ namespace Guildmaster.UI
         // нечего, панель просто подменяет панель). Намерение уезжает СВОЙСТВОМ ЭКРАНА: класс
         // gm-screen--scrimless принадлежит UiNavigator.SyncVisibility, и повешенный здесь руками он
         // тут же перезаписывался обратно — затемнение возвращалось (наход. Макса).
-        private void PushScreen(Func<VisualElement> build, ScreenKind kind, string modeTag = null, string screenId = null,
-                                CancellationToken ct = default, Action onExit = null, bool scrimless = false)
+        /// <returns>Положенный экран — тем, кто снимает его не кнопкой «Назад», а сам (цепочка поверх меню).</returns>
+        private UiScreen PushScreen(Func<VisualElement> build, ScreenKind kind, string modeTag = null, string screenId = null,
+                                    CancellationToken ct = default, Action onExit = null, bool scrimless = false)
         {
-            _nav.Push(new RouterScreen(kind, build, modeTag, screenId, onExit, scrimless), ct);
+            var pushed = new RouterScreen(kind, build, modeTag, screenId, onExit, scrimless);
+            _nav.Push(pushed, ct);
+            return pushed;
         }
 
         // Обёртка flow-экрана с результатом (Ф3): вью-билдер получает делегат Resolve и связывает с ним свои
@@ -706,21 +716,73 @@ namespace Guildmaster.UI
         }
 
         /// <summary>
-        /// Экран «Создать игру»: режим, дом, галочка лобби. Открывается поверх главного меню и
-        /// резолвит его собранным заказом.
+        /// Экран «Создать игру»: режим и галочка лобби. Открывается поверх главного меню.
         /// </summary>
-        private VisualElement BuildNewGameScreen(Action<GameStartRequest> onStart)
+        /// <remarks>
+        /// <b>Экран не решает, куда идти дальше, — решает режим.</b> Площадка и матч уходят в игру
+        /// кликом (дома у них нет), Кампания ведёт на выбор дома. Кнопки «Начать» здесь больше нет:
+        /// она была третьим шагом после двух выборов, и первые два уже отвечали на всё (реш. Макса
+        /// 04.08.2026).
+        /// </remarks>
+        /// <param name="pushOver">
+        /// Чем открыть следующий экран цепочки. Своим <c>PushScreen</c> здесь нельзя: цепочку поверх
+        /// меню снимает её хозяин одним махом, и экран, положенный мимо него, пережил бы уборку.
+        /// </param>
+        private VisualElement BuildNewGameScreen(Action<GameStartRequest> onStart, Action<Func<VisualElement>> pushOver)
         {
             if (CannotShow("Создать игру (_newGameScreen)", _newGameUxml)) return new VisualElement();
 
-            return FillRoot(NewGameScreenView.Build(
+            return NewGameScreenView.Build(
                 _newGameUxml,
-                NewGameScreenView.ReadGuilds(_profiles, _save),
-                _profiles?.GuildsFull ?? false,
                 _coop?.IsSteamReady ?? false,
                 key => _loc?.GetString(key),
-                onStart: onStart,
-                onBack: Pop));
+                onPick: (mode, lobby) =>
+                {
+                    if (mode != GameMode.Campaign) { onStart?.Invoke(new GameStartRequest(mode, null, lobby)); return; }
+
+                    // Дом — следующий экран, а заказ собирается там: сюда он уже не вернётся, поэтому
+                    // галочку лобби несём с собой, а не спрашиваем повторно.
+                    pushOver?.Invoke(() => BuildGuildSelectScreen(lobby, onStart));
+                },
+                onBack: Pop);
+        }
+
+        /// <summary>
+        /// Экран выбора дома (только Кампания): слоты гильдий, свободные — под новую.
+        /// </summary>
+        private VisualElement BuildGuildSelectScreen(bool onlineLobby, Action<GameStartRequest> onStart)
+        {
+            if (CannotShow("Гильдия (_guildSelectScreen)", _guildSelectUxml)) return new VisualElement();
+
+            return GuildSelectScreenView.Build(
+                _guildSelectUxml,
+                GuildSelectScreenView.ReadGuilds(_profiles, _save),
+                _guildSlotLimit,
+                key => _loc?.GetString(key),
+                onPick: guildId => onStart?.Invoke(new GameStartRequest(GameMode.Campaign, guildId, onlineLobby)),
+                onBack: Pop);
+        }
+
+        /// <summary>
+        /// Двор гильдии между выбором дома и забегом. Пока заглушка с единственной дверью наружу.
+        /// </summary>
+        public void OpenHub(OpenHubRequest req)
+        {
+            // Отказ здесь ЗАВЕРШАЕТ шаг: без двора игрок остался бы стоять между домом и актом, и
+            // забег не начался бы никогда. Экран пропущен — забег идёт, но ошибка красная.
+            if (CannotShow("Двор гильдии (_hubScreen)", _hubUxml)) { req.OnStartRun?.Invoke(); return; }
+
+            var screen = new RouterResultScreen<bool>(ScreenKind.Page, true,
+                resolve => HubScreenView.Build(_hubUxml, req.GuildName, key => _loc?.GetString(key),
+                                               onStartRun: () => resolve(true)));
+
+            ShowHubAsync(screen, req).Forget();
+        }
+
+        private async UniTaskVoid ShowHubAsync(RouterResultScreen<bool> screen, OpenHubRequest req)
+        {
+            await _nav.ShowAsync(screen);
+            req.OnStartRun?.Invoke();
         }
 
         /// <summary>
@@ -1416,15 +1478,25 @@ namespace Guildmaster.UI
         {
             RouterResultScreen<MainMenuOutcome> screen = null;
 
-            // Экран поверх меню: панель меню на время прячется, затемнение не накладывается — мы и так
-            // в меню, темнить нечего (реш. Макса, раунд 3). В забеге настройки остаются модалкой со
-            // скримом. Тем же приёмом открывается выбор режима.
-            void OpenOverMenu(Func<VisualElement> build)
+            // Экраны, открытые ПОВЕРХ меню (режим, дом, профиль, настройки). Меню уходит в игру не
+            // само по себе, а из конца этой цепочки, поэтому снять её обязан тот, кто её растил:
+            // резолв меню снимает только меню, а всё, что лежит выше, пережило бы его и осталось
+            // висеть поверх мира на весь забег.
+            var overMenu = new List<UiScreen>();
+
+            // Экран поверх меню — Page, а не Modal: непрозрачную страницу навигатор прячет под собой
+            // САМ. Прежде панель меню пряталась здесь руками (display = None), и ближайший же
+            // SyncVisibility возвращал ей Flex — меню воскресало под новым экраном, и оба читались
+            // одним слипшимся листом (наход. Макса 04.08.2026). Затемнения у Page нет по устройству,
+            // и это верно: мы и так в меню, темнить нечего (реш. Макса, раунд 3). В забеге настройки
+            // остаются модалкой со скримом — там под ними живой мир.
+            void OpenOverMenu(Func<VisualElement> build) => overMenu.Add(PushScreen(build, ScreenKind.Page));
+
+            // Игрок дособрал заказ — цепочка поверх меню отработала и уходит целиком, снизу вверх.
+            void CloseOverMenu()
             {
-                VisualElement menuPanel = screen?.Root;
-                if (menuPanel != null) menuPanel.style.display = DisplayStyle.None;
-                PushScreen(build, ScreenKind.Modal, scrimless: true,
-                    onExit: () => { if (menuPanel != null) menuPanel.style.display = DisplayStyle.Flex; });
+                for (int i = overMenu.Count - 1; i >= 0; i--) _nav.Remove(overMenu[i]);
+                overMenu.Clear();
             }
 
             screen = new RouterResultScreen<MainMenuOutcome>(ScreenKind.Page, MainMenuOutcome.Quit,
@@ -1453,7 +1525,8 @@ namespace Guildmaster.UI
                         _mainMenuUxml,
                         key => _loc?.GetString(key),
                         onCreate:   () => OpenOverMenu(() => BuildNewGameScreen(
-                            request => { Pop(); resolve(MainMenuOutcome.StartGame(request)); })),
+                            request => { CloseOverMenu(); resolve(MainMenuOutcome.StartGame(request)); },
+                            OpenOverMenu)),
                         // «Присоединиться» меню НЕ закрывает: игрок соглашается войти уже в оверлее
                         // Steam, а уводит нас отсюда рукопожатие — оно резолвит меню само.
                         onJoin:     () => _coop?.BrowseFriends(),
