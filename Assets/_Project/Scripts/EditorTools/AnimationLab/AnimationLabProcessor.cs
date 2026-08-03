@@ -94,7 +94,9 @@ namespace Guildmaster.AnimationLab.Editor
             string directory = System.IO.Path.GetDirectoryName(sourcePath).Replace('\\', '/');
             string outputPath = AssetDatabase.GenerateUniqueAssetPath($"{directory}/{working.name}.anim");
             AssetDatabase.CreateAsset(working, outputPath);
-            AssetDatabase.SaveAssets();
+            // Точечно: SaveAssets() пишет ВСЕ грязные ассеты проекта, включая чужую несохранённую
+            // работу в инспекторе. Здесь сохранять надо ровно созданный клип.
+            AssetDatabase.SaveAssetIfDirty(working);
 
             report.ClipPath = outputPath;
             return report;

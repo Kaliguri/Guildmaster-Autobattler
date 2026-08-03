@@ -70,6 +70,12 @@ namespace Guildmaster.Audio.Editor
                     defaultByAction[action] = reference;
                 else if (!e.isDefault)
                     entries.Add(new AudioCatalog.Entry { Key = e.key, Event = reference });
+                else
+                    // Дефолт с действием, которого нет в AudioAction: молча он не попал бы никуда —
+                    // ни в дефолты, ни в записи, — а лог отрапортовал бы успех. Звук действия просто
+                    // отсутствовал бы в игре, и искать это пришлось бы на слух.
+                    Debug.LogError($"[AudioCatalog] Действие '{e.action}' (ключ {e.key}) не найдено в "
+                                   + "AudioAction — запись manifest.json потеряна. Добавь значение в enum.");
             }
 
             // Каждое действие AudioAction получает дефолт-слот (пустой, если не замаплен) — иначе
@@ -84,7 +90,9 @@ namespace Guildmaster.Audio.Editor
 
             catalog.EditorSetContents(entries.ToArray(), defaults.ToArray());
             EditorUtility.SetDirty(catalog);
-            AssetDatabase.SaveAssets();
+            // Точечно: SaveAssets() пишет ВСЕ грязные ассеты проекта, включая чужую несохранённую
+            // работу в инспекторе — при параллельных сессиях это чужие правки в нашем диффе.
+            AssetDatabase.SaveAssetIfDirty(catalog);
 
             Debug.Log($"[AudioCatalog] Наполнен: {entries.Count} записей, {defaults.Count} дефолтов " +
                       $"({resolved} событий резолвнуто, {missing} пропущено).");
