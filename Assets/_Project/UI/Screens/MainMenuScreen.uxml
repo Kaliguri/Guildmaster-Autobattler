@@ -1,4 +1,4 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--mainmenu gm-panel--sheet">
             <!-- Оправа: двойная кайма без угловых накладок (выбор Макса 03.08.2026 — вариант C).
@@ -6,7 +6,14 @@
                  ради неё лишний div — это структура ради вида. Накладки остались ручкой контрола
                  (`corner`) на случай, если оправа где-то должна звучать громче. -->
             <gm:PanelFrame name="menu-frame" corner="0" />
-            <ui:Label name="menu-title" text="Happy Guildmasters" class="gm-panel__title gm-mainmenu__title" />
+
+            <!-- Картуш: титул сидит на табличке, прибитой к верхней кромке листа, а не висит в
+                 воздухе (заявка Макса 03.08.2026). Своя кайма без второй линии — оправа таблички
+                 обязана быть тоньше оправы листа, иначе они спорят за старшинство. -->
+            <ui:VisualElement name="menu-cartouche" class="gm-panel__cartouche" picking-mode="Ignore">
+                <gm:PanelFrame corner="0" inner-line="false" />
+                <ui:Label name="menu-title" text="Happy Guildmasters" class="gm-panel__title gm-mainmenu__title" />
+            </ui:VisualElement>
             <ui:VisualElement class="gm-divider" />
 
             <!-- ДВЕ кнопки входа, а не список режимов (модель Макса 02.08.2026). Режим выбирается
@@ -16,6 +23,7 @@
             <ui:ScrollView class="gm-panel__body gm-mainmenu__buttons">
                 <gm:PlateButton name="btn-create" text="Создать игру" class="gm-button gm-button--primary gm-mainmenu__btn" />
                 <gm:PlateButton name="btn-join" text="Присоединиться" class="gm-button gm-mainmenu__btn" />
+                <gm:PlateButton name="btn-profile" text="Профиль" class="gm-button gm-mainmenu__btn" />
                 <gm:PlateButton name="btn-settings" text="Настройки" class="gm-button gm-mainmenu__btn" />
                 <gm:PlateButton name="btn-quit" text="Выход" class="gm-button gm-mainmenu__btn" />
             </ui:ScrollView>
