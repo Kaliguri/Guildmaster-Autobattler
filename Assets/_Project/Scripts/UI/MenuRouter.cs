@@ -22,7 +22,7 @@ namespace Guildmaster.UI
     /// прежней ручной синхронизации (<c>_menuModeActive</c>/<c>_prevContext</c>/CSS-классов-флагов).
     /// Настройки применяются живьём; Cancel/Save — на кнопках, ESC = навигация назад.
     /// </summary>
-    public sealed class MenuRouter
+    public sealed class MenuRouter : IDisposable
     {
         private readonly IInputService _input;
         private readonly UiNavigator _nav;
@@ -48,6 +48,16 @@ namespace Guildmaster.UI
         // Палитра проекта — единственный владелец цвета. Роутер её не читает сам: он передаёт её ригу
         // карточек, чтобы тот красил тело той же ступенью приглушения, что бой.
         private readonly GuildmasterPalette _palette;
+
+        // Счёт общего согласия. Роутер ЗАПОМИНАЕТ последнее объявление, а не только слушает: гейт
+        // объявляет счёт в момент привязки действия, то есть ДО того, как экран построен, и живая
+        // подписка это объявление пропустила бы — кнопка открылась бы без «(N/M)».
+        private readonly ISubscriber<Core.Net.ReadyGateChangedEvent> _readySub;
+        private readonly IDisposable _readySubscription;
+        private Core.Net.ReadyGateChangedEvent _lastReady;
+        // Что делать со счётом, пока открыт экран, который его ждёт. null — таких экранов нет, и счёт
+        // просто запоминается.
+        private Action<Core.Net.ReadyGateChangedEvent> _onReadyChanged;
 
         private VisualElement _root;
         private VisualElement _modalLayer;   // верхний слой — заслонка выхода ложится поверх и паузы
@@ -87,8 +97,18 @@ namespace Guildmaster.UI
                           Core.DevConsole.DevConsoleLog devLog,
                           Core.Net.ICoopSessionControl coop,
                           Core.Persistence.IProfileService profiles,
-                          Core.Persistence.ISaveService save)
+                          Core.Persistence.ISaveService save,
+                          ISubscriber<Core.Net.ReadyGateChangedEvent> readySub)
         {
+            _readySub = readySub;
+            // Подписка живёт столько же, сколько роутер, и это не лень: гейт объявляет счёт в момент
+            // привязки действия — раньше, чем экран заказан. Подписка на время показа это объявление
+            // пропустила бы, и кнопка открылась бы без «(N/M)».
+            _readySubscription = readySub?.Subscribe(e =>
+            {
+                _lastReady = e;
+                _onReadyChanged?.Invoke(e);
+            });
             _profiles = profiles;
             _save = save;
             _coop = coop;
@@ -295,6 +315,12 @@ namespace Guildmaster.UI
 
             public override void Build(UiScreenContext ctx) => Root = _build(Resolve);
         }
+
+        /// <summary>
+        /// Снять подписки роутера. Зовёт VContainer при уничтожении контейнера — своей строки вызова
+        /// нет и не должно быть.
+        /// </summary>
+        public void Dispose() => _readySubscription?.Dispose();
 
         private void Pop() => _nav.Pop();
 
@@ -1146,19 +1172,58 @@ namespace Guildmaster.UI
             ShowOutcomeAsync(req).Forget();
         }
 
+        /// <summary>
+        /// Экран итога боя. «Продолжить» здесь — не команда, а согласие: экран закрывается не по нажатию,
+        /// а когда согласие собралось.
+        /// </summary>
+        /// <remarks>
+        /// <b>Разница видна только вдвоём, и она принципиальная.</b> Закрывай экран по нажатию — и
+        /// подтвердивший первым остался бы стоять над полем с трупами: экрана нет, расстановки ещё нет,
+        /// нажать нечего. Поэтому кнопка лишь отправляет согласие и показывает «(N/M)», а закрытие
+        /// приходит признаком срабатывания от гейта — тем же самым и у хоста, и у гостя.
+        /// </remarks>
         private async UniTaskVoid ShowOutcomeAsync(OpenOutcomeRequest req)
         {
+            Action<bool> close = null;
+            VisualElement built = null;
+
             var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
-                resolve => OutcomeScreenView.Build(_outcomeUxml, req.Victory, key => _loc?.GetString(key),
-                    onToMenu: () => resolve(true),
-                    // «Продолжить» закрывает экран своим результатом: закрытие крестиком и уход в меню — не
-                    // одно и то же, и слить их значило бы уводить в меню того, кто хотел переиграть.
-                    onContinue: req.OnContinue == null ? null : () => resolve(false)));
+                resolve =>
+                {
+                    close = resolve;
+                    built = OutcomeScreenView.Build(_outcomeUxml, req.Victory, key => _loc?.GetString(key),
+                        onToMenu: () => resolve(true),
+                        onContinue: req.OnContinue);
+                    // Счёт, объявленный ДО постройки экрана, уже лежит в поле: гейт объявляет его в момент
+                    // привязки действия, то есть раньше, чем этот экран вообще заказан.
+                    ApplyReadyCount(built, _lastReady);
+                    return built;
+                });
 
-            bool toMenu = await _nav.ShowAsync(screen);
+            // Пока экран открыт, счёт ведёт его. Слушаем не сами — постоянная подписка живёт в роутере и
+            // помнит последнее объявление; здесь только «что делать, пока экран на виду».
+            _onReadyChanged = e =>
+            {
+                ApplyReadyCount(built, e);
+                if (e.Key == ReadyKeyContinue && e.Fired) close?.Invoke(false); // согласились все
+            };
 
-            if (toMenu) req.OnToMenu?.Invoke();
-            else        req.OnContinue?.Invoke();
+            try
+            {
+                bool toMenu = await _nav.ShowAsync(screen);
+                if (toMenu) req.OnToMenu?.Invoke();
+            }
+            finally { _onReadyChanged = null; }
+        }
+
+        /// <summary>Что подтверждают на этом экране. Тот же ключ объявляет расстановка площадки.</summary>
+        private const string ReadyKeyContinue = "battle.continue";
+
+        private void ApplyReadyCount(VisualElement root, Core.Net.ReadyGateChangedEvent e)
+        {
+            if (root == null || e.Key != ReadyKeyContinue) return;
+            OutcomeScreenView.SetContinueCount(root, key => _loc?.GetString(key),
+                e.Ready, e.Required, e.LocallyReady);
         }
 
         // Главное меню — на UXML (MainMenuScreen.uxml). «Создать игру» открывает выбор режима ПОВЕРХ

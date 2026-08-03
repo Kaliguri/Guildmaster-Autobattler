@@ -120,8 +120,9 @@ namespace Guildmaster.Game.Session.Net
         private void OnMessage(int from, ArraySegment<byte> message)
         {
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
-            // Ровно один байт — это согласие гостя. Два байта на том же канале означают объявленный счёт,
-            // то есть наше собственное эхо; спутать их значило бы принять свой счёт за чужой голос.
+            // Ровно один байт — это согласие гостя. Объявленный счёт длиннее (счёт, планка, признак
+            // срабатывания и ключ), то есть наше собственное эхо; спутать их значило бы принять свой
+            // счёт за чужой голос.
             if (channel != NetChannel.ReadyGate || payload.Count != 1) return;
 
             var bytes = new NetByteReader(payload);
@@ -147,7 +148,7 @@ namespace Guildmaster.Game.Session.Net
             // может убить нас же вместе со скоупом — то, что стоит после него, не выполнится.
             Action fire = _action;
             ClearVotes();
-            Announce();
+            Announce(fired: true);
             fire();
         }
 
@@ -156,15 +157,19 @@ namespace Guildmaster.Game.Session.Net
             _ready.Clear();
         }
 
-        private void Announce()
+        private void Announce(bool fired = false)
         {
-            _changedPub?.Publish(new ReadyGateChangedEvent(Ready, Required, LocallyReady));
+            _changedPub?.Publish(new ReadyGateChangedEvent(_key, Ready, Required, LocallyReady, fired));
 
             if (!_transport.IsRunning) return; // соло: объявлять некому
 
             _writer.Reset();
             _writer.WriteByte((byte)Mathf.Clamp(_ready.Count, 0, 255));
             _writer.WriteByte((byte)Mathf.Clamp(Required, 0, 255));
+            _writer.WriteBool(fired);
+            // Ключ едет строкой, а не номером: он же и есть смысл действия, а таблица номеров разошлась
+            // бы между сборками ровно так, как расходятся все таблицы, которые ведут руками.
+            _writer.WriteString(_key);
             _transport.SendToAll(
                 NetEnvelope.Wrap(NetChannel.ReadyGate, _writer.WrittenSegment, ref _envelope),
                 NetDelivery.Reliable);

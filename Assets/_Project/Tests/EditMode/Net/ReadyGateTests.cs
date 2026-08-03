@@ -110,5 +110,54 @@ namespace Guildmaster.Tests.EditMode.Net
 
             Assert.AreEqual(0, gate.Ready, "согласие относилось к другому действию");
         }
+
+        /// <summary>
+        /// Срабатывание объявляется отдельным признаком, а не выводится из обнулённого счёта: экран,
+        /// ждущий согласия, обязан закрыться именно на нём. Сброс тоже обнуляет счёт — спутав их, экран
+        /// закрывался бы от чужой правки расстановки.
+        /// </summary>
+        [Test]
+        public void Firing_IsAnnouncedApartFromReset()
+        {
+            var host = new LoopbackNetwork();
+            INetTransport hostNode = host.CreateNode();
+            var heard = new ListPublisher();
+            var gate = new HostReadyGate(hostNode, heard);
+            gate.Start();
+
+            gate.Bind("battle.continue", () => { });
+            heard.Events.Clear();
+
+            gate.ToggleLocal(); // соло: согласие собрано целиком, действие произошло
+
+            Assert.IsTrue(heard.Events.Exists(e => e.Fired && e.Key == "battle.continue"),
+                "срабатывание должно быть объявлено, иначе экран итога не закроется");
+
+            // Сброс проверяем вдвоём: в одиночку любое согласие срабатывает мгновенно, и отличить сброс
+            // от срабатывания на таком материале нельзя в принципе.
+            var pair = new LoopbackNetwork();
+            INetTransport pairHost = pair.CreateNode();
+            var heardPair = new ListPublisher();
+            var paired = new HostReadyGate(pairHost, heardPair);
+            paired.Start();
+            pair.CreateNode();
+            pair.PollAll();
+
+            paired.Bind("battle.continue", () => { });
+            paired.ToggleLocal();
+            heardPair.Events.Clear();
+
+            paired.Reset("расстановка изменилась");
+
+            Assert.IsFalse(heardPair.Events.Exists(e => e.Fired),
+                "сброс — это не срабатывание, и путать их нельзя: экран закрылся бы от чужой правки");
+        }
+
+        private sealed class ListPublisher : IPublisher<ReadyGateChangedEvent>
+        {
+            public readonly System.Collections.Generic.List<ReadyGateChangedEvent> Events = new();
+
+            public void Publish(ReadyGateChangedEvent message) => Events.Add(message);
+        }
     }
 }

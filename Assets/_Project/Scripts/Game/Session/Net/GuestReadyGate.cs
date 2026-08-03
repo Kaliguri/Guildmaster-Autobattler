@@ -89,23 +89,27 @@ namespace Guildmaster.Game.Session.Net
         private void OnMessage(int from, ArraySegment<byte> message)
         {
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
-            if (channel != NetChannel.ReadyGate || payload.Count != 2) return;
+            // Объявленный счёт: счёт, планка, признак срабатывания и ключ. Один байт на этом канале —
+            // чужое согласие, а не ответ нам.
+            if (channel != NetChannel.ReadyGate || payload.Count < 3) return;
 
             // Счёт объявляет только хост: чужой счёт от другого гостя показал бы кнопке неправду.
             if (from != NetPeer.HostPeerId) return;
 
             var bytes = new NetByteReader(payload);
-            Ready    = bytes.ReadByte();
-            Required = bytes.ReadByte();
+            Ready      = bytes.ReadByte();
+            Required   = bytes.ReadByte();
+            bool fired = bytes.ReadBool();
+            _key       = bytes.ReadString();
 
             // Хост обнулил счёт — значит согласие снято у всех, включая нас. Иначе кнопка осталась бы
             // нажатой, а хост нас в готовых уже не числил.
             if (Ready == 0) _localReady = false;
 
-            Announce();
+            Announce(fired);
         }
 
-        private void Announce() =>
-            _changedPub?.Publish(new ReadyGateChangedEvent(Ready, Required, _localReady));
+        private void Announce(bool fired = false) =>
+            _changedPub?.Publish(new ReadyGateChangedEvent(_key, Ready, Required, _localReady, fired));
     }
 }
