@@ -57,9 +57,20 @@ namespace Guildmaster.Net.Session
         public event Action LobbyChanged;
 
         /// <summary>
-        /// Создать лобби под текущую сессию. Возвращает false, если Steam не запущен — это внешний
-        /// отказ, и он должен быть виден игроку, а не заглажен.
+        /// Создать лобби под текущую сессию. Возвращается сразу: лобби придёт от Steam кадры спустя и
+        /// объявит о себе через <see cref="LobbyChanged"/>.
         /// </summary>
+        /// <remarks>
+        /// Не создалось — предупреждение в лог и никакого события; это внешний отказ, и он должен быть
+        /// виден, а не заглажен. Вызывающему возвращать нечего: к моменту возврата ответа Steam ещё нет.
+        /// </remarks>
+        /// <remarks>
+        /// Метод <c>async void</c>, и это вынужденно: его зовут как обычное действие из UI, а сборка
+        /// <c>Guildmaster.Net</c> на UniTask не ссылается, так что <c>UniTaskVoid</c> здесь недоступен.
+        /// Цена такого метода — необработанное исключение уходит в никуда мимо всякого лога; поэтому
+        /// ожидание под <c>try</c>. Отказ прилетает из сетевого вызова Steam, то есть ровно оттуда, где
+        /// он ожидаем, и увидеть его надо в консоли, а не по молчанию кнопки приглашения.
+        /// </remarks>
         public async void CreateLobby()
         {
             if (!IsSteamReady)
@@ -68,16 +79,23 @@ namespace Guildmaster.Net.Session
                 return;
             }
 
-            Lobby? created = await SteamMatchmaking.CreateLobbyAsync(MaxMembers);
-            if (!created.HasValue)
+            try
             {
-                Debug.LogWarning("[SteamLobbyService] Steam не создал лобби");
-                return;
-            }
+                Lobby? created = await SteamMatchmaking.CreateLobbyAsync(MaxMembers);
+                if (!created.HasValue)
+                {
+                    Debug.LogWarning("[SteamLobbyService] Steam не создал лобби");
+                    return;
+                }
 
-            created.Value.SetFriendsOnly(); // список комнат нам не нужен: вход только по приглашению
-            created.Value.SetJoinable(true);
-            SetLobby(created);
+                created.Value.SetFriendsOnly(); // список комнат нам не нужен: вход только по приглашению
+                created.Value.SetJoinable(true);
+                SetLobby(created);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[SteamLobbyService] Steam не отдал лобби: {e}");
+            }
         }
 
         /// <summary>Открыть оверлей приглашений на текущее лобби.</summary>
