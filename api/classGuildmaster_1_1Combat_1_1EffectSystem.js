@@ -6,6 +6,7 @@ var classGuildmaster_1_1Combat_1_1EffectSystem =
     [ "CountUniqueTaggedAtTickStart", "classGuildmaster_1_1Combat_1_1EffectSystem.html#ad9274c96894e43dc957fa63d1eb1884c", null ],
     [ "Dispatch", "classGuildmaster_1_1Combat_1_1EffectSystem.html#af105ee295c2f8be96b878c5c8b704251", null ],
     [ "Dispel", "classGuildmaster_1_1Combat_1_1EffectSystem.html#add433549e9a0dc16bb7e3b582cf951cb", null ],
+    [ "DurationScale", "classGuildmaster_1_1Combat_1_1EffectSystem.html#adc4c97103322be932d230839e6edcf6f", null ],
     [ "Remove", "classGuildmaster_1_1Combat_1_1EffectSystem.html#ac752cc7b39872e4fc36e6ddb25fe170d", null ],
     [ "RemoveByDef", "classGuildmaster_1_1Combat_1_1EffectSystem.html#a7245cbbf8dd74d126f0be4279e7c7bb9", null ],
     [ "RemoveByTag", "classGuildmaster_1_1Combat_1_1EffectSystem.html#a3b6d6263a82d13805d5bfb6498ca1ce2", null ],

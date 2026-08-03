@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Значения первого запуска: вся анимация карточек включена, подсказки краткие, камера боя сценарная.">
+<g id="a_Node000001"><a xlink:title="Значения первого запуска: вся анимация карточек включена, подсказки краткие, камера боя сценарная,...">
 <polygon fill="#999999" stroke="#666666" points="362,-54 211,-54 211,-24 362,-24 362,-54"/>
 <text text-anchor="start" x="219" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Core.Settings.</text>
 <text text-anchor="middle" x="286.5" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">GameplaySettings.Defaults</text>

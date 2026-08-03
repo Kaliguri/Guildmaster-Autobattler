@@ -118,6 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3b000a29f1bfcd05d75885fd1311d88c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b08211733f4046c70eb27885f10e0ab" id="r_a8b08211733f4046c70eb27885f10e0ab"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1DevConsole_1_1DevConsoleScreen.html#a8b08211733f4046c70eb27885f10e0ab">Build</a> (<a class="el" href="classGuildmaster_1_1UI_1_1UiScreenContext.html">UiScreenContext</a> ctx)</td></tr>
 <tr class="separator:a8b08211733f4046c70eb27885f10e0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3e19ade7e5fd78ddc7b743962b766be" id="r_ae3e19ade7e5fd78ddc7b743962b766be"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1DevConsole_1_1DevConsoleScreen.html#ae3e19ade7e5fd78ddc7b743962b766be">OnEnter</a> ()</td></tr>
+<tr class="memdesc:ae3e19ade7e5fd78ddc7b743962b766be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Экран добавлен в слой (стал частью стека).  <br /></td></tr>
+<tr class="separator:ae3e19ade7e5fd78ddc7b743962b766be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80279bed193b3ce4b61619d561384d83" id="r_a80279bed193b3ce4b61619d561384d83"><td class="memItemLeft" align="right" valign="top">override VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1DevConsole_1_1DevConsoleScreen.html#a80279bed193b3ce4b61619d561384d83">GetInitialFocus</a> ()</td></tr>
 <tr class="memdesc:a80279bed193b3ce4b61619d561384d83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Элемент, получающий фокус при показе экрана (шов под геймпад/Steam Deck, II.9.1).Навигатор ставит фокус на Push и когда экран становится верхним. По умолчанию null — фокус не трогаем.  <br /></td></tr>
 <tr class="separator:a80279bed193b3ce4b61619d561384d83"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,9 +131,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae57fd93056750a59598046aaec9cacb6 inherit pub_methods_classGuildmaster_1_1UI_1_1UiScreen" id="r_ae57fd93056750a59598046aaec9cacb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1UiScreen.html#ae57fd93056750a59598046aaec9cacb6">Build</a> (<a class="el" href="classGuildmaster_1_1UI_1_1UiScreenContext.html">UiScreenContext</a> ctx)</td></tr>
 <tr class="memdesc:ae57fd93056750a59598046aaec9cacb6 inherit pub_methods_classGuildmaster_1_1UI_1_1UiScreen"><td class="mdescLeft">&#160;</td><td class="mdescRight">Построить Root (клон UXML + проводка). Вызывается навигатором один раз при Push, если Root ещё пуст.  <br /></td></tr>
 <tr class="separator:ae57fd93056750a59598046aaec9cacb6 inherit pub_methods_classGuildmaster_1_1UI_1_1UiScreen"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f4a7acc1487d9534ebe4b5d39a34957 inherit pub_methods_classGuildmaster_1_1UI_1_1UiScreen" id="r_a8f4a7acc1487d9534ebe4b5d39a34957"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1UiScreen.html#a8f4a7acc1487d9534ebe4b5d39a34957">OnEnter</a> ()</td></tr>
-<tr class="memdesc:a8f4a7acc1487d9534ebe4b5d39a34957 inherit pub_methods_classGuildmaster_1_1UI_1_1UiScreen"><td class="mdescLeft">&#160;</td><td class="mdescRight">Экран добавлен в слой (стал частью стека).  <br /></td></tr>
-<tr class="separator:a8f4a7acc1487d9534ebe4b5d39a34957 inherit pub_methods_classGuildmaster_1_1UI_1_1UiScreen"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a070b643457f4bad28b4f11ad85dac2d9 inherit pub_methods_classGuildmaster_1_1UI_1_1UiScreen" id="r_a070b643457f4bad28b4f11ad85dac2d9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1UiScreen.html#a070b643457f4bad28b4f11ad85dac2d9">OnFocus</a> ()</td></tr>
 <tr class="memdesc:a070b643457f4bad28b4f11ad85dac2d9 inherit pub_methods_classGuildmaster_1_1UI_1_1UiScreen"><td class="mdescLeft">&#160;</td><td class="mdescRight">Экран стал верхним (был перекрыт, стал видимым/активным).  <br /></td></tr>
 <tr class="separator:a070b643457f4bad28b4f11ad85dac2d9 inherit pub_methods_classGuildmaster_1_1UI_1_1UiScreen"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -281,6 +281,36 @@ Additional Inherited Members</h2></td></tr>
 <p>Элемент, получающий фокус при показе экрана (шов под геймпад/Steam Deck, II.9.1).Навигатор ставит фокус на Push и когда экран становится верхним. По умолчанию null — фокус не трогаем. </p>
 
 <p>Reimplemented from <a class="el" href="classGuildmaster_1_1UI_1_1UiScreen.html#af296b479cda93ed8b6f62828867a1b9f">Guildmaster.UI.UiScreen&lt; TResult &gt;</a>.</p>
+
+</div>
+</div>
+<a id="ae3e19ade7e5fd78ddc7b743962b766be" name="ae3e19ade7e5fd78ddc7b743962b766be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3e19ade7e5fd78ddc7b743962b766be">&#9670;&#160;</a></span>OnEnter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void Guildmaster.UI.DevConsole.DevConsoleScreen.OnEnter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Экран добавлен в слой (стал частью стека). </p>
+<p>Подписка живёт ровно столько, сколько экран показан, и потому стоит здесь, симметрично OnExit. В <code>Build</code> её держать нельзя: навигатор строит экран, только пока <code>Root == null</code>, то есть один раз за сессию, а закрывают и открывают консоль много раз — после первого закрытия она осталась бы без подписок и молчала бы на любую команду. </p>
+
+<p>Reimplemented from <a class="el" href="classGuildmaster_1_1UI_1_1UiScreen.html#a8f4a7acc1487d9534ebe4b5d39a34957">Guildmaster.UI.UiScreen&lt; TResult &gt;</a>.</p>
 
 </div>
 </div>

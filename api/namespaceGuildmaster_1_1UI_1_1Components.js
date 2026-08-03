@@ -2,6 +2,7 @@ var namespaceGuildmaster_1_1UI_1_1Components =
 [
     [ "AspectBox", "classGuildmaster_1_1UI_1_1Components_1_1AspectBox.html", "classGuildmaster_1_1UI_1_1Components_1_1AspectBox" ],
     [ "Chip", "classGuildmaster_1_1UI_1_1Components_1_1Chip.html", "classGuildmaster_1_1UI_1_1Components_1_1Chip" ],
+    [ "PanelFrame", "classGuildmaster_1_1UI_1_1Components_1_1PanelFrame.html", "classGuildmaster_1_1UI_1_1Components_1_1PanelFrame" ],
     [ "PlateButton", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton.html", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton" ],
     [ "RelicCard", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard" ],
     [ "RelicCardVisualRig", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig" ],

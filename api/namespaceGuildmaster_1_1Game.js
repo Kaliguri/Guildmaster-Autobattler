@@ -4,7 +4,6 @@ var namespaceGuildmaster_1_1Game =
     [ "Editor", "namespaceGuildmaster_1_1Game_1_1Editor.html", "namespaceGuildmaster_1_1Game_1_1Editor" ],
     [ "Flow", "namespaceGuildmaster_1_1Game_1_1Flow.html", "namespaceGuildmaster_1_1Game_1_1Flow" ],
     [ "Input", "namespaceGuildmaster_1_1Game_1_1Input.html", "namespaceGuildmaster_1_1Game_1_1Input" ],
-    [ "Players", "namespaceGuildmaster_1_1Game_1_1Players.html", "namespaceGuildmaster_1_1Game_1_1Players" ],
     [ "Services", "namespaceGuildmaster_1_1Game_1_1Services.html", "namespaceGuildmaster_1_1Game_1_1Services" ],
     [ "Session", "namespaceGuildmaster_1_1Game_1_1Session.html", "namespaceGuildmaster_1_1Game_1_1Session" ],
     [ "ArenaLayoutAuthoring", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring" ],

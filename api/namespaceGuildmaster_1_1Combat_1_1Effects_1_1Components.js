@@ -21,6 +21,7 @@ var namespaceGuildmaster_1_1Combat_1_1Effects_1_1Components =
     [ "DuelDamageBonusComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DuelDamageBonusComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DuelDamageBonusComponent" ],
     [ "EmberComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent" ],
     [ "EmberIgniterComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberIgniterComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberIgniterComponent" ],
+    [ "EmberWardenComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberWardenComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberWardenComponent" ],
     [ "EmpowerNextAttackComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmpowerNextAttackComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmpowerNextAttackComponent" ],
     [ "EveryNthAttackComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EveryNthAttackComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EveryNthAttackComponent" ],
     [ "FeedOnDamageComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FeedOnDamageComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FeedOnDamageComponent" ],

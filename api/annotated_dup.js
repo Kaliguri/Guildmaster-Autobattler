@@ -55,6 +55,7 @@ var annotated_dup =
             [ "DuelDamageBonusComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DuelDamageBonusComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DuelDamageBonusComponent" ],
             [ "EmberComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent" ],
             [ "EmberIgniterComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberIgniterComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberIgniterComponent" ],
+            [ "EmberWardenComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberWardenComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberWardenComponent" ],
             [ "EmpowerNextAttackComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmpowerNextAttackComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmpowerNextAttackComponent" ],
             [ "EveryNthAttackComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EveryNthAttackComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EveryNthAttackComponent" ],
             [ "FeedOnDamageComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FeedOnDamageComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FeedOnDamageComponent" ],
@@ -228,7 +229,8 @@ var annotated_dup =
           [ "ScreenTransitionShape", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape.html", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape" ]
         ] ],
         [ "Input", "namespaceGuildmaster_1_1Core_1_1Input.html", [
-          [ "IInputService", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService" ]
+          [ "IInputService", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService" ],
+          [ "IPointerWorld", "interfaceGuildmaster_1_1Core_1_1Input_1_1IPointerWorld.html", "interfaceGuildmaster_1_1Core_1_1Input_1_1IPointerWorld" ]
         ] ],
         [ "Localization", "namespaceGuildmaster_1_1Core_1_1Localization.html", [
           [ "ILocalizationService", "interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html", "interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService" ]
@@ -236,7 +238,8 @@ var annotated_dup =
         [ "Net", "namespaceGuildmaster_1_1Core_1_1Net.html", [
           [ "ICoopSessionControl", "interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html", "interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl" ],
           [ "IReadyGate", "interfaceGuildmaster_1_1Core_1_1Net_1_1IReadyGate.html", "interfaceGuildmaster_1_1Core_1_1Net_1_1IReadyGate" ],
-          [ "ReadyGateChangedEvent", "structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent.html", "structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent" ]
+          [ "ReadyGateChangedEvent", "structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent.html", "structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent" ],
+          [ "ReadyKeys", "classGuildmaster_1_1Core_1_1Net_1_1ReadyKeys.html", "classGuildmaster_1_1Core_1_1Net_1_1ReadyKeys" ]
         ] ],
         [ "Persistence", "namespaceGuildmaster_1_1Core_1_1Persistence.html", [
           [ "GameDataPath", "classGuildmaster_1_1Core_1_1Persistence_1_1GameDataPath.html", "classGuildmaster_1_1Core_1_1Persistence_1_1GameDataPath" ],
@@ -249,7 +252,11 @@ var annotated_dup =
           [ "SaveSchemaAttribute", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute.html", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute" ]
         ] ],
         [ "Players", "namespaceGuildmaster_1_1Core_1_1Players.html", [
-          [ "ILocalPlayer", "interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer" ]
+          [ "ILocalPlayer", "interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer" ],
+          [ "IPresenceView", "interfaceGuildmaster_1_1Core_1_1Players_1_1IPresenceView.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1IPresenceView" ],
+          [ "ISessionRoster", "interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster" ],
+          [ "RemoteCursor", "structGuildmaster_1_1Core_1_1Players_1_1RemoteCursor.html", "structGuildmaster_1_1Core_1_1Players_1_1RemoteCursor" ],
+          [ "SessionPlayer", "structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html", "structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer" ]
         ] ],
         [ "Random", "namespaceGuildmaster_1_1Core_1_1Random.html", [
           [ "DeterministicHash", "classGuildmaster_1_1Core_1_1Random_1_1DeterministicHash.html", "classGuildmaster_1_1Core_1_1Random_1_1DeterministicHash" ],
@@ -392,6 +399,7 @@ var annotated_dup =
           [ "ActivityClockRouter", "classGuildmaster_1_1Game_1_1Activity_1_1ActivityClockRouter.html", "classGuildmaster_1_1Game_1_1Activity_1_1ActivityClockRouter" ],
           [ "ActivityHost", "classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost.html", "classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost" ],
           [ "ActivityInstaller", "classGuildmaster_1_1Game_1_1Activity_1_1ActivityInstaller.html", "classGuildmaster_1_1Game_1_1Activity_1_1ActivityInstaller" ],
+          [ "ActivitySideAssignment", "classGuildmaster_1_1Game_1_1Activity_1_1ActivitySideAssignment.html", "classGuildmaster_1_1Game_1_1Activity_1_1ActivitySideAssignment" ],
           [ "BattleScopePrefab", "classGuildmaster_1_1Game_1_1Activity_1_1BattleScopePrefab.html", "classGuildmaster_1_1Game_1_1Activity_1_1BattleScopePrefab" ]
         ] ],
         [ "Editor", "namespaceGuildmaster_1_1Game_1_1Editor.html", [
@@ -454,9 +462,6 @@ var annotated_dup =
           [ "BattleInputController", "classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html", "classGuildmaster_1_1Game_1_1Input_1_1BattleInputController" ],
           [ "InputService", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html", "classGuildmaster_1_1Game_1_1Input_1_1InputService" ]
         ] ],
-        [ "Players", "namespaceGuildmaster_1_1Game_1_1Players.html", [
-          [ "SoloLocalPlayer", "classGuildmaster_1_1Game_1_1Players_1_1SoloLocalPlayer.html", "classGuildmaster_1_1Game_1_1Players_1_1SoloLocalPlayer" ]
-        ] ],
         [ "Services", "namespaceGuildmaster_1_1Game_1_1Services.html", [
           [ "ActRunner", "classGuildmaster_1_1Game_1_1Services_1_1ActRunner.html", "classGuildmaster_1_1Game_1_1Services_1_1ActRunner" ],
           [ "BattleTapeDiagnostics", "classGuildmaster_1_1Game_1_1Services_1_1BattleTapeDiagnostics.html", "classGuildmaster_1_1Game_1_1Services_1_1BattleTapeDiagnostics" ],
@@ -491,9 +496,14 @@ var annotated_dup =
             [ "CoopGuestEntry", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry" ],
             [ "GuestActivityFollower", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower" ],
             [ "GuestPartyFollower", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPartyFollower.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPartyFollower" ],
+            [ "GuestPresence", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence" ],
             [ "GuestReadyGate", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestReadyGate.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestReadyGate" ],
             [ "GuestRunState", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState" ],
+            [ "GuestSessionRoster", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster" ],
+            [ "HostPresence", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostPresence.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostPresence" ],
             [ "HostReadyGate", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostReadyGate.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostReadyGate" ],
+            [ "HostSessionRoster", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster" ],
+            [ "PresenceCursors", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1PresenceCursors.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1PresenceCursors" ],
             [ "RemoteRunCommands", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands" ],
             [ "RunCommandCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec" ],
             [ "RunSnapshotCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunSnapshotCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunSnapshotCodec" ],
@@ -503,6 +513,8 @@ var annotated_dup =
           [ "SessionContext", "classGuildmaster_1_1Game_1_1Session_1_1SessionContext.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionContext" ],
           [ "SessionHost", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost" ],
           [ "SessionInstaller", "classGuildmaster_1_1Game_1_1Session_1_1SessionInstaller.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionInstaller" ],
+          [ "SessionPlayerRouter", "classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter" ],
+          [ "SessionPresenceRouter", "classGuildmaster_1_1Game_1_1Session_1_1SessionPresenceRouter.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionPresenceRouter" ],
           [ "SessionRunRouter", "classGuildmaster_1_1Game_1_1Session_1_1SessionRunRouter.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionRunRouter" ]
         ] ],
         [ "ArenaLayoutAuthoring", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring" ],
@@ -692,6 +704,7 @@ var annotated_dup =
         [ "IFocusPointSource", "interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource.html", "interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource" ],
         [ "IScreenShake", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake" ],
         [ "ManaBarView", "classGuildmaster_1_1Presentation_1_1ManaBarView.html", "classGuildmaster_1_1Presentation_1_1ManaBarView" ],
+        [ "PointerWorld", "classGuildmaster_1_1Presentation_1_1PointerWorld.html", "classGuildmaster_1_1Presentation_1_1PointerWorld" ],
         [ "PooledVfx", "classGuildmaster_1_1Presentation_1_1PooledVfx.html", "classGuildmaster_1_1Presentation_1_1PooledVfx" ],
         [ "ProjectileView", "classGuildmaster_1_1Presentation_1_1ProjectileView.html", "classGuildmaster_1_1Presentation_1_1ProjectileView" ],
         [ "ScreenShake", "classGuildmaster_1_1Presentation_1_1ScreenShake.html", "classGuildmaster_1_1Presentation_1_1ScreenShake" ],
@@ -705,6 +718,7 @@ var annotated_dup =
         [ "Components", "namespaceGuildmaster_1_1UI_1_1Components.html", [
           [ "AspectBox", "classGuildmaster_1_1UI_1_1Components_1_1AspectBox.html", "classGuildmaster_1_1UI_1_1Components_1_1AspectBox" ],
           [ "Chip", "classGuildmaster_1_1UI_1_1Components_1_1Chip.html", "classGuildmaster_1_1UI_1_1Components_1_1Chip" ],
+          [ "PanelFrame", "classGuildmaster_1_1UI_1_1Components_1_1PanelFrame.html", "classGuildmaster_1_1UI_1_1Components_1_1PanelFrame" ],
           [ "PlateButton", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton.html", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton" ],
           [ "RelicCard", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard" ],
           [ "RelicCardVisualRig", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig" ],
@@ -721,6 +735,9 @@ var annotated_dup =
           [ "DevConsoleScreen", "classGuildmaster_1_1UI_1_1DevConsole_1_1DevConsoleScreen.html", "classGuildmaster_1_1UI_1_1DevConsole_1_1DevConsoleScreen" ],
           [ "DevLogScreen", "classGuildmaster_1_1UI_1_1DevConsole_1_1DevLogScreen.html", "classGuildmaster_1_1UI_1_1DevConsole_1_1DevLogScreen" ],
           [ "IDevOverlayScreen", "interfaceGuildmaster_1_1UI_1_1DevConsole_1_1IDevOverlayScreen.html", null ]
+        ] ],
+        [ "Presence", "namespaceGuildmaster_1_1UI_1_1Presence.html", [
+          [ "CursorLayerView", "classGuildmaster_1_1UI_1_1Presence_1_1CursorLayerView.html", "classGuildmaster_1_1UI_1_1Presence_1_1CursorLayerView" ]
         ] ],
         [ "Tooltips", "namespaceGuildmaster_1_1UI_1_1Tooltips.html", [
           [ "ITooltipContentFactory", "interfaceGuildmaster_1_1UI_1_1Tooltips_1_1ITooltipContentFactory.html", "interfaceGuildmaster_1_1UI_1_1Tooltips_1_1ITooltipContentFactory" ],

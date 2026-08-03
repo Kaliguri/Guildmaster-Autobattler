@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Net_1_1Session_1_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Net.Session.SteamBootstrap:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap__inherit__graph.svg" width="299" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap__inherit__graph.svg" width="299" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Net.Session.SteamBootstrap:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap__coll__graph.svg" width="299" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap__coll__graph.svg" width="299" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -130,6 +130,9 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a11579eb0a5c38dd559ce9a41e40a77ca" id="r_a11579eb0a5c38dd559ce9a41e40a77ca"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html#a11579eb0a5c38dd559ce9a41e40a77ca">PlayerName</a><code> [get]</code></td></tr>
+<tr class="memdesc:a11579eb0a5c38dd559ce9a41e40a77ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Как зовут игрока за этим клиентом.  <br /></td></tr>
+<tr class="separator:a11579eb0a5c38dd559ce9a41e40a77ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9b554280d819b1b5473facc8ed304f9" id="r_ad9b554280d819b1b5473facc8ed304f9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html#ad9b554280d819b1b5473facc8ed304f9">IsReady</a><code> [get]</code></td></tr>
 <tr class="memdesc:ad9b554280d819b1b5473facc8ed304f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поднялся ли Steam. Спрашивают лобби и транспорт — им без него делать нечего.  <br /></td></tr>
 <tr class="separator:ad9b554280d819b1b5473facc8ed304f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -265,6 +268,32 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Поднялся ли Steam. Спрашивают лобби и транспорт — им без него делать нечего. </p>
+
+</div>
+</div>
+<a id="a11579eb0a5c38dd559ce9a41e40a77ca" name="a11579eb0a5c38dd559ce9a41e40a77ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11579eb0a5c38dd559ce9a41e40a77ca">&#9670;&#160;</a></span>PlayerName</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Guildmaster.Net.Session.SteamBootstrap.PlayerName</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Как зовут игрока за этим клиентом. </p>
+<p>Steam не поднят — безымянное «Игрок». </p>
+<p>Живёт здесь, потому что здесь единственное место, где мы вообще говорим со Steam про личность. Спрашивать <code>SteamClient.Name</code> из игрового кода значило бы завести второй вход в Steam — и второе поведение на случай, когда Steam не запущен. </p>
 
 </div>
 </div>

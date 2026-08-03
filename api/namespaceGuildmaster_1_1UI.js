@@ -3,6 +3,7 @@ var namespaceGuildmaster_1_1UI =
     [ "Components", "namespaceGuildmaster_1_1UI_1_1Components.html", "namespaceGuildmaster_1_1UI_1_1Components" ],
     [ "DevConsole", "namespaceGuildmaster_1_1UI_1_1DevConsole.html", "namespaceGuildmaster_1_1UI_1_1DevConsole" ],
     [ "EditorTools", "namespaceGuildmaster_1_1UI_1_1EditorTools.html", null ],
+    [ "Presence", "namespaceGuildmaster_1_1UI_1_1Presence.html", "namespaceGuildmaster_1_1UI_1_1Presence" ],
     [ "Tooltips", "namespaceGuildmaster_1_1UI_1_1Tooltips.html", "namespaceGuildmaster_1_1UI_1_1Tooltips" ],
     [ "CampScreenView", "classGuildmaster_1_1UI_1_1CampScreenView.html", "classGuildmaster_1_1UI_1_1CampScreenView" ],
     [ "ChestScreenView", "classGuildmaster_1_1UI_1_1ChestScreenView.html", "classGuildmaster_1_1UI_1_1ChestScreenView" ],

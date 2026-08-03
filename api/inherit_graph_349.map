@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,141,38"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Presentation_1_1Editor_1_1SkeletalBodyVisualEditor.html" title="Инспектор составного тела: список частей сверху вниз, как слои в графическом редакторе (верхний рисуе..." alt="" coords="189,5,416,45"/>
-<area shape="poly" id="edge363_Node000000_Node000001" title=" " alt="" coords="155,23,189,23,189,28,155,28"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,105,38"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipManipulator.html" title="Декларативное «у этого элемента есть тултип» (план §II.10.5 п.2)." alt="" coords="153,5,331,45"/>
+<area shape="poly" id="edge380_Node000000_Node000001" title=" " alt="" coords="119,23,153,23,153,28,119,28"/>
 </map>

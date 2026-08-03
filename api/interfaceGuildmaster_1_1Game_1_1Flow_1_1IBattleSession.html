@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Game_1_1Flow_1
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="#events">Events</a> &#124;
 <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Game.Flow.IBattleSession Interface Reference</div></div>
@@ -170,6 +171,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a769fafb7ea4fc8f96ba51ac744f6381b inherit pub_methods_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="mdescLeft">&#160;</td><td class="mdescRight">UI → бой: начать бой из фазы расстановки (кнопка «Начать»). No-op, если некому.  <br /></td></tr>
 <tr class="separator:a769fafb7ea4fc8f96ba51ac744f6381b inherit pub_methods_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a4ea73ca6c7f59e94d31ff89c20d0abf6" id="r_a4ea73ca6c7f59e94d31ff89c20d0abf6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a4ea73ca6c7f59e94d31ff89c20d0abf6">CanRestart</a><code> [get]</code></td></tr>
+<tr class="memdesc:a4ea73ca6c7f59e94d31ff89c20d0abf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли кому исполнить перезапуск (делегат привязан живым боевым скоупом).  <br /></td></tr>
+<tr class="separator:a4ea73ca6c7f59e94d31ff89c20d0abf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">Guildmaster.Data.Definitions.IBattleClock</a></td></tr>
+<tr class="memitem:ad8e294c9ebea9f52a6d087b164a8c363 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock" id="r_ad8e294c9ebea9f52a6d087b164a8c363"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a8dfef43b870791c6c04b4600ff66103a">BattlePhase</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#ad8e294c9ebea9f52a6d087b164a8c363">Phase</a><code> [get]</code></td></tr>
+<tr class="memdesc:ad8e294c9ebea9f52a6d087b164a8c363 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущая фаза боя (пусто/расстановка/бой). Панель опрашивает каждый кадр.  <br /></td></tr>
+<tr class="separator:ad8e294c9ebea9f52a6d087b164a8c363 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1414fbba3d688cc485572b6229ca4d42 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock" id="r_a1414fbba3d688cc485572b6229ca4d42"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#a1414fbba3d688cc485572b6229ca4d42">ElapsedSeconds</a><code> [get]</code></td></tr>
+<tr class="memdesc:a1414fbba3d688cc485572b6229ca4d42 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прошедшее время текущего боя, сек (0, если боя нет).  <br /></td></tr>
+<tr class="separator:a1414fbba3d688cc485572b6229ca4d42 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
 <tr class="memitem:a962990482543b0048748293ff840c802" id="r_a962990482543b0048748293ff840c802"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a962990482543b0048748293ff840c802">ReplayRequested</a></td></tr>
@@ -179,16 +193,6 @@ Events</h2></td></tr>
 <tr class="memitem:a32ad59655ceb01c9eeb318faeee918e1 inherit events_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock" id="r_a32ad59655ceb01c9eeb318faeee918e1"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#a32ad59655ceb01c9eeb318faeee918e1">PhaseChanged</a></td></tr>
 <tr class="memdesc:a32ad59655ceb01c9eeb318faeee918e1 inherit events_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза сменилась (расстановка ↔ бой ↔ нет боя).  <br /></td></tr>
 <tr class="separator:a32ad59655ceb01c9eeb318faeee918e1 inherit events_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">Guildmaster.Data.Definitions.IBattleClock</a></td></tr>
-<tr class="memitem:ad8e294c9ebea9f52a6d087b164a8c363 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock" id="r_ad8e294c9ebea9f52a6d087b164a8c363"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a8dfef43b870791c6c04b4600ff66103a">BattlePhase</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#ad8e294c9ebea9f52a6d087b164a8c363">Phase</a><code> [get]</code></td></tr>
-<tr class="memdesc:ad8e294c9ebea9f52a6d087b164a8c363 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущая фаза боя (пусто/расстановка/бой). Панель опрашивает каждый кадр.  <br /></td></tr>
-<tr class="separator:ad8e294c9ebea9f52a6d087b164a8c363 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1414fbba3d688cc485572b6229ca4d42 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock" id="r_a1414fbba3d688cc485572b6229ca4d42"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#a1414fbba3d688cc485572b6229ca4d42">ElapsedSeconds</a><code> [get]</code></td></tr>
-<tr class="memdesc:a1414fbba3d688cc485572b6229ca4d42 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прошедшее время текущего боя, сек (0, если боя нет).  <br /></td></tr>
-<tr class="separator:a1414fbba3d688cc485572b6229ca4d42 inherit properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (<code>CombatLifetimeScope</code>, живёт один бой). </p>
@@ -560,6 +564,34 @@ Additional Inherited Members</h2></td></tr>
 <p>root: дождаться исхода текущего боя (следующий ReportOutcome после взвода). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ad0456076745fc3021a62a197eaab929e">Guildmaster.Game.Flow.BattleSession</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a4ea73ca6c7f59e94d31ff89c20d0abf6" name="a4ea73ca6c7f59e94d31ff89c20d0abf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ea73ca6c7f59e94d31ff89c20d0abf6">&#9670;&#160;</a></span>CanRestart</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Flow.IBattleSession.CanRestart</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Есть ли кому исполнить перезапуск (делегат привязан живым боевым скоупом). </p>
+<p>Спрашивается ДО списания попытки из пула акта: RequestRestart отвечает тем же «нет» уже после того, как попытка потрачена, и игрок терял бы её без единого перезапуска. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a62a81040e474c25f468cc087b2ca9fd0">Guildmaster.Game.Flow.BattleSession</a>.</p>
 
 </div>
 </div>

@@ -1,7 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,45,96,70"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDefinitionEditor.html" title="Odin&#45;инспектор для всех ContentDefinition&#45;наследников: id&#45;drawer (read&#45;only + Edit Id,..." alt="" coords="156,5,337,45"/>
-<area shape="poly" id="edge359_Node000000_Node000001" title=" " alt="" coords="109,45,155,38,156,43,110,50"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor.html" title="Редактор арены: тянем границы поля и зоны расстановки прямо в Scene&#45;вью за грани (BoxBoundsHandle),..." alt="" coords="144,69,349,109"/>
-<area shape="poly" id="edge360_Node000000_Node000002" title=" " alt="" coords="110,64,144,70,143,75,109,69"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,119,38"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Services_1_1Vector2JsonConverter.html" title="Сериализация Vector2 как {&quot;x&quot;:…,&quot;y&quot;:…}." alt="" coords="167,5,373,45"/>
+<area shape="poly" id="edge376_Node000000_Node000001" title=" " alt="" coords="132,23,166,23,166,28,132,28"/>
 </map>

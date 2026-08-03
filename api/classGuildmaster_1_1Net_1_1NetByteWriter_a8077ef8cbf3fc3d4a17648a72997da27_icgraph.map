@@ -1,5 +1,7 @@
 <map id="Guildmaster.Net.NetByteWriter.WriteShort" name="Guildmaster.Net.NetByteWriter.WriteShort">
-<area shape="rect" id="Node000001" title=" " alt="" coords="248,5,476,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1Presence_1_1PresenceCodec.html#a04306e7ce91e932b8113a1dad8f06e7a" title=" " alt="" coords="5,5,200,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="234,28,200,28,200,23,234,23"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="499,5,727,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1Presence_1_1PresenceCodec.html#a04306e7ce91e932b8113a1dad8f06e7a" title=" " alt="" coords="256,5,451,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="485,28,451,28,451,23,485,23"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence.html#a74860d3eced4220a551ca57cd6c19fe7" title=" " alt="" coords="5,5,208,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="243,28,208,28,208,23,243,23"/>
 </map>

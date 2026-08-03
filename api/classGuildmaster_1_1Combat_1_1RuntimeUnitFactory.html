@@ -103,12 +103,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1RuntimeU
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.RuntimeUnitFactory:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory__inherit__graph.svg" width="218" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory__inherit__graph.svg" width="218" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.RuntimeUnitFactory:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory__coll__graph.svg" width="218" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory__coll__graph.svg" width="218" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -118,6 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4d84bafc6102b502a158474b5eed00ca" id="r_a4d84bafc6102b502a158474b5eed00ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a4d84bafc6102b502a158474b5eed00ca">ResetIds</a> ()</td></tr>
 <tr class="memdesc:a4d84bafc6102b502a158474b5eed00ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сбросить счётчик Id (перезапуск боя на месте, dev-R).  <br /></td></tr>
 <tr class="separator:a4d84bafc6102b502a158474b5eed00ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1212c2238665fd49832412ae424e6410" id="r_a1212c2238665fd49832412ae424e6410"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a1212c2238665fd49832412ae424e6410">AdvanceIdsPast</a> (int lastUsedId)</td></tr>
+<tr class="memdesc:a1212c2238665fd49832412ae424e6410"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сдвинуть счётчик так, чтобы следующие Id шли ПОСЛЕ <em>lastUsedId</em> .  <br /></td></tr>
+<tr class="separator:a1212c2238665fd49832412ae424e6410"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70e9cf5d31e2c828b5913df2b51f7b5a" id="r_a70e9cf5d31e2c828b5913df2b51f7b5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a70e9cf5d31e2c828b5913df2b51f7b5a">Create</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> data, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a> vessel, int team, Vector2 spawnPosition, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a> &gt; items=null)</td></tr>
 <tr class="memdesc:a70e9cf5d31e2c828b5913df2b51f7b5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создать RuntimeUnit из SO-данных.  <br /></td></tr>
 <tr class="separator:a70e9cf5d31e2c828b5913df2b51f7b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,6 +182,35 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1212c2238665fd49832412ae424e6410" name="a1212c2238665fd49832412ae424e6410"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1212c2238665fd49832412ae424e6410">&#9670;&#160;</a></span>AdvanceIdsPast()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.RuntimeUnitFactory.AdvanceIdsPast </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>lastUsedId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сдвинуть счётчик так, чтобы следующие Id шли ПОСЛЕ <em>lastUsedId</em> . </p>
+<p>Нужно тем, кто раздал Id мимо фабрики (стенд баланса размечает бойцов по индексу списка, часть из них — синтетика без фабрики): без сдвига первое призванное в бою тело получит Id живого бойца, и всё, что оно сделает, ляжет в чужую строку. Счётчик только растёт — назад не отматывает. </p>
+
+</div>
+</div>
 <a id="a70e9cf5d31e2c828b5913df2b51f7b5a" name="a70e9cf5d31e2c828b5913df2b51f7b5a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a70e9cf5d31e2c828b5913df2b51f7b5a">&#9670;&#160;</a></span>Create()</h2>
 

@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Editor_1_1
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Editor.ContentEditService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService__coll__graph.svg" width="216" height="291"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService__coll__graph.svg" width="216" height="331"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -128,8 +128,20 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6c11d7513ada02f8a37fcee224bb1615"><td class="mdescLeft">&#160;</td><td class="mdescRight">Умножить значение модификатора стата <em>stat</em>  на <em>factor</em>  (первое совпадение в <code>_stats</code>).  <br /></td></tr>
 <tr class="separator:a6c11d7513ada02f8a37fcee224bb1615"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47282fa97f89bcdafa2f179aa3a9cca0" id="r_a47282fa97f89bcdafa2f179aa3a9cca0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a47282fa97f89bcdafa2f179aa3a9cca0">SetStat</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> unit, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284">StatType</a> stat, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0de">ModifierOp</a> op, float value)</td></tr>
-<tr class="memdesc:a47282fa97f89bcdafa2f179aa3a9cca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать значение модификатора стата (заменить существующий с любым Op или добавить новый c <em>op</em> ).  <br /></td></tr>
+<tr class="memdesc:a47282fa97f89bcdafa2f179aa3a9cca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать значение модификатора стата: заменить ПЕРВЫЙ с этим статом (с любым Op) либо, если такого нет, добавить новый с <em>op</em> .  <br /></td></tr>
 <tr class="separator:a47282fa97f89bcdafa2f179aa3a9cca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92a90d936f5fd8bbaa7559c75326dd5e" id="r_a92a90d936f5fd8bbaa7559c75326dd5e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a92a90d936f5fd8bbaa7559c75326dd5e">RemoveStat</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> unit, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284">StatType</a> stat)</td></tr>
+<tr class="memdesc:a92a90d936f5fd8bbaa7559c75326dd5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять модификатор стата из <code>_stats</code> (первое совпадение).  <br /></td></tr>
+<tr class="separator:a92a90d936f5fd8bbaa7559c75326dd5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e41d43d1c1799e4d1a8984817bda92e" id="r_a4e41d43d1c1799e4d1a8984817bda92e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a4e41d43d1c1799e4d1a8984817bda92e">RemoveStat</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> unit, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284">StatType</a> stat, out <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0de">ModifierOp</a> removedOp)</td></tr>
+<tr class="memdesc:a4e41d43d1c1799e4d1a8984817bda92e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">removedOp</td><td>Операция снятого модификатора — нужна, чтобы откатить сам откат. </td></tr>
+  </table>
+  </dd>
+</dl>
+ <br /></td></tr>
+<tr class="separator:a4e41d43d1c1799e4d1a8984817bda92e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0f8a71b0fa2652cd6ca271cd8f1ba4c" id="r_af0f8a71b0fa2652cd6ca271cd8f1ba4c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#af0f8a71b0fa2652cd6ca271cd8f1ba4c">SetValue</a> (ScriptableObject asset, string propertyPath, float value)</td></tr>
 <tr class="memdesc:af0f8a71b0fa2652cd6ca271cd8f1ba4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать СКАЛЯРНОЕ поле по пути SerializedProperty — float, int, bool или enum (<code>_movingAttackSpeedPenaltyPct</code>, <code>_castConditionCount</code>, <code>_consumesTriggerTag</code>, <code>_ai._autoAttackTargeting</code>).  <br /></td></tr>
 <tr class="separator:af0f8a71b0fa2652cd6ca271cd8f1ba4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -281,6 +293,95 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_a559ddcb178ece6857dbfe89e7652d266_icgraph.svg" width="535" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a92a90d936f5fd8bbaa7559c75326dd5e" name="a92a90d936f5fd8bbaa7559c75326dd5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92a90d936f5fd8bbaa7559c75326dd5e">&#9670;&#160;</a></span>RemoveStat() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a> Guildmaster.Data.Editor.ContentEditService.RemoveStat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a>&#160;</td>
+          <td class="paramname"><em>unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284">StatType</a>&#160;</td>
+          <td class="paramname"><em>stat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Снять модификатор стата из <code>_stats</code> (первое совпадение). </p>
+<p>Существует ради отката. SetStat, не найдя стата, ДОБАВЛЯЕТ модификатор — и обратной правкой к этому будет снятие записи, а не запись числа: до правки значения не существовало, и «вернуть как было» нельзя ничем, кроме удаления. </p>
+
+</div>
+</div>
+<a id="a4e41d43d1c1799e4d1a8984817bda92e" name="a4e41d43d1c1799e4d1a8984817bda92e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e41d43d1c1799e4d1a8984817bda92e">&#9670;&#160;</a></span>RemoveStat() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html">Change</a> Guildmaster.Data.Editor.ContentEditService.RemoveStat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a>&#160;</td>
+          <td class="paramname"><em>unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284">StatType</a>&#160;</td>
+          <td class="paramname"><em>stat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0de">ModifierOp</a>&#160;</td>
+          <td class="paramname"><em>removedOp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">removedOp</td><td>Операция снятого модификатора — нужна, чтобы откатить сам откат. </td></tr>
+  </table>
+  </dd>
+</dl>
+</p>
 
 </div>
 </div>
@@ -521,7 +622,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Задать значение модификатора стата (заменить существующий с любым Op или добавить новый c <em>op</em> ). </p>
+<p>Задать значение модификатора стата: заменить ПЕРВЫЙ с этим статом (с любым Op) либо, если такого нет, добавить новый с <em>op</em> . </p>
+<p>«Первый» имеет значение, когда модификаторов одного стата в <code>_stats</code> несколько: правка достанется первому, а сложение по <a class="el" href="namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0de" title="Операция стат-модификатора.">ModifierOp</a> может отдать победу другому — например, второму <code>Override</code>. Тогда аудит покажет честную правку, а в игре не изменится ничего. Случай редкий (сегодня таких ассетов нет), но тихим он быть не должен — поэтому о дублях предупреждаем в консоль. </p>
 
 </div>
 </div>

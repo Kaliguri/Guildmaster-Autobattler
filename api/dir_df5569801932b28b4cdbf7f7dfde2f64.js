@@ -3,6 +3,7 @@ var dir_df5569801932b28b4cdbf7f7dfde2f64 =
     [ "Components", "dir_c7e1715b966ea12024be0acb59146edf.html", "dir_c7e1715b966ea12024be0acb59146edf" ],
     [ "DevConsole", "dir_88cdc691c8d771082d3ba35367eaad6e.html", "dir_88cdc691c8d771082d3ba35367eaad6e" ],
     [ "Navigation", "dir_73309cd32ac1fef13d7a04a9de609fc2.html", "dir_73309cd32ac1fef13d7a04a9de609fc2" ],
+    [ "Presence", "dir_4a66a361a78572bbdc47a8e6abd65388.html", "dir_4a66a361a78572bbdc47a8e6abd65388" ],
     [ "Tooltips", "dir_8ecc278667f2fdd4f4fbd8d17fe8fb47.html", "dir_8ecc278667f2fdd4f4fbd8d17fe8fb47" ],
     [ "CampScreenView.cs", "CampScreenView_8cs.html", "CampScreenView_8cs" ],
     [ "ChestScreenView.cs", "ChestScreenView_8cs.html", "ChestScreenView_8cs" ],

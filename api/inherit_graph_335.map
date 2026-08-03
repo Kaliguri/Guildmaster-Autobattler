@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipChain.html" title=" " alt="" coords="5,5,189,45"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1UI_1_1Tooltips_1_1ITooltipContentFactory.html" title="Сборка содержимого тултипа по запросу (план §II.10.5 п.3)." alt="" coords="5,5,183,45"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipContentFactory.html" title="Штатная сборка содержимого: реликвия, тег, сосуд, готовый текст." alt="" coords="231,5,408,45"/>
+<area shape="poly" id="edge370_Node000000_Node000001" title=" " alt="" coords="196,23,231,23,231,28,196,28"/>
 </map>

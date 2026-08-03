@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.SessionPlayerRouter" name="Guildmaster.Game.Session.SessionPlayerRouter">
+<area shape="rect" id="Node000001" title="Ответ на вопросы «кто с нами играет» и «за какую сторону играю я» для тех, кто переживает сеансы: кор..." alt="" coords="35,179,229,359"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html" title="За какую команду играет ЭТОТ клиент." alt="" coords="5,35,99,101"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,112,99,177,94,179,67,114"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html" title="Кто в сеансе и за какую сторону играет — единственный источник правды об этом." alt="" coords="123,5,304,131"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="185,145,171,180,166,178,180,143"/>
+</map>

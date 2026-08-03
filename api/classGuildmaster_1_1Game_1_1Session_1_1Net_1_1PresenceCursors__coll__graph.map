@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Session.Net.PresenceCursors" name="Guildmaster.Game.Session.Net.PresenceCursors">
+<area shape="rect" id="Node000001" title="Общая для обеих ролей половина присутствия: держит принятые чужие курсоры и выдаёт их отрисовке сглаж..." alt="" coords="5,139,200,299"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1IPresenceView.html" title="Чужие курсоры, которые нам МОЖНО видеть." alt="" coords="43,5,163,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,104,105,138,100,138,100,104"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.Players.ISessionRoster.SharesTeamWithLocal" name="Guildmaster.Core.Players.ISessionRoster.SharesTeamWithLocal">
+<area shape="rect" id="Node000001" title="Играет ли этот участник за нашу сторону." alt="" coords="292,13,556,53"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a49a2b0cc5996c49f5e6253e2b50988d5" title="Вне сеанса своим считается только сам игрок: показывать чужое присутствие некому, и ответ «да» здесь ..." alt="" coords="5,5,244,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="278,35,244,35,244,30,278,30"/>
+</map>

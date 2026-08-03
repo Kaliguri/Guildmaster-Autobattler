@@ -1,0 +1,9 @@
+<map id="Guildmaster.Core.Players.ISessionRoster" name="Guildmaster.Core.Players.ISessionRoster">
+<area shape="rect" id="Node000001" title="Кто в сеансе и за какую сторону играет — единственный источник правды об этом." alt="" coords="230,5,413,145"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html" title="Гостевая половина состава сеанса: представляется именем и показывает таблицу, присланную хостом." alt="" coords="5,193,200,393"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="244,157,202,198,198,194,240,153"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html" title="Владельческая половина состава сеанса: ведёт список участников, раздаёт стороны и цвета,..." alt="" coords="224,193,419,393"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="324,159,324,193,319,193,319,159"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html" title="Ответ на вопросы «кто с нами играет» и «за какую сторону играю я» для тех, кто переживает сеансы: кор..." alt="" coords="443,203,637,383"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="403,153,452,201,448,205,399,157"/>
+</map>

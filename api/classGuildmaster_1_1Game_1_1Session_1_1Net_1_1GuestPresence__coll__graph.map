@@ -1,0 +1,11 @@
+<map id="Guildmaster.Game.Session.Net.GuestPresence" name="Guildmaster.Game.Session.Net.GuestPresence">
+<area shape="rect" id="Node000001" title="Гостевая половина присутствия: отправляет свой курсор хосту и показывает те, что хост прислал." alt="" coords="140,139,335,299"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1IPresenceView.html" title="Чужие курсоры, которые нам МОЖНО видеть." alt="" coords="5,5,125,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,98,159,137,155,141,116,102"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="149,15,227,81"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="204,93,217,138,212,139,199,95"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="251,15,323,81"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="276,95,263,139,258,138,271,93"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="347,15,437,81"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="356,93,312,140,308,137,352,89"/>
+</map>

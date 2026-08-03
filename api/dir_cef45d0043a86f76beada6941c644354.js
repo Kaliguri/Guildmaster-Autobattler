@@ -21,6 +21,7 @@ var dir_cef45d0043a86f76beada6941c644354 =
     [ "DuelDamageBonusComponent.cs", "DuelDamageBonusComponent_8cs.html", "DuelDamageBonusComponent_8cs" ],
     [ "EmberComponent.cs", "EmberComponent_8cs.html", "EmberComponent_8cs" ],
     [ "EmberIgniterComponent.cs", "EmberIgniterComponent_8cs.html", "EmberIgniterComponent_8cs" ],
+    [ "EmberWardenComponent.cs", "EmberWardenComponent_8cs.html", "EmberWardenComponent_8cs" ],
     [ "EmpowerNextAttackComponent.cs", "EmpowerNextAttackComponent_8cs.html", "EmpowerNextAttackComponent_8cs" ],
     [ "EveryNthAttackComponent.cs", "EveryNthAttackComponent_8cs.html", "EveryNthAttackComponent_8cs" ],
     [ "FeedOnDamageComponent.cs", "FeedOnDamageComponent_8cs.html", "FeedOnDamageComponent_8cs" ],

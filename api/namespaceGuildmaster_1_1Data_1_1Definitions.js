@@ -201,7 +201,8 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "Ember", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438afcb94b14624bcdf327d65d191cd85035", null ],
       [ "Empowered", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a70084f9751a3e440262a1d3215bf5cf0", null ],
       [ "Sleep", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a243924bfd56a682be235638b53961e09", null ],
-      [ "Frostbite", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a5d1801a70481550d3de71ee64068b62d", null ]
+      [ "Frostbite", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a5d1801a70481550d3de71ee64068b62d", null ],
+      [ "Wet", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438aae789b866db2fac36cf644f4cdba1267", null ]
     ] ],
     [ "EncounterTier", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532fa", [
       [ "Common", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532faad13bc5b68b2bd9e18f29777db17cc563", null ],

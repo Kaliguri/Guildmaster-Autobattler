@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Session.SessionHost" name="Guildmaster.Game.Session.SessionHost">
-<area shape="rect" id="Node000001" title="Владелец жизненного цикла Сессии — сеанса владения состоянием игры." alt="" coords="5,119,200,339"/>
+<area shape="rect" id="Node000001" title="Владелец жизненного цикла Сессии — сеанса владения состоянием игры." alt="" coords="5,119,200,379"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="57,5,148,71"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,84,105,119,100,119,100,84"/>
 </map>

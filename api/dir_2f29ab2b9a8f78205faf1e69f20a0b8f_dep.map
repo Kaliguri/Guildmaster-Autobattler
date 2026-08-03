@@ -1,11 +1,10 @@
 <map id="/home/runner/work/Guildmaster&#45;Autobattler/Guildmaster&#45;Autobattler/Assets/_Project/Scripts/Game" name="/home/runner/work/Guildmaster&#45;Autobattler/Guildmaster&#45;Autobattler/Assets/_Project/Scripts/Game">
-<area shape="rect" id="node2" href="dir_3774748d2db74a8eb772fcbb8e83739e.html" title="Activity" alt="" coords="572,63,644,88"/>
-<area shape="rect" id="node3" href="dir_2e33e7522a467f825283ebf8917dfefe.html" title="Editor" alt="" coords="487,63,547,88"/>
-<area shape="rect" id="node4" href="dir_5e37f08017aa58734e3363494990453e.html" title="Flow" alt="" coords="409,63,463,88"/>
-<area shape="rect" id="node5" href="dir_d2774252db0282cea59d2af38c204c1c.html" title="Input" alt="" coords="330,63,385,88"/>
-<area shape="rect" id="node6" href="dir_944f7c46cb9e7fc1fa564f228b5b3994.html" title="Players" alt="" coords="235,63,306,88"/>
-<area shape="rect" id="node7" href="dir_3ac238596ff45257c5c272ceac142e25.html" title="Services" alt="" coords="133,63,211,88"/>
-<area shape="rect" id="node8" href="dir_26f04ae2aee47d95f43b7b6a0dee4ccc.html" title="Session" alt="" coords="37,63,109,88"/>
-<area shape="rect" id="clust2" href="dir_2f29ab2b9a8f78205faf1e69f20a0b8f.html" alt="" coords="27,52,740,99"/>
-<area shape="rect" id="clust1" href="dir_860f14a42753bbe44e0d26e0f40689a7.html" title="Scripts" alt="" coords="16,16,751,109"/>
+<area shape="rect" id="node2" href="dir_3774748d2db74a8eb772fcbb8e83739e.html" title="Activity" alt="" coords="477,63,549,88"/>
+<area shape="rect" id="node3" href="dir_2e33e7522a467f825283ebf8917dfefe.html" title="Editor" alt="" coords="393,63,453,88"/>
+<area shape="rect" id="node4" href="dir_5e37f08017aa58734e3363494990453e.html" title="Flow" alt="" coords="315,63,368,88"/>
+<area shape="rect" id="node5" href="dir_d2774252db0282cea59d2af38c204c1c.html" title="Input" alt="" coords="235,63,290,88"/>
+<area shape="rect" id="node6" href="dir_3ac238596ff45257c5c272ceac142e25.html" title="Services" alt="" coords="133,63,211,88"/>
+<area shape="rect" id="node7" href="dir_26f04ae2aee47d95f43b7b6a0dee4ccc.html" title="Session" alt="" coords="37,63,109,88"/>
+<area shape="rect" id="clust2" href="dir_2f29ab2b9a8f78205faf1e69f20a0b8f.html" alt="" coords="27,52,645,99"/>
+<area shape="rect" id="clust1" href="dir_860f14a42753bbe44e0d26e0f40689a7.html" title="Scripts" alt="" coords="16,16,656,109"/>
 </map>

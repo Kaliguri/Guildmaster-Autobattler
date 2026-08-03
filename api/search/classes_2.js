@@ -70,5 +70,6 @@ var searchData=
   ['controlcomponent_67',['ControlComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
   ['coopguestentry_68',['CoopGuestEntry',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry.html',1,'Guildmaster::Game::Session::Net']]],
   ['coophandshake_69',['CoopHandshake',['../classGuildmaster_1_1Net_1_1Session_1_1CoopHandshake.html',1,'Guildmaster::Net::Session']]],
-  ['coopsession_70',['CoopSession',['../classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html',1,'Guildmaster::Net::Session']]]
+  ['coopsession_70',['CoopSession',['../classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html',1,'Guildmaster::Net::Session']]],
+  ['cursorlayerview_71',['CursorLayerView',['../classGuildmaster_1_1UI_1_1Presence_1_1CursorLayerView.html',1,'Guildmaster::UI::Presence']]]
 ];

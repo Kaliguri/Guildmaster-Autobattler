@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.PointerWorld" name="Guildmaster.Presentation.PointerWorld">
+<area shape="rect" id="Node000001" title="Перевод указателя из экрана в мир по текущей камере." alt="" coords="5,139,188,239"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Input_1_1IPointerWorld.html" title="Где указатель игрока в мировых координатах." alt="" coords="46,5,147,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,104,99,138,94,138,94,104"/>
+</map>

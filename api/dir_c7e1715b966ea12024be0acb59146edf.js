@@ -2,6 +2,7 @@ var dir_c7e1715b966ea12024be0acb59146edf =
 [
     [ "AspectBox.cs", "AspectBox_8cs.html", "AspectBox_8cs" ],
     [ "Chip.cs", "Chip_8cs.html", "Chip_8cs" ],
+    [ "PanelFrame.cs", "PanelFrame_8cs.html", "PanelFrame_8cs" ],
     [ "PlateButton.cs", "PlateButton_8cs.html", "PlateButton_8cs" ],
     [ "RelicCard.cs", "RelicCard_8cs.html", "RelicCard_8cs" ],
     [ "RelicCardVisualRig.cs", "RelicCardVisualRig_8cs.html", "RelicCardVisualRig_8cs" ],

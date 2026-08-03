@@ -17,5 +17,6 @@ var interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession =
     [ "UnbindRestart", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a1d68cd27088b9b97f51d085e50b66b3a", null ],
     [ "UnbindStart", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a77406222d7b94d67391a8af37afc63f7", null ],
     [ "WaitOutcomeAsync", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#afb46c9ea489e6d01e860c989df278ab5", null ],
+    [ "CanRestart", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a4ea73ca6c7f59e94d31ff89c20d0abf6", null ],
     [ "ReplayRequested", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a962990482543b0048748293ff840c802", null ]
 ];

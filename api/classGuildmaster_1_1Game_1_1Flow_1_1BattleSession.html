@@ -172,12 +172,16 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a62a81040e474c25f468cc087b2ca9fd0" id="r_a62a81040e474c25f468cc087b2ca9fd0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a62a81040e474c25f468cc087b2ca9fd0">CanRestart</a><code> [get]</code></td></tr>
+<tr class="memdesc:a62a81040e474c25f468cc087b2ca9fd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли кому исполнить перезапуск (делегат привязан живым боевым скоупом).  <br /></td></tr>
+<tr class="separator:a62a81040e474c25f468cc087b2ca9fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38d9ff1853a968e168b7de6008644f9c" id="r_a38d9ff1853a968e168b7de6008644f9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a8dfef43b870791c6c04b4600ff66103a">BattlePhase</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a38d9ff1853a968e168b7de6008644f9c">Phase</a> = BattlePhase.None<code> [get]</code></td></tr>
 <tr class="memdesc:a38d9ff1853a968e168b7de6008644f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущая фаза боя (пусто/расстановка/бой). Панель опрашивает каждый кадр.  <br /></td></tr>
 <tr class="separator:a38d9ff1853a968e168b7de6008644f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab29f51f9bcfd9d2343e8eb852e474f8c" id="r_ab29f51f9bcfd9d2343e8eb852e474f8c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab29f51f9bcfd9d2343e8eb852e474f8c">ElapsedSeconds</a><code> [get]</code></td></tr>
 <tr class="memdesc:ab29f51f9bcfd9d2343e8eb852e474f8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прошедшее время текущего боя, сек (0, если боя нет).  <br /></td></tr>
 <tr class="separator:ab29f51f9bcfd9d2343e8eb852e474f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html">Guildmaster.Game.Flow.IBattleSession</a></td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">Guildmaster.Data.Definitions.IBattleClock</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
@@ -664,6 +668,33 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a62a81040e474c25f468cc087b2ca9fd0" name="a62a81040e474c25f468cc087b2ca9fd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62a81040e474c25f468cc087b2ca9fd0">&#9670;&#160;</a></span>CanRestart</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Flow.BattleSession.CanRestart</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Есть ли кому исполнить перезапуск (делегат привязан живым боевым скоупом). </p>
+<p>Спрашивается ДО списания попытки из пула акта: RequestRestart отвечает тем же «нет» уже после того, как попытка потрачена, и игрок терял бы её без единого перезапуска. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a4ea73ca6c7f59e94d31ff89c20d0abf6">Guildmaster.Game.Flow.IBattleSession</a>.</p>
+
+</div>
+</div>
 <a id="ab29f51f9bcfd9d2343e8eb852e474f8c" name="ab29f51f9bcfd9d2343e8eb852e474f8c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab29f51f9bcfd9d2343e8eb852e474f8c">&#9670;&#160;</a></span>ElapsedSeconds</h2>
 

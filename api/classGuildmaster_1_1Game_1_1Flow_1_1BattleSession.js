@@ -18,6 +18,7 @@ var classGuildmaster_1_1Game_1_1Flow_1_1BattleSession =
     [ "UnbindRestart", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a69f4198d92d8cff462732088d65fba47", null ],
     [ "UnbindStart", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a0e3a875b442f600f2632bd052d308b93", null ],
     [ "WaitOutcomeAsync", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ad0456076745fc3021a62a197eaab929e", null ],
+    [ "CanRestart", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a62a81040e474c25f468cc087b2ca9fd0", null ],
     [ "ElapsedSeconds", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab29f51f9bcfd9d2343e8eb852e474f8c", null ],
     [ "Phase", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a38d9ff1853a968e168b7de6008644f9c", null ],
     [ "PhaseChanged", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab2c46f27b2584fcb0766e30596e93bba", null ],

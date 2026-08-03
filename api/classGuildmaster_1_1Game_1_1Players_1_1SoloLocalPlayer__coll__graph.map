@@ -1,5 +1,0 @@
-<map id="Guildmaster.Game.Players.SoloLocalPlayer" name="Guildmaster.Game.Players.SoloLocalPlayer">
-<area shape="rect" id="Node000001" title="Соло&#45;тело ILocalPlayer: команда локального игрока берётся из GameConfig (по умолчанию первая)." alt="" coords="5,119,197,199"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html" title="За какую команду играет ЭТОТ клиент." alt="" coords="55,5,148,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,85,104,118,99,118,99,85"/>
-</map>

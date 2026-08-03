@@ -11,6 +11,7 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys =
     [ "DescSuffix", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#ac9e020f27351ec04ba99cf34bceb06d9", null ],
     [ "FullDescSuffix", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#a4c0b8826f9747a44f28bd9d5e41ab0b9", null ],
     [ "GenitiveSuffix", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#ab46202fb6aa3c186403bb3ff4bed078c", null ],
+    [ "InstrumentalSuffix", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#a9ae2af6699c2f54b779d32b7a0816fac", null ],
     [ "NameSuffix", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#a837a7656bd39ec3779fe5e6fa12c9484", null ],
     [ "PluralSuffix", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#a4f11ad79f334a139306343cbcd9f594e", null ],
     [ "TableName", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#a6d389da6cef8f39e9aae2f082ab39dc6", null ],

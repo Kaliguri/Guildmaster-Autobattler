@@ -104,13 +104,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Data_1_1Editor_1_
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Editor.ContentEditService.Change:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change__coll__graph.svg" width="202" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change__coll__graph.svg" width="202" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a87cf0cc10879157dc4c9e53b5ace7961" id="r_a87cf0cc10879157dc4c9e53b5ace7961"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html#a87cf0cc10879157dc4c9e53b5ace7961">Change</a> (string asset, string field, float before, float after, bool applied, string note)</td></tr>
-<tr class="separator:a87cf0cc10879157dc4c9e53b5ace7961"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ddebc7ad19c51c7c60cad4f50d4aee2" id="r_a0ddebc7ad19c51c7c60cad4f50d4aee2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html#a0ddebc7ad19c51c7c60cad4f50d4aee2">Change</a> (string asset, string field, float before, float after, bool applied, string note, bool added=false)</td></tr>
+<tr class="separator:a0ddebc7ad19c51c7c60cad4f50d4aee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bda5693aad93d014fe30bbcc3c1c946" id="r_a1bda5693aad93d014fe30bbcc3c1c946"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html#a1bda5693aad93d014fe30bbcc3c1c946">ToString</a> ()</td></tr>
 <tr class="separator:a1bda5693aad93d014fe30bbcc3c1c946"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -128,12 +128,15 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ae1824939910caa44992b78a993758536"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47afcd54e9ca1996b9f3c6eb886fe17c" id="r_a47afcd54e9ca1996b9f3c6eb886fe17c"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html#a47afcd54e9ca1996b9f3c6eb886fe17c">Note</a></td></tr>
 <tr class="separator:a47afcd54e9ca1996b9f3c6eb886fe17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa04cf41ec0873e0997ee54e30c43b02f" id="r_aa04cf41ec0873e0997ee54e30c43b02f"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html#aa04cf41ec0873e0997ee54e30c43b02f">Added</a></td></tr>
+<tr class="memdesc:aa04cf41ec0873e0997ee54e30c43b02f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Правка СОЗДАЛА запись, которой в ассете не было.  <br /></td></tr>
+<tr class="separator:aa04cf41ec0873e0997ee54e30c43b02f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Запись об одной правке: ассет, поле, было→стало, применилась ли (иначе — почему пропущено). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a87cf0cc10879157dc4c9e53b5ace7961" name="a87cf0cc10879157dc4c9e53b5ace7961"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87cf0cc10879157dc4c9e53b5ace7961">&#9670;&#160;</a></span>Change()</h2>
+<a id="a0ddebc7ad19c51c7c60cad4f50d4aee2" name="a0ddebc7ad19c51c7c60cad4f50d4aee2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ddebc7ad19c51c7c60cad4f50d4aee2">&#9670;&#160;</a></span>Change()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -175,7 +178,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>note</em>&#160;</td>
+          <td class="paramname"><em>note</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>added</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -219,6 +228,24 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa04cf41ec0873e0997ee54e30c43b02f" name="aa04cf41ec0873e0997ee54e30c43b02f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa04cf41ec0873e0997ee54e30c43b02f">&#9670;&#160;</a></span>Added</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly bool Guildmaster.Data.Editor.ContentEditService.Change.Added</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Правка СОЗДАЛА запись, которой в ассете не было. </p>
+<p>Тогда Before равен NaN — и это не «значение было нулевым», а «значения не существовало».</p>
+<p>Различие несёт откат: обратная правка к добавлению — снять запись, а не задать ей число. Записать вместо неё Before значит положить в ассет NaN (или ноль, если разбор NaN провалится) и выпустить юнита на арену без HP. </p>
+
+</div>
+</div>
 <a id="a73620dccac741d58e0ce1cb1e819d041" name="a73620dccac741d58e0ce1cb1e819d041"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a73620dccac741d58e0ce1cb1e819d041">&#9670;&#160;</a></span>After</h2>
 

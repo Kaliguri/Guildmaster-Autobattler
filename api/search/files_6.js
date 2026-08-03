@@ -9,11 +9,13 @@ var searchData=
   ['guestactivityfollower_2ecs_6',['GuestActivityFollower.cs',['../GuestActivityFollower_8cs.html',1,'']]],
   ['guestpartyfollower_2ecs_7',['GuestPartyFollower.cs',['../GuestPartyFollower_8cs.html',1,'']]],
   ['guestplaybackloop_2ecs_8',['GuestPlaybackLoop.cs',['../GuestPlaybackLoop_8cs.html',1,'']]],
-  ['guestreadygate_2ecs_9',['GuestReadyGate.cs',['../GuestReadyGate_8cs.html',1,'']]],
-  ['guestrunstate_2ecs_10',['GuestRunState.cs',['../GuestRunState_8cs.html',1,'']]],
-  ['guildbook_2ecs_11',['GuildBook.cs',['../GuildBook_8cs.html',1,'']]],
-  ['guildmastercommands_2ecs_12',['GuildmasterCommands.cs',['../GuildmasterCommands_8cs.html',1,'']]],
-  ['guildmasterdata_2ecs_13',['GuildmasterData.cs',['../GuildmasterData_8cs.html',1,'']]],
-  ['guildmasterpalette_2ecs_14',['GuildmasterPalette.cs',['../GuildmasterPalette_8cs.html',1,'']]],
-  ['guildroster_2ecs_15',['GuildRoster.cs',['../GuildRoster_8cs.html',1,'']]]
+  ['guestpresence_2ecs_9',['GuestPresence.cs',['../GuestPresence_8cs.html',1,'']]],
+  ['guestreadygate_2ecs_10',['GuestReadyGate.cs',['../GuestReadyGate_8cs.html',1,'']]],
+  ['guestrunstate_2ecs_11',['GuestRunState.cs',['../GuestRunState_8cs.html',1,'']]],
+  ['guestsessionroster_2ecs_12',['GuestSessionRoster.cs',['../GuestSessionRoster_8cs.html',1,'']]],
+  ['guildbook_2ecs_13',['GuildBook.cs',['../GuildBook_8cs.html',1,'']]],
+  ['guildmastercommands_2ecs_14',['GuildmasterCommands.cs',['../GuildmasterCommands_8cs.html',1,'']]],
+  ['guildmasterdata_2ecs_15',['GuildmasterData.cs',['../GuildmasterData_8cs.html',1,'']]],
+  ['guildmasterpalette_2ecs_16',['GuildmasterPalette.cs',['../GuildmasterPalette_8cs.html',1,'']]],
+  ['guildroster_2ecs_17',['GuildRoster.cs',['../GuildRoster_8cs.html',1,'']]]
 ];

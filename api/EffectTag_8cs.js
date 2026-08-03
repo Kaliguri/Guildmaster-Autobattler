@@ -18,6 +18,7 @@ var EffectTag_8cs =
       [ "Ember", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438afcb94b14624bcdf327d65d191cd85035", null ],
       [ "Empowered", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a70084f9751a3e440262a1d3215bf5cf0", null ],
       [ "Sleep", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a243924bfd56a682be235638b53961e09", null ],
-      [ "Frostbite", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a5d1801a70481550d3de71ee64068b62d", null ]
+      [ "Frostbite", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a5d1801a70481550d3de71ee64068b62d", null ],
+      [ "Wet", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438aae789b866db2fac36cf644f4cdba1267", null ]
     ] ]
 ];

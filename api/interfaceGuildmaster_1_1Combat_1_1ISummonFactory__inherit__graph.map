@@ -1,5 +1,5 @@
 <map id="Guildmaster.Combat.ISummonFactory" name="Guildmaster.Combat.ISummonFactory">
 <area shape="rect" id="Node000001" title="Шов «собрать юнита посреди боя» (M10)." alt="" coords="5,5,220,85"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html" title="Единственная точка сборки RuntimeUnit из SO&#45;данных." alt="" coords="9,133,216,273"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html" title="Единственная точка сборки RuntimeUnit из SO&#45;данных." alt="" coords="9,133,216,293"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,99,115,133,110,133,110,99"/>
 </map>

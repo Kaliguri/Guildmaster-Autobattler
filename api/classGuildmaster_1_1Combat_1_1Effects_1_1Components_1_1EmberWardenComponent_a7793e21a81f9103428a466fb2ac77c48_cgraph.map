@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.Effects.Components.EmberWardenComponent.OnTick" name="Guildmaster.Combat.Effects.Components.EmberWardenComponent.OnTick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,284,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#a573ab919e615e636374c98fd43666be6" title="Удалить все модификаторы, добавленные от source ." alt="" coords="332,13,529,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="284,30,318,30,318,35,284,35"/>
+</map>

@@ -1,6 +1,9 @@
 var structGuildmaster_1_1Combat_1_1DamageRequest =
 [
     [ "DamageRequest", "structGuildmaster_1_1Combat_1_1DamageRequest.html#ac38d9e2d36f79718a5923908bff36b32", null ],
+    [ "ScaledForTarget", "structGuildmaster_1_1Combat_1_1DamageRequest.html#aa713a4cd3e3e9495b0d1eca10a29a157", null ],
+    [ "WithRawDamage", "structGuildmaster_1_1Combat_1_1DamageRequest.html#ab6cf8b204ee12bea80390f6eb9b7ae47", null ],
+    [ "WithRawDamage", "structGuildmaster_1_1Combat_1_1DamageRequest.html#a569fa4f565a9205885b4c9d34a5e2724", null ],
     [ "ArmorK", "structGuildmaster_1_1Combat_1_1DamageRequest.html#a96e593ead08f6d85d2f0097cba8ba0f6", null ],
     [ "BonusFlatPen", "structGuildmaster_1_1Combat_1_1DamageRequest.html#a66f1055634da51c88a3e0c803e9fc491", null ],
     [ "BonusPctPen", "structGuildmaster_1_1Combat_1_1DamageRequest.html#a5fc0d6bb6912d6a3a7fbdda7f22a772c", null ],

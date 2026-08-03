@@ -15,7 +15,8 @@
 <polygon fill="#999999" stroke="transparent" points="163,-210 0,-210 0,0 163,0 163,-210"/>
 <text text-anchor="start" x="5.5" y="-198" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.IBattle</text>
 <text text-anchor="start" x="63" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">Session</text>
-<text text-anchor="start" x="80" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="14" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="36.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">CanRestart</text>
 <text text-anchor="start" x="14" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="36.5" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">BindLaunch()</text>
 <text text-anchor="start" x="14" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
@@ -38,7 +39,8 @@
 <text text-anchor="start" x="36.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">UnbindRestart()</text>
 <text text-anchor="start" x="36.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">and 7 more...</text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-182 0.5,-182 163.5,-182 163.5,-182 0.5,-182"/>
-<polygon fill="#666666" stroke="#666666" points="0.5,-167 0.5,-167 163.5,-167 163.5,-167 0.5,-167"/>
+<polygon fill="#666666" stroke="#666666" points="0.5,-167 0.5,-167 34.5,-167 34.5,-167 0.5,-167"/>
+<polygon fill="#666666" stroke="#666666" points="34.5,-167 34.5,-167 163.5,-167 163.5,-167 34.5,-167"/>
 <polygon fill="none" stroke="#666666" points="0,0 0,-210 163,-210 163,0 0,0"/>
 </a>
 </g>

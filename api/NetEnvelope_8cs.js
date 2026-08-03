@@ -11,6 +11,7 @@ var NetEnvelope_8cs =
       [ "BattleRoster", "NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809adcd2970301142279cc397bad805f6e58", null ],
       [ "RunSnapshot", "NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809ad432ba67fb076ed69b509f6ecf16d451", null ],
       [ "ActivityState", "NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809affa5501393f9118b530186508d8ae6ea", null ],
-      [ "ReadyGate", "NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809a94ae64bf4597d4bb43d65279e2cb6ed4", null ]
+      [ "ReadyGate", "NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809a94ae64bf4597d4bb43d65279e2cb6ed4", null ],
+      [ "SessionRoster", "NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809a012c6696b246f4fe5b3e2c8b7d6d0326", null ]
     ] ]
 ];

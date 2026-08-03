@@ -31,6 +31,7 @@ var namespaceGuildmaster_1_1Presentation =
     [ "IFocusPointSource", "interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource.html", "interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource" ],
     [ "IScreenShake", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake" ],
     [ "ManaBarView", "classGuildmaster_1_1Presentation_1_1ManaBarView.html", "classGuildmaster_1_1Presentation_1_1ManaBarView" ],
+    [ "PointerWorld", "classGuildmaster_1_1Presentation_1_1PointerWorld.html", "classGuildmaster_1_1Presentation_1_1PointerWorld" ],
     [ "PooledVfx", "classGuildmaster_1_1Presentation_1_1PooledVfx.html", "classGuildmaster_1_1Presentation_1_1PooledVfx" ],
     [ "ProjectileView", "classGuildmaster_1_1Presentation_1_1ProjectileView.html", "classGuildmaster_1_1Presentation_1_1ProjectileView" ],
     [ "ScreenShake", "classGuildmaster_1_1Presentation_1_1ScreenShake.html", "classGuildmaster_1_1Presentation_1_1ScreenShake" ],

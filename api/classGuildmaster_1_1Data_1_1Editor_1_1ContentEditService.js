@@ -4,6 +4,8 @@ var classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService =
     [ "AddAbilityCooldown", "classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a6d43ffe41c32d82f524d30fd25ddc320", null ],
     [ "AddValue", "classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a634db7c4dad67d4b091b16b20585de2f", null ],
     [ "LoadAll< T >", "classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a559ddcb178ece6857dbfe89e7652d266", null ],
+    [ "RemoveStat", "classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a92a90d936f5fd8bbaa7559c75326dd5e", null ],
+    [ "RemoveStat", "classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a4e41d43d1c1799e4d1a8984817bda92e", null ],
     [ "Resolve< T >", "classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a2932cde8133dce9f1213047eaca4b06f", null ],
     [ "ResolveAnyAsset", "classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a50b696288d0bb8e7435d763876335075", null ],
     [ "Save", "classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a8ff5f52e4ec0a97a3eb442d02be2b1ec", null ],

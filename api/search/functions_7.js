@@ -1,7 +1,7 @@
 var searchData=
 [
   ['has_0',['has',['../structGuildmaster_1_1Presentation_1_1Body_1_1PartMask.html#a2ea003352e49f92564f7664678d2b94b',1,'Guildmaster.Presentation.Body.PartMask.Has()'],['../classGuildmaster_1_1Core_1_1DevConsole_1_1DevArgs.html#a1dd425b596a33695441c35367a365234',1,'Guildmaster.Core.DevConsole.DevArgs.Has()']]],
-  ['hasdefault_1',['hasdefault',['../classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a7ab3baffc75f5a45bf6aa93ad4d73c6e',1,'Guildmaster.Presentation.Audio.AudioCatalog.HasDefault()'],['../interfaceGuildmaster_1_1Presentation_1_1Audio_1_1IAudioCatalog.html#afeef146d58377c4f67027a882d801aaf',1,'Guildmaster.Presentation.Audio.IAudioCatalog.HasDefault()']]],
+  ['hasdefault_1',['hasdefault',['../interfaceGuildmaster_1_1Presentation_1_1Audio_1_1IAudioCatalog.html#afeef146d58377c4f67027a882d801aaf',1,'Guildmaster.Presentation.Audio.IAudioCatalog.HasDefault()'],['../classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a7ab3baffc75f5a45bf6aa93ad4d73c6e',1,'Guildmaster.Presentation.Audio.AudioCatalog.HasDefault()']]],
   ['hash01_2',['Hash01',['../classGuildmaster_1_1Core_1_1Arena_1_1ArenaSwapSchedule.html#a632afb729daf666f44db6631c640db80',1,'Guildmaster::Core::Arena::ArenaSwapSchedule']]],
   ['hassound_3',['HasSound',['../classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a1ed00f33962a3b37cf0a3357a7525402',1,'Guildmaster::Presentation::Audio::AudioCatalog']]],
   ['hastile_4',['HasTile',['../classGuildmaster_1_1Presentation_1_1Arena_1_1ArenaSkinSwapper.html#ab9300cf35d795e00c19d5b7e45e98a38',1,'Guildmaster::Presentation::Arena::ArenaSkinSwapper']]],
@@ -26,6 +26,8 @@ var searchData=
   ['holdhitframe_23',['HoldHitFrame',['../classGuildmaster_1_1Presentation_1_1UnitView.html#a5b2d3bede969465f8b6577ab3fbf2356',1,'Guildmaster::Presentation::UnitView']]],
   ['holdshield_24',['HoldShield',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a0af352edc7d0a78a5ebac8ee7d0d532a',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
   ['homedir_25',['HomeDir',['../classGuildmaster_1_1Combat_1_1FleeSteering.html#a66b7ac7b2fc51e9c7b4cb8193d0f74dd',1,'Guildmaster::Combat::FleeSteering']]],
-  ['hostreadygate_26',['HostReadyGate',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostReadyGate.html#ab5598a2b2899cf92e757eff31cba6a5f',1,'Guildmaster::Game::Session::Net::HostReadyGate']]],
-  ['hubtoasts_27',['HubToasts',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a2175aa94ab0a522b9afccd08ea3e117b',1,'Guildmaster::ContentHub::Editor::HubToasts']]]
+  ['hostpresence_26',['HostPresence',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostPresence.html#ad12319c0633bffa2a1f274ded54fba68',1,'Guildmaster::Game::Session::Net::HostPresence']]],
+  ['hostreadygate_27',['HostReadyGate',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostReadyGate.html#ab5598a2b2899cf92e757eff31cba6a5f',1,'Guildmaster::Game::Session::Net::HostReadyGate']]],
+  ['hostsessionroster_28',['HostSessionRoster',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#a3175378b82b62d9fcaffc4176774922e',1,'Guildmaster::Game::Session::Net::HostSessionRoster']]],
+  ['hubtoasts_29',['HubToasts',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a2175aa94ab0a522b9afccd08ea3e117b',1,'Guildmaster::ContentHub::Editor::HubToasts']]]
 ];
