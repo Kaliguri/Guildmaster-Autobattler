@@ -598,6 +598,7 @@ namespace Guildmaster.UI
             if (_devLog != null && _nav.AnyScreen(s => ReferenceEquals(s, _devLog)))
             {
                 _nav.Remove(_devLog);
+                _log?.Detach();   // парный к Attach ниже: обещание «пока есть кому смотреть» держит хозяин
                 return;
             }
 
