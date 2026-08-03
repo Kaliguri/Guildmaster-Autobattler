@@ -22,8 +22,8 @@
 | **Architecture** | <img alt="DI" src="https://img.shields.io/badge/DI-8957e5?style=flat-square"/> <img alt="MVVM" src="https://img.shields.io/badge/MVVM-8957e5?style=flat-square"/> <img alt="EventBus" src="https://img.shields.io/badge/EventBus-8957e5?style=flat-square"/> <a href="https://github.com/hadashiA/VContainer"><img alt="VContainer" src="https://img.shields.io/badge/VContainer-1f6feb?style=flat-square"/></a> <a href="https://github.com/Cysharp/MessagePipe"><img alt="MessagePipe" src="https://img.shields.io/badge/MessagePipe-1f6feb?style=flat-square"/></a> |
 | **Patterns** | <img alt="State Machine" src="https://img.shields.io/badge/State_Machine-8957e5?style=flat-square"/> <img alt="Command" src="https://img.shields.io/badge/Command-8957e5?style=flat-square"/> <img alt="Object Pool" src="https://img.shields.io/badge/Object_Pool-8957e5?style=flat-square"/> <img alt="Strategy" src="https://img.shields.io/badge/Strategy-8957e5?style=flat-square"/> |
 | **Async / UI** | <a href="https://github.com/Cysharp/UniTask"><img alt="UniTask" src="https://img.shields.io/badge/UniTask-1f6feb?style=flat-square"/></a> <a href="https://github.com/annulusgames/LitMotion"><img alt="LitMotion" src="https://img.shields.io/badge/LitMotion-1f6feb?style=flat-square"/></a> <a href="https://docs.unity3d.com/Manual/UIElements.html"><img alt="UI Toolkit" src="https://img.shields.io/badge/UI_Toolkit-222222?style=flat-square&logo=unity&logoColor=white"/></a> |
-| **Multiplayer** | <a href="https://docs-multiplayer.unity3d.com/"><img alt="NGO" src="https://img.shields.io/badge/NGO-222222?style=flat-square&logo=unity&logoColor=white"/></a> <a href="https://github.com/Facepunch/Facepunch.Steamworks"><img alt="Facepunch.Steamworks" src="https://img.shields.io/badge/Facepunch.Steamworks-171a21?style=flat-square&logo=steam&logoColor=white"/></a> |
-| **Data** | <a href="https://docs.unity3d.com/Packages/com.unity.addressables@latest"><img alt="Addressables" src="https://img.shields.io/badge/Addressables-222222?style=flat-square&logo=unity&logoColor=white"/></a> <a href="https://docs.unity3d.com/Packages/com.unity.localization@latest"><img alt="Unity Localization" src="https://img.shields.io/badge/Unity_Localization-222222?style=flat-square&logo=unity&logoColor=white"/></a> <a href="https://moodkie.com/easy-save/"><img alt="Easy Save 3" src="https://img.shields.io/badge/Easy_Save_3-1f6feb?style=flat-square"/></a> <a href="https://www.newtonsoft.com/json"><img alt="Newtonsoft.Json" src="https://img.shields.io/badge/Newtonsoft.Json-1f6feb?style=flat-square"/></a> <a href="https://odininspector.com"><img alt="Odin Inspector" src="https://img.shields.io/badge/Odin_Inspector-1f6feb?style=flat-square"/></a> |
+| **Multiplayer** | <img alt="Custom netcode" src="https://img.shields.io/badge/Custom_netcode-8957e5?style=flat-square"/> <a href="https://github.com/Facepunch/Facepunch.Steamworks"><img alt="Facepunch.Steamworks" src="https://img.shields.io/badge/Facepunch.Steamworks-171a21?style=flat-square&logo=steam&logoColor=white"/></a> |
+| **Data** | <a href="https://docs.unity3d.com/Packages/com.unity.localization@latest"><img alt="Unity Localization" src="https://img.shields.io/badge/Unity_Localization-222222?style=flat-square&logo=unity&logoColor=white"/></a> <a href="https://www.newtonsoft.com/json"><img alt="Newtonsoft.Json" src="https://img.shields.io/badge/Newtonsoft.Json-1f6feb?style=flat-square"/></a> <a href="https://odininspector.com"><img alt="Odin Inspector" src="https://img.shields.io/badge/Odin_Inspector-1f6feb?style=flat-square"/></a> |
 | **Audio** | <a href="https://www.fmod.com"><img alt="FMOD" src="https://img.shields.io/badge/FMOD-000000?style=flat-square&logo=fmod&logoColor=white"/></a> |
 
 <p>
@@ -49,7 +49,7 @@ You lead a guild preparing for the Grand Championship. Your roster is made of **
 
 Built for **1–4 players**: solo, you command the whole guild; in co-op, each player runs their own Vessels.
 
-> **What this project demonstrates:** a deterministic real-time combat simulation, a DI-driven architecture (VContainer + MessagePipe) with no singletons, host-authoritative co-op netcode (NGO + Steam), and a fully data-driven content pipeline (ScriptableObjects + Addressables) — covered by an EditMode/PlayMode test suite in CI.
+> **What this project demonstrates:** a deterministic real-time combat simulation, a DI-driven architecture (VContainer + MessagePipe) with no singletons, host-authoritative co-op netcode written for this project on top of Steam, and a fully data-driven content pipeline (ScriptableObjects) — covered by an EditMode/PlayMode test suite in CI.
 
 ### Key features
 
@@ -59,7 +59,7 @@ Built for **1–4 players**: solo, you command the whole guild; in co-op, each p
 | **Guildmaster** | Doesn't fight directly — casts spells in real time during the battle; your main lever on the outcome |
 | **Readable auto-battle** | Combat runs automatically from your pre-set positions, target priorities and AI rules; deterministic, no crits or dodges — and you can pause any time |
 | **Roguelike run** | A *Slay the Spire*-style map of events, elite guilds and end-of-act boss fights; rewards are Hero Mementos, resources and gold |
-| **Co-op for 1–4** | The host shares Vessels across the party; each player runs their own over Steam (host-authoritative NGO) |
+| **Co-op for 1–4** | The host shares Vessels across the party; each player runs their own over Steam (host-authoritative) |
 
 ---
 
@@ -73,7 +73,7 @@ Built for **1–4 players**: solo, you command the whole guild; in co-op, each p
 
 Игра рассчитана на **1–4 игроков**: в соло вы ведёте всю гильдию, в кооперативе каждый управляет своими «Сосудами».
 
-> **Что демонстрирует проект:** детерминированную симуляцию боя в реальном времени, DI-архитектуру (VContainer + MessagePipe) без синглтонов, host-authoritative кооп-нетворкинг (NGO + Steam) и полностью data-driven контент-пайплайн (ScriptableObjects + Addressables) — с покрытием EditMode/PlayMode-тестами в CI.
+> **Что демонстрирует проект:** детерминированную симуляцию боя в реальном времени, DI-архитектуру (VContainer + MessagePipe) без синглтонов, host-authoritative кооп-нетворкинг собственной разработки поверх Steam и полностью data-driven контент-пайплайн (ScriptableObjects) — с покрытием EditMode/PlayMode-тестами в CI.
 
 ### Ключевые механики
 
@@ -83,7 +83,7 @@ Built for **1–4 players**: solo, you command the whole guild; in co-op, each p
 | **Гильдмастер (Guildmaster)** | Не сражается напрямую — кастует заклинания в реальном времени по ходу боя; ваш главный рычаг влияния на исход |
 | **Читаемый автобой** | Бой идёт автоматически по заранее заданным позициям, приоритетам целей и AI-правилам; детерминированно, без крита и уклонения — паузу можно ставить в любой момент |
 | **Рогалик-забег** | Карта в стиле *Slay the Spire*: события, элитные гильдии и босс-бои в конце акта; награды — Реликвии, ресурсы и золото |
-| **Кооп на 1–4** | Хост делит «Сосудов» по отряду; каждый играет за своих по Steam (host-authoritative NGO) |
+| **Кооп на 1–4** | Хост делит «Сосудов» по отряду; каждый играет за своих по Steam (host-authoritative) |
 
 ---
 
@@ -115,18 +115,16 @@ Built for **1–4 players**: solo, you command the whole guild; in co-op, each p
 | **Async** | [UniTask](https://github.com/Cysharp/UniTask) | Zero-alloc async/await instead of coroutines |
 | **UI** | [UI Toolkit](https://docs.unity3d.com/Manual/UIElements.html) + MVVM | Retained-mode UI (UXML/USS) with View↔ViewModel bindings |
 | | [LitMotion](https://github.com/annulusgames/LitMotion) | Zero-alloc tweens for UI and VFX |
-| **Multiplayer** | NGO 2.11.2 | Netcode for GameObjects — host-authoritative |
-| | [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) | Steam integration and transport for NGO |
-| | MPPM 1.3.2 | In-editor co-op testing (up to 4 virtual players) |
-| **Data** | Easy Save 3 | Saves (disk + Steam Cloud) |
+| **Multiplayer** | Custom netcode | Host-authoritative, written for this project — commands and snapshots over Steam |
+| | [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) | Steam integration, lobbies and transport |
+| **Data** | Custom JSON saves | Own `ISaveService` — atomic writes, `.bak`, schema versions, Steam Auto-Cloud |
 | | Newtonsoft.Json | JSON serialization of DTOs |
-| | Addressables | Content loading by address |
+| | Addressables | Backing store for Unity Localization (no direct loads by address) |
 | | Unity Localization | EN + RU localization |
 | **Audio** | FMOD | Adaptive music (behind an `IAudioService` interface) |
 | **Tooling** | [Odin Inspector](https://odininspector.com) | Extended inspector, `[SerializeReference]` dropdowns |
-| | [Feel (More Mountains)](https://assetstore.unity.com/packages/tools/particles-effects/feel-183370) | Game feel: rumble, camera shake, hitstops |
 | | [Shapes (Freya Holmer)](https://acegikmo.com/shapes/) | Procedural vector graphics for UI and debug |
-| | [Quantum Console](https://assetstore.unity.com/packages/tools/utilities/quantum-console-211046) | In-game dev console |
+| | Custom dev console | In-game console and dev overlays (F1 / F2 / F3) |
 
 ## Project layout
 
@@ -135,25 +133,33 @@ Guildmaster - Autobattler/
 ├── Assets/
 │   └── _Project/             # All game code and content
 │       ├── Scripts/
-│       │   ├── Core/         # Guildmaster.Core.asmdef
-│       │   ├── Units/        # Guildmaster.Units.asmdef
-│       │   ├── Combat/       # Guildmaster.Combat.asmdef
-│       │   ├── Guild/        # Guildmaster.Guild.asmdef
-│       │   └── UI/           # Guildmaster.UI.asmdef
+│       │   ├── Core/         # Services and seams: input, audio, saves
+│       │   ├── Data/         # ScriptableObject definitions, stats, content registry
+│       │   ├── Combat/       # Deterministic simulation — 30 Hz, two-phase tick
+│       │   ├── Presentation/ # Battle presentation: views, VFX, feel
+│       │   ├── Game/         # Run flow, activities, deployment, map
+│       │   ├── Guild/        # Roster, guild layer
+│       │   ├── Net/          # Co-op sessions and Steam transport
+│       │   ├── UI/           # UI Toolkit screens and design system
+│       │   ├── Balance/      # SimBench — headless balance benchmarks
+│       │   └── DevTools/     # Dev console and overlays
+│       ├── Tests/
+│       │   ├── EditMode/     # Unit tests
+│       │   └── PlayMode/     # Integration tests
 │       ├── ScriptableObjects/
 │       ├── Prefabs/
 │       ├── Scenes/
 │       └── UI/
-├── Assets/Tests/
-│   ├── EditMode/             # Unit tests
-│   └── PlayMode/             # Integration tests
-├── docs/wiki/         # GDD and technical docs (Obsidian Vault)
+├── docs/wiki/                # GDD and technical docs (Obsidian Vault)
 ├── quartz-config/            # Quartz v4 config for the docs site
 ├── doxygen/                  # Doxygen config for the C# API reference
-├── .github/workflows/        # CI: tests (ci.yml) and docs deploy (docs.yml)
-├── .cursor/rules/            # Code standards and git conventions
+├── .github/workflows/        # CI, docs deploy, docs lint, Steam deploy
+├── .cursor/rules/            # Git conventions and agent workflows
+├── tools/                    # Console utilities that run without the editor
 └── scripts/
-    └── run-tests.ps1         # Local test runner
+    ├── run-tests.ps1         # Local test runner (shadow project)
+    ├── compile-check.ps1     # Compile check without opening the editor
+    └── balance-headless.ps1  # Headless balance benchmarks
 ```
 
 **Code principles:**
@@ -166,8 +172,10 @@ Guildmaster - Autobattler/
 
 | File | Purpose |
 |---|---|
-| `.github/workflows/ci.yml` | Unity Test Runner (EditMode + PlayMode) on push/PR |
+| `.github/workflows/ci.yml` | Unity Test Runner + player build. EditMode always; PlayMode only on `master`, where its cost is worth paying |
 | `.github/workflows/docs.yml` | Build Quartz + Doxygen → deploy to GitHub Pages |
+| `.github/workflows/docs-lint.yml` | Blocks a PR on broken internal links in the vault |
+| `.github/workflows/steam-deploy.yml` | Upload a build to Steam — the version is set by the tag |
 
 Run tests locally:
 ```powershell
