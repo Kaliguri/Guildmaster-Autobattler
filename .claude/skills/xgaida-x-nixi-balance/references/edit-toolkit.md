@@ -50,14 +50,19 @@ ContentCohorts.Where<RelicData>(r => r.Abilities.Length > 1)
   "edits": [
     { "op": "scaleStat", "asset": "Druid", "stat": "Power", "factor": 0.58 },
     { "op": "setStat", "asset": "BaseRelic", "stat": "MaxHP", "modOp": "Override", "value": 2000 },
-    { "op": "setFloat", "asset": "BulwarkShield", "path": "_baseDuration", "value": 0.5 },
-    { "op": "addFloat", "asset": "Ranger", "path": "_movingAttackSpeedPenaltyPct", "delta": 0.1 },
+    { "op": "setValue", "asset": "BulwarkShield", "path": "_baseDuration", "value": 0.5 },
+    { "op": "addValue", "asset": "Ranger", "path": "_movingAttackSpeedPenaltyPct", "delta": 0.1 },
     { "op": "addCooldown", "asset": "Defender", "ability": "ability.bulwark", "delta": 1.0 },
     { "op": "setEffectField", "asset": "BulwarkShield", "field": "_internalCooldownSeconds", "value": 5 },
+    { "op": "removeStat", "asset": "Druid", "stat": "MaxResource" },
     { "op": "scaleStat", "cohort": { "class": "Tank" }, "stat": "MaxHP", "factor": 1.1 }
   ]
 }
 ```
+
+Операций ровно семь, и имена у них такие: `scaleStat`, `setStat`, `removeStat`, `setValue`,
+`addValue`, `addCooldown`, `setEffectField`. Неизвестная операция не применяется — только пишет
+предупреждение в консоль, так что опечатка выглядит как «пакет применился, но ничего не изменил».
 
 Применение:
 
