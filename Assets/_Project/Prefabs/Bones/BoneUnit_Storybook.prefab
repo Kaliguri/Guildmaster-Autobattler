@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 366334706354234931}
-  m_Father: {fileID: 263511465683477257}
+  m_Father: {fileID: 34887387643210407}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3499765490715548158
 GameObject:
@@ -396,38 +396,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!1 &7404733982285714954
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 263511465683477257}
-  m_Layer: 0
-  m_Name: Rotation Point (Wrist)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &263511465683477257
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7404733982285714954}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.014819317, y: 0.0076100626, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1851229708332482664}
-  m_Father: {fileID: 679894856690989041}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6782885361109145129
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -885,26 +853,25 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 1030118747433061460, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2231456120308910550, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6249521352780219126}
-    - targetCorrespondingSourceObject: {fileID: 6291210411298906584, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 263511465683477257}
     - targetCorrespondingSourceObject: {fileID: 2943272987204117313, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 877275524313881502}
     - targetCorrespondingSourceObject: {fileID: 2943272987204117313, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1348506750314071968}
+    - targetCorrespondingSourceObject: {fileID: 6798842969194953870, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1851229708332482664}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
---- !u!4 &679894856690989041 stripped
+--- !u!4 &34887387643210407 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 6291210411298906584, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6798842969194953870, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
   m_PrefabInstance: {fileID: 6782885361109145129}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &4671956610316886015 stripped
