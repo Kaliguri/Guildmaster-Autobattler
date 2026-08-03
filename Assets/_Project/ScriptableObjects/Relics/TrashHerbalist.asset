@@ -77,7 +77,7 @@ MonoBehaviour:
     _damageType: 0
     _areaShape: 0
     _areaRadius: 0
-    _healFlat: 300
+    _healFlat: 180
     _healPctTargetMissingHp: 0
     _healEffect: {fileID: 0}
     _selfHealFraction: 1
