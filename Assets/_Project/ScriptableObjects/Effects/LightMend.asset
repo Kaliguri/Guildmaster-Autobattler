@@ -18,6 +18,7 @@ MonoBehaviour:
   _baseDuration: -1
   _stacking: 0
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 0
   _unremovable: 0
   _cleansePrice:
@@ -29,6 +30,7 @@ MonoBehaviour:
     Pct: 0
   _components:
   - rid: 5615027215320744035
+  _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
   references:
@@ -38,6 +40,6 @@ MonoBehaviour:
       type: {class: AllyMendComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _fraction: 0.25
-        _allyBonus: 3
+        _allyBonus: 2
         _radius: 5
         _autoAttackOnly: 1

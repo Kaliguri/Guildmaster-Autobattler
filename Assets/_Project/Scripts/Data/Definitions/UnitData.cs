@@ -29,6 +29,16 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private AttackType _attackType = AttackType.Melee;
         [SerializeField] private ResourceType _resourceType = ResourceType.None;
 
+        [Tooltip("Ступень дальности авто-атаки. Число за ступенью живёт в StatsConfig — здесь юнит " +
+                 "объявляет, кто он по дистанции, а не сколько метров достаёт. Своё число в стат-блоке " +
+                 "задавать нельзя: тогда у дальности снова стало бы два владельца (AttackRangeBandTests).")]
+        [SerializeField] private AttackRangeBand _rangeBand = AttackRangeBand.Melee;
+
+        [Tooltip("Личная поправка к ступени, доля: 0.1 = на 10% дальше своих. Намеренно мелкая и в долях, " +
+                 "а не в единицах, — чтобы правка ступени доезжала и до тех, кто от неё отличается.")]
+        [Range(-0.25f, 0.25f)]
+        [SerializeField] private float _rangeAdjustPct;
+
         [Header("Visual (Phase 3)")]
         [Tooltip("Набор спрайт-кадров. Сим/фабрика читают отсюда кадр контакта авто-атаки для windup " +
                  "(вики «14»). ОБЯЗАТЕЛЕН: пусто = UnitView не найдёт клип атаки и ругнётся в лог, а замах " +
@@ -156,6 +166,13 @@ namespace Guildmaster.Data.Definitions
         public DamageType AutoAttackDamageType => _autoAttackDamageType;
         public CreatureType CreatureType => _creatureType;
         public AttackType AttackType => _attackType;
+
+        /// <summary>Ступень дальности авто-атаки; дистанцию за ней знает <see cref="StatsConfig"/>.</summary>
+        public AttackRangeBand RangeBand => _rangeBand;
+
+        /// <summary>Личная поправка к ступени, доля от неё (0.1 = +10%).</summary>
+        public float RangeAdjustPct => _rangeAdjustPct;
+
         public ResourceType ResourceType => _resourceType;
         public UnitVisual Visual => _visual;
         public GameObject ViewPrefab => _viewPrefab;

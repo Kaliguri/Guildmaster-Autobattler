@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: ai_preset.dreameater
   _profile:
     _autoAttackTargeting: 4
-    _autoAttackMode: 0
+    _autoAttackMode: 2
     _targetTag: 32768
     _retreat:
       Enabled: 1
@@ -27,4 +27,3 @@ MonoBehaviour:
       FallbackDist: 3
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
-  _archetypeTags: []

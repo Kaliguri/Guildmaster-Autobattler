@@ -39,6 +39,7 @@ namespace Guildmaster.Combat
             var stats = new Stats(config);
 
             ClassBaseline.Apply(stats, data, classConfig);
+            RangeBaseline.Apply(stats, data, config);
             EnemyScalers.Apply(stats, data);
 
             if (data != null && data.Stats != null && data.Stats.Length > 0)

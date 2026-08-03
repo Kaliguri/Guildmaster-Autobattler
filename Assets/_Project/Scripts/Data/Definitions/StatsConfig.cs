@@ -24,6 +24,14 @@ namespace Guildmaster.Data.Definitions
                  "полная шкала = 20 секунд, а темп способности читается как «стоимость ÷ это число».")]
         [SerializeField] private float _resourceRegenPerSecond = 5f;
 
+        [Header("Ступени дальности авто-атаки")]
+        [Tooltip("Дистанция каждой ступени в мировых единицах, по порядку AttackRangeBand: обычный мили, " +
+                 "длинное оружие, малая дальность, обычная, большая, без ограничений. Юнит выбирает ступень, " +
+                 "а не число, поэтому правка здесь двигает ВСЕХ её носителей — это и есть ручка баланса " +
+                 "дистанции. Шестая ступень задана числом крупнее арены (поле 20×12), а не бесконечностью: " +
+                 "на дальность опираются геометрические гейты сближения и замаха.")]
+        [SerializeField] private float[] _attackRangeBands = { 1f, 2f, 5f, 8f, 12f, 25f };
+
         [Header("Stat defaults (override; пусто = натуральный дефолт)")]
         [Tooltip("Явные дефолты статов. Если стата нет в списке — берётся натуральный дефолт (1.0 для эффективностей и Size, иначе 0).\n\n" +
                  "MaxHP и MoveSpeed здесь ЗАПРЕЩЕНЫ: их базу задаёт боевой класс (ГДД «Боевая система»), " +
@@ -33,6 +41,19 @@ namespace Guildmaster.Data.Definitions
 
         public float ArmorConstantK => _armorConstantK;
         public float ResourceRegenPerSecond => _resourceRegenPerSecond;
+
+        /// <summary>
+        /// Дистанция ступени в мировых единицах. Ступень вне списка — дефект контента, поэтому говорим
+        /// вслух и отдаём ближний бой: молчаливый ноль означал бы юнита, который не достаёт ни до кого.
+        /// </summary>
+        public float RangeOf(AttackRangeBand band)
+        {
+            int i = (int)band;
+            if (_attackRangeBands != null && i >= 0 && i < _attackRangeBands.Length) return _attackRangeBands[i];
+
+            Debug.LogError($"[StatsConfig] - ступень дальности '{band}' не задана в конфиге; беру ближний бой.");
+            return 1f;
+        }
 
         /// <summary>Базовое (доmodifier) значение стата: явный override из ассета или натуральный дефолт.</summary>
         public float GetDefault(StatType stat)

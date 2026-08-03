@@ -18,6 +18,8 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 0
   _resourceType: 1
+  _rangeBand: 0
+  _rangeAdjustPct: 0
   _visual: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
   _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
   _bodyShade: 0
@@ -55,9 +57,6 @@ MonoBehaviour:
   - Stat: 27
     Op: 3
     Value: 50
-  - Stat: 9
-    Op: 3
-    Value: 1
   _grantedEffects:
   - {fileID: 11400000, guid: c585ce229a24f184cbb2d0431b508603, type: 2}
   _abilities:
@@ -69,6 +68,7 @@ MonoBehaviour:
     _resourceCost: 50
     _targetMode: 1
     _damageMultiplier: 0
+    _baseDamage: 0
     _damageType: 2
     _areaShape: 0
     _areaRadius: 0
