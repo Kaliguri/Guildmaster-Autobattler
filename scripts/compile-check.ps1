@@ -14,6 +14,8 @@
 #   ./scripts/compile-check.ps1 -All                 # все наши сборки
 #   ./scripts/compile-check.ps1 -Assembly Guildmaster.Combat,Guildmaster.Data
 #   ./scripts/compile-check.ps1 -Meta                # заодно завести .meta новым .cs
+#   ./scripts/compile-check.ps1 -All -ShowWarnings   # плюс сводка предупреждений по кодам
+#   ./scripts/compile-check.ps1 -All -WarningCode CS0649   # тексты предупреждений одного кода
 
 param(
     # Явный список сборок. Пусто = определить по изменённым файлам, либо все при -All.
@@ -27,7 +29,13 @@ param(
     [switch]$Meta,
 
     # Не останавливаться на первой сборке с ошибками.
-    [switch]$KeepGoing
+    [switch]$KeepGoing,
+
+    # Сводка предупреждений: сколько какого кода и в каких сборках. Без текстов — их сотни.
+    [switch]$ShowWarnings,
+
+    # Тексты предупреждений только перечисленных кодов, например: -WarningCode CS0649,CS0414.
+    [string[]]$WarningCode
 )
 
 Set-StrictMode -Version Latest
@@ -417,8 +425,15 @@ New-Item -ItemType Directory -Force -Path $outDir | Out-Null
 Write-Host "Проверяю: $($order -join ', ')" -ForegroundColor Cyan
 
 $rebuilt = [System.Collections.Generic.List[string]]::new()
+$allWarnings = [System.Collections.Generic.List[object]]::new()
 $failed = 0
 $totalSeconds = 0.0
+
+# Запятые в -WarningCode разбираем сами по той же причине, что и в -Assembly (см. выше).
+$wantedCodes = @()
+if ($WarningCode) {
+    $wantedCodes = @($WarningCode | ForEach-Object { $_ -split ',' } | Where-Object { $_ } | ForEach-Object { $_.Trim().ToUpperInvariant() })
+}
 
 foreach ($name in $order) {
     $result = Invoke-AssemblyCompile -Name $name -DagDir $dagDir -OutDir $outDir -Map $map -Csc $csc -RebuiltNames $rebuilt
@@ -440,7 +455,31 @@ foreach ($name in $order) {
         $rebuilt.Add($name)
         $warn = if ($result.Warnings.Count -gt 0) { " (предупреждений: $($result.Warnings.Count))" } else { "" }
         Write-Host "  OK $name — $($result.Seconds) с$warn" -ForegroundColor Green
+
+        foreach ($w in $result.Warnings) {
+            $text = [string]$w
+            $code = if ($text -match '\): warning ([A-Z]+\d+)') { $Matches[1] } else { "?" }
+            $allWarnings.Add([pscustomobject]@{ Assembly = $name; Code = $code; Text = $text })
+        }
     }
+}
+
+if ($wantedCodes.Count -gt 0) {
+    $picked = @($allWarnings | Where-Object { $wantedCodes -contains $_.Code })
+    Write-Host ""
+    Write-Host "Предупреждения $($wantedCodes -join ', ') — $($picked.Count) шт.:" -ForegroundColor Yellow
+    foreach ($w in $picked) { Write-Host "  $($w.Text)" -ForegroundColor DarkYellow }
+}
+
+if ($ShowWarnings -and $allWarnings.Count -gt 0) {
+    Write-Host ""
+    Write-Host "Предупреждения по кодам ($($allWarnings.Count) всего):" -ForegroundColor Yellow
+    $allWarnings | Group-Object Code | Sort-Object Count -Descending | ForEach-Object {
+        $where = ($_.Group | Group-Object Assembly | Sort-Object Count -Descending |
+            ForEach-Object { "$($_.Name -replace '^Guildmaster\.', '') x$($_.Count)" }) -join ', '
+        Write-Host ("  {0,-8} {1,4}  {2}" -f $_.Name, $_.Count, $where)
+    }
+    Write-Host "Тексты одного кода: -WarningCode <код>" -ForegroundColor DarkGray
 }
 
 Write-Host ""
