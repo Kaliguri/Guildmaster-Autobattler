@@ -122,20 +122,24 @@ namespace Guildmaster.Balance.Tests
         [Test]
         public void Mirror_Lineups_NeverDiverge([Values("Trio", "Squad", "Large")] string lineupName)
         {
-            List<RelicData> relics = BalanceAssets.LoadRelics();
-            var squad = new List<RelicData>();
-            foreach (string name in new[] { "Defender", "FlameSwordsman", "Cryomancer", "LightShepherd" })
-            {
-                RelicData relic = relics.Find(r => r.name == name);
-                if (relic != null) squad.Add(relic);
-            }
-
             Slot[] lineup = lineupName switch
             {
                 "Trio"  => Lineups.Trio,
                 "Large" => Lineups.Large,
                 _       => Lineups.Squad,
             };
+
+            // Состав режем по числу слотов: лишний герой слота не получает и на арену не выходит вовсе
+            // (SpawnTeam об этом кричит). Зеркальность от этого не страдает — стороны одинаковы, — но
+            // тест проверял бы тройку, называя её четвёркой.
+            List<RelicData> relics = BalanceAssets.LoadRelics();
+            var squad = new List<RelicData>();
+            foreach (string name in new[] { "Defender", "FlameSwordsman", "Cryomancer", "LightShepherd" })
+            {
+                if (squad.Count >= lineup.Length) break;
+                RelicData relic = relics.Find(r => r.name == name);
+                if (relic != null) squad.Add(relic);
+            }
 
             AssertMirrorHolds(squad, lineup, $"строй «{lineupName}»");
         }
