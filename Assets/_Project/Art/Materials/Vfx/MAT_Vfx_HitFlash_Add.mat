@@ -80,7 +80,7 @@ Material:
     - _SoftParticlesFarFadeDistance: 1
     - _SoftParticlesNearFadeDistance: 0
     - _SrcBlend: 5
-    - _SrcBlendAlpha: 5
+    - _SrcBlendAlpha: 1
     - _Surface: 1
     - _ZWrite: 0
     m_Colors:
