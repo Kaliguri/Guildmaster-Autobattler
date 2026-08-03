@@ -354,7 +354,7 @@ namespace Guildmaster.Balance.Editor
             for (int i = 0; i < report.Units.Count; i++)
             {
                 UnitMetric m = report.Units[i];
-                if (m.Team != team) continue;
+                if (m.Team != team || m.IsSummon) continue;   // тело — расходник, в запас стороны не входит
                 hpLeft += m.HpLeft;
                 maxHp += m.MaxHp;
                 if (m.Id == heroId) hero = m;

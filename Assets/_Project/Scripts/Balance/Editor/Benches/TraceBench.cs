@@ -120,8 +120,8 @@ namespace Guildmaster.Balance.Editor
             {
                 UnitMetric m = report.Units[i];
                 string side = m.Team == 0 ? "игрок" : "враг";
-                if (m.Died) dead.Add($"{m.Label} ({side})");
-                else alive.Add($"{m.Label} ({side}, {100.0 * m.HpPctLeft:0}%)");
+                if (m.Died) dead.Add($"{m.DisplayLabel} ({side})");
+                else alive.Add($"{m.DisplayLabel} ({side}, {100.0 * m.HpPctLeft:0}%)");
             }
 
             return "**Выжили:** " + (alive.Count > 0 ? string.Join(", ", alive) : "никто") +

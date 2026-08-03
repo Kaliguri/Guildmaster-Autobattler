@@ -50,8 +50,14 @@ namespace Guildmaster.Balance.Editor
             /// <summary>Метрика самого испытуемого кита за бой — все пять корзин.</summary>
             public readonly UnitMetric Hero;
 
+            /// <summary>Вся его армия за бой, свёрнутая в одну строку. У кита без призывов — нули.</summary>
+            public readonly SummonRollup Army;
+
+            /// <summary>Длительность боя в тиках — знаменатель аптайма армии.</summary>
+            public readonly int DurationTicks;
+
             public Attempt(bool cleared, bool timedOut, double seconds, double teamHpPct, int fallen,
-                bool heroDied, UnitMetric hero)
+                bool heroDied, UnitMetric hero, SummonRollup army, int durationTicks)
             {
                 Cleared = cleared;
                 TimedOut = timedOut;
@@ -60,6 +66,8 @@ namespace Guildmaster.Balance.Editor
                 Fallen = fallen;
                 HeroDied = heroDied;
                 Hero = hero;
+                Army = army;
+                DurationTicks = durationTicks;
             }
         }
 
@@ -118,6 +126,7 @@ namespace Guildmaster.Balance.Editor
                 "Rank", "Relic", "Class", "Cleared", "Fights", "ClearRate", "HpCostOnClear%",
                 "AvgFightSec", "Timeout%", "Overtime%", "HeroDeaths%", "FallenOnClear",
                 "AvgDmgDealt", "HealDone", "ControlSec",
+                "SummonDmg", "DmgWithSummons", "SummonTanked", "SummonsAlive", "FirstSummonSec",
             };
 
             var rows = new List<(double clearRate, double hpCost, IReadOnlyList<object> cells)>();
@@ -129,6 +138,12 @@ namespace Guildmaster.Balance.Editor
                 int fights = 0, clears = 0, timeouts = 0, overtimes = 0, heroDeaths = 0, fallenOnClear = 0;
                 double hpOnClear = 0.0, secondsSum = 0.0, dmg = 0.0, heal = 0.0, control = 0.0;
                 int secondsCount = 0;
+
+                // Армия считается по тем же боям, что и кит: сумма урона тел, сумма перехваченного ими
+                // урона и аптайм. Рампа берётся средней только по боям, где призыв вообще случился —
+                // иначе кит, не успевший призвать в коротком бою, занижал бы себе секунду появления.
+                double summonDmg = 0.0, summonTanked = 0.0, summonAlive = 0.0, firstSpawnSum = 0.0;
+                int firstSpawnCount = 0;
 
                 for (int e = 0; e < encounters.Count; e++)
                 {
@@ -159,6 +174,15 @@ namespace Guildmaster.Balance.Editor
                         dmg += a.Hero.DamageDealt;
                         heal += a.Hero.HealingDone;
                         control += a.Hero.ControlSecondsDealt;
+
+                        summonDmg += a.Army.DamageDealt;
+                        summonTanked += a.Army.DamageTaken;
+                        summonAlive += a.Army.AvgAlive(a.DurationTicks);
+                        if (a.Army.FirstSpawnSeconds >= 0.0)
+                        {
+                            firstSpawnSum += a.Army.FirstSpawnSeconds;
+                            firstSpawnCount++;
+                        }
                     }
                 }
 
@@ -179,6 +203,9 @@ namespace Guildmaster.Balance.Editor
                     100.0 * timeouts / fights, 100.0 * overtimes / fights, 100.0 * heroDeaths / fights,
                     clears > 0 ? (double)fallenOnClear / clears : 0.0,
                     dmg / fights, heal / fights, control / fights,
+                    summonDmg / fights, (dmg + summonDmg) / fights, summonTanked / fights,
+                    summonAlive / fights,
+                    firstSpawnCount > 0 ? firstSpawnSum / firstSpawnCount : -1.0,
                 }));
             }
 
@@ -222,6 +249,15 @@ namespace Guildmaster.Balance.Editor
                 $"**Timeout%** — доля боёв, упёршихся в потолок {CapSeconds:0} с (это не ничья, а отсутствие " +
                 $"исхода). **Overtime%** — доля боёв, доехавших до порога овертайма ({overtimeStart:0} с). " +
                 "Дальше — что кит делал: урон, лечение и секунды контроля в среднем за бой. " +
+                "**Призывы разнесены на три взгляда:** **AvgDmgDealt** — урон САМОГО кита, **SummonDmg** — " +
+                "урон его тел, **DmgWithSummons** — сумма, и сравнивать с классовой нормой надо именно её. " +
+                "**SummonTanked** — урон, принятый телами: это перехваченные удары, вклад призывателя в " +
+                "живучесть отряда, невидимый в его собственном HP. **SummonsAlive** — среднее число живых " +
+                "тел за бой, а не число вызовов: призыватель единственный стартует пустым, и без этой шкалы " +
+                "«набрал восемь к сороковой секунде» неотличимо от «держал три весь бой». " +
+                "**FirstSummonSec** — когда появилось первое тело (−1 = не призвал ни разу), мера рампы. " +
+                "Сами тела в отряд НЕ засчитываются: их смерти не идут в FallenOnClear, а их HP — в " +
+                "HpCostOnClear, иначе кит с армией платил бы за бой дешевле, просто разбавив отряд расходниками. " +
                 "В агрегат по киту НЕ входят энкаунтеры тира Special (служебные, «на карте не спавнятся» — " +
                 "там же живут тренировочные наборы); в таблице сложности они есть, потому что она о боях, " +
                 "а не о ростере. " +
@@ -345,7 +381,9 @@ namespace Guildmaster.Balance.Editor
             for (int i = 0; i < report.Units.Count; i++)
             {
                 UnitMetric m = report.Units[i];
-                if (m.Team != 0) continue;
+                // Призванные тела — не бойцы отряда: их смерть не потеря, их HP не запас прочности.
+                // Иначе кит с армией платил бы за бой «дешевле», просто разбавив отряд расходниками.
+                if (m.Team != 0 || m.IsSummon) continue;
 
                 hpLeft += m.HpLeft;
                 maxHp += m.MaxHp;
@@ -353,10 +391,12 @@ namespace Guildmaster.Balance.Editor
                 if (m.Id == hero) heroMetric = m;
             }
 
+            SummonRollup army = hero >= 0 ? report.Summons(hero) : default;
+
             bool cleared = !report.TimedOut && report.Outcome.IsWinFor(0);
             return new Attempt(cleared, report.TimedOut, report.Seconds,
                 maxHp > 0.0 ? hpLeft / maxHp : 0.0, fallen,
-                heroMetric != null && heroMetric.Died, heroMetric);
+                heroMetric != null && heroMetric.Died, heroMetric, army, report.DurationTicks);
         }
 
         private static string Names(List<string> names)

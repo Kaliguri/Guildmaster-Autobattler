@@ -41,6 +41,11 @@ namespace Guildmaster.Balance.Editor
             for (int i = 0; i < tracked.Count; i++)
                 tracked[i].Unit.Id = i;
 
+            // Тела рождаются в бою ТОЙ ЖЕ фабрикой, а её счётчик про эту переразметку не знает: часть
+            // бойцов — синтетика, созданная мимо фабрики, поэтому её счётчик отстаёт от длины списка.
+            // Без сдвига первый же призыв получил бы Id живого бойца и весь его урон лёг бы в чужую строку.
+            env.Factory.AdvanceIdsPast(tracked.Count - 1);
+
             // EffectSystem передаём: контроль, проклятия и выданные бафы видны только на шве наложения.
             var collector = new MetricCollector(env.Sim, tracked, env.Effects);
 
