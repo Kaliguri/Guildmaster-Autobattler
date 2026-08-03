@@ -109,8 +109,9 @@ namespace Guildmaster.Data.Editor
             if (!AsUnit(target, out UnitData unit) || !AsStat(edit, out StatType stat)) return;
 
             float factor = Float(edit["factor"], 1f);
-            changes.Add(ContentEditService.ScaleStat(unit, stat, factor));
-            if (Mathf.Abs(factor) > 1e-6f)
+            ContentEditService.Change change = ContentEditService.ScaleStat(unit, stat, factor);
+            changes.Add(change);
+            if (change.Applied && Mathf.Abs(factor) > 1e-6f)
             {
                 undo.Add(Edit("scaleStat", unit.name, new JProperty("stat", stat.ToString()),
                     new JProperty("factor", 1f / factor)));
@@ -154,8 +155,12 @@ namespace Guildmaster.Data.Editor
             if (string.IsNullOrEmpty(path)) return;
 
             float delta = Float(edit["delta"], 0f);
-            changes.Add(ContentEditService.AddValue(target, path, delta));
-            undo.Add(Edit("addValue", target.name, new JProperty("path", path), new JProperty("delta", -delta)));
+            ContentEditService.Change change = ContentEditService.AddValue(target, path, delta);
+            changes.Add(change);
+            if (change.Applied)
+            {
+                undo.Add(Edit("addValue", target.name, new JProperty("path", path), new JProperty("delta", -delta)));
+            }
         }
 
         private static void AddCooldown(JObject edit, ScriptableObject target,
@@ -165,9 +170,13 @@ namespace Guildmaster.Data.Editor
 
             string ability = (string)edit["ability"];
             float delta = Float(edit["delta"], 0f);
-            changes.Add(ContentEditService.AddAbilityCooldown(unit, ability, delta));
-            undo.Add(Edit("addCooldown", unit.name, new JProperty("ability", ability),
-                new JProperty("delta", -delta)));
+            ContentEditService.Change change = ContentEditService.AddAbilityCooldown(unit, ability, delta);
+            changes.Add(change);
+            if (change.Applied)
+            {
+                undo.Add(Edit("addCooldown", unit.name, new JProperty("ability", ability),
+                    new JProperty("delta", -delta)));
+            }
         }
 
         private static void SetEffectField(JObject edit, ScriptableObject target,
