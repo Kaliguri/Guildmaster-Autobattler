@@ -471,9 +471,18 @@ namespace Guildmaster.Game.Services
                            ?? runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
             _activities.Open(ActivitySetup.Campaign);
-            var ctx  = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents);
-            var flow = new TextEventFlow(ev, _openEventPub, _activities.EventEffects);
-            return await flow.Run(ctx);
+            try
+            {
+                var ctx  = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents);
+                var flow = new TextEventFlow(ev, _openEventPub, _activities.EventEffects);
+                return await flow.Run(ctx);
+            }
+            finally
+            {
+                // Как и у одиночного боя: занятие закрывает тот, кто его открыл. Оставленное открытым,
+                // оно переживёт метод, и следующий Open закроет его уже посреди чужой работы.
+                _activities.Close();
+            }
         }
     }
 }
