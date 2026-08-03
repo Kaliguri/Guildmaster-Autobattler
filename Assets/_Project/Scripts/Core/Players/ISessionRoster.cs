@@ -24,12 +24,22 @@ namespace Guildmaster.Core.Players
         /// <summary>Место в наборе игровых цветов; сам цвет берётся из палитры по этому номеру.</summary>
         public readonly int ColorIndex;
 
-        public SessionPlayer(int id, string name, int team, int colorIndex)
+        /// <summary>
+        /// Скин курсора (<c>cursor.*</c>), которым игрок виден остальным. Пусто — умолчание набора.
+        /// </summary>
+        /// <remarks>
+        /// Едет вместе с составом, потому что курсор — главное, что видят другие: скин, невидимый
+        /// напарникам, перестаёт быть косметикой и становится настройкой для себя одного.
+        /// </remarks>
+        public readonly string CursorSkinId;
+
+        public SessionPlayer(int id, string name, int team, int colorIndex, string cursorSkinId = null)
         {
-            Id         = id;
-            Name       = name;
-            Team       = team;
-            ColorIndex = colorIndex;
+            Id           = id;
+            Name         = name;
+            Team         = team;
+            ColorIndex   = colorIndex;
+            CursorSkinId = cursorSkinId ?? string.Empty;
         }
 
         public override string ToString() => $"#{Id} {Name} (сторона {Team}, цвет {ColorIndex})";

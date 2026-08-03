@@ -113,8 +113,9 @@ namespace Guildmaster.Game.Session.Net
                     int team  = bytes.ReadByte();
                     int color = bytes.ReadByte();
                     string name = bytes.ReadString();
+                    string skin = bytes.ReadString();
 
-                    _incoming.Add(new SessionPlayer(id, name, team, color));
+                    _incoming.Add(new SessionPlayer(id, name, team, color, skin));
                 }
             }
             catch (InvalidOperationException)

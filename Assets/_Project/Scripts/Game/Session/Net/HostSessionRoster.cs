@@ -179,6 +179,7 @@ namespace Guildmaster.Game.Session.Net
                 _writer.WriteByte((byte)player.Team);
                 _writer.WriteByte((byte)player.ColorIndex);
                 _writer.WriteString(player.Name);
+                _writer.WriteString(player.CursorSkinId);
             }
 
             _transport.SendToAll(

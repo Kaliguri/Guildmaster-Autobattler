@@ -302,6 +302,13 @@ namespace Guildmaster.Game
             // Ввод глобален и переживает перезагрузку боевой сцены (вики «16» §3).
             builder.Register<InputService>(Lifetime.Singleton).As<IInputService>();
 
+            // Каким курсором играем: системный курсор игрока и изображение для чужих — один владелец,
+            // иначе у себя одна стрелка, а у напарника другая.
+            builder.RegisterInstance(ScopeWiring.Require(
+                gameConfig.CursorSkins, nameof(GameConfig), nameof(GameConfig.CursorSkins)));
+            builder.Register<Services.CursorSkinService>(Lifetime.Singleton)
+                   .AsSelf().As<VContainer.Unity.IStartable>();
+
             // Указатель в мировых координатах: один владелец перевода «экран → мир» на расстановку и на
             // присутствие. Камеру ищет лениво — сцена арены поднимается позже этого скоупа.
             builder.Register<Guildmaster.Presentation.PointerWorld>(Lifetime.Singleton)

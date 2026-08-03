@@ -143,6 +143,7 @@ namespace Guildmaster.UI
         private VisualElement _layerTooltip;      // [6] окно тултипа (Трек Т) — над топбаром и модалками
         private Tooltips.TooltipSystem _tooltips; // Трек Т: показыватель тултипов, привязан к слою в Start
         private Presence.CursorLayerView _cursors; // кооп: чужие курсоры, привязаны к своему слою в Start
+        private Presence.ParticipantsPanelView _participants; // кооп: список участников слева под топбаром
         private Tooltips.KeywordStyle _keywordStyle; // Трек Т: цвет терминов, читается с USS-доноров
         private UiSoundSystem _uiSound;           // звук интерфейса: один слушатель на корне панели
         private bool _lastProvingGrounds;    // ребро вида панели: забег ↔ площадка
@@ -201,10 +202,12 @@ namespace Guildmaster.UI
             Tooltips.TooltipSystem tooltips,
             Tooltips.KeywordStyle keywordStyle,
             UiSoundSystem uiSound,
-            Presence.CursorLayerView cursors)
+            Presence.CursorLayerView cursors,
+            Presence.ParticipantsPanelView participants)
         {
             _uiSound = uiSound;
             _cursors = cursors;
+            _participants = participants;
             _tooltips = tooltips;
             _keywordStyle = keywordStyle;
             _screenBackdropPub = screenBackdropPub;
@@ -258,6 +261,9 @@ namespace Guildmaster.UI
             _tooltips?.Attach(_doc.rootVisualElement, _layerTooltip);
             // Кооп-курсоры: слой свой, тикает их сам сервис — здесь только выдаём ему место для рисования.
             _cursors?.Attach(_layerCursors);
+            // Список участников живёт в слое топбара: он такой же постоянный элемент забега и обязан
+            // лежать над экранами, а не под ними.
+            _participants?.Attach(_layerTopbar);
             // Доноры цвета терминов: невидимые элементы с классами .gm-kw--* в слое подсказок. Так
             // палитра остаётся в USS, а rich text получает готовый hex (rich text переменные не читает).
             _keywordStyle?.Attach(_layerTooltip);

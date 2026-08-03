@@ -32,6 +32,7 @@ namespace Guildmaster.UI.Presence
         private readonly ISessionRoster   _roster;
         private readonly ISettingsService _settings;
         private readonly IBattleClock     _clock;
+        private readonly CursorSkinCatalog _skins;
 
         private readonly Dictionary<int, CursorVisual> _cursors = new Dictionary<int, CursorVisual>(4);
         private readonly List<int>                     _stale   = new List<int>(4);
@@ -39,13 +40,19 @@ namespace Guildmaster.UI.Presence
         private VisualElement _layer;
 
         public CursorLayerView(IPresenceView presence, ISessionRoster roster,
-                               ISettingsService settings, IBattleClock clock)
+                               ISettingsService settings, IBattleClock clock,
+                               CursorSkinCatalog skins)
         {
             _presence = presence;
             _roster   = roster;
             _settings = settings;
             _clock    = clock;
+            _skins    = skins;
         }
+
+        /// <summary>Каким скином играет этот участник. Пусто — умолчание набора решит каталог.</summary>
+        private string SkinOf(int playerId) =>
+            _roster != null && _roster.TryGet(playerId, out SessionPlayer player) ? player.CursorSkinId : null;
 
         /// <summary>Взять слой курсоров у корня UI. До этого рисовать некуда — и незачем.</summary>
         public void Attach(VisualElement layer) => _layer = layer;
@@ -82,6 +89,11 @@ namespace Guildmaster.UI.Presence
 
             var point = new VisualElement { name = "point", pickingMode = PickingMode.Ignore };
             point.AddToClassList("gm-cursor__point");
+
+            // Картинка приходит из данных скина, а цвет остаётся в USS: так палитра не теряет владение
+            // цветом, а набор скинов пополняется ассетом без правки стилей.
+            Texture2D texture = _skins != null ? _skins.Resolve(SkinOf(playerId))?.Texture : null;
+            if (texture != null) point.style.backgroundImage = new StyleBackground(texture);
 
             var label = new Label { name = "name", pickingMode = PickingMode.Ignore };
             label.AddToClassList("gm-cursor__name");

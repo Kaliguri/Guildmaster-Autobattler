@@ -3195,31 +3195,26 @@
 
 
 /* === Курсоры других игроков (кооп) =========================================
-   Курсор чужого игрока в мировой точке: цветной указатель и подпись именем. Позицию ставит
-   CursorLayerView переводом «мир → панель», здесь только вид.
-   Форма — плейсхолдер: ГДД обещает указатель-«перчатку», сменяемый скином за личную валюту, и когда
-   арт появится, меняться будет ОДИН этот блок. */
+   Курсор чужого игрока в мировой точке: изображение скина, крашенное в его мейн-цвет, и подпись
+   именем. Позицию ставит CursorLayerView переводом «мир → панель», картинку — он же из данных скина
+   (CursorSkinData). Здесь только вид.
+   Тинт УМНОЖАЕТ: текстура скина белая с чёрной обводкой, поэтому заливка становится цветом игрока, а
+   обводка остаётся чёрной и держит курсор читаемым и на светлой карте, и на тёмной арене. */
 .gm-cursor {
     position: absolute;
-    /* Кончик указателя должен приходиться ровно на точку, а не левый верхний угол коробки. */
-    translate: -2px -2px;
+    /* Остриё скина лежит в левом верхнем углу его холста — значит и коробку смещать не нужно. */
     align-items: flex-start;
 }
 
 .gm-cursor__point {
-    width: 14px;
-    height: 14px;
-    rotate: 45deg;
-    /* Три скруглённых угла и один острый: получается каплевидное остриё, смотрящее вверх-влево. */
-    border-radius: 50% 50% 50% 2px;
-    background-color: var(--gm-color-player-1);
-    border-width: 1px;
-    /* Тёмная обводка держит курсор читаемым и на светлой карте, и на тёмной арене. */
-    border-color: var(--gm-ink-900);
+    width: 40px;
+    height: 40px;
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: var(--gm-color-player-1);
 }
 
 .gm-cursor__name {
-    margin-top: var(--gm-space-1);
+    margin-top: var(--gm-space-0);
     margin-left: var(--gm-space-2);
     font-size: var(--gm-font-xxs);
     color: var(--gm-color-player-1);
@@ -3228,61 +3223,15 @@
 
 /* Держит вещь — указатель крупнее: «в руке» видно всем, это условие работы перехвата. */
 .gm-cursor--holding > .gm-cursor__point {
-    scale: 1.35 1.35;
+    scale: 1.2 1.2;
 }
 
 /* Место в наборе цветов раздаёт состав сеанса; оттенки живут в токенах, а не здесь. */
-.gm-cursor--p1 > .gm-cursor__point { background-color: var(--gm-color-player-1); }
+.gm-cursor--p1 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-1); }
 .gm-cursor--p1 > .gm-cursor__name  { color: var(--gm-color-player-1); }
-.gm-cursor--p2 > .gm-cursor__point { background-color: var(--gm-color-player-2); }
+.gm-cursor--p2 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-2); }
 .gm-cursor--p2 > .gm-cursor__name  { color: var(--gm-color-player-2); }
-.gm-cursor--p3 > .gm-cursor__point { background-color: var(--gm-color-player-3); }
+.gm-cursor--p3 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-3); }
 .gm-cursor--p3 > .gm-cursor__name  { color: var(--gm-color-player-3); }
-.gm-cursor--p4 > .gm-cursor__point { background-color: var(--gm-color-player-4); }
+.gm-cursor--p4 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-4); }
 .gm-cursor--p4 > .gm-cursor__name  { color: var(--gm-color-player-4); }
-
-
-/* === Список участников сеанса (кооп) =======================================
-   Слева под верхней панелью забега. Место выбрано не случайно: до 03.08.2026 его занимала dev-подпись
-   оверлеев боя, и оно единственное на экране, где постоянная строка никому не мешает.
-   В одиночку панель скрыта целиком — список из одного себя не отвечает ни на один вопрос. */
-.gm-participants {
-    position: absolute;
-    left: var(--gm-space-2);
-    /* Высота панели забега ~64 px при Full HD; плюс воздух, чтобы строки не липли к её краю. */
-    top: 72px;
-    flex-direction: column;
-}
-
-.gm-participants__row {
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: var(--gm-space-0);
-}
-
-/* Точка мейн-цвета: тот же набор классов, что у курсора, — цвет игрока обязан совпадать в обоих
-   местах, и достигается это общим классом, а не двумя одинаковыми правилами. */
-.gm-participants__dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 5px;
-    border-width: 1px;
-    border-color: var(--gm-ink-900);
-    margin-right: var(--gm-space-1);
-}
-
-.gm-cursor--p1.gm-participants__dot { background-color: var(--gm-color-player-1); }
-.gm-cursor--p2.gm-participants__dot { background-color: var(--gm-color-player-2); }
-.gm-cursor--p3.gm-participants__dot { background-color: var(--gm-color-player-3); }
-.gm-cursor--p4.gm-participants__dot { background-color: var(--gm-color-player-4); }
-
-.gm-participants__name {
-    font-size: var(--gm-font-xxs);
-    color: var(--gm-color-text-muted);
-}
-
-/* Своя строка ярче: в списке из четверых глаз ищет себя первым. */
-.gm-participants__row--self > .gm-participants__name {
-    color: var(--gm-color-text);
-    -unity-font-style: bold;
-}

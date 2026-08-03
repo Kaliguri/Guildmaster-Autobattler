@@ -104,6 +104,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Классовые коридоры баланса. Ссылка живёт здесь по той же причине, что и StatsConfig.")]
         [SerializeField] private ClassBalanceConfig _classBalanceConfig;
 
+        [Tooltip("Набор скинов курсора: что можно надеть и что стоит по умолчанию. Ссылка здесь по той " +
+                 "же причине — иначе каждая автономная сцена завела бы свой набор.")]
+        [SerializeField] private CursorSkinCatalog _cursorSkins;
+
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
@@ -150,6 +154,9 @@ namespace Guildmaster.Data.Definitions
         /// </remarks>
         public StatsConfig        Stats        => _statsConfig;
         public ClassBalanceConfig ClassBalance => _classBalanceConfig;
+
+        /// <summary>Набор скинов курсора. <c>null</c> — курсор остаётся системным, игра идёт как обычно.</summary>
+        public CursorSkinCatalog  CursorSkins  => _cursorSkins;
 
         /// <summary>
         /// Заготовка значений: инстанс в памяти, заполненный тем, с чего начинают новый ассет. Нужна
