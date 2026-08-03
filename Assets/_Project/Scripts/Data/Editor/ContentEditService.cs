@@ -125,11 +125,36 @@ namespace Guildmaster.Data.Editor
             return Record(unit, stat + ".Value", before, after);
         }
 
-        /// <summary>Задать значение модификатора стата (заменить существующий с любым Op или добавить новый c <paramref name="op"/>).</summary>
+        /// <summary>
+        /// Задать значение модификатора стата: заменить ПЕРВЫЙ с этим статом (с любым Op) либо, если
+        /// такого нет, добавить новый с <paramref name="op"/>.
+        /// </summary>
+        /// <remarks>
+        /// «Первый» имеет значение, когда модификаторов одного стата в <c>_stats</c> несколько: правка
+        /// достанется первому, а сложение по <see cref="ModifierOp"/> может отдать победу другому —
+        /// например, второму <c>Override</c>. Тогда аудит покажет честную правку, а в игре не изменится
+        /// ничего. Случай редкий (сегодня таких ассетов нет), но тихим он быть не должен — поэтому о
+        /// дублях предупреждаем в консоль.
+        /// </remarks>
         public static Change SetStat(UnitData unit, StatType stat, ModifierOp op, float value)
         {
             var so = new SerializedObject(unit);
             SerializedProperty stats = so.FindProperty("_stats");
+
+            int duplicates = 0;
+            for (int i = 0; i < stats.arraySize; i++)
+            {
+                if (stats.GetArrayElementAtIndex(i).FindPropertyRelative("Stat").enumValueIndex == (int)stat)
+                {
+                    duplicates++;
+                }
+            }
+            if (duplicates > 1)
+            {
+                Debug.LogWarning($"[ContentEditService] {unit.name}: модификаторов {stat} в _stats "
+                    + $"{duplicates} — правка достанется первому, а победить в сложении может другой.");
+            }
+
             for (int i = 0; i < stats.arraySize; i++)
             {
                 SerializedProperty el = stats.GetArrayElementAtIndex(i);
