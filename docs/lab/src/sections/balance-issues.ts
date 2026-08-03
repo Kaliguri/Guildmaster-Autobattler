@@ -24,6 +24,7 @@ const STATUS_CLASS: Record<string, string> = {
   "подтверждается частично": "st-open",
   "подтверждается и ухудшилось": "st-design",
   "закрыта": "st-closed",
+  "закрыта как не балансная": "st-closed",
   "отклонена": "st-closed"
 };
 
@@ -82,8 +83,12 @@ function render(host: HTMLElement): void {
     }
     host.replaceChildren();
 
-    const open = issues.filter((i) => !["закрыта", "отклонена"].includes(statusOf(i)));
-    const closed = issues.filter((i) => ["закрыта", "отклонена"].includes(statusOf(i)));
+    // Закрытость определяется ПЕРВЫМ словом статуса: «закрыта как не балансная» — тоже закрытая,
+    // и без этого она осталась бы в работе, ради чего реестр и разгребали.
+    const isClosed = (i: Issue): boolean =>
+      statusOf(i).startsWith("закрыта") || statusOf(i).startsWith("отклонена");
+    const open = issues.filter((i) => !isClosed(i));
+    const closed = issues.filter(isClosed);
     const noVerdict = open.filter((i) => !i.verdict || i.verdict === "—").length;
     const ready = open.filter((i) => READY_TO_CLOSE.some((s) => statusOf(i).startsWith(s)));
 
