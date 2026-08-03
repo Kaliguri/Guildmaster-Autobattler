@@ -389,7 +389,10 @@ if ((Get-Item $manifest).LastWriteTimeUtc -gt $rspSample.LastWriteTimeUtc) {
     Write-Host "ВНИМАНИЕ: manifest.json новее команд компиляции — состав пакетов мог измениться. Ссылки берутся устаревшие; открой Unity, чтобы обновить." -ForegroundColor Yellow
 }
 
-if ($Assembly) { $targets = @($Assembly) }
+# Запятые разбираем сами: при запуске через powershell.exe -File аргумент приезжает ОДНОЙ строкой
+# "A,B,C" (в отличие от вызова из консоли, где оболочка уже сделала массив). Без этого скрипт из
+# любой обёртки падает с «сборка не найдена», перечислив в имени весь список разом.
+if ($Assembly) { $targets = @($Assembly | ForEach-Object { $_ -split ',' } | Where-Object { $_ }) }
 elseif ($All) {
     $targets = @(Get-ChildItem -LiteralPath $dagDir -Filter "*.rsp" -File |
         ForEach-Object { [IO.Path]::GetFileNameWithoutExtension($_.Name) } |
