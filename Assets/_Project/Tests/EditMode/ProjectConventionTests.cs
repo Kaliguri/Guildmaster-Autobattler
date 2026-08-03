@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using Guildmaster.Data.Definitions;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -89,6 +91,43 @@ namespace Guildmaster.Tests.EditMode
                 "Невидимый символ в исходнике: строки выглядят одинаково и не равны, а форматирование "
                 + "молча заменит его на обычный пробел. Нужен в значении — пиши escape (\\u00A0). Найден в: "
                 + string.Join(", ", offenders));
+        }
+
+        /// <summary>
+        /// Каждый падеж, встречающийся в разметке описаний (<c>[kw:id:падеж]</c>), знаком
+        /// <see cref="ContentKeys.FormSuffix"/>.
+        /// </summary>
+        /// <remarks>
+        /// Падеж живёт в ДАННЫХ (ключ <c>{id}.name.gen</c> и разметка в тексте), а знание о нём — в
+        /// коде. Разъезжаются они молча: неизвестный падеж не ошибка, а тихий откат на именительный,
+        /// и заметить его можно только прочитав фразу вслух. Так и было с творительным: три ключа
+        /// <c>name.ins</c> лежали в таблице, разметка их звала, а <c>FormSuffix</c> о них не знал —
+        /// «поглощается Щит» вместо «Щитом».
+        /// </remarks>
+        [Test]
+        public void EveryCaseTagInMarkup_IsKnownToFormSuffix()
+        {
+            string root = Path.Combine(Application.dataPath, "_Project", "Localization");
+            Assert.That(Directory.Exists(root), "Не найдены таблицы локализации: " + root);
+
+            var offenders = new SortedSet<string>(StringComparer.Ordinal);
+            var markup = new Regex(@"\[kw:[^\]:]+:([a-z]+)\]", RegexOptions.IgnoreCase);
+
+            foreach (string file in Directory.EnumerateFiles(root, "*.asset", SearchOption.AllDirectories))
+            {
+                foreach (Match m in markup.Matches(File.ReadAllText(file)))
+                {
+                    string tag = m.Groups[1].Value;
+
+                    // Именительный — это и есть базовый {id}.name, для него совпадение законно.
+                    if (tag == "nom") continue;
+                    if (ContentKeys.FormSuffix(tag) == ContentKeys.NameSuffix) offenders.Add(tag);
+                }
+            }
+
+            Assert.That(offenders, Is.Empty,
+                "Разметка описаний зовёт падеж, которого FormSuffix не знает — текст молча встанет в "
+                + "именительном. Неизвестные падежи: " + string.Join(", ", offenders));
         }
 
         private static IEnumerable<Assembly> OurAssemblies() =>
