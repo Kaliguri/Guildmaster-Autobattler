@@ -24,8 +24,8 @@ MonoBehaviour:
   - Id: torso
     Path: Hips/Torso
     RestZ: 0
-    BoneAxisLocal: 21.042498
-    BoneLength: 0.10361903
+    BoneAxisLocal: 20.949253
+    BoneLength: 0.10878525
     FlexSign: 1
     FlexLimit: 0
   - Id: head
@@ -59,16 +59,16 @@ MonoBehaviour:
     FlexLimit: 0
   - Id: shoulder.R
     Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)
-    RestZ: 10.000004
+    RestZ: 12.909998
     BoneAxisLocal: -82.375336
-    BoneLength: 0.1017872
+    BoneLength: 0.101787195
     FlexSign: 1
     FlexLimit: 0
   - Id: elbow.R
     Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)
     RestZ: 0
-    BoneAxisLocal: -80.06244
-    BoneLength: 0.049283467
+    BoneAxisLocal: -80.06241
+    BoneLength: 0.049283452
     FlexSign: 1
     FlexLimit: 0
   - Id: grip.R
@@ -76,15 +76,15 @@ MonoBehaviour:
       Point (Grip)
     RestZ: 0
     BoneAxisLocal: 75.34998
-    BoneLength: 0.12305589
+    BoneLength: 0.1230559
     FlexSign: 1
     FlexLimit: 0
   - Id: wrist.R
     Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
       Point (Wrist)
     RestZ: 0
-    BoneAxisLocal: 45.96608
-    BoneLength: 0.03065586
+    BoneAxisLocal: 45.9661
+    BoneLength: 0.03065584
     FlexSign: 1
     FlexLimit: 0
   - Id: hip.L
@@ -151,6 +151,6 @@ MonoBehaviour:
     OrientationName: blade
     OrientationLocal: 90
     CalibrationZ: -14.650024
-    GripToButt: 0.12305585
-    GripToBoneEnd: 0.023077274
-    ItemLength: 0.24611174
+    GripToButt: 0.123055845
+    GripToBoneEnd: 0.037662826
+    ItemLength: 0.24611175

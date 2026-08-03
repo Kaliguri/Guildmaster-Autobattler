@@ -49,6 +49,17 @@ namespace Guildmaster.AnimationLab.Editor
             public string AvatarPath;
             /// <summary>Report what would change without writing anything.</summary>
             public bool DryRun;
+
+            /// <summary>
+            /// Произвольная перестройка дерева, применяемая ПОСЛЕ переименований: перевесить узел,
+            /// схлопнуть пару, удалить опустевший контейнер.
+            ///
+            /// Живёт здесь, а не в отдельном инструменте, потому что перенос путей строится сравнением
+            /// «дерево до» и «дерево после» — и он одинаков для переименования и для перестройки. Второй
+            /// конвейер миграции означал бы два владельца одного правила, и разошлись бы они молча:
+            /// клипы починил бы один, маски — другой.
+            /// </summary>
+            public System.Action<Transform> Restructure;
         }
 
         public sealed class Report
@@ -122,7 +133,7 @@ namespace Guildmaster.AnimationLab.Editor
         static Dictionary<string, string> BuildRenameMap(Options options, Report report)
         {
             var map = new Dictionary<string, string>();
-            if (options.Renames.Count == 0) return map;
+            if (options.Renames.Count == 0 && options.Restructure == null) return map;
 
             var contents = PrefabUtility.LoadPrefabContents(options.PrefabPath);
             try
@@ -149,15 +160,24 @@ namespace Guildmaster.AnimationLab.Editor
                     node.name = newName;
                     report.NodesRenamed++;
                 }
+                int restructured = 0;
+                if (options.Restructure != null)
+                {
+                    options.Restructure(root);
+                    restructured = 1;
+                }
+
                 var after = MapPaths(root);
 
                 foreach (var pair in before)
                 {
+                    // Узел, которого в дереве больше нет, карту не пополняет: его путь мёртв, и
+                    // переносить привязки некуда — это ловит счётчик stale after.
                     if (!after.TryGetValue(pair.Key, out string newPath)) continue;
                     if (newPath != pair.Value) map[pair.Value] = newPath;
                 }
 
-                if (!options.DryRun && report.NodesRenamed > 0)
+                if (!options.DryRun && (report.NodesRenamed > 0 || restructured > 0))
                     PrefabUtility.SaveAsPrefabAsset(contents, options.PrefabPath);
             }
             finally
