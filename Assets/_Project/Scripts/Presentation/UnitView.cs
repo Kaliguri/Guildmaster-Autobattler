@@ -287,6 +287,7 @@ namespace Guildmaster.Presentation
         private float _guardTotal;       // всё окно: подводка + жизнь барьера
         private float _guardRise = 0.1f; // за сколько щит встаёт; дальше стоп-кадр до конца окна
         private float _guardRelease;     // 0..1 — насколько прошло опускание после конца окна
+        private float _guardPose;        // 0..1 — куда в клипе гвардии поставлен скраб этим кадром
 
         // Фазы клипа гвардии — из его же маркеров: 0..Up подъём, Up..Down держание, Down..1 возврат.
         private bool  _hasGuardWindow;
@@ -456,6 +457,7 @@ namespace Guildmaster.Presentation
             _guardActive  = false;
             _guardWeight  = 0f;
             _guardRelease = 0f;
+            _guardPose    = 0f;
 
             _actionLayer     = -1;
             _actionHipsLayer = -1;
@@ -1277,9 +1279,16 @@ namespace Guildmaster.Presentation
             // Подъём кончается ЗАРАНЕЕ: остаток подводки щит стоит стоп-кадром. Если подводка короче
             // паузы, поза встаёт мгновенно — лучше резкий щит вовремя, чем плавный, но опоздавший.
             _guardRise    = Mathf.Max(0.02f, lead - GuardSettleSeconds);
-            _guardElapsed = 0f;
             _guardRelease = 0f;
             _guardActive  = true;
+
+            // Барьер повесили, пока щит ещё опускался с прошлого — подъём продолжается ОТ ТЕКУЩЕЙ ПОЗЫ,
+            // а не с нуля. Обнуление здесь роняло руку в стойку и тут же поднимало её заново: на экране
+            // это читается как сбой анимации, хотя происходит ровно то, чего просили.
+            float held = _guardWeight > 0f && _guardUpN > 1e-4f
+                ? Mathf.Clamp01(_guardPose / _guardUpN)
+                : 0f;
+            _guardElapsed = _guardRise * held;
         }
 
         // Поза щита за кадр. Клип гвардии скрабится СВОИМ окном, а не проигрывается: глобальный
@@ -1304,7 +1313,8 @@ namespace Guildmaster.Presentation
                 // гаснет тем же ходом — под слоем может идти бег, и щит, доживший на полном весе до
                 // последнего кадра, вернул бы руку в стойку клипа поверх бегущего тела.
                 _guardRelease = Mathf.Min(1f, _guardRelease + dt / GuardDropSeconds);
-                _animator.Play(GuardHash, _guardLayer, Mathf.Lerp(_guardDownN, 1f, _guardRelease));
+                _guardPose    = Mathf.Lerp(_guardDownN, 1f, _guardRelease);
+                _animator.Play(GuardHash, _guardLayer, _guardPose);
 
                 _guardWeight = Mathf.Max(0f, _guardWeight - dt / GuardDropSeconds);
                 _animator.SetLayerWeight(_guardLayer, _guardWeight);
@@ -1320,7 +1330,8 @@ namespace Guildmaster.Presentation
             // Куда именно скрабить подъём, говорит МАРКЕР клипа: доля, стоявшая здесь числом, пережила
             // ровно одну правку клипа и оставила щит поднятым на 60% вместо 84% (замер RigSweep 04.08).
             float rise = Mathf.Clamp01(_guardElapsed / _guardRise);
-            _animator.Play(GuardHash, _guardLayer, rise * _guardUpN);
+            _guardPose = rise * _guardUpN;
+            _animator.Play(GuardHash, _guardLayer, _guardPose);
 
             _guardWeight = Mathf.Min(1f, _guardWeight + dt / GuardRaiseSeconds);
             _animator.SetLayerWeight(_guardLayer, _guardWeight);

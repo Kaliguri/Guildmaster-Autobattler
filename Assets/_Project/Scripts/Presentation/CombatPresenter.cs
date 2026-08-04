@@ -806,7 +806,14 @@ namespace Guildmaster.Presentation
             // ФОРМА УДАРА — главный знак попадания. Спавнится ПОСЛЕ хита, на этом самом кадре: к моменту
             // её старта результат уже наступил, поэтому промах ничего стирать не заставляет, а серп
             // никогда не врёт о состоявшемся ударе.
-            if (_vfx != null && _feel != null && _feel.EnableHitForm && result.IsDirectHit)
+            //
+            // Только АВТОАТАКА (решение Макса 04.08.2026: «У способностей не надо форму удара рисовать.
+            // Форма пока что только для автоатак»). Контракт таким и был — `HitFormCoverageTests` спрашивает
+            // архетип у автоатак, — а спавн стоял на IsDirectHit, то есть ловил ещё и урон способностей.
+            // Способность оружием не машет и способ доставки не называет: Воспламенение мечника прилетало
+            // сюда типом Fire, форма не резолвилась, и консоль ругалась на дефект контента, которого нет.
+            if (_vfx != null && _feel != null && _feel.EnableHitForm
+                && result.SourceKind == DamageSourceKind.AutoAttack)
                 SpawnHitForm(sourceId, targetId, in source, hasSource, in target, result, frac, blocked);
 
             // ПОРЕЗ — то, что от удара осталось. Щит вскрытия не даёт: тело целое, значит и раны нет.
@@ -846,14 +853,22 @@ namespace Guildmaster.Presentation
             in Combat.Tape.UnitSnapshot source, bool hasSource,
             in Combat.Tape.UnitSnapshot target, DamageResult result, float hpDamageFrac, bool blocked)
         {
-            bool ranged = IsRanged(sourceId);
+            // Паспорт источника спрашиваем ЯВНО, а не через IsRanged: тот отвечает «не дальний» и на
+            // «источника не существует», из-за чего безымянный урон молча получал язык ближнего боя —
+            // в консоли это выглядело как «у мили-удара юнита 0 тип урона Fire». Нет паспорта — нет и
+            // способа доставки, потому что неизвестно даже, чем бьют.
+            if (!_stage.TryGet(sourceId, out Combat.Tape.UnitIdentity identity) || identity.Definition == null)
+                return;
+
+            bool ranged = identity.Definition.AttackType == AttackType.Ranged;
             if (!Effects.HitFormFactory.ResolveKind(result.Type, ranged, out Effects.HitFormKind kind))
             {
-                // Дефект контента, а не «формы не бывает»: удар в ближнем бою обязан называть способ
+                // Дефект контента, а не «формы не бывает»: автоатака в ближнем бою обязана называть способ
                 // доставки. Молчать нельзя — иначе кит без формы выглядит как задумка.
-                Debug.LogError($"[CombatPresenter] у мили-удара юнита {sourceId} тип урона {result.Type} " +
-                               "не называет способ доставки — форму рисовать нечем. Задай физический тип " +
-                               "или объяви архетип явно.");
+                VisualDefects.Report($"hit-form-kind:{DefectKeyOf(sourceId)}",
+                    $"[CombatPresenter] автоатака юнита {DefectKeyOf(sourceId)} бьёт типом {result.Type}, " +
+                    "который не называет способ доставки — форму рисовать нечем. Задай физический тип " +
+                    "или объяви архетип явно.");
                 return;
             }
 

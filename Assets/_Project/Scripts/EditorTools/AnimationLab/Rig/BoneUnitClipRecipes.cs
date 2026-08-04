@@ -117,6 +117,11 @@ namespace Guildmaster.AnimationLab.Editor
                 Stance(w, 1.167f);
                 // Contact where the blade crosses the torso band, not where the arm finishes.
                 w.Event(ClipMarkers.HitFunction, 0.467f);
+                // Границы ВЗМАХА — те же, что у фазы удара выше. Без них показ теряет дугу за клинком и
+                // точку, откуда пришёл удар; рецепт переписывает список событий целиком, поэтому забыть
+                // их здесь значит стереть разметку при первой же регенерации.
+                w.Event(ClipMarkers.StrikeStartFunction, 0.333f);
+                w.Event(ClipMarkers.StrikeEndFunction,   0.583f);
                 return w.Write(Folder + "Attack.anim", 60f).ToString();
             }
         }
@@ -164,6 +169,8 @@ namespace Guildmaster.AnimationLab.Editor
                 Stance(w, 1.000f);
                 // Rising cuts pass the torso on the way UP, so contact is mid-arc, not at the top of it.
                 w.Event(ClipMarkers.HitFunction, 0.450f);
+                w.Event(ClipMarkers.StrikeStartFunction, 0.333f);
+                w.Event(ClipMarkers.StrikeEndFunction,   0.583f);
                 return w.Write(Folder + "Attack2.anim", 60f).ToString();
             }
         }
@@ -213,6 +220,8 @@ namespace Guildmaster.AnimationLab.Editor
                 Stance(w, 1.000f);
                 // Contact where the blade CROSSES the torso band, not where the arm finishes.
                 w.Event(ClipMarkers.HitFunction, 0.483f);
+                w.Event(ClipMarkers.StrikeStartFunction, 0.333f);
+                w.Event(ClipMarkers.StrikeEndFunction,   0.583f);
                 return w.Write(Folder + "Attack3.anim", 60f).ToString();
             }
         }
@@ -276,6 +285,8 @@ namespace Guildmaster.AnimationLab.Editor
 
                 Stance(w, 1.350f);
                 w.Event(ClipMarkers.HitFunction, 0.600f);
+                w.Event(ClipMarkers.StrikeStartFunction, 0.433f);
+                w.Event(ClipMarkers.StrikeEndFunction,   0.733f);
                 return w.Write(Folder + "AttackCharge.anim", 60f).ToString();
             }
         }
@@ -284,6 +295,13 @@ namespace Guildmaster.AnimationLab.Editor
         /// Block behind the shield — the telegraph for Bulwark, and it lives on a masked layer, so it only
         /// writes the shield arm. Snaps up in seven frames (a guard that eases up is a guard that arrives
         /// late), holds, then settles a couple of degrees so the pose is not frozen.
+        /// <para>
+        /// <b>ВНИМАНИЕ: рецепт ОТСТАЛ от ассета</b> (04.08.2026). Клип на диске переавторен руками — подъём
+        /// переехал с 0.117 на 0.25 с, а хвост 0.45–0.6 теперь ВОЗВРАЩАЕТ руку в стойку, чего этот рецепт
+        /// не делает. Регенерация затрёт живую версию старой; прежде чем её запускать, перенеси сюда позы
+        /// с диска. Это цена того, что клипы теперь авторятся и рукой, и рецептом: владельцем считается
+        /// АССЕТ, рецепт остаётся лесами первичной сборки.
+        /// </para>
         /// </summary>
         public static string Block()
         {
@@ -315,6 +333,13 @@ namespace Guildmaster.AnimationLab.Editor
                 w.At(0.600f).Bend("Shoulder_L", 52f, Near, Hold).Bend("LowerArm_L", -13f, Near, Hold)
                             .Bend("Torso", -3f, Near, Hold)
                             .Aim("shield", 94f, Near, Hold);
+
+                // Фазы жеста — маркерами, потому что показ играет клип тремя кусками по трём часам.
+                // Времена соответствуют ПОЗАМ ЭТОГО РЕЦЕПТА, а не ассету на диске: тот переавторен руками
+                // (см. предупреждение в докстринге), и после регенерации разметка обязана описывать то,
+                // что рецепт действительно написал.
+                w.Event(ClipMarkers.GuardUpFunction,   0.117f);
+                w.Event(ClipMarkers.GuardDownFunction, 0.450f);
                 return w.Write(Folder + "Block.anim", 60f, loopTime: false).ToString();
             }
         }
