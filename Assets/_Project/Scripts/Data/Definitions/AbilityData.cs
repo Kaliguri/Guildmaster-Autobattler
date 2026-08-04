@@ -16,7 +16,11 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Ближайший союзник (для бафф/хил-способностей).</summary>
         NearestAlly = 2,
 
-        /// <summary>Союзник с наименьшим HP% — глобально, без ограничения дальности (хилер-ульта «Длань жизни»).</summary>
+        /// <summary>
+        /// Союзник с наименьшим HP% по всей арене (хилер-ульта «Длань жизни»). Выбор цели глобален, но
+        /// каст до неё обязан ДОСТАВАТЬ: дистанцию задаёт <see cref="AbilityData.CastRange"/>, по
+        /// умолчанию равная дальности авто-атаки (2026-08-04).
+        /// </summary>
         LowestHpAlly = 3,
 
         /// <summary>Все живые враги с тегом <see cref="AbilityData.TriggerTag"/> — глобально, без ограничения дальности (масс-стан «Ледяные оковы» по «Заморозке»). Цель не одиночная.</summary>
@@ -73,6 +77,15 @@ namespace Guildmaster.Data.Definitions
                  "способность наносит прямой урон (множитель > 0). Копейщик: ульта Режущая при " +
                  "автоатаке Колющей.")]
         [SerializeField] private DamageType _damageType = DamageType.Undefined;
+
+        [Header("Дальность каста")]
+        [Tooltip("С какого расстояния умение достаёт до ЦЕЛИ. Дефолт — как у авто-атаки: обычно умение " +
+                 "бьёт оттуда же, откуда кит бьёт рукой. Своя ступень нужна тем, у кого умение достаёт " +
+                 "иначе, чем оружие.\n\n" +
+                 "Умению БЕЗ внешней цели (на себя, аура по своим, круг вокруг себя, масс-по-тегу) " +
+                 "дальность не применяется вовсе: у него нет точки, до которой мерить. Копейщик кастует " +
+                 "вихрь с центром на себе — ему хватает того, что задело хоть кого-то.")]
+        [SerializeField] private CastRangeBand _castRange = CastRangeBand.LikeAutoAttack;
 
         [Header("Area of effect (Phase 3)")]
         [Tooltip("Форма зоны поражения. None = одиночная цель по TargetMode (поведение Ф2).")]
@@ -241,6 +254,10 @@ namespace Guildmaster.Data.Definitions
         /// </summary>
         public DamageType DamageType => _damageType;
         public AreaShape AreaShape => _areaShape;
+
+        /// <summary>Ступень дальности каста; <see cref="CastRangeBand.LikeAutoAttack"/> = как у авто-атаки.</summary>
+        public CastRangeBand CastRange => _castRange;
+
         public float AreaRadius => _areaRadius;
 
         /// <summary>

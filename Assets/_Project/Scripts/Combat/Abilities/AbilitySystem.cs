@@ -302,6 +302,15 @@ namespace Guildmaster.Combat
                 return false;
             }
 
+            // Дальность каста: до цели надо ДОСТАВАТЬ. Проверяется только там, где цель внешняя — у
+            // каста на себя, ауры по своим, круга вокруг себя и масс-по-тегу точки нет вовсе, и мерить
+            // до неё нечего (вердикт Макса 2026-08-04: копейщику хватает того, что вихрь задел хоть кого-то).
+            if (target != null && !ReferenceEquals(target, caster)
+                && !CombatPositioning.WithinReach(caster, target, CastReach(caster, ability), ctx.Tuning))
+            {
+                return false;
+            }
+
             // Гейт условия каста (блок D): дешёвое решение «кастовать ли» — здесь, не в мозге.
             // Паника (блок E) кастует независимо от условия.
             if (!panicSelf && !CastConditionMet(caster, target, data, ctx, units)) return false;
@@ -309,6 +318,13 @@ namespace Guildmaster.Combat
             plan = new PlannedCast(caster, ability, target, abilityIndex, PlanKind.Begin);
             return true;
         }
+
+        /// <summary>
+        /// Дистанция, с которой это умение достаёт до цели: своя ступень, разрешённая фабрикой, либо
+        /// текущая дальность авто-атаки — тогда стойка и бафы дальности доезжают до умения сами.
+        /// </summary>
+        private static float CastReach(RuntimeUnit caster, AbilityRuntime ability)
+            => ability.CastRange >= 0f ? ability.CastRange : caster.Stats.Get(StatType.AttackRange);
 
         /// <summary>
         /// Применить решённый план. Заявка (<see cref="PlanKind.Begin"/>) платит цену и либо применяет

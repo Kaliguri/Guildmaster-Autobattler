@@ -70,7 +70,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var ctx     = new MockCombatContext(effects: effects);
             var sys     = new AbilitySystem();
 
-            RuntimeUnit caster    = At(TestUnit.Make(team: 0), 0f);
+            RuntimeUnit caster    = Reaching(At(TestUnit.Make(team: 0), 0f));
             RuntimeUnit warrior   = At(TestUnit.Make(team: 1), 1f);                          // рядом, но без маны
             RuntimeUnit arcanist  = WithResource(At(TestUnit.Make(team: 1), 6f), pool: 15f);  // дальше, зато с маной
 
@@ -139,6 +139,20 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             u.Position         = new Vector2(x, 0f);
             u.PreviousPosition = u.Position;
+            return u;
+        }
+
+        /// <summary>
+        /// Дальность каста, покрывающая всю расстановку теста. Проверяем ВЫБОР жертвы, а не дистанцию:
+        /// с появлением дальности каста (2026-08-04) умение обязано доставать до цели, и без этой строки
+        /// тест падал бы на гейте дистанции, ничего не сообщив про выбор.
+        /// </summary>
+        private static RuntimeUnit Reaching(RuntimeUnit u, float range = 12f)
+        {
+            u.Stats.AddModifiersFrom("reach", new[]
+            {
+                new StatModifier(StatType.AttackRange, ModifierOp.Flat, range),
+            });
             return u;
         }
 

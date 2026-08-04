@@ -202,15 +202,29 @@ namespace Guildmaster.Combat
             }
         }
 
-        /// <summary>Собрать рантайм-обёртки активных способностей кита (кулдаун/ресурс).</summary>
-        private static void RegisterAbilities(RuntimeUnit unit, UnitData data)
+        /// <summary>Собрать рантайм-обёртки активных способностей кита (кулдаун/ресурс/дальность каста).</summary>
+        /// <remarks>
+        /// Ступень дальности разрешается в число здесь, потому что дистанции ступеней живут в
+        /// <see cref="StatsConfig"/> — а он есть у сборки и не должен протаскиваться в боевые системы.
+        /// Наследование «как у авто-атаки» остаётся неразвёрнутым (−1): дальность удара у кита может
+        /// меняться по ходу боя, и умение обязано ехать за ней.
+        /// </remarks>
+        private void RegisterAbilities(RuntimeUnit unit, UnitData data)
         {
             AbilityData[] abilities = data?.Abilities;
             if (abilities == null) return;
 
             for (int i = 0; i < abilities.Length; i++)
             {
-                if (abilities[i] != null) unit.Abilities.Add(new AbilityRuntime(abilities[i]));
+                AbilityData ability = abilities[i];
+                if (ability == null) continue;
+
+                unit.Abilities.Add(new AbilityRuntime(ability)
+                {
+                    CastRange = ability.CastRange == CastRangeBand.LikeAutoAttack || _config == null
+                        ? -1f
+                        : _config.RangeOf((AttackRangeBand)(ability.CastRange - 1)),
+                });
             }
         }
     }
