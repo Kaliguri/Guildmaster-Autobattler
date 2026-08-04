@@ -61,6 +61,11 @@ namespace Guildmaster.Net.Tape
                 return;
             }
 
+            // Показ повтора ведут ЕГО часы, а не расстояние до фронта: фронт здесь двигаем мы сами (см.
+            // Tick), и «отставание» от него — наш же запас, а не провис показа. С включённым догоном
+            // показ съедал этот запас каждый кадр и промотывал бой втридцатеро.
+            _playback.CatchUpToLead = false;
+
             _stream    = new Guildmaster.Net.NetByteReader(new ArraySegment<byte>(fileBytes));
             LoadResult = ReplayFile.TryReadHeader(_stream, out ReplayFile.Header header);
             Header     = header;
