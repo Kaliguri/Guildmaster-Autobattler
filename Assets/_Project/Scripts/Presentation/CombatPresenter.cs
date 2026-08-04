@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
@@ -186,6 +187,7 @@ namespace Guildmaster.Presentation
             if (_simulation == null) return;
             if (battle != null && !ReferenceEquals(_simulation, battle)) return;
 
+            CancelDeferredShow();   // бой закончился — отложенным цифрам этого боя всплывать уже негде
             UnsubscribeFromBattle();
 
             // Статус-кольца читают симуляцию и ленту напрямую (это dev-оверлей боя, не показ мира):
@@ -265,8 +267,33 @@ namespace Guildmaster.Presentation
             _dispatcher.AbilityCastInterrupted -= HandleAbilityCastInterrupted;
         }
 
+        /// <summary>
+        /// Отмена отложенного показа ЭТОГО боя: вторая цифра расщеплённого удара ждёт свои 60 мс через
+        /// <c>UniTask.Delay</c>, и ждать она должна ровно до конца боя, а не до конца жизни презентера.
+        /// </summary>
+        /// <remarks>
+        /// Связан со смертью объекта, поэтому отменится и сам по себе. Без него рестарт боя (dev-R)
+        /// оставлял задержку жить: цифра «-N» прошлого боя всплывала уже в новом, в мировой точке
+        /// прошлой цели — презентер-то пережил обоих.
+        /// </remarks>
+        private CancellationTokenSource _deferredShowCts;
+
+        private CancellationToken DeferredShowToken =>
+            (_deferredShowCts ??= CancellationTokenSource.CreateLinkedTokenSource(
+                this.GetCancellationTokenOnDestroy())).Token;
+
+        private void CancelDeferredShow()
+        {
+            if (_deferredShowCts == null) return;
+            _deferredShowCts.Cancel();
+            _deferredShowCts.Dispose();
+            _deferredShowCts = null;
+        }
+
         private void HandleBattleReset()
         {
+            CancelDeferredShow();
+
             // Лента чистится рекордером, а показ и курсор событий надо отмотать: иначе показ продолжит
             // с тика прошлого боя (и окажется впереди нового фронта), а первые события нового боя
             // сочтутся уже показанными.
@@ -382,6 +409,13 @@ namespace Guildmaster.Presentation
                 Combat.Tape.ProjectileSnapshot p = frame[i];
                 _seenProj.Add(p.Id);
 
+                // Направление выстрела — факт из КАДРА ЛЕНТЫ, а не из показа, поэтому запоминается до
+                // проверки вида. Иначе не разведённый префаб снаряда (он объявлен необязательным) тихо
+                // менял бы направление отброса тела, искр и выпада бьющего: импакт-фидбэк падал бы на
+                // вектор «стрелок → цель», который в этом же файле назван враньём.
+                if (p.TargetId >= 0 && p.Velocity.sqrMagnitude > 1e-8f)
+                    _lastShotDir[p.TargetId] = p.Velocity.normalized;
+
                 if (!_projViews.TryGetValue(p.Id, out ProjectileView view) || view == null)
                 {
                     view = SpawnProjectileView(in p);
@@ -389,8 +423,6 @@ namespace Guildmaster.Presentation
                 }
 
                 view.Follow(p.Position, p.PreviousPosition, p.Velocity, _stage.Alpha);
-                if (p.TargetId >= 0 && p.Velocity.sqrMagnitude > 1e-8f)
-                    _lastShotDir[p.TargetId] = p.Velocity.normalized;
             }
 
             // Исчез из кадра — значит попал или вышел за поле: вид снимается там же, где показан импакт.
@@ -894,9 +926,9 @@ namespace Guildmaster.Presentation
         private async UniTaskVoid DelayedNumber(Vector3 worldPosition, string text, Color color, float delay, float sizeScale)
         {
             bool canceled = await UniTask.Delay(System.TimeSpan.FromSeconds(delay), DelayType.UnscaledDeltaTime,
-                                                cancellationToken: this.GetCancellationTokenOnDestroy())
+                                                cancellationToken: DeferredShowToken)
                                          .SuppressCancellationThrow();
-            if (canceled) return;   // презентер умер за время задержки — спавнить цифру некуда
+            if (canceled) return;   // бой кончился или презентер умер за время задержки — цифре некуда
             SpawnNumber(worldPosition, text, color, sizeScale);
         }
 
