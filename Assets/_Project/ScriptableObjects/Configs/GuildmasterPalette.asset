@@ -88,7 +88,9 @@ MonoBehaviour:
   - Token: --gm-color-display-accent
     Color: {r: 0.9019608, g: 0.7882353, b: 0.56078434, a: 1}
   - Token: --gm-color-display-accent-quiet
-    Color: {r: 0.72156864, g: 0.5254902, b: 0.23137255, a: 1}
+    Color: {r: 0.19215687, g: 0.68235296, b: 0.7254902, a: 1}
+  - Token: --gm-color-display-outline
+    Color: {r: 0.1764706, g: 0.15294118, b: 0.12156863, a: 1}
   - Token: --gm-color-focus-ring
     Color: {r: 0.4509804, g: 0.79607844, b: 0.827451, a: 1}
   - Token: --gm-color-glass-rim
@@ -124,7 +126,7 @@ MonoBehaviour:
   - Token: --gm-color-map-pawn
     Color: {r: 0.972549, g: 0.9254902, b: 0.79607844, a: 1}
   - Token: --gm-color-menu-shade
-    Color: {r: 0.1764706, g: 0.15294118, b: 0.12156863, a: 0.6509804}
+    Color: {r: 0.10980392, g: 0.09411765, b: 0.07450981, a: 0.78039217}
   - Token: --gm-color-negative
     Color: {r: 0.80784315, g: 0.4745098, b: 0.39215687, a: 1}
   - Token: --gm-color-player-1
@@ -149,6 +151,8 @@ MonoBehaviour:
     Color: {r: 0.047058824, g: 0.40784314, b: 0.4392157, a: 1}
   - Token: --gm-color-surface-accent-hover-far
     Color: {r: 0.007843138, g: 0.101960786, b: 0.11764706, a: 1}
+  - Token: --gm-color-surface-accent-lit
+    Color: {r: 0.09411765, g: 0.3372549, b: 0.36078432, a: 1}
   - Token: --gm-color-surface-glass
     Color: {r: 0.13725491, g: 0.11764706, b: 0.09411765, a: 0.61960787}
   - Token: --gm-color-surface-panel
@@ -173,6 +177,8 @@ MonoBehaviour:
     Color: {r: 0.4509804, g: 0.79607844, b: 0.827451, a: 1}
   - Token: --gm-color-text-ghost
     Color: {r: 0.5764706, g: 0.5058824, b: 0.38431373, a: 1}
+  - Token: --gm-color-text-gradient-base
+    Color: {r: 1, g: 1, b: 1, a: 1}
   - Token: --gm-color-text-interactive
     Color: {r: 0.9019608, g: 0.7882353, b: 0.56078434, a: 1}
   - Token: --gm-color-text-interactive-dim
