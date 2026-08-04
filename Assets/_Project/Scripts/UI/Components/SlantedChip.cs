@@ -28,8 +28,11 @@ namespace Guildmaster.UI.Components
 
         private static readonly CustomStyleProperty<float> StrokeWidthProp = new("--gm-chip-stroke-width");
 
-        private Color _fill = new(0f, 0f, 0f, 0f);
-        private Color _stroke = new(0f, 0f, 0f, 0f);
+        // Своих цветов нет — только из USS (--gm-chip-fill / --gm-chip-stroke). Значение то же, что
+        // было, но записано именем: Color.clear читается как «цвет не пришёл», а new(0,0,0,0) — как
+        // осмысленный чёрный прозрачный, и гейт эти два случая различать обязан.
+        private Color _fill = Color.clear;
+        private Color _stroke = Color.clear;
         private float _strokeWidth = 2f;
         private float _slant = 12f;
         private Side _side = Side.Left;

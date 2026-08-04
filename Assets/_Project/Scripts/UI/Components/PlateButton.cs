@@ -56,10 +56,15 @@ namespace Guildmaster.UI.Components
 
         private readonly Label _label;
 
-        private Color _fill = new(0.11f, 0.08f, 0.05f, 1f);
+        // СВОИХ цветов у контрола нет: и заливка, и кайма приходят только из USS. Прежние дефолты
+        // (тёмно-коричневый и латунь) были вторым владельцем токенов и однажды разошлись бы с ними
+        // молча — ровно так это случилось у вуали, где хардкод 0.92 жил рядом с токеном 0.88.
+        // clear здесь значит «цвет не пришёл» и честно не рисует ничего, вместо того чтобы подсунуть
+        // правдоподобный. Инвариант держит UiColorPipelineTests.
+        private Color _fill = Color.clear;
         private Color _fillFar = Color.clear;          // clear = «второго цвета нет», заливка сплошная
         private PlateFill _fillMode = PlateFill.Down;
-        private Color _stroke = new(0.72f, 0.53f, 0.23f, 1f);
+        private Color _stroke = Color.clear;
         private float _strokeWidth = 2f;
         private float _chamfer = 10f;
 
@@ -264,6 +269,6 @@ namespace Guildmaster.UI.Components
         /// разница между «задано» и «нарисовано» читается как «дизайнерское решение», а не как
         /// дефект, и живёт месяцами.</para>
         /// </remarks>
-        internal static Color VertexColor(Color c) => c;
+        public static Color VertexColor(Color c) => c;
     }
 }

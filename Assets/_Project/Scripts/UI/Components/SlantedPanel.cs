@@ -19,8 +19,9 @@ namespace Guildmaster.UI.Components
         private static readonly CustomStyleProperty<Color> StrokeProp = new("--gm-slant-stroke");
         private static readonly CustomStyleProperty<float> WidthProp  = new("--gm-slant-width");
 
-        private Color _fill   = new(0.09f, 0.075f, 0.06f, 1f);
-        private Color _stroke = new(0.42f, 0.35f, 0.21f, 1f);
+        // Своих цветов нет — только из USS (--gm-slant-fill / --gm-slant-stroke): см. PlateButton.
+        private Color _fill   = Color.clear;
+        private Color _stroke = Color.clear;
         private float _strokeWidth = 2f;
         private float _slant = 14f;
 

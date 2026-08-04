@@ -27,8 +27,10 @@ namespace Guildmaster.UI.Components
         private static readonly CustomStyleProperty<float> WidthProp = new("--gm-frame-width");
         private static readonly CustomStyleProperty<float> GapProp = new("--gm-frame-gap");
 
-        private Color _line = new(0.72f, 0.53f, 0.23f, 1f);
-        private Color _inner = new(0.54f, 0.37f, 0.16f, 1f);
+        // Своих цветов нет — только из USS (--gm-frame-line / --gm-frame-inner). Прежние латунные
+        // дефолты были мёртвым дублем токенов: правится роль, а копия в коде остаётся прежней.
+        private Color _line = Color.clear;
+        private Color _inner = Color.clear;
         private float _width = 2f;
         private float _gap = 7f;
         private float _corner = 26f;
