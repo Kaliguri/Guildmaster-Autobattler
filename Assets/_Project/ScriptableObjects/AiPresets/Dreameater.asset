@@ -18,7 +18,7 @@ MonoBehaviour:
     _autoAttackMode: 2
     _targetTag: 32768
     _retreat:
-      Enabled: 1
+      Enabled: 0
       FleeAtHpPct: 0.3
       ReturnAtHpPct: 0.55
     _kite:

@@ -42,7 +42,7 @@ namespace Guildmaster.Combat
                 self.AutoAttackTarget = target;
             }
 
-            self.Positioning = ResolvePositioning(self);
+            self.Positioning = ResolvePositioning(self, view);
         }
 
         // --- Filter ---
@@ -158,26 +158,52 @@ namespace Guildmaster.Combat
 
         // --- Override: позиционирование (§4.3) ---
 
-        private PositioningIntent ResolvePositioning(RuntimeUnit self)
+        private PositioningIntent ResolvePositioning(RuntimeUnit self, IBattleView view)
         {
             Retreat r = _profile.Retreat;
             if (r.Enabled)
             {
                 float hp = HpPct(self);
-                // Гистерезис (B > A): уже отступаем — продолжаем, пока не восстановились до ReturnAtHpPct;
-                // иначе уходим в отступление лишь при падении ниже FleeAtHpPct. Зазор гасит дёрганье.
-                if (self.Positioning == PositioningIntent.Retreat)
+
+                // Оправился — отступление снова доступно целиком. Сброс идёт по тому же порогу, по
+                // которому боец возвращается в бой: у «побега хватило» и «побег закончился» одно условие.
+                if (hp >= r.ReturnAtHpPct) self.RetreatTicks = 0;
+
+                // Предел отступления: порог возврата задан долей HP, а поднять её нечем, когда лечить
+                // некому. Без предела боец уходит навсегда, обе стороны живы, и бой не разрешается —
+                // овертайм тут бессилен, он умножает урон, которого нет. Кайтера предел не касается:
+                // отход и есть его способ драться.
+                bool spent = !_profile.Kite.Enabled
+                             && self.RetreatTicks >= RetreatCapTicks(view);
+
+                if (!spent)
                 {
-                    if (hp < r.ReturnAtHpPct) return PositioningIntent.Retreat;
-                }
-                else if (hp <= r.FleeAtHpPct)
-                {
-                    return PositioningIntent.Retreat;
+                    // Гистерезис (B > A): уже отступаем — продолжаем, пока не восстановились до
+                    // ReturnAtHpPct; иначе уходим в отступление лишь при падении ниже FleeAtHpPct.
+                    // Зазор гасит дёрганье.
+                    if (self.Positioning == PositioningIntent.Retreat)
+                    {
+                        if (hp < r.ReturnAtHpPct) { self.RetreatTicks++; return PositioningIntent.Retreat; }
+                    }
+                    else if (hp <= r.FleeAtHpPct)
+                    {
+                        self.RetreatTicks++;
+                        return PositioningIntent.Retreat;
+                    }
                 }
             }
 
             if (_profile.Kite.Enabled) return PositioningIntent.Kite;
             return PositioningIntent.Approach;
+        }
+
+        /// <summary>Предел отступления в тиках мозга. Мозг решает не каждый тик — считаем по его каденсу.</summary>
+        private static int RetreatCapTicks(IBattleView view)
+        {
+            float seconds = view.Tuning.RetreatMaxSeconds;
+            if (seconds <= 0f) return int.MaxValue;   // ноль = предела нет (прежнее поведение)
+            int ticks = (int)(seconds * Core.Simulation.SimConstants.TickRate);
+            return ticks < 1 ? 1 : ticks;
         }
     }
 }

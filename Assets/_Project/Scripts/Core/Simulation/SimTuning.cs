@@ -93,6 +93,19 @@ namespace Guildmaster.Core.Simulation
         // Боевое ожидание сюда не считается: он в цикле атаки и держит цель, он просто ждёт интервала.
         public readonly float ComboBreakSeconds;
 
+        // --- Отступление ---
+        /// <summary>
+        /// Сколько боец может отступать подряд, прежде чем вернётся в бой независимо от здоровья.
+        /// <b>Кайтеров не касается</b> — у них отход и есть способ драться.
+        /// </summary>
+        /// <remarks>
+        /// Порог возврата задан долей HP, а поднять её нечем, когда лечить некому: боец уходит навсегда,
+        /// и бой замирает при обеих живых сторонах. Овертайм это не лечит — он умножает урон, которого
+        /// в такой ситуации просто нет. Замер 2026-08-04: 13% боёв круга не разрешались, у Монаха
+        /// вихря — 57.69%.
+        /// </remarks>
+        public readonly float RetreatMaxSeconds;
+
         public SimTuning(
             float bodyRadiusPerSize,
             float separationStrength,
@@ -124,7 +137,8 @@ namespace Guildmaster.Core.Simulation
             float concealWeakRadius,
             float concealMediumRadius,
             float concealStrongRadius,
-            float comboBreakSeconds)
+            float comboBreakSeconds,
+            float retreatMaxSeconds = 4f)
         {
             BodyRadiusPerSize         = bodyRadiusPerSize;
             SeparationStrength        = separationStrength;
@@ -157,6 +171,7 @@ namespace Guildmaster.Core.Simulation
             ConcealMediumRadius       = concealMediumRadius;
             ConcealStrongRadius       = concealStrongRadius;
             ComboBreakSeconds         = comboBreakSeconds;
+            RetreatMaxSeconds         = retreatMaxSeconds;
         }
 
         /// <summary>
@@ -260,6 +275,7 @@ namespace Guildmaster.Core.Simulation
             concealWeakRadius:         6f,
             concealMediumRadius:       4f,
             concealStrongRadius:       2f,
-            comboBreakSeconds:         1.5f);
+            comboBreakSeconds:         1.5f,
+            retreatMaxSeconds:         4f);
     }
 }

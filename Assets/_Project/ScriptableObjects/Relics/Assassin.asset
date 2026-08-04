@@ -71,6 +71,7 @@ MonoBehaviour:
     _damageMultiplier: 0
     _baseDamage: 0
     _damageType: 0
+    _castRange: 0
     _areaShape: 0
     _areaRadius: 0
     _healFlat: 0
@@ -84,6 +85,7 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _maxTriggerUniques: 0
     _castSeconds: 0
     _channelSeconds: 0
     _channelTickSeconds: 1
@@ -113,7 +115,7 @@ MonoBehaviour:
     _autoAttackMode: 0
     _targetTag: 0
     _retreat:
-      Enabled: 1
+      Enabled: 0
       FleeAtHpPct: 0.25
       ReturnAtHpPct: 0.5
     _kite:

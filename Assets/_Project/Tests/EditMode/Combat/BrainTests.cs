@@ -240,5 +240,6 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         public IReadOnlyList<RuntimeUnit> Units => _units;
         int IBattleView.CurrentTick => CurrentTick;
+        public Guildmaster.Core.Simulation.SimTuning Tuning { get; set; } = Guildmaster.Core.Simulation.SimTuning.Default;
     }
 }

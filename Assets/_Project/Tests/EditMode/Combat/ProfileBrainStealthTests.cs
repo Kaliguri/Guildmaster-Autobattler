@@ -22,6 +22,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             public IReadOnlyList<RuntimeUnit> Units { get; set; }
             public int CurrentTick => 0;
+            public Guildmaster.Core.Simulation.SimTuning Tuning => Guildmaster.Core.Simulation.SimTuning.Default;
         }
 
         private static RuntimeUnit MakeUnit(int id, int team, float x, bool stealthed = false)
