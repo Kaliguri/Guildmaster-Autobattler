@@ -343,6 +343,11 @@ namespace Guildmaster.Game
 
             builder.RegisterEntryPoint<Net.Tape.BattleTapeBroadcast>(Lifetime.Scoped).AsSelf();
 
+            // Подключение посреди боя: держим общую паузу, пока напарник догружает ленту, и снимаем её
+            // через короткий отсчёт (реш. Макса 04.08.2026). Живёт у владельца, потому что паузу для
+            // всех объявляет он.
+            builder.RegisterEntryPoint<Net.Tape.MidBattleJoinHold>(Lifetime.Scoped).AsSelf();
+
             // Состав боя: в снимках его нет (за бой не меняется), а показу он нужен — кто это, какой
             // арт, чья команда.
             builder.RegisterEntryPoint<Net.Tape.BattleRosterAnnouncer>(Lifetime.Scoped);

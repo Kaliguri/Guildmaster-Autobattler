@@ -166,6 +166,12 @@ namespace Guildmaster.Net.Tape
         /// <summary>Сколько чанков догрузки ещё не ушло — по нему видно, ждать ли гостя.</summary>
         public int BackfillRemaining => _backfill.Count;
 
+        /// <summary>
+        /// Кто-то попросил бой с начала: его номер пира и сколько чанков ему предстоит получить.
+        /// Слушает тот, кто держит бой на паузе, пока гость догружается.
+        /// </summary>
+        public event Action<int, int> WholeBattleRequested;
+
         /// <summary>За один вызов — столько чанков, то есть примерно восемь секунд боя за кадр.</summary>
         public const int BackfillChunksPerCall = 8;
 
@@ -185,6 +191,11 @@ namespace Guildmaster.Net.Tape
                 var numbers = new List<int>(_history.Keys);
                 numbers.Sort();
                 for (int i = 0; i < numbers.Count; i++) _backfill.Enqueue((from, numbers[i]));
+
+                // Просьба «дай бой с начала» — это и есть «кто-то подключился посреди боя». Отдельного
+                // сигнала для паузы не заводим: он был бы вторым владельцем одного факта, а этот
+                // приходит ровно тогда, когда нужно, и ровно от того, кого ждём.
+                WholeBattleRequested?.Invoke(from, numbers.Count);
                 return;
             }
 
