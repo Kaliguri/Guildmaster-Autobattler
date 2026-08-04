@@ -87,6 +87,8 @@ namespace Guildmaster.Guild.Commands
 
         public void AwardBattleReward() => Submit(Next(RunCommandKind.AwardBattleReward));
 
+        public void ChooseNode(string nodeId) => Submit(Next(RunCommandKind.ChooseNode, text: nodeId));
+
         public bool RequestSave() => _applier.Save();
 
         private RunCommand Next(RunCommandKind kind, int slotIndex = -1, int amount = 0,

@@ -202,6 +202,11 @@ namespace Guildmaster.Tests.EditMode.Run
             public bool IsShown => false;
             public void SetVisible(bool visible) { }
             public void Refresh() { }
+            public bool IsChoosing => false;
+            public void BeginChoose(
+                System.Collections.Generic.IReadOnlyList<Guildmaster.Guild.MapNode> available,
+                bool show = true) { }
+            public void EndChoose() { }
         }
 
         private sealed class SilentPublisher : MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>

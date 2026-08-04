@@ -25,7 +25,7 @@ namespace Guildmaster.Tests.EditMode.Net
         {
             var view = new FakeView();
             var runs = new FakeRuns();                       // забега ещё нет — снимок не доехал
-            var map  = new WorldMapController(view, runs, null, null);
+            var map  = new WorldMapController(view, runs, null, null, null);
 
             map.SetVisible(true);
             Assert.IsFalse(map.IsShown, "рисовать нечего — карта не показана, и это правильно");
@@ -42,7 +42,7 @@ namespace Guildmaster.Tests.EditMode.Net
         {
             var view = new FakeView();
             var runs = new FakeRuns { Current = RunWithMap() };
-            var map  = new WorldMapController(view, runs, null, null);
+            var map  = new WorldMapController(view, runs, null, null, null);
 
             map.Refresh();
 
@@ -55,7 +55,7 @@ namespace Guildmaster.Tests.EditMode.Net
         {
             var view = new FakeView();
             var runs = new FakeRuns();
-            var map  = new WorldMapController(view, runs, null, null);
+            var map  = new WorldMapController(view, runs, null, null, null);
 
             map.SetVisible(true);   // нечего рисовать
             map.SetVisible(false);

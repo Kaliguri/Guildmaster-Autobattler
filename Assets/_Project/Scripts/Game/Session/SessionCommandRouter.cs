@@ -36,6 +36,8 @@ namespace Guildmaster.Game.Session
 
         public void AwardBattleReward() => _sessions.Commands?.AwardBattleReward();
 
+        public void ChooseNode(string nodeId) => _sessions.Commands?.ChooseNode(nodeId);
+
         public bool RequestSave() => _sessions.Commands?.RequestSave() ?? false;
     }
 }

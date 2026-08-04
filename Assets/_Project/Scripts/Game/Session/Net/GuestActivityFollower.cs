@@ -37,18 +37,23 @@ namespace Guildmaster.Game.Session.Net
 
         private Action _toggleReady;
 
+        // Снимок забега: из него гость сам считает и какие узлы достижимы, и ждут ли вообще выбора.
+        // По сети не едет ни то, ни другое — оба выводятся из состояния (см. IActMapPresence).
+        private readonly GuestRunState _runs;
+
         private ActivityState _applied = ActivityState.Nowhere;
         private byte[]        _envelope;
 
         public GuestActivityFollower(INetTransport transport, ActivityHost activities,
                                      IActMapPresence map, Guildmaster.Core.Flow.IHubPresence hub,
-                                     Guildmaster.Core.Net.IReadyGate ready)
+                                     Guildmaster.Core.Net.IReadyGate ready, GuestRunState runs)
         {
             _transport  = transport  ?? throw new ArgumentNullException(nameof(transport));
             _activities = activities ?? throw new ArgumentNullException(nameof(activities));
             _map        = map;
             _hub        = hub;
             _ready      = ready;
+            _runs       = runs;
         }
 
         /// <summary>Что применено последним — видно в dev-панели.</summary>
@@ -62,6 +67,10 @@ namespace Guildmaster.Game.Session.Net
         {
             _transport.MessageReceived += HandleMessage;
 
+            // Горящие узлы пересчитываются на каждый снимок: и «ждём ли выбора», и «куда можно» —
+            // это состояние забега, а оно приезжает именно снимком.
+            if (_runs != null) _runs.SnapshotReceived += HandleSnapshot;
+
             if (!_transport.IsRunning) return;
 
             _transport.Send(NetPeer.HostPeerId,
@@ -69,7 +78,13 @@ namespace Guildmaster.Game.Session.Net
                 NetDelivery.Reliable);
         }
 
-        public void Dispose() => _transport.MessageReceived -= HandleMessage;
+        public void Dispose()
+        {
+            _transport.MessageReceived -= HandleMessage;
+            if (_runs != null) _runs.SnapshotReceived -= HandleSnapshot;
+        }
+
+        private void HandleSnapshot(Guildmaster.Guild.RunState _) => RefreshNodeChoice();
 
         private void HandleMessage(int from, ArraySegment<byte> message)
         {
@@ -191,6 +206,41 @@ namespace Guildmaster.Game.Session.Net
         private void ApplyHub(in ActivityState state)
         {
             _hub?.SetVisible(state.HubOpen);
+        }
+
+        /// <summary>
+        /// Зажечь или погасить достижимые узлы — по состоянию забега, а не по объявлению.
+        /// </summary>
+        /// <remarks>
+        /// <b>Гость выбирает наравне</b> (решение Макса 04.08.2026): «все игроки полноправные и могут
+        /// голосовать за карту в будущем. Пока, просто тыкать и выбирать». До этого у него карта
+        /// открывалась, но узлы не горели и клик ничего не делал: момент ожидания жил в стеке петли
+        /// акта, а её у гостя нет.
+        /// <para><b>По сети сюда не едет ничего</b>, и это главное в устройстве. «Ждём выбора» — это
+        /// «поле входа пусто и акт не завершён», достижимые — <c>MapTraversal.AvailableNext</c>; обе
+        /// вещи считаются из снимка карты, который у гостя и так есть. Объявляй мы их отдельно, у
+        /// подсветки появился бы второй владелец, умеющий разойтись с картой под ней.</para>
+        /// <para><b>Клик отсюда никуда не отправляется:</b> его шлёт сама карта, командой в шину — той
+        /// же, что и у хозяина.</para>
+        /// </remarks>
+        private void RefreshNodeChoice()
+        {
+            if (_map == null) return;
+
+            Guildmaster.Guild.MapState map = _runs?.Current?.Map;
+            bool waiting = map != null
+                           && string.IsNullOrEmpty(map.EnteringNodeId)
+                           && !Guildmaster.Guild.MapTraversal.IsActComplete(map);
+
+            if (!waiting)
+            {
+                if (_map.IsChoosing) _map.EndChoose();
+                return;
+            }
+
+            // Карту здесь не открываем (show: false): её открытость объявлена отдельным полем, и второй
+            // хозяин видимости спорил бы с первым.
+            _map.BeginChoose(Guildmaster.Guild.MapTraversal.AvailableNext(map), show: false);
         }
     }
 }

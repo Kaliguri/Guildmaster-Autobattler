@@ -55,6 +55,9 @@ namespace Guildmaster.Guild
             var node = NodeById(map, nodeId);
             node.Cleared = true;
             map.CurrentNodeId = nodeId;
+            // Узел пройден — входить в него больше некуда: снова развилка, и узлы снова горят. Сброс
+            // живёт здесь, потому что здесь же и кончается вход, а два места про один факт разошлись бы.
+            map.EnteringNodeId = null;
             return true;
         }
 
