@@ -134,7 +134,7 @@ MonoBehaviour:
   _shatterGravity: 0
   _shatterSpin: 1.4
   _shatterSpread: 0.7
-  _shatterBlockPixels: 3
+  _shatterShardSize: 0.1
   _shatterTumble: 22
   _shatterUpBias: 0.35
   _shatterFlashOut: 0.12

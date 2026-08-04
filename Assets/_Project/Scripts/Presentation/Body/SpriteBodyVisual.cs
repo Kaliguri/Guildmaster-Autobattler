@@ -171,7 +171,8 @@ namespace Guildmaster.Presentation.Body
             // со спрайтом и осколки спавнятся со смещением.
             go.transform.SetParent(Root, worldPositionStays: false);
             var shatter = go.AddComponent<DeathShatter>();
-            shatter.Play(_sprite, feel, palette, onComplete);
+            // Тело из одного спрайта: его же габарит и есть рост юнита — мера, которой меряется осколок.
+            shatter.Play(_sprite, feel, palette, _sprite.bounds.size.y, onComplete);
 
             _sprite.enabled = false;   // дальше показывают осколки
         }

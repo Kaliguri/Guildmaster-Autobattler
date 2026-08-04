@@ -228,8 +228,10 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private float _shatterSpin = 3f;
         [Tooltip("Разброс направлений от радиального (рад) — больше = летят «во все стороны», не строго от центра.")]
         [SerializeField] private float _shatterSpread = 1.2f;
-        [Tooltip("Размер чанка-осколка в ИСХОДНЫХ пикселях спрайта (меньше = мельче куски, больше = крупнее блоки).")]
-        [SerializeField, Range(2, 16)] private int _shatterBlockPixels = 6;
+        [Tooltip("Размер осколка в ДОЛЯХ РОСТА юнита (0.1 = кусок в десятую часть тела). Мера длины, а не " +
+                 "пикселей исходника: части скелетного юнита нарисованы в разном разрешении, и общий " +
+                 "«чанк в N пикселей» дробил их на куски несопоставимого размера.")]
+        [SerializeField, Range(0.02f, 0.5f)] private float _shatterShardSize = 0.12f;
         [Tooltip("Сила ПСЕВДО-3D кувыркания осколков (переворот вокруг случайной оси). 0 = плоско, больше = активнее кувыркаются.")]
         [SerializeField] private float _shatterTumble = 9f;
         [Tooltip("Восходящий дрейф: смещает разлёт вверх-и-наружу (0 = строго радиально, больше = осколки уходят вверх).")]
@@ -540,7 +542,7 @@ namespace Guildmaster.Presentation.Design
         public float ShatterGravity    => _shatterGravity;
         public float ShatterSpin       => _shatterSpin;
         public float ShatterSpread     => _shatterSpread;
-        public int   ShatterBlockPixels => _shatterBlockPixels;
+        public float ShatterShardSize  => _shatterShardSize;
         public float ShatterTumble     => _shatterTumble;
         public float ShatterUpBias     => _shatterUpBias;
         public float ShatterFlashOut   => _shatterFlashOut;

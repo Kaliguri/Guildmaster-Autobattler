@@ -16,20 +16,30 @@ namespace Guildmaster.Presentation
         private const float LineJitter = 0.6f; // насколько гуляют внутренние линии (в долях ячейки) → разные размеры
         private const int Seed = 1337;
 
+        /// <summary>Потолок сетки — страховка от абсурда, а не регулятор: размер чанка задаёт вызывающий.</summary>
+        private const int MaxCells = 32;
+
         /// <summary>
         /// Собрать блочный меш размером <paramref name="size"/> (лок. ед., центр в 0), UV в области
         /// <paramref name="uvRect"/>. <paramref name="regionPixels"/> — размер области в ИСХОДНЫХ пикселях
-        /// (для снапа границ), <paramref name="blockPixels"/> — целевой размер чанка в пикселях.
+        /// (границы чанков снапятся на его пиксель-сетку), <paramref name="shardSize"/> — целевой размер
+        /// чанка В ТЕХ ЖЕ локальных единицах, что <paramref name="size"/>.
         /// </summary>
-        public static Mesh Build(Vector2 size, Rect uvRect, Vector2 regionPixels, int blockPixels)
+        /// <remarks>
+        /// Размер чанка задаётся ДЛИНОЙ, а не числом исходных пикселей (2026-08-04). Пиксель исходника —
+        /// не мера длины: у покадрового бестиария спрайт юнита целиком занимает 48 px, у частей скелетного
+        /// «сторибука» одна кисть — 112 px при PPU 1000. Один и тот же «чанк в 6 px» давал там кусок в
+        /// восьмую часть тела, а здесь — крошку в 0.006 мировых единиц, и шестнадцать частей рассыпались
+        /// на десяток тысяч пылинок. Длина одинаково читается на любом разрешении арта.
+        /// </remarks>
+        public static Mesh Build(Vector2 size, Rect uvRect, Vector2 regionPixels, float shardSize)
         {
             var rng = new System.Random(Seed);
-            int bp = Mathf.Max(1, blockPixels);
-            // Потолок сетки был 16×20 — и он, а не Block Pixels, определял размер осколка: спрайту в 48 px
-            // с блоком в 3 px нужно ровно 16 колонок, дальше параметр переставал что-либо менять. Потолок
-            // поднят до 48×64 (это по-прежнему ОДИН дро-колл — вся сетка живёт в вершинах одного меша).
-            int cols = Mathf.Clamp(Mathf.RoundToInt(regionPixels.x / bp), 3, 48);
-            int rows = Mathf.Clamp(Mathf.RoundToInt(regionPixels.y / bp), 3, 64);
+            float shard = Mathf.Max(1e-5f, shardSize);
+            // Минимум ОДНА ячейка на ось: часть мельче чанка обязана улететь целым куском, а не быть
+            // насильно разрезанной на три — иначе кисть крошится мельче торса, хотя чанк общий.
+            int cols = Mathf.Clamp(Mathf.RoundToInt(size.x / shard), 1, MaxCells);
+            int rows = Mathf.Clamp(Mathf.RoundToInt(size.y / shard), 1, MaxCells);
 
             float[] fx = BuildLines(cols, regionPixels.x, rng); // доли [0..1] границ по X, снап на пиксели
             float[] fy = BuildLines(rows, regionPixels.y, rng);

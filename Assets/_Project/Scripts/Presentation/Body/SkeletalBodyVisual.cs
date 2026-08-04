@@ -340,6 +340,10 @@ namespace Guildmaster.Presentation.Body
         /// </summary>
         public void PlayShatter(Design.CombatFeelConfig feel, Gradient palette, System.Action onComplete)
         {
+            // Мера осколка — рост ВСЕГО тела, а не своей части: иначе кисть и клинок рассыпаются на
+            // одинаковое ЧИСЛО кусков, то есть на куски совершенно разного размера.
+            float height = TryGetBounds(out Bounds body) ? body.size.y : 1f;
+
             int pending = 0;
             for (int i = 0; i < _parts.Count; i++)
             {
@@ -361,7 +365,7 @@ namespace Guildmaster.Presentation.Body
                 go.transform.SetParent(part.transform.parent != null ? part.transform.parent : transform,
                     worldPositionStays: false);
                 var shatter = go.AddComponent<DeathShatter>();
-                shatter.Play(part, feel, palette, () =>
+                shatter.Play(part, feel, palette, height, () =>
                 {
                     // Догорел последний осколок последней части — тело отработало целиком.
                     if (--left == 0) onComplete?.Invoke();

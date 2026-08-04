@@ -50,7 +50,13 @@ namespace Guildmaster.Presentation
         /// Палитра ПАВШЕГО юнита: часть осколков красится ею, остальные — белым пересветом. Так разлёт
         /// говорит, кто именно погиб, а не «здесь кто-то умер».
         /// </param>
-        public void Play(SpriteRenderer src, Design.CombatFeelConfig cfg, Gradient palette, System.Action onComplete)
+        /// <param name="bodyHeightWorld">
+        /// Рост ВСЕГО тела в мировых единицах — мера, которой меряется осколок. Приходит снаружи, потому что
+        /// у составного юнита эту величину знает только тело целиком: считать её от собственного спрайта
+        /// значило бы дробить кисть на столько же кусков, на сколько торс.
+        /// </param>
+        public void Play(SpriteRenderer src, Design.CombatFeelConfig cfg, Gradient palette,
+                         float bodyHeightWorld, System.Action onComplete)
         {
             _onComplete = onComplete;
             _flashIn  = cfg != null ? cfg.ShatterFlashIn  : 0.08f;
@@ -71,8 +77,14 @@ namespace Guildmaster.Presentation
             if (sprite != null && sprite.texture != null)
                 regionPixels = new Vector2(uvSize.x * sprite.texture.width, uvSize.y * sprite.texture.height);
 
-            int blockPx = cfg != null ? cfg.ShatterBlockPixels : 6;
-            _mesh = ShatterMesh.Build(sizeLocal, new Rect(uvMin.x, uvMin.y, uvSize.x, uvSize.y), regionPixels, blockPx);
+            // Осколок задан ДОЛЕЙ РОСТА тела, то есть длиной, а не пикселями исходника: у скелетного юнита
+            // части нарисованы в разном разрешении (кисть 112 px, клинок 585 px при PPU 1000), и общий
+            // «чанк в N пикселей» резал их на куски несопоставимого размера. Переводим мировую длину в
+            // локальные единицы этого спрайта — масштаб частей внутри рига свой у каждой.
+            float shardWorld = (cfg != null ? cfg.ShatterShardSize : 0.06f) * Mathf.Max(1e-4f, bodyHeightWorld);
+            float scale      = Mathf.Abs(src.transform.lossyScale.y);
+            float shardLocal = shardWorld / Mathf.Max(1e-5f, scale);
+            _mesh = ShatterMesh.Build(sizeLocal, new Rect(uvMin.x, uvMin.y, uvSize.x, uvSize.y), regionPixels, shardLocal);
 
             _mf = GetComponent<MeshFilter>();
             _mr = GetComponent<MeshRenderer>();
