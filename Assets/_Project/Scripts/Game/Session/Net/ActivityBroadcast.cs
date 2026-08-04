@@ -26,17 +26,22 @@ namespace Guildmaster.Game.Session.Net
         // Карта живёт в мире, а не в мероприятии, поэтому спрашивается отдельно — но объявляется тем же
         // сообщением: для гостя «где мы» это одно состояние, а не два независимых.
         private readonly Flow.IActMapPresence _map;
+        // Двор — по той же причине и на тех же правах: он вне мероприятия, но это место, и гость обязан
+        // оказаться в нём вместе с хостом.
+        private readonly Core.Flow.IHubPresence _hub;
 
         private readonly NetByteWriter _writer = new NetByteWriter(16);
         private byte[] _envelope;
 
         private ActivityState _last = ActivityState.Nowhere;
 
-        public ActivityBroadcast(INetTransport transport, ActivityHost activities, Flow.IActMapPresence map)
+        public ActivityBroadcast(INetTransport transport, ActivityHost activities,
+                                 Flow.IActMapPresence map, Core.Flow.IHubPresence hub)
         {
             _transport  = transport  ?? throw new ArgumentNullException(nameof(transport));
             _activities = activities ?? throw new ArgumentNullException(nameof(activities));
             _map        = map;
+            _hub        = hub;
 
             _transport.MessageReceived += HandleMessage;
         }
@@ -77,8 +82,10 @@ namespace Guildmaster.Game.Session.Net
             bool battleOpen     = _activities.Battle?.IsOpen ?? false;
             BattlePhase phase   = _activities.Clock?.Phase ?? BattlePhase.None;
             bool mapOpen        = _map?.IsShown ?? false;
+            bool hubOpen        = _hub?.IsShown ?? false;
 
-            return new ActivityState(setup.Kind, setup.HideOpponent, setup.OwnUnitsOnly, battleOpen, phase, mapOpen);
+            return new ActivityState(setup.Kind, setup.HideOpponent, setup.OwnUnitsOnly,
+                                     battleOpen, phase, mapOpen, hubOpen);
         }
 
         private void Send(int peerId, in ActivityState state)

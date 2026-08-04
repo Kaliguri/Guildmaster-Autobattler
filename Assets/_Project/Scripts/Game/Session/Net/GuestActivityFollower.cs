@@ -29,15 +29,19 @@ namespace Guildmaster.Game.Session.Net
         private readonly ActivityHost  _activities;
         // Карта живёт в мире, а не в мероприятии, но для гостя это часть одного ответа «где мы».
         private readonly IActMapPresence _map;
+        // Двор — на тех же правах: место вне мероприятия, в которое гость обязан попасть вместе с хостом.
+        private readonly Guildmaster.Core.Flow.IHubPresence _hub;
 
         private ActivityState _applied = ActivityState.Nowhere;
         private byte[]        _envelope;
 
-        public GuestActivityFollower(INetTransport transport, ActivityHost activities, IActMapPresence map)
+        public GuestActivityFollower(INetTransport transport, ActivityHost activities,
+                                     IActMapPresence map, Guildmaster.Core.Flow.IHubPresence hub)
         {
             _transport  = transport  ?? throw new ArgumentNullException(nameof(transport));
             _activities = activities ?? throw new ArgumentNullException(nameof(activities));
             _map        = map;
+            _hub        = hub;
         }
 
         /// <summary>Что применено последним — видно в dev-панели.</summary>
@@ -87,6 +91,7 @@ namespace Guildmaster.Game.Session.Net
             ApplyBattle(in state);
             ApplyPhase(in state);
             ApplyMap(in state);
+            ApplyHub(in state);
 
             _applied = state;
         }
@@ -136,6 +141,21 @@ namespace Guildmaster.Game.Session.Net
         private void ApplyMap(in ActivityState state)
         {
             _map?.SetVisible(state.MapOpen);
+        }
+
+        /// <summary>
+        /// Открыть или закрыть двор вслед за хостом.
+        /// </summary>
+        /// <remarks>
+        /// Двор открывает петля игры между выбором дома и забегом, а петли у гостя нет: он оставался в
+        /// том месте, где его застало подключение, — на боевой камере посреди пустого мира, пока хост
+        /// стоял во дворе (наход. Макса 04.08.2026).
+        /// <para>Имя дома гость не получает и не должен: двор здесь — МЕСТО, а чей он и что в нём
+        /// лежит, приезжает состоянием забега своим каналом.</para>
+        /// </remarks>
+        private void ApplyHub(in ActivityState state)
+        {
+            _hub?.SetVisible(state.HubOpen);
         }
     }
 }

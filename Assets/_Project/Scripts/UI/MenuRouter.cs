@@ -22,7 +22,7 @@ namespace Guildmaster.UI
     /// прежней ручной синхронизации (<c>_menuModeActive</c>/<c>_prevContext</c>/CSS-классов-флагов).
     /// Настройки применяются живьём; Cancel/Save — на кнопках, ESC = навигация назад.
     /// </summary>
-    public sealed class MenuRouter : IDisposable
+    public sealed class MenuRouter : IDisposable, Core.Flow.IHubPresence
     {
         private readonly IInputService _input;
         private readonly UiNavigator _nav;
@@ -776,13 +776,44 @@ namespace Guildmaster.UI
                 resolve => HubScreenView.Build(_hubUxml, req.GuildName, key => _loc?.GetString(key),
                                                onStartRun: () => resolve(true)));
 
+            _hubScreen = screen; // «двор открыт» — это ссылка на его экран, и другого владельца у факта нет
             ShowHubAsync(screen, req).Forget();
         }
 
         private async UniTaskVoid ShowHubAsync(RouterResultScreen<bool> screen, OpenHubRequest req)
         {
             await _nav.ShowAsync(screen);
+            if (ReferenceEquals(_hubScreen, screen)) _hubScreen = null;
             req.OnStartRun?.Invoke();
+        }
+
+        // ── Двор глазами сеанса (IHubPresence) ───────────────────────────────
+        // Хост объявляет гостю «где мы», и двор — часть этого ответа. Открывает его петля игры, а петли
+        // у гостя нет: без этого шва он оставался там, где его застало подключение (наход. Макса
+        // 04.08.2026, прогон вдвоём).
+
+        /// <summary>Экран двора, пока он на стеке. Он же ответ на вопрос «открыт ли двор».</summary>
+        private RouterResultScreen<bool> _hubScreen;
+
+        bool Core.Flow.IHubPresence.IsShown => _hubScreen != null;
+
+        /// <summary>
+        /// Открыть или закрыть двор по объявлению хоста.
+        /// </summary>
+        /// <remarks>
+        /// Имени дома у гостя нет и не будет: двор здесь — МЕСТО, а чей он, приезжает состоянием забега
+        /// своим каналом. <c>OnStartRun</c> тоже пуст — забег начинает владелец, и гостевой экран,
+        /// закрывшись сам, не должен никого никуда отправлять.
+        /// </remarks>
+        void Core.Flow.IHubPresence.SetVisible(bool visible)
+        {
+            if (visible == (_hubScreen != null)) return; // применяется целиком и каждый раз — повтор штатен
+
+            if (visible) { OpenHub(new OpenHubRequest(null, null)); return; }
+
+            RouterResultScreen<bool> screen = _hubScreen;
+            _hubScreen = null;
+            _nav.Remove(screen);
         }
 
         /// <summary>
