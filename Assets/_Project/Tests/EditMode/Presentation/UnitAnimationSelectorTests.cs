@@ -219,6 +219,27 @@ namespace Guildmaster.Tests.EditMode.Presentation
             Assert.AreEqual(endOfPrevious, startOfNext, 1e-5f);
         }
 
+        /// <summary>
+        /// Новый взмах опознаётся по ОТКАТУ скраба, а не по смене фазы. У кита, чей следующий замах
+        /// начинается в тот же тик, где кончился прошлый удар, фаза замаха не прерывается ни на кадр — и
+        /// пока показ спрашивал её, точка A оставалась снятой с первого взмаха, а дуга за клинком
+        /// заказывалась ровно один раз за бой (04.08.2026).
+        /// </summary>
+        [Test]
+        public void NewSwing_IsSeenByTheScrubJumpingBack_NotByPhase()
+        {
+            const float drop = 0.1f;
+
+            Assert.That(UnitAnimationSelector.IsNewSwing(0.92f, 0.03f, drop), Is.True,
+                "конец клипа → его начало это следующий удар");
+            Assert.That(UnitAnimationSelector.IsNewSwing(0.30f, 0.34f, drop), Is.False,
+                "скраб идёт вперёд — тот же взмах");
+            Assert.That(UnitAnimationSelector.IsNewSwing(0.30f, 0.28f, drop), Is.False,
+                "дрожь интерполяции на сотые доли новым ударом не считается");
+            Assert.That(UnitAnimationSelector.IsNewSwing(-1f, 0.05f, drop), Is.False,
+                "свинг не играл вовсе — начинать нечего было");
+        }
+
         [Test]
         public void Scrub_ClampsAndSurvivesZeroWindow()
         {

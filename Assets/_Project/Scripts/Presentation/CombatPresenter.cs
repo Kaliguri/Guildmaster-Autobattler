@@ -1073,7 +1073,11 @@ namespace Guildmaster.Presentation
             if (_vfx == null || _feel == null || view == null) return;
             if (!_feel.EnableSwingArc) return;
 
-            _vfx.SpawnArc(_feel.VfxSwingArc, view, GlowColorFor(view.UnitId),
+            // Дуга берёт цвет бьющего, но своей яркостью: она идёт на КАЖДЫЙ взмах, и свет, отмеренный
+            // под разовый каст, в непрерывной серии ударов заливает бой.
+            Color glow = GlowColorFor(view.UnitId);
+            float k = _feel.SwingArcBrightness;
+            _vfx.SpawnArc(_feel.VfxSwingArc, view, new Color(glow.r * k, glow.g * k, glow.b * k, glow.a),
                           _feel.SwingArcInnerShare, _feel.SwingArcTailBias, _feel.SwingArcFadeOut,
                           slot: nameof(_feel.VfxSwingArc));
         }

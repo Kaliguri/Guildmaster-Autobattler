@@ -432,6 +432,11 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Сколько дуга догорает после конца взмаха, сек. Канон: около двух кадров.")]
         [SerializeField] private float _swingArcFadeOut = 0.07f;
 
+        [Tooltip("Яркость дуги относительно свечения каста. 1 = как свет каста; ниже — дуга тусклее. " +
+                 "Своя ручка, потому что дуга идёт на КАЖДЫЙ взмах: то, что читается один раз за каст, " +
+                 "в непрерывной серии ударов пересвечивает бой.")]
+        [SerializeField, Range(0.05f, 1f)] private float _swingArcBrightness = 0.35f;
+
         [SerializeField] private HitFormArchetypeConfig _hitFormSlash = HitFormArchetypeConfig.Slash();
         [SerializeField] private HitFormArchetypeConfig _hitFormPierce = HitFormArchetypeConfig.Pierce();
         [SerializeField] private HitFormArchetypeConfig _hitFormBlunt = HitFormArchetypeConfig.Blunt();
@@ -612,6 +617,7 @@ namespace Guildmaster.Presentation.Design
         public float   SwingArcInnerShare  => _swingArcInnerShare;
         public float   SwingArcTailBias    => _swingArcTailBias;
         public float   SwingArcFadeOut     => _swingArcFadeOut;
+        public float   SwingArcBrightness  => _swingArcBrightness;
 
         /// <summary>
         /// Правило генерации архетипа. Тотальна по построению: новый архетип, забытый здесь, вернёт

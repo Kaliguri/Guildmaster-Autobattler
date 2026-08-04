@@ -72,7 +72,9 @@ namespace Guildmaster.Presentation.Design
         /// <summary>Колющий: 1:18, заметно тоньше режущего, прогиб почти нулевой.</summary>
         public static HitFormArchetypeConfig Pierce() => new HitFormArchetypeConfig
         {
-            _lengthH = 1.1f,
+            // Укол короткий: при обычном ударе его росчерк укладывается примерно в ширину тела, а не
+            // прошивает пол-арены. Было 1.1 роста — это полтора юнита в длину (Макс, 04.08.2026).
+            _lengthH = 0.3f,
             _arcH = new Vector2(0.015f, 0.035f),
             _halfThicknessH = new Vector2(0.028f, 0.036f),
             _roughness = 0.18f,
@@ -92,7 +94,10 @@ namespace Guildmaster.Presentation.Design
         /// <summary>Линия-всполох выстрела: тот же колющий с нулевым прогибом и длиной по дистанции.</summary>
         public static HitFormArchetypeConfig Bolt() => new HitFormArchetypeConfig
         {
-            _lengthH = 0f,
+            // Длина СВОЯ, а не «вся дистанция выстрела»: с четырёх единиц полёта прежнее правило рисовало
+            // росчерк в восемь единиц — линия через полэкрана вместо знака попадания. Откуда прилетело,
+            // по-прежнему говорит НАПРАВЛЕНИЕ (точка A — место выстрела), и оно не потерялось.
+            _lengthH = 0.45f,
             _arcH = Vector2.zero,
             _halfThicknessH = new Vector2(0.024f, 0.032f),
             _roughness = 0.12f,

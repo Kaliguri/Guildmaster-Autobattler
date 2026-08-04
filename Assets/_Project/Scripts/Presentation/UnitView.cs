@@ -305,6 +305,13 @@ namespace Guildmaster.Presentation
         private float _strikeTo;             // 0..1 — нормированный конец взмаха
         private float _swingClipTime = -1f;  // 0..1 — где скраб поставил клип свинга в этом кадре; -1 = свинг не играет
         private bool  _hasStrikeOrigin;      // точка A снята с этого взмаха
+
+        /// <summary>
+        /// На сколько скраб должен откатиться назад, чтобы это считалось НОВЫМ взмахом. Порог, а не любое
+        /// уменьшение: между кадрами время клипа может дрогнуть на доли процента от интерполяции тика, а
+        /// настоящий откат — это прыжок с конца клипа в его начало.
+        /// </summary>
+        private const float SwingRestartDrop = 0.1f;
         private Vector3 _strikeOrigin;       // мировая позиция кончика оружия на кадре StrikeStart
 
         /// <summary>
@@ -628,6 +635,14 @@ namespace Guildmaster.Presentation
         /// </summary>
         private void TrackStrikeWindow(float clipTime)
         {
+            // Новый взмах виден по ОТКАТУ скраба назад: клип свинга всегда идёт вперёд — замах к контакту,
+            // хвост к концу, — поэтому упавшее время означает «начался следующий удар». Опираться на смену
+            // фазы для этого нельзя: у кита, чей следующий замах стартует в тот же тик, где кончился
+            // прошлый удар, фаза Windup не прерывается ни на кадр, точка A остаётся снятой с ПЕРВОГО
+            // взмаха, и дуга за клинком заказывается ровно один раз за весь бой (найдено 04.08.2026).
+            if (UnitAnimationSelector.IsNewSwing(_swingClipTime, clipTime, SwingRestartDrop))
+                _hasStrikeOrigin = false;
+
             _swingClipTime = clipTime;
             if (!_hasStrikeWindow || _hasStrikeOrigin || clipTime < _strikeFrom) return;
 
