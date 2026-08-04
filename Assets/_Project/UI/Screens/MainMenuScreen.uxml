@@ -9,7 +9,18 @@
         <gm:EdgeVeil class="gm-mainmenu__veil" side="Left" />
 
         <ui:VisualElement class="gm-mainmenu__column">
-            <ui:Label name="menu-title" text="Happy Guildmasters" class="gm-mainmenu__title" />
+            <!-- Вывеска: надстрочник между линейками, крупное слово, метка сборки (вариант «линейки»,
+                 выбор Макса 04.08.2026). Два слова живут отдельными элементами не для красоты — у них
+                 разные гарнитуры, кегли и разрядка, одним Label этого не выразить. -->
+            <ui:VisualElement class="gm-mainmenu__title" picking-mode="Ignore">
+                <ui:VisualElement class="gm-title__band" picking-mode="Ignore">
+                    <ui:VisualElement class="gm-title__rule" />
+                    <ui:Label name="menu-title-over" text="HAPPY" class="gm-title__over" />
+                    <ui:VisualElement class="gm-title__rule" />
+                </ui:VisualElement>
+                <ui:Label name="menu-title" text="GUILDMASTERS" class="gm-title__main" />
+                <ui:Label name="menu-stage" text="DEMO" class="gm-title__demo" />
+            </ui:VisualElement>
 
             <!-- ДВЕ кнопки входа, а не список режимов (модель Макса 02.08.2026). Режим выбирается
                  следующим шагом, вместе с домом и открытостью для друзей: кооп у нас свойство

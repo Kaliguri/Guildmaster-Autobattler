@@ -35,15 +35,20 @@ namespace Guildmaster.UI
             VisualElement root = screen.childCount > 0 ? screen[0] : screen;
             root.pickingMode = PickingMode.Position;
 
-            var title    = root.Q<Label>("menu-title");
-            var version  = root.Q<Label>("menu-version");
+            var titleOver = root.Q<Label>("menu-title-over");
+            var title     = root.Q<Label>("menu-title");
+            var version   = root.Q<Label>("menu-version");
             var create   = root.Q<Button>("btn-create");
             var join     = root.Q<Button>("btn-join");
             var profile  = root.Q<Button>("btn-profile");
             var settings = root.Q<Button>("btn-settings");
             var quit     = root.Q<Button>("btn-quit");
 
-            if (title != null) title.text = L("ui.mainmenu.title", "Happy Guildmasters");
+            // Вывеска набрана ДВУМЯ элементами: у слов разные гарнитуры, кегли и разрядка. Ключи тоже
+            // раздельные — иначе перевод, склеенный в одну строку, разложить обратно нечем. Регистр
+            // задаёт содержимое ключа, а не USS: `text-transform` в UI Toolkit нет.
+            if (titleOver != null) titleOver.text = L("ui.mainmenu.title_over", "HAPPY");
+            if (title != null) title.text = L("ui.mainmenu.title", "GUILDMASTERS");
 
             // Версия билда. Лок-ключа намеренно нет: строка не содержит слов — это «v» и номер из
             // ProjectSettings, одинаковые на всех языках. Нужна, чтобы по скриншоту в багрепорте было

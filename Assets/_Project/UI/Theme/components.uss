@@ -189,7 +189,7 @@
     border-width: var(--gm-outline-width);
     border-color: var(--gm-color-border-frame);
     border-radius: var(--gm-radius-0);
-    color: var(--gm-brass-200);
+    color: var(--gm-color-text-interactive);
     font-size: var(--gm-font-body);
     padding: var(--gm-space-2) var(--gm-space-4);
     margin-top: var(--gm-space-2);
@@ -199,14 +199,14 @@
 .gm-button:hover {
     border-color: var(--gm-color-hover-border);
     background-color: var(--gm-color-hover-surface);
-    color: var(--gm-parchment-100);
+    color: var(--gm-color-text);
 }
 
 /* Нажатие «вдавливает»: поле уходит в самый тёмный тон, рамка тускнеет. */
 .gm-button:active {
     border-color: var(--gm-color-border-inner);
     background-color: var(--gm-color-surface-sunken);
-    color: var(--gm-brass-300);
+    color: var(--gm-color-text-interactive-dim);
 }
 
 .gm-button:disabled {
@@ -227,14 +227,14 @@
     background-color: var(--gm-color-hover-surface);
     background-image: none;
     border-color: var(--gm-color-hover-border);
-    color: var(--gm-parchment-100);
+    color: var(--gm-color-text);
 }
 
 .unity-button.gm-button:active {
     background-color: var(--gm-color-surface-sunken);
     background-image: none;
     border-color: var(--gm-color-border-inner);
-    color: var(--gm-brass-300);
+    color: var(--gm-color-text-interactive-dim);
 }
 
 /* Наведение на выбранный/наведённый ТАБ и чип — той же ролью, чтобы тема не подсунула свой серый. */
@@ -1434,7 +1434,7 @@
 
 .gm-shop__gold {
     font-size: var(--gm-font-title);
-    color: var(--gm-brass-300);
+    color: var(--gm-color-value);
 }
 
 /* Витрина и карточки НЕ сжимаются: как только у панели появился потолок высоты, флекс начал
@@ -1465,7 +1465,7 @@
 
 .gm-shop__price {
     font-size: var(--gm-font-body);
-    color: var(--gm-brass-300);
+    color: var(--gm-color-value);
     margin-top: var(--gm-space-1);
     margin-bottom: var(--gm-space-1);
 }
@@ -1514,7 +1514,7 @@
 
 .gm-shop__toast-label {
     font-size: var(--gm-font-lg);
-    color: var(--gm-danger-400);
+    color: var(--gm-color-negative);
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }
@@ -1541,14 +1541,14 @@
     justify-content: center;
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-border-2);
-    border-color: var(--gm-brass-400);
+    border-color: var(--gm-color-border-value);
     transition-property: scale, opacity;
     transition-duration: 0.13s;
 }
 
 .gm-chest__lid:hover {
     scale: 1.04 1.04;
-    border-color: var(--gm-brass-300);
+    border-color: var(--gm-color-border-value-hover);
 }
 
 .gm-chest__lid--open {
@@ -1558,7 +1558,7 @@
 
 .gm-chest__glyph {
     font-size: var(--gm-font-lg);
-    color: var(--gm-brass-300);
+    color: var(--gm-color-value);
 }
 
 .gm-chest__hint {
@@ -1580,11 +1580,11 @@
 }
 
 .gm-outcome__title {
-    color: var(--gm-brass-300);
+    color: var(--gm-color-heading-accent);
 }
 
 .gm-outcome__title--defeat {
-    color: var(--gm-danger-400);
+    color: var(--gm-color-negative);
 }
 
 .gm-outcome__sub {
@@ -1652,15 +1652,64 @@
     align-items: flex-start;
 }
 
-/* Титул. Отношение к капители пункта было 1.85:1 — ХУЖЕ худшего рефа (Mewgenics 2.0:1, вынесен в
-   антипаттерны: «заголовок и список читаются как один блок текста»). Типичное 6-7:1. На display
-   получаем 4.4:1 — между Absolum и REPO; до типичного доберёт настоящий логотип, когда он будет,
-   а текстом выше уже некуда. Зазор до списка — 64px (5.9% высоты) при коридоре рефов 0.8-13.9%. */
+/* ВЫВЕСКА игры — типографический lockup «линейки» (выбор Макса 04.08.2026, вариант 5 из восьми).
+   Приём титульного листа: надстрочник зажат двумя линейками над крупным словом, метка версии под
+   ним. Герба пока нет намеренно — только шрифты.
+   Цвет идёт через РОЛИ, а не через ступени рампы: до 04.08.2026 здесь стоял сырой --gm-brass-300,
+   то есть вывеска не проходила через семантику вовсе — потому и не была согласована с разворотом
+   палитры. Латунь тут не вкус: патина значит «сюда нажать», а название нажать нельзя.
+   Зазор до списка — 64px (5.9% высоты) при коридоре рефов 0.8-13.9%. */
 .gm-mainmenu__title {
-    font-size: var(--gm-font-display);
-    color: var(--gm-brass-300);
+    align-items: flex-start;
     margin-bottom: var(--gm-space-6);
+}
+
+/* Полоса надстрочника: линейка — надпись — линейка. Линейки тянутся, надпись держит свой размер,
+   поэтому полоса всегда равна ширине слова под ней и правится в одном месте. */
+.gm-title__band {
+    flex-direction: row;
+    align-items: center;
+    align-self: stretch;
+}
+
+.gm-title__rule {
+    flex-grow: 1;
+    height: 1px;
+    background-color: var(--gm-color-display-accent-quiet);
+}
+
+/* Разрядка обязательна: капс без неё слипается, а у кириллицы это заметнее, чем у латиницы —
+   прописные там одинаковой ширины и без просвета читаются забором. */
+.gm-title__over {
+    -unity-font-definition: var(--gm-font-inscription);
+    font-size: var(--gm-font-title);
+    color: var(--gm-color-display-accent-quiet);
+    letter-spacing: 16px;
+    margin-left: var(--gm-space-2);
+    /* Разрядка добавляет просвет и ПОСЛЕ последней буквы — без компенсации надпись стоит не по
+       центру между линейками. Классическая оптическая поправка, глазом видна сразу. */
+    margin-right: var(--gm-space-1);
+    padding-left: 16px;
+}
+
+.gm-title__main {
+    -unity-font-definition: var(--gm-font-wordmark);
+    font-size: var(--gm-font-display);
+    color: var(--gm-color-display-accent);
+    letter-spacing: 2px;
     -unity-text-align: middle-left;
+}
+
+/* Метка сборки под вывеской — как DEMO у Absolum: вчетверо мельче названия, приглушённая, по
+   центру блока. Это не версия билда (та живёт в углу экрана) — это статус самой игры. */
+.gm-title__demo {
+    -unity-font-definition: var(--gm-font-inscription);
+    font-size: var(--gm-font-xs);
+    color: var(--gm-color-text-muted);
+    letter-spacing: 10px;
+    align-self: center;
+    padding-left: 10px;
+    margin-top: var(--gm-space-0);
 }
 
 .gm-mainmenu__buttons {
@@ -1837,7 +1886,7 @@
  * клавиша/клик → плавный уход (переход в главное меню). Свечение — PNG (USS без radial).
  * ========================================================================== */
 .gm-boot {
-    background-color: var(--gm-ink-900);
+    background-color: var(--gm-color-veil);
     justify-content: center;
     align-items: center;
     transition-property: opacity;
@@ -2482,7 +2531,7 @@
    только на наведение, и клик не читался вовсе (наход. Макса, раунд 3, п.9). */
 .gm-chip:active { background-color: var(--gm-color-surface-sunken); }
 .gm-chip:active .gm-chip__icon { -unity-background-image-tint-color: var(--gm-color-accent); }
-.gm-chip:active .gm-chip__label { color: var(--gm-brass-200); }
+.gm-chip:active .gm-chip__label { color: var(--gm-color-text-interactive); }
 
 .gm-chip--active { background-color: var(--gm-color-surface-raised); }
 .gm-chip--active .gm-chip__icon { -unity-background-image-tint-color: var(--gm-color-accent); }
@@ -2646,7 +2695,7 @@
     position: absolute;
     top: 3px;
     right: 5px;
-    color: var(--gm-brass-300);
+    color: var(--gm-color-heading-accent);
     font-size: var(--gm-font-xs);
 }
 
@@ -3489,7 +3538,7 @@
     border-radius: 18px;
     margin-right: var(--gm-space-1);
     border-width: var(--gm-border-1);
-    border-color: var(--gm-ink-900);
+    border-color: var(--gm-color-swatch-outline);
 }
 
 /* Выбранное отмечено светлой оправой поверх тёмной: на образце любого цвета это читается одинаково. */
@@ -3601,7 +3650,7 @@
     margin-right: var(--gm-space-1);
     flex-shrink: 0;
     border-width: 1px;
-    border-color: var(--gm-ink-900);
+    border-color: var(--gm-color-swatch-outline);
 }
 
 .gm-participants__name {

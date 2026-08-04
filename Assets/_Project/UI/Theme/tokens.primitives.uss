@@ -214,6 +214,12 @@
            Serif — голос игры (титулы, кнопки, имена сущностей), sans — данные и служебный текст,
            mono — консоль. Четвёртой гарнитуры в проекте быть не должно: два голоса читаются как
            замысел, три — как сборная солянка. */
+    /* ДИСПЛЕЙНЫЕ гарнитуры — только для названия игры и родственных «вывесок». В интерфейсе их нет:
+       Yeseva с её контрастом штриха на кегле текста разваливается, а Forum в капсе ради разрядки и
+       заведён. Обе лежали в проекте ttf-файлами; SDF собраны 04.08.2026 под типографический lockup. */
+    --gm-typeface-display: url("../Fonts/YesevaOne-Regular SDF.asset");
+    --gm-typeface-inscription: url("../Fonts/Forum-Regular SDF.asset");
+
     --gm-typeface-serif: url("../Fonts/CormorantGaramond-Medium SDF.asset");
     --gm-typeface-sans: url("../Fonts/FiraSans-Regular SDF.asset");
     --gm-typeface-sans-bold: url("../Fonts/FiraSans-Bold SDF.asset");
