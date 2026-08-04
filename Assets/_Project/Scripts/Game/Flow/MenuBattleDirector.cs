@@ -139,7 +139,14 @@ namespace Guildmaster.Game.Flow
                 b =>
                 {
                     b.RegisterInstance(new BattleScopeParams(_config.CarrierPreset, seed));
-                    b.Register<BattleSession>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+
+                    // Тот же набор швов, что даёт мероприятие своему бою (ActivityInstaller,
+                    // RegisterBattleSeam) — минус всё, что относится к забегу. Дуэль за меню это
+                    // площадка: свободный состав, никакого сейва и никакой карты.
+                    b.RegisterInstance(ActivitySetup.ProvingGrounds);
+                    b.Register<BattleSession>(Lifetime.Scoped).As<IBattleSession>().As<IBattleClock>();
+                    b.Register<SoloReadyGate>(Lifetime.Scoped).AsImplementedInterfaces();
+                    b.Register<SoloPlayerIntentSource>(Lifetime.Scoped).AsImplementedInterfaces();
                 });
             _battle.name = "[Menu Duel] " + NameOf(entry);
 
