@@ -21,7 +21,7 @@ namespace Guildmaster.Net.Session
     /// <para><b>Steam не запущен — это внешний отказ, и он честный:</b> говорим вслух и живём дальше
     /// одиночной игрой. Подменять его нечем, а молчание читалось бы как «кооп сломан».</para>
     /// </remarks>
-    public sealed class SteamBootstrap : Guildmaster.Core.Players.IPlatformIdentity, IStartable, ITickable, IDisposable
+    public sealed class SteamBootstrap : Guildmaster.Core.Players.IPlatformIdentity, ITickable, IDisposable
     {
         /// <summary>
         /// Слот, под которым мы ходим в Steam. Пока это неизданная <i>Few Seconds - Many Deaths!</i>
@@ -47,7 +47,15 @@ namespace Guildmaster.Net.Session
         /// <summary>Поднялся ли Steam. Спрашивают лобби и транспорт — им без него делать нечего.</summary>
         public bool IsReady => _running && SteamClient.IsValid;
 
-        public void Start()
+        /// <summary>
+        /// Поднимаем Steam В КОНСТРУКТОРЕ, а не на <c>Start</c>.
+        /// </summary>
+        /// <remarks>
+        /// Потому что от ответа «поднялся или нет» зависит СОСТАВ контейнера: транспорт выбирается по
+        /// нему (см. <c>RootLifetimeScope</c>). Фаза <c>Start</c> идёт уже после того, как все объекты
+        /// созданы, — спрашивать там значило бы выбирать транспорт до того, как ответ известен.
+        /// </remarks>
+        public SteamBootstrap()
         {
             try
             {

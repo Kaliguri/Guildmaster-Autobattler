@@ -254,9 +254,29 @@ namespace Guildmaster.Game
             builder.RegisterEntryPoint<Guildmaster.Net.Session.SteamBootstrap>(Lifetime.Singleton)
                    .AsSelf().As<Guildmaster.Core.Players.IPlatformIdentity>();
 
-            builder.Register<Guildmaster.Net.Transport.SteamNetTransport>(Lifetime.Singleton)
-                   .As<Guildmaster.Net.Transport.INetTransport>()
-                   .AsSelf();
+            builder.Register<Guildmaster.Net.Transport.SteamNetTransport>(Lifetime.Singleton).AsSelf();
+
+            // Провод выбирается ЯВНО и по факту: поднялся Steam — идём через него, не поднялся —
+            // поднимаем петлю в своём процессе и ГОВОРИМ ОБ ЭТОМ ВСЛУХ.
+            //
+            // Молчаливого пути здесь быть не должно. 02.08.2026 инициализация Steam уехала вместе с
+            // удалённым netcode, и кооп молча вёл себя как при незапущенном клиенте: лобби «просто не
+            // создавалось», кнопка гасла, а искать это пришлось живым тестом вдвоём. Пустой провод,
+            // который честно называет себя, дешевле такой тишины.
+            //
+            // Второе следствие, ради которого это и сделано: петлю можно СОЕДИНИТЬ САМУ С СОБОЙ, и
+            // тогда сценарий «хост раздаёт, гость принимает» проверяется в одном процессе, на живых
+            // скоупах обеих ролей (см. PlayMode-тесты коопа).
+            builder.Register<Guildmaster.Net.Transport.LoopbackNetwork>(Lifetime.Singleton);
+            builder.Register<Guildmaster.Net.Transport.INetTransport>(r =>
+            {
+                if (r.Resolve<Guildmaster.Net.Session.SteamBootstrap>().IsReady)
+                    return r.Resolve<Guildmaster.Net.Transport.SteamNetTransport>();
+
+                Debug.LogWarning("[Net] Steam не поднят → сеть работает петлёй в своём процессе. " +
+                                 "Кооп по интернету недоступен, одиночная игра работает как обычно.");
+                return r.Resolve<Guildmaster.Net.Transport.LoopbackNetwork>().CreateNode();
+            }, Lifetime.Singleton);
             builder.Register<Guildmaster.Net.Session.SteamLobbyService>(Lifetime.Singleton);
             builder.Register<Guildmaster.Net.Session.CoopHandshake>(Lifetime.Singleton);
             builder.Register<Guildmaster.Net.Session.CoopSession>(Lifetime.Singleton)
