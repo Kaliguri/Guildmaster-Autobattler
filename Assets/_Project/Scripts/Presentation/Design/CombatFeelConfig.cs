@@ -437,6 +437,11 @@ namespace Guildmaster.Presentation.Design
                  "в непрерывной серии ударов пересвечивает бой.")]
         [SerializeField, Range(0.05f, 1f)] private float _swingArcBrightness = 0.35f;
 
+        [Tooltip("Длина следа в ГРАДУСАХ: сколько последнего пути клинка видно. Начало дуги едет за " +
+                 "клинком, поэтому непрерывный взмах (поток «Вихря») рисует один тянущийся след, а не " +
+                 "замкнутый круг. Больше 360 замкнёт кольцо — сектор перекроет сам себя.")]
+        [SerializeField, Range(45f, 360f)] private float _swingArcMaxSpanDeg = 270f;
+
         [SerializeField] private HitFormArchetypeConfig _hitFormSlash = HitFormArchetypeConfig.Slash();
         [SerializeField] private HitFormArchetypeConfig _hitFormPierce = HitFormArchetypeConfig.Pierce();
         [SerializeField] private HitFormArchetypeConfig _hitFormBlunt = HitFormArchetypeConfig.Blunt();
@@ -618,6 +623,7 @@ namespace Guildmaster.Presentation.Design
         public float   SwingArcTailBias    => _swingArcTailBias;
         public float   SwingArcFadeOut     => _swingArcFadeOut;
         public float   SwingArcBrightness  => _swingArcBrightness;
+        public float   SwingArcMaxSpanDeg  => _swingArcMaxSpanDeg;
 
         /// <summary>
         /// Правило генерации архетипа. Тотальна по построению: новый архетип, забытый здесь, вернёт

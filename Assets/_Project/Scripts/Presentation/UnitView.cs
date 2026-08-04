@@ -620,6 +620,17 @@ namespace Guildmaster.Presentation
         {
             progress = 0f;
             if (!_hasStrikeWindow || _swingClipTime < 0f) return false;
+
+            // ПОТОК — один непрерывный взмах, а не череда отдельных. Клип канала крутится оборотами, и
+            // окно взмаха внутри него кончается на каждом обороте; судить по нему значило бы гасить дугу
+            // между ударами вращения, хотя клинок не останавливался ни на кадр. Границы здесь ставит фаза
+            // сима, а не разметка клипа: пока идёт поток, взмах идёт.
+            if (_hasState && _snapshot.Phase == AttackPhase.Channel)
+            {
+                progress = _swingClipTime;
+                return true;
+            }
+
             if (_swingClipTime < _strikeFrom || _swingClipTime > _strikeTo) return false;
 
             progress = Mathf.InverseLerp(_strikeFrom, _strikeTo, _swingClipTime);

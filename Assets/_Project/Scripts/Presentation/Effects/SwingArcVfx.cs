@@ -51,6 +51,7 @@ namespace Guildmaster.Presentation.Effects
         private float _innerShare;
         private float _tailBias;
         private float _fadeOut;        // сколько дуга гаснет после конца взмаха, сек
+        private float _maxSpan;        // максимальная угловая длина следа, радианы
         private float _fadeLeft;
         private bool  _swinging;
         private bool  _playing;
@@ -70,7 +71,8 @@ namespace Guildmaster.Presentation.Effects
         /// <param name="innerShare">Доля радиуса, с которой начинается свечение: у самого плеча его нет.</param>
         /// <param name="tailBias">Насколько быстро гаснет хвост дуги.</param>
         /// <param name="fadeOutSeconds">Сколько дуга догорает после конца взмаха.</param>
-        public void Begin(ISwingArcSource source, Color colour, float innerShare, float tailBias, float fadeOutSeconds)
+        public void Begin(ISwingArcSource source, Color colour, float innerShare, float tailBias,
+                          float fadeOutSeconds, float maxSpanDeg)
         {
             Cache();
 
@@ -78,6 +80,7 @@ namespace Guildmaster.Presentation.Effects
             _innerShare = Mathf.Clamp01(innerShare);
             _tailBias   = Mathf.Max(0.2f, tailBias);
             _fadeOut    = Mathf.Max(0.01f, fadeOutSeconds);
+            _maxSpan    = Mathf.Max(0.1f, maxSpanDeg) * Mathf.Deg2Rad;
             _fadeLeft   = _fadeOut;
             _swinging   = true;
             _playing    = true;
@@ -131,6 +134,14 @@ namespace Guildmaster.Presentation.Effects
                     float raw   = Mathf.Atan2(arm.y, arm.x);
                     float delta = Mathf.DeltaAngle(_angleTo * Mathf.Rad2Deg, raw * Mathf.Rad2Deg) * Mathf.Deg2Rad;
                     _angleTo += delta;
+
+                    // След — это ПОСЛЕДНИЕ N градусов пути, а не весь путь: начало дуги едет за клинком,
+                    // когда сектор перерос свою длину. Иначе непрерывный взмах (поток «Вихря») замкнул бы
+                    // круг и пошёл по второму, а сектор длиннее полного оборота перекрывает сам себя —
+                    // шейдер считает долю от начала до текущего клинка и на таком секторе врёт.
+                    float span = _angleTo - _angleFrom;
+                    if (Mathf.Abs(span) > _maxSpan)
+                        _angleFrom = _angleTo - Mathf.Sign(span) * _maxSpan;
                 }
 
                 Place(pivot);

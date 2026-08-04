@@ -221,6 +221,7 @@ MonoBehaviour:
   _swingArcTailBias: 1.6
   _swingArcFadeOut: 0.07
   _swingArcBrightness: 0.35
+  _swingArcMaxSpanDeg: 270
   _hitFormSlash:
     _lengthH: 1.4
     _arcH: {x: 0.2, y: 0.28}

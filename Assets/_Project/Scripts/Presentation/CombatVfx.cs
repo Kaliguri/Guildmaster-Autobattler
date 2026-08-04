@@ -106,7 +106,8 @@ namespace Guildmaster.Presentation
         /// </summary>
         /// <param name="source">Кто машет — у него дуга спрашивает геометрию каждый кадр.</param>
         public void SpawnArc(VfxData data, Effects.ISwingArcSource source, Color colour,
-                             float innerShare, float tailBias, float fadeOutSeconds, string slot = null)
+                             float innerShare, float tailBias, float fadeOutSeconds, float maxSpanDeg,
+                             string slot = null)
         {
             if (!Ready(data, slot) || source == null) return;
             if (!data.Prefab.TryGetComponent(out PooledVfx _))
@@ -135,7 +136,7 @@ namespace Guildmaster.Presentation
             }, lifeOverride: ArcSafetyLifetime);
 
             if (vfx.TryGetComponent(out Effects.SwingArcVfx arc))
-                arc.Begin(source, colour, innerShare, tailBias, fadeOutSeconds);
+                arc.Begin(source, colour, innerShare, tailBias, fadeOutSeconds, maxSpanDeg);
         }
 
         /// <summary>Потолок жизни дуги, сек: страховка на случай, если взмах оборвался вместе с юнитом.</summary>
