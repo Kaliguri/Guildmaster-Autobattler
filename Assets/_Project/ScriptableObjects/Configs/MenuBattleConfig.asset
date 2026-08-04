@@ -88,4 +88,4 @@ MonoBehaviour:
   _spacing: 1.2
   _enabled: 1
   _maxSeconds: 75
-  _afterEndSeconds: 2.5
+  _afterEndSeconds: 4.5
