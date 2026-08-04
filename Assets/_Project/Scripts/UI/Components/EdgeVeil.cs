@@ -41,11 +41,30 @@ namespace Guildmaster.UI.Components
     public partial class EdgeVeil : VisualElement
     {
         private static readonly CustomStyleProperty<Color> ColorProp = new("--gm-veil-color");
+        private static readonly CustomStyleProperty<float> PlateauProp = new("--gm-veil-plateau");
 
         /// <summary>Полос градиента. Меньше — видно ступени, больше — лишние вершины ни за что.</summary>
-        private const int Segments = 16;
+        private const int Segments = 32;
 
-        private Color _color = new(0.18f, 0.15f, 0.12f, 0.92f);
+        /// <summary>
+        /// Доля ширины у своей кромки, которую вуаль держит в ПОЛНУЮ силу; затухание начинается после
+        /// неё. Ноль — чистый градиент от края.
+        /// </summary>
+        /// <remarks>
+        /// Нужно потому, что квадратичное затухание съедает половину плотности уже к трети пути, и
+        /// текст, лежащий не у самой кромки (титул главного меню тянется до 42% экрана), оказывается
+        /// на почти голом фоне. Поднимать альфу тут бесполезно: она задаёт максимум У КРАЯ, а не под
+        /// текстом. Плато переносит начало спада за колонку, оставляя хвосту ту же мягкость.
+        /// </remarks>
+        private float _plateau;
+
+        /// <summary>
+        /// Своего цвета у вуали НЕТ — он приходит из USS и только оттуда. Прежний дефолт
+        /// (0.18, 0.15, 0.12, 0.92) был вторым владельцем токена <c>--gm-color-menu-shade</c> и уже
+        /// разошёлся с ним по альфе; отсюда прозрачный: не пришёл цвет — вуали не будет, и это
+        /// видно сразу, а не через месяц как «почему-то другой оттенок».
+        /// </summary>
+        private Color _color = Color.clear;
         private VeilSide _side = VeilSide.Left;
 
         /// <summary>Кромка, у которой вуаль плотная. К противоположной она сходит в прозрачность.</summary>
@@ -68,6 +87,7 @@ namespace Guildmaster.UI.Components
         private void OnCustomStyleResolved(CustomStyleResolvedEvent evt)
         {
             if (evt.customStyle.TryGetValue(ColorProp, out Color c)) _color = c;
+            if (evt.customStyle.TryGetValue(PlateauProp, out float p)) _plateau = Mathf.Clamp01(p);
             MarkDirtyRepaint();
         }
 
@@ -78,7 +98,9 @@ namespace Guildmaster.UI.Components
             if (w <= 0f || h <= 0f || _color.a <= 0f) return;
 
             bool horizontal = _side is VeilSide.Left or VeilSide.Right;
-            // t идёт ОТ плотной кромки: у Right и Bottom ось развёрнута, поэтому доля считается с конца.
+            // Плотность у СВОЕЙ кромки: у Right и Bottom она в конце оси, поэтому доля считается с конца.
+            // Разворачивается только затухание — не позиции: ось всегда идёт вперёд, иначе перевернётся
+            // намотка (см. ниже), и вуаль этих двух сторон исчезнет.
             bool reversed = _side is VeilSide.Right or VeilSide.Bottom;
 
             MeshWriteData mesh = ctx.Allocate((Segments + 1) * 2, Segments * 6);
@@ -87,15 +109,18 @@ namespace Guildmaster.UI.Components
             for (int i = 0; i <= Segments; i++)
             {
                 float t = (float)i / Segments;
-                float fade = (1f - t) * (1f - t);
+                // Доля пути ОТ своей кромки: плато держит единицу, после него спад по квадрату.
+                float fromEdge = reversed ? 1f - t : t;
+                float tail = Mathf.Max(1f - _plateau, 0.0001f);
+                float u = Mathf.Clamp01((fromEdge - _plateau) / tail);
+                float fade = (1f - u) * (1f - u);
                 // Перевод в линейное пространство — на нас: Painter2D делает это сам, ручной меш нет
                 // (см. PlateButton.VertexColor). Альфа гаммой не трогается.
                 Color linear = PlateButton.VertexColor(_color);
                 var tint = new Color(linear.r, linear.g, linear.b, _color.a * fade);
 
-                float pos = reversed ? (1f - t) : t;
-                float x = horizontal ? pos * w : 0f;
-                float y = horizontal ? 0f : pos * h;
+                float x = horizontal ? t * w : 0f;
+                float y = horizontal ? 0f : t * h;
 
                 verts[i * 2].position = new Vector3(x, y, Vertex.nearZ);
                 verts[i * 2].tint = tint;
@@ -113,11 +138,24 @@ namespace Guildmaster.UI.Components
                 ushort c = (ushort)(i * 2 + 2);
                 ushort d = (ushort)(i * 2 + 3);
 
-                // Обход одинаковый для обоих направлений: при reversed вершины уже расставлены
-                // «задом наперёд», и переворачивать намотку ещё раз значило бы отменить это.
+                // ОБХОД ПО ЧАСОВОЙ — требование UI-рендерера (Manual: Generate 2D visual content).
+                // Треугольник, намотанный против неё, молча отбрасывается: элемент есть, размер есть,
+                // цвет есть, а на экране пусто. Так вуаль и пролежала невидимой с самого рождения
+                // (поймано замером кадра 04.08.2026).
+                // Ось Y здесь растёт ВНИЗ, поэтому «по часовой» читается как левый-верх → правый-верх →
+                // правый-низ. Пара для horizontal — это (верх, низ), для vertical — (лево, право),
+                // и порядок обхода у них поэтому разный.
                 int o = i * 6;
-                indices[o] = a; indices[o + 1] = b; indices[o + 2] = c;
-                indices[o + 3] = c; indices[o + 4] = b; indices[o + 5] = d;
+                if (horizontal)
+                {
+                    indices[o] = a; indices[o + 1] = c; indices[o + 2] = d;
+                    indices[o + 3] = a; indices[o + 4] = d; indices[o + 5] = b;
+                }
+                else
+                {
+                    indices[o] = a; indices[o + 1] = b; indices[o + 2] = d;
+                    indices[o + 3] = a; indices[o + 4] = d; indices[o + 5] = c;
+                }
             }
 
             mesh.SetAllIndices(indices);

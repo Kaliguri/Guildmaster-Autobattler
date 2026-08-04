@@ -124,7 +124,7 @@ MonoBehaviour:
   - Token: --gm-color-map-pawn
     Color: {r: 0.972549, g: 0.9254902, b: 0.79607844, a: 1}
   - Token: --gm-color-menu-shade
-    Color: {r: 0.1764706, g: 0.15294118, b: 0.12156863, a: 0.8784314}
+    Color: {r: 0.1764706, g: 0.15294118, b: 0.12156863, a: 0.9490196}
   - Token: --gm-color-negative
     Color: {r: 0.80784315, g: 0.4745098, b: 0.39215687, a: 1}
   - Token: --gm-color-player-1
