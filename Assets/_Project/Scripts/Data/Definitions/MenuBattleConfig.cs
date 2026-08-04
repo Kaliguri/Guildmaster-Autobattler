@@ -25,21 +25,45 @@ namespace Guildmaster.Data.Definitions
     [CreateAssetMenu(fileName = "MenuBattleConfig", menuName = "Alebardium/Configs/Menu Battle Config")]
     public sealed class MenuBattleConfig : ScriptableObject
     {
+        /// <summary>
+        /// Одна дуэль: кто с кем. Стороны задаются реликвиями напрямую — <c>RelicData</c> наследует
+        /// <c>UnitData</c>, то есть реликвия и есть боец, и разворачивать её во что-то ещё не нужно.
+        /// </summary>
         [System.Serializable]
         public sealed class Entry
         {
-            [Tooltip("Пресет боя: состав, арена, режим расстановки.")]
-            [SerializeField] private BattlePresetData _preset;
+            [Tooltip("Левая сторона (команда 0). Обычно двое.")]
+            [SerializeField] private RelicData[] _squad = new RelicData[0];
 
-            [Tooltip("Сид прогона. Ноль — взять сид из пресета/по умолчанию.")]
+            [Tooltip("Правая сторона (команда 1). Обычно двое.")]
+            [SerializeField] private RelicData[] _opponents = new RelicData[0];
+
+            [Tooltip("Сид прогона. Ноль — вывести сид из состава: одна и та же дуэль пойдёт одинаково.")]
             [SerializeField] private ulong _seed;
 
-            public BattlePresetData Preset => _preset;
+            public RelicData[] Squad => _squad;
+            public RelicData[] Opponents => _opponents;
             public ulong Seed => _seed;
+
+            /// <summary>Есть ли кому драться: пустая сторона даёт бой, который кончается мгновенно.</summary>
+            public bool IsPlayable =>
+                _squad != null && _opponents != null && _squad.Length > 0 && _opponents.Length > 0;
         }
 
-        [Tooltip("Бои, которые крутятся за меню. Берутся вразнобой, следующий — при новом входе в меню.")]
+        [Tooltip("Дуэли, которые крутятся за меню. Берутся вразнобой, следующая — при новом входе в меню.")]
         [SerializeField] private List<Entry> _battles = new();
+
+        [Tooltip("Пресет-носитель боя: арена и режим расстановки. Состав приходит НЕ из него, а из дуэли — " +
+                 "но без пресета бой остаётся на паузе расстановки и сам не начинается.")]
+        [SerializeField] private BattlePresetData _carrierPreset;
+
+        [Tooltip("Насколько стороны разведены по X от центра арены.")]
+        [Min(1f)]
+        [SerializeField] private float _lineX = 3f;
+
+        [Tooltip("Шаг между бойцами одной стороны по Y.")]
+        [Min(0.3f)]
+        [SerializeField] private float _spacing = 1.2f;
 
         [Tooltip("Показывать бой за меню вообще. Выключено — за меню остаётся обычный задник.")]
         [SerializeField] private bool _enabled = true;
@@ -53,6 +77,9 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private float _afterEndSeconds = 2.5f;
 
         public IReadOnlyList<Entry> Battles => _battles;
+        public BattlePresetData CarrierPreset => _carrierPreset;
+        public float LineX => _lineX;
+        public float Spacing => _spacing;
         public bool Enabled => _enabled;
         public float MaxSeconds => _maxSeconds;
         public float AfterEndSeconds => _afterEndSeconds;
@@ -62,9 +89,9 @@ namespace Guildmaster.Data.Definitions
         {
             get
             {
-                if (!_enabled) return false;
+                if (!_enabled || _carrierPreset == null) return false;
                 for (int i = 0; i < _battles.Count; i++)
-                    if (_battles[i]?.Preset != null) return true;
+                    if (_battles[i] != null && _battles[i].IsPlayable) return true;
                 return false;
             }
         }

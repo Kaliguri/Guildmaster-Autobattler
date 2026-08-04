@@ -13,12 +13,79 @@ MonoBehaviour:
   m_Name: MenuBattleConfig
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.MenuBattleConfig
   _battles:
-  - _preset: {fileID: 11400000, guid: 0e3beac5a930f43449d2ad6b61712c93, type: 2}
-    _seed: 1000
-  - _preset: {fileID: 11400000, guid: 5be5f132232b949419e5dfb69f3cd6a2, type: 2}
-    _seed: 1137
-  - _preset: {fileID: 11400000, guid: f35fa0f042417d1459060234d16bec84, type: 2}
-    _seed: 1274
+  - _squad:
+    - {fileID: 11400000, guid: e5a7c9d1f3b6840ce26a8d0fc2b4e579, type: 2}
+    - {fileID: 11400000, guid: 895566c424a940a79c8ef8468a6084f7, type: 2}
+    _opponents:
+    - {fileID: 11400000, guid: 3929f651376911d4e8bf8d6d5adb3ef5, type: 2}
+    - {fileID: 11400000, guid: 7ef9ed5a7ec3b0d41bdd65e85f35ff88, type: 2}
+    _seed: 0
+  - _squad:
+    - {fileID: 11400000, guid: 11d1540f643fffe4b8d3917310f6e763, type: 2}
+    - {fileID: 11400000, guid: cbdaabcbd4ebc7d42b6f4cbb08c301c9, type: 2}
+    _opponents:
+    - {fileID: 11400000, guid: e5a7c9d1f3b6840ce26a8d0fc2b4e579, type: 2}
+    - {fileID: 11400000, guid: c4e6a8d0f2b5739e1a3d5f7c9e1b3a46, type: 2}
+    _seed: 0
+  - _squad:
+    - {fileID: 11400000, guid: 3929f651376911d4e8bf8d6d5adb3ef5, type: 2}
+    - {fileID: 11400000, guid: 1548b77e3a089f24b9a9d1da35acb9a6, type: 2}
+    _opponents:
+    - {fileID: 11400000, guid: 11d1540f643fffe4b8d3917310f6e763, type: 2}
+    - {fileID: 11400000, guid: 9e25f8a3c4d6471bb0f9d3e7c5b2a184, type: 2}
+    _seed: 0
+  - _squad:
+    - {fileID: 11400000, guid: b94a788eb332911478cd8f88880f03ea, type: 2}
+    - {fileID: 11400000, guid: f60718293a4b5c6d7e8f900112233445, type: 2}
+    _opponents:
+    - {fileID: 11400000, guid: ab27903fcfcfda74aa115da3d3cee210, type: 2}
+    - {fileID: 11400000, guid: cbdaabcbd4ebc7d42b6f4cbb08c301c9, type: 2}
+    _seed: 0
+  - _squad:
+    - {fileID: 11400000, guid: f9c1e3a5b7d0284f6c8e0a2b4d6f8c9d, type: 2}
+    - {fileID: 11400000, guid: 7ef9ed5a7ec3b0d41bdd65e85f35ff88, type: 2}
+    _opponents:
+    - {fileID: 11400000, guid: 996f2fad803a29546b30c3849034e749, type: 2}
+    - {fileID: 11400000, guid: 895566c424a940a79c8ef8468a6084f7, type: 2}
+    _seed: 0
+  - _squad:
+    - {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
+    - {fileID: 11400000, guid: c4e6a8d0f2b5739e1a3d5f7c9e1b3a46, type: 2}
+    _opponents:
+    - {fileID: 11400000, guid: a16f6f98c4874586977097a595b94be1, type: 2}
+    - {fileID: 11400000, guid: f60718293a4b5c6d7e8f900112233445, type: 2}
+    _seed: 0
+  - _squad:
+    - {fileID: 11400000, guid: e5a7c9d1f3b6840ce26a8d0fc2b4e579, type: 2}
+    - {fileID: 11400000, guid: 996f2fad803a29546b30c3849034e749, type: 2}
+    _opponents:
+    - {fileID: 11400000, guid: 11d1540f643fffe4b8d3917310f6e763, type: 2}
+    - {fileID: 11400000, guid: f9c1e3a5b7d0284f6c8e0a2b4d6f8c9d, type: 2}
+    _seed: 0
+  - _squad:
+    - {fileID: 11400000, guid: ab27903fcfcfda74aa115da3d3cee210, type: 2}
+    - {fileID: 11400000, guid: 9e25f8a3c4d6471bb0f9d3e7c5b2a184, type: 2}
+    _opponents:
+    - {fileID: 11400000, guid: b94a788eb332911478cd8f88880f03ea, type: 2}
+    - {fileID: 11400000, guid: 1548b77e3a089f24b9a9d1da35acb9a6, type: 2}
+    _seed: 0
+  - _squad:
+    - {fileID: 11400000, guid: a16f6f98c4874586977097a595b94be1, type: 2}
+    - {fileID: 11400000, guid: 3929f651376911d4e8bf8d6d5adb3ef5, type: 2}
+    _opponents:
+    - {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
+    - {fileID: 11400000, guid: e5a7c9d1f3b6840ce26a8d0fc2b4e579, type: 2}
+    _seed: 0
+  - _squad:
+    - {fileID: 11400000, guid: 895566c424a940a79c8ef8468a6084f7, type: 2}
+    - {fileID: 11400000, guid: cbdaabcbd4ebc7d42b6f4cbb08c301c9, type: 2}
+    _opponents:
+    - {fileID: 11400000, guid: 7ef9ed5a7ec3b0d41bdd65e85f35ff88, type: 2}
+    - {fileID: 11400000, guid: f60718293a4b5c6d7e8f900112233445, type: 2}
+    _seed: 0
+  _carrierPreset: {fileID: 11400000, guid: 0bca994d59f0fcd428a27f34c3f80482, type: 2}
+  _lineX: 3
+  _spacing: 1.2
   _enabled: 1
   _maxSeconds: 75
   _afterEndSeconds: 2.5

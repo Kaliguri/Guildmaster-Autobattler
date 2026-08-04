@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Guildmaster.Core.Flow;
 using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
@@ -116,7 +117,7 @@ namespace Guildmaster.Game.Flow
             }
 
             MenuBattleConfig.Entry entry = PickNext();
-            if (entry?.Preset == null) return;
+            if (entry == null || !entry.IsPlayable) return;
 
             if (_battleScopePrefab?.Value == null)
             {
@@ -128,10 +129,28 @@ namespace Guildmaster.Game.Flow
             // всем, что на ней жило. Чистить арену вручную мы уже пробовали и именно от этого ушли.
             CloseBattle();
 
-            ulong seed = entry.Seed != 0UL ? entry.Seed : DeterministicHash.Of("menu:" + entry.Preset.Id);
+            // Пресет тут НОСИТЕЛЬ: он даёт арену и режим расстановки, а состав приезжает заказом ниже.
+            // Без пресета вовсе бой остался бы на паузе расстановки и сам бы не начался.
+            ulong seed = entry.Seed != 0UL ? entry.Seed : SeedOf(entry);
+            // Боевой скоуп не самодостаточен: расстановка внутри него спрашивает IBattleSession, а та
+            // живёт в мероприятии. Фону мероприятие не нужно, но сессия боя нужна — регистрируем ту же
+            // реализацию прямо здесь, иначе DeploymentController не резолвится и арена остаётся пустой.
             _battle = _world.CreateChildFromPrefab(_battleScopePrefab.Value,
-                b => b.RegisterInstance(new BattleScopeParams(entry.Preset, seed)));
-            _battle.name = "[Menu Battle] " + entry.Preset.Id;
+                b =>
+                {
+                    b.RegisterInstance(new BattleScopeParams(_config.CarrierPreset, seed));
+                    b.Register<BattleSession>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+                });
+            _battle.name = "[Menu Duel] " + NameOf(entry);
+
+            // Заказ состава публикуется ПОСЛЕ рождения скоупа — расстановка внутри него к этому моменту
+            // уже подписана. Обратный порядок и есть та самая готча «заказ раньше адресата»: сообщение
+            // уходит в пустоту, а бой встаёт раскладом из ассета площадки.
+            var request = new ProvingGroundsSetupRequest(
+                Line(entry.Squad, -_config.LineX),
+                Line(entry.Opponents, _config.LineX),
+                "menu-duel");
+            _battle.Container.Resolve<IPublisher<ProvingGroundsSetupRequest>>().Publish(request);
 
             _elapsed  = 0f;
             _sinceEnd = -1f;
@@ -141,6 +160,35 @@ namespace Guildmaster.Game.Flow
                 _running = true;
                 _statePub?.Publish(new MenuBattleChangedEvent(true));
             }
+        }
+
+        /// <summary>
+        /// Строй одной стороны: бойцы столбиком по X, центрированные по Y. Позиции считаются, а не
+        /// хранятся, потому что дуэль всегда 2 на 2 и ставить их руками в ассете было бы работой без
+        /// решения — расстановка у дуэлей одна на всех.
+        /// </summary>
+        private List<ProvingGroundsSpawn> Line(RelicData[] side, float x)
+        {
+            var spawns = new List<ProvingGroundsSpawn>(side?.Length ?? 0);
+            if (side == null) return spawns;
+
+            float top = (side.Length - 1) * _config.Spacing * 0.5f;
+            for (int i = 0; i < side.Length; i++)
+            {
+                if (side[i] == null) continue;
+                spawns.Add(new ProvingGroundsSpawn(side[i], new Vector2(x, top - i * _config.Spacing)));
+            }
+            return spawns;
+        }
+
+        /// <summary>Сид из состава: одна и та же дуэль идёт одинаково, пока её не переписали.</summary>
+        private static ulong SeedOf(MenuBattleConfig.Entry entry) => DeterministicHash.Of("menu-duel:" + NameOf(entry));
+
+        private static string NameOf(MenuBattleConfig.Entry entry)
+        {
+            string left  = entry.Squad != null && entry.Squad.Length > 0 && entry.Squad[0] != null ? entry.Squad[0].Id : "?";
+            string right = entry.Opponents != null && entry.Opponents.Length > 0 && entry.Opponents[0] != null ? entry.Opponents[0].Id : "?";
+            return left + " vs " + right;
         }
 
         /// <summary>
