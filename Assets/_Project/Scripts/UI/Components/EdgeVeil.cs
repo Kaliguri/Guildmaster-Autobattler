@@ -117,10 +117,10 @@ namespace Guildmaster.UI.Components
                 float tail = Mathf.Max(1f - _plateau, 0.0001f);
                 float u = Mathf.Clamp01((fromEdge - _plateau) / tail);
                 float fade = 1f - u * u * (3f - 2f * u);
-                // Перевод в линейное пространство — на нас: Painter2D делает это сам, ручной меш нет
-                // (см. PlateButton.VertexColor). Альфа гаммой не трогается.
-                Color linear = PlateButton.VertexColor(_color);
-                var tint = new Color(linear.r, linear.g, linear.b, _color.a * fade);
+                // Цвет уходит в вершину КАК ЕСТЬ — шейдер UITK конвертирует его сам (см.
+                // PlateButton.VertexColor: ручная конверсия душила цвет втрое). Альфа не трогается.
+                Color rgb = PlateButton.VertexColor(_color);
+                var tint = new Color(rgb.r, rgb.g, rgb.b, _color.a * fade);
 
                 float x = horizontal ? t * w : 0f;
                 float y = horizontal ? 0f : t * h;
