@@ -278,15 +278,78 @@ namespace Guildmaster.AnimationLab.Editor
             return false;
         }
 
+        /// <summary>
+        /// Кусок арта, по которому меряется предмет, — объявленная рабочая часть. Меч состоит из клинка,
+        /// гарды и рукояти, и замах рисует ОДИН клинок: взяв рукоять, гизмо показало вылет 0.07 вместо
+        /// 0.25, а взяв «самый длинный кусок», ошиблось бы на копье, где древко длиннее наконечника.
+        /// </summary>
+        static SpriteRenderer MainPiece(Transform grip)
+        {
+            var mark = grip.GetComponent<Presentation.Body.UnitHeldItem>();
+            if (mark != null && mark.ReachPart != null) return mark.ReachPart;
+
+            SpriteRenderer farthest = null;
+            float best = 0f;
+            foreach (var sr in grip.GetComponentsInChildren<SpriteRenderer>(includeInactive: true))
+            {
+                if (sr.sprite == null) continue;
+                MeasureAxis(grip, sr, out _, out Vector3 tip);
+                float reach = Vector3.Distance(grip.position, tip);
+                if (reach <= best) continue;
+                best = reach;
+                farthest = sr;
+            }
+            if (farthest != null)
+                Debug.LogError($"[RigProfile] у хвата '{grip.name}' не объявлена рабочая часть предмета: " +
+                               $"проставь Reach Part в UnitHeldItem. Меряю по самому дальнему куску " +
+                               $"('{farthest.name}'), и на предмете из нескольких кусков это будет не то.");
+            return farthest;
+        }
+
+        /// <summary>
+        /// Ось предмета по СИЛУЭТУ: ближняя к хвату вершина меша спрайта — пятка, дальняя — кончик.
+        ///
+        /// Ни высота спрайта, ни его углы для этого не годятся. Высота занижает диагональный рисунок вдвое
+        /// (клинок Storybook нарисован по диагонали кадра 0.585 x 0.505), а углы рамки врут в другую
+        /// сторону: у узкого вертикального меча базы диагональ прямоугольника дала ось 109.9° вместо 90°.
+        /// Меш обтягивает рисунок (28 вершин у клинка, 11 у меча базы), поэтому дальняя вершина — это и
+        /// есть кончик. Спрайт с рамочным мешом (4 вершины) деградирует к углам сам собой.
+        /// </summary>
+        static void MeasureAxis(Transform grip, SpriteRenderer renderer, out Vector3 butt, out Vector3 tip)
+        {
+            var node = renderer.transform;
+            butt = node.position;
+            tip = node.position;
+            float nearest = float.MaxValue, farthest = -1f;
+
+            foreach (var vertex in renderer.sprite.vertices)
+            {
+                var point = node.TransformPoint(new Vector3(vertex.x, vertex.y, 0f));
+                float distance = Vector3.Distance(point, grip.position);
+                if (distance < nearest) { nearest = distance; butt = point; }
+                if (distance > farthest) { farthest = distance; tip = point; }
+            }
+        }
+
+        /// <summary>
+        /// Направление предмета ВНУТРИ его спрайта — то, что аим доворачивает до мирового угла. Считается
+        /// от ТОЧКИ ХВАТА до кончика, а не от пятки: ближняя вершина силуэта — это угол рукояти, лежащий
+        /// в стороне от оси, и линия «угол-кончик» уводила прямой меч базы на 69.7° вместо 90°. Дуга же
+        /// растёт именно из хвата, поэтому направление руки к кончику и есть то, чем целятся.
+        /// </summary>
+        static float OrientationInSprite(Transform item, Vector3 grip, Vector3 tip)
+        {
+            var local = item.InverseTransformPoint(tip) - item.InverseTransformPoint(grip);
+            return NormalizeAngle(Mathf.Atan2(local.y, local.x) * Mathf.Rad2Deg);
+        }
+
         static RigProfile.HeldItem MeasureHeld(Transform grip, Transform root, string gripId, string gripPath)
         {
-            var renderer = grip.GetComponentInChildren<SpriteRenderer>();
+            var renderer = MainPiece(grip);
             if (renderer == null || renderer.sprite == null) return null;
 
             var item = renderer.transform;
-            float half = renderer.sprite.bounds.extents.y;
-            var butt = item.TransformPoint(new Vector3(0f, -half, 0f));
-            var tip = item.TransformPoint(new Vector3(0f, half, 0f));
+            MeasureAxis(grip, renderer, out Vector3 butt, out Vector3 tip);
 
             // Тип предмета объявляет метка на его кости, а не имя спрайта. Прежняя эвристика
             // (`sprite.name.Contains("shield")`) держалась на том, что предметов ровно два и оба названы
@@ -300,7 +363,7 @@ namespace Guildmaster.AnimationLab.Editor
                 GripPath = gripPath,
                 ItemPath = AnimationUtility.CalculateTransformPath(item, root),
                 OrientationName = id == "shield" ? "top" : "blade",
-                OrientationLocal = 90f,
+                OrientationLocal = OrientationInSprite(item, grip.position, tip),
                 // Read against the grip rather than as a local angle: the artwork lives inside a
                 // visual container now, so the calibration sits on a node ABOVE the renderer and a
                 // local read would come back a flat zero.

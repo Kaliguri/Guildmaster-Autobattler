@@ -1010,6 +1010,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Body.UnitHeldItem
   _kind: 1
   _twoHanded: 0
+  _reachPart: {fileID: 2291789743680614658}
 --- !u!1 &3287573685078756881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,6 +1058,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Body.UnitHeldItem
   _kind: 2
   _twoHanded: 0
+  _reachPart: {fileID: 4735357580786269482}
 --- !u!1 &3542098478692728360
 GameObject:
   m_ObjectHideFlags: 0

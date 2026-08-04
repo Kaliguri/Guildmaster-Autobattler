@@ -152,17 +152,17 @@ MonoBehaviour:
     GripPath: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R/Hand_R/Weapon_R
     ItemPath: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R/Hand_R/Weapon_R/Weapon_R_Sword_Art
     OrientationName: blade
-    OrientationLocal: 90
+    OrientationLocal: 79.92555
     CalibrationZ: -48.266113
-    GripToButt: 0.06486723
+    GripToButt: 0.03815284
     GripToBoneEnd: 0
-    ItemLength: 0.45523307
+    ItemLength: 0.38878447
   - Id: shield
     GripPath: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L/Hand_L/Weapon_L
     ItemPath: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L/Hand_L/Weapon_L/Weapon_L_Shield_Art
     OrientationName: top
-    OrientationLocal: 90
+    OrientationLocal: 114.36773
     CalibrationZ: -24.76001
-    GripToButt: 0.18699995
+    GripToButt: 0.18318549
     GripToBoneEnd: 0
-    ItemLength: 0.37399992
+    ItemLength: 0.3877246

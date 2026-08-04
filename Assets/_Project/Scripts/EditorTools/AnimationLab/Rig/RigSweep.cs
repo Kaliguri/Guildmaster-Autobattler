@@ -725,19 +725,68 @@ namespace Guildmaster.AnimationLab.Editor
             return true;
         }
 
+        /// <summary>
+        /// Прямоугольник вокруг СИЛУЭТА, ориентированный вдоль предмета, а не рамка спрайта.
+        ///
+        /// Рамка врёт ровно там, где рисунок лежит в кадре по диагонали: клинок Storybook нарисован
+        /// поперёк квадрата 0.585 x 0.505, и зона по рамке выходила почти вдвое шире самого клинка —
+        /// заливка съедала полкадра и «перекрытие тела щитом» считалось по площади, которой нет.
+        /// Ось берётся как самая длинная пара вершин меша (пятка и кончик), ширина — как разброс
+        /// остальных вершин поперёк неё.
+        /// </summary>
         static Vector3[] SpriteQuad(SpriteRenderer sprite)
         {
             if (sprite == null || sprite.sprite == null) return null;
-
-            Bounds local = sprite.sprite.bounds;
-            Vector3 min = local.min, max = local.max;
             Transform node = sprite.transform;
+            Vector2[] mesh = sprite.sprite.vertices;
+
+            if (mesh == null || mesh.Length < 3)
+            {
+                Bounds local = sprite.sprite.bounds;
+                Vector3 min = local.min, max = local.max;
+                return new[]
+                {
+                    node.TransformPoint(new Vector3(min.x, min.y, 0f)),
+                    node.TransformPoint(new Vector3(max.x, min.y, 0f)),
+                    node.TransformPoint(new Vector3(max.x, max.y, 0f)),
+                    node.TransformPoint(new Vector3(min.x, max.y, 0f)),
+                };
+            }
+
+            // Диаметр силуэта — ось предмета. Вершин десятки, так что перебор пар дешевле любой хитрости.
+            Vector2 a = mesh[0], b = mesh[0];
+            float longest = 0f;
+            for (int i = 0; i < mesh.Length; i++)
+            for (int j = i + 1; j < mesh.Length; j++)
+            {
+                float d = (mesh[i] - mesh[j]).sqrMagnitude;
+                if (d <= longest) continue;
+                longest = d; a = mesh[i]; b = mesh[j];
+            }
+
+            Vector2 axis = (b - a).normalized;
+            if (axis.sqrMagnitude < 1e-8f) axis = Vector2.up;
+            Vector2 side = new Vector2(-axis.y, axis.x);
+
+            float alongMin = float.MaxValue, alongMax = float.MinValue;
+            float acrossMin = float.MaxValue, acrossMax = float.MinValue;
+            foreach (var v in mesh)
+            {
+                float along = Vector2.Dot(v, axis);
+                float across = Vector2.Dot(v, side);
+                alongMin = Mathf.Min(alongMin, along); alongMax = Mathf.Max(alongMax, along);
+                acrossMin = Mathf.Min(acrossMin, across); acrossMax = Mathf.Max(acrossMax, across);
+            }
+
+            System.Func<float, float, Vector3> corner = (along, across) =>
+            {
+                Vector2 local2 = axis * along + side * across;
+                return node.TransformPoint(new Vector3(local2.x, local2.y, 0f));
+            };
             return new[]
             {
-                node.TransformPoint(new Vector3(min.x, min.y, 0f)),
-                node.TransformPoint(new Vector3(max.x, min.y, 0f)),
-                node.TransformPoint(new Vector3(max.x, max.y, 0f)),
-                node.TransformPoint(new Vector3(min.x, max.y, 0f)),
+                corner(alongMin, acrossMin), corner(alongMax, acrossMin),
+                corner(alongMax, acrossMax), corner(alongMin, acrossMax),
             };
         }
 
