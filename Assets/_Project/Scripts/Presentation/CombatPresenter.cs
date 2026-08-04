@@ -161,6 +161,11 @@ namespace Guildmaster.Presentation
         {
             UnbindBattle();
 
+            // Новый бой — не dev-рестарт: события OnBattleReset не будет, а виды прошлого боя надо
+            // погасить ДО привязки нового, иначе они переиспользуются по совпадающим id (в фоне меню
+            // это и открывало следующую дуэль телами предыдущей). См. ResetShownBattleVisuals.
+            ResetShownBattleVisuals();
+
             _simulation  = simulation;
             _playback    = playback;
             _dispatcher  = dispatcher;
@@ -299,6 +304,25 @@ namespace Guildmaster.Presentation
             // сочтутся уже показанными.
             _playback.Reset();
             _dispatcher.Reset();
+
+            ResetShownBattleVisuals();
+        }
+
+        /// <summary>
+        /// Погасить весь показанный визуал прошлого боя: курсор кадров, виды и трупы, летящие цифры и VFX.
+        /// Общий для dev-рестарта (<see cref="HandleBattleReset"/>) и смены боя (<see cref="BindBattle"/>).
+        /// </summary>
+        /// <remarks>
+        /// Без сброса при смене боя виды переиспользуются по Id между несвязанными боями: id юнитов в
+        /// каждом бою свои и начинаются с нуля, поэтому вид победителя прошлого боя доставался бойцу
+        /// нового с тем же id — вместе с остаточным HP и позой. В фоне меню (дуэль за дуэлью, без
+        /// «пустого кадра» между ними, который иначе похоронил бы виды) следующая дуэль открывалась
+        /// телами и полумёртвым HP предыдущей, читаясь как «показ с середины» (наход. Макса 04.08.2026).
+        /// <para>Ленту и диспетчер НЕ трогает: у рестарта они те же и мотаются выше отдельно, у смены боя
+        /// уже новые — привязаны свежими в <see cref="BindBattle"/>.</para>
+        /// </remarks>
+        private void ResetShownBattleVisuals()
+        {
             _frameIndex.Clear();
 
             foreach (var kvp in _views)
