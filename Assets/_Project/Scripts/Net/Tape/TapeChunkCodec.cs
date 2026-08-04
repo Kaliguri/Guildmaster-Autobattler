@@ -38,35 +38,43 @@ namespace Guildmaster.Net.Tape
         public int NextChunkNumber => _chunkNumber;
 
         /// <summary>
-        /// Вернуть номер последнего записанного чанка обратно — он не уехал и уедет заново, меньшим
-        /// куском.
-        /// </summary>
-        /// <remarks>
-        /// Нужен ровно одному сценарию: чанк оказался больше предела транспорта, и отправитель делит
-        /// диапазон тиков пополам. Без отката номер остался бы потраченным, а у приёмника — дыра в
-        /// нумерации, которую он будет просить повторить до конца боя. То есть это не удобство, а
-        /// условие того, что деление вообще работает.
-        /// </remarks>
-        public void DiscardLast()
-        {
-            if (_chunkNumber > 0) _chunkNumber--;
-        }
-
-        /// <summary>
         /// Уложить срез ленты: тики <paramref name="firstTick"/>..<paramref name="firstTick"/>+
         /// <paramref name="tickCount"/>-1 и все события в этом диапазоне.
         /// </summary>
+        /// <param name="maxBytes">
+        /// Сколько байт можно занять. Предел приходит СНАРУЖИ, потому что знает его транспорт: у Steam
+        /// это 512 КБ, у UTP — заметно меньше. Писателю остаётся уважать чужое число, а не держать своё.
+        /// </param>
+        /// <param name="bytes">
+        /// Готовые байты (живут до следующего вызова) или ПУСТОЙ сегмент, если в диапазоне не нашлось ни
+        /// одного записанного кадра — раздавать нечего, и это не отказ.
+        /// </param>
         /// <returns>
-        /// Готовые байты (живут до следующего вызова) или пустой сегмент, если в диапазоне нет ни одного
-        /// записанного кадра — раздавать нечего.
+        /// <c>false</c> — и только это — означает «не влезло в <paramref name="maxBytes"/>»: ожидаемый
+        /// исход, на который у вызывающего есть ответ (поделить диапазон и позвать снова). Всё остальное
+        /// (нет ленты, недопустимое число тиков) — ошибка вызова и летит исключением.
         /// </returns>
-        public ArraySegment<byte> Write(BattleTape tape, int firstTick, int tickCount)
+        /// <remarks>
+        /// Так требует конвенция .NET для <c>TryFormat</c>/<c>TryWrite</c>: <c>false</c> возвращают
+        /// исключительно при нехватке места, прочие сбои бросают. Раньше здесь стоял свой потолок в
+        /// 64 КБ и <c>throw</c> на нём — то есть управление потоком через исключение. Срабатывало оно
+        /// РАНЬШЕ предела транспорта, поэтому задуманное деление чанка было недостижимо ни при каком
+        /// входе, а исключение уходило наверх с уже потраченным номером чанка: раздача вставала
+        /// навсегда, у гостя оставалась дыра в нумерации, которую он просил повторить до конца боя.
+        /// <para>Номер чанка тратится ТОЛЬКО на успешной записи. Поэтому отката (<c>DiscardLast</c>)
+        /// больше нет — откатывать нечего.</para>
+        /// </remarks>
+        public bool TryWrite(BattleTape tape, int firstTick, int tickCount, int maxBytes,
+                             out ArraySegment<byte> bytes)
         {
             if (tape == null) throw new ArgumentNullException(nameof(tape));
             if (tickCount <= 0 || tickCount > 255)
                 throw new ArgumentOutOfRangeException(nameof(tickCount),
                     "смещение тика внутри чанка едет одним байтом: 1..255");
+            if (maxBytes <= 0)
+                throw new ArgumentOutOfRangeException(nameof(maxBytes), "предел размера чанка должен быть положительным");
 
+            bytes = default;
             _bytes.Reset();
             _previous.Clear();
 
@@ -79,12 +87,17 @@ namespace Guildmaster.Net.Tape
                 if (tape.TryGetFrame(tick, out _, out _)) frames.Add(tick);
             }
 
-            if (frames.Count == 0) return new ArraySegment<byte>(Array.Empty<byte>());
+            if (frames.Count == 0)
+            {
+                bytes = new ArraySegment<byte>(Array.Empty<byte>());
+                return true;
+            }
 
             tape.CollectEvents(firstTick, firstTick + tickCount - 1, _events);
 
+            // Номер пишем, но НЕ тратим: инкремент ниже, за проверкой размера.
             _bytes.WriteByte(TapeChunkFormat.Version);
-            _bytes.WriteInt(_chunkNumber++);
+            _bytes.WriteInt(_chunkNumber);
             _bytes.WriteInt(firstTick);
             _bytes.WriteByte((byte)frames.Count);
             _bytes.WriteUShort((ushort)_events.Count);
@@ -92,13 +105,11 @@ namespace Guildmaster.Net.Tape
             for (int i = 0; i < frames.Count; i++) WriteFrame(tape, frames[i], firstTick);
             for (int i = 0; i < _events.Count; i++) WriteEvent(tape, _events[i], firstTick);
 
-            if (_bytes.Length > TapeChunkFormat.MaxChunkBytes)
-                throw new InvalidOperationException(
-                    $"чанк {_bytes.Length} Б больше потолка {TapeChunkFormat.MaxChunkBytes} Б: " +
-                    "уменьшай число тиков в чанке. Ниже нас размер не проверяет никто — " +
-                    "Steam молча вернёт InvalidParam, а транспорт его не читает");
+            if (_bytes.Length > maxBytes) return false;   // номер не потрачен — этот же уедет меньшим куском
 
-            return _bytes.WrittenSegment;
+            _chunkNumber++;
+            bytes = _bytes.WrittenSegment;
+            return true;
         }
 
         private void WriteFrame(BattleTape tape, int tick, int firstTick)
