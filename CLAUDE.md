@@ -146,6 +146,7 @@
 | чем код расходится с замыслом | `implementation-status.md` в relics · enemies · items · effects | gdd-scribe |
 | идея без вердикта · отложенное по подсистеме | `relics/draft-ideas.md` · `backlog-*.md` | gdd-scribe, gamefeel-vfx |
 | личный инбокс Макса — **агент не пишет** | `wiki/gdd/00-meta/open.md`, разборы в `00-meta/inbox/` | — |
+| черновые QA-наблюдения Макса — **агент не пишет и не чистит** | `wiki/gdd/00-meta/qa-notes.md` | — |
 | ход мысли по живому заходу | `docs/<фича>-progress.md`, временный | ведущий заход |
 
 Жанр решает, что в файл писать; путь без жанра — приглашение свалить факт куда попало. Новый

@@ -8,6 +8,7 @@
   "showFrontmatter": false,
   "promptDelete": false,
   "alwaysUpdateLinks": true,
+  "attachmentFolderPath": "attachments",
   "enabledPlugins": [
     "templater-obsidian",
     "obsidian-excalidraw-plugin"
