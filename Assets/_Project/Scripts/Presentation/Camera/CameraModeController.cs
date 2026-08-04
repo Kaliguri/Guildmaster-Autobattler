@@ -117,6 +117,8 @@ namespace Guildmaster.Presentation
         private bool _devAccess;
         private bool _inCombat;        // фаза Fighting: только в ней сценарной камере есть за кем следить
         private bool _onStage;         // показ боя вне забега (повтор): то же кадрирование, мимо часов
+        // Сцена поднята, но бойцов в кадре ещё нет: вход в слежение отложен до них (см. OnStageChanged).
+        private bool _stageAwaitingFocus;
         private bool _prefersFreeView; // выбор игрока внутри боя (Tab) — из настроек, туда же и пишется
 
         private readonly List<ScreenShake> _shakers = new List<ScreenShake>(3); // тряска на каждой vcam
@@ -280,13 +282,30 @@ namespace Guildmaster.Presentation
             bool onStage = _stage != null && _stage.OnStage;
             if (_onStage == onStage) return;
             _onStage = onStage;
-            SetWorldMode(WantedWorldMode());
 
-            // Сцена поднялась — открываемся боевым кадром СРАЗУ, без подводки (решение Макса 04.08.2026).
-            // Подводка уместна, когда игрок уже смотрел на арену и его взгляд переносят; фон меню же
-            // возникает вместе с самим меню, и «перелёт» показывал бы дорогу из вида, которого зритель
-            // не видел. Уход со сцены не режем: там кадр отдаётся свободной камере, и она подхватывает
-            // живой (AdoptLiveFrame) — переход и так бесшовный.
+            // Сцена поднялась раньше, чем в кадре появились бойцы (лента наполняется несколько кадров) —
+            // ехать не к кому: цель слежения ещё не знает, где бой, а PrimeActionZoom по той же причине
+            // не взведёт зум. Ждём первого кадра с бойцами (см. Update) и входим уже наверняка.
+            if (onStage && (_focus == null || !_focus.HasUnits))
+            {
+                _stageAwaitingFocus = true;
+                return;
+            }
+
+            _stageAwaitingFocus = false;
+            EnterStageFraming(onStage);
+        }
+
+        /// <summary>
+        /// Применить кадрирование по состоянию сцены. При подъёме открываемся боевым кадром СРАЗУ, без
+        /// подводки (решение Макса 04.08.2026): подводка уместна, когда игрок уже смотрел на арену и его
+        /// взгляд переносят, а фон меню возникает вместе с самим меню — «перелёт» показывал бы дорогу из
+        /// вида, которого зритель не видел. Уход со сцены не режем: там кадр отдаётся свободной камере, и
+        /// она подхватывает живой (<see cref="AdoptLiveFrame"/>) — переход и так бесшовный.
+        /// </summary>
+        private void EnterStageFraming(bool onStage)
+        {
+            SetWorldMode(WantedWorldMode());
             if (onStage) CutToActiveNow();
         }
 
@@ -663,6 +682,13 @@ namespace Guildmaster.Presentation
 
         private void Update()
         {
+            // Отложенный вход в слежение — ДО выхода по вводу: он ждёт бойцов в кадре, а не игрока.
+            if (_stageAwaitingFocus && _focus != null && _focus.HasUnits)
+            {
+                _stageAwaitingFocus = false;
+                EnterStageFraming(true);
+            }
+
             if (_input == null) return;
             switch (Mode)
             {

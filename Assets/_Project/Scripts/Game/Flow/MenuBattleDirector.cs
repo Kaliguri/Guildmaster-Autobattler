@@ -48,17 +48,11 @@ namespace Guildmaster.Game.Flow
         // часов забега (их читают навигатор/звук, и меню их дёргать не должно).
         private readonly Presentation.BattleStagePresence _stage;
 
-        // Владелец факта «показу есть за кем следить»: сцену поднимаем по нему, а не по факту рождения
-        // скоупа (см. _awaitingStage).
-        private readonly Presentation.CombatFocusTarget _focus;
-
         private IDisposable _menuSubscription;
         private IDisposable _endedSubscription;
 
         private bool _menuOpen;
         private bool _running;
-        // Скоуп поднят, но в кадре ещё пусто: сцену держим до первого кадра с бойцами (см. Tick).
-        private bool _awaitingStage;
         private float _elapsed;
         private float _sinceEnd = -1f;   // -1 — запись ещё идёт; иначе секунды с её конца
         private int _lastIndex = -1;
@@ -71,8 +65,7 @@ namespace Guildmaster.Game.Flow
                                   ISubscriber<MainMenuVisibilityChangedEvent> menuSub,
                                   ISubscriber<Presentation.BattleEndedEvent> endedSub,
                                   IPublisher<MenuBattleChangedEvent> statePub,
-                                  Presentation.BattleStagePresence stage,
-                                  Presentation.CombatFocusTarget focus)
+                                  Presentation.BattleStagePresence stage)
         {
             _world       = world;
             _replayScope = replayScope;
@@ -82,7 +75,6 @@ namespace Guildmaster.Game.Flow
             _endedSub = endedSub;
             _statePub = statePub;
             _stage    = stage;
-            _focus    = focus;
         }
 
         public void Start()
@@ -101,18 +93,6 @@ namespace Guildmaster.Game.Flow
         public void Tick()
         {
             if (!_running) return;
-
-            // Сцену поднимаем, когда показу ЕСТЬ ЧТО кадрировать, а не когда родился скоуп. Между этими
-            // моментами несколько кадров: файл читается в ленту по темпу показа, и до первого кадра с
-            // бойцами цель слежения не знает, куда смотреть. Подняв сцену раньше, мы посылали камеру в
-            // бой к ещё не заданной точке — она стартовала подводку от старого кадра, а через пару кадров
-            // цель телепортировалась в центр дуэли, и подводка читалась рывком (наход. Макса 04.08.2026).
-            // Здесь же ждёт и арена: она являётся тем же сигналом, и появляться ей раньше бойцов незачем.
-            if (_awaitingStage && _focus != null && _focus.HasUnits)
-            {
-                _awaitingStage = false;
-                _stage?.SetOnStage(true);
-            }
 
             _elapsed += Time.unscaledDeltaTime;
             if (_sinceEnd >= 0f) _sinceEnd += Time.unscaledDeltaTime;
@@ -171,15 +151,18 @@ namespace Guildmaster.Game.Flow
             _elapsed  = 0f;
             _sinceEnd = -1f;
 
-            // Сам сигнал сцены поднимет Tick, дождавшись первого кадра с бойцами. Держим его на весь фон,
-            // а не по дуэли: смена дуэли пересоздаёт скоуп, и мигание Enter/Exit увело бы камеру в
-            // Overview между дуэлями (при уже поднятой сцене ожидание отработает вхолостую).
-            _awaitingStage = true;
-
             if (!_running)
             {
                 _running = true;
                 _statePub?.Publish(new MenuBattleChangedEvent(true));
+
+                // Фон меню поднялся: «на сцене идёт бой» — по этому ArenaStagePresenter являет арену, а
+                // камера кадрирует дуэль. Сигнал идёт СРАЗУ, не дожидаясь первого кадра ленты: арене
+                // ждать нечего, а её опоздание оставляло под меню голый задник (наход. Макса 04.08.2026).
+                // Камера же к пустому кадру не едет — ждать бойцов её забота, см. CameraModeController.
+                // Держим на весь фон, а не по дуэли: смена дуэли пересоздаёт скоуп, и мигание Enter/Exit
+                // увело бы камеру в Overview между дуэлями.
+                _stage?.SetOnStage(true);
             }
         }
 
@@ -239,7 +222,6 @@ namespace Guildmaster.Game.Flow
 
             CloseBattle();
             _running  = false;
-            _awaitingStage = false;
             _elapsed  = 0f;
             _sinceEnd = -1f;
             _stage?.SetOnStage(false);   // фон ушёл — камера возвращается к обзорному виду
