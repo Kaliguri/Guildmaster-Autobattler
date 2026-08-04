@@ -55,6 +55,11 @@ namespace Guildmaster.Game
 
         private void Start()
         {
+            // Лог прошлого запуска — В АРХИВ, до того как мы начнём писать свой. Unity перезаписывает
+            // его на каждом старте, и разбор сессии со Steam иначе живёт ровно до следующего запуска
+            // игры (просьба Макса 04.08.2026).
+            Core.Diagnostics.SessionLogArchive.ArchivePrevious(System.DateTime.Now);
+
             // Токен от объекта: при выгрузке сцены/остановке play-mode await'ы прекращаются, а не
             // продолжают жить в оторванной задаче.
             StartBootAsync(this.GetCancellationTokenOnDestroy()).Forget();

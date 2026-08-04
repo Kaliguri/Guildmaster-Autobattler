@@ -64,8 +64,15 @@ namespace Guildmaster.Net.Tape
         /// <para>Номер чанка тратится ТОЛЬКО на успешной записи. Поэтому отката (<c>DiscardLast</c>)
         /// больше нет — откатывать нечего.</para>
         /// </remarks>
+        /// <param name="includeEvents">
+        /// Класть ли в чанк события диапазона. <c>false</c> — только снимки: так уезжает КАДР ПОКОЯ,
+        /// который переотправляется десять раз в секунду, пока арена стоит. С событиями внутри каждая
+        /// такая посылка проигрывалась бы у гостя заново — удар, смерть, звук, — и звучало это как
+        /// зациклившийся эффект (наход. Макса 04.08.2026). События едут ровно один раз, в том чанке,
+        /// который двигает бой вперёд.
+        /// </param>
         public bool TryWrite(BattleTape tape, int firstTick, int tickCount, int maxBytes,
-                             out ArraySegment<byte> bytes)
+                             out ArraySegment<byte> bytes, bool includeEvents = true)
         {
             if (tape == null) throw new ArgumentNullException(nameof(tape));
             if (tickCount <= 0 || tickCount > 255)
@@ -93,7 +100,8 @@ namespace Guildmaster.Net.Tape
                 return true;
             }
 
-            tape.CollectEvents(firstTick, firstTick + tickCount - 1, _events);
+            if (includeEvents) tape.CollectEvents(firstTick, firstTick + tickCount - 1, _events);
+            else               _events.Clear();
 
             // Номер пишем, но НЕ тратим: инкремент ниже, за проверкой размера.
             _bytes.WriteByte(TapeChunkFormat.Version);

@@ -46,6 +46,8 @@ namespace Guildmaster.Game.Session.Net
 
         public void Bind(string key, Action onAllReady)
         {
+            Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
+                $"гость: Bind({key}), было «{_key}»");
             if (_key == key) return;
 
             _key = key;

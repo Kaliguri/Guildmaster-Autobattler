@@ -89,7 +89,9 @@ namespace Guildmaster.Net.Tape
 
             int number = _writer.NextChunkNumber;
 
-            if (!_writer.TryWrite(_tape, tick, 1, maxBytes, out ArraySegment<byte> bytes))
+            // БЕЗ событий: этот кадр уезжает снова и снова, пока арена стоит, и события в нём
+            // проигрывались бы у гостя на каждой посылке.
+            if (!_writer.TryWrite(_tape, tick, 1, maxBytes, out ArraySegment<byte> bytes, includeEvents: false))
                 throw new InvalidOperationException(
                     $"кадр покоя (тик {tick}) не влезает в предел {maxBytes} Б — делить дальше нечего");
 

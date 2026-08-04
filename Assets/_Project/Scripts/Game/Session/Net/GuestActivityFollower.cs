@@ -102,6 +102,8 @@ namespace Guildmaster.Game.Session.Net
                 return;
             }
 
+            Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Follow,
+                $"гость: приехало «где мы» — {state}");
             Apply(in state);
         }
 
@@ -171,11 +173,15 @@ namespace Guildmaster.Game.Session.Net
             {
                 _ready?.Bind(Guildmaster.Core.Net.ReadyKeys.BattleStart, null);
                 session.BindStart(_toggleReady ??= () => _ready?.ToggleLocal());
+                Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
+                    $"гость: расстановка — ключ «{Guildmaster.Core.Net.ReadyKeys.BattleStart}» взведён, кнопка привязана (гейт {(_ready == null ? "ОТСУТСТВУЕТ" : "есть")})");
                 return;
             }
 
             _ready?.Unbind(Guildmaster.Core.Net.ReadyKeys.BattleStart);
             session.UnbindStart();
+            Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
+                $"гость: фаза {phase} — ключ снят, кнопка отвязана");
         }
 
         /// <summary>

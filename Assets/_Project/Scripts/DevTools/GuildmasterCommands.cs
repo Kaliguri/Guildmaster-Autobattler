@@ -1,4 +1,4 @@
-﻿using Guildmaster.Combat;
+using Guildmaster.Combat;
 using Guildmaster.Core.Input;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -220,6 +220,7 @@ namespace Guildmaster.DevTools
                 ArenaDevCommands.Register(_commands);
                 MapDevCommands.Register(_commands);
                 VisualFxCommands.Register(_commands);
+                DiagCommands.Register(_commands);
             }
         }
 
