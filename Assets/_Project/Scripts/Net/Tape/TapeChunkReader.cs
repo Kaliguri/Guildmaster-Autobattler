@@ -111,7 +111,11 @@ namespace Guildmaster.Net.Tape
             int frameCount  = bytes.ReadByte();
             int eventCount  = bytes.ReadUShort();
 
-            if (!_appliedChunks.Add(chunkNumber)) return TapeChunkStatus.Duplicate;
+            // Только ПРОВЕРКА: пометка «применён» ставится в самом конце, после успешного разбора.
+            // Пометить здесь значило бы закрыть дыру, которую мы не закрыли: чанк, упавший на разборе,
+            // числился бы применённым, гость продолжал бы просить его повтора каждые полсекунды, а
+            // читатель отвечал бы «дубликат» — секунда боя терялась навсегда, и запросы шли до конца боя.
+            if (_appliedChunks.Contains(chunkNumber)) return TapeChunkStatus.Duplicate;
 
             _previous.Clear();
 
@@ -136,6 +140,7 @@ namespace Guildmaster.Net.Tape
                 if (status != TapeChunkStatus.Ok) return status;
             }
 
+            _appliedChunks.Add(chunkNumber);   // разобрали целиком — только теперь он применён
             LastChunkNumber = chunkNumber;
             return TapeChunkStatus.Ok;
         }
