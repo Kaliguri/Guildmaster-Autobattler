@@ -1778,7 +1778,11 @@
     /* Вдвое мельче слова (26 против 48): надстрочник обязан читаться меткой НАД названием, а не его
        второй строкой. Дисплейная гарнитура плотнее антиквы, поэтому и разрядка убавлена. */
     font-size: var(--gm-font-body);
-    color: var(--gm-color-display-accent-quiet);
+    /* Белый — не цвет, а единица умножения под градиент; сам градиент вешает код тегом
+       <gradient="WordmarkPlate">, потому что USS-свойства для него в UI Toolkit нет. */
+    color: var(--gm-color-text-gradient-base);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: var(--gm-color-display-outline);
     letter-spacing: 12px;
     margin-left: var(--gm-space-2);
     /* Разрядка добавляет просвет и ПОСЛЕ последней буквы — без компенсации надпись стоит не по
@@ -1791,6 +1795,11 @@
     -unity-font-definition: var(--gm-font-wordmark);
     font-size: var(--gm-font-lg);
     color: var(--gm-color-display-accent);
+    /* Обводка ровно 1px и на слове, и на мелких строках. Не «на глаз»: TextCore рисует контур
+       ВНУТРЬ глифа, поэтому на антикве 2px съедали засечки и буквы читались выеденными изнутри
+       (проверено кадром 05.08.2026). Один пиксель отделяет надпись от кадра и ничего не отъедает. */
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: var(--gm-color-display-outline);
     letter-spacing: 2px;
     -unity-text-align: middle-left;
 }
@@ -1806,7 +1815,9 @@
     /* 26 вместо 22 и разрядка вдвое туже: на прежних числах антиква рассыпалась на отдельные буквы.
        Вес добирается кеглем — фейк-болд SDF на дисплейной гарнитуре пачкает засечки. */
     font-size: var(--gm-font-body);
-    color: var(--gm-color-display-accent-quiet);
+    color: var(--gm-color-text-gradient-base);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: var(--gm-color-display-outline);
     letter-spacing: 6px;
     align-self: flex-end;
     /* Компенсация разрядки: просвет добавляется и ПОСЛЕ последней буквы, поэтому без сдвига метка
