@@ -72,6 +72,7 @@ MonoBehaviour:
     _damageMultiplier: 0
     _baseDamage: 0
     _damageType: 0
+    _castRange: 0
     _areaShape: 0
     _areaRadius: 4
     _healFlat: 0
@@ -85,6 +86,7 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0
     _triggerTag: 2048
     _consumesTriggerTag: 0
+    _maxTriggerUniques: 3
     _castSeconds: 0
     _channelSeconds: 0
     _channelTickSeconds: 1

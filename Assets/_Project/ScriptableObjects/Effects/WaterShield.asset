@@ -18,6 +18,7 @@ MonoBehaviour:
   _baseDuration: 5
   _stacking: 2
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 1
   _unremovable: 0
   _cleansePrice:
@@ -40,7 +41,7 @@ MonoBehaviour:
       type: {class: ShieldComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _amount:
-          Base: 600
+          Base: 400
           Scalings: []
         _selfBonusPct: 0.5
     - rid: 7815026876324511924
@@ -49,10 +50,10 @@ MonoBehaviour:
         _fractionOfShield: 1
         _radius: 2.5
         _damageType: 1
-        _secondShare: 0.5
-        _secondType: 11
         _burstOnExpire: 1
         _useRemainingShield: 1
+        _secondShare: 0.5
+        _secondType: 11
         _knockbackDistance: 2
         _victimEffect: {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
         _victimEffectCount: 3

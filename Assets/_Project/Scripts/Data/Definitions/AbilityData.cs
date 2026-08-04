@@ -131,6 +131,12 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("После наложения эффектов снять TriggerTag с цели (конверсия: «Ледяные оковы» превращают «Заморозку» в стан).")]
         [SerializeField] private bool _consumesTriggerTag;
 
+        [Tooltip("Потолок на число РАЗНЫХ эффектов с TriggerTag, которые считаются за одну детонацию " +
+                 "(«Взрыв спор» Друида: до 3 ядов). 0 = без потолка. Ограничивает награду за разнообразие " +
+                 "порчи, чтобы отряд с шестью источниками яда не превращал взрыв в шестикратный.")]
+        [Min(0)]
+        [SerializeField] private int _maxTriggerUniques;
+
         [Header("Cast time and channel (M3) — Копейщик, Маг молний, Барабанщик")]
         [Tooltip("Подготовка перед применением, сек. 0 = мгновенно (поведение всего текущего контента). Маг молний = 1.5. Ресурс и КД списываются в НАЧАЛЕ подготовки: прерывание контролем жжёт каст.")]
         [SerializeField] private float _castSeconds;
@@ -301,6 +307,9 @@ namespace Guildmaster.Data.Definitions
         public float CastOverrideSelfHpPct => _castOverrideSelfHpPct;
         public EffectTag TriggerTag => _triggerTag;
         public bool ConsumesTriggerTag => _consumesTriggerTag;
+
+        /// <summary>Потолок засчитываемых уникальных эффектов-триггеров за детонацию; 0 = без потолка.</summary>
+        public int MaxTriggerUniques => _maxTriggerUniques;
         /// <summary>
         /// Подготовка перед применением, сек (0 = мгновенно). Цена платится на СТАРТЕ подготовки —
         /// решение Макса 2026-07-29: иначе контроль лишь задерживает каст, и телеграф не стоит ничего.
