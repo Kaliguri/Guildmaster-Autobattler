@@ -73,10 +73,11 @@ MonoBehaviour:
     _damageMultiplier: 0
     _baseDamage: 0
     _damageType: 0
+    _castRange: 0
     _areaShape: 0
     _areaRadius: 0
     _healFlat: 100
-    _healPctTargetMissingHp: 0.25
+    _healPctTargetMissingHp: 0.15
     _healEffect: {fileID: 0}
     _selfHealFraction: 0.25
     _castCondition: 2
@@ -86,6 +87,7 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _maxTriggerUniques: 0
     _castSeconds: 0
     _channelSeconds: 0
     _channelTickSeconds: 1

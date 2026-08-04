@@ -58,6 +58,9 @@ MonoBehaviour:
   - Stat: 7
     Op: 3
     Value: 150
+  - Stat: 0
+    Op: 3
+    Value: 1800
   _grantedEffects:
   - {fileID: 11400000, guid: 25016af23763401aa16431c166e8720b, type: 2}
   _abilities:
@@ -71,6 +74,7 @@ MonoBehaviour:
     _damageMultiplier: 0
     _baseDamage: 0
     _damageType: 0
+    _castRange: 0
     _areaShape: 0
     _areaRadius: 0
     _healFlat: 0
@@ -84,6 +88,7 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _maxTriggerUniques: 0
     _castSeconds: 0
     _channelSeconds: 0
     _channelTickSeconds: 1
