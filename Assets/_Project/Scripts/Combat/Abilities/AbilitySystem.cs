@@ -641,6 +641,10 @@ namespace Guildmaster.Combat
                     // Счёт по НАЧАЛУ тика, а не по живому списку: иначе чужой клинз, прошедший раньше по
                     // обходу, обкрадывает детонацию, и зеркальные стороны расходятся (см. EffectSystem).
                     int uniques = EffectSystem.CountUniqueTaggedAtTickStart(u, tag, ctx.CurrentTick);
+                    // Потолок на разнообразие порчи: без него отряд с шестью источниками яда делает
+                    // взрыв шестикратным, и сила Друида начинает зависеть не от него самого.
+                    if (data.MaxTriggerUniques > 0 && uniques > data.MaxTriggerUniques)
+                        uniques = data.MaxTriggerUniques;
                     if (uniques > 0) HealAlliesAround(caster, u, data, uniques, ctx);
                 }
 
