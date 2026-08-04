@@ -304,14 +304,20 @@ namespace Guildmaster.Presentation
         private float _strikeFrom;           // 0..1 — нормированное начало взмаха
         private float _strikeTo;             // 0..1 — нормированный конец взмаха
         private float _swingClipTime = -1f;  // 0..1 — где скраб поставил клип свинга в этом кадре; -1 = свинг не играет
-        private bool  _hasStrikeOrigin;      // точка A снята с этого взмаха
-
         /// <summary>
-        /// На сколько скраб должен откатиться назад, чтобы это считалось НОВЫМ взмахом. Порог, а не любое
-        /// уменьшение: между кадрами время клипа может дрогнуть на доли процента от интерполяции тика, а
-        /// настоящий откат — это прыжок с конца клипа в его начало.
+        /// Номер текущего взмаха. Растёт на КАЖДОМ входе в атаку — там, где о нём сообщает сим
+        /// (<see cref="OnAttackStarted"/>), и больше нигде.
         /// </summary>
-        private const float SwingRestartDrop = 0.1f;
+        /// <remarks>
+        /// Показ не выводит «начался новый взмах» из своего же состояния. Фаза для этого не годится: у
+        /// кита, чей следующий замах стартует в тот же тик, где кончился прошлый удар, фаза замаха не
+        /// прерывается ни на кадр. Скраб клипа не годится тоже — сравнивать его с прошлым кадром значит
+        /// угадывать по порогу. Событие ленты знает ответ точно, и оно уже приходит.
+        /// </remarks>
+        private int _swingSerial;
+
+        /// <summary>Взмах, с которого снята точка A и заказана дуга. <c>-1</c> = ещё ни одного.</summary>
+        private int _originSwingSerial = -1;
         private Vector3 _strikeOrigin;       // мировая позиция кончика оружия на кадре StrikeStart
 
         /// <summary>
@@ -471,6 +477,11 @@ namespace Guildmaster.Presentation
             _actionWeight    = 0f;
             _swingCharged    = false;
 
+            // Вид переиспользуется пулом: взмахи прошлого жильца новому не принадлежат.
+            _swingSerial       = 0;
+            _originSwingSerial = -1;
+            _swingClipTime     = -1f;
+
             if (!_animActive)
             {
                 if (_animator != null) _animator.enabled = false;
@@ -626,25 +637,22 @@ namespace Guildmaster.Presentation
         public bool TryGetStrikeOrigin(out Vector3 world)
         {
             world = _strikeOrigin;
-            return _hasStrikeOrigin;
+            return _originSwingSerial == _swingSerial;
         }
 
         /// <summary>
         /// Отследить кадр начала взмаха и снять с него точку A. Зовётся из скраба свинга — там, где
         /// известно, куда именно поставлен клип.
         /// </summary>
+        /// <remarks>
+        /// «Этот взмах уже обслужен» проверяется НОМЕРОМ взмаха (<see cref="_swingSerial"/>), а не флагом,
+        /// который кто-то обязан вовремя сбросить. Флаг и был причиной того, что дуга появлялась один раз
+        /// за бой: сбрасывать его поручили переходу фазы, а фаза у быстрых китов не прерывается.
+        /// </remarks>
         private void TrackStrikeWindow(float clipTime)
         {
-            // Новый взмах виден по ОТКАТУ скраба назад: клип свинга всегда идёт вперёд — замах к контакту,
-            // хвост к концу, — поэтому упавшее время означает «начался следующий удар». Опираться на смену
-            // фазы для этого нельзя: у кита, чей следующий замах стартует в тот же тик, где кончился
-            // прошлый удар, фаза Windup не прерывается ни на кадр, точка A остаётся снятой с ПЕРВОГО
-            // взмаха, и дуга за клинком заказывается ровно один раз за весь бой (найдено 04.08.2026).
-            if (UnitAnimationSelector.IsNewSwing(_swingClipTime, clipTime, SwingRestartDrop))
-                _hasStrikeOrigin = false;
-
             _swingClipTime = clipTime;
-            if (!_hasStrikeWindow || _hasStrikeOrigin || clipTime < _strikeFrom) return;
+            if (!_hasStrikeWindow || _originSwingSerial == _swingSerial || clipTime < _strikeFrom) return;
 
             // Кончиком считаем то, чем юнит бьёт: предмет в руке, а у безоружного — саму кисть. Нечем
             // ударить — точки A не будет, и форма деградирует на вектор «атакующий → цель». Клип при этом
@@ -674,8 +682,8 @@ namespace Guildmaster.Presentation
                 return;
             }
 
-            _strikeOrigin    = tip;
-            _hasStrikeOrigin = true;
+            _strikeOrigin      = tip;
+            _originSwingSerial = _swingSerial;
 
             // Взмах начался — дуге пора идти за клинком. Момент один и тот же с точкой A намеренно:
             // два источника «когда начался взмах» разъехались бы, и дуга пошла бы не оттуда, откуда удар.
@@ -1101,13 +1109,11 @@ namespace Guildmaster.Presentation
                 // Признак разбега снимаем на ВХОДЕ и держим до конца цикла: он принадлежит одному свингу, а
                 // не мгновению. Перечитывать его каждый кадр значило бы дать клипу право смениться посреди
                 // замаха — удар с разбега превратился бы в обычный на полпути к контакту.
+                // Точка A здесь НЕ сбрасывается: «новый взмах» объявляет событие сима, а не переход фазы.
+                // У кита, чей следующий замах начинается в тот же тик, где кончился прошлый удар, этого
+                // перехода не происходит вовсе — см. _swingSerial.
                 if (_attackPhase != AttackAnimPhase.Windup)
-                {
                     _swingCharged = _snapshot.ChargedSwing;
-                    // Точка A принадлежит ОДНОМУ взмаху: не сбросить её здесь значило бы рисовать второй
-                    // удар из места, откуда пришёл первый.
-                    _hasStrikeOrigin = false;
-                }
                 _attackPhase = AttackAnimPhase.Windup;
                 return;
             }
@@ -1358,6 +1364,10 @@ namespace Guildmaster.Presentation
         /// <param name="awayFromTarget">Нормаль «от цели» (куда оттягиваться); zero = без оттяга.</param>
         public void OnAttackStarted(Vector2 awayFromTarget)
         {
+            // Новый взмах — здесь и только здесь: сим сказал, что он начался. Всё, что «раз за свинг»
+            // (точка A, заказ дуги), сверяется с этим номером, а не с флагами показа.
+            _swingSerial++;
+
             if (_animActive)
             {
                 // Тот же признак и на этом входе: мгновенный удар (windup 0) в UpdateAttackPhase не заходит
