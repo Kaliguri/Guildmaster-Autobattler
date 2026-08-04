@@ -22,9 +22,27 @@ namespace Guildmaster.Net.Transport
         private int _nextPeerId = NetPeer.HostPeerId;
 
         /// <summary>Создать узел. Первый созданный становится хостом.</summary>
-        public INetTransport CreateNode()
+        public INetTransport CreateNode() => CreateNode(claimHost: false);
+
+        /// <summary>
+        /// Создать узел, при <paramref name="claimHost"/> — забрав себе номер хоста, даже если его уже
+        /// кто-то занял: прежний владелец переезжает на следующий свободный.
+        /// </summary>
+        /// <remarks>
+        /// <b>Зачем переселение.</b> В петле «хост» — это номер <see cref="NetPeer.HostPeerId"/>, и
+        /// достаётся он тому, кто создал узел первым. В игре транспорт поднимается на старте, задолго
+        /// до того, как станет известно, хозяин мы в этом сеансе или гость, — то есть игра неизбежно
+        /// занимает номер хоста, даже когда играет гостем. Тогда её же «шлём хосту» уходило бы ей
+        /// самой, и проверить гостевую половину коопа было бы нечем.
+        /// <para>Настоящая сеть решает это тем же способом: номера раздаёт хост в момент подключения
+        /// (см. рукопожатие), а не сокет в момент создания. Здесь — та же логика, только выраженная
+        /// одним переездом.</para>
+        /// </remarks>
+        public INetTransport CreateNode(bool claimHost)
         {
-            int id = _nextPeerId++;
+            if (claimHost) VacateHostSlot();
+
+            int id = claimHost ? NetPeer.HostPeerId : _nextPeerId++;
             var node = new Node(this, id, isHost: id == NetPeer.HostPeerId);
             _nodes.Add(id, node);
 
@@ -39,6 +57,20 @@ namespace Guildmaster.Net.Transport
             }
 
             return node;
+        }
+
+        /// <summary>
+        /// Освободить номер хоста: тот, кто его занимал, переезжает на следующий свободный и узнаёт
+        /// об этом ровно так же, как узнал бы в настоящей сети — сменой состава соединений.
+        /// </summary>
+        private void VacateHostSlot()
+        {
+            if (!_nodes.TryGetValue(NetPeer.HostPeerId, out Node previous)) return;
+
+            _nodes.Remove(NetPeer.HostPeerId);
+            int moved = _nextPeerId++;
+            previous.Rebind(moved, isHost: false);
+            _nodes.Add(moved, previous);
         }
 
         /// <summary>Прокачать все узлы разом — типичный шаг теста «прошёл кадр у всех».</summary>
@@ -102,8 +134,18 @@ namespace Guildmaster.Net.Transport
             }
 
             public bool IsRunning  => _running;
-            public int  LocalPeerId { get; }
-            public bool IsHost      { get; }
+            public int  LocalPeerId { get; private set; }
+            public bool IsHost      { get; private set; }
+
+            /// <summary>
+            /// Переехать на другой номер: пришедший хозяин забрал наш. Так же выглядит и настоящая
+            /// сеть — номер узла назначает хост, и до подключения он не наш.
+            /// </summary>
+            internal void Rebind(int peerId, bool isHost)
+            {
+                LocalPeerId = peerId;
+                IsHost      = isHost;
+            }
 
             /// <summary>
             /// Тот же предел, что у релизного Steam-транспорта (512 КБ на надёжное сообщение). Loopback

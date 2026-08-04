@@ -270,11 +270,19 @@ namespace Guildmaster.Game
             builder.Register<Guildmaster.Net.Transport.LoopbackNetwork>(Lifetime.Singleton);
             builder.Register<Guildmaster.Net.Transport.INetTransport>(r =>
             {
-                if (r.Resolve<Guildmaster.Net.Session.SteamBootstrap>().IsReady)
+                // Автоматический прогон — это игра без игрока: окна нет, Steam-оверлея нет, звать
+                // некого. Steam при этом может быть ЗАПУЩЕН на машине разработчика и радостно
+                // подключиться — и тогда тест коопа проверял бы связь с чужим клиентом вместо
+                // собственной раздачи (наход. 05.08.2026: прогон цеплялся к живому аккаунту).
+                bool headless = Application.isBatchMode;
+
+                if (!headless && r.Resolve<Guildmaster.Net.Session.SteamBootstrap>().IsReady)
                     return r.Resolve<Guildmaster.Net.Transport.SteamNetTransport>();
 
-                Debug.LogWarning("[Net] Steam не поднят → сеть работает петлёй в своём процессе. " +
-                                 "Кооп по интернету недоступен, одиночная игра работает как обычно.");
+                Debug.LogWarning(headless
+                    ? "[Net] Автоматический прогон → сеть работает петлёй в своём процессе."
+                    : "[Net] Steam не поднят → сеть работает петлёй в своём процессе. " +
+                      "Кооп по интернету недоступен, одиночная игра работает как обычно.");
                 return r.Resolve<Guildmaster.Net.Transport.LoopbackNetwork>().CreateNode();
             }, Lifetime.Singleton);
             builder.Register<Guildmaster.Net.Session.SteamLobbyService>(Lifetime.Singleton);
