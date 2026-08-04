@@ -87,7 +87,9 @@ jobs:
             version="${GITHUB_REF_NAME#v}"
             note="${{ github.ref_name }}"
           else
-            base=$(grep -m1 'bundleVersion:' ProjectSettings/ProjectSettings.asset | awk '{print $2}')
+            # Якорь ^ обязателен: без него первым совпадает visionOSBundleVersion двумя строками
+            # выше, и в Steam уезжает версия платформы, которую мы не собираем (было до 05.08.2026).
+            base=$(grep -m1 -E '^\s*bundleVersion:' ProjectSettings/ProjectSettings.asset | awk '{print $2}')
             version="${base}-dev.${GITHUB_SHA::7}"
             note="${{ inputs.note }}"
           fi
