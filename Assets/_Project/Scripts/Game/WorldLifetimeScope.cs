@@ -46,7 +46,13 @@ namespace Guildmaster.Game
             // рождается и умирает вместе с боем, и вечного владельца тел больше нет
             // (решение Макса 02.08.2026, см. журнал «The Simulation Belongs To The Battle»).
             builder.Register<Combat.Tape.WorldBodyStage>(Lifetime.Singleton);
-            builder.Register<Combat.Tape.StageFrameRouter>(Lifetime.Singleton);
+            // Под интерфейсом — тоже, и это не «на всякий случай»: роутер и ЕСТЬ единственный вход за
+            // кадром сцены, а спрашивают его те, кому всё равно, бой сейчас или мир (руки игрока на
+            // арене). Без этой строки боевой скоуп гостя не поднимался ВЕСЬ: `TapeArenaUnits` просил
+            // `IStageFrameSource`, VContainer не находил регистрации и ронял `Awake` скоупа целиком —
+            // у гостя пропадали и юниты, и противники, и круги под ногами (прогон 05.08.2026).
+            builder.Register<Combat.Tape.StageFrameRouter>(Lifetime.Singleton)
+                   .AsSelf().As<Combat.Tape.IStageFrameSource>();
 
             // Кто ставит отряд на арену вне боя. Живёт здесь, а не в боевом скоупе: отряд стоит во
             // дворе и между боями, когда боя — и его скоупа — не существует. Сборщик тел приходит из
