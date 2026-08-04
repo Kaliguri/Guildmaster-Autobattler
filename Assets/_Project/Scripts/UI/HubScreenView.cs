@@ -14,11 +14,18 @@ namespace Guildmaster.UI
     /// </remarks>
     public static class HubScreenView
     {
+        /// <param name="canStartRun">
+        /// Может ли ЭТОТ игрок увести отряд в забег. У гостя — нет: из двора выходит петля владельца, и
+        /// его кнопка закрывала бы двор только ему одному, оставляя напарника стоять (наход. Макса
+        /// 04.08.2026, второй прогон вдвоём). Кнопка при этом остаётся на месте и гаснет: пропавшая
+        /// читается как «экран не догрузился», погашенная — как «ход не мой».
+        /// </param>
         public static VisualElement Build(
             VisualTreeAsset uxml,
             string guildName,
             Func<string, string> localize,
-            Action onStartRun)
+            Action onStartRun,
+            bool canStartRun = true)
         {
             string L(string key, string fallback)
             {
@@ -46,7 +53,8 @@ namespace Guildmaster.UI
             if (start != null)
             {
                 start.text = L("ui.hub.start_run", "Начать забег");
-                start.clicked += () => onStartRun?.Invoke();
+                start.SetEnabled(canStartRun);
+                if (canStartRun) start.clicked += () => onStartRun?.Invoke();
             }
 
             return root;

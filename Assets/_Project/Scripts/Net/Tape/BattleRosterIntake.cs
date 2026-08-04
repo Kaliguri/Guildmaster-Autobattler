@@ -36,14 +36,36 @@ namespace Guildmaster.Net.Tape
         /// <summary>Сколько паспортов принято — видно в dev-панели.</summary>
         public int ReceivedCount { get; private set; }
 
-        public void Start() => _transport.MessageReceived += HandleMessage;
+        /// <summary>
+        /// Подписаться и спросить хоста, кто уже на арене.
+        /// </summary>
+        /// <remarks>
+        /// Спрашиваем сами по той же причине, что и «где мы»: паспорта уходят событием спавна, а спавн
+        /// случился до того, как мы подключились. Своего спавна у гостя нет, ждать нечего — надо просить.
+        /// </remarks>
+        public void Start()
+        {
+            _transport.MessageReceived += HandleMessage;
+
+            if (!_transport.IsRunning) return;
+
+            _transport.Send(NetPeer.HostPeerId,
+                NetEnvelope.Wrap(NetChannel.BattleRoster, default, ref _request),
+                NetDelivery.Reliable);
+        }
 
         public void Dispose() => _transport.MessageReceived -= HandleMessage;
+
+        private byte[] _request;
 
         private void HandleMessage(int from, ArraySegment<byte> message)
         {
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
             if (channel != NetChannel.BattleRoster) return;
+
+            // Пустая нагрузка на этом канале — ЧУЖАЯ просьба перечислить состав, а не паспорт. Ответ на
+            // неё дело хоста; нам её разбирать нечем, и попытка кончилась бы красной строкой в логе.
+            if (payload.Count == 0) return;
 
             int id;
             int team;

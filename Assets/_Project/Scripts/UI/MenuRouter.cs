@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -766,7 +766,9 @@ namespace Guildmaster.UI
         /// <summary>
         /// Двор гильдии между выбором дома и забегом. Пока заглушка с единственной дверью наружу.
         /// </summary>
-        public void OpenHub(OpenHubRequest req)
+        public void OpenHub(OpenHubRequest req) => OpenHub(req, canStartRun: true);
+
+        private void OpenHub(OpenHubRequest req, bool canStartRun)
         {
             // Отказ здесь ЗАВЕРШАЕТ шаг: без двора игрок остался бы стоять между домом и актом, и
             // забег не начался бы никогда. Экран пропущен — забег идёт, но ошибка красная.
@@ -774,7 +776,7 @@ namespace Guildmaster.UI
 
             var screen = new RouterResultScreen<bool>(ScreenKind.Page, true,
                 resolve => HubScreenView.Build(_hubUxml, req.GuildName, key => _loc?.GetString(key),
-                                               onStartRun: () => resolve(true)));
+                                               onStartRun: () => resolve(true), canStartRun: canStartRun));
 
             _hubScreen = screen; // «двор открыт» — это ссылка на его экран, и другого владельца у факта нет
             ShowHubAsync(screen, req).Forget();
@@ -809,7 +811,10 @@ namespace Guildmaster.UI
         {
             if (visible == (_hubScreen != null)) return; // применяется целиком и каждый раз — повтор штатен
 
-            if (visible) { OpenHub(new OpenHubRequest(null, null)); return; }
+            // Кнопка «Начать забег» гостю НЕ даётся: из двора выходит петля владельца, а гостевой клик
+            // закрыл бы двор ему одному — напарник остался бы стоять во дворе (наход. Макса 04.08.2026).
+            // Двор у гостя кончится сам, объявлением: хост вышел — HubOpen стал false.
+            if (visible) { OpenHub(new OpenHubRequest(null, null), canStartRun: false); return; }
 
             RouterResultScreen<bool> screen = _hubScreen;
             _hubScreen = null;

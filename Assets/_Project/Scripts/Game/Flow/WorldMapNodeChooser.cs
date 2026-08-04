@@ -28,11 +28,19 @@ namespace Guildmaster.Game.Flow
     {
         private readonly WorldMapController _map;
         private readonly RunStateService    _runStates;
+        // Ждём ШИНУ, а не держателя состояния. Первая версия слушала RunStateService.Committed — а он
+        // объявляет «состояние зафиксировано» только на старте забега и на загрузке, то есть на смене
+        // самого объекта. Применённая команда его не поднимает, и петля не просыпалась никогда: узел
+        // помечался, карта горела, игра стояла (наход. Макса 04.08.2026, второй прогон вдвоём).
+        // У шины для этого своё событие, и оно единственно верное — мимо неё в состояние не пишут.
+        private readonly Guildmaster.Guild.Commands.RunCommandBus _bus;
 
-        public WorldMapNodeChooser(WorldMapController map, RunStateService runStates)
+        public WorldMapNodeChooser(WorldMapController map, RunStateService runStates,
+                                   Guildmaster.Guild.Commands.RunCommandBus bus)
         {
             _map       = map;
             _runStates = runStates;
+            _bus       = bus;
         }
 
         public async UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available,
@@ -44,20 +52,22 @@ namespace Guildmaster.Game.Flow
 
             var tcs = new UniTaskCompletionSource<string>();
 
-            void OnCommitted(RunState run)
+            void CheckState()
             {
-                string chosen = run?.Map?.EnteringNodeId;
+                string chosen = _runStates.Current?.Map?.EnteringNodeId;
                 if (!string.IsNullOrEmpty(chosen)) tcs.TrySetResult(chosen);
             }
 
-            _runStates.Committed += OnCommitted;
+            void OnApplied(Guildmaster.Guild.Commands.RunCommand _) => CheckState();
+
+            if (_bus != null) _bus.Applied += OnApplied;
             _map.BeginChoose(available, openMap);
 
             try
             {
                 // Между подпиской и этой строкой команда могла уже примениться — перечитываем состояние,
                 // иначе редкая гонка оставила бы петлю ждать того, что уже случилось.
-                OnCommitted(_runStates.Current);
+                CheckState();
 
                 // AttachExternalCancellation: отмена забега («В меню») размотает ожидание исключением, а
                 // finally всё равно погасит узлы — иначе они остались бы гореть в мире (QA #37).
@@ -66,7 +76,7 @@ namespace Guildmaster.Game.Flow
             }
             finally
             {
-                _runStates.Committed -= OnCommitted;
+                if (_bus != null) _bus.Applied -= OnApplied;
                 _map.EndChoose();
             }
         }

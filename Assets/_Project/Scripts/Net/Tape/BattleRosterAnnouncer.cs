@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Net.Transport;
 using VContainer.Unity;
@@ -37,11 +38,42 @@ namespace Guildmaster.Net.Tape
         /// <summary>Сколько паспортов объявлено — видно в dev-панели.</summary>
         public int AnnouncedCount { get; private set; }
 
-        public void Start() => _simulation.OnUnitSpawned += HandleSpawn;
+        public void Start()
+        {
+            _simulation.OnUnitSpawned += HandleSpawn;
+            _transport.MessageReceived += HandleMessage;
+        }
 
-        public void Dispose() => _simulation.OnUnitSpawned -= HandleSpawn;
+        public void Dispose()
+        {
+            _simulation.OnUnitSpawned -= HandleSpawn;
+            _transport.MessageReceived -= HandleMessage;
+        }
 
-        private void HandleSpawn(RuntimeUnit unit)
+        /// <summary>
+        /// Пустое сообщение на этом канале — просьба гостя «перечисли, кто сейчас на арене». Отвечаем
+        /// ему одному, паспортом на каждого живого.
+        /// </summary>
+        /// <remarks>
+        /// <b>Без этого состав видел только тот, кто был в сессии в момент спавна.</b> Паспорта уходят
+        /// событием спавна, а спавн случается один раз — при входе на площадку или в узел. Гость,
+        /// подключившийся к уже стоящей арене, не получал их НИКОГДА: кадры ленты приезжали, а кто эти
+        /// бойцы и чем их рисовать — нет (наход. Макса 04.08.2026, второй прогон вдвоём).
+        /// <para>Направление то же, что у «где мы»: спрашивает гость, потому что его приёмник рождается
+        /// позже отправки. См. <c>GuestActivityFollower</c>.</para>
+        /// </remarks>
+        private void HandleMessage(int from, ArraySegment<byte> message)
+        {
+            if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
+            if (channel != NetChannel.BattleRoster || payload.Count != 0) return;
+
+            IReadOnlyList<RuntimeUnit> units = _simulation.Units;
+            for (int i = 0; i < units.Count; i++) Announce(units[i], from);
+        }
+
+        private void HandleSpawn(RuntimeUnit unit) => Announce(unit, NetPeer.NoPeer);
+
+        private void Announce(RuntimeUnit unit, int peerId)
         {
             if (!_transport.IsRunning) return; // соло: объявлять некому
 
@@ -50,9 +82,12 @@ namespace Guildmaster.Net.Tape
             _writer.WriteByte((byte)unit.Team);
             _writer.WriteString(unit.Unit != null ? unit.Unit.Id : null);
 
-            _transport.SendToAll(
-                NetEnvelope.Wrap(NetChannel.BattleRoster, _writer.WrittenSegment, ref _envelope),
-                NetDelivery.Reliable);
+            ArraySegment<byte> packet =
+                NetEnvelope.Wrap(NetChannel.BattleRoster, _writer.WrittenSegment, ref _envelope);
+
+            if (peerId == NetPeer.NoPeer) _transport.SendToAll(packet, NetDelivery.Reliable);
+            else                          _transport.Send(peerId, packet, NetDelivery.Reliable);
+
             AnnouncedCount++;
         }
     }
