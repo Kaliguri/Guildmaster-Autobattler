@@ -128,6 +128,9 @@ namespace Guildmaster.Game.Session.Net
             var bytes = new NetByteReader(payload);
             bool ready = bytes.ReadBool();
 
+            Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
+                $"хост: согласие от пира {from} = {ready} (ключ «{_key}», действие {(_action == null ? "НЕ ПРИВЯЗАНО" : "есть")})");
+
             _participants.Add(from); // подтвердить может только тот, кто в сессии, — заодно и учтём его
             if (ready) _ready.Add(from);
             else       _ready.Remove(from);

@@ -79,6 +79,9 @@ namespace Guildmaster.Game.Session.Net
             _localReady = ready;
             Announce();
 
+            Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
+                $"гость: своё согласие = {ready}, ключ «{_key}», связь {(_transport.IsRunning ? "есть" : "НЕТ")}");
+
             if (!_transport.IsRunning) return;
 
             _writer.Reset();

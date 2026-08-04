@@ -225,6 +225,11 @@ namespace Guildmaster.Game.Flow
 
         public void UnbindStart() => _start = null;
 
-        public void RequestStart() => _start?.Invoke();
+        public void RequestStart()
+        {
+            Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
+                $"сессия боя: RequestStart, обработчик {(_start == null ? "НЕ ПРИВЯЗАН" : "привязан")}");
+            _start?.Invoke();
+        }
     }
 }

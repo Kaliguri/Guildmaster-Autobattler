@@ -450,7 +450,12 @@ namespace Guildmaster.UI
                 onBattle: GoToBattle,
                 onInventory: GoToInventory,
                 onMenu: () => _router.ToggleSystemMenu(),
-                onStart: () => _clock?.RequestStart());
+                onStart: () =>
+                {
+                    Core.Diagnostics.Diag.Log(Core.Diagnostics.DiagChannel.Ready,
+                        $"кнопка «Начать»: нажата (часы {(_clock == null ? "ОТСУТСТВУЮТ" : "есть")})");
+                    _clock?.RequestStart();
+                });
 
             _topBar.Root.style.display = DisplayStyle.None; // скрыта, пока нет активного забега
             _layerTopbar.Add(_topBar.Root);
