@@ -44,6 +44,9 @@ namespace Guildmaster.Game.Flow
         private readonly ISubscriber<MainMenuVisibilityChangedEvent> _menuSub;
         private readonly ISubscriber<Presentation.BattleEndedEvent> _endedSub;
         private readonly IPublisher<MenuBattleChangedEvent> _statePub;
+        // Показ боя вне забега: по нему И камера кадрирует, И арена являётся — один сигнал на оба, мимо
+        // часов забега (их читают навигатор/звук, и меню их дёргать не должно).
+        private readonly Presentation.BattleStagePresence _stage;
 
         private IDisposable _menuSubscription;
         private IDisposable _endedSubscription;
@@ -61,7 +64,8 @@ namespace Guildmaster.Game.Flow
                                   IRngService rng,
                                   ISubscriber<MainMenuVisibilityChangedEvent> menuSub,
                                   ISubscriber<Presentation.BattleEndedEvent> endedSub,
-                                  IPublisher<MenuBattleChangedEvent> statePub)
+                                  IPublisher<MenuBattleChangedEvent> statePub,
+                                  Presentation.BattleStagePresence stage)
         {
             _world       = world;
             _replayScope = replayScope;
@@ -70,6 +74,7 @@ namespace Guildmaster.Game.Flow
             _menuSub  = menuSub;
             _endedSub = endedSub;
             _statePub = statePub;
+            _stage    = stage;
         }
 
         public void Start()
@@ -150,6 +155,11 @@ namespace Guildmaster.Game.Flow
             {
                 _running = true;
                 _statePub?.Publish(new MenuBattleChangedEvent(true));
+
+                // Фон меню поднялся: «на сцене идёт бой» — по этому камера кадрирует дуэль, а
+                // ArenaStagePresenter являет арену. Держим на весь фон, а не поduel: смена дуэли
+                // пересоздаёт скоуп, и мигание Enter/Exit увело бы камеру в Overview между дуэлями.
+                _stage?.SetOnStage(true);
             }
         }
 
@@ -211,6 +221,7 @@ namespace Guildmaster.Game.Flow
             _running  = false;
             _elapsed  = 0f;
             _sinceEnd = -1f;
+            _stage?.SetOnStage(false);   // фон ушёл — камера возвращается к обзорному виду
             _statePub?.Publish(new MenuBattleChangedEvent(false));
         }
     }

@@ -39,6 +39,11 @@ namespace Guildmaster.Presentation.Arena
         private ISubscriber<ActivityChangedEvent> _activitySub;
         private IDisposable _activitySubscription;
 
+        // Показ боя ВНЕ мероприятия (повтор за меню): арена являётся по тому же сигналу, что кадрирует
+        // камера — «на сцене идёт бой». Мероприятий у меню нет, а место показать надо (журнал
+        // 2026-08-04-battle-on-stage-vs-the-run-clock).
+        private BattleStagePresence _stagePresence;
+
         // Родной облик арены: запоминаем ДО первой пряталки, потому что прячем мы её тем же свопером —
         // и после этого спросить «а какой был настоящий» уже не у кого.
         private string _homeSkin;
@@ -65,7 +70,8 @@ namespace Guildmaster.Presentation.Arena
                               ISubscriber<TestZoneChangedEvent> testZoneSub,
                               ISubscriber<BattleEndedEvent> battleEndedSub,
                               ISubscriber<ActivityChangedEvent> activitySub,
-                              Guildmaster.Core.Input.IInputService input)
+                              Guildmaster.Core.Input.IInputService input,
+                              BattleStagePresence stagePresence)
         {
             _revealSub       = revealSub;
             _fadeSub         = fadeSub;
@@ -73,6 +79,7 @@ namespace Guildmaster.Presentation.Arena
             _battleEndedSub  = battleEndedSub;
             _activitySub     = activitySub;
             _input           = input;
+            _stagePresence   = stagePresence;
         }
 
         private void Start()
@@ -96,6 +103,15 @@ namespace Guildmaster.Presentation.Arena
             // тогда, когда во что-то играют, и появляется на глазах.
             _homeSkin = _swapper != null ? _swapper.CurrentSkinId : null;
             HideArena();
+
+            // Показ боя вне мероприятия (повтор за меню): арену являем/прячем по тому же сигналу, что
+            // кадрирует камеру. Мероприятие своим путём (OnActivityChanged/зона) арену не трогает —
+            // повторы его не поднимают, конфликта нет.
+            if (_stagePresence != null)
+            {
+                _stagePresence.Changed += OnStagePresenceChanged;
+                if (_stagePresence.OnStage) ShowHomeArena();
+            }
         }
 
         private void OnDestroy()
@@ -106,6 +122,28 @@ namespace Guildmaster.Presentation.Arena
             _battleEndedSubscription?.Dispose();
             _activitySubscription?.Dispose();
             if (_input != null) _input.SkipRequested -= OnSkip;
+            if (_stagePresence != null) _stagePresence.Changed -= OnStagePresenceChanged;
+        }
+
+        // Бой встал на сцену (повтор) — являем родное место цветным; ушёл — убираем целиком.
+        private void OnStagePresenceChanged()
+        {
+            if (_stagePresence == null) return;
+            if (_stagePresence.OnStage) ShowHomeArena();
+            else HideArena();
+        }
+
+        /// <summary>
+        /// Явить родную арену сразу и цветной — для показа боя вне мероприятия (повтор). Без цифрового
+        /// перехода: бой уже идёт, место просто есть. Включает рендер (<c>SetVisible</c>), возвращает
+        /// тайлы родного облика и снимает серость.
+        /// </summary>
+        private void ShowHomeArena()
+        {
+            _desaturation?.SetVisible(true);
+            if (_swapper != null && !string.IsNullOrEmpty(_homeSkin)) _swapper.ApplyInstant(_homeSkin);
+            _desaturation?.SetGrey(false);
+            _spawned = true;
         }
 
         /// <summary>

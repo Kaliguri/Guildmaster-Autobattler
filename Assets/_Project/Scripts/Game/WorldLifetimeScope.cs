@@ -74,6 +74,10 @@ namespace Guildmaster.Game
             // боевой скоуп переключит источник через CombatFocusTarget.SetSource(живые юниты).
             builder.RegisterInstance<Presentation.IFocusPointSource>(Presentation.EmptyFocusPointSource.Instance);
 
+            // Сигнал «на сцене идёт бой» для камеры — ортогонален часам забега: повтор за меню поднимает
+            // его, а забеговый UI/ввод/звук про показ не знают (журнал 2026-08-04-battle-on-stage-vs-the-run-clock).
+            builder.Register<Presentation.BattleStagePresence>(Lifetime.Singleton);
+
             // Единая камера-риг (Main Camera + Brain + vcam + focus + controller): резолвится из
             // этой persist-сцены. Держим здесь, чтобы риг пережил смену боевых сцен.
             builder.RegisterComponentInHierarchy<Presentation.CombatFocusTarget>();

@@ -134,7 +134,12 @@ namespace Guildmaster.Game
             RegisterRng(builder);            // сид из BattleScopeParams — для простаивающего сима
             RegisterCombatSystems(builder);  // системы конструирует idle-сим; сами не тикают
             RegisterReplaySimulationCore(builder);
-            RegisterPresentation(builder);   // те же биндеры показа, что у живого боя
+
+            // Показ — те же биндеры, что у живого боя, С ОДНОЙ заменой: фокус камеры берётся из ЛЕНТЫ, а
+            // не из простаивающего сима (иначе камера в Action кадрирует пустоту). Всё остальное — как в
+            // настоящем бою: презентер, телеграфы, диспетчер работают поверх ленты, не зная её источника.
+            builder.RegisterEntryPoint<Flow.BattlePresenterBinder>(Lifetime.Scoped);
+            builder.RegisterEntryPoint<Presentation.ReplayFocusBinder>(Lifetime.Scoped);
         }
 
         /// <summary>Ядро реплея: простаивающий сим ради ссылок, лента без рекордера, плеер из файла.</summary>

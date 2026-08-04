@@ -106,6 +106,7 @@ namespace Guildmaster.Presentation
         private Design.CombatFeelConfig _feel; // конфиг тряски → раздаётся ScreenShake-ам
         private IBattleClock      _clock;      // владелец факта «идёт ли бой» — от него зависит доступность сценарной
         private ISettingsService  _settings;   // дом предпочтения вида (prefs), переживает забег и запуск игры
+        private BattleStagePresence _stage;    // показ боя ВНЕ забега (повтор за меню): второй триггер Action
 
         // Вид в МИРЕ (Action/Overview/Dev). Карта поверх него — отдельным флагом: она временная, и выход
         // из неё обязан вернуть ровно тот мировой вид, что был. Второго поля «откуда пришли» поэтому нет.
@@ -115,6 +116,7 @@ namespace Guildmaster.Presentation
 
         private bool _devAccess;
         private bool _inCombat;        // фаза Fighting: только в ней сценарной камере есть за кем следить
+        private bool _onStage;         // показ боя вне забега (повтор): то же кадрирование, мимо часов
         private bool _prefersFreeView; // выбор игрока внутри боя (Tab) — из настроек, туда же и пишется
 
         private readonly List<ScreenShake> _shakers = new List<ScreenShake>(3); // тряска на каждой vcam
@@ -152,7 +154,8 @@ namespace Guildmaster.Presentation
 
         [Inject]
         public void Construct(IInputService input, ArenaLayoutData layout, CombatFocusTarget focus,
-                              Design.CombatFeelConfig feel, IBattleClock clock, ISettingsService settings)
+                              Design.CombatFeelConfig feel, IBattleClock clock, ISettingsService settings,
+                              BattleStagePresence stage)
         {
             _input    = input;
             _layout   = layout;
@@ -160,6 +163,7 @@ namespace Guildmaster.Presentation
             _feel     = feel;
             _clock    = clock;
             _settings = settings;
+            _stage    = stage;
         }
 
         // Подписку и стартовую настройку делаем в Start, а НЕ в OnEnable: компонент инъектится
@@ -170,6 +174,8 @@ namespace Guildmaster.Presentation
         {
             if (_input != null) _input.CycleViewRequested += OnCycleView;
             if (_clock != null) _clock.PhaseChanged += OnPhaseChanged;
+            if (_stage != null) _stage.Changed += OnStageChanged;
+            _onStage = _stage != null && _stage.OnStage;
 
             // В редакторе dev-камера доступна сразу (удобно тестить), в билде — нет: обычный игрок
             // циклит только Action↔Overview. Прежде доступ можно было выдать и в рантайме
@@ -216,6 +222,7 @@ namespace Guildmaster.Presentation
         {
             if (_input != null) _input.CycleViewRequested -= OnCycleView;
             if (_clock != null) _clock.PhaseChanged -= OnPhaseChanged;
+            if (_stage != null) _stage.Changed -= OnStageChanged;
         }
 
         // 2D-глубина: камеры смотрят на плоскость z=0 из _cameraZ. Overview/Dev — прямой z;
@@ -254,7 +261,9 @@ namespace Guildmaster.Presentation
         private CameraMode WantedWorldMode()
         {
             if (_worldMode == CameraMode.Dev && _devAccess) return CameraMode.Dev;
-            return _inCombat && !_prefersFreeView ? CameraMode.Action : CameraMode.Overview;
+            // Кадрируем бой, когда он идёт в забеге (_inCombat) ИЛИ показывается вне его (_onStage —
+            // повтор за меню). Второй триггер живые бои не трогает: у них _onStage не поднимается.
+            return (_inCombat || _onStage) && !_prefersFreeView ? CameraMode.Action : CameraMode.Overview;
         }
 
         private void OnPhaseChanged()
@@ -262,6 +271,15 @@ namespace Guildmaster.Presentation
             bool fighting = _clock != null && _clock.Phase == BattlePhase.Fighting;
             if (_inCombat == fighting) return;
             _inCombat = fighting;
+            SetWorldMode(WantedWorldMode());
+        }
+
+        // Показ боя вне забега (повтор) поднялся или опустился — то же боевое кадрирование, но мимо часов.
+        private void OnStageChanged()
+        {
+            bool onStage = _stage != null && _stage.OnStage;
+            if (_onStage == onStage) return;
+            _onStage = onStage;
             SetWorldMode(WantedWorldMode());
         }
 
