@@ -135,11 +135,29 @@ namespace Guildmaster.Combat
 
                 if (a.TicksRemaining <= 0)
                 {
-                    u.DisplacedTicksRemaining = 0;
                     _active.RemoveAt(i);
+
+                    // По одному телу может идти НЕСКОЛЬКО смещений сразу: толчок способности и цепное
+                    // отбрасывание «ядра» в те же тики. Флаг полёта у юнита при этом один, поэтому
+                    // гасим его и шлём «полёт кончился» только когда активных смещений не осталось.
+                    // Иначе короткий полёт снимал контроль с тела, которое ещё тащит длинный: юнит
+                    // атаковал и «шёл» одновременно, пока его несёт, а «Вихревой заход» телепортировал
+                    // монаха за спину цели, которая ещё в воздухе.
+                    if (HasActiveDisplacement(u)) continue;
+
+                    u.DisplacedTicksRemaining = 0;
                     OnDisplacementEnded?.Invoke(a.Source, u);
                 }
             }
+        }
+
+        /// <summary>Осталось ли у юнита хоть одно активное смещение — от него зависит, снимать ли полёт.</summary>
+        private bool HasActiveDisplacement(RuntimeUnit unit)
+        {
+            for (int i = 0; i < _active.Count; i++)
+                if (ReferenceEquals(_active[i].Unit, unit)) return true;
+
+            return false;
         }
 
         /// <summary>«Ядро»: летящая цель бьёт врагов источника на сегменте [from, to], каждого — один раз, без friendly-fire.</summary>
