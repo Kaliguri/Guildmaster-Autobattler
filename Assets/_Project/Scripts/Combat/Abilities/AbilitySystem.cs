@@ -533,11 +533,9 @@ namespace Guildmaster.Combat
 
             for (int i = 0; i < count; i++)
             {
-                // Веером за спиной хозяина: чередуем стороны, отступая на шаг. Формула чистая от
-                // состояния мира, поэтому одинакова у обеих команд.
-                int lane = (i / 2) + 1;
-                float side = (i % 2 == 0) ? -1f : 1f;
-                var offset = new Vector2(side * step * lane, -step * 0.5f);
+                // Веером за спиной хозяина — раскладку держит SummonLayout, и он же отвечает за то,
+                // чтобы у отражённых команд она была зеркальной, а не одинаковой.
+                Vector2 offset = SummonLayout.Offset(i, step, caster);
 
                 RuntimeUnit summon = ctx.Summon(
                     data.SummonUnit, caster.Team, caster.Position + offset, caster);
