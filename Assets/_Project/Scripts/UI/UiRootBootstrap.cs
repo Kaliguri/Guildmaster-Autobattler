@@ -302,7 +302,7 @@ namespace Guildmaster.UI
             _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen, _newGameScreen, _profileScreen, _confirmDialog, _guildSelectScreen, _hubScreen, _peerLostDialog);
             _input.MenuToggleRequested += OnMenuToggle;
 
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+#if UNITY_EDITOR || DEVELOPMENT_BUILD || GM_DEVTOOLS
             // Тогл dev-консоли живёт только в редакторе и dev-сборке: в релизе клавиша ~ не должна
             // открывать ничего. Гейт стоит здесь, на ПОДПИСКЕ, а не на регистрации реестра — команды
             // регистрируют модули, и в релизной сборке им всё равно нужен адресат.
@@ -779,7 +779,7 @@ namespace Guildmaster.UI
         private void OnDestroy()
         {
             if (_input != null) _input.MenuToggleRequested -= OnMenuToggle;
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+#if UNITY_EDITOR || DEVELOPMENT_BUILD || GM_DEVTOOLS
             if (_input != null) _input.DevConsoleToggleRequested -= OnDevConsoleToggle;
             if (_input != null) _input.DevLogToggleRequested -= OnDevLogToggle;
 #endif
@@ -816,7 +816,7 @@ namespace Guildmaster.UI
         // Семантика ESC (план II.4, КОНСТИТУЦИЯ): показан тултип → ESC гасит ЕГО и меню не трогает.
         // QA #32: сам ESC-вызов меню работает ТОЛЬКО в активном забеге (в главном меню/вне забега — no-op).
         // Внутри забега ToggleSystemMenu сам решает открыть/шаг-назад.
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+#if UNITY_EDITOR || DEVELOPMENT_BUILD || GM_DEVTOOLS
         // Консоль открывается ИЗ ЛЮБОГО состояния, включая главное меню и отсутствие забега: её зовут
         // как раз тогда, когда игра куда-то не дошла. Никаких проверок RunState здесь быть не должно.
         private void OnDevConsoleToggle() => _router.ToggleDevConsole();

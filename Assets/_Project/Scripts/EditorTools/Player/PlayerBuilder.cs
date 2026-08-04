@@ -28,6 +28,24 @@ namespace Guildmaster.Build.Editor
     /// </remarks>
     public static class PlayerBuilder
     {
+
+        /// <summary>
+        /// Дефайн, включающий наши дев-инструменты в ОБЫЧНОЙ сборке: dev-консоль (F1), лог-консоль (F2)
+        /// и диагностический лог за ними.
+        /// </summary>
+        /// <remarks>
+        /// <b>Свой дефайн, а не <c>BuildOptions.Development</c></b> (04.08.2026). Билды из этого
+        /// скрипта уходят в тестовую ветку Steam, где консоль нужна: без неё кооп нельзя ни включить
+        /// в лог, ни посмотреть — а именно кооп ломается только на двух машинах. Development же тянет
+        /// с собой водяной знак, подключение профайлера и другой профиль производительности: мы бы
+        /// тестировали не ту игру, которую собираем.
+        /// <para>Симптом, из-за которого это нашлось: у Макса в билде не работали F1, F2 и ~, а F3
+        /// работал — витрина боёв подписана без условия, а консоли стояли под
+        /// <c>UNITY_EDITOR || DEVELOPMENT_BUILD</c>.</para>
+        /// <para><b>Релизная сборка для игроков этого дефайна не получит</b> — она собирается не этим
+        /// методом, и консоль в ней по-прежнему не открывается ничем.</para>
+        /// </remarks>
+        public const string DevToolsDefine = "GM_DEVTOOLS";
         private const string ArgOutput  = "-buildOutput";
         private const string ArgVersion = "-buildVersion";
 
@@ -88,6 +106,7 @@ namespace Guildmaster.Build.Editor
                 target           = BuildTarget.StandaloneWindows64,
                 targetGroup      = BuildTargetGroup.Standalone,
                 options          = BuildOptions.None,
+                extraScriptingDefines = new[] { DevToolsDefine },
             };
 
             BuildReport report = BuildPipeline.BuildPlayer(options);
