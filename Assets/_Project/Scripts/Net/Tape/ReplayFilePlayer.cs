@@ -77,7 +77,17 @@ namespace Guildmaster.Net.Tape
             if (LoadResult != ReplayLoadResult.Ok) return;
 
             _playback.SetTargetLead(BattleTapePlayback.LookaheadTicks);
-            FeedUpTo(_playback.ViewTick + BattleTapePlayback.LookaheadTicks + FeedMarginTicks);
+
+            // Пока показ ещё не пошёл, фронт вперёд на весь lookahead НЕ гоним. Иначе к первому кадру
+            // показа лента уже прокормлена на десять секунд, и старт (FrontTick − lookahead) уезжает
+            // мимо завязки — показ начинается с уже сошедшихся команд, а не с их расстановки. Живой
+            // бой этого не делает: продюсер не разгоняет сим впереди несуществующего показа
+            // (HasFullLead=true до старта), поэтому показ идёт с первого тика. Держим ту же симметрию —
+            // до старта кормим только на первый кадр, а lookahead набираем уже по ходу показа.
+            int feedTarget = _playback.IsPlaying
+                ? _playback.ViewTick + BattleTapePlayback.LookaheadTicks + FeedMarginTicks
+                : _tape.OldestTick + FeedMarginTicks;
+            FeedUpTo(feedTarget);
         }
 
         /// <summary>
