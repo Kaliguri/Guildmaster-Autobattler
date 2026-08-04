@@ -620,6 +620,7 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _feelConfig: {fileID: 11400000, guid: b4321495354e86142b6e7f18dfd5b94d, type: 2}
   _battleScopePrefab: {fileID: 8219602246781497683, guid: b641334a1e7294441ac14c8ed260adf9, type: 3}
+  _replayBattleScopePrefab: {fileID: 9162438054538930528, guid: 8dde6d34a6b9eb54fa57154751cce743, type: 3}
 --- !u!4 &309113943
 Transform:
   m_ObjectHideFlags: 0

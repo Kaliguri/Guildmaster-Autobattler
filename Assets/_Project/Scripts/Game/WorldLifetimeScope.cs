@@ -24,6 +24,11 @@ namespace Guildmaster.Game
                  "Боевые ассеты (тюнинг сима, джус, состав Ристалища) выбираются на самом префабе.")]
         [SerializeField] private CombatLifetimeScope _battleScopePrefab;
 
+        [Tooltip("Тот же боевой скоуп в режиме Replay (вариант BattleScopeReplay): из него директор фона " +
+                 "меню поднимает воспроизведение записанной дуэли — без сима-водителя и сессии. " +
+                 "Пусто = фон меню останется обычным задником.")]
+        [SerializeField] private CombatLifetimeScope _replayBattleScopePrefab;
+
         protected override void Configure(IContainerBuilder builder)
         {
             // Снапшот арены из авторинга в ЭТОЙ (persist) сцене. Бой берёт тот же layout из предка —
@@ -56,9 +61,13 @@ namespace Guildmaster.Game
             // Мир держит только выбор ассета — он делается в инспекторе, то есть здесь.
             builder.RegisterInstance(new Activity.BattleScopePrefab(_battleScopePrefab));
 
-            // Бой за главным меню. Живёт в МИРЕ, а не в корне: отсюда виден и префаб боевого скоупа,
-            // и сам скоуп-родитель, от которого бою рождаться. Через мероприятие он подниматься не
-            // может — в меню ещё нет сеанса, а мероприятие рождается от него.
+            // Реплей-вариант того же скоупа для фона меню — отдельным типом, чтобы инъекция не путала
+            // его с боевым префабом.
+            builder.RegisterInstance(new Flow.MenuReplayScope(_replayBattleScopePrefab));
+
+            // Бой за главным меню. Живёт в МИРЕ, а не в корне: отсюда виден и префаб реплей-скоупа,
+            // и сам скоуп-родитель, от которого воспроизведению рождаться. Через мероприятие он
+            // подниматься не может — в меню ещё нет сеанса, а мероприятие рождается от него.
             builder.RegisterEntryPoint<Flow.MenuBattleDirector>(Lifetime.Singleton);
 
             // Вне боя камера ни за кем не следует (пустой источник точек фокуса). На входе в бой
