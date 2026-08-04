@@ -59,13 +59,20 @@ namespace Guildmaster.Tests.EditMode.Presentation
         }
 
         /// <summary>An item in a grip, declared the way the game demands: kind on the grip bone itself.</summary>
-        public static SpriteRenderer Held(Transform grip, string artName, HeldKind kind, bool twoHanded = false)
+        /// <summary>
+        /// Предмет в хвате. <paramref name="declareReach"/> = false собирает его БЕЗ рабочей части — так
+        /// выглядит неразведённый контент, и запрос «чем бьют» обязан ответить «нечем», а не угадать кусок.
+        /// </summary>
+        public static SpriteRenderer Held(Transform grip, string artName, HeldKind kind, bool twoHanded = false,
+            bool declareReach = true)
         {
             var renderer = Child(grip, artName + RigNaming.ArtSuffix).gameObject.AddComponent<SpriteRenderer>();
             var mark = grip.gameObject.AddComponent<UnitHeldItem>();
             var so = new SerializedObject(mark);
             so.FindProperty("_kind").enumValueIndex = (int)kind;
             so.FindProperty("_twoHanded").boolValue = twoHanded;
+            // Рабочая часть объявляется ЯВНО — в игре тоже (04.08.2026). У предмета из одного куска это он сам.
+            if (declareReach) so.FindProperty("_reachPart").objectReferenceValue = renderer;
             so.ApplyModifiedPropertiesWithoutUndo();
             return renderer;
         }

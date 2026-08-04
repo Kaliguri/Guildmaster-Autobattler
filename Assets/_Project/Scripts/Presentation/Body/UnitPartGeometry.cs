@@ -31,19 +31,23 @@ namespace Guildmaster.Presentation.Body
             SpriteRenderer renderer = part.Renderer;
             if (renderer == null || renderer.sprite == null) return false;
 
-            Bounds local = renderer.sprite.bounds;   // уже с учётом pivot: ноль = точка крепления
-            Vector2 min = local.min;
-            Vector2 max = local.max;
+            // По МЕШУ спрайта, как это делает офлайн-замер (`RigProfile.MeasureAxis`), а не по углам рамки:
+            // клинок «сторибука» нарисован по диагонали кадра, и дальний угол рамки лежит в пустоте за
+            // остриём. Меш обтягивает рисунок (28 вершин у клинка), поэтому дальняя вершина и есть остриё.
+            // Спрайт с рамочным мешом (4 вершины) деградирует к углам сам собой — это те же вершины.
+            Vector2[] vertices = renderer.sprite.vertices;
+            if (vertices == null || vertices.Length == 0) return false;
 
-            Vector2 best = min;
+            Vector2 best = vertices[0];
             float bestSqr = -1f;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < vertices.Length; i++)
             {
-                var corner = new Vector2(i < 2 ? min.x : max.x, (i & 1) == 0 ? min.y : max.y);
-                float sqr = corner.sqrMagnitude;
+                // Ноль локальных координат = точка крепления: риг авторится так, что pivot спрайта сидит
+                // там, где часть держится за родителя. Значит дальняя от нуля вершина — остриё.
+                float sqr = vertices[i].sqrMagnitude;
                 if (sqr <= bestSqr) continue;
                 bestSqr = sqr;
-                best = corner;
+                best = vertices[i];
             }
 
             world = renderer.transform.TransformPoint(best);

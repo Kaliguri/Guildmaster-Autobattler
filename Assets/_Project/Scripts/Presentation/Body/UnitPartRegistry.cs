@@ -75,9 +75,14 @@ namespace Guildmaster.Presentation.Body
 
                 HandSlot slot = HandSlot.None;
                 HeldKind kind = HeldKind.None;
-                if (isHeld) ResolveHeld(bone, side, context, out slot, out kind);
+                bool     isReach = false;
+                if (isHeld)
+                {
+                    ResolveHeld(bone, side, context, out slot, out kind, out SpriteRenderer reach);
+                    isReach = reach != null && reach == renderer;
+                }
 
-                parts.Add(new UnitPart(i, renderer, bone.name, side, slot, kind, isHand));
+                parts.Add(new UnitPart(i, renderer, bone.name, side, slot, kind, isHand, isReach));
             }
 
             return new UnitPartRegistry(parts.ToArray(), slots);
@@ -103,12 +108,26 @@ namespace Guildmaster.Presentation.Body
         }
 
         private static void ResolveHeld(Transform bone, BodySide side, Object context,
-            out HandSlot slot, out HeldKind kind)
+            out HandSlot slot, out HeldKind kind, out SpriteRenderer reach)
         {
-            slot = HandSlot.None;
-            kind = HeldKind.None;
+            slot  = HandSlot.None;
+            kind  = HeldKind.None;
+            reach = null;
 
             var mark = bone.GetComponent<UnitHeldItem>();
+            if (mark != null)
+            {
+                reach = mark.ReachPart;
+                if (reach == null)
+                    // Молчать нельзя: без рабочей части «чем бьют» отвечает первый попавшийся кусок предмета,
+                    // а порядок кусков — это порядок отрисовки. У меча первой идёт рукоять, и весь язык
+                    // ближнего боя (дуга, точка A формы, вылет) начинает мериться ею.
+                    Debug.LogError($"[UnitPartRegistry] у предмета '{bone.name}' не назначена рабочая часть " +
+                                   "(UnitHeldItem.Reach Part): это КЛИНОК меча, полотно щита, наконечник копья. " +
+                                   "Без неё вылет меряется первым куском предмета — обычно рукоятью, — и дуга " +
+                                   "за клинком выходит размером с ладонь.", context);
+            }
+
             if (mark == null)
             {
                 Debug.LogError($"[UnitPartRegistry] предмет '{bone.name}' сидит в хвате, но не объявлен: " +
@@ -137,31 +156,41 @@ namespace Guildmaster.Presentation.Body
                                "или её предка. Запрос «что в правой руке» его не найдёт.", context);
         }
 
+        /// <summary>
+        /// Предмет в этом хвате — его РАБОЧАЯ часть (<c>UnitHeldItem.ReachPart</c>).
+        /// </summary>
+        /// <remarks>
+        /// Отвечает только объявленная часть, догадки нет (требование Макса, 04.08.2026: «Мы должны мочь
+        /// ЯВНО указать спрайт. И для гизмо и для этого. Т.е. поле, а не "первое по списку"»). Предмет из
+        /// нескольких кусков даёт столько же частей с типом «оружие», и «первый по списку» означал бы
+        /// «первый по порядку отрисовки» — у сторибучного меча это рукоять. Не объявлена — ответ «нет», а об
+        /// отсутствии кричит сборка реестра: гадать, чем боец бьёт, показ не вправе.
+        /// </remarks>
         public bool TryGetHeld(HandSlot slot, out UnitPart part)
         {
             for (int i = 0; i < _parts.Length; i++)
-            {
                 // Пересечение, а не равенство: двуручный предмет сидит в Both и обязан отвечать на Left и Right.
-                if (_parts[i].IsHeld && (_parts[i].Slot & slot) != 0)
+                if (_parts[i].IsReach && (_parts[i].Slot & slot) != 0)
                 {
                     part = _parts[i];
                     return true;
                 }
-            }
+
             part = default;
             return false;
         }
 
+        /// <summary>Предмет этого типа — его объявленная рабочая часть (см. <see cref="TryGetHeld(HandSlot, out UnitPart)"/>).</summary>
         public bool TryGetHeld(HeldKind kind, out UnitPart part)
         {
-            for (int i = 0; i < _parts.Length; i++)
-            {
-                if (_parts[i].Kind == kind && kind != HeldKind.None)
-                {
-                    part = _parts[i];
-                    return true;
-                }
-            }
+            if (kind != HeldKind.None)
+                for (int i = 0; i < _parts.Length; i++)
+                    if (_parts[i].IsReach && _parts[i].Kind == kind)   // клинок, а не рукоять — см. UnitPart.IsReach
+                    {
+                        part = _parts[i];
+                        return true;
+                    }
+
             part = default;
             return false;
         }

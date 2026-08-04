@@ -192,6 +192,28 @@ namespace Guildmaster.Tests.EditMode.Presentation
                 "покадровое тело светится целиком — его «всё» это единственная часть");
         }
 
+        /// <summary>
+        /// Предмет без объявленной рабочей части не отвечает НИЧЕМ — и кричит об этом. Требование Макса
+        /// (04.08.2026): «Мы должны мочь ЯВНО указать спрайт. И для гизмо и для этого. Т.е. поле, а не
+        /// "первое по списку"». Догадка здесь молча назначала бы вылет: у меча из клинка, гарды и рукояти
+        /// первым по порядку отрисовки идёт не клинок, и дуга за оружием выходила бы размером с этот кусок.
+        /// </summary>
+        [Test]
+        public void HeldItem_WithoutDeclaredReachPart_AnswersNothing_AndShouts()
+        {
+            GameObject root = NewRoot();
+            Transform grip = Arm(root.transform, BodySide.Right, out _);
+            SpriteRenderer sword = TestRigBuilder.Held(grip, "Sword", HeldKind.Weapon, declareReach: false);
+
+            LogAssert.Expect(LogType.Error, new System.Text.RegularExpressions.Regex("рабочая часть"));
+            var registry = UnitPartRegistry.FromBody(new[] { sword }, root.transform);
+
+            Assert.That(registry.TryGetHeld(HandSlot.Right, out _), Is.False,
+                "неразведённый предмет не имеет права ответить «чем бьют» — иначе вылет назначает порядок " +
+                "отрисовки, а не автор");
+            Assert.That(registry.TryGetHeld(HeldKind.Weapon, out _), Is.False);
+        }
+
         // --- The cross-seam invariant ---------------------------------------------------------------
 
         /// <summary>

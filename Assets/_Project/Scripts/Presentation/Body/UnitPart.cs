@@ -37,8 +37,22 @@ namespace Guildmaster.Presentation.Body
         /// </summary>
         public readonly bool IsHand;
 
+        /// <summary>
+        /// Эта часть — РАБОЧАЯ часть предмета (<c>UnitHeldItem.ReachPart</c>): клинок меча, полотно щита,
+        /// наконечник копья. По ней и только по ней меряется вылет.
+        /// </summary>
+        /// <remarks>
+        /// Предмет из нескольких кусков даёт СТОЛЬКО ЖЕ частей с типом «оружие»: рукоять, гарда и клинок все
+        /// сидят под костью-хватом. Без этого признака запрос «чем бьют» возвращал первую по порядку
+        /// отрисовки — у сторибучного меча это РУКОЯТЬ, и кончиком оружия оказывалась точка в паре
+        /// сантиметров от кулака. Дуга за клинком выходила размером с ладонь, а форма удара — из кулака
+        /// (найдено 04.08.2026). Офлайн-замер этой ошибки не знал: `RigProfile` спрашивает `ReachPart`
+        /// с самого начала, и гизмо рисовало правду, которой в игре не было.
+        /// </remarks>
+        public readonly bool IsReach;
+
         public UnitPart(int index, SpriteRenderer renderer, string bone, BodySide side,
-            HandSlot slot, HeldKind kind, bool isHand)
+            HandSlot slot, HeldKind kind, bool isHand, bool isReach = false)
         {
             Index    = index;
             Renderer = renderer;
@@ -47,6 +61,7 @@ namespace Guildmaster.Presentation.Body
             Slot     = slot;
             Kind     = kind;
             IsHand   = isHand;
+            IsReach  = isReach;
         }
 
         /// <summary>Предмет в руке, а не часть тела.</summary>

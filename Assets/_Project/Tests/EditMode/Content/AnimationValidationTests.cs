@@ -145,6 +145,42 @@ namespace Guildmaster.Tests.EditMode.Content
         }
 
         /// <summary>
+        /// У кита СО СКЕЛЕТНЫМ телом разметка взмаха ОБЯЗАТЕЛЬНА. Ему есть чем чертить дугу — оружие
+        /// объявлено частью тела, — и отсутствие маркеров означает не «нет контента», а тихо потерянный
+        /// язык ближнего боя: <c>UnitView</c> без окна взмаха не зовёт хук дуги ни разу, и на экране это
+        /// выглядит как задумка. Ровно так дуги за клинком не существовало в игре до 04.08.2026.
+        /// <para>
+        /// Покадровый бестиарий сюда не попадает намеренно: у него тело — один спрайт, оружия как части
+        /// нет, и дугу вести не от чего.
+        /// </para>
+        /// </summary>
+        [Test]
+        public void SkeletalUnits_AttackClips_CarryStrikeWindow()
+        {
+            var missing = new System.Collections.Generic.List<string>();
+
+            foreach (UnitData unit in AllUnits())
+            {
+                GameObject view = unit.ViewPrefab;
+                if (view == null) continue;
+                if (view.GetComponentInChildren<Guildmaster.Presentation.Body.SkeletalBodyVisual>(true) == null)
+                    continue;   // покадровое тело — дугу вести нечем
+
+                AnimationClip attack = unit.Visual != null ? unit.Visual.AttackClip : null;
+                if (attack == null) continue;   // покрыто Visuals_RequiredBaseSlotsFilled
+
+                if (!ClipMarkers.StrikeWindowNormalized(attack, out _, out _))
+                    missing.Add($"{unit.name} → {attack.name}");
+            }
+
+            Assert.IsEmpty(missing,
+                "Клипы атак скелетных китов без разметки взмаха: " + string.Join("; ", missing) +
+                $". Нужны AnimationEvent '{ClipMarkers.StrikeStartFunction}' и " +
+                $"'{ClipMarkers.StrikeEndFunction}' на границах фазы удара — без них не будет ни дуги за " +
+                "клинком, ни точки, откуда пришёл удар, и молчать об этом дороже, чем падать здесь.");
+        }
+
+        /// <summary>
         /// Разметка гвардии — тоже целиком или никак, и по той же причине: показ играет клип щита ТРЕМЯ
         /// кусками по трём разным часам (подъём за время подводки, держание пока живёт барьер, возврат за
         /// своё), и границы кусков берёт из маркеров. Один маркер из двух даёт ровно то же, что и ноль

@@ -860,15 +860,19 @@ namespace Guildmaster.Presentation
             if (!_stage.TryGet(sourceId, out Combat.Tape.UnitIdentity identity) || identity.Definition == null)
                 return;
 
+            // Способ доставки спрашиваем у ОРУЖИЯ кита, а не у типа урона события: стойка может перекрасить
+            // автоатаку в стихию (ледяная стойка Мороза шлёт Ice), но махать он от этого продолжает тем же,
+            // чем махал. Форма говорит КАК доставили, цвет — ЧЕМ ударили; событие отвечает на второй вопрос.
             bool ranged = identity.Definition.AttackType == AttackType.Ranged;
-            if (!Effects.HitFormFactory.ResolveKind(result.Type, ranged, out Effects.HitFormKind kind))
+            if (!Effects.HitFormFactory.ResolveKind(identity.Definition.AutoAttackDamageType, ranged,
+                                                    out Effects.HitFormKind kind))
             {
                 // Дефект контента, а не «формы не бывает»: автоатака в ближнем бою обязана называть способ
                 // доставки. Молчать нельзя — иначе кит без формы выглядит как задумка.
                 VisualDefects.Report($"hit-form-kind:{DefectKeyOf(sourceId)}",
-                    $"[CombatPresenter] автоатака юнита {DefectKeyOf(sourceId)} бьёт типом {result.Type}, " +
-                    "который не называет способ доставки — форму рисовать нечем. Задай физический тип " +
-                    "или объяви архетип явно.");
+                    $"[CombatPresenter] у кита {DefectKeyOf(sourceId)} тип автоатаки " +
+                    $"{identity.Definition.AutoAttackDamageType} не называет способ доставки — форму " +
+                    "рисовать нечем. Задай физический тип (Slash / Pierce / Blunt) или объяви архетип явно.");
                 return;
             }
 

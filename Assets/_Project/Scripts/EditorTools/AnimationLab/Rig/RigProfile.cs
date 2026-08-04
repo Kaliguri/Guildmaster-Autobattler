@@ -288,22 +288,13 @@ namespace Guildmaster.AnimationLab.Editor
             var mark = grip.GetComponent<Presentation.Body.UnitHeldItem>();
             if (mark != null && mark.ReachPart != null) return mark.ReachPart;
 
-            SpriteRenderer farthest = null;
-            float best = 0f;
-            foreach (var sr in grip.GetComponentsInChildren<SpriteRenderer>(includeInactive: true))
-            {
-                if (sr.sprite == null) continue;
-                MeasureAxis(grip, sr, out _, out Vector3 tip);
-                float reach = Vector3.Distance(grip.position, tip);
-                if (reach <= best) continue;
-                best = reach;
-                farthest = sr;
-            }
-            if (farthest != null)
-                Debug.LogError($"[RigProfile] у хвата '{grip.name}' не объявлена рабочая часть предмета: " +
-                               $"проставь Reach Part в UnitHeldItem. Меряю по самому дальнему куску " +
-                               $"('{farthest.name}'), и на предмете из нескольких кусков это будет не то.");
-            return farthest;
+            // Догадки нет — ни «самый дальний кусок», ни «первый по списку» (требование Макса, 04.08.2026:
+            // явное поле и для гизмо, и для игры). Эвристика ошибается на копье, где древко длиннее
+            // наконечника, и молча выдаёт ответ, который выглядит как замер.
+            Debug.LogError($"[RigProfile] у хвата '{grip.name}' не объявлена рабочая часть предмета: " +
+                           "проставь Reach Part в UnitHeldItem (клинок меча, полотно щита, наконечник копья). " +
+                           "Без неё вылет мерить нечем — предмет в профиль не попадёт.");
+            return null;
         }
 
         /// <summary>
