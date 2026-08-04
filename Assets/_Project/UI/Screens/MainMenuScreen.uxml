@@ -33,8 +33,8 @@
                  вёл в то же самое место — две двери в одну комнату.
                  Игровые пункты отделены от служебных зазором на «Профиле», без линии и подзаголовка. -->
             <ui:VisualElement class="gm-mainmenu__buttons">
-                <gm:PlateButton name="btn-create" text="СОЗДАТЬ ИГРУ" class="gm-button gm-mainmenu__btn" />
-                <gm:PlateButton name="btn-join" text="ПРИСОЕДИНИТЬСЯ" class="gm-button gm-mainmenu__btn" />
+                <gm:PlateButton name="btn-create" text="СОЗДАТЬ ИГРУ" class="gm-button gm-mainmenu__btn gm-mainmenu__btn--primary" />
+                <gm:PlateButton name="btn-join" text="ПРИСОЕДИНИТЬСЯ" class="gm-button gm-mainmenu__btn gm-mainmenu__btn--primary" />
                 <gm:PlateButton name="btn-profile" text="ПРОФИЛЬ" class="gm-button gm-mainmenu__btn gm-mainmenu__btn--group-start" />
                 <gm:PlateButton name="btn-settings" text="НАСТРОЙКИ" class="gm-button gm-mainmenu__btn" />
                 <gm:PlateButton name="btn-quit" text="ВЫХОД" class="gm-button gm-mainmenu__btn" />
@@ -44,6 +44,6 @@
         <!-- Версия билда: угол экрана. Нижний правый — самое частое место у рефов (13 из 14 держат
              версию мелким кеглем в углу), и единственный реф, поставивший её в центр верха, получил
              за это отдельный пункт в «чего избегать». Текст проставляется кодом. -->
-        <ui:Label name="menu-version" class="gm-text-muted gm-version-stamp" />
+        <ui:Label name="menu-version" class="gm-version-stamp" />
     </ui:VisualElement>
 </ui:UXML>
