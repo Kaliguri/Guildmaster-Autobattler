@@ -70,6 +70,12 @@ namespace Guildmaster.Net.Tape
         /// </summary>
         public void Flush(int readyThroughTick) => _pump.Flush(readyThroughTick, ChunkLimit(), Send);
 
+        /// <summary>
+        /// Переслать кадр покоя — состояние арены, пока симуляция стоит (расстановка, площадка).
+        /// Границу отправленного не двигает: см. <see cref="TapeChunkPump.Resend"/>.
+        /// </summary>
+        public void Resend(int tick) => _pump.Resend(tick, ChunkLimit(), Send);
+
         /// <summary>Новый бой: нумерация тиков и чанков начинается заново, история сбрасывается.</summary>
         public void Reset()
         {
