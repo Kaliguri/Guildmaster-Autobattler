@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
@@ -181,6 +181,22 @@ namespace Guildmaster.Game.Services
                 // игра» с «Отключиться» больше нет: сессия — свойство игры, и пережить возврат в меню
                 // она не может. У хоста это конец сессии для всех — так и задумано, миграции авторитета
                 // мы не пишем (решение 01.08.2026).
+                // ...КРОМЕ случая, когда мы УЖЕ идём к кому-то в гости. Приглашение принимается и из
+                // оверлея Steam посреди своего забега: забег рвётся, цикл возвращается сюда — и
+                // закрыл бы то самое подключение, ради которого всё и прервалось. Признак гостя —
+                // само состояние сессии: у хоста оно Hosting, у гостя Connecting/Connected.
+                bool joiningSomeone = _coop != null
+                                      && (_coop.State == Core.Net.CoopSessionState.Connecting
+                                          || _coop.State == Core.Net.CoopSessionState.Connected);
+
+                if (joiningSomeone)
+                {
+                    // Меню не показываем вовсе: игрок уже сделал выбор — в оверлее Steam. Лишний кадр
+                    // главного меню между «принял приглашение» и «я в чужой игре» читался бы как сбой.
+                    await PlayAsGuestAsync();
+                    continue;
+                }
+
                 if (_coop != null && _coop.State != Core.Net.CoopSessionState.Offline) _coop.Leave();
 
                 // Кем заходим — спрашивается ДО меню и только когда профиля нет: дом живёт внутри

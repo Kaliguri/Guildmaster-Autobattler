@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
@@ -72,6 +72,10 @@ namespace Guildmaster.UI
         [Tooltip("UXML Двора гильдии: дом, из которого уходят в забег. Пока заглушка с одной кнопкой.")]
         [SerializeField] private VisualTreeAsset _hubScreen;
 
+        [Tooltip("Диалог разрыва связи (Screens/PeerLostDialog.uxml). Пусто = разрыв снова станет " +
+                 "молчаливым: игра сменит экран, не сказав, что напарник вышел.")]
+        [SerializeField] private VisualTreeAsset _peerLostDialog;
+
         [Tooltip("UXML экрана профиля: слоты, ник, цвет, курсор. Открывается из меню и обязательно на " +
                  "чистой установке — без профиля забегу некуда писаться.")]
         [SerializeField] private VisualTreeAsset _profileScreen;
@@ -130,6 +134,8 @@ namespace Guildmaster.UI
         private ISubscriber<OpenMainMenuRequest> _openMainMenuSub;
         private ISubscriber<OpenProfileRequest>  _openProfileSub;
         private ISubscriber<OpenHubRequest>      _openHubSub;
+        private ISubscriber<Core.Net.PeerLostRequest> _peerLostSub;
+        private IDisposable _peerLostSubscription;
         private ISubscriber<OpenTitleCardRequest> _openTitleCardSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
@@ -207,6 +213,7 @@ namespace Guildmaster.UI
             ISubscriber<OpenMainMenuRequest> openMainMenuSub,
             ISubscriber<OpenProfileRequest> openProfileSub,
             ISubscriber<OpenHubRequest> openHubSub,
+            ISubscriber<Core.Net.PeerLostRequest> peerLostSub,
             ISubscriber<Core.Flow.OpenProvingGroundsRequest> openProvingGroundsSub,
             IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
@@ -258,6 +265,7 @@ namespace Guildmaster.UI
             _openMainMenuSub = openMainMenuSub;
             _openProfileSub  = openProfileSub;
             _openHubSub      = openHubSub;
+            _peerLostSub     = peerLostSub;
             _openProvingGroundsSub = openProvingGroundsSub;
         }
 
@@ -291,7 +299,7 @@ namespace Guildmaster.UI
             // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
             // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
             _uiSound?.Attach(_doc.rootVisualElement);
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen, _newGameScreen, _profileScreen, _confirmDialog, _guildSelectScreen, _hubScreen);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen, _newGameScreen, _profileScreen, _confirmDialog, _guildSelectScreen, _hubScreen, _peerLostDialog);
             _input.MenuToggleRequested += OnMenuToggle;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -324,6 +332,8 @@ namespace Guildmaster.UI
             _openProfileSubscription = _openProfileSub?.Subscribe(req => _router.OpenProfile(req));
             // Двор гильдии — запрос из GameFlow между выбором дома и актом.
             _openHubSubscription = _openHubSub?.Subscribe(req => _router.OpenHub(req));
+            // Разрыв связи: модалка поверх того места, где игрока застало.
+            _peerLostSubscription = _peerLostSub?.Subscribe(req => _router.ShowPeerLost(in req));
 
             // Запрос Ристалища закрывает главное меню тем же путём, что кнопка: резолв экрана через
             // навигатор гасит и панель, и стол под ней. Если меню не показано — здесь no-op, решение
@@ -792,6 +802,7 @@ namespace Guildmaster.UI
             _openMainMenuSubscription?.Dispose();
             _openProfileSubscription?.Dispose();
             _openHubSubscription?.Dispose();
+            _peerLostSubscription?.Dispose();
             _openProvingGroundsSubscription?.Dispose();
             _openTitleCardSubscription?.Dispose();
 

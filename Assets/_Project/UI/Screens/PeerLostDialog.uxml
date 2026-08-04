@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+    <!-- Связь с напарником оборвалась. Кнопок здесь ПЕРЕМЕННОЕ число (у хоста три, у гостя две),
+         поэтому они не лежат в разметке, а собираются кодом: два почти одинаковых экрана разошлись бы
+         на первой же правке. Модалка подтверждения для этого не годится - у неё ровно две кнопки и
+         своя роль «да/нет по необратимому». -->
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--confirm gm-panel--system">
+            <ui:Label name="peer-lost-title" class="gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+
+            <ui:VisualElement class="gm-panel__body">
+                <ui:Label name="peer-lost-body" class="gm-confirm__body" />
+                <!-- Строка последствия: что стало с забегом. Читается ДО нажатия - «я нажал и потерял
+                     три акта» не должно быть возможным даже как испуг. -->
+                <ui:Label name="peer-lost-consequence" class="gm-confirm__consequence" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="gm-divider" />
+            <ui:VisualElement name="peer-lost-actions" class="gm-confirm__actions" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

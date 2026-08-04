@@ -83,6 +83,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _hubUxml;
         private VisualTreeAsset _profileUxml;
         private VisualTreeAsset _confirmUxml;
+        private VisualTreeAsset _peerLostUxml;
 
         // Профиль: набор скинов, число слотов, имя из Steam и применение выбранного курсора. Роутер
         // держит их функциями, а не тянет сервисы вглубь экрана: экран — разметка, а не владелец правил.
@@ -246,8 +247,10 @@ namespace Guildmaster.UI
             VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null,
             VisualTreeAsset newGameUxml = null, VisualTreeAsset profileUxml = null,
             VisualTreeAsset confirmUxml = null,
-            VisualTreeAsset guildSelectUxml = null, VisualTreeAsset hubUxml = null)
+            VisualTreeAsset guildSelectUxml = null, VisualTreeAsset hubUxml = null,
+            VisualTreeAsset peerLostUxml = null)
         {
+            _peerLostUxml = peerLostUxml;
             _newGameUxml = newGameUxml;
             _guildSelectUxml = guildSelectUxml;
             _hubUxml = hubUxml;
@@ -819,6 +822,27 @@ namespace Guildmaster.UI
             RouterResultScreen<bool> screen = _hubScreen;
             _hubScreen = null;
             _nav.Remove(screen);
+        }
+
+        /// <summary>
+        /// Показать разрыв связи: кого потеряли и что можно сделать.
+        /// </summary>
+        /// <remarks>
+        /// <b>Модалка, а не страница:</b> под ней остаётся то место, где игрока застало, — он видит, что
+        /// именно прервалось. И она не закрывается «мимо кнопок»: у разрыва нет безопасного умолчания,
+        /// каждый вариант уводит игру в своё состояние.
+        /// </remarks>
+        public void ShowPeerLost(in Core.Net.PeerLostRequest request)
+        {
+            if (CannotShow("Разрыв связи (_peerLostDialog)", _peerLostUxml)) return;
+
+            Core.Net.PeerLostRequest captured = request;
+            RouterScreen screen = null;
+            screen = new RouterScreen(ScreenKind.Modal,
+                () => PeerLostDialogView.Build(_peerLostUxml, in captured, key => _loc?.GetString(key),
+                                               closed: () => { if (screen != null) _nav.Remove(screen); }));
+
+            _nav.Push(screen);
         }
 
         /// <summary>

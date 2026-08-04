@@ -143,10 +143,14 @@ namespace Guildmaster.Net.Session
             if (!_transport.IsHost && peerId == NetPeer.HostPeerId) _handshake?.SayHello();
         }
 
+        public event Action<int> PeerLeft;
+
         private void HandlePeerDisconnected(int peerId)
         {
-            // У хоста уход гостя сессию не кончает: он остаётся хостом, пусть и в одиночестве.
-            if (_transport.IsHost) return;
+            // У хоста уход гостя сессию не кончает: он остаётся хостом, пусть и в одиночестве. Но
+            // молчать об этом нельзя — он не должен узнавать о потере напарника по тому, что курсор
+            // перестал двигаться.
+            if (_transport.IsHost) { PeerLeft?.Invoke(peerId); return; }
             if (peerId != NetPeer.HostPeerId) return;
 
             if (State == CoopSessionState.Connecting) Fail(CoopEndReason.ConnectionFailed, "Хост не ответил");
