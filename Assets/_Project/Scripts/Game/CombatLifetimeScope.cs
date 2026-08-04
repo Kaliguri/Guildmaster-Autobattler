@@ -110,7 +110,7 @@ namespace Guildmaster.Game
             //
             // ОТСЮДА ЖЕ у гостя нет ни кругов под ногами, ни драга бойцов, ни драга реликвии из
             // инвентаря: всё это рисует и ведёт он. Гостевая расстановка — отдельная работа, и она
-            // записана в docs/coop-sync-contract.md.
+            // записана в docs/player-capability-registry.md.
             if (!IsGuestSession()) builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped);
 
             // Сборка боя, ради которого родился скоуп: отряд, враги, фаза расстановки, отчёт исхода.
