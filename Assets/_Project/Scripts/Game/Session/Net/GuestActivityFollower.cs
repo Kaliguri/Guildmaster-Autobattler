@@ -31,17 +31,24 @@ namespace Guildmaster.Game.Session.Net
         private readonly IActMapPresence _map;
         // Двор — на тех же правах: место вне мероприятия, в которое гость обязан попасть вместе с хостом.
         private readonly Guildmaster.Core.Flow.IHubPresence _hub;
+        // Общее согласие. Гость его только отправляет — но отправить может лишь тогда, когда знает, ЧЕГО
+        // ждут, а ключ ему выставить некому: у хоста это делает расстановка, которой у гостя нет.
+        private readonly Guildmaster.Core.Net.IReadyGate _ready;
+
+        private Action _toggleReady;
 
         private ActivityState _applied = ActivityState.Nowhere;
         private byte[]        _envelope;
 
         public GuestActivityFollower(INetTransport transport, ActivityHost activities,
-                                     IActMapPresence map, Guildmaster.Core.Flow.IHubPresence hub)
+                                     IActMapPresence map, Guildmaster.Core.Flow.IHubPresence hub,
+                                     Guildmaster.Core.Net.IReadyGate ready)
         {
             _transport  = transport  ?? throw new ArgumentNullException(nameof(transport));
             _activities = activities ?? throw new ArgumentNullException(nameof(activities));
             _map        = map;
             _hub        = hub;
+            _ready      = ready;
         }
 
         /// <summary>Что применено последним — видно в dev-панели.</summary>
@@ -126,6 +133,34 @@ namespace Guildmaster.Game.Session.Net
             // Фазу у гостя вести нечем: её ведёт флоу забега, а забег ведёт хост. Без этой строки
             // боевой UI у гостя молчал бы весь бой — панель скрыта, потому что фаза None.
             session.SetPhase(state.Phase);
+
+            ApplyReady(session, state.Phase);
+        }
+
+        /// <summary>
+        /// Чего ждут от игрока в этой фазе — и чем он отвечает.
+        /// </summary>
+        /// <remarks>
+        /// <b>Ключ гейта у гостя выставить больше некому.</b> У хоста это делает расстановка
+        /// (<c>DeploymentController</c>), а у гостя её нет вовсе: бой ему приезжает скоупом-приёмником.
+        /// Без ключа кнопка «Начать» не знала, чего ждут, счёт «(1/2)» не рисовался, а нажатие уходило
+        /// в пустой делегат — гость не мог подтвердить готовность вообще (наход. Макса 04.08.2026).
+        /// <para><b>Гость подтверждает, но не начинает.</b> Кнопка шлёт «я готов», а бой у него пойдёт
+        /// оттого, что хост сменит фазу. Второй путь к тому же состоянию разошёлся бы с первым.</para>
+        /// <para>Фаза здесь — единственный источник: она же приезжает от хоста, она же ведёт панель.
+        /// Заводить своё «мы в расстановке» значило бы завести второго владельца одного факта.</para>
+        /// </remarks>
+        private void ApplyReady(IBattleSession session, BattlePhase phase)
+        {
+            if (phase == BattlePhase.Deployment)
+            {
+                _ready?.Bind(Guildmaster.Core.Net.ReadyKeys.BattleStart, null);
+                session.BindStart(_toggleReady ??= () => _ready?.ToggleLocal());
+                return;
+            }
+
+            _ready?.Unbind(Guildmaster.Core.Net.ReadyKeys.BattleStart);
+            session.UnbindStart();
         }
 
         /// <summary>
