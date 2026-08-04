@@ -45,11 +45,25 @@ namespace Guildmaster.Net.Tape
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
             if (channel != NetChannel.BattleRoster) return;
 
-            var bytes = new NetByteReader(payload);
-
-            int    id        = bytes.ReadInt();
-            int    team      = bytes.ReadByte();
-            string contentId = bytes.ReadString();
+            int id;
+            int team;
+            string contentId;
+            try
+            {
+                var bytes = new NetByteReader(payload);
+                id        = bytes.ReadInt();
+                team      = bytes.ReadByte();
+                contentId = bytes.ReadString();
+            }
+            catch (InvalidOperationException e)
+            {
+                // Пакет от удалённой стороны — вход недоверенный: короткая или чужого формата нагрузка
+                // роняет читатель. Без перехвата исключение уходит в Poll транспорта и обрывает разбор
+                // ВСЕЙ очереди этого кадра, а не только испорченного сообщения. Соседи по каналу
+                // (TapeChunkReader, PresenceCodec) уже защищены — этот обработчик из ряда выпадал.
+                Debug.LogError($"[BattleRosterIntake] Не разобрать паспорт юнита от {from}: {e.Message}");
+                return;
+            }
 
             UnitData definition = null;
             if (!string.IsNullOrEmpty(contentId) && !_content.TryGet(contentId, out definition))
