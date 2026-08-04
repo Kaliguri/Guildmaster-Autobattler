@@ -1,4 +1,4 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel" style="min-width: 560px; max-width: 600px;">
             <ui:Label text="Loadout" class="gm-panel__title" />
@@ -24,10 +24,13 @@
 
             <ui:VisualElement class="gm-divider" />
 
-            <ui:VisualElement style="flex-direction: row;">
-                <ui:Button name="btn-accept" text="Accept" class="gm-button gm-button--primary" style="flex-grow: 1; margin-right: 8px;" />
-                <ui:Button name="btn-save" text="Save" class="gm-button" style="flex-grow: 1; margin-right: 8px;" />
-                <ui:Button name="btn-close" text="Close" class="gm-button" style="flex-grow: 1;" />
+            <!-- Пластины, как на всех игровых экранах: обычные ui:Button остались здесь с прежней
+                 раскладки и были единственным местом, где кнопка выглядела чужой (наход. Макса
+                 05.08.2026). Заодно ушли инлайн-стили и английские подписи. -->
+            <ui:VisualElement class="gm-button-row">
+                <gm:PlateButton name="btn-accept" text="Принять" class="gm-button gm-button--fill" />
+                <gm:PlateButton name="btn-save" text="Сохранить" class="gm-button gm-button--fill" />
+                <gm:PlateButton name="btn-close" text="Закрыть" class="gm-button gm-button--fill" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
