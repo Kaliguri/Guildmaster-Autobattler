@@ -387,10 +387,28 @@
     align-items: center;
     justify-content: center;
     --gm-plate-fill: var(--gm-color-surface-panel);
+    --gm-plate-fill-far: var(--gm-color-surface-plate-far);
+    --gm-plate-fill-mode: down;
     --gm-plate-stroke: var(--gm-color-border-frame);
     --gm-plate-stroke-width: 2;
     --gm-plate-chamfer: 10;
 }
+
+/* --- ЗАГОТОВКИ ЗАЛИВКИ ---
+   Цвета берутся из ролей и у всех заготовок ОДНИ И ТЕ ЖЕ; различаются только направление и тип
+   (реш. Макса 04.08.2026, приём с разбора Guildrun). Поэтому это модификаторы режима, а не пять
+   отдельных наборов цветов: набор цветов, размноженный по вариантам, через месяц разъезжается.
+   Заготовка ставится там, где у неё есть причина: свет сверху — обычная плашка; снизу — то, что
+   лежит на поверхности; от центра — то, что зовёт. */
+.gm-fill--down   { --gm-plate-fill-mode: down; }
+.gm-fill--up     { --gm-plate-fill-mode: up; }
+.gm-fill--left   { --gm-plate-fill-mode: left; }
+.gm-fill--right  { --gm-plate-fill-mode: right; }
+.gm-fill--radial { --gm-plate-fill-mode: radial; }
+
+/* Сплошная заливка — тоже заготовка, только без второго цвета: прозрачный дальний конец контрол
+   читает как «градиента нет». Нужна там, где пластина мелкая и градиент на ней превращается в грязь. */
+.gm-fill--flat   { --gm-plate-fill-far: rgba(0, 0, 0, 0); }
 
 /* Двухклассовые селекторы обязательны для КАЖДОГО состояния: одноклассовый проигрывает правилам
    `.unity-button.gm-button:hover/:active/:disabled` выше, и тема снова принималась рисовать
@@ -444,9 +462,15 @@
 
 /* Primary — та же пластина, только НАГРЕТАЯ (угли вместо холодного дерева). Форма общая: главное
    действие отличается температурой поля, а не другим силуэтом. */
+/* Заливка ГЛАВНОГО действия идёт от центра, а не сверху вниз: остальные пластины освещены сверху
+   как мебель, и радиальная среди них читается как подсвеченная изнутри. Обводка своя и толще —
+   «привлекающий аутлайн» (заявка Макса 04.08.2026). */
 .gm-plate-button.gm-button--primary {
     --gm-plate-fill: var(--gm-color-surface-accent);
-    --gm-plate-stroke: var(--gm-color-hover-border);
+    --gm-plate-fill-far: var(--gm-color-surface-accent-far);
+    --gm-plate-fill-mode: radial;
+    --gm-plate-stroke: var(--gm-color-focus-ring);
+    --gm-plate-stroke-width: 3;
 }
 
 .gm-plate-button.gm-button--primary:hover {
@@ -1716,71 +1740,40 @@
     align-items: flex-start;
 }
 
-/* Пункт — ТЕКСТ, а не пластина: гасим заливку и обводку контрола, оставляя ему подпись. Прозрачное
-   значение здесь — «нет заливки», а не цвет мимо палитры.
-   Кегль 34px даёт капитель 2.2% высоты (рефы без плашек: 2.08-2.78%), шаг со своими отступами —
-   5.3% при медиане 5.7%. Padding слева нулевой: он расходуется на сдвиг активного пункта. */
+/* Пункт — ПЛАСТИНА (пересмотр 04.08.2026, заявка Макса: «я бы хотел все-таки под кнопками какие-то
+   бэкграунды», ориентир Guildrun). Текстовый вариант простоял полдня и показал ровно то, что
+   обещали числа рефов: держать строку без плашки можно только кеглем, и кегль уехал в потолок
+   коридора — «UI СЛИШКОМ гигантский». У плашечных рефов наоборот: строку держит плашка, а текст
+   внутри мелкий (Guildrun капитель 1.53%, AoW4 1.25% против наших прежних 2.8%).
+   Числа: ширина 360px = 18.8% (коридор 16.6-20.5%), высота ~56px = 5.2%, шаг с отступами 6.3%
+   (Guildrun 6.7%, AoW4 5.7%), кегль 22px даёт капитель 1.4%. */
 .gm-mainmenu__btn {
-    --gm-plate-fill: rgba(0, 0, 0, 0);
-    --gm-plate-stroke: rgba(0, 0, 0, 0);
-    font-size: var(--gm-font-title);
-    color: var(--gm-color-text-muted);
-    background-color: rgba(0, 0, 0, 0);
-    border-width: 0;
-    padding: 0;
-    margin-top: var(--gm-space-1);
-    margin-bottom: var(--gm-space-1);
+    width: 360px;
+    font-size: var(--gm-font-sm);
+    color: var(--gm-color-text-interactive);
+    /* Капс без разрядки слипается, у кириллицы сильнее: прописные там одной ширины и без просвета
+       читаются забором. Регистр задаёт САМ ТЕКСТ — text-transform в UI Toolkit нет. */
+    letter-spacing: 3px;
+    padding: var(--gm-space-2) var(--gm-space-3);
+    margin-top: 5px;
+    margin-bottom: 5px;
     align-self: flex-start;
-    transition-property: padding-left, color;
+    transition-property: translate, color;
     transition-duration: 0.12s;
 }
 
-/* Подпись пластины по умолчанию центрирована — в колонке без плашек это разъезжающийся левый край. */
-.gm-mainmenu__btn .gm-plate-button__label {
-    -unity-text-align: middle-left;
-}
-
-/* ПРИЁМ РЕФОВ: выбранный пункт СДВИГАЕТСЯ, а не только красится (9 Kings +13px, CotDG +24px,
-   Absolum выносит маркер на 40px). Сдвиг даёт список, который не дёргается при переборе: соседи
-   стоят на месте, потому что двигается padding, а не ширина. */
+/* ПРИЁМ РЕФОВ: выбранный пункт СДВИГАЕТСЯ, а не только красится (9 Kings +13px, CotDG +24px).
+   Двигается ВСЯ пластина через translate, а не её внутренний отступ: список не дёргается, потому
+   что раскладка не пересчитывается вовсе — соседи стоят на месте. */
 .gm-mainmenu__btn:hover,
 .gm-mainmenu__btn:focus {
-    padding-left: 22px;
+    translate: 14px 0;
     color: var(--gm-color-text);
 }
 
-.gm-mainmenu__btn:active {
-    color: var(--gm-color-text-muted);
-}
-
-/* Пластина не должна проступать НИ В ОДНОМ состоянии: свои --gm-plate-* есть у :hover, :active,
-   :focus и :disabled, и каждое из них надо погасить отдельно — иначе под подписью проявится
-   прямоугольник ровно там, где на него наведут. Прямоугольный фон самой кнопки гасить не нужно,
-   это уже делает правило `.unity-button.gm-plate-button` выше. */
-.gm-mainmenu__btn:hover,
-.gm-mainmenu__btn:focus,
-.gm-mainmenu__btn:active,
-.gm-mainmenu__btn:disabled,
-.gm-mainmenu__btn.unity-disabled {
-    --gm-plate-fill: rgba(0, 0, 0, 0);
-    --gm-plate-stroke: rgba(0, 0, 0, 0);
-}
-
-/* ПРИЁМ РЕФОВ: первичное действие красится, остальные нет (Factorio, AoW4). Без плашки красить
-   можно только подпись — берём патину, роль «сюда нажать». Со сдвигом это не спорит: цвет говорит
-   «начни отсюда», сдвиг — «ты сейчас здесь».
-   Модификатор СВОЙ, а не общий .gm-button--primary: тот вешает пластине латунную заливку двумя
-   классами, и гасить её пришлось бы отдельной войной специфичности ради кнопки, у которой заливки
-   нет по замыслу. */
-.gm-mainmenu__btn--primary {
-    color: var(--gm-color-text-action);
-}
-
-.gm-mainmenu__btn--primary:hover,
-.gm-mainmenu__btn--primary:focus {
-    color: var(--gm-color-focus-ring);
-}
-
+/* ПРИЁМ РЕФОВ: первичное действие отличается заливкой, остальные нет (Factorio, AoW4). Здесь это
+   общий модификатор .gm-button--primary — у пластины снова есть чем зваться, и отдельный цвет
+   подписи, заведённый на время бесплашечного варианта, больше не нужен. */
 .gm-mainmenu__btn:disabled,
 .gm-mainmenu__btn.unity-disabled {
     color: var(--gm-color-disabled-text);

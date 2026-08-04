@@ -439,6 +439,22 @@ MonoBehaviour:
     m_Key: ui.boot.legal
     m_Metadata:
       m_Items: []
+  - m_Id: 8745786747904000
+    m_Key: ui.mainmenu.title_over
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8745786768875520
+    m_Key: ui.mainmenu.create
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8745786773069824
+    m_Key: ui.mainmenu.join
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8745786773069825
+    m_Key: ui.mainmenu.profile
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

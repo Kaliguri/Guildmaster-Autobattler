@@ -1,8 +1,24 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI.Components
 {
+    /// <summary>
+    /// Заготовленные заливки пластины. Цвета у всех ОДНИ И ТЕ ЖЕ — различаются только откуда идёт
+    /// градиент и какого он типа (решение Макса 04.08.2026, приём взят с разбора Guildrun).
+    /// </summary>
+    public enum PlateFill
+    {
+        /// <summary>Сверху вниз — заготовка по умолчанию.</summary>
+        Down,
+        Up,
+        Left,
+        Right,
+        /// <summary>От центра к краям.</summary>
+        Radial
+    }
+
     /// <summary>
     /// Кнопка-ПЛАСТИНА со срезанными углами. Вторая форма интерфейса рядом с прямоугольником:
     /// до неё вся дизайн-система умела ровно один силуэт (прямоугольник + латунный контур 2px),
@@ -32,6 +48,8 @@ namespace Guildmaster.UI.Components
     public partial class PlateButton : Button
     {
         private static readonly CustomStyleProperty<Color> FillProp = new("--gm-plate-fill");
+        private static readonly CustomStyleProperty<Color> FillFarProp = new("--gm-plate-fill-far");
+        private static readonly CustomStyleProperty<string> FillModeProp = new("--gm-plate-fill-mode");
         private static readonly CustomStyleProperty<Color> StrokeProp = new("--gm-plate-stroke");
         private static readonly CustomStyleProperty<float> StrokeWidthProp = new("--gm-plate-stroke-width");
         private static readonly CustomStyleProperty<float> ChamferProp = new("--gm-plate-chamfer");
@@ -39,6 +57,8 @@ namespace Guildmaster.UI.Components
         private readonly Label _label;
 
         private Color _fill = new(0.11f, 0.08f, 0.05f, 1f);
+        private Color _fillFar = Color.clear;          // clear = «второго цвета нет», заливка сплошная
+        private PlateFill _fillMode = PlateFill.Down;
         private Color _stroke = new(0.72f, 0.53f, 0.23f, 1f);
         private float _strokeWidth = 2f;
         private float _chamfer = 10f;
@@ -89,7 +109,27 @@ namespace Guildmaster.UI.Components
             if (style.TryGetValue(StrokeProp, out Color stroke)) _stroke = stroke;
             if (style.TryGetValue(StrokeWidthProp, out float width)) _strokeWidth = width;
             if (style.TryGetValue(ChamferProp, out float chamfer)) _chamfer = Mathf.Max(0f, chamfer);
+
+            // Второй цвет сбрасывается ЯВНО, когда правило его не задаёт: без этого пластина,
+            // унаследовавшая градиент от одного состояния, тащила бы его в состояние со сплошной
+            // заливкой — значения custom-свойств переживают смену псевдокласса.
+            _fillFar = style.TryGetValue(FillFarProp, out Color far) ? far : Color.clear;
+            _fillMode = style.TryGetValue(FillModeProp, out string mode) ? ParseFill(mode) : PlateFill.Down;
+
             MarkDirtyRepaint();
+        }
+
+        /// <summary>Направление или тип заготовленного градиента. Неизвестное имя — «сверху вниз».</summary>
+        private static PlateFill ParseFill(string mode)
+        {
+            switch (mode?.Trim().ToLowerInvariant())
+            {
+                case "up":     return PlateFill.Up;
+                case "left":   return PlateFill.Left;
+                case "right":  return PlateFill.Right;
+                case "radial": return PlateFill.Radial;
+                default:       return PlateFill.Down;
+            }
         }
 
         // Восьмиугольник: прямоугольник со срезанными углами. Фаска кламплется половиной МЕНЬШЕЙ
@@ -106,31 +146,104 @@ namespace Guildmaster.UI.Components
             float inset = _strokeWidth * 0.5f; // обводка идёт по центру линии — поджимаем внутрь
             float left = inset, top = inset, right = w - inset, bottom = h - inset;
 
-            Painter2D p = ctx.painter2D;
-            p.BeginPath();
-            p.MoveTo(new Vector2(left + c, top));
-            p.LineTo(new Vector2(right - c, top));
-            p.LineTo(new Vector2(right, top + c));
-            p.LineTo(new Vector2(right, bottom - c));
-            p.LineTo(new Vector2(right - c, bottom));
-            p.LineTo(new Vector2(left + c, bottom));
-            p.LineTo(new Vector2(left, bottom - c));
-            p.LineTo(new Vector2(left, top + c));
-            p.ClosePath();
+            Span<Vector2> corners = stackalloc Vector2[8];
+            corners[0] = new Vector2(left + c, top);
+            corners[1] = new Vector2(right - c, top);
+            corners[2] = new Vector2(right, top + c);
+            corners[3] = new Vector2(right, bottom - c);
+            corners[4] = new Vector2(right - c, bottom);
+            corners[5] = new Vector2(left + c, bottom);
+            corners[6] = new Vector2(left, bottom - c);
+            corners[7] = new Vector2(left, top + c);
 
             if (_fill.a > 0f)
             {
-                p.fillColor = _fill;
-                p.Fill();
+                if (_fillFar.a > 0f) FillGradient(ctx, corners, w, h);
+                else FillSolid(ctx, corners);
             }
 
             if (_stroke.a > 0f && _strokeWidth > 0f)
             {
+                Painter2D p = ctx.painter2D;
+                p.BeginPath();
+                p.MoveTo(corners[0]);
+                for (int i = 1; i < corners.Length; i++) p.LineTo(corners[i]);
+                p.ClosePath();
                 p.strokeColor = _stroke;
                 p.lineWidth = _strokeWidth;
                 p.lineJoin = LineJoin.Miter;
                 p.Stroke();
             }
+        }
+
+        private void FillSolid(MeshGenerationContext ctx, Span<Vector2> corners)
+        {
+            Painter2D p = ctx.painter2D;
+            p.BeginPath();
+            p.MoveTo(corners[0]);
+            for (int i = 1; i < corners.Length; i++) p.LineTo(corners[i]);
+            p.ClosePath();
+            p.fillColor = _fill;
+            p.Fill();
+        }
+
+        /// <summary>
+        /// Заливка градиентом: ВЕЕР из центра — центральная вершина плюс углы восьмиугольника.
+        /// </summary>
+        /// <remarks>
+        /// <para>Веер выбран потому, что одной раскладкой вершин обслуживает оба типа: линейному
+        /// градиенту цвет вершины даёт проекция на ось, радиальному — расстояние до центра. Через
+        /// <see cref="Painter2D"/> градиента не получить вовсе: у него один <c>fillColor</c> на всю
+        /// фигуру, а USS градиентных функций не знает — та же причина, по которой вуаль меню
+        /// рисуется вершинами.</para>
+        /// <para>Цвета берутся из USS (<c>--gm-plate-fill</c> / <c>--gm-plate-fill-far</c>), режим —
+        /// из <c>--gm-plate-fill-mode</c>. Набор заготовок один на весь интерфейс: меняется не цвет,
+        /// а откуда градиент идёт и какого он типа.</para>
+        /// </remarks>
+        private void FillGradient(MeshGenerationContext ctx, Span<Vector2> corners, float w, float h)
+        {
+            int n = corners.Length;
+            MeshWriteData mesh = ctx.Allocate(n + 1, n * 3);
+
+            var center = new Vector2(w * 0.5f, h * 0.5f);
+            float maxRadius = Mathf.Max(0.0001f, new Vector2(w * 0.5f, h * 0.5f).magnitude);
+
+            var verts = new Vertex[n + 1];
+            verts[0].position = new Vector3(center.x, center.y, Vertex.nearZ);
+            verts[0].tint = ColorAt(center, w, h, center, maxRadius);
+
+            for (int i = 0; i < n; i++)
+            {
+                verts[i + 1].position = new Vector3(corners[i].x, corners[i].y, Vertex.nearZ);
+                verts[i + 1].tint = ColorAt(corners[i], w, h, center, maxRadius);
+            }
+
+            mesh.SetAllVertices(verts);
+
+            var indices = new ushort[n * 3];
+            for (int i = 0; i < n; i++)
+            {
+                indices[i * 3] = 0;
+                indices[i * 3 + 1] = (ushort)(i + 1);
+                indices[i * 3 + 2] = (ushort)(i + 1 == n ? 1 : i + 2);
+            }
+
+            mesh.SetAllIndices(indices);
+        }
+
+        /// <summary>Доля пути от ближнего цвета к дальнему в точке — по режиму заготовки.</summary>
+        private Color ColorAt(Vector2 point, float w, float h, Vector2 center, float maxRadius)
+        {
+            float t = _fillMode switch
+            {
+                PlateFill.Up     => 1f - point.y / Mathf.Max(h, 0.0001f),
+                PlateFill.Right  => point.x / Mathf.Max(w, 0.0001f),
+                PlateFill.Left   => 1f - point.x / Mathf.Max(w, 0.0001f),
+                PlateFill.Radial => Vector2.Distance(point, center) / maxRadius,
+                _                => point.y / Mathf.Max(h, 0.0001f),
+            };
+
+            return Color.Lerp(_fill, _fillFar, Mathf.Clamp01(t));
         }
     }
 }

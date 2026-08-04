@@ -28,11 +28,11 @@
                  вёл в то же самое место — две двери в одну комнату.
                  Игровые пункты отделены от служебных зазором на «Профиле», без линии и подзаголовка. -->
             <ui:VisualElement class="gm-mainmenu__buttons">
-                <gm:PlateButton name="btn-create" text="Создать игру" class="gm-mainmenu__btn gm-mainmenu__btn--primary" />
-                <gm:PlateButton name="btn-join" text="Присоединиться" class="gm-mainmenu__btn" />
-                <gm:PlateButton name="btn-profile" text="Профиль" class="gm-mainmenu__btn gm-mainmenu__btn--group-start" />
-                <gm:PlateButton name="btn-settings" text="Настройки" class="gm-mainmenu__btn" />
-                <gm:PlateButton name="btn-quit" text="Выход" class="gm-mainmenu__btn" />
+                <gm:PlateButton name="btn-create" text="СОЗДАТЬ ИГРУ" class="gm-button gm-button--primary gm-mainmenu__btn" />
+                <gm:PlateButton name="btn-join" text="ПРИСОЕДИНИТЬСЯ" class="gm-button gm-mainmenu__btn" />
+                <gm:PlateButton name="btn-profile" text="ПРОФИЛЬ" class="gm-button gm-mainmenu__btn gm-mainmenu__btn--group-start" />
+                <gm:PlateButton name="btn-settings" text="НАСТРОЙКИ" class="gm-button gm-mainmenu__btn" />
+                <gm:PlateButton name="btn-quit" text="ВЫХОД" class="gm-button gm-mainmenu__btn" />
             </ui:VisualElement>
         </ui:VisualElement>
 

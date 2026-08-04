@@ -139,12 +139,16 @@ MonoBehaviour:
     Color: {r: 0.13333334, g: 0.4745098, b: 0.5058824, a: 1}
   - Token: --gm-color-surface-accent-active
     Color: {r: 0.13333334, g: 0.4745098, b: 0.5058824, a: 1}
+  - Token: --gm-color-surface-accent-far
+    Color: {r: 0.19215687, g: 0.68235296, b: 0.7254902, a: 1}
   - Token: --gm-color-surface-accent-hover
     Color: {r: 0.19215687, g: 0.68235296, b: 0.7254902, a: 1}
   - Token: --gm-color-surface-glass
     Color: {r: 0.13725491, g: 0.11764706, b: 0.09411765, a: 0.61960787}
   - Token: --gm-color-surface-panel
     Color: {r: 0.24705882, g: 0.21176471, b: 0.17254902, a: 1}
+  - Token: --gm-color-surface-plate-far
+    Color: {r: 0.21176471, g: 0.18039216, b: 0.14901961, a: 1}
   - Token: --gm-color-surface-raised
     Color: {r: 0.30588236, g: 0.2627451, b: 0.21176471, a: 1}
   - Token: --gm-color-surface-sunken

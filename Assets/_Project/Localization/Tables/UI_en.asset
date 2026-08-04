@@ -111,11 +111,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5717075769417741
-    m_Localized: "\u2014"
+    m_Localized: SETTINGS
     m_Metadata:
       m_Items: []
   - m_Id: 5717075769417742
-    m_Localized: "\u2014"
+    m_Localized: QUIT
     m_Metadata:
       m_Items: []
   - m_Id: 5717075769417743
@@ -297,6 +297,26 @@ MonoBehaviour:
   - m_Id: 7495534342561792
     m_Localized: "\xA9 2026 Alebardium  \xB7  FMOD Studio by Firelight Technologies
       Pty Ltd."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517449
+    m_Localized: GUILDMASTERS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8745786747904000
+    m_Localized: HAPPY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8745786768875520
+    m_Localized: CREATE GAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8745786773069824
+    m_Localized: JOIN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8745786773069825
+    m_Localized: PROFILE
     m_Metadata:
       m_Items: []
   references:

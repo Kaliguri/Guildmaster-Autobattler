@@ -57,7 +57,7 @@ namespace Guildmaster.UI
 
             if (create != null)
             {
-                create.text = L("ui.mainmenu.create", "Создать игру");
+                create.text = L("ui.mainmenu.create", "СОЗДАТЬ ИГРУ");
                 create.clicked += () => onCreate?.Invoke();
             }
 
@@ -65,7 +65,7 @@ namespace Guildmaster.UI
             // в настройках, потому что настройки принадлежат машине, а профиль — игроку.
             if (profile != null)
             {
-                profile.text = L("ui.mainmenu.profile", "Профиль");
+                profile.text = L("ui.mainmenu.profile", "ПРОФИЛЬ");
                 profile.clicked += () => onProfile?.Invoke();
             }
 
@@ -74,20 +74,20 @@ namespace Guildmaster.UI
             // гаснет — это внешний отказ, и прятать его нельзя.
             if (join != null)
             {
-                join.text = L("ui.mainmenu.join", "Присоединиться");
+                join.text = L("ui.mainmenu.join", "ПРИСОЕДИНИТЬСЯ");
                 join.SetEnabled(canJoin);
                 join.clicked += () => onJoin?.Invoke();
             }
 
             if (settings != null)
             {
-                settings.text = L("ui.mainmenu.settings", "Настройки");
+                settings.text = L("ui.mainmenu.settings", "НАСТРОЙКИ");
                 settings.clicked += () => onSettings?.Invoke();
             }
 
             if (quit != null)
             {
-                quit.text = L("ui.mainmenu.quit", "Выход");
+                quit.text = L("ui.mainmenu.quit", "ВЫХОД");
                 quit.clicked += () => onQuit?.Invoke();
             }
 
