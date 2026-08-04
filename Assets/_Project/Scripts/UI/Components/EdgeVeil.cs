@@ -88,7 +88,10 @@ namespace Guildmaster.UI.Components
             {
                 float t = (float)i / Segments;
                 float fade = (1f - t) * (1f - t);
-                var tint = new Color(_color.r, _color.g, _color.b, _color.a * fade);
+                // Перевод в линейное пространство — на нас: Painter2D делает это сам, ручной меш нет
+                // (см. PlateButton.VertexColor). Альфа гаммой не трогается.
+                Color linear = PlateButton.VertexColor(_color);
+                var tint = new Color(linear.r, linear.g, linear.b, _color.a * fade);
 
                 float pos = reversed ? (1f - t) : t;
                 float x = horizontal ? pos * w : 0f;

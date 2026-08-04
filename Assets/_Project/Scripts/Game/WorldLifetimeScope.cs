@@ -56,6 +56,11 @@ namespace Guildmaster.Game
             // Мир держит только выбор ассета — он делается в инспекторе, то есть здесь.
             builder.RegisterInstance(new Activity.BattleScopePrefab(_battleScopePrefab));
 
+            // Бой за главным меню. Живёт в МИРЕ, а не в корне: отсюда виден и префаб боевого скоупа,
+            // и сам скоуп-родитель, от которого бою рождаться. Через мероприятие он подниматься не
+            // может — в меню ещё нет сеанса, а мероприятие рождается от него.
+            builder.RegisterEntryPoint<Flow.MenuBattleDirector>(Lifetime.Singleton);
+
             // Вне боя камера ни за кем не следует (пустой источник точек фокуса). На входе в бой
             // боевой скоуп переключит источник через CombatFocusTarget.SetSource(живые юниты).
             builder.RegisterInstance<Presentation.IFocusPointSource>(Presentation.EmptyFocusPointSource.Instance);

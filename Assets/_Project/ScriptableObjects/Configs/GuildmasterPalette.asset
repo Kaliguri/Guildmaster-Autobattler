@@ -31,6 +31,10 @@ MonoBehaviour:
     Color: {r: 0.4509804, g: 0.79607844, b: 0.827451, a: 1}
   - Token: --gm-color-arcane
     Color: {r: 0.75686276, g: 0.5254902, b: 0.67058825, a: 1}
+  - Token: --gm-color-border-action
+    Color: {r: 0.27450982, g: 0.7607843, b: 0.80784315, a: 1}
+  - Token: --gm-color-border-action-strong
+    Color: {r: 0.4509804, g: 0.79607844, b: 0.827451, a: 1}
   - Token: --gm-color-border-frame
     Color: {r: 0.72156864, g: 0.5254902, b: 0.23137255, a: 1}
   - Token: --gm-color-border-inner
@@ -143,6 +147,8 @@ MonoBehaviour:
     Color: {r: 0.09411765, g: 0.3372549, b: 0.36078432, a: 1}
   - Token: --gm-color-surface-accent-hover
     Color: {r: 0.09411765, g: 0.3372549, b: 0.36078432, a: 1}
+  - Token: --gm-color-surface-accent-hover-far
+    Color: {r: 0.13333334, g: 0.4745098, b: 0.5058824, a: 1}
   - Token: --gm-color-surface-glass
     Color: {r: 0.13725491, g: 0.11764706, b: 0.09411765, a: 0.61960787}
   - Token: --gm-color-surface-panel

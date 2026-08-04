@@ -386,10 +386,10 @@
     border-width: 0;
     align-items: center;
     justify-content: center;
-    --gm-plate-fill: var(--gm-color-surface-plate);
-    --gm-plate-fill-far: var(--gm-color-surface-plate-far);
+    --gm-plate-fill: var(--gm-color-surface-accent);
+    --gm-plate-fill-far: var(--gm-color-surface-accent-far);
     --gm-plate-fill-mode: down;
-    --gm-plate-stroke: var(--gm-color-border-frame);
+    --gm-plate-stroke: var(--gm-color-border-action);
     --gm-plate-stroke-width: 2;
     --gm-plate-chamfer: 10;
 }
@@ -432,19 +432,19 @@
 }
 
 .gm-plate-button:hover {
-    --gm-plate-fill: var(--gm-color-surface-plate-lit);
-    --gm-plate-fill-far: var(--gm-color-surface-plate-lit-far);
-    --gm-plate-stroke: var(--gm-color-hover-border);
+    --gm-plate-fill: var(--gm-color-surface-accent-hover);
+    --gm-plate-fill-far: var(--gm-color-surface-accent-hover-far);
+    --gm-plate-stroke: var(--gm-color-border-action-strong);
 }
 
 /* Нажатие ВДАВЛИВАЕТ: поле уходит в самый тёмный тон, а подпись сдвигается на пиксель вниз.
    Сдвиг здесь не украшение — до него у кнопки не было никакой физики, только смена цвета, и
    нажатие не читалось как нажатие. */
 .gm-plate-button:active {
-    --gm-plate-fill: var(--gm-color-surface-plate);
-    --gm-plate-fill-far: var(--gm-color-surface-sunken);
+    --gm-plate-fill: var(--gm-color-surface-accent);
+    --gm-plate-fill-far: var(--gm-color-surface-accent-far);
     --gm-plate-fill-mode: up;
-    --gm-plate-stroke: var(--gm-color-border-inner);
+    --gm-plate-stroke: var(--gm-color-border-action);
 }
 
 .gm-plate-button:active > .gm-plate-button__label {
@@ -465,26 +465,22 @@
 
 /* Primary — та же пластина, только НАГРЕТАЯ (угли вместо холодного дерева). Форма общая: главное
    действие отличается температурой поля, а не другим силуэтом. */
-/* Заливка ГЛАВНОГО действия идёт от центра, а не сверху вниз: остальные пластины освещены сверху
-   как мебель, и радиальная среди них читается как подсвеченная изнутри. Обводка своя и толще —
-   «привлекающий аутлайн» (заявка Макса 04.08.2026). */
+/* ГЛАВНОЕ ДЕЙСТВИЕ отличается ТОЛЬКО КАЙМОЙ — поле у него такое же, как у соседей.
+   Так делает реф: у Guildrun выбранная кнопка держится в той же тёмной зоне, а зовёт золотой
+   оправой. Прежняя версия отличала её светом (яркая заливка), и это было моё решение, а не вывод
+   из рефа — Макс поймал: «когда у нашего рефа основная кнопка отличается лишь аутлайном - ты её
+   отличаешь светом. Кто это сказал?» */
 .gm-plate-button.gm-button--primary {
-    --gm-plate-fill: var(--gm-color-surface-accent);
-    --gm-plate-fill-far: var(--gm-color-surface-accent-far);
-    --gm-plate-fill-mode: down;
-    --gm-plate-stroke: var(--gm-color-focus-ring);
+    --gm-plate-stroke: var(--gm-color-border-action-strong);
     --gm-plate-stroke-width: 3;
 }
 
 .gm-plate-button.gm-button--primary:hover {
-    --gm-plate-fill: var(--gm-color-surface-accent-hover);
-    --gm-plate-fill-far: var(--gm-color-surface-accent-hover);
-    --gm-plate-stroke: var(--gm-color-focus-ring);
+    --gm-plate-stroke: var(--gm-color-border-action-strong);
 }
 
 .gm-plate-button.gm-button--primary:active {
-    --gm-plate-fill: var(--gm-color-surface-accent-active);
-    --gm-plate-stroke: var(--gm-color-hover-border);
+    --gm-plate-stroke: var(--gm-color-border-action);
 }
 
 /* Ряд кнопок в подвале панели: равные доли с зазором. */
@@ -1703,7 +1699,7 @@
 .gm-title__rule {
     flex-grow: 1;
     height: 1px;
-    background-color: var(--gm-color-display-accent-quiet);
+    background-color: var(--gm-color-border-action);
 }
 
 /* Разрядка обязательна: капс без неё слипается, а у кириллицы это заметнее, чем у латиницы —
@@ -1711,7 +1707,7 @@
 .gm-title__over {
     -unity-font-definition: var(--gm-font-inscription);
     font-size: var(--gm-font-title);
-    color: var(--gm-color-display-accent-quiet);
+    color: var(--gm-color-text-action);
     letter-spacing: 16px;
     margin-left: var(--gm-space-2);
     /* Разрядка добавляет просвет и ПОСЛЕ последней буквы — без компенсации надпись стоит не по
@@ -1722,7 +1718,7 @@
 
 .gm-title__main {
     -unity-font-definition: var(--gm-font-wordmark);
-    font-size: var(--gm-font-display);
+    font-size: var(--gm-font-lg);
     color: var(--gm-color-display-accent);
     letter-spacing: 2px;
     -unity-text-align: middle-left;
@@ -1732,9 +1728,9 @@
    центру блока. Это не версия билда (та живёт в углу экрана) — это статус самой игры. */
 .gm-title__demo {
     -unity-font-definition: var(--gm-font-inscription);
-    font-size: var(--gm-font-xs);
-    color: var(--gm-color-text-muted);
-    letter-spacing: 10px;
+    font-size: var(--gm-font-sm);
+    color: var(--gm-color-text-action);
+    letter-spacing: 12px;
     align-self: center;
     padding-left: 10px;
     margin-top: var(--gm-space-0);

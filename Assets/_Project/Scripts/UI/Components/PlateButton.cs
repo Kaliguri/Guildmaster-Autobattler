@@ -243,7 +243,19 @@ namespace Guildmaster.UI.Components
                 _                => point.y / Mathf.Max(h, 0.0001f),
             };
 
-            return Color.Lerp(_fill, _fillFar, Mathf.Clamp01(t));
+            return VertexColor(Color.Lerp(_fill, _fillFar, Mathf.Clamp01(t)));
         }
+
+        /// <summary>
+        /// Цвет для ВЕРШИНЫ. В линейном цветовом пространстве его надо перевести самому.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Painter2D"/> конвертирует цвета сам, ручной меш — нет: значение из USS уходит в
+        /// вершину как есть и трактуется как линейное, отчего кнопка выходит примерно вдвое светлее
+        /// заданной. Поймано живьём 04.08.2026: поле <c>rgb(18,62,66)</c> на экране читалось светлой
+        /// бирюзой, и цифры замера переставали значить что-либо.
+        /// </remarks>
+        internal static Color VertexColor(Color c)
+            => QualitySettings.activeColorSpace == ColorSpace.Linear ? c.linear : c;
     }
 }

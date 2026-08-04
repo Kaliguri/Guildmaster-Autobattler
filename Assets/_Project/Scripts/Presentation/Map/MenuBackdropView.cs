@@ -43,14 +43,19 @@ namespace Guildmaster.Presentation.Map
         [SerializeField] private float _viewHeight = 8f;
 
         private ISubscriber<ScreenBackdropChangedEvent> _menuSub;
+        private ISubscriber<MenuBattleChangedEvent> _battleSub;
         private VisualToggles _toggles;
         private IDisposable _sub;
+        private IDisposable _battleSubscription;
 
         private Camera _camera;
         private MeshRenderer _quad;
         private MaterialPropertyBlock _block;
         private bool _menuOpen;
         private bool _enabledByToggle = true;
+        // За меню может идти живой бой (04.08.2026). Тогда стол не просто лишний — он закрывает собой
+        // ровно то, ради чего бой и заведён.
+        private bool _battleBehind;
 
         private static readonly int AspectXId = Shader.PropertyToID("_AspectX");
         private static readonly int LightStrengthId = Shader.PropertyToID("_LightStrength");
@@ -58,15 +63,19 @@ namespace Guildmaster.Presentation.Map
         private static readonly int PatternTilingId = Shader.PropertyToID("_PatternTiling");
 
         [Inject]
-        public void Construct(ISubscriber<ScreenBackdropChangedEvent> menuSub, VisualToggles toggles)
+        public void Construct(ISubscriber<ScreenBackdropChangedEvent> menuSub,
+                              ISubscriber<MenuBattleChangedEvent> battleSub,
+                              VisualToggles toggles)
         {
-            _menuSub = menuSub;
-            _toggles = toggles;
+            _menuSub   = menuSub;
+            _battleSub = battleSub;
+            _toggles   = toggles;
         }
 
         private void Start()
         {
             _sub = _menuSub?.Subscribe(e => SetOpen(e.Visible));
+            _battleSubscription = _battleSub?.Subscribe(e => { _battleBehind = e.Running; ApplyVisibility(); });
 
             _toggles?.Register("menu.table", "Стол за экранами",
                 on => { _enabledByToggle = on; ApplyVisibility(); });
@@ -77,6 +86,7 @@ namespace Guildmaster.Presentation.Map
         private void OnDestroy()
         {
             _sub?.Dispose();
+            _battleSubscription?.Dispose();
             _toggles?.Unregister("menu.table");
         }
 
@@ -88,7 +98,8 @@ namespace Guildmaster.Presentation.Map
 
         private void ApplyVisibility()
         {
-            bool show = _menuOpen && _enabledByToggle && _style != null && _style.TableMaterial != null;
+            bool show = _menuOpen && !_battleBehind && _enabledByToggle
+                        && _style != null && _style.TableMaterial != null;
             if (show && _camera == null) Build();
             if (_camera != null) _camera.gameObject.SetActive(show);
             if (show) Fit();

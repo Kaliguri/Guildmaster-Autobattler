@@ -49,6 +49,10 @@ namespace Guildmaster.Game
                  "состав никем не заказан. Пусто = площадка встаёт пустой (это не ошибка: «состав не собран»).")]
         [SerializeField] private ProvingGroundsConfig _provingGroundsConfig;
 
+        [Tooltip("Бои, которые крутятся ЗА главным меню (список пресетов + сиды). Потребитель — " +
+                 "MenuBattleDirector. Пусто = за меню останется обычный задник, это законная настройка.")]
+        [SerializeField] private MenuBattleConfig _menuBattleConfig;
+
         [Tooltip("Снимок палитры проекта (UI/Theme/tokens.*.uss → Alebardium/Дизайн-система/Пересобрать палитру). " +
                  "Нужен интерфейсу, чтобы карточка реликвии красила тело ТЕМ ЖЕ путём, что бой: юнит хранит " +
                  "ступень приглушения, цвет живёт здесь. Пусто = карточка покажет арт как есть.")]
@@ -76,6 +80,12 @@ namespace Guildmaster.Game
             builder.RegisterInstance(ScopeWiring.Optional(_provingGroundsConfig, nameof(RootLifetimeScope),
                 nameof(_provingGroundsConfig),
                 "вход на Ристалище без заказа даст пустую площадку — драться будет не с кем"));
+
+            // Бои за главным меню. Optional: пустой список означает «фон без боя» — так это и
+            // настраивается, а не ломается.
+            builder.RegisterInstance(ScopeWiring.Optional(_menuBattleConfig, nameof(RootLifetimeScope),
+                nameof(_menuBattleConfig),
+                "за главным меню не будет боя — останется задник, как было до 04.08.2026"));
 
             // Палитра проекта: интерфейсу она нужна ровно за одним — цветом ступени приглушения на карточке
             // реликвии. Без неё карточка рисует арт как нарисован, поэтому Optional, а не Require.

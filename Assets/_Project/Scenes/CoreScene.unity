@@ -298,6 +298,7 @@ MonoBehaviour:
   _audioCatalog: {fileID: 11400000, guid: fe034423cf8b8c5409a5cf3289ab74cc, type: 2}
   _actConfig: {fileID: 11400000, guid: dbc39cb776c7fd6469e9cd31b97af1ab, type: 2}
   _provingGroundsConfig: {fileID: 11400000, guid: 557cd34fa730c0c4c8acfa210f1d7d75, type: 2}
+  _menuBattleConfig: {fileID: 11400000, guid: f1b996516408ea24d8af671b010ec86f, type: 2}
   _palette: {fileID: 11400000, guid: f42219bf529da2c4d909a76d914ab971, type: 2}
 --- !u!4 &265839542
 Transform:
