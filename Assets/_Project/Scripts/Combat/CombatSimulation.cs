@@ -732,17 +732,23 @@ namespace Guildmaster.Combat
 
         public void Displace(in DisplaceRequest req)
         {
+            // Условие приёма ОДНО на оба действия — маркер и траекторию, и совпадает оно с гейтом
+            // DisplacementSystem.Add. Раньше маркер вешался первым, а Add молча отказывался при нулевой
+            // дистанции: цель оставалась с постоянным неснимаемым жёстким контролем до конца боя, потому
+            // что снимает его только КОНЕЦ ПОЛЁТА, которого уже не будет. «Толкает» и «на сколько» —
+            // два независимых поля ассета, так что нулевая дистанция при взведённом флаге это один
+            // промах в инспекторе, а не выдумка.
+            if (req.Target == null || req.Target.IsDead || req.Distance <= 0f) return;
+
             // Смещение — это ЭФФЕКТ: вешаем маркер «в полёте» (жёсткий контроль + тег KnockUp, длительность
             // не скейлится — Neutral) на цель, затем отдаём траекторию DisplacementSystem. Маркер снимается
             // в конце полёта (OnDisplacementEnded → RemoveByTag) и поднимает единый EffectExpired.
-            if (req.Target != null && !req.Target.IsDead)
-                _effectSystem.Apply(req.Target, _airborneEffect, req.Source, this);
+            _effectSystem.Apply(req.Target, _airborneEffect, req.Source, this);
 
             // Урон толчка по САМОЙ отброшенной цели (решение 2026-07-28): раньше заданный урон уходил
             // только тем, кого задело «ядром» на линии, — то есть толчок бил мимо того, кого толкнули.
             // Самосмещение (рывок кастующего) не бьёт себя, цепь идёт с нулевым уроном и тоже молчит.
-            if (req.Damage > 0f && req.Source != null && req.Target != null && !req.Target.IsDead
-                && !ReferenceEquals(req.Source, req.Target))
+            if (req.Damage > 0f && req.Source != null && !ReferenceEquals(req.Source, req.Target))
             {
                 DealDamage(new DamageRequest(req.Source, req.Target, req.Damage, req.DamageType, ArmorK));
             }
