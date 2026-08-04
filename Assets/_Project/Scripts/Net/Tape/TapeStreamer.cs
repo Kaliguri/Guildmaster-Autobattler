@@ -24,7 +24,22 @@ namespace Guildmaster.Net.Tape
     public sealed class TapeStreamer : IDisposable
     {
         /// <summary>Сколько отправленных чанков держим на случай запроса повтора.</summary>
-        public const int DefaultHistoryChunks = 32;
+        /// <summary>
+        /// Сколько чанков хост держит для повторной отправки. <see cref="KeepWholeBattle"/> — весь бой.
+        /// </summary>
+        /// <remarks>
+        /// <b>По умолчанию хранится ВЕСЬ бой</b> (решение Макса 04.08.2026), а не хвост в тридцать две
+        /// секунды. Причина не в потерях пакетов — тех и правда хватало, — а в подключении посреди боя:
+        /// гость получает ленту с нуля и потому встаёт в общую нумерацию без дыр, может отмотать назад
+        /// и имеет на руках полный бой. Отвергнута альтернатива «начинать отсчёт с первого полученного
+        /// чанка»: дешевле в байтах, но лишает гостя ленты и перемотки.
+        /// <para>Цена — память: чанк это секунда боя, порядка трёх килобайт; бой на три минуты
+        /// обходится в полмегабайта и живёт ровно до <see cref="Reset"/>, то есть до следующего боя.</para>
+        /// </remarks>
+        public const int DefaultHistoryChunks = KeepWholeBattle;
+
+        /// <summary>Не выбрасывать ничего: история равна бою целиком.</summary>
+        public const int KeepWholeBattle = int.MaxValue;
 
         private readonly INetTransport _transport;
         private readonly TapeChunkPump _pump;
@@ -82,6 +97,9 @@ namespace Guildmaster.Net.Tape
             _pump.Reset();
             _history.Clear();
             _historyOrder.Clear();
+            // Догрузка принадлежит ПРОШЛОМУ бою: дошли эти чанки гостю или нет, они больше не про то,
+            // что сейчас на арене, а номера в новом бою начинаются заново и совпадут с чужими.
+            _backfill.Clear();
             SentChunkCount   = 0;
             ResentChunkCount = 0;
         }
@@ -119,10 +137,57 @@ namespace Guildmaster.Net.Tape
                 _history.Remove(_historyOrder.Dequeue());
         }
 
+        /// <summary>
+        /// Отдать очередную порцию догрузки — бой с начала тому, кто подключился посреди него.
+        /// </summary>
+        /// <remarks>
+        /// <b>Порциями, а не залпом.</b> Бой на три минуты — это под две сотни надёжных сообщений, и
+        /// высыпать их в очередь Steam одним кадром значит выбрать худший момент: ровно этот, когда
+        /// соединение только поднялось. Отдаём по нескольку за кадр — показ у всех на паузе, спешить
+        /// некуда.
+        /// </remarks>
+        public void PumpBackfill(int maxPerCall = BackfillChunksPerCall)
+        {
+            for (int sent = 0; sent < maxPerCall && _backfill.Count > 0; )
+            {
+                (int peer, int number) = _backfill.Peek();
+                _backfill.Dequeue();
+
+                if (!_history.TryGetValue(number, out byte[] bytes)) continue; // такого чанка и не было
+
+                _transport.Send(peer,
+                    NetEnvelope.Wrap(NetChannel.TapeChunk, new ArraySegment<byte>(bytes), ref _envelope),
+                    NetDelivery.Reliable);
+                ResentChunkCount++;
+                sent++;
+            }
+        }
+
+        /// <summary>Сколько чанков догрузки ещё не ушло — по нему видно, ждать ли гостя.</summary>
+        public int BackfillRemaining => _backfill.Count;
+
+        /// <summary>За один вызов — столько чанков, то есть примерно восемь секунд боя за кадр.</summary>
+        public const int BackfillChunksPerCall = 8;
+
+        private readonly Queue<(int Peer, int Number)> _backfill = new Queue<(int, int)>();
+
         private void HandleMessage(int from, ArraySegment<byte> message)
         {
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
             if (channel != NetChannel.TapeResend) return;
+
+            // Пустая просьба — «пришли бой с начала»: так просит тот, кто подключился, когда бой уже
+            // идёт. Ставим ему в очередь всё, что храним, по возрастанию номера: приёмник складывает
+            // ленту по номерам и от порядка не зависит, но человеку, который смотрит на догрузку,
+            // естественнее видеть бой прибывающим с начала.
+            if (payload.Count == 0)
+            {
+                var numbers = new List<int>(_history.Keys);
+                numbers.Sort();
+                for (int i = 0; i < numbers.Count; i++) _backfill.Enqueue((from, numbers[i]));
+                return;
+            }
+
             if (payload.Count < sizeof(int)) return;
 
             int number = BitConverter.ToInt32(payload.Array, payload.Offset);
