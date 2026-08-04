@@ -386,7 +386,7 @@
     border-width: 0;
     align-items: center;
     justify-content: center;
-    --gm-plate-fill: var(--gm-color-surface-panel);
+    --gm-plate-fill: var(--gm-color-surface-plate);
     --gm-plate-fill-far: var(--gm-color-surface-plate-far);
     --gm-plate-fill-mode: down;
     --gm-plate-stroke: var(--gm-color-border-frame);
@@ -432,7 +432,8 @@
 }
 
 .gm-plate-button:hover {
-    --gm-plate-fill: var(--gm-color-hover-surface);
+    --gm-plate-fill: var(--gm-color-surface-plate-lit);
+    --gm-plate-fill-far: var(--gm-color-surface-plate-lit-far);
     --gm-plate-stroke: var(--gm-color-hover-border);
 }
 
@@ -440,7 +441,9 @@
    Сдвиг здесь не украшение — до него у кнопки не было никакой физики, только смена цвета, и
    нажатие не читалось как нажатие. */
 .gm-plate-button:active {
-    --gm-plate-fill: var(--gm-color-surface-sunken);
+    --gm-plate-fill: var(--gm-color-surface-plate);
+    --gm-plate-fill-far: var(--gm-color-surface-sunken);
+    --gm-plate-fill-mode: up;
     --gm-plate-stroke: var(--gm-color-border-inner);
 }
 
@@ -468,13 +471,14 @@
 .gm-plate-button.gm-button--primary {
     --gm-plate-fill: var(--gm-color-surface-accent);
     --gm-plate-fill-far: var(--gm-color-surface-accent-far);
-    --gm-plate-fill-mode: radial;
+    --gm-plate-fill-mode: down;
     --gm-plate-stroke: var(--gm-color-focus-ring);
     --gm-plate-stroke-width: 3;
 }
 
 .gm-plate-button.gm-button--primary:hover {
     --gm-plate-fill: var(--gm-color-surface-accent-hover);
+    --gm-plate-fill-far: var(--gm-color-surface-accent-hover);
     --gm-plate-stroke: var(--gm-color-focus-ring);
 }
 
