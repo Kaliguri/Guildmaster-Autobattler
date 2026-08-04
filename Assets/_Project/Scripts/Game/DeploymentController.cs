@@ -14,39 +14,40 @@ using VContainer.Unity;
 namespace Guildmaster.Game
 {
     /// <summary>
-    /// Оркестратор интерактивной фазы расстановки (план шаг 4). На загрузку Free-пресета
-    /// (<see cref="EncounterLoader.FreeDeploymentRequested"/>) ставит бой на паузу, флашит спавны и даёт
-    /// игроку таскать своих юнитов (team 0) в пределах player-зон; бой начинает кнопка «Начать».
+    /// Владелец МЕСТА и СОСТАВА расстановки: кто вышел на арену, откуда он там взялся и когда
+    /// начинается бой. На загрузку Free-пресета (<see cref="EncounterLoader.FreeDeploymentRequested"/>)
+    /// ставит бой на паузу, флашит спавны и держит фазу до общего согласия «Начать».
     /// <list type="bullet">
-    /// <item>Пикинг — математикой по радиусу тела (без коллайдеров), ближайший team-0 юнит под курсором.</item>
-    /// <item>Drag с валидацией <see cref="DeploymentService.CanPlace"/> + анти-оверлап при drop (reject).</item>
-    /// <item>Дабл-клик по юниту → публикация <see cref="OpenLoadoutRequest"/> (открывает loadout, шаг 5).</item>
-    /// <item>Экип релика (<see cref="EquipRelicRequest"/>) правит ростер и пересобирает превью респавном.</item>
+    /// <item>Состав площадки: узел забега, построение между узлами или Ристалище — см. <c>Venue</c>.</item>
+    /// <item>Исполнение намерений игроков: <see cref="UnitMoveIntent"/>, <see cref="OpenLoadoutIntent"/>,
+    /// <see cref="EquipRelicRequest"/> — правит ростер и пересобирает превью респавном.</item>
+    /// <item>Исход боя на площадке и возврат в расстановку по общему согласию.</item>
     /// </list>
-    /// Живёт в боевом скоупе как EntryPoint. Хост-авторитативные сетевые команды расстановки — будущий шов
-    /// (сейчас всё локально; drop = прямая правка позиции, а не команда хосту).
     /// </summary>
-    public sealed class DeploymentController : IStartable, ITickable, IDisposable
+    /// <remarks>
+    /// <b>Живёт ТОЛЬКО у хозяина сеанса</b> (см. <c>CombatLifetimeScope</c>): состав арены поднимает
+    /// пресет боя, а у гостя пресета не бывает — бой приезжает лентой. Руки игрока живут отдельно, в
+    /// <see cref="DeploymentInteraction"/>, и есть у обоих участников: право трогать фигурки и право
+    /// решать, кто на арене, — это разные права, и разведены они по разным классам намеренно.
+    /// <para><b>Намерение здесь ПЕРЕПРОВЕРЯЕТСЯ.</b> Зону и перекрытие уже проверили руки, но руки
+    /// бывают чужие и бывают устаревшие: у гостя арена отстаёт на задержку сети, и точка, законная в
+    /// его кадре, к нашему может быть занята. Владелец — последнее слово, и это не перестраховка, а
+    /// то самое «одна авторитетность на факт».</para>
+    /// </remarks>
+    public sealed class DeploymentController : IStartable, IDisposable
     {
         // Что подтверждают все игроки: прежде чем бой начнётся — и прежде чем вернуться с итогов боя
         // обратно в расстановку. Ключи общие с теми, кто рисует счёт, поэтому живут одним владельцем.
         private const string ReadyKeyStart    = Core.Net.ReadyKeys.BattleStart;
         private const string ReadyKeyContinue = Core.Net.ReadyKeys.BattleContinue;
 
-        private const float DoubleClickWindow = 0.30f;
-        private const float DragMinDelta       = 0.05f; // мир-единицы: меньше = «клик», больше = «drag»
-        private const float PickRadiusScale    = 1.3f;  // круг-опора × это = «ближняя» зона хватания (у ног)
-        private const float FigurePickPadding  = 0.08f; // мировой запас вокруг фигуры: чуть-чуть, не «гигантский»
-
         private readonly EncounterLoader  _loader;
         private readonly CombatSimulation _sim;
         private readonly DeploymentService _deploy;
-        private readonly IInputService    _input;
-        private readonly CombatPresenter  _presenter;
-        private readonly ArenaLayoutData  _layout;
         private readonly IPublisher<OpenLoadoutRequest> _openLoadoutPub;
         private readonly ISubscriber<EquipRelicRequest> _equipSub;
-        private readonly ISubscriber<RelicDragEvent> _relicDragSub; // QA #5: drag реликвии из инвентаря на юнита
+        private readonly ISubscriber<UnitMoveIntent>    _moveSub;      // «поставь бойца сюда» — от рук любого игрока
+        private readonly ISubscriber<OpenLoadoutIntent> _loadoutSub;   // «покажи снаряжение этого бойца»
         private readonly ISubscriber<SetTestZoneRequest> _testZoneSub; // радио-табы: целевое состояние тест-зоны (интент)
         private readonly ISubscriber<SetFormationRequest> _formationSub; // кнопка передышки «К построению» (интент)
         private readonly ISubscriber<ProvingGroundsSetupRequest> _groundsSetupSub; // заказ состава площадки (дев-срезы)
@@ -56,9 +57,9 @@ namespace Guildmaster.Game
         // За какую сторону играем МЫ. Своего поля с командой у расстановки нет и не должно быть:
         // владелец этого факта один — состав сеанса, и спрашивается он в момент вопроса.
         private readonly Core.Players.ILocalPlayer _localPlayer;
-        // Указатель в мире. Свой перевод «экран → мир» расстановка держала до 03.08.2026, пока считать
-        // его не понадобилось второму потребителю (присутствие): два перевода разъехались бы молча.
-        private readonly Core.Input.IPointerWorld  _pointer;
+        // Кто ещё в сеансе и за какую сторону: по нему проверяется право автора намерения. Вне сеанса
+        // (соло) пуст, и право сводится к «участник ровно один».
+        private readonly Core.Players.ISessionRoster _roster;
         // Камеры здесь НЕТ намеренно: какой вид показать, выводится из фазы боя (её слушает
         // CameraModeController). Прежде расстановка сама ставила свободную камеру и кадрировала арену, а
         // старт боя сам возвращал слежение — два владельца вида, и оба перебивали выбор игрока.
@@ -131,9 +132,9 @@ namespace Guildmaster.Game
 
         private Venue _venue = Venue.None;
 
-        private DeploymentView _view;
         private IDisposable _equipSubscription;
-        private IDisposable _relicDragSubscription;
+        private IDisposable _moveSubscription;
+        private IDisposable _loadoutSubscription;
         private IDisposable _testZoneSubscription;
         private IDisposable _formationSubscription;
         private IDisposable _groundsSetupSubscription;
@@ -154,31 +155,15 @@ namespace Guildmaster.Game
         // Противник этого захода — рядом со своими и по той же причине: после боя площадка обязана
         // встать тем же составом, иначе «Продолжить» подсунуло бы игроку чужой бой.
         private readonly List<PlayerSpawn> _provingOpponents = new List<PlayerSpawn>();
-        private RuntimeUnit _dragged;
-        private Vector2 _dragStartWorld;
-        // Схваченная точка фигурки: сим-позиция юнита минус курсор в момент захвата. Юнит НЕ прыгает центром
-        // под курсор («магнит») — держим его за то место, за которое взяли, как настоящую фигурку на столе.
-        private Vector2 _grabOffset;
-        // Ноги минус сим-позиция на момент захвата: круг-опору рисуем у ног ПРИЗРАКА, а не под курсором.
-        // Замеряем один раз при захвате — иначе дрожание кадра анимации ёрзало бы кругом.
-        private Vector2 _feetOffset;
-        private bool _dragMoved;
-        private int _hoverUnitId = -1;
-        private float _lastClickTime;
-        private int _lastClickUnitId = -1;
-
-        private RelicData _relicDrag;        // QA #5: тащим реликвию из инвентаря (null = нет); ghost её силуэта
 
         public DeploymentController(
             EncounterLoader loader,
             CombatSimulation sim,
             DeploymentService deploy,
-            IInputService input,
-            CombatPresenter presenter,
-            ArenaLayoutData layout,
             IPublisher<OpenLoadoutRequest> openLoadoutPub,
             ISubscriber<EquipRelicRequest> equipSub,
-            ISubscriber<RelicDragEvent> relicDragSub,
+            ISubscriber<UnitMoveIntent> moveSub,
+            ISubscriber<OpenLoadoutIntent> loadoutSub,
             ISubscriber<SetTestZoneRequest> testZoneSub,
             ISubscriber<SetFormationRequest> formationSub,
             ISubscriber<ProvingGroundsSetupRequest> groundsSetupSub,
@@ -192,7 +177,7 @@ namespace Guildmaster.Game
             ProvingGroundsConfig groundsConfig,
             Core.Net.IReadyGate ready,
             Core.Players.ILocalPlayer localPlayer,
-            Core.Input.IPointerWorld pointer,
+            Core.Players.ISessionRoster roster,
             ISubscriber<BattleEndedEvent> battleEndedSub,
             IPublisher<Guildmaster.Guild.OpenOutcomeRequest> outcomePub,
             Core.Flow.IRunControl runControl)
@@ -204,7 +189,7 @@ namespace Guildmaster.Game
             _groundsConfig = groundsConfig;
             _ready         = ready;
             _localPlayer   = localPlayer;
-            _pointer       = pointer;
+            _roster        = roster;
             _arenaRevealPub = arenaRevealPub;
             _audio         = audio;
             _runStates     = runStates;
@@ -212,12 +197,10 @@ namespace Guildmaster.Game
             _loader        = loader;
             _sim           = sim;
             _deploy        = deploy;
-            _input         = input;
-            _presenter     = presenter;
-            _layout        = layout;
             _openLoadoutPub = openLoadoutPub;
             _equipSub      = equipSub;
-            _relicDragSub  = relicDragSub;
+            _moveSub       = moveSub;
+            _loadoutSub    = loadoutSub;
             _testZoneSub   = testZoneSub;
             _formationSub  = formationSub;
             _groundsSetupSub = groundsSetupSub;
@@ -228,10 +211,11 @@ namespace Guildmaster.Game
         public void Start()
         {
             _loader.FreeDeploymentRequested += OnFreeDeployment;
-            _input.PointerPressed  += OnPointerPressed;
-            _input.PointerReleased += OnPointerReleased;
             _equipSubscription = _equipSub.Subscribe(OnEquip);
-            _relicDragSubscription = _relicDragSub?.Subscribe(OnRelicDrag);
+            // Намерения игроков — единственный вход в правку арены. Свой клик приходит той же дорогой,
+            // что чужой: разных путей к одному результату быть не должно, иначе они разъедутся.
+            _moveSubscription    = _moveSub?.Subscribe(OnMoveIntent);
+            _loadoutSubscription = _loadoutSub?.Subscribe(OnLoadoutIntent);
             _testZoneSubscription = _testZoneSub?.Subscribe(OnSetTestZone);
             _formationSubscription = _formationSub?.Subscribe(OnSetFormation);
             _groundsSetupSubscription = _groundsSetupSub?.Subscribe(OnProvingGroundsSetup);
@@ -296,21 +280,6 @@ namespace Guildmaster.Game
             if (_ready == null) StartCombat();
         }
 
-        /// <summary>
-        /// Распоряжаюсь ли я этой стороной: можно ли брать её бойцов и двигать.
-        /// </summary>
-        /// <remarks>
-        /// <b>Ристалище и PvP отличаются РОВНО этим</b>, и разница описана флагом мероприятия
-        /// (<c>ActivitySetup.OwnUnitsOnly</c>), а не двумя ветками кода — решение Макса 02.08.2026, по
-        /// которому PvP не заводится отдельным видом. До 03.08.2026 флаг не читал никто: расстановка
-        /// жёстко знала «команда 0» в семи местах, и на площадке нельзя было тронуть противника, хотя
-        /// он там — такой же кит игрока.
-        /// <para><b>Своя сторона спрашивается у <see cref="ILocalPlayer"/>, а не считается нулём</b>
-        /// (03.08.2026). Ноль был верен ровно до второго живого игрока: в PvP оба клиента считали бы
-        /// своей одну и ту же сторону и распоряжались бы одним строем. Сторону локального игрока держит
-        /// состав сеанса (<c>ISessionRoster</c>), и это единственный её владелец.</para>
-        /// </remarks>
-        private bool CanCommand(int team) => !_activity.OwnUnitsOnly || team == _localPlayer.Team;
 
         /// <summary>
         /// Половина арены, на которой стоит эта команда.
@@ -404,10 +373,9 @@ namespace Guildmaster.Game
         {
             _session.PhaseChanged -= OnPhaseChanged;
             _loader.FreeDeploymentRequested -= OnFreeDeployment;
-            _input.PointerPressed  -= OnPointerPressed;
-            _input.PointerReleased -= OnPointerReleased;
             _equipSubscription?.Dispose();
-            _relicDragSubscription?.Dispose();
+            _moveSubscription?.Dispose();
+            _loadoutSubscription?.Dispose();
             _testZoneSubscription?.Dispose();
             _formationSubscription?.Dispose();
             _groundsSetupSubscription?.Dispose();
@@ -418,7 +386,6 @@ namespace Guildmaster.Game
             _ready?.Unbind(ReadyKeyStart);
             _ready?.Unbind(ReadyKeyContinue);
             _session.UnbindClock(); // сбрасывает фазу в None → панель скрывается между боями
-            if (_view != null) UnityEngine.Object.Destroy(_view.gameObject);
         }
 
         // ── Вход в фазу ──────────────────────────────────────────────────────
@@ -442,8 +409,6 @@ namespace Guildmaster.Game
                 }
             RemapLiveUnits();
 
-            EnsureView();
-            _view.SetActive(true);
             _deploying = true;
             SetVenue(Venue.BattleNode); // узел боя — не площадка: серая арена гаснет здесь же, по ребру места
             _session.SetPhase(BattlePhase.Deployment); // центр панели = «Начать»; фаза → навигатор ставит контекст Deployment (K8)
@@ -545,8 +510,6 @@ namespace Guildmaster.Game
 
             _encounter = null;     // без узла боя врагов задаёт место, а не энкаунтер
             _sim.SetPaused(true);
-            EnsureView();
-            _view.SetActive(true);
             _deploying = true;
             SetVenue(venue);
             _session.SetPhase(BattlePhase.Deployment); // фаза → навигатор ставит контекст Deployment (K8)
@@ -733,22 +696,11 @@ namespace Guildmaster.Game
             Guildmaster.Diagnostics.UiTrace.Log($"ctrl.LeaveVenue({_venue}) → фаза {_returnPhase}");
             FlushRoster(); // что переставили — то и останется в гильдии
             _deploying = false;
-            _dragged   = null;
-            _relicDrag = null;
-            _view?.SetActive(false);
             // Возвращаем ТУ фазу, в которой место застали: вне забега — None (панель без «Начать»),
             // в передышке — Interlude (мир на экране, задник UI по-прежнему запрещён).
             BattlePhase back = _returnPhase;
             SetVenue(Venue.None); // цветная арена + снятие Sheet — по ребру внутри
             _session.SetPhase(back);
-        }
-
-        private void EnsureView()
-        {
-            if (_view != null) return;
-            var go = new GameObject("DeploymentView");
-            _view = go.AddComponent<DeploymentView>();
-            _view.Init(_layout);
         }
 
         // Сопоставить слоты ростера живым team-0 юнитам (спавнятся в порядке ростера).
@@ -764,233 +716,58 @@ namespace Guildmaster.Game
             }
         }
 
-        // ── Покадровая интеракция ────────────────────────────────────────────
-        public void Tick()
+        // ── Намерения игроков ────────────────────────────────────────────────
+
+        /// <summary>
+        /// «Поставь бойца сюда». Единственный вход в правку расстановки — и для своих рук, и для рук
+        /// напарника.
+        /// </summary>
+        /// <remarks>
+        /// <b>Проверяем ЗАНОВО всё, что проверили руки.</b> Право на сторону — потому что автор
+        /// намерения может быть не тот, кто им распоряжается; зону и перекрытие — потому что арена
+        /// автора отстаёт от нашей на задержку сети, и законная у него точка к нам может прийти уже
+        /// занятой. Отказ молчаливый: у автора боец просто останется на месте, а звук отказа ему уже
+        /// сыграли собственные руки.
+        /// </remarks>
+        private void OnMoveIntent(UnitMoveIntent e)
         {
             if (!_deploying) return;
 
-            // Клавиши старта здесь НЕТ (реш. Макса 2026-07-27): бой начинает только кнопка «Начать».
-            // Прежний Enter читался с клавиатуры напрямую, мимо IInputService, и потому не подчинялся
-            // ни контексту ввода, ни чужому захвату клавиатуры: Enter, которым отправляли команду в
-            // dev-консоли, приходил сюда и начинал бой. Хоткей вернём — но через карту действий.
+            RuntimeUnit unit = FindLive(e.UnitId);
+            if (unit == null || unit.IsDead) return;
+            if (!MayCommand(e.PlayerId, unit.Team)) return;
+            if (!_deploy.CanPlace(e.Position, SideOf(unit.Team), CanUseExtended(unit))) return;
+            if (Overlaps(e.Position, unit)) return;
 
-            // Реликвия-drag из инвентаря (QA #5): призрак силуэта реликвии виден ВЕЗДЕ, пока тащим (в т.ч. над
-            // панелью грида — ghost рисуется поверх мира), цель эквипа под курсором подсвечиваем кругом. Юнит-
-            // drag/ховер в это время не трогаем — это отдельный жест поверх UI.
-            if (_relicDrag != null) { DrawRelicDragGhost(); return; }
-
-            // Меню loadout открыто (ввод заглушён) или курсор над непрозрачной UITK-панелью (инвентарь) вне
-            // активного драга — не интеракчим (ховер/ghost гасим), но круги-опоры оставляем видимыми (QA #20:
-            // читаемость поля не зависит от того, где курсор).
-            if (_input.GameplaySuppressed || (_input.PointerOverUI && _dragged == null))
-            {
-                HideGhostSprite();
-                UpdateUnitRings(-1, default, false, false);
-                return;
-            }
-
-            Vector2 world = _pointer.Position;
-            int hoverId = -1;
-            bool dragValid = false;
-
-            Vector2 dragTarget = default;
-            if (_dragged != null)
-            {
-                if ((world - _dragStartWorld).sqrMagnitude > DragMinDelta * DragMinDelta) _dragMoved = true;
-                dragTarget = DragTarget(world); // куда встанет юнит, если отпустить здесь (с учётом точки захвата)
-                dragValid = CanDrop(dragTarget);
-                ShowDragGhost(dragTarget, dragValid); // призрак-силуэт у целевых ног (QA #9)
-            }
-            else
-            {
-                RuntimeUnit hover = PickUnit(world);
-                hoverId = hover != null ? hover.Id : -1;
-                _hoverUnitId = hoverId;
-                HideGhostSprite();
-            }
-
-            UpdateUnitRings(hoverId, dragTarget + _feetOffset, dragValid, _dragged != null);
+            unit.Position         = e.Position;
+            unit.PreviousPosition = e.Position; // снап вида, без слайда интерполяции
+            UpdateSlotPos(e.UnitId, e.Position);
         }
 
-        // Круги-опоры под ногами живых team-0 юнитов (QA #20/#3): всегда видны (читаемость), наведённый — ярче.
-        // У перетаскиваемого кругов ДВА (реш. Макса): на его месте — ярко горящий («тащишь именно меня»), и у ног
-        // призрака — по валидности drop. Так видно и кого взял, и куда он встанет.
-        private readonly List<(Vector2 center, float radius, DeploymentView.RingState state)> _ringBuffer = new();
-        private void UpdateUnitRings(int hoverId, Vector2 dragFeet, bool dragValid, bool dragging)
-        {
-            _ringBuffer.Clear();
-            IReadOnlyList<RuntimeUnit> units = _sim.Units;
-            for (int i = 0; i < units.Count; i++)
-            {
-                RuntimeUnit u = units[i];
-                if (!CanCommand(u.Team) || u.IsDead) continue;
-
-                bool isDragged = dragging && _dragged != null && u.Id == _dragged.Id;
-                DeploymentView.RingState st = isDragged || u.Id == hoverId
-                    ? DeploymentView.RingState.Hover
-                    : DeploymentView.RingState.Normal;
-                _ringBuffer.Add((FeetOf(u), BodyRadius(u), st)); // у ног (визуальных, не центр — QA #3)
-
-                if (isDragged) // + целевой круг у ног призрака (следует за курсором)
-                    _ringBuffer.Add((dragFeet, BodyRadius(u),
-                                     dragValid ? DeploymentView.RingState.DragValid : DeploymentView.RingState.DragInvalid));
-            }
-            _view.SetUnitRings(_ringBuffer);
-        }
-
-        // Куда встанет перетаскиваемый юнит, если отпустить курсор в точке world. Не «центром под курсор», а
-        // со смещением, снятым в момент захвата: взял за левый край — ведёшь за левый край (наход. Макса, п.4).
-        private Vector2 DragTarget(Vector2 world) => world + _grabOffset;
-
-        // Призрак-силуэт перетаскиваемого юнита в целевой сим-позиции — через ЕДИНЫЙ источник UnitSilhouette
-        // (QA #5: тот же вид «в руке», что и при drag реликвии из инвентаря). Нет вида (headless / спрайт не
-        // готов) → без призрака (круг DragValid/Invalid всё равно ведёт цель).
-        private void ShowDragGhost(Vector2 target, bool valid)
-        {
-            UnitSilhouette sil = UnitSilhouette.None;
-            if (_presenter != null && _presenter.TryGetView(_dragged.Id, out UnitView dv))
-                sil = UnitSilhouette.FromView(dv, FeetOf(_dragged)); // офсет арта — от ТЕКУЩИХ ног живого вида
-
-            // Рисуем тот же силуэт у ЦЕЛЕВЫХ ног: ноги призрака = целевая сим-позиция + замер «ноги-минус-центр».
-            if (sil.Valid) _view.SetGhost(true, target + _feetOffset, sil, valid);
-            else HideGhostSprite();
-        }
-
-        // Мировая точка ног юнита (визуальный FeetPoint из вида, а не сим-центр) — круг/pick садятся под ноги
-        // спрайта, а не в центр фигуры (QA #3). Фолбэк — сим-позиция (headless / вид не готов).
-        private Vector2 FeetOf(RuntimeUnit u)
-        {
-            if (_presenter != null && _presenter.TryGetView(u.Id, out UnitView view) && view != null)
-            {
-                Vector3 f = view.FeetPoint;
-                return new Vector2(f.x, f.y);
-            }
-            return u.Position;
-        }
-
-        private void HideGhostSprite() => _view.SetGhost(false, default, UnitSilhouette.None, false);
-
-        private void HideDragVisuals() => HideGhostSprite();
-
-        // ── Drag реликвии из инвентаря на юнита (QA #5) ───────────────────────
-        // UITK-грид публикует RelicDragEvent (Start/Move/Drop). Вне расстановки пока не поддержано — эквип
-        // на тест-арене придёт с #26. Ghost/подсветку рисует DrawRelicDragGhost из Tick, Drop надевает реликвию.
-        private void OnRelicDrag(RelicDragEvent e)
+        /// <summary>«Покажи снаряжение этого бойца»: экран открывает владелец состава — кит и сосуд знает он.</summary>
+        private void OnLoadoutIntent(OpenLoadoutIntent e)
         {
             if (!_deploying) return;
-            switch (e.Phase)
-            {
-                case RelicDragPhase.Start:
-                case RelicDragPhase.Move:
-                    _relicDrag = e.Relic; // позицию берём из _input в Tick/Drop (тот же источник, что deployment-pick)
-                    break;
-                case RelicDragPhase.Drop:
-                    RuntimeUnit target = e.Relic != null ? PickUnit(_pointer.Position) : null;
-                    if (target != null && e.Relic != null)
-                    {
-                        EquipOn(target.Id, e.Relic);
-                        _audio?.Play("ui.relic_equip.ui");
-                    }
-                    else if (e.Relic != null)
-                    {
-                        _audio?.Play("ui.drag_reject.ui"); // карточку отпустили мимо юнита
-                    }
-                    _relicDrag = null;
-                    HideGhostSprite();
-                    break;
-            }
-        }
-
-        // Призрак силуэта реликвии у курсора (единый вид «в руке», как drag юнита — из ViewPrefab, т.к. юнита
-        // на поле ещё нет) + подсветка юнита под курсором (цель эквипа). Круги-опоры остаются видимыми.
-        private void DrawRelicDragGhost()
-        {
-            Vector2 world = _pointer.Position;
-            RuntimeUnit target = PickUnit(world);
-
-            UnitSilhouette sil = UnitSilhouette.FromPrefab(_relicDrag != null ? _relicDrag.ViewPrefab : null);
-            if (sil.Valid) _view.SetGhost(true, world, sil, target != null);
-            else HideGhostSprite();
-
-            UpdateUnitRings(target != null ? target.Id : -1, default, false, false);
-        }
-
-        private void OnPointerPressed()
-        {
-            if (!_deploying || _input.GameplaySuppressed) return;
-
-            Vector2 world = _pointer.Position;
-            RuntimeUnit unit = PickUnit(world);
-            if (unit == null) return;
-
-            float now = Time.unscaledTime;
-            bool doubleClick = unit.Id == _lastClickUnitId && (now - _lastClickTime) < DoubleClickWindow;
-            _lastClickTime = now;
-            _lastClickUnitId = unit.Id;
-
-            if (doubleClick) { OpenLoadout(unit); return; }
-
-            // Начинаем протяжку (различаем клик/drag по пройденной дистанции на release).
-            _dragged = unit;
-            _dragStartWorld = world;
-            _grabOffset = unit.Position - world;      // держим фигурку за схваченное место, а не за центр
-            _feetOffset = FeetOf(unit) - unit.Position; // куда относительно центра садится круг-опора
-            _dragMoved = false;
-            _view.SetExtendedHighlight(CanUseExtended(unit));
-            _audio?.PlayAt("ui.deploy_grab.ui", unit.Position);
+            Slot slot = FindSlot(e.UnitId);
+            _openLoadoutPub.Publish(new OpenLoadoutRequest(e.UnitId, slot?.Relic, slot?.Vessel));
         }
 
         /// <summary>
-        /// Можно ли отпустить перетаскиваемого бойца в этой точке.
+        /// Распоряжается ли этот участник сеанса той стороной. Своя сторона у автора спрашивается в
+        /// составе сеанса — единственном владельце факта «кто за кого играет».
         /// </summary>
-        /// <remarks>
-        /// Одна точка правды для превью и для самой постановки: разъехавшись, они дают призрака,
-        /// который горит зелёным там, откуда на отпускании боец откатится назад.
-        /// <para>Сторона зоны берётся по КОМАНДЕ бойца, а не «всегда своя»: на Ристалище противника
-        /// двигают в его половину, и жёсткая <c>Player</c> запрещала бы любой его сдвиг — зоны сторон
-        /// не пересекаются.</para>
-        /// </remarks>
-        private bool CanDrop(Vector2 target) =>
-            _dragged != null
-            && _deploy.CanPlace(target, SideOf(_dragged.Team), CanUseExtended(_dragged))
-            && !Overlaps(target, _dragged);
-
-        private void OnPointerReleased()
+        private bool MayCommand(int playerId, int team)
         {
-            if (_dragged == null) return;
-
-            // Ввод заглушили посреди протяжки (консоль по F1, модальный экран) — отпускание считаем
-            // ОТМЕНОЙ: ставить бойца по курсору, уведённому в интерфейс, значит удивить игрока. Само
-            // событие при этом обязано дойти, иначе боец остался бы «в руке» до постороннего клика.
-            if (_dragMoved && !_input.GameplaySuppressed) // именно перетаскивание (не клик) → пробуем поставить
-            {
-                // Та же целевая точка, что вела призрака: иначе юнит на отпускании прыгал бы к курсору.
-                Vector2 target = DragTarget(_pointer.Position);
-                if (CanDrop(target))
-                {
-                    _dragged.Position = target;
-                    _dragged.PreviousPosition = target; // снап вида (без слайда интерполяции)
-                    UpdateSlotPos(_dragged.Id, target);
-                    _audio?.PlayAt("ui.deploy_place.ui", target);
-                }
-                else
-                {
-                    // невалидно → юнит остаётся на месте (reject). Молчаливый откат читается как «не нажалось».
-                    _audio?.Play("ui.deploy_reject.ui");
-                }
-            }
-
-            _dragged = null;
-            _dragMoved = false;
-            HideDragVisuals();
-            _view.SetExtendedHighlight(false);
+            if (!_activity.OwnUnitsOnly) return true;                 // Ристалище: обе стороны наши
+            if (_roster != null && _roster.TryGet(playerId, out Core.Players.SessionPlayer p)) return p.Team == team;
+            return team == _localPlayer.Team;                          // соло: участник ровно один
         }
 
-        // ── Loadout ──────────────────────────────────────────────────────────
-        private void OpenLoadout(RuntimeUnit unit)
+        private RuntimeUnit FindLive(int unitId)
         {
-            Slot slot = FindSlot(unit.Id);
-            _openLoadoutPub.Publish(new OpenLoadoutRequest(unit.Id, slot?.Relic, slot?.Vessel));
+            IReadOnlyList<RuntimeUnit> units = _sim.Units;
+            for (int i = 0; i < units.Count; i++) if (units[i].Id == unitId) return units[i];
+            return null;
         }
 
         private void OnEquip(EquipRelicRequest req)
@@ -1044,10 +821,6 @@ namespace Guildmaster.Game
             _sim.SetPaused(true);
             _sim.FlushSpawns();
             BindLiveUnits();
-
-            _dragged = null;
-            _dragMoved = false;
-            _hoverUnitId = -1;
         }
 
         // ── Старт боя ────────────────────────────────────────────────────────
@@ -1056,8 +829,6 @@ namespace Guildmaster.Game
             FlushRoster();          // расстановка, с которой идём в бой, должна пережить и бой, и вылет игры
             RememberProvingSquad(); // на площадке: с чем ушли в бой — с тем и вернёмся в расстановку
             _deploying = false;
-            _dragged = null;
-            _view?.SetActive(false);
             _sim.SetPaused(false);
             // Фаза Fighting — она же сигнал камере: сценарный вид включит она сама, если игрок его выбрал.
             _session.SetPhase(BattlePhase.Fighting); // центр панели = таймер боя; фаза → навигатор ставит контекст Combat (K8)
@@ -1096,43 +867,6 @@ namespace Guildmaster.Game
         }
 
         // ── Хелперы ──────────────────────────────────────────────────────────
-        // Захват — двухслойный (реш. Макса): круг-опора у ног ИЛИ сама фигура юнита.
-        // Круг главнее: он нарисован и читается как «место юнита», поэтому попадание в чей-то круг всегда
-        // бьёт попадание в чужую фигуру (иначе высокий сосед перехватывал бы клик по ногам соседа).
-        // Внутри слоя выигрывает ближайший по ногам — «хватаем круг ближайшего».
-        private RuntimeUnit PickUnit(Vector2 world)
-        {
-            RuntimeUnit bestRing = null; float bestRingSq = float.MaxValue;
-            RuntimeUnit bestBody = null; float bestBodySq = float.MaxValue;
-
-            IReadOnlyList<RuntimeUnit> units = _sim.Units;
-            for (int i = 0; i < units.Count; i++)
-            {
-                RuntimeUnit u = units[i];
-                if (!CanCommand(u.Team) || u.IsDead) continue;
-
-                float r  = BodyRadius(u) * PickRadiusScale;
-                float sq = (world - FeetOf(u)).sqrMagnitude;
-                if (sq <= r * r)
-                {
-                    if (sq < bestRingSq) { bestRing = u; bestRingSq = sq; }
-                    continue; // в круг попали — по фигуре этого же юнита проверять нечего
-                }
-
-                if (FigureHit(u, world) && sq < bestBodySq) { bestBody = u; bestBodySq = sq; }
-            }
-            return bestRing ?? bestBody;
-        }
-
-        // Попал ли курсор в фигуру юнита — по ЭТАЛОННОМУ габариту (зелёная рамка гизмо UnitView), а не по AABB
-        // кадра: AABB скелетной анимации шире фигуры (замах, плащ, прозрачные поля), и зона хватания выходила
-        // гигантской (наход. Макса). Нет вида (headless) → false: работает только круг-опора.
-        private bool FigureHit(RuntimeUnit u, Vector2 world) =>
-            _presenter != null
-            && _presenter.TryGetView(u.Id, out UnitView view)
-            && view != null
-            && view.FigureContainsWorldPoint(world, FigurePickPadding);
-
         private bool Overlaps(Vector2 pos, RuntimeUnit exclude)
         {
             float r = BodyRadius(exclude);

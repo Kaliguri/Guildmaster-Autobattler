@@ -108,10 +108,14 @@ namespace Guildmaster.Game
             // счастливой очерёдности, а на Ристалище он вставал последним и кнопка умирала
             // (разбор логов прогона вдвоём, 04.08.2026).
             //
-            // ОТСЮДА ЖЕ у гостя нет ни кругов под ногами, ни драга бойцов, ни драга реликвии из
-            // инвентаря: всё это рисует и ведёт он. Гостевая расстановка — отдельная работа, и она
-            // записана в docs/player-capability-registry.md.
             if (!IsGuestSession()) builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped);
+
+            // А РУКИ игрока — у обоих. Круги-опоры, выбор бойца под курсором, перетаскивание фигурки и
+            // приём реликвии из инвентаря есть и у гостя: он ничего не применяет сам, а публикует
+            // намерения, которые исполняет владелец арены. Пока обе роли жили в контроллере выше, у
+            // гостя не было ни кругов, ни драга — и это читалось как три отдельных бага вместо одной
+            // несделанной работы.
+            builder.RegisterEntryPoint<DeploymentInteraction>(Lifetime.Scoped);
 
             // Сборка боя, ради которого родился скоуп: отряд, враги, фаза расстановки, отчёт исхода.
             // Регистрируется ПОСЛЕ DeploymentController — чтобы его подписка на Free-расстановку встала
@@ -267,6 +271,18 @@ namespace Guildmaster.Game
                    .WithParameter("tuning", (SimTuning?)ScopeWiring.Require(_simTuningConfig, nameof(CombatLifetimeScope), nameof(_simTuningConfig)).ToSnapshot())
                    .WithParameter("cameraZone", r => (Rect2D?)r.Resolve<ArenaLayoutData>().CameraZone);
 
+            // Тюнинг отдельным значением: он нужен не только симуляции. Руки игрока переводят габарит
+            // тела в радиус той же формулой, что и бой, — и обязаны делать это, не спрашивая симуляцию:
+            // у гостя её нет, а круги-опоры рисовать надо.
+            builder.RegisterInstance(ScopeWiring.Require(
+                _simTuningConfig, nameof(CombatLifetimeScope), nameof(_simTuningConfig)).ToSnapshot());
+
+            // Кто на арене — для всего, что игрок делает руками. Владельцу правду даёт живая симуляция
+            // (перетаскивание видно в тот же кадр), гостю — присланный кадр: своей симуляции у него нет
+            // вовсе. Единственное место, где эта разница вообще выражена.
+            if (IsGuestSession()) builder.Register<Combat.Tape.TapeArenaUnits>(Lifetime.Scoped).As<IArenaUnits>();
+            else                  builder.Register<SimArenaUnits>(Lifetime.Scoped).As<IArenaUnits>();
+
             StatsConfig cfg = Stats();
             ClassBalanceConfig classCfg = ScopeWiring.Require(
                 ScopeWiring.Require(_gameConfig, nameof(CombatLifetimeScope), nameof(_gameConfig)).ClassBalance,
@@ -362,6 +378,10 @@ namespace Guildmaster.Game
             // Состав боя: в снимках его нет (за бой не меняется), а показу он нужен — кто это, какой
             // арт, чья команда.
             builder.RegisterEntryPoint<Net.Tape.BattleRosterAnnouncer>(Lifetime.Scoped);
+
+            // Руки напарника: его «поставь бойца сюда» приходит сюда и дальше идёт той же дорогой, что
+            // наш собственный клик, — к расстановке, с той же перепроверкой права и зоны.
+            builder.RegisterEntryPoint<Session.Net.DeploymentIntentIntake>(Lifetime.Scoped);
         }
 
         /// <summary>Гость: своей симуляции нет, есть присланная лента и состав к ней.</summary>
@@ -379,6 +399,10 @@ namespace Guildmaster.Game
 
             // Вместо тикового цикла — одно требование к отставанию показа.
             builder.RegisterEntryPoint<Services.GuestPlaybackLoop>(Lifetime.Scoped);
+
+            // Свои руки: применить намерение гость не может (арена не его), поэтому единственное, что
+            // он с ним делает, — отправляет владельцу.
+            builder.RegisterEntryPoint<Session.Net.DeploymentIntentSender>(Lifetime.Scoped);
         }
 
         /// <summary>
