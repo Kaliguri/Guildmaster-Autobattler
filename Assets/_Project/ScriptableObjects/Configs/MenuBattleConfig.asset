@@ -84,7 +84,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f60718293a4b5c6d7e8f900112233445, type: 2}
     _seed: 0
   _carrierPreset: {fileID: 11400000, guid: 0bca994d59f0fcd428a27f34c3f80482, type: 2}
-  _lineX: 3
+  _lineX: 5.5
   _spacing: 1.2
   _enabled: 1
   _maxSeconds: 75
