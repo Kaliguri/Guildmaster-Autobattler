@@ -144,6 +144,43 @@ namespace Guildmaster.Tests.EditMode.Content
             }
         }
 
+        /// <summary>
+        /// Разметка гвардии — тоже целиком или никак, и по той же причине: показ играет клип щита ТРЕМЯ
+        /// кусками по трём разным часам (подъём за время подводки, держание пока живёт барьер, возврат за
+        /// своё), и границы кусков берёт из маркеров. Один маркер из двух даёт ровно то же, что и ноль
+        /// маркеров, — щит, поднимающийся целым клипом и не опускающийся вовсе.
+        /// </summary>
+        [Test]
+        public void Visuals_GuardWindow_IsWholeOrAbsent()
+        {
+            foreach (UnitVisual vis in AllVisuals())
+            {
+                AnimationClip guard = vis.GuardClip;
+                if (guard == null) continue;   // кит без щита — это отсутствие контента, а не дефект
+
+                bool hasUp   = ClipMarkers.FirstTimeOf(guard, ClipMarkers.GuardUpFunction)   >= 0f;
+                bool hasDown = ClipMarkers.FirstTimeOf(guard, ClipMarkers.GuardDownFunction) >= 0f;
+
+                Assert.AreEqual(hasUp, hasDown,
+                    $"UnitVisual '{vis.name}': в клипе гвардии '{guard.name}' размечена ПОЛОВИНА жеста " +
+                    $"({ClipMarkers.GuardUpFunction}={hasUp}, {ClipMarkers.GuardDownFunction}={hasDown}), " +
+                    $"{AssetDatabase.GetAssetPath(vis)}.");
+
+                if (!hasUp) continue;
+
+                Assert.IsTrue(ClipMarkers.GuardWindowNormalized(guard, out float up, out float down),
+                    $"UnitVisual '{vis.name}': маркеры гвардии в '{guard.name}' стоят не по порядку — " +
+                    $"{ClipMarkers.GuardUpFunction} обязан идти РАНЬШЕ {ClipMarkers.GuardDownFunction}, " +
+                    "иначе держать позу нечем.");
+                Assert.Greater(up, 0f,
+                    $"UnitVisual '{vis.name}': '{ClipMarkers.GuardUpFunction}' стоит в нуле — подъёма щита " +
+                    "нет вовсе, поза встаёт мгновенно и телеграф не читается.");
+                Assert.Less(down, 1f,
+                    $"UnitVisual '{vis.name}': '{ClipMarkers.GuardDownFunction}' стоит в конце клипа — " +
+                    "опускать руку нечем, и она растворится в базе вместо возврата.");
+            }
+        }
+
         [Test]
         public void Visuals_SkillClipsMarkerWithinClip()
         {

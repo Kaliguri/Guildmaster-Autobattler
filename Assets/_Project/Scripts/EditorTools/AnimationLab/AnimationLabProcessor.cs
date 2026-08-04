@@ -269,8 +269,9 @@ namespace Guildmaster.AnimationLab.Editor
         static float ResolveImpactTime(AnimationClip source, Options options)
         {
             if (options.ImpactTime >= 0f) return options.ImpactTime;
-            var events = AnimationUtility.GetAnimationEvents(source);
-            return events is { Length: > 0 } ? events[0].time : -1f;
+            // Именно маркер КОНТАКТА: в клипе атаки их теперь трое (StrikeStart, Hit, StrikeEnd), и
+            // «первое событие» подсунуло бы тангенс-пассу начало взмаха вместо удара.
+            return Guildmaster.Data.Definitions.ClipMarkers.FirstHitTime(source);
         }
 
         static int Depth(string path)

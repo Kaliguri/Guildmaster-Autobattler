@@ -944,11 +944,10 @@ namespace Guildmaster.AnimationLab.Editor
             return false;
         }
 
-        static float ContactTimeOf(AnimationClip clip)
-        {
-            var events = AnimationUtility.GetAnimationEvents(clip);
-            return events != null && events.Length > 0 ? events[0].time : -1f;
-        }
+        // Контакт — это маркер КОНТАКТА, а не первое попавшееся событие. Пока маркер в клипе был один,
+        // разница не читалась; с приходом разметки взмаха (StrikeStart стоит РАНЬШЕ Hit) «первое событие»
+        // стало показывать контакт на четверть клипа раньше настоящего — и врало бы в отчёте и в гизмо.
+        static float ContactTimeOf(AnimationClip clip) => Guildmaster.Data.Definitions.ClipMarkers.FirstHitTime(clip);
 
         static Texture2D ReadBack(RenderTexture rt, int size)
         {

@@ -160,10 +160,12 @@ namespace Guildmaster.Presentation
         private const float GuardSettleSeconds = 0.15f;
 
         /// <summary>
-        /// Доля клипа гвардии, на которой поза уже поднята. Дальше клип только держит и оседает, поэтому
-        /// скрабить его до конца незачем — да и нельзя: держать позу должно ОКНО, а не длина клипа.
+        /// Куда скрабится клип гвардии, если он НЕ размечен маркерами: считаем, что весь клип — подъём, а
+        /// возврат делает вес слоя. Это честная деградация «клип как одна поза», а не подобранное число:
+        /// доля подъёма живёт в клипе (<see cref="ClipMarkers.GuardWindowNormalized"/>), и подменять её
+        /// константой нельзя — именно так показ и разъехался с клипом 2026-08-04.
         /// </summary>
-        private const float GuardRiseShare = 0.2f;
+        private const float GuardUnmarkedUp = 1f;
 
         // Состояние берётся из ленты боя, а НЕ из живого RuntimeUnit: сим уходит вперёд на окно
         // опережения, и живой юнит для показа — «будущее». Определение (UnitData) при этом статично,
@@ -284,6 +286,12 @@ namespace Guildmaster.Presentation
         private float _guardElapsed;     // сколько окна прошло
         private float _guardTotal;       // всё окно: подводка + жизнь барьера
         private float _guardRise = 0.1f; // за сколько щит встаёт; дальше стоп-кадр до конца окна
+        private float _guardRelease;     // 0..1 — насколько прошло опускание после конца окна
+
+        // Фазы клипа гвардии — из его же маркеров: 0..Up подъём, Up..Down держание, Down..1 возврат.
+        private bool  _hasGuardWindow;
+        private float _guardUpN   = GuardUnmarkedUp;
+        private float _guardDownN = GuardUnmarkedUp;
 
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
         private float _attackHitNormalized;  // 0..1 — доля клипа атаки до маркера контакта (Hit)
@@ -444,9 +452,10 @@ namespace Guildmaster.Presentation
 
             // Индексы слоёв сбрасываются ДО выхода: вид переиспользуется после чьей-то смерти, и индекс
             // прошлого жильца достался бы новому — вместе с попыткой писать вес в чужой Animator.
-            _guardLayer  = -1;
-            _guardActive = false;
-            _guardWeight = 0f;
+            _guardLayer   = -1;
+            _guardActive  = false;
+            _guardWeight  = 0f;
+            _guardRelease = 0f;
 
             _actionLayer     = -1;
             _actionHipsLayer = -1;
@@ -463,6 +472,7 @@ namespace Guildmaster.Presentation
             _animator.enabled = true;
 
             ResolveAttackMarker();
+            ResolveGuardMarkers();
             RequireSockets();
 
             // Слой-надстройка щита. Его нет у покадрового бестиария — тогда гвардия просто не играется:
@@ -556,6 +566,27 @@ namespace Guildmaster.Presentation
                     $"[UnitView] клип атаки '{attack.name}' не размечен взмахом (нужны AnimationEvent " +
                     $"'{ClipMarkers.StrikeStartFunction}' и '{ClipMarkers.StrikeEndFunction}') — у этого удара " +
                     "не будет дуги за клинком, а форма удара пойдёт от ног бьющего, а не от оружия.", attack);
+        }
+
+        /// <summary>
+        /// Найти фазы клипа гвардии: где щит встал (<c>GuardUp</c>) и где пошёл вниз (<c>GuardDown</c>).
+        /// Показ играет три куска этого клипа по трём разным часам — подъём за время подводки, держание
+        /// пока живёт барьер, возврат за своё, — и знать границы обязан из клипа, а не из числа в коде.
+        /// </summary>
+        /// <remarks>
+        /// Клип без разметки — не ошибка контента: у кита может не быть щита вовсе, а покадровый бестиарий
+        /// и слоя-то не имеет. Поэтому здесь молчание, а не <see cref="VisualDefects"/>: гвардия
+        /// деградирует на «клип как одна поза», и это видно ровно там, где она играется.
+        /// </remarks>
+        private void ResolveGuardMarkers()
+        {
+            AnimationClip guard = _visual != null ? _visual.GuardClip : null;
+
+            _hasGuardWindow = ClipMarkers.GuardWindowNormalized(guard, out _guardUpN, out _guardDownN);
+            if (_hasGuardWindow) return;
+
+            _guardUpN   = GuardUnmarkedUp;
+            _guardDownN = GuardUnmarkedUp;
         }
 
         // --- Взмах ------------------------------------------------------------------------------------
@@ -1247,6 +1278,7 @@ namespace Guildmaster.Presentation
             // паузы, поза встаёт мгновенно — лучше резкий щит вовремя, чем плавный, но опоздавший.
             _guardRise    = Mathf.Max(0.02f, lead - GuardSettleSeconds);
             _guardElapsed = 0f;
+            _guardRelease = 0f;
             _guardActive  = true;
         }
 
@@ -1267,18 +1299,28 @@ namespace Guildmaster.Presentation
             if (!_guardActive)
             {
                 if (_guardWeight <= 0f) return;
+
+                // Возврат: рука ОПУСКАЕТСЯ хвостом клипа (после GuardDown), а не растворяется в базе. Вес
+                // гаснет тем же ходом — под слоем может идти бег, и щит, доживший на полном весе до
+                // последнего кадра, вернул бы руку в стойку клипа поверх бегущего тела.
+                _guardRelease = Mathf.Min(1f, _guardRelease + dt / GuardDropSeconds);
+                _animator.Play(GuardHash, _guardLayer, Mathf.Lerp(_guardDownN, 1f, _guardRelease));
+
                 _guardWeight = Mathf.Max(0f, _guardWeight - dt / GuardDropSeconds);
                 _animator.SetLayerWeight(_guardLayer, _guardWeight);
                 return;
             }
 
             _guardElapsed += dt;
+            _guardRelease = 0f;   // окно поднялось заново — прошлое опускание больше не считается
 
             // Две фазы, а не одна: щит ВСТАЁТ за _guardRise, а потом ДЕРЖИТСЯ — и держится он до конца окна,
             // то есть и последние 0.15 с подводки, и всю жизнь барьера. Линейный скраб по всему окну
             // приводил позу в финал ровно к событию, и жест читался как реакция, а не как предупреждение.
+            // Куда именно скрабить подъём, говорит МАРКЕР клипа: доля, стоявшая здесь числом, пережила
+            // ровно одну правку клипа и оставила щит поднятым на 60% вместо 84% (замер RigSweep 04.08).
             float rise = Mathf.Clamp01(_guardElapsed / _guardRise);
-            _animator.Play(GuardHash, _guardLayer, rise * GuardRiseShare);
+            _animator.Play(GuardHash, _guardLayer, rise * _guardUpN);
 
             _guardWeight = Mathf.Min(1f, _guardWeight + dt / GuardRaiseSeconds);
             _animator.SetLayerWeight(_guardLayer, _guardWeight);
@@ -2150,6 +2192,11 @@ namespace Guildmaster.Presentation
         // y=0): сюда ставь ноги спрайта, и макушка должна доставать до верхней засечки.
         private void OnDrawGizmos()
         {
+            // Общий выключатель служебной разметки: при ручной правке поз и анимации она мешает целиться
+            // мышью, а гасить её удалением кода нельзя — она для того и есть. Меню:
+            // Alebardium/Animation/Show Unit Gizmos In Scene.
+            if (!UnityEditor.EditorPrefs.GetBool("Alebardium.Gizmos.Show", true)) return;
+
             var sel = UnityEditor.Selection.activeGameObject;
             bool related = sel != null && sel.transform.IsChildOf(transform);
             bool inPrefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null;

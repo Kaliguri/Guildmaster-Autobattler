@@ -24,6 +24,10 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private AnimationClip _deathClip;
         [Tooltip("Разовая реакция на урон (косметика). Может быть пустой.")]
         [SerializeField] private AnimationClip _hitClip;
+        [Tooltip("Клип гвардии — тот же, что лежит в стейте слоя «Block». Показ читает из него маркеры " +
+                 "GuardUp/GuardDown: где щит встал и где пошёл вниз. Пусто — гвардия играется целиком, " +
+                 "как одна поза. Может быть пустым у китов без щита.")]
+        [SerializeField] private AnimationClip _guardClip;
         [Tooltip("Клипы кастов по слотам скиллов (индекс = SkillSlot).")]
         [SerializeField] private AnimationClip[] _skillClips = new AnimationClip[4];
         [Tooltip("Портрет для HUD/тултипов. Опционален.")]
@@ -49,6 +53,13 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Клип разовой реакции на урон (может быть <c>null</c>).</summary>
         public AnimationClip HitClip => _hitClip;
+
+        /// <summary>
+        /// Клип гвардии — источник маркеров <see cref="ClipMarkers.GuardUpFunction"/> и
+        /// <see cref="ClipMarkers.GuardDownFunction"/>. <c>null</c> = кит без щита или клип не разведён:
+        /// тогда показ играет позу целиком, без фаз.
+        /// </summary>
+        public AnimationClip GuardClip => _guardClip;
 
         /// <summary>Клип каста по слоту скилла (0-based). <c>null</c> = слот пуст или индекс вне диапазона.</summary>
         public AnimationClip SkillClip(int slot) =>
