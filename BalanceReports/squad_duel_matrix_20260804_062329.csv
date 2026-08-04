@@ -1,0 +1,28 @@
+﻿Left \ Right;Antimage;Arcanist;Assassin;BaseRelic;Cryomancer;Defender;Dreameater;Druid;Emberkeeper;FlameSwordsman;Frostbound;Hemomancer;IronSpearman;LightShepherd;Necromancer;Nightblade;Ranger;TrashArcher;TrashBonecaller;TrashBrawler;TrashCutthroat;TrashHerbalist;TrashHexer;TrashShieldbearer;Treant;WaterMonk;WhirlMonk
+Antimage;-;L;L;W 42%;W 16%;L;W 9%;L;L;L;L;W 24%;L;L;L;L;L;W 21%;W 25%;W 32%;W 42%;W 34%;W 12%;W 22%;L;L;L
+Arcanist;W 13%;-;L;W 45%;W 18%;L;W 15%;L;L;L;L;W 28%;W 3%;W 2%;L;L;W 17%;W 32%;W 37%;W 40%;W 46%;W 41%;W 19%;W 39%;W 9%;L;L
+Assassin;W 54%;W 22%;-;W 57%;W 39%;L;W 37%;W 15%;W 19%;W 7%;L;W 41%;L;W 62%;W 35%;L;W 37%;W 62%;W 62%;W 28%;W 46%;W 67%;W 55%;W 35%;W 39%;L;W 53%
+BaseRelic;L;L;L;-;L;L;L;L;L;L;L;L;L;L;L;L;L;L;L;L;L;W 1%;L;L;L;L;L
+Cryomancer;L;L;L;W 43%;-;L;W 13%;L;L;L;L;W 24%;L;L;L;L;L;W 21%;W 29%;W 32%;W 44%;W 32%;W 14%;W 20%;L;L;L
+Defender;W 52%;W 12%;W 26%;W 62%;W 8%;-;W 48%;L;L;W 38%;W 18%;W 41%;W 47%;L;W 44%;L;W 51%;W 40%;W 59%;W 58%;W 60%;W 56%;W 52%;W 54%;L;W 27%;W 49%
+Dreameater;L;L;L;W 35%;L;L;-;L;L;L;L;W 16%;L;L;L;L;L;W 19%;W 28%;W 28%;W 31%;W 43%;W 0%;L;L;L;L
+Druid;W 49%;W 39%;L;W 48%;W 54%;W 29%;W 58%;-;W 32%;W 46%;W 39%;W 51%;L;W 15%;W 54%;L;W 49%;W 56%;W 63%;W 60%;W 52%;W 72%;W 59%;W 49%;W 13%;L;W 39%
+Emberkeeper;W 17%;W 20%;L;W 46%;W 25%;W 6%;W 36%;L;-;W 34%;W 3%;W 34%;L;L;W 1%;L;D 14%;W 32%;W 38%;W 41%;W 51%;W 43%;W 31%;W 35%;L;L;L
+FlameSwordsman;W 23%;W 13%;L;W 42%;W 21%;L;W 33%;L;L;-;L;W 28%;L;L;L;L;W 12%;W 34%;W 41%;W 30%;W 47%;W 41%;W 23%;W 25%;L;L;W 14%
+Frostbound;W 35%;W 23%;W 33%;W 49%;W 29%;L;W 34%;L;L;W 28%;-;W 35%;L;L;L;L;W 21%;W 37%;W 46%;W 42%;W 53%;W 52%;W 38%;W 35%;L;L;W 25%
+Hemomancer;L;L;L;W 29%;L;L;L;L;L;L;L;-;L;L;L;L;L;L;W 14%;W 18%;W 29%;L;L;L;L;L;L
+IronSpearman;W 27%;L;W 15%;W 44%;W 35%;L;W 52%;W 13%;W 5%;W 27%;W 25%;W 27%;-;L;W 38%;L;W 32%;W 43%;W 44%;W 35%;W 43%;W 58%;W 35%;W 42%;L;L;W 15%
+LightShepherd;W 44%;L;L;W 57%;W 50%;W 46%;W 61%;L;W 40%;W 48%;W 44%;W 55%;W 17%;-;W 43%;L;W 44%;W 52%;W 56%;W 56%;W 57%;W 69%;W 49%;W 60%;W 38%;W 40%;W 42%
+Necromancer;W 34%;L;W 13%;W 50%;W 26%;L;W 41%;L;L;W 20%;L;W 30%;L;L;-;L;W 7%;W 34%;W 42%;W 46%;W 49%;W 46%;W 36%;W 32%;L;L;L
+Nightblade;W 43%;W 38%;W 31%;W 56%;W 43%;W 39%;W 53%;W 31%;W 27%;W 46%;W 37%;W 42%;W 30%;W 32%;W 34%;-;W 38%;W 52%;W 51%;W 52%;W 56%;W 64%;W 48%;W 51%;W 30%;L;W 45%
+Ranger;W 11%;L;L;W 48%;W 5%;L;W 3%;L;D 0%;L;L;W 24%;L;L;L;L;-;W 26%;W 36%;W 42%;W 49%;W 40%;W 26%;W 11%;L;L;L
+TrashArcher;L;L;L;W 35%;L;L;L;L;L;L;L;W 14%;L;L;L;L;L;-;L;W 24%;W 39%;W 11%;L;W 28%;L;L;L
+TrashBonecaller;L;L;L;W 32%;L;L;L;L;L;L;L;L;L;L;L;L;L;W 3%;-;W 27%;W 40%;W 19%;L;L;L;L;L
+TrashBrawler;L;L;L;W 27%;L;L;L;L;L;L;L;L;L;L;L;L;L;L;L;-;W 30%;W 10%;L;L;L;L;L
+TrashCutthroat;L;L;L;W 16%;L;L;L;L;L;L;L;L;L;L;L;L;L;L;L;L;-;L;L;L;L;L;L
+TrashHerbalist;L;L;L;L;L;L;L;L;L;L;L;W 17%;L;L;L;L;L;L;L;L;W 2%;-;L;L;L;L;L
+TrashHexer;L;L;L;W 40%;L;L;L;L;L;L;L;W 15%;L;L;L;L;L;W 13%;W 16%;W 30%;W 38%;W 27%;-;L;L;L;L
+TrashShieldbearer;L;L;L;W 40%;L;L;W 4%;L;L;L;L;W 23%;L;L;L;L;L;L;W 20%;W 30%;W 37%;W 26%;W 4%;-;L;L;L
+Treant;W 32%;L;L;W 44%;W 11%;W 18%;W 28%;L;W 11%;W 26%;W 18%;W 27%;W 19%;L;W 21%;L;W 26%;W 34%;W 36%;W 39%;W 52%;W 40%;W 33%;W 35%;-;L;W 13%
+WaterMonk;W 44%;W 35%;W 37%;W 58%;W 48%;L;W 48%;W 9%;W 35%;W 49%;W 35%;W 40%;W 35%;L;W 26%;W 37%;W 35%;W 50%;W 51%;W 56%;W 57%;W 61%;W 45%;W 31%;W 19%;-;W 7%
+WhirlMonk;W 34%;W 21%;L;W 45%;W 30%;L;W 42%;L;W 11%;L;L;W 31%;L;L;L;L;W 30%;W 38%;W 40%;W 39%;W 46%;W 48%;W 36%;W 28%;L;L;-
