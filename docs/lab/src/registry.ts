@@ -71,6 +71,13 @@ export const PAGES: PageDef[] = [
     load: () => import("./sections/gamefeel-geometry.js")
   },
   {
+    id: "lineart",
+    area: "gamefeel",
+    title: "Лайн у эффектов",
+    blurb: "Нужна ли форме удара тёмная кайма: четыре способа обвести серп, свалка из восьми и цена приёма.",
+    load: () => import("./sections/gamefeel-lineart.js")
+  },
+  {
     id: "barrier",
     area: "gamefeel",
     title: "Барьер",
