@@ -21,7 +21,14 @@ namespace Guildmaster.AnimationLab.Editor
     public static class BoneUnitClipRecipes
     {
         const string Folder = "Assets/_Project/Prefabs/Bones/";
-        const string ProfilePath = Folder + "BoneUnit_Standart_RigProfile.asset";
+
+        /// <summary>
+        /// Эталон замера — Storybook (решение Макса 05.08.2026: «Я выбираю Storybook, как сказал, он
+        /// самый актуал»). Standart остаётся базовым скелетом, вариантами которого Storybook и Spear
+        /// являются, но мерить рецепты обязаны по той фигуре, которая реально выходит в бой: у варианта
+        /// свои пропорции, и клип, снятый с базы, ставит руку не туда.
+        /// </summary>
+        const string ProfilePath = Folder + "BoneUnit_Storybook_RigProfile.asset";
 
         /// <summary>Rest position of the pelvis. Vertical travel from here is the weight shift.</summary>
         static readonly Vector2 RestHips = new Vector2(0.037f, 0.020f);

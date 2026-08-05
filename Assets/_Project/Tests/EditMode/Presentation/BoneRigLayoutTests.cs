@@ -19,9 +19,13 @@ namespace Guildmaster.Tests.EditMode.Presentation
     /// </summary>
     public class BoneRigLayoutTests
     {
-        const string RigPrefab = "Assets/_Project/Prefabs/Bones/BoneUnit_Standart.prefab";
+        // Storybook, а не базовый Standart (Max, 05.08.2026): both invariants are about the rig that
+        // actually fights, and a variant is free to break either of them on its own — a sprite dropped
+        // straight onto a bone, a clip path that no longer resolves. Checking the base would pass while
+        // the figure in the game is broken.
+        const string RigPrefab = "Assets/_Project/Prefabs/Bones/BoneUnit_Storybook.prefab";
         const string ClipFolder = "Assets/_Project/Prefabs/Bones";
-        const string RigProfileAsset = "Assets/_Project/Prefabs/Bones/BoneUnit_Standart_RigProfile.asset";
+        const string RigProfileAsset = "Assets/_Project/Prefabs/Bones/BoneUnit_Storybook_RigProfile.asset";
 
         static GameObject LoadRig()
         {

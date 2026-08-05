@@ -456,6 +456,26 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.079333976
       objectReference: {fileID: 0}
+    - target: {fileID: 2147224240032170120, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
+      propertyPath: _parts.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147224240032170120, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
+      propertyPath: '_parts.Array.data[16]'
+      value: 
+      objectReference: {fileID: 2725297050200900823}
+    - target: {fileID: 2147224240032170120, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
+      propertyPath: '_parts.Array.data[17]'
+      value: 
+      objectReference: {fileID: 7169125006834899231}
+    - target: {fileID: 2147224240032170120, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
+      propertyPath: '_parts.Array.data[18]'
+      value: 
+      objectReference: {fileID: 1047865525407167759}
+    - target: {fileID: 2147224240032170120, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
+      propertyPath: '_parts.Array.data[19]'
+      value: 
+      objectReference: {fileID: 8938373504880697448}
     - target: {fileID: 2231456120308910550, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6849684

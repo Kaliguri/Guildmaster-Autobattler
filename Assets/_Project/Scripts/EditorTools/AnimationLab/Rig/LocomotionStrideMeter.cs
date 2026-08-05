@@ -22,9 +22,12 @@ namespace Guildmaster.AnimationLab.Editor
     /// </summary>
     public static class LocomotionStrideMeter
     {
-        const string ViewPrefab = "Assets/_Project/Prefabs/Units/UnitView_BoneStandart.prefab";
+        // Мерим по боевой фигуре, а не по базовому скелету (решение Макса 05.08.2026): шаг считается
+        // от подошвы, а у варианта своя длина ноги — замер по базе дал бы темп, с которым Storybook
+        // поедет по земле.
+        const string ViewPrefab = "Assets/_Project/Prefabs/Units/UnitView_BoneStorybook.prefab";
         const string ClipFolder = "Assets/_Project/Prefabs/Bones/";
-        const string ProfilePath = ClipFolder + "BoneUnit_Standart_RigProfile.asset";
+        const string ProfilePath = ClipFolder + "BoneUnit_Storybook_RigProfile.asset";
 
         // Clip behind each state, and the field on UnitView that carries its pace.
         static readonly (string clip, string field)[] Clips =

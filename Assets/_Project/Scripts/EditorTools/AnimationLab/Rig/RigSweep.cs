@@ -960,6 +960,9 @@ namespace Guildmaster.AnimationLab.Editor
             return tex;
         }
 
+        /// <summary>Профиль, по которому рисуется гизмо взмаха: боевая фигура, а не базовый скелет.</summary>
+        const string GizmoProfilePath = "Assets/_Project/Prefabs/Bones/BoneUnit_Storybook_RigProfile.asset";
+
         [MenuItem("Alebardium/Animation/Render Slash Gizmo", priority = 630)]
         static void RenderSelected()
         {
@@ -970,14 +973,17 @@ namespace Guildmaster.AnimationLab.Editor
                 return;
             }
 
-            var guids = AssetDatabase.FindAssets("t:RigProfile");
-            if (guids.Length != 1)
+            // Профиль назван ЯВНО, а не выведен из «в проекте он один» (05.08.2026). Профилей четыре
+            // — по одному на базовый скелет и каждый его вариант, — и прежнее условие означало, что
+            // гизмо не рисовалось ни разу с тех пор, как завели второй риг. Эталон — Storybook: та
+            // фигура, которая выходит в бой.
+            var profile = AssetDatabase.LoadAssetAtPath<RigProfile>(GizmoProfilePath);
+            if (profile == null)
             {
-                Debug.LogError($"Render Slash Gizmo: expected exactly one RigProfile in the project, found {guids.Length}.");
+                Debug.LogError($"Render Slash Gizmo: нет профиля рига {GizmoProfilePath}.");
                 return;
             }
 
-            var profile = AssetDatabase.LoadAssetAtPath<RigProfile>(AssetDatabase.GUIDToAssetPath(guids[0]));
             Debug.Log(Render(profile, clip).ToString());
         }
 
