@@ -29,9 +29,7 @@ MonoBehaviour:
   _tableLight: 1.6
   _tableAmbient: 0.25
   _tableTiling: 10
-  _menuTableLight: 2.2
-  _menuTableAmbient: 0.45
-  _menuTableTiling: 5
+  _menuBackdropMaterial: {fileID: 2100000, guid: c51edc4df25dfea44ac9d960043989ac, type: 2}
   _palette: {fileID: 11400000, guid: f42219bf529da2c4d909a76d914ab971, type: 2}
   _available: {r: 1, g: 1, b: 1, a: 1}
   _current: {r: 1, g: 1, b: 1, a: 1}
