@@ -151,7 +151,7 @@ namespace Guildmaster.ContentHub.Editor
                         Name = unit.name,
                         Kind = path.Contains("/Relics/") ? "RELIC" : "ENEMY",
                         Sprite = sprite,
-                        Tint = UnitColorRoles.Shade(palette, unit.BodyShade),
+                        Tint = UnitColorRoles.Body(palette, unit.VfxTone),
                         RecH = Mathf.Max(0.01f, recH),
                         RecW = Mathf.Max(0.01f, recW),
                     });

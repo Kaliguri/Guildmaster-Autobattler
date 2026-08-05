@@ -1123,11 +1123,11 @@ namespace Guildmaster.Presentation
                 ? BodyTintOf(identity.Definition)
                 : (IsAllyOfViewer(identity.Team) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
 
-        // Ступень → цвет. Без палитры не гадаем: белый значит «арт как нарисован», и это честнее пурпура,
-        // потому что тинт по умолчанию и есть «не красим» — большинство юнитов носит None.
+        // Оттенок юнита → цвет тела. Без палитры не гадаем: белый значит «арт как нарисован», и это
+        // честнее пурпура — невыставленный тинт и есть «не красим».
         private Color BodyTintOf(UnitData definition) =>
             _colorPalette != null
-                ? _colorPalette.BodyTint(definition.BodyShade, definition.VfxTone)
+                ? _colorPalette.BodyTint(definition.VfxTone)
                 : Color.white;
 
         /// <summary>

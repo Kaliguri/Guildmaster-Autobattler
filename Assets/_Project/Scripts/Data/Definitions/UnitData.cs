@@ -47,15 +47,9 @@ namespace Guildmaster.Data.Definitions
 
         [Tooltip("Свой префаб визуала юнита (с настроенным Animator и реальным размером ПРЯМО в префабе). " +
                  "ОБЯЗАТЕЛЕН: пусто = юнит выйдет на арену дефолтным видом презентера и станет неотличим " +
-                 "от соседа. Временное тело берётся переиспользованием чужого пака + своя ступень " +
-                 "BodyShade — заглушкой это не закрывают.")]
+                 "от соседа. Временное тело берётся переиспользованием чужого пака — заглушкой это не " +
+                 "закрывают.")]
         [SerializeField] private GameObject _viewPrefab;
-
-        [Tooltip("Приглушение тела: различитель тех, кто носит ОДИН спрайт. Один юнит из группы остаётся " +
-                 "None и показывает арт как есть, остальные берут ступень. Тинт умножается на готовый арт, " +
-                 "поэтому перекрасить им персонажа нельзя — это работа Palette Remapper. " +
-                 "Свой арт → всегда None (сторож — UnitTintPolicyTests).")]
-        [SerializeField] private BodyShade _bodyShade = BodyShade.None;
 
         [Tooltip("Оттенок, которым юнит СВЕТИТ: снаряд, его след, контур каста, искры, осколки. Хранится " +
                  "роль, а не цвет — значение живёт в палитре (UI/Theme/tokens.*.uss → GuildmasterPalette), " +
@@ -177,12 +171,9 @@ namespace Guildmaster.Data.Definitions
         public UnitVisual Visual => _visual;
         public GameObject ViewPrefab => _viewPrefab;
         /// <summary>
-        /// Ступень приглушения тела. Цвет из неё достаёт <c>UnitColorRoles.Shade</c> — здесь только
-        /// решение автора, потому что владелец цвета один и это палитра.
+        /// Оттенок юнита: и чем он СВЕТИТ (снаряд, искры, контур каста), и каким цветом окрашено его
+        /// ТЕЛО. Один источник на оба (05.08.2026); цвет по роли отдаёт <c>CombatColorPalette</c>.
         /// </summary>
-        public BodyShade BodyShade => _bodyShade;
-
-        /// <summary>Оттенок свечения юнита; цвет по роли отдаёт <c>CombatColorPalette</c>.</summary>
         public UnitTone VfxTone => _vfxTone;
 
         public AreaShape AutoAttackShape => _autoAttackShape;
@@ -259,10 +250,11 @@ namespace Guildmaster.Data.Definitions
         /// </summary>
         public AIProfile Ai => _aiPreset != null ? _aiPreset.Profile : _ai;
 
-        // Цветов у юнита больше нет НИ ОДНОГО — только роли выше (BodyShade / VfxTone). Владелец значений
-        // один: палитра проекта (UI/Theme/tokens.*.uss → GuildmasterPalette). Резолв тинта — в
-        // UnitColorRoles.Shade, резолв свечения с HDR-множителями — в CombatColorPalette: множители это
-        // авторинг фидбэка, и в снимок палитры значения больше единицы не едут.
+        // Цветов у юнита больше нет НИ ОДНОГО, и роль осталась ровно ОДНА — VfxTone. Ею красится и тело,
+        // и всё, чем юнит светит: ступень приглушения тела снята 05.08.2026 как второй владелец цвета.
+        // Владелец значений один: палитра проекта (UI/Theme/tokens.*.uss → GuildmasterPalette). Резолв
+        // цвета тела — в UnitColorRoles.Body, резолв свечения с HDR-множителями — в CombatColorPalette:
+        // множители это авторинг фидбэка, и в снимок палитры значения больше единицы не едут.
     }
 
     /// <summary>
