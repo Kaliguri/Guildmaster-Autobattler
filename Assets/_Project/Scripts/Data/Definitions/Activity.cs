@@ -68,8 +68,17 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Идёт ли мероприятие вообще.</summary>
         public bool IsOpen => Kind != ActivityKind.None;
 
-        /// <summary>Забег по акту.</summary>
-        public static ActivitySetup Campaign => new(ActivityKind.Campaign);
+        /// <summary>
+        /// Забег по акту. Расставлять можно ТОЛЬКО СВОИХ: врагов приносит энкаунтер, и они не наши ни
+        /// в каком смысле.
+        /// </summary>
+        /// <remarks>
+        /// Флаг тут отсутствовал до 05.08.2026, и в кампании врагов можно было таскать наравне со
+        /// своим отрядом (наход. Макса на живом прогоне). Умолчание <c>false</c> верно ровно для
+        /// Ристалища, где обе стороны и правда твои, — а кампания просто выпала: её пресет заводился
+        /// раньше, чем появился сам флаг.
+        /// </remarks>
+        public static ActivitySetup Campaign => new(ActivityKind.Campaign, ownUnitsOnly: true);
 
         /// <summary>Открытая площадка: оба состава видны, расставлять можно кого угодно.</summary>
         public static ActivitySetup ProvingGrounds => new(ActivityKind.ProvingGrounds);
