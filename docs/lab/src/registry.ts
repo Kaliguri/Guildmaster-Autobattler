@@ -224,6 +224,46 @@ export const PAGES: PageDef[] = [
     icon: "▦"
   },
   {
+    id: "ui-reward",
+    area: "ui",
+    title: "Награда",
+    blurb: "Выбор из трёх: карточки с плашкой последствия, лежачие строки Hades, самодостаточные карточки.",
+    load: () => import("./sections/ui-reward.js"),
+    icon: "◆"
+  },
+  {
+    id: "ui-shop",
+    area: "ui",
+    title: "Лавка",
+    blurb: "Товары, кошелёк, реролл и продажа: ряд с панелью статов, плотная сетка, наша полка.",
+    load: () => import("./sections/ui-shop.js"),
+    icon: "¤"
+  },
+  {
+    id: "ui-chest",
+    area: "ui",
+    title: "Сундук",
+    blurb: "Рефов класса нет: два такта, раскрытие на месте или отказ от отдельного экрана.",
+    load: () => import("./sections/ui-chest.js"),
+    icon: "▣"
+  },
+  {
+    id: "ui-event",
+    area: "ui",
+    title: "Событие",
+    blurb: "Панель с заходящим артом, текст без панели вовсе, модалка по центру. И что обещает плашка.",
+    load: () => import("./sections/ui-event.js"),
+    icon: "§"
+  },
+  {
+    id: "ui-camp",
+    area: "ui",
+    title: "Привал",
+    blurb: "Бюджет действий и адресат: список как у события, отряд телами, карточки как у награды.",
+    load: () => import("./sections/ui-camp.js"),
+    icon: "▲"
+  },
+  {
     id: "ui-profile",
     area: "ui",
     title: "Выбор профиля",
