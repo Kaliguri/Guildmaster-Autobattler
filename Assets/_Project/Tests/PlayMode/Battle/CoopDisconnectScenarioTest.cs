@@ -105,7 +105,56 @@ namespace Guildmaster.Tests.PlayMode.Battle
                 "свой выход записан чужой причиной — игрок увидит не тот экран");
         }
 
+        [UnityTest]
+        public IEnumerator GuestLearnsTheHostLeft()
+        {
+            LogAssert.ignoreFailingMessages = true;
+            yield return LoadGame();
+
+            var root = UnityEngine.Object.FindAnyObjectByType<RootLifetimeScope>();
+            var coop = root.Container.Resolve<ICoopSessionControl>();
+
+            // Хозяина изображает тест — вместе с его половиной рукопожатия. Отпечаток берём У ИГРЫ:
+            // рукопожатие сверяет контент, и свой, посчитанный иначе, дал бы отказ вместо приёма.
+            INetTransport hostWire = root.Container.Resolve<LoopbackNetwork>().CreateNode(claimHost: true);
+            var hostHandshake = new Guildmaster.Net.Session.CoopHandshake(
+                hostWire, root.Container.Resolve<Guildmaster.Data.ContentFingerprint>());
+
+            // Приглашение приходит тем же событием, каким его приносит платформа.
+            var lobby = root.Container.Resolve<Guildmaster.Net.Session.ICoopLobby>()
+                        as Guildmaster.Net.Session.LoopbackLobby;
+            Assert.IsNotNull(lobby, "в автоматическом прогоне комната обязана быть петлевой");
+            lobby.SimulateInvite();
+
+            yield return WaitUntil(() => coop.State == CoopSessionState.Connected, hostWire, seconds: 8f);
+            Assert.AreEqual(CoopSessionState.Connected, coop.State,
+                "гость не дошёл до «в сессии»: рукопожатие не состоялось");
+
+            // Хозяин уходит. Для гостя это конец сессии — миграции авторитета у нас нет намеренно.
+            hostWire.Shutdown();
+
+            yield return WaitUntil(() => coop.State == CoopSessionState.Offline, hostWire, seconds: 5f);
+
+            Assert.AreEqual(CoopSessionState.Offline, coop.State, "хозяин ушёл, а сессия у гостя жива");
+            Assert.AreEqual(CoopEndReason.HostLeft, coop.EndReason,
+                "уход хозяина записан не той причиной — гость увидит не тот экран");
+
+            hostHandshake.Dispose();
+        }
+
         // ── помощники ────────────────────────────────────────────────────────
+
+        /// <summary>Ждать условия, качая сторону хозяина: её узел ничей, его никто не тикает.</summary>
+        private static IEnumerator WaitUntil(Func<bool> done, INetTransport hostWire, float seconds)
+        {
+            float deadline = Time.realtimeSinceStartup + seconds;
+            while (!done())
+            {
+                if (Time.realtimeSinceStartup > deadline) yield break;
+                hostWire.Poll();
+                yield return null;
+            }
+        }
 
         private static IEnumerator WaitUntil(Func<bool> done, float seconds)
         {
