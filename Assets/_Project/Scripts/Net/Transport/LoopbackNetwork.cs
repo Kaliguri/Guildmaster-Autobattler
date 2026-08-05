@@ -76,6 +76,30 @@ namespace Guildmaster.Net.Transport
         /// <summary>Есть ли в петле узел-хозяин: к кому подключаться, если мы не он.</summary>
         internal bool HasHost => _nodes.ContainsKey(NetPeer.HostPeerId);
 
+        /// <summary>
+        /// Вернуть в сеть узел, который до этого выключили: он снова получает номер и знакомится с
+        /// остальными.
+        /// </summary>
+        /// <remarks>
+        /// <b>Без этого петля врала о жизненном цикле.</b> У настоящего транспорта выключение закрывает
+        /// сокет, а следующее подключение открывает новый — так и делает игра, принимая приглашение
+        /// посреди своей сессии: сперва рвёт своё, потом идёт в гости. В петле же выключенный узел
+        /// оставался мёртвым навсегда, и сеанс застревал на «подключаюсь» (наход. 05.08.2026).
+        /// </remarks>
+        private void ReviveNode(Node node)
+        {
+            int id = _nextPeerId++;
+            node.Rebind(id, isHost: false);
+            _nodes.Add(id, node);
+
+            foreach (KeyValuePair<int, Node> pair in _nodes)
+            {
+                if (pair.Key == id) continue;
+                pair.Value.EnqueueConnect(id);
+                node.EnqueueConnect(pair.Key);
+            }
+        }
+
         /// <summary>Прокачать все узлы разом — типичный шаг теста «прошёл кадр у всех».</summary>
         public void PollAll()
         {
@@ -172,8 +196,20 @@ namespace Guildmaster.Net.Transport
             /// </remarks>
             public bool StartHost() => IsHost;
 
-            /// <summary>Адрес игнорируется: в петле хозяин ровно один, выбирать не из чего.</summary>
-            public bool Connect(ulong hostAddress) => !IsHost && _net.HasHost;
+            /// <summary>
+            /// Адрес игнорируется: в петле хозяин ровно один, выбирать не из чего. Выключенный узел
+            /// при этом ОЖИВАЕТ — как открылся бы новый сокет у настоящего транспорта.
+            /// </summary>
+            public bool Connect(ulong hostAddress)
+            {
+                if (!_running)
+                {
+                    _running = true;
+                    _net.ReviveNode(this);
+                }
+
+                return !IsHost && _net.HasHost;
+            }
 
             /// <summary>
             /// Номер в петле раздаёт сама сеть при создании узла, и второй раздачи не бывает — принять
