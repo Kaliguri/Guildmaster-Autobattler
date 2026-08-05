@@ -10,8 +10,12 @@
                        vertical-scroller-visibility="Auto" horizontal-scroller-visibility="Hidden" />
 
         <ui:VisualElement class="gm-console__footer">
+            <!-- Полка каналов диагностики: кнопки строятся кодом по самому перечислению, иначе список
+                 здесь и список в DiagChannel разъехались бы на первом же новом канале. -->
+            <ui:VisualElement name="devlog-channels" class="gm-console__footer-buttons" />
             <ui:VisualElement class="gm-console__footer-buttons">
                 <ui:Button name="devlog-save" text="сохранить в файл" class="gm-console__tool" />
+                <ui:Button name="devlog-folder" text="папка логов" class="gm-console__tool" />
                 <ui:Button name="devlog-clear" text="очистить" class="gm-console__tool" />
             </ui:VisualElement>
             <ui:Label name="devlog-status" text="" class="gm-console__footer-text" picking-mode="Ignore" />

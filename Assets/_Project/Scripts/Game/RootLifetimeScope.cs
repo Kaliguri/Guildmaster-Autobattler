@@ -107,6 +107,11 @@ namespace Guildmaster.Game
             // машинно-локальное хранилище мимо Steam Cloud. Entry point применяет режим на старте сессии.
             builder.RegisterEntryPoint<DisplayService>(Lifetime.Singleton).As<IDisplayService>();
 
+            // Каналы диагностики — туда же и по той же причине: это свойство отладочного сеанса ЭТОЙ
+            // машины. Кооп разбирают двое, включать каналы приходится обоим и каждый запуск; забыл
+            // один — прогон бесполезен наполовину.
+            builder.RegisterEntryPoint<DiagChannelStore>(Lifetime.Singleton);
+
             // Рантайм-UI (оверлеи меню/настроек): VM + роутер сессионные; бутстрап — UIDocument-компонент
             // в CoreScene (инъекция методом через RegisterComponentInHierarchy). ESC открывает меню.
             // Стат-превью для UI (панель деталей инвентаря): считает те же числа, что боевая сборка.
