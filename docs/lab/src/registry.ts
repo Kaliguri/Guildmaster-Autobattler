@@ -238,6 +238,14 @@ export const PAGES: PageDef[] = [
     icon: "▦"
   },
   {
+    id: "ui-tabs",
+    area: "ui",
+    title: "Лента разделов",
+    blurb: "Чем помечен активный таб: реф промерен, пять вариантов пометки. Вердикт общий для настроек, отряда и реликвий.",
+    load: () => import("./sections/ui-tabs.js"),
+    icon: "▭"
+  },
+  {
     id: "ui-backdrop",
     area: "ui",
     title: "Фон экранов меты",
