@@ -238,6 +238,14 @@ export const PAGES: PageDef[] = [
     icon: "▦"
   },
   {
+    id: "ui-backdrop",
+    area: "ui",
+    title: "Фон экранов меты",
+    blurb: "Из чего сделана плоскость под настройками и меню: реф промерен пипеткой, четыре варианта в патине.",
+    load: () => import("./sections/ui-backdrop.js"),
+    icon: "◑"
+  },
+  {
     id: "ui-loadout",
     area: "ui",
     title: "Сбор отряда",
