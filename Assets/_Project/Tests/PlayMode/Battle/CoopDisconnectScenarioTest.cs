@@ -142,6 +142,40 @@ namespace Guildmaster.Tests.PlayMode.Battle
             hostHandshake.Dispose();
         }
 
+        [UnityTest]
+        public IEnumerator HostVanishingDuringTheHandshake_DoesNotLeaveUsHanging()
+        {
+            LogAssert.ignoreFailingMessages = true;
+            yield return LoadGame();
+
+            var root = UnityEngine.Object.FindAnyObjectByType<RootLifetimeScope>();
+            var coop = root.Container.Resolve<ICoopSessionControl>();
+
+            // Хозяин есть — но отвечать на «привет» не станет: он исчезает ровно в тот момент, когда
+            // гость представился. Самая неудобная точка обрыва: сессия уже не «оффлайн», но ещё и не
+            // «в игре».
+            INetTransport hostWire = root.Container.Resolve<LoopbackNetwork>().CreateNode(claimHost: true);
+
+            var lobby = root.Container.Resolve<Guildmaster.Net.Session.ICoopLobby>()
+                        as Guildmaster.Net.Session.LoopbackLobby;
+            Assert.IsNotNull(lobby, "в автоматическом прогоне комната обязана быть петлевой");
+            lobby.SimulateInvite();
+
+            yield return WaitUntil(() => coop.State == CoopSessionState.Connecting, hostWire, seconds: 5f);
+            Assert.AreEqual(CoopSessionState.Connecting, coop.State, "гость даже не начал подключаться");
+
+            hostWire.Shutdown();
+
+            yield return WaitUntil(() => coop.State == CoopSessionState.Offline, hostWire, seconds: 8f);
+
+            // Главное здесь — НЕ зависнуть. Гость, оставшийся в «подключаюсь» навсегда, не увидит ни
+            // игры, ни объяснения: для него это игра, которая ничего не делает.
+            Assert.AreEqual(CoopSessionState.Offline, coop.State,
+                "гость завис на подключении — для него это игра, которая просто ничего не делает");
+            Assert.AreEqual(CoopEndReason.ConnectionFailed, coop.EndReason,
+                "обрыв на рукопожатии записан как уход хозяина — игрок решит, что его выгнали из готовой игры");
+        }
+
         // ── помощники ────────────────────────────────────────────────────────
 
         /// <summary>Ждать условия, качая сторону хозяина: её узел ничей, его никто не тикает.</summary>
