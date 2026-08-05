@@ -34,9 +34,25 @@ namespace Guildmaster.Core.Settings
         /// <summary>Частоты, доступные для указанного разрешения (без дублей).</summary>
         IReadOnlyList<RefreshRate> RefreshRatesFor(int width, int height);
 
+        /// <summary>
+        /// Синхронизация и потолок кадров в применённом виде. <b>Владелец — этот сервис, а не уровень
+        /// качества:</b> в <c>QualitySettings</c> у каждого уровня своё <c>vSyncCount</c>, и появись у нас
+        /// переключатель качества, игрок менял бы синхронизацию, выбирая «покрасивее».
+        /// </summary>
+        FramePacing Pacing { get; }
+
         void SetResolution(int width, int height);
         void SetMode(WindowMode mode);
         void SetRefreshRate(RefreshRate rate);
+
+        /// <summary>Включить или выключить синхронизацию с развёрткой.</summary>
+        void SetVSync(bool enabled);
+
+        /// <summary>
+        /// Задать потолок кадров, <see cref="FramePacing.Unlimited"/> — снять. Применится только при
+        /// выключенной синхронизации; ниже <see cref="FramePacing.MinCap"/> не опускается.
+        /// </summary>
+        void SetFrameRateCap(int framesPerSecond);
 
         /// <summary>Вернуть «как у монитора»: нативное разрешение, наибольшая частота, окно без рамок.</summary>
         void ResetToNative();
