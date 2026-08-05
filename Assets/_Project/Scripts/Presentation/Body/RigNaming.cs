@@ -57,6 +57,20 @@ namespace Guildmaster.Presentation.Body
         public static bool IsGrip(Transform node) =>
             node != null && node.name.StartsWith(GripPrefix, System.StringComparison.Ordinal);
 
+        /// <summary>
+        /// Опознаватель ВОЛОС в имени узла рисунка (<c>Head_Hair_Art</c>). Волосы — единственная часть
+        /// самого тела, которую красит тинт юнита, поэтому их надо уметь отличать от лица и шеи.
+        /// </summary>
+        public const string HairToken = "Hair";
+
+        /// <summary>
+        /// Этот рисунок — волосы? Спрашивается по имени узла, потому что отдельной кости у волос нет:
+        /// они висят на голове вторым рисунком, и заводить им сустав значило бы врать риг ради ярлыка.
+        /// </summary>
+        public static bool IsHair(string nodeName) =>
+            !string.IsNullOrEmpty(nodeName) &&
+            nodeName.IndexOf(HairToken, System.StringComparison.OrdinalIgnoreCase) >= 0;
+
         /// <summary>Кость плеча нужной стороны — начало дуги удара: рука вращается как жёсткий рычаг.</summary>
         public static string ShoulderBone(BodySide side) =>
             side == BodySide.Left ? "Shoulder" + LeftSuffix : "Shoulder" + RightSuffix;

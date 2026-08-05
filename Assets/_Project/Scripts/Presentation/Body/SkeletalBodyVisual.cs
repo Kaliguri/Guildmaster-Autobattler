@@ -44,6 +44,37 @@ namespace Guildmaster.Presentation.Body
         /// <summary>Части тела для адресных запросов — реестр по конвенции рига.</summary>
         public IUnitPartLookup Parts => _registry ??= BuildRegistry();
 
+        private PartMask _tintMask;
+        private bool     _tintMaskBuilt;
+
+        /// <summary>
+        /// Какие части принимают тинт юнита: волосы и всё, что держится в руках, — любое оружие и щит.
+        /// </summary>
+        /// <remarks>
+        /// Считается один раз на тело и живёт до пересборки списка: состав частей внутри боя не меняется,
+        /// а <see cref="Apply"/> зовётся каждый кадр на каждого бойца.
+        /// <para>Ролей у частей две, и обе уже есть в реестре: предмет опознаётся хватом
+        /// (<see cref="UnitPart.IsHeld"/>), волосы — именем узла рисунка (<see cref="RigNaming.IsHair"/>),
+        /// потому что своей кости у них нет и быть не должно.</para>
+        /// </remarks>
+        private PartMask TintMask()
+        {
+            if (_tintMaskBuilt) return _tintMask;
+
+            PartMask mask = PartMask.Empty;
+            IReadOnlyList<UnitPart> parts = Parts.Parts;
+            for (int i = 0; i < parts.Count; i++)
+            {
+                UnitPart part = parts[i];
+                bool paints = part.IsHeld || RigNaming.IsHair(part.Renderer != null ? part.Renderer.name : null);
+                if (paints) mask |= PartMask.Single(part.Index);
+            }
+
+            _tintMask      = mask;
+            _tintMaskBuilt = true;
+            return _tintMask;
+        }
+
         private void Awake()
         {
             if (_group == null) _group = GetComponent<SortingGroup>() ?? GetComponentInParent<SortingGroup>(true);
@@ -87,7 +118,8 @@ namespace Guildmaster.Presentation.Body
                 SpriteRenderer part = _parts[i];
                 _partTransforms[i] = part != null ? part.transform : null;
             }
-            _registry = null;   // состав частей сменился — анатомию пересобираем при первом запросе
+            _registry      = null;   // состав частей сменился — анатомию пересобираем при первом запросе
+            _tintMaskBuilt = false;  // вместе с анатомией пересчитывается и «кого красим»
         }
 
         /// <summary>
@@ -138,11 +170,19 @@ namespace Guildmaster.Presentation.Body
 
         public void Apply(in BodyVisualState state)
         {
-            // Тинт и альфа инвиза — каждой части: полупрозрачным должно стать тело, а не грудь.
+            // ТИНТ КРАСИТ НЕ ВСЁ ТЕЛО, А ВОЛОСЫ И ТО, ЧТО В РУКАХ (решение Макса 05.08.2026: «Скорее
+            // только волосы И любое оружие»). Остальное носит цвет, каким его нарисовали: кожа, лицо и
+            // одежда, помноженные на оттенок юнита, уходят в грязь, а сталь клинка и прядь волос
+            // принимают цвет честно — они и написаны под покраску.
+            //
+            // Альфа идёт ВСЕМ: она несёт прозрачность инвиза, и некрашеная часть обязана исчезать
+            // вместе с телом, иначе стелс оставит на арене плавающий торс.
+            Color plain = new Color(1f, 1f, 1f, state.Tint.a);
+            PartMask tinted = TintMask();
             for (int i = 0; i < _parts.Count; i++)
             {
                 SpriteRenderer part = _parts[i];
-                if (part != null) part.color = state.Tint;
+                if (part != null) part.color = tinted.Has(i) ? state.Tint : plain;
             }
 
             bool active = state.HasEffect;
