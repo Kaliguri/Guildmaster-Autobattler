@@ -9,7 +9,8 @@ namespace Guildmaster.Presentation
     /// (<c>Guildmaster/UI/SegmentedHealthBar</c>), но БЕЗ щита: заливка ресурса + насечки фиксированного
     /// значения (<see cref="_tickValue"/> ресурса на минорную насечку, жирная каждые <see cref="_majorTickValue"/>).
     /// Нормировка простая — <c>scale = MaxResource</c> (ресурс не выходит за макс), поэтому частота насечек
-    /// постоянна для юнита. Chip-дельта показывает свежую трату/добор.
+    /// постоянна для юнита. Chip-дельты у ресурса нет: трату показывает ВСПЫШКА полосы, а не догоняющий
+    /// хвост (см. <see cref="PushResourceColor"/>).
     ///
     /// <para>Скрывается целиком для безресурсных юнитов (<c>MaxResource ≤ 0</c> — болванчики, безресурсные реликвии).
     /// Динамика гонится в per-instance материал по рендер-времени (НЕ по сим-тику).</para>
@@ -34,15 +35,19 @@ namespace Guildmaster.Presentation
         // владельцем цвета (после материала и префаба) и работало только в паре с мёртвой веткой Shader.Find
         // (аудит фолбэков 2026-07-26, п.6 — близнец HealthBarView, отставший от его правки).
 
-        [Header("Анимация chip-дельты")]
-        [SerializeField] private float _trailDelay = 0.15f;
-        [SerializeField] private float _trailSpeed = 1.2f;
+        [Header("Вспышка траты")]
+        [Tooltip("На сколько ярче вспыхивает полоса в момент списания ресурса. 0 = не вспыхивать.")]
+        [SerializeField] private float _spendFlashAmount = 0.9f;
+        [Tooltip("Сколько держится вспышка траты, сек.")]
+        [SerializeField] private float _spendFlashDuration = 0.18f;
 
         // Абсолютное состояние ресурса.
         private float _max = 1f;
         private float _current;
-        private float _trail;          // догоняющий current, в абсолюте
-        private float _delayRemaining;
+
+        private float _flashRemaining;
+        private Color _resourceColor = Color.white;   // эталон из материала — вспышка множит его, а не задаёт свой
+        private bool  _hasResourceColor;
 
         private Material _mat;
 
@@ -51,6 +56,7 @@ namespace Guildmaster.Presentation
         private static readonly int IdTrailFrac    = Shader.PropertyToID("_TrailFrac");
         private static readonly int IdSegments     = Shader.PropertyToID("_Segments");
         private static readonly int IdMajorEvery   = Shader.PropertyToID("_MajorEvery");
+        private static readonly int IdHpColor      = Shader.PropertyToID("_HpColor");
 
         private void Awake() => EnsureMaterial();
 
@@ -69,6 +75,11 @@ namespace Guildmaster.Presentation
             if (_fillImage != null) _fillImage.material = _mat;
 
             _mat.SetFloat(IdMajorEvery, Mathf.Max(1f, _majorTickValue / Mathf.Max(0.0001f, _tickValue)));
+
+            // Эталон цвета берётся у ЕДИНСТВЕННОГО владельца — материала. Вспышка траты его временно
+            // множит, поэтому без снимка первая же вспышка стала бы новой нормой.
+            _resourceColor    = _mat.GetColor(IdHpColor);
+            _hasResourceColor = true;
         }
 
         /// <summary>Привязать к юниту: скрыть для безресурсных, иначе — на текущую долю мгновенно.</summary>
@@ -82,8 +93,7 @@ namespace Guildmaster.Presentation
             EnsureMaterial();
             _max     = Mathf.Max(1f, max);
             _current = Mathf.Clamp(unit.CurrentResource, 0f, _max);
-            _trail   = _current;
-            _delayRemaining = 0f;
+            _flashRemaining = 0f;
             PushDynamicProps();
         }
 
@@ -93,20 +103,27 @@ namespace Guildmaster.Presentation
             if (max <= 0f) return;
             float newMax = Mathf.Max(1f, max);
             float newCur = Mathf.Clamp(current, 0f, newMax);
-            if (!Mathf.Approximately(newCur, _current))
-                _delayRemaining = _trailDelay;
+
+            // Списание — это КАСТ: пул ресурса равен цене каста, поэтому падение вниз здесь и есть момент
+            // применения способности. Добор регеном идёт непрерывно и вспышки не заслуживает — иначе полоса
+            // мигала бы весь бой и перестала что-либо сообщать.
+            if (newCur < _current - SpendEpsilon) _flashRemaining = _spendFlashDuration;
+
             _max     = newMax;
             _current = newCur;
         }
 
+        /// <summary>Порог, ниже которого убыль ресурса считается дрожанием счёта, а не тратой.</summary>
+        private const float SpendEpsilon = 0.01f;
+
         private void Update()
         {
-            if (!Mathf.Approximately(_trail, _current))
+            if (_flashRemaining > 0f)
             {
-                if (_delayRemaining > 0f)
-                    _delayRemaining -= Time.deltaTime;
-                else
-                    _trail = Mathf.MoveTowards(_trail, _current, _trailSpeed * _max * Time.deltaTime);
+                // Время unscaled: трата случается в тот же миг, что и hitstop с замедлением, и застывшая
+                // вспышка растянулась бы на весь slowmo — то есть перестала бы читаться как момент.
+                _flashRemaining -= Time.unscaledDeltaTime;
+                if (_flashRemaining < 0f) _flashRemaining = 0f;
             }
 
             PushDynamicProps();
@@ -120,8 +137,35 @@ namespace Guildmaster.Presentation
             float frac = _current / scale;
             _mat.SetFloat(IdHpFrac,       frac);
             _mat.SetFloat(IdCombinedFrac, frac);          // ресурс без щита: combined = fill
-            _mat.SetFloat(IdTrailFrac,    _trail / scale);
+            // Догоняющей линии у ресурса НЕТ (решение Макса 05.08.2026: «Мана бар убрать 2 догоняющую
+            // линию. Лишнее»). Chip-дельта рассказывает историю потери, а трата маны — не потеря, а
+            // применение: у неё есть свой знак, вспышка. Trail держим равным заливке, иначе шейдер
+            // нарисует хвост от прежнего значения.
+            _mat.SetFloat(IdTrailFrac,    frac);
             _mat.SetFloat(IdSegments,     Mathf.Max(1f, scale / Mathf.Max(0.0001f, _tickValue)));
+
+            PushResourceColor();
+        }
+
+        /// <summary>
+        /// Вспышка в момент траты: полоса коротко светлеет и гаснет. Яркостью, а не масштабом — бар
+        /// ресурса живёт вплотную к HP-бару, и дёрганье размера читалось бы как удар по юниту.
+        /// </summary>
+        private void PushResourceColor()
+        {
+            if (!_hasResourceColor) return;
+
+            if (_flashRemaining <= 0f || _spendFlashAmount <= 0f)
+            {
+                _mat.SetColor(IdHpColor, _resourceColor);
+                return;
+            }
+
+            // Пик в момент списания, дальше спад: вспышка сообщает «вот сейчас», а не «недавно было».
+            float k = Mathf.Clamp01(_flashRemaining / Mathf.Max(0.01f, _spendFlashDuration));
+            Color flashed = _resourceColor * (1f + _spendFlashAmount * k);
+            flashed.a = _resourceColor.a;
+            _mat.SetColor(IdHpColor, flashed);
         }
 
         private void OnDestroy()
