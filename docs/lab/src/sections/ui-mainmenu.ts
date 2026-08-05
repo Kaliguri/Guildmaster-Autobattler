@@ -281,15 +281,17 @@ const section: SectionDef = {
       id: "layouts",
       title: "Шесть раскладок",
       lede:
-        "А стоит в игре с 04.08.2026 и здесь участвует наравне с прочими. Остальные ждут вердикта."
+        "Пересмотр состоялся 05.08.2026: Макс оставил вариант А, тот же, что стоит в игре с 04.08. " +
+        "Пять остальных отклонены — не потому, что плохи, а потому, что каждая из них платит тем, " +
+        "чего у нас нет в запасе: кадром, центром сцены, глубиной входа в кооп."
     },
     {
       kind: "stands",
       items: [
         {
           id: "left-plates",
-          status: "note",
-          tag: "сейчас в игре",
+          status: "accepted",
+          tag: "оставлено как есть",
           title: "А · Колонка у левой кромки, пластины",
           note:
             "Пункты пластинами у левой кромки поверх живого боя, под колонкой локальная вуаль. " +
@@ -308,7 +310,7 @@ const section: SectionDef = {
         },
         {
           id: "slab",
-          status: "waiting",
+          status: "rejected",
           title: "Б · Колонка на вертикальной плите",
           tag: "реф Curse of the Dead Gods",
           note:
@@ -327,7 +329,7 @@ const section: SectionDef = {
         },
         {
           id: "center",
-          status: "waiting",
+          status: "rejected",
           title: "В · Список по центру",
           tag: "рефы Eldest Souls, RoR Returns",
           note:
@@ -346,7 +348,7 @@ const section: SectionDef = {
         },
         {
           id: "half",
-          status: "waiting",
+          status: "rejected",
           title: "Г · Центр левой половины, крупная вывеска",
           tag: "реф Hades II",
           note:
@@ -365,7 +367,7 @@ const section: SectionDef = {
         },
         {
           id: "bottom",
-          status: "waiting",
+          status: "rejected",
           title: "Д · Меню внизу слева, вывеска в углу",
           tag: "рефы Mewgenics, Brotato",
           note:
@@ -384,7 +386,7 @@ const section: SectionDef = {
         },
         {
           id: "two-lists",
-          status: "waiting",
+          status: "rejected",
           title: "Е · Два списка: игровой и служебный",
           tag: "реф Brotato",
           note:

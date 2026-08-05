@@ -219,14 +219,17 @@ const section: SectionDef = {
       kind: "head",
       id: "layouts",
       title: "Три раскладки",
-      lede: "Все три ждут вердикта. Доли экрана — 1920x1080."
+      lede:
+        "Выбраны горизонтальные табы (Макс, 05.08.2026) — самая частая схема класса. Доли экрана — " +
+        "1920x1080."
     },
     {
       kind: "stands",
       items: [
         {
           id: "tabs-top",
-          status: "waiting",
+          status: "accepted",
+          decision: "2026-08-05",
           title: "А · Горизонтальные табы",
           tag: "семь рефов из тринадцати",
           note:
@@ -245,7 +248,7 @@ const section: SectionDef = {
         },
         {
           id: "tabs-side",
-          status: "waiting",
+          status: "rejected",
           title: "Б · Вертикальные табы слева",
           tag: "реф Hades II",
           note:
@@ -264,7 +267,7 @@ const section: SectionDef = {
         },
         {
           id: "two-col",
-          status: "waiting",
+          status: "rejected",
           title: "В · Две колонки без табов",
           tag: "рефы Skul и Factorio",
           note:
