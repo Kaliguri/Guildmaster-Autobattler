@@ -198,14 +198,17 @@ const section: SectionDef = {
       kind: "head",
       id: "layouts",
       title: "Три раскладки",
-      lede: "Все три ждут вердикта. Доли экрана — 1920x1080."
+      lede:
+        "Выбран вариант А (Макс, 05.08.2026): панель справа, арт слева заходит под неё. Доли — " +
+        "1920x1080."
     },
     {
       kind: "stands",
       items: [
         {
           id: "overlap",
-          status: "waiting",
+          status: "accepted",
+          decision: "2026-08-05",
           title: "А · Панель справа, арт заходит под неё",
           tag: "реф Guildrun",
           note:
@@ -224,7 +227,7 @@ const section: SectionDef = {
         },
         {
           id: "no-panel",
-          status: "waiting",
+          status: "rejected",
           title: "Б · Панели нет вовсе",
           tag: "реф Slay the Spire 2",
           note:
@@ -243,7 +246,7 @@ const section: SectionDef = {
         },
         {
           id: "center",
-          status: "waiting",
+          status: "rejected",
           title: "В · Панель по центру, арт сверху",
           tag: "то, что в игре",
           note:

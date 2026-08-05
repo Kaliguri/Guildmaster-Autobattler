@@ -47,24 +47,34 @@ function drawTwoBeats(ctx: CanvasRenderingContext2D, width: number, height: numb
     size: 9,
     color: w.WIRE.accent
   });
+  // Такт второй — ОБЫЧНЫЙ экран награды, тот самый вариант Б: лежачие строки. Своей раскладки у
+  // содержимого сундука нет, и это часть решения Макса: «сначала просто сундук, анимка и обычный
+  // ревард экран».
   for (let i = 0; i < 3; i++) {
-    const x = 0.575 + i * 0.125;
-    w.box(ctx, { x, y: 0.26, w: 0.105, h: 0.38 }, width, height, { lit: i === 0 });
-    w.box(ctx, { x: x + 0.006, y: 0.275, w: 0.093, h: 0.15 }, width, height, {
+    const r: w.Rect = { x: 0.535, y: 0.26 + i * 0.145, w: 0.43, h: 0.135 };
+    w.box(ctx, r, width, height, { lit: i === 0 });
+    w.box(ctx, { x: r.x + 0.006, y: r.y + 0.016, w: 0.042, h: 0.104 }, width, height, {
       hollow: true,
       dashed: true,
-      label: "арт",
-      size: 7
+      label: "◆",
+      size: 10
     });
-    w.text(ctx, "название", { x: x + 0.0525, y: 0.47 }, width, height, { align: "center", size: 8 });
-    w.text(ctx, "описание", { x: x + 0.0525, y: 0.52 }, width, height, {
-      align: "center",
+    w.text(ctx, "название", { x: 0.59, y: r.y + 0.04 }, width, height, { size: 9 });
+    w.text(ctx, ["обычная", "редкая", "обычная"][i]!, { x: r.x + r.w - 0.01, y: r.y + 0.04 }, width, height, {
+      size: 7,
+      align: "right",
+      color: i === 1 ? w.WIRE.accent : w.WIRE.dim
+    });
+    w.text(ctx, "описание эффекта", { x: 0.59, y: r.y + 0.078 }, width, height, {
       size: 7,
       color: w.WIRE.dim
     });
+    w.text(ctx, "‣ Урон: 50 ➜ 60", { x: 0.59, y: r.y + 0.11 }, width, height, {
+      size: 7,
+      color: w.WIRE.accent
+    });
   }
-  w.box(ctx, { x: 0.66, y: 0.72, w: 0.18, h: 0.06 }, width, height, { label: "Забрать", lit: true, size: 9 });
-  w.measure(ctx, { x: 0.575, y: 0.26, w: 0.105, h: 0.38 }, "10.5%", width, height, "x", "before");
+  w.measure(ctx, { x: 0.535, y: 0.26, w: 0.43, h: 0.135 }, "60% экрана награды", width, height, "x", "before");
 }
 
 /* ---------- Б: сундук раскрывается на месте, содержимое вокруг него ---------- */
@@ -192,14 +202,17 @@ const section: SectionDef = {
       kind: "head",
       id: "layouts",
       title: "Три раскладки",
-      lede: "Все три ждут вердикта. Доли экрана — 1920x1080."
+      lede:
+        "Выбран вариант А (Макс, 05.08.2026): сундук, анимация открытия, затем обычный экран награды. " +
+        "Доли экрана — 1920x1080."
     },
     {
       kind: "stands",
       items: [
         {
           id: "two-beats",
-          status: "waiting",
+          status: "accepted",
+          decision: "2026-08-05",
           title: "А · Два такта: закрыт, затем содержимое",
           tag: "то, что в игре",
           note:
@@ -207,18 +220,18 @@ const section: SectionDef = {
             "рядом; в игре они идут один за другим на одном экране.",
           facts: [
             ["крышка", "18% x 24%"],
-            ["карточка", "10.5% x 38%"],
+            ["такт 2", "экран награды как есть"],
             ["тактов", "2"],
             ["кликов", "2 до награды"]
           ],
           verdict:
-            "Единственный вариант, где открытие вообще существует как событие. Цена — второй клик стоит на пути к тому, что игрок и так получит; если джуса в нём нет, это чистая задержка.",
+            "Единственный вариант, где открытие существует как событие, и при этом своей раскладки у содержимого нет: второй такт — обычный экран награды. Цена принята сознательно: второй клик оправдан анимацией открытия, и если она не появится, вариант В (экрана нет вовсе) вернётся на стол.",
           size: [480, 270],
           draw: drawTwoBeats
         },
         {
           id: "burst",
-          status: "waiting",
+          status: "rejected",
           title: "Б · Раскрывается на месте",
           tag: "своё",
           note:
@@ -237,7 +250,7 @@ const section: SectionDef = {
         },
         {
           id: "none",
-          status: "waiting",
+          status: "rejected",
           title: "В · Отдельного экрана нет",
           tag: "радикальный",
           note:

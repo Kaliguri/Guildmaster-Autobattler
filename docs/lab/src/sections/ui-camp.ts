@@ -245,14 +245,17 @@ const section: SectionDef = {
       kind: "head",
       id: "layouts",
       title: "Три раскладки",
-      lede: "Все три ждут вердикта. Доли экрана — 1920x1080."
+      lede:
+        "Выбран вариант А (Макс, 05.08.2026): привал остаётся раскладкой события — текст и список " +
+        "действий. Доли экрана — 1920x1080."
     },
     {
       kind: "stands",
       items: [
         {
           id: "as-event",
-          status: "waiting",
+          status: "accepted",
+          decision: "2026-08-05",
           title: "А · Как событие: текст и список",
           tag: "то, что в игре",
           note:
@@ -271,7 +274,7 @@ const section: SectionDef = {
         },
         {
           id: "roster",
-          status: "waiting",
+          status: "rejected",
           title: "Б · Отряд телами, действие адресное",
           tag: "своё",
           note:
@@ -290,7 +293,7 @@ const section: SectionDef = {
         },
         {
           id: "cards",
-          status: "waiting",
+          status: "rejected",
           title: "В · Ряд карточек-действий",
           tag: "как экран награды",
           note:

@@ -106,9 +106,11 @@ function drawRows(ctx: CanvasRenderingContext2D, width: number, height: number):
 
   w.text(ctx, "НАГРАДА", { x: 0.5, y: 0.1 }, width, height, { align: "center", size: 12 });
 
-  // Строка 45.9% x 19.2%, зазор 1.4% высоты — числа Hades I. Иконка слева занимает ~22% площади.
+  // Строка 60% x 19.2%: у рефов 45.9% (Hades I) и 53.4% (Hades II), но там строка несёт одну фразу
+  // описания, а у нас в неё идёт кит целиком. Правка Макса 05.08.2026: «карточки должны быть более
+  // широкими, слишком много места теряем» — пустые поля по бокам при 45.9% занимали четверть кадра.
   for (let i = 0; i < 3; i++) {
-    const r: w.Rect = { x: 0.27, y: 0.22 + i * 0.206, w: 0.459, h: 0.192 };
+    const r: w.Rect = { x: 0.2, y: 0.22 + i * 0.206, w: 0.6, h: 0.192 };
     w.box(ctx, r, width, height, { lit: i === 1 });
     w.box(ctx, { x: r.x + 0.008, y: r.y + 0.022, w: 0.06, h: 0.148 }, width, height, {
       hollow: true,
@@ -116,7 +118,7 @@ function drawRows(ctx: CanvasRenderingContext2D, width: number, height: number):
       label: "◆",
       size: 12
     });
-    w.text(ctx, ["ЩИТ ЗАСТАВЫ", "КЛИНОК ЗАРИ", "ПОСОХ ТИШИНЫ"][i]!, { x: 0.35, y: r.y + 0.05 }, width, height, {
+    w.text(ctx, ["ЩИТ ЗАСТАВЫ", "КЛИНОК ЗАРИ", "ПОСОХ ТИШИНЫ"][i]!, { x: 0.28, y: r.y + 0.05 }, width, height, {
       size: 10
     });
     // Редкость СЛОВОМ справа — единственный носитель, читаемый без знания легенды.
@@ -125,15 +127,15 @@ function drawRows(ctx: CanvasRenderingContext2D, width: number, height: number):
       align: "right",
       color: i === 1 ? w.WIRE.accent : w.WIRE.dim
     });
-    w.text(ctx, "одна строка описания, ключевое слово выделено", { x: 0.35, y: r.y + 0.098 }, width, height, {
+    w.text(ctx, "описание эффекта: ключевые слова выделены по смыслу", { x: 0.28, y: r.y + 0.098 }, width, height, {
       size: 8,
       color: w.WIRE.dim
     });
     // Отдельная строка-стат: значение в фиксированной колонке на ~50% ширины строки.
-    w.text(ctx, "‣ Урон:", { x: 0.35, y: r.y + 0.145 }, width, height, { size: 8, color: w.WIRE.dim });
+    w.text(ctx, "‣ Урон:", { x: 0.28, y: r.y + 0.145 }, width, height, { size: 8, color: w.WIRE.dim });
     w.text(ctx, "50 ➜ 60", { x: 0.5, y: r.y + 0.145 }, width, height, { size: 9, color: w.WIRE.accent });
   }
-  w.measure(ctx, { x: 0.27, y: 0.22, w: 0.459, h: 0.192 }, "45.9%", width, height, "x", "before");
+  w.measure(ctx, { x: 0.2, y: 0.22, w: 0.6, h: 0.192 }, "60%", width, height, "x", "before");
 }
 
 /* ---------- В: ряд карточек, описание внутри (рефы STS2, Guildrun Update Cards) ---------- */
@@ -211,14 +213,16 @@ const section: SectionDef = {
       kind: "head",
       id: "layouts",
       title: "Три раскладки",
-      lede: "Все три ждут вердикта. Доли экрана — 1920x1080."
+      lede:
+        "Выбран вариант Б (Макс, 05.08.2026), с одной правкой: строка расширена с 45.9% рефа до 60% " +
+        "экрана — на исходной ширине по бокам оставалась четверть кадра пустоты. Доли — 1920x1080."
     },
     {
       kind: "stands",
       items: [
         {
           id: "banners",
-          status: "waiting",
+          status: "rejected",
           title: "А · Ряд карточек, последствие под каждой",
           tag: "реф Guildrun",
           note:
@@ -237,14 +241,15 @@ const section: SectionDef = {
         },
         {
           id: "rows",
-          status: "waiting",
+          status: "accepted",
+          decision: "2026-08-05",
           title: "Б · Колонка лежачих строк",
           tag: "рефы Hades I и II",
           note:
             "Три строки во всю ширину, иконка слева, редкость словом справа, отдельная строка-стат " +
             "со значением в фиксированной колонке.",
           facts: [
-            ["строка", "45.9% x 19.2%"],
+            ["строка", "60% x 19.2%"],
             ["зазор", "1.4% высоты"],
             ["иконка", "22% площади строки"],
             ["апгрейд", "«50 ➜ 60», старое белым"]
@@ -256,7 +261,7 @@ const section: SectionDef = {
         },
         {
           id: "self",
-          status: "waiting",
+          status: "rejected",
           title: "В · Ряд карточек, описание внутри",
           tag: "рефы STS2, Guildrun Update",
           note:
