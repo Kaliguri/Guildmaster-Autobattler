@@ -231,16 +231,15 @@ const drawFormCentred: DrawFn = (ctx, w, h) => {
 
   const a = pointA(d), b = pointB(d);
   const dist = contactDistance(d);
-  const overshoot = 0.25;                        // сколько формы выходит за цель, в долях |AB|
-  const len = reach(d) * (1 + overshoot);
+  const len = Math.max(archLength(d, d.form.archetypes.slash, SAMPLE_DAMAGE), reach(d));
   const angle = Math.atan2(b[1] - a[1], b[0] - a[0]);
   const thick = thickness(d, d.form.archetypes.slash, SAMPLE_DAMAGE)[1];
 
-  // Центр — середина пути, сдвинутая на выход за цель: форма покрывает A→B и чуть дальше.
-  const cx = (a[0] + b[0]) / 2 + Math.cos(angle) * (reach(d) * overshoot) / 2;
-  const cy = (a[1] + b[1]) / 2 + Math.sin(angle) * (reach(d) * overshoot) / 2;
+  // Середина формы — середина пути: коса ложится на отрезок A→B целиком и никуда за него не уходит.
+  const cx = (a[0] + b[0]) / 2;
+  const cy = (a[1] + b[1]) / 2;
 
-  const v = view(ctx, w, h, a[0] - 0.5, b[0] + len * 0.5, -1.6, 1.9);
+  const v = view(ctx, w, h, a[0] - 0.5, b[0] + 0.8, -1.6, 1.9);
   silhouette(v, d, 0, "rgba(232,222,199,.08)");
   silhouette(v, d, dist, "rgba(255,138,76,.08)");
 
@@ -250,7 +249,7 @@ const drawFormCentred: DrawFn = (ctx, w, h) => {
 
   ctx.font = "500 11px ui-monospace, Consolas, monospace";
   ctx.fillStyle = DIM;
-  ctx.fillText(`длина ${fmt(len)} = |AB| + 25% · за целью ${fmt(reach(d) * overshoot)}`, 22, h - 22);
+  ctx.fillText(`длина ${fmt(len)} = |AB| · за целью 0.00`, 22, h - 22);
 };
 
 /* ---------- таблица чисел ---------- */
@@ -276,7 +275,7 @@ function renderNumbers(host: HTMLElement): void {
       const arch = d.form.archetypes[key];
       const len = archLength(d, arch, SAMPLE_DAMAGE);
       const [tMin, tMax] = thickness(d, arch, SAMPLE_DAMAGE);
-      const minReach = key === "slash" ? Math.max(len, reach(d) * 2) : len;
+      const minReach = key === "slash" ? Math.max(len, reach(d)) : len;
       return `<tr><td>${title}</td><td>${fmt(arch.lengthH)}</td><td>${fmt(len)}</td>` +
              `<td>${key === "slash" ? `<b>${fmt(minReach)}</b>` : "—"}</td>` +
              `<td>${fmt(tMin)} … ${fmt(tMax)}</td>` +
@@ -317,8 +316,7 @@ const section: SectionDef = {
         "<code>weight = lerp(sizeMin, sizeMax, frac / heavyHitFrac)</code> с потолком.<br>" +
         "<b>3. Длина.</b> <code>lengthH × H × weight</code>, где H — рост юнита-человека в мировых " +
         "единицах. У режущего сверх того действует правило пути: форма не короче отрезка от начала " +
-        "замаха до точки хита, а поскольку она центрирована в точке хита и уходит в обе стороны — " +
-        "не короче ДВУХ таких отрезков.<br>" +
+        "замаха до точки хита — и лежит на этом отрезке, серединой в его середине.<br>" +
         "<b>4. Толщина и прогиб</b> — те же доли H, помноженные на тот же weight; внутри коридора " +
         "архетипа выбор делает сид удара, поэтому соседние удары не выглядят штампом.<br>" +
         "<b>5. Жизнь</b> — общая для всех архетипов, плюс окно hitstop, на котором форма стоит замороженной."
@@ -362,27 +360,32 @@ const section: SectionDef = {
     },
 
     {
-      kind: "head", id: "form", title: "Отчего коса выходит больше своих чисел",
+      kind: "head", id: "form", title: "Где лежит коса",
       lede:
-        "Правило «не короче пути клинка» удваивается геометрией: форма навылет центрирована в точке " +
-        "хита, поэтому до A дотягивается только её половина."
+        "Длина косы задаётся не только её архетипом: она обязана покрыть путь клинка. Вопрос в том, " +
+        "относительно чего форма стоит — и он стоил ей ровно двукратной длины."
     },
     {
       kind: "split",
       items: [
         {
-          id: "form-now", status: "note", tag: "как сейчас", title: "Центр в точке хита", size: [740, 420],
-          note: "Половина формы уходит ЗА цель — там, где клинок не был и не будет.",
+          id: "form-now", status: "rejected", tag: "до 05.08", title: "Центр в точке хита", size: [740, 420],
+          note:
+            "Форма центрирована в B и уходит в обе стороны, поэтому до A дотягивается только её " +
+            "половина — а чтобы дотянулась, длину приходилось брать двойной.",
+          verdict:
+            "Половина серпа оказывалась за спиной цели, где клинка не было. При |AB| = 2.48 это давало " +
+            "форму почти в три роста юнита.",
           draw: drawFormNow
         },
         {
-          id: "form-centred", status: "waiting", tag: "предложение", title: "Центр на пути", size: [740, 420],
+          id: "form-centred", status: "accepted", title: "Коса лежит на пути", size: [740, 420],
           note:
-            "Форма покрывает отрезок A→B и выходит за цель на четверть пути. Длина падает почти вдвое " +
-            "при том же покрытии замаха.",
+            "Середина формы — середина отрезка A→B. Тот же замах покрыт вдвое короче, и за цель ничего " +
+            "не выступает.",
           verdict:
-            "Требует правки HitFormVfx.Apply: сейчас ветка «навылет» ставит центр ровно в точку хита. " +
-            "Вердикта нет — решать Максу.",
+            "Принято 05.08.2026: «Понизь длину слеша в 2 раза, остальное - оставь». Остальные три " +
+            "архетипа стоят по-прежнему в точке хита — у прокола и всполоха она конечная станция.",
           draw: drawFormCentred
         }
       ]
