@@ -10,9 +10,9 @@
         <!-- Лента разделов: три таба, как у Guildrun. Кнопка сброса стоит не здесь, а внизу с
              остальными действиями — у всех семи рефов, где она есть, она рядом с «Назад». -->
         <ui:VisualElement class="gm-tabbar gm-settings__tabs">
-            <gm:PlateButton name="tab-game" text="Игра" class="gm-tab" />
-            <gm:PlateButton name="tab-video" text="Графика" class="gm-tab" />
-            <gm:PlateButton name="tab-audio" text="Звук" class="gm-tab gm-tab--active" />
+            <gm:PlateButton name="tab-game" text="ИГРА" class="gm-tab" />
+            <gm:PlateButton name="tab-video" text="ГРАФИКА" class="gm-tab" />
+            <gm:PlateButton name="tab-audio" text="ЗВУК" class="gm-tab gm-tab--active" />
         </ui:VisualElement>
         <!-- Рельса: линия, на которой стоит активная вкладка. Шире ленты — как у рефа. -->
         <ui:VisualElement class="gm-tabbar__rail" />

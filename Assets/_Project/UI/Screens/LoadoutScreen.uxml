@@ -4,9 +4,9 @@
             <ui:Label text="Loadout" class="gm-panel__title" />
 
             <ui:VisualElement class="gm-tabbar">
-                <gm:PlateButton name="tab-relic" text="Relic" class="gm-tab gm-tab--active" />
-                <gm:PlateButton name="tab-items" text="Items" class="gm-tab" />
-                <gm:PlateButton name="tab-upgrades" text="Upgrades" class="gm-tab" />
+                <gm:PlateButton name="tab-relic" text="RELIC" class="gm-tab gm-tab--active" />
+                <gm:PlateButton name="tab-items" text="ITEMS" class="gm-tab" />
+                <gm:PlateButton name="tab-upgrades" text="UPGRADES" class="gm-tab" />
                 <gm:PlateButton name="tab-ai" text="AI" class="gm-tab" />
             </ui:VisualElement>
             <ui:VisualElement class="gm-tabbar__rail" />
