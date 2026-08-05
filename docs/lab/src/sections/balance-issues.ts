@@ -8,7 +8,7 @@
 
 import { el, html } from "../dom.js";
 import type { SectionDef } from "../types.js";
-import { balance, rich, statusOf, type Issue } from "./balance-data.js";
+import { balance, noDataMessage, rich, statusOf, type Issue } from "./balance-data.js";
 
 /** Статус пишется свободным текстом с уточнением после точки — класс берём по первому слову. */
 const STATUS_CLASS: Record<string, string> = {
@@ -77,7 +77,7 @@ function render(host: HTMLElement): void {
     const issues = balance.data.issues;
     if (issues.length === 0) {
       status.textContent = balance.error
-        ? `Реестр недоступен: ${balance.error}. Нужен ./scripts/lab-serve.ps1 -Watch`
+        ? noDataMessage("Реестр")
         : "В реестре пусто.";
       return;
     }

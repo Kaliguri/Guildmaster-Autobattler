@@ -10,7 +10,7 @@ import { el } from "../dom.js";
 import type { SectionDef } from "../types.js";
 import {
   balance, deviation, displayName, fmt, fmtValue, isControlRow, isNum, isReference, meta,
-  modesOf, NORM_KEYS, outOfBand, runA, runB, state, statusOf, unitsOf, valueOf
+  modesOf, noDataMessage, NORM_KEYS, outOfBand, runA, runB, state, statusOf, unitsOf, valueOf
 } from "./balance-data.js";
 import { balanceControls } from "./balance-ui.js";
 
@@ -28,7 +28,7 @@ function render(host: HTMLElement): void {
 
   void balance.settled.then(() => {
     if (balance.data.runs.length === 0) {
-      status.textContent = `Отчёты недоступны: ${balance.error ?? "нет данных"}. Нужен ./scripts/lab-serve.ps1 -Watch`;
+      status.textContent = noDataMessage("Отчёты");
       return;
     }
     draw(host);

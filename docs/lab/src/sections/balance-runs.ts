@@ -6,7 +6,7 @@
 import { el, html } from "../dom.js";
 import type { SectionDef } from "../types.js";
 import {
-  balance, deviation, displayName, fmt, fmtValue, isNum, meta, modeTitle, modesOf, outOfBand,
+  balance, deviation, displayName, fmt, fmtValue, isNum, meta, modeTitle, modesOf, noDataMessage, outOfBand,
   rich, runA, runB, setting, state, UNIT_COLUMNS, unitsOf, type Mode, type Run
 } from "./balance-data.js";
 import { balanceControls } from "./balance-ui.js";
@@ -203,7 +203,7 @@ function render(host: HTMLElement): void {
     if (balance.data.runs.length === 0) {
       status.textContent = balance.data.missing
         ? `Отчётов ещё нет: ${balance.data.missing} не найден. Прогон делается через scripts/balance-headless.ps1.`
-        : `Отчёты недоступны: ${balance.error ?? "нет ответа"}. Нужен ./scripts/lab-serve.ps1 -Watch`;
+        : noDataMessage("Отчёты");
       return;
     }
     // Ссылка вида #/balance-runs?mode=squad_duel открывает сразу нужный режим: разговор идёт про
