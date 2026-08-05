@@ -73,6 +73,9 @@ namespace Guildmaster.Net.Transport
             _nodes.Add(moved, previous);
         }
 
+        /// <summary>Есть ли в петле узел-хозяин: к кому подключаться, если мы не он.</summary>
+        internal bool HasHost => _nodes.ContainsKey(NetPeer.HostPeerId);
+
         /// <summary>Прокачать все узлы разом — типичный шаг теста «прошёл кадр у всех».</summary>
         public void PollAll()
         {
@@ -157,6 +160,27 @@ namespace Guildmaster.Net.Transport
             public event Action<int> PeerConnected;
             public event Action<int> PeerDisconnected;
             public event Action<int, ArraySegment<byte>> MessageReceived;
+
+            /// <summary>
+            /// В петле соединения уже стоят — узлы знакомятся в момент создания. Поэтому «поднять
+            /// сессию» и «войти» здесь не действие, а ОТВЕТ на вопрос, возможно ли это: хозяином может
+            /// объявиться только тот, кто занял номер хоста, а войти — только когда хозяин есть.
+            /// </summary>
+            /// <remarks>
+            /// Ответ важен сам по себе: сеанс на нём строит своё состояние («поднимаю» / «подключаюсь»),
+            /// и соврать здесь значило бы получить сеанс, который считает себя живым в пустой сети.
+            /// </remarks>
+            public bool StartHost() => IsHost;
+
+            /// <summary>Адрес игнорируется: в петле хозяин ровно один, выбирать не из чего.</summary>
+            public bool Connect(ulong hostAddress) => !IsHost && _net.HasHost;
+
+            /// <summary>
+            /// Номер в петле раздаёт сама сеть при создании узла, и второй раздачи не бывает — принять
+            /// назначенный сверху нам нечего. Молча ничего не делаем: рукопожатие вправе состояться и
+            /// здесь, просто его результат нам уже известен.
+            /// </summary>
+            public void SetLocalPeerId(int peerId) { }
 
             public void Send(int peerId, ArraySegment<byte> payload, NetDelivery delivery)
             {

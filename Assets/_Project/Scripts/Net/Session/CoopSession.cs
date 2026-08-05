@@ -23,11 +23,19 @@ namespace Guildmaster.Net.Session
     /// </remarks>
     public sealed class CoopSession : ICoopSessionControl, IDisposable
     {
-        private readonly SteamNetTransport _transport;
-        private readonly SteamLobbyService _lobby;
+        // Транспорт — ЗА ШВОМ, а не конкретный Steam: подъём сессии и вход к другу теперь часть
+        // интерфейса, и потому подключение, разрыв и приём приглашения проверяются петлёй в одном
+        // процессе. Пока здесь стоял конкретный тип, всё это можно было увидеть только вживую вдвоём.
+        private readonly Transport.INetTransport _transport;
+        // Комната — тоже за швом, по той же причине, что и транспорт: гостевая половина сеанса иначе
+        // не отыгрывается нигде, кроме живого прогона вдвоём.
+        private readonly ICoopLobby _lobby;
         private readonly CoopHandshake     _handshake;
 
-        public CoopSession(SteamNetTransport transport, SteamLobbyService lobby, CoopHandshake handshake)
+        // ПАРАМЕТРЫ — тоже за швом, и это не косметика: тип поля можно сузить до интерфейса, а
+        // параметр оставить конкретным, и всё скомпилируется — инъекция при этом продолжит подавать
+        // Steam-транспорт даже там, где в контейнере выбрана петля (моя ошибка 05.08.2026).
+        public CoopSession(Transport.INetTransport transport, ICoopLobby lobby, CoopHandshake handshake)
         {
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
             _lobby     = lobby;

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Tape;
 using Guildmaster.Core.Random;
@@ -269,6 +269,11 @@ namespace Guildmaster.Tests.EditMode.Net
             public DroppingNode(INetTransport inner) => _inner = inner;
 
             public int DropNextSends { get; set; }
+
+            // Подъём сессии, вход и назначенный номер обёртка не трогает: она про ДОСТАВКУ.
+            public bool StartHost()                => _inner.StartHost();
+            public bool Connect(ulong hostAddress) => _inner.Connect(hostAddress);
+            public void SetLocalPeerId(int peerId) => _inner.SetLocalPeerId(peerId);
 
             public bool IsRunning               => _inner.IsRunning;
             public int  LocalPeerId             => _inner.LocalPeerId;

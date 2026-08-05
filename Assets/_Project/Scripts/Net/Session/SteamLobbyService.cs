@@ -21,7 +21,7 @@ namespace Guildmaster.Net.Session
     /// SteamNetworkingSockets в проекте не заведён (`FacepunchTransportBootstrap` только инициализирует
     /// Steam, вопреки своему докстрингу). До этого момента подписчик получает id лобби и решает сам.</para>
     /// </remarks>
-    public sealed class SteamLobbyService : IDisposable
+    public sealed class SteamLobbyService : ICoopLobby, IDisposable
     {
         /// <summary>Сколько мест в лобби. Кооп у нас до четырёх (дизайн).</summary>
         public const int MaxMembers = 4;

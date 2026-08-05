@@ -285,7 +285,15 @@ namespace Guildmaster.Game
                       "Кооп по интернету недоступен, одиночная игра работает как обычно.");
                 return r.Resolve<Guildmaster.Net.Transport.LoopbackNetwork>().CreateNode();
             }, Lifetime.Singleton);
-            builder.Register<Guildmaster.Net.Session.SteamLobbyService>(Lifetime.Singleton);
+            // Комната выбирается тем же признаком, что и провод: без платформы (или в автоматическом
+            // прогоне) она петлевая — не зовёт никого и честно гасит кнопки приглашения.
+            builder.Register<Guildmaster.Net.Session.SteamLobbyService>(Lifetime.Singleton).AsSelf();
+            builder.Register<Guildmaster.Net.Session.LoopbackLobby>(Lifetime.Singleton).AsSelf();
+            builder.Register<Guildmaster.Net.Session.ICoopLobby>(r =>
+                !Application.isBatchMode && r.Resolve<Guildmaster.Net.Session.SteamBootstrap>().IsReady
+                    ? r.Resolve<Guildmaster.Net.Session.SteamLobbyService>()
+                    : (Guildmaster.Net.Session.ICoopLobby)r.Resolve<Guildmaster.Net.Session.LoopbackLobby>(),
+                Lifetime.Singleton);
             builder.Register<Guildmaster.Net.Session.CoopHandshake>(Lifetime.Singleton);
             builder.Register<Guildmaster.Net.Session.CoopSession>(Lifetime.Singleton)
                    .As<Guildmaster.Core.Net.ICoopSessionControl>()

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Tape;
@@ -321,6 +321,11 @@ namespace Guildmaster.Tests.EditMode.Net
             /// <summary>Сколько ближайших отправок проглотить.</summary>
             public int DropNextSends { get; set; }
 
+            // Подъём сессии, вход и назначенный номер обёртка не трогает: она про ДОСТАВКУ.
+            public bool StartHost()                => _inner.StartHost();
+            public bool Connect(ulong hostAddress) => _inner.Connect(hostAddress);
+            public void SetLocalPeerId(int peerId) => _inner.SetLocalPeerId(peerId);
+
             public bool IsRunning               => _inner.IsRunning;
             public int  LocalPeerId             => _inner.LocalPeerId;
             public bool IsHost                  => _inner.IsHost;
@@ -378,6 +383,11 @@ namespace Guildmaster.Tests.EditMode.Net
                 _inner = inner;
                 _limit = limitBytes;
             }
+
+            // Подъём сессии, вход и назначенный номер обёртка не трогает: она про ДОСТАВКУ.
+            public bool StartHost()                => _inner.StartHost();
+            public bool Connect(ulong hostAddress) => _inner.Connect(hostAddress);
+            public void SetLocalPeerId(int peerId) => _inner.SetLocalPeerId(peerId);
 
             public bool IsRunning               => _inner.IsRunning;
             public int  LocalPeerId             => _inner.LocalPeerId;
