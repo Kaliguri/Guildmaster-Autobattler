@@ -120,7 +120,27 @@ namespace Guildmaster.Presentation.Body
             }
             _registry      = null;   // состав частей сменился — анатомию пересобираем при первом запросе
             _tintMaskBuilt = false;  // вместе с анатомией пересчитывается и «кого красим»
+            CacheAuthoredColors();
         }
+
+        /// <summary>
+        /// Авторские цвета частей — те, что стоят в префабе. Некрашеная часть возвращается ИМЕННО К НИМ,
+        /// а не к белому: белый в <c>SpriteRenderer.color</c> означает «спрайт как есть», а художник
+        /// красит vertex-цветом прямо в риге — лицо телесным, тело холодно-серым, волосы тёмно-красным.
+        /// Подставив белый, мы стирали эту работу и получали белое лицо (найдено Максом 05.08.2026).
+        /// </summary>
+        /// <remarks>
+        /// Снимок берётся вместе с составом частей, то есть ДО первой покраски: вид переиспользуется из
+        /// пула целиком, и снимать цвета в <c>Apply</c> значило бы запомнить уже перекрашенное.
+        /// </remarks>
+        private void CacheAuthoredColors()
+        {
+            _authoredColors = new Color[_parts.Count];
+            for (int i = 0; i < _parts.Count; i++)
+                _authoredColors[i] = _parts[i] != null ? _parts[i].color : Color.white;
+        }
+
+        private Color[] _authoredColors;
 
         /// <summary>
         /// Реестр частей строится ЛЕНИВО, а не в <c>Awake</c>: стенд анимаций и валидатор рига поднимают тело
@@ -176,13 +196,21 @@ namespace Guildmaster.Presentation.Body
             // принимают цвет честно — они и написаны под покраску.
             //
             // Альфа идёт ВСЕМ: она несёт прозрачность инвиза, и некрашеная часть обязана исчезать
-            // вместе с телом, иначе стелс оставит на арене плавающий торс.
-            Color plain = new Color(1f, 1f, 1f, state.Tint.a);
+            // вместе с телом, иначе стелс оставит на арене плавающий торс. Меняется только она —
+            // сам цвет некрашеной части остаётся авторским (см. CacheAuthoredColors).
             PartMask tinted = TintMask();
             for (int i = 0; i < _parts.Count; i++)
             {
                 SpriteRenderer part = _parts[i];
-                if (part != null) part.color = tinted.Has(i) ? state.Tint : plain;
+                if (part == null) continue;
+
+                if (tinted.Has(i)) { part.color = state.Tint; continue; }
+
+                Color authored = _authoredColors != null && i < _authoredColors.Length
+                    ? _authoredColors[i]
+                    : Color.white;
+                authored.a = state.Tint.a;
+                part.color = authored;
             }
 
             bool active = state.HasEffect;
