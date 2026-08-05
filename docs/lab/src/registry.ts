@@ -296,6 +296,22 @@ export const PAGES: PageDef[] = [
     icon: "▲"
   },
   {
+    id: "ui-hud",
+    area: "ui",
+    title: "Боевой HUD",
+    blurb: "Единственный экран, который меряется долей кадра: полная периферия, минимум, лента снизу.",
+    load: () => import("./sections/ui-hud.js"),
+    icon: "◍"
+  },
+  {
+    id: "ui-courtyard",
+    area: "ui",
+    title: "Двор гильдии",
+    blurb: "Заготовка под разговор: сцена с телами, сцена с панелью, витрина разделов без места.",
+    load: () => import("./sections/ui-courtyard.js"),
+    icon: "⌂"
+  },
+  {
     id: "ui-profile",
     area: "ui",
     title: "Выбор профиля",
