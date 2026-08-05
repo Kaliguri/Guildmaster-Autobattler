@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Guildmaster.PaletteRemap
 {
     /// <summary>
-    /// Alebardium Palette Remapper — перекрашивает растровые (пиксель-арт) спрайты в нашу палитру
+    /// Alebardium Palette Remapper — перекрашивает растровые спрайты <b>вендорных паков</b> в нашу палитру
     /// методом <b>gradient-map по яркости</b>: яркость каждого пикселя отображается в рампу
     /// <c>ink → brass → parchment</c> (дефолт — прямо из <c>tokens.primitives.uss</c>). В отличие от
     /// плоского Unity-tint (один цвет) градиент-мап сохраняет светотень и потому даёт двухцветный
@@ -222,7 +222,9 @@ namespace Guildmaster.PaletteRemap
             return true;
         }
 
-        // Пиксель-арт импорт: Sprite, Point-фильтр, без компрессии/мипов — острые пиксели при апскейле.
+        // Импорт под ВЕНДОРНЫЙ пиксельный лист: Sprite, Point-фильтр, без компрессии/мипов — острые пиксели при апскейле.
+        // Наш собственный арт идёт иначе — Bilinear без мипов (пресет BonePartSprite): части рига
+        // экспортируются ×10 как запас под вращение костей, и Point этот запас обнулил бы.
         private static void ApplyPixelSpriteImport(string path)
         {
             if (AssetImporter.GetAtPath(path) is not TextureImporter imp) return;
