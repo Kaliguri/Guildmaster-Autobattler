@@ -202,14 +202,14 @@ MonoBehaviour:
   _enableHitForm: 1
   _enableHitFormBreakOnShield: 1
   _vfxHitForm: {fileID: 11400000, guid: d82430ffaffd4a248a06944eb2963688, type: 2}
-  _hitFormUnitHeight: 1
-  _hitFormLife: 0.16
+  _hitFormUnitHeight: 1.6
+  _hitFormLife: 0.22
   _hitFormGrowShare: 0.3
   _hitFormTailLag: 0.4
   _hitFormCoreWidth: 0.55
   _hitFormCoreBrightness: 3.2
   _hitFormSizeMax: 1.35
-  _hitFormSizeMin: 0.55
+  _hitFormSizeMin: 0.7
   _enableBodyCuts: 1
   _cutWidthUnits: 0.012
   _cutLengthMinH: 0.09

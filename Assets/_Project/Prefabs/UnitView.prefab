@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f68ee0afc646074ca2ef28e55b40338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.ConstantScreenScale
-  _referenceOrthographicSize: 5
+  _referenceOrthographicSize: 12
 --- !u!1 &8712704910842961996
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,7 +668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3113
+      value: 0.19
       objectReference: {fileID: 0}
     - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
       propertyPath: m_LocalPosition.z
@@ -749,7 +749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7293368250648807174, guid: cffa6693769cc314a98167d4cbf01187, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.378
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7293368250648807174, guid: cffa6693769cc314a98167d4cbf01187, type: 3}
       propertyPath: m_LocalPosition.z

@@ -262,7 +262,7 @@ Transform:
   m_GameObject: {fileID: 728327794574555595}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.85, z: 0}
+  m_LocalPosition: {x: 0, y: 0.437, z: 0}
   m_LocalScale: {x: 2.1756, y: 2.1756, z: 2.1756}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f68ee0afc646074ca2ef28e55b40338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.ConstantScreenScale
-  _referenceOrthographicSize: 5
+  _referenceOrthographicSize: 12
 --- !u!1 &879942328228487726
 GameObject:
   m_ObjectHideFlags: 0
@@ -2029,6 +2029,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Body.UnitHeldItem
   _kind: 2
   _twoHanded: 0
+  _reachPart: {fileID: 0}
 --- !u!1 &3395154678077429050
 GameObject:
   m_ObjectHideFlags: 0
@@ -2146,7 +2147,7 @@ Transform:
   m_GameObject: {fileID: 3414729947681338739}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3113, z: 0}
+  m_LocalPosition: {x: 0, y: 0.19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2169,8 +2170,8 @@ MonoBehaviour:
   _barMaterial: {fileID: 2100000, guid: 33ed55e40cb0c2c4f85a503c1d687609, type: 2}
   _tickValue: 5
   _majorTickValue: 20
-  _trailDelay: 0.15
-  _trailSpeed: 1.2
+  _spendFlashAmount: 0.9
+  _spendFlashDuration: 0.18
 --- !u!1 &3543832328158404505
 GameObject:
   m_ObjectHideFlags: 0
@@ -2384,7 +2385,7 @@ MonoBehaviour:
   _popDuration: 0.14
   _popOvershoot: 0.9
   _spreadX: 0.35
-  _referenceOrthographicSize: 5
+  _referenceOrthographicSize: 12
 --- !u!1 &3604747359780225023
 GameObject:
   m_ObjectHideFlags: 0
@@ -3539,6 +3540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Body.UnitHeldItem
   _kind: 1
   _twoHanded: 0
+  _reachPart: {fileID: 0}
 --- !u!1 &6564955500095746548
 GameObject:
   m_ObjectHideFlags: 0
@@ -4594,7 +4596,7 @@ Transform:
   m_GameObject: {fileID: 8773891170616601944}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.378, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
