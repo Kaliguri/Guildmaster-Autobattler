@@ -45,6 +45,51 @@ namespace Guildmaster.Tests.PlayMode.Battle
         public void RestoreLogStrictness() => LogAssert.ignoreFailingMessages = false;
 
         [UnityTest]
+        public IEnumerator MovingOnOurOwnGround_IsApplied()
+        {
+            LogAssert.ignoreFailingMessages = true;
+            yield return LoadGame();
+
+            var root = UnityEngine.Object.FindAnyObjectByType<RootLifetimeScope>();
+            var sessions   = root.Container.Resolve<SessionHost>();
+            var activities = root.Container.Resolve<ActivityHost>();
+
+            INetTransport partner = root.Container.Resolve<LoopbackNetwork>().CreateNode();
+
+            sessions.Open(SessionRole.Owner);
+            yield return WaitFrames(1);
+
+            // Обычное Ристалище: обе стороны наши, право заведомо есть — проверяется САМ ПУТЬ, а не
+            // фильтр. Без этого сценария все проверки намерений были бы про отказ, и «принято» держал
+            // бы только один тест — на локальный клик, который по сети не ходит.
+            activities.Open(ActivitySetup.ProvingGrounds);
+            yield return WaitFrames(8);
+
+            IArenaUnits arena = FindAnywhere<IArenaUnits>();
+            Assert.IsNotNull(arena, "у хозяина нет шва «кто на арене»");
+            Assert.IsNotEmpty(arena.Units, "площадка пуста — двигать некого");
+
+            ArenaUnit unit  = arena.Units[0];
+            Vector2 before  = unit.Position;
+            var target      = new Vector2(before.x, before.y + 0.5f); // тот же участок зоны, соседи по X
+
+            SendMoveIntent(partner, unit.Id, target, StrangerPlayerId);
+
+            yield return WaitUntil(() => arena.TryGet(unit.Id, out ArenaUnit u) && u.Position != before,
+                                   partner, seconds: 5f);
+
+            Assert.IsTrue(arena.TryGet(unit.Id, out ArenaUnit after), "боец исчез с арены");
+            Assert.AreNotEqual(before, after.Position,
+                "намерение по сети не применилось — у гостя перетаскивание не будет работать вовсе");
+            Assert.AreEqual(target, after.Position,
+                "боец переехал НЕ ТУДА, куда его звали — хозяин применил намерение по-своему");
+
+            activities.Close();
+            sessions.Close();
+            yield return WaitFrames(2);
+        }
+
+        [UnityTest]
         public IEnumerator MovingSomeoneElsesSide_IsRefused()
         {
             LogAssert.ignoreFailingMessages = true;
