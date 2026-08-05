@@ -225,28 +225,28 @@ MonoBehaviour:
   _hitFormSlash:
     _lengthH: 1.4
     _arcH: {x: 0.2, y: 0.28}
-    _halfThicknessH: {x: 0.08, y: 0.1}
+    _halfThicknessH: {x: 0.03, y: 0.04}
     _roughness: 0.3
     _starRadiusH: 0
     _starRays: {x: 7, y: 9}
   _hitFormPierce:
     _lengthH: 0.6
     _arcH: {x: 0.015, y: 0.035}
-    _halfThicknessH: {x: 0.04, y: 0.05}
+    _halfThicknessH: {x: 0.015, y: 0.02}
     _roughness: 0.18
     _starRadiusH: 0
     _starRays: {x: 7, y: 9}
   _hitFormBlunt:
     _lengthH: 1
     _arcH: {x: 0.09, y: 0.14}
-    _halfThicknessH: {x: 0.07, y: 0.09}
+    _halfThicknessH: {x: 0.025, y: 0.032}
     _roughness: 0.35
     _starRadiusH: 0.5
     _starRays: {x: 7, y: 9}
   _hitFormBolt:
     _lengthH: 0.9
     _arcH: {x: 0, y: 0}
-    _halfThicknessH: {x: 0.035, y: 0.045}
+    _halfThicknessH: {x: 0.012, y: 0.016}
     _roughness: 0.12
     _starRadiusH: 0
     _starRays: {x: 7, y: 9}
