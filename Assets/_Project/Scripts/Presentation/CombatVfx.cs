@@ -105,9 +105,10 @@ namespace Guildmaster.Presentation
         /// возвращается сам, догорев: длину взмаха заранее не знает никто, её ведёт скраб по сим-тикам.
         /// </summary>
         /// <param name="source">Кто машет — у него дуга спрашивает геометрию каждый кадр.</param>
+        /// <param name="style">Как след окрашен и какой он формы поперёк (ступени, профиль ширины).</param>
         public void SpawnArc(VfxData data, Effects.ISwingArcSource source, Color colour,
                              float innerShare, float tailBias, float fadeOutSeconds, float maxSpanDeg,
-                             string slot = null)
+                             in Effects.SwingArcStyle style, string slot = null)
         {
             if (!Ready(data, slot) || source == null) return;
             if (!data.Prefab.TryGetComponent(out PooledVfx _))
@@ -136,7 +137,7 @@ namespace Guildmaster.Presentation
             }, lifeOverride: ArcSafetyLifetime);
 
             if (vfx.TryGetComponent(out Effects.SwingArcVfx arc))
-                arc.Begin(source, colour, innerShare, tailBias, fadeOutSeconds, maxSpanDeg);
+                arc.Begin(source, colour, innerShare, tailBias, fadeOutSeconds, maxSpanDeg, style);
         }
 
         /// <summary>Потолок жизни дуги, сек: страховка на случай, если взмах оборвался вместе с юнитом.</summary>

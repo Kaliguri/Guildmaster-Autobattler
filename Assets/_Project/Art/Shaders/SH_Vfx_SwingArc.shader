@@ -13,6 +13,7 @@ Shader "Guildmaster/Vfx/SwingArc"
     Properties
     {
         [HDR] _Color ("Colour", Color) = (1, 0.8, 0.4, 1)
+        [HDR] _CoreColor ("Core Colour (пересвет в середине следа)", Color) = (1, 1, 1, 1)
 
         _AngleFrom ("Angle From (rad)", Float) = 0
         _AngleTo   ("Angle To (rad)", Float) = 1.2
@@ -22,6 +23,20 @@ Shader "Guildmaster/Vfx/SwingArc"
 
         _Fade     ("Fade (общая сила)", Range(0, 1)) = 1
         _TailBias ("Tail Bias (насколько быстро гаснет хвост)", Range(0.2, 4)) = 1.6
+
+        // СТУПЕНИ ПОПЕРЁК: доли полутолщины следа. Наружу от ядра идёт цвет, за ним — чёрная кромка,
+        // которая толщину СЪЕДАЕТ ИЗНУТРИ, а не нарастает снаружи: габарит дуги от неё не меняется.
+        _CoreShare   ("Core Share (доля толщины под пересвет)", Range(0, 1)) = 0.34
+        _ColourShare ("Colour Share (доля толщины под цвет)", Range(0, 1)) = 0.74
+
+        // Сколько альфы даёт кромка. Ноль — прежнее чисто аддитивное поведение: тёмного нет вовсе,
+        // след ни на что не ложится. Это и есть выключатель приёма.
+        _Opaque ("Opaque (сила перекрытия кромкой)", Range(0, 1)) = 1
+
+        // ПРОФИЛЬ ШИРИНЫ ВДОЛЬ: полумесяц вместо ровного кольца.
+        _ProfileOn   ("Profile On (0 — ровное кольцо)", Range(0, 1)) = 1
+        _TailSharp   ("Tail Sharpness (меньше — резче сужение у хвоста)", Range(0.15, 2)) = 0.55
+        _ProfilePeak ("Profile Peak (нормировка, считается снаружи)", Float) = 0.69
     }
 
     SubShader
@@ -35,7 +50,10 @@ Shader "Guildmaster/Vfx/SwingArc"
             "PreviewType"="Plane"
         }
 
-        Blend One One
+        // PREMULTIPLIED ALPHA — как у формы удара, и по той же причине: чёрная кромка ПЕРЕКРЫВАЕТ то,
+        // что под ней, а сложение перекрывать не умеет. Свет по-прежнему уходит в rgb, поэтому при
+        // _Opaque = 0 шейдер ведёт себя ровно как прежний Blend One One.
+        Blend One OneMinusSrcAlpha
         Cull Off
         ZWrite Off
 
@@ -65,13 +83,34 @@ Shader "Guildmaster/Vfx/SwingArc"
 
             CBUFFER_START(UnityPerMaterial)
                 half4 _Color;
+                half4 _CoreColor;
                 half  _AngleFrom;
                 half  _AngleTo;
                 half  _RadiusInner;
                 half  _RadiusOuter;
                 half  _Fade;
                 half  _TailBias;
+                half  _CoreShare;
+                half  _ColourShare;
+                half  _Opaque;
+                half  _ProfileOn;
+                half  _TailSharp;
+                half  _ProfilePeak;
             CBUFFER_END
+
+            // Профиль ширины следа: t = 0 у хвоста, 1 у клинка.
+            //
+            // Показатель у хвоста МЕНЬШЕ единицы намеренно — тогда производная там максимальна, и
+            // сужение ускоряется к самому концу. Множитель (1 - 0.45 t³) поджимает передний край, но
+            // не сводит его в ноль: свет обязан доходить до клинка, иначе взмах выглядит недоигранным.
+            //
+            // Нормировка приходит снаружи (_ProfilePeak): считать максимум профиля в пикселе значило
+            // бы гонять цикл на каждом фрагменте ради числа, которое меняется раз в жизни материала.
+            float TrailProfile(float t)
+            {
+                float raw = pow(max(t, 1e-4), _TailSharp) * (1.0 - 0.45 * t * t * t);
+                return saturate(raw / max(_ProfilePeak, 1e-4));
+            }
 
             Varyings Vert(Attributes v)
             {
@@ -89,12 +128,10 @@ Shader "Guildmaster/Vfx/SwingArc"
                 float r = length(p);
                 if (r < 1e-4) return 0;
 
-                // Радиальная маска кольца: у самого плеча свечения нет (там рука, а не след клинка),
-                // наружу оно сходит на нет мягко.
+                // Грубая отсечка по кольцу: дальше внешнего радиуса и ближе внутреннего следа нет ни
+                // при каком профиле, и считать там нечего.
                 float edge = max(fwidth(r) * 1.5, 1e-4);
-                float ring = (1.0 - smoothstep(_RadiusOuter - edge, _RadiusOuter + edge, r))
-                           * smoothstep(_RadiusInner - edge, _RadiusInner + edge, r);
-                if (ring <= 0.001) return 0;
+                if (r > _RadiusOuter + edge || r < _RadiusInner - edge) return 0;
 
                 // Угловая маска: от начала взмаха до текущего положения клинка. Углы приходят снаружи
                 // РАЗВЁРНУТЫМИ (без скачка через ±пи), поэтому дугу можно мерить простым отношением.
@@ -115,14 +152,37 @@ Shader "Guildmaster/Vfx/SwingArc"
                 float angEdge = saturate(0.06 / absSpan);
                 float ends = smoothstep(0.0, angEdge, t) * (1.0 - smoothstep(1.0 - angEdge, 1.0, t) * 0.15);
 
-                // Хвост: чем дальше от текущего положения клинка, тем прозрачнее. Второго цвета нет —
-                // это тот же свет, которого стало меньше.
+                // Хвост: чем дальше от текущего положения клинка, тем прозрачнее.
                 float tail = pow(saturate(t), _TailBias);
 
-                float alpha = ring * ends * tail * saturate(_Fade);
-                if (alpha <= 0.001) return 0;
+                // ШИРИНА СЛЕДА в этой точке. Ровное кольцо (_ProfileOn = 0) — прежнее поведение;
+                // профиль превращает его в полумесяц, схлопывая след к линии кончика у хвоста.
+                float full   = max(_RadiusOuter - _RadiusInner, 1e-4);
+                float width  = lerp(full, TrailProfile(t) * full, saturate(_ProfileOn));
+                float halfW  = max(width * 0.5, 1e-4);
+                // Внешняя граница всегда на радиусе кончика: сужается след ВНУТРЬ, к плечу.
+                float rMid   = _RadiusOuter - halfW;
+                float dr     = abs(r - rMid) / halfW;         // 0 — середина следа, 1 — его кромка
 
-                return half4(_Color.rgb * alpha, alpha);
+                // Мягкость края в тех же единицах, что dr, иначе тонкий хвост зазубрится.
+                float e = max(fwidth(r) / halfW * 1.5, 1e-3);
+
+                float band   = 1.0 - smoothstep(1.0 - e, 1.0 + e, dr);
+                if (band <= 0.001) return 0;
+                float colour = 1.0 - smoothstep(_ColourShare - e, _ColourShare + e, dr);
+                float core   = 1.0 - smoothstep(_CoreShare - e, _CoreShare + e, dr);
+
+                float live = ends * tail * saturate(_Fade);
+
+                // Свет: цвет по краям, пересвет в середине — та же ось «ядро и кайма», что у формы.
+                half3 rgb = _Color.rgb * (colour * live) + _CoreColor.rgb * (core * live);
+
+                // Перекрытие даёт ВСЯ полоса, а свет занимает её внутреннюю часть — поэтому снаружи от
+                // цвета остаётся чёрная кромка, и она же есть лайн. Отдельного слоя под это нет.
+                float alpha = band * live * saturate(_Opaque);
+                if (alpha <= 0.001 && colour <= 0.001) return 0;
+
+                return half4(rgb, alpha);
             }
             ENDHLSL
         }

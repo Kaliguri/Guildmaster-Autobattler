@@ -17,6 +17,65 @@ namespace Guildmaster.Presentation.Effects
     }
 
     /// <summary>
+    /// Как след ОКРАШЕН и какой он формы поперёк — в отличие от геометрии взмаха, которая приходит от
+    /// источника каждый кадр. Собирается один раз при спавне из feel-конфига.
+    /// </summary>
+    /// <remarks>
+    /// Приём принят 06.08.2026 по кадру из Cult of the Lamb (канон
+    /// <c>gdd/70-gamefeel/vfx-language</c> §«След — росчерк»): вместо ровного кольца одного цвета след
+    /// получает <b>ступени поперёк</b> (пересвет в середине, цвет к краям, чёрная кромка) и
+    /// <b>профиль ширины вдоль</b> (полумесяц). Тёмное живёт КРАЙНЕЙ СТУПЕНЬЮ собственного градиента,
+    /// а не слоем поверх, — поэтому второго прохода нет, но premultiplied шейдеру всё равно нужен:
+    /// перекрывать сложением нельзя.
+    /// </remarks>
+    public readonly struct SwingArcStyle
+    {
+        /// <summary>Цвет пересвета в середине следа. Белый по той же причине, что у формы удара.</summary>
+        public readonly Color Core;
+
+        /// <summary>Доля полутолщины под пересвет.</summary>
+        public readonly float CoreShare;
+
+        /// <summary>Доля полутолщины под цвет. Всё, что снаружи, — чёрная кромка.</summary>
+        public readonly float ColourShare;
+
+        /// <summary>Сила перекрытия кромкой. Ноль — прежний чистый аддитив, тёмного нет вовсе.</summary>
+        public readonly float Opaque;
+
+        /// <summary>Включён ли профиль ширины: 0 — ровное кольцо, 1 — полумесяц.</summary>
+        public readonly float ProfileOn;
+
+        /// <summary>Резкость сужения у хвоста: меньше — сужается быстрее к самому концу.</summary>
+        public readonly float TailSharpness;
+
+        public SwingArcStyle(Color core, float coreShare, float colourShare, float opaque,
+                             bool profile, float tailSharpness)
+        {
+            Core          = core;
+            CoreShare     = Mathf.Clamp01(coreShare);
+            ColourShare   = Mathf.Clamp01(colourShare);
+            Opaque        = Mathf.Clamp01(opaque);
+            ProfileOn     = profile ? 1f : 0f;
+            TailSharpness = Mathf.Clamp(tailSharpness, 0.15f, 2f);
+        }
+
+        /// <summary>
+        /// Максимум профиля — им шейдер нормирует ширину, чтобы «острее» не означало заодно «тоньше».
+        /// Считается аналитически: производная <c>t^p (1 - 0.45 t³)</c> обращается в ноль при
+        /// <c>t³ = p / (0.45 (p + 3))</c>.
+        /// </summary>
+        public float ProfilePeak
+        {
+            get
+            {
+                float p = TailSharpness;
+                float t = Mathf.Pow(p / (0.45f * (p + 3f)), 1f / 3f);
+                return Mathf.Max(1e-4f, Mathf.Pow(t, p) * (1f - 0.45f * t * t * t));
+            }
+        }
+    }
+
+    /// <summary>
     /// Дуга за клинком: сектор с центром в плече, заметающий УЖЕ пройденный угол. Живёт на strike-фазе
     /// взмаха и гаснет сразу после неё.
     /// </summary>
@@ -39,6 +98,13 @@ namespace Guildmaster.Presentation.Effects
         private static readonly int RadiusOuterId = Shader.PropertyToID("_RadiusOuter");
         private static readonly int FadeId        = Shader.PropertyToID("_Fade");
         private static readonly int TailBiasId    = Shader.PropertyToID("_TailBias");
+        private static readonly int CoreColorId   = Shader.PropertyToID("_CoreColor");
+        private static readonly int CoreShareId   = Shader.PropertyToID("_CoreShare");
+        private static readonly int ColourShareId = Shader.PropertyToID("_ColourShare");
+        private static readonly int OpaqueId      = Shader.PropertyToID("_Opaque");
+        private static readonly int ProfileOnId   = Shader.PropertyToID("_ProfileOn");
+        private static readonly int TailSharpId   = Shader.PropertyToID("_TailSharp");
+        private static readonly int ProfilePeakId = Shader.PropertyToID("_ProfilePeak");
 
         private Renderer _renderer;
         private MaterialPropertyBlock _block;
@@ -71,8 +137,9 @@ namespace Guildmaster.Presentation.Effects
         /// <param name="innerShare">Доля радиуса, с которой начинается свечение: у самого плеча его нет.</param>
         /// <param name="tailBias">Насколько быстро гаснет хвост дуги.</param>
         /// <param name="fadeOutSeconds">Сколько дуга догорает после конца взмаха.</param>
+        /// <param name="style">Как след окрашен и какой он формы поперёк — см. <see cref="SwingArcStyle"/>.</param>
         public void Begin(ISwingArcSource source, Color colour, float innerShare, float tailBias,
-                          float fadeOutSeconds, float maxSpanDeg)
+                          float fadeOutSeconds, float maxSpanDeg, in SwingArcStyle style)
         {
             Cache();
 
@@ -91,6 +158,13 @@ namespace Guildmaster.Presentation.Effects
             _block.SetFloat(RadiusOuterId, 0.95f);
             _block.SetFloat(TailBiasId, _tailBias);
             _block.SetFloat(FadeId, 1f);
+            _block.SetColor(CoreColorId, style.Core);
+            _block.SetFloat(CoreShareId, style.CoreShare);
+            _block.SetFloat(ColourShareId, style.ColourShare);
+            _block.SetFloat(OpaqueId, style.Opaque);
+            _block.SetFloat(ProfileOnId, style.ProfileOn);
+            _block.SetFloat(TailSharpId, style.TailSharpness);
+            _block.SetFloat(ProfilePeakId, style.ProfilePeak);
             _renderer.SetPropertyBlock(_block);
 
             // Первый кадр задаёт начало дуги: дальше угол только доезжает до текущего клинка.

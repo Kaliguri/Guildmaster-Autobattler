@@ -1079,7 +1079,7 @@ namespace Guildmaster.Presentation
             float k = _feel.SwingArcBrightness;
             _vfx.SpawnArc(_feel.VfxSwingArc, view, new Color(glow.r * k, glow.g * k, glow.b * k, glow.a),
                           _feel.SwingArcInnerShare, _feel.SwingArcTailBias, _feel.SwingArcFadeOut,
-                          _feel.SwingArcMaxSpanDeg, slot: nameof(_feel.VfxSwingArc));
+                          _feel.SwingArcMaxSpanDeg, _feel.SwingArcStyle, slot: nameof(_feel.VfxSwingArc));
         }
 
         /// <summary>Contact-dust: пыль у ног при старте/стопе бега (VfxData → префаб, тумблер в feel-конфиге).</summary>

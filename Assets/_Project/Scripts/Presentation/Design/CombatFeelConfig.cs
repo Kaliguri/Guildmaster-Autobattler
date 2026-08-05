@@ -451,6 +451,25 @@ namespace Guildmaster.Presentation.Design
                  "замкнутый круг. Больше 360 замкнёт кольцо — сектор перекроет сам себя.")]
         [SerializeField, Range(45f, 360f)] private float _swingArcMaxSpanDeg = 270f;
 
+        [Tooltip("След становится РОСЧЕРКОМ: пересвет в середине, цвет к краям, чёрная кромка снаружи, " +
+                 "плюс профиль ширины полумесяцем. Выключено — прежнее ровное кольцо одного цвета, " +
+                 "которое и гаснет только прозрачностью.")]
+        [SerializeField] private bool _enableSwingArcShaping = true;
+
+        [Tooltip("Какую долю полутолщины следа занимает пересвет в его середине.")]
+        [SerializeField, Range(0f, 1f)] private float _swingArcCoreShare = 0.34f;
+
+        [Tooltip("Какую долю полутолщины занимает цвет. Всё, что снаружи, и есть чёрная кромка — она " +
+                 "съедает толщину изнутри, а не нарастает снаружи, поэтому габарит дуги не меняется.")]
+        [SerializeField, Range(0f, 1f)] private float _swingArcColourShare = 0.74f;
+
+        [Tooltip("Резкость сужения у хвоста: МЕНЬШЕ — сужается быстрее к самому концу. 0.55 — принятый " +
+                 "профиль, 0.35 острее, 0.85 мягче.")]
+        [SerializeField, Range(0.15f, 2f)] private float _swingArcTailSharpness = 0.55f;
+
+        [Tooltip("Яркость пересвета в середине следа — множитель к базе, как у ядра формы удара.")]
+        [SerializeField, Range(1f, 6f)] private float _swingArcCoreBrightness = 2.4f;
+
         [SerializeField] private HitFormArchetypeConfig _hitFormSlash = HitFormArchetypeConfig.Slash();
         [SerializeField] private HitFormArchetypeConfig _hitFormPierce = HitFormArchetypeConfig.Pierce();
         [SerializeField] private HitFormArchetypeConfig _hitFormBlunt = HitFormArchetypeConfig.Blunt();
@@ -635,6 +654,21 @@ namespace Guildmaster.Presentation.Design
         public float   SwingArcFadeOut     => _swingArcFadeOut;
         public float   SwingArcBrightness  => _swingArcBrightness;
         public float   SwingArcMaxSpanDeg  => _swingArcMaxSpanDeg;
+        /// <summary>
+        /// Как окрашен и какой формы поперёк след клинка. Выключенная подача возвращает прежнее ровное
+        /// кольцо одного цвета: перекрытия нет вовсе (шейдер снова ведёт себя как чистый аддитив),
+        /// профиль ширины выключен, пересвет не выделяется.
+        /// </summary>
+        /// <remarks>
+        /// Тумблер <c>_enableSwingArcShaping</c> публичного свойства НЕ имеет намеренно: он применяется
+        /// здесь же, при сборке стиля, и наружу торчать ему незачем. Публичный <c>Enable*</c> обязан
+        /// читаться кодом презентации — это держит <c>FeelToggleCoverageTests</c>, и он же поймал первую
+        /// версию этой правки, где ручка существовала, но её никто не спрашивал.
+        /// </remarks>
+        public Effects.SwingArcStyle SwingArcStyle => _enableSwingArcShaping
+            ? new Effects.SwingArcStyle(Overbright(_swingArcCoreBrightness),
+                _swingArcCoreShare, _swingArcColourShare, 1f, true, _swingArcTailSharpness)
+            : new Effects.SwingArcStyle(Color.clear, 0f, 1f, 0f, false, _swingArcTailSharpness);
 
         /// <summary>
         /// Правило генерации архетипа. Тотальна по построению: новый архетип, забытый здесь, вернёт
