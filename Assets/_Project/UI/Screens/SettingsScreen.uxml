@@ -46,9 +46,9 @@
         <!-- Действия внизу по центру: у Guildrun «Назад» стоит там же, а «Сброс по умолчанию» рядом
              с ним и НЕ выделен цветом — ни у одного из семи рефов, где он есть, он не покрашен. -->
         <ui:VisualElement class="gm-settings__actions">
-            <gm:PlateButton name="btn-save" text="Сохранить" class="gm-button gm-button--primary" />
-            <gm:PlateButton name="btn-cancel" text="Отмена" class="gm-button" />
-            <gm:PlateButton name="btn-defaults" text="Сброс" class="gm-button" />
+            <gm:PlateButton name="btn-save" text="СОХРАНИТЬ" class="gm-button gm-button--display gm-button--primary" />
+            <gm:PlateButton name="btn-cancel" text="ОТМЕНА" class="gm-button gm-button--display" />
+            <gm:PlateButton name="btn-defaults" text="СБРОС" class="gm-button gm-button--display" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
