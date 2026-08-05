@@ -282,6 +282,161 @@ function drawFill(flat: boolean): DrawFn {
   };
 }
 
+/* ---------- дуга за клинком ----------
+   Второй кандидат на обводку и единственный, о ком спросили отдельно. Дуга устроена иначе, чем
+   форма: это не знак, а СЛЕД — кольцевой сектор от плеча, у которого хвост гаснет по УГЛУ, показывая,
+   где клинок был раньше. Отсюда развилка внутри развилки: контур либо держит полную силу и тогда
+   обводит место, где свечения уже нет, либо гаснет вместе с хвостом и перестаёт быть лайном.
+
+   Клип взмаха повторяет числами раздел «Удар» — иначе сравнивались бы две разные дуги. */
+
+const WINDUP_START = 6;
+const STRIKE_START = 13;
+const STRIKE_END = 19;
+const RECOVERY_END = 27;
+const REST = -18;
+const BACK = -145;
+const FOLLOW = 55;
+
+/** Гашение хвоста по углу: то же число, что в `CombatFeelConfig.SwingArcTailBias`. */
+const TAIL_BIAS = 1.6;
+
+const easeOut = (t: number): number => 1 - Math.pow(1 - t, 2);
+const easeIn = (t: number): number => t * t;
+const easeInOut = (t: number): number => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+
+function armAngle(f: number): number {
+  if (f < WINDUP_START) return REST;
+  if (f < STRIKE_START) return REST + (BACK - REST) * easeOut((f - WINDUP_START) / (STRIKE_START - WINDUP_START));
+  if (f <= STRIKE_END) return BACK + (FOLLOW - BACK) * easeIn((f - STRIKE_START) / (STRIKE_END - STRIKE_START));
+  if (f <= RECOVERY_END) return FOLLOW + (REST - FOLLOW) * easeInOut((f - STRIKE_END) / (RECOVERY_END - STRIKE_END));
+  return REST;
+}
+
+const rad = (deg: number): number => (deg * Math.PI) / 180;
+
+function sectorPath(
+  ctx: CanvasRenderingContext2D,
+  x: number, y: number, a0: number, a1: number, rIn: number, rOut: number
+): void {
+  ctx.beginPath();
+  ctx.arc(x, y, rOut, a0, a1, false);
+  ctx.arc(x, y, Math.max(1, rIn), a1, a0, true);
+  ctx.closePath();
+}
+
+/** Гашение хвоста по УГЛУ одной заливкой.
+ *
+ *  Первая версия рисовала сектор сорока сегментами и получила швы: при аддитивном наложении места
+ *  стыков складывались в светлые радиальные полосы, а без нахлёста между ними оставались тёмные щели.
+ *  Конический градиент решает это по построению — путь один, значит стыков нет вовсе. */
+function tailGradient(
+  ctx: CanvasRenderingContext2D,
+  x: number, y: number, a0: number, a1: number,
+  rgb: string, peak: number, fade: number
+): CanvasGradient {
+  const g = ctx.createConicGradient(a0, x, y);
+  const frac = Math.min(0.999, Math.abs(a1 - a0) / (Math.PI * 2));
+  const STOPS = 10;
+  for (let i = 0; i <= STOPS; i++) {
+    const t = i / STOPS;
+    const k = Math.pow(t, TAIL_BIAS);
+    g.addColorStop(t * frac, `rgba(${rgb},${(peak * k * fade).toFixed(3)})`);
+  }
+  // За сектором цвета быть не должно: путь его и так обрезает, но лишний стоп страхует от
+  // подтекания на torцах при округлении долей.
+  g.addColorStop(Math.min(1, frac + 0.0005), `rgba(${rgb},0)`);
+  return g;
+}
+
+export type ArcOutline =
+  /** Как сейчас: голый свет. */
+  | "none"
+  /** Контур полной силы по всему сектору. */
+  | "solid"
+  /** Контур гаснет вместе с хвостом. */
+  | "faded";
+
+function drawSwingArc(outline: ArcOutline): DrawFn {
+  return (ctx, w, h) => {
+    const groundY = arena(ctx, w, h, 56);
+    const H = 168;
+    const cx = w * 0.44;
+
+    drawUnit(ctx, cx, groundY, H, true);
+
+    const sx = cx;
+    const sy = groundY - H + (H / 16) * 5.6;   // плечо
+    const arm = H * 0.52;
+    const rOut = arm * 1.04;
+    const rIn = rOut * 0.4;                     // у плеча свечения нет: там рука, а не след
+    const lw = H * RIM_W;
+
+    const live = frame >= STRIKE_START && frame <= STRIKE_END + 2;
+    if (live) {
+      const cur = Math.min(frame, STRIKE_END);
+      const a0 = rad(armAngle(STRIKE_START));
+      const a1 = rad(armAngle(cur));
+      const fade = frame > STRIKE_END ? 1 - (frame - STRIKE_END) / 2 : 1;
+
+      // Контур — под свечением и в обычном наложении, как у формы удара.
+      if (outline === "solid") {
+        // Один путь целиком: заливка без швов, сила постоянна вдоль всего сектора.
+        ctx.save();
+        ctx.globalCompositeOperation = "source-over";
+        const da = lw / rOut;
+        sectorPath(ctx, sx, sy, a0 - da, a1 + da, rIn - lw, rOut + lw);
+        ctx.fillStyle = `rgba(${BLACK},${(0.9 * fade).toFixed(3)})`;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      if (outline === "faded") {
+        ctx.save();
+        ctx.globalCompositeOperation = "source-over";
+        const da = lw / rOut;
+        sectorPath(ctx, sx, sy, a0 - da, a1 + da, rIn - lw, rOut + lw);
+        ctx.fillStyle = tailGradient(ctx, sx, sy, a0 - da, a1 + da, BLACK, 0.9, fade);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Свечение: кольцо с угловым гашением плюс яркая кромка у внешнего края.
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      sectorPath(ctx, sx, sy, a0, a1, rIn, rOut);
+      ctx.fillStyle = tailGradient(ctx, sx, sy, a0, a1, ELEMENTS[0], 0.26, fade);
+      ctx.fill();
+      sectorPath(ctx, sx, sy, a0, a1, rOut * 0.9, rOut);
+      ctx.fillStyle = tailGradient(ctx, sx, sy, a0, a1, "220,250,255", 0.5, fade);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Рука и клинок — поверх дуги: след принадлежит движению, а не наоборот.
+    const a = rad(armAngle(frame));
+    const hand = { x: sx + Math.cos(a) * arm * 0.42, y: sy + Math.sin(a) * arm * 0.42 };
+    const tip = { x: sx + Math.cos(a) * arm, y: sy + Math.sin(a) * arm };
+    ctx.lineCap = "round";
+    ctx.strokeStyle = COL.bodyLit;
+    ctx.lineWidth = 9;
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.lineTo(hand.x, hand.y);
+    ctx.stroke();
+    ctx.strokeStyle = "#C9B591";
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(hand.x, hand.y);
+    ctx.lineTo(tip.x, tip.y);
+    ctx.stroke();
+
+    miniLabel(ctx, outline === "none" ? "дуга без обводки — как сейчас"
+      : outline === "solid" ? "обводка полной силы"
+      : "обводка гаснет с хвостом");
+  };
+}
+
 /* ---------- техническая иллюстрация: почему аддитивом нельзя ----------
    Не развилка, а факт про шейдер: Blend One One умеет только ПРИБАВЛЯТЬ свет. Тёмный цвет,
    прибавленный к кадру, кадр не темнит — он его чуть подсвечивает. */
@@ -454,6 +609,51 @@ const section: SectionDef = {
           draw: drawFill(true)
         }
       ]
+    },
+
+    {
+      kind: "head", id: "swing", title: "Дуга за клинком: тот же приём на следе, а не на знаке",
+      lede:
+        "Форма удара обводку получила (05.08.2026), дуга — нет, и вопрос открыт. Дуга устроена иначе: " +
+        "это след, у которого хвост гаснет по углу и показывает, где клинок был раньше. Поэтому " +
+        "вариантов здесь три, а не два — контур либо держит силу вдоль всего сектора, либо гаснет " +
+        "вместе с ним."
+    },
+    {
+      kind: "stands",
+      items: [
+        {
+          id: "arc-none", status: "note", tag: "как сейчас", title: "Без обводки", size: [430, 340],
+          note: "Голый свет: кольцо от плеча с угловым гашением хвоста. Так рисует движок сегодня.",
+          draw: drawSwingArc("none")
+        },
+        {
+          id: "arc-solid", status: "waiting", title: "Обводка полной силы", size: [430, 340],
+          note: "Контур одинаков вдоль всего сектора. Знак читается, но контур держится и там, где свечение уже погасло.",
+          facts: [["хвост", "обведён при нулевом свете"], ["читается", "как лента, а не след"]],
+          draw: drawSwingArc("solid")
+        },
+        {
+          id: "arc-faded", status: "waiting", title: "Обводка гаснет с хвостом", size: [430, 340],
+          note: "Контур гаснет тем же законом, что свечение: он есть там, где есть свет, и исчезает вместе с ним.",
+          facts: [["хвост", "без контура, и это честно"], ["передняя кромка", "получает чёткий край"], ["риск", "идёт на каждый взмах"]],
+          verdict: "Вышло лучше моего прогноза: я ждала бесформенного тёмного ореола, а контур собрался у передней кромки и дал ей край, не тронув хвост.",
+          draw: drawSwingArc("faded")
+        }
+      ]
+    },
+    {
+      kind: "note",
+      html:
+        "Стенд подтвердил половину моего прогноза и опроверг вторую. <b>Полная сила — плохо:</b> " +
+        "контур держится там, где свечения уже нет, и хвост читается чёрной тряпкой, а не следом. " +
+        "<b>Гаснущий контур вышел лучше ожидаемого:</b> я ждала бесформенного тёмного ореола, а он " +
+        "собрался у передней кромки — там, где свет и так ярче всего, — и дал ей край.<br><br>" +
+        "Что остаётся против даже у него: дуга идёт на <b>каждый</b> взмах, включая промахи и " +
+        "холостые, — это самый частый эффект боя, и постоянная тёмная линия у клинка утомляет " +
+        "быстрее, чем знак, мелькающий на попадании.<br><br>" +
+        "Если берём — работа та же, что у формы: premultiplied в <code>SH_Vfx_SwingArc</code> плюс " +
+        "контур кольца по внешнему и внутреннему радиусу, гашение хвоста уже там есть."
     },
 
     {
