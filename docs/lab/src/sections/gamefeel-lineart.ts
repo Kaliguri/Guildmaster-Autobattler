@@ -437,6 +437,147 @@ function drawSwingArc(outline: ArcOutline): DrawFn {
   };
 }
 
+/* ---------- дуга как РОСЧЕРК: тёмное живёт внутри следа ----------
+   Поправка Макса 06.08.2026 по кадру из Cult of the Lamb (`00-meta/qa-notes`): обводка дуге нужна не
+   вторым слоем поверх, а КРАЙНЕЙ СТУПЕНЬЮ собственного градиента. Тогда лайн получается даром и
+   ничего не нарушает — ни блендинга, ни разведения осей.
+
+   Два независимых фактора, поэтому и разложены по стендам: ступени поперёк (белый центр → цвет →
+   чёрная кромка) и профиль ширины вдоль (полумесяц вместо ровного веера). */
+
+/** Доли толщины под ступени: вся полоса — чёрная кромка, внутри цвет, в сердцевине белый пересвет. */
+const STEP_RIM = 1.0;
+const STEP_COLOUR = 0.74;
+const STEP_CORE = 0.34;
+
+/**
+ * Профиль ширины следа по углу: `t` = 0 у хвоста, 1 у клинка.
+ *
+ * Показатель у хвоста МЕНЬШЕ единицы намеренно — тогда производная там максимальна, и сужение
+ * ускоряется к самому концу («чем ближе к концу, тем быстрее уменьшение»). Передний край сужен, но
+ * не сведён в ноль: свет обязан доходить до клинка, иначе взмах выглядит недоигранным.
+ */
+function trailWidth(t: number, wMax: number, sharpness: number): number {
+  const raw = (x: number): number => Math.pow(x, sharpness) * (1 - 0.45 * Math.pow(x, 3));
+  // Нормируем по максимуму профиля, иначе «острее» означало бы заодно и «тоньше».
+  let peak = 1e-3;
+  for (let i = 1; i <= 40; i++) peak = Math.max(peak, raw(i / 40));
+  return wMax * (raw(t) / peak);
+}
+
+export type TrailMode =
+  /** Как сейчас: ровное кольцо одного цвета. */
+  | "flat"
+  /** Только ступени поперёк, ширина по-прежнему ровная. */
+  | "steps"
+  /** Только полумесяц, цвет по-прежнему плоский. */
+  | "crescent"
+  /** И то и другое. */
+  | "full";
+
+/** Полоса-ступень вдоль пути клинка: внешняя граница на радиусе кончика, толщина едет по профилю. */
+function trailBand(
+  ctx: CanvasRenderingContext2D,
+  sx: number, sy: number, a0: number, a1: number,
+  rOut: number, wMax: number, share: number, crescent: boolean, sharpness: number
+): void {
+  const N = 72;
+  const widthAt = (t: number): number => (crescent ? trailWidth(t, wMax, sharpness) : wMax);
+
+  ctx.beginPath();
+  for (let i = 0; i <= N; i++) {
+    const t = i / N;
+    const a = a0 + (a1 - a0) * t;
+    const w = widthAt(t);
+    const r = rOut - w * 0.5 + w * share * 0.5;
+    ctx[i === 0 ? "moveTo" : "lineTo"](sx + Math.cos(a) * r, sy + Math.sin(a) * r);
+  }
+  for (let i = N; i >= 0; i--) {
+    const t = i / N;
+    const a = a0 + (a1 - a0) * t;
+    const w = widthAt(t);
+    const r = rOut - w * 0.5 - w * share * 0.5;
+    ctx.lineTo(sx + Math.cos(a) * r, sy + Math.sin(a) * r);
+  }
+  ctx.closePath();
+}
+
+function drawTrail(mode: TrailMode, sharpness = 0.55): DrawFn {
+  return (ctx, w, h) => {
+    const groundY = arena(ctx, w, h, 56);
+    const H = 168;
+    const cx = w * 0.44;
+
+    drawUnit(ctx, cx, groundY, H, true);
+
+    const sx = cx;
+    const sy = groundY - H + (H / 16) * 5.6;
+    const arm = H * 0.52;
+    const rOut = arm * 1.04;
+    const wMax = rOut * 0.62;              // толщина следа в самом широком месте
+    const steps = mode === "steps" || mode === "full";
+    const crescent = mode === "crescent" || mode === "full";
+
+    const live = frame >= STRIKE_START && frame <= STRIKE_END + 2;
+    if (live) {
+      const cur = Math.min(frame, STRIKE_END);
+      const a0 = rad(armAngle(STRIKE_START));
+      const a1 = rad(armAngle(cur));
+      const fade = frame > STRIKE_END ? 1 - (frame - STRIKE_END) / 2 : 1;
+
+      // Чёрная кромка идёт ПЕРВОЙ и обычным наложением: она съедает толщину изнутри, а не нарастает
+      // снаружи. Габарит следа от неё не меняется — меняется то, сколько внутри осталось свету.
+      if (steps) {
+        ctx.save();
+        ctx.globalCompositeOperation = "source-over";
+        trailBand(ctx, sx, sy, a0, a1, rOut, wMax, STEP_RIM, crescent, sharpness);
+        // Гашение у кромки почти отсутствует: она держит форму до конца, иначе хвост расплывётся.
+        ctx.fillStyle = tailGradient(ctx, sx, sy, a0, a1, BLACK, 0.92, fade);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      if (steps) {
+        trailBand(ctx, sx, sy, a0, a1, rOut, wMax, STEP_COLOUR, crescent, sharpness);
+        ctx.fillStyle = tailGradient(ctx, sx, sy, a0, a1, ELEMENTS[0], 0.55, fade);
+        ctx.fill();
+        trailBand(ctx, sx, sy, a0, a1, rOut, wMax, STEP_CORE, crescent, sharpness);
+        ctx.fillStyle = tailGradient(ctx, sx, sy, a0, a1, "255,255,255", 0.85, fade);
+        ctx.fill();
+      } else {
+        trailBand(ctx, sx, sy, a0, a1, rOut, wMax, 1, crescent, sharpness);
+        ctx.fillStyle = tailGradient(ctx, sx, sy, a0, a1, ELEMENTS[0], 0.3, fade);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    const a = rad(armAngle(frame));
+    const hand = { x: sx + Math.cos(a) * arm * 0.42, y: sy + Math.sin(a) * arm * 0.42 };
+    const tip = { x: sx + Math.cos(a) * arm, y: sy + Math.sin(a) * arm };
+    ctx.lineCap = "round";
+    ctx.strokeStyle = COL.bodyLit;
+    ctx.lineWidth = 9;
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.lineTo(hand.x, hand.y);
+    ctx.stroke();
+    ctx.strokeStyle = "#C9B591";
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(hand.x, hand.y);
+    ctx.lineTo(tip.x, tip.y);
+    ctx.stroke();
+
+    miniLabel(ctx, mode === "flat" ? "как сейчас"
+      : mode === "steps" ? "ступени поперёк"
+      : mode === "crescent" ? "полумесяц"
+      : `ступени плюс полумесяц${sharpness < 0.5 ? " · хвост острее" : ""}`);
+  };
+}
+
 /* ---------- техническая иллюстрация: почему аддитивом нельзя ----------
    Не развилка, а факт про шейдер: Blend One One умеет только ПРИБАВЛЯТЬ свет. Тёмный цвет,
    прибавленный к кадру, кадр не темнит — он его чуть подсвечивает. */
@@ -628,17 +769,77 @@ const section: SectionDef = {
           draw: drawSwingArc("none")
         },
         {
-          id: "arc-solid", status: "waiting", title: "Обводка полной силы", size: [430, 340],
+          id: "arc-solid", status: "rejected", title: "Обводка полной силы", size: [430, 340],
           note: "Контур одинаков вдоль всего сектора. Знак читается, но контур держится и там, где свечение уже погасло.",
           facts: [["хвост", "обведён при нулевом свете"], ["читается", "как лента, а не след"]],
+          verdict: "Отклонена вместе со всем подходом «контур снаружи»: тёмное у дуги должно жить ВНУТРИ следа, крайней ступенью его же градиента.",
           draw: drawSwingArc("solid")
         },
         {
-          id: "arc-faded", status: "waiting", title: "Обводка гаснет с хвостом", size: [430, 340],
+          id: "arc-faded", status: "rejected", title: "Обводка гаснет с хвостом", size: [430, 340],
           note: "Контур гаснет тем же законом, что свечение: он есть там, где есть свет, и исчезает вместе с ним.",
           facts: [["хвост", "без контура, и это честно"], ["передняя кромка", "получает чёткий край"], ["риск", "идёт на каждый взмах"]],
-          verdict: "Вышло лучше моего прогноза: я ждала бесформенного тёмного ореола, а контур собрался у передней кромки и дал ей край, не тронув хвост.",
+          verdict: "Вышло лучше моего прогноза, но подход всё равно не тот: контур снаружи — второй слой, а тёмное у дуги должно быть крайней ступенью её собственного градиента. См. следующий блок.",
           draw: drawSwingArc("faded")
+        }
+      ]
+    },
+    {
+      kind: "note",
+      html:
+        "<b>Оба варианта с контуром снаружи отклонены 06.08.2026.</b> Поправка по кадру из Cult of the " +
+        "Lamb: тёмное у дуги живёт ВНУТРИ следа — оно крайняя ступень его же градиента, а не слой " +
+        "поверх. Тогда лайн получается даром: ни второго прохода, ни правки блендинга, ни спора с " +
+        "разведением осей. Разбор — ниже."
+    },
+
+    {
+      kind: "head", id: "trail", title: "След как росчерк: белый центр, цветные края, чёрная кромка",
+      lede:
+        "Кадр из Lamb: в середине пересвет, к краям цвет, а форма — полумесяц, а не веер. Наша дуга не " +
+        "имеет ни ступеней поперёк, ни профиля вдоль, и потому читается куском кольца. Здесь два " +
+        "фактора разложены по отдельности, чтобы было видно, что даёт какой."
+    },
+    {
+      kind: "stands",
+      items: [
+        {
+          id: "trail-flat", status: "note", tag: "как сейчас", title: "Ровное кольцо", size: [430, 330],
+          note: "Один цвет, постоянная толщина, гаснет только прозрачностью. То самое «скучно».",
+          draw: drawTrail("flat")
+        },
+        {
+          id: "trail-steps", status: "waiting", title: "Только ступени поперёк", size: [430, 330],
+          note: "Белый центр, цвет к краям, чёрная кромка по обеим сторонам. Толщина по-прежнему ровная.",
+          facts: [["кромка", "съедает толщину изнутри"], ["габарит", "не изменился"]],
+          draw: drawTrail("steps")
+        },
+        {
+          id: "trail-crescent", status: "waiting", title: "Только полумесяц", size: [430, 330],
+          note: "Ширина едет по профилю: сходит к хвосту с ускорением, у клинка сужена, но жива. Цвет плоский.",
+          facts: [["хвост", "сужается быстрее к концу"], ["передний край", "открыт, свет доходит"]],
+          draw: drawTrail("crescent")
+        },
+        {
+          id: "trail-full", status: "waiting", tag: "кандидат", title: "Ступени плюс полумесяц", size: [430, 330],
+          note: "Оба фактора разом — то, что предложено по кадру Lamb.",
+          facts: [["слоёв", "три, все в одном градиенте"], ["правка блендинга", "не нужна"], ["чем платим", "света меньше: кромка съела края"]],
+          draw: drawTrail("full")
+        }
+      ]
+    },
+    {
+      kind: "stands",
+      items: [
+        {
+          id: "trail-sharp", status: "waiting", tag: "профиль хвоста", title: "Хвост острее", size: [430, 330],
+          note: "Тот же кандидат с более резким сужением у хвоста — показатель профиля 0.35 против 0.55.",
+          draw: drawTrail("full", 0.35)
+        },
+        {
+          id: "trail-soft", status: "waiting", tag: "профиль хвоста", title: "Хвост мягче", size: [430, 330],
+          note: "Он же с сужением 0.85: след дольше держит ширину и сходит почти линейно.",
+          draw: drawTrail("full", 0.85)
         }
       ]
     },
