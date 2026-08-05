@@ -64,6 +64,13 @@ export const PAGES: PageDef[] = [
     load: () => import("./sections/gamefeel-hits.js")
   },
   {
+    id: "geometry",
+    area: "gamefeel",
+    title: "Геометрия удара",
+    blurb: "Замер живых ассетов: якоря вида, путь клинка из клипа, длина и толщина всех четырёх форм.",
+    load: () => import("./sections/gamefeel-geometry.js")
+  },
+  {
     id: "barrier",
     area: "gamefeel",
     title: "Барьер",
