@@ -224,6 +224,38 @@ export const PAGES: PageDef[] = [
     icon: "▦"
   },
   {
+    id: "ui-loadout",
+    area: "ui",
+    title: "Сбор отряда",
+    blurb: "Единственный экран забега с решениями и единственный без рефов: вкладки, отряд сверху, боец слева.",
+    load: () => import("./sections/ui-loadout.js"),
+    icon: "⚔"
+  },
+  {
+    id: "ui-lobby",
+    area: "ui",
+    title: "Создать игру и лобби",
+    blurb: "Настройки сессии и список игроков: панели рядом, два таба, развилка карточками.",
+    load: () => import("./sections/ui-lobby.js"),
+    icon: "◈"
+  },
+  {
+    id: "ui-outcome",
+    area: "ui",
+    title: "Итоги боя",
+    blurb: "Исход крупнее чисел, полосы на бойца, разбор по наведению: две панели, одна, лента.",
+    load: () => import("./sections/ui-outcome.js"),
+    icon: "✦"
+  },
+  {
+    id: "ui-pause",
+    area: "ui",
+    title: "Пауза",
+    blurb: "Пять строк и вопрос, сколько кадра закрыть: центр, колонка слева, полоса поперёк.",
+    load: () => import("./sections/ui-pause.js"),
+    icon: "‖"
+  },
+  {
     id: "ui-reward",
     area: "ui",
     title: "Награда",
