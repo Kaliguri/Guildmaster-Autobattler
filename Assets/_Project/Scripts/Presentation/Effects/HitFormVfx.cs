@@ -29,11 +29,18 @@ namespace Guildmaster.Presentation.Effects
     /// </summary>
     public readonly struct HitFormParams
     {
-        /// <summary>Точка A — откуда пришёл удар (кончик оружия в начале взмаха либо старт снаряда).</summary>
-        public readonly Vector3 From;
+        /// <summary>Точка удара: середина формы либо её конец, см. <see cref="EndsAtHit"/>.</summary>
+        public readonly Vector3 At;
 
-        /// <summary>Точка B — куда пришёл удар: середина формы либо её конец, см. <see cref="EndsAtHit"/>.</summary>
-        public readonly Vector3 To;
+        /// <summary>
+        /// Единичное направление удара — куда шёл клинок в момент касания (у выстрела — курс снаряда).
+        /// </summary>
+        /// <remarks>
+        /// Пришло на смену паре точек «начало взмаха → попадание» 06.08.2026. Хорда врала о направлении:
+        /// замах начинается за спиной и выше, цель стоит впереди, поэтому знак рубящего удара ложился
+        /// почти горизонтально (~20°) вместо честных ~75° вниз, а длину брал по расстоянию до цели.
+        /// </remarks>
+        public readonly Vector2 Dir;
 
         public readonly HitFormKind Kind;
 
@@ -59,6 +66,12 @@ namespace Guildmaster.Presentation.Effects
         /// <c>gdd/70-gamefeel/vfx-language</c> §«Форму обводит чёрный контур», 05.08.2026).
         /// </remarks>
         public readonly float LineWidth;
+
+        /// <summary>
+        /// Мягкость переходов МЕЖДУ ступенями знака (ядро → кайма → обводка), доля толщины. Внешней
+        /// границы обводки не касается: лайн обязан быть краем, а не растушёвкой.
+        /// </summary>
+        public readonly float Softness;
 
         /// <summary>Прогиб, мировые единицы. Знак задаёт сторону выгиба.</summary>
         public readonly float Arc;
@@ -102,14 +115,14 @@ namespace Guildmaster.Presentation.Effects
         /// </summary>
         public readonly float FreezeSeconds;
 
-        public HitFormParams(Vector3 from, Vector3 to, HitFormKind kind, bool endsAtHit,
-            float length, float halfThickness, float lineWidth,
+        public HitFormParams(Vector3 at, Vector2 dir, HitFormKind kind, bool endsAtHit,
+            float length, float halfThickness, float lineWidth, float softness,
             float arc, float roughness, float starRadius, int starRays, float seed,
             Color core, Color rim, float life, float growShare, float tailLag, float coreWidth,
             float freezeSeconds)
         {
-            From = from; To = to; Kind = kind; EndsAtHit = endsAtHit;
-            Length = length; HalfThickness = halfThickness; LineWidth = lineWidth;
+            At = at; Dir = dir; Kind = kind; EndsAtHit = endsAtHit;
+            Length = length; HalfThickness = halfThickness; LineWidth = lineWidth; Softness = softness;
             Arc = arc; Roughness = roughness;
             StarRadius = starRadius; StarRays = starRays; Seed = seed;
             Core = core; Rim = rim;
@@ -163,6 +176,7 @@ namespace Guildmaster.Presentation.Effects
         private static readonly int GrowId       = Shader.PropertyToID("_Grow");
         private static readonly int TailLagId    = Shader.PropertyToID("_TailLag");
         private static readonly int LineWidthId  = Shader.PropertyToID("_LineWidth");
+        private static readonly int SoftnessId   = Shader.PropertyToID("_Softness");
 
         private Renderer _renderer;
         private MaterialPropertyBlock _block;
@@ -188,31 +202,18 @@ namespace Guildmaster.Presentation.Effects
         {
             Cache();
 
-            Vector3 axis = p.To - p.From;
-            // Вырожденный случай (A совпал с B) не должен ронять поворот в NaN: тогда форма ложится
-            // горизонтально — это честнее, чем не показать удар вовсе.
-            float angle = axis.sqrMagnitude > 1e-8f
-                ? Mathf.Atan2(axis.y, axis.x) * Mathf.Rad2Deg
-                : 0f;
+            // Направление приходит готовым: это движение клинка в момент касания, а не хорда «замах →
+            // цель». Вырожденный вектор сюда не доезжает — вид ругается и формы не заказывает вовсе.
+            Vector2 d2 = p.Dir.sqrMagnitude > 1e-8f ? p.Dir.normalized : Vector2.right;
+            float angle = Mathf.Atan2(d2.y, d2.x) * Mathf.Rad2Deg;
+            Vector3 dir = new Vector3(d2.x, d2.y, 0f);
 
-            Vector3 dir = axis.sqrMagnitude > 1e-8f ? axis.normalized : Vector3.right;
-
-            // Где стоит середина quad.
-            //
-            // Удар кончился в цели (булава, принявший щит) — точка хита конечная, форма уезжает назад.
-            //
-            // РЕЖУЩИЙ ЛЕЖИТ НА ПУТИ КЛИНКА: его середина — середина отрезка A→B, а не точка хита
-            // (05.08.2026). Прежде коса центрировалась в B и уходила в обе стороны, из-за чего половина
-            // серпа оказывалась за спиной цели — там, где клинка не было; чтобы дотянуться при этом до
-            // A, длину приходилось удваивать. Лёжа на пути, коса покрывает тот же замах вдвое короче.
-            //
-            // Остальные архетипы не трогаем: у колющего форма — прокол В точке хита, у всполоха выстрела
-            // точка хита тоже конечная станция, и сдвиг их середины соврал бы о месте удара.
+            // Где стоит середина quad. Клинок проходит НАВЫЛЕТ, поэтому точка удара лежит в середине
+            // формы, и она же центр меша. Форма кончается в цели (булава, удар, принятый щитом) — тогда
+            // знак уезжает назад по своему же направлению.
             Vector3 centre = p.EndsAtHit
-                ? p.To - dir * (p.Length * 0.5f)
-                : p.Kind == HitFormKind.Slash
-                    ? (p.From + p.To) * 0.5f
-                    : p.To;
+                ? p.At - dir * (p.Length * 0.5f)
+                : p.At;
 
             // Quad вмещает и форму, и звезду: у дробящего вторая шире первой, и меш растягивается по ней.
             // Шейдер про мировые единицы не знает — ему всё приходит долями полу-quad, поэтому перевод
@@ -240,6 +241,7 @@ namespace Guildmaster.Presentation.Effects
             // проперти шейдера: блок свойств диапазон не соблюдает, а контур шире трети полудлины
             // съел бы саму форму.
             _block.SetFloat(LineWidthId, Mathf.Clamp(line / halfLen, 0f, MaxLineShare));
+            _block.SetFloat(SoftnessId, Mathf.Clamp01(p.Softness));
             _block.SetFloat(CoreWidthId, p.CoreWidth);
             _block.SetFloat(RoughId, p.Roughness);
             _block.SetFloat(SeedId, p.Seed);

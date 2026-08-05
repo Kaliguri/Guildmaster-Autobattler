@@ -399,9 +399,14 @@ namespace Guildmaster.Presentation.Design
                  "форма остаётся бесконтурным свечением, как до 05.08.2026.")]
         [SerializeField] private bool _enableHitFormLine = true;
 
-        [Tooltip("Ширина обводки в долях H. Едет вместе с размером удара. Заметно больше, чем кажется " +
-                 "нужным на статичном превью: bloom растекается с ядра и подъедает тонкий контур.")]
-        [SerializeField, Range(0f, 0.06f)] private float _hitFormLineWidthH = 0.018f;
+        [Tooltip("Ширина обводки в долях H. Едет вместе с размером удара. Мелкая намеренно (Макс, " +
+                 "06.08.2026): лайн обязан читаться краем, а не полосой. Внешняя граница у него резкая, " +
+                 "мягкость живёт только на внутренних переходах.")]
+        [SerializeField, Range(0f, 0.06f)] private float _hitFormLineWidthH = 0.009f;
+
+        [Tooltip("Мягкость переходов МЕЖДУ ступенями формы: ядро → кайма → обводка. Ноль — ступени " +
+                 "встык, и знак читается тремя вложенными наклейками вместо одного градиента.")]
+        [SerializeField, Range(0f, 1f)] private float _hitFormSoftness = 0.35f;
 
         // --- Порезы: тело помнит бой ---
         [Header("VFX — порезы на теле")]
@@ -469,6 +474,14 @@ namespace Guildmaster.Presentation.Design
 
         [Tooltip("Яркость пересвета в середине следа — множитель к базе, как у ядра формы удара.")]
         [SerializeField, Range(1f, 6f)] private float _swingArcCoreBrightness = 2.4f;
+
+        [Tooltip("Мягкость переходов МЕЖДУ ступенями следа: пересвет → цвет → кромка. Внешнюю границу " +
+                 "не трогает — она резкая, потому что она и есть лайн.")]
+        [SerializeField, Range(0f, 0.6f)] private float _swingArcSoftness = 0.28f;
+
+        [Tooltip("Рванность краёв следа: клинок не оставляет ровной ленты. Шум идёт по углу и по сиду " +
+                 "взмаха, поэтому след не кипит покадрово, но у соседних ударов разный.")]
+        [SerializeField, Range(0f, 1f)] private float _swingArcRoughness = 0.35f;
 
         [SerializeField] private HitFormArchetypeConfig _hitFormSlash = HitFormArchetypeConfig.Slash();
         [SerializeField] private HitFormArchetypeConfig _hitFormPierce = HitFormArchetypeConfig.Pierce();
@@ -614,6 +627,7 @@ namespace Guildmaster.Presentation.Design
         public bool    EnableHitFormBreakOnShield => _enableHitFormBreakOnShield;
         public bool    EnableHitFormLine          => _enableHitFormLine;
         public float   HitFormLineWidthH          => _hitFormLineWidthH;
+        public float   HitFormSoftness            => _hitFormSoftness;
         public VfxData VfxHitForm                 => _vfxHitForm;
         public float   HitFormUnitHeight          => _hitFormUnitHeight;
         public float   HitFormLife                => _hitFormLife;
@@ -667,8 +681,9 @@ namespace Guildmaster.Presentation.Design
         /// </remarks>
         public Effects.SwingArcStyle SwingArcStyle => _enableSwingArcShaping
             ? new Effects.SwingArcStyle(Overbright(_swingArcCoreBrightness),
-                _swingArcCoreShare, _swingArcColourShare, 1f, true, _swingArcTailSharpness)
-            : new Effects.SwingArcStyle(Color.clear, 0f, 1f, 0f, false, _swingArcTailSharpness);
+                _swingArcCoreShare, _swingArcColourShare, 1f, true, _swingArcTailSharpness,
+                _swingArcSoftness, _swingArcRoughness)
+            : new Effects.SwingArcStyle(Color.clear, 0f, 1f, 0f, false, _swingArcTailSharpness, 0f, 0f);
 
         /// <summary>
         /// Правило генерации архетипа. Тотальна по построению: новый архетип, забытый здесь, вернёт

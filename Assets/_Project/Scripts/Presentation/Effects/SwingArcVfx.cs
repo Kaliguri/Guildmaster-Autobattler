@@ -48,8 +48,14 @@ namespace Guildmaster.Presentation.Effects
         /// <summary>Резкость сужения у хвоста: меньше — сужается быстрее к самому концу.</summary>
         public readonly float TailSharpness;
 
+        /// <summary>Мягкость переходов МЕЖДУ ступенями. Внешней границы не касается — она резкая.</summary>
+        public readonly float Softness;
+
+        /// <summary>Рванность краёв следа: шум по углу и сиду взмаха.</summary>
+        public readonly float Roughness;
+
         public SwingArcStyle(Color core, float coreShare, float colourShare, float opaque,
-                             bool profile, float tailSharpness)
+                             bool profile, float tailSharpness, float softness, float roughness)
         {
             Core          = core;
             CoreShare     = Mathf.Clamp01(coreShare);
@@ -57,6 +63,8 @@ namespace Guildmaster.Presentation.Effects
             Opaque        = Mathf.Clamp01(opaque);
             ProfileOn     = profile ? 1f : 0f;
             TailSharpness = Mathf.Clamp(tailSharpness, 0.15f, 2f);
+            Softness      = Mathf.Clamp(softness, 0f, 0.6f);
+            Roughness     = Mathf.Clamp01(roughness);
         }
 
         /// <summary>
@@ -105,6 +113,8 @@ namespace Guildmaster.Presentation.Effects
         private static readonly int ProfileOnId   = Shader.PropertyToID("_ProfileOn");
         private static readonly int TailSharpId   = Shader.PropertyToID("_TailSharp");
         private static readonly int ProfilePeakId = Shader.PropertyToID("_ProfilePeak");
+        private static readonly int SoftnessId    = Shader.PropertyToID("_Softness");
+        private static readonly int RoughId       = Shader.PropertyToID("_Rough");
 
         private Renderer _renderer;
         private MaterialPropertyBlock _block;
@@ -165,6 +175,8 @@ namespace Guildmaster.Presentation.Effects
             _block.SetFloat(ProfileOnId, style.ProfileOn);
             _block.SetFloat(TailSharpId, style.TailSharpness);
             _block.SetFloat(ProfilePeakId, style.ProfilePeak);
+            _block.SetFloat(SoftnessId, style.Softness);
+            _block.SetFloat(RoughId, style.Roughness);
             _renderer.SetPropertyBlock(_block);
 
             // Первый кадр задаёт начало дуги: дальше угол только доезжает до текущего клинка.

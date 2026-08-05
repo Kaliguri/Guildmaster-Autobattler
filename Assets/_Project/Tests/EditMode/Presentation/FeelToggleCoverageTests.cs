@@ -107,7 +107,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
             // Взмах и его геометрия — ЗАПРОСЫ к виду, а не эффекты: отвечают «где клинок», ничего не рисуя.
             new Entry("TryGetSwingArc",      Switch.NotAnEffect, "геометрия взмаха для дуги — запрос, не эффект"),
             new Entry("TryGetSwingProgress", Switch.NotAnEffect, "насколько прошёл взмах — запрос, не эффект"),
-            new Entry("TryGetStrikeOrigin",  Switch.NotAnEffect, "точка A текущего удара — запрос, не эффект"),
+            new Entry("TryGetStrikeDirection", Switch.NotAnEffect, "куда шёл клинок в момент касания — запрос, не эффект"),
 
             // VFX — выключаются пустой ссылкой на VfxData
             new Entry("VfxHitForm",     Switch.Asset, "форма удара по A→B"),

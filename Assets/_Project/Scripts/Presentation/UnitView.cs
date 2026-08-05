@@ -318,7 +318,6 @@ namespace Guildmaster.Presentation
 
         /// <summary>Взмах, с которого снята точка A и заказана дуга. <c>-1</c> = ещё ни одного.</summary>
         private int _originSwingSerial = -1;
-        private Vector3 _strikeOrigin;       // мировая позиция кончика оружия на кадре StrikeStart
 
         /// <summary>
         /// Тело юнита за швом. Резолвится лениво, а не в <c>Awake</c>, потому что силуэт для drag-призрака
@@ -648,21 +647,87 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Точка A текущего удара — где был кончик оружия, когда взмах начался. Снимается один раз за
-        /// свинг, на кадре <c>StrikeStart</c>, и живёт до конца цикла атаки.
+        /// КУДА ДВИГАЛСЯ КОНЧИК ОРУЖИЯ в момент удара — направление, вдоль которого ложится форма.
         /// </summary>
+        /// <param name="towardTarget">Вектор «бьющий → цель»: им разрешается знак касательной.</param>
+        /// <param name="dir">Единичное направление движения кончика.</param>
+        /// <returns><c>false</c> — вести форму не от чего; причина уже названа в консоли.</returns>
         /// <remarks>
-        /// Снимок нужен именно потому, что форма рисуется ПОСЛЕ контакта: к этому моменту клинок уже ушёл
-        /// дальше, и спросить «откуда он пришёл» будет не у кого.
+        /// <b>Почему не хорда «начало взмаха → точка хита».</b> Так было до 06.08.2026, и это давало
+        /// почти горизонтальный знак: замер живого клипа — кончик на <c>StrikeStart</c> отведён назад и
+        /// ВВЕРХ (−0.71, +0.90), цель же стоит впереди на два с лишним корпуса, поэтому хорда наклонена
+        /// всего на ~20°, тогда как клинок в момент касания идёт вниз под ~75°. Рубящий удар читался
+        /// лежачей полосой, а длина знака вдобавок бралась по длине хорды — полтора роста юнита.
+        /// <para>
+        /// Рука — жёсткий рычаг, вращающийся вокруг плеча, поэтому направление движения кончика есть
+        /// просто ПЕРПЕНДИКУЛЯР к вектору «плечо → кончик». Историю кадров хранить не нужно, замер клипа
+        /// тоже: обе точки известны из позы прямо сейчас. Знак перпендикуляра выбирает цель — из двух
+        /// сторон верна та, что смотрит на неё.
+        /// </para>
         /// </remarks>
-        public bool TryGetStrikeOrigin(out Vector3 world)
+        public bool TryGetStrikeDirection(Vector2 towardTarget, out Vector2 dir)
         {
-            world = _strikeOrigin;
-            return _originSwingSerial == _swingSerial;
+            dir = default;
+
+            var body = Body;
+            if (body?.Parts == null)
+            {
+                VisualDefects.Report($"strike-body:{DefectKey}",
+                    $"[UnitView] {name}: удар состоялся, но тела с частями у вида нет — направление " +
+                    "формы брать неоткуда, знак удара не появится.", this);
+                return false;
+            }
+            if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source))
+            {
+                VisualDefects.Report($"strike-source:{DefectKey}",
+                    $"[UnitView] {name}: удар состоялся, но тело не отдаёт, ЧЕМ бьют — нет ни предмета в " +
+                    "хвате (UnitHeldItem на кости под 'Rotation Point (Grip)'), ни кисти. Формы не будет.", this);
+                return false;
+            }
+            if (!UnitPartGeometry.TryGetTip(source, out Vector3 tip))
+            {
+                VisualDefects.Report($"strike-tip:{DefectKey}",
+                    $"[UnitView] {name}: ударная часть '{source.Bone}' есть, но кончика у неё нет — " +
+                    "у рендерера пуст спрайт. Формы не будет.", this);
+                return false;
+            }
+
+            BodySide side = source.Slot == HandSlot.Left ? BodySide.Left
+                          : source.Slot == HandSlot.Right ? BodySide.Right
+                          : source.Side;
+
+            string shoulderBone = RigNaming.ShoulderBone(side);
+            if (!body.Parts.TryGetBone(shoulderBone, side, out UnitPart shoulder) || shoulder.Renderer == null)
+            {
+                VisualDefects.Report($"strike-pivot:{DefectKey}",
+                    $"[UnitView] {name}: удар состоялся, но плеча '{shoulderBone}' ({side}) в теле нет — " +
+                    "вокруг чего вращался клинок, неизвестно, и направление формы не вывести.", this);
+                return false;
+            }
+
+            Vector2 lever = (Vector2)tip - (Vector2)shoulder.Renderer.transform.position;
+            if (lever.sqrMagnitude < 1e-8f)
+            {
+                VisualDefects.Report($"strike-lever:{DefectKey}",
+                    $"[UnitView] {name}: кончик оружия совпал с плечом — рычага нет, направление удара " +
+                    "вырождено. Формы не будет.", this);
+                return false;
+            }
+
+            // Перпендикуляр к рычагу: клинок движется поперёк него, а не вдоль.
+            Vector2 tangent = new Vector2(lever.y, -lever.x).normalized;
+
+            // Из двух перпендикуляров верен тот, что смотрит на цель. Знак направления вращения хранить
+            // не нужно — цель отвечает на этот вопрос сама и переживает любую перерисовку клипа.
+            if (towardTarget.sqrMagnitude > 1e-8f && Vector2.Dot(tangent, towardTarget) < 0f)
+                tangent = -tangent;
+
+            dir = tangent;
+            return true;
         }
 
         /// <summary>
-        /// Отследить кадр начала взмаха и снять с него точку A. Зовётся из скраба свинга — там, где
+        /// Отследить кадр начала взмаха и объявить его начавшимся. Зовётся из скраба свинга — там, где
         /// известно, куда именно поставлен клип.
         /// </summary>
         /// <remarks>
@@ -675,16 +740,33 @@ namespace Guildmaster.Presentation
             _swingClipTime = clipTime;
             if (!_hasStrikeWindow || _originSwingSerial == _swingSerial || clipTime < _strikeFrom) return;
 
-            // Кончиком считаем то, чем юнит бьёт: предмет в руке, а у безоружного — саму кисть. Нечем
-            // ударить — точки A не будет, и форма деградирует на вектор «атакующий → цель». Клип при этом
-            // ЗАЯВИЛ взмах своей разметкой, поэтому здесь уже не «честное отсутствие контента», а
-            // расхождение разметки с телом: о нём говорим вслух.
+            OpenSwing();
+        }
+
+        /// <summary>
+        /// Объявить взмах начавшимся — один раз за свинг. Отсюда уходит заказ дуги за клинком.
+        /// </summary>
+        /// <remarks>
+        /// До 06.08.2026 здесь же снималась точка A — кончик оружия на кадре <c>StrikeStart</c>, — и
+        /// форма удара строилась по хорде от неё к цели. Хорда врала о направлении (замер: ~20° против
+        /// честных ~75° вниз) и задавала длину знака расстоянием до цели, поэтому от неё отказались:
+        /// направление удара теперь выводится из позы в момент касания, см.
+        /// <see cref="TryGetStrikeDirection"/>. Проверки тела и оружия остались — без них некому вести
+        /// дугу, и молчать об этом нельзя.
+        /// </remarks>
+        private void OpenSwing()
+        {
+            if (!_hasStrikeWindow) return;
+
+            // Бьющей частью считаем то, чем юнит машет: предмет в руке, а у безоружного — саму кисть.
+            // Клип ЗАЯВИЛ взмах своей разметкой, поэтому нехватка тела здесь — не «честное отсутствие
+            // контента», а расхождение разметки с телом: о нём говорим вслух.
             var body = Body;
             if (body?.Parts == null)
             {
                 VisualDefects.Report($"strike-body:{DefectKey}",
                     $"[UnitView] {name}: клип атаки размечен взмахом, но тела с частями у вида нет — " +
-                    "ни дуги за клинком, ни точки удара от оружия не будет.", this);
+                    "дуги за клинком не будет.", this);
                 return;
             }
             if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source))
@@ -692,22 +774,18 @@ namespace Guildmaster.Presentation
                 VisualDefects.Report($"strike-source:{DefectKey}",
                     $"[UnitView] {name}: взмах начался, но тело не отдаёт, ЧЕМ бьют — нет ни предмета в " +
                     "хвате (UnitHeldItem на кости под 'Rotation Point (Grip)'), ни кисти. Удар останется " +
-                    "без дуги, а форма пойдёт от ног.", this);
+                    "без дуги.", this);
                 return;
             }
-            if (!UnitPartGeometry.TryGetTip(source, out Vector3 tip))
+            if (!UnitPartGeometry.TryGetTip(source, out Vector3 _))
             {
                 VisualDefects.Report($"strike-tip:{DefectKey}",
                     $"[UnitView] {name}: ударная часть '{source.Bone}' есть, но кончика у неё нет — " +
-                    "у рендерера пуст спрайт. Удар останется без дуги и без точки, откуда пришёл.", this);
+                    "у рендерера пуст спрайт. Удар останется без дуги.", this);
                 return;
             }
 
-            _strikeOrigin      = tip;
             _originSwingSerial = _swingSerial;
-
-            // Взмах начался — дуге пора идти за клинком. Момент один и тот же с точкой A намеренно:
-            // два источника «когда начался взмах» разъехались бы, и дуга пошла бы не оттуда, откуда удар.
             _onSwingStarted?.Invoke(this);
         }
 

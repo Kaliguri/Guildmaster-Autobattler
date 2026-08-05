@@ -37,6 +37,13 @@ Shader "Guildmaster/Vfx/SwingArc"
         _ProfileOn   ("Profile On (0 — ровное кольцо)", Range(0, 1)) = 1
         _TailSharp   ("Tail Sharpness (меньше — резче сужение у хвоста)", Range(0.15, 2)) = 0.55
         _ProfilePeak ("Profile Peak (нормировка, считается снаружи)", Float) = 0.69
+
+        // Ширина перехода между ступенями, в долях полутолщины. Ноль — ступени встык, и границы
+        // читаются как три вложенные наклейки; выше — свет перетекает в цвет, а цвет в кромку.
+        _Softness ("Softness (мягкость переходов между ступенями)", Range(0, 0.6)) = 0.28
+
+        // РВАНОСТЬ: неровность краёв следа. Клинок не оставляет ровной ленты — след живой и дышит.
+        _Rough ("Roughness (рванность краёв)", Range(0, 1)) = 0.35
     }
 
     SubShader
@@ -66,6 +73,7 @@ Shader "Guildmaster/Vfx/SwingArc"
             #pragma fragment Frag
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Lib/Procedural.hlsl"
 
             struct Attributes
             {
@@ -96,6 +104,8 @@ Shader "Guildmaster/Vfx/SwingArc"
                 half  _ProfileOn;
                 half  _TailSharp;
                 half  _ProfilePeak;
+                half  _Softness;
+                half  _Rough;
             CBUFFER_END
 
             // Профиль ширины следа: t = 0 у хвоста, 1 у клинка.
@@ -159,18 +169,36 @@ Shader "Guildmaster/Vfx/SwingArc"
                 // профиль превращает его в полумесяц, схлопывая след к линии кончика у хвоста.
                 float full   = max(_RadiusOuter - _RadiusInner, 1e-4);
                 float width  = lerp(full, TrailProfile(t) * full, saturate(_ProfileOn));
+
+                // РВАНОСТЬ. Шум идёт по УГЛУ и по сиду взмаха: клинок не оставляет ровной ленты. Двумя
+                // потоками — толщина и смещение осевой линии, — потому что одна только толщина даёт
+                // симметричное «дыхание», а не рваный край.
+                //
+                // Сид взят из угла начала взмаха: он постоянен всю жизнь эффекта (значит след не кипит
+                // покадрово) и разный у соседних ударов. Отдельного сида дуге не заводим — своего
+                // события у неё нет, а IRngService показу не принадлежит.
+                float seed  = _AngleFrom * 3.7;
+                float jag   = GM_ValueNoise11(t * 5.3 + seed);
+                float drift = GM_ValueNoise11(t * 3.1 + seed + 11.0);
+                width *= 1.0 + _Rough * 0.38 * jag;
+
                 float halfW  = max(width * 0.5, 1e-4);
                 // Внешняя граница всегда на радиусе кончика: сужается след ВНУТРЬ, к плечу.
-                float rMid   = _RadiusOuter - halfW;
+                float rMid   = _RadiusOuter - halfW + halfW * _Rough * 0.30 * drift;
                 float dr     = abs(r - rMid) / halfW;         // 0 — середина следа, 1 — его кромка
 
-                // Мягкость края в тех же единицах, что dr, иначе тонкий хвост зазубрится.
-                float e = max(fwidth(r) / halfW * 1.5, 1e-3);
+                // Мягкость перехода между ступенями. Пиксельный минимум (fwidth) обязателен — на тонком
+                // хвосте без него край зазубрится, — но САМ переход задаётся долей толщины: иначе три
+                // ступени встают встык и читаются тремя вложенными наклейками, а не одним градиентом.
+                float e    = max(fwidth(r) / halfW * 1.5, 1e-3);
+                float soft = max(_Softness * 0.5, e);
 
-                float band   = 1.0 - smoothstep(1.0 - e, 1.0 + e, dr);
+                // Внешняя граница РЕЗКАЯ — она и есть лайн (Макс, 06.08.2026), мягкий лайн перестаёт
+                // быть лайном. Мягкость живёт только на внутренних переходах: свет → цвет → кромка.
+                float band   = 1.0 - smoothstep(1.0 - e, 1.0, dr);
                 if (band <= 0.001) return 0;
-                float colour = 1.0 - smoothstep(_ColourShare - e, _ColourShare + e, dr);
-                float core   = 1.0 - smoothstep(_CoreShare - e, _CoreShare + e, dr);
+                float colour = 1.0 - smoothstep(max(_ColourShare - soft, 0.0), _ColourShare + soft, dr);
+                float core   = 1.0 - smoothstep(max(_CoreShare - soft, 0.0), _CoreShare + soft, dr);
 
                 float live = ends * tail * saturate(_Fade);
 

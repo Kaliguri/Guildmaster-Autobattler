@@ -89,7 +89,7 @@ namespace Guildmaster.Presentation
             // Позицию, поворот и масштаб сразу после этого перезапишет сама форма: её геометрия считается
             // из A→B, а не из одной точки и угла. Здесь Play нужен ради пула, sorting и возврата.
             float life = form.Life + form.FreezeSeconds;
-            vfx.Play(form.To, sizeUnits: 1f, dirDeg: 0f, layerId, data.SortingOrder, released =>
+            vfx.Play(form.At, sizeUnits: 1f, dirDeg: 0f, layerId, data.SortingOrder, released =>
             {
                 _active.Remove(released);
                 pool.Release(released);

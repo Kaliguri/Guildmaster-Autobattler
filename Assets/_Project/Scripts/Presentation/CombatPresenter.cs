@@ -879,37 +879,41 @@ namespace Guildmaster.Presentation
             Vector3 b = AnchorFor(targetId, target.Position);
             _views.TryGetValue(sourceId, out UnitView sourceView);
 
-            Vector3 a;
-            if (ranged && sourceView != null)
+            // НАПРАВЛЕНИЕ УДАРА, а не пара точек (06.08.2026). Знак говорит, КУДА рубанули, поэтому у
+            // ближнего боя его задаёт движение клинка в момент касания, а у выстрела — курс снаряда.
+            //
+            // Фолбэка здесь нет намеренно: не из чего вывести направление — значит формы не будет, а в
+            // консоли будет причина. Прежний путь «строим от корпуса» рисовал знак наугад и выдавал
+            // догадку показа за замысел.
+            Vector2 dir;
+            if (ranged)
             {
-                a = sourceView.ShotPoint;
-            }
-            else if (!ranged && sourceView != null && sourceView.TryGetStrikeOrigin(out Vector3 tip))
-            {
-                a = tip;
-            }
-            else if (sourceView != null || hasSource)
-            {
-                // Деградация: удар состоялся, а откуда пришёл клинок — неизвестно. Для стрелка это
-                // невозможно (точка выстрела обязательна), значит виноват мили — либо клип не размечен
-                // взмахом, либо тело не отдаёт оружие. Причину уже крикнул UnitView; здесь называется
-                // ПОСЛЕДСТВИЕ, потому что с экрана видно именно его.
-                if (!ranged)
-                    VisualDefects.Report($"hit-form-origin:{DefectKeyOf(sourceId)}",
-                        $"[CombatPresenter] у мили-удара юнита {DefectKeyOf(sourceId)} нет точки, откуда " +
-                        "пришёл клинок — форма удара строится от КОРПУСА бьющего, а не от оружия.");
-
-                // Корпус, а не позиция сима: она стоит в ногах, и форма уходила под тела — то есть удар
-                // в ближнем бою читался как «ничего не произошло». Высота удара у нас корпусная (там же
-                // цифры и искры), поэтому и заявление о нём начинается оттуда же. Позиция сима остаётся
-                // последним словом ровно для случая «вида нет вовсе».
-                a = sourceView != null
-                    ? sourceView.HitPoint
-                    : new Vector3(source.Position.x, source.Position.y, b.z);
+                if (sourceView == null) return;
+                Vector2 course = (Vector2)(b - sourceView.ShotPoint);
+                if (course.sqrMagnitude < 1e-8f)
+                {
+                    VisualDefects.Report($"hit-form-course:{DefectKeyOf(sourceId)}",
+                        $"[CombatPresenter] выстрел юнита {DefectKeyOf(sourceId)} пришёл туда же, откуда " +
+                        "вышел — курса у снаряда нет, всполох рисовать не по чему.");
+                    return;
+                }
+                dir = course.normalized;
             }
             else
             {
-                return;   // источник неизвестен целиком (яд, шипы) — направления у формы нет и быть не может
+                if (sourceView == null)
+                {
+                    if (hasSource)
+                        VisualDefects.Report($"hit-form-view:{DefectKeyOf(sourceId)}",
+                            $"[CombatPresenter] мили-удар юнита {DefectKeyOf(sourceId)} пришёл от того, у " +
+                            "кого нет вида — чем махали, спросить не у кого, формы не будет.");
+                    return;
+                }
+
+                // Знак касательной разрешает вектор «бьющий → цель»: из двух сторон верна та, что
+                // смотрит на цель.
+                Vector2 toward = (Vector2)(b - sourceView.HitPoint);
+                if (!sourceView.TryGetStrikeDirection(toward, out dir)) return;
             }
 
             // Форма кончается в цели у дробящего всегда, а у остальных — когда удар принял щит: он в тело
@@ -924,7 +928,7 @@ namespace Guildmaster.Presentation
             float freeze = _feel.EvaluateHitstopSeconds(hpDamageFrac);
 
             Effects.HitFormParams form = Effects.HitFormFactory.Build(
-                _feel, kind, a, b, hpDamageFrac,
+                _feel, kind, b, dir, hpDamageFrac,
                 core: _feel.HitFormCoreColor,
                 rim: GlowColorFor(sourceId),   // кайма — палитра бьющего: цвет говорит, ЧЕМ ударили
                 seed, endsAtHit, freeze);
