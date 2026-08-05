@@ -264,14 +264,16 @@ const section: SectionDef = {
       kind: "head",
       id: "layouts",
       title: "Три раскладки",
-      lede: "Все три ждут вердикта. Доли экрана — 1920x1080."
+      lede:
+        "Выбран вариант Б (Макс, 05.08.2026), и тот же приём назначен экрану профиля. Доли экрана — " +
+        "1920x1080."
     },
     {
       kind: "stands",
       items: [
         {
           id: "row",
-          status: "waiting",
+          status: "rejected",
           title: "А · Ряд карточек",
           tag: "как экран профиля",
           note:
@@ -290,8 +292,9 @@ const section: SectionDef = {
         },
         {
           id: "list",
-          status: "waiting",
+          status: "accepted",
           title: "Б · Список и панель дома",
+          decision: "2026-08-05",
           tag: "приём Risk of Rain 2",
           note:
             "Слева узкие строки домов, справа — выбранный дом целиком: поля, ростер телами, " +
@@ -309,7 +312,7 @@ const section: SectionDef = {
         },
         {
           id: "focus",
-          status: "waiting",
+          status: "rejected",
           title: "В · Один дом раскрыт, прочие корешками",
           tag: "своё",
           note:

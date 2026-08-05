@@ -244,14 +244,17 @@ const section: SectionDef = {
       kind: "head",
       id: "layouts",
       title: "Три раскладки",
-      lede: "Все три ждут вердикта. Числа в чертежах — доли экрана 1920x1080, снятые с рефов."
+      lede:
+        "Выбран вариант В (Макс, 05.08.2026): тот же приём, что и на экране гильдии — список слева, " +
+        "панель выбранного справа. Один приём на два экрана, стоящих в цепочке входа подряд. Числа в " +
+        "чертежах — доли экрана 1920x1080, снятые с рефов."
     },
     {
       kind: "stands",
       items: [
         {
           id: "row",
-          status: "waiting",
+          status: "rejected",
           title: "А · Ряд карточек на кадре",
           tag: "реф Slay the Spire",
           note:
@@ -270,7 +273,7 @@ const section: SectionDef = {
         },
         {
           id: "sheet",
-          status: "waiting",
+          status: "rejected",
           title: "Б · Ряд на подложке-листе",
           tag: "реф Hades II",
           note:
@@ -289,8 +292,9 @@ const section: SectionDef = {
         },
         {
           id: "split",
-          status: "waiting",
+          status: "accepted",
           title: "В · Слоты и идентичность рядом",
+          decision: "2026-08-05",
           tag: "своё, рефов нет",
           note:
             "Слева стопка слотов, справа «как меня видят». Один экран отвечает на оба вопроса " +

@@ -208,6 +208,22 @@ export const PAGES: PageDef[] = [
   },
 
   {
+    id: "ui-mainmenu",
+    area: "ui",
+    title: "Главное меню",
+    blurb: "Шесть раскладок по четырнадцати рефам: колонка у кромки, плита, центр, обложка, низ, два списка.",
+    load: () => import("./sections/ui-mainmenu.js"),
+    icon: "▤"
+  },
+  {
+    id: "ui-settings",
+    area: "ui",
+    title: "Настройки",
+    blurb: "Три схемы раскладки категорий: горизонтальные табы, вертикальные, две колонки без табов.",
+    load: () => import("./sections/ui-settings.js"),
+    icon: "▦"
+  },
+  {
     id: "ui-profile",
     area: "ui",
     title: "Выбор профиля",
