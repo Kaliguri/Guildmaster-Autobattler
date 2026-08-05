@@ -4,13 +4,12 @@
             <ui:Label text="Loadout" class="gm-panel__title" />
 
             <ui:VisualElement class="gm-tabbar">
-                <ui:Button name="tab-relic" text="Relic" class="gm-tab gm-tab--active" />
-                <ui:Button name="tab-items" text="Items" class="gm-tab" />
-                <ui:Button name="tab-upgrades" text="Upgrades" class="gm-tab" />
-                <ui:Button name="tab-ai" text="AI" class="gm-tab" />
+                <gm:PlateButton name="tab-relic" text="Relic" class="gm-tab gm-tab--active" />
+                <gm:PlateButton name="tab-items" text="Items" class="gm-tab" />
+                <gm:PlateButton name="tab-upgrades" text="Upgrades" class="gm-tab" />
+                <gm:PlateButton name="tab-ai" text="AI" class="gm-tab" />
             </ui:VisualElement>
-
-            <ui:VisualElement class="gm-divider" />
+            <ui:VisualElement class="gm-tabbar__rail" />
 
             <ui:VisualElement class="gm-loadout-body">
                 <ui:ScrollView name="relic-grid" style="flex-grow: 1; max-height: 220px;" />
@@ -21,8 +20,6 @@
                     <ui:Label name="detail-stats" text="" class="gm-detail__stats" />
                 </ui:VisualElement>
             </ui:VisualElement>
-
-            <ui:VisualElement class="gm-divider" />
 
             <!-- Пластины, как на всех игровых экранах: обычные ui:Button остались здесь с прежней
                  раскладки и были единственным местом, где кнопка выглядела чужой (наход. Макса

@@ -1,4 +1,4 @@
-﻿/* ============================================================================
+/* ============================================================================
  * Дизайн-система — ЯРУС 3: COMPONENTS (.gm-*).
  * Единственный слой, задающий вид. Экраны СОБИРАЮТСЯ из этих классов —
  * сырой стиль на экране запрещён (так «единый стиль» становится структурой, а не договором).
@@ -238,12 +238,10 @@
 }
 
 /* Наведение на выбранный/наведённый ТАБ и чип — той же ролью, чтобы тема не подсунула свой серый. */
-.unity-button.gm-tab:hover,
 .gm-chip:hover {
     border-color: var(--gm-color-hover-border);
 }
 
-.unity-button.gm-tab:active,
 .gm-chip:active {
     border-color: var(--gm-color-border-inner);
 }
@@ -252,14 +250,18 @@
    тема Unity продолжала заливать кнопку своим светло-серым, поэтому таб, по которому кликнули,
    оставался серой плашкой (видно на превью настроек 2026-07-27). Тот же корень, что у кнопки в
    раунде 3, просто для таба фон тогда не прописали. */
+/* НАВЕДЕНИЕ И ФОКУС НЕ КРАСЯТ ФОН. Прежние правила заливали таб поверхностью — для пластины это
+   прямоугольник UITK ПОВЕРХ её собственной заливки, то есть заведомая каша. Наведение поднимает
+   текст до полного, выбранный раздел по-прежнему держится плашкой. */
 .unity-button.gm-tab:hover,
 .unity-button.gm-tab:focus {
-    background-color: var(--gm-color-hover-surface);
+    background-color: rgba(0, 0, 0, 0);
     background-image: none;
+    color: var(--gm-color-text);
 }
 
 .unity-button.gm-tab:active {
-    background-color: var(--gm-color-surface-sunken);
+    background-color: rgba(0, 0, 0, 0);
     background-image: none;
 }
 
@@ -282,9 +284,7 @@
    ВАЖНО: выключенному элементу UITK вешает КЛАСС `unity-disabled`, и тема красит именно по нему —
    одного псевдокласса `:disabled` в селекторе не хватает, правило проигрывает. Перекрываем оба. */
 .unity-button.gm-button.unity-disabled:disabled,
-.unity-button.gm-tab.unity-disabled:disabled,
 .unity-button.gm-button.unity-disabled,
-.unity-button.gm-tab.unity-disabled,
 .unity-button.gm-button:disabled,
 .unity-button.gm-button--primary:disabled {
     background-color: var(--gm-color-surface-panel);
@@ -762,10 +762,31 @@
  * Loadout-экран (шаг 5): табы, грид карточек реликов, панель деталей.
  * ========================================================================== */
 
-/* --- Панель табов (Релик активен; Предметы/Улучшения/AI — заглушки) --- */
+/* --- ЛЕНТА РАЗДЕЛОВ: «вкладка на рельсе» (выбор Макса 05.08.2026, вариант A из разбора).
+   РЕЛЬСА — НЕ УКРАШЕНИЕ, А НЕСУЩАЯ ЧАСТЬ ПРИЁМА. Она превращает ленту в край листа, а активный
+   таб — в выступающий из него ярлык, и заодно отчёркивает шапку экрана от содержимого. Без неё
+   табы висят в пустоте и читаются рядом кнопок — ровно то, чем лента была до этой правки, и
+   перекраска плашек этого не лечила.
+   У рефа (Guildrun) рельса 2px тянется от 1.9% до 98% ширины КАДРА, то есть заметно шире самих
+   табов; поэтому линию несёт лента (она растянута), а табы внутри лишь центрируются. --- */
 .gm-tabbar {
     flex-direction: row;
-    margin-bottom: var(--gm-space-2);
+    justify-content: center;
+    align-self: center;
+    margin-bottom: 0;
+}
+
+/* РЕЛЬСА — ОТДЕЛЬНЫЙ ЭЛЕМЕНТ, а не `border-bottom` ленты. Границей она не рисовалась вовсе:
+   resolvedStyle показывал и цвет, и толщину 2px, а на кадре линии не было ни пикселя (проверено
+   замером пикселей 05.08.2026). Выяснять причину дороже, чем нарисовать линию элементом, и элемент
+   к тому же нужен по существу: у рефа рельса ШИРЕ ленты — тянется почти во всю ширину кадра, пока
+   табы центрированы. Границей такого не выразить: она обводит ровно свой элемент. */
+.gm-tabbar__rail {
+    height: 2px;
+    width: 96%;
+    align-self: center;
+    background-color: var(--gm-color-rail);
+    margin-bottom: var(--gm-space-3);
 }
 
 /* Разделы колонкой слева, содержимое справа (настройки, реш. Макса 2026-07-27). Горизонтальный ряд
@@ -794,7 +815,10 @@
    padding экрана, а сама лента только центрируется. */
 .gm-settings__tabs {
     align-self: center;
-    margin-bottom: var(--gm-space-4);
+    /* Отступ снизу НУЛЕВОЙ: под лентой сразу идёт рельса, и вкладка обязана на ней стоять. С прежним
+       зазором в 32px активная плашка висела над линией, и «ярлык папки» читался просто плашкой
+       (поймано кадром 05.08.2026). Воздух до содержимого отдаёт сама рельса. */
+    margin-bottom: 0;
 }
 
 /* Тело: ширина блока опций 820px = 42.7% экрана. У рефа блок занимает 29% при кегле подписи 1.4%
@@ -883,28 +907,43 @@
     margin-right: var(--gm-space-2);
 }
 
+/* НЕАКТИВНЫЙ ТАБ — ТОЛЬКО ТЕКСТ. Плашки у него нет вовсе, и это замер рефа, а не вкус: там
+   неактивные разделы неотличимы от фона (яркость 1A453B против фона 163631), поэтому лента и
+   читается лентой, а не рядом кнопок. Прежде каждый таб носил свою поверхность с каймой.
+   Таб — ПЛАСТИНА С НУЛЕВОЙ ФАСКОЙ (PlateButton): вкладке нужен прямой угол, но нужна и градиентная
+   заливка активного, а её в USS нет — градиент умеет только наш контрол. */
 .gm-tab {
-    background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-outline-width);
-    border-color: var(--gm-outline-color-subtle);
-    border-radius: var(--gm-radius-0);
+    background-color: rgba(0, 0, 0, 0);
+    background-image: none;
+    border-width: 0;
     color: var(--gm-color-text-muted);
     font-size: var(--gm-font-body);
-    padding: var(--gm-space-1) var(--gm-space-3);
+    padding: var(--gm-space-2) var(--gm-space-4);
     margin-right: var(--gm-space-2);
+    margin-bottom: 0;
+    --gm-plate-chamfer: 0;
+    --gm-plate-fill: rgba(0, 0, 0, 0);
+    --gm-plate-fill-far: rgba(0, 0, 0, 0);
+    --gm-plate-stroke: rgba(0, 0, 0, 0);
+    --gm-plate-stroke-width: 0;
 }
 
-/* Активный таб: сильный аутлайн (тихий — у неактивных). */
+/* АКТИВНЫЙ — ЗАЛИТАЯ ВКЛАДКА, СТОЯЩАЯ НА РЕЛЬСЕ. Градиент СВЕТЛЕЕТ КНИЗУ (замер рефа: яркость 72
+   сверху, 117 снизу) — то же направление, что у наших кнопок: свет падает снизу, от стола.
+   Нижнего отступа нет намеренно: низ плашки обязан совпасть с рельсой, иначе вкладка висит над
+   ней и метафора ярлыка рассыпается. */
 .gm-tab--active {
-    border-color: var(--gm-outline-color);
+    --gm-plate-fill: var(--gm-color-surface-accent-lit);
+    --gm-plate-fill-far: var(--gm-color-surface-tab-lit);
+    --gm-plate-fill-mode: down;
+    --gm-plate-stroke: var(--gm-color-accent);
+    --gm-plate-stroke-width: 1;
     color: var(--gm-color-text);
-    -unity-font-style: bold;
 }
 
 .gm-tab:disabled,
 .gm-tab.unity-disabled {
     color: var(--gm-color-disabled-text);
-    border-color: var(--gm-color-border-subtle);
     opacity: 1;
 }
 
