@@ -188,6 +188,7 @@ namespace Guildmaster.UI
         private bool _mainMenuOpen;
         private IPublisher<Core.Flow.ScreenBackdropChangedEvent> _screenBackdropPub; // QA #50: единый задник экранов
         private bool _backdropShown; // последнее сказанное презентации — публикуем только по ребру
+        private bool _backdropOverBattle; // и второе поле того же сообщения: ребро считается по паре
         private ISubscriber<Core.Flow.ScreenFadeChangedEvent> _screenFadeSub; // QA #47: шторка перехода поверх всего
         private IDisposable _screenFadeSubscription;
         private VisualElement _screenFade;
@@ -579,12 +580,19 @@ namespace Guildmaster.UI
             //
             // Фазу тут больше не спрашиваем: правду про «что сейчас на экране» знает стек, а не бой. Экран
             // пройденного ивента живёт и в Interlude (QA #49) — по фазе фон под ним мигал бы на арену.
-            bool needBackdrop = (_mainMenuOpen || _router.HasVisiblePage)
+            //
+            // Вторая, независимая причина показать стол — ЗАПРОС САМОГО ЭКРАНА (UiScreen.RequiresBackdrop).
+            // Его просят настройки: панели у них нет, кадр занят целиком, и смотреть под них незачем. Запрос
+            // сильнее живого боя за спиной — иначе экран, открытый из паузы посреди арены, остался бы строками
+            // громкости поверх мельтешащего боя (наход. Макса 05.08.2026).
+            bool requested = _router.HasScreenRequiringBackdrop;
+            bool needBackdrop = (_mainMenuOpen || _router.HasVisiblePage || requested)
                                 && !_router.IsInventoryOpen && !_router.IsMapSpaceOpen;
-            if (needBackdrop != _backdropShown)
+            if (needBackdrop != _backdropShown || (needBackdrop && requested != _backdropOverBattle))
             {
                 _backdropShown = needBackdrop;
-                _screenBackdropPub?.Publish(new Core.Flow.ScreenBackdropChangedEvent(needBackdrop));
+                _backdropOverBattle = requested;
+                _screenBackdropPub?.Publish(new Core.Flow.ScreenBackdropChangedEvent(needBackdrop, requested));
             }
 
             // QA #11/#21/#35: подсветка активного таба из единого источника — верхний НЕ-Modal экран навигатора

@@ -292,10 +292,12 @@ namespace Guildmaster.UI
             public override ScreenKind Kind { get; }
             public override string ModeTag { get; }
             public override bool SuppressScrim { get; }
+            public override bool RequiresBackdrop { get; }
             public string ScreenId { get; }
 
             public RouterScreen(ScreenKind kind, Func<VisualElement> build, string modeTag = null,
-                                string screenId = null, Action onExit = null, bool suppressScrim = false)
+                                string screenId = null, Action onExit = null, bool suppressScrim = false,
+                                bool requiresBackdrop = false)
             {
                 Kind = kind;
                 _build = build;
@@ -303,6 +305,7 @@ namespace Guildmaster.UI
                 ScreenId = screenId;
                 _onExit = onExit;
                 SuppressScrim = suppressScrim;
+                RequiresBackdrop = requiresBackdrop;
             }
 
             public override void Build(UiScreenContext ctx) => Root = _build();
@@ -321,9 +324,10 @@ namespace Guildmaster.UI
         // тут же перезаписывался обратно — затемнение возвращалось (наход. Макса).
         /// <returns>Положенный экран — тем, кто снимает его не кнопкой «Назад», а сам (цепочка поверх меню).</returns>
         private UiScreen PushScreen(Func<VisualElement> build, ScreenKind kind, string modeTag = null, string screenId = null,
-                                    CancellationToken ct = default, Action onExit = null, bool scrimless = false)
+                                    CancellationToken ct = default, Action onExit = null, bool scrimless = false,
+                                    bool requiresBackdrop = false)
         {
-            var pushed = new RouterScreen(kind, build, modeTag, screenId, onExit, scrimless);
+            var pushed = new RouterScreen(kind, build, modeTag, screenId, onExit, scrimless, requiresBackdrop);
             _nav.Push(pushed, ct);
             return pushed;
         }
@@ -497,6 +501,10 @@ namespace Guildmaster.UI
         /// <summary>Лежит ли на экране непрозрачная страница (ивент/магазин/сундук/награда/исход) — ей нужен
         /// задник-стол вместо просвечивающего мира (QA #50).</summary>
         public bool HasVisiblePage => _nav.HasVisiblePage;
+
+        /// <summary>Просит ли видимый экран задник сам (настройки: кадр занят целиком, панели нет) — причина,
+        /// не зависящая от типа экрана и сильнее живого боя за спиной.</summary>
+        public bool HasScreenRequiringBackdrop => _nav.HasVisibleBackdropRequest;
 
         /// <summary>Войти в пространство world-карты: прозрачный Sheet с тегом режима «карта».</summary>
         public void ShowMapSpace()
@@ -680,7 +688,10 @@ namespace Guildmaster.UI
             // «Продолжить» = снять ТОЛЬКО системное меню (Pop), а не весь стек (CloseAll снёс бы карту под паузой
             // → resolve узла null → Aborted, тот же баг класса #37). Экраны под меню (карта/инвентарь) остаются.
             screen.Q<Button>("btn-return").clicked += Pop;
-            screen.Q<Button>("btn-settings").clicked += () => PushScreen(BuildSettingsScreen, ScreenKind.Modal);
+            // Настройки из паузы остаются Modal (глушение ввода, возврат к паузе по ESC), но задник просят
+            // сами: экран занимает кадр целиком и панели не имеет — под ним мельтешила бы арена забега.
+            screen.Q<Button>("btn-settings").clicked +=
+                () => PushScreen(BuildSettingsScreen, ScreenKind.Modal, requiresBackdrop: true);
 
             // Приглашение живёт ЗДЕСЬ, а не в главном меню: лобби поднимается вместе с игрой, и до
             // входа звать друга некуда. Экран не закрываем — оверлей Steam ложится поверх, игрок
@@ -1550,7 +1561,8 @@ namespace Guildmaster.UI
             // одним слипшимся листом (наход. Макса 04.08.2026). Затемнения у Page нет по устройству,
             // и это верно: мы и так в меню, темнить нечего (реш. Макса, раунд 3). В забеге настройки
             // остаются модалкой со скримом — там под ними живой мир.
-            void OpenOverMenu(Func<VisualElement> build) => overMenu.Add(PushScreen(build, ScreenKind.Page));
+            void OpenOverMenu(Func<VisualElement> build, bool requiresBackdrop = false) =>
+                overMenu.Add(PushScreen(build, ScreenKind.Page, requiresBackdrop: requiresBackdrop));
 
             // Игрок дособрал заказ — цепочка поверх меню отработала и уходит целиком, снизу вверх.
             void CloseOverMenu()
@@ -1586,11 +1598,15 @@ namespace Guildmaster.UI
                         key => _loc?.GetString(key),
                         onCreate:   () => OpenOverMenu(() => BuildNewGameScreen(
                             request => { CloseOverMenu(); resolve(MainMenuOutcome.StartGame(request)); },
-                            OpenOverMenu)),
+                            // Лямбда, а не метод-группа: у OpenOverMenu появился второй (опциональный)
+                            // параметр, а метод с ним в Action<Func<VisualElement>> не преобразуется.
+                            b => OpenOverMenu(b))),
                         // «Присоединиться» меню НЕ закрывает: игрок соглашается войти уже в оверлее
                         // Steam, а уводит нас отсюда рукопожатие — оно резолвит меню само.
                         onJoin:     () => _coop?.BrowseFriends(),
-                        onSettings: () => OpenOverMenu(BuildSettingsScreen),
+                        // Настройки просят стол ЯВНО: за главным меню может идти живой бой, и он гасит задник —
+                        // для меню это верно (бой ради того и заведён), для настроек нет. См. RequiresBackdrop.
+                        onSettings: () => OpenOverMenu(BuildSettingsScreen, requiresBackdrop: true),
                         onProfile:  () => OpenOverMenu(() => BuildProfileScreen(required: false, onClosed: null)),
                         onQuit:     () => { ShowQuitVeil(); resolve(MainMenuOutcome.Quit); },
                         canJoin:    _coop?.IsSteamReady ?? false);

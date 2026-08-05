@@ -56,6 +56,9 @@ namespace Guildmaster.Presentation.Map
         // За меню может идти живой бой (04.08.2026). Тогда стол не просто лишний — он закрывает собой
         // ровно то, ради чего бой и заведён.
         private bool _battleBehind;
+        // ...но экран может попросить стол ЯВНО (настройки: кадр занят целиком, панели нет). Такой запрос
+        // бой не отменяет — смотреть под настройки незачем, а мельтешение арены мешает читать строки.
+        private bool _overBattle;
 
         private static readonly int AspectXId = Shader.PropertyToID("_AspectX");
         private static readonly int LightStrengthId = Shader.PropertyToID("_LightStrength");
@@ -74,7 +77,7 @@ namespace Guildmaster.Presentation.Map
 
         private void Start()
         {
-            _sub = _menuSub?.Subscribe(e => SetOpen(e.Visible));
+            _sub = _menuSub?.Subscribe(e => SetOpen(e.Visible, e.OverBattle));
             _battleSubscription = _battleSub?.Subscribe(e => { _battleBehind = e.Running; ApplyVisibility(); });
 
             _toggles?.Register("menu.table", "Стол за экранами",
@@ -90,15 +93,16 @@ namespace Guildmaster.Presentation.Map
             _toggles?.Unregister("menu.table");
         }
 
-        private void SetOpen(bool open)
+        private void SetOpen(bool open, bool overBattle)
         {
             _menuOpen = open;
+            _overBattle = overBattle;
             ApplyVisibility();
         }
 
         private void ApplyVisibility()
         {
-            bool show = _menuOpen && !_battleBehind && _enabledByToggle
+            bool show = _menuOpen && (!_battleBehind || _overBattle) && _enabledByToggle
                         && _style != null && _style.TableMaterial != null;
             if (show && _camera == null) Build();
             if (_camera != null) _camera.gameObject.SetActive(show);

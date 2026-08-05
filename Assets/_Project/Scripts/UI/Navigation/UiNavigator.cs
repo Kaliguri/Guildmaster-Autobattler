@@ -120,6 +120,25 @@ namespace Guildmaster.UI
             }
         }
 
+        /// <summary>
+        /// Просит ли ВИДИМЫЙ экран задник явно (<see cref="UiScreen.RequiresBackdrop"/>) — вторая, независимая
+        /// причина показать стол помимо <see cref="HasVisiblePage"/>. Разведены намеренно: страница закрывает
+        /// мир по своему типу, а этот запрос идёт от самого экрана и сильнее живого боя за спиной.
+        /// </summary>
+        public bool HasVisibleBackdropRequest
+        {
+            get
+            {
+                for (int i = 0; i < _stack.Count; i++)
+                {
+                    UiScreen s = _stack[i];
+                    if (!s.RequiresBackdrop) continue;
+                    if (s.Root == null || s.Root.style.display.value == DisplayStyle.Flex) return true;
+                }
+                return false;
+            }
+        }
+
         /// <summary>Есть ли в стеке экран, удовлетворяющий предикату (напр. «системное меню где-то открыто»).</summary>
         public bool AnyScreen(Func<UiScreen, bool> predicate)
         {
