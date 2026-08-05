@@ -300,6 +300,8 @@ namespace Guildmaster.Presentation
         // --- Взмах: окно между маркерами StrikeStart и StrikeEnd ------------------------------------
         // На нём живёт дуга за клинком, и с его начала берётся точка A формы удара. Клип без разметки
         // взмаха просто не даёт ни того, ни другого: остальной удар (вспышка, искры, цифра) работает.
+        private Vector2 _strikeDirLocal;     // направление удара на кадре контакта, в координатах корня тела
+        private bool  _hasStrikeDir;         // замер удался
         private bool  _hasStrikeWindow;      // клип атаки размечен обоими маркерами
         private float _strikeFrom;           // 0..1 — нормированное начало взмаха
         private float _strikeTo;             // 0..1 — нормированный конец взмаха
@@ -493,6 +495,7 @@ namespace Guildmaster.Presentation
             ResolveAttackMarker();
             ResolveGuardMarkers();
             RequireSockets();
+            MeasureStrikeDirection();
 
             // Слой-надстройка щита. Его нет у покадрового бестиария — тогда гвардия просто не играется:
             // это отсутствие контента, а не ошибка разводки (см. ResolvedHash).
@@ -647,82 +650,128 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// КУДА ДВИГАЛСЯ КОНЧИК ОРУЖИЯ в момент удара — направление, вдоль которого ложится форма.
+        /// КУДА ДВИГАЛСЯ КОНЧИК ОРУЖИЯ на кадре контакта — направление, вдоль которого ложится форма.
         /// </summary>
-        /// <param name="towardTarget">Вектор «бьющий → цель»: им разрешается знак касательной.</param>
-        /// <param name="dir">Единичное направление движения кончика.</param>
+        /// <param name="dir">Единичное направление движения кончика в мире.</param>
         /// <returns><c>false</c> — вести форму не от чего; причина уже названа в консоли.</returns>
         /// <remarks>
-        /// <b>Почему не хорда «начало взмаха → точка хита».</b> Так было до 06.08.2026, и это давало
-        /// почти горизонтальный знак: замер живого клипа — кончик на <c>StrikeStart</c> отведён назад и
-        /// ВВЕРХ (−0.71, +0.90), цель же стоит впереди на два с лишним корпуса, поэтому хорда наклонена
-        /// всего на ~20°, тогда как клинок в момент касания идёт вниз под ~75°. Рубящий удар читался
-        /// лежачей полосой, а длина знака вдобавок бралась по длине хорды — полтора роста юнита.
+        /// Отвечает ЗАМЕР КЛИПА, снятый один раз при инициализации вида, а не поза в момент вызова.
+        /// Причина в порядке кадра: событие урона приходит внутри <c>Update</c> презентера, у которого
+        /// <c>[DefaultExecutionOrder(-100)]</c>, — то есть до <c>Update</c> самих видов и заведомо до
+        /// того, как Animator применит позу. Спросив кости в этот момент, мы читаем ПРОШЛЫЙ кадр: на
+        /// медленной атаке это 15–20° ошибки, на быстрой — все 60–100°, потому что взмах в 200° там
+        /// укладывается в два-три кадра показа. Ровно от этого дуга за клинком читает геометрию в
+        /// <c>LateUpdate</c>, а форме и такой возможности нет — она рождается по событию.
         /// <para>
-        /// Рука — жёсткий рычаг, вращающийся вокруг плеча, поэтому направление движения кончика есть
-        /// просто ПЕРПЕНДИКУЛЯР к вектору «плечо → кончик». Историю кадров хранить не нужно, замер клипа
-        /// тоже: обе точки известны из позы прямо сейчас. Знак перпендикуляра выбирает цель — из двух
-        /// сторон верна та, что смотрит на неё.
+        /// Замер хранится в координатах корня тела, поэтому поворот и зеркало приходят даром:
+        /// <c>TransformDirection</c> учитывает знак масштаба, которым разворачивается юнит.
         /// </para>
         /// </remarks>
-        public bool TryGetStrikeDirection(Vector2 towardTarget, out Vector2 dir)
+        public bool TryGetStrikeDirection(out Vector2 dir)
         {
             dir = default;
 
-            var body = Body;
-            if (body?.Parts == null)
+            if (!_hasStrikeDir)
             {
-                VisualDefects.Report($"strike-body:{DefectKey}",
-                    $"[UnitView] {name}: удар состоялся, но тела с частями у вида нет — направление " +
-                    "формы брать неоткуда, знак удара не появится.", this);
+                VisualDefects.Report($"strike-dir:{DefectKey}",
+                    $"[UnitView] {name}: направление удара не замерено по клипу — знака удара не будет. " +
+                    "Причина названа выше при инициализации вида.", this);
                 return false;
             }
+
+            Transform root = Body?.Root;
+            if (root == null) return false;
+
+            // Масштабом корня приходит и разворот юнита, и сплющивание. Первое нужно, второе слегка
+            // искажает угол — но squash живёт доли секунды и не превышает десятка процентов.
+            Vector3 world = root.TransformDirection(new Vector3(_strikeDirLocal.x, _strikeDirLocal.y, 0f));
+            Vector2 d = new Vector2(world.x, world.y);
+            if (d.sqrMagnitude < 1e-8f) return false;
+
+            dir = d.normalized;
+            return true;
+        }
+
+        /// <summary>
+        /// Замерить направление удара по клипу — один раз за жизнь вида, до первого боя.
+        /// </summary>
+        /// <remarks>
+        /// Считается двумя сэмплами клипа вокруг кадра контакта: где кончик оружия был чуть раньше и
+        /// чуть позже. Разница и есть движение. Всё в координатах корня тела, поэтому замер не зависит
+        /// от того, куда юнит смотрел в момент замера.
+        /// <para>
+        /// <b>Почему не геометрия «перпендикуляр к рычагу плечо → кончик».</b> Так было полдня
+        /// 06.08.2026 и оказалось приближением вдвойне: рука не совсем жёсткий рычаг (замер живого
+        /// клипа даёт разброс длины 8% между началом взмаха и контактом), а главное — позу всё равно
+        /// приходилось читать в момент события, то есть кадром позже. Замер клипа не зависит ни от
+        /// порядка <c>Update</c>, ни от скорости атаки, ни от числа кадров показа на взмах.
+        /// </para>
+        /// </remarks>
+        private void MeasureStrikeDirection()
+        {
+            _hasStrikeDir = false;
+
+            AnimationClip attack = _visual != null ? _visual.AttackClip : null;
+            if (attack == null || attack.length <= 0f) return;   // об отсутствии клипа уже крикнул резолв маркера
+
+            var body = Body;
+            if (body?.Parts == null || body.Root == null) return;
             if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source))
             {
                 VisualDefects.Report($"strike-source:{DefectKey}",
-                    $"[UnitView] {name}: удар состоялся, но тело не отдаёт, ЧЕМ бьют — нет ни предмета в " +
-                    "хвате (UnitHeldItem на кости под 'Rotation Point (Grip)'), ни кисти. Формы не будет.", this);
-                return false;
+                    $"[UnitView] {name}: тело не отдаёт, ЧЕМ бьют — нет ни предмета в хвате " +
+                    "(UnitHeldItem на кости под 'Rotation Point (Grip)'), ни кисти. Направление удара " +
+                    "замерить не по чему, знака удара не будет.", this);
+                return;
             }
-            if (!UnitPartGeometry.TryGetTip(source, out Vector3 tip))
+
+            float hit = Mathf.Clamp01(_attackHitNormalized) * attack.length;
+            // Шаг замера: пара кадров показа. Слишком мелкий шаг ловит шум кривой, слишком крупный —
+            // усредняет дугу и врёт в ту же сторону, что и отменённая хорда.
+            float step = Mathf.Clamp(attack.length * 0.02f, 1f / 120f, 1f / 30f);
+            float t0 = Mathf.Max(0f, hit - step);
+            float t1 = Mathf.Min(attack.length, hit + step);
+            if (t1 - t0 < 1e-4f) return;
+
+            // Сэмплирование двигает кости мимо Animator, поэтому его на время замера выключаем: иначе
+            // он перепишет позу между двумя выборками и разница окажется чужой.
+            bool wasEnabled = _animator != null && _animator.enabled;
+            if (_animator != null) _animator.enabled = false;
+
+            bool ok = SampleTipLocal(attack, t0, source, body.Root, out Vector2 p0)
+                    & SampleTipLocal(attack, t1, source, body.Root, out Vector2 p1);
+
+            if (_animator != null) _animator.enabled = wasEnabled;
+
+            if (!ok)
             {
                 VisualDefects.Report($"strike-tip:{DefectKey}",
                     $"[UnitView] {name}: ударная часть '{source.Bone}' есть, но кончика у неё нет — " +
-                    "у рендерера пуст спрайт. Формы не будет.", this);
-                return false;
+                    "у рендерера пуст спрайт. Направление удара не замерить.", this);
+                return;
             }
 
-            BodySide side = source.Slot == HandSlot.Left ? BodySide.Left
-                          : source.Slot == HandSlot.Right ? BodySide.Right
-                          : source.Side;
-
-            string shoulderBone = RigNaming.ShoulderBone(side);
-            if (!body.Parts.TryGetBone(shoulderBone, side, out UnitPart shoulder) || shoulder.Renderer == null)
+            Vector2 delta = p1 - p0;
+            if (delta.sqrMagnitude < 1e-10f)
             {
-                VisualDefects.Report($"strike-pivot:{DefectKey}",
-                    $"[UnitView] {name}: удар состоялся, но плеча '{shoulderBone}' ({side}) в теле нет — " +
-                    "вокруг чего вращался клинок, неизвестно, и направление формы не вывести.", this);
-                return false;
+                VisualDefects.Report($"strike-still:{DefectKey}",
+                    $"[UnitView] {name}: на кадре контакта клипа '{attack.name}' кончик оружия стоит на " +
+                    "месте — направления у удара нет. Проверь, там ли маркер контакта.", this);
+                return;
             }
 
-            Vector2 lever = (Vector2)tip - (Vector2)shoulder.Renderer.transform.position;
-            if (lever.sqrMagnitude < 1e-8f)
-            {
-                VisualDefects.Report($"strike-lever:{DefectKey}",
-                    $"[UnitView] {name}: кончик оружия совпал с плечом — рычага нет, направление удара " +
-                    "вырождено. Формы не будет.", this);
-                return false;
-            }
+            _strikeDirLocal = delta.normalized;
+            _hasStrikeDir   = true;
+        }
 
-            // Перпендикуляр к рычагу: клинок движется поперёк него, а не вдоль.
-            Vector2 tangent = new Vector2(lever.y, -lever.x).normalized;
-
-            // Из двух перпендикуляров верен тот, что смотрит на цель. Знак направления вращения хранить
-            // не нужно — цель отвечает на этот вопрос сама и переживает любую перерисовку клипа.
-            if (towardTarget.sqrMagnitude > 1e-8f && Vector2.Dot(tangent, towardTarget) < 0f)
-                tangent = -tangent;
-
-            dir = tangent;
+        /// <summary>Позиция кончика ударной части на заданном кадре клипа, в координатах корня тела.</summary>
+        private bool SampleTipLocal(AnimationClip clip, float time, in UnitPart source, Transform root,
+                                    out Vector2 local)
+        {
+            local = default;
+            clip.SampleAnimation(gameObject, time);
+            if (!UnitPartGeometry.TryGetTip(source, out Vector3 tip)) return false;
+            local = root.InverseTransformPoint(tip);
             return true;
         }
 

@@ -910,10 +910,10 @@ namespace Guildmaster.Presentation
                     return;
                 }
 
-                // Знак касательной разрешает вектор «бьющий → цель»: из двух сторон верна та, что
-                // смотрит на цель.
-                Vector2 toward = (Vector2)(b - sourceView.HitPoint);
-                if (!sourceView.TryGetStrikeDirection(toward, out dir)) return;
+                // Направление отвечает ЗАМЕРОМ КЛИПА, а не позой прямо сейчас: этот код исполняется до
+                // того, как Animator применит позу текущего кадра, и спрашивать кости здесь значит
+                // читать прошлый кадр — на быстрой атаке это десятки градусов.
+                if (!sourceView.TryGetStrikeDirection(out dir)) return;
             }
 
             // Форма кончается в цели у дробящего всегда, а у остальных — когда удар принял щит: он в тело
