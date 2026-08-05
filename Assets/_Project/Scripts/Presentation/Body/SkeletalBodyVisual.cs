@@ -140,6 +140,18 @@ namespace Guildmaster.Presentation.Body
                 _authoredColors[i] = _parts[i] != null ? _parts[i].color : Color.white;
         }
 
+        /// <summary>
+        /// Снимок есть и он по размеру списка. Проверяется в начале <see cref="Apply"/>, потому что
+        /// <c>Awake</c> случается НЕ всегда: стенд рига, валидатор и edit-mode тест поднимают тело
+        /// инстансом префаба, и там первый же <c>Apply</c> шёл бы с пустым снимком — то есть красил
+        /// нетронутые части белым. Ровно это и вылезло белым лицом.
+        /// </summary>
+        private void EnsureAuthoredColors()
+        {
+            if (_authoredColors != null && _authoredColors.Length == _parts.Count) return;
+            CacheAuthoredColors();
+        }
+
         private Color[] _authoredColors;
 
         /// <summary>
@@ -198,6 +210,7 @@ namespace Guildmaster.Presentation.Body
             // Альфа идёт ВСЕМ: она несёт прозрачность инвиза, и некрашеная часть обязана исчезать
             // вместе с телом, иначе стелс оставит на арене плавающий торс. Меняется только она —
             // сам цвет некрашеной части остаётся авторским (см. CacheAuthoredColors).
+            EnsureAuthoredColors();
             PartMask tinted = TintMask();
             for (int i = 0; i < _parts.Count; i++)
             {

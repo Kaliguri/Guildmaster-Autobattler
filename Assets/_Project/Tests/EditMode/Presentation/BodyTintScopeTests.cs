@@ -34,6 +34,67 @@ namespace Guildmaster.Tests.EditMode.Presentation
         static bool Painted(in UnitPart part) =>
             part.IsHeld || RigNaming.IsHair(part.Renderer != null ? part.Renderer.name : null);
 
+        /// <summary>
+        /// Некрашеная часть остаётся ТОЙ, КАКОЙ нарисована. Белый в <c>SpriteRenderer.color</c> выглядит
+        /// нейтральным и им не является: художник красит vertex-цветом прямо в риге (лицо телесным, тело
+        /// холодно-серым), и «нейтральный» белый стирает эту работу. Поймано глазами Макса 05.08.2026 —
+        /// белое лицо; тестом ловится молча.
+        /// </summary>
+        [Test]
+        public void AnUnpaintedPartKeepsItsAuthoredColour()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/_Project/Prefabs/Units/UnitView_BoneStorybook.prefab");
+            Assert.That(prefab, Is.Not.Null, "Боевой вид Storybook не найден.");
+
+            var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+            try
+            {
+                var body = instance.GetComponentInChildren<SkeletalBodyVisual>(includeInactive: true);
+                Assert.That(body, Is.Not.Null);
+
+                // Авторские цвета до всякой покраски — эталон, с которым сверяемся.
+                var authored = body.Renderers.Select(r => r == null ? Color.white : r.color).ToList();
+
+                var tint = new Color(0.2f, 0.9f, 0.4f, 1f);
+                body.Apply(new BodyVisualState(tint, 0f, Color.white, 0f, Color.white, 0f, 0f, 0f,
+                                               0f, Color.white, 0f, Color.white, PartMask.Empty, 0f));
+
+                IReadOnlyList<UnitPart> parts = body.Parts.Parts;
+                for (int i = 0; i < parts.Count; i++)
+                {
+                    UnitPart part = parts[i];
+                    Color now = part.Renderer.color;
+
+                    if (Painted(part))
+                        Assert.That((Vector4)now, Is.EqualTo((Vector4)tint).Using(new Vector4Comparer()),
+                            $"{part.Renderer.name} обязан принять тинт юнита.");
+                    else
+                        Assert.That(new Vector3(now.r, now.g, now.b),
+                            Is.EqualTo(new Vector3(authored[i].r, authored[i].g, authored[i].b))
+                              .Using(new Vector3Comparer()),
+                            $"{part.Renderer.name} потерял авторский цвет: был " +
+                            $"{authored[i]}, стал {now}. Белый — не нейтральное значение.");
+                }
+            }
+            finally
+            {
+                Object.DestroyImmediate(instance);
+            }
+        }
+
+        sealed class Vector3Comparer : IEqualityComparer<Vector3>
+        {
+            public bool Equals(Vector3 a, Vector3 b) => (a - b).sqrMagnitude < 1e-6f;
+            public int GetHashCode(Vector3 v) => v.GetHashCode();
+        }
+
+        sealed class Vector4Comparer : IEqualityComparer<Vector4>
+        {
+            public bool Equals(Vector4 a, Vector4 b) => (a - b).sqrMagnitude < 1e-6f;
+            public int GetHashCode(Vector4 v) => v.GetHashCode();
+        }
+
         [Test]
         public void OnlyHairAndHeldItemsTakeTheUnitTint()
         {
