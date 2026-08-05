@@ -50,6 +50,16 @@ namespace Guildmaster.Presentation.Effects
         /// <summary>Полутолщина в середине, мировые единицы.</summary>
         public readonly float HalfThickness;
 
+        /// <summary>
+        /// Ширина тёмной ОБВОДКИ снаружи формы, мировые единицы. Ноль — обводки нет.
+        /// </summary>
+        /// <remarks>
+        /// Не путать с <see cref="Rim"/>: кайма живёт ВНУТРИ формы и несёт цвет элемента, обводка лежит
+        /// СНАРУЖИ и цвета не имеет вовсе — она перекрывает кадр чёрным (канон
+        /// <c>gdd/70-gamefeel/vfx-language</c> §«Форму обводит чёрный контур», 05.08.2026).
+        /// </remarks>
+        public readonly float LineWidth;
+
         /// <summary>Прогиб, мировые единицы. Знак задаёт сторону выгиба.</summary>
         public readonly float Arc;
 
@@ -93,13 +103,14 @@ namespace Guildmaster.Presentation.Effects
         public readonly float FreezeSeconds;
 
         public HitFormParams(Vector3 from, Vector3 to, HitFormKind kind, bool endsAtHit,
-            float length, float halfThickness,
+            float length, float halfThickness, float lineWidth,
             float arc, float roughness, float starRadius, int starRays, float seed,
             Color core, Color rim, float life, float growShare, float tailLag, float coreWidth,
             float freezeSeconds)
         {
             From = from; To = to; Kind = kind; EndsAtHit = endsAtHit;
-            Length = length; HalfThickness = halfThickness; Arc = arc; Roughness = roughness;
+            Length = length; HalfThickness = halfThickness; LineWidth = lineWidth;
+            Arc = arc; Roughness = roughness;
             StarRadius = starRadius; StarRays = starRays; Seed = seed;
             Core = core; Rim = rim;
             Life = life; GrowShare = growShare; TailLag = tailLag;
@@ -130,6 +141,13 @@ namespace Guildmaster.Presentation.Effects
         /// </summary>
         private const float StarQuadMargin = 2.4f;
 
+        /// <summary>
+        /// Потолок ширины обводки в долях полудлины формы — тот же, что в проперти шейдера
+        /// (<c>_LineWidth</c>). Держится здесь, потому что <see cref="MaterialPropertyBlock"/> объявленный
+        /// в шейдере диапазон не соблюдает: <c>Range</c> ограничивает только инспектор материала.
+        /// </summary>
+        private const float MaxLineShare = 0.3f;
+
         private static readonly int CoreColorId  = Shader.PropertyToID("_CoreColor");
         private static readonly int RimColorId   = Shader.PropertyToID("_RimColor");
         private static readonly int LenId        = Shader.PropertyToID("_Len");
@@ -144,6 +162,7 @@ namespace Guildmaster.Presentation.Effects
         private static readonly int ProgressId   = Shader.PropertyToID("_Progress");
         private static readonly int GrowId       = Shader.PropertyToID("_Grow");
         private static readonly int TailLagId    = Shader.PropertyToID("_TailLag");
+        private static readonly int LineWidthId  = Shader.PropertyToID("_LineWidth");
 
         private Renderer _renderer;
         private MaterialPropertyBlock _block;
@@ -198,8 +217,12 @@ namespace Guildmaster.Presentation.Effects
             // Quad вмещает и форму, и звезду: у дробящего вторая шире первой, и меш растягивается по ней.
             // Шейдер про мировые единицы не знает — ему всё приходит долями полу-quad, поэтому перевод
             // живёт здесь, в одном месте.
+            //
+            // ОБВОДКА ТРЕБУЕТ ЗАПАСА: контур лежит СНАРУЖИ формы, и на quad, натянутом впритык, он
+            // обрезался бы краем меша ровно там, где и должен быть виден.
+            float line     = Mathf.Max(0f, p.LineWidth);
             float length   = Mathf.Max(0.001f, p.Length);
-            float quadSize = Mathf.Max(length, p.StarRadius * StarQuadMargin);
+            float quadSize = Mathf.Max(length + line * 2f, (p.StarRadius + line) * StarQuadMargin);
             float halfQuad = quadSize * 0.5f;
             float halfLen  = length * 0.5f;
 
@@ -212,6 +235,11 @@ namespace Guildmaster.Presentation.Effects
             _block.SetFloat(LenId, Mathf.Clamp(halfLen / halfQuad, 0.05f, 1f));
             _block.SetFloat(ArcId, p.Arc / halfLen);
             _block.SetFloat(HalfThickId, p.HalfThickness / halfLen);
+            // Обводка мерится в тех же долях полудлины формы, что и толщина, — не полу-quad: она растёт
+            // вместе с формой и вместе с ней же ужимается на слабом ударе. Потолок тот же, что в
+            // проперти шейдера: блок свойств диапазон не соблюдает, а контур шире трети полудлины
+            // съел бы саму форму.
+            _block.SetFloat(LineWidthId, Mathf.Clamp(line / halfLen, 0f, MaxLineShare));
             _block.SetFloat(CoreWidthId, p.CoreWidth);
             _block.SetFloat(RoughId, p.Roughness);
             _block.SetFloat(SeedId, p.Seed);

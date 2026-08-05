@@ -394,6 +394,15 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Размер формы на самом лёгком ударе — множитель к числам архетипа.")]
         [SerializeField, Range(0.2f, 1f)] private float _hitFormSizeMin = 0.55f;
 
+        [Tooltip("Тёмная ОБВОДКА снаружи формы. Не путать с каймой: та живёт внутри формы и несёт цвет " +
+                 "элемента, а обводка цвета не имеет вовсе — она перекрывает кадр чёрным. Выключено — " +
+                 "форма остаётся бесконтурным свечением, как до 05.08.2026.")]
+        [SerializeField] private bool _enableHitFormLine = true;
+
+        [Tooltip("Ширина обводки в долях H. Едет вместе с размером удара. Заметно больше, чем кажется " +
+                 "нужным на статичном превью: bloom растекается с ядра и подъедает тонкий контур.")]
+        [SerializeField, Range(0f, 0.06f)] private float _hitFormLineWidthH = 0.018f;
+
         // --- Порезы: тело помнит бой ---
         [Header("VFX — порезы на теле")]
         [Tooltip("Каждое попадание оставляет светящуюся красную прореху; хил заживляет самые старые. " +
@@ -584,6 +593,8 @@ namespace Guildmaster.Presentation.Design
 
         public bool    EnableHitForm              => _enableHitForm;
         public bool    EnableHitFormBreakOnShield => _enableHitFormBreakOnShield;
+        public bool    EnableHitFormLine          => _enableHitFormLine;
+        public float   HitFormLineWidthH          => _hitFormLineWidthH;
         public VfxData VfxHitForm                 => _vfxHitForm;
         public float   HitFormUnitHeight          => _hitFormUnitHeight;
         public float   HitFormLife                => _hitFormLife;

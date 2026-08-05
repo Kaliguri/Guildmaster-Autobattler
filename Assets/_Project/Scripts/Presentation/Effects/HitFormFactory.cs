@@ -126,8 +126,15 @@ namespace Guildmaster.Presentation.Effects
             float starRadius    = a.StarRadiusH * h * weight;
             int   starRays      = Mathf.RoundToInt(Mathf.Lerp(a.StarRays.x, a.StarRays.y, r3));
 
+            // ОБВОДКА едет с размером удара, а не стоит константой: контур постоянной мировой ширины на
+            // мелком ударе съел бы форму целиком, а на крупном превратился бы в ниточку. Ширина растёт
+            // тем же множителем веса, что длина и толщина, — знак остаётся собой в любом масштабе.
+            float lineWidth = feel.EnableHitFormLine
+                ? feel.HitFormLineWidthH * h * weight
+                : 0f;
+
             return new HitFormParams(from, to, kind, endsAtHit,
-                length, halfThickness, arc, a.Roughness, starRadius, starRays,
+                length, halfThickness, lineWidth, arc, a.Roughness, starRadius, starRays,
                 seed & 0xFFFFu, core, rim,
                 feel.HitFormLife, feel.HitFormGrowShare, feel.HitFormTailLag, feel.HitFormCoreWidth,
                 freezeSeconds);

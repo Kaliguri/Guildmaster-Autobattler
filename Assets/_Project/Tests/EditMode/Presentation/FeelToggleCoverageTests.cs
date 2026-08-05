@@ -100,6 +100,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
             new Entry("HealBodyCuts",    Switch.Toggle, nameof(CombatFeelConfig.EnableBodyCuts)),
             new Entry("HitForm",         Switch.Toggle, nameof(CombatFeelConfig.EnableHitForm)),
             new Entry("HitFormBreak",    Switch.Toggle, nameof(CombatFeelConfig.EnableHitFormBreakOnShield)),
+            new Entry("HitFormLine",     Switch.Toggle, nameof(CombatFeelConfig.EnableHitFormLine)),
             new Entry("SwingArc",        Switch.Toggle, nameof(CombatFeelConfig.EnableSwingArc)),
 
             // Взмах и его геометрия — ЗАПРОСЫ к виду, а не эффекты: отвечают «где клинок», ничего не рисуя.

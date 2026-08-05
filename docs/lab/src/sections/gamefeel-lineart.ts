@@ -331,15 +331,35 @@ const RIM_NOTE: Record<RimKind, string> = {
   pressure: "Ширина каймы идёт по толщине формы: толще в середине, сходит в ноль на остриях. Это разница между «обвели фигуру» и «нарисовали от руки»."
 };
 
+/** Вердикт 05.08.2026: принята чёрная обводка постоянной ширины. */
+const RIM_STATUS: Record<RimKind, StandDef["status"]> = {
+  none: "note",
+  black: "accepted",
+  tinted: "rejected",
+  pressure: "rejected"
+};
+
+const RIM_VERDICT: Partial<Record<RimKind, string>> = {
+  black:
+    "Выбрана как есть. В свалке обводка не складывается в грязь, а разделяет формы, которые без неё " +
+    "сливались в белое пятно, — прогноз «темнота копится» не подтвердился.",
+  tinted: "Проиграла чёрной: разница видна только в свалке, а цена та же.",
+  pressure:
+    "Нажим на чёрной обводке не рисовался и остаётся неопробованным: если ровная ширина затупит " +
+    "острия сильнее, чем хочется, это одна ручка."
+};
+
 function rimStand(kind: RimKind, draw: DrawFn, size: [number, number], prefix = ""): StandDef {
   return {
     id: prefix + kind,
-    status: kind === "none" ? "note" : "waiting",
+    status: RIM_STATUS[kind],
     tag: kind === "none" ? "как сейчас" : undefined,
     title: RIM_LABEL[kind],
     size,
+    decision: kind === "black" ? "2026-08-05/3" : undefined,
     note: RIM_NOTE[kind],
     facts: RIM_FACTS[kind],
+    verdict: RIM_VERDICT[kind],
     draw
   };
 }
@@ -350,7 +370,7 @@ const section: SectionDef = {
   lede:
     "Арт персонажей ушёл в плоский сторибук с толстым лайнартом, а эффект остался бесконтурным " +
     "облаком света. Здесь один и тот же серп обведён четырьмя способами — на одиночном ударе и в " +
-    "свалке из восьми. Вердикта нет ни у одного варианта.",
+    "свалке из восьми. Принята чёрная обводка постоянной ширины (05.08.2026).",
   blocks: [
     {
       kind: "text",
