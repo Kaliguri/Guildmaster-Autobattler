@@ -67,13 +67,19 @@ namespace Guildmaster.Presentation.Editor
         /// эффекта нельзя: масштаб поехал бы от того, что выбрано, и два снимка перестали бы
         /// сравниваться — а сравнение здесь единственная цель.
         /// </summary>
-        const float FrameSizeWorld = 3.6f;
+        const float FrameSizeWorld = 5.0f;
 
         /// <summary>
         /// Насколько левее центра стоит юнит-линейка: достаточно, чтобы не лезть под эффект, и не
         /// настолько, чтобы самой уехать за край кадра — обрезанная линейка меряет хуже целой.
         /// </summary>
-        const float RulerOffsetX = 1.05f;
+        const float RulerOffsetX = 1.9f;
+
+        /// <summary>
+        /// Фаза, на которой снимается серия: эффект уже раскрыт, но ещё не начал гаснуть. Одна на все
+        /// эффекты — иначе вариации отличались бы не яркостью, а моментом, в который застали удар.
+        /// </summary>
+        const float CanonPhase = 0.45f;
 
         static readonly CultureInfo Culture = CultureInfo.InvariantCulture;
 
@@ -133,6 +139,27 @@ namespace Guildmaster.Presentation.Editor
         /// </summary>
         [SerializeField] private float _hitDamage = 100f;
         [SerializeField] private float _targetMaxHp;
+
+        [Header("Проигрывание")]
+        /// <summary>
+        /// Фаза эффекта 0..1. Раньше стенд ставил её константой 0.45 и молчал о том, что фаза вообще
+        /// есть, — эффект выглядел то так, то иначе, и это читалось как «спавнится и исчезает».
+        /// </summary>
+        /// <remarks>
+        /// Проигрывание — состояние ПО УМОЛЧАНИЮ, пауза — то, что жмут (решено с Максом 06.08.2026).
+        /// Эффект живёт движением, и статичный кадр — частный случай, нужный чтобы разглядеть, а не
+        /// чтобы им пользоваться постоянно.
+        /// </remarks>
+        [SerializeField, Range(0f, 1f)] private float _phase = 0.45f;
+        [SerializeField] private bool  _playing = true;
+        [SerializeField] private float _playSpeed = 0.35f;
+
+        /// <summary>
+        /// Как текущий эффект показывает свою фазу. Заполняется ячейкой при сборке: только она знает,
+        /// что у неё за параметр времени — <c>_Progress</c>, угол дуги, домотка частиц или разлёт.
+        /// </summary>
+        private Action<float> _applyPhase;
+        private double _lastTick;
         /// <summary>Тон, в котором светится стенд. Один на все эффекты: сравниваем ЯРКОСТЬ, а не оттенки.</summary>
         [SerializeField] private UnitTone _tone = UnitTone.Fire;
 
@@ -155,6 +182,10 @@ namespace Guildmaster.Presentation.Editor
 
         private void OnEnable()
         {
+            EditorApplication.update -= Tick;
+            EditorApplication.update += Tick;
+            _lastTick = EditorApplication.timeSinceStartup;
+
             if (_subjectPrefab == null)
                 _subjectPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(DefaultSubject);
 
@@ -177,7 +208,32 @@ namespace Guildmaster.Presentation.Editor
         /// <summary>Доля максимального HP, снятая ударом, — то, чем игра меряет вес удара.</summary>
         private float HpDamageFrac => Mathf.Clamp01(_hitDamage / Mathf.Max(1f, _targetMaxHp));
 
-        private void OnDisable() => TearDownStage();
+        private void OnDisable()
+        {
+            EditorApplication.update -= Tick;
+            TearDownStage();
+        }
+
+        /// <summary>
+        /// Гоним фазу сами по часам редактора: <c>Update</c> у эффектов в редакторе не идёт (и не должен
+        /// — они боевые компоненты, а не редакторные), поэтому проигрывание живёт здесь.
+        /// </summary>
+        private void Tick()
+        {
+            if (!_playing) { _lastTick = EditorApplication.timeSinceStartup; return; }
+
+            double now = EditorApplication.timeSinceStartup;
+            float dt = (float)(now - _lastTick);
+            _lastTick = now;
+
+            // Цикл, а не одиночный прогон: эффект длится доли секунды, и увидеть его с одного раза
+            // нельзя — по кругу он читается, как в бою при повторных ударах.
+            _phase += dt * Mathf.Max(0.01f, _playSpeed);
+            if (_phase > 1f) _phase -= 1f;
+
+            _applyPhase?.Invoke(_phase);
+            Repaint();
+        }
 
         private void OnGUI()
         {
@@ -205,6 +261,12 @@ namespace Guildmaster.Presentation.Editor
                     if (GUILayout.Button("Снять кадр", EditorStyles.toolbarButton, GUILayout.Width(84f))) SaveShot(_postOn);
                     if (GUILayout.Button("A/B", EditorStyles.toolbarButton, GUILayout.Width(40f))) SaveAb();
                     if (GUILayout.Button("Снять серию", EditorStyles.toolbarButton, GUILayout.Width(90f))) ShootSeries();
+
+                    GUILayout.Space(12f);
+                    bool play = GUILayout.Toggle(_playing, _playing ? "Пауза" : "Играть",
+                        EditorStyles.toolbarButton, GUILayout.Width(60f));
+                    if (play != _playing) { _playing = play; _lastTick = EditorApplication.timeSinceStartup; }
+
                     GUILayout.FlexibleSpace();
                     GUILayout.Label($"×{_zoom:0.##}", EditorStyles.miniLabel, GUILayout.Width(44f));
                     if (GUILayout.Button("Сброс вида", EditorStyles.toolbarButton, GUILayout.Width(84f))) ResetView();
@@ -282,6 +344,15 @@ namespace Guildmaster.Presentation.Editor
                 // неверной: частицы домотывались бы заново, и кадр менялся бы от смены фона.
                 EditorGUILayout.Space(4f);
                 EditorGUI.BeginChangeCheck();
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    float phase = EditorGUILayout.Slider("Фаза", _phase, 0f, 1f);
+                    if (!Mathf.Approximately(phase, _phase)) { _phase = phase; _playing = false; }
+                    _playSpeed = EditorGUILayout.Slider("Скорость", _playSpeed, 0.05f, 2f);
+                }
+                _applyPhase?.Invoke(_phase);
+
                 _background = EditorGUILayout.ColorField("Фон", _background);
                 _zoom       = EditorGUILayout.Slider("Приближение", _zoom, 0.1f, 12f);
                 _shotHeight = EditorGUILayout.IntSlider("Высота снимка", _shotHeight, 720, 2160);
@@ -451,7 +522,12 @@ namespace Guildmaster.Presentation.Editor
             holder.transform.SetParent(_root.transform, false);
             holder.transform.position = StageOrigin;
 
-            try { BuildCell(_cell, holder.transform, feel, palette.UnitMain(_tone), palette.UnitSpread(_tone)); }
+            _applyPhase = null;
+            try
+            {
+                BuildCell(_cell, holder.transform, feel, palette.UnitMain(_tone), palette.UnitSpread(_tone));
+                _applyPhase?.Invoke(_phase);   // собранный эффект сразу встаёт в текущую фазу, а не в нулевую
+            }
             catch (Exception e)
             {
                 Debug.LogError($"[PostFxLab] эффект «{Cells[IndexOf(_cell)].label}» не собрался: {e.Message}");
@@ -483,11 +559,6 @@ namespace Guildmaster.Presentation.Editor
         {
             var go = Spawn(_subjectPrefab, at);
             go.transform.localPosition = new Vector3(-RulerOffsetX, 0f, 0f);
-
-            // Полосы HP и маны — часть игрового вида, но не часть тела: как мера роста они не нужны, а
-            // светятся исправно и лезут в тот самый замер, ради которого линейка и стоит.
-            foreach (Canvas canvas in go.GetComponentsInChildren<Canvas>(true))
-                canvas.enabled = false;
 
             // Красим НАПРЯМУЮ по рендерерам, а не через BodyVisualState: у боевого шва тинт едет вместе
             // с эффектами, и состояние «только тинт, всё остальное по нулям» он законно считает пустым и
@@ -597,7 +668,7 @@ namespace Guildmaster.Presentation.Editor
                 seed: 0x5EEDu + (uint)kind, endsAtHit: endsAtHit, freezeSeconds: 0f);
 
             vfx.Apply(in p);
-            SetFloat(go, "_Progress", 0.45f);   // форма раскрыта, но ещё не начала гаснуть
+            _applyPhase = t => SetFloat(go, "_Progress", t);
         }
 
         /// <summary>
@@ -616,12 +687,19 @@ namespace Guildmaster.Presentation.Editor
             arc.Begin(new StaticSwingSource(at.position), colour, feel.SwingArcInnerShare,
                       feel.SwingArcTailBias, feel.SwingArcFadeOut, feel.SwingArcMaxSpanDeg, feel.SwingArcStyle);
 
-            // Begin ставит начало и конец дуги в одну точку — взмах ещё не пошёл. Домотать его нечем
-            // (домотка живёт в Update), поэтому конечный угол выставляется здесь.
+            // Begin ставит начало и конец дуги в одну точку — взмах ещё не пошёл. Домотка живёт в
+            // Update, которого в редакторе нет, поэтому угол ведём сами: дуга ЗАМЕТАЕТ сектор по фазе,
+            // а последнюю треть догорает — ровно так она и живёт в бою.
             go.transform.localScale = Vector3.one * 2.6f;
-            SetFloat(go, "_AngleFrom", -0.9f);
-            SetFloat(go, "_AngleTo",    0.9f);
-            SetFloat(go, "_Fade",       1f);
+            const float from = -0.9f, to = 0.9f;
+            SetFloat(go, "_AngleFrom", from);
+
+            _applyPhase = t =>
+            {
+                float sweep = Mathf.Clamp01(t / 0.65f);
+                SetFloat(go, "_AngleTo", Mathf.Lerp(from, to, sweep));
+                SetFloat(go, "_Fade", t <= 0.65f ? 1f : 1f - Mathf.InverseLerp(0.65f, 1f, t));
+            };
         }
 
         /// <summary>
@@ -634,6 +712,9 @@ namespace Guildmaster.Presentation.Editor
             if (prefab == null) throw new InvalidOperationException("не назначен префаб частиц");
 
             var go = Spawn(prefab, at);
+            var systems = new List<ParticleSystem>();
+            float life = 0.5f;
+
             foreach (ParticleSystem ps in go.GetComponentsInChildren<ParticleSystem>(true))
             {
                 ps.useAutoRandomSeed = false;
@@ -644,8 +725,17 @@ namespace Guildmaster.Presentation.Editor
                 ParticleSystem.MainModule mainModule = ps.main;
                 mainModule.startColor = new ParticleSystem.MinMaxGradient(spread.Evaluate(0f), spread.Evaluate(1f));
 
-                ps.Simulate(0.25f, withChildren: true, restart: true);
+                life = Mathf.Max(life, mainModule.duration + mainModule.startLifetime.constantMax);
+                systems.Add(ps);
             }
+
+            // Домотка всегда ОТ НУЛЯ (restart), а не шагами: только так фаза детерминирована и два
+            // прогона стенда дают один и тот же рой. Шаговая симуляция копила бы расхождение.
+            _applyPhase = t =>
+            {
+                foreach (ParticleSystem ps in systems)
+                    ps.Simulate(Mathf.Max(0.0001f, t * life), withChildren: true, restart: true);
+            };
         }
 
         /// <summary>Свечение на теле: заряд каста либо вспышка щита, поданные боевым швом.</summary>
@@ -662,12 +752,21 @@ namespace Guildmaster.Presentation.Editor
 
             PartMask parts = CastGlowMask.Resolve(body.Parts, block ? CastSource.Shield : _castSource);
 
-            body.Apply(new BodyVisualState(
-                Color.white,
-                0f, Color.white,
-                0f, Color.white, 1f, 1f, 0f,
-                0f, Color.white,
-                _glowAmount, glow, parts, _glowFlatness));
+            // Каст НАЛИВАЕТСЯ к выпуску приёма, блок — вспыхивает и гаснет. Это разные жесты, и общей
+            // кривой у них быть не может: свет каста копится, свет блока отвечает на удар.
+            _applyPhase = t =>
+            {
+                float amount = block
+                    ? _glowAmount * (1f - Mathf.Clamp01(t))
+                    : _glowAmount * Mathf.Clamp01(t);
+
+                body.Apply(new BodyVisualState(
+                    Color.white,
+                    0f, Color.white,
+                    0f, Color.white, 1f, 1f, 0f,
+                    0f, Color.white,
+                    amount, glow, parts, _glowFlatness));
+            };
         }
 
         /// <summary>Во сколько раз цвет уже поднят над LDR — чтобы ручка множителя не умножала повторно.</summary>
@@ -680,9 +779,11 @@ namespace Guildmaster.Presentation.Editor
             var body = go.GetComponentInChildren<SkeletalBodyVisual>(true);
             if (body == null) throw new InvalidOperationException("в субъекте нет SkeletalBodyVisual");
 
-            body.Apply(new BodyVisualState(
+            // Вспышка смерти вспыхивает разом и гаснет: пересвет — это МОМЕНТ, а не состояние, и
+            // наливаться ему неоткуда.
+            _applyPhase = t => body.Apply(new BodyVisualState(
                 Color.white,
-                1f, feel.DeathFlashColor,
+                1f - Mathf.Clamp01(t), feel.DeathFlashColor,
                 0f, Color.white, 1f, 1f, 0f,
                 0f, Color.white,
                 0f, Color.white, default, 0f));
@@ -692,24 +793,48 @@ namespace Guildmaster.Presentation.Editor
         private void BuildShatter(Transform at, CombatFeelConfig feel, Gradient spread)
         {
             var unit = Spawn(_subjectPrefab, at);
-            SpriteRenderer src = null;
+
+            // Дробится КАЖДАЯ часть скелета, как и в бою: разлёт одного спрайта оставлял бы юнита стоять
+            // целым, а рядом с ним летели бы куски непонятно чего. Мера роста при этом одна на всех —
+            // габарит ВСЕГО тела, иначе кисть раскрошится на столько же осколков, что и торс.
+            var parts = new List<SpriteRenderer>();
+            Bounds body = default;
+            bool any = false;
             foreach (SpriteRenderer r in unit.GetComponentsInChildren<SpriteRenderer>(true))
-                if (r.sprite != null && (src == null || r.bounds.size.y > src.bounds.size.y)) src = r;
-            if (src == null) throw new InvalidOperationException("у субъекта нет спрайтов — резать нечего");
+            {
+                if (r.sprite == null || !r.enabled) continue;
+                parts.Add(r);
+                if (!any) { body = r.bounds; any = true; } else body.Encapsulate(r.bounds);
+            }
+            if (parts.Count == 0) throw new InvalidOperationException("у субъекта нет спрайтов — резать нечего");
 
-            var go = new GameObject("Shatter") { hideFlags = HideFlags.HideAndDontSave };
-            go.transform.SetParent(src.transform.parent, false);
-            go.AddComponent<MeshFilter>();
-            go.AddComponent<MeshRenderer>();
-            var shatter = go.AddComponent<DeathShatter>();
+            float height = Mathf.Max(0.01f, body.size.y);
+            var pieces = new List<GameObject>();
 
-            float height = Mathf.Max(0.01f, unit.GetComponentInChildren<Renderer>(true).bounds.size.y);
-            shatter.Play(src, feel, spread, height, null);
+            foreach (SpriteRenderer src in parts)
+            {
+                var go = new GameObject("Shatter " + src.name) { hideFlags = HideFlags.HideAndDontSave };
+                go.transform.SetParent(src.transform.parent, false);
+                go.AddComponent<MeshFilter>();
+                go.AddComponent<MeshRenderer>();
+                go.AddComponent<DeathShatter>().Play(src, feel, spread, height, null);
 
-            src.enabled = false;                 // тело уже развоплотилось — иначе осколки лежат поверх целого
-            SetFloat(go, "_Shatter", 0.45f);
-            SetFloat(go, "_Explode", 0.45f);
-            SetFloat(go, "_FlashAmount", 0f);
+                src.enabled = false;   // часть уже развоплотилась — иначе осколки лежат поверх целой
+                pieces.Add(go);
+            }
+
+            // Порядок стадий тот же, что в бою: сперва пересвет, потом разлёт. Вспышка живёт первую
+            // пятую часть, дальше куски расходятся и догорают.
+            _applyPhase = t =>
+            {
+                float flash = t < 0.2f ? 1f - t / 0.2f : 0f;
+                foreach (GameObject go in pieces)
+                {
+                    SetFloat(go, "_FlashAmount", flash);
+                    SetFloat(go, "_Shatter", Mathf.Clamp01(t));
+                    SetFloat(go, "_Explode", Mathf.Clamp01(t));
+                }
+            };
         }
 
         // Подписи в кадре не рисуем: эффект в кадре ровно один, его имя стоит в выборе стенда и уезжает
@@ -721,6 +846,13 @@ namespace Guildmaster.Presentation.Editor
             if (prefab == null) throw new InvalidOperationException("префаб не найден");
             GameObject go = Instantiate(prefab, at.position, Quaternion.identity, at);
             SetHideFlagsRecursively(go.transform);
+
+            // Полосы HP и маны едут вместе с игровым видом юнита, но телом не являются: в кадре стенда
+            // они лезут поверх эффекта своим масштабом и светятся, а меряем мы не их. Гасим у ЛЮБОГО
+            // юнита стенда — и у линейки, и у того, на ком показан эффект.
+            foreach (Canvas canvas in go.GetComponentsInChildren<Canvas>(true))
+                canvas.enabled = false;
+
             return go;
         }
 
@@ -813,6 +945,13 @@ namespace Guildmaster.Presentation.Editor
             float zoomWas = _zoom; Vector2 panWas = _pan;
             _zoom = 1f; _pan = Vector2.zero;
 
+            // Фаза тоже часть канона: снимать бегущий эффект значило бы ловить его в случайный момент,
+            // и четыре вариации отличались бы не яркостью, а тем, где застали удар.
+            float phaseWas = _phase; bool playingWas = _playing;
+            _playing = false;
+            _phase = CanonPhase;
+            _applyPhase?.Invoke(_phase);
+
             _volume.sharedProfile = scratch;
             try
             {
@@ -840,6 +979,8 @@ namespace Guildmaster.Presentation.Editor
                 _volume.sharedProfile = source;
                 PostFxScratch.Destroy(scratch);
                 _zoom = zoomWas; _pan = panWas;
+                _phase = phaseWas; _playing = playingWas;
+                _applyPhase?.Invoke(_phase);
             }
 
             WriteManifest();
