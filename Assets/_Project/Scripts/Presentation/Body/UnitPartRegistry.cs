@@ -88,17 +88,6 @@ namespace Guildmaster.Presentation.Body
             return new UnitPartRegistry(parts.ToArray(), slots);
         }
 
-        /// <summary>
-        /// Реестр тела из ОДНОГО спрайта — покадровый юнит. Частей нет, костей нет, хватов нет: единственная
-        /// запись отвечает и на «дай часть», и на «чем ударишь», поэтому такое тело светится целиком.
-        /// </summary>
-        public static UnitPartRegistry ForSingleSprite(SpriteRenderer sprite)
-        {
-            if (sprite == null) return Empty;
-            var part = new UnitPart(0, sprite, sprite.name, BodySide.None, HandSlot.None, HeldKind.None, isHand: false);
-            return new UnitPartRegistry(new[] { part }, 1);
-        }
-
         /// <summary>Кисть — кость, у которой в детях есть узел хвата: она способна держать предмет.</summary>
         private static bool HasGrip(Transform bone)
         {

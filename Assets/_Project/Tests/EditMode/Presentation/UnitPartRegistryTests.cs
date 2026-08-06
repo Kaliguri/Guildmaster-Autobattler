@@ -177,20 +177,9 @@ namespace Guildmaster.Tests.EditMode.Presentation
             Assert.That(source.Bone, Is.EqualTo("Weapon_R"), "щит из другой руки — не источник удара правой");
         }
 
-        [Test]
-        public void SingleSpriteBody_AnswersEveryQueryWithItself()
-        {
-            var go = new GameObject("Frame");
-            _spawned.Add(go);
-            var sprite = go.AddComponent<SpriteRenderer>();
-
-            var registry = UnitPartRegistry.ForSingleSprite(sprite);
-
-            Assert.That(registry.TryGetStrikeSource(HandSlot.Right, out UnitPart source), Is.True);
-            Assert.That(source.Index, Is.EqualTo(0));
-            Assert.That(registry.Everything, Is.EqualTo(PartMask.Single(0)),
-                "покадровое тело светится целиком — его «всё» это единственная часть");
-        }
+        // Здесь стоял тест покадрового тела из одного спрайта (ForSingleSprite): единственная запись
+        // отвечала и на «дай часть», и на «чем ударишь». Удалён 06.08.2026 вместе с самим покадровым
+        // путём — последний такой префаб ушёл из дерева днём раньше.
 
         /// <summary>
         /// Предмет без объявленной рабочей части не отвечает НИЧЕМ — и кричит об этом. Требование Макса

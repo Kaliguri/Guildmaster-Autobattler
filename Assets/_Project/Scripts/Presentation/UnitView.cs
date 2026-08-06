@@ -38,13 +38,10 @@ namespace Guildmaster.Presentation
         private const int   YSortPrecision = 100; // ордеров на 1 мировую ед. Y (0.01 Y = 1 ордер) — Y-сортировка тел
 
         [Header("Components")]
-        [Tooltip("Спрайт тела покадрового юнита. Из него собирается тело (SpriteBodyVisual), если не задано " +
-                 "составное — поэтому существующие покадровые префабы под шов не переразводятся.")]
-        [SerializeField] private SpriteRenderer _sprite;
-        [Tooltip("Animator на теле (той же GO, что SpriteRenderer). Пусто/без визуала = статичный спрайт.")]
+        [Tooltip("Animator, играющий клипы рига.")]
         [SerializeField] private Animator _animator;
-        [Tooltip("Составное (скелетное) тело: компонент на корне визуала, владеющий всеми частями. Задан — " +
-                 "телом становится он, и вспышка/тинт/осколки идут по ВСЕМ частям. Пусто — тело из _sprite.")]
+        [Tooltip("Тело юнита: компонент на корне визуала, владеющий всеми частями. Вспышка, тинт и осколки " +
+                 "идут по ВСЕМ частям через него.")]
         [SerializeField] private Body.SkeletalBodyVisual _skeletalBody;
         [SerializeField] private HealthBarView  _healthBar;
         [Tooltip("Бар ресурса (мана/ярость). Пусто = без бара; скрывается сам для безресурсных юнитов.")]
@@ -331,11 +328,10 @@ namespace Guildmaster.Presentation
             {
                 if (_bodyResolved) return _body;
                 _bodyResolved = true;
-                // Составное тело разведено на префабе — оно и есть тело. Иначе собираем из одного спрайта:
-                // так 17 покадровых префабов остаются нетронутыми.
-                _body = _skeletalBody != null
-                    ? _skeletalBody
-                    : (_sprite != null ? new Body.SpriteBodyVisual(_sprite) : null);
+                // Вторая реализация тела — из ОДНОГО спрайта, для покадровых юнитов — удалена 06.08.2026
+                // вместе с самим покадровым путём: последний такой префаб ушёл из дерева 05.08, и ветка
+                // стала недостижимой. Тело теперь всегда скелетное либо его нет вовсе.
+                _body = _skeletalBody;
                 return _body;
             }
         }
