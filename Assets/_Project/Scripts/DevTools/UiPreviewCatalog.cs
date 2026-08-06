@@ -385,7 +385,7 @@ namespace Guildmaster.DevTools
                 new Guildmaster.Core.DevConsole.DevParam("count", Guildmaster.Core.DevConsole.DevParamType.Int, true));
 
             var log = new Guildmaster.Core.DevConsole.DevConsoleLog();
-            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Info, "[BattleBootstrap] - арена собрана: 4 против 3");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Info, "[BattleStartup] - арена собрана: 4 против 3");
             log.Append(Guildmaster.Core.DevConsole.DevLogKind.Echo, "> gm_arena_swap stone");
             log.Append(Guildmaster.Core.DevConsole.DevLogKind.Reply, "облик «stone» надет, переход 0.8 с");
             log.Append(Guildmaster.Core.DevConsole.DevLogKind.Echo, "> gm_sep_radius");

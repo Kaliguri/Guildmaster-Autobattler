@@ -309,7 +309,7 @@ namespace Guildmaster.DevTools
 
             // R (перезапуск боя) глушим, пока консоль открыта: иначе буква «r» в команде дёргает рестарт.
             // Dev-спавн (gm_spawn_*) задал последний бой → перезапускаем его; иначе это бой ЗАБЕГА (грузится
-            // BattleFlow→BattleBootstrap, dev-сетап пуст) → перезапуск на месте через сессию.
+            // BattleFlow→BattleHost→BattleStartup, dev-сетап пуст) → перезапуск на месте через сессию.
             if (!_consoleOpen && kb.rKey.wasPressedThisFrame)
             {
                 if (_lastBattleSetup != null) RestartLastBattle();

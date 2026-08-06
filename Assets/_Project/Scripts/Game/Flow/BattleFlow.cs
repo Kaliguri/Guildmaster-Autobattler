@@ -69,7 +69,7 @@ namespace Guildmaster.Game.Flow
 
             // Арену здесь НЕ чистим: бой кончился, но игрок ещё на узле (досмотр добивания, награда) и должен
             // видеть поле. Чистку (враги прочь, отряд к строю, пауза) зовёт владелец узла — BattleNodeFlow, когда
-            // игрок с узла уходит. Фазу Aftermath на исходе выставляет боевой скоуп (BattleBootstrap).
+            // игрок с узла уходит. Фазу Aftermath на исходе выставляет боевой скоуп (BattleStartup).
             bool won = Won(outcome);
             Debug.Log($"[BattleFlow] - бой '{_preset.Id}' завершён: {outcome} → {(won ? "Completed" : "Defeated")}");
             return won ? EventResult.Completed : EventResult.Defeated;
