@@ -765,12 +765,12 @@ namespace Guildmaster.Presentation
             int shield = Mathf.RoundToInt(result.ShieldDamage);
             int hp     = Mathf.RoundToInt(result.HpDamage);
 
-            // Точка попадания — ОБЛАСТЬ корпуса со смещением к стороне атакующего, а не фиксированная
-            // грудь: восемь бойцов, окруживших цель, давали восемь одинаковых вспышек в одном пикселе.
-            // Сид тот же, что у формы удара, поэтому знак, искры, порез и цифра приходят В ОДНО место.
+            // Точка попадания — ЗОНА ТЕЛА (голова / корпус / ноги), выбранная с поправкой на досягаемость,
+            // а не фиксированная грудь: восемь бойцов, окруживших цель, давали восемь одинаковых вспышек в
+            // одном пикселе. Сид тот же, что у формы удара, поэтому знак, искры, порез и цифра приходят В
+            // ОДНО место. Все входы берутся ИЗ ЛЕНТЫ — см. ImpactPointFor.
             uint    impactSeed = Effects.HitFormFactory.SeedOf(sourceId, targetId, target.Position, result.HpDamage);
-            Vector2 fromSource = hasSource ? target.Position - source.Position : Vector2.zero;
-            Vector3 anchor     = ImpactPointFor(targetId, target.Position, fromSource, impactSeed);
+            Vector3 anchor     = ImpactPointFor(targetId, target.Position, hasSource, source, sourceId, impactSeed);
             float   hpScale    = _feel.EvaluateNumberScale(frac);   // кривая живёт в feel-конфиге, не здесь
 
             // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе. Только прямое попадание:
@@ -1010,9 +1010,24 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Точка попадания — ОБЛАСТЬ корпуса, а не точка. Внутри эталонного габарита цели, с центром
-        /// тяжести у того края, откуда пришёл атакующий: убийца со спины бьёт в лопатки, защитник в лоб —
-        /// в центр груди, копейщик снизу — ближе к ногам.
+        /// Точка попадания — ЗОНА ТЕЛА, а не точка: голова, корпус или верх ног. Зона выбирается
+        /// заявленным весом из feel-конфига, помноженным на долю её накрытия кругом атаки, поэтому
+        /// «мечник у великана бьёт по ногам» получается само собой, а не отдельным правилом.
+        /// <para>
+        /// <b>Круг атаки считается формулой симуляции</b> (<see cref="Combat.CombatPositioning.ReachCenter"/>:
+        /// <c>AttackRange</c> — зазор между поверхностями тел, к нему радиусы обоих). Из совпадения формул
+        /// следует гарантия, а не пожелание: если бой засчитал удар, ближайшая точка тела цели достижима.
+        /// Поэтому вырожденный ответ солвера — признак поломки, и о нём мы ГРОМКО ругаемся.
+        /// </para>
+        /// <para>
+        /// <b>Числа берутся из ленты</b> (<see cref="Combat.Tape.UnitSnapshot"/>) — дальность, размеры,
+        /// позиции: считать их по трансформам живых видов нельзя, те интерполируются под кадровую частоту.
+        /// <b>Геометрия зон читается со сцены</b> — мировые позиции якорей на костях, и это осознанная
+        /// цена: удар в голову обязан попадать туда, где голова НАРИСОВАНА, включая наклон в замахе и
+        /// масштаб чужого размерного тира. Следствие для кооператива названо прямо: у двух игроков
+        /// совпадёт зона при совпадающей позе, но не бит в бит при разной фазе анимации. Это допустимо
+        /// ровно потому, что урон к этому моменту уже решён боем, а расходится только МЕСТО вспышки.
+        /// </para>
         /// <para>
         /// <b>Разброс детерминирован.</b> Он выведен из самого удара — участники, место, урон, — тем же
         /// хешем, что даёт сид формы (<c>HitFormFactory.SeedOf</c>). Ни <c>UnityEngine.Random</c>, ни
@@ -1022,34 +1037,72 @@ namespace Guildmaster.Presentation
         /// </summary>
         /// <param name="targetId">Кому прилетело.</param>
         /// <param name="shownPosition">Позиция цели на показанном тике (фолбэк, если вида нет).</param>
-        /// <param name="fromAttacker">Вектор «атакующий → цель»; нулевой = бить в центр области.</param>
+        /// <param name="hasSource">Есть ли у удара автор в кадре: яд и горение бьют без него.</param>
+        /// <param name="source">Снимок автора удара — из него берутся позиция, дальность и размер.</param>
+        /// <param name="sourceId">Id автора: нужен, чтобы ругаться по КИТУ, а не по экземпляру.</param>
         /// <param name="seed">Сид этого удара — тот же, что у формы: они обязаны совпасть местом.</param>
-        private Vector3 ImpactPointFor(int targetId, Vector2 shownPosition, Vector2 fromAttacker, uint seed)
+        private Vector3 ImpactPointFor(
+            int targetId, Vector2 shownPosition, bool hasSource,
+            in Combat.Tape.UnitSnapshot source, int sourceId, uint seed)
         {
             if (!_views.TryGetValue(targetId, out var view) || view == null)
                 return (Vector3)shownPosition + Vector3.up * 0.4f;
 
-            // Две независимые дроби из одного сида: разные биты, иначе разброс лёг бы по диагонали.
-            float ru = (seed & 0xFFFF) / 65535f;
-            float rv = ((seed >> 16) & 0xFFFF) / 65535f;
+            if (_feel == null || !_feel.EnableImpactZones)
+                return view.HitPoint;
 
-            // Центр области: по высоте грудь (0.62 роста), по ширине середина. Смещение к стороне
-            // атакующего — половина полуразмера, чтобы удар приходил в ближний край, но не за него.
-            const float ChestV = 0.62f;
-            const float Pull   = 0.25f;   // доля габарита, на которую центр тяжести едет к атакующему
+            // Автора в кадре нет (яд, горение, шипы) — бить неоткуда: круг накрывает всё, сторона не
+            // определена. Это не исключение в правилах, а вырожденный ВХОД в те же правила.
+            float reach = float.PositiveInfinity;
+            Vector2 attacker = shownPosition;
+            if (hasSource)
+            {
+                // Радиус — БУКВАЛЬНО формула симуляции (CombatPositioning.ReachCenter): зазор атаки плюс
+                // радиусы обоих тел. Своя арифметика здесь завела бы второго владельца факта, и показ
+                // начал бы спорить с боем о том, достал удар или нет.
+                float rSelf   = BodyRadiusOf(source.Size);
+                float rTarget = _frameIndex.TryGetValue(targetId, out var t) ? BodyRadiusOf(t.Size) : 0f;
+                reach = source.AttackRange + rSelf + rTarget;
 
-            Vector2 dir = fromAttacker.sqrMagnitude > 1e-8f ? fromAttacker.normalized : Vector2.zero;
-            float centreU = 0.5f - dir.x * Pull;   // атакующий слева (dir.x < 0) → бьём в левый край
-            float centreV = ChestV - dir.y * Pull;
+                // Центр круга — КОРПУС атакующего, а не его позиция: позиция в симе стоит у ног, а зоны
+                // цели висят на высоте фигуры. Круг от ступней не дотянулся бы до чужой груди никогда, и
+                // «вырожденный случай» орал бы на каждом ударе вместо настоящей поломки.
+                attacker = _views.TryGetValue(sourceId, out var sourceView) && sourceView != null
+                    ? (Vector2)sourceView.AimBodyPoint
+                    : source.Position;
+            }
 
-            // Разброс вокруг центра: ±четверть габарита. Больше — и удар уходит с фигуры, меньше —
-            // восемь ударов снова сливаются в одну точку.
-            const float Spread = 0.25f;
-            float u = centreU + (ru - 0.5f) * Spread * 2f;
-            float v = centreV + (rv - 0.5f) * Spread * 2f;
+            float h = view.FigureHeight;
+            var zones = new[]
+            {
+                new Effects.ImpactZoneSample(view.AimHeadPoint, _feel.ImpactZoneHeadRadius * h, _feel.ImpactZoneHeadWeight),
+                new Effects.ImpactZoneSample(view.AimBodyPoint, _feel.ImpactZoneBodyRadius * h, _feel.ImpactZoneBodyWeight),
+                new Effects.ImpactZoneSample(view.AimLegsPoint, _feel.ImpactZoneLegsRadius * h, _feel.ImpactZoneLegsWeight),
+            };
 
-            return view.FigurePoint(u, v);
+            var solved = Effects.ImpactZoneSolver.Solve(
+                attacker, shownPosition, reach, zones, _feel.ImpactZoneNearSideBias, seed);
+
+            if (solved.Degenerate && hasSource)
+            {
+                VisualDefects.Report($"impact-zone-unreachable:{DefectKeyOf(sourceId)}",
+                    $"[CombatPresenter] удар кита {DefectKeyOf(sourceId)} засчитан боем, но показ не нашёл " +
+                    $"НИ ОДНОЙ достижимой зоны на цели {DefectKeyOf(targetId)}: круг атаки {reach:F2} ед. не " +
+                    "накрыл ни голову, ни корпус, ни ноги. Показ и бой считают досягаемость одной формулой, " +
+                    "поэтому такого быть не может — разъехались либо якоря зон в риге, либо радиусы зон в " +
+                    "feel-конфиге, либо снимок ленты. Бьём в наименее далёкую зону, но это заплатка.");
+            }
+
+            return new Vector3(solved.Point.x, solved.Point.y, view.FeetPoint.z);
         }
+
+        /// <summary>
+        /// Радиус тела по <c>Size</c> — тот же множитель, что у сепарации и боевой досягаемости
+        /// (<see cref="Combat.CombatPositioning.BodyRadius"/>). Метрика обязана быть одна: разъедется —
+        /// показ и бой начнут по-разному отвечать на вопрос «достал ли удар».
+        /// </summary>
+        private static float BodyRadiusOf(float size) =>
+            Mathf.Max(0.01f, size) * Core.Simulation.SimTuning.Default.BodyRadiusPerSize;
 
         /// <summary>Снимок юнита на ПОКАЗАННОМ тике. <c>false</c> — его в этом кадре нет.</summary>
         private bool TryGetShown(int unitId, out Combat.Tape.UnitSnapshot snapshot)

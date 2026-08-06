@@ -103,6 +103,9 @@ namespace Guildmaster.Tests.EditMode.Presentation
             new Entry("HitFormLine",     Switch.Toggle, nameof(CombatFeelConfig.EnableHitFormLine)),
             new Entry("SwingArc",        Switch.Toggle, nameof(CombatFeelConfig.EnableSwingArc)),
             new Entry("SwingArcShaping", Switch.InternalToggle, "_enableSwingArcShaping — применяется внутри конфига"),
+            // Зона удара выбирает МЕСТО попадания, а не рисует эффект: выключенная, она возвращает удар в
+            // HitPoint — то есть в поведение до 06.08.2026. Оба режима сравниваются в бою.
+            new Entry("ImpactZone",      Switch.Toggle, nameof(CombatFeelConfig.EnableImpactZones)),
 
             // Взмах и его геометрия — ЗАПРОСЫ к виду, а не эффекты: отвечают «где клинок», ничего не рисуя.
             new Entry("TryGetSwingArc",      Switch.NotAnEffect, "геометрия взмаха для дуги — запрос, не эффект"),

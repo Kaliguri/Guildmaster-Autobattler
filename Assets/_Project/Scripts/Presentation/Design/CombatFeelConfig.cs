@@ -352,6 +352,41 @@ namespace Guildmaster.Presentation.Design
                  "самого юнита (UnitData), поэтому один префаб служит всем.")]
         [SerializeField] private VfxData _vfxCastBurst;
 
+        // --- Зона удара: КУДА по фигуре цели приходит попадание (ГД-журнал 2026-08-06/7) ---
+        [Header("Зона удара — куда по телу цели приходит попадание")]
+        [Tooltip("Выбирать зону тела (голова / корпус / ноги) с поправкой на досягаемость. Выключено — " +
+                 "удар всегда приходит в HitPoint, как до 06.08.2026.")]
+        [SerializeField] private bool _enableImpactZones = true;
+
+        [Tooltip("ЗАЯВЛЕННЫЙ вес головы. Это база, а не итог: вес каждой зоны множится на долю её " +
+                 "накрытия кругом атаки, поэтому мечник, достающий великану лишь до ног, по голове не " +
+                 "попадёт вовсе. Веса не обязаны давать в сумме единицу — они нормализуются.")]
+        [SerializeField, Range(0f, 1f)] private float _impactZoneHeadWeight = 0.05f;
+
+        [Tooltip("Заявленный вес корпуса — основная масса ударов.")]
+        [SerializeField, Range(0f, 1f)] private float _impactZoneBodyWeight = 0.80f;
+
+        [Tooltip("Заявленный вес верха ног.")]
+        [SerializeField, Range(0f, 1f)] private float _impactZoneLegsWeight = 0.15f;
+
+        // Стартовые радиусы ЗАМЕРЕНЫ по арту BoneUnit_Storybook (06.08.2026), а не выбраны на глаз:
+        // полуразмер головы 0.099 роста, торса 0.190, верхней ноги 0.115. Зона чуть меньше своей части —
+        // так удар приходит В неё, а не по касательной к контуру.
+        [Tooltip("Радиус зоны головы В ДОЛЯХ РОСТА юнита. В долях, а не в метрах: сменится сетка " +
+                 "размеров — числа переживут, и крупный враг получит пропорционально крупные зоны.")]
+        [SerializeField, Range(0.02f, 0.4f)] private float _impactZoneHeadRadius = 0.09f;
+
+        [Tooltip("Радиус зоны корпуса в долях роста.")]
+        [SerializeField, Range(0.05f, 0.5f)] private float _impactZoneBodyRadius = 0.19f;
+
+        [Tooltip("Радиус зоны ног в долях роста.")]
+        [SerializeField, Range(0.05f, 0.5f)] private float _impactZoneLegsRadius = 0.11f;
+
+        [Tooltip("Насколько точка тянется к ближнему краю зоны, когда зона накрыта не целиком: " +
+                 "0 — всегда центр зоны, 1 — вплотную к краю со стороны атакующего. Отдельной ручки " +
+                 "«смещение к атакующему» нет — смещение И ЕСТЬ недостача накрытия.")]
+        [SerializeField, Range(0f, 1f)] private float _impactZoneNearSideBias = 0.6f;
+
         // --- Форма удара: главный знак попадания (серп / веретено / звезда / линия-всполох) ---
         [Header("VFX — форма удара")]
         [Tooltip("Форма попадания: серп режущего, веретено колющего, звезда дробящего, линия-всполох выстрела. " +
@@ -489,6 +524,23 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private HitFormArchetypeConfig _hitFormBolt = HitFormArchetypeConfig.Bolt();
 
         // --- Getters ---
+        /// <summary>Выбирать зону тела с поправкой на досягаемость; <c>false</c> — бить в <c>HitPoint</c>.</summary>
+        public bool  EnableImpactZones       => _enableImpactZones;
+        /// <summary>Заявленный вес головы ДО поправки на досягаемость.</summary>
+        public float ImpactZoneHeadWeight    => _impactZoneHeadWeight;
+        /// <summary>Заявленный вес корпуса до поправки на досягаемость.</summary>
+        public float ImpactZoneBodyWeight    => _impactZoneBodyWeight;
+        /// <summary>Заявленный вес верха ног до поправки на досягаемость.</summary>
+        public float ImpactZoneLegsWeight    => _impactZoneLegsWeight;
+        /// <summary>Радиус зоны головы в долях роста юнита.</summary>
+        public float ImpactZoneHeadRadius    => _impactZoneHeadRadius;
+        /// <summary>Радиус зоны корпуса в долях роста юнита.</summary>
+        public float ImpactZoneBodyRadius    => _impactZoneBodyRadius;
+        /// <summary>Радиус зоны ног в долях роста юнита.</summary>
+        public float ImpactZoneLegsRadius    => _impactZoneLegsRadius;
+        /// <summary>Тяга точки к ближнему краю зоны при неполном накрытии: 0 — центр, 1 — край.</summary>
+        public float ImpactZoneNearSideBias  => _impactZoneNearSideBias;
+
         public bool  EnableContactDust       => _enableContactDust;
         public bool  EnableHitNudge          => _enableHitNudge;
         public bool  EnableFacingFlipSquash  => _enableFacingFlipSquash;

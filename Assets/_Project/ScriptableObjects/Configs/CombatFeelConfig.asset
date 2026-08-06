@@ -199,6 +199,14 @@ MonoBehaviour:
   _hitSparkCap: 48
   _hitSparkPrefabCount: 24
   _vfxCastBurst: {fileID: 11400000, guid: 0278f93e6a96dfa4ba9a886e862e9baa, type: 2}
+  _enableImpactZones: 1
+  _impactZoneHeadWeight: 0.05
+  _impactZoneBodyWeight: 0.8
+  _impactZoneLegsWeight: 0.15
+  _impactZoneHeadRadius: 0.09
+  _impactZoneBodyRadius: 0.19
+  _impactZoneLegsRadius: 0.11
+  _impactZoneNearSideBias: 0.6
   _enableHitForm: 1
   _enableHitFormBreakOnShield: 1
   _vfxHitForm: {fileID: 11400000, guid: d82430ffaffd4a248a06944eb2963688, type: 2}

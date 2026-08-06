@@ -99,6 +99,15 @@ namespace Guildmaster.Presentation
         [Tooltip("Точка попадания: куда прилетают снаряды/цифры урона/вспышка (обычно грудь).")]
         [SerializeField] private Transform _hitPoint;
 
+        [Header("Зоны удара — якоря НА КОСТЯХ (ГД-журнал 2026-08-06/7)")]
+        [Tooltip("Центр зоны головы. Вешать ребёнком кости головы, а НЕ под 'Sprite Visual': якорь обязан " +
+                 "ехать за анимацией, поворотом и масштабом. Пусто — зона считается от эталонного габарита.")]
+        [SerializeField] private Transform _aimHead;
+        [Tooltip("Центр зоны корпуса. Ребёнок кости груди.")]
+        [SerializeField] private Transform _aimBody;
+        [Tooltip("Центр зоны верха ног. Ребёнок кости таза.")]
+        [SerializeField] private Transform _aimLegs;
+
         [Header("Gizmo — эталонный габарит + коллизия (только редактор)")]
         [Tooltip("Эталонная ВЫСОТА юнита, мировые ед. (1 = 1 метр). Зелёная рамка — подгоняй размер спрайта под неё.")]
         [SerializeField] private float _recommendedHeight = 1.7f;
@@ -961,6 +970,28 @@ namespace Guildmaster.Presentation
 
         /// <summary>Мировая точка попадания (куда прилетают снаряды/цифры урона), зеркалится по фейсингу. Фолбэк — позиция юнита.</summary>
         public Vector3 HitPoint => ResolveSocketFacing(_hitPoint);
+
+        // --- Зоны удара -----------------------------------------------------------------------------
+        // Якоря НЕ зеркалятся по фейсингу, в отличие от HitPoint/ShotPoint: они висят на костях, а флип
+        // уже применён к телу целиком. Прогнать их через ResolveSocketFacing значило бы отразить дважды.
+
+        /// <summary>Расставлены ли все три якоря зон: <c>false</c> — работает переходный расчёт по габариту.</summary>
+        public bool HasAimAnchors => _aimHead != null && _aimBody != null && _aimLegs != null;
+
+        /// <summary>Эталонная высота фигуры — знаменатель для радиусов зон, заданных долями роста.</summary>
+        public float FigureHeight => Mathf.Max(0.01f, _recommendedHeight);
+
+        /// <summary>
+        /// Мировой центр зоны головы. Якоря нет — берём долю эталонного габарита: зона удара обязана
+        /// существовать даже у вида без рига, иначе показ удара останется без точки.
+        /// </summary>
+        public Vector3 AimHeadPoint => _aimHead != null ? _aimHead.position : FigurePoint(0.5f, 0.90f);
+
+        /// <summary>Мировой центр зоны корпуса; фолбэк — грудь эталонного габарита.</summary>
+        public Vector3 AimBodyPoint => _aimBody != null ? _aimBody.position : FigurePoint(0.5f, 0.62f);
+
+        /// <summary>Мировой центр зоны верха ног; фолбэк — бёдра эталонного габарита.</summary>
+        public Vector3 AimLegsPoint => _aimLegs != null ? _aimLegs.position : FigurePoint(0.5f, 0.28f);
 
         /// <summary>Слой сортировки тела — для размещения VFX относительно юнита.</summary>
         /// <summary>
@@ -2415,7 +2446,59 @@ namespace Guildmaster.Presentation
             DrawSocket(_headPoint, "Голова",    new Color(0.4f, 0.7f,  1f));
             DrawSocket(_shotPoint, "Выстрел",   new Color(1f, 0.85f, 0.2f));
             DrawSocket(_hitPoint,  "Попадание", new Color(1f, 0.35f, 0.35f));
+
+            DrawImpactZoneGizmos();
         }
+
+        /// <summary>
+        /// Зоны удара кругами с подписями заявленных процентов. Проценты подписаны ЗАЯВЛЕННЫЕ: итоговые
+        /// зависят от того, кто и с какой дистанции бьёт, и на неподвижном виде их показать нечестно —
+        /// нарисованное число врало бы ровно в тот момент, когда на него смотрят.
+        /// </summary>
+        private void DrawImpactZoneGizmos()
+        {
+            var feel = GizmoFeelConfig();
+            if (feel == null || !feel.EnableImpactZones) return;
+
+            float h = FigureHeight;
+            DrawImpactZone(AimHeadPoint, feel.ImpactZoneHeadRadius * h, feel.ImpactZoneHeadWeight,
+                           "голова", _aimHead != null, new Color(1f, 0.45f, 0.55f));
+            DrawImpactZone(AimBodyPoint, feel.ImpactZoneBodyRadius * h, feel.ImpactZoneBodyWeight,
+                           "корпус", _aimBody != null, new Color(1f, 0.75f, 0.35f));
+            DrawImpactZone(AimLegsPoint, feel.ImpactZoneLegsRadius * h, feel.ImpactZoneLegsWeight,
+                           "ноги",   _aimLegs != null, new Color(0.55f, 0.8f, 1f));
+        }
+
+        private static void DrawImpactZone(
+            Vector3 centre, float radius, float weight, string label, bool anchored, Color c)
+        {
+            // Якоря нет — рисуем пунктиром по эталонному габариту: видно, что зона РАБОТАЕТ, но стоит по
+            // расчёту, а не по кости, и за наклоном тела не поедет.
+            Gizmos.color = anchored ? c : new Color(c.r, c.g, c.b, 0.35f);
+            DrawWireDisc(centre, radius);
+            UnityEditor.Handles.color = Gizmos.color;
+            UnityEditor.Handles.Label(
+                centre + new Vector3(radius + 0.05f, 0f, 0f),
+                anchored ? $"{label} {weight * 100f:0.#}%" : $"{label} {weight * 100f:0.#}% (без якоря)");
+        }
+
+        /// <summary>
+        /// Feel-конфиг для гизмо. В edit mode его никто не инъектит, поэтому ищем ассет сами и кешируем:
+        /// иначе зоны пришлось бы дублировать полями на виде, а у одного факта стало бы два владельца.
+        /// </summary>
+        private Design.CombatFeelConfig GizmoFeelConfig()
+        {
+            if (_feel != null) return _feel;
+            if (_gizmoFeel != null) return _gizmoFeel;
+
+            string[] guids = UnityEditor.AssetDatabase.FindAssets("t:CombatFeelConfig");
+            if (guids.Length == 0) return null;
+            _gizmoFeel = UnityEditor.AssetDatabase.LoadAssetAtPath<Design.CombatFeelConfig>(
+                UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]));
+            return _gizmoFeel;
+        }
+
+        private static Design.CombatFeelConfig _gizmoFeel;
 
         private static void DrawSocket(Transform t, string label, Color c)
         {
