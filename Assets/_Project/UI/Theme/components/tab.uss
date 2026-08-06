@@ -203,6 +203,6 @@
 .gm-filter-tab--last { border-right-width: 0; }
 
 /* Фильтры инвентаря = чипы: иконка категории (game-icons.net Lorc, CC BY 3.0). Ширина — доля полосы. */
-.gm-filter-tab--relics  .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Filters/relic.png"); }
-.gm-filter-tab--items   .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Filters/item.png"); }
-.gm-filter-tab--banners .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Filters/banner.png"); }
+.gm-filter-tab--relics  .gm-chip__icon { background-image: url("../../../Art/UI/Icons-gm/Filters/relic.png"); }
+.gm-filter-tab--items   .gm-chip__icon { background-image: url("../../../Art/UI/Icons-gm/Filters/item.png"); }
+.gm-filter-tab--banners .gm-chip__icon { background-image: url("../../../Art/UI/Icons-gm/Filters/banner.png"); }

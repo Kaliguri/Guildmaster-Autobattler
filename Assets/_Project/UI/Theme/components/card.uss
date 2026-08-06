@@ -109,7 +109,7 @@
 }
 
 .gm-arcana-card--locked .gm-arcana-card__art {
-    background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/LockGold.png");
+    background-image: url("../../../../Honeti/PixelArtGUI/Textures/Icons/16/LockGold.png");
     -unity-background-image-tint-color: var(--gm-color-text-muted);
     width: 40px;
     flex-grow: 0;

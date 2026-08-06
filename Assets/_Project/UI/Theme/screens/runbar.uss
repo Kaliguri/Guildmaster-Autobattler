@@ -56,12 +56,12 @@
 .gm-runbar__tab--last  { padding-right: var(--gm-space-2); margin-right: 0; }
 
 /* Иконки режимов — game-icons.net (Lorc, Delapouite), CC BY 3.0, белый силуэт; тинт даёт состояние чипа. */
-.gm-runbar__tab--map        .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/treasure-map.png"); }
-.gm-runbar__tab--battle     .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/crossed-swords.png"); }
-.gm-runbar__tab--inventory  .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/knapsack.png"); }
-.gm-runbar__tab--menu       .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/cog.png"); }
-.gm-runbar__tab--tactics    .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/rally-the-troops.png"); }
-.gm-runbar__tab--compendium .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/book-cover.png"); }
+.gm-runbar__tab--map        .gm-chip__icon { background-image: url("../../../Art/UI/Icons-gm/Modes/treasure-map.png"); }
+.gm-runbar__tab--battle     .gm-chip__icon { background-image: url("../../../Art/UI/Icons-gm/Modes/crossed-swords.png"); }
+.gm-runbar__tab--inventory  .gm-chip__icon { background-image: url("../../../Art/UI/Icons-gm/Modes/knapsack.png"); }
+.gm-runbar__tab--menu       .gm-chip__icon { background-image: url("../../../Art/UI/Icons-gm/Modes/cog.png"); }
+.gm-runbar__tab--tactics    .gm-chip__icon { background-image: url("../../../Art/UI/Icons-gm/Modes/rally-the-troops.png"); }
+.gm-runbar__tab--compendium .gm-chip__icon { background-image: url("../../../Art/UI/Icons-gm/Modes/book-cover.png"); }
 
 /* Разделитель перед бургером: он открывает модалку, а не переключает режим. */
 .gm-runbar__sep {
@@ -97,12 +97,12 @@
 /* Векторные, как и режимы: пиксельные Honeti-иконки рядом с векторной лентой выдавали два разных
    набора в одной полосе. Цвет — тинтом, поэтому силуэты остаются белыми. */
 .gm-runbar__capsule-icon--gold {
-    background-image: url("../../Art/UI/Icons-gm/Bar/two-coins.png");
+    background-image: url("../../../Art/UI/Icons-gm/Bar/two-coins.png");
     -unity-background-image-tint-color: var(--gm-color-accent);
 }
 
 .gm-runbar__capsule-icon--hp {
-    background-image: url("../../Art/UI/Icons-gm/Bar/hearts.png");
+    background-image: url("../../../Art/UI/Icons-gm/Bar/hearts.png");
     -unity-background-image-tint-color: var(--gm-color-danger);
 }
 

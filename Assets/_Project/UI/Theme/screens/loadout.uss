@@ -119,7 +119,7 @@
     height: 28px;
     flex-shrink: 0;
     margin-right: var(--gm-space-1);
-    background-image: url("../../Art/UI/Icons-gm/Modes/crossed-swords.png");
+    background-image: url("../../../Art/UI/Icons-gm/Modes/crossed-swords.png");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;

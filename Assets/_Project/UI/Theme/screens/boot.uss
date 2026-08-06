@@ -22,7 +22,7 @@
     top: 26%;
     height: 540px;
     -unity-background-scale-mode: scale-to-fit;
-    background-image: url("../../Art/Brand/BootGlow.png");
+    background-image: url("../../../Art/Brand/BootGlow.png");
 }
 
 .gm-boot__logo {
@@ -76,7 +76,7 @@
     margin-right: var(--gm-space-2);
     -unity-background-scale-mode: scale-to-fit;
     -unity-background-image-tint-color: var(--gm-color-brand-attrib);
-    background-image: url("../../Art/Brand/Mark_Alebardium_Mono.png");
+    background-image: url("../../../Art/Brand/Mark_Alebardium_Mono.png");
     opacity: 0.85;
 }
 
@@ -132,13 +132,13 @@
 .gm-boot__attrib-logo--unity {
     width: 140px;
     height: 33px;
-    background-image: url("../../Art/Brand/Logo_MadeWithUnity_White.png");
+    background-image: url("../../../Art/Brand/Logo_MadeWithUnity_White.png");
 }
 
 .gm-boot__attrib-logo--fmod {
     width: 104px;
     height: 27px;
-    background-image: url("../../Art/Brand/Logo_FMOD_White.png");
+    background-image: url("../../../Art/Brand/Logo_FMOD_White.png");
 }
 
 .gm-boot__loading {
