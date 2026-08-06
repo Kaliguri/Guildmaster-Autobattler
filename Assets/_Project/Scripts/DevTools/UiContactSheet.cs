@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using Cysharp.Threading.Tasks;
 using Guildmaster.UI.Components;
 using UnityEngine;
@@ -36,8 +37,19 @@ namespace Guildmaster.DevTools
     /// </remarks>
     public static class UiContactSheet
     {
-        /// <summary>Куда складываются кадры. Под <c>Temp</c> — они уходят в чат, а не в репозиторий.</summary>
-        public const string OutputDir = "Temp/ContactSheet";
+        /// <summary>
+        /// Куда складываются кадры: в Лабораторию, раздел «Элементы интерфейса».
+        /// </summary>
+        /// <remarks>
+        /// Лежат В РЕПОЗИТОРИИ, а не в <c>Temp</c> (заказ Макса 06.08.2026: «чтобы я всегда мог и
+        /// отдельные элементы глядеть, смотреть что ты сделала»). Кадры перезаписываются на каждом
+        /// прогоне — историю держит git, и она честнее папки со снимками: там видно и что менялось,
+        /// и вместе с каким коммитом.
+        /// </remarks>
+        public const string OutputDir = "docs/lab/assets/ui-states";
+
+        /// <summary>Манифест для стенда: какие кадры сняты, когда и что на них.</summary>
+        public const string ManifestPath = "docs/lab/data/ui-states.json";
 
         /// <summary>
         /// Сколько элементов помещается на один кадр 1080p. Четыре, а не шесть: строка переносится
@@ -92,6 +104,9 @@ namespace Guildmaster.DevTools
             sheet.AddToClassList("gm-sheet");
             root.Add(sheet);
 
+            var manifest = new StringBuilder();
+            manifest.Append("{\n  \"frames\": [\n");
+
             try
             {
                 foreach (UiComponentGroup group in Enum.GetValues(typeof(UiComponentGroup)))
@@ -107,11 +122,16 @@ namespace Guildmaster.DevTools
                         ReapplyForced();
 
                         await UniTask.WaitForEndOfFrame(runner);
-                        string path = Path.Combine(OutputDir, $"{group.ToString().ToLowerInvariant()}-{page + 1}.png");
-                        SaveFrame(path);
-                        saved.Add(path);
+                        string file = $"{group.ToString().ToLowerInvariant()}-{page + 1}.png";
+                        SaveFrame(Path.Combine(OutputDir, file));
+                        saved.Add(Path.Combine(OutputDir, file));
+
+                        AppendFrame(manifest, group, entries, page, file, saved.Count > 1);
                     }
                 }
+
+                manifest.Append("\n  ]\n}\n");
+                File.WriteAllText(ManifestPath, manifest.ToString());
             }
             finally
             {
@@ -140,6 +160,40 @@ namespace Guildmaster.DevTools
                              "Лист может лечь не на ту панель.");
             return UnityEngine.Object.FindAnyObjectByType<UIDocument>();
         }
+
+        /// <summary>
+        /// Дописывает в манифест запись о снятом кадре: что за группа, какие элементы и их состояния.
+        /// </summary>
+        /// <remarks>
+        /// Стенд Лаборатории строится ИЗ ДАННЫХ, а не из захардкоженного списка файлов: иначе он
+        /// разойдётся с реестром на первом же новом компоненте — ровно так и врала прежняя витрина.
+        /// JSON пишется руками, а не сериализатором: три поля не стоят зависимости, а Newtonsoft в
+        /// этой сборке пришлось бы тянуть ради одной строки.
+        /// </remarks>
+        private static void AppendFrame(StringBuilder sb, UiComponentGroup group,
+                                        List<UiComponentEntry> entries, int page, string file, bool comma)
+        {
+            if (comma) sb.Append(",\n");
+
+            int from = page * RowsPerFrame;
+            int to   = Mathf.Min(from + RowsPerFrame, entries.Count);
+
+            sb.Append("    { \"group\": \"").Append(group).Append("\", \"file\": \"").Append(file)
+              .Append("\", \"elements\": [");
+
+            for (int i = from; i < to; i++)
+            {
+                if (i > from) sb.Append(", ");
+                sb.Append("{ \"label\": \"").Append(Escape(entries[i].Label))
+                  .Append("\", \"block\": \"").Append(entries[i].Block)
+                  .Append("\", \"states\": \"").Append(entries[i].Required)
+                  .Append("\" }");
+            }
+
+            sb.Append("] }");
+        }
+
+        private static string Escape(string text) => text.Replace("\\", "\\\\").Replace("\"", "\\\"");
 
         private static List<UiComponentEntry> EntriesOf(UiComponentGroup group)
         {

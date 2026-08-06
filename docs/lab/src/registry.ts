@@ -238,6 +238,14 @@ export const PAGES: PageDef[] = [
     icon: "▦"
   },
   {
+    id: "ui-states",
+    area: "ui",
+    title: "Элементы интерфейса",
+    blurb: "Каждый элемент во всех состояниях: покой, наведение, нажатие, фокус, выключено, отмечено. Снято из живой игры контактным листом.",
+    load: () => import("./sections/ui-states.js"),
+    icon: "▦"
+  },
+  {
     id: "ui-tabs",
     area: "ui",
     title: "Лента разделов",
