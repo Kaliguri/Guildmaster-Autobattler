@@ -53,7 +53,7 @@ MonoBehaviour:
   _healFlashPeak: 1
   _castOutlineDuration: 0
   _castOutlineStrength: 0.9
-  _castGlowStrength: 1
+  _castGlowStrength: 0.4
   _castGlowBloomIntensity: 2.5
   _castGlowChargeCurve:
     serializedVersion: 2

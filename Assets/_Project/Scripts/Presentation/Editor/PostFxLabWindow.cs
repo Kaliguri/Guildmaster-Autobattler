@@ -184,7 +184,8 @@ namespace Guildmaster.Presentation.Editor
         private Volume         _volume;
         private RenderTexture  _preview;
         private UnityEditor.Editor _profileEditor;
-        private Vector2        _profileScroll, _knobScroll;
+        private Vector2        _knobScroll;
+        [SerializeField] private int _tab;
         private string         _lastShot;
 
         [MenuItem("Alebardium/VFX/Post FX Lab", priority = 700)]
@@ -263,9 +264,13 @@ namespace Guildmaster.Presentation.Editor
             }
         }
 
+        /// <summary>
+        /// Слева — только КАДР и управление показом. Настройки уехали в табы справа (заказ Макса
+        /// 06.08.2026): под превью их помещалась половина, и до нижних приходилось скроллить вслепую.
+        /// </summary>
         private void DrawPreviewColumn()
         {
-            using (new EditorGUILayout.VerticalScope(GUILayout.Width(position.width * 0.55f)))
+            using (new EditorGUILayout.VerticalScope(GUILayout.Width(position.width * 0.52f)))
             {
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
                 {
@@ -278,11 +283,6 @@ namespace Guildmaster.Presentation.Editor
                     if (GUILayout.Button("Снять кадр", EditorStyles.toolbarButton, GUILayout.Width(84f))) SaveShot(_postOn);
                     if (GUILayout.Button("A/B", EditorStyles.toolbarButton, GUILayout.Width(40f))) SaveAb();
                     if (GUILayout.Button("Снять серию", EditorStyles.toolbarButton, GUILayout.Width(90f))) ShootSeries();
-
-                    GUILayout.Space(12f);
-                    bool play = GUILayout.Toggle(_playing, _playing ? "Пауза" : "Играть",
-                        EditorStyles.toolbarButton, GUILayout.Width(60f));
-                    if (play != _playing) { _playing = play; _lastTick = EditorApplication.timeSinceStartup; }
 
                     GUILayout.FlexibleSpace();
                     GUILayout.Label($"×{_zoom:0.##}", EditorStyles.miniLabel, GUILayout.Width(44f));
@@ -298,129 +298,123 @@ namespace Guildmaster.Presentation.Editor
                     if (rt != null) GUI.DrawTexture(frame, rt, ScaleMode.StretchToFill, false);
                 }
 
-                DrawSceneKnobs();
+                DrawPlaybackBar();
             }
         }
 
-        private void DrawSceneKnobs()
+        /// <summary>Управление показом живёт под кадром: оно про то, что видно, а не про настройки.</summary>
+        private void DrawPlaybackBar()
         {
-            using (var scroll = new EditorGUILayout.ScrollViewScope(_knobScroll, GUILayout.Height(228f)))
+            EditorGUI.BeginChangeCheck();
+
+            using (new EditorGUILayout.HorizontalScope())
             {
-                _knobScroll = scroll.scrollPosition;
+                bool play = GUILayout.Toggle(_playing, _playing ? "⏸ Пауза" : "▶ Играть",
+                    EditorStyles.miniButton, GUILayout.Width(80f));
+                if (play != _playing) { _playing = play; _lastTick = EditorApplication.timeSinceStartup; }
 
-                EditorGUI.BeginChangeCheck();
-
-                // Эффект выбирается ОДИН. Список с галочками стоял здесь ровно один заход и был снят:
-                // смотрят и подбирают всегда по одному, а набор из нескольких вдобавок плавил масштаб
-                // кадра и делал снимки несравнимыми.
-                using (new EditorGUILayout.HorizontalScope())
+                if (GUILayout.Button("⟲", EditorStyles.miniButton, GUILayout.Width(24f)))
                 {
-                    if (GUILayout.Button("◄", EditorStyles.miniButtonLeft, GUILayout.Width(24f)))
-                        _cell = StepCell(-1);
-                    if (GUILayout.Button("►", EditorStyles.miniButtonRight, GUILayout.Width(24f)))
-                        _cell = StepCell(+1);
-
-                    int index = IndexOf(_cell);
-                    int picked = EditorGUILayout.Popup("Эффект", index, LabelsOf());
-                    if (picked != index) _cell = Cells[picked].cell;
-
-                    _showRuler = GUILayout.Toggle(_showRuler, "Линейка", EditorStyles.miniButton, GUILayout.Width(64f));
+                    _phase = 0f;
+                    if (_root != null) _applyPhase?.Invoke(_phase);
                 }
 
-                EditorGUILayout.Space(4f);
-                _tone = (UnitTone)EditorGUILayout.EnumPopup("Тон свечения", _tone);
+                float phase = EditorGUILayout.Slider(_phase, 0f, 1f);
+                if (!Mathf.Approximately(phase, _phase)) { _phase = phase; _playing = false; }
 
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    _hitDamage   = EditorGUILayout.FloatField("Урон удара", _hitDamage);
-                    _targetMaxHp = EditorGUILayout.FloatField("HP цели", _targetMaxHp);
-                }
-
-                var feelForHint = AssetDatabase.LoadAssetAtPath<CombatFeelConfig>(FeelConfigPath);
-                float heavy = feelForHint != null ? feelForHint.HeavyHitFrac : 0.15f;
-                EditorGUILayout.LabelField(" ",
-                    $"{HpDamageFrac * 100f:0.#}% запаса · тяжёлым считается от {heavy * 100f:0.#}%" +
-                    (HpDamageFrac >= heavy ? " — это уже ПОТОЛОК размера" : ""),
-                    EditorStyles.miniLabel);
-
-                var prefab = (GameObject)EditorGUILayout.ObjectField("Субъект", _subjectPrefab, typeof(GameObject), false);
-                if (prefab != _subjectPrefab) { _subjectPrefab = prefab; TearDownStage(); }
-
-                EditorGUILayout.Space(4f);
-                EditorGUILayout.LabelField("Свечение части", EditorStyles.boldLabel);
-                _castSource   = (CastSource)EditorGUILayout.EnumPopup("Чем исполнен приём", _castSource);
-                _glowAmount   = EditorGUILayout.Slider("Сила", _glowAmount, 0f, 1f);
-                _glowFlatness = EditorGUILayout.Slider("Плоскость", _glowFlatness, 0f, 1f);
-                _glowBloom    = EditorGUILayout.Slider("Множитель под bloom", _glowBloom, 1f, 5f);
-
-                // Ручки ВЫШЕ меняют сам стенд: эффект собирается один раз, и подкручивать его вживую
-                // нечем — дешевле пересобрать, чем держать два пути настройки.
-                if (EditorGUI.EndChangeCheck()) { TearDownStage(); Repaint(); }
-
-                // Ручки НИЖЕ меняют только вид. Пересборка на них была бы не просто медленной, а
-                // неверной: частицы домотывались бы заново, и кадр менялся бы от смены фона.
-                EditorGUILayout.Space(4f);
-                EditorGUI.BeginChangeCheck();
-
-                // Кнопка проигрывания стоит ЗДЕСЬ, рядом с фазой, а не только в тулбаре: там её искали
-                // глазами и не находили — тулбар читается как «действия над кадром», а это управление
-                // самим эффектом.
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    bool play = GUILayout.Toggle(_playing, _playing ? "⏸ Пауза" : "▶ Играть",
-                        EditorStyles.miniButton, GUILayout.Width(80f));
-                    if (play != _playing) { _playing = play; _lastTick = EditorApplication.timeSinceStartup; }
-
-                    if (GUILayout.Button("⟲", EditorStyles.miniButton, GUILayout.Width(24f)))
-                    {
-                        _phase = 0f;
-                        if (_root != null) _applyPhase?.Invoke(_phase);
-                    }
-
-                    float phase = EditorGUILayout.Slider(_phase, 0f, 1f);
-                    if (!Mathf.Approximately(phase, _phase)) { _phase = phase; _playing = false; }
-
-                    GUILayout.Label($"{_phase * _phaseDuration:0.00} / {_phaseDuration:0.00} с",
-                                    EditorStyles.miniLabel, GUILayout.Width(90f));
-                }
-
-                // Множитель ступенями, а не ползунком: ×1 — это «как видит игрок», и такое значение
-                // должно выбираться одним щелчком, а не ловиться в ползунке.
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.PrefixLabel("Темп");
-                    for (int i = 0; i < TimeScales.Length; i++)
-                    {
-                        bool on = Mathf.Approximately(_timeScale, TimeScales[i]);
-                        GUIStyle style = i == 0 ? EditorStyles.miniButtonLeft
-                                       : i == TimeScales.Length - 1 ? EditorStyles.miniButtonRight
-                                       : EditorStyles.miniButtonMid;
-                        if (GUILayout.Toggle(on, $"×{TimeScales[i]:0.##}", style) && !on)
-                            _timeScale = TimeScales[i];
-                    }
-                }
-
-                // Только по живому стенду: ручки выше могли снести его прямо в этом же кадре GUI.
-                if (_root != null) _applyPhase?.Invoke(_phase);
-
-                _background = EditorGUILayout.ColorField("Фон", _background);
-                _zoom       = EditorGUILayout.Slider("Приближение", _zoom, 0.1f, 12f);
-                _shotHeight = EditorGUILayout.IntSlider("Высота снимка", _shotHeight, 720, 2160);
-                if (EditorGUI.EndChangeCheck()) Repaint();
-
-                EditorGUILayout.HelpBox("Колесо — приближение, средняя кнопка или Alt+ЛКМ — возить кадр. " +
-                                        "Серия всегда снимается в каноническом виде, как бы ты сейчас ни смотрел.",
-                                        MessageType.None);
-
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    if (GUILayout.Button("Записать свечение в feel-конфиг"))  WriteGlowToConfig();
-                    if (GUILayout.Button("Открыть папку кадров"))             EditorUtility.RevealInFinder(ShotFolder);
-                }
-
-                if (!string.IsNullOrEmpty(_lastShot))
-                    EditorGUILayout.HelpBox("Последний кадр: " + _lastShot, MessageType.None);
+                GUILayout.Label($"{_phase * _phaseDuration:0.00} / {_phaseDuration:0.00} с",
+                                EditorStyles.miniLabel, GUILayout.Width(90f));
             }
+
+            // Множитель ступенями, а не ползунком: ×1 — это «как видит игрок», и такое значение
+            // должно выбираться одним щелчком, а не ловиться в ползунке.
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.PrefixLabel("Темп");
+                for (int i = 0; i < TimeScales.Length; i++)
+                {
+                    bool on = Mathf.Approximately(_timeScale, TimeScales[i]);
+                    GUIStyle style = i == 0 ? EditorStyles.miniButtonLeft
+                                   : i == TimeScales.Length - 1 ? EditorStyles.miniButtonRight
+                                   : EditorStyles.miniButtonMid;
+                    if (GUILayout.Toggle(on, $"×{TimeScales[i]:0.##}", style) && !on)
+                        _timeScale = TimeScales[i];
+                }
+                GUILayout.Space(8f);
+                _zoom = EditorGUILayout.Slider(_zoom, 0.1f, 12f);
+            }
+
+            if (_root != null) _applyPhase?.Invoke(_phase);
+            if (EditorGUI.EndChangeCheck()) Repaint();
+        }
+
+        /// <summary>Таб «Эффекты»: всё, что описывает САМ эффект и то, чем его меряют.</summary>
+        private void DrawEffectsTab()
+        {
+            EditorGUI.BeginChangeCheck();
+
+            // Эффект выбирается ОДИН. Список с галочками стоял здесь ровно один заход и был снят:
+            // смотрят и подбирают всегда по одному, а набор из нескольких вдобавок плавил масштаб
+            // кадра и делал снимки несравнимыми.
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("◄", EditorStyles.miniButtonLeft, GUILayout.Width(24f)))
+                    _cell = StepCell(-1);
+                if (GUILayout.Button("►", EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                    _cell = StepCell(+1);
+
+                int index = IndexOf(_cell);
+                int picked = EditorGUILayout.Popup(index, LabelsOf());
+                if (picked != index) _cell = Cells[picked].cell;
+
+                _showRuler = GUILayout.Toggle(_showRuler, "Линейка", EditorStyles.miniButton, GUILayout.Width(64f));
+            }
+
+            EditorGUILayout.Space(6f);
+            EditorGUILayout.LabelField("Чем меряем", EditorStyles.boldLabel);
+            _tone = (UnitTone)EditorGUILayout.EnumPopup("Тон свечения", _tone);
+            _hitDamage   = EditorGUILayout.FloatField("Урон удара", _hitDamage);
+            _targetMaxHp = EditorGUILayout.FloatField("HP цели", _targetMaxHp);
+
+            var feel = AssetDatabase.LoadAssetAtPath<CombatFeelConfig>(FeelConfigPath);
+            float heavy = feel != null ? feel.HeavyHitFrac : 0.15f;
+            EditorGUILayout.LabelField(" ",
+                $"{HpDamageFrac * 100f:0.#}% запаса · тяжёлым считается от {heavy * 100f:0.#}%" +
+                (HpDamageFrac >= heavy ? " — это уже ПОТОЛОК размера" : ""),
+                EditorStyles.miniLabel);
+
+            var prefab = (GameObject)EditorGUILayout.ObjectField("Субъект", _subjectPrefab, typeof(GameObject), false);
+            if (prefab != _subjectPrefab) { _subjectPrefab = prefab; TearDownStage(); }
+
+            EditorGUILayout.Space(6f);
+            EditorGUILayout.LabelField("Свечение части", EditorStyles.boldLabel);
+            _castSource   = (CastSource)EditorGUILayout.EnumPopup("Чем исполнен приём", _castSource);
+            _glowAmount   = EditorGUILayout.Slider("Сила", _glowAmount, 0f, 1f);
+            _glowFlatness = EditorGUILayout.Slider("Плоскость", _glowFlatness, 0f, 1f);
+            _glowBloom    = EditorGUILayout.Slider("Множитель под bloom", _glowBloom, 1f, 5f);
+
+            if (EditorGUI.EndChangeCheck()) { TearDownStage(); Repaint(); }
+
+            EditorGUILayout.Space(6f);
+            EditorGUILayout.LabelField("Кадр", EditorStyles.boldLabel);
+            EditorGUI.BeginChangeCheck();
+            _background = EditorGUILayout.ColorField("Фон", _background);
+            _shotHeight = EditorGUILayout.IntSlider("Высота снимка", _shotHeight, 720, 2160);
+            if (EditorGUI.EndChangeCheck()) Repaint();
+
+            EditorGUILayout.Space(6f);
+            EditorGUILayout.HelpBox("Колесо — приближение, средняя кнопка или Alt+ЛКМ — возить кадр. " +
+                                    "Серия всегда снимается в каноническом виде, как бы ты сейчас ни смотрел.",
+                                    MessageType.None);
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("Записать значения в конфиг"))  WriteGlowToConfig();
+                if (GUILayout.Button("Открыть папку кадров"))        EditorUtility.RevealInFinder(ShotFolder);
+            }
+
+            if (!string.IsNullOrEmpty(_lastShot))
+                EditorGUILayout.HelpBox("Последний кадр: " + _lastShot, MessageType.None);
         }
 
         /// <summary>
@@ -480,11 +474,32 @@ namespace Guildmaster.Presentation.Editor
             return Cells[i].cell;
         }
 
-        // --- Правая колонка: сам профиль ----------------------------------------------------------------
+        // --- Правая колонка: два таба -------------------------------------------------------------------
 
+        /// <summary>
+        /// Настройки разведены по табам, потому что это два разных вопроса: «как настроен ЭКРАН» и
+        /// «как устроен ЭФФЕКТ». Раньше они лежали в одной колонке под превью и не помещались.
+        /// </summary>
         private void DrawProfileColumn()
         {
             using (new EditorGUILayout.VerticalScope(GUILayout.ExpandWidth(true)))
+            {
+                _tab = GUILayout.Toolbar(_tab, TabNames);
+                EditorGUILayout.Space(4f);
+
+                using (var scroll = new EditorGUILayout.ScrollViewScope(_knobScroll))
+                {
+                    _knobScroll = scroll.scrollPosition;
+                    if (_tab == 0) DrawPostFxTab();
+                    else           DrawEffectsTab();
+                }
+            }
+        }
+
+        static readonly string[] TabNames = { "Постпроцессинг", "Эффекты" };
+
+        private void DrawPostFxTab()
+        {
             {
                 VolumeProfile profile = CurrentProfile();
                 EditorGUILayout.LabelField(_stage == StageKind.Battle ? "Боевой профиль" : "Профиль карты",
@@ -507,13 +522,11 @@ namespace Guildmaster.Presentation.Editor
                     _profileEditor = UnityEditor.Editor.CreateEditor(profile);
                 }
 
-                using (var scroll = new EditorGUILayout.ScrollViewScope(_profileScroll))
-                {
-                    _profileScroll = scroll.scrollPosition;
-                    EditorGUI.BeginChangeCheck();
-                    _profileEditor.OnInspectorGUI();
-                    if (EditorGUI.EndChangeCheck()) Repaint();
-                }
+                // Инспектор профиля правит АССЕТ напрямую — это и есть «как поменять постпроцессинг»:
+                // крутишь здесь, значение уезжает в BattlePostFX_Base и играет в бою.
+                EditorGUI.BeginChangeCheck();
+                _profileEditor.OnInspectorGUI();
+                if (EditorGUI.EndChangeCheck()) Repaint();
             }
         }
 
@@ -1173,13 +1186,19 @@ namespace Guildmaster.Presentation.Editor
             var feel = AssetDatabase.LoadAssetAtPath<CombatFeelConfig>(FeelConfigPath);
             if (feel == null) { Debug.LogError("[PostFxLab] не найден CombatFeelConfig: " + FeelConfigPath); return; }
 
+            // ВСЕ ручки разом, а не выборочно. Прежняя версия писала плоскость и множитель, но теряла
+            // СИЛУ — и подобранное значение молча не доезжало до игры: со стенда оно выглядело
+            // сохранённым, а в бою оставалось прежним.
             var so = new SerializedObject(feel);
+            so.FindProperty("_castGlowStrength").floatValue       = _glowAmount;
             so.FindProperty("_castGlowFlatness").floatValue       = _glowFlatness;
             so.FindProperty("_castGlowBloomIntensity").floatValue = _glowBloom;
             so.ApplyModifiedProperties();
             EditorUtility.SetDirty(feel);
             AssetDatabase.SaveAssetIfDirty(feel);
-            Debug.Log($"[PostFxLab] в конфиг записано: плоскость {_glowFlatness:0.##}, множитель bloom {_glowBloom:0.##}");
+
+            Debug.Log($"[PostFxLab] в конфиг записано: сила {_glowAmount:0.##}, плоскость {_glowFlatness:0.##}, " +
+                      $"множитель bloom {_glowBloom:0.##}");
         }
     }
 }
