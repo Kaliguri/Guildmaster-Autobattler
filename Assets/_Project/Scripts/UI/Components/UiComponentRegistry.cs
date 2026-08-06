@@ -311,8 +311,7 @@ namespace Guildmaster.UI.Components
             New("Переключатель", "gm-toggle-row", UiComponentGroup.Rows,
                 RowInteractive | UiElementState.Checked, null, "настройки — да/нет"),
             New("Выбор", "gm-select-row", UiComponentGroup.Rows, RowInteractive, null,
-                "настройки — разрешение, режим окна, частота обновления",
-                "gm-select-row--disabled"),
+                "настройки — разрешение, режим окна, частота обновления"),
             New("Слайдер", "gm-slider-row", UiComponentGroup.Rows, RowInteractive, null,
                 "настройки — громкость и прочие доли"),
 

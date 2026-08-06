@@ -83,11 +83,17 @@
    и «Продолжить» без сейва выглядела деталью чужого интерфейса.
    ВАЖНО: выключенному элементу UITK вешает КЛАСС `unity-disabled`, и тема красит именно по нему —
    одного псевдокласса `:disabled` в селекторе не хватает, правило проигрывает. Перекрываем оба. */
+/* ПОЛЕ У ВЫКЛЮЧЕННОЙ ОСТАЁТСЯ (заказ Макса 06.08.2026: «фон кнопки должен оставаться.
+   Приглушенный, но оставаться. А цвет текста быть сероватым»). Прежде здесь стоял
+   surface-panel — ТОТ ЖЕ токен, которым красится подложка под кнопкой, — и выключенная кнопка
+   растворялась в фоне: оставалась одна тусклая рамка, читавшаяся как пустое место. Взята
+   соседняя ступень рампы: поле видно, но тише живого, и не спорит с нажатием, у которого своя
+   (surface-sunken). Текст был сероват и раньше — эта половина требования уже держалась. */
 .unity-button.gm-button.unity-disabled:disabled,
 .unity-button.gm-button.unity-disabled,
 .unity-button.gm-button:disabled,
 .unity-button.gm-button--primary:disabled {
-    background-color: var(--gm-color-surface-panel);
+    background-color: var(--gm-color-surface-raised);
     background-image: none;
     border-color: var(--gm-color-border-subtle);
     color: var(--gm-color-disabled-text);
