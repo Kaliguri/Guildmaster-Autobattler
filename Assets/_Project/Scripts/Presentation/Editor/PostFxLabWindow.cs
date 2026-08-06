@@ -65,6 +65,9 @@ namespace Guildmaster.Presentation.Editor
         /// </summary>
         const float FrameSizeWorld = 3.6f;
 
+        /// <summary>Насколько левее центра стоит юнит-линейка. Ровно столько, чтобы не лезть под эффект.</summary>
+        const float RulerOffsetX = 1.35f;
+
         static readonly CultureInfo Culture = CultureInfo.InvariantCulture;
 
         /// <summary>Что показывает стенд. Ровно одно за раз — смотрят и подбирают по одному эффекту.</summary>
@@ -108,10 +111,13 @@ namespace Guildmaster.Presentation.Editor
         [SerializeField] private GameObject _subjectPrefab;
         [SerializeField] private Color      _background = new Color(0.08f, 0.08f, 0.10f, 1f);
         [SerializeField] private float      _zoom = 1f;
+        [SerializeField] private Vector2    _pan;
         [SerializeField] private int         _shotHeight = 1440;
 
         [Header("Что в кадре")]
         [SerializeField] private Cell _cell = Cell.HitSlash;
+        /// <summary>Юнит-линейка сбоку: без него «мелко» и «крупно» не с чем сравнить.</summary>
+        [SerializeField] private bool _showRuler = true;
         /// <summary>Тон, в котором светится стенд. Один на все эффекты: сравниваем ЯРКОСТЬ, а не оттенки.</summary>
         [SerializeField] private UnitTone _tone = UnitTone.Fire;
 
@@ -174,10 +180,13 @@ namespace Guildmaster.Presentation.Editor
                     if (GUILayout.Button("A/B", EditorStyles.toolbarButton, GUILayout.Width(40f))) SaveAb();
                     if (GUILayout.Button("Снять серию", EditorStyles.toolbarButton, GUILayout.Width(90f))) ShootSeries();
                     GUILayout.FlexibleSpace();
+                    GUILayout.Label($"×{_zoom:0.##}", EditorStyles.miniLabel, GUILayout.Width(44f));
+                    if (GUILayout.Button("Сброс вида", EditorStyles.toolbarButton, GUILayout.Width(84f))) ResetView();
                     if (GUILayout.Button("Пересобрать", EditorStyles.toolbarButton, GUILayout.Width(88f))) TearDownStage();
                 }
 
                 Rect frame = GUILayoutUtility.GetRect(10f, 10f, 200f, 100000f, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                HandleNavigation(frame);
                 if (Event.current.type == EventType.Repaint)
                 {
                     RenderTexture rt = RenderPreview((int)frame.width, (int)frame.height, _postOn);
@@ -209,13 +218,12 @@ namespace Guildmaster.Presentation.Editor
                     int index = IndexOf(_cell);
                     int picked = EditorGUILayout.Popup("Эффект", index, LabelsOf());
                     if (picked != index) _cell = Cells[picked].cell;
+
+                    _showRuler = GUILayout.Toggle(_showRuler, "Линейка", EditorStyles.miniButton, GUILayout.Width(64f));
                 }
 
                 EditorGUILayout.Space(4f);
-                _tone       = (UnitTone)EditorGUILayout.EnumPopup("Тон свечения", _tone);
-                _background = EditorGUILayout.ColorField("Фон", _background);
-                _zoom       = EditorGUILayout.Slider("Приближение", _zoom, 0.25f, 4f);
-                _shotHeight = EditorGUILayout.IntSlider("Высота снимка", _shotHeight, 720, 2160);
+                _tone = (UnitTone)EditorGUILayout.EnumPopup("Тон свечения", _tone);
 
                 var prefab = (GameObject)EditorGUILayout.ObjectField("Субъект", _subjectPrefab, typeof(GameObject), false);
                 if (prefab != _subjectPrefab) { _subjectPrefab = prefab; TearDownStage(); }
@@ -227,9 +235,22 @@ namespace Guildmaster.Presentation.Editor
                 _glowFlatness = EditorGUILayout.Slider("Плоскость", _glowFlatness, 0f, 1f);
                 _glowBloom    = EditorGUILayout.Slider("Множитель под bloom", _glowBloom, 1f, 5f);
 
-                // Любая ручка меняет САМ стенд, а не только кадр: ячейки собираются один раз, и
-                // подкручивать их вживую нечем — дешевле пересобрать, чем держать два пути настройки.
+                // Ручки ВЫШЕ меняют сам стенд: эффект собирается один раз, и подкручивать его вживую
+                // нечем — дешевле пересобрать, чем держать два пути настройки.
                 if (EditorGUI.EndChangeCheck()) { TearDownStage(); Repaint(); }
+
+                // Ручки НИЖЕ меняют только вид. Пересборка на них была бы не просто медленной, а
+                // неверной: частицы домотывались бы заново, и кадр менялся бы от смены фона.
+                EditorGUILayout.Space(4f);
+                EditorGUI.BeginChangeCheck();
+                _background = EditorGUILayout.ColorField("Фон", _background);
+                _zoom       = EditorGUILayout.Slider("Приближение", _zoom, 0.1f, 12f);
+                _shotHeight = EditorGUILayout.IntSlider("Высота снимка", _shotHeight, 720, 2160);
+                if (EditorGUI.EndChangeCheck()) Repaint();
+
+                EditorGUILayout.HelpBox("Колесо — приближение, средняя кнопка или Alt+ЛКМ — возить кадр. " +
+                                        "Серия всегда снимается в каноническом виде, как бы ты сейчас ни смотрел.",
+                                        MessageType.None);
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
@@ -239,6 +260,43 @@ namespace Guildmaster.Presentation.Editor
 
                 if (!string.IsNullOrEmpty(_lastShot))
                     EditorGUILayout.HelpBox("Последний кадр: " + _lastShot, MessageType.None);
+            }
+        }
+
+        /// <summary>
+        /// Колесо приближает, перетаскивание возит кадр. Живёт здесь, а не ползунками: разглядывать
+        /// эффект приходится в тех же движениях, что и всё остальное на экране, и ползунок вместо
+        /// колеса — это лишний перевод намерения в число.
+        /// </summary>
+        /// <remarks>
+        /// Ни зум, ни сдвиг НЕ пересобирают стенд: они меняют только камеру. Пересборка на каждый
+        /// щелчок колеса резала бы эффект заново (а частицы ещё и домотывались бы с нуля) — стенд
+        /// дёргался бы на ровном месте.
+        /// </remarks>
+        private void HandleNavigation(Rect frame)
+        {
+            Event e = Event.current;
+            if (e == null || !frame.Contains(e.mousePosition)) return;
+
+            if (e.type == EventType.ScrollWheel)
+            {
+                _zoom = Mathf.Clamp(_zoom * (1f - e.delta.y * 0.03f), 0.1f, 12f);
+                e.Use();
+                Repaint();
+                return;
+            }
+
+            // Тащим средней кнопкой или Alt+левой — как в сцене; левая без модификатора остаётся
+            // свободной, чтобы окно не воевало с обычным кликом по нему.
+            bool dragging = e.type == EventType.MouseDrag && (e.button == 2 || (e.button == 0 && e.alt));
+            if (dragging)
+            {
+                // Пиксели в мир: высота кадра — это две ортографические полу-высоты.
+                float worldPerPixel = (_camera != null ? _camera.orthographicSize * 2f : FrameSizeWorld)
+                                      / Mathf.Max(1f, frame.height);
+                _pan += new Vector2(-e.delta.x, e.delta.y) * worldPerPixel;
+                e.Use();
+                Repaint();
             }
         }
 
@@ -360,7 +418,38 @@ namespace Guildmaster.Presentation.Editor
                 Debug.LogError($"[PostFxLab] эффект «{Cells[IndexOf(_cell)].label}» не собрался: {e.Message}");
             }
 
+            if (_showRuler && NeedsRuler(_cell)) BuildRuler(holder.transform);
+
             FrameStage();
+        }
+
+        /// <summary>
+        /// Нужна ли эффекту линейка. У ячеек со своим юнитом (свечение, блок, смерть) масштаб виден и
+        /// так — второе тело рядом только запутает, кто из них показывает эффект.
+        /// </summary>
+        static bool NeedsRuler(Cell cell) =>
+            cell != Cell.CastGlow && cell != Cell.BlockFlash && cell != Cell.DeathFlash && cell != Cell.Shatter;
+
+        /// <summary>
+        /// Юнит-линейка сбоку от эффекта: мера роста, по которой читается его размер. Стоит именно
+        /// СБОКУ, а не под эффектом, — крупные формы закрыли бы тело целиком, и линейка перестала бы
+        /// быть линейкой.
+        /// </summary>
+        /// <remarks>
+        /// Приглушён намеренно: белое тело ярче половины порога попало бы в блум своей же светлотой и
+        /// подсветилось бы рядом с эффектом, который мы как раз и пришли мерить. Тинт держит его ниже
+        /// колена, поэтому линейка в замере не участвует.
+        /// </remarks>
+        private void BuildRuler(Transform at)
+        {
+            var go = Spawn(_subjectPrefab, at);
+            go.transform.localPosition = new Vector3(-RulerOffsetX, 0f, 0f);
+
+            // Красим НАПРЯМУЮ по рендерерам, а не через BodyVisualState: у боевого шва тинт едет вместе
+            // с эффектами, и состояние «только тинт, всё остальное по нулям» он законно считает пустым и
+            // не применяет вовсе. Линейка — предмет стенда, а не юнит боя, и красить её можно прямо.
+            foreach (SpriteRenderer r in go.GetComponentsInChildren<SpriteRenderer>(true))
+                r.color = new Color(0.26f, 0.26f, 0.30f, 1f);
         }
 
         private void BuildCell(Cell cell, Transform at, CombatFeelConfig feel, Color main, Gradient spread)
@@ -390,9 +479,18 @@ namespace Guildmaster.Presentation.Editor
         {
             if (_camera == null) return;
 
-            _camera.transform.position = new Vector3(StageOrigin.x, StageOrigin.y, StageOrigin.z - 10f);
+            _camera.transform.position = new Vector3(StageOrigin.x + _pan.x, StageOrigin.y + _pan.y,
+                                                     StageOrigin.z - 10f);
             _camera.orthographicSize   = FrameSizeWorld * 0.5f / Mathf.Max(0.01f, _zoom);
             _camera.aspect             = 1f;
+        }
+
+        /// <summary>Канонический кадр: тот, в котором снимаются серии и который сравним между эффектами.</summary>
+        private void ResetView()
+        {
+            _zoom = 1f;
+            _pan  = Vector2.zero;
+            Repaint();
         }
 
         static void SetHideFlagsRecursively(Transform node)
@@ -419,6 +517,10 @@ namespace Guildmaster.Presentation.Editor
                 if (_preview != null) { _preview.Release(); DestroyImmediate(_preview); }
                 _preview = new RenderTexture(width, height, 24, RenderTextureFormat.DefaultHDR);
             }
+
+            // Кадрируем на КАЖДЫЙ кадр: зум и сдвиг меняют только камеру, и гонять ради них пересборку
+            // стенда было бы и медленно, и неверно — частицы домотывались бы заново.
+            FrameStage();
 
             _camera.backgroundColor = _background;
             _camera.GetUniversalAdditionalCameraData().renderPostProcessing = post;
@@ -661,6 +763,13 @@ namespace Guildmaster.Presentation.Editor
 
             string label = Cells[IndexOf(_cell)].label;
             var files = new List<string>();
+
+            // Съёмка идёт из КАНОНИЧЕСКОГО вида, а не из того, как стенд повёрнут прямо сейчас: кадры
+            // сравниваются между собой и между эффектами, и приближение, забытое на ×4, тихо сделало бы
+            // всю серию несравнимой с остальными.
+            float zoomWas = _zoom; Vector2 panWas = _pan;
+            _zoom = 1f; _pan = Vector2.zero;
+
             _volume.sharedProfile = scratch;
             try
             {
@@ -687,6 +796,7 @@ namespace Guildmaster.Presentation.Editor
                 EditorUtility.ClearProgressBar();
                 _volume.sharedProfile = source;
                 PostFxScratch.Destroy(scratch);
+                _zoom = zoomWas; _pan = panWas;
             }
 
             WriteManifest();
@@ -760,6 +870,11 @@ namespace Guildmaster.Presentation.Editor
 
         private string Shot(bool post, string name)
         {
+            // Стенд может быть ещё не собран: кнопку жмут и сразу после смены эффекта, и снаружи
+            // (из execute_code), где OnGUI не отрабатывал вовсе.
+            EnsureStage();
+            if (_camera == null) return "<стенд не собрался>";
+
             const int size = 1024;
             Texture2D tex = Capture(size, Mathf.RoundToInt(size / Mathf.Max(0.1f, _camera.aspect)), post);
             if (tex == null) return "<нет кадра>";
