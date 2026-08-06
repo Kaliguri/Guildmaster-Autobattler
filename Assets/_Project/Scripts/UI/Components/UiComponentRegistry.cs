@@ -168,14 +168,14 @@ namespace Guildmaster.UI.Components
             // «Вариация N» в подписи — задел: вторая вариация роли появится, и ей найдётся номер, а
             // не новое существительное. Роль пишется в скобках, потому что имя обязано отвечать на
             // вопрос «какую брать сюда» без заглядывания в картинку.
+            // РОЛЕЙ ДВЕ. «Удаление» — СОСТОЯНИЕ кнопки, а не третья кнопка в наборе (решение Макса
+            // 06.08.2026): красный тут значит «отменить будет нечем», то есть говорит о последствии
+            // нажатия, а не о месте действия в иерархии экрана. Тем же свойством обладает
+            // «не по карману»: обе метки накладываются на любую роль и ни одну не заменяют.
             New("Кнопка (Обычная) — Вариация 1", "gm-button", UiComponentGroup.Buttons, Interactive, null,
-                "gm-button--display", "gm-button--unaffordable"),
+                "gm-button--display", "gm-button--danger", "gm-button--unaffordable"),
             New("Кнопка (Главная) — Вариация 1", "gm-button--primary", UiComponentGroup.Buttons,
                 Interactive, OfButton),
-            // Единственная роль, которую держит НЕОБРАТИМОСТЬ, а не иерархия действий: красный тут
-            // значит «отменить будет нечем», а не «важнее соседней кнопки».
-            New("Кнопка (Для удаления / необратимого) — Вариация 1", "gm-button--danger",
-                UiComponentGroup.Buttons, Interactive, OfButton),
             NewTechnical("Пластина (форма, не элемент набора)", "gm-plate-button", UiComponentGroup.Buttons,
                 Interactive),
 
@@ -223,23 +223,35 @@ namespace Guildmaster.UI.Components
             New("Слайдер", "gm-slider-row", UiComponentGroup.Rows, RowInteractive, null),
 
             // --- ТЕКСТ ---
-            // Вопрос Макса 06.08.2026: «Где я могу ознакомиться с вариациями текста (шрифты + цвет +
-            // различные иные особенности (КАПС как в меню, например))?» Ответ был «нигде»: цвета
-            // жили ролями в семантике, гарнитуры — ярусом шрифтов, документ существовал, а
-            // ПОСМОТРЕТЬ на них было негде.
+            // ВОСЕМЬ РОЛЕЙ, а не перепись классов (правило Макса 06.08.2026: «как и кнопки,
+            // желательно придти к небольшому количеству реально нужных вариантов»). Отвечает на
+            // вопрос «какой текст брать сюда»: заголовок, имя вещи, тело, подпись действия, число,
+            // метка. Надстрочник, метка сборки, заголовок раздела и ключевое слово — ЧАСТНЫЕ СЛУЧАИ
+            // этих восьми, а не собственные роли: они отличаются кеглем или цветом, то есть осью
+            // размера и ролью цвета, а не назначением.
             //
-            // КАПС в перечень не входит и входить не может: `text-transform` в UI Toolkit
-            // отсутствует, капитель задают САМИ БУКВЫ в разметке. Это решение по тексту, а не по
-            // стилю, и витрина показывает его образцом, а не свойством.
+            // В дереве типографику задают 75 классов, и роль «тело» размазана по четырём из них
+            // (gm-tooltip__desc, gm-detail__desc, gm-event-body, gm-loadout__narrative-text).
+            // Здесь по одному ПРЕДСТАВИТЕЛЮ на роль; сведение самих классов — отдельный заход тем же
+            // приёмом, каким сведены кнопки.
+            //
+            // РЕГИСТР не входит в перечень: `text-transform` в UI Toolkit отсутствует, капитель
+            // задают САМИ БУКВЫ в разметке. Образцы написаны так, как эти строки пишутся в игре.
             New("Текст (Вывеска) — Вариация 1", "gm-title__main", UiComponentGroup.Typography,
                 UiElementState.None, null),
-            New("Текст (Надстрочник) — Вариация 1", "gm-title__over", UiComponentGroup.Typography,
+            New("Текст (Заголовок) — Вариация 1", "gm-panel__title", UiComponentGroup.Typography,
                 UiElementState.None, null),
-            New("Текст (Заголовок панели) — Вариация 1", "gm-panel__title", UiComponentGroup.Typography,
+            New("Текст (Имя вещи) — Вариация 1", "gm-card__name", UiComponentGroup.Typography,
                 UiElementState.None, null),
-            New("Текст (Приглушённый) — Вариация 1", "gm-text-muted", UiComponentGroup.Typography,
+            New("Текст (Тело — описание, событие) — Вариация 1", "gm-tooltip__desc",
+                UiComponentGroup.Typography, UiElementState.None, null),
+            New("Текст (Подпись действия) — Вариация 1", "gm-plate-button__label",
+                UiComponentGroup.Typography, UiElementState.None, null),
+            New("Текст (Число) — Вариация 1", "gm-stat__value", UiComponentGroup.Typography,
                 UiElementState.None, null),
-            New("Текст (Метка сборки) — Вариация 1", "gm-version-stamp", UiComponentGroup.Typography,
+            New("Текст (Метка) — Вариация 1", "gm-text-muted", UiComponentGroup.Typography,
+                UiElementState.None, null),
+            New("Текст (Код, дев) — Вариация 1", "gm-console__keys", UiComponentGroup.Typography,
                 UiElementState.None, null),
 
             // --- ПАНЕЛИ И ДЕКОР ---

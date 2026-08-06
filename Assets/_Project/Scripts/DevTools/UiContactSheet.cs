@@ -76,6 +76,17 @@ namespace Guildmaster.DevTools
         private static readonly List<(VisualElement Element, object State)> Forced = new();
 
         /// <summary>
+        /// Образцы текущей страницы: блок → элемент. Нужны, чтобы снять с них ЗАМЕР после раскладки.
+        /// </summary>
+        /// <remarks>
+        /// Вопрос Макса 06.08.2026 был «шрифты + цвет + различные иные особенности», и картинка на
+        /// него отвечает наполовину: гарнитуру видно, а её ИМЯ и точный кегль — нет. Замер снимается
+        /// с живого элемента (<c>resolvedStyle</c>), то есть показывает то, что реально применилось,
+        /// а не то, что написано в правиле, — расхождение между этими двумя нас уже подводило.
+        /// </remarks>
+        private static readonly Dictionary<string, VisualElement> Measured = new();
+
+        /// <summary>
         /// Снимает лист по всем группам. Возвращает пути сохранённых кадров.
         /// </summary>
         /// <param name="runner">Держатель кадрового ожидания: снимок берётся строго в конце кадра.</param>
@@ -187,6 +198,7 @@ namespace Guildmaster.DevTools
                 sb.Append("{ \"label\": \"").Append(Escape(entries[i].Label))
                   .Append("\", \"block\": \"").Append(entries[i].Block)
                   .Append("\", \"states\": \"").Append(entries[i].Required)
+                  .Append("\", \"type\": \"").Append(Escape(Measure(entries[i].Block)))
                   .Append("\" }");
             }
 
@@ -194,6 +206,35 @@ namespace Guildmaster.DevTools
         }
 
         private static string Escape(string text) => text.Replace("\\", "\\\\").Replace("\"", "\\\"");
+
+        /// <summary>
+        /// Замер образца словами: гарнитура, кегль, цвет, разрядка. Пусто, если элемент не текстовый.
+        /// </summary>
+        /// <remarks>
+        /// Читается <c>resolvedStyle</c>, то есть ПРИМЕНИВШЕЕСЯ значение, а не объявленное в правиле.
+        /// Цвет печатается числами RGB: имя роли по значению не восстановить (одна ступень рампы
+        /// стоит за несколькими ролями), а число сверяется с палитрой напрямую.
+        /// </remarks>
+        private static string Measure(string block)
+        {
+            if (!Measured.TryGetValue(block, out VisualElement sample)) return string.Empty;
+
+            // Образец роли, набираемой предком, — это КОНТЕЙНЕР с подписью внутри; мерить надо саму
+            // подпись, иначе замер вернёт стиль пустой коробки.
+            VisualElement target = sample as Label ?? sample.Q<Label>() ?? sample;
+            IResolvedStyle style = target.resolvedStyle;
+            string face = style.unityFontDefinition.fontAsset != null
+                ? style.unityFontDefinition.fontAsset.name
+                : style.unityFont != null ? style.unityFont.name : "—";
+
+            Color c = style.color;
+            string color = $"rgb({Mathf.RoundToInt(c.r * 255)}, {Mathf.RoundToInt(c.g * 255)}, {Mathf.RoundToInt(c.b * 255)})";
+
+            var parts = new List<string> { face, $"{Mathf.RoundToInt(style.fontSize)}px", color };
+            if (Mathf.Abs(style.letterSpacing) > 0.01f) parts.Add($"разрядка {style.letterSpacing:0.#}px");
+
+            return string.Join(" · ", parts);
+        }
 
         private static List<UiComponentEntry> EntriesOf(UiComponentGroup group)
         {
@@ -212,6 +253,7 @@ namespace Guildmaster.DevTools
         {
             sheet.Clear();
             Forced.Clear();
+            Measured.Clear();
 
             var title = new Label($"{group}  ·  лист {page + 1}");
             title.AddToClassList("gm-sheet__title");
@@ -269,8 +311,12 @@ namespace Guildmaster.DevTools
             var cell = new VisualElement();
             cell.AddToClassList("gm-sheet__cell");
 
-            VisualElement sample = UiSampleFactory.Build(entry.Block);
+            VisualElement sample = UiSampleFactory.Build(entry);
             if (variant != null) sample.AddToClassList(variant);
+
+            // Замер снимается с образца В ПОКОЕ: состояния меняют цвет, и «цвет роли» в подписи
+            // должен означать покой, а не наведение.
+            if (variant == null && state == UiElementState.None) Measured[entry.Block] = sample;
 
             if (state == UiElementState.Disabled) sample.SetEnabled(false);
             else if (state == UiElementState.Checked) Check(sample);

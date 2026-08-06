@@ -21,6 +21,8 @@ interface FrameElement {
   label: string;
   block: string;
   states: string;
+  /** Замер с живого образца: гарнитура, кегль, цвет, разрядка. Пусто у нетекстовых. */
+  type?: string;
 }
 
 interface Frame {
@@ -104,8 +106,10 @@ function frameCard(frame: Frame): HTMLElement {
   list.style.margin = "0.8rem 0 0";
   list.style.paddingLeft = "1.2rem";
   for (const item of frame.elements) {
-    list.appendChild(html("li",
-      `<code>${item.block}</code> — ${item.label} <span class="dim">· ${stateWords(item.states)}</span>`));
+    const tail = item.type
+      ? `<span class="dim">· ${item.type}</span>`
+      : `<span class="dim">· ${stateWords(item.states)}</span>`;
+    list.appendChild(html("li", `<code>${item.block}</code> — ${item.label} ${tail}`));
   }
   box.appendChild(list);
 

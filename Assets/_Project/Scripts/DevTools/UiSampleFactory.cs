@@ -76,14 +76,6 @@ namespace Guildmaster.DevTools
             ["gm-tooltip"]             = () => Box("gm-tooltip"),
             ["gm-tooltip__card"]       = () => Tooltip(),
 
-            // Текст. Образец — короткая строка НАШИМИ буквами: кириллица показывает гарнитуру
-            // честнее латиницы, а капитель видно только на живом слове.
-            ["gm-title__main"]         = () => Text("GUILDMASTERS"),
-            ["gm-title__over"]         = () => Text("HAPPY"),
-            ["gm-panel__title"]        = () => Text("Заголовок панели"),
-            ["gm-text-muted"]          = () => Text("Приглушённая подпись"),
-            ["gm-version-stamp"]       = () => Text("v0.1.0-demo"),
-
             // Дев-тулинг.
             ["gm-console__tool"]       = () => Btn("gm-console__tool"),             // DevConsoleScreen.uxml:26
             ["gm-console__hit"]        = () => Box("gm-console__hit"),              // DevConsoleScreen.cs:415
@@ -91,23 +83,50 @@ namespace Guildmaster.DevTools
             ["gm-picker__head-cell"]   = () => Box("gm-picker__head-cell"),
         };
 
-        /// <summary>Знает ли фабрика, как собрать этот блок.</summary>
-        public static bool Knows(string block) => Builders.ContainsKey(block);
+        /// <summary>
+        /// Образцы ТЕКСТОВЫХ ролей — отдельной таблицей.
+        /// </summary>
+        /// <remarks>
+        /// Разведены не для порядка: <c>gm-tab</c> живёт в обеих группах — как вкладка (пластина) и
+        /// как её подпись (строка), — и в одном словаре ключи столкнулись бы. Группа записи и решает,
+        /// из какой таблицы брать образец.
+        /// </remarks>
+        private static readonly Dictionary<string, Func<VisualElement>> TextBuilders = new()
+        {
+            // Текст. Образцы написаны ТАК, КАК ЭТИ СТРОКИ ПИШУТСЯ В ИГРЕ: регистр в UI Toolkit не
+            // задаётся стилем (`text-transform` отсутствует), его задают сами буквы. Кириллица —
+            // везде, где она бывает в игре: гарнитуру она показывает честнее латиницы.
+            ["gm-title__main"]         = () => Text("GUILDMASTERS"),
+            ["gm-panel__title"]        = () => Text("Настройки"),
+            ["gm-card__name"]          = () => Text("Клинок Рассвета"),
+            ["gm-tooltip__desc"]       = () => Text("Наносит 12 урона всем врагам в дуге и поджигает их на 3 секунды."),
+            // Подпись действия и код набираются В СВОЁМ КОНТЕКСТЕ: кегль подписи задаёт сама кнопка,
+            // а моноширинную гарнитуру консоли — правило `.gm-console .unity-text-element`, то есть
+            // ПРЕДОК. Без обёртки образец показывал 14px почти чёрным и FiraSans вместо Fira Mono —
+            // враньё, которое поймал замер, а не глаз.
+            ["gm-plate-button__label"] = () => Within("gm-button", "gm-plate-button__label", "НАЧАТЬ ЗАБЕГ"),
+            ["gm-stat__value"]         = () => Text("128"),
+            ["gm-text-muted"]          = () => Text("Приглушённая подпись"),
+            ["gm-console__keys"]       = () => Within("gm-console", "gm-console__keys", "gm.spawn(\"goblin\", 3)"),
+        };
 
         /// <summary>
         /// Образец элемента. Неизвестный блок отдаётся заметной пустышкой, а не тихой коробкой:
         /// дыра в таблице обязана бросаться в глаза на самом листе.
         /// </summary>
-        public static VisualElement Build(string block)
+        public static VisualElement Build(UiComponentEntry entry)
         {
-            if (Builders.TryGetValue(block, out Func<VisualElement> build))
+            Dictionary<string, Func<VisualElement>> table =
+                entry.Group == UiComponentGroup.Typography ? TextBuilders : Builders;
+
+            if (table.TryGetValue(entry.Block, out Func<VisualElement> build))
             {
                 VisualElement element = build();
-                if (!element.ClassListContains(block)) element.AddToClassList(block);
+                if (!element.ClassListContains(entry.Block)) element.AddToClassList(entry.Block);
                 return element;
             }
 
-            var unknown = new Label($"?? {block}");
+            var unknown = new Label($"?? {entry.Block}");
             unknown.AddToClassList("gm-sheet__unknown");
             return unknown;
         }
@@ -144,6 +163,20 @@ namespace Guildmaster.DevTools
 
         /// <summary>Образец текстовой роли: строка, у которой вид целиком приходит с класса.</summary>
         private static Label Text(string sample) => new(sample);
+
+        /// <summary>
+        /// Образец, которому нужен ПРЕДОК: часть ролей набирается правилами родителя, а не своими.
+        /// </summary>
+        private static VisualElement Within(string parentClass, string ownClass, string sample)
+        {
+            var host = new VisualElement();
+            host.AddToClassList(parentClass);
+
+            var label = new Label(sample);
+            label.AddToClassList(ownClass);
+            host.Add(label);
+            return host;
+        }
 
         private static VisualElement Box(params string[] classes)
         {
