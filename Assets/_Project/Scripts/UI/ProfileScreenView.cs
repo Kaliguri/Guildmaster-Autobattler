@@ -196,7 +196,7 @@ namespace Guildmaster.UI
             {
                 int index = i;
 
-                var swatch = new VisualElement { name = $"color-{i}" };
+                var swatch = new VisualElement { name = $"color-{i}", focusable = true };
                 swatch.AddToClassList("gm-profile__swatch");
                 // Оттенок живёт в USS-токенах: палитра остаётся единственным владельцем цвета.
                 swatch.AddToClassList($"gm-profile__swatch--p{i + 1}");
@@ -228,7 +228,7 @@ namespace Guildmaster.UI
 
                 int index = tiles.Count;
 
-                var tile = new VisualElement { name = $"cursor-{skin.Id}" };
+                var tile = new VisualElement { name = $"cursor-{skin.Id}", focusable = true };
                 tile.AddToClassList("gm-profile__cursor");
                 if (skin.Texture != null) tile.style.backgroundImage = new StyleBackground(skin.Texture);
 

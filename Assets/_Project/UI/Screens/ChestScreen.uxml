@@ -6,7 +6,7 @@
 
             <ui:VisualElement class="gm-chest__body">
                 <!-- Фасад крышки: кликабелен; арт-плейсхолдер до PixelLab-спрайта. -->
-                <ui:VisualElement name="chest-lid" class="gm-chest__lid">
+                <ui:VisualElement name="chest-lid" class="gm-chest__lid" focusable="true">
                     <ui:Label text="◆" class="gm-chest__glyph" />
                 </ui:VisualElement>
                 <ui:Label name="chest-hint" text="Нажми, чтобы открыть" class="gm-chest__hint" />

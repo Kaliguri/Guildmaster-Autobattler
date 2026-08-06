@@ -130,7 +130,7 @@ namespace Guildmaster.UI
                     // и та, что уже у игрока, в этом списке отсутствует по определению — резолв всегда
                     // промахивался, и в списке «что сбросить» игрок читал сырые id.
                     string label = Coalesce(localize?.Invoke(id + "." + ContentKeys.NameSuffix), id);
-                    var r = new Label(label);
+                    var r = new Label(label) { focusable = true };
                     r.AddToClassList("gm-reward-drop__row");
                     r.RegisterCallback<ClickEvent>(_ => { drop = id; Refresh(); });
                     dropList?.Add(r);

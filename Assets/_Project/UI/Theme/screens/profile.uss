@@ -91,3 +91,27 @@
     flex-direction: row;
     justify-content: flex-end;
 }
+
+/* === ОТКЛИК ОБРАЗЦОВ ЦВЕТА И КУРСОРА (06.08.2026) ===========================
+ * Ни один из них не отвечал на курсор: выбранный отличался от невыбранного (--picked), а вот
+ * «на что я сейчас смотрю» не читалось никак.
+ * ========================================================================== */
+.gm-profile__swatch:hover,
+.gm-profile__cursor:hover {
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-profile__swatch:active,
+.gm-profile__cursor:active {
+    border-color: var(--gm-color-border-inner);
+}
+
+.gm-profile__swatch:focus,
+.gm-profile__cursor:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-profile__swatch:disabled,
+.gm-profile__cursor:disabled {
+    opacity: 0.5;
+}

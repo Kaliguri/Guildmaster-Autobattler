@@ -43,6 +43,9 @@ namespace Guildmaster.UI.Components
 
         public RelicCard()
         {
+            // Карточка — это выбор игрока (награда, инвентарь), и он обязан быть доступен без мыши.
+            focusable = true;
+
             AddToClassList("gm-card");
             _sprite = new VisualElement { name = "sprite", pickingMode = PickingMode.Ignore };
             _sprite.AddToClassList("gm-card__sprite");

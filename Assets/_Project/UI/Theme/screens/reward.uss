@@ -50,3 +50,17 @@
 .gm-reward-footer > .gm-button {
     margin-left: var(--gm-space-2);
 }
+
+/* Строка сброса: нажатие, фокус и недоступность. Наведение было и раньше. */
+.gm-reward-drop__row:active {
+    background-color: var(--gm-color-surface-sunken);
+}
+
+.gm-reward-drop__row:focus {
+    color: var(--gm-color-text);
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-reward-drop__row:disabled {
+    color: var(--gm-color-disabled-text);
+}

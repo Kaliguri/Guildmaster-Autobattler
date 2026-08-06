@@ -91,3 +91,31 @@
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }
+
+/* === ОТКЛИК ВИТРИНЫ ЛАВКИ (06.08.2026) ======================================
+ * Карточка витрины и строка запаса не отвечали НИ НА ЧТО — ни наведения, ни нажатия, при том что
+ * по ним кликают. Свою разметку лавка строит кодом (ShopScreenView), поэтому и вид ей приходится
+ * задавать здесь, а не общими правилами карточки: это долг, а не замысел (см. план захода).
+ * ========================================================================== */
+.gm-shop__card:hover,
+.gm-shop__stash-row:hover {
+    background-color: var(--gm-color-hover-surface);
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-shop__card:active,
+.gm-shop__stash-row:active {
+    background-color: var(--gm-color-surface-sunken);
+    border-color: var(--gm-color-border-inner);
+}
+
+.gm-shop__card:focus,
+.gm-shop__stash-row:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+/* Проданное недоступно: гаснет текст, отклик остаётся (правило ui-feedback). */
+.gm-shop__card:disabled,
+.gm-shop__stash-row:disabled {
+    color: var(--gm-color-disabled-text);
+}

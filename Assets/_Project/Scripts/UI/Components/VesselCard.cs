@@ -34,6 +34,9 @@ namespace Guildmaster.UI.Components
 
         public VesselCard()
         {
+            // Карточка сосуда кликабельна — значит доступна и с клавиатуры (см. RelicCard).
+            focusable = true;
+
             AddToClassList("gm-hub-vessel");
 
             _name = new Label { name = "vessel-name" };

@@ -126,6 +126,17 @@ namespace Guildmaster.UI.Components
         /// </remarks>
         public const UiElementState DevTooling = UiElementState.Hover | UiElementState.Active;
 
+        /// <summary>
+        /// Набор строки настроек: всё, кроме фокуса.
+        /// </summary>
+        /// <remarks>
+        /// Фокус у строки принимает её контрол, а не она сама — подробности при записях строк ниже.
+        /// Отдельная константа, а не «забыли флаг»: разница между «не нужно» и «не дописали» должна
+        /// читаться из кода, иначе следующий заход вернёт требование обратно.
+        /// </remarks>
+        public const UiElementState RowInteractive =
+            UiElementState.Hover | UiElementState.Active | UiElementState.Disabled;
+
         private const string OfButton = "gm-button";
         private const string OfPlate  = "gm-plate-button";
         private const string OfChip   = "gm-chip";
@@ -140,7 +151,7 @@ namespace Guildmaster.UI.Components
             New("Пункт главного меню", "gm-mainmenu__btn", UiComponentGroup.Buttons, Interactive, OfButton,
                 "gm-mainmenu__btn--primary", "gm-mainmenu__btn--group-start"),
             New("Начать забег", "gm-loadout__start-btn", UiComponentGroup.Buttons, Interactive, OfPlate),
-            New("Сортировка инвентаря", "gm-loadout__sort", UiComponentGroup.Buttons, Interactive, null),
+            New("Сортировка инвентаря", "gm-loadout__sort", UiComponentGroup.Buttons, Interactive, OfButton),
             New("Вариант события", "gm-event-choice", UiComponentGroup.Buttons, Interactive, OfButton,
                 "gm-event-choice--unaffordable"),
             New("Слот профиля", "gm-profile__slot-pick", UiComponentGroup.Buttons, Interactive, OfButton,
@@ -179,13 +190,17 @@ namespace Guildmaster.UI.Components
                 "gm-chest__lid--open"),
 
             // --- СТРОКИ НАСТРОЕК ---
-            // Переключатель — единственный элемент с :checked. Псевдокласс ставится на сам Toggle,
-            // поэтому правило пишется через потомка: `.gm-toggle-row .unity-toggle:checked`.
+            // ФОКУСА У СТРОКИ НЕТ, и это решение, а не пропуск: фокус принимает её контрол (Toggle,
+            // DropdownField, Slider) — он и есть цель клавиатуры. Подсветить строку от фокуса
+            // потомка USS не может (`:focus-within` в UI Toolkit не существует), а сделать строку
+            // focusable значит поставить Tab две остановки подряд на одном и том же месте.
+            // Переключатель — единственный элемент с `:checked`: псевдокласс ставится на сам Toggle,
+            // поэтому правило пишется через потомка.
             New("Переключатель", "gm-toggle-row", UiComponentGroup.Rows,
-                Interactive | UiElementState.Checked, null),
-            New("Выбор", "gm-select-row", UiComponentGroup.Rows, Interactive, null,
+                RowInteractive | UiElementState.Checked, null),
+            New("Выбор", "gm-select-row", UiComponentGroup.Rows, RowInteractive, null,
                 "gm-select-row--disabled"),
-            New("Слайдер", "gm-slider-row", UiComponentGroup.Rows, Interactive, null),
+            New("Слайдер", "gm-slider-row", UiComponentGroup.Rows, RowInteractive, null),
 
             // --- ПАНЕЛИ И ДЕКОР ---
             New("Панель", "gm-panel", UiComponentGroup.Panels, UiElementState.None, null,

@@ -503,3 +503,11 @@
     min-width: auto;
     max-width: none;
 }
+
+/* Нажатие на строки дев-полок: отклик на клик у них был только наведением. Фокуса и
+   выключенности дев-тулингу не требуется — см. UiComponentRegistry.DevTooling. */
+.gm-console__hit:active,
+.gm-picker__row:active,
+.gm-picker__head-cell:active {
+    background-color: var(--gm-color-surface-sunken);
+}

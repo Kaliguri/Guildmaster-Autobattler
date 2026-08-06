@@ -179,16 +179,16 @@ namespace Guildmaster.DevTools
             caption.AddToClassList("gm-sheet__caption");
             row.Add(caption);
 
-            row.Add(Cell(entry, "покой",   UiElementState.None));
-            if (entry.IsInteractive)
-            {
-                row.Add(Cell(entry, "наведение", UiElementState.Hover));
-                row.Add(Cell(entry, "нажатие",   UiElementState.Active));
-                row.Add(Cell(entry, "фокус",     UiElementState.Focus));
-                row.Add(Cell(entry, "выключено", UiElementState.Disabled));
-                if (entry.Required.HasFlag(UiElementState.Checked))
-                    row.Add(Cell(entry, "отмечено", UiElementState.Checked));
-            }
+            row.Add(Cell(entry, "покой", UiElementState.None));
+
+            // Ячейки рисуются ровно по требуемым состояниям. Показывать «фокус» там, где элемент
+            // его не принимает (строка настроек — фокус живёт на её контроле), значит рисовать
+            // ячейку, неотличимую от покоя, и читать её как ненайденный дефект.
+            if (entry.Required.HasFlag(UiElementState.Hover))    row.Add(Cell(entry, "наведение", UiElementState.Hover));
+            if (entry.Required.HasFlag(UiElementState.Active))   row.Add(Cell(entry, "нажатие",   UiElementState.Active));
+            if (entry.Required.HasFlag(UiElementState.Focus))    row.Add(Cell(entry, "фокус",     UiElementState.Focus));
+            if (entry.Required.HasFlag(UiElementState.Disabled)) row.Add(Cell(entry, "выключено", UiElementState.Disabled));
+            if (entry.Required.HasFlag(UiElementState.Checked))  row.Add(Cell(entry, "отмечено",  UiElementState.Checked));
 
             for (int i = 0; i < entry.Variants.Count; i++)
             {
@@ -215,6 +215,7 @@ namespace Guildmaster.DevTools
             if (variant != null) sample.AddToClassList(variant);
 
             if (state == UiElementState.Disabled) sample.SetEnabled(false);
+            else if (state == UiElementState.Checked) Check(sample);
             else if (state != UiElementState.None) Force(sample, state);
 
             cell.Add(sample);
@@ -224,6 +225,23 @@ namespace Guildmaster.DevTools
             cell.Add(label);
 
             return cell;
+        }
+
+        /// <summary>
+        /// Отмечает образец: ставит значение реальному <see cref="Toggle"/> внутри него.
+        /// </summary>
+        /// <remarks>
+        /// Навязать <c>:checked</c> корню образца нельзя — псевдокласс держит сам <c>Toggle</c>, и
+        /// правило пишется через потомка. Первый прогон это и показал: ячейка «отмечено» ничем не
+        /// отличалась от «покоя», хотя правило в теме уже стояло. Значение ставится честно, через
+        /// <c>value</c>, — тогда движок поднимает псевдокласс сам.
+        /// </remarks>
+        private static void Check(VisualElement sample)
+        {
+            Toggle toggle = sample as Toggle ?? sample.Q<Toggle>();
+            if (toggle != null) { toggle.value = true; return; }
+
+            Force(sample, UiElementState.Checked);
         }
 
         /// <summary>Навязывает элементу псевдосостояние и запоминает пару для повторной установки.</summary>

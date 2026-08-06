@@ -36,3 +36,16 @@
     color: var(--gm-color-text-muted);
     margin-top: var(--gm-space-3);
 }
+
+/* Крышку сундука жмут — значит она отвечает на нажатие и на фокус (стала focusable 06.08.2026). */
+.gm-chest__lid:active {
+    background-color: var(--gm-color-surface-sunken);
+}
+
+.gm-chest__lid:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-chest__lid:disabled {
+    color: var(--gm-color-disabled-text);
+}

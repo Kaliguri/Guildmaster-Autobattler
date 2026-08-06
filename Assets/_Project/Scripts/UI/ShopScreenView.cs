@@ -65,7 +65,7 @@ namespace Guildmaster.UI
                 for (int i = 0; i < shelf.Count; i++)
                 {
                     ShopItem item = shelf[i];
-                    var card = new VisualElement();
+                    var card = new VisualElement { focusable = true };
                     card.AddToClassList("gm-shop__card");
                     if (item.Sold) card.AddToClassList("gm-shop__card--sold");
                     // Витрина показывает имя и цену; чем реликвия ЯВЛЯЕТСЯ — тем же тултипом, что в награде
@@ -102,7 +102,7 @@ namespace Guildmaster.UI
                 stashBox.Clear();
                 foreach (ShopStashItem st in shop.Stash)
                 {
-                    var row = new VisualElement();
+                    var row = new VisualElement { focusable = true };
                     row.AddToClassList("gm-shop__stash-row");
 
                     var n = new Label(nameOf(st.Relic));

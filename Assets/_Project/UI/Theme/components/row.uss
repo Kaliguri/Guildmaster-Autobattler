@@ -179,3 +179,65 @@
 .gm-stat.unity-disabled .gm-stat__value {
     color: var(--gm-color-disabled-text);
 }
+
+/* === ОТКЛИК СТРОКИ НАСТРОЕК (06.08.2026) ====================================
+ * Строки не отвечали ни на что: наведение, нажатие и выключенность выглядели одинаково, и
+ * контактный лист показал шесть одинаковых ячеек в ряд. Правило Макса — «полоса везде, вдруг просто
+ * навестись захочется, КОНСИСТЕНТНОСТЬ» (26.07.2026), поэтому подсвечивается СТРОКА целиком, а не
+ * её контрол: цель шириной в панель, а не галочка 20x20.
+ *
+ * Язык отклика тот же, что у кнопки: наведение поднимает поверхность, нажатие утапливает. Свой
+ * язык здесь был бы вторым словарём для одного и того же жеста.
+ *
+ * ФОКУСА У СТРОКИ НЕТ, и это осознанно: фокус принимает её контрол (Toggle, DropdownField,
+ * Slider) — он и есть цель клавиатуры. Подсветить строку от фокуса потомка USS не может:
+ * :focus-within в UI Toolkit не существует, а делать строку focusable значит ставить Tab две
+ * остановки подряд на одном и том же.
+ * ========================================================================== */
+.gm-toggle-row:hover,
+.gm-select-row:hover,
+.gm-slider-row:hover {
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-toggle-row:active,
+.gm-select-row:active,
+.gm-slider-row:active {
+    background-color: var(--gm-color-surface-sunken);
+}
+
+/* Выключенная строка не поднимается под курсором: отклик на недоступное — обещание, которого
+   элемент не сдержит. Гаснет при этом ТЕКСТ (правило ui-feedback), а сама строка остаётся живой. */
+.gm-toggle-row:disabled:hover,
+.gm-select-row:disabled:hover,
+.gm-slider-row:disabled:hover {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.gm-slider-row:disabled .gm-slider-row__label,
+.gm-slider-row:disabled .gm-slider-row__value {
+    color: var(--gm-color-disabled-text);
+}
+
+/* ОТМЕЧЕНО. `:checked` не был объявлен НИ РАЗУ до 06.08.2026: включённая галочка отличалась от
+   выключенной только самой галкой, которую рисует тема Unity. Теперь отмеченный чекбокс заливается
+   патиной — тем же цветом, которым в игре обозначено «сюда нажать» и «это выбрано». */
+.gm-toggle-row__check .unity-toggle__checkmark:checked,
+.gm-toggle-row .unity-toggle:checked .unity-toggle__checkmark {
+    background-color: var(--gm-color-surface-accent);
+    border-color: var(--gm-color-border-action-strong);
+}
+
+/* Фокус контрола внутри строки — латунной каймой, как у кнопки; синюю рамку темы Unity гасим тем
+   же приёмом, что и везде (двухклассовый селектор против её специфичности). */
+.gm-toggle-row .unity-toggle:focus .unity-toggle__checkmark,
+.gm-select-row .unity-base-field:focus,
+.gm-slider-row .gm-slider:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+/* Ячейка стата кликабельна (открывает подсказку), значит отвечает и на нажатие. */
+.gm-stat:active {
+    background-color: var(--gm-color-surface-sunken);
+    border-color: var(--gm-color-border-inner);
+}

@@ -25,6 +25,10 @@ namespace Guildmaster.UI.Components
 
         public Slot()
         {
+            // См. Chip: по слоту кликают, значит он обязан принимать фокус — иначе клавиатура и
+            // геймпад до снаряжения не доходят, а правило `.gm-slot:focus` в теме не срабатывает.
+            focusable = true;
+
             AddToClassList("gm-slot");
             _icon = new VisualElement { name = "icon", pickingMode = PickingMode.Ignore };
             _icon.AddToClassList("gm-slot__icon");

@@ -64,3 +64,9 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
+
+/* Нажатие на слот — тот же жест, что у карточки: поверхность утапливается. */
+.gm-slot:active {
+    background-color: var(--gm-color-surface-sunken);
+    border-color: var(--gm-color-border-inner);
+}

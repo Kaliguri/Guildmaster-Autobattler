@@ -24,6 +24,11 @@ namespace Guildmaster.UI.Components
 
         public Chip()
         {
+            // Фокус: чип кликают мышью, значит до него обязана доходить и клавиатура с геймпадом —
+            // на Steam Deck курсора нет вовсе. VisualElement фокус не принимает по умолчанию, и до
+            // 06.08.2026 правило `.gm-chip:focus` в теме было мёртвым: состояние не наступало никогда.
+            focusable = true;
+
             AddToClassList("gm-chip");
             _icon = new VisualElement { name = "icon", pickingMode = PickingMode.Ignore };
             _icon.AddToClassList("gm-chip__icon");
