@@ -35,8 +35,7 @@ namespace Guildmaster.UI
             VisualElement root = screen.childCount > 0 ? screen[0] : screen;
             root.pickingMode = PickingMode.Position;
 
-            var titleOver = root.Q<Label>("menu-title-over");
-            var title     = root.Q<Label>("menu-title");
+            var wordmark  = root.Q<Guildmaster.UI.Components.Wordmark>("menu-title");
             var version   = root.Q<Label>("menu-version");
             var create   = root.Q<Button>("btn-create");
             var join     = root.Q<Button>("btn-join");
@@ -44,16 +43,15 @@ namespace Guildmaster.UI
             var settings = root.Q<Button>("btn-settings");
             var quit     = root.Q<Button>("btn-quit");
 
-            // Вывеска набрана ДВУМЯ элементами: у слов разные гарнитуры, кегли и разрядка. Ключи тоже
-            // раздельные — иначе перевод, склеенный в одну строку, разложить обратно нечем. Регистр
-            // задаёт содержимое ключа, а не USS: `text-transform` в UI Toolkit нет.
-            if (titleOver != null) titleOver.text = Gradient(L("ui.mainmenu.title_over", "HAPPY"));
-            if (title != null) title.text = L("ui.mainmenu.title", "GUILDMASTERS");
-
-            // Метка стадии стоит текстом в UXML — здесь ей только надевается градиент, потому что
-            // сделать это разметкой нельзя: тег пришлось бы экранировать прямо в атрибуте.
-            var stage = root.Q<Label>("menu-stage");
-            if (stage != null) stage.text = Gradient(stage.text);
+            // Вывеска — КОНТРОЛ (с 07.08.2026), и ключи по-прежнему раздельные: у слов разные
+            // гарнитуры, кегли и разрядка, а перевод, склеенный в одну строку, разложить обратно
+            // нечем. Градиент вешает сам контрол — здесь только тексты. Метка стадии живёт в
+            // разметке: она про сборку, а не про перевод.
+            if (wordmark != null)
+            {
+                wordmark.Over = L("ui.mainmenu.title_over", "HAPPY");
+                wordmark.Main = L("ui.mainmenu.title", "GUILDMASTERS");
+            }
 
             // Версия билда — ТОЛЬКО номер, целиком (уточнение Макса 05.08.2026: «без названия игры, а
             // просто версия, но целиком, как 1.0-dev.7e18da8»). Имя продукта отсюда убрано: название
@@ -104,28 +102,6 @@ namespace Guildmaster.UI
             }
 
             return root;
-        }
-
-        /// <summary>
-        /// Одевает строку вывески в вертикальный градиент пресета <c>WordmarkPlate</c>.
-        /// </summary>
-        /// <remarks>
-        /// <para><b>Почему кодом, а не в USS.</b> Свойства градиента текста в UI Toolkit нет вовсе —
-        /// единственный путь это rich-text тег, который живёт в самом тексте. Пресет ищется по имени
-        /// в <c>Resources/Text Color Gradients/</c>: путь задан настройками текста и менять его
-        /// незачем.</para>
-        /// <para><b>Три условия, без любого из которых градиент молча не появится</b> (проверено
-        /// кадром 05.08.2026): пресет лежит в той папке; цвет элемента белый, потому что градиент
-        /// УМНОЖАЕТСЯ на цвет, а не заменяет его (роль <c>--gm-color-text-gradient-base</c>);
-        /// внешний <c>&lt;color&gt;</c> обязателен при включённой обводке — с
-        /// <c>outline-width &gt; 0</c> голый тег градиента не применяется вовсе, это
-        /// <see href="https://issuetracker.unity3d.com/issues/ui-toolkit-color-gradient-not-applying-to-label-text-when-outline-width-is-set-to-more-than-0">
-        /// зарегистрированный баг Unity</see>. Белый в теге — та же единица умножения, поэтому
-        /// обёртка обхода ничего не искажает.</para>
-        /// </remarks>
-        private static string Gradient(string text)
-        {
-            return "<color=#FFFFFF><gradient=\"WordmarkPlate\">" + text + "</gradient></color>";
         }
 
         /// <summary>

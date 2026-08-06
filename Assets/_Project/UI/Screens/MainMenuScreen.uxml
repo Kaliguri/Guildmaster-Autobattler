@@ -15,17 +15,10 @@
 
         <ui:VisualElement class="gm-mainmenu__column">
             <!-- Вывеска: надстрочник между линейками, крупное слово, метка сборки (вариант «линейки»,
-                 выбор Макса 04.08.2026). Два слова живут отдельными элементами не для красоты — у них
-                 разные гарнитуры, кегли и разрядка, одним Label этого не выразить. -->
-            <ui:VisualElement class="gm-mainmenu__title" picking-mode="Ignore">
-                <ui:VisualElement class="gm-title__band" picking-mode="Ignore">
-                    <ui:VisualElement class="gm-title__rule" />
-                    <ui:Label name="menu-title-over" text="HAPPY" class="gm-title__over" />
-                    <ui:VisualElement class="gm-title__rule" />
-                </ui:VisualElement>
-                <ui:Label name="menu-title" text="GUILDMASTERS" class="gm-text-display gm-title__main" />
-                <ui:Label name="menu-stage" text="DEMO" class="gm-title__demo" />
-            </ui:VisualElement>
+                 выбор Макса 04.08.2026). С 07.08.2026 это КОНТРОЛ, а не разметка: ту же вывеску
+                 просит бут-экран, и композиция обязана быть одна на оба места. Тексты ставит View
+                 из локализации — здесь только то, что видно без неё. -->
+            <gm:Wordmark name="menu-title" class="gm-mainmenu__title" over="HAPPY" main="GUILDMASTERS" stage="DEMO" />
 
             <!-- ДВЕ кнопки входа, а не список режимов (модель Макса 02.08.2026). Режим выбирается
                  следующим шагом, вместе с домом и открытостью для друзей: кооп у нас свойство

@@ -368,6 +368,12 @@ namespace Guildmaster.UI.Components
             New("Текст (Словарь подсказки)", "gm-kw", UiComponentGroup.Typography,
                 UiElementState.None, null, "выделенные понятия внутри подсказок"),
 
+            // ВЫВЕСКА — ОДНА НА ВСЮ ИГРУ, и поэтому она контрол, а не разметка экрана. До 07.08.2026
+            // композиция жила внутри главного меню, а бут-экран набирал название своим сырым Label,
+            // не задавая ему гарнитуру, — и показывал имя игры интерфейсным гротеском.
+            New("Вывеска игры", "gm-wordmark", UiComponentGroup.Panels, UiElementState.None, null,
+                "главное меню и бут-экран"),
+
             // --- ПАНЕЛИ И ДЕКОР ---
             New("Панель", "gm-panel", UiComponentGroup.Panels, UiElementState.None, null,
                 "подложка почти всех экранов: меню, диалоги, лавка, награда",

@@ -27,6 +27,7 @@
 @import url("components/unity.uss");
 @import url("components/row.uss");
 @import url("components/text.uss");
+@import url("components/wordmark.uss");
 @import url("components/card.uss");
 @import url("components/slot.uss");
 @import url("components/tooltip.uss");

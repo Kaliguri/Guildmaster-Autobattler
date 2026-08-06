@@ -84,6 +84,10 @@ namespace Guildmaster.DevTools
             ["gm-select-row"]          = () => SelectSample(),
             ["gm-slider-row"]          = () => new SliderRow { LabelText = "Громкость", Value = 0.65f },
 
+            // Вывеска идёт СО СВОИМИ дефолтами: название игры одинаково на всех языках, и подменять
+            // его «Образцом» значило бы показывать на листе не тот блок, что в игре.
+            ["gm-wordmark"]            = () => new Wordmark { Stage = "DEMO" },
+
             // Панели и декор.
             ["gm-panel"]               = () => Box("gm-panel", "gm-panel--dialog"),
             ["gm-panel__frame"]        = () => new PanelFrame(),
