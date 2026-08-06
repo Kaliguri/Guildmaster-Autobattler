@@ -106,6 +106,13 @@ export const PAGES: PageDef[] = [
     load: () => import("./sections/gamefeel-zones.js")
   },
   {
+    id: "bloom",
+    area: "gamefeel",
+    title: "Витрина блума",
+    blurb: "Все светящиеся эффекты боя в одном кадре, по кадру на вариацию настроек свечения.",
+    load: () => import("./sections/gamefeel-bloom.js")
+  },
+  {
     id: "floor",
     area: "gamefeel",
     title: "Пол арены",
