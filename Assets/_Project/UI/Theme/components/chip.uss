@@ -174,8 +174,6 @@
 
 /* Разделитель осей тегов (Role | DamageType | Playstyle | Mechanic). */
 .gm-tag-sep {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-xs);
     opacity: 0.4;
     margin: 0 var(--gm-space-0);
 }

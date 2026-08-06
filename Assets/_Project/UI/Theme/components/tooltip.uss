@@ -26,8 +26,6 @@
 }
 
 .gm-tooltip__tags {
-    color: var(--gm-color-accent);
-    font-size: var(--gm-font-xxs);
 }
 
 .gm-tooltip__desc {
@@ -72,8 +70,6 @@
 }
 
 .gm-tooltip__glossary-term {
-    color: var(--gm-color-accent);
-    font-size: var(--gm-font-xxs);
     -unity-font-style: bold;
 }
 

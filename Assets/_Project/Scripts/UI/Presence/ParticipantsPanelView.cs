@@ -100,6 +100,8 @@ namespace Guildmaster.UI.Presence
             if (foes.childCount > 0)
             {
                 var caption = new Label("Против") { pickingMode = PickingMode.Ignore };
+                caption.AddToClassList("gm-text-label");
+                caption.AddToClassList("gm-text--muted");
                 caption.AddToClassList("gm-participants__caption");
                 _root.Add(caption);
                 _root.Add(foes);
@@ -117,6 +119,7 @@ namespace Guildmaster.UI.Presence
             dot.AddToClassList($"gm-cursor--p{(player.ColorIndex % 4) + 1}");
 
             var name = new Label(player.Name) { pickingMode = PickingMode.Ignore };
+            name.AddToClassList("gm-text-label");
             name.AddToClassList("gm-participants__name");
 
             row.Add(dot);
@@ -125,6 +128,8 @@ namespace Guildmaster.UI.Presence
             if (isLocal)
             {
                 var you = new Label("вы") { pickingMode = PickingMode.Ignore };
+                you.AddToClassList("gm-text-label");
+                you.AddToClassList("gm-text--muted");
                 you.AddToClassList("gm-participants__you");
                 row.Add(you);
             }

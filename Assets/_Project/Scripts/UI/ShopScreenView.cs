@@ -50,6 +50,7 @@ namespace Guildmaster.UI
                 if (toast == null)
                 {
                     toast = new Label();
+                    toast.AddToClassList("gm-text--negative");
                     toast.AddToClassList("gm-shop__toast-label");
                     toastBox.Add(toast);
                 }
@@ -83,6 +84,8 @@ namespace Guildmaster.UI
                     card.Add(name);
 
                     var price = new Label(item.Sold ? L("ui.shop.sold", "Куплено") : $"{item.Price}");
+                    price.AddToClassList("gm-text-body");
+                    price.AddToClassList("gm-text--value");
                     price.AddToClassList("gm-shop__price");
                     card.Add(price);
 
@@ -107,7 +110,7 @@ namespace Guildmaster.UI
                     row.AddToClassList("gm-shop__stash-row");
 
                     var n = new Label(nameOf(st.Relic));
-                    n.AddToClassList("gm-shop__stash-name");
+                    n.AddToClassList("gm-text-body");
                     n.WithTooltip(TooltipRequest.Relic(st.Relic?.Id)); // продаём вслепую только по имени — плохо
                     row.Add(n);
 

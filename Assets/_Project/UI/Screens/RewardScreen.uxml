@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--reward">
-            <ui:Label name="reward-title" text="Награда" class="gm-panel__title" />
+            <ui:Label name="reward-title" text="Награда" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
             <!-- Витрина: карточки катит код (RewardService), контейнер и рамка — из UXML. -->

@@ -483,6 +483,8 @@ namespace Guildmaster.UI
         private static VisualElement TagSeparator()
         {
             var sep = new Label("|") { pickingMode = PickingMode.Ignore };
+            sep.AddToClassList("gm-text-note");
+            sep.AddToClassList("gm-text--muted");
             sep.AddToClassList("gm-tag-sep");
             return sep;
         }

@@ -5,7 +5,7 @@
          своя роль «да/нет по необратимому». -->
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--confirm gm-panel--system">
-            <ui:Label name="peer-lost-title" class="gm-panel__title" />
+            <ui:Label name="peer-lost-title" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
             <ui:VisualElement class="gm-panel__body">

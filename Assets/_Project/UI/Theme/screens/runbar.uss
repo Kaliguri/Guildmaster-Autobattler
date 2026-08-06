@@ -107,8 +107,6 @@
 }
 
 .gm-runbar__capsule-value {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-body);
     -unity-font-style: bold;
     margin: 0;
 }

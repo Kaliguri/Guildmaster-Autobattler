@@ -1,13 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--event">
-            <ui:Label name="camp-title" text="Привал" class="gm-panel__title" />
+            <ui:Label name="camp-title" text="Привал" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
-            <ui:Label name="camp-body" text="" class="gm-event-body" />
+            <ui:Label name="camp-body" text="" class="gm-text-body gm-event-body" />
 
             <!-- Остаток бюджета: текст катит код (значения — из CampSession). -->
-            <ui:Label name="camp-budget" text="" class="gm-camp-budget" />
+            <ui:Label name="camp-budget" text="" class="gm-text-body gm-text--muted gm-camp-budget" />
 
             <!-- Кнопки действий катит код; «Пройти мимо» всегда последняя. -->
             <ui:VisualElement name="camp-actions" class="gm-choice-list" />

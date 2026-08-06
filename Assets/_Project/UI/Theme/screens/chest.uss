@@ -32,8 +32,6 @@
 }
 
 .gm-chest__hint {
-    font-size: var(--gm-font-body);
-    color: var(--gm-color-text-muted);
     margin-top: var(--gm-space-3);
 }
 

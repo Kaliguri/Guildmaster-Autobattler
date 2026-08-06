@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
-            <ui:Label text="Меню" class="gm-panel__title" />
+            <ui:Label text="Меню" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
             <!-- Тело диалога: пунктов немного, но занимает оно ту же область, что и у настроек —
                  поэтому окно одинаковое, а кнопки не растягиваются по всей высоте. -->

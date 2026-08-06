@@ -1,14 +1,14 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--confirm gm-panel--system">
-            <ui:Label name="confirm-title" class="gm-panel__title" />
+            <ui:Label name="confirm-title" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
             <ui:VisualElement class="gm-panel__body">
                 <ui:Label name="confirm-body" class="gm-confirm__body" />
                 <!-- Отдельная строка последствия: игрок читает заголовок и кнопки, а «что именно
                      пропадёт» обязано попасться ему на глаза до нажатия, а не после. -->
-                <ui:Label name="confirm-consequence" class="gm-confirm__consequence" />
+                <ui:Label name="confirm-consequence" class="gm-text--danger gm-confirm__consequence" />
             </ui:VisualElement>
 
             <ui:VisualElement class="gm-divider" />

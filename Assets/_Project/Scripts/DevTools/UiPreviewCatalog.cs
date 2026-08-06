@@ -426,6 +426,7 @@ namespace Guildmaster.DevTools
             root.style.paddingLeft = 24; root.style.paddingRight = 24;
 
             var h1 = new Label("Guildmaster UI — библиотека компонентов");
+            h1.AddToClassList("gm-text-title");
             h1.AddToClassList("gm-panel__title");
             h1.style.unityTextAlign = UnityEngine.TextAnchor.MiddleLeft;
             h1.style.fontSize = 26; h1.style.marginBottom = 2;

@@ -23,7 +23,7 @@
                     <ui:Label name="menu-title-over" text="HAPPY" class="gm-title__over" />
                     <ui:VisualElement class="gm-title__rule" />
                 </ui:VisualElement>
-                <ui:Label name="menu-title" text="GUILDMASTERS" class="gm-title__main" />
+                <ui:Label name="menu-title" text="GUILDMASTERS" class="gm-text-display gm-title__main" />
                 <ui:Label name="menu-stage" text="DEMO" class="gm-title__demo" />
             </ui:VisualElement>
 

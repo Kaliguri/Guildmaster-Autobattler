@@ -37,30 +37,22 @@
 }
 
 .gm-detail__name {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-body);
     -unity-font-style: bold;
     margin-bottom: var(--gm-space-2);
     white-space: normal;
 }
 
 .gm-detail__desc {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-sm);
     margin-bottom: var(--gm-space-2);
     white-space: normal;
 }
 
 .gm-detail__tags {
-    color: var(--gm-color-accent);
-    font-size: var(--gm-font-sm);
     margin-bottom: var(--gm-space-2);
     white-space: normal;
 }
 
 .gm-detail__stats {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
     white-space: normal;
 }
 
@@ -86,8 +78,6 @@
 
 /* Стат-лейбл в глобальной панели (золото/акт/таймер). */
 .gm-loadout__stat {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-sm);
     margin-left: var(--gm-space-1);
     margin-right: var(--gm-space-1);
 }
@@ -139,8 +129,6 @@
 /* Подпись — сериф, как у прочих кнопок-пластин (голос игры), поэтому синтетический жир снят:
    поле у кнопки нагретое, и подпись читается без него. */
 .gm-loadout__start-label {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-sm);
     -unity-font-definition: var(--gm-font-voice);
     -unity-font-style: normal;
 }
@@ -172,15 +160,11 @@
 
 /* Гильдия + возвышение + акт (слева) — ОДНОЙ строкой: двухстрочная верстка держала высоту бара на 84. */
 .gm-loadout__guild-name {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-body);
     -unity-font-style: bold;
     margin: 0;
 }
 
 .gm-loadout__guild-asc {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
     letter-spacing: 2px;
     margin: 0;
     margin-left: var(--gm-space-1);
@@ -223,8 +207,6 @@
 }
 
 .gm-loadout__battle-hint {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
     -unity-text-align: middle-center;
     white-space: normal;
 }
@@ -371,14 +353,10 @@
 }
 
 .gm-loadout__video-hint {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
 }
 
 /* Имя персонажа — НАД видео, компактно (не плакат). */
 .gm-loadout__detail-title {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-body);
     letter-spacing: 1px;
     -unity-font-style: bold;
     margin-bottom: 0;
@@ -398,8 +376,6 @@
 
 /* Мелкая подпись секции. Прижата к своему блоку (space-0): подпись принадлежит тому, что под ней. */
 .gm-loadout__section-label {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
     margin-bottom: var(--gm-space-0);
 }
 
@@ -433,7 +409,6 @@
 .gm-loadout__narrative-text {
     -unity-font-definition: var(--gm-font-voice-italic);
     -unity-font-style: italic;
-    color: var(--gm-color-text-muted);
     font-size: var(--gm-font-xs);
     white-space: normal;
     min-height: 70px;

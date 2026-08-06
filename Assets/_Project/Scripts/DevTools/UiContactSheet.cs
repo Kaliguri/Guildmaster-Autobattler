@@ -329,8 +329,8 @@ namespace Guildmaster.DevTools
         /// <summary>Порядок меток на листе: от тихой к громкой, чтобы ряд читался как шкала.</summary>
         private static readonly UiTextTone[] ToneOrder =
         {
-            UiTextTone.Muted, UiTextTone.Brass, UiTextTone.Positive,
-            UiTextTone.Negative, UiTextTone.Danger,
+            UiTextTone.Muted, UiTextTone.Brass, UiTextTone.Value, UiTextTone.Accent,
+            UiTextTone.Positive, UiTextTone.Negative, UiTextTone.Danger,
         };
 
         /// <summary>Класс метки и её подпись на листе.</summary>
@@ -338,6 +338,8 @@ namespace Guildmaster.DevTools
         {
             UiTextTone.Muted    => ("gm-text--muted",    "приглушённый"),
             UiTextTone.Brass    => ("gm-text--brass",    "латунь"),
+            UiTextTone.Value    => ("gm-text--value",    "ценность"),
+            UiTextTone.Accent   => ("gm-text--accent",   "выбрано"),
             UiTextTone.Positive => ("gm-text--positive", "прирост"),
             UiTextTone.Negative => ("gm-text--negative", "убыль"),
             UiTextTone.Danger   => ("gm-text--danger",   "опасность"),

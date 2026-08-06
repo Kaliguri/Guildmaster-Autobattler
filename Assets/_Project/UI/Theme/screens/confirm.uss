@@ -6,7 +6,6 @@
 /* Последствие — тем же красным, что и кнопка сноса: это одна мысль, сказанная дважды. */
 .gm-confirm__consequence {
     white-space: normal;
-    color: var(--gm-color-danger);
 }
 
 .gm-confirm__actions {

@@ -19,8 +19,6 @@
 
 /* Строка запаса для сброса ради места (кликабельна). */
 .gm-reward-drop__row {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
     padding-top: var(--gm-space-1);
     padding-bottom: var(--gm-space-1);
     padding-left: var(--gm-space-2);

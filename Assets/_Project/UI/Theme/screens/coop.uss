@@ -63,8 +63,6 @@
 .gm-participants__caption {
     margin-top: var(--gm-space-1);
     margin-bottom: var(--gm-space-0);
-    font-size: var(--gm-font-xxs);
-    color: var(--gm-color-text-muted);
     -unity-font-style: italic;
 }
 
@@ -90,12 +88,8 @@
 }
 
 .gm-participants__name {
-    font-size: var(--gm-font-xxs);
-    color: var(--gm-color-text);
 }
 
 .gm-participants__you {
     margin-left: var(--gm-space-0);
-    font-size: var(--gm-font-xxs);
-    color: var(--gm-color-text-muted);
 }

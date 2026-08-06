@@ -14,5 +14,4 @@
     -unity-text-align: middle-center;
     letter-spacing: 4px;
     margin-bottom: var(--gm-space-3);
-    color: var(--gm-color-accent);
 }

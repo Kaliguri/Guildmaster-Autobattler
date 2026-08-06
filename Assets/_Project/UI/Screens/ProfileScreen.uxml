@@ -2,7 +2,7 @@
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="profile-frame" corner="0" />
-            <ui:Label name="profile-title" text="Профиль" class="gm-panel__title" />
+            <ui:Label name="profile-title" text="Профиль" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
             <ui:ScrollView class="gm-panel__body">

@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel" style="min-width: 560px; max-width: 600px;">
-            <ui:Label text="Loadout" class="gm-panel__title" />
+            <ui:Label text="Loadout" class="gm-text-title gm-panel__title" />
 
             <ui:VisualElement class="gm-tabbar">
                 <gm:PlateButton name="tab-relic" text="Relic" class="gm-tab gm-tab--active" />
@@ -14,10 +14,10 @@
             <ui:VisualElement class="gm-loadout-body">
                 <ui:ScrollView name="relic-grid" style="flex-grow: 1; max-height: 220px;" />
                 <ui:VisualElement class="gm-detail">
-                    <ui:Label name="detail-name" text="—" class="gm-detail__name" />
-                    <ui:Label name="detail-desc" text="" class="gm-detail__desc" />
-                    <ui:Label name="detail-tags" text="" class="gm-detail__tags" />
-                    <ui:Label name="detail-stats" text="" class="gm-detail__stats" />
+                    <ui:Label name="detail-name" text="—" class="gm-text-subtitle gm-detail__name" />
+                    <ui:Label name="detail-desc" text="" class="gm-text-caption gm-detail__desc" />
+                    <ui:Label name="detail-tags" text="" class="gm-text-caption gm-text--accent gm-detail__tags" />
+                    <ui:Label name="detail-stats" text="" class="gm-text-caption gm-text--muted gm-detail__stats" />
                 </ui:VisualElement>
             </ui:VisualElement>
 

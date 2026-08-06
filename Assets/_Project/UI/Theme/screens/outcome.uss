@@ -1,14 +1,8 @@
-.gm-outcome__title {
-    color: var(--gm-color-heading-accent);
-}
-
 .gm-outcome__title--defeat {
     color: var(--gm-color-negative);
 }
 
 .gm-outcome__sub {
-    font-size: var(--gm-font-body);
-    color: var(--gm-color-text-muted);
     -unity-text-align: middle-center;
     flex-grow: 1;
     margin-top: var(--gm-space-3);

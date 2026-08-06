@@ -2,7 +2,7 @@
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="newgame-frame" corner="0" />
-            <ui:Label name="newgame-title" text="Создать игру" class="gm-panel__title" />
+            <ui:Label name="newgame-title" text="Создать игру" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
             <!-- Тело диалога — ScrollView, а не VisualElement: переполнение обязано уходить в

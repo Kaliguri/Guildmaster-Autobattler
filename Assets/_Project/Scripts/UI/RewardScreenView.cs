@@ -131,6 +131,8 @@ namespace Guildmaster.UI
                     // промахивался, и в списке «что сбросить» игрок читал сырые id.
                     string label = Coalesce(localize?.Invoke(id + "." + ContentKeys.NameSuffix), id);
                     var r = new Label(label) { focusable = true };
+                    r.AddToClassList("gm-text-caption");
+                    r.AddToClassList("gm-text--muted");
                     r.AddToClassList("gm-reward-drop__row");
                     r.RegisterCallback<ClickEvent>(_ => { drop = id; Refresh(); });
                     dropList?.Add(r);

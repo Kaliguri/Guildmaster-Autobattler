@@ -57,6 +57,8 @@ namespace Guildmaster.UI.Components
 
             // --- Тело ---
             _tags = Line("gm-tooltip__tags");
+            _tags.AddToClassList("gm-text-label");
+            _tags.AddToClassList("gm-text--accent");
             _tags.style.whiteSpace = WhiteSpace.Normal;
 
             _lines = new VisualElement { pickingMode = PickingMode.Ignore };
@@ -124,6 +126,8 @@ namespace Guildmaster.UI.Components
             row.AddToClassList("gm-tooltip__glossary-row");
 
             var name = new Label(term ?? string.Empty) { pickingMode = PickingMode.Ignore };
+            name.AddToClassList("gm-text-label");
+            name.AddToClassList("gm-text--accent");
             name.AddToClassList("gm-tooltip__glossary-term");
             var text = new Label(definition ?? string.Empty) { pickingMode = PickingMode.Ignore };
             text.AddToClassList("gm-text-label");

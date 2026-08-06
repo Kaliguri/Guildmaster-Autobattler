@@ -5,8 +5,6 @@
 }
 
 .gm-event-body {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-body);
     white-space: normal;
     margin-bottom: var(--gm-space-3);
 }
@@ -28,8 +26,6 @@
 
 /* Остаток бюджета над колонкой действий — вторичная строка, читается как счётчик, а не как заголовок. */
 .gm-camp-budget {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-body);
     margin-bottom: var(--gm-space-2);
     -unity-text-align: middle-right;
 }

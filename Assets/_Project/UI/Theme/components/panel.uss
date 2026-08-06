@@ -9,8 +9,6 @@
 }
 
 .gm-panel__title {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-title);
     -unity-font-style: bold;
     -unity-text-align: upper-center;
     margin-bottom: var(--gm-space-3);

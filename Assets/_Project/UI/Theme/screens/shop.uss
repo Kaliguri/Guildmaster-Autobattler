@@ -5,11 +5,6 @@
     margin-bottom: var(--gm-space-2);
 }
 
-.gm-shop__gold {
-    font-size: var(--gm-font-title);
-    color: var(--gm-color-value);
-}
-
 /* Витрина и карточки НЕ сжимаются: как только у панели появился потолок высоты, флекс начал
    ужимать их первыми — карточка становилась ниже своего содержимого, и кнопка «Купить» вылезала
    за нижнюю кромку прямо на разделитель (рендер 2026-08-02). Место под нехватку высоты отдаёт
@@ -37,15 +32,11 @@
 }
 
 .gm-shop__price {
-    font-size: var(--gm-font-body);
-    color: var(--gm-color-value);
     margin-top: var(--gm-space-1);
     margin-bottom: var(--gm-space-1);
 }
 
 .gm-shop__section-title {
-    font-size: var(--gm-font-body);
-    color: var(--gm-color-text-muted);
     margin-top: var(--gm-space-2);
     margin-bottom: var(--gm-space-1);
 }
@@ -61,11 +52,6 @@
     padding: var(--gm-space-1);
     border-bottom-width: var(--gm-border-1);
     border-bottom-color: var(--gm-color-border-subtle);
-}
-
-.gm-shop__stash-name {
-    font-size: var(--gm-font-body);
-    color: var(--gm-color-text);
 }
 
 .gm-shop__footer {
@@ -85,9 +71,12 @@
     justify-content: center;
 }
 
+/* Кегль мимо ролей: 48 у гротеска роли не имеет (--gm-text-display это 48 ДИСПЛЕЙНОЙ гарнитуры,
+   то есть вывеска игры). Тост об отказе и глиф сундука — два таких случая на всё дерево; заводить
+   девятую роль ради двух непохожих друг на друга вещей значит плодить роли под места. Оба выписаны
+   исключениями в UiTypographyGateTests. */
 .gm-shop__toast-label {
     font-size: var(--gm-font-lg);
-    color: var(--gm-color-negative);
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }

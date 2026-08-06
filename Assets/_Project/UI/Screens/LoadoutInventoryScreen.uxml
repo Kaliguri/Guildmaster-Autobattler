@@ -12,7 +12,7 @@
 
             <!-- Боевая зона-«дырка» (сквозная; прозрачна над персист-камерой). -->
             <ui:VisualElement name="battle-zone" class="gm-loadout__battle" picking-mode="Ignore">
-                <ui:Label name="battle-hint" text="Живая расстановка" class="gm-loadout__battle-hint" picking-mode="Ignore" />
+                <ui:Label name="battle-hint" text="Живая расстановка" class="gm-text-caption gm-text--muted gm-loadout__battle-hint" picking-mode="Ignore" />
             </ui:VisualElement>
 
             <ui:VisualElement class="gm-loadout__main">
@@ -52,14 +52,14 @@
                              (п.8 раунда 4): раньше шапка панели была единственным блоком без заголовка
                              и читалась «до» списка, а не первым его разделом. -->
                         <ui:VisualElement class="gm-loadout__section">
-                            <ui:Label name="basics-label" text="Основное" class="gm-loadout__section-label" />
-                            <ui:Label name="detail-title" text="—" class="gm-loadout__detail-title" />
+                            <ui:Label name="basics-label" text="Основное" class="gm-text-name gm-text--muted gm-loadout__section-label" />
+                            <ui:Label name="detail-title" text="—" class="gm-text-subtitle gm-loadout__detail-title" />
                             <ui:VisualElement name="detail-tags" class="gm-loadout__tags" />
                         </ui:VisualElement>
 
                         <ui:VisualElement class="gm-loadout__section">
                             <gm:AspectBox Aspect="16:9" class="gm-loadout__video">
-                                <ui:Label name="video-hint" text="видео-вставка 16:9" class="gm-loadout__video-hint" />
+                                <ui:Label name="video-hint" text="видео-вставка 16:9" class="gm-text-caption gm-text--muted gm-loadout__video-hint" />
                             </gm:AspectBox>
                         </ui:VisualElement>
 
@@ -68,11 +68,11 @@
                         </ui:VisualElement>
 
                         <ui:VisualElement class="gm-loadout__section">
-                            <ui:Label name="detail-narrative" text="" class="gm-loadout__narrative-text" />
+                            <ui:Label name="detail-narrative" text="" class="gm-text--muted gm-loadout__narrative-text" />
                         </ui:VisualElement>
 
                         <ui:VisualElement class="gm-loadout__section">
-                            <ui:Label name="upgrades-label" text="Улучшения" class="gm-loadout__section-label" />
+                            <ui:Label name="upgrades-label" text="Улучшения" class="gm-text-name gm-text--muted gm-loadout__section-label" />
                             <ui:VisualElement class="gm-loadout__upgrades">
                                 <ui:VisualElement name="upgrade-row-1" class="gm-loadout__upgrade-row" />
                                 <ui:VisualElement name="upgrade-row-2" class="gm-loadout__upgrade-row" />
@@ -80,7 +80,7 @@
                         </ui:VisualElement>
 
                         <ui:VisualElement class="gm-loadout__section">
-                            <ui:Label name="stats-label" text="Характеристики" class="gm-loadout__section-label" />
+                            <ui:Label name="stats-label" text="Характеристики" class="gm-text-name gm-text--muted gm-loadout__section-label" />
                             <ui:VisualElement name="detail-stats" class="gm-loadout__stats" />
                         </ui:VisualElement>
 
