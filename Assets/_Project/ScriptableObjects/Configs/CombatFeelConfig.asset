@@ -252,10 +252,10 @@ MonoBehaviour:
     _starRadiusH: 0
     _starRays: {x: 7, y: 9}
   _hitFormPierce:
-    _lengthH: 0.6
-    _arcH: {x: 0.015, y: 0.035}
-    _halfThicknessH: {x: 0.015, y: 0.02}
-    _roughness: 0.18
+    _lengthH: 0.9
+    _arcH: {x: 0, y: 0}
+    _halfThicknessH: {x: 0.012, y: 0.016}
+    _roughness: 0.12
     _starRadiusH: 0
     _starRays: {x: 7, y: 9}
   _hitFormBlunt:

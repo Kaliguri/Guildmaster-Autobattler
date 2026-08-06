@@ -149,10 +149,11 @@ namespace Guildmaster.Presentation.Effects
     public sealed class HitFormVfx : MonoBehaviour
     {
         /// <summary>
-        /// Во сколько раз quad шире звезды дробящего: лучи неравной длины и рвутся наружу, поэтому
-        /// впритык к радиусу их обрезало бы краем меша.
+        /// Во сколько раз quad шире честного вылета формы. Ровно вдвое — это «впритык» (вылет мерится
+        /// от центра), плюс десятая доля запаса: лучи звезды неравной длины и слегка рвутся наружу, а
+        /// обводка ложится поверх краёв.
         /// </summary>
-        private const float StarQuadMargin = 2.4f;
+        private const float StarQuadMargin = 2.2f;
 
         /// <summary>
         /// Потолок ширины обводки в долях полудлины формы — тот же, что в проперти шейдера
@@ -215,17 +216,26 @@ namespace Guildmaster.Presentation.Effects
                 ? p.At - dir * (p.Length * 0.5f)
                 : p.At;
 
-            // Quad вмещает и форму, и звезду: у дробящего вторая шире первой, и меш растягивается по ней.
-            // Шейдер про мировые единицы не знает — ему всё приходит долями полу-quad, поэтому перевод
-            // живёт здесь, в одном месте.
+            // Quad вмещает и форму, и звезду. Шейдер про мировые единицы не знает — ему всё приходит
+            // долями полу-quad, поэтому перевод живёт здесь, в одном месте.
+            //
+            // ЗВЕЗДА СТОИТ НЕ В ЦЕНТРЕ, А В ТОЧКЕ УДАРА — на конце формы (шейдер центрирует её в
+            // `q.x - _Len`). Прежняя формула считала её habitat от центра квада и потому недодавала
+            // ровно половину длины формы: лучи дробящего уезжали за меш и срезались краем. Считаем
+            // ЧЕСТНЫЙ вылет от центра: половина формы плюс радиус звезды.
             //
             // ОБВОДКА ТРЕБУЕТ ЗАПАСА: контур лежит СНАРУЖИ формы, и на quad, натянутом впритык, он
             // обрезался бы краем меша ровно там, где и должен быть виден.
             float line     = Mathf.Max(0f, p.LineWidth);
             float length   = Mathf.Max(0.001f, p.Length);
-            float quadSize = Mathf.Max(length + line * 2f, (p.StarRadius + line) * StarQuadMargin);
+            float halfLenRaw = length * 0.5f;
+
+            float reach = p.StarRadius > 0f
+                ? halfLenRaw + p.StarRadius     // звезда живёт на конце формы, а не вокруг её середины
+                : halfLenRaw;
+            float quadSize = (reach + line) * StarQuadMargin;
             float halfQuad = quadSize * 0.5f;
-            float halfLen  = length * 0.5f;
+            float halfLen  = halfLenRaw;
 
             transform.SetPositionAndRotation(centre, Quaternion.Euler(0f, 0f, angle));
             transform.localScale = new Vector3(quadSize, quadSize, 1f);
