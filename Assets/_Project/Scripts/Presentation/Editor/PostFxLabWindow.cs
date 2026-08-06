@@ -47,7 +47,11 @@ namespace Guildmaster.Presentation.Editor
         const string MapProfilePath    = "Assets/Settings/PostFX/MapPostFX.asset";
         const string FeelConfigPath    = "Assets/_Project/ScriptableObjects/Configs/CombatFeelConfig.asset";
         const string PalettePath       = "Assets/_Project/ScriptableObjects/Configs/CombatColorPalette.asset";
-        const string DefaultSubject    = "Assets/_Project/Prefabs/Bones/BoneUnit_SwordShield.prefab";
+        // ИГРОВОЙ вид юнита, а не голый риг. Разница не косметическая: обёртка `UnitView_*` масштабирует
+        // тело в 2.48 раза, и без неё линейка мельче настоящего юнита во столько же раз — то есть врёт
+        // ровно там, где она единственный источник правды о размере.
+        const string DefaultSubject    = "Assets/_Project/Prefabs/Units/UnitView_BoneStorybook.prefab";
+        const string BalancePath       = "Assets/_Project/ScriptableObjects/Configs/ClassBalanceConfig.asset";
         const string ShotFolder        = "Temp/PostFxLab";
 
         // Серия вариаций едет СРАЗУ в лабораторию, а не в Temp: кадр, оставшийся во временной папке,
@@ -65,8 +69,11 @@ namespace Guildmaster.Presentation.Editor
         /// </summary>
         const float FrameSizeWorld = 3.6f;
 
-        /// <summary>Насколько левее центра стоит юнит-линейка. Ровно столько, чтобы не лезть под эффект.</summary>
-        const float RulerOffsetX = 1.35f;
+        /// <summary>
+        /// Насколько левее центра стоит юнит-линейка: достаточно, чтобы не лезть под эффект, и не
+        /// настолько, чтобы самой уехать за край кадра — обрезанная линейка меряет хуже целой.
+        /// </summary>
+        const float RulerOffsetX = 1.05f;
 
         static readonly CultureInfo Culture = CultureInfo.InvariantCulture;
 
@@ -118,6 +125,14 @@ namespace Guildmaster.Presentation.Editor
         [SerializeField] private Cell _cell = Cell.HitSlash;
         /// <summary>Юнит-линейка сбоку: без него «мелко» и «крупно» не с чем сравнить.</summary>
         [SerializeField] private bool _showRuler = true;
+
+        /// <summary>
+        /// Вес удара задаётся УРОНОМ и запасом цели, а не долей напрямую: доля — величина расчётная, и
+        /// вбитая руками она молча уезжает мимо игры. Прежний фикс 0.25 при пороге тяжёлого удара 0.15
+        /// означал, что стенд всё время показывал САМЫЙ тяжёлый удар в игре и выдавал его за обычный.
+        /// </summary>
+        [SerializeField] private float _hitDamage = 100f;
+        [SerializeField] private float _targetMaxHp;
         /// <summary>Тон, в котором светится стенд. Один на все эффекты: сравниваем ЯРКОСТЬ, а не оттенки.</summary>
         [SerializeField] private UnitTone _tone = UnitTone.Fire;
 
@@ -149,7 +164,18 @@ namespace Guildmaster.Presentation.Editor
                 _glowBloom    = feel.CastGlowBloomIntensity;
                 _glowFlatness = feel.CastGlowFlatness;
             }
+
+            // Запас цели берётся из БАЛАНСА, а не из головы: норма живёт в ClassBalanceConfig, и вбитое
+            // здесь число разошлось бы с игрой на первой же правке баланса.
+            if (_targetMaxHp <= 0f)
+            {
+                var balance = AssetDatabase.LoadAssetAtPath<Guildmaster.Data.Definitions.ClassBalanceConfig>(BalancePath);
+                _targetMaxHp = balance != null ? balance.BaseHp : 2000f;
+            }
         }
+
+        /// <summary>Доля максимального HP, снятая ударом, — то, чем игра меряет вес удара.</summary>
+        private float HpDamageFrac => Mathf.Clamp01(_hitDamage / Mathf.Max(1f, _targetMaxHp));
 
         private void OnDisable() => TearDownStage();
 
@@ -224,6 +250,19 @@ namespace Guildmaster.Presentation.Editor
 
                 EditorGUILayout.Space(4f);
                 _tone = (UnitTone)EditorGUILayout.EnumPopup("Тон свечения", _tone);
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    _hitDamage   = EditorGUILayout.FloatField("Урон удара", _hitDamage);
+                    _targetMaxHp = EditorGUILayout.FloatField("HP цели", _targetMaxHp);
+                }
+
+                var feelForHint = AssetDatabase.LoadAssetAtPath<CombatFeelConfig>(FeelConfigPath);
+                float heavy = feelForHint != null ? feelForHint.HeavyHitFrac : 0.15f;
+                EditorGUILayout.LabelField(" ",
+                    $"{HpDamageFrac * 100f:0.#}% запаса · тяжёлым считается от {heavy * 100f:0.#}%" +
+                    (HpDamageFrac >= heavy ? " — это уже ПОТОЛОК размера" : ""),
+                    EditorStyles.miniLabel);
 
                 var prefab = (GameObject)EditorGUILayout.ObjectField("Субъект", _subjectPrefab, typeof(GameObject), false);
                 if (prefab != _subjectPrefab) { _subjectPrefab = prefab; TearDownStage(); }
@@ -445,6 +484,11 @@ namespace Guildmaster.Presentation.Editor
             var go = Spawn(_subjectPrefab, at);
             go.transform.localPosition = new Vector3(-RulerOffsetX, 0f, 0f);
 
+            // Полосы HP и маны — часть игрового вида, но не часть тела: как мера роста они не нужны, а
+            // светятся исправно и лезут в тот самый замер, ради которого линейка и стоит.
+            foreach (Canvas canvas in go.GetComponentsInChildren<Canvas>(true))
+                canvas.enabled = false;
+
             // Красим НАПРЯМУЮ по рендерерам, а не через BodyVisualState: у боевого шва тинт едет вместе
             // с эффектами, и состояние «только тинт, всё остальное по нулям» он законно считает пустым и
             // не применяет вовсе. Линейка — предмет стенда, а не юнит боя, и красить её можно прямо.
@@ -548,9 +592,8 @@ namespace Guildmaster.Presentation.Editor
             var vfx = go.GetComponentInChildren<HitFormVfx>(true);
             if (vfx == null) throw new InvalidOperationException("в префабе формы нет HitFormVfx");
 
-            // Удар среднего веса: стенд сравнивает яркость, а не разброс размеров, поэтому вес у всех один.
             HitFormParams p = HitFormFactory.Build(feel, kind, at.position, Vector2.right,
-                hpDamageFrac: 0.25f, core: feel.HitFormCoreColor, rim: rim,
+                hpDamageFrac: HpDamageFrac, core: feel.HitFormCoreColor, rim: rim,
                 seed: 0x5EEDu + (uint)kind, endsAtHit: endsAtHit, freezeSeconds: 0f);
 
             vfx.Apply(in p);
