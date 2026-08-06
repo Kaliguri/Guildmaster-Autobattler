@@ -995,6 +995,27 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
+        /// Точка ВНУТРИ эталонного габарита по нормированным координатам: <paramref name="u"/> — поперёк
+        /// (0 левый край, 1 правый), <paramref name="v"/> — вдоль от ног (0 ступни, 1 макушка).
+        /// <para>
+        /// Нужна показу удара: бить всегда в одну точку (<see cref="HitPoint"/>) значит получить восемь
+        /// одинаковых вспышек в одном пикселе, когда цель окружили. Габарит взят тот же, что у зоны
+        /// хватания, — он не зависит ни от кадра анимации, ни от прозрачных полей спрайта, поэтому
+        /// область попадания совпадает с фигурой, которую видит игрок.
+        /// </para>
+        /// </summary>
+        public Vector3 FigurePoint(float u, float v)
+        {
+            Vector3 feet = FeetPoint;
+            float width  = Mathf.Max(0.01f, _recommendedWidth);
+            float height = Mathf.Max(0.01f, _recommendedHeight);
+            return new Vector3(
+                feet.x + (Mathf.Clamp01(u) - 0.5f) * width,
+                feet.y + Mathf.Clamp01(v) * height,
+                feet.z);
+        }
+
+        /// <summary>
         /// Силуэт тела для drag-призрака расстановки (QA #9): части с их позами относительно точки ног
         /// <paramref name="feet"/>. Работает и на живом виде, и прямо на ассете префаба — см. <see cref="Body"/>.
         /// </summary>

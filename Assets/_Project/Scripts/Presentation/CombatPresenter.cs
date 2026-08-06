@@ -765,9 +765,13 @@ namespace Guildmaster.Presentation
             int shield = Mathf.RoundToInt(result.ShieldDamage);
             int hp     = Mathf.RoundToInt(result.HpDamage);
 
-            // Цифры — в точку попадания (грудь) цели. Размер HP-цифры растёт с весом удара (тяжёлый = крупнее).
-            Vector3 anchor  = AnchorFor(targetId, target.Position);
-            float   hpScale = _feel.EvaluateNumberScale(frac);   // кривая живёт в feel-конфиге, не здесь
+            // Точка попадания — ОБЛАСТЬ корпуса со смещением к стороне атакующего, а не фиксированная
+            // грудь: восемь бойцов, окруживших цель, давали восемь одинаковых вспышек в одном пикселе.
+            // Сид тот же, что у формы удара, поэтому знак, искры, порез и цифра приходят В ОДНО место.
+            uint    impactSeed = Effects.HitFormFactory.SeedOf(sourceId, targetId, target.Position, result.HpDamage);
+            Vector2 fromSource = hasSource ? target.Position - source.Position : Vector2.zero;
+            Vector3 anchor     = ImpactPointFor(targetId, target.Position, fromSource, impactSeed);
+            float   hpScale    = _feel.EvaluateNumberScale(frac);   // кривая живёт в feel-конфиге, не здесь
 
             // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе. Только прямое попадание:
             // яд, горение и шипы брони бьют тиками и без стороны — искры на них читались бы как удары.
@@ -780,7 +784,7 @@ namespace Guildmaster.Presentation
                     ? Mathf.Atan2(nudgeDir.y, nudgeDir.x) * Mathf.Rad2Deg
                     : (float?)null;
 
-                _vfx.Spawn(_feel.VfxHitSpark, AnchorFor(targetId, target.Position), blockDir,
+                _vfx.Spawn(_feel.VfxHitSpark, anchor, blockDir,
                            _feel.EvaluateHitVfxSizeMultiplier(frac), _feel.EvaluateHitVfxCount(frac),
                            BlockSparkPalette(sourceId, targetId), wound: false,
                            slot: nameof(_feel.VfxHitSpark));
@@ -814,14 +818,14 @@ namespace Guildmaster.Presentation
             // сюда типом Fire, форма не резолвилась, и консоль ругалась на дефект контента, которого нет.
             if (_vfx != null && _feel != null && _feel.EnableHitForm
                 && result.SourceKind == DamageSourceKind.AutoAttack)
-                SpawnHitForm(sourceId, targetId, in source, hasSource, in target, result, frac, blocked);
+                SpawnHitForm(sourceId, targetId, in source, hasSource, in target, result, frac, blocked, anchor);
 
             // ПОРЕЗ — то, что от удара осталось. Щит вскрытия не даёт: тело целое, значит и раны нет.
             // Тики яда и шипы тоже не режут — у них нет ни стороны, ни момента, ни клинка.
             if (view != null && result.IsDirectHit && !blocked && result.HpDamage > 0f
                 && nudgeDir.sqrMagnitude > 1e-8f)
             {
-                view.AddBodyCut(AnchorFor(targetId, target.Position), nudgeDir, frac, result.HpDamage);
+                view.AddBodyCut(anchor, nudgeDir, frac, result.HpDamage);
             }
 
             // Урон по щиту — синим «-N»; по HP — «-N» цветом урона. Если задет и щит, и HP —
@@ -849,9 +853,15 @@ namespace Guildmaster.Presentation
         /// «атакующий → цель»: направление удара он передаёт верно, теряется только то, с какой высоты
         /// замахнулись.
         /// </remarks>
+        /// <param name="impactPoint">
+        /// Точка попадания, уже разбросанная по области корпуса. Приходит параметром, а не считается
+        /// заново: знак удара, искры, порез и цифра обязаны прийти В ОДНО место, а два независимых
+        /// расчёта разъедутся на первой же правке разброса.
+        /// </param>
         private void SpawnHitForm(int sourceId, int targetId,
             in Combat.Tape.UnitSnapshot source, bool hasSource,
-            in Combat.Tape.UnitSnapshot target, DamageResult result, float hpDamageFrac, bool blocked)
+            in Combat.Tape.UnitSnapshot target, DamageResult result, float hpDamageFrac, bool blocked,
+            Vector3 impactPoint)
         {
             // Паспорт источника спрашиваем ЯВНО, а не через IsRanged: тот отвечает «не дальний» и на
             // «источника не существует», из-за чего безымянный урон молча получал язык ближнего боя —
@@ -876,7 +886,7 @@ namespace Guildmaster.Presentation
                 return;
             }
 
-            Vector3 b = AnchorFor(targetId, target.Position);
+            Vector3 b = impactPoint;
             _views.TryGetValue(sourceId, out UnitView sourceView);
 
             // НАПРАВЛЕНИЕ УДАРА, а не пара точек (06.08.2026). Знак говорит, КУДА рубанули, поэтому у
@@ -997,6 +1007,48 @@ namespace Guildmaster.Presentation
             if (_views.TryGetValue(unitId, out var v) && v != null)
                 return v.HitPoint;
             return (Vector3)shownPosition + Vector3.up * 0.4f;
+        }
+
+        /// <summary>
+        /// Точка попадания — ОБЛАСТЬ корпуса, а не точка. Внутри эталонного габарита цели, с центром
+        /// тяжести у того края, откуда пришёл атакующий: убийца со спины бьёт в лопатки, защитник в лоб —
+        /// в центр груди, копейщик снизу — ближе к ногам.
+        /// <para>
+        /// <b>Разброс детерминирован.</b> Он выведен из самого удара — участники, место, урон, — тем же
+        /// хешем, что даёт сид формы (<c>HitFormFactory.SeedOf</c>). Ни <c>UnityEngine.Random</c>, ни
+        /// поток <c>IRngService</c> здесь не годятся: первый разошёлся бы между клиентами кооператива,
+        /// второй — сам боевой поток, и показ, дёрнув его, сдвинул бы симуляцию.
+        /// </para>
+        /// </summary>
+        /// <param name="targetId">Кому прилетело.</param>
+        /// <param name="shownPosition">Позиция цели на показанном тике (фолбэк, если вида нет).</param>
+        /// <param name="fromAttacker">Вектор «атакующий → цель»; нулевой = бить в центр области.</param>
+        /// <param name="seed">Сид этого удара — тот же, что у формы: они обязаны совпасть местом.</param>
+        private Vector3 ImpactPointFor(int targetId, Vector2 shownPosition, Vector2 fromAttacker, uint seed)
+        {
+            if (!_views.TryGetValue(targetId, out var view) || view == null)
+                return (Vector3)shownPosition + Vector3.up * 0.4f;
+
+            // Две независимые дроби из одного сида: разные биты, иначе разброс лёг бы по диагонали.
+            float ru = (seed & 0xFFFF) / 65535f;
+            float rv = ((seed >> 16) & 0xFFFF) / 65535f;
+
+            // Центр области: по высоте грудь (0.62 роста), по ширине середина. Смещение к стороне
+            // атакующего — половина полуразмера, чтобы удар приходил в ближний край, но не за него.
+            const float ChestV = 0.62f;
+            const float Pull   = 0.25f;   // доля габарита, на которую центр тяжести едет к атакующему
+
+            Vector2 dir = fromAttacker.sqrMagnitude > 1e-8f ? fromAttacker.normalized : Vector2.zero;
+            float centreU = 0.5f - dir.x * Pull;   // атакующий слева (dir.x < 0) → бьём в левый край
+            float centreV = ChestV - dir.y * Pull;
+
+            // Разброс вокруг центра: ±четверть габарита. Больше — и удар уходит с фигуры, меньше —
+            // восемь ударов снова сливаются в одну точку.
+            const float Spread = 0.25f;
+            float u = centreU + (ru - 0.5f) * Spread * 2f;
+            float v = centreV + (rv - 0.5f) * Spread * 2f;
+
+            return view.FigurePoint(u, v);
         }
 
         /// <summary>Снимок юнита на ПОКАЗАННОМ тике. <c>false</c> — его в этом кадре нет.</summary>
