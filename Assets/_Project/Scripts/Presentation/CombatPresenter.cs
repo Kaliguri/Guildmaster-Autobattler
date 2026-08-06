@@ -1188,18 +1188,17 @@ namespace Guildmaster.Presentation
         /// Взмах начался — пускаем дугу за клинком. Она принадлежит ДВИЖЕНИЮ ОРУЖИЯ, а не удару, поэтому
         /// заводится здесь, на старте взмаха, и ничего не знает о том, попадёт ли он.
         /// </summary>
+        /// <remarks>
+        /// Своих чисел здесь нет намеренно: тумблер, яркость и весь вид следа раскладывает
+        /// <see cref="Effects.SwingArcLaunch"/> — тот же, кого зовёт редакторный стенд. Презентер отвечает
+        /// ровно за одно: чей это взмах и какого он цвета.
+        /// </remarks>
         private void OnUnitSwingStarted(UnitView view)
         {
             if (_vfx == null || _feel == null || view == null) return;
-            if (!_feel.EnableSwingArc) return;
 
-            // Дуга берёт цвет бьющего, но своей яркостью: она идёт на КАЖДЫЙ взмах, и свет, отмеренный
-            // под разовый каст, в непрерывной серии ударов заливает бой.
-            Color glow = GlowColorFor(view.UnitId);
-            float k = _feel.SwingArcBrightness;
-            _vfx.SpawnArc(_feel.VfxSwingArc, view, new Color(glow.r * k, glow.g * k, glow.b * k, glow.a),
-                          _feel.SwingArcInnerShare, _feel.SwingArcTailBias, _feel.SwingArcFadeOut,
-                          _feel.SwingArcMaxSpanDeg, _feel.SwingArcStyle, slot: nameof(_feel.VfxSwingArc));
+            _vfx.SpawnArc(_feel.VfxSwingArc, view, _feel, GlowColorFor(view.UnitId),
+                          slot: nameof(_feel.VfxSwingArc));
         }
 
         /// <summary>Contact-dust: пыль у ног при старте/стопе бега (VfxData → префаб, тумблер в feel-конфиге).</summary>

@@ -756,15 +756,28 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Отследить кадр начала взмаха и объявить его начавшимся. Зовётся из скраба свинга — там, где
-        /// известно, куда именно поставлен клип.
+        /// ПОСТАВИТЬ ВЗМАХ в заданное место клипа: запомнить, где он, и объявить его начавшимся, когда
+        /// скраб дошёл до кадра <c>StrikeStart</c>. Единственный вход в состояние взмаха — его зовёт и
+        /// боевой скраб по сим-тикам, и редакторный стенд.
         /// </summary>
+        /// <param name="clipTime">Нормализованное время клипа атаки (0..1).</param>
         /// <remarks>
+        /// Публичный вход существует ради стендов. Пока его не было, стенд решал «идёт ли взмах» сам — по
+        /// маркерам клипа, — и это выглядело правдоподобно ровно до тех пор, пока не выяснилось, чего в
+        /// такой копии нет: ни удержанного кадра финишера, ни режима потока, ни номера взмаха, по
+        /// которому дуга заводится один раз за свинг. Показ, который «почти как в игре», хуже
+        /// отсутствующего: по нему принимают решения.
+        /// <para>
+        /// ПОЗУ здесь не ставим — её ставит вызывающий: в бою это <c>Animator.Play</c>, в редакторе он
+        /// не тикает вовсе и позу раскладывают чтением кривых. Разные там механизмы, а не разная логика.
+        /// </para>
+        /// <para>
         /// «Этот взмах уже обслужен» проверяется НОМЕРОМ взмаха (<see cref="_swingSerial"/>), а не флагом,
         /// который кто-то обязан вовремя сбросить. Флаг и был причиной того, что дуга появлялась один раз
         /// за бой: сбрасывать его поручили переходу фазы, а фаза у быстрых китов не прерывается.
+        /// </para>
         /// </remarks>
-        private void TrackStrikeWindow(float clipTime)
+        public void ScrubSwing(float clipTime)
         {
             _swingClipTime = clipTime;
             if (!_hasStrikeWindow || _originSwingSerial == _swingSerial || clipTime < _strikeFrom) return;
@@ -895,6 +908,13 @@ namespace Guildmaster.Presentation
             }
             return false;
         }
+
+        /// <summary>
+        /// Место дуги внутри тела: «я меч, но чуть ниже меча». Ответ живёт в
+        /// <see cref="Effects.SwingArcGeometry"/> — там же, где и остальная геометрия взмаха.
+        /// </summary>
+        public bool TryGetArcAnchor(out Transform parent, out int sortingOrder) =>
+            Effects.SwingArcGeometry.TryResolveAnchor(Body, out parent, out sortingOrder);
 
         /// <summary>
         /// Положить состояние показываемого тика. Зовётся раз за кадр из <see cref="CombatPresenter"/>,
@@ -1359,7 +1379,7 @@ namespace Guildmaster.Presentation
                     _frameAlpha);
                 if (ownsSpeed) _animator.speed = 0f;
                 _animator.Play(SwingHash(), layer, cycle);
-                TrackStrikeWindow(cycle);
+                ScrubSwing(cycle);
                 return;
             }
 
@@ -1371,7 +1391,7 @@ namespace Guildmaster.Presentation
                 if (ownsSpeed) _animator.speed = 0f;
                 float clipTime = progress * _attackHitNormalized;
                 _animator.Play(SwingHash(), layer, clipTime);
-                TrackStrikeWindow(clipTime);
+                ScrubSwing(clipTime);
             }
             else if (_attackPhase == AttackAnimPhase.Recovery && _hasState)
             {
@@ -1385,7 +1405,7 @@ namespace Guildmaster.Presentation
                 float clipT = _attackHitNormalized + tail * (1f - _attackHitNormalized);
                 if (ownsSpeed) _animator.speed = 0f;
                 _animator.Play(SwingHash(), layer, clipT);
-                TrackStrikeWindow(clipT);
+                ScrubSwing(clipT);
             }
             else if (ownsSpeed)
             {

@@ -56,6 +56,40 @@ namespace Guildmaster.Presentation.Effects
             return true;
         }
 
+        /// <summary>
+        /// Место дуги В ПОРЯДКЕ ОТРИСОВКИ ТЕЛА: куда её положить и с каким порядком.
+        /// </summary>
+        /// <param name="body">Тело бьющего.</param>
+        /// <param name="parent">Узел группы сортировки тела — внутрь него дуга и переезжает.</param>
+        /// <param name="sortingOrder">Порядок дуги: на единицу ниже бьющей части.</param>
+        /// <remarks>
+        /// Требование дословно (Макс, 06.08.2026): «След дуги должен быть ЗА мечом, тут все ок. Его слой —
+        /// "я меч, но чуть ниже меча", относительно других частей тела». Слоем такое не выражается: тело
+        /// сортируется <c>SortingGroup</c>'ой целиком, и снаружи дуга может быть только над ВСЕМ юнитом
+        /// или под ВСЕМ юнитом — «между мечом и рукой» снаружи не существует. Поэтому дуга физически
+        /// переезжает внутрь группы и получает порядок относительно того, чем бьют.
+        /// <para>
+        /// Порядок берётся у БЬЮЩЕЙ ЧАСТИ, а не числом из данных: у бойца с двумя клинками левый и правый
+        /// лежат в разных слоях тела, и число в ассете было бы верным ровно для одного из них.
+        /// </para>
+        /// </remarks>
+        public static bool TryResolveAnchor(IUnitBodyVisual body, out Transform parent, out int sortingOrder)
+        {
+            parent       = null;
+            sortingOrder = 0;
+
+            if (body?.Parts == null) return false;
+
+            parent = body.SortingRoot;
+            if (parent == null) return false;
+
+            if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source) || source.Renderer == null)
+                return false;
+
+            sortingOrder = source.Renderer.sortingOrder - 1;
+            return true;
+        }
+
         /// <summary>Имя кости плеча для стороны бьющей руки — для сообщений о разводке.</summary>
         public static string ShoulderBoneFor(IUnitBodyVisual body)
         {

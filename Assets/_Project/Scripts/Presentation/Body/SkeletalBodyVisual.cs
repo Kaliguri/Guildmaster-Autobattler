@@ -179,6 +179,21 @@ namespace Guildmaster.Presentation.Body
 
         public int SortingOrder => _group != null ? _group.sortingOrder : 0;
 
+        /// <summary>
+        /// Носитель группы — единственная дверь внутрь порядка частей. Разрешается лениво: тело умеют
+        /// поднимать и редакторные стенды, где <see cref="Awake"/> проходит, но поле на префабе может быть
+        /// не заполнено вовсе.
+        /// </summary>
+        public Transform SortingRoot
+        {
+            get
+            {
+                if (_group == null)
+                    _group = GetComponent<SortingGroup>() ?? GetComponentInParent<SortingGroup>(true);
+                return _group != null ? _group.transform : null;
+            }
+        }
+
         public bool IsFlippedX => transform.localScale.x < 0f;
 
         public void Prime(Color flashColor)

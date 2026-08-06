@@ -105,12 +105,15 @@ namespace Guildmaster.Presentation
         /// возвращается сам, догорев: длину взмаха заранее не знает никто, её ведёт скраб по сим-тикам.
         /// </summary>
         /// <param name="source">Кто машет — у него дуга спрашивает геометрию каждый кадр.</param>
-        /// <param name="style">Как след окрашен и какой он формы поперёк (ступени, профиль ширины).</param>
-        public void SpawnArc(VfxData data, Effects.ISwingArcSource source, Color colour,
-                             float innerShare, float tailBias, float fadeOutSeconds, float maxSpanDeg,
-                             in Effects.SwingArcStyle style, string slot = null)
+        /// <param name="feel">Feel-конфиг: все числа дуги раскладывает <see cref="Effects.SwingArcLaunch"/>.</param>
+        /// <param name="unitGlow">Цвет свечения бьющего; свою яркость дуга домножает сама, внутри Launch.</param>
+        public void SpawnArc(VfxData data, Effects.ISwingArcSource source,
+                             Design.CombatFeelConfig feel, Color unitGlow, string slot = null)
         {
-            if (!Ready(data, slot) || source == null) return;
+            // Тумблер спрашивается ПЕРВЫМ: выключенная дуга не занимает объект пула и не жалуется на
+            // незаполненный слот в данных — «выключено» и «не разведено» это разные новости.
+            if (!Effects.SwingArcLaunch.Enabled(feel) || source == null) return;
+            if (!Ready(data, slot)) return;
             if (!data.Prefab.TryGetComponent(out PooledVfx _))
             {
                 Debug.LogError($"[CombatVfx] Prefab '{data.Prefab.name}' for '{data.Id}' has no PooledVfx on root.", data.Prefab);
@@ -136,8 +139,10 @@ namespace Guildmaster.Presentation
                 pool.Release(released);
             }, lifeOverride: ArcSafetyLifetime);
 
+            // Слой и порядок из данных легли выше — но если у бьющего есть место ВНУТРИ тела, дуга туда и
+            // переедет: это решает сам эффект, спросив источник (см. SwingArcVfx.Anchor).
             if (vfx.TryGetComponent(out Effects.SwingArcVfx arc))
-                arc.Begin(source, colour, innerShare, tailBias, fadeOutSeconds, maxSpanDeg, style);
+                Effects.SwingArcLaunch.Begin(arc, feel, source, unitGlow);
         }
 
         /// <summary>Потолок жизни дуги, сек: страховка на случай, если взмах оборвался вместе с юнитом.</summary>
@@ -197,7 +202,14 @@ namespace Guildmaster.Presentation
                     return go.GetComponent<PooledVfx>();
                 },
                 actionOnGet: v => v.gameObject.SetActive(true),
-                actionOnRelease: v => v.gameObject.SetActive(false),
+                // Родитель возвращается ВСЕГДА, а не только тем, кто его менял: дуга за клинком переезжает
+                // внутрь тела бьющего, и объект, оставшийся его ребёнком, умрёт вместе с видом — то есть
+                // исчезнет из пула молча, а пул будет считать, что вернул его себе.
+                actionOnRelease: v =>
+                {
+                    v.gameObject.SetActive(false);
+                    if (v.transform.parent != transform) v.transform.SetParent(transform, worldPositionStays: false);
+                },
                 actionOnDestroy: v => { if (v != null) Destroy(v.gameObject); },
                 collectionCheck: false,
                 defaultCapacity: 16,

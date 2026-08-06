@@ -14,6 +14,13 @@ namespace Guildmaster.Presentation.Effects
         /// </summary>
         /// <returns><c>false</c> — взмах кончился (или его нечем показывать), и дуге пора гаснуть.</returns>
         bool TryGetSwingArc(out Vector3 pivot, out Vector3 tip, out float progress);
+
+        /// <summary>
+        /// Куда положить дугу в порядке отрисовки: узел, внутри которого сортируется тело, и порядок
+        /// относительно бьющей части. Спрашивается один раз при запуске.
+        /// </summary>
+        /// <returns><c>false</c> — места внутри тела нет; дуга остаётся там, куда её положили данные.</returns>
+        bool TryGetArcAnchor(out Transform parent, out int sortingOrder);
     }
 
     /// <summary>
@@ -163,6 +170,8 @@ namespace Guildmaster.Presentation.Effects
             _swinging   = true;
             _playing    = true;
 
+            Anchor(source);
+
             _renderer.GetPropertyBlock(_block);
             _block.SetColor(ColorId, colour);
             _block.SetFloat(RadiusInnerId, _innerShare);
@@ -279,12 +288,42 @@ namespace Guildmaster.Presentation.Effects
             Write(Mathf.Clamp01(left / 0.25f));
         }
 
+        /// <summary>
+        /// Переехать ВНУТРЬ тела бьющего: дуге положено место между мечом и остальными частями, а снаружи
+        /// такого места не бывает — группа сортировки читается снаружи как один объект.
+        /// </summary>
+        /// <remarks>
+        /// Источник, который не даёт якоря (статика стенда, тело без группы), оставляет дугу там, куда её
+        /// положил спавн: слой и порядок из <c>VfxData</c>. Это не фолбэк-догадка, а честное «внутрь
+        /// вкладывать некуда».
+        /// </remarks>
+        private void Anchor(ISwingArcSource source)
+        {
+            if (source == null || !source.TryGetArcAnchor(out Transform parent, out int order)) return;
+            if (parent == null) return;
+
+            transform.SetParent(parent, worldPositionStays: true);
+            foreach (Renderer r in GetComponentsInChildren<Renderer>(true))
+            {
+                r.sortingLayerID = 0;      // внутри группы слой ребёнка не значит ничего, кроме путаницы
+                r.sortingOrder   = order;
+            }
+        }
+
         private void Place(Vector3 pivot)
         {
-            // Quad вмещает круг радиусом _radius: половина стороны и есть радиус.
-            transform.position   = pivot;
-            transform.localScale = new Vector3(_radius * 2f, _radius * 2f, 1f);
+            transform.position = pivot;
+
+            // Quad вмещает круг радиусом _radius: половина стороны и есть радиус. Масштаб задаётся МИРОВОЙ,
+            // потому что у дуги теперь бывает родитель — тело бьющего. Делением на масштаб родителя
+            // приходит и его зеркало: при отрицательном X локальный масштаб тоже становится отрицательным,
+            // и сектор в мире остаётся тем же, каким его посчитали по мировым плечу и острию.
+            float d = _radius * 2f;
+            Vector3 s = transform.parent != null ? transform.parent.lossyScale : Vector3.one;
+            transform.localScale = new Vector3(d / NonZero(s.x), d / NonZero(s.y), 1f);
         }
+
+        private static float NonZero(float v) => Mathf.Abs(v) > 1e-5f ? v : 1f;
 
         private void Write(float fade)
         {

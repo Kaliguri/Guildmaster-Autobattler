@@ -52,8 +52,11 @@ namespace Guildmaster.Presentation.Editor
         // ровно там, где она единственный источник правды о размере.
         const string DefaultSubject    = "Assets/_Project/Prefabs/Units/UnitView_BoneStorybook.prefab";
         const string BalancePath       = "Assets/_Project/ScriptableObjects/Configs/ClassBalanceConfig.asset";
-        /// <summary>«Атака 1» — обычный удар мечом; дуга показывается на нём (выбор Макса 06.08.2026).</summary>
-        const string AttackClipPath    = "Assets/_Project/Prefabs/Bones/Attack.anim";
+        /// <summary>
+        /// Данные субъекта: ими вид связывается так же, как в бою. Через них приходит и клип атаки —
+        /// «Атака 1», обычный удар мечом (выбор Макса 06.08.2026), — и его разметка взмаха.
+        /// </summary>
+        const string SwingSubjectData  = "Assets/_Project/ScriptableObjects/DevTools/BoneStorybookDevDuelist.asset";
         const string ShotFolder        = "Temp/PostFxLab";
 
         // Серия вариаций едет СРАЗУ в лабораторию, а не в Temp: кадр, оставшийся во временной папке,
@@ -747,21 +750,23 @@ namespace Guildmaster.Presentation.Editor
         }
 
         /// <summary>
-        /// Дуга за клинком в середине взмаха. Источник-риг ей не нужен: геометрия дуги — это пара углов
-        /// в шейдере, и статике достаточно их.
-        /// </summary>
-        /// <summary>
         /// Дуга за клинком на ЖИВОЙ анимации атаки: юнит играет клип, дуга заметает сектор за настоящим
         /// остриём, длительность — весь клип, а не одна дуга.
         /// </summary>
         /// <remarks>
-        /// Геометрия берётся ТЕМ ЖЕ путём, что в бою (<c>UnitView.TryGetSwingArc</c>): бьющая часть из
-        /// реестра, остриё через <see cref="UnitPartGeometry"/>, центр вращения — плечо той же стороны.
-        /// Считать её здесь по-своему значило бы завести второго владельца правды о взмахе, и стенд
-        /// начал бы показывать дугу, которой в бою нет.
+        /// Стенд поднимает НАСТОЯЩИЙ <see cref="UnitView"/> и разговаривает с ним игровыми входами:
+        /// <c>Bind</c> — кем показываем, <c>OnAttackStarted</c> — начался новый взмах, <c>ScrubSwing</c> —
+        /// где сейчас клип, <c>SetSwingStartHandler</c> — вид сам объявляет, что пора заводить дугу. Дальше
+        /// её заводит <see cref="SwingArcLaunch"/> — тот же, кого зовёт презентер боя.
         /// <para>
-        /// Позу гоним <c>SampleAnimation</c>, а не аниматором: в редакторе он не тикает, а нам нужна
-        /// поза в произвольной фазе — в том числе на паузе.
+        /// Своего здесь не осталось ничего, и это принципиально. Пока стенд решал сам — где окно взмаха,
+        /// какие у дуги параметры, в каком она порядке рисовки, — он показывал похожую дугу вместо
+        /// настоящей, а расхождение всплывало кадрами позже и читалось как «в игре почему-то иначе».
+        /// </para>
+        /// <para>
+        /// Единственное исключение — ПОЗА: её раскладывает <see cref="ClipSampler"/>, потому что в
+        /// редакторе Animator не тикает вовсе. Это разный механизм, а не вторая логика: что означает
+        /// поставленное время, по-прежнему решает вид.
         /// </para>
         /// </remarks>
         private void BuildSwingArc(Transform at, CombatFeelConfig feel, Color colour)
@@ -769,12 +774,19 @@ namespace Guildmaster.Presentation.Editor
             GameObject prefab = feel.VfxSwingArc != null ? feel.VfxSwingArc.Prefab : null;
             if (prefab == null) throw new InvalidOperationException("не назначен префаб дуги");
 
-            GameObject unit = Spawn(_subjectPrefab, at);
-            var body = unit.GetComponentInChildren<SkeletalBodyVisual>(true);
-            if (body == null) throw new InvalidOperationException("в субъекте нет SkeletalBodyVisual");
+            var definition = AssetDatabase.LoadAssetAtPath<Data.Definitions.UnitData>(SwingSubjectData);
+            if (definition == null)
+                throw new InvalidOperationException("не найдены данные субъекта: " + SwingSubjectData);
 
-            AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(AttackClipPath);
-            if (clip == null) throw new InvalidOperationException("не найден клип атаки: " + AttackClipPath);
+            // Клип берём ИЗ АРХЕТИПА, а не путём-константой: вид резолвит по нему маркеры взмаха, и
+            // разойдись эти два клипа — стенд сэмплировал бы одну анимацию, а окно считал по другой.
+            AnimationClip clip = definition.Archetype != null ? definition.Archetype.AttackClip : null;
+            if (clip == null)
+                throw new InvalidOperationException("у архетипа субъекта нет клипа атаки");
+
+            GameObject unit = Spawn(_subjectPrefab, at);
+            var view = unit.GetComponentInChildren<UnitView>(true);
+            if (view == null) throw new InvalidOperationException("в субъекте нет UnitView");
 
             // Корень путей клипа ищем ПО САМИМ КОСТЯМ, а не по носителю Animator: у сторибук-вида
             // аниматор висит на «Body», а скелет лежит под «BoneVisual», и от аниматора пути клипа
@@ -788,57 +800,36 @@ namespace Guildmaster.Presentation.Editor
             var arc = go.GetComponentInChildren<SwingArcVfx>(true);
             if (arc == null) throw new InvalidOperationException("в префабе дуги нет SwingArcVfx");
 
-            // Begin поднимает эффект и раскладывает СТИЛЬ из конфига — без него дуга существует, но не
-            // показывается, и настройки пришлось бы дублировать здесь вторым списком.
+            view.ApplyFeelConfig(feel);
+            var snapshot = default(Combat.Tape.UnitSnapshot);
+            view.Bind(in snapshot, definition);
+            unit.transform.position = at.position;   // Bind ставит вид в точку снимка — возвращаем в кадр
+
+            // Заказ дуги приходит ОТ ВИДА, как в бою: он сам знает, на каком кадре взмах начался и один
+            // ли раз за свинг об этом сказать.
+            view.SetSwingStartHandler(v => SwingArcLaunch.Begin(arc, feel, v, colour));
+
             var sampler = new ClipSampler(clip, rig);
-            var source = new ClipSwingSource();
-            // Сортировка — из ДАННЫХ эффекта, как в бою (CombatVfx кладёт туда же). Без этого стенд
-            // показывал дугу поверх клинка просто потому, что префаб лежит в сцене как попало.
-            foreach (Renderer r in go.GetComponentsInChildren<Renderer>(true))
-            {
-                r.sortingLayerID = SortingLayer.NameToID(feel.VfxSwingArc.SortingLayerName);
-                r.sortingOrder   = feel.VfxSwingArc.SortingOrder;
-            }
-
-            // ОКНО ВЗМАХА — то же, что у боя: дуга живёт не весь клип, а от маркера StrikeStart до
-            // StrikeEnd, дальше догорает. Показывать её всю анимацию значило бы показывать эффект,
-            // которого в игре нет.
-            bool hasWindow = Data.Definitions.ClipMarkers.StrikeWindowNormalized(clip, out float from, out float to);
-            if (!hasWindow) { from = 0f; to = 1f; }
-
-            sampler.Sample(0f);
-            source.Swinging = false;
-            SwingArcGeometry.TryResolve(body, out source.Pivot, out source.Tip, out _);
-
-            arc.Begin(source, colour, feel.SwingArcInnerShare, feel.SwingArcTailBias,
-                      feel.SwingArcFadeOut, feel.SwingArcMaxSpanDeg, feel.SwingArcStyle);
 
             // Весь клип целиком, а не только время дуги: смотрят ВЗМАХ, а дуга — его часть.
             _phaseDuration = Mathf.Max(0.05f, clip.length);
 
             float lastNorm = 0f;
+            sampler.Sample(0f);
+            view.OnAttackStarted(Vector2.zero);
 
             _applyPhase = t =>
             {
-                if (unit == null || arc == null) return;
+                if (unit == null || arc == null || view == null) return;
 
                 float norm = Mathf.Clamp01(t);
+
+                // Круг пошёл заново — это новый взмах. В бою номер взмаха поднимает сим своим событием,
+                // здесь его роль играет возврат фазы к началу.
+                if (norm < lastNorm) view.OnAttackStarted(Vector2.zero);
+
                 sampler.Sample(norm * clip.length);
-
-                // Взмах идёт ровно внутри окна: вне его источник отвечает «нечего показывать», и дуга
-                // сама уходит в догорание — тем же путём, что в бою после конца удара.
-                bool inWindow = norm >= from && norm <= to;
-                source.Swinging = inWindow &&
-                    SwingArcGeometry.TryResolve(body, out source.Pivot, out source.Tip, out _);
-
-                // Цикл повторяется: на новом заходе дугу надо ЗАВЕСТИ заново — в бою её на каждый взмах
-                // спавнит презентер, здесь роль спавна играет возврат фазы к началу.
-                if (norm < lastNorm)
-                {
-                    SwingArcGeometry.TryResolve(body, out source.Pivot, out source.Tip, out _);
-                    arc.Begin(source, colour, feel.SwingArcInnerShare, feel.SwingArcTailBias,
-                              feel.SwingArcFadeOut, feel.SwingArcMaxSpanDeg, feel.SwingArcStyle);
-                }
+                view.ScrubSwing(norm);
 
                 float dt = (norm - lastNorm) * clip.length;
                 lastNorm = norm;
@@ -943,44 +934,6 @@ namespace Guildmaster.Presentation.Editor
                 if (candidate.Find(probe) != null) return candidate.gameObject;
 
             return null;
-        }
-
-        /// <summary>
-        /// Источник взмаха для стенда: отдаёт позу, которую стенд поставил клипом. Ответ «взмах
-        /// кончился» — тот же, что в бою: он переводит дугу в догорание, и без него хвост не утёк бы.
-        /// </summary>
-        private sealed class ClipSwingSource : ISwingArcSource
-        {
-            public Vector3 Pivot, Tip;
-            public bool Swinging;
-
-            public bool TryGetSwingArc(out Vector3 pivot, out Vector3 tip, out float progress)
-            {
-                pivot = Pivot; tip = Tip; progress = 1f;
-                return Swinging;
-            }
-        }
-
-        /// <summary>
-        /// Плечо и остриё — ровно как в бою: бьющая часть из реестра, центр вращения — плечо её стороны.
-        /// Дуга идёт вокруг ПЛЕЧА, а не кисти: рука — жёсткий рычаг, и вращается вся плоскость удара.
-        /// </summary>
-        static bool TrySwingGeometry(SkeletalBodyVisual body, out Vector3 pivot, out Vector3 tip)
-        {
-            pivot = default; tip = default;
-            if (body?.Parts == null) return false;
-            if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source)) return false;
-            if (!UnitPartGeometry.TryGetTip(source, out tip)) return false;
-
-            BodySide side = source.Slot == HandSlot.Left ? BodySide.Left
-                          : source.Slot == HandSlot.Right ? BodySide.Right
-                          : source.Side;
-
-            if (!body.Parts.TryGetBone(RigNaming.ShoulderBone(side), side, out UnitPart shoulder)
-                || shoulder.Renderer == null) return false;
-
-            pivot = shoulder.Renderer.transform.position;
-            return true;
         }
 
         /// <summary>
@@ -1180,21 +1133,6 @@ namespace Guildmaster.Presentation.Editor
             renderer.GetPropertyBlock(block);
             block.SetFloat(Shader.PropertyToID(property), value);
             renderer.SetPropertyBlock(block);
-        }
-
-        /// <summary>Источник взмаха для статики: плечо на месте, кончик клинка — на радиусе.</summary>
-        private sealed class StaticSwingSource : ISwingArcSource
-        {
-            private readonly Vector3 _pivot;
-            public StaticSwingSource(Vector3 pivot) => _pivot = pivot;
-
-            public bool TryGetSwingArc(out Vector3 pivot, out Vector3 tip, out float progress)
-            {
-                pivot = _pivot;
-                tip = _pivot + new Vector3(1.2f, 0f, 0f);
-                progress = 1f;
-                return true;
-            }
         }
 
         // --- Кадры и запись значений ---------------------------------------------------------------------
