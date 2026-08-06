@@ -792,30 +792,60 @@ namespace Guildmaster.Presentation.Editor
             // показывается, и настройки пришлось бы дублировать здесь вторым списком.
             var sampler = new ClipSampler(clip, rig);
             var source = new ClipSwingSource();
+            // Сортировка — из ДАННЫХ эффекта, как в бою (CombatVfx кладёт туда же). Без этого стенд
+            // показывал дугу поверх клинка просто потому, что префаб лежит в сцене как попало.
+            foreach (Renderer r in go.GetComponentsInChildren<Renderer>(true))
+            {
+                r.sortingLayerID = SortingLayer.NameToID(feel.VfxSwingArc.SortingLayerName);
+                r.sortingOrder   = feel.VfxSwingArc.SortingOrder;
+            }
+
+            // ОКНО ВЗМАХА — то же, что у боя: дуга живёт не весь клип, а от маркера StrikeStart до
+            // StrikeEnd, дальше догорает. Показывать её всю анимацию значило бы показывать эффект,
+            // которого в игре нет.
+            bool hasWindow = Data.Definitions.ClipMarkers.StrikeWindowNormalized(clip, out float from, out float to);
+            if (!hasWindow) { from = 0f; to = 1f; }
+
             sampler.Sample(0f);
-            source.Swinging = SwingArcGeometry.TryResolve(body, out source.Pivot, out source.Tip, out _);
+            source.Swinging = false;
+            SwingArcGeometry.TryResolve(body, out source.Pivot, out source.Tip, out _);
 
             arc.Begin(source, colour, feel.SwingArcInnerShare, feel.SwingArcTailBias,
                       feel.SwingArcFadeOut, feel.SwingArcMaxSpanDeg, feel.SwingArcStyle);
 
-            // Весь клип целиком, а не только время дуги: смотрят взмах, а дуга — его часть.
+            // Весь клип целиком, а не только время дуги: смотрят ВЗМАХ, а дуга — его часть.
             _phaseDuration = Mathf.Max(0.05f, clip.length);
 
-            float lastTime = 0f;
+            float lastNorm = 0f;
 
             _applyPhase = t =>
             {
                 if (unit == null || arc == null) return;
 
-                float time = Mathf.Clamp01(t) * clip.length;
-                sampler.Sample(time);
-                source.Swinging = SwingArcGeometry.TryResolve(body, out source.Pivot, out source.Tip, out _);
+                float norm = Mathf.Clamp01(t);
+                sampler.Sample(norm * clip.length);
+
+                // Взмах идёт ровно внутри окна: вне его источник отвечает «нечего показывать», и дуга
+                // сама уходит в догорание — тем же путём, что в бою после конца удара.
+                bool inWindow = norm >= from && norm <= to;
+                source.Swinging = inWindow &&
+                    SwingArcGeometry.TryResolve(body, out source.Pivot, out source.Tip, out _);
+
+                // Цикл повторяется: на новом заходе дугу надо ЗАВЕСТИ заново — в бою её на каждый взмах
+                // спавнит презентер, здесь роль спавна играет возврат фазы к началу.
+                if (norm < lastNorm)
+                {
+                    SwingArcGeometry.TryResolve(body, out source.Pivot, out source.Tip, out _);
+                    arc.Begin(source, colour, feel.SwingArcInnerShare, feel.SwingArcTailBias,
+                              feel.SwingArcFadeOut, feel.SwingArcMaxSpanDeg, feel.SwingArcStyle);
+                }
+
+                float dt = (norm - lastNorm) * clip.length;
+                lastNorm = norm;
 
                 // Дугу ведёт САМ эффект — тем же кодом, что в бою. Стенд только ставит позу и отдаёт
                 // время; считать здесь угол, сектор и затухание значило бы завести вторую правду о
                 // взмахе, и она уже разошлась с боевой.
-                float dt = time - lastTime;
-                lastTime = time;
                 arc.Tick(dt > 0f ? dt : Mathf.Max(1e-4f, clip.length * 0.01f));
             };
         }
