@@ -242,7 +242,12 @@ namespace Guildmaster.Presentation.Editor
             _phase += dt * Mathf.Max(0.01f, _timeScale) / Mathf.Max(0.01f, _phaseDuration);
             if (_phase > 1f) _phase -= 1f;
 
-            if (_root == null) return;   // стенд снесён — фазе некуда приезжать
+            // Стенд снесён (сменили тон, эффект, субъект) — фазе некуда приезжать, но перерисовать
+            // ОБЯЗАТЕЛЬНО: пересборка живёт в OnGUI, а OnGUI приходит только по Repaint. Без этой
+            // строки смена любой ручки останавливала проигрывание намертво — стенд ждал перерисовки,
+            // перерисовка ждала стенда.
+            if (_root == null) { Repaint(); return; }
+
             _applyPhase?.Invoke(_phase);
             Repaint();
         }
@@ -357,12 +362,26 @@ namespace Guildmaster.Presentation.Editor
                 EditorGUILayout.Space(4f);
                 EditorGUI.BeginChangeCheck();
 
+                // Кнопка проигрывания стоит ЗДЕСЬ, рядом с фазой, а не только в тулбаре: там её искали
+                // глазами и не находили — тулбар читается как «действия над кадром», а это управление
+                // самим эффектом.
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    float phase = EditorGUILayout.Slider("Фаза", _phase, 0f, 1f);
+                    bool play = GUILayout.Toggle(_playing, _playing ? "⏸ Пауза" : "▶ Играть",
+                        EditorStyles.miniButton, GUILayout.Width(80f));
+                    if (play != _playing) { _playing = play; _lastTick = EditorApplication.timeSinceStartup; }
+
+                    if (GUILayout.Button("⟲", EditorStyles.miniButton, GUILayout.Width(24f)))
+                    {
+                        _phase = 0f;
+                        if (_root != null) _applyPhase?.Invoke(_phase);
+                    }
+
+                    float phase = EditorGUILayout.Slider(_phase, 0f, 1f);
                     if (!Mathf.Approximately(phase, _phase)) { _phase = phase; _playing = false; }
-                    GUILayout.Label($"{_phase * _phaseDuration:0.00} из {_phaseDuration:0.00} с",
-                                    EditorStyles.miniLabel, GUILayout.Width(96f));
+
+                    GUILayout.Label($"{_phase * _phaseDuration:0.00} / {_phaseDuration:0.00} с",
+                                    EditorStyles.miniLabel, GUILayout.Width(90f));
                 }
 
                 // Множитель ступенями, а не ползунком: ×1 — это «как видит игрок», и такое значение
