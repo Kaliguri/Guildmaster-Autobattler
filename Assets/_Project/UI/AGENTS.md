@@ -27,12 +27,19 @@
   `.unity-text-element` (правило `.unity-text-element` в `components.uss` бьёт её по порядку импорта); 4-й `@import`
   тема `.tss` не подхватывает — правила шрифтов держим в `components.uss`, не отдельным файлом.
 
+> **ПОЛНЫЙ перечень элементов и их состояний — не здесь, а в коде:**
+> `Scripts/UI/Components/UiComponentRegistry.cs`. Он источник для гейта состояний
+> (`UiStateGateTests`), для контактного листа (`Alebardium → UI → Contact Sheet`) и для звука
+> интерфейса. Таблицы ниже — быстрый указатель; при расхождении прав реестр, потому что его
+> расхождение с деревом роняет сборку, а расхождение этого файла — нет. До 06.08.2026 здесь
+> числились пять сущностей, которых в дереве не существовало.
+
 ## Атомы (классы) — собирай из них
 
 | Класс | Что |
 |---|---|
 | `.gm-screen` | оверлей-scrim, контент по центру |
-| `.gm-panel` (+ `--reward`/`--event`/`--hub`) | панель с латунной рамкой; `.gm-panel__title` — заголовок (Cormorant) |
+| `.gm-panel` (+ `--dialog`/`--menu`/`--system`) | поверхность диалога; `.gm-panel__title` — заголовок |
 | `.gm-divider` | разделитель |
 | `.gm-button` (+ `--primary`) | кнопка; primary — не более одной на экран; `:disabled` primary = приглушённая латунь |
 | `.gm-tabbar` / `.gm-tab` (+ `--active`) | табы |
@@ -43,13 +50,15 @@
 
 | Контрол | Назначение | Ключевое API |
 |---|---|---|
-| `Slot` | рамка-квадрат с опц. иконкой (баннеры/запас) | `Size` (Sm/Md), `SetIcon(Sprite)` |
+| `Slot` | рамка-квадрат с опц. иконкой (баннеры/запас) | `Size` (Sm/Md/Lg), `SetIcon(Sprite)`, `SetSelected(bool)` |
 | `RelicCard` | карточка релика ГДЕ ПИКАЕМ = **анимированный спрайт** персонажа (план 10 §5), не иконка + имя + состояния | `RelicName`, `Selected`, `Current`, `SetVisual(RenderTexture)`, `SetSprite(Sprite)` |
 | `RelicCardVisualRig` | рендерит боевой `ViewPrefab` юнита в RenderTexture (idle/attack), кадрирует по гизмо-габариту | `Acquire(UnitData)→RT`, `PlayIdle/PlayAttack(rt)`, `Dispose()` |
 | `VesselCard` | сосуд команды: имя + надетый релик, кликабелен | `VesselName`, `RelicName`, `SetRelicIcon`, `Clicked` |
-| `SliderRow` | подпись + слайдер + авто-% (настройки) | `LabelText`, `Value`, `Low/HighValue`, `Slider` |
-| `ModalPanel` | каркас оверлея: scrim+панель+заголовок+дивайдер+слот контента | `Title`, `PanelModifier`, дети → тело |
-| `Tooltip` | подсказка при наведении: заголовок+мета+теги+описание | `Set(...)`, `ShowAt(pos)`, `Hide()` |
+| `SliderRow` | подпись + слайдер + авто-% (настройки) | `LabelText`, `Value`, `SetValueWithoutNotify(float)` |
+| `TooltipCard` | каркас содержимого подсказки: заголовок, мета, строки, глоссарий | `SetTitle/SetMeta/SetDesc`, `AddLine`, `AddGlossaryEntry` |
+| `Chip` / `SlantedChip` | иконка с подписью: фильтры, теги, лента режимов | `Text`, `SetIcon`, `SetActive(bool)` |
+| `SelectRow` / `ToggleRow` | строки настроек: выбор и переключатель | `LabelText`, `SetChoices`, `Value` |
+| `PanelFrame` / `SlantedPanel` / `EdgeVeil` / `AspectBox` | оправа, скошенная подложка, вуаль кромки, соотношение сторон | атрибуты UXML |
 
 ## Локализация
 
