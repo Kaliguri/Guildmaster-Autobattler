@@ -152,7 +152,17 @@ namespace Guildmaster.Presentation.Editor
         /// </remarks>
         [SerializeField, Range(0f, 1f)] private float _phase = 0.45f;
         [SerializeField] private bool  _playing = true;
-        [SerializeField] private float _playSpeed = 0.35f;
+
+        /// <summary>
+        /// Множитель НАСТОЯЩЕГО времени эффекта. ×1 — ровно так, как это видит игрок; замедление нужно,
+        /// чтобы разглядеть, но оно обязано быть заявленным, а не подразумеваться.
+        /// </summary>
+        [SerializeField] private float _timeScale = 1f;
+
+        /// <summary>Сколько эффект живёт на самом деле, секунды. Ставит ячейка при сборке.</summary>
+        private float _phaseDuration = 0.5f;
+
+        static readonly float[] TimeScales = { 0.1f, 0.25f, 0.5f, 1f, 2f };
 
         /// <summary>
         /// Как текущий эффект показывает свою фазу. Заполняется ячейкой при сборке: только она знает,
@@ -226,9 +236,10 @@ namespace Guildmaster.Presentation.Editor
             float dt = (float)(now - _lastTick);
             _lastTick = now;
 
-            // Цикл, а не одиночный прогон: эффект длится доли секунды, и увидеть его с одного раза
-            // нельзя — по кругу он читается, как в бою при повторных ударах.
-            _phase += dt * Mathf.Max(0.01f, _playSpeed);
+            // Фаза бежит по НАСТОЯЩЕЙ длительности эффекта, а не по абстрактной скорости: у формы удара
+            // это 0.16 с, у разлёта — почти секунда, и общая «скорость» врала бы про обоих сразу.
+            // Цикл, а не одиночный прогон: с одного раза такое не разглядеть.
+            _phase += dt * Mathf.Max(0.01f, _timeScale) / Mathf.Max(0.01f, _phaseDuration);
             if (_phase > 1f) _phase -= 1f;
 
             if (_root == null) return;   // стенд снесён — фазе некуда приезжать
@@ -350,7 +361,24 @@ namespace Guildmaster.Presentation.Editor
                 {
                     float phase = EditorGUILayout.Slider("Фаза", _phase, 0f, 1f);
                     if (!Mathf.Approximately(phase, _phase)) { _phase = phase; _playing = false; }
-                    _playSpeed = EditorGUILayout.Slider("Скорость", _playSpeed, 0.05f, 2f);
+                    GUILayout.Label($"{_phase * _phaseDuration:0.00} из {_phaseDuration:0.00} с",
+                                    EditorStyles.miniLabel, GUILayout.Width(96f));
+                }
+
+                // Множитель ступенями, а не ползунком: ×1 — это «как видит игрок», и такое значение
+                // должно выбираться одним щелчком, а не ловиться в ползунке.
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.PrefixLabel("Темп");
+                    for (int i = 0; i < TimeScales.Length; i++)
+                    {
+                        bool on = Mathf.Approximately(_timeScale, TimeScales[i]);
+                        GUIStyle style = i == 0 ? EditorStyles.miniButtonLeft
+                                       : i == TimeScales.Length - 1 ? EditorStyles.miniButtonRight
+                                       : EditorStyles.miniButtonMid;
+                        if (GUILayout.Toggle(on, $"×{TimeScales[i]:0.##}", style) && !on)
+                            _timeScale = TimeScales[i];
+                    }
                 }
 
                 // Только по живому стенду: ручки выше могли снести его прямо в этом же кадре GUI.
@@ -582,8 +610,8 @@ namespace Guildmaster.Presentation.Editor
                 case Cell.Sparks:     BuildParticles(at, feel.VfxHitSpark,   spread); break;
                 case Cell.ImpactDust: BuildParticles(at, feel.VfxImpactDust, spread); break;
                 case Cell.CastBurst:  BuildParticles(at, feel.VfxCastBurst,  spread); break;
-                case Cell.CastGlow:   BuildUnitGlow(at, main, block: false); break;
-                case Cell.BlockFlash: BuildUnitGlow(at, main, block: true);  break;
+                case Cell.CastGlow:   BuildUnitGlow(at, main, block: false, feel); break;
+                case Cell.BlockFlash: BuildUnitGlow(at, main, block: true,  feel); break;
                 case Cell.DeathFlash: BuildDeathFlash(at, feel); break;
                 case Cell.Shatter:    BuildShatter(at, feel, spread); break;
             }
@@ -676,6 +704,7 @@ namespace Guildmaster.Presentation.Editor
                 seed: 0x5EEDu + (uint)kind, endsAtHit: endsAtHit, freezeSeconds: 0f);
 
             vfx.Apply(in p);
+            _phaseDuration = p.Life;   // ровно столько форма живёт в бою
             _applyPhase = t => SetFloat(go, "_Progress", t);
         }
 
@@ -702,11 +731,17 @@ namespace Guildmaster.Presentation.Editor
             const float from = -0.9f, to = 0.9f;
             SetFloat(go, "_AngleFrom", from);
 
+            // Взмах плюс догорание: заметание идёт strike-фазу, дальше дуга гаснет свой fadeOut.
+            const float sweepSeconds = 0.18f;
+            float fade = Mathf.Max(0.01f, feel.SwingArcFadeOut);
+            _phaseDuration = sweepSeconds + fade;
+            float sweepShare = sweepSeconds / _phaseDuration;
+
             _applyPhase = t =>
             {
-                float sweep = Mathf.Clamp01(t / 0.65f);
+                float sweep = Mathf.Clamp01(t / sweepShare);
                 SetFloat(go, "_AngleTo", Mathf.Lerp(from, to, sweep));
-                SetFloat(go, "_Fade", t <= 0.65f ? 1f : 1f - Mathf.InverseLerp(0.65f, 1f, t));
+                SetFloat(go, "_Fade", t <= sweepShare ? 1f : 1f - Mathf.InverseLerp(sweepShare, 1f, t));
             };
         }
 
@@ -737,6 +772,8 @@ namespace Guildmaster.Presentation.Editor
                 systems.Add(ps);
             }
 
+            _phaseDuration = life;   // выброс плюс дожитие последней частицы
+
             // Домотка всегда ОТ НУЛЯ (restart), а не шагами: только так фаза детерминирована и два
             // прогона стенда дают один и тот же рой. Шаговая симуляция копила бы расхождение.
             _applyPhase = t =>
@@ -747,7 +784,7 @@ namespace Guildmaster.Presentation.Editor
         }
 
         /// <summary>Свечение на теле: заряд каста либо вспышка щита, поданные боевым швом.</summary>
-        private void BuildUnitGlow(Transform at, Color main, bool block)
+        private void BuildUnitGlow(Transform at, Color main, bool block, CombatFeelConfig feel)
         {
             var go = Spawn(_subjectPrefab, at);
             var body = go.GetComponentInChildren<SkeletalBodyVisual>(true);
@@ -762,6 +799,11 @@ namespace Guildmaster.Presentation.Editor
 
             // Каст НАЛИВАЕТСЯ к выпуску приёма, блок — вспыхивает и гаснет. Это разные жесты, и общей
             // кривой у них быть не может: свет каста копится, свет блока отвечает на удар.
+            //
+            // Длительность каста приходит из СИМУЛЯЦИИ (это cast-time приёма), и здесь её взять неоткуда
+            // — берём типичную секунду и говорим об этом вслух в подписи. Спад блока свой, из конфига.
+            _phaseDuration = block ? Mathf.Max(0.05f, feel.CastGlowRelease) : 1f;
+
             _applyPhase = t =>
             {
                 float amount = block
@@ -788,7 +830,9 @@ namespace Guildmaster.Presentation.Editor
             if (body == null) throw new InvalidOperationException("в субъекте нет SkeletalBodyVisual");
 
             // Вспышка смерти вспыхивает разом и гаснет: пересвет — это МОМЕНТ, а не состояние, и
-            // наливаться ему неоткуда.
+            // наливаться ему неоткуда. Живёт она ровно столько, сколько ей отмерено перед расколом.
+            _phaseDuration = Mathf.Max(0.05f, feel.ShatterFlashIn + feel.ShatterFlashOut);
+
             _applyPhase = t => body.Apply(new BodyVisualState(
                 Color.white,
                 1f - Mathf.Clamp01(t), feel.DeathFlashColor,
@@ -831,11 +875,15 @@ namespace Guildmaster.Presentation.Editor
                 pieces.Add(go);
             }
 
-            // Порядок стадий тот же, что в бою: сперва пересвет, потом разлёт. Вспышка живёт первую
-            // пятую часть, дальше куски расходятся и догорают.
+            // Порядок стадий тот же, что в бою: сперва пересвет, потом разлёт. Обе длительности —
+            // из конфига, а не на глаз: вспышка и разлёт настраиваются по отдельности и уже разошлись.
+            float flashSeconds = Mathf.Max(0.01f, feel.ShatterFlashIn + feel.ShatterFlashOut);
+            _phaseDuration = flashSeconds + Mathf.Max(0.05f, feel.ShatterDuration);
+            float flashShare = flashSeconds / _phaseDuration;
+
             _applyPhase = t =>
             {
-                float flash = t < 0.2f ? 1f - t / 0.2f : 0f;
+                float flash = t < flashShare ? 1f - t / flashShare : 0f;
                 foreach (GameObject go in pieces)
                 {
                     SetFloat(go, "_FlashAmount", flash);
