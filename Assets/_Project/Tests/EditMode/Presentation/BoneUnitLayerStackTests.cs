@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.Animations;
@@ -15,11 +15,11 @@ namespace Guildmaster.Tests.EditMode.Presentation
     /// </summary>
     public sealed class BoneUnitLayerStackTests
     {
-        // Лабораторный и боевой контроллеры держат ОДИН стек намеренно: приёмка снимает кадры того же
-        // стека, что играет в бою. Раскладка, разъехавшаяся между ними, однажды уже стоила разбора —
-        // вся работа легла в лабораторный, а в игре играл боевой.
-        private const string CombatPath = "Assets/_Project/Prefabs/Bones/BoneUnit_Combat.controller";
-        private const string LabPath    = "Assets/_Project/Prefabs/Bones/BoneUnit_Standart.controller";
+        // Контроллер один — тот, что играет в бою у всего ростера. Их было два, «боевой» и
+        // «лабораторный», и держались они в одном стеке намеренно: приёмка снимала кадры того же стека,
+        // что играет в бою. Имена при этом врали наоборот — играл ЛАБОРАТОРНЫЙ, а «боевой» сидел на
+        // дев-дуэлянте; 06.08.2026 дуэлянт и его контроллер удалены, оставшийся назван честно.
+        private const string ControllerPath = "Assets/_Project/Prefabs/Bones/BoneUnit_SwordShield.controller";
 
         private const string ActionLayer     = "Action";
         private const string ActionHipsLayer = "ActionHips";
@@ -28,8 +28,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
         // Стейты, которые UnitView просит на слое действия по имени (см. SwingHash).
         private static readonly string[] RequiredSwings = { "Attack", "AttackCharge" };
 
-        [TestCase(CombatPath)]
-        [TestCase(LabPath)]
+        [TestCase(ControllerPath)]
         public void ActionLayer_OverridesArmsAboveTheBase(string path)
         {
             AnimatorController controller = Load(path);
@@ -54,8 +53,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
         /// стёр качание бега (замер 30.07: −0.022 против 0.038 − 0.037 = 0.001 у аддитива), а рассинхрон со
         /// слоем рук развёл бы дельту таза и сам удар по разным моментам.
         /// </summary>
-        [TestCase(CombatPath)]
-        [TestCase(LabPath)]
+        [TestCase(ControllerPath)]
         public void ActionHips_AddsDeltaOnTopOfWhateverTheLegsAreDoing(string path)
         {
             AnimatorController controller = Load(path);
@@ -77,8 +75,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
         /// дельту ровно 0.000 именно поэтому). Стейт без override-моушена здесь — не «пока не дошли руки»,
         /// а неработающий слой.
         /// </summary>
-        [TestCase(CombatPath)]
-        [TestCase(LabPath)]
+        [TestCase(ControllerPath)]
         public void ActionHips_CarriesItsOwnMotionForEverySwing(string path)
         {
             AnimatorController controller = Load(path);
@@ -91,8 +88,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
                     "синхронизированный слой сыграет пустоту, и дельта таза будет ровно нулевой.");
         }
 
-        [TestCase(CombatPath)]
-        [TestCase(LabPath)]
+        [TestCase(ControllerPath)]
         public void GuardLayer_StaysItsOwnLane(string path)
         {
             AnimatorController controller = Load(path);
@@ -107,8 +103,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
         /// Ни один слой-надстройка не имеет права стартовать с весом: вес им выдаёт показ по состоянию сима.
         /// Слой, приехавший с единицей из ассета, держит позу удара на юните, который ещё ничего не делал.
         /// </summary>
-        [TestCase(CombatPath)]
-        [TestCase(LabPath)]
+        [TestCase(ControllerPath)]
         public void OverlayLayers_StartSilent(string path)
         {
             AnimatorController controller = Load(path);

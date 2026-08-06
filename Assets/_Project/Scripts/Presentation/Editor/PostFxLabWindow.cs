@@ -32,7 +32,7 @@ namespace Guildmaster.Presentation.Editor
         const string BattleProfilePath = "Assets/Settings/PostFX/BattlePostFX_Base.asset";
         const string MapProfilePath    = "Assets/Settings/PostFX/MapPostFX.asset";
         const string FeelConfigPath    = "Assets/_Project/ScriptableObjects/Configs/CombatFeelConfig.asset";
-        const string DefaultSubject    = "Assets/_Project/Prefabs/Bones/BoneUnit_Standart.prefab";
+        const string DefaultSubject    = "Assets/_Project/Prefabs/Bones/BoneUnit_SwordShield.prefab";
         const string ShotFolder        = "Temp/PostFxLab";
 
         /// <summary>Далеко от любой живой сцены: стенд не должен попадать в чужие камеры и коллайдеры.</summary>

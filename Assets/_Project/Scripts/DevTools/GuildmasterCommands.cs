@@ -81,13 +81,11 @@ namespace Guildmaster.DevTools
         // визуал MedievalWarrior (→ анимации). Резолвится из контент-БД, поэтому не нужен serialized-ref в сцене.
         private UnitData _dummyEnemy;
 
-        // Дев-дуэлянт на скелетном визуале (EnemyData «enemy.bone_dev»): отдельный ассет ради того, чтобы
-        // смотр анимации не требовал подмены вида у игровой реликвии. Бьёт и умирает — иначе не увидеть ни
-        // удар, ни разлёт на осколки.
-        private UnitData _boneDuelist;
-
-        // Тот же кит, но вид Storybook (`enemy.bone_storybook` → UnitView_BoneStorybook). Отдельная команда,
-        // чтобы сравнивать новый арт рядом со старым Standart, не подменяя ничего в игровом контенте.
+        // Дев-дуэлянт на скелетном визуале (EnemyData «enemy.bone_storybook»): отдельный ассет ради того,
+        // чтобы смотр анимации не требовал подмены вида у игровой реликвии. Бьёт и умирает — иначе не
+        // увидеть ни удар, ни разлёт на осколки.
+        // Второй такой же (`enemy.bone_dev` на виде Standart) удалён 06.08.2026: он существовал, чтобы
+        // сравнивать новый арт со старым рядом, а старого больше нет — Storybook единственный живой вид.
         private UnitData _boneStorybookDuelist;
 
         // Контент-БД для дев-срезов: релик берётся по id (relic.*) в момент вызова команды.
@@ -170,7 +168,6 @@ namespace Guildmaster.DevTools
             _content = contentDatabase;
             _arena   = arena;
             contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
-            contentDatabase.TryGet("enemy.bone_dev", out _boneDuelist);
             contentDatabase.TryGet("enemy.bone_storybook", out _boneStorybookDuelist);
             // Сессия боя живёт в RootScope: в реальном забеге резолвится, в standalone dev-арене (без Root) — null.
             resolver.TryResolve(out _activities);
@@ -337,10 +334,7 @@ namespace Guildmaster.DevTools
             // мимо расстановки, которая площадкой владеет. Работали они, пока боевой скоуп был вечным;
             // с рождением боя по требованию каждая стала гонкой «заказ раньше владельца». Балансные
             // прогоны (mirror, crowd) живут в SimBench, где им и место — там не нужен ни показ, ни арена.
-            set.Add("bones", "1×1 дуэль скелетных дев-бойцов (смоук вида юнита)",
-                _ => { SpawnBoneDuel(); return null; });
-
-            set.Add("storybook", "1×1 дуэль на скелетном виде Storybook (смоук нового арта)",
+            set.Add("storybook", "1×1 дуэль скелетных дев-бойцов (смоук вида юнита)",
                 _ => { SpawnBoneStorybookDuel(); return null; });
 
             set.Add("win", "Мгновенно завершить бой победой команды A",
@@ -630,8 +624,8 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>
-        /// 1×1 зеркально на дев-дуэлянте (<c>enemy.bone_dev</c>) — смотреть скелетный визуал в живом бою.
-        /// Кит у него ЗАЩИТНИКА (Оплот + «Решительный удар»): смотреть скелетную анимацию на бойце без
+        /// 1×1 зеркально на дев-дуэлянте (<c>enemy.bone_storybook</c>) — смотреть скелетный визуал в живом
+        /// бою. Кит у него ЗАЩИТНИКА (Оплот + «Решительный удар»): смотреть скелетную анимацию на бойце без
         /// активок было нечего — ни каста, ни телеграфа щита, ради которого поза блока и делается. Отличие
         /// от Защитника ровно одно: HP 800 вместо 3000, иначе дуэль двух танков идёт полторы минуты и до
         /// смерти с осколками дело не доходит.
@@ -639,12 +633,6 @@ namespace Guildmaster.DevTools
         /// подменяет в игровом контенте: раньше костяной вид приходилось руками вписывать в <c>relic.base</c>,
         /// и пока подмена стояла, костяным становился каждый бой базовой реликвии.
         /// Тот же вход на Ристалище, что у <see cref="SpawnMirror"/>.
-        /// </summary>
-        public void SpawnBoneDuel()
-            => SpawnSkeletalDuel(_boneDuelist, "enemy.bone_dev", "bones", self => self.SpawnBoneDuel());
-
-        /// <summary>
-        /// То же, что <see cref="SpawnBoneDuel"/>, но на виде Storybook (<c>enemy.bone_storybook</c>).
         /// </summary>
         public void SpawnBoneStorybookDuel()
             => SpawnSkeletalDuel(_boneStorybookDuelist, "enemy.bone_storybook", "storybook",

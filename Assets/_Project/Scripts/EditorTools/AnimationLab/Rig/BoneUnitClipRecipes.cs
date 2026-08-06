@@ -640,11 +640,10 @@ namespace Guildmaster.AnimationLab.Editor
         /// </summary>
         static void HoldUntil(RigWriter w, float until) => w.HoldUntil(until);
 
-        /// <summary>Bring both controllers in line with the clips that now exist. See BoneUnitControllerBuilder.</summary>
+        /// <summary>Bring the controller in line with the clips that now exist. See BoneUnitControllerBuilder.</summary>
         static string[] RebuildControllers() => new[]
         {
-            BoneUnitControllerBuilder.Rebuild("BoneUnit_Combat"),
-            BoneUnitControllerBuilder.Rebuild("BoneUnit_Standart"),
+            BoneUnitControllerBuilder.Rebuild("BoneUnit_SwordShield"),
         };
 
         /// <summary>Back to the stance every attack starts and ends in.</summary>

@@ -1468,7 +1468,7 @@ GameObject:
   - component: {fileID: 8349544715134497280}
   - component: {fileID: 2147224240032170120}
   m_Layer: 0
-  m_Name: BoneUnit_Standart
+  m_Name: BoneUnit_SwordShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

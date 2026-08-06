@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 551ba710b5e1fcc4f9e3f6c56bdfdf45, type: 3}
-  m_Name: BoneStandart
+  m_Name: SwordShield
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.UnitVisual
   _idleClip: {fileID: 7400000, guid: 61f38bd5b957d154da1cb1076e2228b8, type: 2}
   _runClip: {fileID: 7400000, guid: 96c023c5eeb325a4da625a7c37c01b7a, type: 2}
