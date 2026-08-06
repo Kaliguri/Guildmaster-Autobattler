@@ -31,6 +31,13 @@ namespace Guildmaster.Presentation.Body
             SpriteRenderer renderer = part.Renderer;
             if (renderer == null || renderer.sprite == null) return false;
 
+            // ОБЪЯВЛЕННЫЙ размер важнее замера: длина оружия — величина данных, а не картинки. Пока её
+            // не объявили, работает замер по мешу (переходный режим, см. UnitHeldItem.DeclaredLength).
+            if (part.IsReach && renderer.transform.parent != null
+                && renderer.transform.parent.TryGetComponent(out UnitHeldItem held)
+                && held.TryGetDeclaredTip(out world))
+                return true;
+
             // По МЕШУ спрайта, как это делает офлайн-замер (`RigProfile.MeasureAxis`), а не по углам рамки:
             // клинок «сторибука» нарисован по диагонали кадра, и дальний угол рамки лежит в пустоте за
             // остриём. Меш обтягивает рисунок (28 вершин у клинка), поэтому дальняя вершина и есть остриё.

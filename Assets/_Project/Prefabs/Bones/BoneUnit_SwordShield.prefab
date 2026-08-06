@@ -1011,6 +1011,9 @@ MonoBehaviour:
   _kind: 1
   _twoHanded: 0
   _reachPart: {fileID: 2291789743680614658}
+  _declaredLength: 0.39200965
+  _declaredAxisDeg: 36.509228
+  _showReachGizmo: 1
 --- !u!1 &3287573685078756881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1059,6 +1062,9 @@ MonoBehaviour:
   _kind: 2
   _twoHanded: 0
   _reachPart: {fileID: 4735357580786269482}
+  _declaredLength: 0.2052878
+  _declaredAxisDeg: 89.60773
+  _showReachGizmo: 1
 --- !u!1 &3542098478692728360
 GameObject:
   m_ObjectHideFlags: 0
