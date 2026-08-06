@@ -8,6 +8,7 @@ using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Diagnostics;
 using Guildmaster.Guild;
+using Guildmaster.UI.Components;
 using Guildmaster.UI.DevConsole;
 using MessagePipe;
 using UnityEngine;
@@ -1200,18 +1201,12 @@ namespace Guildmaster.UI
             for (int i = 0; i < relics.Count; i++)
             {
                 RelicData relic = relics[i];
-                var card = new VisualElement();
-                card.AddToClassList("gm-card");
-
-                var sprite = new VisualElement();
-                sprite.AddToClassList("gm-card__sprite");
-                if (relic.Icon != null) sprite.style.backgroundImage = new StyleBackground(relic.Icon);
-                card.Add(sprite);
-
-                var name = new Label(_loadoutVm.Name(relic));
-                name.AddToClassList("gm-text-name");
-                name.AddToClassList("gm-card__name");
-                card.Add(name);
+                // КОНТРОЛ, а не ручная сборка. До 07.08.2026 здесь построчно повторялся конструктор
+                // RelicCard — те же классы, тот же спрайт, та же подпись, — и расхождение уже стоило
+                // грида: карточки контрола стали focusable, а собранные тут остались недоступны с
+                // клавиатуры. Один владелец сборки: правка контрола доезжает сюда сама.
+                var card = new RelicCard { RelicName = _loadoutVm.Name(relic) };
+                card.SetSprite(relic.Icon);
 
                 // Наведение → детали; клик → выбор (+звук) + предпросмотр деталей.
                 card.RegisterCallback<PointerEnterEvent>(_ => ShowDetail(relic));
