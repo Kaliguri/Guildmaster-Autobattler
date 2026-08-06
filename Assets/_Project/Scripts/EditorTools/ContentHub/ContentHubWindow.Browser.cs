@@ -230,13 +230,10 @@ namespace Guildmaster.ContentHub.Editor
             _detailPane.Add(new Label("Поля") { }.WithClass("gh-sec-h"));
             _detailPane.Add(new InspectorElement(new SerializedObject(_selected.Asset)));
 
-            // Визуал прямо под полями: если это UnitVisual или юнит с визуалом — портрет + плеер клипов.
-            var vis = _selected.Asset as UnitVisual ?? _selected.Unit?.Visual;
-            if (vis != null)
-            {
-                _detailPane.Add(new Label("Визуал").WithClass("gh-sec-h"));
-                BuildVisualPreview(_detailPane, vis);
-            }
+            // Превью визуала здесь БЫЛО и удалено 06.08.2026 вместе с покадровым путём: оно проигрывало
+            // клип по спрайт-кадрам, а у скелетного рига кадров нет — на живом ростере окно показывало
+            // пустоту. Переписать под скелет (рендер как у контактных листов AnimationLab) — отдельная
+            // работа, см. план `tech/40-planning/weapon-system` §6.1.
 
             if (_selected.IsUnit)
                 BuildStatContext(_selected);
