@@ -274,9 +274,7 @@ namespace Guildmaster.DevTools
             Forced.Clear();
             Measured.Clear();
 
-            var title = new Label($"{group}  ·  лист {page + 1}");
-            title.AddToClassList("gm-sheet__title");
-            sheet.Add(title);
+            sheet.Add(BuildHead(group, page, entries.Count));
 
             int from = page * RowsPerFrame;
             int to   = Mathf.Min(from + RowsPerFrame, entries.Count);
@@ -287,14 +285,62 @@ namespace Guildmaster.DevTools
             }
         }
 
+        /// <summary>
+        /// Шапка страницы: название раздела, номер листа из скольких, и строка «зачем смотреть».
+        /// </summary>
+        /// <remarks>
+        /// «Лист 2 из 3» вместо просто «лист 2» — чтобы по одному кадру было видно, весь ли раздел
+        /// перед глазами. Название и описание берутся из перечня: раздел — его свойство, а не
+        /// свойство инструмента показа.
+        /// </remarks>
+        private static VisualElement BuildHead(UiComponentGroup group, int page, int count)
+        {
+            var head = new VisualElement();
+            head.AddToClassList("gm-sheet__head");
+
+            (string name, string description) = UiComponentRegistry.Describe(group);
+            int pages = Mathf.Max(1, Mathf.CeilToInt(count / (float)RowsPerFrame));
+
+            var title = new Label($"{name}  ·  лист {page + 1} из {pages}");
+            title.AddToClassList("gm-sheet__title");
+            head.Add(title);
+
+            if (!string.IsNullOrEmpty(description))
+            {
+                var subtitle = new Label(description);
+                subtitle.AddToClassList("gm-sheet__subtitle");
+                head.Add(subtitle);
+            }
+
+            return head;
+        }
+
         private static VisualElement BuildRow(UiComponentEntry entry)
         {
             var row = new VisualElement();
             row.AddToClassList("gm-sheet__row");
 
-            var caption = new Label($"{entry.Label}\n{entry.Block}");
+            // Подпись — три яруса: имя, класс, адрес применения. Тремя подписями в КОНТЕЙНЕРЕ, а
+            // не одной строкой через перенос: у ярусов разный вес (см. .gm-sheet__caption*), и
+            // одна строка красилась бы целиком в цвет самого важного из них.
+            var caption = new VisualElement();
             caption.AddToClassList("gm-sheet__caption");
             row.Add(caption);
+
+            var name = new Label(entry.Label);
+            name.AddToClassList("gm-sheet__caption-name");
+            caption.Add(name);
+
+            var block = new Label(entry.Block);
+            block.AddToClassList("gm-sheet__caption-block");
+            caption.Add(block);
+
+            if (!string.IsNullOrEmpty(entry.Usage))
+            {
+                var usage = new Label(entry.Usage);
+                usage.AddToClassList("gm-sheet__caption-usage");
+                caption.Add(usage);
+            }
 
             // У декоративного элемента подпись «покой» лишняя: состояний у него нет, и слово
             // намекает, что где-то рядом должны быть другие ячейки.

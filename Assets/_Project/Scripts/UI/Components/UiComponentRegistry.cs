@@ -133,12 +133,30 @@ namespace Guildmaster.UI.Components
         /// </remarks>
         public UiTextTone Tones { get; }
 
+        /// <summary>
+        /// Где элемент живёт в игре: одно-два реальных места, по-человечески. Пусто — адреса нет.
+        /// </summary>
+        /// <remarks>
+        /// Заведено 07.08.2026 по вопросу, который на самом деле был про весь лист, а не про один
+        /// элемент: «не понятно что за "сосуд во дворе" в принципе и где это юзается». До этого
+        /// подпись ряда несла имя и класс, и узнать, откуда элемент растёт, можно было только
+        /// грепом — то есть витрина показывала набор, но не говорила, где его применяют.
+        ///
+        /// <para>Пишется НАЗНАЧЕНИЕМ, а не путём к файлу: путь устареет от первого переименования
+        /// экрана и соврёт молча, а «лавка, список на продажу» останется верным, пока жива лавка.
+        /// У текстовых ролей адреса нет намеренно — роль по определению кладётся куда угодно, и
+        /// перечислять места значило бы возвращать ту самую перепись жителей, от которой роли
+        /// уходили.</para>
+        /// </remarks>
+        public string Usage { get; }
+
         /// <summary>Элемент принимает указатель: по нему кликают, он звучит, он обязан иметь состояния.</summary>
         public bool IsInteractive => Required != UiElementState.None;
 
         internal UiComponentEntry(string label, string block, UiComponentGroup group,
                                   UiElementState required, string baseBlock, string[] variants,
-                                  bool technical = false, UiTextTone tones = UiTextTone.None)
+                                  bool technical = false, UiTextTone tones = UiTextTone.None,
+                                  string usage = null)
         {
             Label    = label;
             Block    = block;
@@ -147,6 +165,7 @@ namespace Guildmaster.UI.Components
             Base      = baseBlock;
             Technical = technical;
             Tones     = tones;
+            Usage     = usage;
             Variants  = variants ?? Array.Empty<string>();
         }
     }
@@ -231,20 +250,25 @@ namespace Guildmaster.UI.Components
             // нажатия, а не о месте действия в иерархии экрана. Тем же свойством обладает
             // «не по карману»: обе метки накладываются на любую роль и ни одну не заменяют.
             New("Кнопка (Обычная) — Вариация 1", "gm-button", UiComponentGroup.Buttons, Interactive, null,
+                "везде, кроме главного действия экрана: диалоги, лавка, настройки",
                 "gm-button--display", "gm-button--danger", "gm-button--unaffordable"),
             New("Кнопка (Главная) — Вариация 1", "gm-button--primary", UiComponentGroup.Buttons,
-                Interactive, OfButton),
+                Interactive, OfButton, "главное действие экрана: начать забег, принять, продолжить"),
             NewTechnical("Пластина (форма, не элемент набора)", "gm-plate-button", UiComponentGroup.Buttons,
                 Interactive),
 
             // --- ВКЛАДКИ И ЧИПЫ ---
-            New("Вкладка", "gm-tab", UiComponentGroup.Tabs, Interactive, OfPlate, "gm-tab--active"),
+            New("Вкладка", "gm-tab", UiComponentGroup.Tabs, Interactive, OfPlate,
+                "страницы настроек и лоадаута", "gm-tab--active"),
             New("Чип", "gm-chip", UiComponentGroup.Tabs, Interactive, null,
+                "фильтры инвентаря, лента режимов забега",
                 "gm-chip--active", "gm-chip--muted", "gm-chip--sm", "gm-chip--collapsible"),
-            New("Чип скошенный", "gm-chip--slanted", UiComponentGroup.Tabs, Interactive, OfChip),
-            New("Таб ленты забега", "gm-runbar__tab", UiComponentGroup.Tabs, Interactive, OfChip),
+            New("Чип скошенный", "gm-chip--slanted", UiComponentGroup.Tabs, Interactive, OfChip,
+                "лента режимов забега"),
+            New("Таб ленты забега", "gm-runbar__tab", UiComponentGroup.Tabs, Interactive, OfChip,
+                "лента режимов забега — переключение боя, карты, лагеря"),
             New("Фильтр инвентаря", "gm-filter-tab", UiComponentGroup.Tabs, Interactive, OfChip,
-                "gm-filter-tab--last"),
+                "инвентарь реликвий — отбор по виду", "gm-filter-tab--last"),
 
             // --- КАРТОЧКИ И СЛОТЫ ---
             // КАРТОЧКА ОДНА, различается РАЗМЕРОМ (правило Макса 06.08.2026, третье применение того
@@ -254,22 +278,28 @@ namespace Guildmaster.UI.Components
             // Расхождение было историческим: витрина писалась в screens/shop.uss отдельно. Кайма
             // сведена к базовой, вид лавки при этом изменился — решение принято глядя на кадр.
             New("Карточка релика", "gm-card", UiComponentGroup.Cards, Interactive, null,
+                "снаряжение бойца, витрина лавки, выбор награды",
                 "gm-card--selected", "gm-card--current", "gm-card--reward", "gm-card--shop",
                 "gm-card--sold"),
             New("Карточка арканы", "gm-arcana-card", UiComponentGroup.Cards, Interactive, null,
+                "инвентарь реликвий — таро-грид",
                 "gm-arcana-card--selected", "gm-arcana-card--locked"),
-            New("Строка запаса", "gm-shop__stash-row", UiComponentGroup.Cards, Interactive, null),
+            New("Строка запаса", "gm-shop__stash-row", UiComponentGroup.Cards, Interactive, null,
+                "лавка — список того, что можно продать"),
             New("Слот", "gm-slot", UiComponentGroup.Cards, Interactive, null,
+                "расстановка команды, ячейки инвентаря",
                 "gm-slot--selected", "gm-slot--empty", "gm-slot--sm", "gm-slot--md", "gm-slot--lg"),
             New("Строка дропа", "gm-reward-drop__row", UiComponentGroup.Cards, Interactive, null,
+                "экран награды — что сбросить, когда инвентарь полон",
                 "gm-reward-drop__row--selected"),
-            New("Ячейка стата", "gm-stat", UiComponentGroup.Cards, Interactive, null),
+            New("Ячейка стата", "gm-stat", UiComponentGroup.Cards, Interactive, null,
+                "статблок бойца в инвентаре"),
             New("Цвет профиля", "gm-profile__swatch", UiComponentGroup.Cards, Interactive, null,
-                "gm-profile__swatch--picked"),
+                "профиль — выбор цвета игрока", "gm-profile__swatch--picked"),
             New("Курсор профиля", "gm-profile__cursor", UiComponentGroup.Cards, Interactive, null,
-                "gm-profile__cursor--picked"),
+                "профиль — выбор скина курсора", "gm-profile__cursor--picked"),
             New("Крышка сундука", "gm-chest__lid", UiComponentGroup.Cards, Interactive, null,
-                "gm-chest__lid--open"),
+                "экран сундука — открывается кликом", "gm-chest__lid--open"),
 
             // --- СТРОКИ НАСТРОЕК ---
             // ФОКУСА У СТРОКИ НЕТ, и это решение, а не пропуск: фокус принимает её контрол (Toggle,
@@ -279,10 +309,12 @@ namespace Guildmaster.UI.Components
             // Переключатель — единственный элемент с `:checked`: псевдокласс ставится на сам Toggle,
             // поэтому правило пишется через потомка.
             New("Переключатель", "gm-toggle-row", UiComponentGroup.Rows,
-                RowInteractive | UiElementState.Checked, null),
+                RowInteractive | UiElementState.Checked, null, "настройки — да/нет"),
             New("Выбор", "gm-select-row", UiComponentGroup.Rows, RowInteractive, null,
+                "настройки — разрешение, режим окна, частота обновления",
                 "gm-select-row--disabled"),
-            New("Слайдер", "gm-slider-row", UiComponentGroup.Rows, RowInteractive, null),
+            New("Слайдер", "gm-slider-row", UiComponentGroup.Rows, RowInteractive, null,
+                "настройки — громкость и прочие доли"),
 
             // --- ТЕКСТ ---
             // ВОСЕМЬ РОЛЕЙ, а не перепись классов (правило Макса 06.08.2026: «как и кнопки,
@@ -335,34 +367,82 @@ namespace Guildmaster.UI.Components
             // одной строке (иначе не видно, различимы ли они рядом), и список вариантов дал бы
             // семь одинаковых ячеек — первый прогон это и показал.
             New("Текст (Словарь подсказки)", "gm-kw", UiComponentGroup.Typography,
-                UiElementState.None, null),
+                UiElementState.None, null, "выделенные понятия внутри подсказок"),
 
             // --- ПАНЕЛИ И ДЕКОР ---
             New("Панель", "gm-panel", UiComponentGroup.Panels, UiElementState.None, null,
+                "подложка почти всех экранов: меню, диалоги, лавка, награда",
                 "gm-panel--dialog", "gm-panel--menu", "gm-panel--system"),
-            New("Оправа", "gm-panel__frame", UiComponentGroup.Panels, UiElementState.None, null),
-            New("Скошенная подложка", "gm-slant", UiComponentGroup.Panels, UiElementState.None, null),
-            New("Вуаль кромки", "gm-edge-veil", UiComponentGroup.Panels, UiElementState.None, null),
+            New("Оправа", "gm-panel__frame", UiComponentGroup.Panels, UiElementState.None, null,
+                "хаб, выбор гильдии, новая игра, профиль"),
+            New("Скошенная подложка", "gm-slant", UiComponentGroup.Panels, UiElementState.None, null,
+                "лента режимов забега"),
+            New("Вуаль кромки", "gm-edge-veil", UiComponentGroup.Panels, UiElementState.None, null,
+                "главное меню — затемнение к краю кадра"),
 
             // --- ПОВЕРХ ВСЕГО ---
             New("Подсказка", "gm-tooltip", UiComponentGroup.Overlays, UiElementState.None, null,
+                "наведение на что угодно с описанием: релик, стат, понятие",
                 "gm-tooltip--wide", "gm-tooltip--sticky"),
             New("Карточка подсказки", "gm-tooltip__card", UiComponentGroup.Overlays, UiElementState.None, null,
-                "gm-tooltip__card--wide"),
+                "содержимое подсказки: заголовок, мета, строки", "gm-tooltip__card--wide"),
 
             // --- ДЕВ-ТУЛИНГ ---
             New("Инструмент консоли", "gm-console__tool", UiComponentGroup.Dev, DevTooling, null,
-                "gm-console__tool--active"),
+                "дев-консоль — кнопки инструментов", "gm-console__tool--active"),
             New("Совпадение консоли", "gm-console__hit", UiComponentGroup.Dev, DevTooling, null,
-                "gm-console__hit--selected"),
+                "дев-консоль — подсказка команд при наборе", "gm-console__hit--selected"),
             New("Строка пикера", "gm-picker__row", UiComponentGroup.Dev, DevTooling, null,
+                "браузер боёв — строка таблицы",
                 "gm-picker__row--selected", "gm-picker__row--head"),
             New("Заголовок пикера", "gm-picker__head-cell", UiComponentGroup.Dev, DevTooling, null,
+                "браузер боёв — шапка колонки, по ней сортируют",
                 "gm-picker__head-cell--sorted"),
         };
 
         /// <summary>Весь перечень в порядке объявления.</summary>
         public static IReadOnlyList<UiComponentEntry> All => Entries;
+
+        /// <summary>
+        /// Название раздела по-русски и строка «что здесь и зачем смотреть» — шапка страницы листа.
+        /// </summary>
+        /// <remarks>
+        /// Живёт в перечне, а не в самом листе: раздел — свойство НАБОРА, и лист лишь показывает
+        /// его. Заказ Макса 06.08.2026: «Чтобы экран был сверху подписан, что за экран (что на нем,
+        /// т.е. название) и кратко описание». До этого страница подписывалась именем перечисления
+        /// латиницей («Cards · лист 1») посреди русского листа, а описания не было вовсе — и по
+        /// кадру нельзя было понять, чем раздел отличается от соседнего.
+        ///
+        /// <para>Описание отвечает на «зачем смотреть», а не пересказывает состав: перечень
+        /// элементов и так виден на самой странице.</para>
+        /// </remarks>
+        public static (string Title, string Description) Describe(UiComponentGroup group) => group switch
+        {
+            UiComponentGroup.Buttons => ("Кнопки",
+                "Две роли: обычная и главная. «Удаление» и «не по карману» — метки поверх роли, "
+                + "а не отдельные кнопки: они говорят о последствии нажатия."),
+            UiComponentGroup.Tabs => ("Вкладки и чипы",
+                "Переключатели. Вкладка держит страницу, чип — отбор и режим; различаются формой "
+                + "и весом, а не назначением."),
+            UiComponentGroup.Cards => ("Карточки и слоты",
+                "Всё, что показывает вещь или бойца. Смотреть на размеры вариантов: одна карточка "
+                + "в разных размерах, а не разные карточки."),
+            UiComponentGroup.Rows => ("Строки настроек",
+                "Подпись слева, контрол справа. Фокуса у самой строки нет — его принимает её "
+                + "контрол, и это решение, а не пропуск."),
+            UiComponentGroup.Panels => ("Панели и декор",
+                "Подложки, оправы, вуали. Состояний нет: на них не нажимают."),
+            UiComponentGroup.Overlays => ("Поверх всего",
+                "Подсказки. Появляются по наведению и живут над экраном, поэтому на общих кадрах "
+                + "их не видно."),
+            UiComponentGroup.Typography => ("Текст",
+                "Девять ролей и семь цветовых меток. Роль задаёт гарнитуру и кегль, метка — только "
+                + "цвет; метка кладётся поверх любой роли вторым классом."),
+            UiComponentGroup.Dev => ("Дев-тулинг",
+                "Консоль и пикеры. Игрок их не видит, поэтому фокус и выключенность с них не "
+                + "требуются."),
+            _ => (group.ToString(), string.Empty),
+        };
 
         /// <summary>
         /// Классы всех интерактивных элементов. Зовётся из <c>UiSoundSystem</c>: звук наведения и
@@ -388,10 +468,15 @@ namespace Guildmaster.UI.Components
             return blocks.ToArray();
         }
 
+        /// <summary>
+        /// Запись перечня. <paramref name="usage"/> стоит ПЕРЕД вариантами намеренно: у варианта
+        /// своего адреса не бывает (он живёт там же, где блок), а <c>params</c> обязан быть
+        /// последним — и адрес, поставленный после, пришлось бы каждый раз писать в массив.
+        /// </summary>
         private static UiComponentEntry New(string label, string block, UiComponentGroup group,
-                                            UiElementState required, string baseBlock,
+                                            UiElementState required, string baseBlock, string usage,
                                             params string[] variants)
-            => new(label, block, group, required, baseBlock, variants);
+            => new(label, block, group, required, baseBlock, variants, usage: usage);
 
         /// <summary>Текстовая роль с её живыми метками. Состояний у текста нет — он не кликается.</summary>
         private static UiComponentEntry NewText(string label, string block, UiTextTone tones)
