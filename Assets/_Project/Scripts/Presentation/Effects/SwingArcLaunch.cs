@@ -47,7 +47,8 @@ namespace Guildmaster.Presentation.Effects
             var colour = new Color(unitGlow.r * k, unitGlow.g * k, unitGlow.b * k, unitGlow.a);
 
             arc.Begin(source, colour, feel.SwingArcInnerShare, feel.SwingArcTailBias,
-                      feel.SwingArcFadeOut, feel.SwingArcMaxSpanDeg, feel.SwingArcStyle);
+                      feel.SwingArcFadeOut, feel.SwingArcTrailSeconds, feel.SwingArcMaxSpanDeg,
+                      feel.SwingArcStyle);
             return true;
         }
     }

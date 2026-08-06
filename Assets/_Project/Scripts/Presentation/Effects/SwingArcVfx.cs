@@ -134,11 +134,39 @@ namespace Guildmaster.Presentation.Effects
         private float _innerShare;
         private float _tailBias;
         private float _fadeOut;        // сколько дуга гаснет после конца взмаха, сек
-        private float _maxSpan;        // максимальная угловая длина следа, радианы
+        private float _trailSeconds;   // сколько живёт точка следа — ДЛИНА хвоста, см. Remember
+        private float _maxSpan;        // страховка от сектора длиннее оборота, радианы
         private float _fadeLeft;
         private float _fadeStart;      // угол начала сектора на момент конца взмаха — от него след съедается
         private bool  _swinging;
         private bool  _playing;
+
+        /// <summary>
+        /// След клинка ВО ВРЕМЕНИ: где остриё было в последние <see cref="_trailSeconds"/>. Кольцевой
+        /// буфер пар «угол + момент», ровно как точки внутри <c>TrailRenderer</c>.
+        /// </summary>
+        /// <remarks>
+        /// До 07.08.2026 длина хвоста задавалась В ГРАДУСАХ, и это была неверная единица (заметил Макс):
+        /// укол и тяжёлый замах оставляли одинаковый след, потому что «сколько градусов держим» ничего не
+        /// знает о скорости. След — это остаточное изображение, его длина есть скорость × время; поэтому
+        /// быстрый взмах обязан тянуть длинный хвост, а медленный короткий, и вес удара читается сам
+        /// собой. Так устроены все трейлы: у точки есть время жизни, а не пройденный путь.
+        /// <para>
+        /// Хранятся УГЛЫ, а не мировые точки: замер клипа «Атака 1» показал, что остриё идёт вокруг
+        /// плеча по окружности с разбросом радиуса в 6% — хранить полные позиции было бы нечего.
+        /// </para>
+        /// </remarks>
+        private readonly float[] _trailAngle = new float[TrailCapacity];
+        private readonly float[] _trailTime  = new float[TrailCapacity];
+        private int   _trailHead;      // куда писать следующую пробу
+        private int   _trailCount;
+        private float _elapsed;        // часы этой дуги; идут по ЯВНОМУ времени Tick, а не по Time.time
+
+        /// <summary>
+        /// Сколько проб помнит след. Одна проба на кадр: при 144 Гц и полусекундном хвосте нужно 72,
+        /// вдвое меньший буфер молча укоротил бы хвост — поэтому берём с запасом, он стоит полкилобайта.
+        /// </summary>
+        private const int TrailCapacity = 128;
 
         private void Awake() => Cache();
 
@@ -157,18 +185,23 @@ namespace Guildmaster.Presentation.Effects
         /// <param name="fadeOutSeconds">Сколько дуга догорает после конца взмаха.</param>
         /// <param name="style">Как след окрашен и какой он формы поперёк — см. <see cref="SwingArcStyle"/>.</param>
         public void Begin(ISwingArcSource source, Color colour, float innerShare, float tailBias,
-                          float fadeOutSeconds, float maxSpanDeg, in SwingArcStyle style)
+                          float fadeOutSeconds, float trailSeconds, float maxSpanDeg, in SwingArcStyle style)
         {
             Cache();
 
-            _source     = source;
-            _innerShare = Mathf.Clamp01(innerShare);
-            _tailBias   = Mathf.Max(0.2f, tailBias);
-            _fadeOut    = Mathf.Max(0.01f, fadeOutSeconds);
-            _maxSpan    = Mathf.Max(0.1f, maxSpanDeg) * Mathf.Deg2Rad;
-            _fadeLeft   = _fadeOut;
-            _swinging   = true;
-            _playing    = true;
+            _source       = source;
+            _innerShare   = Mathf.Clamp01(innerShare);
+            _tailBias     = Mathf.Max(0.2f, tailBias);
+            _fadeOut      = Mathf.Max(0.01f, fadeOutSeconds);
+            _trailSeconds = Mathf.Max(0.01f, trailSeconds);
+            _maxSpan      = Mathf.Max(0.1f, maxSpanDeg) * Mathf.Deg2Rad;
+            _fadeLeft     = _fadeOut;
+            _swinging     = true;
+            _playing      = true;
+
+            _trailHead  = 0;
+            _trailCount = 0;
+            _elapsed    = 0f;
 
             Anchor(source);
 
@@ -228,13 +261,22 @@ namespace Guildmaster.Presentation.Effects
         public void Tick(float deltaTime)
         {
             if (!_playing) return;
+
+            _elapsed += Mathf.Max(0f, deltaTime);
+
             if (_swinging && _source != null &&
                 _source.TryGetSwingArc(out Vector3 pivot, out Vector3 tip, out float _))
             {
                 Vector2 arm = tip - pivot;
                 if (arm.sqrMagnitude > 1e-8f)
                 {
-                    _radius = Mathf.Max(_radius, arm.magnitude);   // рука разгибается — сектор растёт с ней
+                    // Радиус СЛЕДУЕТ за рукой, а не запоминает самый широкий размах. Максимум держался
+                    // до 07.08.2026 и давал вот что: после удара локоть сгибается, клинок идёт ближе к
+                    // телу, а кольцо остаётся на прежнем радиусе — след «висит» дальше меча и перестаёт
+                    // читаться как его движение. Замер по клипу «Атака 1»: за окно взмаха радиус гуляет
+                    // на 6% (1.29 → 1.365), так что дыхание сектора глазом не ловится, а отрыв от
+                    // клинка — ловится сразу.
+                    _radius = arm.magnitude;
 
                     // Угол РАЗВОРАЧИВАЕТСЯ: клинок за взмах проходит больше пи, и наивный atan2 дал бы
                     // скачок, от которого сектор схлопнулся бы в ничто ровно на середине удара.
@@ -242,10 +284,16 @@ namespace Guildmaster.Presentation.Effects
                     float delta = Mathf.DeltaAngle(_angleTo * Mathf.Rad2Deg, raw * Mathf.Rad2Deg) * Mathf.Deg2Rad;
                     _angleTo += delta;
 
-                    // След — это ПОСЛЕДНИЕ N градусов пути, а не весь путь: начало дуги едет за клинком,
-                    // когда сектор перерос свою длину. Иначе непрерывный взмах (поток «Вихря») замкнул бы
-                    // круг и пошёл по второму, а сектор длиннее полного оборота перекрывает сам себя —
-                    // шейдер считает долю от начала до текущего клинка и на таком секторе врёт.
+                    // След — это путь клинка за ПОСЛЕДНИЕ _trailSeconds. Начало хвоста берётся из буфера
+                    // проб: где остриё было столько-то назад. Так длина следа сама зависит от скорости —
+                    // укол оставит короткий росчерк, размашистый удар длинный, и это разница, которую
+                    // видно.
+                    Remember(_angleTo);
+                    _angleFrom = OldestLiveAngle();
+
+                    // Страховка: сектор длиннее оборота перекрывает сам себя, а шейдер считает долю от
+                    // начала следа до клинка и на таком секторе врёт. Упирается в неё только непрерывное
+                    // вращение (поток «Вихря»), обычному взмаху до неё не дотянуться.
                     float span = _angleTo - _angleFrom;
                     if (Mathf.Abs(span) > _maxSpan)
                         _angleFrom = _angleTo - Mathf.Sign(span) * _maxSpan;
@@ -286,6 +334,42 @@ namespace Guildmaster.Presentation.Effects
             // Прозрачность держится до последней четверти: гасить одновременно с укорачиванием значит
             // отнять у следа то самое движение, ради которого он и укорачивается.
             Write(Mathf.Clamp01(left / 0.25f));
+        }
+
+        /// <summary>Запомнить, где клинок сейчас: одна проба следа за шаг.</summary>
+        private void Remember(float angle)
+        {
+            _trailAngle[_trailHead] = angle;
+            _trailTime[_trailHead]  = _elapsed;
+
+            _trailHead = (_trailHead + 1) % TrailCapacity;
+            if (_trailCount < TrailCapacity) _trailCount++;
+        }
+
+        /// <summary>
+        /// Угол начала хвоста: где остриё было <see cref="_trailSeconds"/> назад. Пробы старше этого
+        /// срока следу больше не принадлежат — ровно как точки, отжившие своё в <c>TrailRenderer</c>.
+        /// </summary>
+        /// <remarks>
+        /// Ищем ЛИНЕЙНО от самой старой пробы к новым, а не бинарно: живых проб десяток-другой, и цикл по
+        /// ним дешевле развесистого поиска. Буфер переполнился — самая старая уже затёрта, и хвост
+        /// оказывается короче заказанного; отсюда запас в <see cref="TrailCapacity"/>.
+        /// </remarks>
+        private float OldestLiveAngle()
+        {
+            if (_trailCount == 0) return _angleTo;
+
+            float cutoff = _elapsed - _trailSeconds;
+            int oldest = (_trailHead - _trailCount + TrailCapacity) % TrailCapacity;
+
+            for (int i = 0; i < _trailCount; i++)
+            {
+                int idx = (oldest + i) % TrailCapacity;
+                if (_trailTime[idx] >= cutoff) return _trailAngle[idx];
+            }
+
+            // Все пробы старше среза: клинок стоит на месте дольше времени жизни следа — хвоста нет.
+            return _angleTo;
         }
 
         /// <summary>

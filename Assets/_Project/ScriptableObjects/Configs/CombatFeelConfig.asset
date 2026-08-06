@@ -234,9 +234,10 @@ MonoBehaviour:
   _vfxSwingArc: {fileID: 11400000, guid: ebe50167bd8259643881ef7aa77df7ec, type: 2}
   _swingArcInnerShare: 0.4
   _swingArcTailBias: 1.6
-  _swingArcFadeOut: 0.07
+  _swingArcFadeOut: 0.15
   _swingArcBrightness: 0.35
-  _swingArcMaxSpanDeg: 270
+  _swingArcTrailSeconds: 0.15
+  _swingArcMaxSpanDeg: 350
   _enableSwingArcShaping: 1
   _swingArcCoreShare: 0.34
   _swingArcColourShare: 0.74

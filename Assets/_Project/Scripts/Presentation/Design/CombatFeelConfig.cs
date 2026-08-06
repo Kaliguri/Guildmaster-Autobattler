@@ -508,10 +508,16 @@ namespace Guildmaster.Presentation.Design
                  "в непрерывной серии ударов пересвечивает бой.")]
         [SerializeField, Range(0.05f, 1f)] private float _swingArcBrightness = 0.35f;
 
-        [Tooltip("Длина следа в ГРАДУСАХ: сколько последнего пути клинка видно. Начало дуги едет за " +
-                 "клинком, поэтому непрерывный взмах (поток «Вихря») рисует один тянущийся след, а не " +
-                 "замкнутый круг. Больше 360 замкнёт кольцо — сектор перекроет сам себя.")]
-        [SerializeField, Range(45f, 360f)] private float _swingArcMaxSpanDeg = 270f;
+        [Tooltip("Длина следа ВО ВРЕМЕНИ: виден путь клинка за последние столько секунд. Не в градусах — " +
+                 "иначе укол и тяжёлый замах оставили бы одинаковый след, и вес удара перестал бы " +
+                 "читаться. Быстрый взмах даёт длинный след, медленный короткий — как остаточное " +
+                 "изображение и работает.")]
+        [SerializeField, Range(0.02f, 0.5f)] private float _swingArcTrailSeconds = 0.15f;
+
+        [Tooltip("СТРАХОВКА от сектора длиннее оборота: шейдер считает долю от начала следа до клинка, и " +
+                 "на перекрывающем себя секторе врёт. Длину следа задаёт не это поле, а время выше — " +
+                 "сюда упирается только непрерывное вращение (поток «Вихря»).")]
+        [SerializeField, Range(45f, 360f)] private float _swingArcMaxSpanDeg = 350f;
 
         [Tooltip("След становится РОСЧЕРКОМ: пересвет в середине, цвет к краям, чёрная кромка снаружи, " +
                  "плюс профиль ширины полумесяцем. Выключено — прежнее ровное кольцо одного цвета, " +
@@ -749,6 +755,7 @@ namespace Guildmaster.Presentation.Design
         public float   SwingArcTailBias    => _swingArcTailBias;
         public float   SwingArcFadeOut     => _swingArcFadeOut;
         public float   SwingArcBrightness  => _swingArcBrightness;
+        public float   SwingArcTrailSeconds => _swingArcTrailSeconds;
         public float   SwingArcMaxSpanDeg  => _swingArcMaxSpanDeg;
         /// <summary>
         /// Как окрашен и какой формы поперёк след клинка. Выключенная подача возвращает прежнее ровное
