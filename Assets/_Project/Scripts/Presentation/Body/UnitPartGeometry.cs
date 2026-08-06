@@ -38,10 +38,37 @@ namespace Guildmaster.Presentation.Body
                 && held.TryGetDeclaredTip(out world))
                 return true;
 
-            // По МЕШУ спрайта, как это делает офлайн-замер (`RigProfile.MeasureAxis`), а не по углам рамки:
-            // клинок «сторибука» нарисован по диагонали кадра, и дальний угол рамки лежит в пустоте за
-            // остриём. Меш обтягивает рисунок (28 вершин у клинка), поэтому дальняя вершина и есть остриё.
-            // Спрайт с рамочным мешом (4 вершины) деградирует к углам сам собой — это те же вершины.
+            if (!TryMeasureTipFromMesh(renderer, out Vector3 local)) return false;
+            world = renderer.transform.TransformPoint(local);
+            return true;
+        }
+
+        /// <summary>
+        /// ЧИСТЫЙ замер кончика по мешу спрайта, в локальных координатах рендерера: дальняя от точки
+        /// крепления вершина. Объявленный размер здесь НЕ учитывается — это и есть смысл метода.
+        /// </summary>
+        /// <returns><c>false</c>, если у спрайта нет вершин.</returns>
+        /// <remarks>
+        /// Отдельный публичный метод нужен редакторной кнопке «Замерить вылет по мешу»: она обязана
+        /// спросить именно картинку. Позови она <see cref="TryGetTip"/>, тот вернул бы уже объявленное
+        /// значение, и «замер» переписал бы число им же самим — тождество вместо проверки.
+        /// <para>
+        /// Меряем по МЕШУ, а не по углам рамки: клинок «сторибука» нарисован по диагонали кадра, и дальний
+        /// угол рамки лежит в пустоте за остриём. Меш обтягивает рисунок (28 вершин у клинка), поэтому
+        /// дальняя вершина и есть остриё. Спрайт с рамочным мешом (4 вершины) деградирует к углам сам
+        /// собой — это те же вершины.
+        /// </para>
+        /// <para>
+        /// Похожий на вид <c>RigProfile.MeasureAxis</c> — НЕ дубль и сливать их нельзя: он меряет от точки
+        /// ХВАТА (не от нуля рендерера) и ищет заодно пятку, потому что отвечает на другой вопрос — «куда
+        /// смотрит предмет», а не «где его остриё».
+        /// </para>
+        /// </remarks>
+        public static bool TryMeasureTipFromMesh(SpriteRenderer renderer, out Vector3 local)
+        {
+            local = default;
+            if (renderer == null || renderer.sprite == null) return false;
+
             Vector2[] vertices = renderer.sprite.vertices;
             if (vertices == null || vertices.Length == 0) return false;
 
@@ -57,7 +84,7 @@ namespace Guildmaster.Presentation.Body
                 best = vertices[i];
             }
 
-            world = renderer.transform.TransformPoint(best);
+            local = best;
             return true;
         }
     }

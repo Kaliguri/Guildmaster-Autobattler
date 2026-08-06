@@ -206,7 +206,9 @@ Hits»](journal/2026-07-31-an-attack-may-be-several-hits.md)): клип разм
 **Заглушка поставлена сознательно 2026-07-31 (решение Макса), и она видна в игре.** У рига
 (`Prefabs/Bones/`) есть Idle, Walk, Attack, Attack2, Attack3, AttackCharge, Block, CombatIdle, Sprint,
 Stun — **клипа смерти нет вовсе**. Валидатор контента требует Idle/Run/Attack/Death у каждого
-`UnitVisual`, поэтому в слот Death у `Visuals/BoneStandart.asset` положен `Idle.anim`.
+архетипа анимаций, поэтому в слот Death у `AnimationArchetypes/SwordShield.asset` положен `Idle.anim`.
+*(Имена обновлены 06.08.2026: `UnitVisual` → `AnimationArchetypeData`, папка `Visuals` →
+`AnimationArchetypes`, ассет `BoneStandart` → `SwordShield`. Суть долга не изменилась.)*
 
 Что это значит на экране: путь смерти играет клип перед разлётом на осколки
 (`UnitView.DriveDeath`, фаза `Dying`), то есть скелетный юнит перед распадом будет стоять в позе покоя

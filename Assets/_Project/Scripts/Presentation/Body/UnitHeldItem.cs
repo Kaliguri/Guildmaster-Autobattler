@@ -109,9 +109,13 @@ namespace Guildmaster.Presentation.Body
                 return;
             }
 
-            // Мерим по МЕШУ напрямую, минуя UnitPartGeometry: тот уже предпочитает объявленное значение,
-            // и кнопка переписывала бы число им же самим — «замер» стал бы тождеством.
-            Vector3 local = LocalTipFromMesh(_reachPart);
+            // Именно ЧИСТЫЙ замер: UnitPartGeometry.TryGetTip уже предпочитает объявленное значение, и
+            // кнопка переписывала бы число им же самим — «замер» стал бы тождеством.
+            if (!UnitPartGeometry.TryMeasureTipFromMesh(_reachPart, out Vector3 local))
+            {
+                Debug.LogError($"[UnitHeldItem] {name}: у рабочей части нет вершин меша — мерить нечего.", this);
+                return;
+            }
             Vector3 world = _reachPart.transform.TransformPoint(local);
             Vector3 fromGrip = transform.InverseTransformPoint(world);
 
@@ -122,24 +126,6 @@ namespace Guildmaster.Presentation.Body
 
             Debug.Log($"[UnitHeldItem] {name}: вылет замерен — длина {_declaredLength:F4}, " +
                       $"ось {_declaredAxisDeg:F2}°. Теперь он объявлен и от картинки не зависит.", this);
-        }
-
-        /// <summary>Дальняя от точки крепления вершина меша — то же, что делает <see cref="UnitPartGeometry"/>.</summary>
-        private static Vector3 LocalTipFromMesh(SpriteRenderer renderer)
-        {
-            Vector2[] vertices = renderer.sprite.vertices;
-            if (vertices == null || vertices.Length == 0) return Vector3.zero;
-
-            Vector2 best = vertices[0];
-            float bestSqr = -1f;
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                float sqr = vertices[i].sqrMagnitude;
-                if (sqr <= bestSqr) continue;
-                bestSqr = sqr;
-                best = vertices[i];
-            }
-            return best;
         }
 
         /// <summary>
@@ -158,11 +144,11 @@ namespace Guildmaster.Presentation.Body
                 Gizmos.DrawWireSphere(declared, 0.012f);
             }
 
-            // Замер идёт по мешу НАПРЯМУЮ: через UnitPartGeometry он вернул бы объявленное значение, и
-            // две линии совпали бы всегда — гизмо перестало бы ловить ровно то, ради чего заведено.
-            if (_reachPart != null && _reachPart.sprite != null)
+            // Именно ЧИСТЫЙ замер: TryGetTip вернул бы объявленное значение, и две линии совпали бы
+            // всегда — гизмо перестало бы ловить ровно то, ради чего заведено.
+            if (UnitPartGeometry.TryMeasureTipFromMesh(_reachPart, out Vector3 localTip))
             {
-                Vector3 measured = _reachPart.transform.TransformPoint(LocalTipFromMesh(_reachPart));
+                Vector3 measured = _reachPart.transform.TransformPoint(localTip);
                 Gizmos.color = new Color(0.35f, 0.95f, 0.55f, 0.75f);
                 Gizmos.DrawLine(transform.position, measured);
                 Gizmos.DrawWireSphere(measured, 0.008f);
