@@ -878,34 +878,22 @@ namespace Guildmaster.Presentation
 
             if (!TryGetSwingProgress(out progress)) return false;
 
-            var body = Body;
-            if (body?.Parts == null) return false;
-            if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source)) return false;
-            if (!UnitPartGeometry.TryGetTip(source, out tip)) return false;
+            // Сам расчёт живёт в SwingArcGeometry — его же зовёт редакторный стенд. Держать здесь свою
+            // копию значило бы завести вторую правду о взмахе; она уже расходилась.
+            if (Effects.SwingArcGeometry.TryResolve(Body, out pivot, out tip, out bool missingShoulder))
+                return true;
 
-            // Дуга идёт вокруг ПЛЕЧА, а не вокруг кисти: рука — жёсткий рычаг, и вращается вся плоскость
-            // удара. Взяв центром кисть, мы получили бы короткий веер вокруг запястья, которого в
-            // движении нет. Сторона — та же, что у бьющей руки: у бойца с двумя клинками левый взмах
-            // обязан идти от левого плеча.
-            BodySide side = source.Slot == HandSlot.Left ? BodySide.Left
-                          : source.Slot == HandSlot.Right ? BodySide.Right
-                          : source.Side;
-
-            string shoulderBone = RigNaming.ShoulderBone(side);
-            if (!body.Parts.TryGetBone(shoulderBone, side, out UnitPart shoulder)
-                || shoulder.Renderer == null)
+            if (missingShoulder)
             {
                 // Дуга уже заказана презентером — значит взмах состоялся, а вести её не вокруг чего.
                 // Молча вернуть false здесь значило бы погасить эффект в первом же кадре и оставить
                 // впечатление, что дуги у этого кита «не бывает».
                 VisualDefects.Report($"swing-pivot:{DefectKey}",
-                    $"[UnitView] {name}: дуга за клинком заказана, но плеча '{shoulderBone}' " +
-                    $"({side}) в теле нет — вращать сектор не вокруг чего, дуги не будет.", this);
-                return false;
+                    $"[UnitView] {name}: дуга за клинком заказана, но плеча " +
+                    $"'{Effects.SwingArcGeometry.ShoulderBoneFor(Body)}' в теле нет — вращать сектор " +
+                    "не вокруг чего, дуги не будет.", this);
             }
-
-            pivot = shoulder.Renderer.transform.position;
-            return true;
+            return false;
         }
 
         /// <summary>

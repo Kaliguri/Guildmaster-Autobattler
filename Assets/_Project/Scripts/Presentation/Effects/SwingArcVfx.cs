@@ -203,11 +203,22 @@ namespace Guildmaster.Presentation.Effects
             _fadeLeft = 0f;
         }
 
-        private void LateUpdate()
+        // LateUpdate, а не Update: плечо двигает Animator, и в Update дуга отставала бы от руки на кадр.
+        private void LateUpdate() => Tick(Time.deltaTime);
+
+        /// <summary>
+        /// Шаг жизни дуги: подтянуться за клинком либо догореть. Публичный и с ЯВНЫМ временем, потому
+        /// что в редакторных стендах кадров нет — а показывать они обязаны ровно то же, что бой.
+        /// </summary>
+        /// <remarks>
+        /// До 06.08.2026 стенд вёл дугу сам: свой угол, своё затухание. Получалась вторая правда о
+        /// взмахе, и она разошлась с боевой на первом же кадре — там нет ни разворота угла, ни клампа
+        /// сектора, ни утекающего хвоста. Единственный способ показать «как в игре» — звать этот
+        /// самый код.
+        /// </remarks>
+        public void Tick(float deltaTime)
         {
             if (!_playing) return;
-
-            // LateUpdate, а не Update: плечо двигает Animator, и в Update дуга отставала бы от руки на кадр.
             if (_swinging && _source != null &&
                 _source.TryGetSwingArc(out Vector3 pivot, out Vector3 tip, out float _))
             {
@@ -248,7 +259,7 @@ namespace Guildmaster.Presentation.Effects
                 _fadeStart = _angleFrom;   // откуда начинать съедать — угол на момент конца взмаха
             }
 
-            _fadeLeft -= Time.deltaTime;
+            _fadeLeft -= deltaTime;
             if (_fadeLeft <= 0f)
             {
                 _playing = false;

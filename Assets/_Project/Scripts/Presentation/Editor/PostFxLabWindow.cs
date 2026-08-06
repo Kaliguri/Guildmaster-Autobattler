@@ -321,8 +321,12 @@ namespace Guildmaster.Presentation.Editor
                     if (_root != null) _applyPhase?.Invoke(_phase);
                 }
 
+                // Ползунок ставит паузу ТОЛЬКО когда его действительно тронули. Сравнивать его значение
+                // с текущей фазой нельзя: во время проигрывания фаза убегает между кадрами GUI, разница
+                // появляется сама собой — и стенд вставал на паузу, стоило мышке пройти мимо.
+                EditorGUI.BeginChangeCheck();
                 float phase = EditorGUILayout.Slider(_phase, 0f, 1f);
-                if (!Mathf.Approximately(phase, _phase)) { _phase = phase; _playing = false; }
+                if (EditorGUI.EndChangeCheck()) { _phase = phase; _playing = false; }
 
                 GUILayout.Label($"{_phase * _phaseDuration:0.00} / {_phaseDuration:0.00} с",
                                 EditorStyles.miniLabel, GUILayout.Width(90f));
@@ -789,7 +793,7 @@ namespace Guildmaster.Presentation.Editor
             var sampler = new ClipSampler(clip, rig);
             var source = new ClipSwingSource();
             sampler.Sample(0f);
-            TrySwingGeometry(body, out source.Pivot, out source.Tip);
+            source.Swinging = SwingArcGeometry.TryResolve(body, out source.Pivot, out source.Tip, out _);
 
             arc.Begin(source, colour, feel.SwingArcInnerShare, feel.SwingArcTailBias,
                       feel.SwingArcFadeOut, feel.SwingArcMaxSpanDeg, feel.SwingArcStyle);
@@ -797,25 +801,22 @@ namespace Guildmaster.Presentation.Editor
             // Весь клип целиком, а не только время дуги: смотрят взмах, а дуга — его часть.
             _phaseDuration = Mathf.Max(0.05f, clip.length);
 
-            float angleFrom = Mathf.Atan2(source.Tip.y - source.Pivot.y, source.Tip.x - source.Pivot.x);
-            float radius    = Mathf.Max(0.01f, ((Vector2)(source.Tip - source.Pivot)).magnitude);
+            float lastTime = 0f;
 
             _applyPhase = t =>
             {
-                if (unit == null || go == null) return;
+                if (unit == null || arc == null) return;
 
-                sampler.Sample(Mathf.Clamp01(t) * clip.length);
-                if (!TrySwingGeometry(body, out Vector3 pivot, out Vector3 tip)) return;
+                float time = Mathf.Clamp01(t) * clip.length;
+                sampler.Sample(time);
+                source.Swinging = SwingArcGeometry.TryResolve(body, out source.Pivot, out source.Tip, out _);
 
-                Vector2 arm = tip - pivot;
-
-                // Домотку ведём сами: Update у эффекта в редакторе не идёт. Дуга заметает от угла на
-                // первом кадре клипа до угла сейчас — то есть повторяет путь настоящего острия.
-                go.transform.position   = pivot;
-                go.transform.localScale = new Vector3(radius * 2f, radius * 2f, 1f);
-                SetFloat(go, "_AngleFrom", angleFrom);
-                SetFloat(go, "_AngleTo",   Mathf.Atan2(arm.y, arm.x));
-                SetFloat(go, "_Fade",      1f);
+                // Дугу ведёт САМ эффект — тем же кодом, что в бою. Стенд только ставит позу и отдаёт
+                // время; считать здесь угол, сектор и затухание значило бы завести вторую правду о
+                // взмахе, и она уже разошлась с боевой.
+                float dt = time - lastTime;
+                lastTime = time;
+                arc.Tick(dt > 0f ? dt : Mathf.Max(1e-4f, clip.length * 0.01f));
             };
         }
 
@@ -914,15 +915,19 @@ namespace Guildmaster.Presentation.Editor
             return null;
         }
 
-        /// <summary>Источник взмаха, который просто отдаёт то, что стенд посчитал по позе клипа.</summary>
+        /// <summary>
+        /// Источник взмаха для стенда: отдаёт позу, которую стенд поставил клипом. Ответ «взмах
+        /// кончился» — тот же, что в бою: он переводит дугу в догорание, и без него хвост не утёк бы.
+        /// </summary>
         private sealed class ClipSwingSource : ISwingArcSource
         {
             public Vector3 Pivot, Tip;
+            public bool Swinging;
 
             public bool TryGetSwingArc(out Vector3 pivot, out Vector3 tip, out float progress)
             {
                 pivot = Pivot; tip = Tip; progress = 1f;
-                return true;
+                return Swinging;
             }
         }
 
