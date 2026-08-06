@@ -122,7 +122,7 @@ namespace Guildmaster.Combat
             float attackSpeed = unit.Stats.Get(StatType.AttackSpeed);
             int intervalTicks = IntervalTicks(attackSpeed);
 
-            UnitVisual visual = unit.Unit != null ? unit.Unit.Visual : null;
+            AnimationArchetypeData visual = unit.Unit != null ? unit.Unit.Archetype : null;
             int frameCount = visual != null ? visual.AttackFrameCount : 0;
             int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
 
@@ -135,7 +135,7 @@ namespace Guildmaster.Combat
             // и если бы разбег его удлинял, весь смысл контроль-лупа пропадал бы (§10.6).
             if (unit.NextWindupMult > 0f && !ignoreRecast) chargeMult = unit.NextWindupMult;
 
-            // Доля замаха из данных важнее покадровой: у юнита без UnitVisual (скелетный риг — кадров у
+            // Доля замаха из данных важнее покадровой: у юнита без AnimationArchetypeData (скелетный риг — кадров у
             // него нет вовсе) расчёт по кадрам даёт ноль и падает на телеграф-пол, то есть замах в 3 тика
             // при интервале в полсотни. Клип при этом скрабится в это окно и летит в разы быстрее.
             // Свой потолок свинга (0 = глобальный) — из данных юнита, оба пути расчёта читают его одинаково.
@@ -175,7 +175,7 @@ namespace Guildmaster.Combat
 
             int first = WindupTicksFor(unit);
 
-            UnitVisual visual = unit.Unit != null ? unit.Unit.Visual : null;
+            AnimationArchetypeData visual = unit.Unit != null ? unit.Unit.Archetype : null;
             int count = visual != null && positionsBuffer != null ? visual.AttackHitPositions(positionsBuffer) : 0;
 
             result.Add(first);
@@ -231,7 +231,7 @@ namespace Guildmaster.Combat
             if (unit.Unit.Channel.Exists && unit.Unit.Channel.WindupSeconds > 0f) return 0f;
             if (unit.Unit.WindupShare > 0f) return 0f;   // путь доли — округление к ближайшему, см. выше
 
-            UnitVisual visual = unit.Unit.Visual;
+            AnimationArchetypeData visual = unit.Unit.Archetype;
             if (visual == null) return 0f;
 
             return ContactSubTick(

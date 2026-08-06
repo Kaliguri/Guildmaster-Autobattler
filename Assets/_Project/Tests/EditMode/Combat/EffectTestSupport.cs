@@ -148,7 +148,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             AreaShape autoAttackShape = AreaShape.None,
             float autoAttackWidth = 1f,
             float resourceOnHit = 0f,
-            UnitVisual visual = null,
+            AnimationArchetypeData visual = null,
             AIProfile ai = null,
             EffectData[] autoAttackEffects = null,
             bool canAttackWhileMoving = false,
@@ -170,7 +170,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(r, "_autoAttackShape", autoAttackShape);
             Set(r, "_autoAttackWidth", autoAttackWidth);
             Set(r, "_resourceOnHit", resourceOnHit);
-            Set(r, "_visual", visual);
+            Set(r, "_archetype", visual);
             Set(r, "_ai", ai ?? new AIProfile());
             Set(r, "_autoAttackEffects", autoAttackEffects ?? Array.Empty<EffectData>());
             Set(r, "_canAttackWhileMoving", canAttackWhileMoving);
@@ -190,7 +190,7 @@ namespace Guildmaster.Tests.EditMode.Combat
     }
 
     /// <summary>
-    /// Билдер <see cref="UnitVisual"/> для тестов windup: собирает Attack-<see cref="AnimationClip"/> с
+    /// Билдер <see cref="AnimationArchetypeData"/> для тестов windup: собирает Attack-<see cref="AnimationClip"/> с
     /// заданным числом кадров (длина = frameCount/fps) и маркером контакта на hitFrame — сим выводит
     /// windup из клипа (<see cref="ClipMarkers"/>), как в проде. Спрайты не нужны: длину задаёт float-кривая.
     /// </summary>
@@ -198,10 +198,10 @@ namespace Guildmaster.Tests.EditMode.Combat
     {
         private const float Fps = 10f;
 
-        public static UnitVisual Make(int frameCount, params int[] hitFrames)
+        public static AnimationArchetypeData Make(int frameCount, params int[] hitFrames)
         {
-            var v = ScriptableObject.CreateInstance<UnitVisual>();
-            FieldInfo attackClip = typeof(UnitVisual).GetField("_attackClip", BindingFlags.Instance | BindingFlags.NonPublic);
+            var v = ScriptableObject.CreateInstance<AnimationArchetypeData>();
+            FieldInfo attackClip = typeof(AnimationArchetypeData).GetField("_attackClip", BindingFlags.Instance | BindingFlags.NonPublic);
             attackClip.SetValue(v, BuildAttackClip(frameCount, hitFrames));
             return v;
         }

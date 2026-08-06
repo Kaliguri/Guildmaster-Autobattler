@@ -266,7 +266,7 @@ namespace Guildmaster.Combat
             // добавлять к этому ожидание значило бы наказать дважды за одно прерывание.
             unit.AttackCooldownTicks = HasChannel(unit) ? 0 : intervalTicks;
 
-            UnitVisual visual = unit.Unit != null ? unit.Unit.Visual : null;
+            AnimationArchetypeData visual = unit.Unit != null ? unit.Unit.Archetype : null;
             int frameCount = visual != null ? visual.AttackFrameCount : 0;
             int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
 

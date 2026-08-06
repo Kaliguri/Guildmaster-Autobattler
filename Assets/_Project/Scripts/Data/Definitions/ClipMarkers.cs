@@ -7,7 +7,7 @@ namespace Guildmaster.Data.Definitions
     /// <see cref="AnimationEvent"/>, чьё <c>functionName</c> называет ВИД маркера; контакт удара —
     /// <see cref="HitFunction"/>. Всё читается в рантайме (<c>clip.events/length/frameRate</c>), без
     /// editor-API. Источник тайминга удара авто-атаки: сим берёт
-    /// <see cref="UnitVisual.AttackFrameCount"/>/<see cref="UnitVisual.AttackHitFrame"/>, которые
+    /// <see cref="AnimationArchetypeData.AttackFrameCount"/>/<see cref="AnimationArchetypeData.AttackHitFrame"/>, которые
     /// выводятся отсюда. <c>Animator.fireEvents=false</c> — маркеры никогда не колбэчат.
     /// </summary>
     /// <remarks>

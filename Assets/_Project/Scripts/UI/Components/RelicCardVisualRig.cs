@@ -230,12 +230,9 @@ namespace Guildmaster.UI.Components
         // Части тела рефлексией: UI-асмдеф не ссылается на Presentation, поэтому ни IUnitBodyVisual, ни
         // UnitView здесь не типизируются. Составное тело отдаёт ВСЕ свои части — иначе на карточке
         // скелетного героя покрашен один кусок, а остальные висят исходным цветом арта. Порядок поиска:
-        // список частей составного тела → одиночный спрайт UnitView → первый спрайт в иерархии.
+        // список частей составного тела → первый спрайт в иерархии.
         private static void CollectBodyParts(GameObject unit, List<SpriteRenderer> into)
         {
-            const System.Reflection.BindingFlags F =
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
-
             var behaviours = unit.GetComponentsInChildren<MonoBehaviour>(true);
             for (int i = 0; i < behaviours.Length; i++)
             {
@@ -249,15 +246,9 @@ namespace Guildmaster.UI.Components
                 break;
             }
 
-            for (int i = 0; i < behaviours.Length; i++)
-            {
-                MonoBehaviour mb = behaviours[i];
-                if (mb == null || mb.GetType().Name != "UnitView") continue;
-                var f = mb.GetType().GetField("_sprite", F);
-                if (f != null && f.GetValue(mb) is SpriteRenderer sr && sr != null) { into.Add(sr); return; }
-                break;
-            }
-
+            // Второй ход — поле UnitView._sprite (тело покадрового юнита) — снят 06.08.2026 вместе с самим
+            // покадровым путём. Рефлексия молчала бы и дальше: поля нет, f == null, и карточка тихо
+            // сваливалась бы на «любой спрайт в детях», рисуя вместо бойца что попало.
             SpriteRenderer any = unit.GetComponentInChildren<SpriteRenderer>(true);
             if (any != null) into.Add(any);
         }

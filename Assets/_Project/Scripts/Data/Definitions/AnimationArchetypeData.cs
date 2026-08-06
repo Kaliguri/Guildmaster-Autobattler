@@ -3,18 +3,30 @@ using UnityEngine;
 namespace Guildmaster.Data.Definitions
 {
     /// <summary>
-    /// Визуальный набор реликвии на <see cref="AnimationClip"/>-слотах (вики «13» §3.1): состояния
-    /// Idle/Run/Attack/Death/Hit + клипы скиллов + портрет. <c>UnitView</c> собирает из них
-    /// <c>AnimatorOverrideController</c> поверх базового контроллера.
+    /// АРХЕТИП АНИМАЦИЙ: набор клипов на <see cref="AnimationClip"/>-слотах — Idle/Run/Attack/Death/Hit,
+    /// клипы скиллов, портрет. Один архетип = одна хореография; «меч и щит», «копьё», «посох» будут
+    /// разными архетипами при общем скелете.
+    /// <para>
+    /// <b>Назывался <c>UnitVisual</c> до 06.08.2026, и имя врало:</b> визуал — это спрайты, а здесь клипы.
+    /// Переименовано по заказу Макса вместе с остальным неймингом фазы 0
+    /// (<c>tech/40-planning/weapon-system</c> §6.1).
+    /// </para>
+    /// <para>
+    /// <b>Клипы отсюда НЕ подменяются override-контроллером</b>, что бы ни говорил прежний докстринг:
+    /// <c>UnitView</c> играет стейты контроллера по имени (<c>Animator.Play</c>), а этот набор служит
+    /// источником МАРКЕРОВ и темпа. Сборка <c>AnimatorOverrideController</c> жила в покадровом
+    /// пайплайне и удалена вместе с ним.
+    /// </para>
     /// <para>
     /// Живёт в <c>Guildmaster.Data</c> (не Presentation), потому что сим/фабрика считают windup авто-атаки
-    /// из <see cref="AttackFrameCount"/> + <see cref="AttackHitFrame"/> (вики «14»), а Combat видит только
-    /// Core+Data. Эти числа выводятся из Attack-клипа и его маркера (<see cref="ClipMarkers"/>) —
-    /// клип единственный источник правды, без дублирующих полей.
+    /// из <see cref="AttackFrameCount"/> + <see cref="AttackHitFrame"/>, а Combat видит только Core+Data.
+    /// Эти числа выводятся из Attack-клипа и его маркера (<see cref="ClipMarkers"/>). <b>Это и есть та
+    /// зависимость, которую фаза 2 плана снимает:</b> тайминг переедет в объявленные доли, а клип
+    /// останется показом.
     /// </para>
     /// </summary>
-    [CreateAssetMenu(menuName = "Guildmaster/Content/Unit Visual", fileName = "UnitVisual")]
-    public sealed class UnitVisual : ScriptableObject
+    [CreateAssetMenu(menuName = "Guildmaster/Content/Animation Archetype", fileName = "AnimationArchetype")]
+    public sealed class AnimationArchetypeData : ScriptableObject
     {
         [Header("Animation clips")]
         [SerializeField] private AnimationClip _idleClip;

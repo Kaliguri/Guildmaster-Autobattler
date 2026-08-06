@@ -39,11 +39,16 @@ namespace Guildmaster.Data.Definitions
         [Range(-0.25f, 0.25f)]
         [SerializeField] private float _rangeAdjustPct;
 
-        [Header("Visual (Phase 3)")]
-        [Tooltip("Набор спрайт-кадров. Сим/фабрика читают отсюда кадр контакта авто-атаки для windup " +
-                 "(вики «14»). ОБЯЗАТЕЛЕН: пусто = UnitView не найдёт клип атаки и ругнётся в лог, а замах " +
-                 "свалится на телеграф-пол в три тика. Сторож — ContentValidationService (Doctor в Content Hub).")]
-        [SerializeField] private UnitVisual _visual;
+        [Header("Архетип анимаций")]
+        [Tooltip("Набор клипов, по которому юнит двигается. Сим/фабрика читают отсюда кадр контакта " +
+                 "авто-атаки для windup. ОБЯЗАТЕЛЕН: пусто = UnitView не найдёт клип атаки и ругнётся в " +
+                 "лог, а замах свалится на телеграф-пол в три тика. Сторож — ContentValidationService " +
+                 "(Doctor в Content Hub).")]
+        // Поле звалось _visual до 06.08.2026: имя врало, внутри клипы, а не спрайты. FormerlySerializedAs
+        // держит ссылки 47 живых ассетов — без него они обнулились бы молча, и весь ростер потерял бы
+        // анимацию при следующем сохранении.
+        [FormerlySerializedAs("_visual")]
+        [SerializeField] private AnimationArchetypeData _archetype;
 
         [Tooltip("Свой префаб визуала юнита (с настроенным Animator и реальным размером ПРЯМО в префабе). " +
                  "ОБЯЗАТЕЛЕН: пусто = юнит выйдет на арену дефолтным видом презентера и станет неотличим " +
@@ -91,8 +96,8 @@ namespace Guildmaster.Data.Definitions
 
         [Tooltip("Доля свинга до кадра контакта, 0..1: сколько удар «замахивается», прежде чем прилететь. " +
                  "0.45 = контакт чуть позже середины (размашистый удар с внятным телеграфом), 0.2 = быстрый " +
-                 "тычок. 0 = взять из кадров UnitVisual (покадровые юниты так и делают). ЗАДАВАТЬ ОБЯЗАТЕЛЬНО " +
-                 "юнитам без UnitVisual (скелетный риг): кадров у них нет, расчёт падает на телеграф-пол в " +
+                 "тычок. 0 = взять из кадров AnimationArchetypeData (покадровые юниты так и делают). ЗАДАВАТЬ ОБЯЗАТЕЛЬНО " +
+                 "юнитам без AnimationArchetypeData (скелетный риг): кадров у них нет, расчёт падает на телеграф-пол в " +
                  "3 тика, и клип атаки скрабится в 0.1 с — удар прилетает почти мгновенно и выглядит рвано.")]
         [SerializeField, Range(0f, 1f)] private float _windupShare;
 
@@ -168,7 +173,8 @@ namespace Guildmaster.Data.Definitions
         public float RangeAdjustPct => _rangeAdjustPct;
 
         public ResourceType ResourceType => _resourceType;
-        public UnitVisual Visual => _visual;
+        /// <summary>Архетип анимаций: какие клипы играет юнит. Звался <c>Visual</c> до 06.08.2026.</summary>
+        public AnimationArchetypeData Archetype => _archetype;
         public GameObject ViewPrefab => _viewPrefab;
         /// <summary>
         /// Оттенок юнита: и чем он СВЕТИТ (снаряд, искры, контур каста), и каким цветом окрашено его
@@ -197,7 +203,7 @@ namespace Guildmaster.Data.Definitions
         public float MovingAttackSpeedPenaltyPct => _movingAttackSpeedPenaltyPct;
         public float AttackRecoverySeconds => _attackRecoverySeconds;
 
-        /// <summary>Доля свинга до кадра контакта (0..1). 0 = считать из кадров <see cref="UnitVisual"/>.</summary>
+        /// <summary>Доля свинга до кадра контакта (0..1). 0 = считать из кадров <see cref="AnimationArchetypeData"/>.</summary>
         public float WindupShare => _windupShare;
 
         /// <summary>Заданные доли урона по Ударам; <c>null</c>/пусто = каждый Удар в полную силу.</summary>

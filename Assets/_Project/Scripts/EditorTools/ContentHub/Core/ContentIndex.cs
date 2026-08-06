@@ -83,7 +83,7 @@ namespace Guildmaster.ContentHub.Editor
                 AddEntry(cd, cd.Id, ContentDomains.GetDomain(cd.GetType()));
 
             // Спутники дата-слоя (не ContentDefinition). Presentation-типы (AudioCatalog, палитры) — позже (P8/P9).
-            foreach (var v in FindAll<UnitVisual>()) AddEntry(v, v.name, "Visuals");
+            foreach (var v in FindAll<AnimationArchetypeData>()) AddEntry(v, v.name, "Visuals");
             foreach (var c in FindAll<StatsConfig>()) AddEntry(c, c.name, "Configs");
             foreach (var c in FindAll<SimTuningConfig>()) AddEntry(c, c.name, "Configs");
             foreach (var c in FindAll<GameConfig>()) AddEntry(c, c.name, "Configs");

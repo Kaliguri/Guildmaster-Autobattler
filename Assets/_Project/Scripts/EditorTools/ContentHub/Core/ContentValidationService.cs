@@ -87,7 +87,7 @@ namespace Guildmaster.ContentHub.Editor
         }
 
         /// <summary>
-        /// Юнит обязан иметь тело: <c>UnitVisual</c> и <c>ViewPrefab</c>. Пусто здесь — не «пока не
+        /// Юнит обязан иметь тело: <c>AnimationArchetypeData</c> и <c>ViewPrefab</c>. Пусто здесь — не «пока не
         /// нарисовали», а поломка на арене, и найтись она должна при авторинге, а не логом в бою.
         /// </summary>
         /// <remarks>
@@ -104,8 +104,8 @@ namespace Guildmaster.ContentHub.Editor
             var issues = new List<string>();
             if (unit == null) return issues;
 
-            if (unit.Visual == null)
-                issues.Add("нет UnitVisual — UnitView не найдёт клип атаки, удар не привяжется к тику " +
+            if (unit.Archetype == null)
+                issues.Add("нет AnimationArchetypeData — UnitView не найдёт клип атаки, удар не привяжется к тику " +
                            "урона, а замах свалится на телеграф-пол в три тика (удар прилетит почти мгновенно)");
 
             if (unit.ViewPrefab == null)

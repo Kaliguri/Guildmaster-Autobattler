@@ -14,9 +14,9 @@ namespace Guildmaster.Tests.EditMode.Content
     /// </summary>
     public sealed class AnimationValidationTests
     {
-        private static UnitVisual[] AllVisuals() =>
-            AssetDatabase.FindAssets($"t:{nameof(UnitVisual)}")
-                .Select(g => AssetDatabase.LoadAssetAtPath<UnitVisual>(AssetDatabase.GUIDToAssetPath(g)))
+        private static AnimationArchetypeData[] AllVisuals() =>
+            AssetDatabase.FindAssets($"t:{nameof(AnimationArchetypeData)}")
+                .Select(g => AssetDatabase.LoadAssetAtPath<AnimationArchetypeData>(AssetDatabase.GUIDToAssetPath(g)))
                 .ToArray();
 
         private static UnitData[] AllUnits() =>
@@ -37,7 +37,7 @@ namespace Guildmaster.Tests.EditMode.Content
                 float[] shares = unit.HitDamageShares;
                 if (shares == null || shares.Length == 0) continue;   // не задано = каждый Удар в полную силу
 
-                int contacts = unit.Visual != null ? unit.Visual.AttackHitCount : 0;
+                int contacts = unit.Archetype != null ? unit.Archetype.AttackHitCount : 0;
                 Assert.AreEqual(contacts, shares.Length,
                     $"{unit.name}: долей урона {shares.Length}, а контактов в клипе атаки {contacts} " +
                     $"({AssetDatabase.GetAssetPath(unit)}). Число долей обязано совпадать с числом маркеров.");
@@ -47,7 +47,7 @@ namespace Guildmaster.Tests.EditMode.Content
         [Test]
         public void Visuals_RequiredBaseSlotsFilled()
         {
-            foreach (UnitVisual vis in AllVisuals())
+            foreach (AnimationArchetypeData vis in AllVisuals())
             {
                 string path = AssetDatabase.GetAssetPath(vis);
                 foreach (UnitAnimationState state in new[]
@@ -55,23 +55,23 @@ namespace Guildmaster.Tests.EditMode.Content
                     UnitAnimationState.Idle, UnitAnimationState.Run,
                     UnitAnimationState.Attack, UnitAnimationState.Death,
                 })
-                    Assert.IsNotNull(vis.Clip(state), $"UnitVisual '{vis.name}' missing {state} clip ({path}).");
+                    Assert.IsNotNull(vis.Clip(state), $"AnimationArchetypeData '{vis.name}' missing {state} clip ({path}).");
             }
         }
 
         [Test]
         public void Visuals_AttackClipHasMarkerWithinClip()
         {
-            foreach (UnitVisual vis in AllVisuals())
+            foreach (AnimationArchetypeData vis in AllVisuals())
             {
                 AnimationClip attack = vis.AttackClip;
                 if (attack == null) continue; // покрыто RequiredBaseSlotsFilled
                 string path = AssetDatabase.GetAssetPath(vis);
 
                 float t = ClipMarkers.FirstHitTime(attack);
-                Assert.GreaterOrEqual(t, 0f, $"UnitVisual '{vis.name}' Attack clip has no \"Marker\" event ({path}).");
+                Assert.GreaterOrEqual(t, 0f, $"AnimationArchetypeData '{vis.name}' Attack clip has no \"Marker\" event ({path}).");
                 Assert.LessOrEqual(t, attack.length,
-                    $"UnitVisual '{vis.name}' Attack marker at {t}s is past clip end {attack.length}s ({path}).");
+                    $"AnimationArchetypeData '{vis.name}' Attack marker at {t}s is past clip end {attack.length}s ({path}).");
             }
         }
 
@@ -84,14 +84,14 @@ namespace Guildmaster.Tests.EditMode.Content
         [Test]
         public void Visuals_AttackMarkerIsNotAtFrameZero()
         {
-            foreach (UnitVisual vis in AllVisuals())
+            foreach (AnimationArchetypeData vis in AllVisuals())
             {
                 AnimationClip attack = vis.AttackClip;
                 if (attack == null) continue;
                 if (ClipMarkers.FirstHitTime(attack) < 0f) continue;   // отсутствие покрыто тестом выше
 
                 Assert.Greater(vis.AttackHitFrame, 0,
-                    $"UnitVisual '{vis.name}': маркер контакта стоит на кадре 0 " +
+                    $"AnimationArchetypeData '{vis.name}': маркер контакта стоит на кадре 0 " +
                     $"({AssetDatabase.GetAssetPath(vis)}). Сим выведет из него нулевой замах — удар без " +
                     "подводки. Поставь маркер туда, где оружие реально достаёт цель.");
             }
@@ -106,7 +106,7 @@ namespace Guildmaster.Tests.EditMode.Content
         [Test]
         public void Visuals_StrikeWindow_IsWholeOrAbsent()
         {
-            foreach (UnitVisual vis in AllVisuals())
+            foreach (AnimationArchetypeData vis in AllVisuals())
             {
                 AnimationClip attack = vis.AttackClip;
                 if (attack == null) continue;
@@ -115,7 +115,7 @@ namespace Guildmaster.Tests.EditMode.Content
                 bool hasEnd   = ClipMarkers.FirstTimeOf(attack, ClipMarkers.StrikeEndFunction)   >= 0f;
 
                 Assert.AreEqual(hasStart, hasEnd,
-                    $"UnitVisual '{vis.name}': в клипе '{attack.name}' размечена ПОЛОВИНА взмаха " +
+                    $"AnimationArchetypeData '{vis.name}': в клипе '{attack.name}' размечена ПОЛОВИНА взмаха " +
                     $"({ClipMarkers.StrikeStartFunction}={hasStart}, {ClipMarkers.StrikeEndFunction}={hasEnd}), " +
                     $"{AssetDatabase.GetAssetPath(vis)}. Взмах читается только целиком: половина = " +
                     "клип без дуги и без точки, откуда пришёл удар.");
@@ -130,7 +130,7 @@ namespace Guildmaster.Tests.EditMode.Content
         [Test]
         public void Visuals_HitMarker_LiesInsideStrikeWindow()
         {
-            foreach (UnitVisual vis in AllVisuals())
+            foreach (AnimationArchetypeData vis in AllVisuals())
             {
                 AnimationClip attack = vis.AttackClip;
                 if (attack == null) continue;
@@ -138,7 +138,7 @@ namespace Guildmaster.Tests.EditMode.Content
 
                 float hit = ClipMarkers.HitNormalized(attack);
                 Assert.IsTrue(hit >= from && hit <= to,
-                    $"UnitVisual '{vis.name}': контакт клипа '{attack.name}' стоит на {hit:F3} " +
+                    $"AnimationArchetypeData '{vis.name}': контакт клипа '{attack.name}' стоит на {hit:F3} " +
                     $"нормированного времени, а взмах размечен {from:F3}..{to:F3} " +
                     $"({AssetDatabase.GetAssetPath(vis)}).");
             }
@@ -166,7 +166,7 @@ namespace Guildmaster.Tests.EditMode.Content
                 if (view.GetComponentInChildren<Guildmaster.Presentation.Body.SkeletalBodyVisual>(true) == null)
                     continue;   // покадровое тело — дугу вести нечем
 
-                AnimationClip attack = unit.Visual != null ? unit.Visual.AttackClip : null;
+                AnimationClip attack = unit.Archetype != null ? unit.Archetype.AttackClip : null;
                 if (attack == null) continue;   // покрыто Visuals_RequiredBaseSlotsFilled
 
                 if (!ClipMarkers.StrikeWindowNormalized(attack, out _, out _))
@@ -189,7 +189,7 @@ namespace Guildmaster.Tests.EditMode.Content
         [Test]
         public void Visuals_GuardWindow_IsWholeOrAbsent()
         {
-            foreach (UnitVisual vis in AllVisuals())
+            foreach (AnimationArchetypeData vis in AllVisuals())
             {
                 AnimationClip guard = vis.GuardClip;
                 if (guard == null) continue;   // кит без щита — это отсутствие контента, а не дефект
@@ -198,21 +198,21 @@ namespace Guildmaster.Tests.EditMode.Content
                 bool hasDown = ClipMarkers.FirstTimeOf(guard, ClipMarkers.GuardDownFunction) >= 0f;
 
                 Assert.AreEqual(hasUp, hasDown,
-                    $"UnitVisual '{vis.name}': в клипе гвардии '{guard.name}' размечена ПОЛОВИНА жеста " +
+                    $"AnimationArchetypeData '{vis.name}': в клипе гвардии '{guard.name}' размечена ПОЛОВИНА жеста " +
                     $"({ClipMarkers.GuardUpFunction}={hasUp}, {ClipMarkers.GuardDownFunction}={hasDown}), " +
                     $"{AssetDatabase.GetAssetPath(vis)}.");
 
                 if (!hasUp) continue;
 
                 Assert.IsTrue(ClipMarkers.GuardWindowNormalized(guard, out float up, out float down),
-                    $"UnitVisual '{vis.name}': маркеры гвардии в '{guard.name}' стоят не по порядку — " +
+                    $"AnimationArchetypeData '{vis.name}': маркеры гвардии в '{guard.name}' стоят не по порядку — " +
                     $"{ClipMarkers.GuardUpFunction} обязан идти РАНЬШЕ {ClipMarkers.GuardDownFunction}, " +
                     "иначе держать позу нечем.");
                 Assert.Greater(up, 0f,
-                    $"UnitVisual '{vis.name}': '{ClipMarkers.GuardUpFunction}' стоит в нуле — подъёма щита " +
+                    $"AnimationArchetypeData '{vis.name}': '{ClipMarkers.GuardUpFunction}' стоит в нуле — подъёма щита " +
                     "нет вовсе, поза встаёт мгновенно и телеграф не читается.");
                 Assert.Less(down, 1f,
-                    $"UnitVisual '{vis.name}': '{ClipMarkers.GuardDownFunction}' стоит в конце клипа — " +
+                    $"AnimationArchetypeData '{vis.name}': '{ClipMarkers.GuardDownFunction}' стоит в конце клипа — " +
                     "опускать руку нечем, и она растворится в базе вместо возврата.");
             }
         }
@@ -220,7 +220,7 @@ namespace Guildmaster.Tests.EditMode.Content
         [Test]
         public void Visuals_SkillClipsMarkerWithinClip()
         {
-            foreach (UnitVisual vis in AllVisuals())
+            foreach (AnimationArchetypeData vis in AllVisuals())
             {
                 string path = AssetDatabase.GetAssetPath(vis);
                 for (int slot = 0; slot < 4; slot++)
@@ -229,9 +229,9 @@ namespace Guildmaster.Tests.EditMode.Content
                     if (clip == null) continue; // слот необязателен
 
                     float t = ClipMarkers.FirstHitTime(clip);
-                    Assert.GreaterOrEqual(t, 0f, $"UnitVisual '{vis.name}' Skill{slot + 1} clip has no \"Marker\" event ({path}).");
+                    Assert.GreaterOrEqual(t, 0f, $"AnimationArchetypeData '{vis.name}' Skill{slot + 1} clip has no \"Marker\" event ({path}).");
                     Assert.LessOrEqual(t, clip.length,
-                        $"UnitVisual '{vis.name}' Skill{slot + 1} marker at {t}s past clip end {clip.length}s ({path}).");
+                        $"AnimationArchetypeData '{vis.name}' Skill{slot + 1} marker at {t}s past clip end {clip.length}s ({path}).");
                 }
             }
         }
@@ -241,7 +241,7 @@ namespace Guildmaster.Tests.EditMode.Content
         {
             foreach (UnitData unit in ContentIdUtility.FindAll().OfType<UnitData>())
             {
-                UnitVisual vis = unit.Visual;
+                AnimationArchetypeData vis = unit.Archetype;
                 if (vis == null || unit.Abilities == null) continue; // визуал есть не у всех — тогда слоты неактуальны
 
                 foreach (AbilityData ability in unit.Abilities)

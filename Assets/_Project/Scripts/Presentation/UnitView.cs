@@ -19,7 +19,7 @@ namespace Guildmaster.Presentation
     /// <summary>
     /// World-space визуальное представление <see cref="RuntimeUnit"/>. Интерполирует позицию между
     /// тиками (сим 30 Hz, рендер 60+ fps) и проигрывает анимацию через <see cref="Animator"/> —
-    /// клипы берутся из <see cref="UnitVisual"/> сборкой <see cref="AnimatorOverrideController"/> поверх
+    /// клипы берутся из <see cref="AnimationArchetypeData"/> сборкой <see cref="AnimatorOverrideController"/> поверх
     /// базового контроллера. Состояние выбирает чистый <see cref="UnitAnimationSelector"/> по наблюдаемому
     /// состоянию сима; тайминг Attack привязан к сим-windup (маркер клипа садится на тик удара), Run
     /// «прибит к земле». <c>animator.fireEvents=false</c> — маркеры это данные, а не колбэки. Анимация
@@ -52,9 +52,9 @@ namespace Guildmaster.Presentation
 
         [Header("Animation")]
         // Клипы играются из контроллера Animator по именам стейтов (Idle/Run/Attack/Death/Hit/Skill1-4) —
-        // на префабе вручную указывать НЕ надо. _visual берётся из данных юнита (UnitData.Visual) авто и нужен
+        // на префабе вручную указывать НЕ надо. _archetype берётся из данных юнита (UnitData.Archetype) авто и нужен
         // ТОЛЬКО для маркера контакта/темпа бега (те же данные, что читает сим для windup).
-        private UnitVisual _visual;
+        private AnimationArchetypeData _archetype;
 
         [Tooltip("Бег «прибит к земле»: сколько мировых юнитов проходит клип бега за СЕКУНДУ на скорости 1. " +
                  "Меньше = ноги быстрее (бодрее), больше = медленнее. Темп бега привязан к скорости — не скользит.\n" +
@@ -446,7 +446,7 @@ namespace Guildmaster.Presentation
 
         /// <summary>
         /// Инициализировать визуал из САМОГО префаба (вызывается из <see cref="Bind"/>): Animator уже несёт
-        /// контроллер с клипами персонажа — рантайм-подмены больше нет. Из <see cref="_visual"/> (задан на
+        /// контроллер с клипами персонажа — рантайм-подмены больше нет. Из <see cref="_archetype"/> (задан на
         /// префабе) берём только маркер контакта авто-атаки и темп бега для скраба анимации по симу. Нет
         /// клипов/контроллера → статичный спрайт (Animator выключается).
         /// </summary>
@@ -456,9 +456,9 @@ namespace Guildmaster.Presentation
             _attackPhase = AttackAnimPhase.None;
 
             // Данные юнита — только для маркера контакта/темпа бега (скраб по симу). Клипы играет контроллер.
-            _visual = _definition != null ? _definition.Visual : null;
+            _archetype = _definition != null ? _definition.Archetype : null;
 
-            // Анимация активна, если у Animator есть контроллер (клипы — в его стейтах). UnitVisual не обязателен.
+            // Анимация активна, если у Animator есть контроллер (клипы — в его стейтах). AnimationArchetypeData не обязателен.
             _animActive = _animator != null && _animator.runtimeAnimatorController != null;
 
             // Индексы слоёв сбрасываются ДО выхода: вид переиспользуется после чьей-то смерти, и индекс
@@ -541,24 +541,24 @@ namespace Guildmaster.Presentation
 
         /// <summary>
         /// Найти долю клипа атаки до кадра контакта. По ней скрабится замах, поэтому промах здесь двигает
-        /// видимый удар мимо сим-тика урона. Источник **один** — <see cref="UnitVisual"/> из данных юнита,
+        /// видимый удар мимо сим-тика урона. Источник **один** — <see cref="AnimationArchetypeData"/> из данных юнита,
         /// тот же, из которого симуляция берёт кадр контакта. Клип без маркера — не «настройка по
         /// умолчанию», а неразведённые данные: молчать нельзя, иначе удар уезжает в конец клипа и это
         /// ищется глазами по всему бою.
         /// </summary>
         /// <remarks>
-        /// Прежде источников было два: у скелетных юнитов <c>UnitVisual</c> не заводили, и клип брался
+        /// Прежде источников было два: у скелетных юнитов <c>AnimationArchetypeData</c> не заводили, и клип брался
         /// отдельным полем с префаба вида. Тогда позиция контакта жила в двух местах — в клипе для показа
         /// и долей <c>WindupShare</c> в данных для сима, — а второй владелец того же факта у нас считается
-        /// дефектом. Скелетный риг получил свой <c>UnitVisual</c> (2026-07-31), и путь стал общим для всех.
+        /// дефектом. Скелетный риг получил свой <c>AnimationArchetypeData</c> (2026-07-31), и путь стал общим для всех.
         /// </remarks>
         private void ResolveAttackMarker()
         {
-            AnimationClip attack = _visual != null ? _visual.AttackClip : null;
+            AnimationClip attack = _archetype != null ? _archetype.AttackClip : null;
 
             if (attack == null)
             {
-                Debug.LogError($"[UnitView] {name}: у юнита нет UnitVisual с клипом атаки — " +
+                Debug.LogError($"[UnitView] {name}: у юнита нет AnimationArchetypeData с клипом атаки — " +
                                "удар не привязан к тику урона.", this);
                 _attackHitNormalized = 1f;
                 return;
@@ -598,7 +598,7 @@ namespace Guildmaster.Presentation
         /// </remarks>
         private void ResolveGuardMarkers()
         {
-            AnimationClip guard = _visual != null ? _visual.GuardClip : null;
+            AnimationClip guard = _archetype != null ? _archetype.GuardClip : null;
 
             _hasGuardWindow = ClipMarkers.GuardWindowNormalized(guard, out _guardUpN, out _guardDownN);
             if (_hasGuardWindow) return;
@@ -707,7 +707,7 @@ namespace Guildmaster.Presentation
         {
             _hasStrikeDir = false;
 
-            AnimationClip attack = _visual != null ? _visual.AttackClip : null;
+            AnimationClip attack = _archetype != null ? _archetype.AttackClip : null;
             if (attack == null || attack.length <= 0f) return;   // об отсутствии клипа уже крикнул резолв маркера
 
             var body = Body;
@@ -2224,7 +2224,7 @@ namespace Guildmaster.Presentation
                         _state = UnitAnimationState.Death;
                         _animator.Play(DeathHash, 0, 0f);
                         _animator.speed = 1f;
-                        AnimationClip death = _visual != null ? _visual.Clip(UnitAnimationState.Death) : null;
+                        AnimationClip death = _archetype != null ? _archetype.Clip(UnitAnimationState.Death) : null;
                         _deathRemaining = death != null && death.length > 0f ? death.length : 0.6f;
                         _deathPhase = DeathPhase.Dying;
                     }

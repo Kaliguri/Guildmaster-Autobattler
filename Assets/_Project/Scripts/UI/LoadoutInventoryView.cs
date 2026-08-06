@@ -526,11 +526,11 @@ namespace Guildmaster.UI
         private static string Title(RelicData r, Func<RelicData, string> titleOf)
             => r == null ? null : (titleOf != null ? titleOf(r) : r.Id);
 
-        // Спрайт релика: портрет из UnitVisual, иначе иконка-фолбэк.
+        // Спрайт релика: портрет из AnimationArchetypeData, иначе иконка-фолбэк.
         private static Sprite RelicSprite(RelicData relic)
         {
             if (relic == null) return null;
-            return relic.Visual != null && relic.Visual.Portrait != null ? relic.Visual.Portrait : relic.Icon;
+            return relic.Archetype != null && relic.Archetype.Portrait != null ? relic.Archetype.Portrait : relic.Icon;
         }
 
         // Номер аркана (плейсхолдер по индексу; финально — стабильный id из компендиума).

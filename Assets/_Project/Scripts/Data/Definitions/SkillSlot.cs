@@ -1,7 +1,7 @@
 namespace Guildmaster.Data.Definitions
 {
     /// <summary>
-    /// Слот визуала каста способности (вики «13» §3.1). Индекс совпадает с <c>UnitVisual.SkillClip(int)</c>:
+    /// Слот визуала каста способности (вики «13» §3.1). Индекс совпадает с <c>AnimationArchetypeData.SkillClip(int)</c>:
     /// каст проигрывает клип соответствующего слота. Порядок стабилен.
     /// </summary>
     public enum SkillSlot

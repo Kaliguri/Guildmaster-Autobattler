@@ -50,7 +50,7 @@ namespace Guildmaster.Tests.EditMode.ContentHub
             {
                 var issues = ContentValidationService.ValidateUnitVisual(unit);
                 Assert.AreEqual(2, issues.Count,
-                    "Пустой юнит обязан дать две находки — нет UnitVisual и нет ViewPrefab.");
+                    "Пустой юнит обязан дать две находки — нет AnimationArchetypeData и нет ViewPrefab.");
             }
             finally
             {

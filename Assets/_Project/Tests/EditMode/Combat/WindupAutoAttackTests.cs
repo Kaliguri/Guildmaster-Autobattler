@@ -289,7 +289,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx)
             FleeScene(float? enemyDist, float recedePerTick)
         {
-            UnitVisual visual = TestVisual.Make(FrameCount, HitFrame);
+            AnimationArchetypeData visual = TestVisual.Make(FrameCount, HitFrame);
             RelicData relic = TestRelic.Make(visual: visual);
 
             var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: relic, range: 2f, aad: 10f, atkSpeed: 1f);
@@ -639,7 +639,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx)
             DoubleHitScene(float[] hitShares = null)
         {
-            UnitVisual visual = TestVisual.Make(FrameCount, 3, HitFrame);
+            AnimationArchetypeData visual = TestVisual.Make(FrameCount, 3, HitFrame);
             RelicData relic = TestRelic.Make(visual: visual, hitDamageShares: hitShares);
 
             var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: relic, range: 5f, aad: 10f, atkSpeed: 1f);
@@ -657,7 +657,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         /// </summary>
         private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx) SlowScene()
         {
-            UnitVisual visual = TestVisual.Make(FrameCount, HitFrame);
+            AnimationArchetypeData visual = TestVisual.Make(FrameCount, HitFrame);
             RelicData relic = TestRelic.Make(visual: visual);
 
             var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: relic, range: 5f, aad: 10f, atkSpeed: 0.5f);
@@ -677,7 +677,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx) Scene()
         {
-            UnitVisual visual = TestVisual.Make(FrameCount, HitFrame);
+            AnimationArchetypeData visual = TestVisual.Make(FrameCount, HitFrame);
             RelicData relic = TestRelic.Make(visual: visual);
 
             var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: relic, range: 5f, aad: 10f, atkSpeed: 1f);

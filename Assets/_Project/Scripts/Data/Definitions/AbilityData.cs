@@ -224,7 +224,7 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private float _displaceWidth = 1f;
 
         [Header("Visual")]
-        [Tooltip("Слот визуала каста: проигрывается клип UnitVisual.SkillClip(этот слот). По умолчанию Skill1.")]
+        [Tooltip("Слот визуала каста: проигрывается клип AnimationArchetypeData.SkillClip(этот слот). По умолчанию Skill1.")]
         [SerializeField] private SkillSlot _visualSlot = SkillSlot.Skill1;
 
         [Header("Info")]
@@ -434,7 +434,7 @@ namespace Guildmaster.Data.Definitions
         public float DisplaceWidth => _displaceWidth;
         public TagData[] InfoTags => _infoTags;
 
-        /// <summary>Слот визуала каста (клип из <see cref="UnitVisual.SkillClip"/>).</summary>
+        /// <summary>Слот визуала каста (клип из <see cref="AnimationArchetypeData.SkillClip"/>).</summary>
         public SkillSlot VisualSlot => _visualSlot;
     }
 }

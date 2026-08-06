@@ -96,7 +96,7 @@ namespace Guildmaster.UI
                 }
                 else
                 {
-                    card.SetSprite(relic?.Visual != null ? relic.Visual.Portrait : relic?.Icon);
+                    card.SetSprite(relic?.Archetype != null ? relic.Archetype.Portrait : relic?.Icon);
                 }
 
                 RelicData r = relic;
