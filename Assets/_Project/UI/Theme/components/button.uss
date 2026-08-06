@@ -176,10 +176,18 @@
     border-width: 0;
     align-items: center;
     justify-content: center;
-    --gm-plate-fill: var(--gm-color-surface-accent);
-    --gm-plate-fill-far: var(--gm-color-surface-accent-far);
+    /* ПОЛАЯ, А НЕ ЗАЛИТАЯ (решение Макса 06.08.2026). До этого дня базовая пластина была залита
+       ПАТИНОЙ — то есть цветом, который по нашей же семантике значит «сюда нажать». Из-за этого
+       роль и состояние сидели на одной оси: наведение — та же патина светлее, нажатие — темнее,
+       главная — светлее наведения. Главная физически не могла не пересекаться с ховером, что Макс
+       и увидел: «Главная выглядит плохо, ибо пересекается с наведением».
+       Теперь ось роли — ЕСТЬ ЛИ ЗАЛИВКА (полая против сплошной), ось состояния — светлота. Они не
+       пересекаются в принципе. Заодно это возврат к тому, что записано выше в комментарии к
+       .gm-button как решение Макса: «тёмное поле в латунной рамке с латунной подписью». */
+    --gm-plate-fill: var(--gm-color-surface-panel);
+    --gm-plate-fill-far: var(--gm-color-surface-sunken);
     --gm-plate-fill-mode: down;
-    --gm-plate-stroke: var(--gm-color-border-action);
+    --gm-plate-stroke: var(--gm-color-border-frame);
     --gm-plate-stroke-width: 2;
     --gm-plate-chamfer: 10;
 }
@@ -214,9 +222,11 @@
        стоило шрифту один раз поработать динамическим). Длинная подпись решается шириной кнопки. */
 }
 
+/* Наведение поднимает ПОЛЕ на ступень и зажигает кайму патиной: «сюда нажать» приходит с курсором,
+   а не живёт на кнопке постоянно. */
 .gm-plate-button:hover {
-    --gm-plate-fill: var(--gm-color-surface-accent-hover);
-    --gm-plate-fill-far: var(--gm-color-surface-accent-hover-far);
+    --gm-plate-fill: var(--gm-color-hover-surface);
+    --gm-plate-fill-far: var(--gm-color-surface-panel);
     --gm-plate-stroke: var(--gm-color-border-action-strong);
 }
 
@@ -227,8 +237,8 @@
     /* Свет ПЕРЕВОРАЧИВАЕТСЯ: тёмное сверху, светлее снизу — так выглядит вдавленная поверхность.
        Прежде здесь стоял режим `up` с теми же цветами, но он оставлял свет на том же месте (fill
        уходил вниз вместе с направлением), и вдавливания не получалось — только смена оттенка. */
-    --gm-plate-fill: var(--gm-color-surface-accent-active);
-    --gm-plate-fill-far: var(--gm-color-surface-accent-hover-far);
+    --gm-plate-fill: var(--gm-color-surface-sunken);
+    --gm-plate-fill-far: var(--gm-color-surface-panel);
     --gm-plate-fill-mode: down;
     --gm-plate-stroke: var(--gm-color-border-action);
 }
@@ -247,10 +257,12 @@
    одного псевдокласса `:disabled` не хватает, чтобы перебить тему (та же готча, что у кнопок выше). */
 .gm-plate-button:disabled,
 .gm-plate-button.unity-disabled {
-    --gm-plate-fill: var(--gm-color-surface-raised);
-    /* Дальний конец гасится ЯВНО: иначе выключенная кнопка донашивает патиновый низ от покоя и
-       выглядит живее включённых соседей. */
-    --gm-plate-fill-far: var(--gm-color-surface-panel);
+    /* УТОПЛЕНА, А НЕ ВЫБЕЛЕНА (правка Макса 06.08.2026: «должны быть с сероватым текстом и с
+       каким-то всё-таки фоном»). Прежде здесь стояло surface-raised — поле СВЕТЛЕЕ покоя, и
+       выключенная кнопка выглядела ярче включённых соседей: недоступное звало громче доступного.
+       Фон остаётся (кнопка на месте, действие существует), но уходит в самый тёмный тон. */
+    --gm-plate-fill: var(--gm-color-surface-sunken);
+    --gm-plate-fill-far: var(--gm-color-surface-sunken);
     --gm-plate-stroke: var(--gm-color-border-subtle);
 }
 
@@ -265,17 +277,26 @@
    До этого дня главная выглядела двояко: в меню — светлой заливкой (класс gm-mainmenu__btn--primary),
    во всех остальных одиннадцати местах — только каймой. Заливка перенесена сюда, потому что «зовёт
    нажать» обязано выглядеть одинаково везде, иначе роль перестаёт читаться ролью. */
+/* ГЛАВНАЯ — СПЛОШНАЯ ПАТИНА при полой обычной. Роль читается наличием заливки, а состояние —
+   её светлотой; двум осям больше негде пересечься. Патина взята потому, что по семантике она и
+   значит «сюда нажать», а у обычной кнопки этот сигнал теперь приходит только каймой и только
+   под курсором. */
 .gm-plate-button.gm-button--primary {
-    --gm-plate-fill: var(--gm-color-surface-accent-lit);
+    --gm-plate-fill: var(--gm-color-surface-accent);
+    --gm-plate-fill-far: var(--gm-color-surface-accent-far);
     --gm-plate-stroke: var(--gm-color-border-action-strong);
     --gm-plate-stroke-width: 3;
 }
 
 .gm-plate-button.gm-button--primary:hover {
+    --gm-plate-fill: var(--gm-color-surface-accent-hover);
+    --gm-plate-fill-far: var(--gm-color-surface-accent-hover-far);
     --gm-plate-stroke: var(--gm-color-border-action-strong);
 }
 
 .gm-plate-button.gm-button--primary:active {
+    --gm-plate-fill: var(--gm-color-surface-accent-active);
+    --gm-plate-fill-far: var(--gm-color-surface-accent-far);
     --gm-plate-stroke: var(--gm-color-border-action);
 }
 
@@ -342,7 +363,14 @@
 
 /* Опасное действие: красный текст и кайма, но НЕ красная заливка — залитая кнопка в нашем интерфейсе
    означает «сюда», а сюда мы игрока как раз не зовём. */
-.gm-button--danger {
+/* КРАСНЫЙ ДЕРЖИТСЯ ВО ВСЕХ СОСТОЯНИЯХ (правка Макса 06.08.2026: «нажатие с удалением — текст тоже
+   красный лучше»). Общие правила состояний перекрашивают подпись (наведение — в полный свет,
+   нажатие — в приглушённую латунь), и на нажатии предупреждение пропадало ровно в тот момент,
+   когда игрок нажимает необратимое. Двухклассовый селектор — против специфичности темы Unity. */
+.gm-button--danger,
+.unity-button.gm-button--danger:hover,
+.unity-button.gm-button--danger:active,
+.unity-button.gm-button--danger:focus {
     color: var(--gm-color-danger);
     border-color: var(--gm-color-danger);
 }

@@ -76,6 +76,14 @@ namespace Guildmaster.DevTools
             ["gm-tooltip"]             = () => Box("gm-tooltip"),
             ["gm-tooltip__card"]       = () => Tooltip(),
 
+            // Текст. Образец — короткая строка НАШИМИ буквами: кириллица показывает гарнитуру
+            // честнее латиницы, а капитель видно только на живом слове.
+            ["gm-title__main"]         = () => Text("GUILDMASTERS"),
+            ["gm-title__over"]         = () => Text("HAPPY"),
+            ["gm-panel__title"]        = () => Text("Заголовок панели"),
+            ["gm-text-muted"]          = () => Text("Приглушённая подпись"),
+            ["gm-version-stamp"]       = () => Text("v0.1.0-demo"),
+
             // Дев-тулинг.
             ["gm-console__tool"]       = () => Btn("gm-console__tool"),             // DevConsoleScreen.uxml:26
             ["gm-console__hit"]        = () => Box("gm-console__hit"),              // DevConsoleScreen.cs:415
@@ -133,6 +141,9 @@ namespace Guildmaster.DevTools
             for (int i = 0; i < classes.Length; i++) chip.AddToClassList(classes[i]);
             return chip;
         }
+
+        /// <summary>Образец текстовой роли: строка, у которой вид целиком приходит с класса.</summary>
+        private static Label Text(string sample) => new(sample);
 
         private static VisualElement Box(params string[] classes)
         {

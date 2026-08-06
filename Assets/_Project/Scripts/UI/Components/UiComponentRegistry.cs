@@ -32,6 +32,7 @@ namespace Guildmaster.UI.Components
         Rows,
         Panels,
         Overlays,
+        Typography,
         Dev,
     }
 
@@ -220,6 +221,26 @@ namespace Guildmaster.UI.Components
             New("Выбор", "gm-select-row", UiComponentGroup.Rows, RowInteractive, null,
                 "gm-select-row--disabled"),
             New("Слайдер", "gm-slider-row", UiComponentGroup.Rows, RowInteractive, null),
+
+            // --- ТЕКСТ ---
+            // Вопрос Макса 06.08.2026: «Где я могу ознакомиться с вариациями текста (шрифты + цвет +
+            // различные иные особенности (КАПС как в меню, например))?» Ответ был «нигде»: цвета
+            // жили ролями в семантике, гарнитуры — ярусом шрифтов, документ существовал, а
+            // ПОСМОТРЕТЬ на них было негде.
+            //
+            // КАПС в перечень не входит и входить не может: `text-transform` в UI Toolkit
+            // отсутствует, капитель задают САМИ БУКВЫ в разметке. Это решение по тексту, а не по
+            // стилю, и витрина показывает его образцом, а не свойством.
+            New("Текст (Вывеска) — Вариация 1", "gm-title__main", UiComponentGroup.Typography,
+                UiElementState.None, null),
+            New("Текст (Надстрочник) — Вариация 1", "gm-title__over", UiComponentGroup.Typography,
+                UiElementState.None, null),
+            New("Текст (Заголовок панели) — Вариация 1", "gm-panel__title", UiComponentGroup.Typography,
+                UiElementState.None, null),
+            New("Текст (Приглушённый) — Вариация 1", "gm-text-muted", UiComponentGroup.Typography,
+                UiElementState.None, null),
+            New("Текст (Метка сборки) — Вариация 1", "gm-version-stamp", UiComponentGroup.Typography,
+                UiElementState.None, null),
 
             // --- ПАНЕЛИ И ДЕКОР ---
             New("Панель", "gm-panel", UiComponentGroup.Panels, UiElementState.None, null,
