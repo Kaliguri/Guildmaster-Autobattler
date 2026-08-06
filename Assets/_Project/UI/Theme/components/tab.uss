@@ -132,18 +132,36 @@
        выбран       плашка патиной, подпись в полный свет
    У выбранного наведение не меняет ничего: он уже здесь, и всякий отклик читался бы приглашением
    нажать ещё раз. */
+/* ЗАЛИВКУ ГАСИМ ЯВНО, И ЭТО НЕ ПЕРЕСТРАХОВКА. Вкладка построена на PlateButton, а у пластины есть
+   свои `:hover` и `:active` с заливкой патиной. Правка 05.08.2026 добавила табу черту, но заливку
+   не сняла — и под курсором у вкладки вырастала плашка кнопки. Ровно на это Макс и указал 06.08:
+   «состояние кривые, будто как у кнопок, а не у табов». Правило покоя гасит fill, а правила
+   состояний его возвращали, потому что приходили с другого класса. */
 .unity-button.gm-tab:hover,
 .unity-button.gm-tab:focus {
     color: var(--gm-color-text);
+    --gm-plate-fill: rgba(0, 0, 0, 0);
+    --gm-plate-fill-far: rgba(0, 0, 0, 0);
     --gm-plate-stroke: var(--gm-color-accent);
     --gm-plate-stroke-width: 3;
     --gm-plate-stroke-mode: bottom;
 }
 
 .unity-button.gm-tab:active {
+    --gm-plate-fill: rgba(0, 0, 0, 0);
+    --gm-plate-fill-far: rgba(0, 0, 0, 0);
     --gm-plate-stroke: var(--gm-color-accent-active);
     --gm-plate-stroke-width: 3;
     --gm-plate-stroke-mode: bottom;
+}
+
+/* Выключенная вкладка тоже остаётся без поверхности: серая плашка приходила от пластины и читалась
+   выключенной КНОПКОЙ — то есть тем, чего на ленте нет. */
+.unity-button.gm-tab:disabled,
+.unity-button.gm-tab.unity-disabled {
+    --gm-plate-fill: rgba(0, 0, 0, 0);
+    --gm-plate-fill-far: rgba(0, 0, 0, 0);
+    --gm-plate-stroke: rgba(0, 0, 0, 0);
 }
 
 /* Выбранный не отзывается ни на наведение, ни на фокус, ни на нажатие: он уже выбран. Правила
