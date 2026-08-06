@@ -198,6 +198,7 @@ namespace Guildmaster.DevTools
                 sb.Append("{ \"label\": \"").Append(Escape(entries[i].Label))
                   .Append("\", \"block\": \"").Append(entries[i].Block)
                   .Append("\", \"states\": \"").Append(entries[i].Required)
+                  .Append("\", \"tones\": \"").Append(ToneList(entries[i].Tones))
                   .Append("\", \"type\": \"").Append(Escape(Measure(entries[i].Block)))
                   .Append("\" }");
             }
@@ -206,6 +207,19 @@ namespace Guildmaster.DevTools
         }
 
         private static string Escape(string text) => text.Replace("\\", "\\\\").Replace("\"", "\\\"");
+
+        /// <summary>Метки роли по-русски, в том же порядке, в каком стоят ячейки на кадре.</summary>
+        private static string ToneList(UiTextTone tones)
+        {
+            if (tones == UiTextTone.None) return string.Empty;
+
+            var names = new List<string>();
+            foreach (UiTextTone tone in ToneOrder)
+            {
+                if (tones.HasFlag(tone)) names.Add(ToneOf(tone).Caption);
+            }
+            return string.Join(", ", names);
+        }
 
         /// <summary>
         /// Замер образца словами: гарнитура, кегль, цвет, разрядка. Пусто, если элемент не текстовый.
@@ -222,6 +236,11 @@ namespace Guildmaster.DevTools
             // Образец роли, набираемой предком, — это КОНТЕЙНЕР с подписью внутри; мерить надо саму
             // подпись, иначе замер вернёт стиль пустой коробки.
             VisualElement target = sample as Label ?? sample.Q<Label>() ?? sample;
+
+            // Образец из НЕСКОЛЬКИХ строк замеру не поддаётся: у словаря подсказки каждое слово
+            // своего цвета, и число под кадром описывало бы первое из шести — то есть врало бы
+            // ровно тем способом, ради поимки которого замер и заведён.
+            if (target != sample && sample.Query<Label>().ToList().Count > 1) return string.Empty;
             IResolvedStyle style = target.resolvedStyle;
             string face = style.unityFontDefinition.fontAsset != null
                 ? style.unityFontDefinition.fontAsset.name
@@ -290,12 +309,68 @@ namespace Guildmaster.DevTools
             if (entry.Required.HasFlag(UiElementState.Disabled)) row.Add(Cell(entry, "выключено", UiElementState.Disabled));
             if (entry.Required.HasFlag(UiElementState.Checked))  row.Add(Cell(entry, "отмечено",  UiElementState.Checked));
 
+            // МЕТКИ — вторая ось текста: цвет поверх роли. Показываются рядом с покоем ровно так же,
+            // как у кнопки показаны состояния, потому что вопрос к ним тот же: «а как это выглядит,
+            // когда наступает». Красного текста на листе не было вовсе, хотя в дереве он живёт в
+            // семи местах — то есть проверить его было нечем.
+            foreach (UiTextTone tone in ToneOrder)
+            {
+                if (entry.Tones.HasFlag(tone)) row.Add(ToneCell(entry, tone));
+            }
+
             for (int i = 0; i < entry.Variants.Count; i++)
             {
                 row.Add(Cell(entry, Modifier(entry.Variants[i]), UiElementState.None, entry.Variants[i]));
             }
 
             return row;
+        }
+
+        /// <summary>Порядок меток на листе: от тихой к громкой, чтобы ряд читался как шкала.</summary>
+        private static readonly UiTextTone[] ToneOrder =
+        {
+            UiTextTone.Muted, UiTextTone.Brass, UiTextTone.Positive,
+            UiTextTone.Negative, UiTextTone.Danger,
+        };
+
+        /// <summary>Класс метки и её подпись на листе.</summary>
+        private static (string Class, string Caption) ToneOf(UiTextTone tone) => tone switch
+        {
+            UiTextTone.Muted    => ("gm-text--muted",    "приглушённый"),
+            UiTextTone.Brass    => ("gm-text--brass",    "латунь"),
+            UiTextTone.Positive => ("gm-text--positive", "прирост"),
+            UiTextTone.Negative => ("gm-text--negative", "убыль"),
+            UiTextTone.Danger   => ("gm-text--danger",   "опасность"),
+            _                   => (null, tone.ToString()),
+        };
+
+        /// <summary>
+        /// Ячейка с меткой: та же роль, поверх неё второй класс.
+        /// </summary>
+        /// <remarks>
+        /// Класс вешается на элемент, НЕСУЩИЙ роль, а не на корень образца: у роли, набираемой
+        /// предком, корень — это контейнер-обёртка, и метка на нём не покрасила бы ничего.
+        /// </remarks>
+        private static VisualElement ToneCell(UiComponentEntry entry, UiTextTone tone)
+        {
+            (string cls, string caption) = ToneOf(tone);
+
+            var cell = new VisualElement();
+            cell.AddToClassList("gm-sheet__cell");
+
+            VisualElement sample = UiSampleFactory.Build(entry);
+            VisualElement target = sample.ClassListContains(entry.Block)
+                ? sample
+                : sample.Q(className: entry.Block) ?? sample;
+            if (cls != null) target.AddToClassList(cls);
+
+            cell.Add(sample);
+
+            var label = new Label(caption);
+            label.AddToClassList("gm-sheet__cell-caption");
+            cell.Add(label);
+
+            return cell;
         }
 
         /// <summary>Короткая подпись варианта: «gm-button--primary» → «--primary».</summary>

@@ -23,6 +23,46 @@ namespace Guildmaster.UI.Components
         Checked  = 1 << 4,
     }
 
+    /// <summary>
+    /// Цветовые метки текста: вторая ось поверх роли.
+    /// </summary>
+    /// <remarks>
+    /// <b>Роль и метка — разные вопросы.</b> Роль отвечает «что это за текст» и задаёт гарнитуру с
+    /// кеглем; метка отвечает «что с ним сейчас» и меняет ТОЛЬКО цвет. Поэтому метка кладётся на
+    /// любую роль вторым классом и ни одну не заменяет. Заводить пару «роль+цвет» отдельной записью
+    /// значило бы получить восемь ролей на пять цветов = сорок восемь записей и вернуть ту самую
+    /// болезнь, из-за которой роль и состояние делили одну ось у кнопок.
+    ///
+    /// <para><b>Пять, а не четырнадцать.</b> Столько цветовых токенов текста объявлено в теме;
+    /// разбор 06.08.2026 показал, что <c>--gm-color-text-action</c> не занят нигде (удалён), а
+    /// <c>warning</c>, <c>text-ghost</c> и <c>text-on-accent</c> живут только в дев-консоли и
+    /// пикере, то есть в игровой набор не входят. <c>disabled-text</c> — не метка, а состояние:
+    /// у него своя ось (<see cref="UiElementState.Disabled"/>).</para>
+    ///
+    /// <para><b>Обычного цвета в перечне нет намеренно:</b> это отсутствие метки, а не шестая
+    /// метка. Значение <see cref="None"/> и означает «роль звучит своим цветом».</para>
+    /// </remarks>
+    [Flags]
+    public enum UiTextTone
+    {
+        None     = 0,
+
+        /// <summary>Приглушённый: пояснение, служебная подпись.</summary>
+        Muted    = 1 << 0,
+
+        /// <summary>Латунь: ценное, кликабельное, выделенное понятие.</summary>
+        Brass    = 1 << 1,
+
+        /// <summary>Опасность: необратимое последствие действия.</summary>
+        Danger   = 1 << 2,
+
+        /// <summary>Убыль числа: падение стата, списание, урон.</summary>
+        Negative = 1 << 3,
+
+        /// <summary>Прирост числа: рост стата, начисление, лечение.</summary>
+        Positive = 1 << 4,
+    }
+
     /// <summary>Раздел витрины: по нему контактный лист группирует образцы.</summary>
     public enum UiComponentGroup
     {
@@ -76,12 +116,23 @@ namespace Guildmaster.UI.Components
         /// </remarks>
         public bool Technical { get; }
 
+        /// <summary>
+        /// Цветовые метки, которые на эту роль реально ложатся. Показываются в витрине рядом с
+        /// покоем — так же, как у кнопки показаны состояния.
+        /// </summary>
+        /// <remarks>
+        /// Перечисляются ЖИВЫЕ, а не все подряд: «имя вещи» бывает приглушённым (недоступна) и
+        /// латунным (редкая), но не бывает «прирост». Показ всех пяти на каждой роли превратил бы
+        /// витрину в таблицу умножения, из которой не видно, что в игре действительно встречается.
+        /// </remarks>
+        public UiTextTone Tones { get; }
+
         /// <summary>Элемент принимает указатель: по нему кликают, он звучит, он обязан иметь состояния.</summary>
         public bool IsInteractive => Required != UiElementState.None;
 
         internal UiComponentEntry(string label, string block, UiComponentGroup group,
                                   UiElementState required, string baseBlock, string[] variants,
-                                  bool technical = false)
+                                  bool technical = false, UiTextTone tones = UiTextTone.None)
         {
             Label    = label;
             Block    = block;
@@ -89,6 +140,7 @@ namespace Guildmaster.UI.Components
             Required = required;
             Base      = baseBlock;
             Technical = technical;
+            Tones     = tones;
             Variants  = variants ?? Array.Empty<string>();
         }
     }
@@ -235,23 +287,43 @@ namespace Guildmaster.UI.Components
             // Здесь по одному ПРЕДСТАВИТЕЛЮ на роль; сведение самих классов — отдельный заход тем же
             // приёмом, каким сведены кнопки.
             //
-            // РЕГИСТР не входит в перечень: `text-transform` в UI Toolkit отсутствует, капитель
-            // задают САМИ БУКВЫ в разметке. Образцы написаны так, как эти строки пишутся в игре.
+            // РЕГИСТР — СТИЛЬ, и потому в перечне ролей его нет: он объявлен в USS свойством
+            // --gm-text-case и применяется контролом (см. UiTextCase). Поля в реестре под него
+            // заводить не нужно — образец витрины получает капс оттуда же, откуда игра.
+            //
+            // МЕТКИ — ВТОРАЯ ОСЬ (решение Макса 06.08.2026). Красный текст, приглушённый, латунный
+            // не являются отдельными ролями: они кладутся поверх роли вторым классом и меняют
+            // только цвет. У каждой роли перечислены ЖИВЫЕ метки — те, что в игре встречаются.
             New("Текст (Вывеска) — Вариация 1", "gm-title__main", UiComponentGroup.Typography,
                 UiElementState.None, null),
             New("Текст (Заголовок) — Вариация 1", "gm-panel__title", UiComponentGroup.Typography,
                 UiElementState.None, null),
-            New("Текст (Имя вещи) — Вариация 1", "gm-card__name", UiComponentGroup.Typography,
-                UiElementState.None, null),
-            New("Текст (Тело — описание, событие) — Вариация 1", "gm-tooltip__desc",
-                UiComponentGroup.Typography, UiElementState.None, null),
-            New("Текст (Подпись действия) — Вариация 1", "gm-plate-button__label",
-                UiComponentGroup.Typography, UiElementState.None, null),
-            New("Текст (Число) — Вариация 1", "gm-stat__value", UiComponentGroup.Typography,
-                UiElementState.None, null),
-            New("Текст (Метка) — Вариация 1", "gm-text-muted", UiComponentGroup.Typography,
+            NewText("Текст (Имя вещи) — Вариация 1", "gm-card__name",
+                UiTextTone.Muted | UiTextTone.Brass),
+            NewText("Текст (Тело — описание, событие) — Вариация 1", "gm-tooltip__desc",
+                UiTextTone.Muted | UiTextTone.Danger),
+            NewText("Текст (Подпись действия) — Вариация 1", "gm-plate-button__label",
+                UiTextTone.Muted | UiTextTone.Danger),
+            NewText("Текст (Число) — Вариация 1", "gm-stat__value",
+                UiTextTone.Brass | UiTextTone.Negative | UiTextTone.Positive),
+            // Роль «подпись» уже приглушена собственным цветом, поэтому метки Muted у неё нет:
+            // она бы ничего не изменила. Звалась gm-text-muted — имя описывало цвет, тогда как
+            // класс задаёт и кегль; переименована 06.08.2026, чтобы не стоять в одном дереве с
+            // меткой gm-text--muted через один дефис.
+            New("Текст (Подпись) — Вариация 1", "gm-text-caption", UiComponentGroup.Typography,
                 UiElementState.None, null),
             New("Текст (Код, дев) — Вариация 1", "gm-console__keys", UiComponentGroup.Typography,
+                UiElementState.None, null),
+
+            // СЛОВАРЬ ПОДСКАЗКИ — третья сущность рядом с ролью и меткой: цвет здесь кодирует
+            // КАТЕГОРИЮ ПОНЯТИЯ, а не назначение текста и не его состояние. Шесть категорий на
+            // пять цветов: --behaviour и --other сегодня красятся одинаково.
+            // Блок .gm-kw правила не имеет и иметь не должен — стилизованы только модификаторы;
+            // для гейта мёртвого он объявлен маркером.
+            // ВАРИАНТЫ ЗДЕСЬ НЕ ПЕРЕЧИСЛЯЮТСЯ: образец словаря показывает все шесть категорий в
+            // одной строке (иначе не видно, различимы ли они рядом), и список вариантов дал бы
+            // семь одинаковых ячеек — первый прогон это и показал.
+            New("Текст (Словарь подсказки)", "gm-kw", UiComponentGroup.Typography,
                 UiElementState.None, null),
 
             // --- ПАНЕЛИ И ДЕКОР ---
@@ -309,6 +381,11 @@ namespace Guildmaster.UI.Components
                                             UiElementState required, string baseBlock,
                                             params string[] variants)
             => new(label, block, group, required, baseBlock, variants);
+
+        /// <summary>Текстовая роль с её живыми метками. Состояний у текста нет — он не кликается.</summary>
+        private static UiComponentEntry NewText(string label, string block, UiTextTone tones)
+            => new(label, block, UiComponentGroup.Typography, UiElementState.None, null, null,
+                   technical: false, tones: tones);
 
         /// <summary>Форма, известная реестру, но не входящая в набор для сборки экранов.</summary>
         private static UiComponentEntry NewTechnical(string label, string block, UiComponentGroup group,

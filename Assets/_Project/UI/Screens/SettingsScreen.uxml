@@ -10,9 +10,9 @@
         <!-- Лента разделов: три таба, как у Guildrun. Кнопка сброса стоит не здесь, а внизу с
              остальными действиями — у всех семи рефов, где она есть, она рядом с «Назад». -->
         <ui:VisualElement class="gm-tabbar gm-settings__tabs">
-            <gm:PlateButton name="tab-game" text="ИГРА" class="gm-tab" />
-            <gm:PlateButton name="tab-video" text="ГРАФИКА" class="gm-tab" />
-            <gm:PlateButton name="tab-audio" text="ЗВУК" class="gm-tab gm-tab--active" />
+            <gm:PlateButton name="tab-game" text="Игра" class="gm-tab" />
+            <gm:PlateButton name="tab-video" text="Графика" class="gm-tab" />
+            <gm:PlateButton name="tab-audio" text="Звук" class="gm-tab gm-tab--active" />
         </ui:VisualElement>
         <!-- Рельса: линия, на которой стоит активная вкладка. Шире ленты — как у рефа. -->
         <ui:VisualElement class="gm-tabbar__rail" />
@@ -34,7 +34,7 @@
                 <gm:SelectRow name="row-window-mode" />
                 <gm:SelectRow name="row-resolution" />
                 <gm:SelectRow name="row-refresh-rate" />
-                <ui:Label name="video-hint" class="gm-text-muted gm-tab-hint" />
+                <ui:Label name="video-hint" class="gm-text-caption gm-tab-hint" />
             </ui:VisualElement>
 
             <!-- Страница «Звук» — активная: три строки-слайдера (подписи/значения проставляет роутер из VM). -->
@@ -48,9 +48,9 @@
         <!-- Действия внизу по центру: у Guildrun «Назад» стоит там же, а «Сброс по умолчанию» рядом
              с ним и НЕ выделен цветом — ни у одного из семи рефов, где он есть, он не покрашен. -->
         <ui:VisualElement class="gm-settings__actions">
-            <gm:PlateButton name="btn-save" text="СОХРАНИТЬ" class="gm-button gm-button--display gm-button--primary" />
-            <gm:PlateButton name="btn-cancel" text="ОТМЕНА" class="gm-button gm-button--display" />
-            <gm:PlateButton name="btn-defaults" text="СБРОС" class="gm-button gm-button--display" />
+            <gm:PlateButton name="btn-save" text="Сохранить" class="gm-button gm-button--display gm-button--primary" />
+            <gm:PlateButton name="btn-cancel" text="Отмена" class="gm-button gm-button--display" />
+            <gm:PlateButton name="btn-defaults" text="Сброс" class="gm-button gm-button--display" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

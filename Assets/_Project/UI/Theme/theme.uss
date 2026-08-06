@@ -51,3 +51,6 @@
 @import url("screens/profile.uss");
 @import url("screens/confirm.uss");
 @import url("screens/dev.uss");
+
+/* --- Утилиты. ПОСЛЕДНИЙ ярус: метка обязана перебивать и компонент, и экран. --- */
+@import url("utilities/text-tones.uss");

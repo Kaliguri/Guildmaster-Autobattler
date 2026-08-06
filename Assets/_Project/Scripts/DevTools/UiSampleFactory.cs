@@ -93,21 +93,33 @@ namespace Guildmaster.DevTools
         /// </remarks>
         private static readonly Dictionary<string, Func<VisualElement>> TextBuilders = new()
         {
-            // Текст. Образцы написаны ТАК, КАК ЭТИ СТРОКИ ПИШУТСЯ В ИГРЕ: регистр в UI Toolkit не
-            // задаётся стилем (`text-transform` отсутствует), его задают сами буквы. Кириллица —
-            // везде, где она бывает в игре: гарнитуру она показывает честнее латиницы.
+            // Текст. Образцы пишутся ТАК, КАК ЭТИ СТРОКИ ЛЕЖАТ В ЛОКАЛИЗАЦИИ — по-человечески, а не
+            // прописными. Регистр с 06.08.2026 приходит из USS (`--gm-text-case`, см. UiTextCase),
+            // поэтому «Начать забег» в образце покажется на кадре как «НАЧАТЬ ЗАБЕГ» ровно потому же,
+            // почему и в игре. Написать здесь капс руками значило бы снова завести второго владельца
+            // регистра — и витрина перестала бы ловить его пропажу.
+            // Кириллица — везде, где она бывает в игре: гарнитуру она показывает честнее латиницы.
             ["gm-title__main"]         = () => Text("GUILDMASTERS"),
             ["gm-panel__title"]        = () => Text("Настройки"),
             ["gm-card__name"]          = () => Text("Клинок Рассвета"),
-            ["gm-tooltip__desc"]       = () => Text("Наносит 12 урона всем врагам в дуге и поджигает их на 3 секунды."),
-            // Подпись действия и код набираются В СВОЁМ КОНТЕКСТЕ: кегль подписи задаёт сама кнопка,
-            // а моноширинную гарнитуру консоли — правило `.gm-console .unity-text-element`, то есть
-            // ПРЕДОК. Без обёртки образец показывал 14px почти чёрным и FiraSans вместо Fira Mono —
-            // враньё, которое поймал замер, а не глаз.
-            ["gm-plate-button__label"] = () => Within("gm-button", "gm-plate-button__label", "НАЧАТЬ ЗАБЕГ"),
+            // Коротко намеренно: с метками у роли до шести ячеек в ряду, и длинная фраза разносила
+            // ряд на две строки — на кадре это читалось поломкой листа, а не образцом.
+            ["gm-tooltip__desc"]       = () => Text("Поджигает цель на 3 секунды."),
+            // ПОДПИСЬ ДЕЙСТВИЯ — НАСТОЯЩАЯ КНОПКА, а не строка в контейнере с классом `.gm-button`.
+            // Контейнер работал, пока роль отличалась кеглем и цветом, и сломался на регистре:
+            // custom-свойства USS в UI Toolkit, в отличие от CSS, ПО НАСЛЕДСТВУ НЕ ПЕРЕДАЮТСЯ, а
+            // применяет `--gm-text-case` сам PlateButton к своей подписи. Образец без контрола
+            // показывал «Начать забег» строчными там, где игра произносит прописными.
+            ["gm-plate-button__label"] = () => PlateBtn(),
+            // Код набирается В СВОЁМ КОНТЕКСТЕ: моноширинную гарнитуру консоли задаёт правило
+            // `.gm-console .unity-text-element`, то есть ПРЕДОК. Без обёртки образец показывал
+            // FiraSans вместо Fira Mono — враньё, которое поймал замер, а не глаз.
             ["gm-stat__value"]         = () => Text("128"),
-            ["gm-text-muted"]          = () => Text("Приглушённая подпись"),
+            ["gm-text-caption"]        = () => Text("Дом хранит прогресс забега"),
             ["gm-console__keys"]       = () => Within("gm-console", "gm-console__keys", "gm.spawn(\"goblin\", 3)"),
+            // Словарь: шесть категорий одной строкой — так видно, различимы ли они между собой.
+            // Цвет живёт на модификаторе, поэтому образец блока показывает сразу все варианты.
+            ["gm-kw"]                  = () => Keywords(),
         };
 
         /// <summary>
@@ -122,7 +134,13 @@ namespace Guildmaster.DevTools
             if (table.TryGetValue(entry.Block, out Func<VisualElement> build))
             {
                 VisualElement element = build();
-                if (!element.ClassListContains(entry.Block)) element.AddToClassList(entry.Block);
+                // Класс роли дописывается, только если его нет НИГДЕ в образце. Проверять один
+                // корень мало: у роли, набираемой предком, класс висит на подписи внутри, и корень
+                // получал бы вторую копию — то есть образец с классом там, где в игре его не бывает.
+                if (!element.ClassListContains(entry.Block) && element.Q(className: entry.Block) == null)
+                {
+                    element.AddToClassList(entry.Block);
+                }
                 return element;
             }
 
@@ -162,20 +180,67 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Образец текстовой роли: строка, у которой вид целиком приходит с класса.</summary>
-        private static Label Text(string sample) => new(sample);
+        /// <remarks>
+        /// Привязывается к <see cref="UiTextCase"/>: регистр — такое же свойство роли, как гарнитура,
+        /// и голый <see cref="Label"/> сам его не применяет. Без привязки витрина показывала бы
+        /// строчными то, что игра произносит прописными, — то есть ровно тем способом, каким она уже
+        /// один раз соврала на кегле подписи.
+        /// </remarks>
+        private static Label Text(string sample)
+        {
+            var label = new Label(sample);
+            UiTextCase.Bind(label);
+            return label;
+        }
 
         /// <summary>
         /// Образец, которому нужен ПРЕДОК: часть ролей набирается правилами родителя, а не своими.
         /// </summary>
+        /// <remarks>
+        /// Регистр сюда приходит тем же путём, что и кегль: custom-свойства USS наследуются, поэтому
+        /// <c>--gm-text-case</c> с родительского <c>.gm-button</c> доходит до подписи внутри.
+        /// </remarks>
         private static VisualElement Within(string parentClass, string ownClass, string sample)
         {
             var host = new VisualElement();
             host.AddToClassList(parentClass);
 
-            var label = new Label(sample);
+            Label label = Text(sample);
             label.AddToClassList(ownClass);
             host.Add(label);
             return host;
+        }
+
+        /// <summary>
+        /// Словарь подсказки: по слову на каждую категорию, все в одной строке.
+        /// </summary>
+        /// <remarks>
+        /// Одной строкой намеренно — вопрос к словарю не «какого цвета статус», а «отличается ли
+        /// статус от защиты, когда стоят рядом». Порознь этого не видно, а в игре они и встречаются
+        /// в одном абзаце подсказки.
+        /// </remarks>
+        private static VisualElement Keywords()
+        {
+            var host = new VisualElement();
+            host.AddToClassList("gm-tooltip__desc");
+            host.style.flexDirection = FlexDirection.Row;
+            host.style.flexWrap = Wrap.Wrap;
+
+            AddKeyword(host, "горение", "gm-kw--status");
+            AddKeyword(host, "рубящий", "gm-kw--damage");
+            AddKeyword(host, "броня", "gm-kw--defense");
+            AddKeyword(host, "угроза", "gm-kw--behaviour");
+            AddKeyword(host, "привал", "gm-kw--run");
+            AddKeyword(host, "прочее", "gm-kw--other");
+            return host;
+        }
+
+        private static void AddKeyword(VisualElement host, string word, string cls)
+        {
+            var label = new Label(word);
+            label.AddToClassList(cls);
+            label.style.marginRight = 12;
+            host.Add(label);
         }
 
         private static VisualElement Box(params string[] classes)

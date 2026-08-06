@@ -14,12 +14,33 @@ namespace Guildmaster.UI.Components
         private readonly VisualElement _icon;
         private readonly Label _label;
 
-        /// <summary>Подпись чипа (текст справа от иконки).</summary>
+        // Как у пластины: подпись хранится исходной, регистр приходит из USS (см. UiTextCase).
+        private string _sourceText = string.Empty;
+        private UiTextCaseMode _textCase = UiTextCaseMode.None;
+
+        /// <summary>Подпись чипа (текст справа от иконки). Отдаётся исходной, без применённого регистра.</summary>
         [UxmlAttribute]
         public string Text
         {
-            get => _label.text;
-            set => _label.text = value;
+            get => _sourceText;
+            set
+            {
+                _sourceText = value ?? string.Empty;
+                ApplyTextCase();
+            }
+        }
+
+        private void ApplyTextCase() => _label.text = UiTextCase.Apply(_sourceText, _textCase);
+
+        private void OnCustomStyleResolved(CustomStyleResolvedEvent evt)
+        {
+            UiTextCaseMode textCase = evt.customStyle.TryGetValue(UiTextCase.Property, out string raw)
+                ? UiTextCase.Parse(raw)
+                : UiTextCaseMode.None;
+            if (textCase == _textCase) return;
+
+            _textCase = textCase;
+            ApplyTextCase();
         }
 
         public Chip()
@@ -36,6 +57,8 @@ namespace Guildmaster.UI.Components
             _label.AddToClassList("gm-chip__label");
             Add(_icon);
             Add(_label);
+
+            RegisterCallback<CustomStyleResolvedEvent>(OnCustomStyleResolved);
         }
 
         /// <summary>Подсветить как выбранный (активный фильтр, надетый тег и т.п.).</summary>

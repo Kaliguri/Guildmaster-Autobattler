@@ -30,7 +30,9 @@ namespace Guildmaster.UI.Components
         /// <summary>Замкнутый контур по всей фигуре — поведение по умолчанию.</summary>
         Full,
         /// <summary>Только левая и правая грани, с затуханием книзу.</summary>
-        Sides
+        Sides,
+        /// <summary>Только нижняя грань — черта под подписью, отклик наведения у вкладки.</summary>
+        Bottom
     }
 
     /// <summary>
@@ -71,6 +73,11 @@ namespace Guildmaster.UI.Components
 
         private readonly Label _label;
 
+        // Подпись хранится ИСХОДНОЙ, а показывается по правилу регистра из USS. Инициализатор поля
+        // выполняется до базового конструктора, поэтому обращение к text из ctor базы безопасно.
+        private string _sourceText = string.Empty;
+        private UiTextCaseMode _textCase = UiTextCaseMode.None;
+
         // СВОИХ цветов у контрола нет: и заливка, и кайма приходят только из USS. Прежние дефолты
         // (тёмно-коричневый и латунь) были вторым владельцем токенов и однажды разошлись бы с ними
         // молча — ровно так это случилось у вуали, где хардкод 0.92 жил рядом с токеном 0.88.
@@ -88,12 +95,28 @@ namespace Guildmaster.UI.Components
         /// Подпись кнопки. Перенаправлена в дочерний <see cref="Label"/> — база остаётся с пустым
         /// текстом и ничего не рисует (см. «почему текст в ребёнке» в описании класса).
         /// </summary>
+        /// <remarks>
+        /// Отдаёт ИСХОДНУЮ строку, а не показанную: регистр — это вид, задаваемый USS-свойством
+        /// <c>--gm-text-case</c> (см. <see cref="UiTextCase"/>), и код, читающий подпись, должен
+        /// получить то, что положил. Иначе сравнение вида <c>button.text == "Отмена"</c> ломалось бы
+        /// от одной строчки в теме.
+        /// </remarks>
         public override string text
         {
             // Геттер обязан пережить обращение ДО нашего конструктора: базовый Button может тронуть
             // text в своём ctor, а _label к тому моменту ещё null.
-            get => _label != null ? _label.text : string.Empty;
-            set { if (_label != null) _label.text = value; }
+            get => _sourceText;
+            set
+            {
+                _sourceText = value ?? string.Empty;
+                ApplyTextCase();
+            }
+        }
+
+        private void ApplyTextCase()
+        {
+            if (_label == null) return;
+            _label.text = UiTextCase.Apply(_sourceText, _textCase);
         }
 
         /// <summary>Кнопка с обработчиком клика — как у <see cref="Button"/>, чтобы места вида
@@ -138,6 +161,18 @@ namespace Guildmaster.UI.Components
             _fillMode = style.TryGetValue(FillModeProp, out string mode) ? ParseFill(mode) : PlateFill.Down;
             _strokeMode = style.TryGetValue(StrokeModeProp, out string sm) ? ParseStroke(sm) : PlateStroke.Full;
 
+            // Регистр сбрасывается так же явно, как второй цвет заливки: правило, не задающее
+            // --gm-text-case, обязано вернуть подпись к исходной, а не унаследовать капс от
+            // состояния, из которого кнопка вышла.
+            UiTextCaseMode textCase = style.TryGetValue(UiTextCase.Property, out string tc)
+                ? UiTextCase.Parse(tc)
+                : UiTextCaseMode.None;
+            if (textCase != _textCase)
+            {
+                _textCase = textCase;
+                ApplyTextCase();
+            }
+
             MarkDirtyRepaint();
         }
 
@@ -156,7 +191,14 @@ namespace Guildmaster.UI.Components
 
         /// <summary>Где проходит кромка. Неизвестное имя — замкнутый контур.</summary>
         private static PlateStroke ParseStroke(string mode)
-            => mode?.Trim().ToLowerInvariant() == "sides" ? PlateStroke.Sides : PlateStroke.Full;
+        {
+            switch (mode?.Trim().ToLowerInvariant())
+            {
+                case "sides":  return PlateStroke.Sides;
+                case "bottom": return PlateStroke.Bottom;
+                default:       return PlateStroke.Full;
+            }
+        }
 
         // Восьмиугольник: прямоугольник со срезанными углами. Фаска кламплется половиной МЕНЬШЕЙ
         // стороны — на низкой кнопке фигура иначе вывернулась бы наизнанку.
@@ -191,6 +233,7 @@ namespace Guildmaster.UI.Components
             if (_stroke.a > 0f && _strokeWidth > 0f)
             {
                 if (_strokeMode == PlateStroke.Sides) StrokeSides(ctx, w, h);
+                else if (_strokeMode == PlateStroke.Bottom) StrokeBottom(ctx, w, h);
                 else
                 {
                     Painter2D p = ctx.painter2D;
@@ -237,6 +280,23 @@ namespace Guildmaster.UI.Components
             v[7].position = new Vector3(w - t, h, Vertex.nearZ);    v[7].tint = bottom;
             mesh.SetAllVertices(v);
             mesh.SetAllIndices(new ushort[] { 0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7 });
+        }
+
+        /// <summary>
+        /// Нижняя грань — ровная черта во всю ширину. Отклик наведения у вкладки: поверхность там
+        /// появляться не должна (это повадка кнопки), а линия под словом читается «сюда можно».
+        /// </summary>
+        private void StrokeBottom(MeshGenerationContext ctx, float w, float h)
+        {
+            float t = Mathf.Max(1f, _strokeWidth);
+            MeshWriteData mesh = ctx.Allocate(4, 6);
+            var v = new Vertex[4];
+            v[0].position = new Vector3(0f, h - t, Vertex.nearZ); v[0].tint = _stroke;
+            v[1].position = new Vector3(w, h - t, Vertex.nearZ);  v[1].tint = _stroke;
+            v[2].position = new Vector3(w, h, Vertex.nearZ);      v[2].tint = _stroke;
+            v[3].position = new Vector3(0f, h, Vertex.nearZ);     v[3].tint = _stroke;
+            mesh.SetAllVertices(v);
+            mesh.SetAllIndices(new ushort[] { 0, 1, 2, 0, 2, 3 });
         }
 
         private void FillSolid(MeshGenerationContext ctx, Span<Vector2> corners)

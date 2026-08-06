@@ -9,23 +9,23 @@
                 <!-- Слоты. Имени профиль не носит — только номер: именуемая сущность у игрока одна,
                      это дом, он же слот сохранения. Строки строятся кодом: их число берётся из
                      GameConfig, а не из разметки. -->
-                <ui:Label name="slots-caption" text="Слоты" class="gm-text-muted" />
+                <ui:Label name="slots-caption" text="Слоты" class="gm-text-caption" />
                 <ui:VisualElement name="slot-list" class="gm-profile__slots" />
 
                 <ui:VisualElement class="gm-divider" />
 
                 <!-- Идентичность: то, чем игрок виден остальным. Настройки клиента (звук, экран) сюда
                      НЕ переезжают — они принадлежат машине и не должны прыгать при смене профиля. -->
-                <ui:Label name="identity-caption" text="Как меня видят" class="gm-text-muted" />
+                <ui:Label name="identity-caption" text="Как меня видят" class="gm-text-caption" />
 
                 <gm:ToggleRow name="toggle-steam-name" label-text="Брать имя из Steam" value="true" />
                 <ui:TextField name="field-name" class="gm-profile__name" />
-                <ui:Label name="name-hint" class="gm-text-muted gm-profile__hint" />
+                <ui:Label name="name-hint" class="gm-text-caption gm-profile__hint" />
 
-                <ui:Label name="color-caption" text="Цвет" class="gm-text-muted" />
+                <ui:Label name="color-caption" text="Цвет" class="gm-text-caption" />
                 <ui:VisualElement name="color-row" class="gm-profile__colors" />
 
-                <ui:Label name="cursor-caption" text="Курсор" class="gm-text-muted" />
+                <ui:Label name="cursor-caption" text="Курсор" class="gm-text-caption" />
                 <ui:VisualElement name="cursor-row" class="gm-profile__cursors" />
             </ui:ScrollView>
 

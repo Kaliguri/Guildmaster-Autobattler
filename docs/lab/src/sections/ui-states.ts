@@ -21,6 +21,8 @@ interface FrameElement {
   label: string;
   block: string;
   states: string;
+  /** Цветовые метки роли через запятую: вторая ось текста. Пусто, если роль их не носит. */
+  tones?: string;
   /** Замер с живого образца: гарнитура, кегль, цвет, разрядка. Пусто у нетекстовых. */
   type?: string;
 }
@@ -54,6 +56,7 @@ const GROUP_TITLE: Record<string, string> = {
   Rows: "Строки настроек",
   Panels: "Панели и декор",
   Overlays: "Поверх всего",
+  Typography: "Текст",
   Dev: "Дев-тулинг"
 };
 
@@ -106,9 +109,15 @@ function frameCard(frame: Frame): HTMLElement {
   list.style.margin = "0.8rem 0 0";
   list.style.paddingLeft = "1.2rem";
   for (const item of frame.elements) {
-    const tail = item.type
-      ? `<span class="dim">· ${item.type}</span>`
-      : `<span class="dim">· ${stateWords(item.states)}</span>`;
+    // У текстовой роли осмысленны замер и метки, у интерактивного элемента — состояния. Печатается
+    // то, что у записи есть: показывать «декоративный» рядом с замером шрифта значит отвечать на
+    // вопрос, которого к тексту не было.
+    const parts: string[] = [];
+    if (item.type) parts.push(item.type);
+    else parts.push(stateWords(item.states));
+    if (item.tones) parts.push(`метки: ${item.tones}`);
+
+    const tail = `<span class="dim">· ${parts.join(" · ")}</span>`;
     list.appendChild(html("li", `<code>${item.block}</code> — ${item.label} ${tail}`));
   }
   box.appendChild(list);
@@ -147,7 +156,8 @@ const section: SectionDef = {
   id: "ui-states",
   title: "Элементы интерфейса",
   lede: "Каждый элемент во всех своих состояниях — покой, наведение, нажатие, фокус, выключено, " +
-        "отмечено. Снято из живой игры, а не со стенда: важно, как элемент выглядит на настоящей " +
+        "отмечено. У текста вместо состояний — метки: приглушённый, латунь, прирост, убыль, " +
+        "опасность. Снято из живой игры, а не со стенда: важно, как элемент выглядит на настоящей " +
         "подложке и в настоящем масштабе.",
   transport: false,
   blocks: [

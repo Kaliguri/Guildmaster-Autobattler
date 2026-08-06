@@ -9,7 +9,7 @@
                 <!-- Слоты домов. Строки строятся кодом: их число берётся из GameConfig, а не из
                      разметки, и свободные слоты показываются наравне с занятыми — иначе список не
                      отвечает на первый же вопрос игрока «а можно ещё?». -->
-                <ui:Label name="guilds-caption" text="Дом хранит прогресс: забег, ростер, открытия" class="gm-text-muted" />
+                <ui:Label name="guilds-caption" text="Дом хранит прогресс: забег, ростер, открытия" class="gm-text-caption" />
                 <ui:VisualElement name="guild-list" class="gm-guilds__slots" />
             </ui:ScrollView>
 

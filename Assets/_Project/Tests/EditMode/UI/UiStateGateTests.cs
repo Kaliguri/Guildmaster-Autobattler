@@ -91,10 +91,24 @@ namespace Guildmaster.Tests.EditMode.UI
 
             for (int i = 2; i < imports.Count; i++)
             {
-                Assert.That(imports[i], Does.StartWith("components").Or.StartWith("screens"),
-                    $"После двух ярусов токенов идут только таблицы компонентов и экранов, а не «{imports[i]}».\n" +
+                Assert.That(imports[i],
+                    Does.StartWith("components").Or.StartWith("screens").Or.StartWith("utilities"),
+                    $"После двух ярусов токенов идут только таблицы компонентов, экранов и утилит, " +
+                    $"а не «{imports[i]}».\n" +
                     "Порядок здесь несущий: при равной специфичности выигрывает импортированный ПОЗЖЕ,\n" +
                     "поэтому перестановка молча меняет вид там, где никто ничего не правил.");
+            }
+
+            // Утилиты — ПОСЛЕДНИЕ, и это несущее правило, а не порядок для красоты. Метка текста
+            // (.gm-text--danger) равна по специфичности правилу роли (.gm-tooltip__desc), поэтому
+            // при равенстве решает порядок импорта. Первый прогон витрины 06.08.2026 показал метку
+            // «опасность» неотличимой от покоя ровно по этой причине.
+            int firstUtility = imports.FindIndex(i => i.StartsWith("utilities"));
+            if (firstUtility >= 0)
+            {
+                Assert.That(imports.Skip(firstUtility).All(i => i.StartsWith("utilities")), Is.True,
+                    "После яруса утилит не должно идти ничего: утилита обязана перебивать и компонент,\n" +
+                    "и экран, иначе она срабатывает через раз — по алфавиту имени файла.");
             }
         }
 

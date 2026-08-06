@@ -431,14 +431,14 @@ namespace Guildmaster.DevTools
             h1.style.fontSize = 26; h1.style.marginBottom = 2;
             root.Add(h1);
             var sub = new Label("единственный источник и приёмка: атомы = классы, композиты = кастом-контролы");
-            sub.AddToClassList("gm-text-muted");
+            sub.AddToClassList("gm-text-caption");
             sub.style.marginBottom = 8;
             root.Add(sub);
 
             Label Header(string t)
             {
                 var l = new Label(t);
-                l.AddToClassList("gm-text-muted");
+                l.AddToClassList("gm-text-caption");
                 l.style.unityFontStyleAndWeight = UnityEngine.FontStyle.Bold;
                 l.style.marginTop = 22; l.style.marginBottom = 8;
                 root.Add(l);
@@ -460,7 +460,7 @@ namespace Guildmaster.DevTools
                 c.style.marginRight = 16; c.style.marginBottom = 14;
                 c.Add(content1);
                 var cap = new Label(caption);
-                cap.AddToClassList("gm-text-muted");
+                cap.AddToClassList("gm-text-caption");
                 cap.style.marginTop = 4;
                 c.Add(cap);
                 return c;
@@ -580,7 +580,7 @@ namespace Guildmaster.DevTools
             _gallerySystem.Attach(root, layer);
 
             var hint = new Label("Shift — подробности · Alt+клик — закрепить окно (внутри работают ссылки, «‹ › ×»)");
-            hint.AddToClassList("gm-text-muted");
+            hint.AddToClassList("gm-text-caption");
             hint.style.marginBottom = 8;
             root.Add(hint);
 
