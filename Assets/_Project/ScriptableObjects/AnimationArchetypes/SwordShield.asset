@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 551ba710b5e1fcc4f9e3f6c56bdfdf45, type: 3}
   m_Name: SwordShield
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.UnitVisual
+  _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
   _idleClip: {fileID: 7400000, guid: 61f38bd5b957d154da1cb1076e2228b8, type: 2}
   _runClip: {fileID: 7400000, guid: 96c023c5eeb325a4da625a7c37c01b7a, type: 2}
   _attackClip: {fileID: 7400000, guid: b6dec23425e1c8f489724d8a2ae19e3b, type: 2}

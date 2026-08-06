@@ -28,6 +28,11 @@ namespace Guildmaster.Data.Definitions
     [CreateAssetMenu(menuName = "Guildmaster/Content/Animation Archetype", fileName = "AnimationArchetype")]
     public sealed class AnimationArchetypeData : ScriptableObject
     {
+        [Header("Тело")]
+        [Tooltip("Префаб вида: риг с нужными узлами и контроллером. Живёт ЗДЕСЬ, а не у юнита, потому что " +
+                 "риг и набор клипов — одна вещь: у копья свои узлы И свои клипы, и порознь они бессмысленны.")]
+        [SerializeField] private GameObject _viewPrefab;
+
         [Header("Animation clips")]
         [SerializeField] private AnimationClip _idleClip;
         [SerializeField] private AnimationClip _runClip;
@@ -44,6 +49,13 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private AnimationClip[] _skillClips = new AnimationClip[4];
         [Tooltip("Портрет для HUD/тултипов. Опционален.")]
         [SerializeField] private Sprite _portrait;
+
+        /// <summary>
+        /// Префаб вида этого архетипа: риг с его узлами, Animator с его контроллером. Юнит берёт вид
+        /// отсюда и своего поля под него не имеет — иначе архетип «копьё» уживался бы в данных с
+        /// префабом меча, и юнит выходил бы на арену махать клипами копья по мечу.
+        /// </summary>
+        public GameObject ViewPrefab => _viewPrefab;
 
         /// <summary>Портрет для HUD/тултипов (может быть <c>null</c>).</summary>
         public Sprite Portrait => _portrait;

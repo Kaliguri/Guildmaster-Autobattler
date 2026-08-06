@@ -50,12 +50,6 @@ namespace Guildmaster.Data.Definitions
         [FormerlySerializedAs("_visual")]
         [SerializeField] private AnimationArchetypeData _archetype;
 
-        [Tooltip("Свой префаб визуала юнита (с настроенным Animator и реальным размером ПРЯМО в префабе). " +
-                 "ОБЯЗАТЕЛЕН: пусто = юнит выйдет на арену дефолтным видом презентера и станет неотличим " +
-                 "от соседа. Временное тело берётся переиспользованием чужого пака — заглушкой это не " +
-                 "закрывают.")]
-        [SerializeField] private GameObject _viewPrefab;
-
         [Tooltip("Облачение: броня и предметы в руках. Пусто = играет то, что лежит на префабе рига. " +
                  "Именно здесь снимается щит у тех, кто его не носит: строка с пустым спрайтом.")]
         [SerializeField] private OutfitData _outfit;
@@ -181,7 +175,13 @@ namespace Guildmaster.Data.Definitions
         public AnimationArchetypeData Archetype => _archetype;
         /// <summary>Облачение: броня и предметы в руках. <c>null</c> — как на префабе.</summary>
         public OutfitData Outfit => _outfit;
-        public GameObject ViewPrefab => _viewPrefab;
+
+        /// <summary>
+        /// Префаб вида. Своего поля у юнита НЕТ (снято 06.08.2026): вид приходит из архетипа, потому что
+        /// риг и набор клипов — одна вещь. Пока это были два поля, ничто не мешало свести в данных
+        /// архетип копья с префабом меча, и юнит вышел бы на арену махать клипами копья по мечу.
+        /// </summary>
+        public GameObject ViewPrefab => _archetype != null ? _archetype.ViewPrefab : null;
         /// <summary>
         /// Оттенок юнита: и чем он СВЕТИТ (снаряд, искры, контур каста), и каким цветом окрашено его
         /// ТЕЛО. Один источник на оба (05.08.2026); цвет по роли отдаёт <c>CombatColorPalette</c>.
