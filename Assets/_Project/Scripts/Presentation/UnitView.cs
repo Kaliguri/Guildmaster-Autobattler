@@ -725,54 +725,21 @@ namespace Guildmaster.Presentation
                 return;
             }
 
-            float hit = Mathf.Clamp01(_attackHitNormalized) * attack.length;
-            // Шаг замера: пара кадров показа. Слишком мелкий шаг ловит шум кривой, слишком крупный —
-            // усредняет дугу и врёт в ту же сторону, что и отменённая хорда.
-            float step = Mathf.Clamp(attack.length * 0.02f, 1f / 120f, 1f / 30f);
-            float t0 = Mathf.Max(0f, hit - step);
-            float t1 = Mathf.Min(attack.length, hit + step);
-            if (t1 - t0 < 1e-4f) return;
+            if (_animator == null) return;
 
-            // Сэмплирование двигает кости мимо Animator, поэтому его на время замера выключаем: иначе
-            // он перепишет позу между двумя выборками и разница окажется чужой.
-            bool wasEnabled = _animator != null && _animator.enabled;
-            if (_animator != null) _animator.enabled = false;
-
-            bool ok = SampleTipLocal(attack, t0, source, body.Root, out Vector2 p0)
-                    & SampleTipLocal(attack, t1, source, body.Root, out Vector2 p1);
-
-            if (_animator != null) _animator.enabled = wasEnabled;
-
-            if (!ok)
+            // Полное имя намеренно: `Body` здесь ещё и свойство вида, и короткая форма разрешается в него.
+            if (!Guildmaster.Presentation.Body.StrikeDirectionMeasure.TryMeasure(
+                    attack, source, body.Root, _attackHitNormalized, out Vector2 local))
             {
-                VisualDefects.Report($"strike-tip:{DefectKey}",
-                    $"[UnitView] {name}: ударная часть '{source.Bone}' есть, но кончика у неё нет — " +
-                    "у рендерера пуст спрайт. Направление удара не замерить.", this);
+                VisualDefects.Report($"strike-measure:{DefectKey}",
+                    $"[UnitView] {name}: направление удара не замерилось по клипу '{attack.name}' — " +
+                    "кончик оружия на кадре контакта стоит на месте либо у него пуст спрайт. Проверь " +
+                    "маркер контакта и то, что оружие анимировано этим клипом. Знака удара не будет.", this);
                 return;
             }
 
-            Vector2 delta = p1 - p0;
-            if (delta.sqrMagnitude < 1e-10f)
-            {
-                VisualDefects.Report($"strike-still:{DefectKey}",
-                    $"[UnitView] {name}: на кадре контакта клипа '{attack.name}' кончик оружия стоит на " +
-                    "месте — направления у удара нет. Проверь, там ли маркер контакта.", this);
-                return;
-            }
-
-            _strikeDirLocal = delta.normalized;
+            _strikeDirLocal = local;
             _hasStrikeDir   = true;
-        }
-
-        /// <summary>Позиция кончика ударной части на заданном кадре клипа, в координатах корня тела.</summary>
-        private bool SampleTipLocal(AnimationClip clip, float time, in UnitPart source, Transform root,
-                                    out Vector2 local)
-        {
-            local = default;
-            clip.SampleAnimation(gameObject, time);
-            if (!UnitPartGeometry.TryGetTip(source, out Vector3 tip)) return false;
-            local = root.InverseTransformPoint(tip);
-            return true;
         }
 
         /// <summary>
