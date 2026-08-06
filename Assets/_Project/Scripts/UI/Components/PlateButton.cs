@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,6 +17,20 @@ namespace Guildmaster.UI.Components
         Right,
         /// <summary>От центра к краям.</summary>
         Radial
+    }
+
+    /// <summary>
+    /// Где у пластины проходит кромка. Заведено 05.08.2026 по разбору Guildrun: у активной вкладки
+    /// там СВЕТЯТСЯ ТОЛЬКО БОКА, верхней и нижней грани нет вовсе, а книзу боковая линия
+    /// растворяется в собственной заливке (замер: кромка/заливка 1.42 вверху против 1.09 внизу).
+    /// Полный контур на её месте читается «кнопкой», а не ярлыком, выступающим из рельсы.
+    /// </summary>
+    public enum PlateStroke
+    {
+        /// <summary>Замкнутый контур по всей фигуре — поведение по умолчанию.</summary>
+        Full,
+        /// <summary>Только левая и правая грани, с затуханием книзу.</summary>
+        Sides
     }
 
     /// <summary>
@@ -52,6 +66,7 @@ namespace Guildmaster.UI.Components
         private static readonly CustomStyleProperty<string> FillModeProp = new("--gm-plate-fill-mode");
         private static readonly CustomStyleProperty<Color> StrokeProp = new("--gm-plate-stroke");
         private static readonly CustomStyleProperty<float> StrokeWidthProp = new("--gm-plate-stroke-width");
+        private static readonly CustomStyleProperty<string> StrokeModeProp = new("--gm-plate-stroke-mode");
         private static readonly CustomStyleProperty<float> ChamferProp = new("--gm-plate-chamfer");
 
         private readonly Label _label;
@@ -66,6 +81,7 @@ namespace Guildmaster.UI.Components
         private PlateFill _fillMode = PlateFill.Down;
         private Color _stroke = Color.clear;
         private float _strokeWidth = 2f;
+        private PlateStroke _strokeMode = PlateStroke.Full;
         private float _chamfer = 10f;
 
         /// <summary>
@@ -120,6 +136,7 @@ namespace Guildmaster.UI.Components
             // заливкой — значения custom-свойств переживают смену псевдокласса.
             _fillFar = style.TryGetValue(FillFarProp, out Color far) ? far : Color.clear;
             _fillMode = style.TryGetValue(FillModeProp, out string mode) ? ParseFill(mode) : PlateFill.Down;
+            _strokeMode = style.TryGetValue(StrokeModeProp, out string sm) ? ParseStroke(sm) : PlateStroke.Full;
 
             MarkDirtyRepaint();
         }
@@ -136,6 +153,10 @@ namespace Guildmaster.UI.Components
                 default:       return PlateFill.Down;
             }
         }
+
+        /// <summary>Где проходит кромка. Неизвестное имя — замкнутый контур.</summary>
+        private static PlateStroke ParseStroke(string mode)
+            => mode?.Trim().ToLowerInvariant() == "sides" ? PlateStroke.Sides : PlateStroke.Full;
 
         // Восьмиугольник: прямоугольник со срезанными углами. Фаска кламплется половиной МЕНЬШЕЙ
         // стороны — на низкой кнопке фигура иначе вывернулась бы наизнанку.
@@ -169,16 +190,53 @@ namespace Guildmaster.UI.Components
 
             if (_stroke.a > 0f && _strokeWidth > 0f)
             {
-                Painter2D p = ctx.painter2D;
-                p.BeginPath();
-                p.MoveTo(corners[0]);
-                for (int i = 1; i < corners.Length; i++) p.LineTo(corners[i]);
-                p.ClosePath();
-                p.strokeColor = _stroke;
-                p.lineWidth = _strokeWidth;
-                p.lineJoin = LineJoin.Miter;
-                p.Stroke();
+                if (_strokeMode == PlateStroke.Sides) StrokeSides(ctx, w, h);
+                else
+                {
+                    Painter2D p = ctx.painter2D;
+                    p.BeginPath();
+                    p.MoveTo(corners[0]);
+                    for (int i = 1; i < corners.Length; i++) p.LineTo(corners[i]);
+                    p.ClosePath();
+                    p.strokeColor = _stroke;
+                    p.lineWidth = _strokeWidth;
+                    p.lineJoin = LineJoin.Miter;
+                    p.Stroke();
+                }
             }
+        }
+
+        /// <summary>
+        /// Боковые грани с затуханием книзу — две полосы шириной с обводку, нарисованные мешем.
+        /// </summary>
+        /// <remarks>
+        /// Мешем, а не <see cref="Painter2D"/>: у него один <c>strokeColor</c> на весь путь, а здесь
+        /// цвет обязан меняться по высоте — иначе линия внизу спорит со светлой частью заливки,
+        /// ровно то, чего у рефа нет. Та же причина, по которой градиентная заливка тоже собирается
+        /// вершинами.
+        /// </remarks>
+        private void StrokeSides(MeshGenerationContext ctx, float w, float h)
+        {
+            // 0.35 внизу — не «на глаз»: у рефа контраст кромки к заливке падает с 1.42 вверху до
+            // 1.09 внизу, то есть линия почти растворяется, но не исчезает совсем.
+            Color top = _stroke;
+            Color bottom = new(_stroke.r, _stroke.g, _stroke.b, _stroke.a * 0.35f);
+            float t = Mathf.Max(1f, _strokeWidth);
+
+            MeshWriteData mesh = ctx.Allocate(8, 12);
+            var v = new Vertex[8];
+            // левая полоса
+            v[0].position = new Vector3(0f, 0f, Vertex.nearZ);      v[0].tint = top;
+            v[1].position = new Vector3(t, 0f, Vertex.nearZ);       v[1].tint = top;
+            v[2].position = new Vector3(t, h, Vertex.nearZ);        v[2].tint = bottom;
+            v[3].position = new Vector3(0f, h, Vertex.nearZ);       v[3].tint = bottom;
+            // правая полоса
+            v[4].position = new Vector3(w - t, 0f, Vertex.nearZ);   v[4].tint = top;
+            v[5].position = new Vector3(w, 0f, Vertex.nearZ);       v[5].tint = top;
+            v[6].position = new Vector3(w, h, Vertex.nearZ);        v[6].tint = bottom;
+            v[7].position = new Vector3(w - t, h, Vertex.nearZ);    v[7].tint = bottom;
+            mesh.SetAllVertices(v);
+            mesh.SetAllIndices(new ushort[] { 0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7 });
         }
 
         private void FillSolid(MeshGenerationContext ctx, Span<Vector2> corners)
