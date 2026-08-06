@@ -127,11 +127,6 @@
     -unity-background-image-tint-color: var(--gm-color-text-muted);
 }
 
-.gm-chip__label {
-    font-size: var(--gm-font-xs);
-    color: var(--gm-color-text-muted);
-}
-
 .gm-chip:hover { background-color: var(--gm-color-hover-surface); }
 .gm-chip:hover .gm-chip__icon { -unity-background-image-tint-color: var(--gm-color-text); }
 .gm-chip:hover .gm-chip__label { color: var(--gm-color-text); }

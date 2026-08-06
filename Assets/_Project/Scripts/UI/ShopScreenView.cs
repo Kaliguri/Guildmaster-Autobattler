@@ -78,6 +78,7 @@ namespace Guildmaster.UI
                     card.Add(sprite);
 
                     var name = new Label(item.Relic != null ? nameOf(item.Relic) : "—");
+                    name.AddToClassList("gm-text-name");
                     name.AddToClassList("gm-card__name");
                     card.Add(name);
 

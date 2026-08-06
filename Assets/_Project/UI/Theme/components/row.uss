@@ -6,9 +6,10 @@
     margin-bottom: var(--gm-space-2);
 }
 
+/* Типографика ушла в роль .gm-text-body (её вешает сам контрол) — здесь осталась только раскладка.
+   Так по всему файлу с 06.08.2026: кегль и цвет текста задаёт ярус ролей, местный класс — отступы,
+   ширины и выравнивание. */
 .gm-toggle-row__label {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-body);
     flex-grow: 1;
 }
 
@@ -42,8 +43,6 @@
 }
 
 .gm-select-row__label {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-body);
     flex-grow: 1;
 }
 
@@ -83,15 +82,11 @@
 }
 
 .gm-slider-row__label {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-body);
     width: 88px;
     flex-shrink: 0;
 }
 
 .gm-slider-row__value {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-body);
     width: 48px;
     flex-shrink: 0;
     -unity-text-align: middle-right;
@@ -146,8 +141,11 @@
     padding: var(--gm-space-0) var(--gm-space-1);
     margin-bottom: var(--gm-space-0);
 }
-.gm-stat__label { color: var(--gm-color-text-muted); font-size: var(--gm-font-xxs); }
-.gm-stat__value { color: var(--gm-color-text); font-size: var(--gm-font-xs); -unity-font-style: bold; }
+/* Метка характеристики типографики своей не имеет вовсе — её задают роль .gm-text-label и метка
+   .gm-text--muted. Правило осталось бы пустым, поэтому класса .gm-stat__label больше нет.
+   У значения свой признак — ЖИРНОСТЬ: она отличает число от подписи при одном кегле, и это не
+   цвет и не размер, то есть третьей осью в систему ролей не лезет. */
+.gm-stat__value { -unity-font-style: bold; }
 
 /* СОСТОЯНИЯ СТРОКИ ХАРАКТЕРИСТИКИ. Строка не кнопка, но она отзывается на курсор и фокус —
    иначе игрок не понимает, что у неё есть объяснение. Рамка появляется ИЗ ПРОЗРАЧНОЙ (ширина

@@ -1209,6 +1209,7 @@ namespace Guildmaster.UI
                 card.Add(sprite);
 
                 var name = new Label(_loadoutVm.Name(relic));
+                name.AddToClassList("gm-text-name");
                 name.AddToClassList("gm-card__name");
                 card.Add(name);
 

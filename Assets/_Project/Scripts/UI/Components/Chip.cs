@@ -54,6 +54,8 @@ namespace Guildmaster.UI.Components
             _icon = new VisualElement { name = "icon", pickingMode = PickingMode.Ignore };
             _icon.AddToClassList("gm-chip__icon");
             _label = new Label { pickingMode = PickingMode.Ignore };
+            _label.AddToClassList("gm-text-note");
+            _label.AddToClassList("gm-text--muted");
             _label.AddToClassList("gm-chip__label");
             Add(_icon);
             Add(_label);

@@ -13,7 +13,7 @@
                      режимов: сначала «с кем играем», потом «во что». Под кнопкой-действием она
                      читалась бы как настройка этой кнопки. -->
                 <gm:ToggleRow name="toggle-lobby" label-text="Создать онлайн-лобби" value="true" />
-                <ui:Label name="lobby-hint" class="gm-text-caption gm-newgame__hint" />
+                <ui:Label name="lobby-hint" class="gm-text-caption gm-text--muted gm-newgame__hint" />
 
                 <ui:VisualElement class="gm-divider" />
 
@@ -27,7 +27,7 @@
                 </ui:VisualElement>
 
                 <!-- Пояснение идёт за курсором, а не за выбором: выбора на экране больше нет. -->
-                <ui:Label name="mode-hint" class="gm-text-caption gm-newgame__hint" />
+                <ui:Label name="mode-hint" class="gm-text-caption gm-text--muted gm-newgame__hint" />
             </ui:ScrollView>
 
             <ui:VisualElement class="gm-divider" />

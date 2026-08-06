@@ -33,8 +33,6 @@
 }
 
 .gm-card__name {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-sm);
     -unity-text-align: middle-center;
     white-space: normal;
 }
@@ -72,8 +70,6 @@
 /* Имя сосуда: перенос в 2 строки вместо агрессивного эллипсиса (длинные классы —
    «Криомант»/«Защитник» — не влезают одной строкой в компактную карточку). */
 .gm-hub-vessel__name {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-sm);
     -unity-font-style: bold;
     white-space: normal;
 }
@@ -95,8 +91,6 @@
 }
 
 .gm-hub-vessel__relic-name {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

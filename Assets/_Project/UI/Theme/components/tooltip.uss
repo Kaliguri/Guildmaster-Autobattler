@@ -18,14 +18,10 @@
 }
 
 .gm-tooltip__title {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-sm);
     -unity-font-style: bold;
 }
 
 .gm-tooltip__meta {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-xxs);
     margin-bottom: var(--gm-space-0);
 }
 
@@ -35,8 +31,6 @@
 }
 
 .gm-tooltip__desc {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-xs);
     margin-top: var(--gm-space-0);
 }
 
@@ -81,11 +75,6 @@
     color: var(--gm-color-accent);
     font-size: var(--gm-font-xxs);
     -unity-font-style: bold;
-}
-
-.gm-tooltip__glossary-text {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-xxs);
 }
 
 /* Разбор со стат-строками шире текстовой подсказки — размер даётся МОДИФИКАТОРОМ, а не правкой
@@ -139,14 +128,7 @@
 
 /* Те же кегли, что у статблока панели (.gm-stat__label / __value) — подсказка и панель говорят
    об одном и том же одинаковым голосом. */
-.gm-tooltip__line-label {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-xxs);
-}
-
 .gm-tooltip__line-value {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-xs);
     -unity-font-style: bold;
     margin-left: var(--gm-space-2);
 }

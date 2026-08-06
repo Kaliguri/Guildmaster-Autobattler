@@ -45,6 +45,7 @@ namespace Guildmaster.UI.Components
             AddToClassList("gm-slider-row");
 
             _label = new Label { name = "label" };
+            _label.AddToClassList("gm-text-body");
             _label.AddToClassList("gm-slider-row__label");
             Add(_label);
 
@@ -53,6 +54,7 @@ namespace Guildmaster.UI.Components
             Add(_slider);
 
             _value = new Label("0%") { name = "value" };
+            _value.AddToClassList("gm-text-body");
             _value.AddToClassList("gm-slider-row__value");
             Add(_value);
 

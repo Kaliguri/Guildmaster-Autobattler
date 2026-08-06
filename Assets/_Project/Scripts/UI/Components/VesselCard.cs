@@ -40,6 +40,7 @@ namespace Guildmaster.UI.Components
             AddToClassList("gm-hub-vessel");
 
             _name = new Label { name = "vessel-name" };
+            _name.AddToClassList("gm-text-name");
             _name.AddToClassList("gm-hub-vessel__name");
             Add(_name);
 
@@ -49,6 +50,8 @@ namespace Guildmaster.UI.Components
             _relicIcon.AddToClassList("gm-hub-vessel__relic-icon");
             row.Add(_relicIcon);
             _relicName = new Label { name = "relic-name" };
+            _relicName.AddToClassList("gm-text-caption");
+            _relicName.AddToClassList("gm-text--muted");
             _relicName.AddToClassList("gm-hub-vessel__relic-name");
             row.Add(_relicName);
             Add(row);

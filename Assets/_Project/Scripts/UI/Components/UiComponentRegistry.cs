@@ -294,26 +294,25 @@ namespace Guildmaster.UI.Components
             // МЕТКИ — ВТОРАЯ ОСЬ (решение Макса 06.08.2026). Красный текст, приглушённый, латунный
             // не являются отдельными ролями: они кладутся поверх роли вторым классом и меняют
             // только цвет. У каждой роли перечислены ЖИВЫЕ метки — те, что в игре встречаются.
-            New("Текст (Вывеска) — Вариация 1", "gm-title__main", UiComponentGroup.Typography,
-                UiElementState.None, null),
-            New("Текст (Заголовок) — Вариация 1", "gm-panel__title", UiComponentGroup.Typography,
-                UiElementState.None, null),
-            NewText("Текст (Имя вещи) — Вариация 1", "gm-card__name",
+            // РОЛЬ — ЭТО КЛАСС gm-text-*, а не её представитель на каком-то экране. До 06.08.2026
+            // здесь стояли gm-card__name, gm-tooltip__desc, gm-stat__value — то есть по одному
+            // ЖИТЕЛЮ на роль, и витрина показывала «вот такой текст бывает в подсказке» вместо
+            // «вот роль, бери её куда надо». Ровно та же подмена, что была у кнопок с «пунктом
+            // главного меню». Перепись дерева показала, что пять пар «кегль + цвет» покрывают 42
+            // класса из 75 — роли существовали, но были расписаны под каждый экран заново.
+            NewText("Текст (Вывеска) — Вариация 1", "gm-text-display", UiTextTone.None),
+            NewText("Текст (Заголовок) — Вариация 1", "gm-text-title", UiTextTone.Muted),
+            NewText("Текст (Имя вещи) — Вариация 1", "gm-text-name",
                 UiTextTone.Muted | UiTextTone.Brass),
-            NewText("Текст (Тело — описание, событие) — Вариация 1", "gm-tooltip__desc",
+            NewText("Текст (Тело — подпись поля, значение) — Вариация 1", "gm-text-body",
+                UiTextTone.Muted | UiTextTone.Brass | UiTextTone.Positive | UiTextTone.Negative),
+            NewText("Текст (Подпись — пояснение под полем) — Вариация 1", "gm-text-caption",
+                UiTextTone.Muted),
+            NewText("Текст (Описание — способность, событие) — Вариация 1", "gm-text-note",
                 UiTextTone.Muted | UiTextTone.Danger),
-            NewText("Текст (Подпись действия) — Вариация 1", "gm-plate-button__label",
-                UiTextTone.Muted | UiTextTone.Danger),
-            NewText("Текст (Число) — Вариация 1", "gm-stat__value",
-                UiTextTone.Brass | UiTextTone.Negative | UiTextTone.Positive),
-            // Роль «подпись» уже приглушена собственным цветом, поэтому метки Muted у неё нет:
-            // она бы ничего не изменила. Звалась gm-text-muted — имя описывало цвет, тогда как
-            // класс задаёт и кегль; переименована 06.08.2026, чтобы не стоять в одном дереве с
-            // меткой gm-text--muted через один дефис.
-            New("Текст (Подпись) — Вариация 1", "gm-text-caption", UiComponentGroup.Typography,
-                UiElementState.None, null),
-            New("Текст (Код, дев) — Вариация 1", "gm-console__keys", UiComponentGroup.Typography,
-                UiElementState.None, null),
+            NewText("Текст (Метка — мета, счётчик) — Вариация 1", "gm-text-label",
+                UiTextTone.Muted | UiTextTone.Brass),
+            NewText("Текст (Код, дев) — Вариация 1", "gm-text-code", UiTextTone.None),
 
             // СЛОВАРЬ ПОДСКАЗКИ — третья сущность рядом с ролью и меткой: цвет здесь кодирует
             // КАТЕГОРИЮ ПОНЯТИЯ, а не назначение текста и не его состояние. Шесть категорий на

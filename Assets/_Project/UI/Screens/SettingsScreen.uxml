@@ -34,7 +34,7 @@
                 <gm:SelectRow name="row-window-mode" />
                 <gm:SelectRow name="row-resolution" />
                 <gm:SelectRow name="row-refresh-rate" />
-                <ui:Label name="video-hint" class="gm-text-caption gm-tab-hint" />
+                <ui:Label name="video-hint" class="gm-text-caption gm-text--muted gm-tab-hint" />
             </ui:VisualElement>
 
             <!-- Страница «Звук» — активная: три строки-слайдера (подписи/значения проставляет роутер из VM). -->

@@ -53,6 +53,7 @@ namespace Guildmaster.UI.Components
             AddToClassList("gm-select-row");
 
             _label = new Label { name = "label" };
+            _label.AddToClassList("gm-text-body");
             _label.AddToClassList("gm-select-row__label");
             Add(_label);
 

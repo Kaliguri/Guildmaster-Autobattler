@@ -9,7 +9,7 @@
 
             <!-- Секция сброса: видна только при полном запасе реликвий (§5.4). -->
             <ui:VisualElement name="drop-section" class="gm-reward-drop" style="display: none;">
-                <ui:Label name="drop-hint" text="" class="gm-text-caption gm-reward-drop__hint" />
+                <ui:Label name="drop-hint" text="" class="gm-text-caption gm-text--muted gm-reward-drop__hint" />
                 <ui:VisualElement name="drop-list" />
             </ui:VisualElement>
 

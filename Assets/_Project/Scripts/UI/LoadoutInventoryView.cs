@@ -513,9 +513,14 @@ namespace Guildmaster.UI
         {
             var cell = new VisualElement { focusable = true };
             cell.AddToClassList("gm-stat");
+            // Подпись — роль «метка» приглушённой меткой. Свой класс ей всё же нужен, и не ради
+            // вида: `.gm-stat:disabled .gm-stat__label` адресует её в выключенном состоянии строки.
             var l = new Label(label) { pickingMode = PickingMode.Ignore };
+            l.AddToClassList("gm-text-label");
+            l.AddToClassList("gm-text--muted");
             l.AddToClassList("gm-stat__label");
             var v = new Label(value) { pickingMode = PickingMode.Ignore };
+            v.AddToClassList("gm-text-note");
             v.AddToClassList("gm-stat__value");
             cell.Add(l);
             cell.Add(v);

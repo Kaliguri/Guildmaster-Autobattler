@@ -51,6 +51,7 @@ namespace Guildmaster.UI.Components
             _sprite.AddToClassList("gm-card__sprite");
             Add(_sprite);
             _name = new Label { name = "name" };
+            _name.AddToClassList("gm-text-name");
             _name.AddToClassList("gm-card__name");
             Add(_name);
         }
