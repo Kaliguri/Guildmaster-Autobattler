@@ -52,6 +52,8 @@ namespace Guildmaster.Presentation.Editor
         // ровно там, где она единственный источник правды о размере.
         const string DefaultSubject    = "Assets/_Project/Prefabs/Units/UnitView_BoneStorybook.prefab";
         const string BalancePath       = "Assets/_Project/ScriptableObjects/Configs/ClassBalanceConfig.asset";
+        /// <summary>«Атака 1» — обычный удар мечом; дуга показывается на нём (выбор Макса 06.08.2026).</summary>
+        const string AttackClipPath    = "Assets/_Project/Prefabs/Bones/Attack.anim";
         const string ShotFolder        = "Temp/PostFxLab";
 
         // Серия вариаций едет СРАЗУ в лабораторию, а не в Temp: кадр, оставшийся во временной папке,
@@ -744,37 +746,206 @@ namespace Guildmaster.Presentation.Editor
         /// Дуга за клинком в середине взмаха. Источник-риг ей не нужен: геометрия дуги — это пара углов
         /// в шейдере, и статике достаточно их.
         /// </summary>
+        /// <summary>
+        /// Дуга за клинком на ЖИВОЙ анимации атаки: юнит играет клип, дуга заметает сектор за настоящим
+        /// остриём, длительность — весь клип, а не одна дуга.
+        /// </summary>
+        /// <remarks>
+        /// Геометрия берётся ТЕМ ЖЕ путём, что в бою (<c>UnitView.TryGetSwingArc</c>): бьющая часть из
+        /// реестра, остриё через <see cref="UnitPartGeometry"/>, центр вращения — плечо той же стороны.
+        /// Считать её здесь по-своему значило бы завести второго владельца правды о взмахе, и стенд
+        /// начал бы показывать дугу, которой в бою нет.
+        /// <para>
+        /// Позу гоним <c>SampleAnimation</c>, а не аниматором: в редакторе он не тикает, а нам нужна
+        /// поза в произвольной фазе — в том числе на паузе.
+        /// </para>
+        /// </remarks>
         private void BuildSwingArc(Transform at, CombatFeelConfig feel, Color colour)
         {
             GameObject prefab = feel.VfxSwingArc != null ? feel.VfxSwingArc.Prefab : null;
             if (prefab == null) throw new InvalidOperationException("не назначен префаб дуги");
 
+            GameObject unit = Spawn(_subjectPrefab, at);
+            var body = unit.GetComponentInChildren<SkeletalBodyVisual>(true);
+            if (body == null) throw new InvalidOperationException("в субъекте нет SkeletalBodyVisual");
+
+            AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(AttackClipPath);
+            if (clip == null) throw new InvalidOperationException("не найден клип атаки: " + AttackClipPath);
+
+            // Корень путей клипа ищем ПО САМИМ КОСТЯМ, а не по носителю Animator: у сторибук-вида
+            // аниматор висит на «Body», а скелет лежит под «BoneVisual», и от аниматора пути клипа
+            // («Hips/Torso/…») не разрешаются вовсе. Промах здесь молчаливый: поза просто остаётся
+            // префабной, будто анимации нет.
+            GameObject rig = FindClipRoot(unit, clip);
+            if (rig == null) throw new InvalidOperationException(
+                "не найден корень, от которого клип адресует кости — сэмплировать нечего");
+
             var go = Spawn(prefab, at);
             var arc = go.GetComponentInChildren<SwingArcVfx>(true);
             if (arc == null) throw new InvalidOperationException("в префабе дуги нет SwingArcVfx");
 
-            arc.Begin(new StaticSwingSource(at.position), colour, feel.SwingArcInnerShare,
-                      feel.SwingArcTailBias, feel.SwingArcFadeOut, feel.SwingArcMaxSpanDeg, feel.SwingArcStyle);
+            // Begin поднимает эффект и раскладывает СТИЛЬ из конфига — без него дуга существует, но не
+            // показывается, и настройки пришлось бы дублировать здесь вторым списком.
+            var sampler = new ClipSampler(clip, rig);
+            var source = new ClipSwingSource();
+            sampler.Sample(0f);
+            TrySwingGeometry(body, out source.Pivot, out source.Tip);
 
-            // Begin ставит начало и конец дуги в одну точку — взмах ещё не пошёл. Домотка живёт в
-            // Update, которого в редакторе нет, поэтому угол ведём сами: дуга ЗАМЕТАЕТ сектор по фазе,
-            // а последнюю треть догорает — ровно так она и живёт в бою.
-            go.transform.localScale = Vector3.one * 2.6f;
-            const float from = -0.9f, to = 0.9f;
-            SetFloat(go, "_AngleFrom", from);
+            arc.Begin(source, colour, feel.SwingArcInnerShare, feel.SwingArcTailBias,
+                      feel.SwingArcFadeOut, feel.SwingArcMaxSpanDeg, feel.SwingArcStyle);
 
-            // Взмах плюс догорание: заметание идёт strike-фазу, дальше дуга гаснет свой fadeOut.
-            const float sweepSeconds = 0.18f;
-            float fade = Mathf.Max(0.01f, feel.SwingArcFadeOut);
-            _phaseDuration = sweepSeconds + fade;
-            float sweepShare = sweepSeconds / _phaseDuration;
+            // Весь клип целиком, а не только время дуги: смотрят взмах, а дуга — его часть.
+            _phaseDuration = Mathf.Max(0.05f, clip.length);
+
+            float angleFrom = Mathf.Atan2(source.Tip.y - source.Pivot.y, source.Tip.x - source.Pivot.x);
+            float radius    = Mathf.Max(0.01f, ((Vector2)(source.Tip - source.Pivot)).magnitude);
 
             _applyPhase = t =>
             {
-                float sweep = Mathf.Clamp01(t / sweepShare);
-                SetFloat(go, "_AngleTo", Mathf.Lerp(from, to, sweep));
-                SetFloat(go, "_Fade", t <= sweepShare ? 1f : 1f - Mathf.InverseLerp(sweepShare, 1f, t));
+                if (unit == null || go == null) return;
+
+                sampler.Sample(Mathf.Clamp01(t) * clip.length);
+                if (!TrySwingGeometry(body, out Vector3 pivot, out Vector3 tip)) return;
+
+                Vector2 arm = tip - pivot;
+
+                // Домотку ведём сами: Update у эффекта в редакторе не идёт. Дуга заметает от угла на
+                // первом кадре клипа до угла сейчас — то есть повторяет путь настоящего острия.
+                go.transform.position   = pivot;
+                go.transform.localScale = new Vector3(radius * 2f, radius * 2f, 1f);
+                SetFloat(go, "_AngleFrom", angleFrom);
+                SetFloat(go, "_AngleTo",   Mathf.Atan2(arm.y, arm.x));
+                SetFloat(go, "_Fade",      1f);
             };
+        }
+
+        /// <summary>
+        /// Поза клипа, разложенная ПО КРИВЫМ вручную: план строится один раз, дальше применяется за
+        /// проход по костям.
+        /// </summary>
+        /// <remarks>
+        /// Два очевидных пути не работают, и оба молча. <c>clip.SampleAnimation</c> вне play-mode
+        /// генерик-клип по костям не раскладывает вовсе. <see cref="AnimationMode"/> раскладывает, но
+        /// не видит объекты с <see cref="HideFlags.HideAndDontSave"/> — а весь стенд состоит именно из
+        /// таких, чтобы не мусорить в сцене. В обоих случаях поза остаётся префабной, и выглядит это как
+        /// «анимация не играет», хотя ошибки нигде нет.
+        /// <para>
+        /// Прямое чтение кривых от этого свободно и заодно ничего не включает глобально: соседнее окно
+        /// анимации и инспектор остаются в своём состоянии.
+        /// </para>
+        /// </remarks>
+        private sealed class ClipSampler
+        {
+            private readonly List<(Transform target, AnimationCurve[] pos, AnimationCurve[] rot, AnimationCurve[] scale)> _plan
+                = new List<(Transform, AnimationCurve[], AnimationCurve[], AnimationCurve[])>();
+
+            public ClipSampler(AnimationClip clip, GameObject root)
+            {
+                if (clip == null || root == null) return;
+
+                var byTarget = new Dictionary<Transform, (AnimationCurve[] pos, AnimationCurve[] rot, AnimationCurve[] scale)>();
+
+                foreach (EditorCurveBinding binding in AnimationUtility.GetCurveBindings(clip))
+                {
+                    Transform target = string.IsNullOrEmpty(binding.path)
+                        ? root.transform
+                        : root.transform.Find(binding.path);
+                    if (target == null) continue;
+
+                    AnimationCurve curve = AnimationUtility.GetEditorCurve(clip, binding);
+                    if (curve == null) continue;
+
+                    if (!byTarget.TryGetValue(target, out var slot))
+                        slot = (new AnimationCurve[3], new AnimationCurve[3], new AnimationCurve[3]);
+
+                    int axis = AxisOf(binding.propertyName);
+                    if (axis < 0) continue;
+
+                    if (binding.propertyName.StartsWith("m_LocalPosition"))      slot.pos[axis]   = curve;
+                    else if (binding.propertyName.StartsWith("localEulerAngles")) slot.rot[axis]   = curve;
+                    else if (binding.propertyName.StartsWith("m_LocalScale"))     slot.scale[axis] = curve;
+                    else continue;
+
+                    byTarget[target] = slot;
+                }
+
+                foreach (var pair in byTarget)
+                    _plan.Add((pair.Key, pair.Value.pos, pair.Value.rot, pair.Value.scale));
+            }
+
+            static int AxisOf(string property) =>
+                property.EndsWith(".x") ? 0 : property.EndsWith(".y") ? 1 : property.EndsWith(".z") ? 2 : -1;
+
+            public void Sample(float time)
+            {
+                foreach (var (target, pos, rot, scale) in _plan)
+                {
+                    if (target == null) continue;
+                    if (pos[0] != null || pos[1] != null || pos[2] != null)
+                        target.localPosition = Blend(target.localPosition, pos, time);
+                    if (rot[0] != null || rot[1] != null || rot[2] != null)
+                        target.localEulerAngles = Blend(target.localEulerAngles, rot, time);
+                    if (scale[0] != null || scale[1] != null || scale[2] != null)
+                        target.localScale = Blend(target.localScale, scale, time);
+                }
+            }
+
+            /// <summary>Ось без своей кривой остаётся как есть: клип правит не всё подряд.</summary>
+            static Vector3 Blend(Vector3 current, AnimationCurve[] axes, float time) => new Vector3(
+                axes[0] != null ? axes[0].Evaluate(time) : current.x,
+                axes[1] != null ? axes[1].Evaluate(time) : current.y,
+                axes[2] != null ? axes[2].Evaluate(time) : current.z);
+        }
+
+        /// <summary>
+        /// Найти объект, от которого пути клипа разрешаются в настоящие кости. Проверяем ПЕРВЫЙ путь
+        /// клипа на каждом кандидате — это единственный честный признак: имя носителя аниматора,
+        /// название узла и структура вида у разных юнитов свои, а совпадение пути не врёт.
+        /// </summary>
+        static GameObject FindClipRoot(GameObject unit, AnimationClip clip)
+        {
+            EditorCurveBinding[] bindings = AnimationUtility.GetCurveBindings(clip);
+            string probe = bindings.Length > 0 ? bindings[0].path : null;
+            if (string.IsNullOrEmpty(probe)) return unit;
+
+            foreach (Transform candidate in unit.GetComponentsInChildren<Transform>(true))
+                if (candidate.Find(probe) != null) return candidate.gameObject;
+
+            return null;
+        }
+
+        /// <summary>Источник взмаха, который просто отдаёт то, что стенд посчитал по позе клипа.</summary>
+        private sealed class ClipSwingSource : ISwingArcSource
+        {
+            public Vector3 Pivot, Tip;
+
+            public bool TryGetSwingArc(out Vector3 pivot, out Vector3 tip, out float progress)
+            {
+                pivot = Pivot; tip = Tip; progress = 1f;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Плечо и остриё — ровно как в бою: бьющая часть из реестра, центр вращения — плечо её стороны.
+        /// Дуга идёт вокруг ПЛЕЧА, а не кисти: рука — жёсткий рычаг, и вращается вся плоскость удара.
+        /// </summary>
+        static bool TrySwingGeometry(SkeletalBodyVisual body, out Vector3 pivot, out Vector3 tip)
+        {
+            pivot = default; tip = default;
+            if (body?.Parts == null) return false;
+            if (!body.Parts.TryGetStrikeSource(HandSlot.None, out UnitPart source)) return false;
+            if (!UnitPartGeometry.TryGetTip(source, out tip)) return false;
+
+            BodySide side = source.Slot == HandSlot.Left ? BodySide.Left
+                          : source.Slot == HandSlot.Right ? BodySide.Right
+                          : source.Side;
+
+            if (!body.Parts.TryGetBone(RigNaming.ShoulderBone(side), side, out UnitPart shoulder)
+                || shoulder.Renderer == null) return false;
+
+            pivot = shoulder.Renderer.transform.position;
+            return true;
         }
 
         /// <summary>
@@ -949,6 +1120,18 @@ namespace Guildmaster.Presentation.Editor
         /// эффект уже положил при своём <c>Apply</c>/<c>Begin</c>, и заменять блок целиком значило бы
         /// стереть всю его настройку ради одного числа.
         /// </summary>
+        static void SetColor(GameObject go, string property, Color value)
+        {
+            if (go == null) return;
+            var renderer = go.GetComponentInChildren<Renderer>(true);
+            if (renderer == null) return;
+
+            var block = new MaterialPropertyBlock();
+            renderer.GetPropertyBlock(block);
+            block.SetColor(Shader.PropertyToID(property), value);
+            renderer.SetPropertyBlock(block);
+        }
+
         static void SetFloat(GameObject go, string property, float value)
         {
             // Объект мог уйти вместе со стендом раньше, чем до него добрался делегат фазы: сравнение с
@@ -1150,6 +1333,11 @@ namespace Guildmaster.Presentation.Editor
             // (из execute_code), где OnGUI не отрабатывал вовсе.
             EnsureStage();
             if (_camera == null) return "<стенд не собрался>";
+
+            // Фазу применяем ЯВНО: обычно её ставит тик проигрывания или отрисовка окна, но снимок
+            // могут просить и мимо них (кнопкой сразу после смены эффекта, скриптом снаружи) — и тогда
+            // в кадр уезжает поза, оставшаяся от прошлого раза.
+            _applyPhase?.Invoke(_phase);
 
             const int size = 1024;
             Texture2D tex = Capture(size, Mathf.RoundToInt(size / Mathf.Max(0.1f, _camera.aspect)), post);
