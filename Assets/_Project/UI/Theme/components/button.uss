@@ -300,6 +300,16 @@
     --gm-plate-stroke: var(--gm-color-border-action);
 }
 
+/* Выключенная ГЛАВНАЯ гасится ОТДЕЛЬНО. Правило роли задано двумя классами и потому специфичнее
+   общего `:disabled` — без этой строки недоступная главная кнопка оставалась патиновой и звала
+   нажать себя громче включённых соседей. Поймано контактным листом сразу после разведения осей. */
+.gm-plate-button.gm-button--primary:disabled,
+.gm-plate-button.gm-button--primary.unity-disabled {
+    --gm-plate-fill: var(--gm-color-surface-sunken);
+    --gm-plate-fill-far: var(--gm-color-surface-sunken);
+    --gm-plate-stroke: var(--gm-color-border-subtle);
+}
+
 /* Ряд кнопок в подвале панели: равные доли с зазором. */
 /* Кнопки в ряду делят ширину поровну. Прежде это делал модификатор gm-button--fill на КАЖДОЙ
    кнопке — то есть раскладка, притворявшаяся вариантом кнопки. Растягивает ряд, а не кнопка. */
@@ -373,6 +383,18 @@
 .unity-button.gm-button--danger:focus {
     color: var(--gm-color-danger);
     border-color: var(--gm-color-danger);
+}
+
+/* У ПЛАСТИНЫ кайму рисует меш, а не рамка: `border-color` выше на неё не действует вовсе, и
+   предупреждение держалось одной подписью, пока наведение не перекрашивало кайму в патину.
+   Красная кайма — во всех состояниях, включая выключенное: необратимое остаётся необратимым. */
+.gm-plate-button.gm-button--danger,
+.gm-plate-button.gm-button--danger:hover,
+.gm-plate-button.gm-button--danger:active,
+.gm-plate-button.gm-button--danger:focus,
+.gm-plate-button.gm-button--danger:disabled,
+.gm-plate-button.gm-button--danger.unity-disabled {
+    --gm-plate-stroke: var(--gm-color-danger);
 }
 
 /* ЖДЁМ ДРУГИХ. Кнопка готовности в кооперативе: игрок нажал, остальные ещё нет. Класс вешался с

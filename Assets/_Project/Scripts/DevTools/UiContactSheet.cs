@@ -235,7 +235,9 @@ namespace Guildmaster.DevTools
             caption.AddToClassList("gm-sheet__caption");
             row.Add(caption);
 
-            row.Add(Cell(entry, "покой", UiElementState.None));
+            // У декоративного элемента подпись «покой» лишняя: состояний у него нет, и слово
+            // намекает, что где-то рядом должны быть другие ячейки.
+            row.Add(Cell(entry, entry.IsInteractive ? "покой" : string.Empty, UiElementState.None));
 
             // Ячейки рисуются ровно по требуемым состояниям. Показывать «фокус» там, где элемент
             // его не принимает (строка настроек — фокус живёт на её контроле), значит рисовать
