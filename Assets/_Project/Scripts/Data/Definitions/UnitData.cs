@@ -92,13 +92,6 @@ namespace Guildmaster.Data.Definitions
                  "доигрыш клипа. Ненулевое — сознательный «оверкоммит» (замедляет эффективную скорость атаки).")]
         [SerializeField] private float _attackRecoverySeconds;
 
-        [Tooltip("Доля свинга до кадра контакта, 0..1: сколько удар «замахивается», прежде чем прилететь. " +
-                 "0.45 = контакт чуть позже середины (размашистый удар с внятным телеграфом), 0.2 = быстрый " +
-                 "тычок. 0 = взять из кадров AnimationArchetypeData (покадровые юниты так и делают). ЗАДАВАТЬ ОБЯЗАТЕЛЬНО " +
-                 "юнитам без AnimationArchetypeData (скелетный риг): кадров у них нет, расчёт падает на телеграф-пол в " +
-                 "3 тика, и клип атаки скрабится в 0.1 с — удар прилетает почти мгновенно и выглядит рвано.")]
-        [SerializeField, Range(0f, 1f)] private float _windupShare;
-
         [Tooltip("Потолок длительности свинга ЭТОГО юнита в сим-тиках (30 = 1 сек при 30 Гц; 45 = 1.5 сек, " +
                  "60 = 2 сек). 0 = глобальный дефолт SimConstants.MaxAttackAnimTicks. Ставить тем, чья " +
                  "идентичность — редкий тяжёлый удар: длинный занос = широкое окно прерывания и парирования. " +
@@ -209,8 +202,16 @@ namespace Guildmaster.Data.Definitions
         public float MovingAttackSpeedPenaltyPct => _movingAttackSpeedPenaltyPct;
         public float AttackRecoverySeconds => _attackRecoverySeconds;
 
-        /// <summary>Доля свинга до кадра контакта (0..1). 0 = считать из кадров <see cref="AnimationArchetypeData"/>.</summary>
-        public float WindupShare => _windupShare;
+        /// <summary>
+        /// Доля свинга до контакта (0..1) — сколько удар замахивается, прежде чем прилететь.
+        /// <para>
+        /// <b>Своего поля у юнита НЕТ</b> (снято 06.08.2026): «время замаха должно быть у всех
+        /// одинаковым» — решение Макса. Доля живёт на архетипе, потому что она свойство ХОРЕОГРАФИИ:
+        /// один и тот же взмах не может замахиваться по-разному у двух бойцов. Персональные доли
+        /// десяти юнитов (0.25–0.50, заданные вручную) сняты этим же решением.
+        /// </para>
+        /// </summary>
+        public float WindupShare => _archetype != null ? _archetype.WindupShare : 0f;
 
         /// <summary>Заданные доли урона по Ударам; <c>null</c>/пусто = каждый Удар в полную силу.</summary>
         public float[] HitDamageShares => _hitDamageShares;

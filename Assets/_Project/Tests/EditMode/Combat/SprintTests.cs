@@ -271,14 +271,15 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void ChargedAttack_UsesItsOwnWindupLength()
         {
             // Разные множители дают разную длину замаха — и обычный удар остаётся эталоном.
-            const int hitFrame = 5, frames = 10, interval = 30;
-            int normal = AttackTiming.WindupTicks(hitFrame, frames, interval);
-            int longer = AttackTiming.WindupTicks(hitFrame, frames, interval, 1.5f);
-            int shorter = AttackTiming.WindupTicks(hitFrame, frames, interval, 0.6f);
+            const float share = 0.5f;
+            const int interval = 30;
+            int normal = AttackTiming.WindupTicksFromShare(share, interval);
+            int longer = AttackTiming.WindupTicksFromShare(share, interval, 1.5f);
+            int shorter = AttackTiming.WindupTicksFromShare(share, interval, 0.6f);
 
             Assert.That(longer,  Is.GreaterThan(normal), "Множитель > 1 удлиняет замах (телеграф дольше).");
             Assert.That(shorter, Is.LessThan(normal),    "Множитель < 1 укорачивает замах (выпад на скорости).");
-            Assert.That(AttackTiming.WindupTicks(hitFrame, frames, interval, 1f), Is.EqualTo(normal),
+            Assert.That(AttackTiming.WindupTicksFromShare(share, interval, 1f), Is.EqualTo(normal),
                 "Множитель 1 обязан не менять ничего: у юнитов без разбег-атаки тайминг не должен ехать.");
         }
 
@@ -287,10 +288,10 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             const int interval = 55;   // ≈ 0.55 атак/сек: интервал 1.8 с
 
-            // Без кадров и без доли расчёт падает на телеграф-пол: замах 3 тика при интервале 55.
-            int floorOnly = AttackTiming.WindupTicks(0, 0, interval);
+            // Без объявленной доли расчёт падает на телеграф-пол: замах 3 тика при интервале 55.
+            int floorOnly = AttackTiming.WindupTicksFromShare(0f, interval);
             Assert.That(floorOnly, Is.EqualTo(SimConstants.MinWindupTicks),
-                "Юнит без кадров сейчас получает минимальный замах — это и есть «удар прилетает мгновенно».");
+                "Юнит без объявленного замаха получает минимальный — это и есть «удар прилетает мгновенно».");
 
             int fromShare = AttackTiming.WindupTicksFromShare(0.45f, interval);
             Assert.That(fromShare, Is.GreaterThan(floorOnly * 3),
@@ -311,9 +312,10 @@ namespace Guildmaster.Tests.EditMode.Combat
         [Test]
         public void ChargedWindup_StaysWithinItsClamps()
         {
-            const int hitFrame = 9, frames = 10, interval = 12;
-            int huge = AttackTiming.WindupTicks(hitFrame, frames, interval, 10f);
-            int tiny = AttackTiming.WindupTicks(hitFrame, frames, interval, 0.01f);
+            const float share = 0.9f;
+            const int interval = 12;
+            int huge = AttackTiming.WindupTicksFromShare(share, interval, 10f);
+            int tiny = AttackTiming.WindupTicksFromShare(share, interval, 0.01f);
 
             Assert.That(huge, Is.LessThanOrEqualTo(interval - 1),
                 "Замах с разбега не имеет права налезть на следующий удар.");

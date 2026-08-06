@@ -81,17 +81,19 @@ namespace Guildmaster.Combat
         /// что и <see cref="WindupTicks"/>, поэтому автоматически масштабируется со скоростью атаки —
         /// в отличие от абсолютных секунд не «расклеивается» при баффах скорости.
         /// <para>
-        /// Нет реального клипа (<paramref name="frameCount"/> ≤ 0 или <paramref name="hitFrame"/> ≤ 0) →
-        /// windup был чистым телеграфом (пол <see cref="SimConstants.MinWindupTicks"/>), доигрывать нечего → 0.
+        /// Замах не объявлен (<paramref name="windupShare"/> ≤ 0) → он был чистым телеграфом (пол
+        /// <see cref="SimConstants.MinWindupTicks"/>), доигрывать нечего → 0. Признаком служит доля, а не
+        /// кадры клипа: тайминг объявлен в данных с 06.08.2026, и спрашивать про кадры здесь значило бы
+        /// вернуть симуляции зависимость от разметки анимации ради одного условия.
         /// Вычитание (а не независимая пропорция «хвостовых кадров») сознательно: оно поглощает округление
         /// windup, поэтому <c>windup + доигрыш = attackDurationTicks</c> ровно, без фантомного зазора.
         /// </para>
         /// </summary>
         /// <param name="maxAnimTicks">Потолок свинга юнита в тиках; <c>0</c> = глобальный дефолт.</param>
-        public static int FollowThroughTicks(int hitFrame, int frameCount, int intervalTicks, int windupTicks,
+        public static int FollowThroughTicks(float windupShare, int intervalTicks, int windupTicks,
             int maxAnimTicks = 0)
         {
-            if (frameCount <= 0 || hitFrame <= 0) return 0;
+            if (windupShare <= 0f) return 0;
             int tail = AttackDurationTicks(intervalTicks, maxAnimTicks) - windupTicks;
             return tail < 0 ? 0 : tail;
         }
@@ -122,10 +124,6 @@ namespace Guildmaster.Combat
             float attackSpeed = unit.Stats.Get(StatType.AttackSpeed);
             int intervalTicks = IntervalTicks(attackSpeed);
 
-            AnimationArchetypeData visual = unit.Unit != null ? unit.Unit.Archetype : null;
-            int frameCount = visual != null ? visual.AttackFrameCount : 0;
-            int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
-
             // Удар с разбега считается ЗДЕСЬ, а не при входе в замах: гейт атаки и предсказание
             // «докрутит ли замах» берут длину отсюда, и своя длина у самого свинга означала бы, что
             // юнит начинает удар, который по расчёту гейта попадал, а по факту нет.
@@ -135,16 +133,15 @@ namespace Guildmaster.Combat
             // и если бы разбег его удлинял, весь смысл контроль-лупа пропадал бы (§10.6).
             if (unit.NextWindupMult > 0f && !ignoreRecast) chargeMult = unit.NextWindupMult;
 
-            // Доля замаха из данных важнее покадровой: у юнита без AnimationArchetypeData (скелетный риг — кадров у
-            // него нет вовсе) расчёт по кадрам даёт ноль и падает на телеграф-пол, то есть замах в 3 тика
-            // при интервале в полсотни. Клип при этом скрабится в это окно и летит в разы быстрее.
-            // Свой потолок свинга (0 = глобальный) — из данных юнита, оба пути расчёта читают его одинаково.
+            // Потолок свинга — свой у юнита (0 = глобальный дефолт): длинный занос это идентичность кита,
+            // а не свойство хореографии, поэтому он и остался на юните, когда доля замаха ушла в архетип.
             int maxAnimTicks = unit.Unit != null ? unit.Unit.AttackSwingTicks : 0;
 
+            // Замах ОБЪЯВЛЕН долей на архетипе. Покадровый путь (hitFrame/frameCount из клипа) снят
+            // 06.08.2026: он делал разметку анимации источником боевого тайминга, и правка маркера на два
+            // кадра двигала баланс всему ростеру молча. Клип теперь показ, число живёт в данных.
             float share = unit.Unit != null ? unit.Unit.WindupShare : 0f;
-            if (share > 0f) return WindupTicksFromShare(share, intervalTicks, chargeMult, maxAnimTicks);
-
-            return WindupTicks(hitFrame, frameCount, intervalTicks, chargeMult, maxAnimTicks);
+            return WindupTicksFromShare(share, intervalTicks, chargeMult, maxAnimTicks);
         }
 
         /// <summary>
@@ -167,16 +164,19 @@ namespace Guildmaster.Combat
         /// упрётся, контакты сядут вплотную к границе — это случай для отчёта аудита анимаций, а не для
         /// тихого отбрасывания: потерянный контакт — это потерянный стак.</para>
         /// </remarks>
-        public static int ContactTicks(RuntimeUnit unit, System.Collections.Generic.List<int> result,
-            System.Collections.Generic.List<float> positionsBuffer)
+        public static int ContactTicks(RuntimeUnit unit, System.Collections.Generic.List<int> result)
         {
             if (result == null) return 0;
             result.Clear();
 
             int first = WindupTicksFor(unit);
 
-            AnimationArchetypeData visual = unit.Unit != null ? unit.Unit.Archetype : null;
-            int count = visual != null && positionsBuffer != null ? visual.AttackHitPositions(positionsBuffer) : 0;
+            // Моменты контактов ОБЪЯВЛЕНЫ долями на архетипе (06.08.2026). Раньше их читали из маркеров
+            // клипа — то есть число ударов в Атаке задавала разметка анимации, и лишний маркер добавлял
+            // юниту стак, ничего не сказав об этом ни данным, ни балансу.
+            AnimationArchetypeData archetype = unit.Unit != null ? unit.Unit.Archetype : null;
+            float[] shares = archetype != null ? archetype.ContactShares : System.Array.Empty<float>();
+            int count = shares.Length;
 
             result.Add(first);
             if (count <= 1) return 1;   // одиночный удар: прежний путь целиком
@@ -187,10 +187,10 @@ namespace Guildmaster.Combat
             int   durationTicks = AttackDurationTicks(intervalTicks, maxAnimTicks);
             int   lastAllowed   = intervalTicks > 1 ? intervalTicks - 1 : 1;
 
-            float basePos = positionsBuffer[0];
+            float basePos = shares[0];
             for (int i = 1; i < count; i++)
             {
-                int offset = (int)Math.Round((positionsBuffer[i] - basePos) * durationTicks,
+                int offset = (int)Math.Round((shares[i] - basePos) * durationTicks,
                     MidpointRounding.AwayFromZero);
 
                 int tick = first + (offset > 0 ? offset : 0);
@@ -204,97 +204,77 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
-        /// Доля тика, в которую попадает кадр контакта, — остаток, который целочисленный
-        /// <see cref="WindupTicks"/> отбрасывает. Нужна ПОДАЧЕ: показ ставит вспышку, цифру, звук и
-        /// hitstop в тот кадр, где меч коснулся, вместо границы тика (разброс до 33 мс).
+        /// Доля тика, в которую попадает момент контакта, — остаток, который целочисленный расчёт
+        /// отбрасывает. Нужна ПОДАЧЕ: показ ставит вспышку, цифру, звук и hitstop в тот кадр, где меч
+        /// коснулся, вместо границы тика (разброс до 33 мс).
         /// <para><b>Модель не меняется вовсе:</b> удар по-прежнему принадлежит тику
-        /// <paramref name="actualWindupTicks"/>. Здесь только дробь от того же деления, посчитанная
-        /// остатком (<c>%</c>), а не повторным делением во float — иначе у формулы тайминга появился бы
-        /// второй владелец, способный разойтись с первым на границах округления.</para>
-        /// <para><b>Возвращает 0 там, где точности нет</b>, и это не осторожность, а честность:</para>
-        /// <list type="bullet">
-        /// <item>нет покадрового клипа (скелетный риг, путь <see cref="WindupTicksFromShare"/>): момент
-        /// задан долей свинга и округляется к БЛИЖАЙШЕМУ тику, поэтому истинный момент бывает и раньше
-        /// тика модели — дробью [0..1) это не выразить;</item>
-        /// <item>замах склампился (телеграф-пол или потолок «интервал − 1») либо его сдвинул множитель
-        /// (разбег, взведённое комбо): момент уже сдвинут искусственно, и дробь от сдвинутого числа была
-        /// бы точностью, которой нет.</item>
-        /// </list>
+        /// <paramref name="actualWindupTicks"/>. Здесь только дробь от того же произведения
+        /// <c>доля × длительность</c>, что даёт и сам замах — второго владельца формулы не заводим.</para>
+        /// <para><b>Дробь стала честной 06.08.2026.</b> Пока путь доли округлял к БЛИЖАЙШЕМУ, истинный
+        /// момент мог оказаться и раньше тика модели, и выразить его в [0..1) было нельзя — метод честно
+        /// отдавал ноль. С округлением ВНИЗ остаток существует всегда и означает ровно то, что говорит.</para>
+        /// <para><b>Возвращает 0 там, где точности нет:</b> замах склампился (телеграф-пол или потолок
+        /// «интервал − 1») либо его сдвинул множитель (разбег, взведённое комбо) — момент уже сдвинут
+        /// искусственно, и дробь от сдвинутого числа была бы точностью, которой нет.</para>
         /// </summary>
         /// <param name="actualWindupTicks">
         /// Длина замаха, с которой удар РЕАЛЬНО занесён (<see cref="WindupTicksFor"/>). Расхождение с
-        /// несклампленным покадровым расчётом и есть признак того, что момент сдвинут.
+        /// несклампленным расчётом и есть признак того, что момент сдвинут.
         /// </param>
         public static float ContactSubTick(RuntimeUnit unit, int actualWindupTicks)
         {
             if (unit?.Unit == null) return 0f;
             if (unit.Unit.Channel.Exists && unit.Unit.Channel.WindupSeconds > 0f) return 0f;
-            if (unit.Unit.WindupShare > 0f) return 0f;   // путь доли — округление к ближайшему, см. выше
 
-            AnimationArchetypeData visual = unit.Unit.Archetype;
-            if (visual == null) return 0f;
+            float share = unit.Unit.WindupShare;
+            if (share <= 0f) return 0f;
 
-            return ContactSubTick(
-                visual.AttackHitFrame, visual.AttackFrameCount,
-                IntervalTicks(unit.Stats.Get(StatType.AttackSpeed)),
+            return ContactSubTick(share, IntervalTicks(unit.Stats.Get(StatType.AttackSpeed)),
                 actualWindupTicks, unit.Unit.AttackSwingTicks);
         }
 
         /// <summary>
-        /// Арифметика доли контакта из тех же чисел, что у <see cref="WindupTicks"/>. Отдельно от чтения
-        /// данных юнита, чтобы её можно было проверить тестом без ассетов: кадры клипа выводятся из
-        /// <c>AnimationClip</c>, и собрать их в EditMode дороже, чем стоит сама формула.
+        /// Арифметика доли контакта — та же, что у <see cref="WindupTicksFromShare"/>, но отдельно от
+        /// чтения данных юнита: так её проверяет тест без ассетов и без движка.
         /// </summary>
         /// <param name="actualWindupTicks">Длина замаха, с которой удар реально занесён.</param>
-        public static float ContactSubTick(int hitFrame, int frameCount, int intervalTicks,
+        public static float ContactSubTick(float windupShare, int intervalTicks,
             int actualWindupTicks, int maxAnimTicks = 0)
         {
-            if (frameCount <= 0 || hitFrame <= 0) return 0f;
+            if (windupShare <= 0f) return 0f;
 
             int durationTicks = AttackDurationTicks(intervalTicks, maxAnimTicks);
-            int clampedHit    = hitFrame < frameCount ? hitFrame : frameCount;
+            double raw = Math.Min(1f, Math.Max(0f, windupShare)) * durationTicks;
 
-            int product = clampedHit * durationTicks;
-            if (product / frameCount != actualWindupTicks) return 0f;   // кламп или множитель сдвинули момент
+            if ((int)Math.Floor(raw) != actualWindupTicks) return 0f;   // кламп или множитель сдвинули момент
 
-            return (product % frameCount) / (float)frameCount;
+            return (float)(raw - Math.Floor(raw));
         }
 
         /// <summary>
-        /// Замах из ДОЛИ свинга (0..1) — путь для юнитов, у которых нет покадрового клипа. Кламп и
-        /// множитель разбега те же, что у покадрового пути: границы у замаха одни, кем бы он ни был задан.
+        /// Замах из ДОЛИ свинга (0..1) — единственный путь с 06.08.2026. Кламп и множитель разбега те же,
+        /// что были у покадрового расчёта: границы у замаха одни, кем бы он ни был задан.
         /// </summary>
+        /// <remarks>
+        /// <b>Округление ВНИЗ, и это не вкусовщина.</b> Прежний покадровый путь считал
+        /// <c>(hitFrame × duration) / frameCount</c> целочисленным делением, то есть отбрасывал остаток.
+        /// Округление к ближайшему сдвинуло бы момент удара на тик у 40% скоростей атаки — то есть перевод
+        /// на доли молча поехал бы по всему ростеру. Вниз — ещё и честнее по смыслу: удар не должен
+        /// прилетать ПОЗЖЕ, чем его показывает анимация.
+        /// </remarks>
         /// <param name="maxAnimTicks">Потолок свинга юнита в тиках; <c>0</c> = глобальный дефолт.</param>
         public static int WindupTicksFromShare(float share, int intervalTicks, float windupMultiplier = 1f,
             int maxAnimTicks = 0)
         {
             int durationTicks = AttackDurationTicks(intervalTicks, maxAnimTicks);
-            int raw = (int)Math.Round(Math.Min(1f, Math.Max(0f, share)) * durationTicks, MidpointRounding.AwayFromZero);
+            int raw = (int)Math.Floor(Math.Min(1f, Math.Max(0f, share)) * durationTicks);
             return ClampWindup(raw, intervalTicks, windupMultiplier);
         }
 
-        /// <param name="windupMultiplier">
-        /// Множитель длины замаха для особого удара (разбег). 1 = обычный. Применяется ДО клампа, поэтому
-        /// не может ни увести удар за интервал, ни опустить телеграф ниже пола.
-        /// </param>
-        /// <param name="maxAnimTicks">Потолок свинга юнита в тиках; <c>0</c> = глобальный дефолт.</param>
-        public static int WindupTicks(int hitFrame, int frameCount, int intervalTicks, float windupMultiplier = 1f,
-            int maxAnimTicks = 0)
-        {
-            int raw;
-            if (frameCount <= 0 || hitFrame <= 0)
-            {
-                raw = 0;
-            }
-            else
-            {
-                int durationTicks = AttackDurationTicks(intervalTicks, maxAnimTicks);
-                int clampedHit = hitFrame < frameCount ? hitFrame : frameCount; // hitFrame не больше числа кадров
-                raw = (clampedHit * durationTicks) / frameCount;
-            }
-
-            return ClampWindup(raw, intervalTicks, windupMultiplier);
-        }
+        // Здесь была перегрузка WindupTicks(hitFrame, frameCount, …) — покадровый расчёт замаха. Снята
+        // 06.08.2026 вместе со всем покадровым путём, и не только за ненадобностью: её первый параметр
+        // int против float у доли делал СТАРЫЕ вызовы молча компилируемыми — аргументы съезжали на
+        // позицию, компилятор молчал, а тест падал в другом месте с невнятным «нет хвоста».
 
         // Границы замаха — один владелец на все способы его задать (кадры клипа, доля из данных):
         // пол MinWindupTicks (телеграф, ниже которого удар нечитаем) и потолок intervalTicks − 1

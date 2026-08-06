@@ -28,9 +28,6 @@ namespace Guildmaster.Combat
         // Удары, дозревшие на этом тике: цифры сняты, но ещё никому не прилетело (см. Tick).
         private readonly List<ResolvedHit> _hits = new List<ResolvedHit>();
 
-        /// <summary>Буфер нормированных позиций контактов: заполняется на входе в замах и тут же читается.</summary>
-        private readonly List<float> _hitPositions = new List<float>(4);
-
         /// <summary>Удар, у которого замах истёк: кто, по кому и с какими цифрами бьёт.</summary>
         private readonly struct ResolvedHit
         {
@@ -266,13 +263,9 @@ namespace Guildmaster.Combat
             // добавлять к этому ожидание значило бы наказать дважды за одно прерывание.
             unit.AttackCooldownTicks = HasChannel(unit) ? 0 : intervalTicks;
 
-            AnimationArchetypeData visual = unit.Unit != null ? unit.Unit.Archetype : null;
-            int frameCount = visual != null ? visual.AttackFrameCount : 0;
-            int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
-
             // Контакты этого свинга: один у обычного кита, несколько у многоударного. Считаются здесь и
             // не пересчитываются — занесённый удар живёт по тем цифрам, с которыми начался.
-            AttackTiming.ContactTicks(unit, unit.SwingContacts, _hitPositions);
+            AttackTiming.ContactTicks(unit, unit.SwingContacts);
             unit.SwingHitIndex = 0;
 
             unit.WindupTicks = unit.WindupRemaining = windupTicks;
@@ -296,7 +289,8 @@ namespace Guildmaster.Combat
             if (unit.NextWindupMult > 0f)
                 tailAnchor += AttackTiming.WindupTicksFor(unit, ignoreRecast: true) - windupTicks;
 
-            int followThrough = AttackTiming.FollowThroughTicks(hitFrame, frameCount, intervalTicks, tailAnchor,
+            float windupShare = unit.Unit != null ? unit.Unit.WindupShare : 0f;
+            int followThrough = AttackTiming.FollowThroughTicks(windupShare, intervalTicks, tailAnchor,
                 maxAnimTicks);
             // У канальной формы хвост свой — сворачивание потока, — и берётся из профиля канала: тот же
             // кит в ближней форме бьёт короткими выпадами, и общий хвост кита навязал бы им чужую цену.

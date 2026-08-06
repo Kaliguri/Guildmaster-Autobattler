@@ -49,21 +49,21 @@ namespace Guildmaster.Tests.EditMode.Combat
             // interval 90 (atkSpeed 1/3), duration = min(30, 90) = 30, hit 5/7 → 150/7 = 21.
             int interval = AttackTiming.IntervalTicks(1f / 3f);
             Assert.AreEqual(90, interval);
-            Assert.AreEqual(21, AttackTiming.WindupTicks(5, 7, interval));
+            Assert.AreEqual(21, AttackTiming.WindupTicksFromShare(5f / 7f, interval));
         }
 
         [Test]
         public void WindupTicks_BaseSpeed_UsesFullAnim()
         {
             // interval 30, duration 30, hit 5/7 → 21, upper 29.
-            Assert.AreEqual(21, AttackTiming.WindupTicks(5, 7, 30));
+            Assert.AreEqual(21, AttackTiming.WindupTicksFromShare(5f / 7f, 30));
         }
 
         [Test]
         public void WindupTicks_FastUnit_SwingCompressedToInterval()
         {
             // interval 15, duration = min(30,15) = 15, hit 5/7 → 75/7 = 10, upper 14.
-            Assert.AreEqual(10, AttackTiming.WindupTicks(5, 7, 15));
+            Assert.AreEqual(10, AttackTiming.WindupTicksFromShare(5f / 7f, 15));
         }
 
         // ===================== WindupTicks: полы и краевые =====================
@@ -72,33 +72,33 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void WindupTicks_TinyHitFraction_FlooredToMinWindup()
         {
             // interval 30, duration 30, hit 1/20 → 30/20 = 1 < MinWindupTicks(3) → 3.
-            Assert.AreEqual(SimConstants.MinWindupTicks, AttackTiming.WindupTicks(1, 20, 30));
+            Assert.AreEqual(SimConstants.MinWindupTicks, AttackTiming.WindupTicksFromShare(1f / 20f, 30));
         }
 
         [Test]
         public void WindupTicks_HitFrameZero_FlooredToMinWindup()
         {
-            Assert.AreEqual(SimConstants.MinWindupTicks, AttackTiming.WindupTicks(0, 7, 30));
+            Assert.AreEqual(SimConstants.MinWindupTicks, AttackTiming.WindupTicksFromShare(0f, 30));
         }
 
         [Test]
         public void WindupTicks_EmptyClip_FlooredToMinWindup()
         {
-            Assert.AreEqual(SimConstants.MinWindupTicks, AttackTiming.WindupTicks(3, 0, 30));
+            Assert.AreEqual(SimConstants.MinWindupTicks, AttackTiming.WindupTicksFromShare(0f, 30));
         }
 
         [Test]
         public void WindupTicks_NeverReachesIntervalStart()
         {
             // Последний кадр при базовой скорости: hit 7/7 → 30, но upper = interval-1 = 29.
-            Assert.AreEqual(29, AttackTiming.WindupTicks(7, 7, 30));
+            Assert.AreEqual(29, AttackTiming.WindupTicksFromShare(1f, 30));
         }
 
         [Test]
         public void WindupTicks_ShortInterval_LowerClampYieldsToUpper()
         {
             // interval 2 → upper 1; пол MinWindupTicks(3) не может превысить upper → результат ≤ 1.
-            int w = AttackTiming.WindupTicks(5, 7, 2);
+            int w = AttackTiming.WindupTicksFromShare(5f / 7f, 2);
             Assert.LessOrEqual(w, 1);
             Assert.GreaterOrEqual(w, 0);
         }
@@ -107,14 +107,14 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void WindupTicks_IntervalOne_IsInstant()
         {
             // interval 1 → upper 0 → удар в тот же тик (windup 0).
-            Assert.AreEqual(0, AttackTiming.WindupTicks(5, 7, 1));
+            Assert.AreEqual(0, AttackTiming.WindupTicksFromShare(5f / 7f, 1));
         }
 
         [Test]
         public void WindupTicks_IsDeterministic()
         {
             for (int i = 0; i < 5; i++)
-                Assert.AreEqual(21, AttackTiming.WindupTicks(5, 7, 30));
+                Assert.AreEqual(21, AttackTiming.WindupTicksFromShare(5f / 7f, 30));
         }
 
         // ===================== Свой потолок свинга у юнита (override, 2026-07-30) =====================
@@ -148,8 +148,8 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             // Тот же клип (5/7) и тот же интервал: замах растёт вместе с потолком, то есть окно
             // прерывания и парирования становится шире — ради этого override и заведён.
-            int windupGlobal   = AttackTiming.WindupTicks(5, 7, 55);
-            int windupOverride = AttackTiming.WindupTicks(5, 7, 55, 1f, 45);
+            int windupGlobal   = AttackTiming.WindupTicksFromShare(5f / 7f, 55);
+            int windupOverride = AttackTiming.WindupTicksFromShare(5f / 7f, 55, 1f, 45);
 
             Assert.AreEqual(21, windupGlobal);                          // 5×30/7
             Assert.AreEqual(32, windupOverride);                        // 5×45/7 = 32.14 → floor 32
@@ -175,8 +175,8 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void FollowThrough_UnitOverride_TailGrowsWithSwing()
         {
             // windup + доигрыш = длительность свинга ровно, каким бы потолком она ни была задана.
-            int windup = AttackTiming.WindupTicks(5, 7, 55, 1f, 45);
-            int tail   = AttackTiming.FollowThroughTicks(5, 7, 55, windup, 45);
+            int windup = AttackTiming.WindupTicksFromShare(5f / 7f, 55, 1f, 45);
+            int tail   = AttackTiming.FollowThroughTicks(5f / 7f, 55, windup, 45);
 
             Assert.AreEqual(45, windup + tail, "Замах и доигрыш складываются в длительность свинга");
         }
@@ -187,26 +187,26 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void FollowThrough_BaseSpeed_FillsRestOfClip()
         {
             // interval 30, duration 30, windup 21 → доигрыш 30 − 21 = 9. windup + доигрыш = весь клип.
-            int windup = AttackTiming.WindupTicks(5, 7, 30);
-            Assert.AreEqual(9, AttackTiming.FollowThroughTicks(5, 7, 30, windup));
-            Assert.AreEqual(30, windup + AttackTiming.FollowThroughTicks(5, 7, 30, windup),
+            int windup = AttackTiming.WindupTicksFromShare(5f / 7f, 30);
+            Assert.AreEqual(9, AttackTiming.FollowThroughTicks(5f / 7f, 30, windup));
+            Assert.AreEqual(30, windup + AttackTiming.FollowThroughTicks(5f / 7f, 30, windup),
                 "windup + доигрыш ровно покрывают длительность клипа (без фантомного зазора)");
         }
 
         [Test]
-        public void FollowThrough_NoClip_IsZero()
+        public void FollowThrough_NoDeclaredWindup_IsZero()
         {
-            // Без клипа windup был чистым телеграфом (пол MinWindupTicks) → доигрывать нечего.
-            Assert.AreEqual(0, AttackTiming.FollowThroughTicks(0, 7, 30, SimConstants.MinWindupTicks));
-            Assert.AreEqual(0, AttackTiming.FollowThroughTicks(5, 0, 30, SimConstants.MinWindupTicks));
+            // Замах не объявлен → он был чистым телеграфом (пол MinWindupTicks), доигрывать нечего.
+            // Признаком служит доля, а не кадры: покадровый путь снят 06.08.2026.
+            Assert.AreEqual(0, AttackTiming.FollowThroughTicks(0f, 30, SimConstants.MinWindupTicks));
         }
 
         [Test]
-        public void FollowThrough_LastFrameHit_LeavesMinimalTail()
+        public void FollowThrough_ContactAtTheVeryEnd_LeavesMinimalTail()
         {
-            // hit 7/7 → windup клампится к interval−1 = 29; доигрыш = 30 − 29 = 1 (удар почти в конце клипа).
-            int windup = AttackTiming.WindupTicks(7, 7, 30);
-            Assert.AreEqual(1, AttackTiming.FollowThroughTicks(7, 7, 30, windup));
+            // Доля 1.0 → windup клампится к interval−1 = 29; доигрыш = 30 − 29 = 1 (удар почти в конце свинга).
+            int windup = AttackTiming.WindupTicksFromShare(1f, 30);
+            Assert.AreEqual(1, AttackTiming.FollowThroughTicks(1f, 30, windup));
         }
     }
 }

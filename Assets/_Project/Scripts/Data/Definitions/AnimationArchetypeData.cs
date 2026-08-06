@@ -33,6 +33,16 @@ namespace Guildmaster.Data.Definitions
                  "риг и набор клипов — одна вещь: у копья свои узлы И свои клипы, и порознь они бессмысленны.")]
         [SerializeField] private GameObject _viewPrefab;
 
+        [Header("Тайминг удара (объявлен, не выведен из клипа)")]
+        [Tooltip("Доля свинга до контакта, 0..1. ОДНА на всех, кто играет этот архетип: один и тот же взмах " +
+                 "не может замахиваться по-разному у двух бойцов. Замеряется из клипа кнопкой ниже — руками " +
+                 "правится только осознанно, и тогда клип с ней разойдётся (об этом скажет гейт).")]
+        [SerializeField, Range(0f, 1f)] private float _windupShare;
+
+        [Tooltip("Доли свинга для ВСЕХ контактов серии, по возрастанию. Пусто или один элемент = обычный " +
+                 "одиночный удар. Первый элемент задаёт тот же момент, что и доля замаха.")]
+        [SerializeField] private float[] _contactShares = System.Array.Empty<float>();
+
         [Header("Animation clips")]
         [SerializeField] private AnimationClip _idleClip;
         [SerializeField] private AnimationClip _runClip;
@@ -56,6 +66,25 @@ namespace Guildmaster.Data.Definitions
         /// префабом меча, и юнит выходил бы на арену махать клипами копья по мечу.
         /// </summary>
         public GameObject ViewPrefab => _viewPrefab;
+
+        /// <summary>
+        /// Доля свинга до контакта (0..1) — ОБЪЯВЛЕННЫЙ тайминг удара, тот самый, по которому сим считает
+        /// замах. Клип его больше не диктует: он показ, а число живёт здесь.
+        /// <para>
+        /// Значение <b>замеряется</b> из клипа (кадр контакта / число кадров) редакторной кнопкой и
+        /// записывается сюда, а не читается каждый раз. Так замер остаётся честным, а рантайм — свободным
+        /// от <c>AnimationClip</c>: он движковый объект, из-за которого тайминг был недоступен быстрым
+        /// headless-тестам.
+        /// </para>
+        /// </summary>
+        public float WindupShare => _windupShare;
+
+        /// <summary>
+        /// Доли свинга для всех контактов серии, по возрастанию. Пусто = один контакт, и его момент
+        /// задаёт <see cref="WindupShare"/>. Как и доля замаха, это ОБЪЯВЛЕННЫЕ числа: сим больше не
+        /// считает моменты ударов по маркерам клипа.
+        /// </summary>
+        public float[] ContactShares => _contactShares ?? System.Array.Empty<float>();
 
         /// <summary>Портрет для HUD/тултипов (может быть <c>null</c>).</summary>
         public Sprite Portrait => _portrait;

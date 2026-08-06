@@ -137,11 +137,11 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void ContactSubTick_IsTheRemainderWindupThrowsAway()
         {
             // Кадр 7 из 20, свинг 15 тиков: 7*15 = 105, 105/20 = 5 тиков замаха и 5/20 = 0.25 сверху.
-            int windup = AttackTiming.WindupTicks(hitFrame: 7, frameCount: 20, intervalTicks: 30,
+            int windup = AttackTiming.WindupTicksFromShare(7f / 20f, intervalTicks: 30,
                 maxAnimTicks: 15);
             Assert.AreEqual(5, windup, "Предусловие: замах считается целочисленно, floor");
 
-            float share = AttackTiming.ContactSubTick(hitFrame: 7, frameCount: 20, intervalTicks: 30,
+            float share = AttackTiming.ContactSubTick(7f / 20f, intervalTicks: 30,
                 actualWindupTicks: windup, maxAnimTicks: 15);
 
             Assert.AreEqual(0.25f, share, 1e-5f,
@@ -152,9 +152,9 @@ namespace Guildmaster.Tests.EditMode.Combat
         [Test]
         public void ContactSubTick_IsZero_WhenTheContactLandsOnTheBoundary()
         {
-            int windup = AttackTiming.WindupTicks(hitFrame: 5, frameCount: 10, intervalTicks: 30,
+            int windup = AttackTiming.WindupTicksFromShare(5f / 10f, intervalTicks: 30,
                 maxAnimTicks: 20);
-            float share = AttackTiming.ContactSubTick(hitFrame: 5, frameCount: 10, intervalTicks: 30,
+            float share = AttackTiming.ContactSubTick(5f / 10f, intervalTicks: 30,
                 actualWindupTicks: windup, maxAnimTicks: 20);
 
             Assert.AreEqual(10, windup, "Предусловие: 5*20/10 = 10 ровно");
@@ -167,22 +167,22 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void ContactSubTick_IsZero_WhenTheMomentWasClampedOrScaled()
         {
             // Кадр 1 из 60 при свинге 12 тиков даёт 0 тиков замаха — кламп поднимает до телеграф-пола.
-            int clamped = AttackTiming.WindupTicks(hitFrame: 1, frameCount: 60, intervalTicks: 30,
+            int clamped = AttackTiming.WindupTicksFromShare(1f / 60f, intervalTicks: 30,
                 maxAnimTicks: 12);
             Assert.Greater(clamped, 0, "Предусловие: сработал нижний кламп");
 
             Assert.AreEqual(0f,
-                AttackTiming.ContactSubTick(hitFrame: 1, frameCount: 60, intervalTicks: 30,
+                AttackTiming.ContactSubTick(1f / 60f, intervalTicks: 30,
                     actualWindupTicks: clamped, maxAnimTicks: 12),
                 1e-6f,
                 "Момент сдвинут клампом — точности нет, и доля обязана молчать");
 
             // Тот же расчёт, но замах ускорен разбегом: фактическая длина не равна пропорции.
-            int scaled = AttackTiming.WindupTicks(hitFrame: 7, frameCount: 20, intervalTicks: 30,
+            int scaled = AttackTiming.WindupTicksFromShare(7f / 20f, intervalTicks: 30,
                 windupMultiplier: 0.5f, maxAnimTicks: 15);
 
             Assert.AreEqual(0f,
-                AttackTiming.ContactSubTick(hitFrame: 7, frameCount: 20, intervalTicks: 30,
+                AttackTiming.ContactSubTick(7f / 20f, intervalTicks: 30,
                     actualWindupTicks: scaled, maxAnimTicks: 15),
                 1e-6f,
                 "Разбег сдвинул момент — та же причина, тот же ответ");
