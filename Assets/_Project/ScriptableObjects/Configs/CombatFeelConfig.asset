@@ -203,13 +203,16 @@ MonoBehaviour:
   _enableHitFormBreakOnShield: 1
   _vfxHitForm: {fileID: 11400000, guid: d82430ffaffd4a248a06944eb2963688, type: 2}
   _hitFormUnitHeight: 1.6
-  _hitFormLife: 0.5
+  _hitFormLife: 0.2
   _hitFormGrowShare: 0.3
   _hitFormTailLag: 0.4
   _hitFormCoreWidth: 0.55
   _hitFormCoreBrightness: 3.2
   _hitFormSizeMax: 1.35
   _hitFormSizeMin: 0.7
+  _enableHitFormLine: 1
+  _hitFormLineWidthH: 0.009
+  _hitFormSoftness: 0.35
   _enableBodyCuts: 1
   _cutWidthUnits: 0.012
   _cutLengthMinH: 0.09
@@ -222,6 +225,13 @@ MonoBehaviour:
   _swingArcFadeOut: 0.07
   _swingArcBrightness: 0.35
   _swingArcMaxSpanDeg: 270
+  _enableSwingArcShaping: 1
+  _swingArcCoreShare: 0.34
+  _swingArcColourShare: 0.74
+  _swingArcTailSharpness: 0.55
+  _swingArcCoreBrightness: 2.4
+  _swingArcSoftness: 0.28
+  _swingArcRoughness: 0.35
   _hitFormSlash:
     _lengthH: 1.4
     _arcH: {x: 0.2, y: 0.28}
