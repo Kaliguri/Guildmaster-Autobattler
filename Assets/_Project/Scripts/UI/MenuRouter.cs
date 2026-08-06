@@ -97,7 +97,6 @@ namespace Guildmaster.UI
         /// <summary>Сколько мейн-цветов предлагаем. Столько же токенов в палитре — предел кооп-сессии.</summary>
         private const int ProfileColorCount = 4;
         private VisualTreeAsset _titleCardUxml;
-        private Sprite _titleCardSeal;
         private VisualTreeAsset _loadoutInventoryUxml;
         private VisualTreeAsset _arcanaCardUxml;
 
@@ -244,7 +243,7 @@ namespace Guildmaster.UI
             VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null,
             VisualTreeAsset loadoutInventoryUxml = null,
             VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null,
-            VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null,
+            VisualTreeAsset titleCardUxml = null,
             VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null,
             VisualTreeAsset newGameUxml = null, VisualTreeAsset profileUxml = null,
             VisualTreeAsset confirmUxml = null,
@@ -275,7 +274,6 @@ namespace Guildmaster.UI
             _arcanaCardUxml = arcanaCardUxml;
             _campUxml = campUxml;
             _titleCardUxml = titleCardUxml;
-            _titleCardSeal = titleCardSeal;
 
             // Навигатор Ф4: два слоя-контейнера. Page/Sheet → screensLayer (под топбаром); Modal (pause/
             // settings) → modalLayer (над топбаром, fullscreen-scrim накрывает его — QA #36). Контекст сборки
@@ -1463,7 +1461,6 @@ namespace Guildmaster.UI
                     _resolveTitleCard = () => resolve(true);
                     return TitleCardScreenView.Build(
                         _titleCardUxml,
-                        _titleCardSeal,
                         key => _loc?.GetString(key),
                         onDismiss: () => resolve(true));
                 });

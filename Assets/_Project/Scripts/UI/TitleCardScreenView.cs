@@ -17,9 +17,16 @@ namespace Guildmaster.UI
         // отдаём управление — главное меню строится уже под погасшим экраном, без рывка.
         private const long FadeOutMs = 350;
 
+        /// <summary>Как долго подсказка гаснет и разгорается — совпадает с transition в теме.</summary>
+        /// <remarks>
+        /// Быстрее читается тревогой, а не ожиданием. Ведёт пульсацию код, потому что keyframes в
+        /// UI Toolkit нет, а `transition` сам себя не перезапускает: он срабатывает на смену
+        /// значения, и вернуть значение обратно должен кто-то извне.
+        /// </remarks>
+        private const long HintPulseMs = 1600;
+
         public static VisualElement Build(
             VisualTreeAsset uxml,
-            Sprite seal,
             Func<string, string> localize,
             Action onDismiss)
         {
@@ -33,17 +40,15 @@ namespace Guildmaster.UI
             VisualElement root = screen.childCount > 0 ? screen[0] : screen;
             root.pickingMode = PickingMode.Position;
 
-            var sealEl = root.Q<VisualElement>("titlecard-seal");
-            var title = root.Q<Label>("titlecard-title");
             var hint = root.Q<Label>("titlecard-hint");
             var loading = root.Q<Label>("boot-loading-label");
             var legal = root.Q<Label>("boot-legal");
             var spinner = root.Q<VisualElement>("boot-spinner");
 
-            if (sealEl != null && seal != null)
-                sealEl.style.backgroundImage = new StyleBackground(seal);
-
-            if (title != null) title.text = L("ui.boot.title", "Happy Guildmasters");
+            // Название игры здесь НЕ ставится: его несёт сам контрол вывески своими дефолтами.
+            // «Happy Guildmasters» — имя собственное, одинаковое на всех языках, и ключ под него был
+            // бы ключом без перевода. Меню переопределяет тексты своими ключами — там они заведены
+            // исторически и трогать их незачем.
             if (hint != null) hint.text = L("ui.boot.hint", "нажмите любую клавишу");
             if (loading != null) loading.text = L("ui.boot.loading", "Загрузка");
             // Строка прав: «FMOD» и «Firelight Technologies Pty Ltd.» — требование Clause 3 их лицензии,
@@ -63,6 +68,19 @@ namespace Guildmaster.UI
                     angle = (angle + 2f) % 360f;
                     spinner.style.rotate = new Rotate(new Angle(angle, AngleUnit.Degree));
                 }).Every(16);
+            }
+
+            // Пульсация подсказки: класс снимается и вешается по таймеру, а плавность даёт transition
+            // из темы. Дыхание, а не мигание: строка не гаснет полностью, иначе в нижней точке экран
+            // выглядит зависшим.
+            if (hint != null)
+            {
+                bool dim = false;
+                hint.schedule.Execute(() =>
+                {
+                    dim = !dim;
+                    hint.EnableInClassList("gm-boot__hint--dim", dim);
+                }).Every(HintPulseMs);
             }
 
             bool dismissed = false;

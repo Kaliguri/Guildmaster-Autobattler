@@ -357,8 +357,7 @@ namespace Guildmaster.DevTools
         {
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/TitleCardScreen.uxml");
             if (uxml == null) { AddError(root, "TitleCardScreen.uxml не найден"); return; }
-            var seal = AssetDatabase.LoadAssetAtPath<UnityEngine.Sprite>("Assets/_Project/Art/Brand/AppIcon_HappyGuildmasters.png");
-            root.Add(Guildmaster.UI.TitleCardScreenView.Build(uxml, seal, RuValue, () => { }));
+            root.Add(Guildmaster.UI.TitleCardScreenView.Build(uxml, RuValue, () => { }));
         }
 
         /// <summary>

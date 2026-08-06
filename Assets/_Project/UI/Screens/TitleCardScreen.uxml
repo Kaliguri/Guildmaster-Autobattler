@@ -1,11 +1,14 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement name="titlecard-root" class="gm-screen gm-boot">
         <ui:VisualElement name="boot-glow" class="gm-boot__glow" picking-mode="Ignore" />
 
-        <ui:VisualElement class="gm-boot__logo" picking-mode="Ignore">
-            <ui:VisualElement name="titlecard-seal" class="gm-boot__seal" picking-mode="Ignore" />
-            <ui:Label name="titlecard-title" text="Happy Guildmasters" class="gm-panel__title gm-boot__title" />
-        </ui:VisualElement>
+        <!-- ТА ЖЕ ВЫВЕСКА, ЧТО В МЕНЮ (07.08.2026). Прежде здесь стояли иконка приложения и голый
+             Label, не задававший гарнитуру, — название игры выходило интерфейсным гротеском с
+             синтетическим болдом от «заголовка панели», которым бут-экран не является. Иконка
+             убрана: у неё своя чёрная подложка и своя рамка, и на тёплом фоне она читалась
+             ярлыком из лаунчера, приклеенным сбоку. Метки стадии тут нет — она принадлежит меню,
+             а бут показывает название, и только. -->
+        <gm:Wordmark name="titlecard-title" class="gm-boot__wordmark" over="HAPPY" main="GUILDMASTERS" />
 
         <ui:Label name="titlecard-hint" text="" class="gm-boot__hint" picking-mode="Ignore" />
 
@@ -17,13 +20,18 @@
                 <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--unity" picking-mode="Ignore" />
                 <ui:Label text="·" class="gm-boot__attrib-sep" />
                 <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--fmod" picking-mode="Ignore" />
+
+                <!-- «Загрузка» стоит В ТОМ ЖЕ РЯДУ, что логотипы (правка Макса 07.08.2026: «слишком
+                     мелкая и не выровненная с другими элементами нижними по одной строке»). Прежде
+                     она была прибита абсолютом к низу экрана — а низ у блока атрибуций это СТРОКА
+                     ПРАВ, потому что он колонка; вот «Загрузка» и садилась на её уровень, а не на
+                     уровень логотипов. Общий ряд выравнивает их сам, без подгонки чисел. -->
+                <ui:VisualElement name="boot-loading" class="gm-boot__loading" picking-mode="Ignore">
+                    <ui:Label name="boot-loading-label" text="" class="gm-boot__loading-label" />
+                    <ui:VisualElement name="boot-spinner" class="gm-boot__spinner" />
+                </ui:VisualElement>
             </ui:VisualElement>
             <ui:Label name="boot-legal" text="" class="gm-boot__legal" />
-        </ui:VisualElement>
-
-        <ui:VisualElement name="boot-loading" class="gm-boot__loading" picking-mode="Ignore">
-            <ui:Label name="boot-loading-label" text="" class="gm-boot__loading-label" />
-            <ui:VisualElement name="boot-spinner" class="gm-boot__spinner" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

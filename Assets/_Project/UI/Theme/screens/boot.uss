@@ -25,30 +25,37 @@
     background-image: url("../../../Art/Brand/BootGlow.png");
 }
 
-.gm-boot__logo {
-    flex-direction: row;
+/* Вывеска по центру кадра — единственное отличие от меню, где она прижата к левой кромке колонки.
+   Всё остальное (гарнитуры, кегли, разрядка, градиент) приходит с самого контрола: см.
+   components/wordmark.uss. Своих правил вида у бута для неё нет и быть не должно — иначе вывеска
+   снова разъедется по двум экранам, как было до 07.08.2026. */
+.gm-boot__wordmark {
     align-items: center;
 }
 
-.gm-boot__seal {
-    width: 160px;
-    height: 160px;
-    margin-right: var(--gm-space-3);
-    -unity-background-scale-mode: scale-to-fit;
-}
-
-.gm-boot__title {
-    font-size: var(--gm-font-display);
-    color: var(--gm-color-display-accent);
-    -unity-text-align: middle-left;
-}
-
+/* Подсказка ожидания. СЕРИФ ВРАЗРЯДКУ, а не интерфейсный гротеск: строка обращена к игроку, а не
+   подписывает поле, и рядом с дисплейной вывеской гротеск читался дефолтом движка (правка Макса
+   07.08.2026: «тоже очень плохо выглядит»). Разрядка тут за интонацию — фраза произносится тише и
+   медленнее названия над ней.
+   ПУЛЬСАЦИЯ — не украшение: экран ничего не делает и ничем не показывает, что чего-то ждёт.
+   Медленная (1.6с в каждую сторону), потому что быстрая читается тревогой; амплитуда небольшая —
+   строка не должна пропадать совсем, иначе в момент затухания экран выглядит зависшим.
+   Анимацию ведёт TitleCardScreenView: keyframes в UI Toolkit нет, а transition сам себя не
+   перезапускает. */
 .gm-boot__hint {
-    font-size: var(--gm-font-sm);
+    -unity-font-definition: var(--gm-font-voice);
+    font-size: var(--gm-font-body);
     color: var(--gm-color-text-muted);
     -unity-text-align: middle-center;
+    letter-spacing: 3px;
     margin-top: var(--gm-space-5);
-    opacity: 0.8;
+    opacity: 0.75;
+    transition-property: opacity;
+    transition-duration: 1.6s;
+}
+
+.gm-boot__hint--dim {
+    opacity: 0.3;
 }
 
 .gm-boot__attrib {
@@ -141,17 +148,24 @@
     background-image: url("../../../Art/Brand/Logo_FMOD_White.png");
 }
 
+/* Стоит В РЯДУ атрибуций, а не абсолютом у кромки экрана: прежняя привязка к низу кадра сажала
+   «Загрузку» на уровень юридической строки, потому что блок атрибуций — колонка, и его низ это
+   именно она. Отступ слева отделяет служебный индикатор от бренд-строки, не разрывая ряд. */
 .gm-boot__loading {
-    position: absolute;
-    right: var(--gm-space-5);
-    bottom: var(--gm-space-4);
     flex-direction: row;
     align-items: center;
+    margin-left: var(--gm-space-5);
 }
 
+/* Кегль и цвет — как у соседей по ряду: «мелкая» она была буквально, на ступень ниже логотипов и
+   имени студии. Латунь атрибуции вместо приглушённого серого по той же причине — ряд обязан
+   читаться одной системой. */
 .gm-boot__loading-label {
-    font-size: var(--gm-font-xs);
-    color: var(--gm-color-text-muted);
+    -unity-font-definition: var(--gm-font-data-strong);
+    font-size: var(--gm-font-sm);
+    color: var(--gm-color-brand-attrib);
+    letter-spacing: 0.5px;
+    opacity: 0.85;
     margin-right: var(--gm-space-1);
 }
 
