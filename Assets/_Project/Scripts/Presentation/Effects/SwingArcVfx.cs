@@ -129,6 +129,7 @@ namespace Guildmaster.Presentation.Effects
         private float _fadeOut;        // сколько дуга гаснет после конца взмаха, сек
         private float _maxSpan;        // максимальная угловая длина следа, радианы
         private float _fadeLeft;
+        private float _fadeStart;      // угол начала сектора на момент конца взмаха — от него след съедается
         private bool  _swinging;
         private bool  _playing;
 
@@ -235,8 +236,18 @@ namespace Guildmaster.Presentation.Effects
                 return;
             }
 
-            // Взмах кончился — догораем на месте: дуга принадлежит движению, а движения больше нет.
-            _swinging  = false;
+            // Взмах кончился — след УТЕКАЕТ ЗА КЛИНКОМ, а не гаснет весь разом.
+            //
+            // До 06.08.2026 догорание было одной общей прозрачностью: сектор оставался во всю длину и
+            // просто тускнел — «исчезает сразу», как это и читалось с экрана. След же принадлежит
+            // движению, поэтому уходить обязан с того конца, где клинок был РАНЬШЕ: начало сектора
+            // подтягивается к его концу, и хвост съедается сам собой.
+            if (_swinging)
+            {
+                _swinging  = false;
+                _fadeStart = _angleFrom;   // откуда начинать съедать — угол на момент конца взмаха
+            }
+
             _fadeLeft -= Time.deltaTime;
             if (_fadeLeft <= 0f)
             {
@@ -249,7 +260,12 @@ namespace Guildmaster.Presentation.Effects
                 return;
             }
 
-            Write(_fadeLeft / _fadeOut);
+            float left = _fadeLeft / _fadeOut;              // 1 в начале догорания, 0 в конце
+            _angleFrom = Mathf.Lerp(_angleTo, _fadeStart, left);
+
+            // Прозрачность держится до последней четверти: гасить одновременно с укорачиванием значит
+            // отнять у следа то самое движение, ради которого он и укорачивается.
+            Write(Mathf.Clamp01(left / 0.25f));
         }
 
         private void Place(Vector3 pivot)
