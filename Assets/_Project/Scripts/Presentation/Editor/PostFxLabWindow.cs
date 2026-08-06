@@ -288,6 +288,11 @@ namespace Guildmaster.Presentation.Editor
                     if (GUILayout.Button("Снять кадр", EditorStyles.toolbarButton, GUILayout.Width(84f))) SaveShot(_postOn);
                     if (GUILayout.Button("A/B", EditorStyles.toolbarButton, GUILayout.Width(40f))) SaveAb();
                     if (GUILayout.Button("Снять серию", EditorStyles.toolbarButton, GUILayout.Width(90f))) ShootSeries();
+                    if (GUILayout.Button("Раскадровка", EditorStyles.toolbarButton, GUILayout.Width(96f)))
+                    {
+                        _lastShot = ShootStrip();
+                        Debug.Log("[PostFxLab] раскадровка: " + _lastShot);
+                    }
 
                     GUILayout.FlexibleSpace();
                     GUILayout.Label($"×{_zoom:0.##}", EditorStyles.miniLabel, GUILayout.Width(44f));
@@ -818,26 +823,46 @@ namespace Guildmaster.Presentation.Editor
             sampler.Sample(0f);
             view.OnAttackStarted(Vector2.zero);
 
+            // Один шаг: поза → состояние взмаха → шаг жизни эффекта. Ровно тот порядок, что в бою.
+            void Step(float norm, float seconds)
+            {
+                sampler.Sample(norm * clip.length);
+                view.ScrubSwing(norm);
+                if (seconds > 0f) arc.Tick(seconds);
+            }
+
             _applyPhase = t =>
             {
                 if (unit == null || arc == null || view == null) return;
 
                 float norm = Mathf.Clamp01(t);
 
-                // Круг пошёл заново — это новый взмах. В бою номер взмаха поднимает сим своим событием,
-                // здесь его роль играет возврат фазы к началу.
-                if (norm < lastNorm) view.OnAttackStarted(Vector2.zero);
+                // Фаза УШЛА НАЗАД (новый заход круга, перетащили ползунок) — эффект переигрывается с
+                // нуля. Дуга накапливает состояние: её нельзя «поставить» в середину, её можно только
+                // прожить до середины. В бою новый взмах объявляет сим — здесь эту роль берёт возврат.
+                if (norm < lastNorm - 1e-5f)
+                {
+                    view.OnAttackStarted(Vector2.zero);
+                    lastNorm = 0f;
+                    Step(0f, 0f);
+                }
 
-                sampler.Sample(norm * clip.length);
-                view.ScrubSwing(norm);
-
-                float dt = (norm - lastNorm) * clip.length;
-                lastNorm = norm;
-
-                // Дугу ведёт САМ эффект — тем же кодом, что в бою. Стенд только ставит позу и отдаёт
-                // время; считать здесь угол, сектор и затухание значило бы завести вторую правду о
-                // взмахе, и она уже разошлась с боевой.
-                arc.Tick(dt > 0f ? dt : Mathf.Max(1e-4f, clip.length * 0.01f));
+                // Идём к цели шагами не крупнее StripSubStep. Крупный шаг обманывает эффект: у дуги
+                // длина хвоста считается по пробам собственного пути, и одним прыжком через полклипа
+                // проб набирается три штуки вместо десятков.
+                //
+                // Нулевой шаг НЕ двигает время вовсе. До 07.08.2026 здесь стояла подстановка «хоть
+                // немножко» — 1% длины клипа, — и она обошлась дорого: панель зовёт этот делегат на
+                // КАЖДОЙ перерисовке с той же фазой, поэтому часы дуги бежали в разы быстрее реальных.
+                // Хвост уезжал за своё время жизни мгновенно, и на экране оставалось пятно у острия —
+                // ровно то, что читалось как «трейл исчезает слишком быстро и не идёт за клинком».
+                float sub = Mathf.Max(1e-4f, StripSubStep / Mathf.Max(0.01f, clip.length));
+                while (lastNorm < norm - 1e-5f)
+                {
+                    float next = Mathf.Min(norm, lastNorm + sub);
+                    Step(next, (next - lastNorm) * clip.length);
+                    lastNorm = next;
+                }
             };
         }
 
@@ -1299,6 +1324,109 @@ namespace Guildmaster.Presentation.Editor
 
         static string FileNameOf(Cell cell, float intensity, float scatter) =>
             $"{cell}_i{intensity.ToString("0.00", Culture)}_s{scatter.ToString("0.00", Culture)}.png";
+
+        /// <summary>Колонок и строк в раскадровке: 24 кадра одним листом.</summary>
+        private const int StripCols = 6;
+        private const int StripRows = 4;
+
+        /// <summary>Ширина одной клетки листа, пикселей. Высота выводится из аспекта кадра.</summary>
+        private const int StripCellWidth = 360;
+
+        /// <summary>
+        /// Шаг ПРОГОНА между снимками, сек. Эффект прожёвывается мелкими шагами, а снимается только на
+        /// границах клеток: подать ему сразу пятьдесят миллисекунд значило бы показать не то, что видит
+        /// игрок. Дуге, например, хвост считается по пробам своего пути — с редкими шагами их набралось бы
+        /// три штуки вместо десятков.
+        /// </summary>
+        private const float StripSubStep = 1f / 120f;
+
+        /// <summary>
+        /// РАСКАДРОВКА выбранного эффекта: 24 кадра по всей его длительности, склеенные в один лист.
+        /// </summary>
+        /// <remarks>
+        /// Существует ради самопроверки агента, а не ради красивых картинок. До 07.08.2026 правки боевых
+        /// эффектов уезжали к Максу непроверенными — единственным зрителем был он, и три захода подряд
+        /// «дуга идёт не так» находил именно он. Одно изображение с полной жизнью эффекта стоит
+        /// секунды и снимает этот класс промахов целиком.
+        /// <para>
+        /// Лист живёт в <c>Temp</c>: самопроверка не должна мусорить в репозитории. Нужный кадр всё равно
+        /// уезжает в чат отдельно.
+        /// </para>
+        /// </remarks>
+        private string ShootStrip()
+        {
+            EnsureStage();
+            if (_camera == null) return "<стенд не собрался>";
+
+            int cellW = StripCellWidth;
+            int cellH = Mathf.Max(8, Mathf.RoundToInt(cellW / Mathf.Max(0.1f, _camera.aspect)));
+            int count = StripCols * StripRows;
+
+            float phaseWas = _phase;
+            bool playingWas = _playing;
+            _playing = false;
+
+            var sheet = new Texture2D(cellW * StripCols, cellH * StripRows, TextureFormat.RGBA32, false);
+            try
+            {
+                // С нуля: эффект обязан прожить свой цикл целиком, а не с той фазы, где его застали.
+                float phase = 0f;
+                _phase = 0f;
+                _applyPhase?.Invoke(0f);
+
+                for (int i = 0; i < count; i++)
+                {
+                    // Фазу отдаём как есть: дожевать путь до неё мелкими шагами — забота эффекта, а не
+                    // снимающего. Держать здесь свой прогон значило бы завести вторую правду о том, как
+                    // эффект проживает время, — и раскадровка показывала бы не то, что видно в окне.
+                    float target = count > 1 ? (float)i / (count - 1) : 0f;
+                    phase = target;
+                    _phase = target;
+                    _applyPhase?.Invoke(target);
+
+                    Texture2D frame = Capture(cellW, cellH, _postOn);
+                    if (frame == null) continue;
+
+                    // Клетки читаются как текст — слева направо, сверху вниз, — а у текстуры начало снизу.
+                    int col = i % StripCols;
+                    int row = i / StripCols;
+                    sheet.SetPixels(col * cellW, (StripRows - 1 - row) * cellH, cellW, cellH, frame.GetPixels());
+                    DestroyImmediate(frame);
+                }
+
+                DrawStripGrid(sheet, cellW, cellH);
+                sheet.Apply();
+
+                Directory.CreateDirectory(ShotFolder);
+                string file = Path.GetFullPath(Path.Combine(ShotFolder, "strip_" + _cell.ToString().ToLowerInvariant() + ".png"));
+                File.WriteAllBytes(file, sheet.EncodeToPNG());
+                return file;
+            }
+            finally
+            {
+                DestroyImmediate(sheet);
+                _phase = phaseWas;
+                _playing = playingWas;
+                _applyPhase?.Invoke(_phase);
+            }
+        }
+
+        /// <summary>Разделители клеток: без них соседние кадры сливаются в одно пятно.</summary>
+        private static void DrawStripGrid(Texture2D sheet, int cellW, int cellH)
+        {
+            var line = new Color(1f, 1f, 1f, 0.25f);
+
+            for (int c = 1; c < StripCols; c++)
+            {
+                int x = c * cellW;
+                for (int y = 0; y < sheet.height; y++) sheet.SetPixel(x, y, line);
+            }
+            for (int r = 1; r < StripRows; r++)
+            {
+                int y = r * cellH;
+                for (int x = 0; x < sheet.width; x++) sheet.SetPixel(x, y, line);
+            }
+        }
 
         private string Shot(bool post, string name)
         {
