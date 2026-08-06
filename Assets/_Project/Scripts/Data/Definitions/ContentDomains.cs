@@ -33,6 +33,7 @@ namespace Guildmaster.Data.Definitions
             { typeof(BattlePresetData),"battle_preset"},
             { typeof(TextEventData),   "event"       },
             { typeof(CursorSkinData),  "cursor"      },
+            { typeof(OutfitData),      "outfit"      },
         };
 
         /// <summary>

@@ -415,6 +415,48 @@ namespace Guildmaster.Presentation.Body
         }
 
         /// <summary>
+        /// Спрайты частей, какими они лежат на префабе. Снимаются ОДИН раз, до первого облачения, и
+        /// живут как точка возврата: вид переиспользуется пулом, и без неё щит, снятый у лучника, не
+        /// вернулся бы Защитнику, занявшему тот же вид следующим боем.
+        /// </summary>
+        private Sprite[] _bareSprites;
+
+        /// <summary>
+        /// Надеть облачение. <c>null</c> — вернуть тело к префабному виду.
+        /// <para>
+        /// <b>Прячем спрайтом, а не выключателем.</b> <see cref="SetVisible"/> гасит и зажигает ВСЕ части
+        /// разом (разлёт осколков, возврат вида в пул), и если бы облачение снимало щит через
+        /// <c>enabled</c>, первый же возврат видимости надел бы его обратно. Поэтому у облачения свой
+        /// канал — <c>sprite</c>, — и два канала не пересекаются.
+        /// </para>
+        /// </summary>
+        public void ApplyOutfit(Data.Definitions.OutfitData outfit)
+        {
+            if (_bareSprites == null || _bareSprites.Length != _parts.Count)
+            {
+                _bareSprites = new Sprite[_parts.Count];
+                for (int i = 0; i < _parts.Count; i++)
+                    _bareSprites[i] = _parts[i] != null ? _parts[i].sprite : null;
+            }
+
+            for (int i = 0; i < _parts.Count; i++)
+            {
+                SpriteRenderer part = _parts[i];
+                if (part == null) continue;
+
+                // Часть, о которой облачение молчит, возвращается к префабной — иначе прошлый жилец
+                // вида оставил бы на ней свой спрайт.
+                if (outfit == null || !outfit.TryResolve(part.name, out Sprite dressed))
+                {
+                    part.sprite = _bareSprites[i];
+                    continue;
+                }
+
+                part.sprite = dressed;   // пусто = часть не рисуется, но остаётся в теле и в сортировке
+            }
+        }
+
+        /// <summary>
         /// Колется КАЖДАЯ часть — общей палитрой и общим таймингом. Тело разлетается по частям, а не одним
         /// прямоугольником торса, и это заодно честнее: у составного юнита «прямоугольник тела» никогда не
         /// совпадал с фигурой.

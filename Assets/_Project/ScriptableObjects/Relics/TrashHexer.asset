@@ -20,9 +20,9 @@ MonoBehaviour:
   _resourceType: 1
   _rangeBand: 3
   _rangeAdjustPct: -0.125
-  _visual: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
+  _archetype: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
   _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
-  _bodyShade: 3
+  _outfit: {fileID: 11400000, guid: 924228f4836e68148ae3acf9cb94802c, type: 2}
   _vfxTone: 9
   _autoAttackShape: 0
   _autoAttackWidth: 1
@@ -75,6 +75,7 @@ MonoBehaviour:
     _damageMultiplier: 0
     _baseDamage: 0
     _damageType: 0
+    _castRange: 0
     _areaShape: 0
     _areaRadius: 0
     _healFlat: 0
@@ -88,6 +89,7 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _maxTriggerUniques: 0
     _castSeconds: 0
     _channelSeconds: 0
     _channelTickSeconds: 0

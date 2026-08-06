@@ -39,6 +39,7 @@ namespace Guildmaster.Data.Editor
             { "battle_preset", "BattlePresets" },
             { "event",         "Events"        },
             { "cursor",        "Cursors"       },
+            { "outfit",        "Outfits"       },
         };
 
         /// <summary>Все типы контента, которые менеджер умеет создавать — из реестра доменов.</summary>

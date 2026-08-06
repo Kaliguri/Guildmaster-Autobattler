@@ -176,5 +176,17 @@ namespace Guildmaster.Presentation.Body
         /// </summary>
         /// <param name="onComplete">Зовётся один раз, когда догорел последний осколок.</param>
         void PlayShatter(Design.CombatFeelConfig feel, Gradient palette, System.Action onComplete);
+
+        /// <summary>
+        /// Надеть ОБЛАЧЕНИЕ: подменить спрайты частей тем, что объявлено в данных, а части с пустой
+        /// записью — спрятать. Часть, о которой облачение молчит, остаётся как на префабе.
+        /// <para>
+        /// <b>Вид переиспользуется</b> — пул отдаёт один и тот же объект следующему юниту, — поэтому
+        /// метод обязан возвращать к исходному ВСЁ, что менял прошлый жилец. Иначе щит, снятый у
+        /// лучника, не вернулся бы Защитнику, занявшему тот же вид после его смерти.
+        /// </para>
+        /// </summary>
+        /// <param name="outfit">Что надето. <c>null</c> — вернуть тело к тому, что лежит на префабе.</param>
+        void ApplyOutfit(Data.Definitions.OutfitData outfit);
     }
 }

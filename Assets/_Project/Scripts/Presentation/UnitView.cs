@@ -458,6 +458,11 @@ namespace Guildmaster.Presentation
             // Данные юнита — только для маркера контакта/темпа бега (скраб по симу). Клипы играет контроллер.
             _archetype = _definition != null ? _definition.Archetype : null;
 
+            // Облачение надевается ЗДЕСЬ, а не при спавне: вид переиспользуется пулом, и с ним переезжают
+            // спрайты прошлого жильца. Зовём даже когда облачения нет — это и есть возврат к префабному
+            // телу (иначе Защитник, занявший вид лучника, вышел бы на арену без щита).
+            Body?.ApplyOutfit(_definition != null ? _definition.Outfit : null);
+
             // Анимация активна, если у Animator есть контроллер (клипы — в его стейтах). AnimationArchetypeData не обязателен.
             _animActive = _animator != null && _animator.runtimeAnimatorController != null;
 

@@ -56,6 +56,10 @@ namespace Guildmaster.Data.Definitions
                  "закрывают.")]
         [SerializeField] private GameObject _viewPrefab;
 
+        [Tooltip("Облачение: броня и предметы в руках. Пусто = играет то, что лежит на префабе рига. " +
+                 "Именно здесь снимается щит у тех, кто его не носит: строка с пустым спрайтом.")]
+        [SerializeField] private OutfitData _outfit;
+
         [Tooltip("Оттенок, которым юнит СВЕТИТ: снаряд, его след, контур каста, искры, осколки. Хранится " +
                  "роль, а не цвет — значение живёт в палитре (UI/Theme/tokens.*.uss → GuildmasterPalette), " +
                  "яркость накручивает CombatColorPalette множителями. Повторять оттенок между юнитами " +
@@ -175,6 +179,8 @@ namespace Guildmaster.Data.Definitions
         public ResourceType ResourceType => _resourceType;
         /// <summary>Архетип анимаций: какие клипы играет юнит. Звался <c>Visual</c> до 06.08.2026.</summary>
         public AnimationArchetypeData Archetype => _archetype;
+        /// <summary>Облачение: броня и предметы в руках. <c>null</c> — как на префабе.</summary>
+        public OutfitData Outfit => _outfit;
         public GameObject ViewPrefab => _viewPrefab;
         /// <summary>
         /// Оттенок юнита: и чем он СВЕТИТ (снаряд, искры, контур каста), и каким цветом окрашено его

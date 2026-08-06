@@ -20,9 +20,9 @@ MonoBehaviour:
   _resourceType: 0
   _rangeBand: 0
   _rangeAdjustPct: 0
-  _visual: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
+  _archetype: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
   _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
-  _bodyShade: 3
+  _outfit: {fileID: 11400000, guid: 2421d12c09b8fa74486e4a5f12afccde, type: 2}
   _vfxTone: 1
   _autoAttackShape: 0
   _autoAttackWidth: 1
