@@ -184,14 +184,6 @@
     overflow: visible;
 }
 
-.gm-console__status {
-    -unity-text-align: middle-right;
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-xxs);
-    flex-shrink: 0;
-    padding-top: var(--gm-space-0);
-}
-
 /* Витрина боёв (F3) — та же полка, что консоль, но строка поиска сверху: здесь глаза идут «набрал →
    выбрал из списка», а не «прочитал вывод → набрал». */
 /* Витрина — тоже во весь экран: искать бой удобнее в списке на всю высоту, а не в щели на треть. */
@@ -223,9 +215,6 @@
     background-color: var(--gm-color-hover-surface);
     border-left-color: var(--gm-color-accent);
 }
-
-
-
 
 /* --- Скроллбар dev-полок: тонкая латунная нить вместо серого слайдера Unity ---
    Дефолтная тема рисует широкий светлый слайдер со стрелками — на тёмной полке он читается как чужой
@@ -283,7 +272,6 @@
 }
 
 /* --- Кнопки в шапке полки (очистить, сохранить, сортировка) --- */
-
 
 .gm-console__spacer {
     flex-grow: 1;
@@ -346,11 +334,6 @@
     padding-top: var(--gm-space-1);
     border-top-width: 1px;
     border-top-color: var(--gm-color-border-subtle);
-}
-
-/* Статус в подвале — не отдельная строка под ним, а правая половина той же полосы. */
-.gm-console__footer .gm-console__status {
-    padding-top: 0;
 }
 
 /* --- Шапка таблицы витрины: подписи колонок, они же кнопки сортировки --- */

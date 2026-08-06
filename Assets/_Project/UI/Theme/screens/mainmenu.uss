@@ -76,7 +76,7 @@
     background-image: url("../../Art/UI/Panels/PanelLinen.png");
     background-size: 512px 512px;
     background-repeat: repeat;
-    -unity-background-image-tint-color: rgba(230, 201, 143, 0.07);
+    -unity-background-image-tint-color: var(--gm-color-menu-grain);
 }
 
 /* Колонка: 7% от левой кромки — середина коридора рефов (1.6% у Brotato, 12.5% у Guildrun).

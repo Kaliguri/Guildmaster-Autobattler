@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
-        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu gm-panel--sheet">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="newgame-frame" corner="0" />
             <ui:Label name="newgame-title" text="Создать игру" class="gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
@@ -21,9 +21,9 @@
                      здесь нет. PvP и Ристалище — одно занятие с разными ограничениями, но выбирает
                      игрок игру, а не устройство движка. -->
                 <ui:VisualElement name="mode-list" class="gm-newgame__modes">
-                    <gm:PlateButton name="btn-mode-campaign" text="Кампания" class="gm-button gm-button--primary gm-newgame__mode" />
-                    <gm:PlateButton name="btn-mode-grounds" text="Ристалище" class="gm-button gm-newgame__mode" />
-                    <gm:PlateButton name="btn-mode-pvp" text="PvP" class="gm-button gm-newgame__mode" />
+                    <gm:PlateButton name="btn-mode-campaign" text="Кампания" class="gm-button gm-button--primary" />
+                    <gm:PlateButton name="btn-mode-grounds" text="Ристалище" class="gm-button" />
+                    <gm:PlateButton name="btn-mode-pvp" text="PvP" class="gm-button" />
                 </ui:VisualElement>
 
                 <!-- Пояснение идёт за курсором, а не за выбором: выбора на экране больше нет. -->

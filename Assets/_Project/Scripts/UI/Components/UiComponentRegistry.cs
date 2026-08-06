@@ -152,12 +152,10 @@ namespace Guildmaster.UI.Components
                 "gm-mainmenu__btn--primary", "gm-mainmenu__btn--group-start"),
             New("Начать забег", "gm-loadout__start-btn", UiComponentGroup.Buttons, Interactive, OfPlate),
             New("Сортировка инвентаря", "gm-loadout__sort", UiComponentGroup.Buttons, Interactive, OfButton),
-            New("Вариант события", "gm-event-choice", UiComponentGroup.Buttons, Interactive, OfButton,
-                "gm-event-choice--unaffordable"),
+            New("Вариант события", "gm-event-choice", UiComponentGroup.Buttons, Interactive, OfButton),
             New("Слот профиля", "gm-profile__slot-pick", UiComponentGroup.Buttons, Interactive, OfButton,
                 "gm-profile__slot-pick--active"),
-            New("Слот гильдии", "gm-guilds__slot-pick", UiComponentGroup.Buttons, Interactive, OfButton,
-                "gm-guilds__slot-pick--create"),
+            New("Слот гильдии", "gm-guilds__slot-pick", UiComponentGroup.Buttons, Interactive, OfButton),
 
             // --- ВКЛАДКИ И ЧИПЫ ---
             New("Вкладка", "gm-tab", UiComponentGroup.Tabs, Interactive, OfPlate, "gm-tab--active"),

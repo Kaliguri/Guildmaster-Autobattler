@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
-        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu gm-panel--sheet">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="hub-frame" corner="0" />
             <!-- Титул — имя дома: игрок вернулся к СВОЕЙ гильдии, и узнать её он должен первым делом.
                  Текст проставляется кодом. -->

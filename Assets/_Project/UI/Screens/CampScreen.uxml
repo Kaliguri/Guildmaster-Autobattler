@@ -10,7 +10,7 @@
             <ui:Label name="camp-budget" text="" class="gm-camp-budget" />
 
             <!-- Кнопки действий катит код; «Пройти мимо» всегда последняя. -->
-            <ui:VisualElement name="camp-actions" class="gm-event-choices" />
+            <ui:VisualElement name="camp-actions" class="" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

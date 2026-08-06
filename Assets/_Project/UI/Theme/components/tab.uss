@@ -25,15 +25,6 @@
     display: none;
 }
 
-/* Плейсхолдер пустой вкладки (визуал-каркас «на будущее»). */
-.gm-tab-placeholder {
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-body);
-}
-
 /* Пояснение под страницей таба: почему опция недоступна. Мельче тела, приглушённое. */
 .gm-tab-hint {
     margin-top: var(--gm-space-1);

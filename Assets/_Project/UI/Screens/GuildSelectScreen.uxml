@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
-        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu gm-panel--sheet">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="guilds-frame" corner="0" />
             <ui:Label name="guilds-title" text="Гильдия" class="gm-panel__title" />
             <ui:VisualElement class="gm-divider" />

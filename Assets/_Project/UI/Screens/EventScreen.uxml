@@ -10,7 +10,7 @@
             <ui:Label name="event-body" text="" class="gm-event-body" />
 
             <!-- Кнопки вариантов катит код; после выбора здесь остаётся «Продолжить». -->
-            <ui:VisualElement name="event-choices" class="gm-event-choices" />
+            <ui:VisualElement name="event-choices" class="" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

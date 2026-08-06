@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="devlog-root" class="gm-console gm-console--log">
+    <ui:VisualElement name="devlog-root" class="gm-console">
         <ui:VisualElement class="gm-console__header">
             <ui:Label text="Лог движка" class="gm-console__title" picking-mode="Ignore" />
             <ui:VisualElement class="gm-console__spacer" picking-mode="Ignore" />

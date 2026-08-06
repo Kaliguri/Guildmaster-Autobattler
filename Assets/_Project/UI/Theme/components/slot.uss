@@ -28,15 +28,6 @@
     background-color: var(--gm-color-hover-surface);
 }
 
-/* Ghost перетаскиваемой реликвии (лоадаут-хаб): иконка под курсором во время драга. */
-.gm-drag-ghost {
-    position: absolute;
-    width: 48px;
-    height: 48px;
-    -unity-background-scale-mode: scale-to-fit;
-    opacity: 0.85;
-}
-
 .gm-slot__icon {
     flex-grow: 1;
     -unity-background-scale-mode: scale-to-fit;
@@ -59,14 +50,16 @@
     height: 92px;
 }
 
-/* Ряд слотов (запас/баннеры): перенос по ширине, БЕЗ flex-grow (не распирает панель). */
-.gm-slot-grid {
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
 /* Нажатие на слот — тот же жест, что у карточки: поверхность утапливается. */
 .gm-slot:active {
     background-color: var(--gm-color-surface-sunken);
     border-color: var(--gm-color-border-inner);
+}
+
+/* ПУСТОЙ СЛОТ. Класс вешается с самого появления Slot, а вида не имел: пустая ячейка отличалась от
+   занятой только отсутствием иконки, то есть ничем, когда иконка ещё не загрузилась. Пустой слот
+   утоплен и держит тусклую кайму — он читается местом ПОД вещь, а не вещью. */
+.gm-slot--empty {
+    background-color: var(--gm-color-surface-sunken);
+    border-color: var(--gm-color-border-subtle);
 }
