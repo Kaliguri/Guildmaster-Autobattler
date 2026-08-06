@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Guildmaster.UI.Components;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -172,6 +173,48 @@ namespace Guildmaster.Tests.EditMode.UI
                 "Кегль задаётся ступенью --gm-font-*, а не числом. Ступеней семь: 13 / 17 / 22 / 26 /\n" +
                 "34 / 48 / 88. Нужно число между ними — это решение, и его место в ExemptSelectors\n" +
                 "с причиной, иначе оно неотличимо от опечатки.\n" +
+                string.Join("\n", complaints));
+        }
+
+        /// <summary>
+        /// ОБРАТНАЯ ПРОВЕРКА: роль, объявленная в теме, обязана быть в реестре.
+        /// </summary>
+        /// <remarks>
+        /// Остальные гейты смотрят в одну сторону — заявленное реализовано. Обратного не проверял
+        /// никто, и это стоило невидимого элемента набора: роль <c>gm-text-subtitle</c> была заведена
+        /// в теме и повешена в пяти местах разметки, но в <see cref="UiComponentRegistry"/> не
+        /// внесена — контактный лист её не показывал, а все гейты были ЗЕЛЁНЫМИ (06.08.2026).
+        ///
+        /// <para>Проверяются только роли текста (<c>gm-text-*</c> без двойного дефиса): у них
+        /// имя само объявляет принадлежность к набору. Метки (<c>gm-text--*</c>) живут перечнем
+        /// <see cref="UiTextTone"/>, и за них отвечает <c>UiTextToneGateTests</c>.</para>
+        /// </remarks>
+        [Test]
+        public void Роль_из_темы_объявлена_в_реестре()
+        {
+            var role = new Regex(@"\.(gm-text-(?!-)[a-z-]+)", RegexOptions.Compiled);
+            var declared = new HashSet<string>();
+
+            foreach (string file in ThemeFiles())
+            {
+                foreach (Match m in role.Matches(StripComments(File.ReadAllText(file))))
+                {
+                    declared.Add(m.Groups[1].Value);
+                }
+            }
+
+            Assert.That(declared, Is.Not.Empty, "не нашлось ни одной роли — сломан разбор, а не тема");
+
+            var known = new HashSet<string>(UiComponentRegistry.All.Select(e => e.Block));
+            var complaints = declared
+                .Where(cls => !known.Contains(cls))
+                .Select(cls => $"  .{cls} — правило в теме есть, записи в UiComponentRegistry нет")
+                .ToList();
+
+            Assert.IsEmpty(complaints,
+                "Роль, которой нет в реестре, НЕВИДИМА: её не покажет контактный лист, не проверит\n" +
+                "гейт состояний и не озвучит UiSoundSystem. При этом всё остальное зелено — потому\n" +
+                "что остальные гейты смотрят в другую сторону.\n" +
                 string.Join("\n", complaints));
         }
 
