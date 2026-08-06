@@ -106,6 +106,7 @@ namespace Guildmaster.Presentation.Editor
 
                     if (GUILayout.Button("Снять кадр", EditorStyles.toolbarButton, GUILayout.Width(90f))) SaveShot(_postOn);
                     if (GUILayout.Button("Снять A/B", EditorStyles.toolbarButton, GUILayout.Width(80f))) SaveAb();
+                    if (GUILayout.Button("Контактный лист", EditorStyles.toolbarButton, GUILayout.Width(115f))) SaveContactSheet();
                     GUILayout.FlexibleSpace();
                     if (GUILayout.Button("Пересобрать", EditorStyles.toolbarButton, GUILayout.Width(90f))) TearDownStage();
                 }
@@ -323,6 +324,137 @@ namespace Guildmaster.Presentation.Editor
             string post = Shot(true,  _stage.ToString().ToLowerInvariant() + "_post");
             _lastShot = post;
             Debug.Log("[PostFxLab] A/B:\n  " + raw + "\n  " + post);
+        }
+
+        // --- Контактный лист: одна сетка вместо девяти заходов ползунком ---------------------------------
+
+        // Оси замера. Текущее состояние боевого профиля (интенсивность 1.0, растекание 0.7) намеренно
+        // стоит в УГЛУ сетки, а не в центре: жалоба была «слишком ярко и слишком широко», значит смотреть
+        // надо, куда двигаться ВНИЗ от нынешнего, а не симметрично вокруг него.
+        static readonly float[] SheetIntensity = { 0.4f, 0.7f, 1.0f };
+        static readonly float[] SheetScatter   = { 0.3f, 0.5f, 0.7f };
+
+        /// <summary>
+        /// Снимает сетку «интенсивность × растекание» по ОДНОМУ кадру и склеивает в один PNG. Существует
+        /// потому, что подбор блума ползунком — это сравнение кадра с памятью о прошлом кадре, а глаз к
+        /// свечению адаптируется за секунды и такое сравнение проигрывает.
+        /// </summary>
+        /// <remarks>
+        /// Профиль-ассет при этом <b>не трогается</b>: значения крутятся на временной копии, которая живёт
+        /// только на время съёмки. Правка настоящего профиля ради замера пометила бы ассет изменённым, и
+        /// подобранное «на посмотреть» уехало бы в игру молча — ровно тот тихий костыль, которого у нас
+        /// быть не должно.
+        /// </remarks>
+        private void SaveContactSheet()
+        {
+            EnsureStage();   // зовётся и снаружи (из execute_code), где OnGUI ещё не отрабатывал
+
+            VolumeProfile source = CurrentProfile();
+            if (source == null) { Debug.LogError("[PostFxLab] профиль не найден: " + CurrentProfilePath()); return; }
+
+            VolumeProfile scratch = CloneProfile(source);
+            if (!scratch.TryGet(out Bloom bloom))
+            {
+                Debug.LogError("[PostFxLab] в профиле нет Bloom — снимать сетку не по чему.");
+                DestroyProfile(scratch);
+                return;
+            }
+
+            const int cell = 384, gap = 4;
+            int cols = SheetIntensity.Length, rows = SheetScatter.Length;
+            var sheet = new Texture2D(cols * cell + (cols - 1) * gap, rows * cell + (rows - 1) * gap,
+                                      TextureFormat.RGBA32, false);
+            FillSheetBackground(sheet);
+
+            _volume.sharedProfile = scratch;
+            try
+            {
+                for (int row = 0; row < rows; row++)
+                for (int col = 0; col < cols; col++)
+                {
+                    bloom.intensity.overrideState = true; bloom.intensity.value = SheetIntensity[col];
+                    bloom.scatter.overrideState   = true; bloom.scatter.value   = SheetScatter[row];
+
+                    Texture2D shot = ReadShot(cell, cell, post: true);
+                    // Строки идут сверху вниз, а координаты текстуры снизу вверх — иначе растекание
+                    // в подписи к листу окажется зеркальным тому, что на картинке.
+                    sheet.SetPixels(col * (cell + gap), (rows - 1 - row) * (cell + gap), cell, cell,
+                                    shot.GetPixels());
+                    DestroyImmediate(shot);
+                }
+            }
+            finally
+            {
+                _volume.sharedProfile = source;
+                DestroyProfile(scratch);
+            }
+
+            sheet.Apply();
+            Directory.CreateDirectory(ShotFolder);
+            string file = Path.GetFullPath(Path.Combine(ShotFolder, "contact_bloom.png"));
+            File.WriteAllBytes(file, sheet.EncodeToPNG());
+            DestroyImmediate(sheet);
+
+            _lastShot = file;
+            Debug.Log($"[PostFxLab] контактный лист: {file}\n  колонки (слева направо) — интенсивность " +
+                      $"{string.Join(" / ", SheetIntensity)}\n  строки (сверху вниз) — растекание " +
+                      $"{string.Join(" / ", SheetScatter)}");
+        }
+
+        /// <summary>Фон между ячейками: явно не чёрный, иначе граница кадра не читается на тёмной сцене.</summary>
+        static void FillSheetBackground(Texture2D sheet)
+        {
+            var fill = new Color[sheet.width * sheet.height];
+            for (int i = 0; i < fill.Length; i++) fill[i] = new Color(0.22f, 0.22f, 0.24f, 1f);
+            sheet.SetPixels(fill);
+        }
+
+        /// <summary>
+        /// Копия профиля в памяти. Собирается по-компонентно, а не <c>Instantiate</c>: список
+        /// <c>components</c> хранит ССЫЛКИ на подассеты, и копия профиля указывала бы на те же самые
+        /// компоненты — правка «копии» ушла бы прямиком в ассет.
+        /// </summary>
+        static VolumeProfile CloneProfile(VolumeProfile source)
+        {
+            var clone = CreateInstance<VolumeProfile>();
+            clone.hideFlags = HideFlags.HideAndDontSave;
+
+            foreach (VolumeComponent component in source.components)
+            {
+                // Дырка в списке — не паранойя: в боевом профиле первой ссылкой лежит ровно {fileID: 0}.
+                if (component == null) continue;
+
+                var copy = (VolumeComponent)CreateInstance(component.GetType());
+                copy.hideFlags = HideFlags.HideAndDontSave;
+                for (int i = 0; i < component.parameters.Count; i++)
+                {
+                    copy.parameters[i].overrideState = component.parameters[i].overrideState;
+                    copy.parameters[i].SetValue(component.parameters[i]);
+                }
+                clone.components.Add(copy);
+            }
+            return clone;
+        }
+
+        static void DestroyProfile(VolumeProfile profile)
+        {
+            if (profile == null) return;
+            foreach (VolumeComponent component in profile.components)
+                if (component != null) DestroyImmediate(component);
+            DestroyImmediate(profile);
+        }
+
+        /// <summary>Кадр стенда как <c>Texture2D</c>. Вызывающий обязан его уничтожить.</summary>
+        private Texture2D ReadShot(int width, int height, bool post)
+        {
+            RenderTexture rt = RenderPreview(width, height, post);
+            RenderTexture prev = RenderTexture.active;
+            RenderTexture.active = rt;
+            var tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
+            tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+            tex.Apply();
+            RenderTexture.active = prev;
+            return tex;
         }
 
         private string Shot(bool post, string name)
