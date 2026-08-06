@@ -67,8 +67,9 @@ namespace Guildmaster.UI
                 {
                     ShopItem item = shelf[i];
                     var card = new VisualElement { focusable = true };
-                    card.AddToClassList("gm-shop__card");
-                    if (item.Sold) card.AddToClassList("gm-shop__card--sold");
+                    card.AddToClassList("gm-card");
+                    card.AddToClassList("gm-card--shop");
+                    if (item.Sold) card.AddToClassList("gm-card--sold");
                     // Витрина показывает имя и цену; чем реликвия ЯВЛЯЕТСЯ — тем же тултипом, что в награде
                     // и в инвентаре (Трек Т): решение о покупке принимается по киту, а не по цене.
                     card.WithTooltip(TooltipRequest.Relic(item.Relic?.Id));

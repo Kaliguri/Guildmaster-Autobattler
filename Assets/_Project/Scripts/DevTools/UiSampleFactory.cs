@@ -53,7 +53,6 @@ namespace Guildmaster.DevTools
             ["gm-hub-vessel"]          = () => new VesselCard { VesselName = Sample, RelicName = "Реликвия" },
             ["gm-slot"]                = () => new Slot(),
             ["gm-arcana-card"]         = () => Box("gm-arcana-card"),               // RelicArcanaCard.uxml:6
-            ["gm-shop__card"]          = () => Box("gm-shop__card"),                // ShopScreenView.cs:69
             ["gm-shop__stash-row"]     = () => Box("gm-shop__stash-row"),           // ShopScreenView.cs:106
             ["gm-reward-drop__row"]    = () => Box("gm-reward-drop__row"),
             ["gm-stat"]                = () => Box("gm-stat"),                      // LoadoutInventoryView.cs:515
@@ -105,6 +104,7 @@ namespace Guildmaster.DevTools
             // родителем, потому что кегль задавала кнопка, а гарнитуру — консоль.
             ["gm-text-display"] = () => Text("GUILDMASTERS"),
             ["gm-text-title"]   = () => Text("Настройки"),
+            ["gm-text-subtitle"] = () => Text("Продать реликвии"),
             ["gm-text-name"]    = () => Text("Клинок Рассвета"),
             ["gm-text-body"]    = () => Text("Сложность"),
             ["gm-text-caption"] = () => Text("Дом хранит прогресс забега"),

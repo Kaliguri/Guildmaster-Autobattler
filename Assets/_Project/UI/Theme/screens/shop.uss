@@ -16,21 +16,6 @@
     flex-shrink: 0;
 }
 
-.gm-shop__card {
-    width: 200px;
-    flex-shrink: 0;
-    align-items: center;
-    padding: var(--gm-space-2);
-    margin: var(--gm-space-1);
-    background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-2);
-    border-color: var(--gm-color-border-inner);
-}
-
-.gm-shop__card--sold {
-    opacity: 0.4;
-}
-
 .gm-shop__price {
     margin-top: var(--gm-space-1);
     margin-bottom: var(--gm-space-1);
@@ -86,25 +71,21 @@
  * по ним кликают. Свою разметку лавка строит кодом (ShopScreenView), поэтому и вид ей приходится
  * задавать здесь, а не общими правилами карточки: это долг, а не замысел (см. план захода).
  * ========================================================================== */
-.gm-shop__card:hover,
 .gm-shop__stash-row:hover {
     background-color: var(--gm-color-hover-surface);
     border-color: var(--gm-color-hover-border);
 }
 
-.gm-shop__card:active,
 .gm-shop__stash-row:active {
     background-color: var(--gm-color-surface-sunken);
     border-color: var(--gm-color-border-inner);
 }
 
-.gm-shop__card:focus,
 .gm-shop__stash-row:focus {
     border-color: var(--gm-color-hover-border);
 }
 
 /* Проданное недоступно: гаснет текст, отклик остаётся (правило ui-feedback). */
-.gm-shop__card:disabled,
 .gm-shop__stash-row:disabled {
     color: var(--gm-color-disabled-text);
 }

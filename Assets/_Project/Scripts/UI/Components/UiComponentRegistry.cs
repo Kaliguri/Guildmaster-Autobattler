@@ -247,12 +247,17 @@ namespace Guildmaster.UI.Components
                 "gm-filter-tab--last"),
 
             // --- КАРТОЧКИ И СЛОТЫ ---
+            // КАРТОЧКА ОДНА, различается РАЗМЕРОМ (правило Макса 06.08.2026, третье применение того
+            // же приёма после кнопок и текста). «Карточка лавки» стояла отдельной записью, хотя
+            // делила с базовой фон, центрирование и внешний отступ — расходились ширина, внутренний
+            // отступ и КАЙМА (--gm-border-2 цвета border-inner против outline-width/outline-color).
+            // Расхождение было историческим: витрина писалась в screens/shop.uss отдельно. Кайма
+            // сведена к базовой, вид лавки при этом изменился — решение принято глядя на кадр.
             New("Карточка релика", "gm-card", UiComponentGroup.Cards, Interactive, null,
-                "gm-card--selected", "gm-card--current", "gm-card--reward"),
+                "gm-card--selected", "gm-card--current", "gm-card--reward", "gm-card--shop",
+                "gm-card--sold"),
             New("Карточка арканы", "gm-arcana-card", UiComponentGroup.Cards, Interactive, null,
                 "gm-arcana-card--selected", "gm-arcana-card--locked"),
-            New("Карточка лавки", "gm-shop__card", UiComponentGroup.Cards, Interactive, null,
-                "gm-shop__card--sold"),
             New("Строка запаса", "gm-shop__stash-row", UiComponentGroup.Cards, Interactive, null),
             New("Сосуд во Дворе", "gm-hub-vessel", UiComponentGroup.Cards, Interactive, null),
             New("Слот", "gm-slot", UiComponentGroup.Cards, Interactive, null,
@@ -308,6 +313,8 @@ namespace Guildmaster.UI.Components
             // класса из 75 — роли существовали, но были расписаны под каждый экран заново.
             NewText("Текст (Вывеска) — Вариация 1", "gm-text-display", UiTextTone.None),
             NewText("Текст (Заголовок) — Вариация 1", "gm-text-title", UiTextTone.Muted),
+            NewText("Текст (Подзаголовок — сериф на кегле тела) — Вариация 1", "gm-text-subtitle",
+                UiTextTone.Muted | UiTextTone.Value),
             NewText("Текст (Имя вещи) — Вариация 1", "gm-text-name",
                 UiTextTone.Muted | UiTextTone.Brass),
             NewText("Текст (Тело — подпись поля, значение) — Вариация 1", "gm-text-body",
