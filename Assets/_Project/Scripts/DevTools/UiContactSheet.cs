@@ -45,6 +45,18 @@ namespace Guildmaster.DevTools
         /// </summary>
         private const int RowsPerFrame = 4;
 
+        /// <summary>
+        /// Сколько кадров лист устаивается перед захватом.
+        /// </summary>
+        /// <remarks>
+        /// Двух не хватало, и это ловилось прямым замером: два прогона ПОДРЯД без единой правки
+        /// давали три расходящихся кадра. Причина — USS-переходы: правила состояний анимируются, и
+        /// захват заставал их на полпути, каждый раз на разном. Пока кадр нестабилен, попиксельное
+        /// сравнение врёт в обе стороны — оно и заставило меня однажды «починить» порядок импортов
+        /// по шуму. Сорока кадров хватает с запасом на самый долгий наш переход.
+        /// </remarks>
+        private const int SettleFrames = 40;
+
         private static readonly PropertyInfo PseudoStatesProperty =
             typeof(VisualElement).GetProperty("pseudoStates", BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -91,8 +103,7 @@ namespace Guildmaster.DevTools
                     {
                         BuildPage(sheet, group, entries, page);
 
-                        // Два кадра: первый считает раскладку, второй отдаёт устоявшиеся стили.
-                        await UniTask.DelayFrame(2);
+                        await UniTask.DelayFrame(SettleFrames);
                         ReapplyForced();
 
                         await UniTask.WaitForEndOfFrame(runner);

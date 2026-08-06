@@ -1,0 +1,31 @@
+.gm-event-image {
+    height: 120px;
+    margin-bottom: var(--gm-space-3);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-event-body {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    white-space: normal;
+    margin-bottom: var(--gm-space-3);
+}
+
+/* Варианты ответа — колонка кнопок во всю ширину панели. */
+.gm-event-choice {
+    width: 100%;
+    margin-top: var(--gm-space-1);
+    margin-bottom: 0;
+}
+
+/* ============================================================================
+ * Привал: панель с бюджетом действий отряда.
+ * ========================================================================== */
+
+/* Остаток бюджета над колонкой действий — вторичная строка, читается как счётчик, а не как заголовок. */
+.gm-camp-budget {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-body);
+    margin-bottom: var(--gm-space-2);
+    -unity-text-align: middle-right;
+}

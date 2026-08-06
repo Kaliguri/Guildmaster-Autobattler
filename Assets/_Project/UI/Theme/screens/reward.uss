@@ -1,0 +1,52 @@
+/* Витрина: карточки в ряд по центру (перенос — страховка при узкой панели). */
+.gm-reward-choices {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--gm-space-3);
+    margin-bottom: var(--gm-space-3);
+}
+
+.gm-reward-drop {
+    margin-top: var(--gm-space-1);
+}
+
+.gm-reward-drop__hint {
+    white-space: normal;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Строка запаса для сброса ради места (кликабельна). */
+.gm-reward-drop__row {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    padding-top: var(--gm-space-1);
+    padding-bottom: var(--gm-space-1);
+    padding-left: var(--gm-space-2);
+    border-left-width: 2px;
+    border-left-color: rgba(0, 0, 0, 0);
+}
+
+.gm-reward-drop__row:hover {
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-reward-drop__row--selected {
+    color: var(--gm-color-text);
+    background-color: var(--gm-color-hover-surface);
+    border-left-color: var(--gm-color-accent);
+}
+
+/* Подвал витрины: обе кнопки У ПРАВОГО КРАЯ, главная — крайняя. Раньше стояло space-between, и на
+   узкой панели это читалось нормально; после укрупнения до 900+ кнопки разбежались по углам и
+   перестали читаться парой (рендер 2026-08-02). */
+.gm-reward-footer {
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: var(--gm-space-1);
+}
+
+.gm-reward-footer > .gm-button {
+    margin-left: var(--gm-space-2);
+}

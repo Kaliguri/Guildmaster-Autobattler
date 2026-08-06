@@ -1,0 +1,93 @@
+/* === Экран «Профиль» =======================================================
+   Слот и идентичность на одном листе: вопрос у игрока один — «кем я захожу». */
+.gm-profile__slots {
+    flex-direction: column;
+}
+
+.gm-profile__slot {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Имя слота тянется, кнопка сноса — по содержимому: так строки выстраиваются в колонку без грида. */
+.gm-profile__slot-pick {
+    flex-grow: 1;
+    -unity-text-align: middle-left;
+}
+
+/* Активный слот отмечен каймой, а не цветом текста: цвет здесь уже занят мейн-цветом игрока. */
+.gm-profile__slot-pick--active {
+    border-color: var(--gm-color-accent);
+    border-width: var(--gm-border-2);
+}
+
+.gm-profile__slot-delete {
+    margin-left: var(--gm-space-1);
+    flex-shrink: 0;
+}
+
+.gm-profile__slot-create {
+    flex-grow: 1;
+    opacity: 0.75;
+}
+
+.gm-profile__name {
+    margin-top: var(--gm-space-0);
+    margin-bottom: var(--gm-space-0);
+}
+
+.gm-profile__hint {
+    margin-bottom: var(--gm-space-2);
+}
+
+/* --- Образцы цвета и курсора ---
+   Выбираются глазом, поэтому это плитки, а не выпадающий список: подпись «Лазурный» рядом с лазурным
+   кружком — лишнее слово, а не помощь. */
+.gm-profile__colors,
+.gm-profile__cursors {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-profile__swatch {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    margin-right: var(--gm-space-1);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-swatch-outline);
+}
+
+/* Выбранное отмечено светлой оправой поверх тёмной: на образце любого цвета это читается одинаково. */
+.gm-profile__swatch--picked {
+    border-color: var(--gm-color-accent);
+    border-width: var(--gm-border-2);
+    scale: 1.1 1.1;
+}
+
+.gm-profile__swatch--p1 { background-color: var(--gm-color-player-1); }
+.gm-profile__swatch--p2 { background-color: var(--gm-color-player-2); }
+.gm-profile__swatch--p3 { background-color: var(--gm-color-player-3); }
+.gm-profile__swatch--p4 { background-color: var(--gm-color-player-4); }
+
+.gm-profile__cursor {
+    width: 48px;
+    height: 48px;
+    margin-right: var(--gm-space-1);
+    padding: var(--gm-space-0);
+    -unity-background-scale-mode: scale-to-fit;
+    border-width: var(--gm-border-1);
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.gm-profile__cursor--picked {
+    border-color: var(--gm-color-accent);
+    border-width: var(--gm-border-2);
+}
+
+.gm-profile__actions {
+    flex-direction: row;
+    justify-content: flex-end;
+}

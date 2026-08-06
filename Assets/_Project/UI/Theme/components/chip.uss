@@ -1,0 +1,186 @@
+/* Наведение на выбранный/наведённый ТАБ и чип — той же ролью, чтобы тема не подсунула свой серый. */
+.gm-chip:hover {
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-chip:active {
+    border-color: var(--gm-color-border-inner);
+}
+
+/* ===== ВЫКЛЮЧЕННЫЕ СОСТОЯНИЯ — единым местом (п.9 раунда 4) =====
+   До этого disabled жил только у кнопок и табов, а чипы, слоты и поля ввода выключались
+   «никак»: тема Unity гасила их своим светло-серым и полупрозрачностью, и элемент читался
+   деталью чужого интерфейса. Правило одно на всех: тихий контур, выцветший (но ЧИТАЕМЫЙ)
+   текст, гашение иконки — и opacity: 1, потому что тусклость мы задаём цветом сами.
+   Класс unity-disabled обязателен рядом с :disabled — тема красит именно по нему. */
+.gm-chip:disabled,
+.gm-chip.unity-disabled,
+.gm-slot:disabled,
+.gm-slot.unity-disabled {
+    background-color: var(--gm-color-surface-panel);
+    background-image: none;
+    border-color: var(--gm-color-border-subtle);
+    color: var(--gm-color-disabled-text);
+    opacity: 1;
+}
+
+.gm-chip:disabled .gm-chip__label,
+.gm-chip.unity-disabled .gm-chip__label {
+    color: var(--gm-color-disabled-text);
+}
+
+/* Иконка выключенного чипа гаснет тинтом, а не прозрачностью: прозрачная просвечивала фоном
+   и выглядела грязной поверх плашки. */
+.gm-chip:disabled .gm-chip__icon,
+.gm-chip.unity-disabled .gm-chip__icon {
+    -unity-background-image-tint-color: var(--gm-color-disabled-text);
+}
+
+/* Наведение и выбор усиливают именно КОНТУР — так кнопка читается кнопкой, а не подсвеченным полем. */
+.gm-chip.gm-runbar__tab:hover { border-color: var(--gm-color-hover-border); }
+.gm-chip.gm-runbar__tab.gm-chip--active { border-color: var(--gm-color-accent); }
+
+/* Крайние табы контура НЕ несут: их форму рисует Painter2D клином под скос ленты, а прямоугольная
+   рамка срезала бы угол ступенькой — та самая находка, ради которой заведён SlantedChip. */
+.gm-chip.gm-runbar__tab--first,
+.gm-chip.gm-runbar__tab--last {
+    border-width: 0;
+}
+
+/* Крайние табы ленты (SlantedChip): подсветку рисует Painter2D клином под торец ленты, поэтому
+   прямоугольный background-color у них ВСЕГДА прозрачный, а цвет состояния приходит через
+   custom-свойство --gm-chip-fill. Состояния по-прежнему живут здесь, в USS, не в C#. */
+/* ВСЕ селекторы ниже — из ДВУХ классов (.gm-chip.gm-chip--slanted), и это не стилистика.
+   Правила состояний обычного чипа (.gm-chip:hover и т.д.) объявлены НИЖЕ по файлу, в секции чипов.
+   При равном весе побеждает то, что ниже, — и прямоугольная заливка возвращалась поверх скоса,
+   вылезая за срезанный угол (п.1 раунда 4, тот же класс готчи бил уже трижды).
+   Два класса дают больший вес, и порядок секций перестаёт что-либо решать. */
+/* Обводка клина = то же, что border-width у прямых табов, только по скошенной форме. Без неё
+   крайние табы (карта, настройки) в покое не рисовали НИЧЕГО и не читались кнопками, пока соседи
+   уже стали кнопками (наход. Макса). Цвет ходит по тем же ролям, что и у прямых. */
+.gm-chip.gm-chip--slanted {
+    background-color: rgba(0, 0, 0, 0);
+    --gm-chip-fill: rgba(0, 0, 0, 0);
+    --gm-chip-stroke: var(--gm-color-border-subtle);
+    --gm-chip-stroke-width: 2;
+}
+
+.gm-chip.gm-chip--slanted:hover {
+    background-color: rgba(0, 0, 0, 0);
+    --gm-chip-fill: var(--gm-color-hover-surface);
+    --gm-chip-stroke: var(--gm-color-hover-border);
+}
+
+.gm-chip.gm-chip--slanted:active {
+    background-color: rgba(0, 0, 0, 0);
+    --gm-chip-fill: var(--gm-color-surface-sunken);
+    --gm-chip-stroke: var(--gm-color-border-inner);
+}
+
+.gm-chip.gm-chip--slanted.gm-chip--active {
+    background-color: rgba(0, 0, 0, 0);
+    --gm-chip-fill: var(--gm-color-surface-accent);
+    --gm-chip-stroke: var(--gm-color-accent);
+}
+
+/* Выключенный крайний таб: тема Unity вешает класс unity-disabled, одного :disabled мало. */
+.gm-chip.gm-chip--slanted.unity-disabled,
+.gm-chip.gm-chip--slanted:disabled { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: rgba(0, 0, 0, 0); }
+
+/* Режим, которого ещё нет: гаснет подписью и тинтом иконки — ровно как выключенный чип, но БЕЗ
+   SetEnabled(false). HARD-правило [[ui-feedback]] (реш. 2026-07-20): недоступная кнопка остаётся
+   живой на наведение и нажатие, иначе интерфейс читается как сломанный. Тот же приём, что у
+   .gm-button--unaffordable на привале. */
+.gm-chip--muted .gm-chip__label {
+    color: var(--gm-color-disabled-text);
+}
+.gm-chip--muted .gm-chip__icon {
+    -unity-background-image-tint-color: var(--gm-color-disabled-text);
+}
+
+/* ===== Чип: иконка + подпись как один элемент (единый компонент для фильтров, тегов и пр.) ===== */
+.gm-chip {
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0);
+    /* Было var(--gm-radius-1) — такого токена в теме нет (есть только --gm-radius-0), поэтому
+       скругление молча не применялось. Ставим 0 осознанно: острые углы — объявленное правило
+       темы, а заводить вторую ступень радиуса ради одного чипа — отдельное решение по виду. */
+    border-radius: var(--gm-radius-0);
+    padding: var(--gm-space-1) var(--gm-space-2);
+    /* Плавной подсветки НЕТ намеренно: в UI Toolkit анимация состояния — известный триггер
+       залипания :hover/:active (баг движка, репорты с 2022, официально «в grab bag» без ETA;
+       pseudoStates внутренние, сбросить их из кода невозможно). Подсветка чипа переключается
+       мгновенно — это дешевле, чем держать собственную машину состояний ради 0.12s плавности.
+       Проверка п.5 раунда 4: если после этого залипание осталось — виноват не transition,
+       и находка закрывается как баг движка. */
+}
+
+.gm-chip__icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    margin-right: var(--gm-space-1);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    -unity-background-image-tint-color: var(--gm-color-text-muted);
+}
+
+.gm-chip__label {
+    font-size: var(--gm-font-xs);
+    color: var(--gm-color-text-muted);
+}
+
+.gm-chip:hover { background-color: var(--gm-color-hover-surface); }
+.gm-chip:hover .gm-chip__icon { -unity-background-image-tint-color: var(--gm-color-text); }
+.gm-chip:hover .gm-chip__label { color: var(--gm-color-text); }
+
+/* Нажатие: чип проваливается в тёмное и подсвечивает содержимое латунью — без этого таб отвечал
+   только на наведение, и клик не читался вовсе (наход. Макса, раунд 3, п.9). */
+.gm-chip:active { background-color: var(--gm-color-surface-sunken); }
+.gm-chip:active .gm-chip__icon { -unity-background-image-tint-color: var(--gm-color-accent); }
+.gm-chip:active .gm-chip__label { color: var(--gm-color-text-interactive); }
+
+.gm-chip--active { background-color: var(--gm-color-surface-raised); }
+.gm-chip--active .gm-chip__icon { -unity-background-image-tint-color: var(--gm-color-accent); }
+.gm-chip--active .gm-chip__label { color: var(--gm-color-text); -unity-font-style: bold; }
+
+/* Малый размер (--sm): теги юнита и прочие «вторичные» чипы. Тот же компонент, тот же вид,
+   просто компактнее — подпись xxs вместо xs, отступы тоньше. Иконка 24 (была 16 — на 1080p
+   силуэт тега не читался; +50% по решению Макса, раунд 2). */
+.gm-chip--sm { padding: 0 var(--gm-space-0); }
+.gm-chip--sm .gm-chip__icon {
+    width: 24px;
+    height: 24px;
+    margin-right: var(--gm-space-0);
+}
+.gm-chip--sm .gm-chip__label { font-size: var(--gm-font-xxs); }
+
+/* Режим «скрытый» (--collapsible, лента режимов): подпись видна ТОЛЬКО у активного чипа. Иконка
+   отдаёт правый отступ, пока подписи нет, и возвращает его, когда подпись появляется. */
+.gm-chip--collapsible .gm-chip__label { display: none; }
+.gm-chip--collapsible .gm-chip__icon { margin-right: 0; }
+.gm-chip--collapsible.gm-chip--active .gm-chip__label { display: flex; }
+.gm-chip--collapsible.gm-chip--active .gm-chip__icon { margin-right: var(--gm-space-1); }
+
+/* Чип «ещё N тегов»: тот же малый чип, но подпись латунью — видно, что он кликабельно-наводимый. */
+.gm-tag--more .gm-chip__label {
+    color: var(--gm-color-accent);
+    -unity-font-style: bold;
+}
+
+/* Тег юнита = ТОТ ЖЕ компонент Chip, что фильтры инвентаря и лента режимов сверху — только в
+   малом размере (.gm-chip--sm). Один источник вида, разный масштаб: единство стиля обеспечивает
+   компонент, а не копипаста. Раньше тег собирался отдельным VisualElement с инлайн-стилями в C#,
+   отсюда и был рассинхрон с табами.
+   Иконки — game-icons.net (Lorc/Delapouite/sbed), CC BY 3.0; см. Icons-gm/Tags/ATTRIBUTION.txt */
+.gm-tag { margin: var(--gm-space-0) var(--gm-space-1) var(--gm-space-0) 0; }
+
+/* Разделитель осей тегов (Role | DamageType | Playstyle | Mechanic). */
+.gm-tag-sep {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-xs);
+    opacity: 0.4;
+    margin: 0 var(--gm-space-0);
+}

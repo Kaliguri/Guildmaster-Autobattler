@@ -1,8 +1,53 @@
 /* ============================================================================
- * Агрегатор дизайн-системы: собирает три яруса в правильном порядке.
- * Экраны/тема ссылаются на ЭТОТ файл, а не на три по отдельности.
- * Порядок обязателен: primitives → semantic → components.
+ * Агрегатор дизайн-системы. Экраны/тема ссылаются на ЭТОТ файл, а не на части.
+ *
+ * ПОРЯДОК НЕСУЩИЙ, и это не стилистика: при равной специфичности USS выигрывает импортированный
+ * ПОЗЖЕ. Перестановка строки здесь молча меняет вид там, где никто ничего не правил, поэтому
+ * порядок закреплён тестом `UiStateGateTests.Порядок_ярусов_темы_не_менялся`.
+ *
+ * Ярусы:
+ *   1. примитивы   — сырые рампы и шкалы;
+ *   2. семантика   — роли; только её и читают компоненты;
+ *   3. компоненты  — блок на файл;
+ *   4. экраны      — экран на файл, и они перебивают компоненты (частное поверх общего).
+ *
+ * До 06.08.2026 ярусы 3 и 4 лежали одной лентой на 3994 строки, и это стоило двенадцати
+ * селекторов, объявленных дважды: в такой длине не видно, что правило уже есть выше.
  * ========================================================================== */
 @import url("tokens.primitives.uss");
 @import url("tokens.semantic.uss");
-@import url("components.uss");
+
+/* --- Компоненты. Порядок повторяет прежний порядок появления в components.uss. --- */
+@import url("components/screen.uss");
+@import url("components/layout.uss");
+@import url("components/panel.uss");
+@import url("components/button.uss");
+@import url("components/chip.uss");
+@import url("components/tab.uss");
+@import url("components/unity.uss");
+@import url("components/row.uss");
+@import url("components/text.uss");
+@import url("components/card.uss");
+@import url("components/slot.uss");
+@import url("components/tooltip.uss");
+@import url("components/sheet.uss");
+
+/* --- Экраны. Идут ПОСЛЕ компонентов: экран уточняет общий вид, а не наоборот. --- */
+@import url("screens/settings.uss");
+@import url("screens/loadout.uss");
+@import url("screens/reward.uss");
+@import url("screens/event.uss");
+@import url("screens/continue.uss");
+@import url("screens/shop.uss");
+@import url("screens/chest.uss");
+@import url("screens/outcome.uss");
+@import url("screens/mainmenu.uss");
+@import url("screens/newgame.uss");
+@import url("screens/guilds.uss");
+@import url("screens/hub.uss");
+@import url("screens/boot.uss");
+@import url("screens/runbar.uss");
+@import url("screens/coop.uss");
+@import url("screens/profile.uss");
+@import url("screens/confirm.uss");
+@import url("screens/dev.uss");

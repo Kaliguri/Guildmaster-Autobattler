@@ -1,0 +1,192 @@
+/* --- Карточка релика (плейсхолдер-спрайт + подпись; primary=спрайт по дизайну) --- */
+.gm-card {
+    width: 76px;
+    height: 88px;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+    border-radius: var(--gm-radius-0);
+    margin: var(--gm-space-1);
+    align-items: center;
+    justify-content: flex-end;
+    padding: var(--gm-space-1);
+}
+
+.gm-card:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+/* Надетая/выбранная: подсветка того же аутлайна. */
+.gm-card--current {
+    border-color: var(--gm-color-accent);
+}
+
+.gm-card--selected {
+    border-color: var(--gm-color-focus-ring);
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-card__sprite {
+    flex-grow: 1;
+    width: 100%;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-card__name {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* Карточка витрины — крупная (фокус экрана: показываем анимированный спрайт персонажа).
+   Пропорция ближе к карте таро, чем к плитке: тот же язык, что у грида инвентаря. */
+.gm-card--reward {
+    width: 240px;
+    height: 330px;
+    margin: var(--gm-space-2);
+}
+
+/* ============================================================================
+ * Карточка сосуда (VesselCard). Экран хаба лоадаута, ради которого писались эти классы,
+ * удалён (аудит 2026-07-26, R1-21) — его заменил трёхколоночный инвентарь. Осталось ровно
+ * то, что читает живой контрол; остальная секция .gm-hub-* ушла вместе с экраном.
+ * ========================================================================== */
+
+/* Карточка сосуда: имя сверху, надетый релик (иконка+имя) снизу. */
+.gm-hub-vessel {
+    width: 130px;
+    height: 116px;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+    border-radius: var(--gm-radius-0);
+    padding: var(--gm-space-2);
+    justify-content: space-between;
+}
+
+.gm-hub-vessel:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+/* Имя сосуда: перенос в 2 строки вместо агрессивного эллипсиса (длинные классы —
+   «Криомант»/«Защитник» — не влезают одной строкой в компактную карточку). */
+.gm-hub-vessel__name {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    -unity-font-style: bold;
+    white-space: normal;
+}
+
+.gm-hub-vessel__relic {
+    flex-direction: row;
+    align-items: center;
+}
+
+.gm-hub-vessel__relic-icon {
+    width: 28px;
+    height: 28px;
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-subtle);
+    -unity-background-scale-mode: scale-to-fit;
+    margin-right: var(--gm-space-2);
+    flex-shrink: 0;
+}
+
+.gm-hub-vessel__relic-name {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+}
+
+/* Скроллбар грида карт вида не переопределяет: он приходит из общего правила контрола выше
+   (искать «СКРОЛЛБАР — ОДНО ПРАВИЛО»). Прежняя копия правил жила здесь и расходилась бы с ним. */
+
+/* --- Таро-карточка релика: кайма-в-кайме, номер аркана в углу, титул на нижней плашке --- */
+.gm-arcana-card {
+    width: var(--gm-card-width);
+    height: 227px;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+    border-radius: var(--gm-radius-0);
+    margin: var(--gm-card-gap);
+    padding: var(--gm-space-1);
+    flex-direction: column;
+}
+
+.gm-arcana-card:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+/* Выбранная (ЛКМ) — латунная рамка + лёгкая заливка. */
+.gm-arcana-card--selected {
+    border-color: var(--gm-color-focus-ring);
+    background-color: var(--gm-color-hover-surface);
+}
+
+
+/* Заблокированная (не открытая) карта: тусклая, в центре — замок вместо арта, без номера/титула. */
+.gm-arcana-card--locked {
+    opacity: 0.45;
+}
+
+.gm-arcana-card--locked .gm-arcana-card__art {
+    background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/LockGold.png");
+    -unity-background-image-tint-color: var(--gm-color-text-muted);
+    width: 40px;
+    flex-grow: 0;
+    height: 40px;
+}
+
+/* Внутренняя рамка вокруг арта — вторая кайма таро. */
+.gm-arcana-card__frame {
+    flex-grow: 1;
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color-inner);
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.gm-arcana-card__art {
+    flex-grow: 1;
+    width: 100%;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* Номер аркана (по ID релика) — латунь, верхний-правый угол арта. */
+.gm-arcana-card__num {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    color: var(--gm-color-heading-accent);
+    font-size: var(--gm-font-xs);
+}
+
+/* Нижняя плашка титула: отделена латунной линией сверху. Высота ФИКСИРОВАНА под две строки и текст
+   центрирован по вертикали — иначе 1-строчные и 2-строчные имена давали карты разной высоты (ряд скакал).
+   Теперь резерв всегда «как под 2 строки», и одна строка садится по центру того же места. */
+.gm-arcana-card__plaque {
+    height: 44px;
+    flex-shrink: 0;
+    justify-content: center;
+    border-top-width: var(--gm-border-1);
+    border-top-color: var(--gm-color-border-frame);
+    margin-top: var(--gm-space-1);
+    padding-top: var(--gm-space-1);
+}
+
+/* Титул таро-карты: очень мелкий (--gm-font-xxs) и с переносом в 2 строки — узкая таро-карта не
+   вмещает длинные имена («THE LIGHT SHEPHERD») в одну строку, а обрезать эллипсисом Макс не хочет. */
+.gm-arcana-card__title {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-xxs);
+    -unity-text-align: middle-center;
+    white-space: normal;
+    overflow: hidden;
+}

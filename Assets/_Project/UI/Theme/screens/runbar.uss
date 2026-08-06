@@ -1,0 +1,114 @@
+/* Глобальная панель забега: тот же вид, что топбар инвентаря, но абсолютно закреплён сверху с фикс-высотой. */
+.gm-runbar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: var(--gm-topbar-height);
+}
+
+/* Лента-островок по центру: выступает ниже кромки бара, как накладка (реф TFT). */
+.gm-runbar__ribbon {
+    flex-shrink: 0;
+    height: 64px;
+    /* Прижата к верхней кромке бара: при вертикальной центровке лента вылезала ВВЕРХ за край экрана
+       и там срезалась. Свисать она должна только вниз. */
+    align-self: flex-start;
+    /* Вертикальные поля держат подсветку табов внутри кромки ленты. Боковых полей НЕТ: крайние табы
+       (SlantedChip) сами повторяют скошенный торец и обязаны доходить до него вплотную — иначе клин
+       подсветки не совпадёт с углом ленты. Обводку торца они не перекрывают: вершина клина таба
+       на 3px внутри за счёт вертикального поля. */
+    padding: 3px 0;
+    align-items: stretch;
+    justify-content: center;
+}
+
+/* Иконка-режим: квадратный слот, состояние — тинтом монохромной иконки, не вторым файлом. */
+/* Лента режимов = чипы в «скрытом» режиме (.gm-chip--collapsible): иконка всегда, подпись — только
+   у активного. Здесь только зазор между табами; весь вид/отклик берёт единый .gm-chip. */
+/* Таб ленты — САМОСТОЯТЕЛЬНАЯ КНОПКА (п.2 раунда 4). Раньше границы обозначали палочки-разделители
+   между табами: они рисовали сетку, но кнопкой таб от этого не становился — не было ни своей формы,
+   ни своей рамки. Теперь у каждого таба тихий контур из общего источника (--gm-outline-*) и зазор
+   между соседями; палочки из разметки убраны, остался один смысловой разделитель перед настройками.
+   Почему контур ТИХИЙ, а не strong: пять сильных рамок подряд внутри уже обведённой ленты снова
+   дают решётку — ровно то, за что лента была забракована в раунде 3. */
+.gm-runbar__tab {
+    margin: 0 2px;
+    padding: 0 var(--gm-space-2);
+    justify-content: center;
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-subtle);
+    border-radius: var(--gm-radius-0);
+}
+
+/* Таб настроек — ТОЛЬКО иконка: подпись не появляется даже в активном состоянии. Настройки не
+   режим забега, их «Меню» подписью читалось шестым табом (наход. Макса, раунд 3, п.10).
+   Селектор с ТРЕМЯ классами обязателен: правило .gm-chip--collapsible.gm-chip--active .gm-chip__label
+   объявлено НИЖЕ по файлу (секция чипов идёт после секции ленты) и при равном весе побеждает
+   порядком — подпись «Меню» возвращалась в активном состоянии. */
+.gm-runbar__tab--menu .gm-chip__label,
+.gm-chip--collapsible.gm-runbar__tab--menu.gm-chip--active .gm-chip__label { display: none; }
+.gm-runbar__tab--menu .gm-chip__icon,
+.gm-chip--collapsible.gm-runbar__tab--menu.gm-chip--active .gm-chip__icon { margin-right: 0; }
+
+/* Крайние табы прижаты к торцам ленты — иначе клин подсветки повис бы в воздухе, не совпав с углом. */
+.gm-runbar__tab--first { padding-left: var(--gm-space-2); margin-left: 0; }
+.gm-runbar__tab--last  { padding-right: var(--gm-space-2); margin-right: 0; }
+
+/* Иконки режимов — game-icons.net (Lorc, Delapouite), CC BY 3.0, белый силуэт; тинт даёт состояние чипа. */
+.gm-runbar__tab--map        .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/treasure-map.png"); }
+.gm-runbar__tab--battle     .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/crossed-swords.png"); }
+.gm-runbar__tab--inventory  .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/knapsack.png"); }
+.gm-runbar__tab--menu       .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/cog.png"); }
+.gm-runbar__tab--tactics    .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/rally-the-troops.png"); }
+.gm-runbar__tab--compendium .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/book-cover.png"); }
+
+/* Разделитель перед бургером: он открывает модалку, а не переключает режим. */
+.gm-runbar__sep {
+    width: 2px;
+    height: 32px;
+    background-color: var(--gm-color-border-subtle);
+    margin: 0 var(--gm-space-2);
+    /* Лента растягивает детей по высоте (align-items: stretch), а у палочки высота фиксированная —
+       без этого она прилипала к верхнему краю вместо середины (наход. Макса). */
+    align-self: center;
+}
+
+/* Капсула ресурса (золото / перезапуски): компактный минимум, большие значения расширяют её сами. */
+.gm-runbar__capsule {
+    height: 40px;
+    min-width: 132px;
+    /* Горизонтальный padding больше вылета скоса (10), иначе значение наезжает на клин торца. */
+    padding: 0 var(--gm-space-3);
+    margin-left: var(--gm-space-2);
+    justify-content: center;
+}
+
+.gm-runbar__capsule-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-right: var(--gm-space-1);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Векторные, как и режимы: пиксельные Honeti-иконки рядом с векторной лентой выдавали два разных
+   набора в одной полосе. Цвет — тинтом, поэтому силуэты остаются белыми. */
+.gm-runbar__capsule-icon--gold {
+    background-image: url("../../Art/UI/Icons-gm/Bar/two-coins.png");
+    -unity-background-image-tint-color: var(--gm-color-accent);
+}
+
+.gm-runbar__capsule-icon--hp {
+    background-image: url("../../Art/UI/Icons-gm/Bar/hearts.png");
+    -unity-background-image-tint-color: var(--gm-color-danger);
+}
+
+.gm-runbar__capsule-value {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    -unity-font-style: bold;
+    margin: 0;
+}

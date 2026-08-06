@@ -1,0 +1,66 @@
+/* Прежний блок .gm-topbar* (девять правил) снят: верхнюю панель забега рисует RunModeBar
+ * со своими классами .gm-runbar*, а старую разметку удалили ещё при редизайне 2026-07-20 —
+ * стили пережили её и держались ни на чём (аудит 2026-07-26, волна 3). Переменная
+ * --gm-topbar-height жива: по ней отступают тела экранов. */
+
+/* ============================================================================
+ * Слот (компонент Slot): рамка-квадрат с опц. иконкой. Пустой = плейсхолдер.
+ * ========================================================================== */
+
+/* Слот — ТИХИЙ аутлайн: слотов на экране много (способности, улучшения, запас), и сильная
+   латунная кайма у каждого превращала правую панель в решётку. Заполненный слот с иконкой
+   сам по себе читается; пустой — это тихий плейсхолдер, а не акцент. */
+.gm-slot {
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color-subtle);
+    border-radius: var(--gm-radius-0);
+    margin: var(--gm-space-1);
+}
+
+/* Наведение/выбор слота (запас реликвий в хабе): разгорается до сильного аутлайна. */
+.gm-slot:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+.gm-slot--selected {
+    border-color: var(--gm-color-focus-ring);
+    background-color: var(--gm-color-hover-surface);
+}
+
+/* Ghost перетаскиваемой реликвии (лоадаут-хаб): иконка под курсором во время драга. */
+.gm-drag-ghost {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    -unity-background-scale-mode: scale-to-fit;
+    opacity: 0.85;
+}
+
+.gm-slot__icon {
+    flex-grow: 1;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* Sm вырос 40 → 60 (реш. Макса, раунд 3): в правой панели инвентаря на 1080p иконка способности
+   в слоте 40px не читалась. Компактный ряд слотов всё равно остаётся вдвое меньше Md. */
+.gm-slot--sm {
+    width: 60px;
+    height: 60px;
+}
+
+.gm-slot--md {
+    width: 76px;
+    height: 76px;
+}
+
+.gm-slot--lg {
+    width: 92px;
+    height: 92px;
+}
+
+/* Ряд слотов (запас/баннеры): перенос по ширине, БЕЗ flex-grow (не распирает панель). */
+.gm-slot-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+}

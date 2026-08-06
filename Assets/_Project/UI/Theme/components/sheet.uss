@@ -1,0 +1,59 @@
+/* === КОНТАКТНЫЙ ЛИСТ (дев-инструмент) =======================================
+ * Раскладка листа состояний: строка на элемент, ячейка на состояние. Живёт поверх реальной панели
+ * в play, поэтому фон непрозрачный — иначе за образцами читается бой или меню и цвет не сверить.
+ * Только раскладка и подписи: сами образцы обязаны выглядеть ровно так же, как в игре, и ни одно
+ * правило отсюда их вида касаться не должно.
+ * ========================================================================== */
+.gm-sheet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--gm-color-surface-panel);
+    padding-left: var(--gm-space-3);
+    padding-right: var(--gm-space-3);
+    padding-top: var(--gm-space-2);
+}
+
+.gm-sheet__title {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Перенос обязателен: у пунктов меню ширина под 500px, и шесть состояний в ряд уезжают за кромку
+   экрана — на первом же прогоне три образца налезли друг на друга и читались как один. */
+.gm-sheet__row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-sheet__caption {
+    width: 300px;
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-xxs);
+    white-space: normal;
+}
+
+.gm-sheet__cell {
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    min-height: 96px;
+    margin-right: var(--gm-space-2);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-sheet__cell-caption {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-xxs);
+    margin-top: var(--gm-space-0);
+}
+
+.gm-sheet__unknown {
+    color: var(--gm-color-text-interactive);
+    font-size: var(--gm-font-xs);
+}
