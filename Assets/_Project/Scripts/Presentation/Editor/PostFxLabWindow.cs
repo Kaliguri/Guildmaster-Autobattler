@@ -231,6 +231,7 @@ namespace Guildmaster.Presentation.Editor
             _phase += dt * Mathf.Max(0.01f, _playSpeed);
             if (_phase > 1f) _phase -= 1f;
 
+            if (_root == null) return;   // стенд снесён — фазе некуда приезжать
             _applyPhase?.Invoke(_phase);
             Repaint();
         }
@@ -351,7 +352,9 @@ namespace Guildmaster.Presentation.Editor
                     if (!Mathf.Approximately(phase, _phase)) { _phase = phase; _playing = false; }
                     _playSpeed = EditorGUILayout.Slider("Скорость", _playSpeed, 0.05f, 2f);
                 }
-                _applyPhase?.Invoke(_phase);
+
+                // Только по живому стенду: ручки выше могли снести его прямо в этом же кадре GUI.
+                if (_root != null) _applyPhase?.Invoke(_phase);
 
                 _background = EditorGUILayout.ColorField("Фон", _background);
                 _zoom       = EditorGUILayout.Slider("Приближение", _zoom, 0.1f, 12f);
@@ -620,6 +623,11 @@ namespace Guildmaster.Presentation.Editor
             if (_preview != null) { _preview.Release(); DestroyImmediate(_preview); _preview = null; }
             if (_root != null) { DestroyImmediate(_root); _root = null; }
             _camera = null; _volume = null;
+
+            // Делегат фазы держит ССЫЛКИ на объекты стенда, и пережить стенд он не имеет права: иначе
+            // следующий же кадр GUI дёрнет его по уничтоженным объектам. Собирается он вместе с ячейкой
+            // и умирает вместе с ней.
+            _applyPhase = null;
         }
 
         /// <summary>Кадр стенда. Свечение подаётся боевым путём — через шов тела, не записью в материал.</summary>
@@ -863,6 +871,10 @@ namespace Guildmaster.Presentation.Editor
         /// </summary>
         static void SetFloat(GameObject go, string property, float value)
         {
+            // Объект мог уйти вместе со стендом раньше, чем до него добрался делегат фазы: сравнение с
+            // null у Unity-объектов ловит и уничтоженные, а не только пустые ссылки.
+            if (go == null) return;
+
             var renderer = go.GetComponentInChildren<Renderer>(true);
             if (renderer == null) return;
 
