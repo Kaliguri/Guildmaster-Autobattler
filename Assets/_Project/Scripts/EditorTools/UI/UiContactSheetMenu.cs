@@ -22,8 +22,33 @@ namespace Guildmaster.UI.EditorTools
                 return;
             }
 
+            Run(UiContactSheetRunner.Job.ContactSheet);
+        }
+
+        /// <summary>
+        /// Лестница громкости: одна панель на трёх насыщенностях фона.
+        /// </summary>
+        /// <remarks>
+        /// Отдельным пунктом, а не страницей листа: лист отвечает на «как выглядит элемент», а это —
+        /// на «насколько звонко звучит интерфейс в целом». Вопросы разные, и смешивать их в одном
+        /// прогоне значит каждый раз снимать лишнее.
+        /// </remarks>
+        [MenuItem("Alebardium/UI/Colour Ladder", priority = 101)]
+        public static void CaptureLadder()
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                Debug.LogError("[ColourLadder] Нужен play mode: панель интерфейса живёт только в игре.");
+                return;
+            }
+
+            Run(UiContactSheetRunner.Job.ColourLadder);
+        }
+
+        private static void Run(UiContactSheetRunner.Job job)
+        {
             var host = new GameObject("~UiContactSheetRunner") { hideFlags = HideFlags.HideAndDontSave };
-            host.AddComponent<UiContactSheetRunner>().Begin();
+            host.AddComponent<UiContactSheetRunner>().Begin(job);
         }
     }
 }

@@ -14,14 +14,28 @@ namespace Guildmaster.DevTools
     /// </remarks>
     public sealed class UiContactSheetRunner : MonoBehaviour
     {
-        /// <summary>Снимает лист и уничтожает себя.</summary>
-        public void Begin() => RunAsync().Forget();
+        /// <summary>Что снимать: полный лист состояний или лестницу громкости фона.</summary>
+        public enum Job
+        {
+            ContactSheet,
+            ColourLadder,
+        }
+
+        private Job _job;
+
+        /// <summary>Снимает заказанное и уничтожает себя.</summary>
+        public void Begin(Job job = Job.ContactSheet)
+        {
+            _job = job;
+            RunAsync().Forget();
+        }
 
         private async UniTaskVoid RunAsync()
         {
             try
             {
-                await UiContactSheet.Capture(this);
+                if (_job == Job.ColourLadder) await UiColourLadder.Capture(this);
+                else await UiContactSheet.Capture(this);
             }
             finally
             {
