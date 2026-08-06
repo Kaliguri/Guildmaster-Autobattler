@@ -64,58 +64,6 @@
     opacity: 0.4;
 }
 
-/* ============================================================================
- * Карточка сосуда (VesselCard). Экран хаба лоадаута, ради которого писались эти классы,
- * удалён (аудит 2026-07-26, R1-21) — его заменил трёхколоночный инвентарь. Осталось ровно
- * то, что читает живой контрол; остальная секция .gm-hub-* ушла вместе с экраном.
- * ========================================================================== */
-
-/* Карточка сосуда: имя сверху, надетый релик (иконка+имя) снизу. */
-.gm-hub-vessel {
-    width: 130px;
-    height: 116px;
-    background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-outline-width);
-    border-color: var(--gm-outline-color);
-    border-radius: var(--gm-radius-0);
-    padding: var(--gm-space-2);
-    justify-content: space-between;
-}
-
-.gm-hub-vessel:hover {
-    border-color: var(--gm-outline-color-hover);
-}
-
-/* Имя сосуда: перенос в 2 строки вместо агрессивного эллипсиса (длинные классы —
-   «Криомант»/«Защитник» — не влезают одной строкой в компактную карточку). */
-.gm-hub-vessel__name {
-    -unity-font-style: bold;
-    white-space: normal;
-}
-
-.gm-hub-vessel__relic {
-    flex-direction: row;
-    align-items: center;
-}
-
-.gm-hub-vessel__relic-icon {
-    width: 28px;
-    height: 28px;
-    background-color: var(--gm-color-surface-sunken);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-subtle);
-    -unity-background-scale-mode: scale-to-fit;
-    margin-right: var(--gm-space-2);
-    flex-shrink: 0;
-}
-
-.gm-hub-vessel__relic-name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-shrink: 1;
-}
-
 /* Скроллбар грида карт вида не переопределяет: он приходит из общего правила контрола выше
    (искать «СКРОЛЛБАР — ОДНО ПРАВИЛО»). Прежняя копия правил жила здесь и расходилась бы с ним. */
 
@@ -213,27 +161,23 @@
  * `VisualElement` не принимал фокус вовсе, и правило `:focus` было бы декорацией.
  * ========================================================================== */
 .gm-card:active,
-.gm-arcana-card:active,
-.gm-hub-vessel:active {
+.gm-arcana-card:active {
     background-color: var(--gm-color-surface-sunken);
     border-color: var(--gm-color-border-inner);
 }
 
 .gm-card:focus,
-.gm-arcana-card:focus,
-.gm-hub-vessel:focus {
+.gm-arcana-card:focus {
     border-color: var(--gm-color-hover-border);
 }
 
 .gm-card:disabled .gm-card__name,
-.gm-arcana-card:disabled .gm-arcana-card__title,
-.gm-hub-vessel:disabled .gm-hub-vessel__name {
+.gm-arcana-card:disabled .gm-arcana-card__title {
     color: var(--gm-color-disabled-text);
 }
 
 /* Недоступная карточка не поднимается под курсором — см. строки настроек. */
 .gm-card:disabled:hover,
-.gm-arcana-card:disabled:hover,
-.gm-hub-vessel:disabled:hover {
+.gm-arcana-card:disabled:hover {
     border-color: var(--gm-color-border-subtle);
 }

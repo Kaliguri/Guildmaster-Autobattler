@@ -58,7 +58,6 @@
 | `Slot` | рамка-квадрат с опц. иконкой (баннеры/запас) | `Size` (Sm/Md/Lg), `SetIcon(Sprite)`, `SetSelected(bool)` |
 | `RelicCard` | карточка релика ГДЕ ПИКАЕМ = **анимированный спрайт** персонажа (план 10 §5), не иконка + имя + состояния | `RelicName`, `Selected`, `Current`, `SetVisual(RenderTexture)`, `SetSprite(Sprite)` |
 | `RelicCardVisualRig` | рендерит боевой `ViewPrefab` юнита в RenderTexture (idle/attack), кадрирует по гизмо-габариту | `Acquire(UnitData)→RT`, `PlayIdle/PlayAttack(rt)`, `Dispose()` |
-| `VesselCard` | сосуд команды: имя + надетый релик, кликабелен | `VesselName`, `RelicName`, `SetRelicIcon`, `Clicked` |
 | `SliderRow` | подпись + слайдер + авто-% (настройки) | `LabelText`, `Value`, `SetValueWithoutNotify(float)` |
 | `TooltipCard` | каркас содержимого подсказки: заголовок, мета, строки, глоссарий | `SetTitle/SetMeta/SetDesc`, `AddLine`, `AddGlossaryEntry` |
 | `Chip` / `SlantedChip` | иконка с подписью: фильтры, теги, лента режимов | `Text`, `SetIcon`, `SetActive(bool)` |

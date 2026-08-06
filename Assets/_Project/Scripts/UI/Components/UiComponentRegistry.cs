@@ -259,7 +259,6 @@ namespace Guildmaster.UI.Components
             New("Карточка арканы", "gm-arcana-card", UiComponentGroup.Cards, Interactive, null,
                 "gm-arcana-card--selected", "gm-arcana-card--locked"),
             New("Строка запаса", "gm-shop__stash-row", UiComponentGroup.Cards, Interactive, null),
-            New("Сосуд во Дворе", "gm-hub-vessel", UiComponentGroup.Cards, Interactive, null),
             New("Слот", "gm-slot", UiComponentGroup.Cards, Interactive, null,
                 "gm-slot--selected", "gm-slot--empty", "gm-slot--sm", "gm-slot--md", "gm-slot--lg"),
             New("Строка дропа", "gm-reward-drop__row", UiComponentGroup.Cards, Interactive, null,
@@ -371,8 +370,8 @@ namespace Guildmaster.UI.Components
         /// </summary>
         /// <remarks>
         /// До перевода на реестр список кликабельных классов лежал в самом <c>UiSoundSystem</c> и
-        /// отставал: сосуд во Дворе, карточка лавки, строка пикера, строка дропа и свотч профиля
-        /// кликались молча. Ровно тот случай, ради которого перечень и заводился.
+        /// отставал: карточка лавки, строка пикера, строка дропа и свотч профиля кликались молча.
+        /// Ровно тот случай, ради которого перечень и заводился.
         ///
         /// <para>Отдаётся массивом, а не <c>IEnumerable</c> с <c>yield</c>: потребитель ходит по нему
         /// на каждое движение указателя, и энумератор аллоцировал бы на кадр.</para>
