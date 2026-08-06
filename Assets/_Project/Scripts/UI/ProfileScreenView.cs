@@ -162,8 +162,9 @@ namespace Guildmaster.UI
 
                     var pick = new Components.PlateButton { text = slot.Name };
                     pick.AddToClassList("gm-button");
-                    pick.AddToClassList("gm-profile__slot-pick");
-                    if (slot.IsActive) pick.AddToClassList("gm-profile__slot-pick--active");
+                    // Активный слот — ГЛАВНАЯ кнопка: «текущий профиль» и «главное действие строки»
+                    // здесь одно и то же, и отдельный класс означал бы то же самое вторым способом.
+                    if (slot.IsActive) pick.AddToClassList("gm-button--primary");
                     pick.clicked += () => onSelect?.Invoke(slot.Id);
                     row.Add(pick);
 

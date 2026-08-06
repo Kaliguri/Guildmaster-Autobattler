@@ -51,7 +51,6 @@ namespace Guildmaster.UI
                 CampAction action = CampActions[i];
                 var btn = new PlateButton { text = L(LabelKey(action), Fallback(action)) };
                 btn.AddToClassList("gm-button");
-                btn.AddToClassList("gm-event-choice");
                 btn.clicked += () => OnAction(action);
                 actions?.Add(btn);
                 buttons[i] = (action, btn);

@@ -50,7 +50,7 @@
             <!-- «Начать» = иконка боя + подпись (иконка та же, что у таба «Бой» в ленте — один язык).
                  Текст живёт в дочернем Label, а не в атрибуте Button: у кнопки с детьми собственный
                  текст рисуется поверх содержимого и наезжает на иконку. -->
-            <gm:PlateButton name="btn-start" class="gm-loadout__start-btn">
+            <gm:PlateButton name="btn-start" class="gm-button gm-button--primary">
                 <ui:VisualElement class="gm-loadout__start-icon" picking-mode="Ignore" />
                 <ui:Label name="btn-start-label" text="Начать" class="gm-loadout__start-label" picking-mode="Ignore" />
             </gm:PlateButton>

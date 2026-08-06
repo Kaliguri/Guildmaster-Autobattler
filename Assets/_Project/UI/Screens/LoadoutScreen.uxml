@@ -25,9 +25,9 @@
                  раскладки и были единственным местом, где кнопка выглядела чужой (наход. Макса
                  05.08.2026). Заодно ушли инлайн-стили и английские подписи. -->
             <ui:VisualElement class="gm-button-row">
-                <gm:PlateButton name="btn-accept" text="Принять" class="gm-button gm-button--fill" />
-                <gm:PlateButton name="btn-save" text="Сохранить" class="gm-button gm-button--fill" />
-                <gm:PlateButton name="btn-close" text="Закрыть" class="gm-button gm-button--fill" />
+                <gm:PlateButton name="btn-accept" text="Принять" class="gm-button" />
+                <gm:PlateButton name="btn-save" text="Сохранить" class="gm-button" />
+                <gm:PlateButton name="btn-close" text="Закрыть" class="gm-button" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

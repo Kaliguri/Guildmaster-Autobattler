@@ -12,7 +12,8 @@
     margin-bottom: var(--gm-space-1);
 }
 
-.gm-guilds__slot-pick {
+/* Раскладывает строка, а не кнопка: см. профиль. */
+.gm-guilds__slot > .gm-button {
     flex-grow: 1;
     -unity-text-align: middle-left;
 }

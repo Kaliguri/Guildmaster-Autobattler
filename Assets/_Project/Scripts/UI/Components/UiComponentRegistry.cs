@@ -64,18 +64,31 @@ namespace Guildmaster.UI.Components
         /// </remarks>
         public string Base { get; }
 
+        /// <summary>
+        /// Техническая форма: существует в коде, но в наборе для сборки экранов её нет.
+        /// </summary>
+        /// <remarks>
+        /// Ровно один случай — <c>gm-plate-button</c>: контрол рисует фигуру мешем, потому что USS не
+        /// умеет градиент, и голым в игре не встречается никогда. Из реестра его убрать нельзя (от
+        /// него наследует вкладка, и гейт обязан видеть цепочку), а в витрине ему делать нечего:
+        /// «А вот "пластина" — это зачем?» (Макс, 06.08.2026). Отсюда флаг, а не удаление.
+        /// </remarks>
+        public bool Technical { get; }
+
         /// <summary>Элемент принимает указатель: по нему кликают, он звучит, он обязан иметь состояния.</summary>
         public bool IsInteractive => Required != UiElementState.None;
 
         internal UiComponentEntry(string label, string block, UiComponentGroup group,
-                                  UiElementState required, string baseBlock, string[] variants)
+                                  UiElementState required, string baseBlock, string[] variants,
+                                  bool technical = false)
         {
             Label    = label;
             Block    = block;
             Group    = group;
             Required = required;
-            Base     = baseBlock;
-            Variants = variants ?? Array.Empty<string>();
+            Base      = baseBlock;
+            Technical = technical;
+            Variants  = variants ?? Array.Empty<string>();
         }
     }
 
@@ -144,18 +157,26 @@ namespace Guildmaster.UI.Components
         private static readonly UiComponentEntry[] Entries =
         {
             // --- КНОПКИ ---
-            New("Кнопка", "gm-button", UiComponentGroup.Buttons, Interactive, null,
-                "gm-button--primary", "gm-button--danger", "gm-button--fill", "gm-button--display",
-                "gm-button--unaffordable"),
-            New("Пластина", "gm-plate-button", UiComponentGroup.Buttons, Interactive, null),
-            New("Пункт главного меню", "gm-mainmenu__btn", UiComponentGroup.Buttons, Interactive, OfButton,
-                "gm-mainmenu__btn--primary", "gm-mainmenu__btn--group-start"),
-            New("Начать забег", "gm-loadout__start-btn", UiComponentGroup.Buttons, Interactive, OfPlate),
-            New("Сортировка инвентаря", "gm-loadout__sort", UiComponentGroup.Buttons, Interactive, OfButton),
-            New("Вариант события", "gm-event-choice", UiComponentGroup.Buttons, Interactive, OfButton),
-            New("Слот профиля", "gm-profile__slot-pick", UiComponentGroup.Buttons, Interactive, OfButton,
-                "gm-profile__slot-pick--active"),
-            New("Слот гильдии", "gm-guilds__slot-pick", UiComponentGroup.Buttons, Interactive, OfButton),
+            // НАБОР, А НЕ СПИСОК МЕСТ (правило Макса 06.08.2026). Кнопка одна, у неё РОЛЬ и РАЗМЕР,
+            // а экран берёт нужную и раскладывает её у себя. Прежде здесь стояли пять записей вида
+            // «пункт главного меню», «начать забег», «слот профиля» — то есть привязки к экранам,
+            // и витрина показывала не набор, из которого собирают, а перепись того, что уже собрано.
+            // Дословно: «У нас должны быть вариации кнопок. Кнопка 1, Кнопка 2, Кнопка 3. Мы
+            // вставляем их куда надо».
+            //
+            // «Вариация N» в подписи — задел: вторая вариация роли появится, и ей найдётся номер, а
+            // не новое существительное. Роль пишется в скобках, потому что имя обязано отвечать на
+            // вопрос «какую брать сюда» без заглядывания в картинку.
+            New("Кнопка (Обычная) — Вариация 1", "gm-button", UiComponentGroup.Buttons, Interactive, null,
+                "gm-button--display", "gm-button--unaffordable"),
+            New("Кнопка (Главная) — Вариация 1", "gm-button--primary", UiComponentGroup.Buttons,
+                Interactive, OfButton),
+            // Единственная роль, которую держит НЕОБРАТИМОСТЬ, а не иерархия действий: красный тут
+            // значит «отменить будет нечем», а не «важнее соседней кнопки».
+            New("Кнопка (Для удаления / необратимого) — Вариация 1", "gm-button--danger",
+                UiComponentGroup.Buttons, Interactive, OfButton),
+            NewTechnical("Пластина (форма, не элемент набора)", "gm-plate-button", UiComponentGroup.Buttons,
+                Interactive),
 
             // --- ВКЛАДКИ И ЧИПЫ ---
             New("Вкладка", "gm-tab", UiComponentGroup.Tabs, Interactive, OfPlate, "gm-tab--active"),
@@ -255,5 +276,10 @@ namespace Guildmaster.UI.Components
                                             UiElementState required, string baseBlock,
                                             params string[] variants)
             => new(label, block, group, required, baseBlock, variants);
+
+        /// <summary>Форма, известная реестру, но не входящая в набор для сборки экранов.</summary>
+        private static UiComponentEntry NewTechnical(string label, string block, UiComponentGroup group,
+                                                     UiElementState required)
+            => new(label, block, group, required, null, null, technical: true);
     }
 }

@@ -34,16 +34,11 @@ namespace Guildmaster.DevTools
         {
             // Кнопки. В UXML экраны пишут `<gm:PlateButton class="gm-button ...">`: класс несёт вид,
             // контрол — форму пластины. Поэтому образец обязан иметь оба.
+            // РОЛИ. Класс роли всегда идёт вместе с gm-button: роль уточняет кнопку, а не заменяет её.
             ["gm-button"]              = () => PlateBtn(),
-            ["gm-plate-button"]        = () => new PlateButton { text = Sample },   // голая форма: в игре одна не встречается
-            ["gm-mainmenu__btn"]       = () => PlateBtn("gm-mainmenu__btn", "gm-button--display"),
-            ["gm-event-choice"]        = () => PlateBtn("gm-event-choice"),         // EventScreenView.cs:74
-            ["gm-profile__slot-pick"]  = () => PlateBtn("gm-profile__slot-pick"),   // ProfileScreenView.cs:165
-            ["gm-guilds__slot-pick"]   = () => PlateBtn("gm-guilds__slot-pick"),    // GuildSelectScreenView.cs:100
-            ["gm-loadout__sort"]       = () => Btn("gm-loadout__sort"),             // LoadoutInventoryScreen.uxml:36
-
-            // Пластина БЕЗ gm-button — так стоит в разметке, и вид у неё оттого другой.
-            ["gm-loadout__start-btn"]  = () => Plate("gm-loadout__start-btn"),      // RunModeBar.uxml:53
+            ["gm-button--primary"]     = () => PlateBtn("gm-button--primary"),
+            ["gm-button--danger"]      = () => PlateBtn("gm-button--danger"),
+            ["gm-plate-button"]        = () => new PlateButton { text = Sample },   // техническая форма
 
             // Вкладки и чипы.
             ["gm-tab"]                 = () => Plate("gm-tab"),                     // SettingsScreen.uxml:13

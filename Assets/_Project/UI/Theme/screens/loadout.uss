@@ -108,26 +108,20 @@
    единственным местом со старым набором, причём на самом видном действии забега.
    min-width держит ширину постоянной: без него кнопка меняла размер вслед за длиной подписи
    в другой локали, и «центр» уезжал (реш. Макса, раунд 2). */
-.gm-loadout__start-btn {
+/* «Начать» бой — ГЛАВНАЯ кнопка (роль из набора), а не свой класс. Здесь остаётся только
+   РАСКЛАДКА: иконка и подпись в ряд, постоянная ширина. Цвет, кайма и отклик приходят с
+   gm-button--primary — до 06.08.2026 они были выписаны отдельно, и самое видное действие забега
+   жило собственным набором правил, расходившимся с остальными главными кнопками.
+   min-width держит ширину постоянной: без него кнопка меняла размер вслед за длиной подписи
+   в другой локали, и «центр» уезжал (реш. Макса, раунд 2). */
+.gm-loadout__battle-center > .gm-button {
     flex-direction: row;
     align-items: center;
     justify-content: center;
     min-width: 220px;
-    color: var(--gm-color-text);
     font-size: var(--gm-font-sm);
     padding: var(--gm-space-1) var(--gm-space-4);
     margin: 0;
-    --gm-plate-fill: var(--gm-color-surface-accent);
-    --gm-plate-stroke: var(--gm-color-hover-border);
-}
-
-.gm-loadout__start-btn:hover {
-    --gm-plate-fill: var(--gm-color-surface-accent-hover);
-    --gm-plate-stroke: var(--gm-color-focus-ring);
-}
-
-.gm-loadout__start-btn:active {
-    --gm-plate-fill: var(--gm-color-surface-accent-active);
 }
 
 .gm-loadout__start-icon {
@@ -320,25 +314,18 @@
 
 /* Сортировка: кнопка «Имя ↓» — клик циклит ключ + переключает стрелку (логика во View).
    Аутлайн и высота — ровно как у поля поиска рядом (тихий контур, 36px): это пара одного тулбара. */
-.gm-loadout__sort {
+/* Кнопка сортировки — ОБЫЧНАЯ кнопка, панель инструментов лишь ужимает её под свою высоту.
+   Свой вид (утопленный фон, тонкая кайма) она держала классом gm-loadout__sort, и это была не
+   роль, а место: «кнопка на панели инструментов инвентаря». Цвет и отклик приходят с gm-button. */
+.gm-loadout__toolbar > .gm-button {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: var(--gm-color-surface-sunken);
-    border-width: var(--gm-outline-width);
-    border-color: var(--gm-outline-color-subtle);
-    border-radius: var(--gm-radius-0);
-    color: var(--gm-color-text);
     font-size: var(--gm-font-xs);
     height: 36px;
     margin: 0;
     padding-left: var(--gm-space-3);
     padding-right: var(--gm-space-3);
-}
-
-.gm-loadout__sort:hover {
-    border-color: var(--gm-outline-color-hover);
-    background-color: var(--gm-color-hover-surface);
 }
 
 /* Грид таро-карточек: перенос по ширине, лево-паковка (владеемые — слева, пустые-локи — далее вправо).

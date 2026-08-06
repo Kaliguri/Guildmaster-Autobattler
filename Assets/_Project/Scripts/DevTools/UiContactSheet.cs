@@ -200,7 +200,9 @@ namespace Guildmaster.DevTools
             var list = new List<UiComponentEntry>();
             foreach (UiComponentEntry entry in UiComponentRegistry.All)
             {
-                if (entry.Group == group) list.Add(entry);
+                // Техническая форма в витрину не идёт: набор показывает то, ИЗ ЧЕГО собирают экраны,
+                // а не всё, что существует в коде.
+                if (entry.Group == group && !entry.Technical) list.Add(entry);
             }
             return list;
         }

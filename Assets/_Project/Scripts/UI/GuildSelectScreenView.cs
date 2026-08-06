@@ -97,7 +97,6 @@ namespace Guildmaster.UI
 
                     var pick = new Components.PlateButton { name = "btn-guild-" + entry.Id, text = label };
                     pick.AddToClassList("gm-button");
-                    pick.AddToClassList("gm-guilds__slot-pick");
                     string captured = entry.Id;
                     pick.clicked += () => onPick?.Invoke(captured);
                     row.Add(pick);

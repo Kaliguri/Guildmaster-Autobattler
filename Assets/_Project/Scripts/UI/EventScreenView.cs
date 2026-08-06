@@ -71,7 +71,6 @@ namespace Guildmaster.UI
                 string result = L(ev.ChoiceResultKey(i), string.Empty);
                 var btn = new PlateButton(() => { onChosen?.Invoke(index); ShowResult(result); }) { text = label };
                 btn.AddToClassList("gm-button");
-                btn.AddToClassList("gm-event-choice");
                 choicesBox?.Add(btn);
             }
 
