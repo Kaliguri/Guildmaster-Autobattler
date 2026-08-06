@@ -21,17 +21,29 @@ namespace Guildmaster.Tests.EditMode.Presentation
         private const float BodyWeight = 0.80f;
         private const float LegsWeight = 0.15f;
 
-        /// <summary>Зоны обычного бойца ростом 1.7, стоящего в <paramref name="x"/> с ногами на нуле.</summary>
+        /// <summary>Резкость по умолчанию — квадрат (решение Макса 06.08.2026).</summary>
+        private const float Sharpness = 2f;
+
+        /// <summary>
+        /// Зоны обычного бойца ростом 1.7, стоящего в <paramref name="x"/> с ногами на нуле. Расчётный и
+        /// живой центры здесь совпадают: расхождение между ними — предмет отдельного теста, а не фон.
+        /// </summary>
         private static ImpactZoneSample[] HumanZones(float x = 0f, float scale = 1f)
         {
             float h = Height * scale;
             return new[]
             {
-                new ImpactZoneSample(new Vector2(x, 0.90f * h), 0.09f * h, HeadWeight),
-                new ImpactZoneSample(new Vector2(x, 0.62f * h), 0.20f * h, BodyWeight),
-                new ImpactZoneSample(new Vector2(x, 0.28f * h), 0.14f * h, LegsWeight),
+                Zone(new Vector2(x, 0.71f * h), 0.09f * h, HeadWeight),
+                Zone(new Vector2(x, 0.56f * h), 0.19f * h, BodyWeight),
+                Zone(new Vector2(x, 0.32f * h), 0.11f * h, LegsWeight),
             };
         }
+
+        private static ImpactZoneSample Zone(Vector2 centre, float radius, float weight)
+            => new ImpactZoneSample(centre, centre, radius, weight);
+
+        /// <summary>Откуда бьёт боец ростом 1.7, стоящий в <paramref name="x"/>: с высоты корпуса.</summary>
+        private static Vector2 AttackerAt(float x) => new Vector2(x, 0.56f * Height);
 
         /// <summary>Сколько раз за <paramref name="rolls"/> сидов выпала каждая зона.</summary>
         private static int[] ZoneHistogram(
@@ -40,7 +52,8 @@ namespace Guildmaster.Tests.EditMode.Presentation
             var counts = new int[zones.Length];
             for (uint s = 1; s <= rolls; s++)
             {
-                var r = ImpactZoneSolver.Solve(attacker, targetCentre, reach, zones, 0.6f, s * 2654435761u);
+                var r = ImpactZoneSolver.Solve(
+                    attacker, attacker, targetCentre, reach, zones, Sharpness, 0.6f, s * 2654435761u);
                 counts[r.ZoneIndex]++;
             }
             return counts;
@@ -55,12 +68,11 @@ namespace Guildmaster.Tests.EditMode.Presentation
         [Test]
         public void Swordsman_ReachingOnlyGiantsLegs_HitsLegs()
         {
-            // Великан втрое выше: корпус на 3.16, ноги на 1.43. Мечник бьёт из своего корпуса (1.05).
+            // Великан втрое выше: корпус на 2.86, ноги на 1.63. Мечник бьёт из своего корпуса (0.95).
             var giant = HumanZones(x: 2.2f, scale: 3f);
-            var swordsman = new Vector2(0f, 0.62f * Height);
 
-            // Круга хватает только до ног: до корпуса 3.05 при радиусе зоны 1.02 — не дотянуться вовсе.
-            var counts = ZoneHistogram(swordsman, new Vector2(2.2f, 0f), reach: 1.9f, zones: giant);
+            // Круга хватает только до ног: до корпуса далеко даже с учётом радиуса его зоны.
+            var counts = ZoneHistogram(AttackerAt(0f), new Vector2(2.2f, 0f), reach: 1.9f, zones: giant);
 
             Assert.That(counts[(int)ImpactZoneKind.Head], Is.Zero,
                 "до головы великана мечник не дотягивается — она обязана выпасть из розыгрыша полностью");
@@ -71,23 +83,78 @@ namespace Guildmaster.Tests.EditMode.Presentation
         }
 
         /// <summary>
-        /// ЧАСТИЧНО накрытая зона не проигрывает автоматически: вес умножается на накрытие линейно,
-        /// поэтому корпус, доступный на четверть, всё ещё бьётся чаще ног, доступных на три четверти —
-        /// шестнадцатикратная разница заявленных весов это перевешивает.
+        /// Резкость работает МОНОТОННО: чем она выше, тем больше ударов уходит в хорошо накрытые ноги и
+        /// меньше — в еле накрытый корпус, хотя заявленный вес корпуса больше в шестнадцать раз.
         /// <para>
-        /// Тест фиксирует ИМЕННО ЭТО поведение, потому что оно неочевидно и легко «чинится» кем-то, кто
-        /// ждал обратного. Если решим, что достижимость должна решать резче, меняется формула в
-        /// <see cref="ImpactZoneSolver"/> — и этот тест обязан упасть, а не промолчать.
+        /// Тест намеренно проверяет ручку, а не одну точку. Абсолютная точка перелома зависит от
+        /// геометрии: в этой конфигурации квадрат уравнивает зоны примерно при 33% накрытия корпуса, и
+        /// привязка теста к «ноги победили» сделала бы его хрупким к сдвигу радиуса на сантиметр. Ломается
+        /// же тут другое — если кто-то вернёт линейность или перепутает знак степени, монотонность
+        /// исчезнет, и тест это поймает.
         /// </para>
         /// </summary>
         [Test]
-        public void PartiallyReachableBody_StillOutweighsWellReachableLegs()
+        public void HigherSharpness_ShiftsHitsFromBarelyReachedBodyToLegs()
         {
             var giant = HumanZones(x: 2.2f, scale: 3f);
-            var counts = ZoneHistogram(new Vector2(0f, 0.62f * Height), new Vector2(2.2f, 0f), 2.6f, giant);
+            var attacker = AttackerAt(0f);
+            var target = new Vector2(2.2f, 0f);
 
-            Assert.That(counts[(int)ImpactZoneKind.Body], Is.GreaterThan(counts[(int)ImpactZoneKind.Legs]),
-                "линейный множитель сохраняет перевес базового веса — это решение, а не случайность");
+            System.Func<float, float> legsShare = sharpness =>
+            {
+                int body = 0, legs = 0;
+                for (uint s = 1; s <= 4000; s++)
+                {
+                    var r = ImpactZoneSolver.Solve(
+                        attacker, attacker, target, 2.6f, giant, sharpness, 0.6f, s * 2654435761u);
+                    if (r.ZoneIndex == (int)ImpactZoneKind.Body) body++;
+                    if (r.ZoneIndex == (int)ImpactZoneKind.Legs) legs++;
+                }
+                return legs / (float)(body + legs);
+            };
+
+            float linear = legsShare(1f);
+            float squared = legsShare(2f);
+            float cubed = legsShare(3f);
+
+            Assert.That(squared, Is.GreaterThan(linear + 0.1f),
+                "квадрат обязан заметно сдвинуть удары в достижимую зону по сравнению с линейной резкостью");
+            Assert.That(cubed, Is.GreaterThan(squared),
+                "куб обязан сдвинуть их ещё дальше — иначе ручка не монотонна");
+            Assert.That(cubed, Is.GreaterThan(0.5f),
+                "при кубе плохо накрытый корпус обязан ПРОИГРАТЬ ногам");
+        }
+
+        /// <summary>
+        /// Выбор зоны считается ТОЛЬКО по расчётным центрам: сдвиг живого якоря (то есть поза, кадр
+        /// анимации, разный FPS) не имеет права перебросить удар в другую часть тела.
+        /// <para>
+        /// Это условие того, что в кооперативе двое видят удар в одну зону. Свяжет кто-нибудь вес с
+        /// живым якорем — тест упадёт здесь, а не всплывёт жалобой «у нас по-разному бьёт».
+        /// </para>
+        /// </summary>
+        [Test]
+        public void ZoneChoice_IgnoresLiveAnchorDrift()
+        {
+            float h = Height;
+            var steady = HumanZones(x: 1.4f);
+            // Тот же боец, но кости уехали: голова свесилась вниз, корпус подался вперёд, ноги согнулись.
+            var drifted = new[]
+            {
+                new ImpactZoneSample(new Vector2(1.4f, 0.71f * h), new Vector2(1.25f, 0.60f * h), 0.09f * h, HeadWeight),
+                new ImpactZoneSample(new Vector2(1.4f, 0.56f * h), new Vector2(1.30f, 0.52f * h), 0.19f * h, BodyWeight),
+                new ImpactZoneSample(new Vector2(1.4f, 0.32f * h), new Vector2(1.48f, 0.26f * h), 0.11f * h, LegsWeight),
+            };
+
+            var attacker = AttackerAt(0f);
+            for (uint s = 1; s <= 1500; s++)
+            {
+                uint seed = s * 2654435761u;
+                var a = ImpactZoneSolver.Solve(attacker, attacker, new Vector2(1.4f, 0f), 2.4f, steady,  Sharpness, 0.6f, seed);
+                var b = ImpactZoneSolver.Solve(attacker, attacker, new Vector2(1.4f, 0f), 2.4f, drifted, Sharpness, 0.6f, seed);
+                Assert.That(b.ZoneIndex, Is.EqualTo(a.ZoneIndex),
+                    $"сид {s}: поза сдвинула ВЫБОР зоны — в кооперативе это разные части тела у двух игроков");
+            }
         }
 
         /// <summary>
@@ -116,10 +183,11 @@ namespace Guildmaster.Tests.EditMode.Presentation
             var zones = HumanZones(x: 1.9f);
             // Бой засчитывает удар на дистанции центров ≤ AttackRange + r_self + r_target.
             const float attackRange = 1.6f, rSelf = 0.3f, rTarget = 0.3f;
-            var attacker = new Vector2(0f, 0.62f * Height);
+            var attacker = AttackerAt(0f);
 
             var result = ImpactZoneSolver.Solve(
-                attacker, new Vector2(1.9f, 0f), attackRange + rSelf + rTarget, zones, 0.6f, 12345u);
+                attacker, attacker, new Vector2(1.9f, 0f), attackRange + rSelf + rTarget, zones,
+                Sharpness, 0.6f, 12345u);
 
             Assert.That(result.Degenerate, Is.False,
                 "показ обязан найти зону там, где бой засчитал удар — иначе формулы разъехались");
@@ -136,11 +204,12 @@ namespace Guildmaster.Tests.EditMode.Presentation
         {
             var zones = HumanZones(x: 3f);
             var target = new Vector2(3f, 0f);
-            var attacker = new Vector2(0f, 1.05f);   // слева от цели
+            var attacker = AttackerAt(0f);   // слева от цели
 
             for (uint s = 1; s <= 3000; s++)
             {
-                var r = ImpactZoneSolver.Solve(attacker, target, 50f, zones, 0.6f, s * 2654435761u);
+                var r = ImpactZoneSolver.Solve(
+                    attacker, attacker, target, 50f, zones, Sharpness, 0.6f, s * 2654435761u);
                 Assert.That(r.Point.x, Is.LessThanOrEqualTo(target.x + 1e-3f),
                     $"сид {s}: удар слева пришёл за дальний край силуэта (x={r.Point.x:F3} > {target.x:F3})");
             }
@@ -151,12 +220,13 @@ namespace Guildmaster.Tests.EditMode.Presentation
         public void Point_NeverLeavesAttackCircle()
         {
             var zones = HumanZones(x: 1.6f);
-            var attacker = new Vector2(0f, 1.05f);
+            var attacker = AttackerAt(0f);
             const float reach = 1.8f;
 
             for (uint s = 1; s <= 3000; s++)
             {
-                var r = ImpactZoneSolver.Solve(attacker, new Vector2(1.6f, 0f), reach, zones, 0.6f, s * 40503u);
+                var r = ImpactZoneSolver.Solve(
+                    attacker, attacker, new Vector2(1.6f, 0f), reach, zones, Sharpness, 0.6f, s * 40503u);
                 Assert.That(Vector2.Distance(attacker, r.Point), Is.LessThanOrEqualTo(reach + 1e-3f),
                     $"сид {s}: точка удара оказалась дальше круга атаки");
             }
@@ -170,8 +240,9 @@ namespace Guildmaster.Tests.EditMode.Presentation
         public void SameSeed_GivesSameResult()
         {
             var zones = HumanZones(x: 1.2f);
-            var a = ImpactZoneSolver.Solve(Vector2.zero, new Vector2(1.2f, 0f), 3f, zones, 0.6f, 987654321u);
-            var b = ImpactZoneSolver.Solve(Vector2.zero, new Vector2(1.2f, 0f), 3f, zones, 0.6f, 987654321u);
+            var at = AttackerAt(0f);
+            var a = ImpactZoneSolver.Solve(at, at, new Vector2(1.2f, 0f), 3f, zones, Sharpness, 0.6f, 987654321u);
+            var b = ImpactZoneSolver.Solve(at, at, new Vector2(1.2f, 0f), 3f, zones, Sharpness, 0.6f, 987654321u);
 
             Assert.That(b.ZoneIndex, Is.EqualTo(a.ZoneIndex));
             Assert.That(b.Point, Is.EqualTo(a.Point));
@@ -185,7 +256,9 @@ namespace Guildmaster.Tests.EditMode.Presentation
         public void UnreachableTarget_IsFlaggedDegenerate()
         {
             var zones = HumanZones(x: 40f);
-            var result = ImpactZoneSolver.Solve(Vector2.zero, new Vector2(40f, 0f), 1.5f, zones, 0.6f, 7u);
+            var at = AttackerAt(0f);
+            var result = ImpactZoneSolver.Solve(
+                at, at, new Vector2(40f, 0f), 1.5f, zones, Sharpness, 0.6f, 7u);
 
             Assert.That(result.Degenerate, Is.True);
             Assert.That(result.ZoneIndex, Is.InRange(0, zones.Length - 1),
@@ -203,7 +276,9 @@ namespace Guildmaster.Tests.EditMode.Presentation
             var seen = new System.Collections.Generic.HashSet<(int, int)>();
             for (uint s = 1; s <= 200; s++)
             {
-                var r = ImpactZoneSolver.Solve(new Vector2(0f, 1.05f), new Vector2(1f, 0f), 50f, zones, 0.6f, s * 7919u);
+                var at = AttackerAt(0f);
+                var r = ImpactZoneSolver.Solve(
+                    at, at, new Vector2(1f, 0f), 50f, zones, Sharpness, 0.6f, s * 7919u);
                 seen.Add((Mathf.RoundToInt(r.Point.x * 50f), Mathf.RoundToInt(r.Point.y * 50f)));
             }
 

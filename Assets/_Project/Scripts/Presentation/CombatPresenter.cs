@@ -1054,7 +1054,8 @@ namespace Guildmaster.Presentation
             // Автора в кадре нет (яд, горение, шипы) — бить неоткуда: круг накрывает всё, сторона не
             // определена. Это не исключение в правилах, а вырожденный ВХОД в те же правила.
             float reach = float.PositiveInfinity;
-            Vector2 attacker = shownPosition;
+            Vector2 attackerWeighAt = shownPosition;
+            Vector2 attackerStrikeAt = shownPosition;
             if (hasSource)
             {
                 // Радиус — БУКВАЛЬНО формула симуляции (CombatPositioning.ReachCenter): зазор атаки плюс
@@ -1064,24 +1065,34 @@ namespace Guildmaster.Presentation
                 float rTarget = _frameIndex.TryGetValue(targetId, out var t) ? BodyRadiusOf(t.Size) : 0f;
                 reach = source.AttackRange + rSelf + rTarget;
 
-                // Центр круга — КОРПУС атакующего, а не его позиция: позиция в симе стоит у ног, а зоны
+                // Круг идёт от КОРПУСА атакующего, а не от его позиции: позиция в симе стоит у ног, а зоны
                 // цели висят на высоте фигуры. Круг от ступней не дотянулся бы до чужой груди никогда, и
                 // «вырожденный случай» орал бы на каждом ударе вместо настоящей поломки.
-                attacker = _views.TryGetValue(sourceId, out var sourceView) && sourceView != null
-                    ? (Vector2)sourceView.AimBodyPoint
-                    : source.Position;
+                bool hasSourceView = _views.TryGetValue(sourceId, out var sourceView) && sourceView != null;
+                float sourceHeight = hasSourceView ? sourceView.FigureHeight : view.FigureHeight;
+                attackerWeighAt  = source.Position + Vector2.up * (_feel.ImpactZoneBodyHeight * sourceHeight);
+                attackerStrikeAt = hasSourceView ? (Vector2)sourceView.AimBodyPoint : attackerWeighAt;
             }
 
             float h = view.FigureHeight;
+            // Два центра у каждой зоны: по WeighAt считается ВЕС (доля роста от позиции в ленте — одинаково
+            // у всех клиентов), вокруг StrikeAt ставится ТОЧКА (живой якорь — попадает в нарисованную часть).
             var zones = new[]
             {
-                new Effects.ImpactZoneSample(view.AimHeadPoint, _feel.ImpactZoneHeadRadius * h, _feel.ImpactZoneHeadWeight),
-                new Effects.ImpactZoneSample(view.AimBodyPoint, _feel.ImpactZoneBodyRadius * h, _feel.ImpactZoneBodyWeight),
-                new Effects.ImpactZoneSample(view.AimLegsPoint, _feel.ImpactZoneLegsRadius * h, _feel.ImpactZoneLegsWeight),
+                new Effects.ImpactZoneSample(
+                    shownPosition + Vector2.up * (_feel.ImpactZoneHeadHeight * h), view.AimHeadPoint,
+                    _feel.ImpactZoneHeadRadius * h, _feel.ImpactZoneHeadWeight),
+                new Effects.ImpactZoneSample(
+                    shownPosition + Vector2.up * (_feel.ImpactZoneBodyHeight * h), view.AimBodyPoint,
+                    _feel.ImpactZoneBodyRadius * h, _feel.ImpactZoneBodyWeight),
+                new Effects.ImpactZoneSample(
+                    shownPosition + Vector2.up * (_feel.ImpactZoneLegsHeight * h), view.AimLegsPoint,
+                    _feel.ImpactZoneLegsRadius * h, _feel.ImpactZoneLegsWeight),
             };
 
             var solved = Effects.ImpactZoneSolver.Solve(
-                attacker, shownPosition, reach, zones, _feel.ImpactZoneNearSideBias, seed);
+                attackerWeighAt, attackerStrikeAt, shownPosition, reach, zones,
+                _feel.ImpactZoneReachSharpness, _feel.ImpactZoneNearSideBias, seed);
 
             if (solved.Degenerate && hasSource)
             {

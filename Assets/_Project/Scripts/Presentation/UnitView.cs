@@ -117,6 +117,9 @@ namespace Guildmaster.Presentation
         [SerializeField] private float _gizmoPreviewSize = 1f;
         [Tooltip("Показывать оранжевый круг коллизии симуляции (радиус = Size × SimTuning.BodyRadiusPerSize). Выключи, если мешает.")]
         [SerializeField] private bool _showCollisionGizmo = true;
+        [Tooltip("Превью дальности атаки для гизмо круга досягаемости, пока юнит не заспавнен (в бою " +
+                 "берётся настоящий AttackRange из ленты). 0 — круг не рисовать.")]
+        [SerializeField] private float _gizmoAttackRangePreview = 1.6f;
 
         // Пик подсветки телеграфа: заметно, но слабее удара — подводка не должна читаться как попадание.
         private const float TelegraphPeak = 0.55f;
@@ -2461,24 +2464,69 @@ namespace Guildmaster.Presentation
             if (feel == null || !feel.EnableImpactZones) return;
 
             float h = FigureHeight;
-            DrawImpactZone(AimHeadPoint, feel.ImpactZoneHeadRadius * h, feel.ImpactZoneHeadWeight,
+            Vector3 feet = FeetPoint;
+
+            DrawImpactZone(AimHeadPoint, feet + Vector3.up * (feel.ImpactZoneHeadHeight * h),
+                           feel.ImpactZoneHeadRadius * h, feel.ImpactZoneHeadWeight,
                            "голова", _aimHead != null, new Color(1f, 0.45f, 0.55f));
-            DrawImpactZone(AimBodyPoint, feel.ImpactZoneBodyRadius * h, feel.ImpactZoneBodyWeight,
+            DrawImpactZone(AimBodyPoint, feet + Vector3.up * (feel.ImpactZoneBodyHeight * h),
+                           feel.ImpactZoneBodyRadius * h, feel.ImpactZoneBodyWeight,
                            "корпус", _aimBody != null, new Color(1f, 0.75f, 0.35f));
-            DrawImpactZone(AimLegsPoint, feel.ImpactZoneLegsRadius * h, feel.ImpactZoneLegsWeight,
+            DrawImpactZone(AimLegsPoint, feet + Vector3.up * (feel.ImpactZoneLegsHeight * h),
+                           feel.ImpactZoneLegsRadius * h, feel.ImpactZoneLegsWeight,
                            "ноги",   _aimLegs != null, new Color(0.55f, 0.8f, 1f));
+
+            DrawAttackReachGizmo(feel, h, feet);
+        }
+
+        /// <summary>
+        /// Круг, В ПРЕДЕЛАХ которого этот юнит вообще может ударить. Он и решает распределение по зонам,
+        /// поэтому без него зоны настраиваются вслепую: видно «сколько процентов заявлено» и не видно,
+        /// какие из них вообще достижимы.
+        /// </summary>
+        /// <remarks>
+        /// Радиус берётся той же формулой, что в бою и в показе (<c>AttackRange</c> плюс радиусы тел), но
+        /// про ЧУЖОЕ тело неподвижный вид знать не может — считаем по своему размеру, как по типичному
+        /// сопернику. Оттого это ориентир, о чём и говорит подпись.
+        /// </remarks>
+        private void DrawAttackReachGizmo(Design.CombatFeelConfig feel, float height, Vector3 feet)
+        {
+            float range = Application.isPlaying && _hasState ? _snapshot.AttackRange : _gizmoAttackRangePreview;
+            if (range <= 0f) return;
+
+            float size = Application.isPlaying && _hasState
+                ? Mathf.Max(0.01f, _snapshot.Size)
+                : Mathf.Max(0.01f, _gizmoPreviewSize);
+            float body = size * SimTuning.Default.BodyRadiusPerSize;
+            float reach = range + body * 2f;   // свой радиус плюс такой же чужой — соперник «как я»
+
+            Vector3 origin = feet + Vector3.up * (feel.ImpactZoneBodyHeight * height);
+            var violet = new Color(0.75f, 0.55f, 1f, 0.8f);
+            Gizmos.color = violet;
+            DrawWireDisc(origin, reach, 48);
+            UnityEditor.Handles.color = violet;
+            UnityEditor.Handles.Label(origin + Vector3.up * (reach + 0.04f),
+                $"досягаемость ~{reach:0.##} м (по сопернику своего размера)");
         }
 
         private static void DrawImpactZone(
-            Vector3 centre, float radius, float weight, string label, bool anchored, Color c)
+            Vector3 strikeAt, Vector3 weighAt, float radius, float weight, string label, bool anchored, Color c)
         {
-            // Якоря нет — рисуем пунктиром по эталонному габариту: видно, что зона РАБОТАЕТ, но стоит по
-            // расчёту, а не по кости, и за наклоном тела не поедет.
+            // Круг стоит по ЖИВОМУ якорю — туда придёт вспышка. Крестик рядом — расчётный центр, по
+            // которому считается ВЕС зоны: он не зависит от позы, потому что дискретный выбор зоны обязан
+            // быть одинаков у всех в кооперативе. Разъехались далеко — согласуй доли роста в feel-конфиге
+            // с якорями в риге, иначе зона взвешивается не там, где её бьют.
             Gizmos.color = anchored ? c : new Color(c.r, c.g, c.b, 0.35f);
-            DrawWireDisc(centre, radius);
-            UnityEditor.Handles.color = Gizmos.color;
+            DrawWireDisc(strikeAt, radius);
+
+            Gizmos.color = new Color(c.r, c.g, c.b, 0.55f);
+            const float t = 0.03f;
+            Gizmos.DrawLine(weighAt + new Vector3(-t, -t, 0f), weighAt + new Vector3(t, t, 0f));
+            Gizmos.DrawLine(weighAt + new Vector3(-t, t, 0f), weighAt + new Vector3(t, -t, 0f));
+
+            UnityEditor.Handles.color = anchored ? c : new Color(c.r, c.g, c.b, 0.35f);
             UnityEditor.Handles.Label(
-                centre + new Vector3(radius + 0.05f, 0f, 0f),
+                strikeAt + new Vector3(radius + 0.05f, 0f, 0f),
                 anchored ? $"{label} {weight * 100f:0.#}%" : $"{label} {weight * 100f:0.#}% (без якоря)");
         }
 

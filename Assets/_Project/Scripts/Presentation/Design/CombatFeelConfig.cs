@@ -387,6 +387,28 @@ namespace Guildmaster.Presentation.Design
                  "«смещение к атакующему» нет — смещение И ЕСТЬ недостача накрытия.")]
         [SerializeField, Range(0f, 1f)] private float _impactZoneNearSideBias = 0.6f;
 
+        [Tooltip("Насколько РЕЗКО недостача досягаемости давит заявленный вес зоны. 1 — линейно, и тогда " +
+                 "базовый вес почти всегда перевешивает: корпус, доступный на четверть, выигрывает у ног, " +
+                 "доступных на три четверти. 2 — квадрат, эту разницу переворачивает. 3 и выше — " +
+                 "досягаемость решает почти всё.")]
+        [SerializeField, Range(1f, 4f)] private float _impactZoneReachSharpness = 2f;
+
+        // Высоты зон в долях роста: по НИМ считаются веса, а не по живым якорям. Дискретный выбор зоны
+        // обязан быть одинаков у всех клиентов, а якорь на кости зависит от фазы анимации — на границе
+        // весов это перебросило бы удар из корпуса в ногу у одного игрока и не перебросило у другого.
+        // Числа замерены по якорям BoneUnit_Storybook (06.08.2026) и обязаны им соответствовать: разъедутся —
+        // вес зоны начнёт считаться не от того места, где зону в итоге бьют.
+        [Tooltip("Высота центра зоны головы в долях роста — по ней считается ВЕС зоны (бьём всё равно " +
+                 "по якорю на кости). Держать согласованной с Aim_Head в риге.")]
+        [SerializeField, Range(0.4f, 1f)] private float _impactZoneHeadHeight = 0.71f;
+
+        [Tooltip("Высота центра зоны корпуса в долях роста. Это же число задаёт, откуда бьёт АТАКУЮЩИЙ: " +
+                 "круг атаки строится от его корпуса, а не от ступней.")]
+        [SerializeField, Range(0.3f, 0.9f)] private float _impactZoneBodyHeight = 0.56f;
+
+        [Tooltip("Высота центра зоны ног в долях роста. Держать согласованной с Aim_Legs в риге.")]
+        [SerializeField, Range(0.05f, 0.6f)] private float _impactZoneLegsHeight = 0.32f;
+
         // --- Форма удара: главный знак попадания (серп / веретено / звезда / линия-всполох) ---
         [Header("VFX — форма удара")]
         [Tooltip("Форма попадания: серп режущего, веретено колющего, звезда дробящего, линия-всполох выстрела. " +
@@ -540,6 +562,14 @@ namespace Guildmaster.Presentation.Design
         public float ImpactZoneLegsRadius    => _impactZoneLegsRadius;
         /// <summary>Тяга точки к ближнему краю зоны при неполном накрытии: 0 — центр, 1 — край.</summary>
         public float ImpactZoneNearSideBias  => _impactZoneNearSideBias;
+        /// <summary>Резкость влияния досягаемости на вес: 1 — линейно, 2 — квадрат.</summary>
+        public float ImpactZoneReachSharpness => _impactZoneReachSharpness;
+        /// <summary>Высота центра зоны головы в долях роста — по ней считается вес зоны.</summary>
+        public float ImpactZoneHeadHeight    => _impactZoneHeadHeight;
+        /// <summary>Высота центра зоны корпуса в долях роста; она же — высота, откуда бьёт атакующий.</summary>
+        public float ImpactZoneBodyHeight    => _impactZoneBodyHeight;
+        /// <summary>Высота центра зоны ног в долях роста — по ней считается вес зоны.</summary>
+        public float ImpactZoneLegsHeight    => _impactZoneLegsHeight;
 
         public bool  EnableContactDust       => _enableContactDust;
         public bool  EnableHitNudge          => _enableHitNudge;

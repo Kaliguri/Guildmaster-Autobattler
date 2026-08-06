@@ -13,19 +13,36 @@ namespace Guildmaster.Presentation.Effects
         Legs = 2,
     }
 
-    /// <summary>Одна зона в запросе: где её центр, насколько она велика и какой у неё ЗАЯВЛЕННЫЙ вес.</summary>
+    /// <summary>
+    /// Одна зона в запросе. Центров у неё ДВА, и это главное решение модели: веса считаются по
+    /// расчётному центру, а бьём вокруг живого.
+    /// </summary>
+    /// <remarks>
+    /// Разделение появилось из-за кооператива (06.08.2026). Выбор зоны дискретен: миллиметровая разница
+    /// в позе на границе весов перебрасывает удар из корпуса в ногу, и два игрока видят РАЗНЫЕ части
+    /// тела. Место внутри зоны непрерывно — там та же разница даёт сдвиг на миллиметры, которого не
+    /// видно. Поэтому дискретное решение считается по геометрии, одинаковой у всех (доли роста от
+    /// позиции из ленты), а непрерывное — по живому якорю на кости, чтобы вспышка попадала туда, где
+    /// часть тела НАРИСОВАНА.
+    /// </remarks>
     public readonly struct ImpactZoneSample
     {
-        /// <summary>Мировой центр зоны — якорь на кости, поэтому следует за анимацией и масштабом.</summary>
-        public readonly Vector2 Anchor;
+        /// <summary>
+        /// Расчётный центр — доля роста от позиции юнита в ленте. Одинаков у всех клиентов при любой
+        /// фазе анимации, поэтому от него и только от него считается вес зоны.
+        /// </summary>
+        public readonly Vector2 WeighAt;
+        /// <summary>Живой центр — якорь на кости: следует за анимацией, поворотом и масштабом.</summary>
+        public readonly Vector2 StrikeAt;
         /// <summary>Радиус зоны в мировых единицах.</summary>
         public readonly float Radius;
         /// <summary>Заявленный вес до поправки на досягаемость (сумма по всем зонам произвольна).</summary>
         public readonly float Weight;
 
-        public ImpactZoneSample(Vector2 anchor, float radius, float weight)
+        public ImpactZoneSample(Vector2 weighAt, Vector2 strikeAt, float radius, float weight)
         {
-            Anchor = anchor;
+            WeighAt = weighAt;
+            StrikeAt = strikeAt;
             Radius = Mathf.Max(0.001f, radius);
             Weight = Mathf.Max(0f, weight);
         }
@@ -75,10 +92,17 @@ namespace Guildmaster.Presentation.Effects
     /// с зонами за одну ось.</item>
     /// </list>
     /// <para>
-    /// Позиции обязаны приходить <b>из ленты показа</b>, а не из трансформов живых видов: трансформы
-    /// интерполируются под кадровую частоту, и в кооперативе у двух игроков разойдутся веса, а с ними и
-    /// выбранная зона. Сид удара общий (<c>HitFormFactory.SeedOf</c>), поэтому при равных входах решение
-    /// одинаково на всех машинах.
+    /// <b>Выбор зоны детерминирован полностью</b> — он считается по <see cref="ImpactZoneSample.WeighAt"/>,
+    /// то есть по долям роста от позиции из ленты, и не зависит ни от кадровой частоты, ни от фазы
+    /// анимации. Сид удара общий (<c>HitFormFactory.SeedOf</c>), поэтому в кооперативе оба игрока
+    /// получают ОДНУ зону. Место внутри зоны берётся от живого якоря и может разойтись на миллиметры —
+    /// цена того, что вспышка попадает в нарисованную часть тела, а не в расчётную точку рядом с ней.
+    /// </para>
+    /// <para>
+    /// Считать всё это в симуляции — отдельный, сознательно НЕ выбранный путь (06.08.2026): симу
+    /// пришлось бы узнать геометрию фигуры, которая живёт в арте, а розыгрыш зоны из боевого потока
+    /// случайности сдвинул бы все последующие броски. Переезжать туда зона обязана в тот день, когда
+    /// понадобится механике — крит по голове, броня по частям, прицельные удары.
     /// </para>
     /// </remarks>
     public static class ImpactZoneSolver
@@ -86,34 +110,47 @@ namespace Guildmaster.Presentation.Effects
         /// <summary>
         /// Выбрать точку удара по телу цели.
         /// </summary>
-        /// <param name="attacker">Позиция атакующего (из ленты).</param>
+        /// <param name="attackerWeighAt">Расчётный центр атаки — доля роста от позиции атакующего в ленте.
+        /// От него считаются веса, поэтому он обязан быть одинаков у всех клиентов.</param>
+        /// <param name="attackerStrikeAt">Живой центр атаки — якорь корпуса на кости; вокруг него
+        /// проверяется, что точка не вышла за круг.</param>
         /// <param name="targetCentre">Позиция цели (из ленты) — ось, относительно которой считается сторона.</param>
-        /// <param name="reach">Радиус круга атаки от <paramref name="attacker"/>: зазор атаки плюс радиус его тела.</param>
+        /// <param name="reach">Радиус круга атаки: зазор атаки плюс радиусы обоих тел (формула симуляции).</param>
         /// <param name="zones">Зоны цели; пустой массив — вернём центр цели и пометим вырожденным.</param>
+        /// <param name="reachSharpness">Насколько резко недостача накрытия давит вес зоны. 1 — линейно
+        /// (базовый вес почти всегда перевешивает), 2 — квадрат, 3 и выше — достижимость решает почти всё.</param>
         /// <param name="nearSideBias">Насколько сильно точка тянется к ближнему краю зоны при неполном
         /// накрытии: 0 — всегда центр зоны, 1 — вплотную к краю со стороны атакующего.</param>
         /// <param name="seed">Сид этого удара — тот же, что у формы: они обязаны совпасть местом.</param>
         public static ImpactZoneResult Solve(
-            Vector2 attacker,
+            Vector2 attackerWeighAt,
+            Vector2 attackerStrikeAt,
             Vector2 targetCentre,
             float reach,
             ImpactZoneSample[] zones,
+            float reachSharpness,
             float nearSideBias,
             uint seed)
         {
             if (zones == null || zones.Length == 0)
                 return new ImpactZoneResult(targetCentre, -1, degenerate: true);
 
+            float sharpness = Mathf.Max(1f, reachSharpness);
+
             // Доля накрытия каждой зоны кругом атаки. Линейная аппроксимация пересечения двух кругов:
             // точное отношение площадей здесь не нужно — важна монотонность и то, что края дают ровно 0 и 1.
+            //
+            // Возведение в степень — решение Макса от 06.08.2026. Линейного множителя мало: базовый вес
+            // корпуса больше веса ног в шестнадцать раз, и корпус, доступный на четверть, всё равно
+            // выигрывал у ног, доступных на три четверти. Квадрат эту разницу переворачивает.
             var coverage = new float[zones.Length];
             float total = 0f;
             for (int i = 0; i < zones.Length; i++)
             {
-                float d = Vector2.Distance(attacker, zones[i].Anchor);
+                float d = Vector2.Distance(attackerWeighAt, zones[i].WeighAt);
                 float r = zones[i].Radius;
                 coverage[i] = Mathf.Clamp01((reach + r - d) / (2f * r));
-                total += zones[i].Weight * coverage[i];
+                total += zones[i].Weight * Mathf.Pow(coverage[i], sharpness);
             }
 
             var stream = new SeedStream(seed);
@@ -129,7 +166,7 @@ namespace Guildmaster.Presentation.Effects
                 float best = float.NegativeInfinity;
                 for (int i = 0; i < zones.Length; i++)
                 {
-                    float slack = reach + zones[i].Radius - Vector2.Distance(attacker, zones[i].Anchor);
+                    float slack = reach + zones[i].Radius - Vector2.Distance(attackerWeighAt, zones[i].WeighAt);
                     if (slack > best) { best = slack; picked = i; }
                 }
             }
@@ -140,13 +177,13 @@ namespace Guildmaster.Presentation.Effects
                 float running = 0f;
                 for (int i = 0; i < zones.Length; i++)
                 {
-                    running += zones[i].Weight * coverage[i];
+                    running += zones[i].Weight * Mathf.Pow(coverage[i], sharpness);
                     if (roll <= running) { picked = i; break; }
                 }
             }
 
             Vector2 point = PointInZone(
-                zones[picked], coverage[picked], attacker, targetCentre, reach, nearSideBias, ref stream);
+                zones[picked], coverage[picked], attackerStrikeAt, targetCentre, reach, nearSideBias, ref stream);
 
             return new ImpactZoneResult(point, picked, degenerate);
         }
@@ -165,13 +202,14 @@ namespace Guildmaster.Presentation.Effects
             ref SeedStream stream)
         {
             // Равномерно ПО ПЛОЩАДИ: без корня точки сбились бы к центру и зона читалась бы как точка.
+            // Центр — ЖИВОЙ якорь: зону уже выбрали, теперь бьём туда, где часть тела нарисована.
             float angle = stream.NextFloat() * Mathf.PI * 2f;
             float radius = zone.Radius * Mathf.Sqrt(stream.NextFloat());
-            Vector2 point = zone.Anchor + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+            Vector2 point = zone.StrikeAt + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
 
             // Достаём зону наполовину — бьём в ту половину, что ближе к себе. Отдельной ручки «смещение
             // к атакующему» нет: она и есть недостача накрытия.
-            Vector2 toAttacker = attacker - zone.Anchor;
+            Vector2 toAttacker = attacker - zone.StrikeAt;
             if (toAttacker.sqrMagnitude > 1e-8f)
             {
                 point += toAttacker.normalized

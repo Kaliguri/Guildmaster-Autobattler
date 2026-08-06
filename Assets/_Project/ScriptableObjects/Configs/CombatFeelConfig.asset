@@ -207,6 +207,10 @@ MonoBehaviour:
   _impactZoneBodyRadius: 0.19
   _impactZoneLegsRadius: 0.11
   _impactZoneNearSideBias: 0.6
+  _impactZoneReachSharpness: 2
+  _impactZoneHeadHeight: 0.71
+  _impactZoneBodyHeight: 0.56
+  _impactZoneLegsHeight: 0.32
   _enableHitForm: 1
   _enableHitFormBreakOnShield: 1
   _vfxHitForm: {fileID: 11400000, guid: d82430ffaffd4a248a06944eb2963688, type: 2}
