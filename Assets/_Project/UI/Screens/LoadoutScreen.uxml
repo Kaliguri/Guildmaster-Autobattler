@@ -12,7 +12,10 @@
             <ui:VisualElement class="gm-tabbar__rail" />
 
             <ui:VisualElement class="gm-loadout-body">
-                <ui:ScrollView name="relic-grid" style="flex-grow: 1; max-height: 220px;" />
+                <!-- Высота грида — ДВА РЯДА карточек: 2 * (168 высоты + 16 внешнего отступа) = 368.
+                     Прежние 220 держали два ряда прежних карточек; после пересчёта размера
+                     (см. .gm-card в components/card.uss) в них влезал бы один. -->
+                <ui:ScrollView name="relic-grid" style="flex-grow: 1; max-height: 376px;" />
                 <ui:VisualElement class="gm-detail">
                     <ui:Label name="detail-name" text="—" class="gm-text-subtitle gm-detail__name" />
                     <ui:Label name="detail-desc" text="" class="gm-text-caption gm-detail__desc" />
