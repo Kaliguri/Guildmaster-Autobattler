@@ -52,16 +52,29 @@ namespace Guildmaster.UI.Components
 
         public UiComponentGroup Group { get; }
 
+        /// <summary>
+        /// Блок, от которого этот наследует состояния, или <c>null</c>. Пустая строка не годится:
+        /// «нет базы» — это факт, а не пропуск.
+        /// </summary>
+        /// <remarks>
+        /// Наследование здесь не выдумано, а взято с разметки: <c>gm-runbar__tab</c> висит на
+        /// <c>gm:Chip</c> и потому отвечает на курсор правилами <c>.gm-chip:hover</c>, своих не имея.
+        /// Без этого поля гейт требовал бы у него дубля — то есть заставлял бы городить правило ради
+        /// зелёного там, где элемент и так работает.
+        /// </remarks>
+        public string Base { get; }
+
         /// <summary>Элемент принимает указатель: по нему кликают, он звучит, он обязан иметь состояния.</summary>
         public bool IsInteractive => Required != UiElementState.None;
 
         internal UiComponentEntry(string label, string block, UiComponentGroup group,
-                                  UiElementState required, string[] variants)
+                                  UiElementState required, string baseBlock, string[] variants)
         {
             Label    = label;
             Block    = block;
             Group    = group;
             Required = required;
+            Base     = baseBlock;
             Variants = variants ?? Array.Empty<string>();
         }
     }
@@ -113,79 +126,88 @@ namespace Guildmaster.UI.Components
         /// </remarks>
         public const UiElementState DevTooling = UiElementState.Hover | UiElementState.Active;
 
+        private const string OfButton = "gm-button";
+        private const string OfPlate  = "gm-plate-button";
+        private const string OfChip   = "gm-chip";
+
         private static readonly UiComponentEntry[] Entries =
         {
             // --- КНОПКИ ---
-            New("Кнопка", "gm-button", UiComponentGroup.Buttons, Interactive,
+            New("Кнопка", "gm-button", UiComponentGroup.Buttons, Interactive, null,
                 "gm-button--primary", "gm-button--danger", "gm-button--fill", "gm-button--display",
                 "gm-button--unaffordable"),
-            New("Пластина", "gm-plate-button", UiComponentGroup.Buttons, Interactive),
-            New("Пункт главного меню", "gm-mainmenu__btn", UiComponentGroup.Buttons, Interactive,
+            New("Пластина", "gm-plate-button", UiComponentGroup.Buttons, Interactive, null),
+            New("Пункт главного меню", "gm-mainmenu__btn", UiComponentGroup.Buttons, Interactive, OfButton,
                 "gm-mainmenu__btn--primary", "gm-mainmenu__btn--group-start"),
-            New("Начать забег", "gm-loadout__start-btn", UiComponentGroup.Buttons, Interactive),
-            New("Сортировка инвентаря", "gm-loadout__sort", UiComponentGroup.Buttons, Interactive),
-            New("Вариант события", "gm-event-choice", UiComponentGroup.Buttons, Interactive,
+            New("Начать забег", "gm-loadout__start-btn", UiComponentGroup.Buttons, Interactive, OfPlate),
+            New("Сортировка инвентаря", "gm-loadout__sort", UiComponentGroup.Buttons, Interactive, null),
+            New("Вариант события", "gm-event-choice", UiComponentGroup.Buttons, Interactive, OfButton,
                 "gm-event-choice--unaffordable"),
-            New("Слот профиля", "gm-profile__slot-pick", UiComponentGroup.Buttons, Interactive,
+            New("Слот профиля", "gm-profile__slot-pick", UiComponentGroup.Buttons, Interactive, OfButton,
                 "gm-profile__slot-pick--active"),
-            New("Слот гильдии", "gm-guilds__slot-pick", UiComponentGroup.Buttons, Interactive,
+            New("Слот гильдии", "gm-guilds__slot-pick", UiComponentGroup.Buttons, Interactive, OfButton,
                 "gm-guilds__slot-pick--create"),
 
             // --- ВКЛАДКИ И ЧИПЫ ---
-            New("Вкладка", "gm-tab", UiComponentGroup.Tabs, Interactive, "gm-tab--active"),
-            New("Чип", "gm-chip", UiComponentGroup.Tabs, Interactive,
+            New("Вкладка", "gm-tab", UiComponentGroup.Tabs, Interactive, OfPlate, "gm-tab--active"),
+            New("Чип", "gm-chip", UiComponentGroup.Tabs, Interactive, null,
                 "gm-chip--active", "gm-chip--muted", "gm-chip--sm", "gm-chip--collapsible"),
-            New("Чип скошенный", "gm-chip--slanted", UiComponentGroup.Tabs, Interactive),
-            New("Таб ленты забега", "gm-runbar__tab", UiComponentGroup.Tabs, Interactive),
-            New("Фильтр инвентаря", "gm-filter-tab", UiComponentGroup.Tabs, Interactive, "gm-filter-tab--last"),
+            New("Чип скошенный", "gm-chip--slanted", UiComponentGroup.Tabs, Interactive, OfChip),
+            New("Таб ленты забега", "gm-runbar__tab", UiComponentGroup.Tabs, Interactive, OfChip),
+            New("Фильтр инвентаря", "gm-filter-tab", UiComponentGroup.Tabs, Interactive, OfChip,
+                "gm-filter-tab--last"),
 
             // --- КАРТОЧКИ И СЛОТЫ ---
-            New("Карточка релика", "gm-card", UiComponentGroup.Cards, Interactive,
+            New("Карточка релика", "gm-card", UiComponentGroup.Cards, Interactive, null,
                 "gm-card--selected", "gm-card--current", "gm-card--reward"),
-            New("Карточка арканы", "gm-arcana-card", UiComponentGroup.Cards, Interactive,
+            New("Карточка арканы", "gm-arcana-card", UiComponentGroup.Cards, Interactive, null,
                 "gm-arcana-card--selected", "gm-arcana-card--locked"),
-            New("Карточка лавки", "gm-shop__card", UiComponentGroup.Cards, Interactive, "gm-shop__card--sold"),
-            New("Строка запаса", "gm-shop__stash-row", UiComponentGroup.Cards, Interactive),
-            New("Сосуд во Дворе", "gm-hub-vessel", UiComponentGroup.Cards, Interactive),
-            New("Слот", "gm-slot", UiComponentGroup.Cards, Interactive,
+            New("Карточка лавки", "gm-shop__card", UiComponentGroup.Cards, Interactive, null,
+                "gm-shop__card--sold"),
+            New("Строка запаса", "gm-shop__stash-row", UiComponentGroup.Cards, Interactive, null),
+            New("Сосуд во Дворе", "gm-hub-vessel", UiComponentGroup.Cards, Interactive, null),
+            New("Слот", "gm-slot", UiComponentGroup.Cards, Interactive, null,
                 "gm-slot--selected", "gm-slot--empty", "gm-slot--sm", "gm-slot--md", "gm-slot--lg"),
-            New("Строка дропа", "gm-reward-drop__row", UiComponentGroup.Cards, Interactive,
+            New("Строка дропа", "gm-reward-drop__row", UiComponentGroup.Cards, Interactive, null,
                 "gm-reward-drop__row--selected"),
-            New("Ячейка стата", "gm-stat", UiComponentGroup.Cards, Interactive),
-            New("Цвет профиля", "gm-profile__swatch", UiComponentGroup.Cards, Interactive,
+            New("Ячейка стата", "gm-stat", UiComponentGroup.Cards, Interactive, null),
+            New("Цвет профиля", "gm-profile__swatch", UiComponentGroup.Cards, Interactive, null,
                 "gm-profile__swatch--picked"),
-            New("Курсор профиля", "gm-profile__cursor", UiComponentGroup.Cards, Interactive,
+            New("Курсор профиля", "gm-profile__cursor", UiComponentGroup.Cards, Interactive, null,
                 "gm-profile__cursor--picked"),
-            New("Крышка сундука", "gm-chest__lid", UiComponentGroup.Cards, Interactive, "gm-chest__lid--open"),
+            New("Крышка сундука", "gm-chest__lid", UiComponentGroup.Cards, Interactive, null,
+                "gm-chest__lid--open"),
 
             // --- СТРОКИ НАСТРОЕК ---
             // Переключатель — единственный элемент с :checked. Псевдокласс ставится на сам Toggle,
             // поэтому правило пишется через потомка: `.gm-toggle-row .unity-toggle:checked`.
-            New("Переключатель", "gm-toggle-row", UiComponentGroup.Rows, Interactive | UiElementState.Checked),
-            New("Выбор", "gm-select-row", UiComponentGroup.Rows, Interactive, "gm-select-row--disabled"),
-            New("Слайдер", "gm-slider-row", UiComponentGroup.Rows, Interactive),
+            New("Переключатель", "gm-toggle-row", UiComponentGroup.Rows,
+                Interactive | UiElementState.Checked, null),
+            New("Выбор", "gm-select-row", UiComponentGroup.Rows, Interactive, null,
+                "gm-select-row--disabled"),
+            New("Слайдер", "gm-slider-row", UiComponentGroup.Rows, Interactive, null),
 
             // --- ПАНЕЛИ И ДЕКОР ---
-            New("Панель", "gm-panel", UiComponentGroup.Panels, UiElementState.None,
+            New("Панель", "gm-panel", UiComponentGroup.Panels, UiElementState.None, null,
                 "gm-panel--dialog", "gm-panel--menu", "gm-panel--system"),
-            New("Оправа", "gm-panel__frame", UiComponentGroup.Panels, UiElementState.None),
-            New("Скошенная подложка", "gm-slant", UiComponentGroup.Panels, UiElementState.None),
-            New("Вуаль кромки", "gm-edge-veil", UiComponentGroup.Panels, UiElementState.None),
+            New("Оправа", "gm-panel__frame", UiComponentGroup.Panels, UiElementState.None, null),
+            New("Скошенная подложка", "gm-slant", UiComponentGroup.Panels, UiElementState.None, null),
+            New("Вуаль кромки", "gm-edge-veil", UiComponentGroup.Panels, UiElementState.None, null),
 
             // --- ПОВЕРХ ВСЕГО ---
-            New("Подсказка", "gm-tooltip", UiComponentGroup.Overlays, UiElementState.None,
+            New("Подсказка", "gm-tooltip", UiComponentGroup.Overlays, UiElementState.None, null,
                 "gm-tooltip--wide", "gm-tooltip--sticky"),
-            New("Карточка подсказки", "gm-tooltip__card", UiComponentGroup.Overlays, UiElementState.None,
+            New("Карточка подсказки", "gm-tooltip__card", UiComponentGroup.Overlays, UiElementState.None, null,
                 "gm-tooltip__card--wide"),
 
             // --- ДЕВ-ТУЛИНГ ---
-            New("Инструмент консоли", "gm-console__tool", UiComponentGroup.Dev, DevTooling,
+            New("Инструмент консоли", "gm-console__tool", UiComponentGroup.Dev, DevTooling, null,
                 "gm-console__tool--active"),
-            New("Совпадение консоли", "gm-console__hit", UiComponentGroup.Dev, DevTooling,
+            New("Совпадение консоли", "gm-console__hit", UiComponentGroup.Dev, DevTooling, null,
                 "gm-console__hit--selected"),
-            New("Строка пикера", "gm-picker__row", UiComponentGroup.Dev, DevTooling,
+            New("Строка пикера", "gm-picker__row", UiComponentGroup.Dev, DevTooling, null,
                 "gm-picker__row--selected", "gm-picker__row--head"),
-            New("Заголовок пикера", "gm-picker__head-cell", UiComponentGroup.Dev, DevTooling,
+            New("Заголовок пикера", "gm-picker__head-cell", UiComponentGroup.Dev, DevTooling, null,
                 "gm-picker__head-cell--sorted"),
         };
 
@@ -217,7 +239,8 @@ namespace Guildmaster.UI.Components
         }
 
         private static UiComponentEntry New(string label, string block, UiComponentGroup group,
-                                            UiElementState required, params string[] variants)
-            => new(label, block, group, required, variants);
+                                            UiElementState required, string baseBlock,
+                                            params string[] variants)
+            => new(label, block, group, required, baseBlock, variants);
     }
 }

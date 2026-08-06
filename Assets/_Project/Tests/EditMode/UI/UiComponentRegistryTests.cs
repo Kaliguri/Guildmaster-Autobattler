@@ -92,6 +92,55 @@ namespace Guildmaster.Tests.EditMode.UI
         }
 
         [Test]
+        public void База_существует_и_не_ведёт_на_себя()
+        {
+            var blocks = new HashSet<string>(UiComponentRegistry.All.Select(e => e.Block));
+            var complaints = new List<string>();
+
+            foreach (UiComponentEntry entry in UiComponentRegistry.All)
+            {
+                if (entry.Base == null) continue;
+
+                if (entry.Base == entry.Block)
+                    complaints.Add($"  {entry.Label}: база указывает на сам блок «{entry.Block}»");
+                else if (!blocks.Contains(entry.Base))
+                    complaints.Add($"  {entry.Label}: базы «{entry.Base}» нет в перечне");
+            }
+
+            Assert.IsEmpty(complaints,
+                "База — это блок, от которого элемент наследует состояния; её отсутствие в перечне\n" +
+                "означает, что гейт зачтёт состояние по правилу, которого никто не проверяет.\n" +
+                string.Join("\n", complaints));
+        }
+
+        [Test]
+        public void Цепочка_баз_не_зациклена()
+        {
+            var byBlock = UiComponentRegistry.All.ToDictionary(e => e.Block);
+            var complaints = new List<string>();
+
+            foreach (UiComponentEntry entry in UiComponentRegistry.All)
+            {
+                var seen = new HashSet<string> { entry.Block };
+                string current = entry.Base;
+
+                while (current != null && byBlock.TryGetValue(current, out UiComponentEntry parent))
+                {
+                    if (!seen.Add(current))
+                    {
+                        complaints.Add($"  {entry.Label}: цепочка баз замкнулась на «{current}»");
+                        break;
+                    }
+                    current = parent.Base;
+                }
+            }
+
+            Assert.IsEmpty(complaints,
+                "Гейт поднимается по цепочке баз в поисках объявленного состояния — на кольце он зависнет.\n" +
+                string.Join("\n", complaints));
+        }
+
+        [Test]
         public void Список_интерактивных_совпадает_с_перечнем()
         {
             List<string> expected = UiComponentRegistry.All
