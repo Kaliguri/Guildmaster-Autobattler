@@ -24,7 +24,7 @@ namespace Guildmaster.Net.Presence
     public static class PresenceCodec
     {
         /// <summary>Версия формата — как у чанков ленты, по той же причине.</summary>
-        public const byte Version = 1;
+        public const byte Version = 2; // +жест: пакет вырос на байт на игрока
 
         /// <summary>
         /// Сколько курсоров кладём в один пакет. Четверо — предел кооп-сессии, и при 15 байтах на
