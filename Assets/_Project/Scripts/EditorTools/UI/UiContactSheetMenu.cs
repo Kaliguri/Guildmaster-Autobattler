@@ -45,6 +45,27 @@ namespace Guildmaster.UI.EditorTools
             Run(UiContactSheetRunner.Job.ColourLadder);
         }
 
+        /// <summary>
+        /// Лестница глубины: три светлоты фона, и на каждой — кнопка на фоне против кнопки на своей
+        /// ступени.
+        /// </summary>
+        /// <remarks>
+        /// Отдельным пунктом от лестницы громкости: та крутит НАСЫЩЕННОСТЬ и отвечает «насколько
+        /// звонко», эта крутит СВЕТЛОТУ и отвечает «различимы ли слои». Вопросы соседние, но ответы
+        /// у них разные, и мешать их в одном кадре значит не получить ни одного.
+        /// </remarks>
+        [MenuItem("Alebardium/UI/Lightness Ladder", priority = 102)]
+        public static void CaptureLightnessLadder()
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                Debug.LogError("[LightnessLadder] Нужен play mode: панель интерфейса живёт только в игре.");
+                return;
+            }
+
+            Run(UiContactSheetRunner.Job.LightnessLadder);
+        }
+
         private static void Run(UiContactSheetRunner.Job job)
         {
             var host = new GameObject("~UiContactSheetRunner") { hideFlags = HideFlags.HideAndDontSave };

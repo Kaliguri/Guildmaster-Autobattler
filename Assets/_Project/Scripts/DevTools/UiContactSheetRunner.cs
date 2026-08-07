@@ -19,6 +19,7 @@ namespace Guildmaster.DevTools
         {
             ContactSheet,
             ColourLadder,
+            LightnessLadder,
         }
 
         private Job _job;
@@ -35,6 +36,7 @@ namespace Guildmaster.DevTools
             try
             {
                 if (_job == Job.ColourLadder) await UiColourLadder.Capture(this);
+                else if (_job == Job.LightnessLadder) await UiColourLadder.CaptureLightness(this);
                 else await UiContactSheet.Capture(this);
             }
             finally
