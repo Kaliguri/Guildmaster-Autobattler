@@ -17,6 +17,7 @@ var searchData=
   ['oneffectexpired_14',['OnEffectExpired',['../classGuildmaster_1_1Combat_1_1EffectSystem.html#a83d599992f80d903424732e367fc54e6',1,'Guildmaster::Combat::EffectSystem']]],
   ['onhealed_15',['OnHealed',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae9f9904d224e85b35467387dace83479',1,'Guildmaster::Combat::CombatSimulation']]],
   ['onprojectilespawned_16',['OnProjectileSpawned',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a7c9a86d3e520b6496d02d52a598f5fd5',1,'Guildmaster::Combat::CombatSimulation']]],
-  ['onunitdied_17',['onunitdied',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac25978bcf3dab4e01b7b92d6bc884d60',1,'Guildmaster.Combat.CombatSimulation.OnUnitDied'],['../classGuildmaster_1_1Combat_1_1DeathSystem.html#a8996bfc30d9a90e91e33f504a9c28749',1,'Guildmaster.Combat.DeathSystem.OnUnitDied']]],
-  ['onunitspawned_18',['OnUnitSpawned',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#ad5df9c3a7cc47a7c99246aedfb4cb605',1,'Guildmaster::Combat::CombatSimulation']]]
+  ['onshieldabsorbed_17',['OnShieldAbsorbed',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#aa3e4c1ad8313fb3c13742a4977cd5dab',1,'Guildmaster::Combat::CombatSimulation']]],
+  ['onunitdied_18',['onunitdied',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac25978bcf3dab4e01b7b92d6bc884d60',1,'Guildmaster.Combat.CombatSimulation.OnUnitDied'],['../classGuildmaster_1_1Combat_1_1DeathSystem.html#a8996bfc30d9a90e91e33f504a9c28749',1,'Guildmaster.Combat.DeathSystem.OnUnitDied']]],
+  ['onunitspawned_19',['OnUnitSpawned',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#ad5df9c3a7cc47a7c99246aedfb4cb605',1,'Guildmaster::Combat::CombatSimulation']]]
 ];

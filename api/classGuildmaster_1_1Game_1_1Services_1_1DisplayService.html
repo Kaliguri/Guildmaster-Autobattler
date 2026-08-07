@@ -126,6 +126,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adab74429c67cc249ce5bb6bc68a5243d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38b2b13e22d3a4437743be81c41f9f89" id="r_a38b2b13e22d3a4437743be81c41f9f89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html#a38b2b13e22d3a4437743be81c41f9f89">SetRefreshRate</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html#a9e008d7f6571206b3cb343d11f7f8270">RefreshRate</a> rate)</td></tr>
 <tr class="separator:a38b2b13e22d3a4437743be81c41f9f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63131b39478cb71672d6a7f44ad1543f" id="r_a63131b39478cb71672d6a7f44ad1543f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html#a63131b39478cb71672d6a7f44ad1543f">SetVSync</a> (bool enabled)</td></tr>
+<tr class="memdesc:a63131b39478cb71672d6a7f44ad1543f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Включить или выключить синхронизацию с развёрткой.  <br /></td></tr>
+<tr class="separator:a63131b39478cb71672d6a7f44ad1543f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae33ecea38a823c9d298daa8cc9dd5f89" id="r_ae33ecea38a823c9d298daa8cc9dd5f89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html#ae33ecea38a823c9d298daa8cc9dd5f89">SetFrameRateCap</a> (int framesPerSecond)</td></tr>
+<tr class="memdesc:ae33ecea38a823c9d298daa8cc9dd5f89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать потолок кадров, FramePacing.Unlimited — снять.  <br /></td></tr>
+<tr class="separator:ae33ecea38a823c9d298daa8cc9dd5f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb2449008aec4eeaf520acc47fda4fe8" id="r_adb2449008aec4eeaf520acc47fda4fe8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html#adb2449008aec4eeaf520acc47fda4fe8">ResetToNative</a> ()</td></tr>
 <tr class="memdesc:adb2449008aec4eeaf520acc47fda4fe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вернуть «как у монитора»: нативное разрешение, наибольшая частота, окно без рамок.  <br /></td></tr>
 <tr class="separator:adb2449008aec4eeaf520acc47fda4fe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,6 +150,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a9e008d7f6571206b3cb343d11f7f8270" id="r_a9e008d7f6571206b3cb343d11f7f8270"><td class="memItemLeft" align="right" valign="top">RefreshRate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html#a9e008d7f6571206b3cb343d11f7f8270">RefreshRate</a><code> [get]</code></td></tr>
 <tr class="memdesc:a9e008d7f6571206b3cb343d11f7f8270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущая частота обновления. Осмысленна только в WindowMode.ExclusiveFullscreen.  <br /></td></tr>
 <tr class="separator:a9e008d7f6571206b3cb343d11f7f8270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d3bd6cfbe3bf1284be430aa7c0e2ea5" id="r_a8d3bd6cfbe3bf1284be430aa7c0e2ea5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Core_1_1Settings_1_1FramePacing.html">FramePacing</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html#a8d3bd6cfbe3bf1284be430aa7c0e2ea5">Pacing</a> = FramePacing.Resolve(null, null)<code> [get]</code></td></tr>
+<tr class="memdesc:a8d3bd6cfbe3bf1284be430aa7c0e2ea5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Синхронизация и потолок кадров в применённом виде.  <br /></td></tr>
+<tr class="separator:a8d3bd6cfbe3bf1284be430aa7c0e2ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfd36662fdb565df9937677d54a12432" id="r_acfd36662fdb565df9937677d54a12432"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html#acfd36662fdb565df9937677d54a12432">RefreshRateSelectable</a><code> [get]</code></td></tr>
 <tr class="memdesc:acfd36662fdb565df9937677d54a12432"><td class="mdescLeft">&#160;</td><td class="mdescRight">Можно ли сейчас выбирать частоту обновления.  <br /></td></tr>
 <tr class="separator:acfd36662fdb565df9937677d54a12432"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,7 +173,8 @@ Events</h2></td></tr>
 <div class="textblock"><p>Реализация IDisplayService. </p>
 <p>Персист — ILocalSaveService, ключ <code>machine</code>: файл лежит вне <code>Saves/</code> и в Steam Cloud не едет (ТЗ [[save-system]] §3). </p>
 <p>Entry point: Start читает файл и применяет режим на старте сессии. Unity к этому моменту уже применил <b>своё</b> запомненное разрешение (реестр <code>Screenmanager Resolution Width/Height</code>) — он делает это до первой сцены. Мы применяем поверх, поэтому владельцем остаётся наш файл, а реестр становится его следствием. Видимого переключения при этом обычно нет: прошлый запуск записал в реестр ровно то, что мы применили.</p>
-<p><b>В редакторе режим не применяется.</b> <code>Screen.SetResolution</code> здесь переписывал бы Game view под разрешение монитора, ломая работу; настройки при этом читаются и отдаются как есть, чтобы UI можно было проверять в play mode.</p>
+<p><b>В редакторе режим не применяется.</b> <code>Screen.SetResolution</code> здесь переписывал бы Game view под разрешение монитора, ломая работу; настройки при этом читаются и отдаются как есть, чтобы UI можно было проверять в play mode. Пасовка кадров (FramePacing) — исключение: она применяется и в редакторе, см. Apply.</p>
+<p><b>Синхронизация кадров живёт здесь, а не в уровне качества.</b> В <code>QualitySettings</code> <code>vSyncCount</code> задан у каждого из шести уровней по-своему, и на активном (<code>Very Low</code>) он равен нулю. Оставить владельцем уровень значило бы, что игрок, выбравший «покрасивее», молча меняет и синхронизацию — один факт с двумя владельцами.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a66d0d4b6979604bf63e1b20d392ae070" name="a66d0d4b6979604bf63e1b20d392ae070"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a66d0d4b6979604bf63e1b20d392ae070">&#9670;&#160;</a></span>DisplayService()</h2>
@@ -272,6 +282,42 @@ Events</h2></td></tr>
 <p>Записать выбор на диск. Применение происходит сразу, персист — по этому вызову. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1IDisplayService.html#adfa2f32e1c51f5f5db1980bff095275a">Guildmaster.Core.Settings.IDisplayService</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1DisplayService_a8d1a4c18fc1a3991464f595f1cccaf6a_cgraph.svg" width="462" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ae33ecea38a823c9d298daa8cc9dd5f89" name="ae33ecea38a823c9d298daa8cc9dd5f89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae33ecea38a823c9d298daa8cc9dd5f89">&#9670;&#160;</a></span>SetFrameRateCap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Services.DisplayService.SetFrameRateCap </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>framesPerSecond</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Задать потолок кадров, FramePacing.Unlimited — снять. </p>
+<p>Применится только при выключенной синхронизации; ниже FramePacing.MinCap не опускается. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1IDisplayService.html#a52cdbde50add9303cb76fa50f0b0e217">Guildmaster.Core.Settings.IDisplayService</a>.</p>
 
 </div>
 </div>
@@ -369,6 +415,36 @@ Events</h2></td></tr>
 
 </div>
 </div>
+<a id="a63131b39478cb71672d6a7f44ad1543f" name="a63131b39478cb71672d6a7f44ad1543f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63131b39478cb71672d6a7f44ad1543f">&#9670;&#160;</a></span>SetVSync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Services.DisplayService.SetVSync </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Включить или выключить синхронизацию с развёрткой. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1IDisplayService.html#a8328a27985d93ffee8c449404d484be3">Guildmaster.Core.Settings.IDisplayService</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="a69f04e1e61dfc090dff852660021273d" name="a69f04e1e61dfc090dff852660021273d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a69f04e1e61dfc090dff852660021273d">&#9670;&#160;</a></span>AvailableResolutions</h2>
@@ -441,6 +517,33 @@ Events</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1IDisplayService.html#a55609699f011e068c6c1691aafa4f940">Guildmaster.Core.Settings.IDisplayService</a>.</p>
+
+</div>
+</div>
+<a id="a8d3bd6cfbe3bf1284be430aa7c0e2ea5" name="a8d3bd6cfbe3bf1284be430aa7c0e2ea5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d3bd6cfbe3bf1284be430aa7c0e2ea5">&#9670;&#160;</a></span>Pacing</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structGuildmaster_1_1Core_1_1Settings_1_1FramePacing.html">FramePacing</a> Guildmaster.Game.Services.DisplayService.Pacing = FramePacing.Resolve(null, null)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Синхронизация и потолок кадров в применённом виде. </p>
+<p><b>Владелец — этот сервис, а не уровень качества:</b> в <code>QualitySettings</code> у каждого уровня своё <code>vSyncCount</code>, и появись у нас переключатель качества, игрок менял бы синхронизацию, выбирая «покрасивее». </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1IDisplayService.html#a40bf5887b745472f82873a6becd2d8af">Guildmaster.Core.Settings.IDisplayService</a>.</p>
 
 </div>
 </div>

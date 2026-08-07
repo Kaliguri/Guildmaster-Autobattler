@@ -173,6 +173,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aa95fa045315d83e9b2e840d3d19b30c6" id="r_aa95fa045315d83e9b2e840d3d19b30c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653b">PositioningIntent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa95fa045315d83e9b2e840d3d19b30c6">Positioning</a></td></tr>
 <tr class="memdesc:aa95fa045315d83e9b2e840d3d19b30c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Намерение позиционирования (Approach/Kite/Retreat). Пишет мозг (10 Гц), читает MovementSystem (30 Гц).  <br /></td></tr>
 <tr class="separator:aa95fa045315d83e9b2e840d3d19b30c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5965d0aae267049858f9b552b015f65" id="r_ac5965d0aae267049858f9b552b015f65"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ac5965d0aae267049858f9b552b015f65">RetreatTicks</a></td></tr>
+<tr class="memdesc:ac5965d0aae267049858f9b552b015f65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько тиков подряд боец уже отступает.  <br /></td></tr>
+<tr class="separator:ac5965d0aae267049858f9b552b015f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae517b9898a466d005a66443081e7d549" id="r_ae517b9898a466d005a66443081e7d549"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae517b9898a466d005a66443081e7d549">SprintRamp</a></td></tr>
 <tr class="memdesc:ae517b9898a466d005a66443081e7d549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Насколько юнит разогнался [0..1]: 0 — обычный шаг, 1 — полная прибавка скорости разбега.  <br /></td></tr>
 <tr class="separator:ae517b9898a466d005a66443081e7d549"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1669,6 +1672,24 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Тик, с которого считается текущее секундное окно набора ресурса (потолок «единиц в секунду»). </p>
+
+</div>
+</div>
+<a id="ac5965d0aae267049858f9b552b015f65" name="ac5965d0aae267049858f9b552b015f65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5965d0aae267049858f9b552b015f65">&#9670;&#160;</a></span>RetreatTicks</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.RuntimeUnit.RetreatTicks</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Сколько тиков подряд боец уже отступает. </p>
+<p>Обнуляется, когда он оправился до порога возврата.</p>
+<p>Держит предел отступления (<code>SimTuning.RetreatMaxSeconds</code>): порог возврата задан долей HP, а поднять её нечем, если лечить некому — без счётчика боец уходит навсегда и бой замирает при обеих живых сторонах. Кайтеров предел не касается: у них отход и есть способ драться. </p>
 
 </div>
 </div>

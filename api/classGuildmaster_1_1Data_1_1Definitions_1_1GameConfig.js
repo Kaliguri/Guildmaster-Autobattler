@@ -3,6 +3,7 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig =
     [ "CreateDefault", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a7feabfaff77d5b1937486c119c6f1bc0", null ],
     [ "BattleGoldReward", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a8d05524febecb76d983218a7fe4cb28b", null ],
     [ "ClassBalance", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ab3da034f7648ec99aa3055b09a4df331", null ],
+    [ "CursorSkins", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a6a3c83400e738e9e9f4b47271ceeecdd", null ],
     [ "DefaultMasterVolume", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a057b8ba6fcb4cd3d9a8312c502111590", null ],
     [ "DefaultMusicVolume", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ace78569fefe75af6daab76e8ebfa3a8b", null ],
     [ "DefaultSfxVolume", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a229a933687c3a48a5c2ffddc4e92d638", null ],

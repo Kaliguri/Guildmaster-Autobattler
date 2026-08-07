@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.Players.IPlatformIdentity" name="Guildmaster.Core.Players.IPlatformIdentity">
+<area shape="rect" id="Node000001" title="Как игрока зовёт платформа (Steam)." alt="" coords="5,5,188,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html" title="Поднимает Steam на старте игры и качает его колбэки." alt="" coords="7,133,186,293"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,99,99,133,94,133,94,99"/>
+</map>

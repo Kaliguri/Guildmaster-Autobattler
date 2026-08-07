@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.IProfilePresenter" name="Guildmaster.Game.Flow.IProfilePresenter">
+<area shape="rect" id="Node000001" title="Показ экрана профиля и ожидание, пока игрок его закроет." alt="" coords="5,5,224,105"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1ProfilePresenter.html" title="Презентер профиля — тем же образцом, что MainMenuPresenter: публикует запрос и ждёт ответа UI." alt="" coords="7,153,222,273"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,119,117,153,112,153,112,119"/>
+</map>

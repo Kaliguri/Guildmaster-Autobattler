@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Definitions.ClipMarkers:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers__coll__graph.svg" width="218" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers__coll__graph.svg" width="218" height="331"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -133,6 +133,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aa5d508e46407319ccf34fde84f5cbb37" id="r_aa5d508e46407319ccf34fde84f5cbb37"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#aa5d508e46407319ccf34fde84f5cbb37">StrikeWindowNormalized</a> (AnimationClip clip, out float start, out float end)</td></tr>
 <tr class="memdesc:aa5d508e46407319ccf34fde84f5cbb37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Окно ВЗМАХА в нормированном времени клипа: от StrikeStartFunction до StrikeEndFunction.  <br /></td></tr>
 <tr class="separator:aa5d508e46407319ccf34fde84f5cbb37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f19d0cff69b1e7e291c8947195479f1" id="r_a3f19d0cff69b1e7e291c8947195479f1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a3f19d0cff69b1e7e291c8947195479f1">GuardWindowNormalized</a> (AnimationClip clip, out float up, out float down)</td></tr>
+<tr class="memdesc:a3f19d0cff69b1e7e291c8947195479f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Окно ДЕРЖАНИЯ гвардии в нормированном времени клипа: от GuardUpFunction (щит встал) до GuardDownFunction (щит пошёл вниз).  <br /></td></tr>
+<tr class="separator:a3f19d0cff69b1e7e291c8947195479f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -145,10 +148,16 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a1ecb91224962a7e336c97c313d26b04e" id="r_a1ecb91224962a7e336c97c313d26b04e"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a1ecb91224962a7e336c97c313d26b04e">StrikeEndFunction</a> = &quot;StrikeEnd&quot;</td></tr>
 <tr class="memdesc:a1ecb91224962a7e336c97c313d26b04e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя маркера КОНЦА ВЗМАХА — дальше идёт возврат, который ничего не сообщает.  <br /></td></tr>
 <tr class="separator:a1ecb91224962a7e336c97c313d26b04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17d5af5444e85da4a78820c35ca0a5a5" id="r_a17d5af5444e85da4a78820c35ca0a5a5"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a17d5af5444e85da4a78820c35ca0a5a5">GuardUpFunction</a> = &quot;GuardUp&quot;</td></tr>
+<tr class="memdesc:a17d5af5444e85da4a78820c35ca0a5a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя маркера «ЩИТ ВСТАЛ»: кадр, на котором поза гвардии достигнута и дальше клип её только держит.  <br /></td></tr>
+<tr class="separator:a17d5af5444e85da4a78820c35ca0a5a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a682de6a8678ef1d4dd098ea66c2bdbca" id="r_a682de6a8678ef1d4dd098ea66c2bdbca"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a682de6a8678ef1d4dd098ea66c2bdbca">GuardDownFunction</a> = &quot;GuardDown&quot;</td></tr>
+<tr class="memdesc:a682de6a8678ef1d4dd098ea66c2bdbca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя маркера «ЩИТ ПОШЁЛ ВНИЗ»: кадр, с которого клип возвращает руку в стойку.  <br /></td></tr>
+<tr class="separator:a682de6a8678ef1d4dd098ea66c2bdbca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Маркеры-как-данные на AnimationClip (вики «13» §3.1, «14»). </p>
-<p>Маркер — это AnimationEvent, чьё <code>functionName</code> называет ВИД маркера; контакт удара — HitFunction. Всё читается в рантайме (<code>clip.events/length/frameRate</code>), без editor-API. Источник тайминга удара авто-атаки: сим берёт UnitVisual.AttackFrameCount/UnitVisual.AttackHitFrame, которые выводятся отсюда. <code>Animator.fireEvents=false</code> — маркеры никогда не колбэчат.</p>
+<p>Маркер — это AnimationEvent, чьё <code>functionName</code> называет ВИД маркера; контакт удара — HitFunction. Всё читается в рантайме (<code>clip.events/length/frameRate</code>), без editor-API. Источник тайминга удара авто-атаки: сим берёт AnimationArchetypeData.AttackFrameCount/AnimationArchetypeData.AttackHitFrame, которые выводятся отсюда. <code>Animator.fireEvents=false</code> — маркеры никогда не колбэчат.</p>
 <p><b>Имя маркера контакта — <code>"Hit"</code>, а не безликое <code>"Marker"</code></b> (2026-07-31). Пока вид маркера был один, родовое имя не мешало; с приходом разметки самого взмаха (границы strike-зоны для слеш-дуги) «маркер» становится словом для трёх разных событий, и молчаливое равенство «маркер = контакт» превратилось бы в ловушку: новый маркер с тем же именем сим засчитал бы за лишний удар. Имя вида отвечает за смысл, класс — за чтение. </p>
 <p><b>Маркеров контакта может быть несколько — это Атака из нескольких Ударов</b> (2026-07-30/6). Каждый = одно разрешение контакта: свой расчёт урона, своё попадание, свой on-hit. Позиции считаются в нормированном времени клипа и умножаются на длительность свинга, поэтому серия сжимается вместе с ним; раздвижку до зазора в тик и клампы делает <code>AttackTiming</code>, а не авторинг — свинг сжимается рантайм-скоростью атаки, и валидатор клипа этого не увидел бы.</p>
 <p>Правила серии, которые держит уже не этот класс: рефанд кулдауна положен только свингу без единого контакта, промах считается состоявшимся контактом, каст между контактами не втискивается (<code>tech/00-meta/tech-debt</code> §3.9).</p>
@@ -224,7 +233,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers_a3cb383258e645dabdf86e6859359ebd4_icgraph.svg" width="540" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers_a3cb383258e645dabdf86e6859359ebd4_icgraph.svg" width="543" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -254,6 +263,58 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Число кадров клипа = <code>round(length × frameRate)</code>. 0 если клип пуст. </p>
+
+</div>
+</div>
+<a id="a3f19d0cff69b1e7e291c8947195479f1" name="a3f19d0cff69b1e7e291c8947195479f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f19d0cff69b1e7e291c8947195479f1">&#9670;&#160;</a></span>GuardWindowNormalized()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Guildmaster.Data.Definitions.ClipMarkers.GuardWindowNormalized </td>
+          <td>(</td>
+          <td class="paramtype">AnimationClip&#160;</td>
+          <td class="paramname"><em>clip</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out float&#160;</td>
+          <td class="paramname"><em>up</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out float&#160;</td>
+          <td class="paramname"><em>down</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Окно ДЕРЖАНИЯ гвардии в нормированном времени клипа: от GuardUpFunction (щит встал) до GuardDownFunction (щит пошёл вниз). </p>
+<p>Всё до <em>up</em>  — подъём, всё после <em>down</em>  — возврат в стойку.</p>
+<dl class="section return"><dt>Returns</dt><dd><code>false</code>, если клип не размечен целиком или окно вырождено. Половина разметки — это неразмеченный клип: показу нужны обе границы, потому что он играет три куска клипа по трём разным часам (подъём — за время подводки, держание — пока живёт барьер, возврат — за своё). </dd></dl>
+<p>Так же, как у взмаха, границы живут В КЛИПЕ, а не константой в показе. До 2026-08-04 доля подъёма стояла числом в <code>UnitView</code> (0.2 клипа) — и совпадала с позой ровно до первой правки клипа: автор снял промежуточный ключ на 0.117 с, подъём переехал на 0.25 с, а показ продолжил скрабить до 0.12 с и оставлял щит поднятым на 60% вместо 84% (замер перекрытия тела, RigSweep). Второй владелец одного факта — дефект; владельцем назначен клип. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers_a3f19d0cff69b1e7e291c8947195479f1_cgraph.svg" width="543" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -453,6 +514,55 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a682de6a8678ef1d4dd098ea66c2bdbca" name="a682de6a8678ef1d4dd098ea66c2bdbca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a682de6a8678ef1d4dd098ea66c2bdbca">&#9670;&#160;</a></span>GuardDownFunction</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const string Guildmaster.Data.Definitions.ClipMarkers.GuardDownFunction = &quot;GuardDown&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Имя маркера «ЩИТ ПОШЁЛ ВНИЗ»: кадр, с которого клип возвращает руку в стойку. </p>
+<p>Всё, что после него, — возврат, и играть его надо тогда, когда защита кончилась, а не когда кончился клип. </p>
+
+</div>
+</div>
+<a id="a17d5af5444e85da4a78820c35ca0a5a5" name="a17d5af5444e85da4a78820c35ca0a5a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17d5af5444e85da4a78820c35ca0a5a5">&#9670;&#160;</a></span>GuardUpFunction</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const string Guildmaster.Data.Definitions.ClipMarkers.GuardUpFunction = &quot;GuardUp&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Имя маркера «ЩИТ ВСТАЛ»: кадр, на котором поза гвардии достигнута и дальше клип её только держит. </p>
+
+</div>
+</div>
 <a id="a742468eb1671fee16474f55b2c6d7a8c" name="a742468eb1671fee16474f55b2c6d7a8c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a742468eb1671fee16474f55b2c6d7a8c">&#9670;&#160;</a></span>HitFunction</h2>
 

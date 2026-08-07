@@ -151,6 +151,9 @@ Events</h2></td></tr>
 <tr class="memitem:a3a4d4bce186979427542dc94ac93d1be" id="r_a3a4d4bce186979427542dc94ac93d1be"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="namespaceGuildmaster_1_1Core_1_1Net.html#ae2b5e5ef3c4e367a31ede454dbd22d65">CoopSessionState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html#a3a4d4bce186979427542dc94ac93d1be">StateChanged</a></td></tr>
 <tr class="memdesc:a3a4d4bce186979427542dc94ac93d1be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что-то, что видит экран, изменилось — пора перерисоваться.  <br /></td></tr>
 <tr class="separator:a3a4d4bce186979427542dc94ac93d1be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4443ccada981e388814787dbc0ba5cd0" id="r_a4443ccada981e388814787dbc0ba5cd0"><td class="memItemLeft" align="right" valign="top">Action&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html#a4443ccada981e388814787dbc0ba5cd0">PeerLeft</a></td></tr>
+<tr class="memdesc:a4443ccada981e388814787dbc0ba5cd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Напарник отвалился: его номер пира.  <br /></td></tr>
+<tr class="separator:a4443ccada981e388814787dbc0ba5cd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Что интерфейсу нужно знать и уметь про кооп-сессию: создать, позвать, выйти, показать состояние. </p>
@@ -379,6 +382,24 @@ Events</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Event Documentation</h2>
+<a id="a4443ccada981e388814787dbc0ba5cd0" name="a4443ccada981e388814787dbc0ba5cd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4443ccada981e388814787dbc0ba5cd0">&#9670;&#160;</a></span>PeerLeft</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;int&gt; Guildmaster.Core.Net.ICoopSessionControl.PeerLeft</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Напарник отвалился: его номер пира. </p>
+<p>Только у хоста — гостю уход хоста приходит сменой состояния, потому что для него это конец сессии, а не потеря соседа.</p>
+<p>Заведено, потому что у хоста уход гостя не порождал НИЧЕГО: он оставался в игре, не зная, что остался один (наход. Макса 04.08.2026). </p>
+
+</div>
+</div>
 <a id="a3a4d4bce186979427542dc94ac93d1be" name="a3a4d4bce186979427542dc94ac93d1be"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3a4d4bce186979427542dc94ac93d1be">&#9670;&#160;</a></span>StateChanged</h2>
 

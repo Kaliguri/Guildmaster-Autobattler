@@ -1,5 +1,7 @@
 <map id="Guildmaster.Presentation.UnitView.TryGetSwingArc" name="Guildmaster.Presentation.UnitView.TryGetSwingArc">
-<area shape="rect" id="Node000001" title="Геометрия текущего взмаха для дуги: вокруг чего он идёт (плечо бьющей руки), где сейчас кончик оружия..." alt="" coords="5,5,196,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a35ef0e1616d9ab179fb8fe677c698cb7" title="Идёт ли сейчас взмах и насколько он прошёл (0..1) — окно между маркерами StrikeStart и StrikeEnd." alt="" coords="244,5,465,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
+<area shape="rect" id="Node000001" title="Геометрия текущего взмаха для дуги: вокруг чего он идёт (плечо бьющей руки), где сейчас кончик оружия..." alt="" coords="5,37,196,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1VisualDefects.html#a7221e80ed1658d3ed950512669e074ba" title="Сказать о дефекте один раз." alt="" coords="259,5,450,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,43,245,36,246,42,197,48"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a35ef0e1616d9ab179fb8fe677c698cb7" title="Идёт ли сейчас взмах и насколько он прошёл (0..1) — окно между маркерами StrikeStart и StrikeEnd." alt="" coords="244,69,465,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="197,67,231,71,230,76,196,72"/>
 </map>

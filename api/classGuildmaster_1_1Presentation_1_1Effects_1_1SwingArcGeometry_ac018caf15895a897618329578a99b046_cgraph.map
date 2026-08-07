@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Effects.SwingArcGeometry.TryResolveAnchor" name="Guildmaster.Presentation.Effects.SwingArcGeometry.TryResolveAnchor">
+<area shape="rect" id="Node000001" title="Место дуги В ПОРЯДКЕ ОТРИСОВКИ ТЕЛА: куда её положить и с каким порядком." alt="" coords="5,5,273,60"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitPartLookup.html#a2d3f0c7b7785644bb24fbe7dcc70b783" title="Чем юнит исполняет приём ЭТОЙ рукой: предмет в её хвате, а если рука пуста — сама кисть (кулак)." alt="" coords="321,5,564,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="273,30,308,30,308,35,273,35"/>
+</map>

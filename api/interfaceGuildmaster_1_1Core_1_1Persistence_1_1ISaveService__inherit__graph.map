@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,199,132,294,127,292,174,197"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html" title="Общая механика файлового ISaveService: конверт со версией схемы, атомарная запись,..." alt="" coords="241,233,442,433"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="278,197,295,232,290,234,273,199"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html" title="Бэкенд ILocalSaveService — данные КОМПЬЮТЕРА, а не игрока: каталог persistentDataPath/Local,..." alt="" coords="12,481,215,561"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html" title="Бэкенд ILocalSaveService — данные КОМПЬЮТЕРА, а не игрока: каталог Local под Core...." alt="" coords="12,481,215,561"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="114,387,115,481,110,481,109,387"/>
 <area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="232,434,230,435,168,483,165,479,226,431,228,430"/>
 <area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html" title="Бэкенд ISaveService для данных ИГРОКА — наш собственный и единственный: JSON&#45;файлы под GameDataPath...." alt="" coords="242,481,441,561"/>

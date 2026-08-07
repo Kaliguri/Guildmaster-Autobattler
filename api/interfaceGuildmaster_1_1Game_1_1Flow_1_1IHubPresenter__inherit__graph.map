@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.IHubPresenter" name="Guildmaster.Game.Flow.IHubPresenter">
+<area shape="rect" id="Node000001" title="Показ Двора гильдии и ожидание, пока игрок не уйдёт в забег." alt="" coords="5,5,209,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html" title="Презентер Двора — тем же образцом, что MainMenuPresenter и ProfilePresenter: публикует запрос и ждёт ..." alt="" coords="7,133,207,233"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,99,110,133,105,133,105,99"/>
+</map>

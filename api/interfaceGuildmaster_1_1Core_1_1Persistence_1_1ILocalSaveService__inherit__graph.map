@@ -1,6 +1,6 @@
 <map id="Guildmaster.Core.Persistence.ILocalSaveService" name="Guildmaster.Core.Persistence.ILocalSaveService">
 <area shape="rect" id="Node000001" title="Хранилище машинно&#45;локальных данных: тот же контракт, что у ISaveService, но другой каталог — вне Save..." alt="" coords="5,219,216,299"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html" title="Бэкенд ILocalSaveService — данные КОМПЬЮТЕРА, а не игрока: каталог persistentDataPath/Local,..." alt="" coords="9,347,212,427"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html" title="Бэкенд ILocalSaveService — данные КОМПЬЮТЕРА, а не игрока: каталог Local под Core...." alt="" coords="9,347,212,427"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="113,312,113,346,108,346,108,312"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html" title="Шов персистентности (ТЗ [[save&#45;system]]): сохранение/загрузка сериализуемых DTO по строковому ключу." alt="" coords="47,5,174,171"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,184,113,218,108,218,108,184"/>

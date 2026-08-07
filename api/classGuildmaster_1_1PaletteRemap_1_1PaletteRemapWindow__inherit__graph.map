@@ -1,5 +1,5 @@
 <map id="Guildmaster.PaletteRemap.PaletteRemapWindow" name="Guildmaster.PaletteRemap.PaletteRemapWindow">
-<area shape="rect" id="Node000001" title="Alebardium Palette Remapper — перекрашивает растровые (пиксель&#45;арт) спрайты в нашу палитру методом gr..." alt="" coords="5,119,197,199"/>
+<area shape="rect" id="Node000001" title="Alebardium Palette Remapper — перекрашивает растровые спрайты вендорных паков в нашу палитру методом ..." alt="" coords="5,119,197,199"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="49,5,153,71"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,85,104,118,99,118,99,85"/>
 </map>

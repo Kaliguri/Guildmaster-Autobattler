@@ -6,6 +6,7 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
     [ "ActivitySetup", "structGuildmaster_1_1Data_1_1Definitions_1_1ActivitySetup.html", "structGuildmaster_1_1Data_1_1Definitions_1_1ActivitySetup" ],
     [ "AIPresetData", "classGuildmaster_1_1Data_1_1Definitions_1_1AIPresetData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AIPresetData" ],
     [ "AIProfile", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile" ],
+    [ "AnimationArchetypeData", "classGuildmaster_1_1Data_1_1Definitions_1_1AnimationArchetypeData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AnimationArchetypeData" ],
     [ "ArenaRevealRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1ArenaRevealRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1ArenaRevealRequest" ],
     [ "AttackChannel", "structGuildmaster_1_1Data_1_1Definitions_1_1AttackChannel.html", "structGuildmaster_1_1Data_1_1Definitions_1_1AttackChannel" ],
     [ "BattlePresetData", "classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData" ],
@@ -18,6 +19,8 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
     [ "ContentIds", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentIds.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentIds" ],
     [ "ContentKeys", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys" ],
     [ "ContentRegistry", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentRegistry.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentRegistry" ],
+    [ "CursorSkinCatalog", "classGuildmaster_1_1Data_1_1Definitions_1_1CursorSkinCatalog.html", "classGuildmaster_1_1Data_1_1Definitions_1_1CursorSkinCatalog" ],
+    [ "CursorSkinData", "classGuildmaster_1_1Data_1_1Definitions_1_1CursorSkinData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1CursorSkinData" ],
     [ "DamageTypes", "classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes.html", "classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes" ],
     [ "EffectData", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData" ],
     [ "EncounterData", "classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData" ],
@@ -37,9 +40,12 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
     [ "ItemData", "classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ItemData" ],
     [ "KeywordDefinition", "classGuildmaster_1_1Data_1_1Definitions_1_1KeywordDefinition.html", "classGuildmaster_1_1Data_1_1Definitions_1_1KeywordDefinition" ],
     [ "Kite", "structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html", "structGuildmaster_1_1Data_1_1Definitions_1_1Kite" ],
+    [ "MenuBattleConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1MenuBattleConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1MenuBattleConfig" ],
     [ "OpenLoadoutRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenLoadoutRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenLoadoutRequest" ],
     [ "OpenRewardRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest" ],
     [ "OpenTextEventRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest" ],
+    [ "OutfitData", "classGuildmaster_1_1Data_1_1Definitions_1_1OutfitData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1OutfitData" ],
+    [ "OutfitPiece", "structGuildmaster_1_1Data_1_1Definitions_1_1OutfitPiece.html", "structGuildmaster_1_1Data_1_1Definitions_1_1OutfitPiece" ],
     [ "PlayerSlot", "structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html", "structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot" ],
     [ "ProvingGroundsConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1ProvingGroundsConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ProvingGroundsConfig" ],
     [ "ProvingGroundsSetupRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1ProvingGroundsSetupRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1ProvingGroundsSetupRequest" ],
@@ -61,13 +67,13 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
     [ "UnitColorRoles", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitColorRoles.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitColorRoles" ],
     [ "UnitData", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData" ],
     [ "UnitTagResolver", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitTagResolver.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitTagResolver" ],
-    [ "UnitVisual", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual" ],
     [ "VesselData", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselData" ],
     [ "VfxData", "classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1VfxData" ],
     [ "AbilityParameter", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afe80c9145386df4d9fac1fd87c017c8e", [
       [ "Cooldown", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afe80c9145386df4d9fac1fd87c017c8ea5b9cca31b21c9c04c3d6f9ecbcc3ffc8", null ],
       [ "CastSeconds", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afe80c9145386df4d9fac1fd87c017c8eac87b04506c3e9f99efa8f55d82c9f9ce", null ],
-      [ "DamageMultiplier", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afe80c9145386df4d9fac1fd87c017c8ead20501ca436749ae1cf7c92952ba6131", null ]
+      [ "DamageMultiplier", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afe80c9145386df4d9fac1fd87c017c8ead20501ca436749ae1cf7c92952ba6131", null ],
+      [ "BaseDamage", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afe80c9145386df4d9fac1fd87c017c8eaff34b8c2d29a915f10b421669d2efa27", null ]
     ] ],
     [ "AbilityTargetMode", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d", [
       [ "Self", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806", null ],
@@ -88,6 +94,14 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "Line", "namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca4803e6b9e63dabf04de980788d6a13c4", null ],
       [ "Circle", "namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca30954d90085f6eaaf5817917fc5fecb3", null ]
     ] ],
+    [ "AttackRangeBand", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46d15226b8b51f5b785efccd01e4e3f", [
+      [ "Melee", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46d15226b8b51f5b785efccd01e4e3fafcbd772e48c4b07d7d3be13b37a82f5e", null ],
+      [ "Reach", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46d15226b8b51f5b785efccd01e4e3fab350f6de1060afddbefbdf47552464ae", null ],
+      [ "ShortRange", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46d15226b8b51f5b785efccd01e4e3fa509956ac9f043653602d5dd1f94ba69f", null ],
+      [ "MidRange", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46d15226b8b51f5b785efccd01e4e3fa31c2ac6e8c35911c8d17ee410d4090c2", null ],
+      [ "LongRange", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46d15226b8b51f5b785efccd01e4e3facc9ef42bf48ab3818281ccb0242bda47", null ],
+      [ "Boundless", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46d15226b8b51f5b785efccd01e4e3faaeeceb2a17e84d36e5112ea1ed5ddad2", null ]
+    ] ],
     [ "AttackType", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1", [
       [ "Melee", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1afcbd772e48c4b07d7d3be13b37a82f5e", null ],
       [ "Ranged", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1ac2f329a17c18a701dbe1e96e03858728", null ],
@@ -105,17 +119,20 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "Fighting", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a8dfef43b870791c6c04b4600ff66103aaef492f571a74192b637adada68fdd94a", null ],
       [ "Interlude", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a8dfef43b870791c6c04b4600ff66103aa3cfb3f0cb9369e6e2e4c01428f34f87e", null ]
     ] ],
-    [ "BodyShade", "namespaceGuildmaster_1_1Data_1_1Definitions.html#adbfd05fcfcc6e150c47638f97126266c", [
-      [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#adbfd05fcfcc6e150c47638f97126266ca6adf97f83acf6453d4a6a4b1070f3754", null ],
-      [ "Ash", "namespaceGuildmaster_1_1Data_1_1Definitions.html#adbfd05fcfcc6e150c47638f97126266cabebd38011265cc9ca332791054106ef5", null ],
-      [ "Verdant", "namespaceGuildmaster_1_1Data_1_1Definitions.html#adbfd05fcfcc6e150c47638f97126266cab33646d7b7b14dd6da17a88f6ddb5926", null ],
-      [ "Tan", "namespaceGuildmaster_1_1Data_1_1Definitions.html#adbfd05fcfcc6e150c47638f97126266ca1266b4e6f81e60733ec6c717e0181f60", null ]
-    ] ],
     [ "CastCondition", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0", [
       [ "Immediately", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0afd83e0ccb3e6312a62f888dd496dd0a5", null ],
       [ "EnemiesInRadius", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204", null ],
       [ "AllyTargetHpBelowPct", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a9b5c1389533f26b3550e6a1a2f7e63d8", null ],
       [ "EnemiesWithTagCount", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a925aa4b0a5b89dc13621f1afe086c21a", null ]
+    ] ],
+    [ "CastRangeBand", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fd", [
+      [ "LikeAutoAttack", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fdaaffa9b001c0c3c19b73cdefa60fe2cbb", null ],
+      [ "Melee", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fdafcbd772e48c4b07d7d3be13b37a82f5e", null ],
+      [ "Reach", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fdab350f6de1060afddbefbdf47552464ae", null ],
+      [ "ShortRange", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fda509956ac9f043653602d5dd1f94ba69f", null ],
+      [ "MidRange", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fda31c2ac6e8c35911c8d17ee410d4090c2", null ],
+      [ "LongRange", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fdacc9ef42bf48ab3818281ccb0242bda47", null ],
+      [ "Boundless", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fdaaeeceb2a17e84d36e5112ea1ed5ddad2", null ]
     ] ],
     [ "CastSource", "namespaceGuildmaster_1_1Data_1_1Definitions.html#ab39acdcb0147f727f4254c23e2bc404d", [
       [ "Auto", "namespaceGuildmaster_1_1Data_1_1Definitions.html#ab39acdcb0147f727f4254c23e2bc404da06b9281e396db002010bde1de57262eb", null ],

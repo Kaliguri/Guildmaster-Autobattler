@@ -1,5 +1,5 @@
 <map id="Guildmaster.Combat.Tape.BattleTape.CollectEvents" name="Guildmaster.Combat.Tape.BattleTape.CollectEvents">
 <area shape="rect" id="Node000001" title="Собрать события в диапазоне тиков включительно." alt="" coords="249,5,444,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkWriter.html#a89267e34f5fa5ae05f9dbebe46ab3a9d" title="Уложить срез ленты: тики firstTick ..firstTick + tickCount &#45;1 и все события в этом диапазоне." alt="" coords="5,5,201,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkWriter.html#a1b35adcdad469ba7cc8a2035b60162a1" title="Уложить срез ленты: тики firstTick ..firstTick + tickCount &#45;1 и все события в этом диапазоне." alt="" coords="5,5,201,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,28,201,28,201,23,236,23"/>
 </map>

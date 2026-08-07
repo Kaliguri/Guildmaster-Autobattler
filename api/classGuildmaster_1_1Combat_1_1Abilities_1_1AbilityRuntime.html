@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Abilitie
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Abilities.AbilityRuntime:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime__coll__graph.svg" width="220" height="554"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime__coll__graph.svg" width="220" height="594"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -123,6 +123,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a86fec4bb9fa8b44ce01b59b50586e7a4" id="r_a86fec4bb9fa8b44ce01b59b50586e7a4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html#a86fec4bb9fa8b44ce01b59b50586e7a4">CastsThisBattle</a></td></tr>
 <tr class="memdesc:a86fec4bb9fa8b44ce01b59b50586e7a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько раз способность кастовала В ЭТОМ БОЮ.  <br /></td></tr>
 <tr class="separator:a86fec4bb9fa8b44ce01b59b50586e7a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af30cdf06131a56de57a868918577efcd" id="r_af30cdf06131a56de57a868918577efcd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html#af30cdf06131a56de57a868918577efcd">CastRange</a> = -1f</td></tr>
+<tr class="memdesc:af30cdf06131a56de57a868918577efcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Дальность каста в мировых единицах.  <br /></td></tr>
+<tr class="separator:af30cdf06131a56de57a868918577efcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -152,6 +155,24 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="af30cdf06131a56de57a868918577efcd" name="af30cdf06131a56de57a868918577efcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af30cdf06131a56de57a868918577efcd">&#9670;&#160;</a></span>CastRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Combat.Abilities.AbilityRuntime.CastRange = -1f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Дальность каста в мировых единицах. </p>
+<p><b>Отрицательная = «как у авто-атаки»</b>: тогда дистанция читается из стата юнита прямо в момент проверки.</p>
+<p>Разрешается фабрикой, потому что ступень живёт в <code>StatsConfig</code>, а он есть у сборки юнита и не должен протаскиваться в боевые системы. Наследование намеренно НЕ разворачивается в число при сборке: авто-атака у кита может меняться по ходу боя — стойка Кровоманта переставляет дальность с 8 на 1, — и умение обязано ехать вместе с ней, а не с той, что была на старте. </p>
+
+</div>
+</div>
 <a id="a86fec4bb9fa8b44ce01b59b50586e7a4" name="a86fec4bb9fa8b44ce01b59b50586e7a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a86fec4bb9fa8b44ce01b59b50586e7a4">&#9670;&#160;</a></span>CastsThisBattle</h2>
 

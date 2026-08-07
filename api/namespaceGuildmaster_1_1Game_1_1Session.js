@@ -1,6 +1,8 @@
 var namespaceGuildmaster_1_1Game_1_1Session =
 [
     [ "Net", "namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html", "namespaceGuildmaster_1_1Game_1_1Session_1_1Net" ],
+    [ "CoopDisconnectPresenter", "classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter.html", "classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter" ],
+    [ "CoopJoinInterrupt", "classGuildmaster_1_1Game_1_1Session_1_1CoopJoinInterrupt.html", "classGuildmaster_1_1Game_1_1Session_1_1CoopJoinInterrupt" ],
     [ "SessionCommandRouter", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter" ],
     [ "SessionContext", "classGuildmaster_1_1Game_1_1Session_1_1SessionContext.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionContext" ],
     [ "SessionHost", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost" ],

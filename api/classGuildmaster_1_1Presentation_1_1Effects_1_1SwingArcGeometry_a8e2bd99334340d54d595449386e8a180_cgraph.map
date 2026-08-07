@@ -1,0 +1,13 @@
+<map id="Guildmaster.Presentation.Effects.SwingArcGeometry.TryResolve" name="Guildmaster.Presentation.Effects.SwingArcGeometry.TryResolve">
+<area shape="rect" id="Node000001" title="Плечо и остриё для тела в его ТЕКУЩЕЙ позе." alt="" coords="5,105,273,145"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a33577b0580a24ec9c0dbba739cc1d3fb" title="Кость плеча нужной стороны — начало дуги удара: рука вращается как жёсткий рычаг." alt="" coords="331,5,554,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,103,320,55,347,47,349,52,322,60,191,108"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitPartLookup.html#abdae40edefd94bf4723277241c8d269a" title="Часть тела по кости и стороне: (&quot;Head&quot;, None), (&quot;Leg_Boots&quot;, Right)." alt="" coords="323,69,562,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="273,107,309,102,310,108,274,112"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitPartLookup.html#a2d3f0c7b7785644bb24fbe7dcc70b783" title="Чем юнит исполняет приём ЭТОЙ рукой: предмет в её хвате, а если рука пуста — сама кисть (кулак)." alt="" coords="321,134,564,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="274,139,308,143,308,148,273,144"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry.html#ace536a95ea64c25b9f3ba4ec08def315" title="Мировая точка кончика части: угол спрайта, самый дальний от точки крепления." alt="" coords="323,213,562,253"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="186,143,322,197,351,207,350,212,320,203,184,148"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry.html#a1f34434d71231f4aceae98dfd44cdb27" title="ЧИСТЫЙ замер кончика по мешу спрайта, в локальных координатах рендерера: дальняя от точки крепления в..." alt="" coords="612,206,863,261"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="562,231,598,231,598,236,562,236"/>
+</map>

@@ -16,26 +16,26 @@
 <text text-anchor="start" x="21.5" y="-318" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
 <text text-anchor="start" x="21.5" y="-307" font-family="Helvetica,sans-Serif" font-size="10.00">Design.CombatFeelConfig</text>
 <text text-anchor="start" x="4.5" y="-292" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-292" font-family="Helvetica,sans-Serif" font-size="10.00">EnableContactDust</text>
+<text text-anchor="start" x="17.5" y="-292" font-family="Helvetica,sans-Serif" font-size="10.00">EnableImpactZones</text>
 <text text-anchor="start" x="4.5" y="-277" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-277" font-family="Helvetica,sans-Serif" font-size="10.00">EnableHitNudge</text>
+<text text-anchor="start" x="17.5" y="-277" font-family="Helvetica,sans-Serif" font-size="10.00">ImpactZoneHeadWeight</text>
 <text text-anchor="start" x="4.5" y="-262" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-262" font-family="Helvetica,sans-Serif" font-size="10.00">EnableFacingFlipSquash</text>
+<text text-anchor="start" x="17.5" y="-262" font-family="Helvetica,sans-Serif" font-size="10.00">ImpactZoneBodyWeight</text>
 <text text-anchor="start" x="4.5" y="-247" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-247" font-family="Helvetica,sans-Serif" font-size="10.00">EnableTargetAcquireTell</text>
+<text text-anchor="start" x="17.5" y="-247" font-family="Helvetica,sans-Serif" font-size="10.00">ImpactZoneLegsWeight</text>
 <text text-anchor="start" x="4.5" y="-232" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-232" font-family="Helvetica,sans-Serif" font-size="10.00">EnableIdleBreath</text>
+<text text-anchor="start" x="17.5" y="-232" font-family="Helvetica,sans-Serif" font-size="10.00">ImpactZoneHeadRadius</text>
 <text text-anchor="start" x="4.5" y="-217" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-217" font-family="Helvetica,sans-Serif" font-size="10.00">EnableAttackAnticipation</text>
+<text text-anchor="start" x="17.5" y="-217" font-family="Helvetica,sans-Serif" font-size="10.00">ImpactZoneBodyRadius</text>
 <text text-anchor="start" x="4.5" y="-202" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-202" font-family="Helvetica,sans-Serif" font-size="10.00">EnableAttackerLunge</text>
+<text text-anchor="start" x="17.5" y="-202" font-family="Helvetica,sans-Serif" font-size="10.00">ImpactZoneLegsRadius</text>
 <text text-anchor="start" x="4.5" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">EnableImpactFrame</text>
+<text text-anchor="start" x="17.5" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">ImpactZoneNearSideBias</text>
 <text text-anchor="start" x="4.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">EnableDeathAnticipation</text>
+<text text-anchor="start" x="17.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">ImpactZoneReachSharpness</text>
 <text text-anchor="start" x="4.5" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">EnableFloatingTextArc</text>
-<text text-anchor="start" x="17.5" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">and 116 more...</text>
+<text text-anchor="start" x="17.5" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">ImpactZoneHeadHeight</text>
+<text text-anchor="start" x="17.5" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">and 135 more...</text>
 <text text-anchor="start" x="4.5" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17.5" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">EvaluateHitstopSeconds()</text>
 <text text-anchor="start" x="4.5" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>

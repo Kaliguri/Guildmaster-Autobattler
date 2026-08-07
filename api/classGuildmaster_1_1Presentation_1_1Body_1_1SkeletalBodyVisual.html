@@ -140,6 +140,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad8480ab504ed72a48377bfc11a2ca390" id="r_ad8480ab504ed72a48377bfc11a2ca390"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#ad8480ab504ed72a48377bfc11a2ca390">SetVisible</a> (bool visible)</td></tr>
 <tr class="memdesc:ad8480ab504ed72a48377bfc11a2ca390"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать/скрыть тело.  <br /></td></tr>
 <tr class="separator:ad8480ab504ed72a48377bfc11a2ca390"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad12eb0d00623f6647b5772eb904f3dd" id="r_aad12eb0d00623f6647b5772eb904f3dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#aad12eb0d00623f6647b5772eb904f3dd">ApplyOutfit</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1OutfitData.html">Data.Definitions.OutfitData</a> outfit)</td></tr>
+<tr class="memdesc:aad12eb0d00623f6647b5772eb904f3dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Надеть облачение.  <br /></td></tr>
+<tr class="separator:aad12eb0d00623f6647b5772eb904f3dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a060e337eafdcb25e62a2af83301a1b07" id="r_a060e337eafdcb25e62a2af83301a1b07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a060e337eafdcb25e62a2af83301a1b07">PlayShatter</a> (<a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">Design.CombatFeelConfig</a> feel, Gradient palette, System.Action onComplete)</td></tr>
 <tr class="memdesc:a060e337eafdcb25e62a2af83301a1b07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колется КАЖДАЯ часть — общей палитрой и общим таймингом.  <br /></td></tr>
 <tr class="separator:a060e337eafdcb25e62a2af83301a1b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,6 +183,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a7c4cdacef13ef4b769c3dfdf6ecb32bd" id="r_a7c4cdacef13ef4b769c3dfdf6ecb32bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a7c4cdacef13ef4b769c3dfdf6ecb32bd">SortingOrder</a><code> [get]</code></td></tr>
 <tr class="memdesc:a7c4cdacef13ef4b769c3dfdf6ecb32bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущий порядок сортировки тела.  <br /></td></tr>
 <tr class="separator:a7c4cdacef13ef4b769c3dfdf6ecb32bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a482be0816869b3138495b1a79ae7077d" id="r_a482be0816869b3138495b1a79ae7077d"><td class="memItemLeft" align="right" valign="top">Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a482be0816869b3138495b1a79ae7077d">SortingRoot</a><code> [get]</code></td></tr>
+<tr class="memdesc:a482be0816869b3138495b1a79ae7077d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Носитель группы — единственная дверь внутрь порядка частей.  <br /></td></tr>
+<tr class="separator:a482be0816869b3138495b1a79ae7077d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ff2a39cf58da64f8c8f2a756810fb7b" id="r_a4ff2a39cf58da64f8c8f2a756810fb7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a4ff2a39cf58da64f8c8f2a756810fb7b">IsFlippedX</a><code> [get]</code></td></tr>
 <tr class="memdesc:a4ff2a39cf58da64f8c8f2a756810fb7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отзеркалено ли тело сейчас.  <br /></td></tr>
 <tr class="separator:a4ff2a39cf58da64f8c8f2a756810fb7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,6 +224,11 @@ Properties</h2></td></tr>
 <p>Применить состояние кадра. Реализация сама решает, писать ли — повтор того же не пишется. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a9c30d9104a90ac92699ec6601a299322">Guildmaster.Presentation.Body.IUnitBodyVisual</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual_a22fdd9f564988e40a699bfc1271b9475_cgraph.svg" width="472" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -288,6 +299,38 @@ Properties</h2></td></tr>
 
 <p>Разложить порядок списка в <code>sortingOrder</code> частей: верхний элемент получает наибольший ордер (рисуется поверх). </p>
 <p>Слой сортировки выравнивается по группе — часть с чужим слоем иначе выпадает из тела целиком. </p>
+
+</div>
+</div>
+<a id="aad12eb0d00623f6647b5772eb904f3dd" name="aad12eb0d00623f6647b5772eb904f3dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad12eb0d00623f6647b5772eb904f3dd">&#9670;&#160;</a></span>ApplyOutfit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Presentation.Body.SkeletalBodyVisual.ApplyOutfit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1OutfitData.html">Data::Definitions::OutfitData</a>&#160;</td>
+          <td class="paramname"><em>outfit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Надеть облачение. </p>
+<p><code>null</code> — вернуть тело к префабному виду. </p>
+<p><b>Прячем спрайтом, а не выключателем.</b> SetVisible гасит и зажигает ВСЕ части разом (разлёт осколков, возврат вида в пул), и если бы облачение снимало щит через <code>enabled</code>, первый же возврат видимости надел бы его обратно. Поэтому у облачения свой канал — <code>sprite</code>, — и два канала не пересекаются. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#afa87b61cae2ed09afe08bd6c41b54d1f">Guildmaster.Presentation.Body.IUnitBodyVisual</a>.</p>
 
 </div>
 </div>
@@ -402,7 +445,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual_a060e337eafdcb25e62a2af83301a1b07_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual_a060e337eafdcb25e62a2af83301a1b07_cgraph.svg" width="100%" height="398"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -687,6 +730,11 @@ Here is the call graph for this function:</div>
 <p>Мировой AABB тела (у скелета — объединение частей). false — рисовать нечего. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a015832437d440f954eeeb42cd254736f">Guildmaster.Presentation.Body.IUnitBodyVisual</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual_aff86236b4398cfbc3db914a5dadaa6d6_icgraph.svg" width="548" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -868,6 +916,33 @@ Here is the call graph for this function:</div>
 <p>Текущий порядок сортировки тела. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a2cd147dc96f78fbbb3e056f86b8dbf00">Guildmaster.Presentation.Body.IUnitBodyVisual</a>.</p>
+
+</div>
+</div>
+<a id="a482be0816869b3138495b1a79ae7077d" name="a482be0816869b3138495b1a79ae7077d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a482be0816869b3138495b1a79ae7077d">&#9670;&#160;</a></span>SortingRoot</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Transform Guildmaster.Presentation.Body.SkeletalBodyVisual.SortingRoot</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Носитель группы — единственная дверь внутрь порядка частей. </p>
+<p>Разрешается лениво: тело умеют поднимать и редакторные стенды, где Awake проходит, но поле на префабе может быть не заполнено вовсе. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#aa816e23b7992870b803735072e2afb65">Guildmaster.Presentation.Body.IUnitBodyVisual</a>.</p>
 
 </div>
 </div>

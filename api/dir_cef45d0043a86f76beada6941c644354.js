@@ -52,11 +52,11 @@ var dir_cef45d0043a86f76beada6941c644354 =
     [ "SplitAttackOnTagComponent.cs", "SplitAttackOnTagComponent_8cs.html", "SplitAttackOnTagComponent_8cs" ],
     [ "StatModifierComponent.cs", "StatModifierComponent_8cs.html", "StatModifierComponent_8cs" ],
     [ "StealthComponent.cs", "StealthComponent_8cs.html", "StealthComponent_8cs" ],
-    [ "StoneTitheComponent.cs", "StoneTitheComponent_8cs.html", "StoneTitheComponent_8cs" ],
     [ "SummonOnBattleStartComponent.cs", "SummonOnBattleStartComponent_8cs.html", "SummonOnBattleStartComponent_8cs" ],
     [ "TaggedTargetDamageBonusComponent.cs", "TaggedTargetDamageBonusComponent_8cs.html", "TaggedTargetDamageBonusComponent_8cs" ],
     [ "ThornsComponent.cs", "ThornsComponent_8cs.html", "ThornsComponent_8cs" ],
     [ "ThrowAllyComponent.cs", "ThrowAllyComponent_8cs.html", "ThrowAllyComponent_8cs" ],
+    [ "TitheComponent.cs", "TitheComponent_8cs.html", "TitheComponent_8cs" ],
     [ "VortexEntryComponent.cs", "VortexEntryComponent_8cs.html", "VortexEntryComponent_8cs" ],
     [ "WardOnEnemyCastComponent.cs", "WardOnEnemyCastComponent_8cs.html", "WardOnEnemyCastComponent_8cs" ],
     [ "WhirlDashLandingComponent.cs", "WhirlDashLandingComponent_8cs.html", "WhirlDashLandingComponent_8cs" ]

@@ -193,7 +193,8 @@ var menudata={children:[
 {text:"p",url:"functions_evnt.html#index_p"},
 {text:"r",url:"functions_evnt.html#index_r"},
 {text:"s",url:"functions_evnt.html#index_s"},
-{text:"u",url:"functions_evnt.html#index_u"}]}]}]},
+{text:"u",url:"functions_evnt.html#index_u"},
+{text:"w",url:"functions_evnt.html#index_w"}]}]}]},
 {text:"Files",url:"files.html",children:[
 {text:"File List",url:"files.html"},
 {text:"File Members",url:"globals.html",children:[

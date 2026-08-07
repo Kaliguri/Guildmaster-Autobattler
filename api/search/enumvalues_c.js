@@ -12,13 +12,15 @@ var searchData=
   ['md_9',['Md',['../classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a43dde70287e571242272c78764ea534daa9547b86268c5e29adedd500ff7eef45',1,'Guildmaster::UI::Components::Slot']]],
   ['mechanic_10',['Mechanic',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113a64eb669723cae1983f03e34cca705c80',1,'Guildmaster::Data::Definitions']]],
   ['medium_11',['Medium',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a97708c7660ca7173822cc063f469c397a87f8a6ab85c9ced3702b4ea641ad4bb5',1,'Guildmaster::Data::Definitions']]],
-  ['melee_12',['Melee',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1afcbd772e48c4b07d7d3be13b37a82f5e',1,'Guildmaster::Data::Definitions']]],
+  ['melee_12',['melee',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fdafcbd772e48c4b07d7d3be13b37a82f5e',1,'Guildmaster.Data.Definitions.Melee'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1afcbd772e48c4b07d7d3be13b37a82f5e',1,'Guildmaster.Data.Definitions.Melee'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46d15226b8b51f5b785efccd01e4e3fafcbd772e48c4b07d7d3be13b37a82f5e',1,'Guildmaster.Data.Definitions.Melee']]],
   ['menu_13',['Menu',['../namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8ab61541208db7fa7dba42c85224405911',1,'Guildmaster::Core::Input']]],
   ['mettle_14',['Mettle',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4a400419f1b352e7a735a9b391387e8e80',1,'Guildmaster::Data::Definitions']]],
-  ['missing_15',['Missing',['../namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90a2aee0be2678ee90fd327cc186826438e',1,'Guildmaster::Core::Persistence']]],
-  ['modal_16',['Modal',['../namespaceGuildmaster_1_1UI.html#acf7fb6f779e3d4f2391d5de890539640ac59d6df802c32f037c2a15ff75faec17',1,'Guildmaster::UI']]],
-  ['move_17',['Move',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a12d0b679c877521b9eb27e95f192d9e5a6bc362dbf494c61ea117fe3c71ca48a5',1,'Guildmaster::Data::Definitions']]],
-  ['moveon_18',['MoveOn',['../namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5abe79922aaf92f857f6742a26e0ff57b2',1,'Guildmaster::Guild']]],
-  ['movespeed_19',['MoveSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a3dfb8a09b650ce66270c54fdf5c2aa74',1,'Guildmaster::Data::Stats']]],
-  ['multiplier_20',['Multiplier',['../namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323edaee34a21131a5636ee8dcf521e2369bee',1,'Guildmaster::Data::Stats']]]
+  ['midrange_15',['midrange',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46d15226b8b51f5b785efccd01e4e3fa31c2ac6e8c35911c8d17ee410d4090c2',1,'Guildmaster.Data.Definitions.MidRange'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fda31c2ac6e8c35911c8d17ee410d4090c2',1,'Guildmaster.Data.Definitions.MidRange']]],
+  ['missing_16',['missing',['../namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90a2aee0be2678ee90fd327cc186826438e',1,'Guildmaster.Core.Persistence.Missing'],['../namespaceGuildmaster_1_1Net_1_1Tape.html#a04d45969aca30b6f6f49a3d45c654bb6a2aee0be2678ee90fd327cc186826438e',1,'Guildmaster.Net.Tape.Missing']]],
+  ['modal_17',['Modal',['../namespaceGuildmaster_1_1UI.html#acf7fb6f779e3d4f2391d5de890539640ac59d6df802c32f037c2a15ff75faec17',1,'Guildmaster::UI']]],
+  ['move_18',['Move',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a12d0b679c877521b9eb27e95f192d9e5a6bc362dbf494c61ea117fe3c71ca48a5',1,'Guildmaster::Data::Definitions']]],
+  ['moveon_19',['MoveOn',['../namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5abe79922aaf92f857f6742a26e0ff57b2',1,'Guildmaster::Guild']]],
+  ['movespeed_20',['MoveSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a3dfb8a09b650ce66270c54fdf5c2aa74',1,'Guildmaster::Data::Stats']]],
+  ['multiplier_21',['Multiplier',['../namespaceGuildmaster_1_1Data_1_1Stats.html#a0dba18b4b8400b8224681c79ab6323edaee34a21131a5636ee8dcf521e2369bee',1,'Guildmaster::Data::Stats']]],
+  ['muted_22',['Muted',['../namespaceGuildmaster_1_1UI_1_1Components.html#aa0cf15f52c3f3de92879aaba96cdd4cda70a51c85067ce6cd7fa1630b5a2d4951',1,'Guildmaster::UI::Components']]]
 ];

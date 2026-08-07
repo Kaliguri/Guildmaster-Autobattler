@@ -1,9 +1,13 @@
 <map id="Guildmaster.Net.NetByteWriter.WriteUInt" name="Guildmaster.Net.NetByteWriter.WriteUInt">
-<area shape="rect" id="Node000001" title=" " alt="" coords="885,5,1113,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a766f2eecb93cc1180c521ababf677c66" title="Восемь байт, младшая половина первой — тем же порядком, что и всё остальное." alt="" coords="609,5,837,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="872,28,838,28,838,23,872,23"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="885,37,1113,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a766f2eecb93cc1180c521ababf677c66" title="Восемь байт, младшая половина первой — тем же порядком, что и всё остальное." alt="" coords="609,37,837,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="872,60,838,60,838,55,872,55"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="341,5,561,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="595,28,562,28,562,23,595,23"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="595,45,561,41,562,36,596,40"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1Tape_1_1ReplayFile.html#a4944dec9d935b5355330b52b2eb6c45b" title="Записать заголовок в начало потока." alt="" coords="346,69,557,109"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="596,75,557,80,557,74,595,70"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,5,293,45"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="328,28,294,28,294,23,328,23"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Net_1_1Tape_1_1ReplayFileWriter.html#abdd3803a8d440e84626855124b952cd6" title=" " alt="" coords="44,69,255,109"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="332,92,255,92,255,87,332,87"/>
 </map>

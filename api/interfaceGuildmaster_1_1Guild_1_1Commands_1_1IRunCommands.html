@@ -108,7 +108,7 @@ Inheritance diagram for Guildmaster.Guild.Commands.IRunCommands:</div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.Commands.IRunCommands:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands__coll__graph.svg" width="224" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands__coll__graph.svg" width="224" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -128,6 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:add483f1ba351d2329231ff1199187cd4" id="r_add483f1ba351d2329231ff1199187cd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#add483f1ba351d2329231ff1199187cd4">AwardBattleReward</a> ()</td></tr>
 <tr class="memdesc:add483f1ba351d2329231ff1199187cd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начислить награду золотом за победу в бою (величина — из конфига).  <br /></td></tr>
 <tr class="separator:add483f1ba351d2329231ff1199187cd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6732bfb2439b78bc09fd74c361e2b82" id="r_ab6732bfb2439b78bc09fd74c361e2b82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ab6732bfb2439b78bc09fd74c361e2b82">ChooseNode</a> (string nodeId)</td></tr>
+<tr class="memdesc:ab6732bfb2439b78bc09fd74c361e2b82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Войти в узел карты.  <br /></td></tr>
+<tr class="separator:ab6732bfb2439b78bc09fd74c361e2b82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae58102853d843cf68e8dbe8363b92245" id="r_ae58102853d843cf68e8dbe8363b92245"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ae58102853d843cf68e8dbe8363b92245">RequestSave</a> ()</td></tr>
 <tr class="memdesc:ae58102853d843cf68e8dbe8363b92245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Попросить владельца зафиксировать состояние на диск (точка автосейва).  <br /></td></tr>
 <tr class="separator:ae58102853d843cf68e8dbe8363b92245"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,6 +180,29 @@ Public Member Functions</h2></td></tr>
 <p>Начислить награду золотом за победу в бою (величина — из конфига). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#aa9ed1ccf238be48fb5354fda3f2b5bd1">Guildmaster.Game.Session.Net.RemoteRunCommands</a>, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a2acde8523580765390b2e840d5400cdf">Guildmaster.Game.Session.SessionCommandRouter</a>, and <a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html#a6a0bf88de4e07b8649f0fb3e321278f0">Guildmaster.Guild.Commands.RunCommandBus</a>.</p>
+
+</div>
+</div>
+<a id="ab6732bfb2439b78bc09fd74c361e2b82" name="ab6732bfb2439b78bc09fd74c361e2b82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6732bfb2439b78bc09fd74c361e2b82">&#9670;&#160;</a></span>ChooseNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Guild.Commands.IRunCommands.ChooseNode </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>nodeId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Войти в узел карты. </p>
+<p>Достижимость проверяет применитель — по СВОЕЙ копии состояния, а не по той, что видел нажавший: у напарника карта могла отстать на снимок. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#a73fba3ac639c61c58c00278ca84b4557">Guildmaster.Game.Session.Net.RemoteRunCommands</a>, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#aecb1dc35062978c6672154736d49e000">Guildmaster.Game.Session.SessionCommandRouter</a>, and <a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html#a6ab880f2805b7334d47e87387ebb2731">Guildmaster.Guild.Commands.RunCommandBus</a>.</p>
 
 </div>
 </div>

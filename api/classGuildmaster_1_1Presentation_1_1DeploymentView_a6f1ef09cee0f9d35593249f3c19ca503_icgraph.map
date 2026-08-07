@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.DeploymentView.SetActive" name="Guildmaster.Presentation.DeploymentView.SetActive">
+<area shape="rect" id="Node000001" title="Показать/скрыть весь оверлей (вход/выход из фазы расстановки)." alt="" coords="281,5,480,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1DeploymentInteraction.html#a51f3df039a1046501dc665daf8ca5d39" title=" " alt="" coords="5,5,233,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="268,28,233,28,233,23,268,23"/>
+</map>

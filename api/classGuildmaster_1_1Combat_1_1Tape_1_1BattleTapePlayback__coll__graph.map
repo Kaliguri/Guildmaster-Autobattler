@@ -1,5 +1,5 @@
 <map id="Guildmaster.Combat.Tape.BattleTapePlayback" name="Guildmaster.Combat.Tape.BattleTapePlayback">
-<area shape="rect" id="Node000001" title="Момент показа: сколько боя игрок уже увидел." alt="" coords="5,139,192,479"/>
+<area shape="rect" id="Node000001" title="Момент показа: сколько боя игрок уже увидел." alt="" coords="5,139,192,499"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Tape_1_1IStageFrameSource.html" title="Кто поставляет показу кадр сцены: кто стоит на арене, где и в какой позе." alt="" coords="29,5,169,91"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,104,101,138,96,138,96,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,105,101,138,96,138,96,105"/>
 </map>

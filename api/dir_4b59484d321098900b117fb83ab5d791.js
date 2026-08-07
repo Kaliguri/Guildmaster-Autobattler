@@ -9,5 +9,6 @@ var dir_4b59484d321098900b117fb83ab5d791 =
     [ "ContentIdUtility.cs", "ContentIdUtility_8cs.html", "ContentIdUtility_8cs" ],
     [ "ContentLocalization.cs", "ContentLocalization_8cs.html", "ContentLocalization_8cs" ],
     [ "ContentPaths.cs", "ContentPaths_8cs.html", "ContentPaths_8cs" ],
+    [ "PaletteSnapshotAutoRebuild.cs", "PaletteSnapshotAutoRebuild_8cs.html", null ],
     [ "PaletteSnapshotBuilder.cs", "PaletteSnapshotBuilder_8cs.html", "PaletteSnapshotBuilder_8cs" ]
 ];

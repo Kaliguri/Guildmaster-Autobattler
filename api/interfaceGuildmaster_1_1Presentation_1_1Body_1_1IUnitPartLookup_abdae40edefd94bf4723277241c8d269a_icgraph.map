@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Body.IUnitPartLookup.TryGetBone" name="Guildmaster.Presentation.Body.IUnitPartLookup.TryGetBone">
+<area shape="rect" id="Node000001" title="Часть тела по кости и стороне: (&quot;Head&quot;, None), (&quot;Leg_Boots&quot;, Right)." alt="" coords="321,5,560,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcGeometry.html#a8e2bd99334340d54d595449386e8a180" title="Плечо и остриё для тела в его ТЕКУЩЕЙ позе." alt="" coords="5,5,273,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="308,28,274,28,274,23,308,23"/>
+</map>

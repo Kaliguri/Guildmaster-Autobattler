@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Net_1_1NetByteRead
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Net.NetByteReader:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader__coll__graph.svg" width="234" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader__coll__graph.svg" width="234" height="276"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -129,6 +129,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab771d1ed7d9dd61416d6bed5c3b98466"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a4fbc247140c3ed7ad4d8cec328ae5a" id="r_a2a4fbc247140c3ed7ad4d8cec328ae5a"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1NetByteReader.html#a2a4fbc247140c3ed7ad4d8cec328ae5a">ReadString</a> ()</td></tr>
 <tr class="separator:a2a4fbc247140c3ed7ad4d8cec328ae5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9472136023d70faace9733865f19a6a1" id="r_a9472136023d70faace9733865f19a6a1"><td class="memItemLeft" align="right" valign="top">ArraySegment&lt; byte &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1NetByteReader.html#a9472136023d70faace9733865f19a6a1">ReadBytes</a> (int count)</td></tr>
+<tr class="memdesc:a9472136023d70faace9733865f19a6a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сырой отрезок из <em>count</em>  байт БЕЗ копии — вид на внутренний буфер.  <br /></td></tr>
+<tr class="separator:a9472136023d70faace9733865f19a6a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -208,8 +211,37 @@ Properties</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader_ab06f80c65b7ff49c1544e319c5780ff4_icgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader_ab06f80c65b7ff49c1544e319c5780ff4_icgraph.svg" width="100%" height="424"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<a id="a9472136023d70faace9733865f19a6a1" name="a9472136023d70faace9733865f19a6a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9472136023d70faace9733865f19a6a1">&#9670;&#160;</a></span>ReadBytes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ArraySegment&lt; byte &gt; Guildmaster.Net.NetByteReader.ReadBytes </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>count</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сырой отрезок из <em>count</em>  байт БЕЗ копии — вид на внутренний буфер. </p>
+<p>Нужен там, где вложенный формат читает свой кусок сам (чанк ленты внутри файла повтора): его отдают целиком в <code>TapeChunkReader</code>, а не разбирают здесь. </p>
 
 </div>
 </div>
@@ -274,6 +306,11 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader_ab771d1ed7d9dd61416d6bed5c3b98466_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader_ab771d1ed7d9dd61416d6bed5c3b98466_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
 
 </div>
 </div>
@@ -321,6 +358,11 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader_a2a4fbc247140c3ed7ad4d8cec328ae5a_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader_a2a4fbc247140c3ed7ad4d8cec328ae5a_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
 
 </div>
 </div>
@@ -354,7 +396,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader_a148d4c23a2f5fbedb7c25355494b04d4_icgraph.svg" width="528" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader_a148d4c23a2f5fbedb7c25355494b04d4_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -389,7 +431,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader_a807d7bb7ec0ce80e03958f06154515d7_icgraph.svg" width="528" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1NetByteReader_a807d7bb7ec0ce80e03958f06154515d7_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

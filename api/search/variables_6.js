@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['gameversion_0',['GameVersion',['../structGuildmaster_1_1Data_1_1ContentFingerprint.html#a0ad70dd2df70a2e8ef3ad43925623bfe',1,'Guildmaster::Data::ContentFingerprint']]],
+  ['gameversion_0',['gameversion',['../structGuildmaster_1_1Net_1_1Tape_1_1ReplayFile_1_1Header.html#a96bc19851f03f34deee20b9e936e1b3b',1,'Guildmaster.Net.Tape.ReplayFile.Header.GameVersion'],['../structGuildmaster_1_1Data_1_1ContentFingerprint.html#a0ad70dd2df70a2e8ef3ad43925623bfe',1,'Guildmaster.Data.ContentFingerprint.GameVersion']]],
   ['gap_1',['Gap',['../classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipPlacement.html#a85f35bbb16e7941d966e89960978238c',1,'Guildmaster::UI::Tooltips::TooltipPlacement']]],
   ['genitivesuffix_2',['GenitiveSuffix',['../classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#ab46202fb6aa3c186403bb3ff4bed078c',1,'Guildmaster::Data::Definitions::ContentKeys']]],
   ['globalsearchradius_3',['GlobalSearchRadius',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a4d3cfea1fe03b64dedba71506fa9c846',1,'Guildmaster::Core::Simulation::SimTuning']]],
@@ -9,9 +9,12 @@ var searchData=
   ['glowflatness_6',['GlowFlatness',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#a5d92d4f63bf72ebf81743dad68e85faa',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
   ['glowparts_7',['GlowParts',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#ad789f6e0df13bb39e87f9509560a7a94',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
   ['gold_8',['Gold',['../classGuildmaster_1_1Guild_1_1RunState.html#a3db2b15652b5026ffa1820256081924e',1,'Guildmaster::Guild::RunState']]],
-  ['griplabel_9',['GripLabel',['../classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a12423f091cceac425843a74432ef0b8a',1,'Guildmaster::Presentation::Body::RigNaming']]],
+  ['gripprefix_9',['GripPrefix',['../classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a178a9bdfdaeae1618a0fd53b5c9bb74f',1,'Guildmaster::Presentation::Body::RigNaming']]],
   ['growshare_10',['GrowShare',['../structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html#a809c1e667207870d4cd4fae8b8148630',1,'Guildmaster::Presentation::Effects::HitFormParams']]],
-  ['guestofguildname_11',['GuestOfGuildName',['../classGuildmaster_1_1Guild_1_1RunRecord.html#a26ea1c1a631c084c6ec70c47d6f2d64d',1,'Guildmaster::Guild::RunRecord']]],
-  ['guild_12',['Guild',['../classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844',1,'Guildmaster::Guild::RunState']]],
-  ['guildid_13',['GuildId',['../structGuildmaster_1_1Guild_1_1GameStartRequest.html#ac726073026b381fd61ae4185d7630748',1,'Guildmaster::Guild::GameStartRequest']]]
+  ['guarddownfunction_11',['GuardDownFunction',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a682de6a8678ef1d4dd098ea66c2bdbca',1,'Guildmaster::Data::Definitions::ClipMarkers']]],
+  ['guardupfunction_12',['GuardUpFunction',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a17d5af5444e85da4a78820c35ca0a5a5',1,'Guildmaster::Data::Definitions::ClipMarkers']]],
+  ['guestofguildname_13',['GuestOfGuildName',['../classGuildmaster_1_1Guild_1_1RunRecord.html#a26ea1c1a631c084c6ec70c47d6f2d64d',1,'Guildmaster::Guild::RunRecord']]],
+  ['guild_14',['Guild',['../classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844',1,'Guildmaster::Guild::RunState']]],
+  ['guildid_15',['GuildId',['../structGuildmaster_1_1Guild_1_1GameStartRequest.html#ac726073026b381fd61ae4185d7630748',1,'Guildmaster::Guild::GameStartRequest']]],
+  ['guildname_16',['GuildName',['../structGuildmaster_1_1Guild_1_1OpenHubRequest.html#a19b217a31808d9b393dc044cb120f6be',1,'Guildmaster::Guild::OpenHubRequest']]]
 ];

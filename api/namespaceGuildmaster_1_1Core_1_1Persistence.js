@@ -4,6 +4,7 @@ var namespaceGuildmaster_1_1Core_1_1Persistence =
     [ "ILocalSaveService", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1ILocalSaveService.html", null ],
     [ "IProfileService", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService" ],
     [ "ISaveService", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService" ],
+    [ "ProfileIdentity", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity" ],
     [ "ProfileSummary", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary" ],
     [ "SaveLoadResult", "structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html", "structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult" ],
     [ "SaveSchema", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchema.html", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchema" ],

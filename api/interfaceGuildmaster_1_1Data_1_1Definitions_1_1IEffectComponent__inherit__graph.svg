@@ -46,7 +46,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 6727;
+var viewWidth = 6698;
 var viewHeight = 521;
 var sectionId = 'dynsection-0';
 </script>
@@ -100,15 +100,15 @@ var sectionId = 'dynsection-0';
 <g id="Node000072" class="node">
 <title>Node72</title>
 <g id="a_Node000072"><a xlink:href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IDeclaresDamageTypes.html" target="_top" xlink:title="Компонент эффекта, который добавляет носителю статический источник урона — то есть собственный тип ур...">
-<polygon fill="white" stroke="transparent" points="3382.5,-409.5 3227.5,-409.5 3227.5,-349.5 3382.5,-349.5 3382.5,-409.5"/>
-<text text-anchor="start" x="3233" y="-397.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="start" x="3248" y="-386.5" font-family="Helvetica,sans-Serif" font-size="10.00">IDeclaresDamageTypes</text>
-<text text-anchor="start" x="3303.5" y="-371.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="3237.5" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3256" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00">CollectDamageTypes()</text>
-<polygon fill="#666666" stroke="#666666" points="3228,-381.5 3228,-381.5 3383,-381.5 3383,-381.5 3228,-381.5"/>
-<polygon fill="#666666" stroke="#666666" points="3228,-366.5 3228,-366.5 3383,-366.5 3383,-366.5 3228,-366.5"/>
-<polygon fill="none" stroke="#666666" points="3227.5,-349.5 3227.5,-409.5 3382.5,-409.5 3382.5,-349.5 3227.5,-349.5"/>
+<polygon fill="white" stroke="transparent" points="3369.5,-409.5 3214.5,-409.5 3214.5,-349.5 3369.5,-349.5 3369.5,-409.5"/>
+<text text-anchor="start" x="3220" y="-397.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
+<text text-anchor="start" x="3235" y="-386.5" font-family="Helvetica,sans-Serif" font-size="10.00">IDeclaresDamageTypes</text>
+<text text-anchor="start" x="3290.5" y="-371.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="3224.5" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3243" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00">CollectDamageTypes()</text>
+<polygon fill="#666666" stroke="#666666" points="3215,-381.5 3215,-381.5 3370,-381.5 3370,-381.5 3215,-381.5"/>
+<polygon fill="#666666" stroke="#666666" points="3215,-366.5 3215,-366.5 3370,-366.5 3370,-366.5 3215,-366.5"/>
+<polygon fill="none" stroke="#666666" points="3214.5,-349.5 3214.5,-409.5 3369.5,-409.5 3369.5,-349.5 3214.5,-349.5"/>
 </a>
 </g>
 </g>
@@ -116,8 +116,8 @@ var sectionId = 'dynsection-0';
 <g id="edge63_Node000001_Node000072" class="edge">
 <title>Node1&#45;&gt;Node72</title>
 <g id="a_edge63_Node000001_Node000072"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1847.08,-476.22C2122.72,-458.12 2966.03,-402.75 3227.12,-385.61"/>
-<polygon fill="none" stroke="#63b8ff" points="1846.48,-472.75 1836.73,-476.9 1846.93,-479.73 1846.48,-472.75"/>
+<path fill="none" stroke="#63b8ff" d="M1846.88,-476.18C2120.64,-458.06 2955.25,-402.8 3214.4,-385.64"/>
+<polygon fill="none" stroke="#63b8ff" points="1846.35,-472.71 1836.6,-476.86 1846.81,-479.69 1846.35,-472.71"/>
 </a>
 </g>
 </g>
@@ -162,17 +162,17 @@ var sectionId = 'dynsection-0';
 <g id="Node000004" class="node">
 <title>Node4</title>
 <g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DelayedBurstComponent.html" target="_top" xlink:title="Отложенный взрыв: пока эффект висит — ничего, по ИСТЕЧЕНИИ он бьёт носителя.">
-<polygon fill="white" stroke="transparent" points="4195.5,-276 3998.5,-276 3998.5,-201 4195.5,-201 4195.5,-276"/>
-<text text-anchor="start" x="4004" y="-263.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="4004" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.DelayedBurstComponent</text>
-<text text-anchor="start" x="4095.5" y="-237.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="4034" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4078" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="4034" y="-207.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4078" y="-207.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<polygon fill="#666666" stroke="#666666" points="3999,-247.5 3999,-247.5 4196,-247.5 4196,-247.5 3999,-247.5"/>
-<polygon fill="#666666" stroke="#666666" points="3999,-232.5 3999,-232.5 4196,-232.5 4196,-232.5 3999,-232.5"/>
-<polygon fill="none" stroke="#666666" points="3998.5,-201 3998.5,-276 4195.5,-276 4195.5,-201 3998.5,-201"/>
+<polygon fill="white" stroke="transparent" points="4171.5,-276 3974.5,-276 3974.5,-201 4171.5,-201 4171.5,-276"/>
+<text text-anchor="start" x="3980" y="-263.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="3980" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.DelayedBurstComponent</text>
+<text text-anchor="start" x="4071.5" y="-237.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="4010" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4054" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="4010" y="-207.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4054" y="-207.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<polygon fill="#666666" stroke="#666666" points="3975,-247.5 3975,-247.5 4172,-247.5 4172,-247.5 3975,-247.5"/>
+<polygon fill="#666666" stroke="#666666" points="3975,-232.5 3975,-232.5 4172,-232.5 4172,-232.5 3975,-232.5"/>
+<polygon fill="none" stroke="#666666" points="3974.5,-201 3974.5,-276 4171.5,-276 4171.5,-201 3974.5,-201"/>
 </a>
 </g>
 </g>
@@ -180,8 +180,8 @@ var sectionId = 'dynsection-0';
 <g id="edge3_Node000002_Node000004" class="edge">
 <title>Node2&#45;&gt;Node4</title>
 <g id="a_edge3_Node000002_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1759.1,-376.43C2170.36,-366.37 3934.57,-322.34 3989,-306 4010.3,-299.61 4031.6,-287.91 4049.59,-276.08"/>
-<polygon fill="none" stroke="#63b8ff" points="1758.97,-372.94 1749.05,-376.68 1759.14,-379.93 1758.97,-372.94"/>
+<path fill="none" stroke="#63b8ff" d="M1759.52,-376.39C2168.94,-366.24 3911.2,-322.16 3965,-306 3986.3,-299.6 4007.6,-287.9 4025.59,-276.08"/>
+<polygon fill="none" stroke="#63b8ff" points="1759.15,-372.9 1749.24,-376.65 1759.32,-379.9 1759.15,-372.9"/>
 </a>
 </g>
 </g>
@@ -189,17 +189,17 @@ var sectionId = 'dynsection-0';
 <g id="Node000005" class="node">
 <title>Node5</title>
 <g id="a_Node000005"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent.html" target="_top" xlink:title="Диспел: при наложении снимает с носителя подходящие эффекты (вики «6» §5.4).">
-<polygon fill="white" stroke="transparent" points="4376,-276 4214,-276 4214,-201 4376,-201 4376,-276"/>
-<text text-anchor="start" x="4219" y="-263.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="4219" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.DispelComponent</text>
-<text text-anchor="start" x="4293" y="-237.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="4240" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4275" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="4240" y="-207.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4275" y="-207.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<polygon fill="#666666" stroke="#666666" points="4214,-247.5 4214,-247.5 4376,-247.5 4376,-247.5 4214,-247.5"/>
-<polygon fill="#666666" stroke="#666666" points="4214,-232.5 4214,-232.5 4376,-232.5 4376,-232.5 4214,-232.5"/>
-<polygon fill="none" stroke="#666666" points="4214,-201 4214,-276 4376,-276 4376,-201 4214,-201"/>
+<polygon fill="white" stroke="transparent" points="4352,-276 4190,-276 4190,-201 4352,-201 4352,-276"/>
+<text text-anchor="start" x="4195" y="-263.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="4195" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.DispelComponent</text>
+<text text-anchor="start" x="4269" y="-237.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="4216" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4251" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="4216" y="-207.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4251" y="-207.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<polygon fill="#666666" stroke="#666666" points="4190,-247.5 4190,-247.5 4352,-247.5 4352,-247.5 4190,-247.5"/>
+<polygon fill="#666666" stroke="#666666" points="4190,-232.5 4190,-232.5 4352,-232.5 4352,-232.5 4190,-232.5"/>
+<polygon fill="none" stroke="#666666" points="4190,-201 4190,-276 4352,-276 4352,-201 4190,-201"/>
 </a>
 </g>
 </g>
@@ -207,8 +207,8 @@ var sectionId = 'dynsection-0';
 <g id="edge4_Node000002_Node000005" class="edge">
 <title>Node2&#45;&gt;Node5</title>
 <g id="a_edge4_Node000002_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1759.15,-376.4C2196.86,-365.57 4174.43,-316.13 4204,-306 4222.7,-299.6 4240.81,-287.9 4255.88,-276.07"/>
-<polygon fill="none" stroke="#63b8ff" points="1759.01,-372.9 1749.1,-376.65 1759.18,-379.9 1759.01,-372.9"/>
+<path fill="none" stroke="#63b8ff" d="M1759.37,-376.37C2195,-365.47 4150.73,-316.03 4180,-306 4198.7,-299.6 4216.81,-287.89 4231.88,-276.07"/>
+<polygon fill="none" stroke="#63b8ff" points="1758.97,-372.88 1749.06,-376.63 1759.15,-379.88 1758.97,-372.88"/>
 </a>
 </g>
 </g>
@@ -351,15 +351,15 @@ var sectionId = 'dynsection-0';
 <g id="Node000012" class="node">
 <title>Node12</title>
 <g id="a_Node000012"><a xlink:href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IAttackSplitComponent.html" target="_top" xlink:title="Компонент на эффекте АТАКУЮЩЕГО, расщепляющий его авто&#45;атаку по школам (условие смотрит на цель).">
-<polygon fill="white" stroke="transparent" points="3809,-268.5 3659,-268.5 3659,-208.5 3809,-208.5 3809,-268.5"/>
-<text text-anchor="start" x="3664" y="-256.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="3677.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">IAttackSplitComponent</text>
-<text text-anchor="start" x="3732" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="3684" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3718" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">TrySplit()</text>
-<polygon fill="#666666" stroke="#666666" points="3659,-240.5 3659,-240.5 3809,-240.5 3809,-240.5 3659,-240.5"/>
-<polygon fill="#666666" stroke="#666666" points="3659,-225.5 3659,-225.5 3809,-225.5 3809,-225.5 3659,-225.5"/>
-<polygon fill="none" stroke="#666666" points="3659,-208.5 3659,-268.5 3809,-268.5 3809,-208.5 3659,-208.5"/>
+<polygon fill="white" stroke="transparent" points="3785,-268.5 3635,-268.5 3635,-208.5 3785,-208.5 3785,-268.5"/>
+<text text-anchor="start" x="3640" y="-256.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="3653.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">IAttackSplitComponent</text>
+<text text-anchor="start" x="3708" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="3660" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3694" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">TrySplit()</text>
+<polygon fill="#666666" stroke="#666666" points="3635,-240.5 3635,-240.5 3785,-240.5 3785,-240.5 3635,-240.5"/>
+<polygon fill="#666666" stroke="#666666" points="3635,-225.5 3635,-225.5 3785,-225.5 3785,-225.5 3635,-225.5"/>
+<polygon fill="none" stroke="#666666" points="3635,-208.5 3635,-268.5 3785,-268.5 3785,-208.5 3635,-208.5"/>
 </a>
 </g>
 </g>
@@ -367,8 +367,8 @@ var sectionId = 'dynsection-0';
 <g id="edge11_Node000002_Node000012" class="edge">
 <title>Node2&#45;&gt;Node12</title>
 <g id="a_edge11_Node000002_Node000012"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1759.08,-376.86C2126.19,-369.57 3560.17,-339.11 3650,-306 3671.29,-298.15 3691.37,-282.68 3706.55,-268.64"/>
-<polygon fill="none" stroke="#63b8ff" points="1758.98,-373.36 1749.05,-377.05 1759.11,-380.36 1758.98,-373.36"/>
+<path fill="none" stroke="#63b8ff" d="M1759.22,-376.81C2123.76,-369.41 3537.37,-338.69 3626,-306 3647.29,-298.15 3667.37,-282.68 3682.55,-268.63"/>
+<polygon fill="none" stroke="#63b8ff" points="1758.93,-373.32 1749,-377.02 1759.07,-380.32 1758.93,-373.32"/>
 </a>
 </g>
 </g>
@@ -376,15 +376,15 @@ var sectionId = 'dynsection-0';
 <g id="Node000014" class="node">
 <title>Node14</title>
 <g id="a_Node000014"><a xlink:href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IOutgoingDamageBonusComponent.html" target="_top" xlink:title="Опциональный шов: компонент носителя усиливает ЕГО удары по цели, отвечающей условию (Криомант больне...">
-<polygon fill="white" stroke="transparent" points="6136.5,-268.5 5951.5,-268.5 5951.5,-208.5 6136.5,-208.5 6136.5,-268.5"/>
-<text text-anchor="start" x="5957" y="-256.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="5957" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">IOutgoingDamageBonusComponent</text>
-<text text-anchor="start" x="6042.5" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="5978" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="6013" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
-<polygon fill="#666666" stroke="#666666" points="5952,-240.5 5952,-240.5 6137,-240.5 6137,-240.5 5952,-240.5"/>
-<polygon fill="#666666" stroke="#666666" points="5952,-225.5 5952,-225.5 6137,-225.5 6137,-225.5 5952,-225.5"/>
-<polygon fill="none" stroke="#666666" points="5951.5,-208.5 5951.5,-268.5 6136.5,-268.5 6136.5,-208.5 5951.5,-208.5"/>
+<polygon fill="white" stroke="transparent" points="6107.5,-268.5 5922.5,-268.5 5922.5,-208.5 6107.5,-208.5 6107.5,-268.5"/>
+<text text-anchor="start" x="5928" y="-256.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="5928" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">IOutgoingDamageBonusComponent</text>
+<text text-anchor="start" x="6013.5" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="5949" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5984" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
+<polygon fill="#666666" stroke="#666666" points="5923,-240.5 5923,-240.5 6108,-240.5 6108,-240.5 5923,-240.5"/>
+<polygon fill="#666666" stroke="#666666" points="5923,-225.5 5923,-225.5 6108,-225.5 6108,-225.5 5923,-225.5"/>
+<polygon fill="none" stroke="#666666" points="5922.5,-208.5 5922.5,-268.5 6107.5,-268.5 6107.5,-208.5 5922.5,-208.5"/>
 </a>
 </g>
 </g>
@@ -392,8 +392,8 @@ var sectionId = 'dynsection-0';
 <g id="edge13_Node000002_Node000014" class="edge">
 <title>Node2&#45;&gt;Node14</title>
 <g id="a_edge13_Node000002_Node000014"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1759.32,-376.63C2094.15,-369.22 3350.77,-340.56 4385,-306 4982.07,-286.05 5699.71,-254.82 5951.39,-243.65"/>
-<polygon fill="none" stroke="#63b8ff" points="1759.13,-373.14 1749.21,-376.86 1759.28,-380.13 1759.13,-373.14"/>
+<path fill="none" stroke="#63b8ff" d="M1759.12,-376.61C2091.83,-369.15 3336.5,-340.42 4361,-306 4955.91,-286.02 5670.89,-254.84 5922.21,-243.66"/>
+<polygon fill="none" stroke="#63b8ff" points="1759,-373.11 1749.08,-376.84 1759.15,-380.11 1759,-373.11"/>
 </a>
 </g>
 </g>
@@ -401,17 +401,17 @@ var sectionId = 'dynsection-0';
 <g id="Node000020" class="node">
 <title>Node20</title>
 <g id="a_Node000020"><a xlink:href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html" target="_top" xlink:title="Периодический компонент: OnTick каждые Interval секунд (DoT/HoT/реген).">
-<polygon fill="white" stroke="transparent" points="3473,-268.5 3323,-268.5 3323,-208.5 3473,-208.5 3473,-268.5"/>
-<text text-anchor="start" x="3328" y="-256.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="3348.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">IPeriodicComponent</text>
-<text text-anchor="start" x="3348.5" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3383" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="3348.5" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3383" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<polygon fill="#666666" stroke="#666666" points="3323,-240.5 3323,-240.5 3473,-240.5 3473,-240.5 3323,-240.5"/>
-<polygon fill="#666666" stroke="#666666" points="3323,-225.5 3323,-225.5 3381,-225.5 3381,-225.5 3323,-225.5"/>
-<polygon fill="#666666" stroke="#666666" points="3381,-225.5 3381,-225.5 3473,-225.5 3473,-225.5 3381,-225.5"/>
-<polygon fill="none" stroke="#666666" points="3323,-208.5 3323,-268.5 3473,-268.5 3473,-208.5 3323,-208.5"/>
+<polygon fill="white" stroke="transparent" points="3449,-268.5 3299,-268.5 3299,-208.5 3449,-208.5 3449,-268.5"/>
+<text text-anchor="start" x="3304" y="-256.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="3324.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">IPeriodicComponent</text>
+<text text-anchor="start" x="3324.5" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3359" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="3324.5" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3359" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<polygon fill="#666666" stroke="#666666" points="3299,-240.5 3299,-240.5 3449,-240.5 3449,-240.5 3299,-240.5"/>
+<polygon fill="#666666" stroke="#666666" points="3299,-225.5 3299,-225.5 3357,-225.5 3357,-225.5 3299,-225.5"/>
+<polygon fill="#666666" stroke="#666666" points="3357,-225.5 3357,-225.5 3449,-225.5 3449,-225.5 3357,-225.5"/>
+<polygon fill="none" stroke="#666666" points="3299,-208.5 3299,-268.5 3449,-268.5 3449,-208.5 3299,-208.5"/>
 </a>
 </g>
 </g>
@@ -419,8 +419,8 @@ var sectionId = 'dynsection-0';
 <g id="edge19_Node000002_Node000020" class="edge">
 <title>Node2&#45;&gt;Node20</title>
 <g id="a_edge19_Node000002_Node000020"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1759.47,-371.61C2056.69,-347.65 3042.36,-268.17 3322.9,-245.55"/>
-<polygon fill="none" stroke="#63b8ff" points="1758.87,-368.15 1749.19,-372.44 1759.44,-375.12 1758.87,-368.15"/>
+<path fill="none" stroke="#63b8ff" d="M1759.41,-371.52C2053.41,-347.48 3020.68,-268.39 3298.67,-245.66"/>
+<polygon fill="none" stroke="#63b8ff" points="1758.92,-368.04 1749.24,-372.35 1759.49,-375.02 1758.92,-368.04"/>
 </a>
 </g>
 </g>
@@ -453,17 +453,17 @@ var sectionId = 'dynsection-0';
 <g id="Node000046" class="node">
 <title>Node46</title>
 <g id="a_Node000046"><a xlink:href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" target="_top" xlink:title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь...">
-<polygon fill="#fff0f0" stroke="transparent" points="3641,-268.5 3491,-268.5 3491,-208.5 3641,-208.5 3641,-268.5"/>
-<text text-anchor="start" x="3496" y="-256.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="3514.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">IReactiveComponent</text>
-<text text-anchor="start" x="3515" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3548" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">Events</text>
-<text text-anchor="start" x="3515" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3548" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnEvent()</text>
-<polygon fill="red" stroke="red" points="3491,-240.5 3491,-240.5 3641,-240.5 3641,-240.5 3491,-240.5"/>
-<polygon fill="red" stroke="red" points="3491,-225.5 3491,-225.5 3546,-225.5 3546,-225.5 3491,-225.5"/>
-<polygon fill="red" stroke="red" points="3546,-225.5 3546,-225.5 3641,-225.5 3641,-225.5 3546,-225.5"/>
-<polygon fill="none" stroke="red" points="3491,-208.5 3491,-268.5 3641,-268.5 3641,-208.5 3491,-208.5"/>
+<polygon fill="#fff0f0" stroke="transparent" points="3617,-268.5 3467,-268.5 3467,-208.5 3617,-208.5 3617,-268.5"/>
+<text text-anchor="start" x="3472" y="-256.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="3490.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">IReactiveComponent</text>
+<text text-anchor="start" x="3491" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3524" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">Events</text>
+<text text-anchor="start" x="3491" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3524" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnEvent()</text>
+<polygon fill="red" stroke="red" points="3467,-240.5 3467,-240.5 3617,-240.5 3617,-240.5 3467,-240.5"/>
+<polygon fill="red" stroke="red" points="3467,-225.5 3467,-225.5 3522,-225.5 3522,-225.5 3467,-225.5"/>
+<polygon fill="red" stroke="red" points="3522,-225.5 3522,-225.5 3617,-225.5 3617,-225.5 3522,-225.5"/>
+<polygon fill="none" stroke="red" points="3467,-208.5 3467,-268.5 3617,-268.5 3617,-208.5 3467,-208.5"/>
 </a>
 </g>
 </g>
@@ -471,8 +471,8 @@ var sectionId = 'dynsection-0';
 <g id="edge46_Node000002_Node000046" class="edge">
 <title>Node2&#45;&gt;Node46</title>
 <g id="a_edge46_Node000002_Node000046"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1759.17,-378.18C2095.33,-376.48 3319.6,-366.18 3482,-306 3503.28,-298.12 3523.35,-282.64 3538.54,-268.61"/>
-<polygon fill="none" stroke="#63b8ff" points="1758.99,-374.68 1749.01,-378.23 1759.02,-381.68 1758.99,-374.68"/>
+<path fill="none" stroke="#63b8ff" d="M1759.16,-378.13C2092.45,-376.24 3297.95,-365.36 3458,-306 3479.28,-298.11 3499.35,-282.64 3514.54,-268.6"/>
+<polygon fill="none" stroke="#63b8ff" points="1759.06,-374.63 1749.08,-378.18 1759.1,-381.63 1759.06,-374.63"/>
 </a>
 </g>
 </g>
@@ -480,14 +480,14 @@ var sectionId = 'dynsection-0';
 <g id="Node000067" class="node">
 <title>Node67</title>
 <g id="a_Node000067"><a xlink:href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRearmOnRefreshComponent.html" target="_top" xlink:title="Опциональный шов подкрепления: компонент, выдающий ОДНОРАЗОВЫЙ заряд, взводится заново,...">
-<polygon fill="#fff0f0" stroke="transparent" points="3980.5,-268.5 3827.5,-268.5 3827.5,-208.5 3980.5,-208.5 3980.5,-268.5"/>
-<text text-anchor="start" x="3833" y="-256.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="3833" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">IRearmOnRefreshComponent</text>
-<text text-anchor="start" x="3902.5" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="3902.5" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="red" stroke="red" points="3828,-240.5 3828,-240.5 3981,-240.5 3981,-240.5 3828,-240.5"/>
-<polygon fill="red" stroke="red" points="3828,-225.5 3828,-225.5 3981,-225.5 3981,-225.5 3828,-225.5"/>
-<polygon fill="none" stroke="red" points="3827.5,-208.5 3827.5,-268.5 3980.5,-268.5 3980.5,-208.5 3827.5,-208.5"/>
+<polygon fill="#fff0f0" stroke="transparent" points="3956.5,-268.5 3803.5,-268.5 3803.5,-208.5 3956.5,-208.5 3956.5,-268.5"/>
+<text text-anchor="start" x="3809" y="-256.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="3809" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">IRearmOnRefreshComponent</text>
+<text text-anchor="start" x="3878.5" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="3878.5" y="-215.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<polygon fill="red" stroke="red" points="3804,-240.5 3804,-240.5 3957,-240.5 3957,-240.5 3804,-240.5"/>
+<polygon fill="red" stroke="red" points="3804,-225.5 3804,-225.5 3957,-225.5 3957,-225.5 3804,-225.5"/>
+<polygon fill="none" stroke="red" points="3803.5,-208.5 3803.5,-268.5 3956.5,-268.5 3956.5,-208.5 3803.5,-208.5"/>
 </a>
 </g>
 </g>
@@ -495,8 +495,8 @@ var sectionId = 'dynsection-0';
 <g id="edge48_Node000002_Node000067" class="edge">
 <title>Node2&#45;&gt;Node67</title>
 <g id="a_edge48_Node000002_Node000067"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1759.16,-376.33C2151.59,-366.26 3768.76,-323.75 3818,-306 3839.66,-298.19 3860.21,-282.72 3875.78,-268.67"/>
-<polygon fill="none" stroke="#63b8ff" points="1758.92,-372.84 1749.01,-376.59 1759.1,-379.84 1758.92,-372.84"/>
+<path fill="none" stroke="#63b8ff" d="M1759.17,-376.3C2148.89,-366.14 3745.35,-323.55 3794,-306 3815.66,-298.19 3836.21,-282.72 3851.78,-268.66"/>
+<polygon fill="none" stroke="#63b8ff" points="1758.99,-372.8 1749.09,-376.56 1759.18,-379.8 1758.99,-372.8"/>
 </a>
 </g>
 </g>
@@ -584,19 +584,19 @@ var sectionId = 'dynsection-0';
 <g id="Node000013" class="node">
 <title>Node13</title>
 <g id="a_Node000013"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SplitAttackOnTagComponent.html" target="_top" xlink:title="Расщепляет авто&#45;атаку носителя по школам, когда на цели висит нужный тег (The Pyre: по уже горящей це...">
-<polygon fill="white" stroke="transparent" points="5561.5,-112.5 5346.5,-112.5 5346.5,-22.5 5561.5,-22.5 5561.5,-112.5"/>
-<text text-anchor="start" x="5352" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="5352" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.SplitAttackOnTagComponent</text>
-<text text-anchor="start" x="5452.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="5386.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5435" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="5386.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5435" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="5386.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5435" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">TrySplit()</text>
-<polygon fill="#666666" stroke="#666666" points="5347,-84.5 5347,-84.5 5562,-84.5 5562,-84.5 5347,-84.5"/>
-<polygon fill="#666666" stroke="#666666" points="5347,-69.5 5347,-69.5 5562,-69.5 5562,-69.5 5347,-69.5"/>
-<polygon fill="none" stroke="#666666" points="5346.5,-22.5 5346.5,-112.5 5561.5,-112.5 5561.5,-22.5 5346.5,-22.5"/>
+<polygon fill="white" stroke="transparent" points="5532.5,-112.5 5317.5,-112.5 5317.5,-22.5 5532.5,-22.5 5532.5,-112.5"/>
+<text text-anchor="start" x="5323" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="5323" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.SplitAttackOnTagComponent</text>
+<text text-anchor="start" x="5423.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="5357.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5406" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="5357.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5406" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="5357.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5406" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">TrySplit()</text>
+<polygon fill="#666666" stroke="#666666" points="5318,-84.5 5318,-84.5 5533,-84.5 5533,-84.5 5318,-84.5"/>
+<polygon fill="#666666" stroke="#666666" points="5318,-69.5 5318,-69.5 5533,-69.5 5533,-69.5 5318,-69.5"/>
+<polygon fill="none" stroke="#666666" points="5317.5,-22.5 5317.5,-112.5 5532.5,-112.5 5532.5,-22.5 5317.5,-22.5"/>
 </a>
 </g>
 </g>
@@ -604,8 +604,8 @@ var sectionId = 'dynsection-0';
 <g id="edge12_Node000012_Node000013" class="edge">
 <title>Node12&#45;&gt;Node13</title>
 <g id="a_edge12_Node000012_Node000013"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3768.87,-201.59C3782.89,-189.53 3799.99,-177.51 3818,-171 3976.78,-113.64 5174.3,-180.07 5337,-135 5355.01,-130.01 5373.19,-121.64 5389.68,-112.5"/>
-<polygon fill="none" stroke="#63b8ff" points="3766.53,-198.98 3761.41,-208.25 3771.2,-204.2 3766.53,-198.98"/>
+<path fill="none" stroke="#63b8ff" d="M3744.87,-201.59C3758.89,-189.53 3775.99,-177.51 3794,-171 3952.26,-113.82 5145.84,-179.93 5308,-135 5325.9,-130.04 5343.97,-121.75 5360.37,-112.67"/>
+<polygon fill="none" stroke="#63b8ff" points="3742.53,-198.98 3737.41,-208.25 3747.2,-204.2 3742.53,-198.98"/>
 </a>
 </g>
 </g>
@@ -613,20 +613,20 @@ var sectionId = 'dynsection-0';
 <g id="Node000015" class="node">
 <title>Node15</title>
 <g id="a_Node000015"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyProximityDamageBonusComponent.html" target="_top" xlink:title="Стая бьёт злее (волк стаи): носитель наносит больше урона за КАЖДОГО живого союзника в радиусе вокруг...">
-<polygon fill="white" stroke="transparent" points="5792,-118 5580,-118 5580,-17 5792,-17 5792,-118"/>
-<text text-anchor="start" x="5585" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="5585" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.AllyProximityDamageBonus</text>
-<text text-anchor="start" x="5657.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">Component</text>
-<text text-anchor="start" x="5684" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="5613" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5655" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="5613" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5655" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="5613" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5655" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
-<polygon fill="#666666" stroke="#666666" points="5580,-78.5 5580,-78.5 5792,-78.5 5792,-78.5 5580,-78.5"/>
-<polygon fill="#666666" stroke="#666666" points="5580,-63.5 5580,-63.5 5792,-63.5 5792,-63.5 5580,-63.5"/>
-<polygon fill="none" stroke="#666666" points="5580,-17 5580,-118 5792,-118 5792,-17 5580,-17"/>
+<polygon fill="white" stroke="transparent" points="5763,-118 5551,-118 5551,-17 5763,-17 5763,-118"/>
+<text text-anchor="start" x="5556" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="5556" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.AllyProximityDamageBonus</text>
+<text text-anchor="start" x="5628.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">Component</text>
+<text text-anchor="start" x="5655" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="5584" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5626" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="5584" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5626" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="5584" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5626" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
+<polygon fill="#666666" stroke="#666666" points="5551,-78.5 5551,-78.5 5763,-78.5 5763,-78.5 5551,-78.5"/>
+<polygon fill="#666666" stroke="#666666" points="5551,-63.5 5551,-63.5 5763,-63.5 5763,-63.5 5551,-63.5"/>
+<polygon fill="none" stroke="#666666" points="5551,-17 5551,-118 5763,-118 5763,-17 5551,-17"/>
 </a>
 </g>
 </g>
@@ -634,8 +634,8 @@ var sectionId = 'dynsection-0';
 <g id="edge14_Node000014_Node000015" class="edge">
 <title>Node14&#45;&gt;Node15</title>
 <g id="a_edge14_Node000014_Node000015"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M5958.89,-204.64C5911.72,-185.68 5852.39,-160.57 5801,-135 5790.47,-129.76 5779.57,-123.97 5768.87,-118.05"/>
-<polygon fill="none" stroke="#63b8ff" points="5957.88,-208.01 5968.46,-208.47 5960.48,-201.51 5957.88,-208.01"/>
+<path fill="none" stroke="#63b8ff" d="M5929.89,-204.64C5882.72,-185.68 5823.39,-160.57 5772,-135 5761.47,-129.76 5750.57,-123.97 5739.87,-118.05"/>
+<polygon fill="none" stroke="#63b8ff" points="5928.88,-208.01 5939.46,-208.47 5931.48,-201.51 5928.88,-208.01"/>
 </a>
 </g>
 </g>
@@ -643,19 +643,19 @@ var sectionId = 'dynsection-0';
 <g id="Node000016" class="node">
 <title>Node16</title>
 <g id="a_Node000016"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DuelDamageBonusComponent.html" target="_top" xlink:title="Дуэль один на один (разбойник&#45;дуэлянт): носитель бьёт сильнее, пока рядом с ним не больше одного прот...">
-<polygon fill="white" stroke="transparent" points="6035.5,-112.5 5810.5,-112.5 5810.5,-22.5 6035.5,-22.5 6035.5,-112.5"/>
-<text text-anchor="start" x="5816" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="5816" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.DuelDamageBonusComponent</text>
-<text text-anchor="start" x="5921.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="5847" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5892" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="5847" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5892" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="5847" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5892" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
-<polygon fill="#666666" stroke="#666666" points="5811,-84.5 5811,-84.5 6036,-84.5 6036,-84.5 5811,-84.5"/>
-<polygon fill="#666666" stroke="#666666" points="5811,-69.5 5811,-69.5 6036,-69.5 6036,-69.5 5811,-69.5"/>
-<polygon fill="none" stroke="#666666" points="5810.5,-22.5 5810.5,-112.5 6035.5,-112.5 6035.5,-22.5 5810.5,-22.5"/>
+<polygon fill="white" stroke="transparent" points="6006.5,-112.5 5781.5,-112.5 5781.5,-22.5 6006.5,-22.5 6006.5,-112.5"/>
+<text text-anchor="start" x="5787" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="5787" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.DuelDamageBonusComponent</text>
+<text text-anchor="start" x="5892.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="5818" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5863" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="5818" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5863" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="5818" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5863" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
+<polygon fill="#666666" stroke="#666666" points="5782,-84.5 5782,-84.5 6007,-84.5 6007,-84.5 5782,-84.5"/>
+<polygon fill="#666666" stroke="#666666" points="5782,-69.5 5782,-69.5 6007,-69.5 6007,-69.5 5782,-69.5"/>
+<polygon fill="none" stroke="#666666" points="5781.5,-22.5 5781.5,-112.5 6006.5,-112.5 6006.5,-22.5 5781.5,-22.5"/>
 </a>
 </g>
 </g>
@@ -663,8 +663,8 @@ var sectionId = 'dynsection-0';
 <g id="edge15_Node000014_Node000016" class="edge">
 <title>Node14&#45;&gt;Node16</title>
 <g id="a_edge15_Node000014_Node000016"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M6017.19,-200.05C5998.71,-174.25 5974.09,-139.86 5954.65,-112.71"/>
-<polygon fill="none" stroke="#63b8ff" points="6014.53,-202.35 6023.2,-208.45 6020.22,-198.28 6014.53,-202.35"/>
+<path fill="none" stroke="#63b8ff" d="M5988.19,-200.05C5969.71,-174.25 5945.09,-139.86 5925.65,-112.71"/>
+<polygon fill="none" stroke="#63b8ff" points="5985.53,-202.35 5994.2,-208.45 5991.22,-198.28 5985.53,-202.35"/>
 </a>
 </g>
 </g>
@@ -672,19 +672,19 @@ var sectionId = 'dynsection-0';
 <g id="Node000017" class="node">
 <title>Node17</title>
 <g id="a_Node000017"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RearDamageBonusComponent.html" target="_top" xlink:title="Удар в тыл больнее (гоблин&#45;убийца): носитель наносит больше урона цели, в тыловой конус которой он ст...">
-<polygon fill="white" stroke="transparent" points="6278.5,-112.5 6053.5,-112.5 6053.5,-22.5 6278.5,-22.5 6278.5,-112.5"/>
-<text text-anchor="start" x="6059" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="6059" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.RearDamageBonusComponent</text>
-<text text-anchor="start" x="6164.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="6090" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="6135" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="6090" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="6135" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="6090" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="6135" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
-<polygon fill="#666666" stroke="#666666" points="6054,-84.5 6054,-84.5 6279,-84.5 6279,-84.5 6054,-84.5"/>
-<polygon fill="#666666" stroke="#666666" points="6054,-69.5 6054,-69.5 6279,-69.5 6279,-69.5 6054,-69.5"/>
-<polygon fill="none" stroke="#666666" points="6053.5,-22.5 6053.5,-112.5 6278.5,-112.5 6278.5,-22.5 6053.5,-22.5"/>
+<polygon fill="white" stroke="transparent" points="6249.5,-112.5 6024.5,-112.5 6024.5,-22.5 6249.5,-22.5 6249.5,-112.5"/>
+<text text-anchor="start" x="6030" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="6030" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.RearDamageBonusComponent</text>
+<text text-anchor="start" x="6135.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="6061" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="6106" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="6061" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="6106" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="6061" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="6106" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
+<polygon fill="#666666" stroke="#666666" points="6025,-84.5 6025,-84.5 6250,-84.5 6250,-84.5 6025,-84.5"/>
+<polygon fill="#666666" stroke="#666666" points="6025,-69.5 6025,-69.5 6250,-69.5 6250,-69.5 6025,-69.5"/>
+<polygon fill="none" stroke="#666666" points="6024.5,-22.5 6024.5,-112.5 6249.5,-112.5 6249.5,-22.5 6024.5,-22.5"/>
 </a>
 </g>
 </g>
@@ -692,8 +692,8 @@ var sectionId = 'dynsection-0';
 <g id="edge16_Node000014_Node000017" class="edge">
 <title>Node14&#45;&gt;Node17</title>
 <g id="a_edge16_Node000014_Node000017"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M6071.03,-200.05C6089.66,-174.25 6114.49,-139.86 6134.08,-112.71"/>
-<polygon fill="none" stroke="#63b8ff" points="6067.99,-198.29 6064.97,-208.45 6073.66,-202.39 6067.99,-198.29"/>
+<path fill="none" stroke="#63b8ff" d="M6042.03,-200.05C6060.66,-174.25 6085.49,-139.86 6105.08,-112.71"/>
+<polygon fill="none" stroke="#63b8ff" points="6038.99,-198.29 6035.97,-208.45 6044.66,-202.39 6038.99,-198.29"/>
 </a>
 </g>
 </g>
@@ -701,20 +701,20 @@ var sectionId = 'dynsection-0';
 <g id="Node000018" class="node">
 <title>Node18</title>
 <g id="a_Node000018"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SelfStackDamageBonusComponent.html" target="_top" xlink:title="Урон носителя растёт от того, сколько стаков _marker он накопил НА СЕБЕ.">
-<polygon fill="white" stroke="transparent" points="6489,-118 6297,-118 6297,-17 6489,-17 6489,-118"/>
-<text text-anchor="start" x="6302" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="6302" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.SelfStackDamageBonus</text>
-<text text-anchor="start" x="6364.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">Component</text>
-<text text-anchor="start" x="6391" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="6325" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="6362" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="6325" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="6362" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="6325" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="6362" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
-<polygon fill="#666666" stroke="#666666" points="6297,-78.5 6297,-78.5 6489,-78.5 6489,-78.5 6297,-78.5"/>
-<polygon fill="#666666" stroke="#666666" points="6297,-63.5 6297,-63.5 6489,-63.5 6489,-63.5 6297,-63.5"/>
-<polygon fill="none" stroke="#666666" points="6297,-17 6297,-118 6489,-118 6489,-17 6297,-17"/>
+<polygon fill="white" stroke="transparent" points="6460,-118 6268,-118 6268,-17 6460,-17 6460,-118"/>
+<text text-anchor="start" x="6273" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="6273" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.SelfStackDamageBonus</text>
+<text text-anchor="start" x="6335.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">Component</text>
+<text text-anchor="start" x="6362" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="6296" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="6333" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="6296" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="6333" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="6296" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="6333" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
+<polygon fill="#666666" stroke="#666666" points="6268,-78.5 6268,-78.5 6460,-78.5 6460,-78.5 6268,-78.5"/>
+<polygon fill="#666666" stroke="#666666" points="6268,-63.5 6268,-63.5 6460,-63.5 6460,-63.5 6268,-63.5"/>
+<polygon fill="none" stroke="#666666" points="6268,-17 6268,-118 6460,-118 6460,-17 6268,-17"/>
 </a>
 </g>
 </g>
@@ -722,8 +722,8 @@ var sectionId = 'dynsection-0';
 <g id="edge17_Node000014_Node000018" class="edge">
 <title>Node14&#45;&gt;Node18</title>
 <g id="a_edge17_Node000014_Node000018"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M6132.01,-204.65C6179.15,-186.04 6237.7,-161.26 6288,-135 6297.85,-129.86 6307.99,-124.09 6317.9,-118.16"/>
-<polygon fill="none" stroke="#63b8ff" points="6130.47,-201.5 6122.44,-208.41 6133.03,-208.01 6130.47,-201.5"/>
+<path fill="none" stroke="#63b8ff" d="M6103.01,-204.65C6150.15,-186.04 6208.7,-161.26 6259,-135 6268.85,-129.86 6278.99,-124.09 6288.9,-118.16"/>
+<polygon fill="none" stroke="#63b8ff" points="6101.47,-201.5 6093.44,-208.41 6104.03,-208.01 6101.47,-201.5"/>
 </a>
 </g>
 </g>
@@ -731,20 +731,20 @@ var sectionId = 'dynsection-0';
 <g id="Node000019" class="node">
 <title>Node19</title>
 <g id="a_Node000019"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TaggedTargetDamageBonusComponent.html" target="_top" xlink:title="«Больнее по тем, кого сам обработал» (§10.3): носитель наносит больше урона цели, несущей нужные теги...">
-<polygon fill="white" stroke="transparent" points="6718.5,-118 6507.5,-118 6507.5,-17 6718.5,-17 6718.5,-118"/>
-<text text-anchor="start" x="6513" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="6513" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.TaggedTargetDamageBonus</text>
-<text text-anchor="start" x="6585" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">Component</text>
-<text text-anchor="start" x="6611.5" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="6540.5" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="6582" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="6540.5" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="6582" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="6540.5" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="6582" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
-<polygon fill="#666666" stroke="#666666" points="6508,-78.5 6508,-78.5 6719,-78.5 6719,-78.5 6508,-78.5"/>
-<polygon fill="#666666" stroke="#666666" points="6508,-63.5 6508,-63.5 6719,-63.5 6719,-63.5 6508,-63.5"/>
-<polygon fill="none" stroke="#666666" points="6507.5,-17 6507.5,-118 6718.5,-118 6718.5,-17 6507.5,-17"/>
+<polygon fill="white" stroke="transparent" points="6689.5,-118 6478.5,-118 6478.5,-17 6689.5,-17 6689.5,-118"/>
+<text text-anchor="start" x="6484" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="6484" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.TaggedTargetDamageBonus</text>
+<text text-anchor="start" x="6556" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">Component</text>
+<text text-anchor="start" x="6582.5" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="6511.5" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="6553" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="6511.5" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="6553" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="6511.5" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="6553" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">BonusAgainst()</text>
+<polygon fill="#666666" stroke="#666666" points="6479,-78.5 6479,-78.5 6690,-78.5 6690,-78.5 6479,-78.5"/>
+<polygon fill="#666666" stroke="#666666" points="6479,-63.5 6479,-63.5 6690,-63.5 6690,-63.5 6479,-63.5"/>
+<polygon fill="none" stroke="#666666" points="6478.5,-17 6478.5,-118 6689.5,-118 6689.5,-17 6478.5,-17"/>
 </a>
 </g>
 </g>
@@ -752,8 +752,8 @@ var sectionId = 'dynsection-0';
 <g id="edge18_Node000014_Node000019" class="edge">
 <title>Node14&#45;&gt;Node19</title>
 <g id="a_edge18_Node000014_Node000019"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M6146.92,-223.37C6240.69,-208.38 6381.84,-180.48 6498,-135 6510.13,-130.25 6522.51,-124.36 6534.44,-118.06"/>
-<polygon fill="none" stroke="#63b8ff" points="6146.19,-219.94 6136.86,-224.95 6147.28,-226.85 6146.19,-219.94"/>
+<path fill="none" stroke="#63b8ff" d="M6117.92,-223.37C6211.69,-208.38 6352.84,-180.48 6469,-135 6481.13,-130.25 6493.51,-124.36 6505.44,-118.06"/>
+<polygon fill="none" stroke="#63b8ff" points="6117.19,-219.94 6107.86,-224.95 6118.28,-226.85 6117.19,-219.94"/>
 </a>
 </g>
 </g>
@@ -761,27 +761,27 @@ var sectionId = 'dynsection-0';
 <g id="Node000021" class="node">
 <title>Node21</title>
 <g id="a_Node000021"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AttackStanceComponent.html" target="_top" xlink:title="Боевые СТОЙКИ по дистанции: носитель переключает форму своей авто&#45;атаки, когда цель входит в ближнюю ...">
-<polygon fill="white" stroke="transparent" points="5328,-135 5132,-135 5132,0 5328,0 5328,-135"/>
-<text text-anchor="start" x="5137" y="-122.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="5137" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.AttackStanceComponent</text>
-<text text-anchor="start" x="5152" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5181" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">FarStanceIndex</text>
-<text text-anchor="start" x="5152" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5181" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">CloseStanceIndex</text>
-<text text-anchor="start" x="5152" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5181" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="5152" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5181" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="5152" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5181" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="5152" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5181" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<text text-anchor="start" x="5152" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5181" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">CollectDamageTypes()</text>
-<polygon fill="#666666" stroke="#666666" points="5132,-106.5 5132,-106.5 5328,-106.5 5328,-106.5 5132,-106.5"/>
-<polygon fill="#666666" stroke="#666666" points="5132,-61.5 5132,-61.5 5179,-61.5 5179,-61.5 5132,-61.5"/>
-<polygon fill="#666666" stroke="#666666" points="5179,-61.5 5179,-61.5 5328,-61.5 5328,-61.5 5179,-61.5"/>
-<polygon fill="none" stroke="#666666" points="5132,0 5132,-135 5328,-135 5328,0 5132,0"/>
+<polygon fill="white" stroke="transparent" points="5299,-135 5103,-135 5103,0 5299,0 5299,-135"/>
+<text text-anchor="start" x="5108" y="-122.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="5108" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.AttackStanceComponent</text>
+<text text-anchor="start" x="5123" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5152" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">FarStanceIndex</text>
+<text text-anchor="start" x="5123" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5152" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">CloseStanceIndex</text>
+<text text-anchor="start" x="5123" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5152" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="5123" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5152" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="5123" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5152" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="5123" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5152" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<text text-anchor="start" x="5123" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="5152" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">CollectDamageTypes()</text>
+<polygon fill="#666666" stroke="#666666" points="5103,-106.5 5103,-106.5 5299,-106.5 5299,-106.5 5103,-106.5"/>
+<polygon fill="#666666" stroke="#666666" points="5103,-61.5 5103,-61.5 5150,-61.5 5150,-61.5 5103,-61.5"/>
+<polygon fill="#666666" stroke="#666666" points="5150,-61.5 5150,-61.5 5299,-61.5 5299,-61.5 5150,-61.5"/>
+<polygon fill="none" stroke="#666666" points="5103,0 5103,-135 5299,-135 5299,0 5103,0"/>
 </a>
 </g>
 </g>
@@ -789,8 +789,8 @@ var sectionId = 'dynsection-0';
 <g id="edge20_Node000020_Node000021" class="edge">
 <title>Node20&#45;&gt;Node21</title>
 <g id="a_edge20_Node000020_Node000021"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3432.86,-201.57C3446.88,-189.51 3463.99,-177.49 3482,-171 3653.58,-109.19 4948.19,-186.98 5123,-135 5125.94,-134.13 5128.87,-133.15 5131.79,-132.09"/>
-<polygon fill="none" stroke="#63b8ff" points="3430.52,-198.96 3425.4,-208.24 3435.19,-204.18 3430.52,-198.96"/>
+<path fill="none" stroke="#63b8ff" d="M3408.86,-201.57C3422.88,-189.51 3439.99,-177.49 3458,-171 3629.06,-109.37 4919.72,-186.82 5094,-135 5096.94,-134.13 5099.87,-133.15 5102.79,-132.09"/>
+<polygon fill="none" stroke="#63b8ff" points="3406.53,-198.96 3401.4,-208.24 3411.19,-204.18 3406.53,-198.96"/>
 </a>
 </g>
 </g>
@@ -798,22 +798,22 @@ var sectionId = 'dynsection-0';
 <g id="Node000022" class="node">
 <title>Node22</title>
 <g id="a_Node000022"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ChargeThroughOnBattleStartComponent.html" target="_top" xlink:title="Разгон насквозь на старте боя («Волчий разгон» наездника): носитель разгоняется к ближайшему врагу и ...">
-<polygon fill="white" stroke="transparent" points="3186,-118 2994,-118 2994,-17 3186,-17 3186,-118"/>
-<text text-anchor="start" x="2999" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="2999" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.ChargeThroughOnBattle</text>
-<text text-anchor="start" x="3050" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">StartComponent</text>
-<text text-anchor="start" x="3027.5" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3070" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="3027.5" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3070" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="3027.5" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3070" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="3027.5" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3070" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<polygon fill="#666666" stroke="#666666" points="2994,-78.5 2994,-78.5 3186,-78.5 3186,-78.5 2994,-78.5"/>
-<polygon fill="#666666" stroke="#666666" points="2994,-63.5 2994,-63.5 3068,-63.5 3068,-63.5 2994,-63.5"/>
-<polygon fill="#666666" stroke="#666666" points="3068,-63.5 3068,-63.5 3186,-63.5 3186,-63.5 3068,-63.5"/>
-<polygon fill="none" stroke="#666666" points="2994,-17 2994,-118 3186,-118 3186,-17 2994,-17"/>
+<polygon fill="white" stroke="transparent" points="3162,-118 2970,-118 2970,-17 3162,-17 3162,-118"/>
+<text text-anchor="start" x="2975" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="2975" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.ChargeThroughOnBattle</text>
+<text text-anchor="start" x="3026" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">StartComponent</text>
+<text text-anchor="start" x="3003.5" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3046" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="3003.5" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3046" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="3003.5" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3046" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="3003.5" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3046" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<polygon fill="#666666" stroke="#666666" points="2970,-78.5 2970,-78.5 3162,-78.5 3162,-78.5 2970,-78.5"/>
+<polygon fill="#666666" stroke="#666666" points="2970,-63.5 2970,-63.5 3044,-63.5 3044,-63.5 2970,-63.5"/>
+<polygon fill="#666666" stroke="#666666" points="3044,-63.5 3044,-63.5 3162,-63.5 3162,-63.5 3044,-63.5"/>
+<polygon fill="none" stroke="#666666" points="2970,-17 2970,-118 3162,-118 3162,-17 2970,-17"/>
 </a>
 </g>
 </g>
@@ -821,8 +821,8 @@ var sectionId = 'dynsection-0';
 <g id="edge21_Node000020_Node000022" class="edge">
 <title>Node20&#45;&gt;Node22</title>
 <g id="a_edge21_Node000020_Node000022"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3327.07,-203.78C3287.68,-184.54 3238.08,-159.44 3195,-135 3185.62,-129.68 3175.89,-123.89 3166.32,-118.04"/>
-<polygon fill="none" stroke="#63b8ff" points="3325.81,-207.07 3336.34,-208.3 3328.88,-200.77 3325.81,-207.07"/>
+<path fill="none" stroke="#63b8ff" d="M3303.07,-203.78C3263.68,-184.54 3214.08,-159.44 3171,-135 3161.62,-129.68 3151.89,-123.89 3142.32,-118.04"/>
+<polygon fill="none" stroke="#63b8ff" points="3301.81,-207.07 3312.34,-208.3 3304.88,-200.77 3301.81,-207.07"/>
 </a>
 </g>
 </g>
@@ -830,22 +830,22 @@ var sectionId = 'dynsection-0';
 <g id="Node000023" class="node">
 <title>Node23</title>
 <g id="a_Node000023"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DecayingStatModifierComponent.html" target="_top" xlink:title="Стат&#45;модификатор, который СПАДАЕТ к нулю за время жизни эффекта: в момент наложения работает в полную...">
-<polygon fill="white" stroke="transparent" points="3384,-118 3204,-118 3204,-17 3384,-17 3384,-118"/>
-<text text-anchor="start" x="3209" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="3209" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.DecayingStatModifier</text>
-<text text-anchor="start" x="3265.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">Component</text>
-<text text-anchor="start" x="3234.5" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3274" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="3234.5" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3274" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="3234.5" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3274" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="3234.5" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3274" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<polygon fill="#666666" stroke="#666666" points="3204,-78.5 3204,-78.5 3384,-78.5 3384,-78.5 3204,-78.5"/>
-<polygon fill="#666666" stroke="#666666" points="3204,-63.5 3204,-63.5 3272,-63.5 3272,-63.5 3204,-63.5"/>
-<polygon fill="#666666" stroke="#666666" points="3272,-63.5 3272,-63.5 3384,-63.5 3384,-63.5 3272,-63.5"/>
-<polygon fill="none" stroke="#666666" points="3204,-17 3204,-118 3384,-118 3384,-17 3204,-17"/>
+<polygon fill="white" stroke="transparent" points="3360,-118 3180,-118 3180,-17 3360,-17 3360,-118"/>
+<text text-anchor="start" x="3185" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="3185" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.DecayingStatModifier</text>
+<text text-anchor="start" x="3241.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">Component</text>
+<text text-anchor="start" x="3210.5" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3250" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="3210.5" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3250" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="3210.5" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3250" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="3210.5" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3250" y="-23.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<polygon fill="#666666" stroke="#666666" points="3180,-78.5 3180,-78.5 3360,-78.5 3360,-78.5 3180,-78.5"/>
+<polygon fill="#666666" stroke="#666666" points="3180,-63.5 3180,-63.5 3248,-63.5 3248,-63.5 3180,-63.5"/>
+<polygon fill="#666666" stroke="#666666" points="3248,-63.5 3248,-63.5 3360,-63.5 3360,-63.5 3248,-63.5"/>
+<polygon fill="none" stroke="#666666" points="3180,-17 3180,-118 3360,-118 3360,-17 3180,-17"/>
 </a>
 </g>
 </g>
@@ -853,8 +853,8 @@ var sectionId = 'dynsection-0';
 <g id="edge22_Node000020_Node000023" class="edge">
 <title>Node20&#45;&gt;Node23</title>
 <g id="a_edge22_Node000020_Node000023"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3374.7,-199.63C3359.93,-175.64 3340.67,-144.33 3324.66,-118.33"/>
-<polygon fill="none" stroke="#63b8ff" points="3371.9,-201.77 3380.12,-208.45 3377.86,-198.1 3371.9,-201.77"/>
+<path fill="none" stroke="#63b8ff" d="M3350.7,-199.63C3335.93,-175.64 3316.67,-144.33 3300.66,-118.33"/>
+<polygon fill="none" stroke="#63b8ff" points="3347.9,-201.77 3356.12,-208.45 3353.86,-198.1 3347.9,-201.77"/>
 </a>
 </g>
 </g>
@@ -888,8 +888,8 @@ var sectionId = 'dynsection-0';
 <g id="edge23_Node000020_Node000024" class="edge">
 <title>Node20&#45;&gt;Node24</title>
 <g id="a_edge23_Node000020_Node000024"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3312.93,-231.8C3136.93,-219.12 2738.75,-185.68 2613,-135 2607.68,-132.86 2602.4,-130.33 2597.21,-127.52"/>
-<polygon fill="none" stroke="#63b8ff" points="3312.7,-235.29 3322.93,-232.51 3313.2,-228.31 3312.7,-235.29"/>
+<path fill="none" stroke="#63b8ff" d="M3288.71,-231.38C3116.68,-218.16 2734.21,-184.13 2613,-135 2607.78,-132.88 2602.59,-130.39 2597.48,-127.64"/>
+<polygon fill="none" stroke="#63b8ff" points="3288.5,-234.87 3298.73,-232.14 3289.03,-227.89 3288.5,-234.87"/>
 </a>
 </g>
 </g>
@@ -897,21 +897,21 @@ var sectionId = 'dynsection-0';
 <g id="Node000025" class="node">
 <title>Node25</title>
 <g id="a_Node000025"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberWardenComponent.html" target="_top" xlink:title="«Тёплый пепел» — пассивка Хранителя очага (карточка [[the&#45;hearth]]): угли НА СОЮЗНИКАХ перестают быть...">
-<polygon fill="white" stroke="transparent" points="3602,-112.5 3402,-112.5 3402,-22.5 3602,-22.5 3602,-112.5"/>
-<text text-anchor="start" x="3407" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="3407" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.EmberWardenComponent</text>
-<text text-anchor="start" x="3437.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3482" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="3437.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3482" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="3437.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3482" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="3437.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3482" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<polygon fill="#666666" stroke="#666666" points="3402,-84.5 3402,-84.5 3602,-84.5 3602,-84.5 3402,-84.5"/>
-<polygon fill="#666666" stroke="#666666" points="3402,-69.5 3402,-69.5 3480,-69.5 3480,-69.5 3402,-69.5"/>
-<polygon fill="#666666" stroke="#666666" points="3480,-69.5 3480,-69.5 3602,-69.5 3602,-69.5 3480,-69.5"/>
-<polygon fill="none" stroke="#666666" points="3402,-22.5 3402,-112.5 3602,-112.5 3602,-22.5 3402,-22.5"/>
+<polygon fill="white" stroke="transparent" points="3578,-112.5 3378,-112.5 3378,-22.5 3578,-22.5 3578,-112.5"/>
+<text text-anchor="start" x="3383" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="3383" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.EmberWardenComponent</text>
+<text text-anchor="start" x="3413.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3458" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="3413.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3458" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="3413.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3458" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="3413.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3458" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<polygon fill="#666666" stroke="#666666" points="3378,-84.5 3378,-84.5 3578,-84.5 3578,-84.5 3378,-84.5"/>
+<polygon fill="#666666" stroke="#666666" points="3378,-69.5 3378,-69.5 3456,-69.5 3456,-69.5 3378,-69.5"/>
+<polygon fill="#666666" stroke="#666666" points="3456,-69.5 3456,-69.5 3578,-69.5 3578,-69.5 3456,-69.5"/>
+<polygon fill="none" stroke="#666666" points="3378,-22.5 3378,-112.5 3578,-112.5 3578,-22.5 3378,-22.5"/>
 </a>
 </g>
 </g>
@@ -919,8 +919,8 @@ var sectionId = 'dynsection-0';
 <g id="edge24_Node000020_Node000025" class="edge">
 <title>Node20&#45;&gt;Node25</title>
 <g id="a_edge24_Node000020_Node000025"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3421.25,-199.71C3437.11,-173.95 3458.16,-139.74 3474.79,-112.71"/>
-<polygon fill="none" stroke="#63b8ff" points="3418.14,-198.1 3415.88,-208.45 3424.1,-201.77 3418.14,-198.1"/>
+<path fill="none" stroke="#63b8ff" d="M3397.25,-199.71C3413.11,-173.95 3434.16,-139.74 3450.79,-112.71"/>
+<polygon fill="none" stroke="#63b8ff" points="3394.14,-198.1 3391.88,-208.45 3400.1,-201.77 3394.14,-198.1"/>
 </a>
 </g>
 </g>
@@ -928,21 +928,21 @@ var sectionId = 'dynsection-0';
 <g id="Node000026" class="node">
 <title>Node26</title>
 <g id="a_Node000026"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FireOrbsComponent.html" target="_top" xlink:title="Огненные сферы (гоблин&#45;маг): вокруг носителя крутятся сферы — на старте боя их полный запас,...">
-<polygon fill="white" stroke="transparent" points="3792,-112.5 3620,-112.5 3620,-22.5 3792,-22.5 3792,-112.5"/>
-<text text-anchor="start" x="3625" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="3625" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.FireOrbsComponent</text>
-<text text-anchor="start" x="3648.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3686" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="3648.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3686" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="3648.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3686" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="3648.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3686" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<polygon fill="#666666" stroke="#666666" points="3620,-84.5 3620,-84.5 3792,-84.5 3792,-84.5 3620,-84.5"/>
-<polygon fill="#666666" stroke="#666666" points="3620,-69.5 3620,-69.5 3684,-69.5 3684,-69.5 3620,-69.5"/>
-<polygon fill="#666666" stroke="#666666" points="3684,-69.5 3684,-69.5 3792,-69.5 3792,-69.5 3684,-69.5"/>
-<polygon fill="none" stroke="#666666" points="3620,-22.5 3620,-112.5 3792,-112.5 3792,-22.5 3620,-22.5"/>
+<polygon fill="white" stroke="transparent" points="3768,-112.5 3596,-112.5 3596,-22.5 3768,-22.5 3768,-112.5"/>
+<text text-anchor="start" x="3601" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="3601" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.FireOrbsComponent</text>
+<text text-anchor="start" x="3624.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3662" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="3624.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3662" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="3624.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3662" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="3624.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3662" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<polygon fill="#666666" stroke="#666666" points="3596,-84.5 3596,-84.5 3768,-84.5 3768,-84.5 3596,-84.5"/>
+<polygon fill="#666666" stroke="#666666" points="3596,-69.5 3596,-69.5 3660,-69.5 3660,-69.5 3596,-69.5"/>
+<polygon fill="#666666" stroke="#666666" points="3660,-69.5 3660,-69.5 3768,-69.5 3768,-69.5 3660,-69.5"/>
+<polygon fill="none" stroke="#666666" points="3596,-22.5 3596,-112.5 3768,-112.5 3768,-22.5 3596,-22.5"/>
 </a>
 </g>
 </g>
@@ -950,8 +950,8 @@ var sectionId = 'dynsection-0';
 <g id="edge25_Node000020_Node000026" class="edge">
 <title>Node20&#45;&gt;Node26</title>
 <g id="a_edge25_Node000020_Node000026"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3436.37,-201.87C3449.98,-190.71 3465.93,-179.18 3482,-171 3535.05,-144 3557.18,-160.43 3611,-135 3624.11,-128.81 3637.35,-120.84 3649.63,-112.58"/>
-<polygon fill="none" stroke="#63b8ff" points="3434.04,-199.25 3428.64,-208.37 3438.54,-204.61 3434.04,-199.25"/>
+<path fill="none" stroke="#63b8ff" d="M3412.37,-201.87C3425.98,-190.71 3441.93,-179.18 3458,-171 3511.05,-144 3533.18,-160.43 3587,-135 3600.11,-128.81 3613.35,-120.84 3625.63,-112.58"/>
+<polygon fill="none" stroke="#63b8ff" points="3410.04,-199.25 3404.64,-208.37 3414.54,-204.61 3410.04,-199.25"/>
 </a>
 </g>
 </g>
@@ -985,8 +985,8 @@ var sectionId = 'dynsection-0';
 <g id="edge26_Node000020_Node000027" class="edge">
 <title>Node20&#45;&gt;Node27</title>
 <g id="a_edge26_Node000020_Node000027"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3312.8,-236.04C3191.27,-231.16 2963.35,-211.52 2787,-135 2782.03,-132.84 2777.09,-130.34 2772.23,-127.6"/>
-<polygon fill="none" stroke="#63b8ff" points="3312.67,-239.54 3322.79,-236.42 3312.93,-232.54 3312.67,-239.54"/>
+<path fill="none" stroke="#63b8ff" d="M3288.9,-235.23C3171.35,-229.35 2954.82,-208.49 2787,-135 2782.04,-132.83 2777.1,-130.31 2772.25,-127.56"/>
+<polygon fill="none" stroke="#63b8ff" points="3288.76,-238.73 3298.92,-235.71 3289.1,-231.74 3288.76,-238.73"/>
 </a>
 </g>
 </g>
@@ -994,27 +994,27 @@ var sectionId = 'dynsection-0';
 <g id="Node000028" class="node">
 <title>Node28</title>
 <g id="a_Node000028"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html" target="_top" xlink:title="Периодический урон (DoT).">
-<polygon fill="white" stroke="transparent" points="4022,-135 3810,-135 3810,0 4022,0 4022,-135"/>
-<text text-anchor="start" x="3815" y="-122.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="3815" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.PeriodicDamageComponent</text>
-<text text-anchor="start" x="3836.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3872" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="3836.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3872" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">Potency</text>
-<text text-anchor="start" x="3836.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3872" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">DamageType</text>
-<text text-anchor="start" x="3836.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3872" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="3836.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3872" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="3836.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3872" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<text text-anchor="start" x="3836.5" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="3872" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">DamagePerSecond()</text>
-<polygon fill="#666666" stroke="#666666" points="3810,-106.5 3810,-106.5 4022,-106.5 4022,-106.5 3810,-106.5"/>
-<polygon fill="#666666" stroke="#666666" points="3810,-61.5 3810,-61.5 3870,-61.5 3870,-61.5 3810,-61.5"/>
-<polygon fill="#666666" stroke="#666666" points="3870,-61.5 3870,-61.5 4022,-61.5 4022,-61.5 3870,-61.5"/>
-<polygon fill="none" stroke="#666666" points="3810,0 3810,-135 4022,-135 4022,0 3810,0"/>
+<polygon fill="white" stroke="transparent" points="3998,-135 3786,-135 3786,0 3998,0 3998,-135"/>
+<text text-anchor="start" x="3791" y="-122.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="3791" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.PeriodicDamageComponent</text>
+<text text-anchor="start" x="3812.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3848" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="3812.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3848" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">Potency</text>
+<text text-anchor="start" x="3812.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3848" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">DamageType</text>
+<text text-anchor="start" x="3812.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3848" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="3812.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3848" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="3812.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3848" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<text text-anchor="start" x="3812.5" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="3848" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">DamagePerSecond()</text>
+<polygon fill="#666666" stroke="#666666" points="3786,-106.5 3786,-106.5 3998,-106.5 3998,-106.5 3786,-106.5"/>
+<polygon fill="#666666" stroke="#666666" points="3786,-61.5 3786,-61.5 3846,-61.5 3846,-61.5 3786,-61.5"/>
+<polygon fill="#666666" stroke="#666666" points="3846,-61.5 3846,-61.5 3998,-61.5 3998,-61.5 3846,-61.5"/>
+<polygon fill="none" stroke="#666666" points="3786,0 3786,-135 3998,-135 3998,0 3786,0"/>
 </a>
 </g>
 </g>
@@ -1022,8 +1022,8 @@ var sectionId = 'dynsection-0';
 <g id="edge27_Node000020_Node000028" class="edge">
 <title>Node20&#45;&gt;Node28</title>
 <g id="a_edge27_Node000020_Node000028"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3434.28,-201.52C3448.12,-189.86 3464.75,-178.11 3482,-171 3613.91,-116.62 3665.49,-179.66 3801,-135 3803.96,-134.03 3806.92,-132.97 3809.89,-131.84"/>
-<polygon fill="none" stroke="#63b8ff" points="3431.69,-199.13 3426.46,-208.34 3436.3,-204.4 3431.69,-199.13"/>
+<path fill="none" stroke="#63b8ff" d="M3410.28,-201.52C3424.12,-189.86 3440.75,-178.11 3458,-171 3589.91,-116.62 3641.49,-179.66 3777,-135 3779.96,-134.03 3782.92,-132.97 3785.89,-131.84"/>
+<polygon fill="none" stroke="#63b8ff" points="3407.69,-199.13 3402.46,-208.34 3412.3,-204.4 3407.69,-199.13"/>
 </a>
 </g>
 </g>
@@ -1031,21 +1031,21 @@ var sectionId = 'dynsection-0';
 <g id="Node000029" class="node">
 <title>Node29</title>
 <g id="a_Node000029"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicEmpowerComponent.html" target="_top" xlink:title="«Восходящий удар» Монаха воды (карточка [[the&#45;torrent]]): пассивка, которая раз в Interval секунд выд...">
-<polygon fill="white" stroke="transparent" points="4256,-112.5 4040,-112.5 4040,-22.5 4256,-22.5 4256,-112.5"/>
-<text text-anchor="start" x="4045" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="4045" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.PeriodicEmpowerComponent</text>
-<text text-anchor="start" x="4079.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4128" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="4079.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4128" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="4079.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4128" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="4079.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4128" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<polygon fill="#666666" stroke="#666666" points="4040,-84.5 4040,-84.5 4256,-84.5 4256,-84.5 4040,-84.5"/>
-<polygon fill="#666666" stroke="#666666" points="4040,-69.5 4040,-69.5 4126,-69.5 4126,-69.5 4040,-69.5"/>
-<polygon fill="#666666" stroke="#666666" points="4126,-69.5 4126,-69.5 4256,-69.5 4256,-69.5 4126,-69.5"/>
-<polygon fill="none" stroke="#666666" points="4040,-22.5 4040,-112.5 4256,-112.5 4256,-22.5 4040,-22.5"/>
+<polygon fill="white" stroke="transparent" points="4232,-112.5 4016,-112.5 4016,-22.5 4232,-22.5 4232,-112.5"/>
+<text text-anchor="start" x="4021" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="4021" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.PeriodicEmpowerComponent</text>
+<text text-anchor="start" x="4055.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4104" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="4055.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4104" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="4055.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4104" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="4055.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4104" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<polygon fill="#666666" stroke="#666666" points="4016,-84.5 4016,-84.5 4232,-84.5 4232,-84.5 4016,-84.5"/>
+<polygon fill="#666666" stroke="#666666" points="4016,-69.5 4016,-69.5 4102,-69.5 4102,-69.5 4016,-69.5"/>
+<polygon fill="#666666" stroke="#666666" points="4102,-69.5 4102,-69.5 4232,-69.5 4232,-69.5 4102,-69.5"/>
+<polygon fill="none" stroke="#666666" points="4016,-22.5 4016,-112.5 4232,-112.5 4232,-22.5 4016,-22.5"/>
 </a>
 </g>
 </g>
@@ -1053,8 +1053,8 @@ var sectionId = 'dynsection-0';
 <g id="edge28_Node000020_Node000029" class="edge">
 <title>Node20&#45;&gt;Node29</title>
 <g id="a_edge28_Node000020_Node000029"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3433.75,-201.36C3447.65,-189.56 3464.44,-177.76 3482,-171 3710.19,-83.13 3796.77,-205.19 4031,-135 4048.46,-129.77 4066.14,-121.55 4082.29,-112.65"/>
-<polygon fill="none" stroke="#63b8ff" points="3431.1,-199.03 3425.92,-208.27 3435.73,-204.28 3431.1,-199.03"/>
+<path fill="none" stroke="#63b8ff" d="M3409.75,-201.36C3423.65,-189.56 3440.44,-177.76 3458,-171 3686.19,-83.13 3772.77,-205.19 4007,-135 4024.46,-129.77 4042.14,-121.55 4058.29,-112.65"/>
+<polygon fill="none" stroke="#63b8ff" points="3407.1,-199.03 3401.92,-208.27 3411.73,-204.28 3407.1,-199.03"/>
 </a>
 </g>
 </g>
@@ -1062,23 +1062,25 @@ var sectionId = 'dynsection-0';
 <g id="Node000030" class="node">
 <title>Node30</title>
 <g id="a_Node000030"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html" target="_top" xlink:title="Периодическое исцеление (HoT).">
-<polygon fill="white" stroke="transparent" points="4467.5,-120 4274.5,-120 4274.5,-15 4467.5,-15 4467.5,-120"/>
-<text text-anchor="start" x="4280" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="4280" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.PeriodicHealComponent</text>
-<text text-anchor="start" x="4309" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4352" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="4309" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4352" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">Potency</text>
-<text text-anchor="start" x="4309" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4352" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="4309" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4352" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="4309" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4352" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<polygon fill="#666666" stroke="#666666" points="4275,-91.5 4275,-91.5 4468,-91.5 4468,-91.5 4275,-91.5"/>
-<polygon fill="#666666" stroke="#666666" points="4275,-61.5 4275,-61.5 4350,-61.5 4350,-61.5 4275,-61.5"/>
-<polygon fill="#666666" stroke="#666666" points="4350,-61.5 4350,-61.5 4468,-61.5 4468,-61.5 4350,-61.5"/>
-<polygon fill="none" stroke="#666666" points="4274.5,-15 4274.5,-120 4467.5,-120 4467.5,-15 4274.5,-15"/>
+<polygon fill="white" stroke="transparent" points="4443.5,-127.5 4250.5,-127.5 4250.5,-7.5 4443.5,-7.5 4443.5,-127.5"/>
+<text text-anchor="start" x="4256" y="-115.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="4256" y="-104.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.PeriodicHealComponent</text>
+<text text-anchor="start" x="4277" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4312" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="4277" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4312" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Potency</text>
+<text text-anchor="start" x="4277" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4312" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="4277" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4312" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="4277" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4312" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<text text-anchor="start" x="4277" y="-14.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4312" y="-14.5" font-family="Helvetica,sans-Serif" font-size="10.00">EffectiveStacks()</text>
+<polygon fill="#666666" stroke="#666666" points="4251,-99.5 4251,-99.5 4444,-99.5 4444,-99.5 4251,-99.5"/>
+<polygon fill="#666666" stroke="#666666" points="4251,-69.5 4251,-69.5 4310,-69.5 4310,-69.5 4251,-69.5"/>
+<polygon fill="#666666" stroke="#666666" points="4310,-69.5 4310,-69.5 4444,-69.5 4444,-69.5 4310,-69.5"/>
+<polygon fill="none" stroke="#666666" points="4250.5,-7.5 4250.5,-127.5 4443.5,-127.5 4443.5,-7.5 4250.5,-7.5"/>
 </a>
 </g>
 </g>
@@ -1086,8 +1088,8 @@ var sectionId = 'dynsection-0';
 <g id="edge29_Node000020_Node000030" class="edge">
 <title>Node20&#45;&gt;Node30</title>
 <g id="a_edge29_Node000020_Node000030"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3433.33,-201.47C3447.29,-189.55 3464.23,-177.64 3482,-171 3645.15,-110 4098.76,-186.99 4265,-135 4276.71,-131.34 4288.42,-126.05 4299.55,-120.04"/>
-<polygon fill="none" stroke="#63b8ff" points="3430.63,-199.19 3425.48,-208.45 3435.28,-204.42 3430.63,-199.19"/>
+<path fill="none" stroke="#63b8ff" d="M3409.33,-201.47C3423.29,-189.55 3440.23,-177.64 3458,-171 3621.15,-110 4074.76,-186.99 4241,-135 4247.53,-132.96 4254.06,-130.41 4260.49,-127.51"/>
+<polygon fill="none" stroke="#63b8ff" points="3406.63,-199.19 3401.48,-208.45 3411.28,-204.42 3406.63,-199.19"/>
 </a>
 </g>
 </g>
@@ -1095,25 +1097,25 @@ var sectionId = 'dynsection-0';
 <g id="Node000031" class="node">
 <title>Node31</title>
 <g id="a_Node000031"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SinewsComponent.html" target="_top" xlink:title="«Жилы» Десятины: пока носитель здоров, он рвёт себя ради темпа — бьёт быстрее, но каждый удар стоит е...">
-<polygon fill="white" stroke="transparent" points="5114,-127.5 4948,-127.5 4948,-7.5 5114,-7.5 5114,-127.5"/>
-<text text-anchor="start" x="4953" y="-115.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="4953" y="-104.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.SinewsComponent</text>
-<text text-anchor="start" x="4975" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5011" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="4975" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5011" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Events</text>
-<text text-anchor="start" x="4975" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5011" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="4975" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5011" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="4975" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5011" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<text text-anchor="start" x="4975" y="-14.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="5011" y="-14.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnEvent()</text>
-<polygon fill="#666666" stroke="#666666" points="4948,-99.5 4948,-99.5 5114,-99.5 5114,-99.5 4948,-99.5"/>
-<polygon fill="#666666" stroke="#666666" points="4948,-69.5 4948,-69.5 5009,-69.5 5009,-69.5 4948,-69.5"/>
-<polygon fill="#666666" stroke="#666666" points="5009,-69.5 5009,-69.5 5114,-69.5 5114,-69.5 5009,-69.5"/>
-<polygon fill="none" stroke="#666666" points="4948,-7.5 4948,-127.5 5114,-127.5 5114,-7.5 4948,-7.5"/>
+<polygon fill="white" stroke="transparent" points="5085,-127.5 4919,-127.5 4919,-7.5 5085,-7.5 5085,-127.5"/>
+<text text-anchor="start" x="4924" y="-115.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="4924" y="-104.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.SinewsComponent</text>
+<text text-anchor="start" x="4946" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4982" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="4946" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4982" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Events</text>
+<text text-anchor="start" x="4946" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4982" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="4946" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4982" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="4946" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4982" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<text text-anchor="start" x="4946" y="-14.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4982" y="-14.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnEvent()</text>
+<polygon fill="#666666" stroke="#666666" points="4919,-99.5 4919,-99.5 5085,-99.5 5085,-99.5 4919,-99.5"/>
+<polygon fill="#666666" stroke="#666666" points="4919,-69.5 4919,-69.5 4980,-69.5 4980,-69.5 4919,-69.5"/>
+<polygon fill="#666666" stroke="#666666" points="4980,-69.5 4980,-69.5 5085,-69.5 5085,-69.5 4980,-69.5"/>
+<polygon fill="none" stroke="#666666" points="4919,-7.5 4919,-127.5 5085,-127.5 5085,-7.5 4919,-7.5"/>
 </a>
 </g>
 </g>
@@ -1121,30 +1123,30 @@ var sectionId = 'dynsection-0';
 <g id="edge30_Node000020_Node000031" class="edge">
 <title>Node20&#45;&gt;Node31</title>
 <g id="a_edge30_Node000020_Node000031"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3432.87,-201.6C3446.89,-189.54 3464,-177.51 3482,-171 3634.17,-115.94 4784.53,-186.33 4938,-135 4944.02,-132.99 4949.99,-130.44 4955.83,-127.52"/>
-<polygon fill="none" stroke="#63b8ff" points="3430.54,-198.99 3425.41,-208.26 3435.2,-204.21 3430.54,-198.99"/>
+<path fill="none" stroke="#63b8ff" d="M3408.87,-201.6C3422.89,-189.54 3440,-177.52 3458,-171 3609.75,-116.08 4757.08,-186.58 4910,-135 4915.98,-132.98 4921.9,-130.43 4927.68,-127.51"/>
+<polygon fill="none" stroke="#63b8ff" points="3406.54,-198.99 3401.41,-208.26 3411.2,-204.21 3406.54,-198.99"/>
 </a>
 </g>
 </g>
 <!-- Node32 -->
 <g id="Node000032" class="node">
 <title>Node32</title>
-<g id="a_Node000032"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StoneTitheComponent.html" target="_top" xlink:title="«Каменная десятина» Геоманта (карточка [[the&#45;cairn]]): один раз в начале боя носитель забирает у союз...">
-<polygon fill="white" stroke="transparent" points="4670,-112.5 4486,-112.5 4486,-22.5 4670,-22.5 4670,-112.5"/>
-<text text-anchor="start" x="4491" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="4491" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.StoneTitheComponent</text>
-<text text-anchor="start" x="4517.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4558" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="4517.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4558" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="4517.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4558" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="4517.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4558" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<polygon fill="#666666" stroke="#666666" points="4486,-84.5 4486,-84.5 4670,-84.5 4670,-84.5 4486,-84.5"/>
-<polygon fill="#666666" stroke="#666666" points="4486,-69.5 4486,-69.5 4556,-69.5 4556,-69.5 4486,-69.5"/>
-<polygon fill="#666666" stroke="#666666" points="4556,-69.5 4556,-69.5 4670,-69.5 4670,-69.5 4556,-69.5"/>
-<polygon fill="none" stroke="#666666" points="4486,-22.5 4486,-112.5 4670,-112.5 4670,-22.5 4486,-22.5"/>
+<g id="a_Node000032"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SummonOnBattleStartComponent.html" target="_top" xlink:title="«Скелеты&#45;защитники» Некроманта (карточка [[the&#45;bonewright]]): пассивка, которая один раз в начале боя...">
+<polygon fill="white" stroke="transparent" points="4702.5,-112.5 4461.5,-112.5 4461.5,-22.5 4702.5,-22.5 4702.5,-112.5"/>
+<text text-anchor="start" x="4467" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="4467" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.SummonOnBattleStartComponent</text>
+<text text-anchor="start" x="4508" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4563" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="4508" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4563" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="4508" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4563" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="4508" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4563" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<polygon fill="#666666" stroke="#666666" points="4462,-84.5 4462,-84.5 4703,-84.5 4703,-84.5 4462,-84.5"/>
+<polygon fill="#666666" stroke="#666666" points="4462,-69.5 4462,-69.5 4561,-69.5 4561,-69.5 4462,-69.5"/>
+<polygon fill="#666666" stroke="#666666" points="4561,-69.5 4561,-69.5 4703,-69.5 4703,-69.5 4561,-69.5"/>
+<polygon fill="none" stroke="#666666" points="4461.5,-22.5 4461.5,-112.5 4702.5,-112.5 4702.5,-22.5 4461.5,-22.5"/>
 </a>
 </g>
 </g>
@@ -1152,30 +1154,30 @@ var sectionId = 'dynsection-0';
 <g id="edge31_Node000020_Node000032" class="edge">
 <title>Node20&#45;&gt;Node32</title>
 <g id="a_edge31_Node000020_Node000032"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3433.3,-201.37C3447.25,-189.44 3464.2,-177.56 3482,-171 3689.41,-94.6 4265.3,-201.79 4476,-135 4492.02,-129.92 4507.93,-121.58 4522.25,-112.5"/>
-<polygon fill="none" stroke="#63b8ff" points="3430.59,-199.1 3425.45,-208.36 3435.25,-204.33 3430.59,-199.1"/>
+<path fill="none" stroke="#63b8ff" d="M3409.3,-201.37C3423.25,-189.44 3440.2,-177.56 3458,-171 3665.41,-94.6 4238.09,-190.65 4452,-135 4471.5,-129.93 4491.43,-121.59 4509.64,-112.51"/>
+<polygon fill="none" stroke="#63b8ff" points="3406.59,-199.1 3401.45,-208.36 3411.25,-204.33 3406.59,-199.1"/>
 </a>
 </g>
 </g>
 <!-- Node33 -->
 <g id="Node000033" class="node">
 <title>Node33</title>
-<g id="a_Node000033"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SummonOnBattleStartComponent.html" target="_top" xlink:title="«Скелеты&#45;защитники» Некроманта (карточка [[the&#45;bonewright]]): пассивка, которая один раз в начале боя...">
-<polygon fill="white" stroke="transparent" points="4929.5,-112.5 4688.5,-112.5 4688.5,-22.5 4929.5,-22.5 4929.5,-112.5"/>
-<text text-anchor="start" x="4694" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="4694" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.SummonOnBattleStartComponent</text>
-<text text-anchor="start" x="4735" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4790" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="4735" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4790" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="4735" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4790" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="4735" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="4790" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<polygon fill="#666666" stroke="#666666" points="4689,-84.5 4689,-84.5 4930,-84.5 4930,-84.5 4689,-84.5"/>
-<polygon fill="#666666" stroke="#666666" points="4689,-69.5 4689,-69.5 4788,-69.5 4788,-69.5 4689,-69.5"/>
-<polygon fill="#666666" stroke="#666666" points="4788,-69.5 4788,-69.5 4930,-69.5 4930,-69.5 4788,-69.5"/>
-<polygon fill="none" stroke="#666666" points="4688.5,-22.5 4688.5,-112.5 4929.5,-112.5 4929.5,-22.5 4688.5,-22.5"/>
+<g id="a_Node000033"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThrowAllyComponent.html" target="_top" xlink:title="Швырнуть союзника (гоблин&#45;командир «Швырнуть!», наездник «Доставка!»): носитель хватает соседнего сою...">
+<polygon fill="white" stroke="transparent" points="4901,-112.5 4721,-112.5 4721,-22.5 4901,-22.5 4901,-112.5"/>
+<text text-anchor="start" x="4726" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="4726" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.ThrowAllyComponent</text>
+<text text-anchor="start" x="4751.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4791" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="4751.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4791" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="4751.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4791" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="4751.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="4791" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<polygon fill="#666666" stroke="#666666" points="4721,-84.5 4721,-84.5 4901,-84.5 4901,-84.5 4721,-84.5"/>
+<polygon fill="#666666" stroke="#666666" points="4721,-69.5 4721,-69.5 4789,-69.5 4789,-69.5 4721,-69.5"/>
+<polygon fill="#666666" stroke="#666666" points="4789,-69.5 4789,-69.5 4901,-69.5 4901,-69.5 4789,-69.5"/>
+<polygon fill="none" stroke="#666666" points="4721,-22.5 4721,-112.5 4901,-112.5 4901,-22.5 4721,-22.5"/>
 </a>
 </g>
 </g>
@@ -1183,30 +1185,30 @@ var sectionId = 'dynsection-0';
 <g id="edge32_Node000020_Node000033" class="edge">
 <title>Node20&#45;&gt;Node33</title>
 <g id="a_edge32_Node000020_Node000033"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3433.28,-201.31C3447.23,-189.38 3464.18,-177.5 3482,-171 3732,-79.78 4421.25,-201.21 4679,-135 4698.52,-129.99 4718.45,-121.67 4736.66,-112.59"/>
-<polygon fill="none" stroke="#63b8ff" points="3430.57,-199.04 3425.43,-208.31 3435.22,-204.27 3430.57,-199.04"/>
+<path fill="none" stroke="#63b8ff" d="M3409.27,-201.3C3423.22,-189.36 3440.18,-177.49 3458,-171 3719.75,-75.7 4445.53,-219.39 4711,-135 4726.8,-129.98 4742.43,-121.66 4756.47,-112.58"/>
+<polygon fill="none" stroke="#63b8ff" points="3406.56,-199.03 3401.42,-208.3 3411.22,-204.25 3406.56,-199.03"/>
 </a>
 </g>
 </g>
 <!-- Node34 -->
 <g id="Node000034" class="node">
 <title>Node34</title>
-<g id="a_Node000034"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThrowAllyComponent.html" target="_top" xlink:title="Швырнуть союзника (гоблин&#45;командир «Швырнуть!», наездник «Доставка!»): носитель хватает соседнего сою...">
-<polygon fill="white" stroke="transparent" points="2976,-112.5 2796,-112.5 2796,-22.5 2976,-22.5 2976,-112.5"/>
+<g id="a_Node000034"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TitheComponent.html" target="_top" xlink:title="«Десятина» Кровоманта (карточка [[the&#45;tithe]]): один раз в начале боя носитель забирает у союзников в...">
+<polygon fill="white" stroke="transparent" points="2952,-112.5 2796,-112.5 2796,-22.5 2952,-22.5 2952,-112.5"/>
 <text text-anchor="start" x="2801" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="2801" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.ThrowAllyComponent</text>
-<text text-anchor="start" x="2826.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2866" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
-<text text-anchor="start" x="2826.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2866" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="2826.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2866" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<text text-anchor="start" x="2826.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2866" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
-<polygon fill="#666666" stroke="#666666" points="2796,-84.5 2796,-84.5 2976,-84.5 2976,-84.5 2796,-84.5"/>
-<polygon fill="#666666" stroke="#666666" points="2796,-69.5 2796,-69.5 2864,-69.5 2864,-69.5 2796,-69.5"/>
-<polygon fill="#666666" stroke="#666666" points="2864,-69.5 2864,-69.5 2976,-69.5 2976,-69.5 2864,-69.5"/>
-<polygon fill="none" stroke="#666666" points="2796,-22.5 2796,-112.5 2976,-112.5 2976,-22.5 2796,-22.5"/>
+<text text-anchor="start" x="2801" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.TitheComponent</text>
+<text text-anchor="start" x="2820.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2854" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Interval</text>
+<text text-anchor="start" x="2820.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2854" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="2820.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2854" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="2820.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2854" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnTick()</text>
+<polygon fill="#666666" stroke="#666666" points="2796,-84.5 2796,-84.5 2952,-84.5 2952,-84.5 2796,-84.5"/>
+<polygon fill="#666666" stroke="#666666" points="2796,-69.5 2796,-69.5 2852,-69.5 2852,-69.5 2796,-69.5"/>
+<polygon fill="#666666" stroke="#666666" points="2852,-69.5 2852,-69.5 2952,-69.5 2952,-69.5 2852,-69.5"/>
+<polygon fill="none" stroke="#666666" points="2796,-22.5 2796,-112.5 2952,-112.5 2952,-22.5 2796,-22.5"/>
 </a>
 </g>
 </g>
@@ -1214,8 +1216,8 @@ var sectionId = 'dynsection-0';
 <g id="edge33_Node000020_Node000034" class="edge">
 <title>Node20&#45;&gt;Node34</title>
 <g id="a_edge33_Node000020_Node000034"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3312.78,-225.26C3227.23,-210.95 3093,-182.89 2985,-135 2971.28,-128.91 2957.39,-120.94 2944.52,-112.64"/>
-<polygon fill="none" stroke="#63b8ff" points="3312.27,-228.72 3322.71,-226.9 3313.41,-221.82 3312.27,-228.72"/>
+<path fill="none" stroke="#63b8ff" d="M3288.91,-226.77C3202.91,-213.57 3067.81,-186.32 2961,-135 2948.49,-128.99 2936.04,-121 2924.64,-112.65"/>
+<polygon fill="none" stroke="#63b8ff" points="3288.49,-230.24 3298.89,-228.27 3289.53,-223.32 3288.49,-230.24"/>
 </a>
 </g>
 </g>
@@ -1518,8 +1520,8 @@ var sectionId = 'dynsection-0';
 <g id="edge47_Node000046_Node000031" class="edge">
 <title>Node46&#45;&gt;Node31</title>
 <g id="a_edge47_Node000046_Node000031"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3600.88,-201.63C3614.9,-189.58 3632.01,-177.54 3650,-171 3919.09,-73.14 4666.6,-226.25 4938,-135 4943.93,-133.01 4949.8,-130.5 4955.55,-127.63"/>
-<polygon fill="none" stroke="#63b8ff" points="3598.55,-199.02 3593.42,-208.29 3603.21,-204.24 3598.55,-199.02"/>
+<path fill="none" stroke="#63b8ff" d="M3576.88,-201.63C3590.9,-189.58 3608.01,-177.54 3626,-171 3894.25,-73.43 4639.68,-226.67 4910,-135 4915.88,-133.01 4921.7,-130.5 4927.4,-127.63"/>
+<polygon fill="none" stroke="#63b8ff" points="3574.55,-199.02 3569.42,-208.29 3579.21,-204.24 3574.55,-199.02"/>
 </a>
 </g>
 </g>
@@ -1635,8 +1637,8 @@ var sectionId = 'dynsection-0';
 <g id="edge64_Node000072_Node000021" class="edge">
 <title>Node72&#45;&gt;Node21</title>
 <g id="a_edge64_Node000072_Node000021"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M3392.92,-377.37C3577.64,-373.96 4019.22,-360.3 4385,-306 4718.04,-256.57 4811.83,-263.59 5123,-135 5125.93,-133.79 5128.87,-132.5 5131.82,-131.15"/>
-<polygon fill="none" stroke="#63b8ff" points="3392.66,-373.88 3382.72,-377.56 3392.78,-380.88 3392.66,-373.88"/>
+<path fill="none" stroke="#63b8ff" d="M3379.72,-377.33C3562.98,-373.85 3999.43,-360.07 4361,-306 4691.85,-256.52 4784.93,-263 5094,-135 5096.93,-133.79 5099.87,-132.5 5102.81,-131.14"/>
+<polygon fill="none" stroke="#63b8ff" points="3379.53,-373.84 3369.6,-377.52 3379.66,-380.84 3379.53,-373.84"/>
 </a>
 </g>
 </g>

@@ -1,0 +1,3 @@
+<map id="Guildmaster.Game.Flow.IProfilePresenter" name="Guildmaster.Game.Flow.IProfilePresenter">
+<area shape="rect" id="Node000001" title="Показ экрана профиля и ожидание, пока игрок его закроет." alt="" coords="5,5,224,105"/>
+</map>

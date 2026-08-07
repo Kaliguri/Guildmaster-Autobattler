@@ -1,5 +1,9 @@
 <map id="Guildmaster.Combat.Effects.Components.SummonOnBattleStartComponent.OnTick" name="Guildmaster.Combat.Effects.Components.SummonOnBattleStartComponent.OnTick">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,339,60"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="387,20,607,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="339,30,373,30,373,35,339,35"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,20,339,75"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="387,5,607,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="339,30,373,26,373,32,339,35"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1SummonLayout.html#a3ab60dd18a5b857e2b0c465802d6006a" title="Смещение тела от призывателя: назад на пол&#45;шага, веером поперёк фронта." alt="" coords="387,55,606,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="339,59,374,62,373,67,339,64"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1FleeSteering.html#a66b7ac7b2fc51e9c7b4cb8193d0f74dd" title="Направление «к своему тылу» по команде: 0 (союзники, левая сторона) → влево, иначе вправо." alt="" coords="655,55,901,95"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="606,73,641,73,641,78,606,78"/>
 </map>

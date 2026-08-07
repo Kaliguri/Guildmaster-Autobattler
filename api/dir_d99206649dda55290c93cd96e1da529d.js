@@ -18,5 +18,7 @@ var dir_d99206649dda55290c93cd96e1da529d =
     [ "FleeSteering.cs", "FleeSteering_8cs.html", "FleeSteering_8cs" ],
     [ "ICombatContext.cs", "ICombatContext_8cs.html", "ICombatContext_8cs" ],
     [ "PositioningIntent.cs", "PositioningIntent_8cs.html", "PositioningIntent_8cs" ],
+    [ "SimArenaUnits.cs", "SimArenaUnits_8cs.html", "SimArenaUnits_8cs" ],
+    [ "SummonLayout.cs", "SummonLayout_8cs.html", "SummonLayout_8cs" ],
     [ "TargetFilter.cs", "TargetFilter_8cs.html", "TargetFilter_8cs" ]
 ];

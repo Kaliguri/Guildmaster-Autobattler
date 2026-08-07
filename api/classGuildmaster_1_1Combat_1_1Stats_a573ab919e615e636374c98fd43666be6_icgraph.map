@@ -2,8 +2,8 @@
 <area shape="rect" id="Node000001" title="Удалить все модификаторы, добавленные от source ." alt="" coords="840,73,1037,113"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#a2ba9f65756d1aaa68f725852d6bb0ac5" title="Проявить отложенные изменения: снятия, затем наложения." alt="" coords="554,37,751,77"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="826,82,751,72,752,67,827,77"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberWardenComponent.html#a7793e21a81f9103428a466fb2ac77c48" title=" " alt="" coords="513,102,792,157"/>
-<area shape="poly" id="edge5_Node000001_Node000008" title=" " alt="" coords="827,110,793,114,792,109,826,105"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberWardenComponent.html#a7793e21a81f9103428a466fb2ac77c48" title=" " alt="" coords="513,102,792,157"/>
+<area shape="poly" id="edge5_Node000001_Node000007" title=" " alt="" coords="827,110,793,114,792,109,826,105"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1EffectSystem.html#aafdd26efd16e1f27b83bafcb7f970482" title="Проявить отложенное на одном юните." alt="" coords="268,37,465,77"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="540,60,466,60,466,55,540,55"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1EffectSystem.html#a876e8cfca2bf82b25b68759d9ed0aa20" title="ЗАКОН ВИДИМОСТИ ЭФФЕКТОВ: проявить всё, что эффекты наложили или сняли за этот тик — статы и маску те..." alt="" coords="7,5,218,45"/>

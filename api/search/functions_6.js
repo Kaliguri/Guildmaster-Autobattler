@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['gameflow_0',['GameFlow',['../classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#a35f3d54d8660d51de0237f1e430ef723',1,'Guildmaster::Game::Services::GameFlow']]],
+  ['gameflow_0',['GameFlow',['../classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#ad446af0690e02ec36a911c291f1b89bd',1,'Guildmaster::Game::Services::GameFlow']]],
   ['gameplaysettings_1',['GameplaySettings',['../structGuildmaster_1_1Core_1_1Settings_1_1GameplaySettings.html#afc432b3b0214647a756c8bcdef5e6aea',1,'Guildmaster::Core::Settings::GameplaySettings']]],
   ['gamestartrequest_2',['GameStartRequest',['../structGuildmaster_1_1Guild_1_1GameStartRequest.html#a400886e6ac342d73c1baa0a7ff1d87d5',1,'Guildmaster::Guild::GameStartRequest']]],
   ['generate_3',['Generate',['../classGuildmaster_1_1Guild_1_1MapGenerator.html#a054078ab44d9a06131a10ac5b5135ead',1,'Guildmaster::Guild::MapGenerator']]],
@@ -34,12 +34,13 @@ var searchData=
   ['goto_31',['GoTo',['../classGuildmaster_1_1DevTools_1_1MapDevCommands.html#a11d23f471c4773216d9b6da58a2ab580',1,'Guildmaster::DevTools::MapDevCommands']]],
   ['gotoid_32',['GoToId',['../classGuildmaster_1_1DevTools_1_1MapDevCommands.html#acc9be608218064ada5dd6a48ba9817bf',1,'Guildmaster::DevTools::MapDevCommands']]],
   ['groundswith_33',['GroundsWith',['../structGuildmaster_1_1Data_1_1Definitions_1_1ActivitySetup.html#af71c73fc4cdf38abd16edbf192e68e88',1,'Guildmaster::Data::Definitions::ActivitySetup']]],
-  ['guestactivityfollower_34',['GuestActivityFollower',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html#a0f6cda4f3d16cfe1f834a060e14e1f44',1,'Guildmaster::Game::Session::Net::GuestActivityFollower']]],
-  ['guestpartyfollower_35',['GuestPartyFollower',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPartyFollower.html#ac5eb3ac01a934c196397696e94110701',1,'Guildmaster::Game::Session::Net::GuestPartyFollower']]],
-  ['guestplaybackloop_36',['GuestPlaybackLoop',['../classGuildmaster_1_1Game_1_1Services_1_1GuestPlaybackLoop.html#ae2792031e3e540186975e13571010970',1,'Guildmaster::Game::Services::GuestPlaybackLoop']]],
-  ['guestpresence_37',['GuestPresence',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence.html#aa7d807136e53b9e19540b7966373c581',1,'Guildmaster::Game::Session::Net::GuestPresence']]],
-  ['guestreadygate_38',['GuestReadyGate',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestReadyGate.html#aa73d32fade7ed7155f37483fbc3bfb3d',1,'Guildmaster::Game::Session::Net::GuestReadyGate']]],
-  ['guestrunstate_39',['GuestRunState',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ab76ecaf04b80ed44221a604ae47685f6',1,'Guildmaster::Game::Session::Net::GuestRunState']]],
-  ['guestsessionroster_40',['GuestSessionRoster',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html#ae8d8cf5e23778f650e3693fa86ea503f',1,'Guildmaster::Game::Session::Net::GuestSessionRoster']]],
-  ['guildentry_41',['GuildEntry',['../structGuildmaster_1_1UI_1_1NewGameScreenView_1_1GuildEntry.html#a1ed9e6391e0fc68c85872aa1bbb9298a',1,'Guildmaster::UI::NewGameScreenView::GuildEntry']]]
+  ['guardwindownormalized_34',['GuardWindowNormalized',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a3f19d0cff69b1e7e291c8947195479f1',1,'Guildmaster::Data::Definitions::ClipMarkers']]],
+  ['guestactivityfollower_35',['GuestActivityFollower',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html#ae4756c67a61e1c55bf1a3a0ce600fece',1,'Guildmaster::Game::Session::Net::GuestActivityFollower']]],
+  ['guestpartyfollower_36',['GuestPartyFollower',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPartyFollower.html#ac5eb3ac01a934c196397696e94110701',1,'Guildmaster::Game::Session::Net::GuestPartyFollower']]],
+  ['guestplaybackloop_37',['GuestPlaybackLoop',['../classGuildmaster_1_1Game_1_1Services_1_1GuestPlaybackLoop.html#ae2792031e3e540186975e13571010970',1,'Guildmaster::Game::Services::GuestPlaybackLoop']]],
+  ['guestpresence_38',['GuestPresence',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence.html#aa7d807136e53b9e19540b7966373c581',1,'Guildmaster::Game::Session::Net::GuestPresence']]],
+  ['guestreadygate_39',['GuestReadyGate',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestReadyGate.html#aa73d32fade7ed7155f37483fbc3bfb3d',1,'Guildmaster::Game::Session::Net::GuestReadyGate']]],
+  ['guestrunstate_40',['GuestRunState',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ab76ecaf04b80ed44221a604ae47685f6',1,'Guildmaster::Game::Session::Net::GuestRunState']]],
+  ['guestsessionroster_41',['GuestSessionRoster',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html#a4c9f51e59202281467e7c15f3ef43cf7',1,'Guildmaster::Game::Session::Net::GuestSessionRoster']]],
+  ['guildentry_42',['GuildEntry',['../structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html#a2a99bf59a7775efb0668e71c1a49ff24',1,'Guildmaster::UI::GuildSelectScreenView::GuildEntry']]]
 ];

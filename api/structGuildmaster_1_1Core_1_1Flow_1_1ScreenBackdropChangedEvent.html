@@ -104,44 +104,82 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Core_1_1Flow_1_1S
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Flow.ScreenBackdropChangedEvent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent__coll__graph.svg" width="248" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent__coll__graph.svg" width="248" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad6cdf6520d3a0ec3ff2ba9a4b8f6f35f" id="r_ad6cdf6520d3a0ec3ff2ba9a4b8f6f35f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html#ad6cdf6520d3a0ec3ff2ba9a4b8f6f35f">ScreenBackdropChangedEvent</a> (bool visible)</td></tr>
-<tr class="separator:ad6cdf6520d3a0ec3ff2ba9a4b8f6f35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c8452c9747b3822a33182417151dcae" id="r_a9c8452c9747b3822a33182417151dcae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html#a9c8452c9747b3822a33182417151dcae">ScreenBackdropChangedEvent</a> (bool visible, bool overBattle=false)</td></tr>
+<tr class="separator:a9c8452c9747b3822a33182417151dcae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ad5b9a0ee6d43ca92ac8e5f3ad0ad0dfe" id="r_ad5b9a0ee6d43ca92ac8e5f3ad0ad0dfe"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html#ad5b9a0ee6d43ca92ac8e5f3ad0ad0dfe">Visible</a></td></tr>
 <tr class="memdesc:ad5b9a0ee6d43ca92ac8e5f3ad0ad0dfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">true — под экраном нужен стол, false — за экраном живой мир (бой, карта, передышка).  <br /></td></tr>
 <tr class="separator:ad5b9a0ee6d43ca92ac8e5f3ad0ad0dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3337e453028a9e5ccd465c00edb0329c" id="r_a3337e453028a9e5ccd465c00edb0329c"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html#a3337e453028a9e5ccd465c00edb0329c">OverBattle</a></td></tr>
+<tr class="memdesc:a3337e453028a9e5ccd465c00edb0329c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Стол нужен ДАЖЕ ЕСЛИ за экраном идёт живой бой.  <br /></td></tr>
+<tr class="separator:a3337e453028a9e5ccd465c00edb0329c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>СОСТОЯНИЕ заднего фона экранов: нужен ли под текущим экраном стол. </p>
 <p>Вещает UI-слой (он один знает, что сейчас на экране), слушает презентация (она одна умеет его нарисовать).</p>
 <p>Заведено по QA #50: фон под ивентом был отдельной непрозрачной заливкой UI-цветом, и рядом с меню, где лежит настоящий стол, это читалось как «чёрный экран». Источник правды у фона теперь ОДИН — материал стола из <code>MapStyle</code>; UI лишь говорит, когда он нужен. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad6cdf6520d3a0ec3ff2ba9a4b8f6f35f" name="ad6cdf6520d3a0ec3ff2ba9a4b8f6f35f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6cdf6520d3a0ec3ff2ba9a4b8f6f35f">&#9670;&#160;</a></span>ScreenBackdropChangedEvent()</h2>
+<a id="a9c8452c9747b3822a33182417151dcae" name="a9c8452c9747b3822a33182417151dcae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c8452c9747b3822a33182417151dcae">&#9670;&#160;</a></span>ScreenBackdropChangedEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Guildmaster.Core.Flow.ScreenBackdropChangedEvent.ScreenBackdropChangedEvent </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>visible</em></td><td>)</td>
+          <td class="paramname"><em>visible</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>overBattle</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a3337e453028a9e5ccd465c00edb0329c" name="a3337e453028a9e5ccd465c00edb0329c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3337e453028a9e5ccd465c00edb0329c">&#9670;&#160;</a></span>OverBattle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly bool Guildmaster.Core.Flow.ScreenBackdropChangedEvent.OverBattle</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Стол нужен ДАЖЕ ЕСЛИ за экраном идёт живой бой. </p>
+<p>Обычно бой стол снимает: меню открывают, стоя посреди арены, и подложка закрыла бы ровно то, ради чего бой заведён. Но экран, который занял кадр целиком и панели не имеет (настройки), смотреть под собой не предлагает — там наоборот, мельтешение арены мешает читать строки. </p>
+
+</div>
+</div>
 <a id="ad5b9a0ee6d43ca92ac8e5f3ad0ad0dfe" name="ad5b9a0ee6d43ca92ac8e5f3ad0ad0dfe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad5b9a0ee6d43ca92ac8e5f3ad0ad0dfe">&#9670;&#160;</a></span>Visible</h2>
 

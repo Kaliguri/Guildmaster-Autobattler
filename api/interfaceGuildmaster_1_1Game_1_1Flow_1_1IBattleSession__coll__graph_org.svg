@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (CombatLifetimeScope,...">
+<g id="a_Node000001"><a xlink:title="Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (BattleScope,...">
 <polygon fill="#999999" stroke="transparent" points="163,-210 0,-210 0,0 163,0 163,-210"/>
 <text text-anchor="start" x="5.5" y="-198" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.IBattle</text>
 <text text-anchor="start" x="63" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">Session</text>

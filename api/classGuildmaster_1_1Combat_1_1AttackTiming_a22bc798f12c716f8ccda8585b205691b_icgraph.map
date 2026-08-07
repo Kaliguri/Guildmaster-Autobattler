@@ -2,9 +2,9 @@
 <area shape="rect" id="Node000001" title="Интервал между атаками в сим&#45;тиках." alt="" coords="536,189,739,229"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#aa8ff44eba75969d093da4ff8a6e6edba" title="Атак в секунду — то, что игра ДЕЙСТВИТЕЛЬНО производит: TickRate / IntervalTicks, то есть с тиковой к..." alt="" coords="285,37,488,77"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="605,182,552,136,487,92,461,80,463,75,489,87,555,132,608,178"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#ac73338528727dd1d55c1aba51b6dbad4" title="Доля тика, в которую попадает кадр контакта, — остаток, который целочисленный WindupTicks отбрасывает..." alt="" coords="285,125,488,165"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#ac73338528727dd1d55c1aba51b6dbad4" title="Доля тика, в которую попадает момент контакта, — остаток, который целочисленный расчёт отбрасывает." alt="" coords="285,125,488,165"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="545,188,465,168,466,163,546,183"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a8d6696d026a5780f7846fe236b4f52c4" title="Тики ВСЕХ контактов свинга (от его старта), дописанные в result ." alt="" coords="20,249,223,289"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#ad6c56a468dabeb2f97a2e3c6e463be80" title="Тики ВСЕХ контактов свинга (от его старта), дописанные в result ." alt="" coords="20,249,223,289"/>
 <area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="540,235,488,244,350,259,223,268,223,263,349,254,488,239,539,230"/>
 <area shape="rect" id="Node000007" href="$structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a485356d77b895e011470412b625c38d1" title="Снять состояние с живого юнита. Единственное место, где сим встречается с лентой." alt="" coords="289,189,484,229"/>
 <area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="522,212,484,212,484,207,522,207"/>

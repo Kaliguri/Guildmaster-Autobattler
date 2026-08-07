@@ -37,10 +37,10 @@
 </a>
 </g>
 </g>
-<!-- Node8 -->
-<g id="Node000008" class="node">
-<title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberWardenComponent.html#a7793e21a81f9103428a466fb2ac77c48" target="_top" xlink:title=" ">
+<!-- Node7 -->
+<g id="Node000007" class="node">
+<title>Node7</title>
+<g id="a_Node000007"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberWardenComponent.html#a7793e21a81f9103428a466fb2ac77c48" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="590,-41 381,-41 381,0 590,0 590,-41"/>
 <text text-anchor="start" x="389" y="-29" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
 <text text-anchor="start" x="389" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Components.EmberWardenComponent.</text>
@@ -48,10 +48,10 @@
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node8 -->
-<g id="edge5_Node000001_Node000008" class="edge">
-<title>Node1&#45;&gt;Node8</title>
-<g id="a_edge5_Node000001_Node000008"><a xlink:title=" ">
+<!-- Node1&#45;&gt;Node7 -->
+<g id="edge5_Node000001_Node000007" class="edge">
+<title>Node1&#45;&gt;Node7</title>
+<g id="a_edge5_Node000001_Node000007"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M615.75,-36.92C607.35,-35.86 598.76,-34.76 590.18,-33.67"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="615.51,-40.42 625.87,-38.21 616.39,-33.48 615.51,-40.42"/>
 </a>

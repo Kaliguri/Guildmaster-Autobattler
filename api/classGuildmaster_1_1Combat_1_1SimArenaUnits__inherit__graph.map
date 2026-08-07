@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.SimArenaUnits" name="Guildmaster.Combat.SimArenaUnits">
+<area shape="rect" id="Node000001" title="Арена глазами хозяина сеанса: правду о том, кто где стоит, держит живая симуляция." alt="" coords="5,119,220,219"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Arena_1_1IArenaUnits.html" title="Кто сейчас стоит на арене." alt="" coords="67,5,158,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,84,115,119,110,119,110,84"/>
+</map>

@@ -105,16 +105,25 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Net_1_1Transpo
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Net.Transport.INetTransport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport__inherit__graph.svg" width="446" height="579"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Net.Transport.INetTransport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport__coll__graph.svg" width="216" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport__coll__graph.svg" width="216" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a1f03d9b1f9f79afa58e46fa1b26147c4" id="r_a1f03d9b1f9f79afa58e46fa1b26147c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a1f03d9b1f9f79afa58e46fa1b26147c4">StartHost</a> ()</td></tr>
+<tr class="memdesc:a1f03d9b1f9f79afa58e46fa1b26147c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поднять сессию у себя: дальше к нам подключаются.  <br /></td></tr>
+<tr class="separator:a1f03d9b1f9f79afa58e46fa1b26147c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14d88f37729dff4f24829af6e6857fca" id="r_a14d88f37729dff4f24829af6e6857fca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a14d88f37729dff4f24829af6e6857fca">Connect</a> (ulong hostAddress)</td></tr>
+<tr class="memdesc:a14d88f37729dff4f24829af6e6857fca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подключиться к хозяину по адресу его платформы.  <br /></td></tr>
+<tr class="separator:a14d88f37729dff4f24829af6e6857fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bea456e776ac8d0b0cb781207f68f98" id="r_a3bea456e776ac8d0b0cb781207f68f98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a3bea456e776ac8d0b0cb781207f68f98">SetLocalPeerId</a> (int peerId)</td></tr>
+<tr class="memdesc:a3bea456e776ac8d0b0cb781207f68f98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Принять номер, назначенный хозяином на рукопожатии.  <br /></td></tr>
+<tr class="separator:a3bea456e776ac8d0b0cb781207f68f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02a905f3d21134a8a6eb25ec77f4ab30" id="r_a02a905f3d21134a8a6eb25ec77f4ab30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a02a905f3d21134a8a6eb25ec77f4ab30">Send</a> (int peerId, ArraySegment&lt; byte &gt; payload, <a class="el" href="namespaceGuildmaster_1_1Net_1_1Transport.html#a7cc795a3e314259e924548bdd6ff85a5">NetDelivery</a> delivery)</td></tr>
 <tr class="memdesc:a02a905f3d21134a8a6eb25ec77f4ab30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отправить одному пиру.  <br /></td></tr>
 <tr class="separator:a02a905f3d21134a8a6eb25ec77f4ab30"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,6 +169,30 @@ Events</h2></td></tr>
 <p><b>Зачем шов, если NGO и так абстракция.</b> Затем, что за этим интерфейсом живёт не только релизный Facepunch/Steam: <b>loopback</b> даёт весь кооп-код в EditMode без сети и сцен, а <b>chaos-обёртка</b> воспроизводит потерю, задержку и переупорядочивание ПО СИДУ. Без этого отладка коопа выглядит как «поднять два инстанса и ждать, пока баг случится сам» — по внешним свидетельствам это вторая по величине статья расходов мультиплеера после самой сессии.</p>
 <p><b>Заложен сразу, а не потом,</b> потому что Steam-транспорт, приросший к коду, лишает нас отладки на годы: Network Simulator из Multiplayer Tools работает только с UTP, и подменяемым транспорт обязан быть с первого дня.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a14d88f37729dff4f24829af6e6857fca" name="a14d88f37729dff4f24829af6e6857fca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14d88f37729dff4f24829af6e6857fca">&#9670;&#160;</a></span>Connect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Net.Transport.INetTransport.Connect </td>
+          <td>(</td>
+          <td class="paramtype">ulong&#160;</td>
+          <td class="paramname"><em>hostAddress</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Подключиться к хозяину по адресу его платформы. </p>
+<p><code>false</code> — не вышло.</p>
+<p>Адрес — <code>ulong</code>, потому что у Steam это <code>SteamId</code>. Транспорты, у которых адреса нет (петля в своём процессе), его игнорируют: там хозяин ровно один, и выбирать не из чего. Абстрагировать адрес дальше — значит завести тип ради одного случая. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a4b80b964ba8ce0e38dd6de898b54baf6">Guildmaster.Net.Transport.ChaosTransport</a>, and <a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#a8a369ddbea88d8734224ca191cee2b25">Guildmaster.Net.Transport.SteamNetTransport</a>.</p>
+
+</div>
+</div>
 <a id="ac086c5842dfc9ca823de418411ce8f47" name="ac086c5842dfc9ca823de418411ce8f47"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac086c5842dfc9ca823de418411ce8f47">&#9670;&#160;</a></span>Poll()</h2>
 
@@ -252,6 +285,29 @@ Events</h2></td></tr>
 
 </div>
 </div>
+<a id="a3bea456e776ac8d0b0cb781207f68f98" name="a3bea456e776ac8d0b0cb781207f68f98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bea456e776ac8d0b0cb781207f68f98">&#9670;&#160;</a></span>SetLocalPeerId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Net.Transport.INetTransport.SetLocalPeerId </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>peerId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Принять номер, назначенный хозяином на рукопожатии. </p>
+<p>Номер выдаёт протокол уровнем выше, а не транспорт: тот не знает ни версии сборки, ни отпечатка контента, по которым хозяин решает, пускать ли нас вообще. Транспортам, где номер известен с рождения (петля в своём процессе), звать это незачем — там раздача одна. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#ab0735222261ad70583ff53cf35ca6b03">Guildmaster.Net.Transport.ChaosTransport</a>, and <a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#a9e92edbcb71c3c8e2b14ae00ef323ab1">Guildmaster.Net.Transport.SteamNetTransport</a>.</p>
+
+</div>
+</div>
 <a id="aa4742da916223bde507428442d79ac0a" name="aa4742da916223bde507428442d79ac0a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa4742da916223bde507428442d79ac0a">&#9670;&#160;</a></span>Shutdown()</h2>
 
@@ -270,6 +326,29 @@ Events</h2></td></tr>
 <p>Закрыть соединение и отписаться. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a4c5a862fb2af213cc7a432a56ea36d33">Guildmaster.Net.Transport.ChaosTransport</a>, and <a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#aa537a26f6be3f5a586cd92399141c86d">Guildmaster.Net.Transport.SteamNetTransport</a>.</p>
+
+</div>
+</div>
+<a id="a1f03d9b1f9f79afa58e46fa1b26147c4" name="a1f03d9b1f9f79afa58e46fa1b26147c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f03d9b1f9f79afa58e46fa1b26147c4">&#9670;&#160;</a></span>StartHost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Net.Transport.INetTransport.StartHost </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Поднять сессию у себя: дальше к нам подключаются. </p>
+<p><code>false</code> — не вышло, причина уже названа в логе.</p>
+<p><b>Живёт в шве, а не только у Steam-транспорта</b> (05.08.2026). Пока подъём сессии и вход к другу были методами конкретного <code>SteamNetTransport</code>, сеанс держал его конкретным типом — и всё, что связано с подключением и разрывом, проверялось только вживую на двух машинах: ни петля, ни хаос-слой к сеансу подключиться не могли. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a7d233c0152e6315ac88ae783030798f8">Guildmaster.Net.Transport.ChaosTransport</a>, and <a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#af73214e84df78c6507dcf77cb0ab85c5">Guildmaster.Net.Transport.SteamNetTransport</a>.</p>
 
 </div>
 </div>

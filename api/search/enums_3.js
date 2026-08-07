@@ -10,6 +10,7 @@ var searchData=
   ['devlogkind_7',['DevLogKind',['../namespaceGuildmaster_1_1Core_1_1DevConsole.html#ae136fac84a618794c6bc0a26bf25227d',1,'Guildmaster::Core::DevConsole']]],
   ['devoverlaysource_8',['DevOverlaySource',['../namespaceGuildmaster_1_1Presentation.html#afa8883774f1d063bb0a3409202ff0539',1,'Guildmaster::Presentation']]],
   ['devparamtype_9',['DevParamType',['../namespaceGuildmaster_1_1Core_1_1DevConsole.html#a1050efdf402aecf69c2755e4b884ac64',1,'Guildmaster::Core::DevConsole']]],
-  ['dispeltargetpolarity_10',['DispelTargetPolarity',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20',1,'Guildmaster::Data::Definitions']]],
-  ['droprarity_11',['DropRarity',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a925db2d2a0c45c6708446a8c78dce0a6',1,'Guildmaster::Data::Definitions']]]
+  ['diagchannel_10',['DiagChannel',['../namespaceGuildmaster_1_1Core_1_1Diagnostics.html#aa5a9521d6de39e165e70d902e50ce7e8',1,'Guildmaster::Core::Diagnostics']]],
+  ['dispeltargetpolarity_11',['DispelTargetPolarity',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20',1,'Guildmaster::Data::Definitions']]],
+  ['droprarity_12',['DropRarity',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a925db2d2a0c45c6708446a8c78dce0a6',1,'Guildmaster::Data::Definitions']]]
 ];

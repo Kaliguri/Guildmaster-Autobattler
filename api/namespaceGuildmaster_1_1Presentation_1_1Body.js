@@ -9,7 +9,7 @@ var namespaceGuildmaster_1_1Presentation_1_1Body =
     [ "PartMask", "structGuildmaster_1_1Presentation_1_1Body_1_1PartMask.html", "structGuildmaster_1_1Presentation_1_1Body_1_1PartMask" ],
     [ "RigNaming", "classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html", "classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming" ],
     [ "SkeletalBodyVisual", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual" ],
-    [ "SpriteBodyVisual", "classGuildmaster_1_1Presentation_1_1Body_1_1SpriteBodyVisual.html", "classGuildmaster_1_1Presentation_1_1Body_1_1SpriteBodyVisual" ],
+    [ "StrikeDirectionMeasure", "classGuildmaster_1_1Presentation_1_1Body_1_1StrikeDirectionMeasure.html", "classGuildmaster_1_1Presentation_1_1Body_1_1StrikeDirectionMeasure" ],
     [ "UnitHeldItem", "classGuildmaster_1_1Presentation_1_1Body_1_1UnitHeldItem.html", "classGuildmaster_1_1Presentation_1_1Body_1_1UnitHeldItem" ],
     [ "UnitPart", "structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart.html", "structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart" ],
     [ "UnitPartGeometry", "classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry.html", "classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry" ],

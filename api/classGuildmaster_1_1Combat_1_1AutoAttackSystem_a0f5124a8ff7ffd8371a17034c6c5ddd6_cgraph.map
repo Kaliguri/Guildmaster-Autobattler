@@ -1,32 +1,28 @@
 <map id="Guildmaster.Combat.AutoAttackSystem.Tick" name="Guildmaster.Combat.AutoAttackSystem.Tick">
-<area shape="rect" id="Node000001" title="Обработать автоатаки всех живых юнитов за один тик." alt="" coords="5,101,237,141"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a57295456ca777e61fdd124729528c22a" title="Успеет ли рутовый замах докрутить по этой цели (слой 2, «сначала подойти ближе с учётом скоростей»)." alt="" coords="285,69,496,109"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,105,272,101,272,106,238,110"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a3087b271f69177d35a9120d27ae5b4e1" title="Цель в пределах досягаемости атаки (сравнение квадратов — без sqrt). См. AttackReachCenter." alt="" coords="285,5,496,45"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="170,99,284,55,307,47,309,52,286,60,172,104"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a3ab4d7585846f6e392b148d21ab73cf6" title="Телепорт атакующего ЗА спину цели: на ДАЛЬНЮЮ от атакующего сторону (по направлению «атакующий → цель..." alt="" coords="285,133,496,173"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="238,132,272,137,272,142,237,138"/>
-<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a4f00d8a9a07bfec73091d61f4e20b9da" title="Тики замаха, которые получит СЛЕДУЮЩИЙ свинг этого юнита при текущей скорости атаки и клипе." alt="" coords="289,280,492,320"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="154,139,350,270,347,275,151,144"/>
+<area shape="rect" id="Node000001" title="Обработать автоатаки всех живых юнитов за один тик." alt="" coords="5,147,237,187"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a57295456ca777e61fdd124729528c22a" title="Успеет ли рутовый замах докрутить по этой цели (слой 2, «сначала подойти ближе с учётом скоростей»)." alt="" coords="285,51,496,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,144,284,100,307,92,309,97,286,105,172,149"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a3087b271f69177d35a9120d27ae5b4e1" title="Цель в пределах досягаемости атаки (сравнение квадратов — без sqrt). См. AttackReachCenter." alt="" coords="285,115,496,155"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="237,150,272,146,272,151,238,156"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a3ab4d7585846f6e392b148d21ab73cf6" title="Телепорт атакующего ЗА спину цели: на ДАЛЬНЮЮ от атакующего сторону (по направлению «атакующий → цель..." alt="" coords="285,179,496,219"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="238,178,272,182,272,187,237,183"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a4f00d8a9a07bfec73091d61f4e20b9da" title="Тики замаха, которые получит СЛЕДУЮЩИЙ свинг этого юнита при текущей скорости атаки и клипе." alt="" coords="289,268,492,308"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="168,184,334,260,331,265,166,189"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#aefa09ee7a570ca7a9f220d0cbe5528d4" title="Эффективная дистанция ЦЕНТРОВ, на которой цель «в досягаемости»: StatType.AttackRange трактуется как ..." alt="" coords="570,5,793,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="482,67,576,46,578,51,483,72"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="496,52,556,42,556,47,497,57"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a8acd5fc82a7974b455f42d1279121279" title="Лучевая скорость ухода цели, мировые ед." alt="" coords="544,69,819,109"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="496,87,530,87,530,92,496,92"/>
-<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="496,23,556,23,556,28,496,28"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#afca5f76971a79eade081102c296c0b85" title="Точка «за спиной» цели — та, куда встанет attacker , ничего не двигая." alt="" coords="576,133,787,173"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="496,151,562,151,562,156,496,156"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="867,170,1087,195"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="787,161,853,168,852,173,786,166"/>
-<area shape="poly" id="edge10_Node000009_Node000008" title=" " alt="" coords="430,277,483,254,543,233,623,215,704,202,853,186,853,191,704,207,624,221,545,239,485,259,433,282"/>
-<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a22bc798f12c716f8ccda8585b205691b" title="Интервал между атаками в сим&#45;тиках." alt="" coords="580,248,783,288"/>
-<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="492,286,566,278,566,283,493,292"/>
-<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a8db23a6ac07992286291ec08f127c80f" title="Тики замаха до кадра контакта." alt="" coords="580,312,783,352"/>
-<area shape="poly" id="edge12_Node000009_Node000011" title=" " alt="" coords="493,308,566,317,566,322,492,314"/>
-<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#aa903062ad68e0504e24b53d400814481" title=" " alt="" coords="580,376,783,416"/>
-<area shape="poly" id="edge13_Node000009_Node000012" title=" " alt="" coords="436,318,545,361,573,370,572,375,543,367,434,323"/>
-<area shape="rect" id="Node000014" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a8fe786d7f0ca34d559f4df76d57792cd" title="Замах из ДОЛИ свинга (0..1) — путь для юнитов, у которых нет покадрового клипа." alt="" coords="569,440,793,480"/>
-<area shape="poly" id="edge15_Node000009_Node000014" title=" " alt="" coords="412,318,468,372,505,401,545,426,561,433,559,438,543,430,502,406,464,376,408,322"/>
-<area shape="rect" id="Node000013" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#ab985f657217195261cca2bf305b0e480" title="Длительность свинга в тиках = min(потолок, intervalTicks)." alt="" coords="875,408,1078,448"/>
-<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="783,404,862,413,861,418,783,410"/>
-<area shape="poly" id="edge16_Node000014_Node000013" title=" " alt="" coords="793,445,861,438,862,443,794,451"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="497,75,531,77,530,82,496,80"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#afca5f76971a79eade081102c296c0b85" title="Точка «за спиной» цели — та, куда встанет attacker , ничего не двигая." alt="" coords="576,153,787,193"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="496,187,562,181,563,186,497,192"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="867,190,1087,215"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="787,181,853,188,852,193,786,186"/>
+<area shape="poly" id="edge9_Node000009_Node000008" title=" " alt="" coords="480,265,544,253,704,230,852,212,853,218,705,235,544,259,481,271"/>
+<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a22bc798f12c716f8ccda8585b205691b" title="Интервал между атаками в сим&#45;тиках." alt="" coords="580,268,783,308"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="492,285,566,285,566,291,492,291"/>
+<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a8db23a6ac07992286291ec08f127c80f" title="Тики замаха до кадра контакта." alt="" coords="580,332,783,372"/>
+<area shape="poly" id="edge11_Node000009_Node000011" title=" " alt="" coords="483,305,578,326,576,332,482,311"/>
+<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a8fe786d7f0ca34d559f4df76d57792cd" title="Замах из ДОЛИ свинга (0..1) — единственный путь с 06.08.2026." alt="" coords="569,396,793,436"/>
+<area shape="poly" id="edge12_Node000009_Node000012" title=" " alt="" coords="419,306,475,345,545,382,566,389,564,394,543,386,473,349,416,310"/>
+<area shape="rect" id="Node000013" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#ab985f657217195261cca2bf305b0e480" title="Длительность свинга в тиках = min(потолок, intervalTicks)." alt="" coords="875,396,1078,436"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="794,413,861,413,861,419,794,419"/>
 </map>

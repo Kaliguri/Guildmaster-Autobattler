@@ -1,5 +1,5 @@
 <map id="Guildmaster.Presentation.Body.UnitPartRegistry.TryGetStrikeSource" name="Guildmaster.Presentation.Body.UnitPartRegistry.TryGetStrikeSource">
 <area shape="rect" id="Node000001" title="Чем юнит исполняет приём ЭТОЙ рукой: предмет в её хвате, а если рука пуста — сама кисть (кулак)." alt="" coords="5,5,249,60"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#abb3f82824307687378342a4a1ed9cc9f" title="Предмет в этом хвате." alt="" coords="297,13,535,53"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#abb3f82824307687378342a4a1ed9cc9f" title="Предмет в этом хвате — его РАБОЧАЯ часть (UnitHeldItem.ReachPart)." alt="" coords="297,13,535,53"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,30,283,30,283,35,250,35"/>
 </map>

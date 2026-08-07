@@ -4,6 +4,8 @@ var namespaceGuildmaster_1_1Game_1_1Session_1_1Net =
     [ "ActivityState", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState" ],
     [ "ActivityStateCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec" ],
     [ "CoopGuestEntry", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry" ],
+    [ "DeploymentIntentIntake", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake" ],
+    [ "DeploymentIntentSender", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender" ],
     [ "GuestActivityFollower", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower" ],
     [ "GuestPartyFollower", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPartyFollower.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPartyFollower" ],
     [ "GuestPresence", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence" ],

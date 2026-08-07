@@ -1,5 +1,0 @@
-<map id="Guildmaster.Presentation.DeathShatter.Play" name="Guildmaster.Presentation.DeathShatter.Play">
-<area shape="rect" id="Node000001" title="Запустить разлёт из текущего состояния спрайта src ." alt="" coords="5,5,196,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1ShatterMesh.html#a95e91979b68518905199d0111baf9df8" title="Собрать блочный меш размером size &#160;(лок." alt="" coords="244,5,435,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
-</map>

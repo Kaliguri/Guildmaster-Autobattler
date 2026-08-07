@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Core_1_1Settings_1
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Settings.DisplaySettings:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Settings_1_1DisplaySettings__coll__graph.svg" width="199" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Settings_1_1DisplaySettings__coll__graph.svg" width="199" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -119,12 +119,35 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a79d4bfec9d0d1b20bab8c7cb55773345"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27edec144da5b4095582fe9094c2f11d" id="r_a27edec144da5b4095582fe9094c2f11d"><td class="memItemLeft" align="right" valign="top">uint?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Settings_1_1DisplaySettings.html#a27edec144da5b4095582fe9094c2f11d">RefreshDenominator</a></td></tr>
 <tr class="separator:a27edec144da5b4095582fe9094c2f11d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5209ec432604258072eb4d2501bcb47b" id="r_a5209ec432604258072eb4d2501bcb47b"><td class="memItemLeft" align="right" valign="top">bool?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Settings_1_1DisplaySettings.html#a5209ec432604258072eb4d2501bcb47b">VSync</a></td></tr>
+<tr class="memdesc:a5209ec432604258072eb4d2501bcb47b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Синхронизация кадров с развёрткой.  <br /></td></tr>
+<tr class="separator:a5209ec432604258072eb4d2501bcb47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32f5574cb8705cc69b15f6bc41eda7f9" id="r_a32f5574cb8705cc69b15f6bc41eda7f9"><td class="memItemLeft" align="right" valign="top">int?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Settings_1_1DisplaySettings.html#a32f5574cb8705cc69b15f6bc41eda7f9">FrameRateCap</a></td></tr>
+<tr class="memdesc:a32f5574cb8705cc69b15f6bc41eda7f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Потолок кадров в секунду, FramePacing.Unlimited — без потолка.  <br /></td></tr>
+<tr class="separator:a32f5574cb8705cc69b15f6bc41eda7f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Машинно-локальные настройки дисплея (ТЗ [[save-system]] §3). </p>
 <p>Лежат в <code>Local/machine</code> и <b>не синхронизируются</b> Steam Cloud: они описывают компьютер, а не игрока. </p>
 <p>Поля <b>nullable намеренно</b>: «не задано» означает «взять с монитора» — нативное разрешение и наибольшую частоту. Записать сюда вычисленные значения при первом запуске было бы ошибкой: игрок, сменивший монитор, остался бы с разрешением старого.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a32f5574cb8705cc69b15f6bc41eda7f9" name="a32f5574cb8705cc69b15f6bc41eda7f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32f5574cb8705cc69b15f6bc41eda7f9">&#9670;&#160;</a></span>FrameRateCap</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int? Guildmaster.Core.Settings.DisplaySettings.FrameRateCap</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Потолок кадров в секунду, FramePacing.Unlimited — без потолка. </p>
+<p>Смысл имеет только при выключенной VSync: движок игнорирует потолок, пока синхронизация включена. </p>
+
+</div>
+</div>
 <a id="a782d3d71c2a78b9560d074551ac1dac1" name="a782d3d71c2a78b9560d074551ac1dac1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a782d3d71c2a78b9560d074551ac1dac1">&#9670;&#160;</a></span>Height</h2>
 
@@ -180,6 +203,23 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Частота обновления рациональным числом, как её отдаёт Unity: 60 Гц = 60/1, а 59.94 Гц — это 60000/1001, и в double такое не уложить без потери точности. </p>
+
+</div>
+</div>
+<a id="a5209ec432604258072eb4d2501bcb47b" name="a5209ec432604258072eb4d2501bcb47b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5209ec432604258072eb4d2501bcb47b">&#9670;&#160;</a></span>VSync</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool? Guildmaster.Core.Settings.DisplaySettings.VSync</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Синхронизация кадров с развёрткой. </p>
+<p>«Не задано» читается как <b>включена</b> — см. FramePacing, там же причина, почему это не default(bool). </p>
 
 </div>
 </div>

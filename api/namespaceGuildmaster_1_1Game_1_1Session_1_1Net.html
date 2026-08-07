@@ -106,10 +106,19 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Где идёт игра прямо сейчас: вид мероприятия, его ограничения, открыт ли бой и в какой он фазе.  <a href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html">ActivityStateCodec</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Состояние мероприятия в байтах и обратно. Шесть полей, все примитивные.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Состояние мероприятия в байтах и обратно. Семь полей, все примитивные.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry.html">CoopGuestEntry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вход гостем: как только хост нас принял, уводит игрока из главного меню в чужую игру.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>DeploymentIntentCodec</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Как намерение выглядит на проводе. Единственный владелец этого формата. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html">DeploymentIntentIntake</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владельческая половина: принимает намерения гостей и публикует их у себя как свои.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html">DeploymentIntentSender</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Намерение гостя, отправленное владельцу арены: «поставь этого бойца сюда».  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html">GuestActivityFollower</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гостевая половина «где мы»: открывает и закрывает мероприятие и арену вслед за хостом.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html#details">More...</a><br /></td></tr>

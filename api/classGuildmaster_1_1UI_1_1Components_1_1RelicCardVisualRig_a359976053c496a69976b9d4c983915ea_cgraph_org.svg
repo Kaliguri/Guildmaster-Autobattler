@@ -21,10 +21,10 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitColorRoles.html#a7b6a14f7d171762394bfdfd775198086" target="_top" xlink:title="Цвет ступени приглушения.">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitColorRoles.html#a62efd1aaba7a042f6d4b03980251e997" target="_top" xlink:title="ЦВЕТ ТЕЛА юнита — одно правило на всех, кто это тело рисует: бой, карточка, витрина.">
 <polygon fill="white" stroke="#666666" points="354,-30 193,-30 193,0 354,0 354,-30"/>
 <text text-anchor="start" x="201" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="middle" x="273.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">UnitColorRoles.Shade</text>
+<text text-anchor="middle" x="273.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">UnitColorRoles.Body</text>
 </a>
 </g>
 </g>

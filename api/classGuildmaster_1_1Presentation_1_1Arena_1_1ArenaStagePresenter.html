@@ -113,16 +113,16 @@ Collaboration diagram for Guildmaster.Presentation.Arena.ArenaStagePresenter:</d
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:accad2d2420ca5c7050acabd26194dc17" id="r_accad2d2420ca5c7050acabd26194dc17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Arena_1_1ArenaStagePresenter.html#accad2d2420ca5c7050acabd26194dc17">Construct</a> (ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1ArenaRevealRequest.html">ArenaRevealRequest</a> &gt; revealSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenFadeChangedEvent.html">ScreenFadeChangedEvent</a> &gt; fadeSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1TestZoneChangedEvent.html">TestZoneChangedEvent</a> &gt; testZoneSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">BattleEndedEvent</a> &gt; battleEndedSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1ActivityChangedEvent.html">ActivityChangedEvent</a> &gt; activitySub, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">Guildmaster.Core.Input.IInputService</a> input)</td></tr>
-<tr class="separator:accad2d2420ca5c7050acabd26194dc17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6e2474eb3425a0e6eeea2b01e3d4cfc" id="r_ad6e2474eb3425a0e6eeea2b01e3d4cfc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Arena_1_1ArenaStagePresenter.html#ad6e2474eb3425a0e6eeea2b01e3d4cfc">Construct</a> (ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1ArenaRevealRequest.html">ArenaRevealRequest</a> &gt; revealSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenFadeChangedEvent.html">ScreenFadeChangedEvent</a> &gt; fadeSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1TestZoneChangedEvent.html">TestZoneChangedEvent</a> &gt; testZoneSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">BattleEndedEvent</a> &gt; battleEndedSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1ActivityChangedEvent.html">ActivityChangedEvent</a> &gt; activitySub, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">Guildmaster.Core.Input.IInputService</a> input, <a class="el" href="classGuildmaster_1_1Presentation_1_1BattleStagePresence.html">BattleStagePresence</a> stagePresence)</td></tr>
+<tr class="separator:ad6e2474eb3425a0e6eeea2b01e3d4cfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Являет место боя, когда игрок вошёл в узел (ArenaRevealRequest): снимает серый полигон и прогоняет цифровой переход. </p>
 <p>Решает ЗДЕСЬ, а не в боевом потоке: сколько актов играть и когда начинать — вопрос подачи, и меняться он должен без правок флоу. </p>
 <p>Главное — ждать шторку. Вход в узел приходит, пока экран ещё закрыт чернилами (карта ныряет в точку и гасит кадр); заиграй переход сразу, игрок увидел бы только его хвост. Поэтому старт откладывается до момента, когда шторка снова открыта.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="accad2d2420ca5c7050acabd26194dc17" name="accad2d2420ca5c7050acabd26194dc17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accad2d2420ca5c7050acabd26194dc17">&#9670;&#160;</a></span>Construct()</h2>
+<a id="ad6e2474eb3425a0e6eeea2b01e3d4cfc" name="ad6e2474eb3425a0e6eeea2b01e3d4cfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6e2474eb3425a0e6eeea2b01e3d4cfc">&#9670;&#160;</a></span>Construct()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,7 +164,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">Guildmaster::Core::Input::IInputService</a>&#160;</td>
-          <td class="paramname"><em>input</em>&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Presentation_1_1BattleStagePresence.html">BattleStagePresence</a>&#160;</td>
+          <td class="paramname"><em>stagePresence</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

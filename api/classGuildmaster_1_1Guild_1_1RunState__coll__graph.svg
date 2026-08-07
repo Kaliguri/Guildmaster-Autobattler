@@ -124,15 +124,17 @@ var sectionId = 'dynsection-0';
 <g id="Node000003" class="node">
 <title>Node3</title>
 <g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Guild_1_1MapState.html" target="_top" xlink:title="Состояние карты акта в RunState: граф узлов + где игрок сейчас.">
-<polygon fill="white" stroke="transparent" points="318,-295 170,-295 170,-246 318,-246 318,-295"/>
-<text text-anchor="start" x="175" y="-282.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.MapState</text>
-<text text-anchor="start" x="188" y="-267.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="215" y="-267.5" font-family="Helvetica,sans-Serif" font-size="10.00">CurrentNodeId</text>
-<text text-anchor="start" x="242" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="#666666" stroke="#666666" points="170,-277.5 170,-277.5 318,-277.5 318,-277.5 170,-277.5"/>
-<polygon fill="#666666" stroke="#666666" points="170,-262.5 170,-262.5 213,-262.5 213,-262.5 170,-262.5"/>
-<polygon fill="#666666" stroke="#666666" points="213,-262.5 213,-262.5 318,-262.5 318,-262.5 213,-262.5"/>
-<polygon fill="none" stroke="#666666" points="170,-246 170,-295 318,-295 318,-246 170,-246"/>
+<polygon fill="white" stroke="transparent" points="318,-302.5 170,-302.5 170,-238.5 318,-238.5 318,-302.5"/>
+<text text-anchor="start" x="175" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.MapState</text>
+<text text-anchor="start" x="186.5" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="212" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">CurrentNodeId</text>
+<text text-anchor="start" x="186.5" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="212" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00">EnteringNodeId</text>
+<text text-anchor="start" x="242" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<polygon fill="#666666" stroke="#666666" points="170,-285.5 170,-285.5 318,-285.5 318,-285.5 170,-285.5"/>
+<polygon fill="#666666" stroke="#666666" points="170,-255.5 170,-255.5 210,-255.5 210,-255.5 170,-255.5"/>
+<polygon fill="#666666" stroke="#666666" points="210,-255.5 210,-255.5 318,-255.5 318,-255.5 210,-255.5"/>
+<polygon fill="none" stroke="#666666" points="170,-238.5 170,-302.5 318,-302.5 318,-238.5 170,-238.5"/>
 </a>
 </g>
 </g>
@@ -140,8 +142,8 @@ var sectionId = 'dynsection-0';
 <g id="edge2_Node000001_Node000003" class="edge">
 <title>Node3&#45;&gt;Node1</title>
 <g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M229.72,-245.82C219.37,-228.67 204.64,-204.25 189.78,-179.63"/>
-<polygon fill="none" stroke="#63b8ff" points="189.62,-179.36 183.1,-176.29 183.42,-169.09 189.95,-172.16 189.62,-179.36"/>
+<path fill="none" stroke="#63b8ff" d="M225.17,-238.29C215.28,-221.9 202.59,-200.85 189.8,-179.65"/>
+<polygon fill="none" stroke="#63b8ff" points="189.72,-179.53 183.2,-176.46 183.52,-169.25 190.05,-172.32 189.72,-179.53"/>
 </a>
 </g>
 <text text-anchor="middle" x="214.5" y="-190" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +Map</text>
@@ -178,8 +180,8 @@ var sectionId = 'dynsection-0';
 <g id="edge3_Node000003_Node000004" class="edge">
 <title>Node4&#45;&gt;Node3</title>
 <g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M244,-371.76C244,-349.63 244,-326.01 244,-307.26"/>
-<polygon fill="none" stroke="#63b8ff" points="244,-307.13 240,-301.13 244,-295.13 248,-301.13 244,-307.13"/>
+<path fill="none" stroke="#63b8ff" d="M244,-371.76C244,-352.49 244,-332.1 244,-314.76"/>
+<polygon fill="none" stroke="#63b8ff" points="244,-314.74 240,-308.74 244,-302.74 248,-308.74 244,-314.74"/>
 </a>
 </g>
 <text text-anchor="middle" x="265.5" y="-346" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +Nodes</text>

@@ -208,9 +208,6 @@ Properties</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.UI.Components.SelectRow.SetRowEnabled </td>
@@ -220,15 +217,11 @@ Properties</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Погасить строку целиком (подпись тоже). </p>
-<p>Нужна там, где вариант недоступен не по нашей воле: частоту обновления Unity меняет только в эксклюзивном полноэкранном, и живой список, который ничего не делает, врал бы игроку. </p>
+<p>Нужна там, где вариант недоступен не по нашей воле: частоту обновления Unity меняет только в эксклюзивном полноэкранном, и живой список, который ничего не делает, врал бы игроку.</p>
+<p>Класса-модификатора здесь больше нет: он вешался ровно вместе с <code>SetEnabled(false)</code> и потому был вторым владельцем одного факта. Вид выключенной строки держит псевдокласс <code>:disabled</code> — тот, что движок поднимает сам. </p>
 
 </div>
 </div>

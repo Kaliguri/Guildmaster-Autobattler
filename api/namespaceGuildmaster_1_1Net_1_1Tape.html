@@ -109,11 +109,29 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1BattleTapeBroadcast.html">BattleTapeBroadcast</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Провод между живым боем и раздачей: раз в кадр отдаёт стримеру всё, что симуляция уже досчитала, а на конце боя дожимает хвост.  <a href="classGuildmaster_1_1Net_1_1Tape_1_1BattleTapeBroadcast.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1MidBattleJoinHold.html">MidBattleJoinHold</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подключение посреди боя: бой встаёт на общую паузу, пока напарник догружает ленту, и снимается с неё через короткий отсчёт — чтобы оба увидели одно и то же место с одного момента.  <a href="classGuildmaster_1_1Net_1_1Tape_1_1MidBattleJoinHold.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1ReplayFile.html">ReplayFile</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Формат файла повтора боя: та же лента, что кооп гоняет по сети, положенная на диск.  <a href="classGuildmaster_1_1Net_1_1Tape_1_1ReplayFile.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1ReplayFilePlayer.html">ReplayFilePlayer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Воспроизводит бой из файла повтора — третий наполнитель ленты после живого сима и гостя по сети.  <a href="classGuildmaster_1_1Net_1_1Tape_1_1ReplayFilePlayer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1ReplayFileWriter.html">ReplayFileWriter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пишет бой в файл повтора: заголовок при рождении, дальше паспорта юнитов и чанки ленты в потоке — в том же порядке, в каком кооп слал бы их по сети.  <a href="classGuildmaster_1_1Net_1_1Tape_1_1ReplayFileWriter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1ReplayPlaybackRequest.html">ReplayPlaybackRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заказ на воспроизведение повтора: байты файла, которые реплей-скоуп отдаст ReplayFilePlayer.  <a href="classGuildmaster_1_1Net_1_1Tape_1_1ReplayPlaybackRequest.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeAbilityIndex.html">TapeAbilityIndex</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Индекс способностей по их id — то, чем приёмник чанка находит AbilityData.  <a href="classGuildmaster_1_1Net_1_1Tape_1_1TapeAbilityIndex.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkFormat.html">TapeChunkFormat</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Формат чанка боевой ленты — числа, общие для писателя и читателя.  <a href="classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkFormat.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkPump.html">TapeChunkPump</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Нарезчик боевой ленты на чанки: единый владелец правила «сколько тиков в чанк и что делать, если кадр не влез».  <a href="classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkPump.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkReader.html">TapeChunkReader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разбирает чанки в свою BattleTape.  <a href="classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkReader.html#details">More...</a><br /></td></tr>
@@ -136,6 +154,13 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:a04d45969aca30b6f6f49a3d45c654bb6" id="r_a04d45969aca30b6f6f49a3d45c654bb6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Net_1_1Tape.html#a04d45969aca30b6f6f49a3d45c654bb6">ReplayLoadResult</a> { <a class="el" href="namespaceGuildmaster_1_1Net_1_1Tape.html#a04d45969aca30b6f6f49a3d45c654bb6aa60852f204ed8028c1c58808b746d115">Ok</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Net_1_1Tape.html#a04d45969aca30b6f6f49a3d45c654bb6a2aee0be2678ee90fd327cc186826438e">Missing</a>
+, <a class="el" href="namespaceGuildmaster_1_1Net_1_1Tape.html#a04d45969aca30b6f6f49a3d45c654bb6a15ff2bcedc465304bd186b34a01e251e">Corrupted</a>
+, <a class="el" href="namespaceGuildmaster_1_1Net_1_1Tape.html#a04d45969aca30b6f6f49a3d45c654bb6a13ccd8b0552f185d8f2b245224b2c16c">TooNew</a>
+ }</td></tr>
+<tr class="memdesc:a04d45969aca30b6f6f49a3d45c654bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Чем кончилась загрузка файла повтора. Зеркалит <code>SaveLoadResult</code> по духу.  <a href="namespaceGuildmaster_1_1Net_1_1Tape.html#a04d45969aca30b6f6f49a3d45c654bb6">More...</a><br /></td></tr>
+<tr class="separator:a04d45969aca30b6f6f49a3d45c654bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88062296a021ea9316dec3b95717e941" id="r_a88062296a021ea9316dec3b95717e941"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Net_1_1Tape.html#a88062296a021ea9316dec3b95717e941">TapeChunkStatus</a> { <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Net_1_1Tape.html#a88062296a021ea9316dec3b95717e941aa60852f204ed8028c1c58808b746d115">Ok</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Net_1_1Tape.html#a88062296a021ea9316dec3b95717e941aed75712b0eb1913c28a3872731ffd48d">Duplicate</a>
@@ -149,6 +174,32 @@ Enumerations</h2></td></tr>
 <tr class="separator:a88062296a021ea9316dec3b95717e941"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a04d45969aca30b6f6f49a3d45c654bb6" name="a04d45969aca30b6f6f49a3d45c654bb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04d45969aca30b6f6f49a3d45c654bb6">&#9670;&#160;</a></span>ReplayLoadResult</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Net_1_1Tape.html#a04d45969aca30b6f6f49a3d45c654bb6">Guildmaster.Net.Tape.ReplayLoadResult</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Чем кончилась загрузка файла повтора. Зеркалит <code>SaveLoadResult</code> по духу. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a04d45969aca30b6f6f49a3d45c654bb6aa60852f204ed8028c1c58808b746d115" name="a04d45969aca30b6f6f49a3d45c654bb6aa60852f204ed8028c1c58808b746d115"></a>Ok&#160;</td><td class="fielddoc"><p>Заголовок прочитан, тело можно воспроизводить. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a04d45969aca30b6f6f49a3d45c654bb6a2aee0be2678ee90fd327cc186826438e" name="a04d45969aca30b6f6f49a3d45c654bb6a2aee0be2678ee90fd327cc186826438e"></a>Missing&#160;</td><td class="fielddoc"><p>Файла нет на диске — решает вызывающий, до чтения байтов. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a04d45969aca30b6f6f49a3d45c654bb6a15ff2bcedc465304bd186b34a01e251e" name="a04d45969aca30b6f6f49a3d45c654bb6a15ff2bcedc465304bd186b34a01e251e"></a>Corrupted&#160;</td><td class="fielddoc"><p>Не наш файл, обрезан или бит: сигнатура/раскладка не сходятся. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a04d45969aca30b6f6f49a3d45c654bb6a13ccd8b0552f185d8f2b245224b2c16c" name="a04d45969aca30b6f6f49a3d45c654bb6a13ccd8b0552f185d8f2b245224b2c16c"></a>TooNew&#160;</td><td class="fielddoc"><p>Формат новее нашего: писала более новая версия игры, читать как попало нельзя. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="a88062296a021ea9316dec3b95717e941" name="a88062296a021ea9316dec3b95717e941"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a88062296a021ea9316dec3b95717e941">&#9670;&#160;</a></span>TapeChunkStatus</h2>
 

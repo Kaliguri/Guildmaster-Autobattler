@@ -2,6 +2,8 @@ var namespaceGuildmaster_1_1Core_1_1Net =
 [
     [ "ICoopSessionControl", "interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html", "interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl" ],
     [ "IReadyGate", "interfaceGuildmaster_1_1Core_1_1Net_1_1IReadyGate.html", "interfaceGuildmaster_1_1Core_1_1Net_1_1IReadyGate" ],
+    [ "PeerLostOption", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption.html", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption" ],
+    [ "PeerLostRequest", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest" ],
     [ "ReadyGateChangedEvent", "structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent.html", "structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent" ],
     [ "ReadyKeys", "classGuildmaster_1_1Core_1_1Net_1_1ReadyKeys.html", "classGuildmaster_1_1Core_1_1Net_1_1ReadyKeys" ],
     [ "CoopEndReason", "namespaceGuildmaster_1_1Core_1_1Net.html#a73fd84c1a070f14364cf84c2197a2d4e", [

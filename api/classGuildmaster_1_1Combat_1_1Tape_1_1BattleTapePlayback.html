@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Tape_1_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Tape.BattleTapePlayback:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback__inherit__graph.svg" width="198" height="484"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback__inherit__graph.svg" width="198" height="504"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Tape.BattleTapePlayback:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback__coll__graph.svg" width="198" height="484"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback__coll__graph.svg" width="198" height="504"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -147,6 +147,9 @@ Properties</h2></td></tr>
 <tr class="memitem:adc7312f5dcc728fdc4e698d0592ed63a" id="r_adc7312f5dcc728fdc4e698d0592ed63a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#adc7312f5dcc728fdc4e698d0592ed63a">TargetLead</a><code> [get]</code></td></tr>
 <tr class="memdesc:adc7312f5dcc728fdc4e698d0592ed63a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Насколько показ ДОЛЖЕН отставать от фронта.  <br /></td></tr>
 <tr class="separator:adc7312f5dcc728fdc4e698d0592ed63a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a719db8abe0edf335dc370befc43a3ec4" id="r_a719db8abe0edf335dc370befc43a3ec4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a719db8abe0edf335dc370befc43a3ec4">CatchUpToLead</a> = true<code> [get, set]</code></td></tr>
+<tr class="memdesc:a719db8abe0edf335dc370befc43a3ec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Догонять ли фронт, отстав больше требуемого.  <br /></td></tr>
+<tr class="separator:a719db8abe0edf335dc370befc43a3ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2266f82574810b7a5113d44296303df8" id="r_a2266f82574810b7a5113d44296303df8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a2266f82574810b7a5113d44296303df8">ViewTick</a><code> [get]</code></td></tr>
 <tr class="memdesc:a2266f82574810b7a5113d44296303df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тик, который показан сейчас. BattleTape.NoTick — показ ещё не начался.  <br /></td></tr>
 <tr class="separator:a2266f82574810b7a5113d44296303df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -283,7 +286,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Задать требуемое отставание. </p>
-<p>Если показ отстал БОЛЬШЕ требуемого (вышли из боя в мир, или бой только что начался и лаг ещё не нужен) — показ подтягивается к фронту сразу: держать задержку там, где игрок взаимодействует, нельзя. </p>
+<p>Если показ отстал БОЛЬШЕ требуемого (вышли из боя в мир, или бой только что начался и лаг ещё не нужен) — показ подтягивается к фронту сразу: держать задержку там, где игрок взаимодействует, нельзя. Подтягивание выключается CatchUpToLead. </p>
 
 </div>
 </div>
@@ -462,6 +465,32 @@ Properties</h2></td></tr>
 
 <p>Показ подошёл к краю окна снимков: считать дальше НЕЛЬЗЯ — следующий кадр вытеснит тот, который сейчас на экране, и картинка исчезнет. </p>
 <p>Случается на паузе: показ стоит, а просчёт продолжал бы уходить вперёд. Пауза останавливает показ — значит она обязана останавливать и убегание просчёта.</p>
+
+</div>
+</div>
+<a id="a719db8abe0edf335dc370befc43a3ec4" name="a719db8abe0edf335dc370befc43a3ec4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a719db8abe0edf335dc370befc43a3ec4">&#9670;&#160;</a></span>CatchUpToLead</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.Tape.BattleTapePlayback.CatchUpToLead = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Догонять ли фронт, отстав больше требуемого. </p>
+<p><code>true</code> (по умолчанию) — живой бой и гость: там фронт гонит ЧУЖОЙ источник, и отставание сверх требуемого значит, что показ провис. </p>
+<p><b>Файловому повтору нужно <code>false</code>.</b> Там фронт двигаем мы сами, кормя ленту на опережение впереди показа, — и «отставание» от него не провис, а ровно тот запас, который мы только что и создали. Догоняя его, показ прыгал вперёд на подачу каждый кадр и промотывал бой примерно втридцатеро (замер 04.08.2026: 25 секунд боя за секунду реального времени).</p>
 
 </div>
 </div>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Net.Session.LoopbackLobby" name="Guildmaster.Net.Session.LoopbackLobby">
+<area shape="rect" id="Node000001" title="Комната для игры без платформы: живёт в своём процессе, никого никуда не зовёт и честно об этом говор..." alt="" coords="5,199,184,379"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby.html" title="Откуда берутся напарники: комната, приглашение и ответ на чужое приглашение." alt="" coords="9,5,180,151"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,164,97,198,92,198,92,164"/>
+</map>

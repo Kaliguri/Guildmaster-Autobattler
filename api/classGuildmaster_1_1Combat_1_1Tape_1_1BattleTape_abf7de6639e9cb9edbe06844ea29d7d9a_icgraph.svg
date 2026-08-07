@@ -86,10 +86,10 @@ var sectionId = 'dynsection-4';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkWriter.html#a89267e34f5fa5ae05f9dbebe46ab3a9d" target="_top" xlink:title="Уложить срез ленты: тики firstTick ..firstTick + tickCount &#45;1 и все события в этом диапазоне.">
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkWriter.html#a1b35adcdad469ba7cc8a2035b60162a1" target="_top" xlink:title="Уложить срез ленты: тики firstTick ..firstTick + tickCount &#45;1 и все события в этом диапазоне.">
 <polygon fill="white" stroke="#666666" points="147,-30 0,-30 0,0 147,0 147,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Net.Tape.Tape</text>
-<text text-anchor="middle" x="73.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ChunkWriter.Write</text>
+<text text-anchor="middle" x="73.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ChunkWriter.TryWrite</text>
 </a>
 </g>
 </g>

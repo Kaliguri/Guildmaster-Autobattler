@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1UiNavigator.
 <div class="dynheader">
 Inheritance diagram for Guildmaster.UI.UiNavigator:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1UiNavigator__inherit__graph.svg" width="204" height="450"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1UiNavigator__inherit__graph.svg" width="223" height="470"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.UiNavigator:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1UiNavigator__coll__graph.svg" width="204" height="450"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1UiNavigator__coll__graph.svg" width="223" height="470"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -162,6 +162,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a5c05d872599132114ed3dd1f1855d228" id="r_a5c05d872599132114ed3dd1f1855d228"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1UiNavigator.html#a5c05d872599132114ed3dd1f1855d228">HasVisiblePage</a><code> [get]</code></td></tr>
 <tr class="memdesc:a5c05d872599132114ed3dd1f1855d228"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лежит ли на экране НЕПРОЗРАЧНАЯ страница (ивент, магазин, сундук, награда, исход, главное меню) — та, что закрывает собой мир и потому требует под собой задник (QA #50).  <br /></td></tr>
 <tr class="separator:a5c05d872599132114ed3dd1f1855d228"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20227f114691b7e1cf469b899afdf966" id="r_a20227f114691b7e1cf469b899afdf966"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1UiNavigator.html#a20227f114691b7e1cf469b899afdf966">HasVisibleBackdropRequest</a><code> [get]</code></td></tr>
+<tr class="memdesc:a20227f114691b7e1cf469b899afdf966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Просит ли ВИДИМЫЙ экран задник явно (UiScreen.RequiresBackdrop) — вторая, независимая причина показать стол помимо HasVisiblePage.  <br /></td></tr>
+<tr class="separator:a20227f114691b7e1cf469b899afdf966"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
@@ -586,6 +589,31 @@ Here is the caller graph for this function:</div>
 
 <p>Тег режима для подсветки таба топбара — из верхнего НЕ-Modal экрана (QA #35, K4). </p>
 <p>Modal (pause/ settings) НЕ меняет подсветку: открытое поверх карты системное меню оставляет активным «Карта», а не сбрасывает в null (иначе подсветка «прыгала» на бой/карту при открытии ESC-меню). </p>
+
+</div>
+</div>
+<a id="a20227f114691b7e1cf469b899afdf966" name="a20227f114691b7e1cf469b899afdf966"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20227f114691b7e1cf469b899afdf966">&#9670;&#160;</a></span>HasVisibleBackdropRequest</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.UI.UiNavigator.HasVisibleBackdropRequest</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Просит ли ВИДИМЫЙ экран задник явно (UiScreen.RequiresBackdrop) — вторая, независимая причина показать стол помимо HasVisiblePage. </p>
+<p>Разведены намеренно: страница закрывает мир по своему типу, а этот запрос идёт от самого экрана и сильнее живого боя за спиной. </p>
 
 </div>
 </div>

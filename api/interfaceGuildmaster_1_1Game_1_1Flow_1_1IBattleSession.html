@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Game_1_1Flow_1
 </div><!--header-->
 <div class="contents">
 
-<p>Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (<code>CombatLifetimeScope</code>, живёт один бой).  
+<p>Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (<code>BattleScope</code>, живёт один бой — его рождает и хоронит BattleHost).  
  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.IBattleSession:</div>
@@ -195,8 +195,8 @@ Events</h2></td></tr>
 <tr class="separator:a32ad59655ceb01c9eeb318faeee918e1 inherit events_interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (<code>CombatLifetimeScope</code>, живёт один бой). </p>
-<p>Живёт в RootScope, виден обоим: root кладёт «какой бой грузить» и ждёт исход; дочерний <code>BattleBootstrap</code> забирает запрос, запускает бой и репортит исход. Единственный шов, пересекающий границу скоупов — держит её тонкой и сетевой-ready (в Фазе 6 хост шлёт тот же запрос по сети, клиенты ждут исход через ту же абстракцию). Реализует read-side IBattleClock (Data) — так UI читает фазу/время боя без ссылки на Game. </p>
+<div class="textblock"><p>Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (<code>BattleScope</code>, живёт один бой — его рождает и хоронит BattleHost). </p>
+<p>Живёт в RootScope, виден обоим: root кладёт «какой бой грузить» и ждёт исход; дочерний BattleStartup забирает запрос, собирает бой и репортит исход. Единственный шов, пересекающий границу скоупов — держит её тонкой и сетевой-ready (в Фазе 6 хост шлёт тот же запрос по сети, клиенты ждут исход через ту же абстракцию). Реализует read-side IBattleClock (Data) — так UI читает фазу/время боя без ссылки на Game. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a613dbdd8f0b3d041e80d79d1db4a5400" name="a613dbdd8f0b3d041e80d79d1db4a5400"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a613dbdd8f0b3d041e80d79d1db4a5400">&#9670;&#160;</a></span>BindClock()</h2>

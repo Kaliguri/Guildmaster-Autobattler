@@ -114,8 +114,8 @@ Collaboration diagram for Guildmaster.Presentation.CameraModeController:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a31474942efff00cf14de16376491fa97" id="r_a31474942efff00cf14de16376491fa97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CameraModeController.html#a31474942efff00cf14de16376491fa97">Construct</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">IInputService</a> input, <a class="el" href="classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html">ArenaLayoutData</a> layout, <a class="el" href="classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html">CombatFocusTarget</a> focus, <a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">Design.CombatFeelConfig</a> feel, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">IBattleClock</a> clock, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html">ISettingsService</a> settings)</td></tr>
-<tr class="separator:a31474942efff00cf14de16376491fa97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d31e296feec618357339568b08394ac" id="r_a3d31e296feec618357339568b08394ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CameraModeController.html#a3d31e296feec618357339568b08394ac">Construct</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">IInputService</a> input, <a class="el" href="classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html">ArenaLayoutData</a> layout, <a class="el" href="classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html">CombatFocusTarget</a> focus, <a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">Design.CombatFeelConfig</a> feel, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">IBattleClock</a> clock, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html">ISettingsService</a> settings, <a class="el" href="classGuildmaster_1_1Presentation_1_1BattleStagePresence.html">BattleStagePresence</a> stage)</td></tr>
+<tr class="separator:a3d31e296feec618357339568b08394ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abea59b28019e170139abcfb202456ff8" id="r_abea59b28019e170139abcfb202456ff8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CameraModeController.html#abea59b28019e170139abcfb202456ff8">Shake</a> (float intensity)</td></tr>
 <tr class="memdesc:abea59b28019e170139abcfb202456ff8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тряхнуть камеру (IScreenShake): рассылаем на все vcam — активная тряхнётся, прочие вхолостую.  <br /></td></tr>
 <tr class="separator:abea59b28019e170139abcfb202456ff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,8 +150,8 @@ Properties</h2></td></tr>
 <p><b>Камера логически ОДНА, режимов у неё два:</b> сценарный (слежение за боем) и свободный (руль у игрока). Отсюда два правила перехода, и оба несимметричны намеренно. В свободный вид камера входит <b>подхватывая живой кадр</b> (AdoptLiveFrame) — игрок продолжает смотреть ровно туда, куда смотрел, поэтому в блендах переход в свободную стоит Cut: блендить нечего. В сценарный — наоборот, Brain делает подводку своим бленд-временем, и зум сценарной камеры взводится сразу (PrimeActionZoom), чтобы кадр приехал одним движением, а не двумя подряд.</p>
 <p><b>Кто выбирает вид.</b> Сценарной камере вне боя следить не за кем, поэтому владелец «какой вид сейчас» — фаза боя (IBattleClock): BattlePhase.Fighting → сценарный, всё остальное → свободный. Внутри боя выбор за игроком (Tab), и этот выбор <b>переживает бой, забег и запуск игры</b>: он лежит в настройках (ISettingsService, ключ <code>prefs</code>), а не сбрасывается на входе в каждый бой.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a31474942efff00cf14de16376491fa97" name="a31474942efff00cf14de16376491fa97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31474942efff00cf14de16376491fa97">&#9670;&#160;</a></span>Construct()</h2>
+<a id="a3d31e296feec618357339568b08394ac" name="a3d31e296feec618357339568b08394ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d31e296feec618357339568b08394ac">&#9670;&#160;</a></span>Construct()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +193,13 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html">ISettingsService</a>&#160;</td>
-          <td class="paramname"><em>settings</em>&#160;</td>
+          <td class="paramname"><em>settings</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Presentation_1_1BattleStagePresence.html">BattleStagePresence</a>&#160;</td>
+          <td class="paramname"><em>stage</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

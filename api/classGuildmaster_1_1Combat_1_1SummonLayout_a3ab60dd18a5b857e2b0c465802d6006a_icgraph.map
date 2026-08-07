@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.SummonLayout.Offset" name="Guildmaster.Combat.SummonLayout.Offset">
+<area shape="rect" id="Node000001" title="Смещение тела от призывателя: назад на пол&#45;шага, веером поперёк фронта." alt="" coords="387,13,605,53"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SummonOnBattleStartComponent.html#a4dc8c804bc14ddd0af07ff96fbcd107c" title=" " alt="" coords="5,5,339,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="373,35,339,35,339,30,373,30"/>
+</map>

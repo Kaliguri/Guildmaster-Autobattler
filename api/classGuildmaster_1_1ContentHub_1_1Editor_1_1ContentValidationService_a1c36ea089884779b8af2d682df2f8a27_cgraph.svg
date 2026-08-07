@@ -106,7 +106,7 @@ var sectionId = 'dynsection-3';
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a5d583eeb04b1416bfcf133a221d6f9f2" target="_top" xlink:title="Юнит обязан иметь тело: UnitVisual и ViewPrefab.">
+<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a5d583eeb04b1416bfcf133a221d6f9f2" target="_top" xlink:title="Юнит обязан иметь тело: AnimationArchetypeData и ViewPrefab.">
 <polygon fill="white" stroke="#666666" points="631,-41 449,-41 449,0 631,0 631,-41"/>
 <text text-anchor="start" x="457" y="-29" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.ContentHub.Editor.</text>
 <text text-anchor="start" x="457" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">ContentValidationService.Validate</text>

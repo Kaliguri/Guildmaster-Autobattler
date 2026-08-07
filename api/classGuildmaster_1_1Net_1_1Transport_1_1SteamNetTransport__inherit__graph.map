@@ -1,7 +1,7 @@
 <map id="Guildmaster.Net.Transport.SteamNetTransport" name="Guildmaster.Net.Transport.SteamNetTransport">
-<area shape="rect" id="Node000001" title="Транспорт поверх Steam Networking Sockets: хост поднимает relay&#45;сокет, гость подключается к нему по S..." alt="" coords="91,239,296,559"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html" title="Шов транспорта: отправить байты, получить байты, узнать о приходе и уходе пиров." alt="" coords="5,5,211,191"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,203,150,238,145,239,135,205"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="235,65,325,131"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="270,145,242,239,237,238,264,143"/>
+<area shape="rect" id="Node000001" title="Транспорт поверх Steam Networking Sockets: хост поднимает relay&#45;сокет, гость подключается к нему по S..." alt="" coords="91,299,296,619"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html" title="Шов транспорта: отправить байты, получить байты, узнать о приходе и уходе пиров." alt="" coords="5,5,211,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,264,155,298,149,299,141,265"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="235,95,325,161"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="271,175,238,299,233,298,266,173"/>
 </map>

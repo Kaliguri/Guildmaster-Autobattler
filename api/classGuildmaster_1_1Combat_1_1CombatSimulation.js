@@ -51,6 +51,7 @@ var classGuildmaster_1_1Combat_1_1CombatSimulation =
     [ "OnDamageDealt", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a845becdf4b3273fef21b64bc92512c14", null ],
     [ "OnHealed", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae9f9904d224e85b35467387dace83479", null ],
     [ "OnProjectileSpawned", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a7c9a86d3e520b6496d02d52a598f5fd5", null ],
+    [ "OnShieldAbsorbed", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#aa3e4c1ad8313fb3c13742a4977cd5dab", null ],
     [ "OnUnitDied", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac25978bcf3dab4e01b7b92d6bc884d60", null ],
     [ "OnUnitSpawned", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ad5df9c3a7cc47a7c99246aedfb4cb605", null ]
 ];

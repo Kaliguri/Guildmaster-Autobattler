@@ -1,7 +1,9 @@
 <map id="Guildmaster.Presentation.Body.SkeletalBodyVisual.PlayShatter" name="Guildmaster.Presentation.Body.SkeletalBodyVisual.PlayShatter">
-<area shape="rect" id="Node000001" title="Колется КАЖДАЯ часть — общей палитрой и общим таймингом." alt="" coords="5,5,267,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1DeathShatter.html#ae7736ab9646ca98f3ba8eac4616aa470" title="Запустить разлёт из текущего состояния спрайта src ." alt="" coords="315,5,505,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="267,23,301,23,301,28,267,28"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1ShatterMesh.html#a95e91979b68518905199d0111baf9df8" title="Собрать блочный меш размером size &#160;(лок." alt="" coords="553,5,744,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="506,23,539,23,539,28,506,28"/>
+<area shape="rect" id="Node000001" title="Колется КАЖДАЯ часть — общей палитрой и общим таймингом." alt="" coords="5,41,267,81"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1DeathShatter.html#a17fd7e2610235ea94874aceb38f49844" title="Запустить разлёт из текущего состояния спрайта src ." alt="" coords="333,5,524,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="267,43,319,36,320,41,267,48"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#aff86236b4398cfbc3db914a5dadaa6d6" title="Мировой AABB тела (у скелета — объединение частей). false — рисовать нечего." alt="" coords="315,70,543,125"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="267,75,302,79,301,84,267,80"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1ShatterMesh.html#a2ad03ed761326c6478b36bd26d7d426d" title="Собрать блочный меш размером size &#160;(лок." alt="" coords="591,5,781,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="524,23,577,23,577,28,524,28"/>
 </map>

@@ -39,7 +39,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1PaletteRemap_1_1PaletteRemapWindow.html" target="_top" xlink:title="Alebardium Palette Remapper — перекрашивает растровые (пиксель&#45;арт) спрайты в нашу палитру методом gr...">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1PaletteRemap_1_1PaletteRemapWindow.html" target="_top" xlink:title="Alebardium Palette Remapper — перекрашивает растровые спрайты вендорных паков в нашу палитру методом ...">
 <polygon fill="white" stroke="#666666" points="280,-78 130,-78 130,-48 280,-48 280,-78"/>
 <text text-anchor="start" x="138" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.PaletteRemap.</text>
 <text text-anchor="middle" x="205" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">PaletteRemapWindow</text>

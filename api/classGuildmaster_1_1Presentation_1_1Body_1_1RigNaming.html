@@ -99,75 +99,71 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Bo
 </div><!--header-->
 <div class="contents">
 
-<p>Конвенция имён рига: как называются суставы (<code>Rotation Point (Elbow)</code>), хват предмета (<code>Rotation Point (Grip)</code>), контейнер арта кости (<code>Visual Part (Head)</code>) и сторона тела (<code>Arm (Left)</code>).  
+<p>Конвенция имён рига: кость зовётся как сустав, который она вращает (<code>LowerArm_R</code>), сторона живёт суффиксом (<code>_R</code> / <code>_L</code>), а рисунок висит на кости отдельным узлом с суффиксом <code>_Art</code> (<code>LowerArm_R_Art</code>).  
  <a href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.Body.RigNaming:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming__coll__graph.svg" width="218" height="371"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming__coll__graph.svg" width="194" height="331"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a95763909adc663e391df25d960bbc3d9" id="r_a95763909adc663e391df25d960bbc3d9"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a95763909adc663e391df25d960bbc3d9">ContainerName</a> (string boneName)</td></tr>
-<tr class="memdesc:a95763909adc663e391df25d960bbc3d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя контейнера арта для кости: <code>Head</code> -&gt; <code>Visual Part (Head)</code>.  <br /></td></tr>
-<tr class="separator:a95763909adc663e391df25d960bbc3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6f941797e6277521b2969662459baf4" id="r_ab6f941797e6277521b2969662459baf4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ab6f941797e6277521b2969662459baf4">IsContainer</a> (Transform node)</td></tr>
-<tr class="separator:ab6f941797e6277521b2969662459baf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48b697179aa010e04b507b0d4d25d289" id="r_a48b697179aa010e04b507b0d4d25d289"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a48b697179aa010e04b507b0d4d25d289">IsJoint</a> (Transform node)</td></tr>
-<tr class="memdesc:a48b697179aa010e04b507b0d4d25d289"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел-сустав (в том числе хват): имя начинается с JointPrefix.  <br /></td></tr>
-<tr class="separator:a48b697179aa010e04b507b0d4d25d289"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2ffd0cf0f6d9e18ce1ee4ae90d34965" id="r_ad2ffd0cf0f6d9e18ce1ee4ae90d34965"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ad2ffd0cf0f6d9e18ce1ee4ae90d34965">ArtName</a> (string boneName)</td></tr>
+<tr class="memdesc:ad2ffd0cf0f6d9e18ce1ee4ae90d34965"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя узла рисунка для кости: <code>Head</code> -&gt; <code>Head_Art</code>.  <br /></td></tr>
+<tr class="separator:ad2ffd0cf0f6d9e18ce1ee4ae90d34965"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a596399180f27d9b51277770f9d0260a4" id="r_a596399180f27d9b51277770f9d0260a4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a596399180f27d9b51277770f9d0260a4">IsArt</a> (Transform node)</td></tr>
+<tr class="memdesc:a596399180f27d9b51277770f9d0260a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел рисунка — лист с суффиксом ArtSuffix.  <br /></td></tr>
+<tr class="separator:a596399180f27d9b51277770f9d0260a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05d4bcb800d5e37caf9b01390fad9955" id="r_a05d4bcb800d5e37caf9b01390fad9955"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a05d4bcb800d5e37caf9b01390fad9955">IsBone</a> (Transform node)</td></tr>
+<tr class="memdesc:a05d4bcb800d5e37caf9b01390fad9955"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кость — любой узел рига, который не рисунок.  <br /></td></tr>
+<tr class="separator:a05d4bcb800d5e37caf9b01390fad9955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ac7662facfb5b5cad81cb55382b671a" id="r_a7ac7662facfb5b5cad81cb55382b671a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a7ac7662facfb5b5cad81cb55382b671a">IsGrip</a> (Transform node)</td></tr>
-<tr class="memdesc:a7ac7662facfb5b5cad81cb55382b671a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сустав-хват — тот, чья метка равна GripLabel.  <br /></td></tr>
+<tr class="memdesc:a7ac7662facfb5b5cad81cb55382b671a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кость-хват: та, внутри которой висит предмет.  <br /></td></tr>
 <tr class="separator:a7ac7662facfb5b5cad81cb55382b671a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab40b8980945db38bcba3bc150ffb8c00" id="r_ab40b8980945db38bcba3bc150ffb8c00"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ab40b8980945db38bcba3bc150ffb8c00">ExtractLabel</a> (string nodeName)</td></tr>
-<tr class="memdesc:ab40b8980945db38bcba3bc150ffb8c00"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>Rotation Point (Elbow)</code> -&gt; <code>Elbow</code>; имя без скобок возвращается как есть.  <br /></td></tr>
-<tr class="separator:ab40b8980945db38bcba3bc150ffb8c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f9585d89de8f450999f25c6e9730ec6" id="r_a8f9585d89de8f450999f25c6e9730ec6"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a8f9585d89de8f450999f25c6e9730ec6">BoneNameFromContainer</a> (string containerName)</td></tr>
-<tr class="memdesc:a8f9585d89de8f450999f25c6e9730ec6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>Visual Part (Head)</code> -&gt; <code>Head</code>.  <br /></td></tr>
-<tr class="separator:a8f9585d89de8f450999f25c6e9730ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84f91979a79f7913b3fb027ebf6ab605" id="r_a84f91979a79f7913b3fb027ebf6ab605"><td class="memItemLeft" align="right" valign="top">static Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a84f91979a79f7913b3fb027ebf6ab605">FindContainer</a> (Transform bone)</td></tr>
-<tr class="memdesc:a84f91979a79f7913b3fb027ebf6ab605"><td class="mdescLeft">&#160;</td><td class="mdescRight">Контейнер арта этой кости, если он уже выделен (риг мог быть не разделён).  <br /></td></tr>
-<tr class="separator:a84f91979a79f7913b3fb027ebf6ab605"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add8e8850c09f95c8e303eff1567a4d60" id="r_add8e8850c09f95c8e303eff1567a4d60"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#add8e8850c09f95c8e303eff1567a4d60">IsUnderContainer</a> (Transform node)</td></tr>
-<tr class="memdesc:add8e8850c09f95c8e303eff1567a4d60"><td class="mdescLeft">&#160;</td><td class="mdescRight">True для контейнера и всего, что внутри него.  <br /></td></tr>
-<tr class="separator:add8e8850c09f95c8e303eff1567a4d60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae22a6bbb85454560f33edbf75973ae47" id="r_ae22a6bbb85454560f33edbf75973ae47"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ae22a6bbb85454560f33edbf75973ae47">IsHair</a> (string nodeName)</td></tr>
+<tr class="memdesc:ae22a6bbb85454560f33edbf75973ae47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Этот рисунок — волосы? Спрашивается по имени узла, потому что отдельной кости у волос нет: они висят на голове вторым рисунком, и заводить им сустав значило бы врать риг ради ярлыка.  <br /></td></tr>
+<tr class="separator:ae22a6bbb85454560f33edbf75973ae47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33577b0580a24ec9c0dbba739cc1d3fb" id="r_a33577b0580a24ec9c0dbba739cc1d3fb"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a33577b0580a24ec9c0dbba739cc1d3fb">ShoulderBone</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a2942e4d172a548bdfdd6a1a337f8df71">BodySide</a> side)</td></tr>
+<tr class="memdesc:a33577b0580a24ec9c0dbba739cc1d3fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кость плеча нужной стороны — начало дуги удара: рука вращается как жёсткий рычаг.  <br /></td></tr>
+<tr class="separator:a33577b0580a24ec9c0dbba739cc1d3fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba5b69a7b9dafd83d7d530b52651bb47" id="r_aba5b69a7b9dafd83d7d530b52651bb47"><td class="memItemLeft" align="right" valign="top">static Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#aba5b69a7b9dafd83d7d530b52651bb47">BoneOf</a> (Transform rendererNode)</td></tr>
-<tr class="memdesc:aba5b69a7b9dafd83d7d530b52651bb47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кость, которую рисует этот рендерер: узел НАД контейнером арта.  <br /></td></tr>
+<tr class="memdesc:aba5b69a7b9dafd83d7d530b52651bb47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кость, которую рисует этот рендерер: сам узел, если он не рисунок, иначе его родитель.  <br /></td></tr>
 <tr class="separator:aba5b69a7b9dafd83d7d530b52651bb47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab021260903ed9cd3a547e102acd6b633" id="r_ab021260903ed9cd3a547e102acd6b633"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ab021260903ed9cd3a547e102acd6b633">BoneNameOf</a> (Transform rendererNode)</td></tr>
-<tr class="memdesc:ab021260903ed9cd3a547e102acd6b633"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя кости, которую рисует этот рендерер (<code>Arm_Down</code>, <code>Sword</code>).  <br /></td></tr>
+<tr class="memdesc:ab021260903ed9cd3a547e102acd6b633"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя кости, которую рисует этот рендерер (<code>LowerArm_R</code>, <code>Weapon_R</code>).  <br /></td></tr>
 <tr class="separator:ab021260903ed9cd3a547e102acd6b633"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a865d4304f0805ae006cda4c4b19da14e" id="r_a865d4304f0805ae006cda4c4b19da14e"><td class="memItemLeft" align="right" valign="top">static Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a865d4304f0805ae006cda4c4b19da14e">FindArt</a> (Transform bone)</td></tr>
+<tr class="memdesc:a865d4304f0805ae006cda4c4b19da14e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Первый узел рисунка на этой кости.  <br /></td></tr>
+<tr class="separator:a865d4304f0805ae006cda4c4b19da14e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64015fa4fa0e0b64ecd9f9ba6b19321f" id="r_a64015fa4fa0e0b64ecd9f9ba6b19321f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a2942e4d172a548bdfdd6a1a337f8df71">BodySide</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a64015fa4fa0e0b64ecd9f9ba6b19321f">SideOf</a> (Transform node, Transform root)</td></tr>
-<tr class="memdesc:a64015fa4fa0e0b64ecd9f9ba6b19321f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сторона тела: берётся с конечности НАД узлом (<code>Arm (Left)</code>), поэтому сами суставы носят одно имя на обе стороны.  <br /></td></tr>
+<tr class="memdesc:a64015fa4fa0e0b64ecd9f9ba6b19321f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сторона тела: читается из суффикса имени, своего или ближайшего предка до <em>root</em> .  <br /></td></tr>
 <tr class="separator:a64015fa4fa0e0b64ecd9f9ba6b19321f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91300b8c0de2173e707970f438f43f47" id="r_a91300b8c0de2173e707970f438f43f47"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a91300b8c0de2173e707970f438f43f47">SideSuffix</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a2942e4d172a548bdfdd6a1a337f8df71">BodySide</a> side)</td></tr>
-<tr class="memdesc:a91300b8c0de2173e707970f438f43f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Суффикс логического id сустава: <code>.L</code> / <code>.R</code> / пусто.  <br /></td></tr>
+<tr class="memdesc:a91300b8c0de2173e707970f438f43f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Суффикс стороны для имени кости: <code>_L</code> / <code>_R</code> / пусто.  <br /></td></tr>
 <tr class="separator:a91300b8c0de2173e707970f438f43f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a48392c4854efadf1541bae7872445d67" id="r_a48392c4854efadf1541bae7872445d67"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a48392c4854efadf1541bae7872445d67">ContainerPrefix</a> = &quot;Visual Part&quot;</td></tr>
-<tr class="memdesc:a48392c4854efadf1541bae7872445d67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Префикс контейнера арта кости: <code>Visual Part (Head)</code>.  <br /></td></tr>
-<tr class="separator:a48392c4854efadf1541bae7872445d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6c256a5ec195e5158f7615ecbbabc24" id="r_ab6c256a5ec195e5158f7615ecbbabc24"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ab6c256a5ec195e5158f7615ecbbabc24">JointPrefix</a> = &quot;Rotation Point (&quot;</td></tr>
-<tr class="memdesc:ab6c256a5ec195e5158f7615ecbbabc24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Префикс узла-сустава: <code>Rotation Point (Elbow)</code>.  <br /></td></tr>
-<tr class="separator:ab6c256a5ec195e5158f7615ecbbabc24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12423f091cceac425843a74432ef0b8a" id="r_a12423f091cceac425843a74432ef0b8a"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a12423f091cceac425843a74432ef0b8a">GripLabel</a> = &quot;Grip&quot;</td></tr>
-<tr class="memdesc:a12423f091cceac425843a74432ef0b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Метка сустава-хвата: сустав, в котором висит предмет.  <br /></td></tr>
-<tr class="separator:a12423f091cceac425843a74432ef0b8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e12311a0f7a6bf2a6d96b7538577f7f" id="r_a9e12311a0f7a6bf2a6d96b7538577f7f"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a9e12311a0f7a6bf2a6d96b7538577f7f">ShoulderBone</a> = &quot;Arm_Shoulder&quot;</td></tr>
-<tr class="memdesc:a9e12311a0f7a6bf2a6d96b7538577f7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кость плеча.  <br /></td></tr>
-<tr class="separator:a9e12311a0f7a6bf2a6d96b7538577f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adee42253b716603b1aca064677948a9e" id="r_adee42253b716603b1aca064677948a9e"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#adee42253b716603b1aca064677948a9e">ArtSuffix</a> = &quot;_Art&quot;</td></tr>
+<tr class="memdesc:adee42253b716603b1aca064677948a9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Суффикс узла с рисунком: <code>LowerArm_R</code> -&gt; <code>LowerArm_R_Art</code>.  <br /></td></tr>
+<tr class="separator:adee42253b716603b1aca064677948a9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a178a9bdfdaeae1618a0fd53b5c9bb74f" id="r_a178a9bdfdaeae1618a0fd53b5c9bb74f"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a178a9bdfdaeae1618a0fd53b5c9bb74f">GripPrefix</a> = &quot;Weapon_&quot;</td></tr>
+<tr class="memdesc:a178a9bdfdaeae1618a0fd53b5c9bb74f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Префикс кости-хвата: узла, в котором висит предмет.  <br /></td></tr>
+<tr class="separator:a178a9bdfdaeae1618a0fd53b5c9bb74f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e24716c1aad6f90210498c86bfb802a" id="r_a0e24716c1aad6f90210498c86bfb802a"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a0e24716c1aad6f90210498c86bfb802a">HairToken</a> = &quot;Hair&quot;</td></tr>
+<tr class="memdesc:a0e24716c1aad6f90210498c86bfb802a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Опознаватель ВОЛОС в имени узла рисунка (<code>Head_Hair_Art</code>).  <br /></td></tr>
+<tr class="separator:a0e24716c1aad6f90210498c86bfb802a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Конвенция имён рига: как называются суставы (<code>Rotation Point (Elbow)</code>), хват предмета (<code>Rotation Point (Grip)</code>), контейнер арта кости (<code>Visual Part (Head)</code>) и сторона тела (<code>Arm (Left)</code>). </p>
+<div class="textblock"><p>Конвенция имён рига: кость зовётся как сустав, который она вращает (<code>LowerArm_R</code>), сторона живёт суффиксом (<code>_R</code> / <code>_L</code>), а рисунок висит на кости отдельным узлом с суффиксом <code>_Art</code> (<code>LowerArm_R_Art</code>). </p>
 <p>Всё, что читает структуру рига — и в редакторе, и в рантайме, — спрашивает здесь.</p>
-<p>Конвенция родилась в editor-инструментах анимации (<code>RigProfileBuilder</code>, <code>RigVisualParts</code>) и жила там же. Рантайму она понадобилась, когда свечению каста стало нужно адресовать ЧАСТЬ — «то, что в хвате правой руки», а не «спрайт с именем Sword», — а editor-сборка в игре недоступна. </p>
-<p>Копия строк во втором файле была бы вторым владельцем: узлы рига переименовываются только через <code>RigMigrate</code> (иначе молча рвутся пути клипов, маски и аватар), и вторая копия конвенции разошлась бы с первой без единой ошибки компиляции. Поэтому владелец переехал в рантайм-сборку, а инструменты рига читают конвенцию отсюда. </p>
+<p>Имя кости обязано совпадать с именем трансформа: этого требует Unity для перепривязки клипов, и на этом же держится цепочка <code>Shoulder → UpperArm → LowerArm → Hand</code>. Предмет — звено цепи (<code>Weapon_R</code> внутри <code>Hand_R</code>), а не ветка рядом с ней: меч едет за ладонью структурно, а не потому, что две ветки удалось согласовать. </p>
+<p>Копия строк во втором файле была бы вторым владельцем: узлы рига переименовываются только через <code>RigMigrate</code> (иначе молча рвутся пути клипов, маски и аватар), и вторая копия конвенции разошлась бы с первой без единой ошибки компиляции. Поэтому владелец живёт в рантайм-сборке, а инструменты рига читают конвенцию отсюда. </p>
+<p>Прежняя конвенция (<code>Rotation Point (Elbow)</code>, контейнер <code>Visual Part (…)</code>, сторона в скобках у конечности) отменена 04.08.2026 вместе с перестройкой рига: три узла на часть тела схлопнулись в два, и «где тут ось вращения» перестало быть вопросом — ось это сам узел. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8f9585d89de8f450999f25c6e9730ec6" name="a8f9585d89de8f450999f25c6e9730ec6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f9585d89de8f450999f25c6e9730ec6">&#9670;&#160;</a></span>BoneNameFromContainer()</h2>
+<a id="ad2ffd0cf0f6d9e18ce1ee4ae90d34965" name="ad2ffd0cf0f6d9e18ce1ee4ae90d34965"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2ffd0cf0f6d9e18ce1ee4ae90d34965">&#9670;&#160;</a></span>ArtName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,10 +172,10 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static string Guildmaster.Presentation.Body.RigNaming.BoneNameFromContainer </td>
+          <td class="memname">static string Guildmaster.Presentation.Body.RigNaming.ArtName </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>containerName</em></td><td>)</td>
+          <td class="paramname"><em>boneName</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -190,7 +186,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p><code>Visual Part (Head)</code> -&gt; <code>Head</code>. </p>
+<p>Имя узла рисунка для кости: <code>Head</code> -&gt; <code>Head_Art</code>. </p>
 
 </div>
 </div>
@@ -218,7 +214,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Имя кости, которую рисует этот рендерер (<code>Arm_Down</code>, <code>Sword</code>). </p>
+<p>Имя кости, которую рисует этот рендерер (<code>LowerArm_R</code>, <code>Weapon_R</code>). </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -251,12 +247,11 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Кость, которую рисует этот рендерер: узел НАД контейнером арта. </p>
-<p>Рендерер, ещё не переехавший в контейнер, сам себе кость. </p>
+<p>Кость, которую рисует этот рендерер: сам узел, если он не рисунок, иначе его родитель. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming_aba5b69a7b9dafd83d7d530b52651bb47_cgraph.svg" width="456" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming_aba5b69a7b9dafd83d7d530b52651bb47_cgraph.svg" width="440" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -266,8 +261,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a95763909adc663e391df25d960bbc3d9" name="a95763909adc663e391df25d960bbc3d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95763909adc663e391df25d960bbc3d9">&#9670;&#160;</a></span>ContainerName()</h2>
+<a id="a865d4304f0805ae006cda4c4b19da14e" name="a865d4304f0805ae006cda4c4b19da14e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a865d4304f0805ae006cda4c4b19da14e">&#9670;&#160;</a></span>FindArt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -276,63 +271,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static string Guildmaster.Presentation.Body.RigNaming.ContainerName </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>boneName</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Имя контейнера арта для кости: <code>Head</code> -&gt; <code>Visual Part (Head)</code>. </p>
-
-</div>
-</div>
-<a id="ab40b8980945db38bcba3bc150ffb8c00" name="ab40b8980945db38bcba3bc150ffb8c00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab40b8980945db38bcba3bc150ffb8c00">&#9670;&#160;</a></span>ExtractLabel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static string Guildmaster.Presentation.Body.RigNaming.ExtractLabel </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>nodeName</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p><code>Rotation Point (Elbow)</code> -&gt; <code>Elbow</code>; имя без скобок возвращается как есть. </p>
-
-</div>
-</div>
-<a id="a84f91979a79f7913b3fb027ebf6ab605" name="a84f91979a79f7913b3fb027ebf6ab605"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84f91979a79f7913b3fb027ebf6ab605">&#9670;&#160;</a></span>FindContainer()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static Transform Guildmaster.Presentation.Body.RigNaming.FindContainer </td>
+          <td class="memname">static Transform Guildmaster.Presentation.Body.RigNaming.FindArt </td>
           <td>(</td>
           <td class="paramtype">Transform&#160;</td>
           <td class="paramname"><em>bone</em></td><td>)</td>
@@ -346,17 +285,18 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Контейнер арта этой кости, если он уже выделен (риг мог быть не разделён). </p>
+<p>Первый узел рисунка на этой кости. </p>
+<p>Кость вправе нести несколько рисунков (лицо и волосы, клинок, гарда и рукоять), поэтому «первый» — это порядок в иерархии, а не привилегия. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming_a84f91979a79f7913b3fb027ebf6ab605_cgraph.svg" width="488" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming_a865d4304f0805ae006cda4c4b19da14e_cgraph.svg" width="440" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ab6f941797e6277521b2969662459baf4" name="ab6f941797e6277521b2969662459baf4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6f941797e6277521b2969662459baf4">&#9670;&#160;</a></span>IsContainer()</h2>
+<a id="a596399180f27d9b51277770f9d0260a4" name="a596399180f27d9b51277770f9d0260a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a596399180f27d9b51277770f9d0260a4">&#9670;&#160;</a></span>IsArt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -365,7 +305,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool Guildmaster.Presentation.Body.RigNaming.IsContainer </td>
+          <td class="memname">static bool Guildmaster.Presentation.Body.RigNaming.IsArt </td>
           <td>(</td>
           <td class="paramtype">Transform&#160;</td>
           <td class="paramname"><em>node</em></td><td>)</td>
@@ -378,11 +318,42 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Узел рисунка — лист с суффиксом ArtSuffix. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming_ab6f941797e6277521b2969662459baf4_icgraph.svg" width="100%" height="458"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming_a596399180f27d9b51277770f9d0260a4_icgraph.svg" width="100%" height="434"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<a id="a05d4bcb800d5e37caf9b01390fad9955" name="a05d4bcb800d5e37caf9b01390fad9955"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05d4bcb800d5e37caf9b01390fad9955">&#9670;&#160;</a></span>IsBone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Guildmaster.Presentation.Body.RigNaming.IsBone </td>
+          <td>(</td>
+          <td class="paramtype">Transform&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Кость — любой узел рига, который не рисунок. </p>
+<p>Отдельного понятия «сустав» больше нет: кость и есть точка вращения, и это главное, что дала перестройка. </p>
 
 </div>
 </div>
@@ -410,7 +381,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Сустав-хват — тот, чья метка равна GripLabel. </p>
+<p>Кость-хват: та, внутри которой висит предмет. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -419,8 +390,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a48b697179aa010e04b507b0d4d25d289" name="a48b697179aa010e04b507b0d4d25d289"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48b697179aa010e04b507b0d4d25d289">&#9670;&#160;</a></span>IsJoint()</h2>
+<a id="ae22a6bbb85454560f33edbf75973ae47" name="ae22a6bbb85454560f33edbf75973ae47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae22a6bbb85454560f33edbf75973ae47">&#9670;&#160;</a></span>IsHair()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -429,10 +400,10 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool Guildmaster.Presentation.Body.RigNaming.IsJoint </td>
+          <td class="memname">static bool Guildmaster.Presentation.Body.RigNaming.IsHair </td>
           <td>(</td>
-          <td class="paramtype">Transform&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>nodeName</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -443,12 +414,12 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Узел-сустав (в том числе хват): имя начинается с JointPrefix. </p>
+<p>Этот рисунок — волосы? Спрашивается по имени узла, потому что отдельной кости у волос нет: они висят на голове вторым рисунком, и заводить им сустав значило бы врать риг ради ярлыка. </p>
 
 </div>
 </div>
-<a id="add8e8850c09f95c8e303eff1567a4d60" name="add8e8850c09f95c8e303eff1567a4d60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add8e8850c09f95c8e303eff1567a4d60">&#9670;&#160;</a></span>IsUnderContainer()</h2>
+<a id="a33577b0580a24ec9c0dbba739cc1d3fb" name="a33577b0580a24ec9c0dbba739cc1d3fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33577b0580a24ec9c0dbba739cc1d3fb">&#9670;&#160;</a></span>ShoulderBone()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -457,26 +428,25 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool Guildmaster.Presentation.Body.RigNaming.IsUnderContainer </td>
+          <td class="memname">static string Guildmaster.Presentation.Body.RigNaming.ShoulderBone </td>
           <td>(</td>
-          <td class="paramtype">Transform&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a2942e4d172a548bdfdd6a1a337f8df71">BodySide</a>&#160;</td>
+          <td class="paramname"><em>side</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>True для контейнера и всего, что внутри него. </p>
-<p>Имена там принадлежат художнику — спрайтовый узел может зваться <code>Head</code>, <code>Hair</code>, <code>Armor Plate</code>, — поэтому код, узнающий кости ПО ИМЕНИ, обязан остановиться на контейнере, иначе выдумает сустав из куска арта. </p>
+<p>Кость плеча нужной стороны — начало дуги удара: рука вращается как жёсткий рычаг. </p>
 <div class="dynheader">
-Here is the call graph for this function:</div>
+Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming_add8e8850c09f95c8e303eff1567a4d60_cgraph.svg" width="512" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming_a33577b0580a24ec9c0dbba739cc1d3fb_icgraph.svg" width="550" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -515,8 +485,13 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Сторона тела: берётся с конечности НАД узлом (<code>Arm (Left)</code>), поэтому сами суставы носят одно имя на обе стороны. </p>
-<p>Поиск идёт до <em>root</em>  включительно-исключая: выше корня тела уже чужая иерархия. </p>
+<p>Сторона тела: читается из суффикса имени, своего или ближайшего предка до <em>root</em> . </p>
+<p>Кисть и хват собственного суффикса не теряют, но предок нужен для рисунков и вложенных предметов. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming_a64015fa4fa0e0b64ecd9f9ba6b19321f_cgraph.svg" width="440" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -549,13 +524,13 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Суффикс логического id сустава: <code>.L</code> / <code>.R</code> / пусто. </p>
+<p>Суффикс стороны для имени кости: <code>_L</code> / <code>_R</code> / пусто. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a48392c4854efadf1541bae7872445d67" name="a48392c4854efadf1541bae7872445d67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48392c4854efadf1541bae7872445d67">&#9670;&#160;</a></span>ContainerPrefix</h2>
+<a id="adee42253b716603b1aca064677948a9e" name="adee42253b716603b1aca064677948a9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adee42253b716603b1aca064677948a9e">&#9670;&#160;</a></span>ArtSuffix</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -564,7 +539,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const string Guildmaster.Presentation.Body.RigNaming.ContainerPrefix = &quot;Visual Part&quot;</td>
+          <td class="memname">const string Guildmaster.Presentation.Body.RigNaming.ArtSuffix = &quot;_Art&quot;</td>
         </tr>
       </table>
   </td>
@@ -574,12 +549,12 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Префикс контейнера арта кости: <code>Visual Part (Head)</code>. </p>
+<p>Суффикс узла с рисунком: <code>LowerArm_R</code> -&gt; <code>LowerArm_R_Art</code>. </p>
 
 </div>
 </div>
-<a id="a12423f091cceac425843a74432ef0b8a" name="a12423f091cceac425843a74432ef0b8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12423f091cceac425843a74432ef0b8a">&#9670;&#160;</a></span>GripLabel</h2>
+<a id="a178a9bdfdaeae1618a0fd53b5c9bb74f" name="a178a9bdfdaeae1618a0fd53b5c9bb74f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a178a9bdfdaeae1618a0fd53b5c9bb74f">&#9670;&#160;</a></span>GripPrefix</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -588,7 +563,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const string Guildmaster.Presentation.Body.RigNaming.GripLabel = &quot;Grip&quot;</td>
+          <td class="memname">const string Guildmaster.Presentation.Body.RigNaming.GripPrefix = &quot;Weapon_&quot;</td>
         </tr>
       </table>
   </td>
@@ -598,12 +573,13 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Метка сустава-хвата: сустав, в котором висит предмет. </p>
+<p>Префикс кости-хвата: узла, в котором висит предмет. </p>
+<p>Имя нейтрально к содержимому нарочно — назови узел по мечу, и кит с двумя мечами или с копьём потребует переименования кости, то есть новой миграции клипов, масок и аватара. </p>
 
 </div>
 </div>
-<a id="ab6c256a5ec195e5158f7615ecbbabc24" name="ab6c256a5ec195e5158f7615ecbbabc24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6c256a5ec195e5158f7615ecbbabc24">&#9670;&#160;</a></span>JointPrefix</h2>
+<a id="a0e24716c1aad6f90210498c86bfb802a" name="a0e24716c1aad6f90210498c86bfb802a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e24716c1aad6f90210498c86bfb802a">&#9670;&#160;</a></span>HairToken</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -612,7 +588,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const string Guildmaster.Presentation.Body.RigNaming.JointPrefix = &quot;Rotation Point (&quot;</td>
+          <td class="memname">const string Guildmaster.Presentation.Body.RigNaming.HairToken = &quot;Hair&quot;</td>
         </tr>
       </table>
   </td>
@@ -622,32 +598,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Префикс узла-сустава: <code>Rotation Point (Elbow)</code>. </p>
-
-</div>
-</div>
-<a id="a9e12311a0f7a6bf2a6d96b7538577f7f" name="a9e12311a0f7a6bf2a6d96b7538577f7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e12311a0f7a6bf2a6d96b7538577f7f">&#9670;&#160;</a></span>ShoulderBone</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const string Guildmaster.Presentation.Body.RigNaming.ShoulderBone = &quot;Arm_Shoulder&quot;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Кость плеча. </p>
-<p>Единственное имя КОНКРЕТНОЙ кости в конвенции, и заведено оно не для красоты: дуга за клинком идёт вокруг плеча, потому что рука — жёсткий рычаг и вращается вся плоскость удара. Вокруг кисти получился бы веер у запястья, которого в движении нет. </p>
+<p>Опознаватель ВОЛОС в имени узла рисунка (<code>Head_Hair_Art</code>). </p>
+<p>Волосы — единственная часть самого тела, которую красит тинт юнита, поэтому их надо уметь отличать от лица и шеи. </p>
 
 </div>
 </div>

@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Guild_1_1MapState.
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.MapState:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1MapState__coll__graph.svg" width="208" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1MapState__coll__graph.svg" width="208" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -112,6 +112,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a8ee74e17b9cd325348834e78ffd060ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e1ce97ab11403f4e6a0113ed962cbb8" id="r_a0e1ce97ab11403f4e6a0113ed962cbb8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html#a0e1ce97ab11403f4e6a0113ed962cbb8">Nodes</a> = Array.Empty&lt;<a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a>&gt;()</td></tr>
 <tr class="separator:a0e1ce97ab11403f4e6a0113ed962cbb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fe62c0bbf97d3598303004cac85addd" id="r_a4fe62c0bbf97d3598303004cac85addd"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html#a4fe62c0bbf97d3598303004cac85addd">EnteringNodeId</a></td></tr>
+<tr class="memdesc:a4fe62c0bbf97d3598303004cac85addd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел, в который игроки решили войти и который ещё не пройден.  <br /></td></tr>
+<tr class="separator:a4fe62c0bbf97d3598303004cac85addd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Состояние карты акта в RunState: граф узлов + где игрок сейчас. </p>
@@ -127,6 +130,27 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4fe62c0bbf97d3598303004cac85addd" name="a4fe62c0bbf97d3598303004cac85addd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fe62c0bbf97d3598303004cac85addd">&#9670;&#160;</a></span>EnteringNodeId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Guildmaster.Guild.MapState.EnteringNodeId</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Узел, в который игроки решили войти и который ещё не пройден. </p>
+<p>Пусто — стоим на развилке и ждём выбора.</p>
+<p><b>Выбор узла — это durable-факт, а не событие</b> (решение Макса 04.08.2026: «чисто, понятно и один источник правды»). Раньше его не было нигде: клик по карте будил ожидающий <code>await</code> в петле акта, и «куда мы идём» жило в стеке одной машины. Отсюда шли сразу три вещи — гость не мог выбирать вовсе, узлы у него не горели (момент ожидания знала только петля), а реконнект посреди узла не знал, где игроки находятся. </p>
+<p>Теперь и клик хозяина, и клик напарника — одна команда <code>ChooseNode</code> в шине; петля же реагирует на это поле и потому одинаково воспроизводится из лога.</p>
+<p><b>«Ждём ли выбор» отдельным полем не хранится:</b> это ровно «поле пусто и акт не завершён». Второе поле рядом умело бы разойтись с первым.</p>
+<p>Поле необязательное: старый сейв читается как «никуда не входим» — то есть как развилка, что для сохранённого забега и верно. Версию схемы это не двигает.</p>
 
 </div>
 </div>

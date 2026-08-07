@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.Effects.Components.PeriodicHealComponent.OnTick" name="Guildmaster.Combat.Effects.Components.PeriodicHealComponent.OnTick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,275,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html#a0d6a318bfa1fd4e65287fee1d79d9d0c" title="Во сколько «полных стаков» превращаются stacks &#160;с учётом убывания: первый идёт целиком,..." alt="" coords="323,5,592,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="275,30,309,30,309,35,275,35"/>
+</map>

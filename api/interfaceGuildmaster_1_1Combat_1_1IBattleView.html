@@ -108,7 +108,7 @@ Inheritance diagram for Guildmaster.Combat.IBattleView:</div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.IBattleView:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1IBattleView__coll__graph.svg" width="238" height="96"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1IBattleView__coll__graph.svg" width="238" height="116"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
@@ -119,6 +119,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a7c13cb5020751f1f809963d84ec287d1" id="r_a7c13cb5020751f1f809963d84ec287d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1IBattleView.html#a7c13cb5020751f1f809963d84ec287d1">CurrentTick</a><code> [get]</code></td></tr>
 <tr class="memdesc:a7c13cb5020751f1f809963d84ec287d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущий номер тика — для каденса/стаггера мозга.  <br /></td></tr>
 <tr class="separator:a7c13cb5020751f1f809963d84ec287d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d139d5e8811cac013cfcdaf47274aec" id="r_a8d139d5e8811cac013cfcdaf47274aec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">Core.Simulation.SimTuning</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1IBattleView.html#a8d139d5e8811cac013cfcdaf47274aec">Tuning</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8d139d5e8811cac013cfcdaf47274aec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снимок тюнинга боя.  <br /></td></tr>
+<tr class="separator:a8d139d5e8811cac013cfcdaf47274aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Read-only срез боя для мозга (вики «13» §3.1). </p>
@@ -148,6 +151,33 @@ Properties</h2></td></tr>
 <p>Текущий номер тика — для каденса/стаггера мозга. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ab9f442fdb4c0fe4050dfd80796841bf9">Guildmaster.Combat.CombatSimulation</a>.</p>
+
+</div>
+</div>
+<a id="a8d139d5e8811cac013cfcdaf47274aec" name="a8d139d5e8811cac013cfcdaf47274aec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d139d5e8811cac013cfcdaf47274aec">&#9670;&#160;</a></span>Tuning</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">Core.Simulation.SimTuning</a> Guildmaster.Combat.IBattleView.Tuning</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Снимок тюнинга боя. </p>
+<p>Мозгу он нужен затем же, зачем движению и удару: правила позиционирования (предел отступления) — это настройка боя, а не константа в голове одного класса. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a5c1c25bef2787d28f77d0e8c2e328e8a">Guildmaster.Combat.CombatSimulation</a>.</p>
 
 </div>
 </div>

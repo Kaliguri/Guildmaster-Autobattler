@@ -144,6 +144,7 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809affa5501393f9118b530186508d8ae6ea">ActivityState</a> = 9
 , <a class="el" href="namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809a94ae64bf4597d4bb43d65279e2cb6ed4">ReadyGate</a> = 10
 , <a class="el" href="namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809a012c6696b246f4fe5b3e2c8b7d6d0326">SessionRoster</a> = 11
+, <a class="el" href="namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809abd7ab48c5388920001cc9fa96a5caf00">DeploymentIntent</a> = 12
 <br />
  }</td></tr>
 <tr class="memdesc:ad606a1b8f063f8707073aabe329e9809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кто говорит в сообщении.  <a href="namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809">More...</a><br /></td></tr>
@@ -187,6 +188,10 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ad606a1b8f063f8707073aabe329e9809a94ae64bf4597d4bb43d65279e2cb6ed4" name="ad606a1b8f063f8707073aabe329e9809a94ae64bf4597d4bb43d65279e2cb6ed4"></a>ReadyGate&#160;</td><td class="fielddoc"><p>Общее согласие на действие: гость шлёт «я готов», хост в ответ — сколько готовы и сколько нужно. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad606a1b8f063f8707073aabe329e9809a012c6696b246f4fe5b3e2c8b7d6d0326" name="ad606a1b8f063f8707073aabe329e9809a012c6696b246f4fe5b3e2c8b7d6d0326"></a>SessionRoster&#160;</td><td class="fielddoc"><p>Состав сеанса: гость представляется именем, хост объявляет всем таблицу «кто, за какую сторону, каким цветом». </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad606a1b8f063f8707073aabe329e9809abd7ab48c5388920001cc9fa96a5caf00" name="ad606a1b8f063f8707073aabe329e9809abd7ab48c5388920001cc9fa96a5caf00"></a>DeploymentIntent&#160;</td><td class="fielddoc"><p>Намерение игрока на арене: «поставь этого бойца сюда». </p>
+<p>Гость → хост.</p>
+<p><b>Не команда забега, и потому свой канал.</b> Команда меняет durable-состояние и обязана пережить сессию в логе; намерение же эфемерно — оно адресует бойца на арене, которого через минуту не будет. Durable-след появляется уже у владельца, когда тот исполнит намерение и переведёт его в позицию слота гильдии. </p>
 </td></tr>
 </table>
 

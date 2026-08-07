@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1CombatPo
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.CombatPositioning:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning__coll__graph.svg" width="226" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning__coll__graph.svg" width="226" height="311"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -114,9 +114,15 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aefa09ee7a570ca7a9f220d0cbe5528d4" id="r_aefa09ee7a570ca7a9f220d0cbe5528d4"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#aefa09ee7a570ca7a9f220d0cbe5528d4">AttackReachCenter</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> self, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a> tuning)</td></tr>
 <tr class="memdesc:aefa09ee7a570ca7a9f220d0cbe5528d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Эффективная дистанция ЦЕНТРОВ, на которой цель «в досягаемости»: StatType.AttackRange трактуется как зазор между <b>поверхностями</b> тел, поэтому к нему прибавляются радиусы обоих тел.  <br /></td></tr>
 <tr class="separator:aefa09ee7a570ca7a9f220d0cbe5528d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d72bf0d07f8aa1b2f828e640c08471f" id="r_a9d72bf0d07f8aa1b2f828e640c08471f"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#a9d72bf0d07f8aa1b2f828e640c08471f">ReachCenter</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> self, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, float gap, in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a> tuning)</td></tr>
+<tr class="memdesc:a9d72bf0d07f8aa1b2f828e640c08471f"><td class="mdescLeft">&#160;</td><td class="mdescRight">То же для ПРОИЗВОЛЬНОЙ дистанции: зазор между поверхностями плюс радиусы обоих тел.  <br /></td></tr>
+<tr class="separator:a9d72bf0d07f8aa1b2f828e640c08471f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3087b271f69177d35a9120d27ae5b4e1" id="r_a3087b271f69177d35a9120d27ae5b4e1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#a3087b271f69177d35a9120d27ae5b4e1">InAttackRange</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> self, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a> tuning)</td></tr>
 <tr class="memdesc:a3087b271f69177d35a9120d27ae5b4e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цель в пределах досягаемости атаки (сравнение квадратов — без sqrt). См. AttackReachCenter.  <br /></td></tr>
 <tr class="separator:a3087b271f69177d35a9120d27ae5b4e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a694af2b8defdeb6f018d8eafa67cb57e" id="r_a694af2b8defdeb6f018d8eafa67cb57e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#a694af2b8defdeb6f018d8eafa67cb57e">WithinReach</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> self, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, float gap, in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a> tuning)</td></tr>
+<tr class="memdesc:a694af2b8defdeb6f018d8eafa67cb57e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цель в пределах заданной дистанции (дальность каста умения).  <br /></td></tr>
+<tr class="separator:a694af2b8defdeb6f018d8eafa67cb57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8acd5fc82a7974b455f42d1279121279" id="r_a8acd5fc82a7974b455f42d1279121279"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#a8acd5fc82a7974b455f42d1279121279">TargetRecedeSpeedPerTick</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> self, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target)</td></tr>
 <tr class="memdesc:a8acd5fc82a7974b455f42d1279121279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лучевая скорость <b>ухода</b> цели, мировые ед.  <br /></td></tr>
 <tr class="separator:a8acd5fc82a7974b455f42d1279121279"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,7 +193,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_aefa09ee7a570ca7a9f220d0cbe5528d4_icgraph.svg" width="100%" height="434"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_aefa09ee7a570ca7a9f220d0cbe5528d4_icgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -434,17 +440,12 @@ Here is the caller graph for this function:</div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Цель в пределах досягаемости атаки (сравнение квадратов — без sqrt). См. AttackReachCenter. </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a3087b271f69177d35a9120d27ae5b4e1_cgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -506,6 +507,62 @@ Here is the call graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_abba2779e25e6946004a97395883b64d6_icgraph.svg" width="582" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a9d72bf0d07f8aa1b2f828e640c08471f" name="a9d72bf0d07f8aa1b2f828e640c08471f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d72bf0d07f8aa1b2f828e640c08471f">&#9670;&#160;</a></span>ReachCenter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Guildmaster.Combat.CombatPositioning.ReachCenter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>gap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a>&#160;</td>
+          <td class="paramname"><em>tuning</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>То же для ПРОИЗВОЛЬНОЙ дистанции: зазор между поверхностями плюс радиусы обоих тел. </p>
+<p>Отдельная функция появилась вместе с дальностью каста — у умения своя дистанция, но правило перевода «зазор → расстояние центров» обязано остаться одно на всех, иначе удар и умение начнут мерить одну и ту же арену по-разному. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a9d72bf0d07f8aa1b2f828e640c08471f_icgraph.svg" width="480" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -643,6 +700,61 @@ Here is the call graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a3ab4d7585846f6e392b148d21ab73cf6_icgraph.svg" width="502" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a694af2b8defdeb6f018d8eafa67cb57e" name="a694af2b8defdeb6f018d8eafa67cb57e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a694af2b8defdeb6f018d8eafa67cb57e">&#9670;&#160;</a></span>WithinReach()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Guildmaster.Combat.CombatPositioning.WithinReach </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>gap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a>&#160;</td>
+          <td class="paramname"><em>tuning</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Цель в пределах заданной дистанции (дальность каста умения). </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatPositioning_a694af2b8defdeb6f018d8eafa67cb57e_cgraph.svg" width="480" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

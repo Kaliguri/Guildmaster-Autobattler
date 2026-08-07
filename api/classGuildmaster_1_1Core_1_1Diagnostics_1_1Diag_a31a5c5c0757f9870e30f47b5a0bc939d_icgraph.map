@@ -1,0 +1,13 @@
+<map id="Guildmaster.Core.Diagnostics.Diag.IsOn" name="Guildmaster.Core.Diagnostics.Diag.IsOn">
+<area shape="rect" id="Node000001" title=" " alt="" coords="559,37,777,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1Diagnostics_1_1Diag.html#a58b001a7c09a0798b6285caf20906f5c" title="Для сообщений, которые дорого собирать." alt="" coords="292,5,511,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="545,45,511,41,511,36,546,40"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Core_1_1Diagnostics_1_1Diag.html#a14ee1464b46b0cead0860580fe5d4bb6" title=" " alt="" coords="292,69,511,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="546,75,511,79,511,74,545,69"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestReadyGate.html#a3a53ca8b406bfac5a542411ac0ec4cba" title="Связать действие, которого ждём." alt="" coords="23,5,226,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="300,69,211,48,212,43,301,64"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Activity_1_1ActivityClockRouter.html#a6857da04b11a9eae6fea36fc25ee9ec4" title="UI → бой: начать бой из фазы расстановки (кнопка «Начать»). No&#45;op, если некому." alt="" coords="5,69,244,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="278,92,244,92,244,87,278,87"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a1996312ca2f53a29871e9b904c586793" title="UI → бой: начать бой из фазы расстановки (кнопка «Начать»). No&#45;op, если некому." alt="" coords="14,133,235,173"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="301,115,212,136,211,131,300,110"/>
+</map>

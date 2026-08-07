@@ -1,6 +1,5 @@
 var classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry =
 [
-    [ "ForSingleSprite", "classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#ab1d7ac5c8b3afbc8c27ead694459ea7f", null ],
     [ "FromBody", "classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#a12736fd9d5a9305241142fd104832812", null ],
     [ "TryGetBone", "classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#ae9cb4f4390e26cde25fd58bb627efa64", null ],
     [ "TryGetHeld", "classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#abb3f82824307687378342a4a1ed9cc9f", null ],

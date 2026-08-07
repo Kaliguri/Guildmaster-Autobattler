@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Body.PartMask.Has" name="Guildmaster.Presentation.Body.PartMask.Has">
+<area shape="rect" id="Node000001" title="Входит ли часть с этим индексом в набор." alt="" coords="276,5,467,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a22fdd9f564988e40a699bfc1271b9475" title="Применить состояние кадра. Реализация сама решает, писать ли — повтор того же не пишется." alt="" coords="5,5,228,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,28,228,28,228,23,262,23"/>
+</map>

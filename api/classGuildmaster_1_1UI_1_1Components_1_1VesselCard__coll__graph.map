@@ -1,5 +1,0 @@
-<map id="Guildmaster.UI.Components.VesselCard" name="Guildmaster.UI.Components.VesselCard">
-<area shape="rect" id="Node000001" title="Карточка сосуда команды: имя носителя + строка надетого релика (мини&#45;иконка + имя)." alt="" coords="5,119,207,239"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="52,5,160,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,85,109,118,103,118,103,85"/>
-</map>

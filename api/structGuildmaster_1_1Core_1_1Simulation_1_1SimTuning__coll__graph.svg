@@ -81,7 +81,7 @@ var sectionId = 'dynsection-0';
 <text text-anchor="start" x="17.5" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">FleeThreatWeight</text>
 <text text-anchor="start" x="4.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">FleeHomeWeight</text>
-<text text-anchor="start" x="17.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">and 21 more...</text>
+<text text-anchor="start" x="17.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">and 22 more...</text>
 <text text-anchor="start" x="4.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">ComboBreakTicks</text>
 <text text-anchor="start" x="4.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
@@ -126,7 +126,7 @@ var sectionId = 'dynsection-0';
 <text text-anchor="start" x="17.5" y="-429" font-family="Helvetica,sans-Serif" font-size="10.00">FleeThreatWeight</text>
 <text text-anchor="start" x="4.5" y="-414" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17.5" y="-414" font-family="Helvetica,sans-Serif" font-size="10.00">FleeHomeWeight</text>
-<text text-anchor="start" x="17.5" y="-399" font-family="Helvetica,sans-Serif" font-size="10.00">and 21 more...</text>
+<text text-anchor="start" x="17.5" y="-399" font-family="Helvetica,sans-Serif" font-size="10.00">and 22 more...</text>
 <text text-anchor="start" x="4.5" y="-384" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17.5" y="-384" font-family="Helvetica,sans-Serif" font-size="10.00">ComboBreakTicks</text>
 <text text-anchor="start" x="4.5" y="-369" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>

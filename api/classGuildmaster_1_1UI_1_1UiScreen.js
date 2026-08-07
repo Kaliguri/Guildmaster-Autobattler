@@ -13,6 +13,7 @@ var classGuildmaster_1_1UI_1_1UiScreen =
     [ "DefaultResult", "classGuildmaster_1_1UI_1_1UiScreen.html#aa29cbb78b665641eb56dd315fc8ff886", null ],
     [ "Kind", "classGuildmaster_1_1UI_1_1UiScreen.html#a6cf3544d20fdb3d6096f4f3823e73f26", null ],
     [ "ModeTag", "classGuildmaster_1_1UI_1_1UiScreen.html#a593bd11b76f170eb84e20aa27e896af0", null ],
+    [ "RequiresBackdrop", "classGuildmaster_1_1UI_1_1UiScreen.html#aba6986e6cac6397fea14dccfc6433d66", null ],
     [ "Root", "classGuildmaster_1_1UI_1_1UiScreen.html#a57ab9015f45684b0cbeff636996fe1e2", null ],
     [ "SuppressScrim", "classGuildmaster_1_1UI_1_1UiScreen.html#a8ea00aba5af09422dfb9d4efd4766013", null ]
 ];

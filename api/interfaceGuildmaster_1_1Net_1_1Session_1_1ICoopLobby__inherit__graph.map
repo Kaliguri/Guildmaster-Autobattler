@@ -1,0 +1,7 @@
+<map id="Guildmaster.Net.Session.ICoopLobby" name="Guildmaster.Net.Session.ICoopLobby">
+<area shape="rect" id="Node000001" title="Откуда берутся напарники: комната, приглашение и ответ на чужое приглашение." alt="" coords="107,5,285,165"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1Session_1_1LoopbackLobby.html" title="Комната для игры без платформы: живёт в своём процессе, никого никуда не зовёт и честно об этом говор..." alt="" coords="5,233,184,413"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,179,135,234,131,232,154,177"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1Session_1_1SteamLobbyService.html" title="Лобби Steam: создать, позвать друга оверлеем, узнать, что нас позвали." alt="" coords="208,213,387,433"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="238,177,253,212,248,214,233,179"/>
+</map>

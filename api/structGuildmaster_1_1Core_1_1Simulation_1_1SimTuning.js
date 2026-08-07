@@ -1,6 +1,6 @@
 var structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning =
 [
-    [ "SimTuning", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#acbef7f112a99ddc759c69a94e8a784cb", null ],
+    [ "SimTuning", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a49be0840450cb20c56998f3a36163d41", null ],
     [ "DisplaceTicks", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a8f23b734e3e501100ceb2d9a706a6751", null ],
     [ "OvertimeDamageMultiplier", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#af616872f7b83d575195ac7b14039c6cf", null ],
     [ "SprintRampAt", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a63756f956c2de88d21914bd62eb0ce6c", null ],
@@ -26,6 +26,7 @@ var structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning =
     [ "ProjectileHitRadiusFactor", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a0f3cbf6825341739566213eadb00bb9a", null ],
     [ "RecastRecoverySpeed", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#aeace751602e148db075468b8e8389496", null ],
     [ "RecastWindupSpeed", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a5308f1f91fe6df83fd3b6a0c2ced9b7e", null ],
+    [ "RetreatMaxSeconds", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a204e44cbd28870a22677846118186ed9", null ],
     [ "SeparationIterations", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a3030dff74e377fea802b472f42b5d5a2", null ],
     [ "SeparationSameTeamScale", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#ad0743847dc8767a26e53633b71e92841", null ],
     [ "SeparationStrength", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a5d33b41422d6dc97f755158035ecceeb", null ],

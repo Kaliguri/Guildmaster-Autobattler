@@ -1,6 +1,6 @@
 var classGuildmaster_1_1Net_1_1Session_1_1CoopSession =
 [
-    [ "CoopSession", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html#a903196c8d0c230342e67fd6445d0b26a", null ],
+    [ "CoopSession", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html#a94bf32afc8d265dcdee24e8dd76f26ac", null ],
     [ "BrowseFriends", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html#a2300df3a921553ecf9538d43f9c8bbcc", null ],
     [ "Dispose", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html#a0141b092bdc3a52253704f2496252dc0", null ],
     [ "InviteFriend", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html#ac61836584954cdd43e9d134d79666129", null ],
@@ -11,5 +11,6 @@ var classGuildmaster_1_1Net_1_1Session_1_1CoopSession =
     [ "EndReason", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html#a15267c050e4de79585abf21aa80c0c7d", null ],
     [ "IsSteamReady", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html#a3cadf188a307c70cb8a34f8430de0cfb", null ],
     [ "State", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html#a34a03ff79eeba274eec593773e789189", null ],
+    [ "PeerLeft", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html#a0454491f5a4f707d97fcfb62cab9652f", null ],
     [ "StateChanged", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html#ab461e8617c5f8b96f3c0e84e43bf0b97", null ]
 ];

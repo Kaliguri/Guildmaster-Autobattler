@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Фаза D&#45;реализация IMapNodeChooser: выбор узла на world&#45;карте.">
+<g id="a_Node000001"><a xlink:title="Выбор узла на world&#45;карте: зажигает достижимые узлы и ждёт, пока выбор не появится В СОСТОЯНИИ забега...">
 <polygon fill="#999999" stroke="transparent" points="158,-75 0,-75 0,0 158,0 158,-75"/>
 <text text-anchor="start" x="5" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.World</text>
 <text text-anchor="start" x="35.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">MapNodeChooser</text>

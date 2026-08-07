@@ -4,6 +4,8 @@ var dir_3ac238596ff45257c5c272ceac142e25 =
     [ "BattleTapeDiagnostics.cs", "BattleTapeDiagnostics_8cs.html", "BattleTapeDiagnostics_8cs" ],
     [ "CombatFeelDirector.cs", "CombatFeelDirector_8cs.html", "CombatFeelDirector_8cs" ],
     [ "CombatLoopService.cs", "CombatLoopService_8cs.html", "CombatLoopService_8cs" ],
+    [ "CursorSkinService.cs", "CursorSkinService_8cs.html", "CursorSkinService_8cs" ],
+    [ "DiagChannelStore.cs", "DiagChannelStore_8cs.html", "DiagChannelStore_8cs" ],
     [ "DisplayService.cs", "DisplayService_8cs.html", "DisplayService_8cs" ],
     [ "FmodAudioService.cs", "FmodAudioService_8cs.html", "FmodAudioService_8cs" ],
     [ "GameFlow.cs", "GameFlow_8cs.html", "GameFlow_8cs" ],

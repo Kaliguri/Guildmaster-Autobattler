@@ -1,5 +1,7 @@
 <map id="Guildmaster.Data.Definitions.ClipMarkers.FirstTimeOf" name="Guildmaster.Data.Definitions.ClipMarkers.FirstTimeOf">
-<area shape="rect" id="Node000001" title="Время первого маркера этого вида (сек) или &#45;1, если такого в клипе нет." alt="" coords="320,5,535,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#aa5d508e46407319ccf34fde84f5cbb37" title="Окно ВЗМАХА в нормированном времени клипа: от StrikeStartFunction до StrikeEndFunction." alt="" coords="5,5,272,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="306,28,272,28,272,23,306,23"/>
+<area shape="rect" id="Node000001" title="Время первого маркера этого вида (сек) или &#45;1, если такого в клипе нет." alt="" coords="323,37,537,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a3f19d0cff69b1e7e291c8947195479f1" title="Окно ДЕРЖАНИЯ гвардии в нормированном времени клипа: от GuardUpFunction (щит встал) до GuardDownFunct..." alt="" coords="5,5,275,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="309,47,275,43,275,38,309,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#aa5d508e46407319ccf34fde84f5cbb37" title="Окно ВЗМАХА в нормированном времени клипа: от StrikeStartFunction до StrikeEndFunction." alt="" coords="7,69,273,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="309,73,274,77,273,72,309,68"/>
 </map>

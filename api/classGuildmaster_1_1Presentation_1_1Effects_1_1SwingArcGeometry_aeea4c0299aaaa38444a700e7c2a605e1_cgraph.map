@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.Effects.SwingArcGeometry.ShoulderBoneFor" name="Guildmaster.Presentation.Effects.SwingArcGeometry.ShoulderBoneFor">
+<area shape="rect" id="Node000001" title="Имя кости плеча для стороны бьющей руки — для сообщений о разводке." alt="" coords="5,34,260,89"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a33577b0580a24ec9c0dbba739cc1d3fb" title="Кость плеча нужной стороны — начало дуги удара: рука вращается как жёсткий рычаг." alt="" coords="318,5,541,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="260,43,304,38,305,43,261,49"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitPartLookup.html#a2d3f0c7b7785644bb24fbe7dcc70b783" title="Чем юнит исполняет приём ЭТОЙ рукой: предмет в её хвате, а если рука пуста — сама кисть (кулак)." alt="" coords="308,70,551,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="261,74,295,78,294,84,260,79"/>
+</map>

@@ -2,8 +2,8 @@
 <area shape="rect" id="Node000001" title="Детерминированная тиковая симуляция боя." alt="" coords="148,379,351,859"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1ICombatContext.html" title="Шов «логика эффектов/способностей ↔ боевой мир»." alt="" coords="5,5,173,331"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,343,167,378,162,380,149,345"/>
-<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1IBattleView.html" title="Read&#45;only срез боя для мозга (вики «13» §3.1)." alt="" coords="197,125,301,211"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="252,225,252,378,247,378,247,225"/>
-<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Combat_1_1ITickLedgerSink.html" title="Куда реестр отдаёт разрешённые изменения: события наружу и внутренние события для реактивов." alt="" coords="326,115,498,221"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="391,234,339,379,334,377,386,232"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1IBattleView.html" title="Read&#45;only срез боя для мозга (вики «13» §3.1)." alt="" coords="197,115,301,221"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="252,234,252,378,247,378,247,234"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Combat_1_1ITickLedgerSink.html" title="Куда реестр отдаёт разрешённые изменения: события наружу и внутренние события для реактивов." alt="" coords="326,105,498,231"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="388,244,339,379,334,377,383,243"/>
 </map>

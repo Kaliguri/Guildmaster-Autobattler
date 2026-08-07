@@ -1,27 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,319,121,345"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1UI_1_1Components_1_1AspectBox.html" title="Блок, который сам держит соотношение сторон: высота выводится из фактической ширины." alt="" coords="184,5,393,45"/>
-<area shape="poly" id="edge386_Node000000_Node000001" title=" " alt="" coords="64,305,72,252,90,185,103,150,121,115,142,83,168,55,184,43,188,48,171,59,146,87,125,118,108,152,95,187,78,253,70,306"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Components_1_1Chip.html" title="Чип: иконка + подпись как ОДИН элемент." alt="" coords="169,70,408,95"/>
-<area shape="poly" id="edge387_Node000000_Node000002" title=" " alt="" coords="67,305,77,261,96,207,126,152,145,127,168,106,189,93,192,98,171,110,149,131,130,155,101,209,82,262,72,306"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1Components_1_1PanelFrame.html" title="ОПРАВА панели: двойная кайма по периметру и угловые накладки, выступающие наружу." alt="" coords="184,120,393,160"/>
-<area shape="poly" id="edge389_Node000000_Node000004" title=" " alt="" coords="72,305,107,237,134,201,168,170,189,158,191,162,171,174,138,204,112,240,77,308"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html" title="Карточка реликвии: рамка + область ВИЗУАЛА + имя + состояния (текущая/выбранная)." alt="" coords="184,184,393,224"/>
-<area shape="poly" id="edge390_Node000000_Node000005" title=" " alt="" coords="83,306,120,269,168,234,194,222,197,227,171,238,123,273,86,310"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1UI_1_1Components_1_1SelectRow.html" title="Строка выбора: подпись слева + выпадающий список справа." alt="" coords="184,248,393,288"/>
-<area shape="poly" id="edge391_Node000000_Node000006" title=" " alt="" coords="118,313,169,297,211,286,212,291,170,303,119,318"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1UI_1_1Components_1_1SlantedPanel.html" title="Подложка со скошенными торцами (лента верхней панели забега)." alt="" coords="184,312,393,352"/>
-<area shape="poly" id="edge392_Node000000_Node000007" title=" " alt="" coords="135,329,184,329,184,335,135,335"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html" title="Строка слайдера: подпись слева + слайдер + значение в процентах справа." alt="" coords="184,376,393,416"/>
-<area shape="poly" id="edge393_Node000000_Node000008" title=" " alt="" coords="119,346,170,361,212,373,211,378,169,367,118,351"/>
-<area shape="rect" id="Node000009" href="$classGuildmaster_1_1UI_1_1Components_1_1Slot.html" title="Слот: рамка&#45;квадрат с опциональной иконкой." alt="" coords="171,441,406,466"/>
-<area shape="poly" id="edge394_Node000000_Node000009" title=" " alt="" coords="85,354,122,391,146,410,171,426,203,438,201,443,168,430,142,414,119,395,82,357"/>
-<area shape="rect" id="Node000010" href="$classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html" title="Строка тумблера: подпись слева (растянута) + чекбокс справа, выровненный в колонку." alt="" coords="184,491,393,531"/>
-<area shape="poly" id="edge395_Node000000_Node000010" title=" " alt="" coords="78,356,114,416,140,448,171,475,194,488,192,493,168,480,136,452,110,419,74,358"/>
-<area shape="rect" id="Node000011" href="$classGuildmaster_1_1UI_1_1Components_1_1TooltipCard.html" title="Содержимое тултипа — ЕДИНЫЙ каркас для всех видов подсказок: шапка (заголовок + мета),..." alt="" coords="184,555,393,595"/>
-<area shape="poly" id="edge396_Node000000_Node000011" title=" " alt="" coords="73,357,84,398,104,448,132,498,150,521,171,541,189,552,186,557,168,545,146,524,128,501,99,450,79,400,68,359"/>
-<area shape="rect" id="Node000012" href="$classGuildmaster_1_1UI_1_1Components_1_1VesselCard.html" title="Карточка сосуда команды: имя носителя + строка надетого релика (мини&#45;иконка + имя)." alt="" coords="184,619,393,659"/>
-<area shape="poly" id="edge397_Node000000_Node000012" title=" " alt="" coords="70,358,78,411,95,477,108,512,125,546,146,577,171,605,188,616,184,621,168,609,142,581,121,549,103,514,90,479,72,412,64,359"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1Components_1_1SlantedChip.html" title="Чип со скошенным торцом — крайние табы ленты режимов." alt="" coords="456,63,665,103"/>
-<area shape="poly" id="edge388_Node000002_Node000003" title=" " alt="" coords="422,80,456,80,456,85,422,85"/>
+<area shape="rect" id="Node000000" href="$structGuildmaster_1_1Presentation_1_1SilhouettePart.html" title="Одна часть силуэта: спрайт и его поза ОТНОСИТЕЛЬНО ТОЧКИ НОГ юнита." alt="" coords="5,5,196,45"/>
 </map>

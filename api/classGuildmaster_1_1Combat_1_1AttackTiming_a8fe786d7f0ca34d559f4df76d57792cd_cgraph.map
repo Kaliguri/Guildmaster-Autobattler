@@ -1,5 +1,5 @@
 <map id="Guildmaster.Combat.AttackTiming.WindupTicksFromShare" name="Guildmaster.Combat.AttackTiming.WindupTicksFromShare">
-<area shape="rect" id="Node000001" title="Замах из ДОЛИ свинга (0..1) — путь для юнитов, у которых нет покадрового клипа." alt="" coords="5,5,229,45"/>
+<area shape="rect" id="Node000001" title="Замах из ДОЛИ свинга (0..1) — единственный путь с 06.08.2026." alt="" coords="5,5,229,45"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#ab985f657217195261cca2bf305b0e480" title="Длительность свинга в тиках = min(потолок, intervalTicks)." alt="" coords="277,5,480,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="229,23,263,23,263,28,229,28"/>
 </map>

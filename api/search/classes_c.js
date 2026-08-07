@@ -19,7 +19,12 @@ var searchData=
   ['markdowntable_16',['MarkdownTable',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1MarkdownTable.html',1,'Guildmaster::ContentHub::Editor']]],
   ['marktransfercomponent_17',['MarkTransferComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MarkTransferComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
   ['menubackdropview_18',['MenuBackdropView',['../classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView.html',1,'Guildmaster::Presentation::Map']]],
-  ['menurouter_19',['MenuRouter',['../classGuildmaster_1_1UI_1_1MenuRouter.html',1,'Guildmaster::UI']]],
-  ['missinghpshieldcomponent_20',['MissingHpShieldComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MissingHpShieldComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
-  ['movementsystem_21',['MovementSystem',['../classGuildmaster_1_1Combat_1_1MovementSystem.html',1,'Guildmaster::Combat']]]
+  ['menubattlechangedevent_19',['MenuBattleChangedEvent',['../structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent.html',1,'Guildmaster::Core::Flow']]],
+  ['menubattleconfig_20',['MenuBattleConfig',['../classGuildmaster_1_1Data_1_1Definitions_1_1MenuBattleConfig.html',1,'Guildmaster::Data::Definitions']]],
+  ['menubattledirector_21',['MenuBattleDirector',['../classGuildmaster_1_1Game_1_1Flow_1_1MenuBattleDirector.html',1,'Guildmaster::Game::Flow']]],
+  ['menureplayscope_22',['MenuReplayScope',['../classGuildmaster_1_1Game_1_1Flow_1_1MenuReplayScope.html',1,'Guildmaster::Game::Flow']]],
+  ['menurouter_23',['MenuRouter',['../classGuildmaster_1_1UI_1_1MenuRouter.html',1,'Guildmaster::UI']]],
+  ['midbattlejoinhold_24',['MidBattleJoinHold',['../classGuildmaster_1_1Net_1_1Tape_1_1MidBattleJoinHold.html',1,'Guildmaster::Net::Tape']]],
+  ['missinghpshieldcomponent_25',['MissingHpShieldComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MissingHpShieldComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
+  ['movementsystem_26',['MovementSystem',['../classGuildmaster_1_1Combat_1_1MovementSystem.html',1,'Guildmaster::Combat']]]
 ];

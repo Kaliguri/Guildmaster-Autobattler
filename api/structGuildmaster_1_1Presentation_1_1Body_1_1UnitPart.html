@@ -105,13 +105,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Presentation_1_1B
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.Body.UnitPart:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart__coll__graph.svg" width="194" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart__coll__graph.svg" width="194" height="291"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5331c71c00a46e706ecb9c341b8eb385" id="r_a5331c71c00a46e706ecb9c341b8eb385"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart.html#a5331c71c00a46e706ecb9c341b8eb385">UnitPart</a> (int index, SpriteRenderer renderer, string bone, <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a2942e4d172a548bdfdd6a1a337f8df71">BodySide</a> side, <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a5720775fdbc2ef9a22c2ab013201505b">HandSlot</a> slot, <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a5fedd7faf007da62d2a6014f6d2f1f0d">HeldKind</a> kind, bool isHand)</td></tr>
-<tr class="separator:a5331c71c00a46e706ecb9c341b8eb385"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e6407f737eaf96e89402a99a120c689" id="r_a9e6407f737eaf96e89402a99a120c689"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart.html#a9e6407f737eaf96e89402a99a120c689">UnitPart</a> (int index, SpriteRenderer renderer, string bone, <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a2942e4d172a548bdfdd6a1a337f8df71">BodySide</a> side, <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a5720775fdbc2ef9a22c2ab013201505b">HandSlot</a> slot, <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a5fedd7faf007da62d2a6014f6d2f1f0d">HeldKind</a> kind, bool isHand, bool isReach=false)</td></tr>
+<tr class="separator:a9e6407f737eaf96e89402a99a120c689"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f27d3fc96b51132a03b1191f2890120" id="r_a0f27d3fc96b51132a03b1191f2890120"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart.html#a0f27d3fc96b51132a03b1191f2890120">ToString</a> ()</td></tr>
 <tr class="separator:a0f27d3fc96b51132a03b1191f2890120"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -138,6 +138,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a05623c355473eec10c70f534221f9e48" id="r_a05623c355473eec10c70f534221f9e48"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart.html#a05623c355473eec10c70f534221f9e48">IsHand</a></td></tr>
 <tr class="memdesc:a05623c355473eec10c70f534221f9e48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кисть: кость, под которой висит хват.  <br /></td></tr>
 <tr class="separator:a05623c355473eec10c70f534221f9e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a576d831d46c693632bc0f80c8e84201b" id="r_a576d831d46c693632bc0f80c8e84201b"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart.html#a576d831d46c693632bc0f80c8e84201b">IsReach</a></td></tr>
+<tr class="memdesc:a576d831d46c693632bc0f80c8e84201b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Эта часть — РАБОЧАЯ часть предмета (<code>UnitHeldItem.ReachPart</code>): клинок меча, полотно щита, наконечник копья.  <br /></td></tr>
+<tr class="separator:a576d831d46c693632bc0f80c8e84201b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -152,8 +155,8 @@ Properties</h2></td></tr>
 <div class="textblock"><p>Одна часть тела юнита глазами презентации: чем она рисуется, какую кость рига несёт, на какой стороне стоит и — если это предмет в руке — чем является и в каком хвате сидит. </p>
 <p>Предмет в руке — не отдельная сущность рядом с частями тела, а частный случай части: клинок рисуется таким же рендерером под такой же костью, просто кость висит в хвате. Держать их двумя списками значило бы дважды описывать одно тело. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5331c71c00a46e706ecb9c341b8eb385" name="a5331c71c00a46e706ecb9c341b8eb385"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5331c71c00a46e706ecb9c341b8eb385">&#9670;&#160;</a></span>UnitPart()</h2>
+<a id="a9e6407f737eaf96e89402a99a120c689" name="a9e6407f737eaf96e89402a99a120c689"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e6407f737eaf96e89402a99a120c689">&#9670;&#160;</a></span>UnitPart()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,7 +204,13 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>isHand</em>&#160;</td>
+          <td class="paramname"><em>isHand</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isReach</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -283,6 +292,24 @@ Properties</h2></td></tr>
 
 <p>Кисть: кость, под которой висит хват. </p>
 <p>Она же источник безоружного удара — кулак у бойца с пустыми руками. Признак структурный, а не по списку имён: «рука» — это то, что может держать предмет. </p>
+
+</div>
+</div>
+<a id="a576d831d46c693632bc0f80c8e84201b" name="a576d831d46c693632bc0f80c8e84201b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a576d831d46c693632bc0f80c8e84201b">&#9670;&#160;</a></span>IsReach</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly bool Guildmaster.Presentation.Body.UnitPart.IsReach</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Эта часть — РАБОЧАЯ часть предмета (<code>UnitHeldItem.ReachPart</code>): клинок меча, полотно щита, наконечник копья. </p>
+<p>По ней и только по ней меряется вылет.</p>
+<p>Предмет из нескольких кусков даёт СТОЛЬКО ЖЕ частей с типом «оружие»: рукоять, гарда и клинок все сидят под костью-хватом. Без этого признака запрос «чем бьют» возвращал первую по порядку отрисовки — у сторибучного меча это РУКОЯТЬ, и кончиком оружия оказывалась точка в паре сантиметров от кулака. Дуга за клинком выходила размером с ладонь, а форма удара — из кулака (найдено 04.08.2026). Офлайн-замер этой ошибки не знал: <code>RigProfile</code> спрашивает <code>ReachPart</code> с самого начала, и гизмо рисовало правду, которой в игре не было. </p>
 
 </div>
 </div>

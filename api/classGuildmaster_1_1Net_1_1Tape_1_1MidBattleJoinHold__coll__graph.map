@@ -1,0 +1,7 @@
+<map id="Guildmaster.Net.Tape.MidBattleJoinHold" name="Guildmaster.Net.Tape.MidBattleJoinHold">
+<area shape="rect" id="Node000001" title="Подключение посреди боя: бой встаёт на общую паузу, пока напарник догружает ленту,..." alt="" coords="5,119,188,319"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="9,5,81,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,83,70,118,65,119,55,84"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="105,5,195,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="139,84,129,119,124,118,134,83"/>
+</map>

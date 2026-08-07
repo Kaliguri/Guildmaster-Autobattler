@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.Commands.RunCommandApplier.Apply" name="Guildmaster.Guild.Commands.RunCommandApplier.Apply">
+<area shape="rect" id="Node000001" title="Применить команду." alt="" coords="5,5,227,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1MapTraversal.html#a0b7dacdd34d805731328312e97fa6857" title="Можно ли войти в узел nodeId &#160;прямо сейчас (сосед текущего, не пройден)." alt="" coords="275,5,509,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,23,261,23,261,28,227,28"/>
+</map>

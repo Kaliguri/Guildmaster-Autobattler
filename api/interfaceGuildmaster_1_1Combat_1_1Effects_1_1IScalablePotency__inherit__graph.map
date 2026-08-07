@@ -2,8 +2,8 @@
 <area shape="rect" id="Node000001" title="Опциональный шов: компонент объявляет масштабируемую потенцию." alt="" coords="483,5,683,85"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html" title="Периодический урон (DoT)." alt="" coords="5,133,288,313"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="470,78,386,103,301,136,289,141,287,136,299,131,384,98,469,72"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html" title="Периодическое исцеление (HoT)." alt="" coords="313,153,570,293"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="545,98,499,155,495,152,541,95"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html" title="Периодическое исцеление (HoT)." alt="" coords="313,143,570,303"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="545,98,507,145,503,142,541,95"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolShieldComponent.html" title="Щит С ФИЛЬТРОМ ПО ШКОЛЕ: поглощает только урон своей школы (и, если задана, стихии),..." alt="" coords="595,153,853,293"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="625,95,671,152,666,155,621,98"/>
 <area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html" title="Поглощающий щит." alt="" coords="878,163,1093,283"/>

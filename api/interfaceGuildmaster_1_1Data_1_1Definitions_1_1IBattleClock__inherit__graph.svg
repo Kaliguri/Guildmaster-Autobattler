@@ -110,7 +110,7 @@ var sectionId = 'dynsection-0';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html" target="_top" xlink:title="Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (CombatLifetimeScope,...">
+<g id="a_Node000003"><a xlink:href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html" target="_top" xlink:title="Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (BattleScope,...">
 <polygon fill="white" stroke="transparent" points="325.5,-486 162.5,-486 162.5,-276 325.5,-276 325.5,-486"/>
 <text text-anchor="start" x="168" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.IBattle</text>
 <text text-anchor="start" x="225.5" y="-463" font-family="Helvetica,sans-Serif" font-size="10.00">Session</text>

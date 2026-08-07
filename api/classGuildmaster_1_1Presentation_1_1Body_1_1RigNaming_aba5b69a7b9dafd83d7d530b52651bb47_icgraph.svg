@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Кость, которую рисует этот рендерер: узел НАД контейнером арта.">
+<g id="a_Node000001"><a xlink:title="Кость, которую рисует этот рендерер: сам узел, если он не рисунок, иначе его родитель.">
 <polygon fill="#999999" stroke="#666666" points="352,-54 209,-54 209,-24 352,-24 352,-54"/>
 <text text-anchor="start" x="217" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
 <text text-anchor="middle" x="280.5" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">Body.RigNaming.BoneOf</text>
@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ab021260903ed9cd3a547e102acd6b633" target="_top" xlink:title="Имя кости, которую рисует этот рендерер (Arm_Down, Sword).">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ab021260903ed9cd3a547e102acd6b633" target="_top" xlink:title="Имя кости, которую рисует этот рендерер (LowerArm_R, Weapon_R).">
 <polygon fill="white" stroke="#666666" points="169,-78 4,-78 4,-48 169,-48 169,-78"/>
 <text text-anchor="start" x="12" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
 <text text-anchor="middle" x="86.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Body.RigNaming.BoneNameOf</text>

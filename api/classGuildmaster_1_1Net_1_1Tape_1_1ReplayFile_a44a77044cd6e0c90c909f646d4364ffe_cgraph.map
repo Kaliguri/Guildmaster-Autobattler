@@ -1,0 +1,15 @@
+<map id="Guildmaster.Net.Tape.ReplayFile.TryReadHeader" name="Guildmaster.Net.Tape.ReplayFile.TryReadHeader">
+<area shape="rect" id="Node000001" title="Прочитать заголовок с начала потока." alt="" coords="5,35,216,75"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#ab06f80c65b7ff49c1544e319c5780ff4" title=" " alt="" coords="829,35,1064,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,32,264,20,409,7,523,3,636,7,782,20,846,29,845,35,781,25,636,13,523,8,409,12,264,25,192,37"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#ab771d1ed7d9dd61416d6bed5c3b98466" title=" " alt="" coords="264,35,499,75"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="216,52,251,52,251,57,216,57"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#a2a4fbc247140c3ed7ad4d8cec328ae5a" title=" " alt="" coords="264,99,499,139"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="197,72,284,93,282,98,195,77"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#a148d4c23a2f5fbedb7c25355494b04d4" title=" " alt="" coords="547,35,781,75"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="499,52,533,52,533,57,499,57"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="782,52,815,52,815,57,782,57"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#a807d7bb7ec0ce80e03958f06154515d7" title=" " alt="" coords="547,99,781,139"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="499,116,533,116,533,121,499,121"/>
+<area shape="poly" id="edge7_Node000006_Node000002" title=" " alt="" coords="753,96,844,75,845,80,754,101"/>
+</map>

@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Ma
 </div><!--header-->
 <div class="contents">
 
-<p>Задний фон ЭКРАНОВ: тот же стол, что под картой акта.  
+<p>Задний фон ЭКРАНОВ МЕТЫ: настройки, пауза, главное меню.  
  <a href="classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.Map.MenuBackdropView:</div>
@@ -113,18 +113,18 @@ Collaboration diagram for Guildmaster.Presentation.Map.MenuBackdropView:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae2c6c5e9ae02d89dee36a9d7e4a30d98" id="r_ae2c6c5e9ae02d89dee36a9d7e4a30d98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView.html#ae2c6c5e9ae02d89dee36a9d7e4a30d98">Construct</a> (ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html">ScreenBackdropChangedEvent</a> &gt; menuSub, <a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1VisualToggles.html">VisualToggles</a> toggles)</td></tr>
-<tr class="separator:ae2c6c5e9ae02d89dee36a9d7e4a30d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6117f0edc9da6d3b85d5b58521ff918b" id="r_a6117f0edc9da6d3b85d5b58521ff918b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView.html#a6117f0edc9da6d3b85d5b58521ff918b">Construct</a> (ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html">ScreenBackdropChangedEvent</a> &gt; menuSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent.html">MenuBattleChangedEvent</a> &gt; battleSub, <a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1VisualToggles.html">VisualToggles</a> toggles)</td></tr>
+<tr class="separator:a6117f0edc9da6d3b85d5b58521ff918b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Задний фон ЭКРАНОВ: тот же стол, что под картой акта. </p>
+<div class="textblock"><p>Задний фон ЭКРАНОВ МЕТЫ: настройки, пауза, главное меню. </p>
 <p>Живёт на СВОЕЙ камере со своим слоем — поэтому ни с чем в мире не спорит и ничего собой не заслоняет.</p>
 <p>Начинал жизнь как фон одного лишь главного меню, но с QA #50 это ЕДИНСТВЕННЫЙ задник в игре: под ивентом, магазином, сундуком и наградой раньше лежала своя непрозрачная заливка UI-цветом, и рядом с настоящим столом она читалась как чёрный экран. Теперь UI только говорит, нужен ли фон (ScreenBackdropChangedEvent), а как он выглядит — знает одно это место. Имя класса осталось прежним намеренно: его держит ссылка компонента в сцене. </p>
 <p>Почему отдельная камера, а не квад перед основной: меню показывают, стоя посреди живой арены, и подложить под него мировой объект не выходит — 2D-рендерер рисует спрайты после непрозрачной геометрии, так что тайлмап арены перекрывал стол на любом расстоянии, вплоть до вплотную к объективу. Своя камера с собственной маской слоёв снимает вопрос порядка целиком: она видит ровно один квад, перекрывает основную по depth, пока меню открыто, и гаснет вместе с ним. </p>
-<p>Материал берётся из MapStyle — тот же, что под картой. Это не экономия: фон меню и фон карты обязаны быть одной поверхностью, иначе вход в забег читается как смена сцены.</p>
+<p>Материал берётся из MapStyle, но СВОЙ — не тот, что под картой (05.08.2026). Прежде здесь лежал стол, и обоснованием было «фон меню и фон карты обязаны быть одной поверхностью». Оно перестало работать, когда мета получила собственный регистр: стол принадлежит гроссбуху — миру и забегу, — а настройки и меню стоят по другую сторону этой границы. Вход в забег и без общей поверхности не читается сменой сцены: между ними идёт шторка перехода.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae2c6c5e9ae02d89dee36a9d7e4a30d98" name="ae2c6c5e9ae02d89dee36a9d7e4a30d98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2c6c5e9ae02d89dee36a9d7e4a30d98">&#9670;&#160;</a></span>Construct()</h2>
+<a id="a6117f0edc9da6d3b85d5b58521ff918b" name="a6117f0edc9da6d3b85d5b58521ff918b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6117f0edc9da6d3b85d5b58521ff918b">&#9670;&#160;</a></span>Construct()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,6 +137,12 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html">ScreenBackdropChangedEvent</a> &gt;&#160;</td>
           <td class="paramname"><em>menuSub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent.html">MenuBattleChangedEvent</a> &gt;&#160;</td>
+          <td class="paramname"><em>battleSub</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

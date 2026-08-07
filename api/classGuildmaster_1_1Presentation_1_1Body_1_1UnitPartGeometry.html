@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Bo
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.Body.UnitPartGeometry:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry__coll__graph.svg" width="194" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry__coll__graph.svg" width="212" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -111,6 +111,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ace536a95ea64c25b9f3ba4ec08def315" id="r_ace536a95ea64c25b9f3ba4ec08def315"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry.html#ace536a95ea64c25b9f3ba4ec08def315">TryGetTip</a> (in <a class="el" href="structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart.html">UnitPart</a> part, out Vector3 world)</td></tr>
 <tr class="memdesc:ace536a95ea64c25b9f3ba4ec08def315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мировая точка кончика части: угол спрайта, самый дальний от точки крепления.  <br /></td></tr>
 <tr class="separator:ace536a95ea64c25b9f3ba4ec08def315"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f34434d71231f4aceae98dfd44cdb27" id="r_a1f34434d71231f4aceae98dfd44cdb27"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry.html#a1f34434d71231f4aceae98dfd44cdb27">TryMeasureTipFromMesh</a> (SpriteRenderer renderer, out Vector3 local)</td></tr>
+<tr class="memdesc:a1f34434d71231f4aceae98dfd44cdb27"><td class="mdescLeft">&#160;</td><td class="mdescRight">ЧИСТЫЙ замер кончика по мешу спрайта, в локальных координатах рендерера: дальняя от точки крепления вершина.  <br /></td></tr>
+<tr class="separator:a1f34434d71231f4aceae98dfd44cdb27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Геометрия части тела: где у неё кончик и куда она смотрит. </p>
@@ -161,6 +164,64 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>false</code>, если части нечем рисоваться — тогда кончика у неё нет.</dd></dl>
 <p>Точка крепления — локальный ноль рендерера: наш риг авторится так, что pivot спрайта сидит там, где часть держится за родителя (хват у предмета, сустав у конечности). Значит «дальний угол спрайта» и есть остриё — у клинка это лезвие, у кисти кулак, и оба ответа верные. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry_ace536a95ea64c25b9f3ba4ec08def315_cgraph.svg" width="548" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry_ace536a95ea64c25b9f3ba4ec08def315_icgraph.svg" width="566" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a1f34434d71231f4aceae98dfd44cdb27" name="a1f34434d71231f4aceae98dfd44cdb27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f34434d71231f4aceae98dfd44cdb27">&#9670;&#160;</a></span>TryMeasureTipFromMesh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Guildmaster.Presentation.Body.UnitPartGeometry.TryMeasureTipFromMesh </td>
+          <td>(</td>
+          <td class="paramtype">SpriteRenderer&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out Vector3&#160;</td>
+          <td class="paramname"><em>local</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ЧИСТЫЙ замер кончика по мешу спрайта, в локальных координатах рендерера: дальняя от точки крепления вершина. </p>
+<p>Объявленный размер здесь НЕ учитывается — это и есть смысл метода.</p>
+<dl class="section return"><dt>Returns</dt><dd><code>false</code>, если у спрайта нет вершин.</dd></dl>
+<p>Отдельный публичный метод нужен редакторной кнопке «Замерить вылет по мешу»: она обязана спросить именно картинку. Позови она TryGetTip, тот вернул бы уже объявленное значение, и «замер» переписал бы число им же самим — тождество вместо проверки. </p>
+<p>Меряем по МЕШУ, а не по углам рамки: клинок «сторибука» нарисован по диагонали кадра, и дальний угол рамки лежит в пустоте за остриём. Меш обтягивает рисунок (28 вершин у клинка), поэтому дальняя вершина и есть остриё. Спрайт с рамочным мешом (4 вершины) деградирует к углам сам собой — это те же вершины. </p>
+<p>Похожий на вид <code>RigProfile.MeasureAxis</code> — НЕ дубль и сливать их нельзя: он меряет от точки ХВАТА (не от нуля рендерера) и ищет заодно пятку, потому что отвечает на другой вопрос — «куда смотрит предмет», а не «где его остриё». </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry_a1f34434d71231f4aceae98dfd44cdb27_icgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
 
 </div>
 </div>

@@ -9,5 +9,6 @@ var interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl =
     [ "EndReason", "interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html#af9d05e577dfee8b086f0aa5ad8189055", null ],
     [ "IsSteamReady", "interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html#af3eb0c44fea253385623ae8e58ba2e17", null ],
     [ "State", "interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html#a460240d5e89517ebb945468dc4cbf227", null ],
+    [ "PeerLeft", "interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html#a4443ccada981e388814787dbc0ba5cd0", null ],
     [ "StateChanged", "interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html#a3a4d4bce186979427542dc94ac93d1be", null ]
 ];

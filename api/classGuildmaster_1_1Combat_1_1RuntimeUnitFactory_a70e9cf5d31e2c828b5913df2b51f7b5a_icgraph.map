@@ -1,8 +1,5 @@
 <map id="Guildmaster.Combat.RuntimeUnitFactory.Create" name="Guildmaster.Combat.RuntimeUnitFactory.Create">
-<area shape="rect" id="Node000001" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="301,49,516,89"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a50f5fe5c50d54b6d2c1fdbcabd79bc09" title="Собрать призванного юнита (M10): та же сборка, что у всех, плюс множители силы призывов от призывател..." alt="" coords="22,5,237,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="287,53,237,45,237,40,288,48"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab4ec10b3c8cb40ff0c983b1fda86385f" title="1×1 зеркально на дев&#45;дуэлянте (enemy.bone_dev) — смотреть скелетный визуал в живом бою." alt="" coords="5,93,253,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="288,91,254,96,253,91,288,86"/>
-<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="177,82,160,75,129,72,102,74,86,79,80,85,83,92,78,94,75,84,83,74,101,69,129,67,161,69,179,77"/>
+<area shape="rect" id="Node000001" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="268,5,483,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a50f5fe5c50d54b6d2c1fdbcabd79bc09" title="Собрать призванного юнита (M10): та же сборка, что у всех, плюс множители силы призывов от призывател..." alt="" coords="5,5,220,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="255,28,220,28,220,23,255,23"/>
 </map>

@@ -92,43 +92,33 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1NewGameScree
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classGuildmaster_1_1UI_1_1NewGameScreenView-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.UI.NewGameScreenView Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Экран «Создать игру»: во что играем, в каком доме и пускаем ли друзей.  
+<p>Экран «Создать игру»: во что играем и пускаем ли друзей.  
  <a href="classGuildmaster_1_1UI_1_1NewGameScreenView.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.NewGameScreenView:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1NewGameScreenView__coll__graph.svg" width="270" height="96"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1NewGameScreenView__coll__graph.svg" width="270" height="76"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1UI_1_1NewGameScreenView_1_1GuildEntry.html">GuildEntry</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что показывать про дом: имя и идёт ли в нём забег.  <a href="structGuildmaster_1_1UI_1_1NewGameScreenView_1_1GuildEntry.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a6e25abeb0e1cf70677495af294a7bdce" id="r_a6e25abeb0e1cf70677495af294a7bdce"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1NewGameScreenView.html#a6e25abeb0e1cf70677495af294a7bdce">Build</a> (VisualTreeAsset uxml, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1NewGameScreenView_1_1GuildEntry.html">GuildEntry</a> &gt; guilds, bool guildsFull, bool steamReady, Func&lt; string, string &gt; localize, Action&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1GameStartRequest.html">GameStartRequest</a> &gt; onStart, Action onBack)</td></tr>
-<tr class="separator:a6e25abeb0e1cf70677495af294a7bdce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a946b422f75df454d0b5b271b0b4f49ad" id="r_a946b422f75df454d0b5b271b0b4f49ad"><td class="memItemLeft" align="right" valign="top">static List&lt; <a class="el" href="structGuildmaster_1_1UI_1_1NewGameScreenView_1_1GuildEntry.html">GuildEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1NewGameScreenView.html#a946b422f75df454d0b5b271b0b4f49ad">ReadGuilds</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a> profiles, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">ISaveService</a> save)</td></tr>
-<tr class="memdesc:a946b422f75df454d0b5b271b0b4f49ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать список домов из профиля: имя плюс ответ на вопрос «идёт ли там забег».  <br /></td></tr>
-<tr class="separator:a946b422f75df454d0b5b271b0b4f49ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc463600de7a2678a3d052809f2405b5" id="r_abc463600de7a2678a3d052809f2405b5"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1NewGameScreenView.html#abc463600de7a2678a3d052809f2405b5">Build</a> (VisualTreeAsset uxml, bool steamReady, Func&lt; string, string &gt; localize, Action&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#a38e8510cb3d9bbba3df18a5873f0a2e3">GameMode</a>, bool &gt; onPick, Action onBack)</td></tr>
+<tr class="separator:abc463600de7a2678a3d052809f2405b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Экран «Создать игру»: во что играем, в каком доме и пускаем ли друзей. </p>
-<p><b>Один экран собирает заказ целиком</b> (модель Макса 02.08.2026): режим, гильдия и галочка лобби уезжают в игру одним GameStartRequest. Прежде это были три разных входа из главного меню, и открытость для друзей выбиралась ОТДЕЛЬНО от игры — то есть игрок мог начать забег, забыв поднять сессию, и узнавал об этом, когда звать друга было уже некуда. </p>
-<p><b>Дома показываются только у Кампании.</b> У площадки дома нет вовсе, и пустой список там читался бы как поломка, а не как «здесь это не нужно».</p>
-<p><b>Пары «Начать / Продолжить» здесь нет:</b> гильдия и есть слот сохранения (ТЗ [[save-system]] §3), поэтому игрок выбирает дом, а забег в нём либо уже идёт, либо начнётся. Строка дома сама говорит, что там внутри.</p>
+<div class="textblock"><p>Экран «Создать игру»: во что играем и пускаем ли друзей. </p>
+<p><b>Режим — это действие, а не галочка</b> (модель Макса 04.08.2026): клик по режиму сразу ведёт дальше, поэтому кнопки «Начать» здесь нет вовсе. Прежде экран собирал заказ целиком — режим, дом и лобби на одном листе, — и дом приходилось показывать рядом с режимами, которым он не нужен: половина экрана то появлялась, то исчезала, а «Начать» стояло третьим шагом после двух выборов. </p>
+<p><b>Дом выбирается СЛЕДУЮЩИМ экраном и только у Кампании</b> — см. GuildSelectScreenView. Площадка и матч уходят в игру этим же кликом: дома у них нет.</p>
+<p><b>Галочка лобби стоит НАД режимами,</b> потому что она про сеанс, а не про режим: сначала «с кем играем», потом «во что». Под кнопкой-действием она читалась бы как настройка этой кнопки.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6e25abeb0e1cf70677495af294a7bdce" name="a6e25abeb0e1cf70677495af294a7bdce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e25abeb0e1cf70677495af294a7bdce">&#9670;&#160;</a></span>Build()</h2>
+<a id="abc463600de7a2678a3d052809f2405b5" name="abc463600de7a2678a3d052809f2405b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc463600de7a2678a3d052809f2405b5">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -145,18 +135,6 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1NewGameScreenView_1_1GuildEntry.html">GuildEntry</a> &gt;&#160;</td>
-          <td class="paramname"><em>guilds</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>guildsFull</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>steamReady</em>, </td>
         </tr>
@@ -169,8 +147,8 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Action&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1GameStartRequest.html">GameStartRequest</a> &gt;&#160;</td>
-          <td class="paramname"><em>onStart</em>, </td>
+          <td class="paramtype">Action&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#a38e8510cb3d9bbba3df18a5873f0a2e3">GameMode</a>, bool &gt;&#160;</td>
+          <td class="paramname"><em>onPick</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -190,50 +168,6 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="a946b422f75df454d0b5b271b0b4f49ad" name="a946b422f75df454d0b5b271b0b4f49ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a946b422f75df454d0b5b271b0b4f49ad">&#9670;&#160;</a></span>ReadGuilds()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static List&lt; <a class="el" href="structGuildmaster_1_1UI_1_1NewGameScreenView_1_1GuildEntry.html">GuildEntry</a> &gt; Guildmaster.UI.NewGameScreenView.ReadGuilds </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a>&#160;</td>
-          <td class="paramname"><em>profiles</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">ISaveService</a>&#160;</td>
-          <td class="paramname"><em>save</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Собрать список домов из профиля: имя плюс ответ на вопрос «идёт ли там забег». </p>
-<p>Наличие забега спрашивается у ДИСКА по ключу каждой гильдии, а не у держателя состояния: меню живёт вне сеанса, и держателя в этот момент не существует. </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1NewGameScreenView_a946b422f75df454d0b5b271b0b4f49ad_cgraph.svg" width="100%" height="410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
 
 </div>
 </div>

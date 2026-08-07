@@ -18,10 +18,15 @@ var searchData=
   ['markdowntable_2ecs_15',['MarkdownTable.cs',['../MarkdownTable_8cs.html',1,'']]],
   ['marktransfercomponent_2ecs_16',['MarkTransferComponent.cs',['../MarkTransferComponent_8cs.html',1,'']]],
   ['menubackdropview_2ecs_17',['MenuBackdropView.cs',['../MenuBackdropView_8cs.html',1,'']]],
-  ['menurouter_2ecs_18',['MenuRouter.cs',['../MenuRouter_8cs.html',1,'']]],
-  ['menuvisibilitymessages_2ecs_19',['MenuVisibilityMessages.cs',['../MenuVisibilityMessages_8cs.html',1,'']]],
-  ['metriccollector_2ecs_20',['MetricCollector.cs',['../MetricCollector_8cs.html',1,'']]],
-  ['missinghpshieldcomponent_2ecs_21',['MissingHpShieldComponent.cs',['../MissingHpShieldComponent_8cs.html',1,'']]],
-  ['modifierop_2ecs_22',['ModifierOp.cs',['../ModifierOp_8cs.html',1,'']]],
-  ['movementsystem_2ecs_23',['MovementSystem.cs',['../MovementSystem_8cs.html',1,'']]]
+  ['menubattleconfig_2ecs_18',['MenuBattleConfig.cs',['../MenuBattleConfig_8cs.html',1,'']]],
+  ['menubattledirector_2ecs_19',['MenuBattleDirector.cs',['../MenuBattleDirector_8cs.html',1,'']]],
+  ['menubattlemessages_2ecs_20',['MenuBattleMessages.cs',['../MenuBattleMessages_8cs.html',1,'']]],
+  ['menureplayscope_2ecs_21',['MenuReplayScope.cs',['../MenuReplayScope_8cs.html',1,'']]],
+  ['menurouter_2ecs_22',['MenuRouter.cs',['../MenuRouter_8cs.html',1,'']]],
+  ['menuvisibilitymessages_2ecs_23',['MenuVisibilityMessages.cs',['../MenuVisibilityMessages_8cs.html',1,'']]],
+  ['metriccollector_2ecs_24',['MetricCollector.cs',['../MetricCollector_8cs.html',1,'']]],
+  ['midbattlejoinhold_2ecs_25',['MidBattleJoinHold.cs',['../MidBattleJoinHold_8cs.html',1,'']]],
+  ['missinghpshieldcomponent_2ecs_26',['MissingHpShieldComponent.cs',['../MissingHpShieldComponent_8cs.html',1,'']]],
+  ['modifierop_2ecs_27',['ModifierOp.cs',['../ModifierOp_8cs.html',1,'']]],
+  ['movementsystem_2ecs_28',['MovementSystem.cs',['../MovementSystem_8cs.html',1,'']]]
 ];

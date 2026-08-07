@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structGuildmaster_1_1Guild_1_1AnchorRule.html" title="Якорь: на этаже Floor ВСЯ колонка получает тип Type (перекрывает зону)." alt="" coords="5,5,223,31"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IOutcomePresenter.html" title="Показ экрана исхода забега (победа/поражение) и ожидание «В меню» (план C2)." alt="" coords="5,5,251,45"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html" title="Презентер исхода забега (план [[act&#45;map&#45;run&#45;loop]] §4 C2): публикует OpenOutcomeRequest и ждёт «В мен..." alt="" coords="299,5,540,45"/>
+<area shape="poly" id="edge342_Node000000_Node000001" title=" " alt="" coords="265,23,298,23,298,28,265,28"/>
 </map>

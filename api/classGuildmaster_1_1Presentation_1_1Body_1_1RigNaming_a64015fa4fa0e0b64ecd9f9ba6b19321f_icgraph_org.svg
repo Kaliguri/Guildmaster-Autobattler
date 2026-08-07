@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Сторона тела: берётся с конечности НАД узлом (Arm (Left)), поэтому сами суставы носят одно имя на обе...">
+<g id="a_Node000001"><a xlink:title="Сторона тела: читается из суффикса имени, своего или ближайшего предка до root .">
 <polygon fill="#999999" stroke="#666666" points="352,-30 209,-30 209,0 352,0 352,-30"/>
 <text text-anchor="start" x="217" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
 <text text-anchor="middle" x="280.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Body.RigNaming.SideOf</text>

@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Build_1_1Editor_1_
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classGuildmaster_1_1Build_1_1Editor_1_1PlayerBuilder-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Build.Editor.PlayerBuilder Class Reference</div></div>
 </div><!--header-->
@@ -111,6 +112,12 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aefafffc8dd3b73799502a8b79c3166fe" id="r_aefafffc8dd3b73799502a8b79c3166fe"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Build_1_1Editor_1_1PlayerBuilder.html#aefafffc8dd3b73799502a8b79c3166fe">Windows64</a> ()</td></tr>
 <tr class="memdesc:aefafffc8dd3b73799502a8b79c3166fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать Windows-плеер.  <br /></td></tr>
 <tr class="separator:aefafffc8dd3b73799502a8b79c3166fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:abfe37d7d09d5f8ac301afe61827169e2" id="r_abfe37d7d09d5f8ac301afe61827169e2"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Build_1_1Editor_1_1PlayerBuilder.html#abfe37d7d09d5f8ac301afe61827169e2">DevToolsDefine</a> = &quot;GM_DEVTOOLS&quot;</td></tr>
+<tr class="memdesc:abfe37d7d09d5f8ac301afe61827169e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Дефайн, включающий наши дев-инструменты в ОБЫЧНОЙ сборке: dev-консоль (F1), лог-консоль (F2) и диагностический лог за ними.  <br /></td></tr>
+<tr class="separator:abfe37d7d09d5f8ac301afe61827169e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Сборка плеера из командной строки: то, что зовёт локальная выкладка в Steam (<code>scripts/steam-publish.ps1</code>). </p>
@@ -144,6 +151,34 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Собрать Windows-плеер. </p>
 <p>Зовётся как <code>-executeMethod <a class="el" href="classGuildmaster_1_1Build_1_1Editor_1_1PlayerBuilder.html#aefafffc8dd3b73799502a8b79c3166fe" title="Собрать Windows-плеер.">Guildmaster.Build.Editor.PlayerBuilder.Windows64</a></code>. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="abfe37d7d09d5f8ac301afe61827169e2" name="abfe37d7d09d5f8ac301afe61827169e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfe37d7d09d5f8ac301afe61827169e2">&#9670;&#160;</a></span>DevToolsDefine</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const string Guildmaster.Build.Editor.PlayerBuilder.DevToolsDefine = &quot;GM_DEVTOOLS&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Дефайн, включающий наши дев-инструменты в ОБЫЧНОЙ сборке: dev-консоль (F1), лог-консоль (F2) и диагностический лог за ними. </p>
+<p><b>Свой дефайн, а не <code>BuildOptions.Development</code></b> (04.08.2026). Билды из этого скрипта уходят в тестовую ветку Steam, где консоль нужна: без неё кооп нельзя ни включить в лог, ни посмотреть — а именно кооп ломается только на двух машинах. Development же тянет с собой водяной знак, подключение профайлера и другой профиль производительности: мы бы тестировали не ту игру, которую собираем. </p>
+<p>Симптом, из-за которого это нашлось: у Макса в билде не работали F1, F2 и ~, а F3 работал — витрина боёв подписана без условия, а консоли стояли под <code>UNITY_EDITOR || DEVELOPMENT_BUILD</code>.</p>
+<p><b>Релизная сборка для игроков этого дефайна не получит</b> — она собирается не этим методом, и консоль в ней по-прежнему не открывается ничем.</p>
 
 </div>
 </div>

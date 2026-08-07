@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Замах из ДОЛИ свинга (0..1) — путь для юнитов, у которых нет покадрового клипа.">
+<g id="a_Node000001"><a xlink:title="Замах из ДОЛИ свинга (0..1) — единственный путь с 06.08.2026.">
 <polygon fill="#999999" stroke="#666666" points="168,-30 0,-30 0,0 168,0 168,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Attack</text>
 <text text-anchor="middle" x="84" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Timing.WindupTicksFromShare</text>

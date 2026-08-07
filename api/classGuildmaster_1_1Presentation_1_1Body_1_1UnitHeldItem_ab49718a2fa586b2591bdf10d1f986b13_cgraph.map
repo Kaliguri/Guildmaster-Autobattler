@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Body.UnitHeldItem.TryGetReachDirection" name="Guildmaster.Presentation.Body.UnitHeldItem.TryGetReachDirection">
+<area shape="rect" id="Node000001" title="Куда смотрит рабочая часть — единичный вектор в координатах хвата, снятый с САМОГО РИСУНКА." alt="" coords="5,13,295,53"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry.html#a1f34434d71231f4aceae98dfd44cdb27" title="ЧИСТЫЙ замер кончика по мешу спрайта, в локальных координатах рендерера: дальняя от точки крепления в..." alt="" coords="343,5,593,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="295,30,329,30,329,35,295,35"/>
+</map>

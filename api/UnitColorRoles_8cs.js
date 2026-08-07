@@ -1,12 +1,6 @@
 var UnitColorRoles_8cs =
 [
     [ "Guildmaster.Data.Definitions.UnitColorRoles", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitColorRoles.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitColorRoles" ],
-    [ "BodyShade", "UnitColorRoles_8cs.html#adbfd05fcfcc6e150c47638f97126266c", [
-      [ "None", "UnitColorRoles_8cs.html#adbfd05fcfcc6e150c47638f97126266ca6adf97f83acf6453d4a6a4b1070f3754", null ],
-      [ "Ash", "UnitColorRoles_8cs.html#adbfd05fcfcc6e150c47638f97126266cabebd38011265cc9ca332791054106ef5", null ],
-      [ "Verdant", "UnitColorRoles_8cs.html#adbfd05fcfcc6e150c47638f97126266cab33646d7b7b14dd6da17a88f6ddb5926", null ],
-      [ "Tan", "UnitColorRoles_8cs.html#adbfd05fcfcc6e150c47638f97126266ca1266b4e6f81e60733ec6c717e0181f60", null ]
-    ] ],
     [ "UnitTone", "UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3", [
       [ "Fire", "UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3abd2b7e5f85a6ea65065c4ebc6d7c95bb", null ],
       [ "Gold", "UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3a9768feb3fdb1f267b06093bc572952dd", null ],

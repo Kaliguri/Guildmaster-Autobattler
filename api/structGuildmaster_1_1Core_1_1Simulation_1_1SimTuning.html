@@ -111,8 +111,8 @@ Collaboration diagram for Guildmaster.Core.Simulation.SimTuning:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acbef7f112a99ddc759c69a94e8a784cb" id="r_acbef7f112a99ddc759c69a94e8a784cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#acbef7f112a99ddc759c69a94e8a784cb">SimTuning</a> (float bodyRadiusPerSize, float separationStrength, int separationIterations, float separationSameTeamScale, float projectileHitRadiusFactor, float projectileDespawnMargin, float kiteFleeFactor, float globalSearchRadius, float fleeThreatWeight, float fleeHomeWeight, float fleeWallWeight, float fleeWallMargin, float fleeThreatRadius, float kiteStrafeWeight, float displaceSpeedPerSecond, float cannonballWidthMult, float wallImpactDamageMult, float wallImpactStunSeconds, float overtimeStartSeconds, float overtimeDamagePerSecond, float sprintSpeedMult, float sprintEnterGap, float sprintExitGap, float sprintWalkSeconds, float sprintRampSeconds, float recastRecoverySpeed, float recastWindupSpeed, float concealWeakRadius, float concealMediumRadius, float concealStrongRadius, float comboBreakSeconds)</td></tr>
-<tr class="separator:acbef7f112a99ddc759c69a94e8a784cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49be0840450cb20c56998f3a36163d41" id="r_a49be0840450cb20c56998f3a36163d41"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a49be0840450cb20c56998f3a36163d41">SimTuning</a> (float bodyRadiusPerSize, float separationStrength, int separationIterations, float separationSameTeamScale, float projectileHitRadiusFactor, float projectileDespawnMargin, float kiteFleeFactor, float globalSearchRadius, float fleeThreatWeight, float fleeHomeWeight, float fleeWallWeight, float fleeWallMargin, float fleeThreatRadius, float kiteStrafeWeight, float displaceSpeedPerSecond, float cannonballWidthMult, float wallImpactDamageMult, float wallImpactStunSeconds, float overtimeStartSeconds, float overtimeDamagePerSecond, float sprintSpeedMult, float sprintEnterGap, float sprintExitGap, float sprintWalkSeconds, float sprintRampSeconds, float recastRecoverySpeed, float recastWindupSpeed, float concealWeakRadius, float concealMediumRadius, float concealStrongRadius, float comboBreakSeconds, float retreatMaxSeconds=4f)</td></tr>
+<tr class="separator:a49be0840450cb20c56998f3a36163d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63756f956c2de88d21914bd62eb0ce6c" id="r_a63756f956c2de88d21914bd62eb0ce6c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a63756f956c2de88d21914bd62eb0ce6c">SprintRampAt</a> (int wantTicks)</td></tr>
 <tr class="memdesc:a63756f956c2de88d21914bd62eb0ce6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Доля разгона [0..1] после <em>wantTicks</em>  тиков непрерывного намерения бежать: ноль всю «прогулочную» часть, потом линейный набор до единицы.  <br /></td></tr>
 <tr class="separator:a63756f956c2de88d21914bd62eb0ce6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,6 +187,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a59a76fd7cd6a422f68a0f5c859abcfaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37d98fc0a7885ceeffbd4e7bf769f101" id="r_a37d98fc0a7885ceeffbd4e7bf769f101"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a37d98fc0a7885ceeffbd4e7bf769f101">ComboBreakSeconds</a></td></tr>
 <tr class="separator:a37d98fc0a7885ceeffbd4e7bf769f101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a204e44cbd28870a22677846118186ed9" id="r_a204e44cbd28870a22677846118186ed9"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a204e44cbd28870a22677846118186ed9">RetreatMaxSeconds</a></td></tr>
+<tr class="memdesc:a204e44cbd28870a22677846118186ed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько боец может отступать подряд, прежде чем вернётся в бой независимо от здоровья.  <br /></td></tr>
+<tr class="separator:a204e44cbd28870a22677846118186ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -206,8 +209,8 @@ Properties</h2></td></tr>
 <p>Default — единый код-сид этих значений: сюда же смотрят свежесозданный <code>SimTuningConfig</code>, dev-гизмо презентации и тесты-страховки неизменности баланса. </p>
 <p>НЕ здесь (осознанные отклонения от §3.4, шов готов принять их позже): <code>TickRate</code>/ <code>AiTickRate</code> — структурные (детерминизм, назначение BrainPhase; см. SimConstants); <code>MaxAttackAnimTicks</code>/<code>MinWindupTicks</code> — в чистом статик-хелпере AttackTiming (широкие юнит-тесты); <code>DefaultPassiveThresholdPct</code> — compile-time дефолт сериализованного поля AIProfile. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="acbef7f112a99ddc759c69a94e8a784cb" name="acbef7f112a99ddc759c69a94e8a784cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbef7f112a99ddc759c69a94e8a784cb">&#9670;&#160;</a></span>SimTuning()</h2>
+<a id="a49be0840450cb20c56998f3a36163d41" name="a49be0840450cb20c56998f3a36163d41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49be0840450cb20c56998f3a36163d41">&#9670;&#160;</a></span>SimTuning()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -399,7 +402,13 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>comboBreakSeconds</em>&#160;</td>
+          <td class="paramname"><em>comboBreakSeconds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>retreatMaxSeconds</em> = <code>4f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -830,6 +839,24 @@ Properties</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a204e44cbd28870a22677846118186ed9" name="a204e44cbd28870a22677846118186ed9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a204e44cbd28870a22677846118186ed9">&#9670;&#160;</a></span>RetreatMaxSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Core.Simulation.SimTuning.RetreatMaxSeconds</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Сколько боец может отступать подряд, прежде чем вернётся в бой независимо от здоровья. </p>
+<p><b>Кайтеров не касается</b> — у них отход и есть способ драться.</p>
+<p>Порог возврата задан долей HP, а поднять её нечем, когда лечить некому: боец уходит навсегда, и бой замирает при обеих живых сторонах. Овертайм это не лечит — он умножает урон, которого в такой ситуации просто нет. Замер 2026-08-04: 13% боёв круга не разрешались, у Монаха вихря — 57.69%. </p>
 
 </div>
 </div>

@@ -106,7 +106,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Bo
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.Body.UnitPartRegistry:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry__inherit__graph.svg" width="194" height="424"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry__inherit__graph.svg" width="194" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.Body.UnitPartRegistry:</div>
@@ -117,10 +117,10 @@ Collaboration diagram for Guildmaster.Presentation.Body.UnitPartRegistry:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abb3f82824307687378342a4a1ed9cc9f" id="r_abb3f82824307687378342a4a1ed9cc9f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#abb3f82824307687378342a4a1ed9cc9f">TryGetHeld</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a5720775fdbc2ef9a22c2ab013201505b">HandSlot</a> slot, out <a class="el" href="structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart.html">UnitPart</a> part)</td></tr>
-<tr class="memdesc:abb3f82824307687378342a4a1ed9cc9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Предмет в этом хвате.  <br /></td></tr>
+<tr class="memdesc:abb3f82824307687378342a4a1ed9cc9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Предмет в этом хвате — его РАБОЧАЯ часть (<code>UnitHeldItem.ReachPart</code>).  <br /></td></tr>
 <tr class="separator:abb3f82824307687378342a4a1ed9cc9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2362dc2f23bbe865189baa10e2467e5c" id="r_a2362dc2f23bbe865189baa10e2467e5c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#a2362dc2f23bbe865189baa10e2467e5c">TryGetHeld</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a5fedd7faf007da62d2a6014f6d2f1f0d">HeldKind</a> kind, out <a class="el" href="structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart.html">UnitPart</a> part)</td></tr>
-<tr class="memdesc:a2362dc2f23bbe865189baa10e2467e5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Первый предмет этого типа: «дай щит», «дай оружие».  <br /></td></tr>
+<tr class="memdesc:a2362dc2f23bbe865189baa10e2467e5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Предмет этого типа — его объявленная рабочая часть (см. TryGetHeld(HandSlot, out UnitPart)).  <br /></td></tr>
 <tr class="separator:a2362dc2f23bbe865189baa10e2467e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9cb4f4390e26cde25fd58bb627efa64" id="r_ae9cb4f4390e26cde25fd58bb627efa64"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#ae9cb4f4390e26cde25fd58bb627efa64">TryGetBone</a> (string boneName, <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Body.html#a2942e4d172a548bdfdd6a1a337f8df71">BodySide</a> side, out <a class="el" href="structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart.html">UnitPart</a> part)</td></tr>
 <tr class="memdesc:ae9cb4f4390e26cde25fd58bb627efa64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Часть тела по кости и стороне: <code>("Head", None)</code>, <code>("Leg_Boots", Right)</code>.  <br /></td></tr>
@@ -134,9 +134,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a12736fd9d5a9305241142fd104832812" id="r_a12736fd9d5a9305241142fd104832812"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html">UnitPartRegistry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#a12736fd9d5a9305241142fd104832812">FromBody</a> (IReadOnlyList&lt; SpriteRenderer &gt; renderers, Transform root, Object context=null)</td></tr>
 <tr class="memdesc:a12736fd9d5a9305241142fd104832812"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать реестр по частям скелетного тела.  <br /></td></tr>
 <tr class="separator:a12736fd9d5a9305241142fd104832812"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1d7ac5c8b3afbc8c27ead694459ea7f" id="r_ab1d7ac5c8b3afbc8c27ead694459ea7f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html">UnitPartRegistry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#ab1d7ac5c8b3afbc8c27ead694459ea7f">ForSingleSprite</a> (SpriteRenderer sprite)</td></tr>
-<tr class="memdesc:ab1d7ac5c8b3afbc8c27ead694459ea7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Реестр тела из ОДНОГО спрайта — покадровый юнит.  <br /></td></tr>
-<tr class="separator:ab1d7ac5c8b3afbc8c27ead694459ea7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -156,39 +153,10 @@ Properties</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Реестр частей тела, выведенный ИЗ КОНВЕНЦИИ РИГА: кто чем является, читается из иерархии (RigNaming), а не назначается вторым списком рядом с ней. </p>
-<p>Ручная разметка «эта часть — оружие» была бы вторым владельцем: риг уже держит структурно всё, что нужно, — предмет в руке это кость под <code>Rotation Point (Grip)</code>, рука это <code>(Left)</code>/<code>(Right)</code> над ней, часть тела это кость над <code>Visual Part (…)</code>. Метка нужна ровно для того, что из геометрии не следует, — типа предмета (UnitHeldItem). </p>
+<p>Ручная разметка «эта часть — оружие» была бы вторым владельцем: риг уже держит структурно всё, что нужно, — предмет в руке это кость-хват (<code>Weapon_R</code>), сторона это суффикс <code>_R</code>/<code>_L</code> в имени кости, часть тела это кость над узлом <code>…_Art</code>. Метка нужна ровно для того, что из геометрии не следует, — типа предмета (UnitHeldItem). </p>
 <p>Поэтому реестр расстановко-независим сам собой: меч со щитом, два кинжала, двуручное копьё и пустые руки собираются одним кодом, и новая расстановка не требует ни строки здесь. </p>
 <p><b>Индекс части — это индекс в списке частей ТЕЛА</b> (не в Parts): именно по нему тело проверяет маску при записи property block. Потерянные ссылки в списке тела записи не получают, но индексы живых от этого не сдвигаются. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab1d7ac5c8b3afbc8c27ead694459ea7f" name="ab1d7ac5c8b3afbc8c27ead694459ea7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1d7ac5c8b3afbc8c27ead694459ea7f">&#9670;&#160;</a></span>ForSingleSprite()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html">UnitPartRegistry</a> Guildmaster.Presentation.Body.UnitPartRegistry.ForSingleSprite </td>
-          <td>(</td>
-          <td class="paramtype">SpriteRenderer&#160;</td>
-          <td class="paramname"><em>sprite</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Реестр тела из ОДНОГО спрайта — покадровый юнит. </p>
-<p>Частей нет, костей нет, хватов нет: единственная запись отвечает и на «дай часть», и на «чем ударишь», поэтому такое тело светится целиком. </p>
-
-</div>
-</div>
 <a id="a12736fd9d5a9305241142fd104832812" name="a12736fd9d5a9305241142fd104832812"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a12736fd9d5a9305241142fd104832812">&#9670;&#160;</a></span>FromBody()</h2>
 
@@ -320,8 +288,8 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Предмет в этом хвате. </p>
-<p>Двуручный отвечает на любую руку. Пустая рука — false. </p>
+<p>Предмет в этом хвате — его РАБОЧАЯ часть (<code>UnitHeldItem.ReachPart</code>). </p>
+<p>Отвечает только объявленная часть, догадки нет (требование Макса, 04.08.2026: «Мы должны мочь ЯВНО указать спрайт. И для гизмо и для этого. Т.е. поле, а не "первое по списку"»). Предмет из нескольких кусков даёт столько же частей с типом «оружие», и «первый по списку» означал бы «первый по порядку отрисовки» — у сторибучного меча это рукоять. Не объявлена — ответ «нет», а об отсутствии кричит сборка реестра: гадать, чем боец бьёт, показ не вправе. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitPartLookup.html#ab10a07d7296662f98a2f3df9e6b3f767">Guildmaster.Presentation.Body.IUnitPartLookup</a>.</p>
 <div class="dynheader">
@@ -366,8 +334,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Первый предмет этого типа: «дай щит», «дай оружие». </p>
-<p>У бойца с двумя кинжалами вернёт основной — правый, потому что части перебираются в порядке тела, а не по стороне. </p>
+<p>Предмет этого типа — его объявленная рабочая часть (см. TryGetHeld(HandSlot, out UnitPart)). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitPartLookup.html#ad230b5f05922036e92675ad58d2d2839">Guildmaster.Presentation.Body.IUnitPartLookup</a>.</p>
 

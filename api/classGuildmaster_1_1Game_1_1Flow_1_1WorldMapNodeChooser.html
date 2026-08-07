@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Wo
 </div><!--header-->
 <div class="contents">
 
-<p>Фаза D-реализация IMapNodeChooser: выбор узла на world-карте.  
+<p>Выбор узла на world-карте: зажигает достижимые узлы и ждёт, пока выбор не появится В СОСТОЯНИИ забега.  
  <a href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapNodeChooser.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.WorldMapNodeChooser:</div>
@@ -113,31 +113,58 @@ Collaboration diagram for Guildmaster.Game.Flow.WorldMapNodeChooser:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa815d6e4ea291233f296c9fcb818fb51" id="r_aa815d6e4ea291233f296c9fcb818fb51"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapNodeChooser.html#aa815d6e4ea291233f296c9fcb818fb51">WorldMapNodeChooser</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html">WorldMapController</a> map)</td></tr>
-<tr class="separator:aa815d6e4ea291233f296c9fcb818fb51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad19cfe442a224f0ed7c2770e3586e23e" id="r_ad19cfe442a224f0ed7c2770e3586e23e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapNodeChooser.html#ad19cfe442a224f0ed7c2770e3586e23e">WorldMapNodeChooser</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html">WorldMapController</a> map, <a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a> runStates, <a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html">Guildmaster.Guild.Commands.RunCommandBus</a> bus)</td></tr>
+<tr class="separator:ad19cfe442a224f0ed7c2770e3586e23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdc2a05b0e23c93a9704a04687e5bab4" id="r_afdc2a05b0e23c93a9704a04687e5bab4"><td class="memItemLeft" align="right" valign="top">async UniTask&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapNodeChooser.html#afdc2a05b0e23c93a9704a04687e5bab4">ChooseAsync</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html">MapState</a> map, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a> &gt; available, CancellationToken ct=default, bool openMap=true)</td></tr>
 <tr class="memdesc:afdc2a05b0e23c93a9704a04687e5bab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выбрать один узел из доступных.  <br /></td></tr>
 <tr class="separator:afdc2a05b0e23c93a9704a04687e5bab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Фаза D-реализация IMapNodeChooser: выбор узла на world-карте. </p>
-<p>Сам ничего не рисует — говорит владельцу карты (WorldMapController) «жду выбор из этих узлов» и ждёт результат. Ровно с этого момента узлы и становятся доступными: до него (пока игрок не нажал «Продолжить») карту можно открыть, но гореть на ней нечему. </p>
-<p>Контракт петли (<code>ActRunner</code>) не меняется: петля просто просит выбрать узел и ждёт id, а чем он выбран — её не касается.</p>
+<div class="textblock"><p>Выбор узла на world-карте: зажигает достижимые узлы и ждёт, пока выбор не появится В СОСТОЯНИИ забега. </p>
+<p>Сам ничего не рисует и никого не слушает — ни клик, ни сеть.</p>
+<p><b>Ждём состояние, а не клик</b> (решение Макса 04.08.2026: «чисто, понятно и один источник правды»). Прежде клик по карте резолвил здешний <code>UniTaskCompletionSource</code> — то есть «куда мы идём» жило в стеке одной машины. Из этого следовало сразу три вещи: напарник не мог выбрать вовсе (будить чужой стек нечем), узлы у него не горели, а реконнект посреди узла не знал, где игроки находятся. </p>
+<p>Теперь клик — команда <code>ChooseNode</code>, применитель пишет <a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html#a4fe62c0bbf97d3598303004cac85addd" title="Узел, в который игроки решили войти и который ещё не пройден.">MapState.EnteringNodeId</a>, а мы ждём эту запись. Чей был клик, здесь неизвестно и неважно; лог команд по-прежнему воспроизводит забег целиком, потому что петля стала реакцией на состояние.</p>
+<p><b>Уже записанный выбор не ждём заново:</b> так забег переживает реконнект и перезапуск — игрок возвращается в тот узел, в который вошёл, а не на развилку перед ним.</p>
+<p>Контракт петли (<code>ActRunner</code>) не изменился: она просит выбрать узел и получает его.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa815d6e4ea291233f296c9fcb818fb51" name="aa815d6e4ea291233f296c9fcb818fb51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa815d6e4ea291233f296c9fcb818fb51">&#9670;&#160;</a></span>WorldMapNodeChooser()</h2>
+<a id="ad19cfe442a224f0ed7c2770e3586e23e" name="ad19cfe442a224f0ed7c2770e3586e23e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad19cfe442a224f0ed7c2770e3586e23e">&#9670;&#160;</a></span>WorldMapNodeChooser()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Guildmaster.Game.Flow.WorldMapNodeChooser.WorldMapNodeChooser </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html">WorldMapController</a>&#160;</td>
-          <td class="paramname"><em>map</em></td><td>)</td>
+          <td class="paramname"><em>map</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a>&#160;</td>
+          <td class="paramname"><em>runStates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html">Guildmaster::Guild::Commands::RunCommandBus</a>&#160;</td>
+          <td class="paramname"><em>bus</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

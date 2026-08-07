@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Body.SkeletalBodyVisual.TryGetBounds" name="Guildmaster.Presentation.Body.SkeletalBodyVisual.TryGetBounds">
+<area shape="rect" id="Node000001" title="Мировой AABB тела (у скелета — объединение частей). false — рисовать нечего." alt="" coords="315,5,543,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a060e337eafdcb25e62a2af83301a1b07" title="Колется КАЖДАЯ часть — общей палитрой и общим таймингом." alt="" coords="5,13,267,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="301,35,267,35,267,30,301,30"/>
+</map>

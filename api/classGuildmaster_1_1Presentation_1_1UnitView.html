@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Un
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.UnitView:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1UnitView__inherit__graph.svg" width="326" height="584"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1UnitView__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.UnitView:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1UnitView__coll__graph.svg" width="326" height="584"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1UnitView__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -144,9 +144,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a35ef0e1616d9ab179fb8fe677c698cb7" id="r_a35ef0e1616d9ab179fb8fe677c698cb7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a35ef0e1616d9ab179fb8fe677c698cb7">TryGetSwingProgress</a> (out float progress)</td></tr>
 <tr class="memdesc:a35ef0e1616d9ab179fb8fe677c698cb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Идёт ли сейчас взмах и насколько он прошёл (0..1) — окно между маркерами <code>StrikeStart</code> и <code>StrikeEnd</code>.  <br /></td></tr>
 <tr class="separator:a35ef0e1616d9ab179fb8fe677c698cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17d1d9891e0ed1df9e6210ca3a7e6c40" id="r_a17d1d9891e0ed1df9e6210ca3a7e6c40"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a17d1d9891e0ed1df9e6210ca3a7e6c40">TryGetStrikeOrigin</a> (out Vector3 world)</td></tr>
-<tr class="memdesc:a17d1d9891e0ed1df9e6210ca3a7e6c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Точка A текущего удара — где был кончик оружия, когда взмах начался.  <br /></td></tr>
-<tr class="separator:a17d1d9891e0ed1df9e6210ca3a7e6c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaae9579e0755d59a683648f18b7bf0b" id="r_adaae9579e0755d59a683648f18b7bf0b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#adaae9579e0755d59a683648f18b7bf0b">TryGetStrikeDirection</a> (out Vector2 dir)</td></tr>
+<tr class="memdesc:adaae9579e0755d59a683648f18b7bf0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">КУДА ДВИГАЛСЯ КОНЧИК ОРУЖИЯ на кадре контакта — направление, вдоль которого ложится форма.  <br /></td></tr>
+<tr class="separator:adaae9579e0755d59a683648f18b7bf0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53ffed423fa29321aa675485d904aa61" id="r_a53ffed423fa29321aa675485d904aa61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a53ffed423fa29321aa675485d904aa61">ScrubSwing</a> (float clipTime)</td></tr>
+<tr class="memdesc:a53ffed423fa29321aa675485d904aa61"><td class="mdescLeft">&#160;</td><td class="mdescRight">ПОСТАВИТЬ ВЗМАХ в заданное место клипа: запомнить, где он, и объявить его начавшимся, когда скраб дошёл до кадра <code>StrikeStart</code>.  <br /></td></tr>
+<tr class="separator:a53ffed423fa29321aa675485d904aa61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e3a4caf22ddb1d742236d37a8b3c81f" id="r_a2e3a4caf22ddb1d742236d37a8b3c81f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a2e3a4caf22ddb1d742236d37a8b3c81f">AddBodyCut</a> (Vector3 world, Vector2 worldDir, float hpDamageFrac, float hpDamage)</td></tr>
 <tr class="memdesc:a2e3a4caf22ddb1d742236d37a8b3c81f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Записать порез от состоявшегося удара: место в теле, направление вдоль удара, длина по весу.  <br /></td></tr>
 <tr class="separator:a2e3a4caf22ddb1d742236d37a8b3c81f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,6 +159,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4d85b5b40fb1674777d31c39f219c31e" id="r_a4d85b5b40fb1674777d31c39f219c31e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a4d85b5b40fb1674777d31c39f219c31e">TryGetSwingArc</a> (out Vector3 pivot, out Vector3 tip, out float progress)</td></tr>
 <tr class="memdesc:a4d85b5b40fb1674777d31c39f219c31e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Геометрия текущего взмаха для дуги: вокруг чего он идёт (плечо бьющей руки), где сейчас кончик оружия и насколько взмах прошёл.  <br /></td></tr>
 <tr class="separator:a4d85b5b40fb1674777d31c39f219c31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51401085a70b3463bbdd4d9436e0bba5" id="r_a51401085a70b3463bbdd4d9436e0bba5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a51401085a70b3463bbdd4d9436e0bba5">TryGetArcAnchor</a> (out Transform parent, out int sortingOrder)</td></tr>
+<tr class="memdesc:a51401085a70b3463bbdd4d9436e0bba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Место дуги внутри тела: «я меч, но чуть ниже меча».  <br /></td></tr>
+<tr class="separator:a51401085a70b3463bbdd4d9436e0bba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71bf3595629a28ee74da0bb420236a6f" id="r_a71bf3595629a28ee74da0bb420236a6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a71bf3595629a28ee74da0bb420236a6f">SetState</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html">Combat.Tape.UnitSnapshot</a> state, in <a class="el" href="structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html">Combat.Tape.UnitSnapshot</a> target, bool hasTarget)</td></tr>
 <tr class="memdesc:a71bf3595629a28ee74da0bb420236a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Положить состояние показываемого тика.  <br /></td></tr>
 <tr class="separator:a71bf3595629a28ee74da0bb420236a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,6 +171,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab1d490b6c2de7f2ebe3cf202410759e5" id="r_ab1d490b6c2de7f2ebe3cf202410759e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#ab1d490b6c2de7f2ebe3cf202410759e5">FigureContainsWorldPoint</a> (Vector2 world, float padding=0f)</td></tr>
 <tr class="memdesc:ab1d490b6c2de7f2ebe3cf202410759e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Попадает ли мировая точка в ЭТАЛОННЫЙ габарит фигуры — ту самую зелёную рамку гизмо (<code>_recommendedWidth</code> × <code>_recommendedHeight</code> от ног).  <br /></td></tr>
 <tr class="separator:ab1d490b6c2de7f2ebe3cf202410759e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a032fd3b50e1575d7c88b5a2787fc410d" id="r_a032fd3b50e1575d7c88b5a2787fc410d"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a032fd3b50e1575d7c88b5a2787fc410d">FigurePoint</a> (float u, float v)</td></tr>
+<tr class="memdesc:a032fd3b50e1575d7c88b5a2787fc410d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Точка ВНУТРИ эталонного габарита по нормированным координатам: <em>u</em>  — поперёк (0 левый край, 1 правый), <em>v</em>  — вдоль от ног (0 ступни, 1 макушка).  <br /></td></tr>
+<tr class="separator:a032fd3b50e1575d7c88b5a2787fc410d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe57ed3d19d980aa6c2a1303b47b52a8" id="r_abe57ed3d19d980aa6c2a1303b47b52a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Presentation_1_1UnitSilhouette.html">UnitSilhouette</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#abe57ed3d19d980aa6c2a1303b47b52a8">CaptureSilhouette</a> (Vector2 feet)</td></tr>
 <tr class="memdesc:abe57ed3d19d980aa6c2a1303b47b52a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Силуэт тела для drag-призрака расстановки (QA #9): части с их позами относительно точки ног <em>feet</em> .  <br /></td></tr>
 <tr class="separator:abe57ed3d19d980aa6c2a1303b47b52a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,6 +249,21 @@ Properties</h2></td></tr>
 <tr class="memitem:a444c356d8abdf2981ef9a8a556af8196" id="r_a444c356d8abdf2981ef9a8a556af8196"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a444c356d8abdf2981ef9a8a556af8196">HitPoint</a><code> [get]</code></td></tr>
 <tr class="memdesc:a444c356d8abdf2981ef9a8a556af8196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мировая точка попадания (куда прилетают снаряды/цифры урона), зеркалится по фейсингу. Фолбэк — позиция юнита.  <br /></td></tr>
 <tr class="separator:a444c356d8abdf2981ef9a8a556af8196"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28bda3315ff970910dc7f3055121d754" id="r_a28bda3315ff970910dc7f3055121d754"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a28bda3315ff970910dc7f3055121d754">HasAimAnchors</a><code> [get]</code></td></tr>
+<tr class="memdesc:a28bda3315ff970910dc7f3055121d754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Расставлены ли все три якоря зон: <code>false</code> — работает переходный расчёт по габариту.  <br /></td></tr>
+<tr class="separator:a28bda3315ff970910dc7f3055121d754"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cbe4581d59c1ed758829fe2bbcc66a4" id="r_a8cbe4581d59c1ed758829fe2bbcc66a4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a8cbe4581d59c1ed758829fe2bbcc66a4">FigureHeight</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8cbe4581d59c1ed758829fe2bbcc66a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Эталонная высота фигуры — знаменатель для радиусов зон, заданных долями роста.  <br /></td></tr>
+<tr class="separator:a8cbe4581d59c1ed758829fe2bbcc66a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8803dd7c730375af5abd120df3640c29" id="r_a8803dd7c730375af5abd120df3640c29"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a8803dd7c730375af5abd120df3640c29">AimHeadPoint</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8803dd7c730375af5abd120df3640c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мировой центр зоны головы.  <br /></td></tr>
+<tr class="separator:a8803dd7c730375af5abd120df3640c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1a0df6f6c29ef4b93a7ccdb604589e5" id="r_ad1a0df6f6c29ef4b93a7ccdb604589e5"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#ad1a0df6f6c29ef4b93a7ccdb604589e5">AimBodyPoint</a><code> [get]</code></td></tr>
+<tr class="memdesc:ad1a0df6f6c29ef4b93a7ccdb604589e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мировой центр зоны корпуса; фолбэк — грудь эталонного габарита.  <br /></td></tr>
+<tr class="separator:ad1a0df6f6c29ef4b93a7ccdb604589e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a272227e076b69f077f6e177dc92f0593" id="r_a272227e076b69f077f6e177dc92f0593"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a272227e076b69f077f6e177dc92f0593">AimLegsPoint</a><code> [get]</code></td></tr>
+<tr class="memdesc:a272227e076b69f077f6e177dc92f0593"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мировой центр зоны верха ног; фолбэк — бёдра эталонного габарита.  <br /></td></tr>
+<tr class="separator:a272227e076b69f077f6e177dc92f0593"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87f46e4f11ad58ab37a3df9b2c7bb1ca" id="r_a87f46e4f11ad58ab37a3df9b2c7bb1ca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a87f46e4f11ad58ab37a3df9b2c7bb1ca">UnitId</a><code> [get]</code></td></tr>
 <tr class="memdesc:a87f46e4f11ad58ab37a3df9b2c7bb1ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Слой сортировки тела — для размещения VFX относительно юнита.  <br /></td></tr>
 <tr class="separator:a87f46e4f11ad58ab37a3df9b2c7bb1ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -251,7 +275,7 @@ Properties</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>World-space визуальное представление RuntimeUnit. </p>
-<p>Интерполирует позицию между тиками (сим 30 Hz, рендер 60+ fps) и проигрывает анимацию через Animator — клипы берутся из UnitVisual сборкой AnimatorOverrideController поверх базового контроллера. Состояние выбирает чистый UnitAnimationSelector по наблюдаемому состоянию сима; тайминг Attack привязан к сим-windup (маркер клипа садится на тик удара), Run «прибит к земле». <code>animator.fireEvents=false</code> — маркеры это данные, а не колбэки. Анимация НИКОГДА не пишет в сим. Базовая реакция на удар (вспышка/сплющивание/локальный hitstop) — кодом на LitMotion (zero-alloc); UnityEvent-хуки оставлены пустым швом под точечный MMF. </p>
+<p>Интерполирует позицию между тиками (сим 30 Hz, рендер 60+ fps) и проигрывает анимацию через Animator — клипы берутся из AnimationArchetypeData сборкой AnimatorOverrideController поверх базового контроллера. Состояние выбирает чистый UnitAnimationSelector по наблюдаемому состоянию сима; тайминг Attack привязан к сим-windup (маркер клипа садится на тик удара), Run «прибит к земле». <code>animator.fireEvents=false</code> — маркеры это данные, а не колбэки. Анимация НИКОГДА не пишет в сим. Базовая реакция на удар (вспышка/сплющивание/локальный hitstop) — кодом на LitMotion (zero-alloc); UnityEvent-хуки оставлены пустым швом под точечный MMF. </p>
 <p>Само ТЕЛО вид держит за швом Body.IUnitBodyVisual и не знает, один это спрайт или полтора десятка частей: тинт, вспышку, голограмму, контур, сортировку, силуэт и осколки он адресует телу целиком. До шва всё это писалось в один SpriteRenderer, и у составного юнита доставалось одной части — вспыхивала грудь, разлетался торс. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2e3a4caf22ddb1d742236d37a8b3c81f" name="a2e3a4caf22ddb1d742236d37a8b3c81f"></a>
@@ -532,6 +556,45 @@ Here is the call graph for this function:</div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a032fd3b50e1575d7c88b5a2787fc410d" name="a032fd3b50e1575d7c88b5a2787fc410d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a032fd3b50e1575d7c88b5a2787fc410d">&#9670;&#160;</a></span>FigurePoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector3 Guildmaster.Presentation.UnitView.FigurePoint </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>u</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Точка ВНУТРИ эталонного габарита по нормированным координатам: <em>u</em>  — поперёк (0 левый край, 1 правый), <em>v</em>  — вдоль от ног (0 ступни, 1 макушка). </p>
+<p>Нужна показу удара: бить всегда в одну точку (HitPoint) значит получить восемь одинаковых вспышек в одном пикселе, когда цель окружили. Габарит взят тот же, что у зоны хватания, — он не зависит ни от кадра анимации, ни от прозрачных полей спрайта, поэтому область попадания совпадает с фигурой, которую видит игрок. </p>
 
 </div>
 </div>
@@ -1126,6 +1189,44 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a53ffed423fa29321aa675485d904aa61" name="a53ffed423fa29321aa675485d904aa61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53ffed423fa29321aa675485d904aa61">&#9670;&#160;</a></span>ScrubSwing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Presentation.UnitView.ScrubSwing </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>clipTime</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ПОСТАВИТЬ ВЗМАХ в заданное место клипа: запомнить, где он, и объявить его начавшимся, когда скраб дошёл до кадра <code>StrikeStart</code>. </p>
+<p>Единственный вход в состояние взмаха — его зовёт и боевой скраб по сим-тикам, и редакторный стенд.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">clipTime</td><td>Нормализованное время клипа атаки (0..1).</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Публичный вход существует ради стендов. Пока его не было, стенд решал «идёт ли взмах» сам — по маркерам клипа, — и это выглядело правдоподобно ровно до тех пор, пока не выяснилось, чего в такой копии нет: ни удержанного кадра финишера, ни режима потока, ни номера взмаха, по которому дуга заводится один раз за свинг. Показ, который «почти как в игре», хуже отсутствующего: по нему принимают решения. </p>
+<p>ПОЗУ здесь не ставим — её ставит вызывающий: в бою это <code>Animator.Play</code>, в редакторе он не тикает вовсе и позу раскладывают чтением кривых. Разные там механизмы, а не разная логика. </p>
+<p>«Этот взмах уже обслужен» проверяется НОМЕРОМ взмаха (_swingSerial), а не флагом, который кто-то обязан вовремя сбросить. Флаг и был причиной того, что дуга появлялась один раз за бой: сбрасывать его поручили переходу фазы, а фаза у быстрых китов не прерывается. </p>
+
+</div>
+</div>
 <a id="a5830ae9e37bc66039834c1397bd209f9" name="a5830ae9e37bc66039834c1397bd209f9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5830ae9e37bc66039834c1397bd209f9">&#9670;&#160;</a></span>SetContactDustHandler()</h2>
 
@@ -1376,8 +1477,41 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a17d1d9891e0ed1df9e6210ca3a7e6c40" name="a17d1d9891e0ed1df9e6210ca3a7e6c40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17d1d9891e0ed1df9e6210ca3a7e6c40">&#9670;&#160;</a></span>TryGetStrikeOrigin()</h2>
+<a id="a51401085a70b3463bbdd4d9436e0bba5" name="a51401085a70b3463bbdd4d9436e0bba5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51401085a70b3463bbdd4d9436e0bba5">&#9670;&#160;</a></span>TryGetArcAnchor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.UnitView.TryGetArcAnchor </td>
+          <td>(</td>
+          <td class="paramtype">out Transform&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out int&#160;</td>
+          <td class="paramname"><em>sortingOrder</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Место дуги внутри тела: «я меч, но чуть ниже меча». </p>
+<p>Ответ живёт в Effects.SwingArcGeometry — там же, где и остальная геометрия взмаха. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource.html#ab258c456b48335fe37a43471ec4b3f24">Guildmaster.Presentation.Effects.ISwingArcSource</a>.</p>
+
+</div>
+</div>
+<a id="adaae9579e0755d59a683648f18b7bf0b" name="adaae9579e0755d59a683648f18b7bf0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaae9579e0755d59a683648f18b7bf0b">&#9670;&#160;</a></span>TryGetStrikeDirection()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1386,10 +1520,10 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Guildmaster.Presentation.UnitView.TryGetStrikeOrigin </td>
+          <td class="memname">bool Guildmaster.Presentation.UnitView.TryGetStrikeDirection </td>
           <td>(</td>
-          <td class="paramtype">out Vector3&#160;</td>
-          <td class="paramname"><em>world</em></td><td>)</td>
+          <td class="paramtype">out Vector2&#160;</td>
+          <td class="paramname"><em>dir</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1400,9 +1534,21 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Точка A текущего удара — где был кончик оружия, когда взмах начался. </p>
-<p>Снимается один раз за свинг, на кадре <code>StrikeStart</code>, и живёт до конца цикла атаки.</p>
-<p>Снимок нужен именно потому, что форма рисуется ПОСЛЕ контакта: к этому моменту клинок уже ушёл дальше, и спросить «откуда он пришёл» будет не у кого. </p>
+<p>КУДА ДВИГАЛСЯ КОНЧИК ОРУЖИЯ на кадре контакта — направление, вдоль которого ложится форма. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>Единичное направление движения кончика в мире.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>false</code> — вести форму не от чего; причина уже названа в консоли.</dd></dl>
+<p>Отвечает ЗАМЕР КЛИПА, снятый один раз при инициализации вида, а не поза в момент вызова. Причина в порядке кадра: событие урона приходит внутри <code>Update</code> презентера, у которого <code>[DefaultExecutionOrder(-100)]</code>, — то есть до <code>Update</code> самих видов и заведомо до того, как Animator применит позу. Спросив кости в этот момент, мы читаем ПРОШЛЫЙ кадр: на медленной атаке это 15–20° ошибки, на быстрой — все 60–100°, потому что взмах в 200° там укладывается в два-три кадра показа. Ровно от этого дуга за клинком читает геометрию в <code>LateUpdate</code>, а форме и такой возможности нет — она рождается по событию. </p>
+<p>Замер хранится в координатах корня тела, поэтому поворот и зеркало приходят даром: <code>TransformDirection</code> учитывает знак масштаба, которым разворачивается юнит. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1UnitView_adaae9579e0755d59a683648f18b7bf0b_cgraph.svg" width="472" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -1453,7 +1599,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1UnitView_a4d85b5b40fb1674777d31c39f219c31e_cgraph.svg" width="471" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1UnitView_a4d85b5b40fb1674777d31c39f219c31e_cgraph.svg" width="471" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1533,6 +1679,79 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="ad1a0df6f6c29ef4b93a7ccdb604589e5" name="ad1a0df6f6c29ef4b93a7ccdb604589e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1a0df6f6c29ef4b93a7ccdb604589e5">&#9670;&#160;</a></span>AimBodyPoint</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector3 Guildmaster.Presentation.UnitView.AimBodyPoint</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Мировой центр зоны корпуса; фолбэк — грудь эталонного габарита. </p>
+
+</div>
+</div>
+<a id="a8803dd7c730375af5abd120df3640c29" name="a8803dd7c730375af5abd120df3640c29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8803dd7c730375af5abd120df3640c29">&#9670;&#160;</a></span>AimHeadPoint</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector3 Guildmaster.Presentation.UnitView.AimHeadPoint</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Мировой центр зоны головы. </p>
+<p>Якоря нет — берём долю эталонного габарита: зона удара обязана существовать даже у вида без рига, иначе показ удара останется без точки. </p>
+
+</div>
+</div>
+<a id="a272227e076b69f077f6e177dc92f0593" name="a272227e076b69f077f6e177dc92f0593"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a272227e076b69f077f6e177dc92f0593">&#9670;&#160;</a></span>AimLegsPoint</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector3 Guildmaster.Presentation.UnitView.AimLegsPoint</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Мировой центр зоны верха ног; фолбэк — бёдра эталонного габарита. </p>
+
+</div>
+</div>
 <a id="a6c2a38c9137a0fea7037b84660e95a81" name="a6c2a38c9137a0fea7037b84660e95a81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6c2a38c9137a0fea7037b84660e95a81">&#9670;&#160;</a></span>BodySortingLayerId</h2>
 
@@ -1601,6 +1820,54 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Мировая точка ног (касание земли). Фолбэк — позиция юнита. </p>
+
+</div>
+</div>
+<a id="a8cbe4581d59c1ed758829fe2bbcc66a4" name="a8cbe4581d59c1ed758829fe2bbcc66a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cbe4581d59c1ed758829fe2bbcc66a4">&#9670;&#160;</a></span>FigureHeight</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Presentation.UnitView.FigureHeight</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Эталонная высота фигуры — знаменатель для радиусов зон, заданных долями роста. </p>
+
+</div>
+</div>
+<a id="a28bda3315ff970910dc7f3055121d754" name="a28bda3315ff970910dc7f3055121d754"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28bda3315ff970910dc7f3055121d754">&#9670;&#160;</a></span>HasAimAnchors</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.UnitView.HasAimAnchors</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Расставлены ли все три якоря зон: <code>false</code> — работает переходный расчёт по габариту. </p>
 
 </div>
 </div>

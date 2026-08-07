@@ -1,5 +1,7 @@
 <map id="Guildmaster.Net.Tape.TapeIntakePump" name="Guildmaster.Net.Tape.TapeIntakePump">
-<area shape="rect" id="Node000001" title="Гостевая половина раздачи: раз в кадр просит хоста повторить чанки, которые не доехали." alt="" coords="5,119,193,219"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="63,5,135,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,84,102,119,97,119,97,84"/>
+<area shape="rect" id="Node000001" title="Гостевая половина раздачи: раз в кадр просит хоста повторить чанки, которые не доехали." alt="" coords="5,119,193,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="11,5,89,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="68,83,81,117,76,119,63,85"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="113,5,185,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="135,85,123,119,118,117,130,83"/>
 </map>

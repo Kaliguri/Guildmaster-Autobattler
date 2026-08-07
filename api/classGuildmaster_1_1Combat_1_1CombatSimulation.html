@@ -262,6 +262,9 @@ Events</h2></td></tr>
 <tr class="memitem:ae9f9904d224e85b35467387dace83479" id="r_ae9f9904d224e85b35467387dace83479"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae9f9904d224e85b35467387dace83479">OnHealed</a></td></tr>
 <tr class="memdesc:ae9f9904d224e85b35467387dace83479"><td class="mdescLeft">&#160;</td><td class="mdescRight">Юнит исцелён: источник, цель, фактически вылеченное HP (overheal не входит). Для presentation (хил-цифры).  <br /></td></tr>
 <tr class="separator:ae9f9904d224e85b35467387dace83479"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3e4c1ad8313fb3c13742a4977cd5dab" id="r_aa3e4c1ad8313fb3c13742a4977cd5dab"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#aa3e4c1ad8313fb3c13742a4977cd5dab">OnShieldAbsorbed</a></td></tr>
+<tr class="memdesc:aa3e4c1ad8313fb3c13742a4977cd5dab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Щит поглотил урон: АВТОР щита, носитель, поглощённое.  <br /></td></tr>
+<tr class="separator:aa3e4c1ad8313fb3c13742a4977cd5dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac488c96e1b4ab1abfff473a2fd0f1f8d" id="r_ac488c96e1b4ab1abfff473a2fd0f1f8d"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac488c96e1b4ab1abfff473a2fd0f1f8d">OnAttackEvaded</a></td></tr>
 <tr class="memdesc:ac488c96e1b4ab1abfff473a2fd0f1f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Входящий удар полностью отменён pre-damage реактивом («Изворотливость»). Для presentation («evade»). Урона нет.  <br /></td></tr>
 <tr class="separator:ac488c96e1b4ab1abfff473a2fd0f1f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -741,7 +744,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a6ef3762989e4fb8bf6e6f2229baa2b5c_icgraph.svg" width="530" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a6ef3762989e4fb8bf6e6f2229baa2b5c_icgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1917,6 +1920,23 @@ Here is the call graph for this function:</div>
 
 <p>Снаряд создан — презентация заводит вид (Bullet), держит ссылку на этот Projectile и следует за ним интерполяцией. </p>
 <p>При попадании сим ставит <code>Position</code> = точка удара и <code>IsAlive = false</code> в тот же тик, что и OnDamageDealt — вид снапается туда и гаснет, поэтому визуальный импакт и реальный эффект совпадают (без рассинхрона). </p>
+
+</div>
+</div>
+<a id="aa3e4c1ad8313fb3c13742a4977cd5dab" name="aa3e4c1ad8313fb3c13742a4977cd5dab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3e4c1ad8313fb3c13742a4977cd5dab">&#9670;&#160;</a></span>OnShieldAbsorbed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, float&gt; Guildmaster.Combat.CombatSimulation.OnShieldAbsorbed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Щит поглотил урон: АВТОР щита, носитель, поглощённое. </p>
+<p>Работа щитовика — то, что его щит принял на себя, и без этого события она неотличима от нуля: лечения он не делает, а урон приняла цель. </p>
 
 </div>
 </div>

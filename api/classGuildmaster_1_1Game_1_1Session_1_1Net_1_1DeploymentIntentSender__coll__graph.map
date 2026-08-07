@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.Net.DeploymentIntentSender" name="Guildmaster.Game.Session.Net.DeploymentIntentSender">
+<area shape="rect" id="Node000001" title="Намерение гостя, отправленное владельцу арены: «поставь этого бойца сюда»." alt="" coords="5,119,209,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="15,5,93,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,83,87,117,82,119,69,85"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="117,5,207,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="147,84,133,119,128,117,142,82"/>
+</map>

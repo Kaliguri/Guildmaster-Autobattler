@@ -1,7 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,45,84,70"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Activity_1_1ActivityInstaller.html" title="Состав Занятия — конечного мероприятия со своим состоянием и выходом в хаб: забег,..." alt="" coords="133,5,333,45"/>
-<area shape="poly" id="edge374_Node000000_Node000001" title=" " alt="" coords="97,46,133,40,134,45,98,51"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionInstaller.html" title="Состав Сессии — сеанса владения состоянием игры." alt="" coords="132,69,335,109"/>
-<area shape="poly" id="edge375_Node000000_Node000002" title=" " alt="" coords="98,64,132,69,131,75,97,69"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource.html" title="Источник точек фокуса экшн&#45;камеры (вики «16» §5): позиции сущностей, которые камера держит в кадре." alt="" coords="5,69,196,109"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Presentation_1_1CombatFocusPointSource.html" title="Боевой источник точек фокуса: позиции живых юнитов активной симуляции." alt="" coords="244,5,435,45"/>
+<area shape="poly" id="edge395_Node000000_Node000001" title=" " alt="" coords="188,63,264,43,265,48,190,68"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1EmptyFocusPointSource.html" title="Пустой источник точек фокуса: камера ни за кем не следует." alt="" coords="244,69,435,109"/>
+<area shape="poly" id="edge396_Node000000_Node000002" title=" " alt="" coords="210,87,244,87,244,92,210,92"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1TapeFocusPointSource.html" title="Источник точек фокуса из ЛЕНТЫ: позиции юнитов текущего кадра показа." alt="" coords="244,133,435,173"/>
+<area shape="poly" id="edge397_Node000000_Node000003" title=" " alt="" coords="190,110,265,131,264,136,188,116"/>
 </map>

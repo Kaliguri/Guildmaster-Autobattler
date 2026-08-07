@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.Effects.Components.PeriodicHealComponent Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
@@ -104,12 +105,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.PeriodicHealComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent__inherit__graph.svg" width="327" height="511"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent__inherit__graph.svg" width="327" height="531"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Effects.Components.PeriodicHealComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent__coll__graph.svg" width="327" height="511"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent__coll__graph.svg" width="327" height="531"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -120,6 +121,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab3158bd78dfed445de596e9197af17c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a7bef654ab74ddf60dcaae949880918" id="r_a9a7bef654ab74ddf60dcaae949880918"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html#a9a7bef654ab74ddf60dcaae949880918">OnTick</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a> ctx)</td></tr>
 <tr class="separator:a9a7bef654ab74ddf60dcaae949880918"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a0d6a318bfa1fd4e65287fee1d79d9d0c" id="r_a0d6a318bfa1fd4e65287fee1d79d9d0c"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html#a0d6a318bfa1fd4e65287fee1d79d9d0c">EffectiveStacks</a> (int stacks, float falloff)</td></tr>
+<tr class="memdesc:a0d6a318bfa1fd4e65287fee1d79d9d0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Во сколько «полных стаков» превращаются <em>stacks</em>  с учётом убывания: первый идёт целиком, каждый следующий — со скидкой.  <br /></td></tr>
+<tr class="separator:a0d6a318bfa1fd4e65287fee1d79d9d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -136,6 +143,50 @@ Properties</h2></td></tr>
 <p><b>Числа:</b> <code>_healPerSecond</code> — лечение В СЕКУНДУ (не за тик), масштабируется статами источника; <code>_interval</code> — как часто капает, секунды. Частота не меняет суммарный хил, только его дробность: реже, но крупнее — заметнее глазу и уязвимее к добиванию между тиками.</p>
 <p><b>Когда срабатывает:</b> каждые <code>_interval</code> секунд, пока эффект висит.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0d6a318bfa1fd4e65287fee1d79d9d0c" name="a0d6a318bfa1fd4e65287fee1d79d9d0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d6a318bfa1fd4e65287fee1d79d9d0c">&#9670;&#160;</a></span>EffectiveStacks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Guildmaster.Combat.Effects.Components.PeriodicHealComponent.EffectiveStacks </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>stacks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>falloff</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Во сколько «полных стаков» превращаются <em>stacks</em>  с учётом убывания: первый идёт целиком, каждый следующий — со скидкой. </p>
+<p>Считается циклом, а не степенью: стаков единицы, а <code>Mathf.Pow</code> в детерминированной симуляции — лишний источник расхождения между платформами. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent_a0d6a318bfa1fd4e65287fee1d79d9d0c_icgraph.svg" width="598" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="ab5ff06fddbf09ff1e29889b9d2e16a42" name="ab5ff06fddbf09ff1e29889b9d2e16a42"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab5ff06fddbf09ff1e29889b9d2e16a42">&#9670;&#160;</a></span>OnApply()</h2>
 
@@ -217,6 +268,11 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html#ab11c5b414ee471c4060ac310d45066aa">Guildmaster.Combat.Effects.IPeriodicComponent</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent_a9a7bef654ab74ddf60dcaae949880918_cgraph.svg" width="598" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

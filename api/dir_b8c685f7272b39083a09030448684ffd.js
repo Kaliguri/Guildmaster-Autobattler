@@ -8,6 +8,7 @@ var dir_b8c685f7272b39083a09030448684ffd =
     [ "IStageFrameSource.cs", "IStageFrameSource_8cs.html", "IStageFrameSource_8cs" ],
     [ "ProjectileSnapshot.cs", "ProjectileSnapshot_8cs.html", "ProjectileSnapshot_8cs" ],
     [ "StageFrameRouter.cs", "StageFrameRouter_8cs.html", "StageFrameRouter_8cs" ],
+    [ "TapeArenaUnits.cs", "TapeArenaUnits_8cs.html", "TapeArenaUnits_8cs" ],
     [ "TapeEvent.cs", "TapeEvent_8cs.html", "TapeEvent_8cs" ],
     [ "UnitIdentity.cs", "UnitIdentity_8cs.html", "UnitIdentity_8cs" ],
     [ "UnitSnapshot.cs", "UnitSnapshot_8cs.html", "UnitSnapshot_8cs" ],

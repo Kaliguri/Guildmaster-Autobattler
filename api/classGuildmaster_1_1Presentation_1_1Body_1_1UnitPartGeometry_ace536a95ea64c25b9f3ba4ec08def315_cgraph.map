@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Body.UnitPartGeometry.TryGetTip" name="Guildmaster.Presentation.Body.UnitPartGeometry.TryGetTip">
+<area shape="rect" id="Node000001" title="Мировая точка кончика части: угол спрайта, самый дальний от точки крепления." alt="" coords="5,13,244,53"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry.html#a1f34434d71231f4aceae98dfd44cdb27" title="ЧИСТЫЙ замер кончика по мешу спрайта, в локальных координатах рендерера: дальняя от точки крепления в..." alt="" coords="292,5,543,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="244,30,279,30,279,35,244,35"/>
+</map>

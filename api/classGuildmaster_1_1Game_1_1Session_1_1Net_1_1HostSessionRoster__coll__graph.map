@@ -1,9 +1,9 @@
 <map id="Guildmaster.Game.Session.Net.HostSessionRoster" name="Guildmaster.Game.Session.Net.HostSessionRoster">
-<area shape="rect" id="Node000001" title="Владельческая половина состава сеанса: ведёт список участников, раздаёт стороны и цвета,..." alt="" coords="152,179,347,379"/>
+<area shape="rect" id="Node000001" title="Владельческая половина состава сеанса: ведёт список участников, раздаёт стороны и цвета,..." alt="" coords="152,179,347,419"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html" title="Кто в сеансе и за какую сторону играет — единственный источник правды об этом." alt="" coords="5,5,187,131"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,141,178,177,174,180,148,144"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,141,172,177,167,180,143,144"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="211,35,288,101"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="252,115,252,179,247,179,247,115"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="252,114,252,178,247,178,247,114"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="312,35,403,101"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="337,114,303,180,298,177,332,112"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="339,114,308,180,303,177,334,112"/>
 </map>

@@ -103,22 +103,25 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Ef
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.Effects.SwingArcVfx:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx__inherit__graph.svg" width="194" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx__inherit__graph.svg" width="194" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.Effects.SwingArcVfx:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx__coll__graph.svg" width="194" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx__coll__graph.svg" width="194" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8ee7a3c1a1b5f8eb7567f885698bb93c" id="r_a8ee7a3c1a1b5f8eb7567f885698bb93c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html#a8ee7a3c1a1b5f8eb7567f885698bb93c">Begin</a> (<a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource.html">ISwingArcSource</a> source, Color colour, float innerShare, float tailBias, float fadeOutSeconds)</td></tr>
-<tr class="memdesc:a8ee7a3c1a1b5f8eb7567f885698bb93c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начать дугу этого взмаха.  <br /></td></tr>
-<tr class="separator:a8ee7a3c1a1b5f8eb7567f885698bb93c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3029be73aad3b173242a3c77a10b617" id="r_ab3029be73aad3b173242a3c77a10b617"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html#ab3029be73aad3b173242a3c77a10b617">Begin</a> (<a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource.html">ISwingArcSource</a> source, Color colour, float innerShare, float tailBias, float fadeOutSeconds, float trailSeconds, float maxSpanDeg, in <a class="el" href="structGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcStyle.html">SwingArcStyle</a> style)</td></tr>
+<tr class="memdesc:ab3029be73aad3b173242a3c77a10b617"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начать дугу этого взмаха.  <br /></td></tr>
+<tr class="separator:ab3029be73aad3b173242a3c77a10b617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f66c37e10a53ca4056251e9eb6df924" id="r_a7f66c37e10a53ca4056251e9eb6df924"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html#a7f66c37e10a53ca4056251e9eb6df924">Cancel</a> ()</td></tr>
 <tr class="memdesc:a7f66c37e10a53ca4056251e9eb6df924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оборвать дугу и погасить сразу (сброс боя).  <br /></td></tr>
 <tr class="separator:a7f66c37e10a53ca4056251e9eb6df924"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b33d239dca04168c5bda52e3614e95e" id="r_a3b33d239dca04168c5bda52e3614e95e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html#a3b33d239dca04168c5bda52e3614e95e">Tick</a> (float deltaTime)</td></tr>
+<tr class="memdesc:a3b33d239dca04168c5bda52e3614e95e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаг жизни дуги: подтянуться за клинком либо догореть.  <br /></td></tr>
+<tr class="separator:a3b33d239dca04168c5bda52e3614e95e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Дуга за клинком: сектор с центром в плече, заметающий УЖЕ пройденный угол. </p>
@@ -126,8 +129,8 @@ Public Member Functions</h2></td></tr>
 <p><b>Рисуется на каждом взмахе, включая промах и холостой замах.</b> Дуга сообщает только «клинок прошёл здесь» — это правда в любом исходе. Заявление «удар состоялся» несёт форма, и вот она на промахе не появляется вовсе. </p>
 <p><b>Почему не трейл клинка.</b> Трейл — более слабая версия того же (формулировка Макса): он тянется за кончиком ниткой, тогда как дуга показывает ЗАМЕТЁННЫЙ УГОЛ, то есть работу всей руки. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8ee7a3c1a1b5f8eb7567f885698bb93c" name="a8ee7a3c1a1b5f8eb7567f885698bb93c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ee7a3c1a1b5f8eb7567f885698bb93c">&#9670;&#160;</a></span>Begin()</h2>
+<a id="ab3029be73aad3b173242a3c77a10b617" name="ab3029be73aad3b173242a3c77a10b617"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3029be73aad3b173242a3c77a10b617">&#9670;&#160;</a></span>Begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -163,7 +166,25 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fadeOutSeconds</em>&#160;</td>
+          <td class="paramname"><em>fadeOutSeconds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>trailSeconds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>maxSpanDeg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcStyle.html">SwingArcStyle</a>&#160;</td>
+          <td class="paramname"><em>style</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -186,13 +207,19 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">innerShare</td><td>Доля радиуса, с которой начинается свечение: у самого плеча его нет.</td></tr>
     <tr><td class="paramname">tailBias</td><td>Насколько быстро гаснет хвост дуги.</td></tr>
     <tr><td class="paramname">fadeOutSeconds</td><td>Сколько дуга догорает после конца взмаха.</td></tr>
+    <tr><td class="paramname">style</td><td>Как след окрашен и какой он формы поперёк — см. SwingArcStyle.</td></tr>
   </table>
   </dd>
 </dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx_a8ee7a3c1a1b5f8eb7567f885698bb93c_cgraph.svg" width="476" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx_ab3029be73aad3b173242a3c77a10b617_cgraph.svg" width="476" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx_ab3029be73aad3b173242a3c77a10b617_icgraph.svg" width="470" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -221,6 +248,41 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Оборвать дугу и погасить сразу (сброс боя). </p>
+
+</div>
+</div>
+<a id="a3b33d239dca04168c5bda52e3614e95e" name="a3b33d239dca04168c5bda52e3614e95e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b33d239dca04168c5bda52e3614e95e">&#9670;&#160;</a></span>Tick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Presentation.Effects.SwingArcVfx.Tick </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>deltaTime</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Шаг жизни дуги: подтянуться за клинком либо догореть. </p>
+<p>Публичный и с ЯВНЫМ временем, потому что в редакторных стендах кадров нет — а показывать они обязаны ровно то же, что бой.</p>
+<p>До 06.08.2026 стенд вёл дугу сам: свой угол, своё затухание. Получалась вторая правда о взмахе, и она разошлась с боевой на первом же кадре — там нет ни разворота угла, ни клампа сектора, ни утекающего хвоста. Единственный способ показать «как в игре» — звать этот самый код. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx_a3b33d239dca04168c5bda52e3614e95e_cgraph.svg" width="474" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

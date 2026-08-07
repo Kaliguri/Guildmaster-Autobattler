@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Net_1_1Transport_1
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Net.Transport.LoopbackNetwork:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Transport_1_1LoopbackNetwork__coll__graph.svg" width="199" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Transport_1_1LoopbackNetwork__coll__graph.svg" width="199" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -112,6 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a312eacc08d3a122db8640741dc2d2b8d" id="r_a312eacc08d3a122db8640741dc2d2b8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1LoopbackNetwork.html#a312eacc08d3a122db8640741dc2d2b8d">CreateNode</a> ()</td></tr>
 <tr class="memdesc:a312eacc08d3a122db8640741dc2d2b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создать узел. Первый созданный становится хостом.  <br /></td></tr>
 <tr class="separator:a312eacc08d3a122db8640741dc2d2b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a698c34e22110e9bb116f4405d4617fa0" id="r_a698c34e22110e9bb116f4405d4617fa0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1LoopbackNetwork.html#a698c34e22110e9bb116f4405d4617fa0">CreateNode</a> (bool claimHost)</td></tr>
+<tr class="memdesc:a698c34e22110e9bb116f4405d4617fa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создать узел, при <em>claimHost</em>  — забрав себе номер хоста, даже если его уже кто-то занял: прежний владелец переезжает на следующий свободный.  <br /></td></tr>
+<tr class="separator:a698c34e22110e9bb116f4405d4617fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f0b318290f1026e289d8a5d5180e833" id="r_a8f0b318290f1026e289d8a5d5180e833"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1LoopbackNetwork.html#a8f0b318290f1026e289d8a5d5180e833">PollAll</a> ()</td></tr>
 <tr class="memdesc:a8f0b318290f1026e289d8a5d5180e833"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прокачать все узлы разом — типичный шаг теста «прошёл кадр у всех».  <br /></td></tr>
 <tr class="separator:a8f0b318290f1026e289d8a5d5180e833"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,7 +125,26 @@ Public Member Functions</h2></td></tr>
 <p>Порядок доставки строго FIFO на пару «отправитель → получатель», и это ЕДИНСТВЕННОЕ обещание loopback'а. Задержку, потерю, дубли и переупорядочивание добавляет ChaosTransport — иначе идеальный канал прятал бы ровно те баги, ради которых шов и делался. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a312eacc08d3a122db8640741dc2d2b8d" name="a312eacc08d3a122db8640741dc2d2b8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a312eacc08d3a122db8640741dc2d2b8d">&#9670;&#160;</a></span>CreateNode()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a312eacc08d3a122db8640741dc2d2b8d">&#9670;&#160;</a></span>CreateNode() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> Guildmaster.Net.Transport.LoopbackNetwork.CreateNode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Создать узел. Первый созданный становится хостом. </p>
+
+</div>
+</div>
+<a id="a698c34e22110e9bb116f4405d4617fa0" name="a698c34e22110e9bb116f4405d4617fa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a698c34e22110e9bb116f4405d4617fa0">&#9670;&#160;</a></span>CreateNode() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -133,7 +155,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> Guildmaster.Net.Transport.LoopbackNetwork.CreateNode </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>claimHost</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -144,7 +167,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Создать узел. Первый созданный становится хостом. </p>
+<p>Создать узел, при <em>claimHost</em>  — забрав себе номер хоста, даже если его уже кто-то занял: прежний владелец переезжает на следующий свободный. </p>
+<p><b>Зачем переселение.</b> В петле «хост» — это номер NetPeer.HostPeerId, и достаётся он тому, кто создал узел первым. В игре транспорт поднимается на старте, задолго до того, как станет известно, хозяин мы в этом сеансе или гость, — то есть игра неизбежно занимает номер хоста, даже когда играет гостем. Тогда её же «шлём хосту» уходило бы ей самой, и проверить гостевую половину коопа было бы нечем. </p>
+<p>Настоящая сеть решает это тем же способом: номера раздаёт хост в момент подключения (см. рукопожатие), а не сокет в момент создания. Здесь — та же логика, только выраженная одним переездом.</p>
 
 </div>
 </div>

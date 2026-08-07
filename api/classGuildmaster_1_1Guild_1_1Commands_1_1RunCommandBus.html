@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Guild_1_1Commands_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Guild.Commands.RunCommandBus:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus__inherit__graph.svg" width="224" height="578"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.Commands.RunCommandBus:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus__coll__graph.svg" width="224" height="578"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -138,6 +138,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6a0bf88de4e07b8649f0fb3e321278f0" id="r_a6a0bf88de4e07b8649f0fb3e321278f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html#a6a0bf88de4e07b8649f0fb3e321278f0">AwardBattleReward</a> ()</td></tr>
 <tr class="memdesc:a6a0bf88de4e07b8649f0fb3e321278f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начислить награду золотом за победу в бою (величина — из конфига).  <br /></td></tr>
 <tr class="separator:a6a0bf88de4e07b8649f0fb3e321278f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ab880f2805b7334d47e87387ebb2731" id="r_a6ab880f2805b7334d47e87387ebb2731"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html#a6ab880f2805b7334d47e87387ebb2731">ChooseNode</a> (string nodeId)</td></tr>
+<tr class="memdesc:a6ab880f2805b7334d47e87387ebb2731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Войти в узел карты.  <br /></td></tr>
+<tr class="separator:a6ab880f2805b7334d47e87387ebb2731"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ffb8b2d456e9a10ee20b5af5e63c013" id="r_a5ffb8b2d456e9a10ee20b5af5e63c013"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html#a5ffb8b2d456e9a10ee20b5af5e63c013">RequestSave</a> ()</td></tr>
 <tr class="memdesc:a5ffb8b2d456e9a10ee20b5af5e63c013"><td class="mdescLeft">&#160;</td><td class="mdescRight">Попросить владельца зафиксировать состояние на диск (точка автосейва).  <br /></td></tr>
 <tr class="separator:a5ffb8b2d456e9a10ee20b5af5e63c013"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -237,6 +240,29 @@ Events</h2></td></tr>
 <p>Начислить награду золотом за победу в бою (величина — из конфига). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#add483f1ba351d2329231ff1199187cd4">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
+
+</div>
+</div>
+<a id="a6ab880f2805b7334d47e87387ebb2731" name="a6ab880f2805b7334d47e87387ebb2731"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ab880f2805b7334d47e87387ebb2731">&#9670;&#160;</a></span>ChooseNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Guild.Commands.RunCommandBus.ChooseNode </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>nodeId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Войти в узел карты. </p>
+<p>Достижимость проверяет применитель — по СВОЕЙ копии состояния, а не по той, что видел нажавший: у напарника карта могла отстать на снимок. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ab6732bfb2439b78bc09fd74c361e2b82">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
 
 </div>
 </div>

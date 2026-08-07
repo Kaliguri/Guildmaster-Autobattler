@@ -2,6 +2,6 @@
 <area shape="rect" id="Node000001" title="Шов выбора следующего узла на карте (план [[act&#45;map&#45;run&#45;loop]] §3.2)." alt="" coords="120,5,327,85"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1AutoFirstNodeChooser.html" title="A2&#45;реализация: авто&#45;выбор первого доступного узла (без UI) — забег проходится headless по «верхнему» ..." alt="" coords="5,143,209,223"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,98,143,145,139,141,179,94"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1WorldMapNodeChooser.html" title="Фаза D&#45;реализация IMapNodeChooser: выбор узла на world&#45;карте." alt="" coords="234,133,445,233"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1WorldMapNodeChooser.html" title="Выбор узла на world&#45;карте: зажигает достижимые узлы и ждёт, пока выбор не появится В СОСТОЯНИИ забега..." alt="" coords="234,133,445,233"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="268,94,299,131,295,135,263,98"/>
 </map>

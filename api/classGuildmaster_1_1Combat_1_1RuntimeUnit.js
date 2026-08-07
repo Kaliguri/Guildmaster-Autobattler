@@ -70,6 +70,7 @@ var classGuildmaster_1_1Combat_1_1RuntimeUnit =
     [ "RecoveryTicks", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a23576b1527457888eb26cc63151ad400", null ],
     [ "ResourceGainedInWindow", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4c7552cf137b487ab8270bbe09caedd7", null ],
     [ "ResourceWindowStartTick", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa289c791c263d8cdcb1c552dd1b7e9b1", null ],
+    [ "RetreatTicks", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ac5965d0aae267049858f9b552b015f65", null ],
     [ "Revealed", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a009e12a717052dcb3403c43bfb2b6ab2", null ],
     [ "SprintRamp", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae517b9898a466d005a66443081e7d549", null ],
     [ "SprintWantTicks", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a0ebc247fb10d1480a2a7201ff7220fd1", null ],

@@ -1,5 +1,7 @@
 <map id="Guildmaster.UI.MenuRouter" name="Guildmaster.UI.MenuRouter">
-<area shape="rect" id="Node000001" title="Строит и проводит экраны забега из UXML&#45;шаблонов, а стек, видимость и глушение геймплейного ввода дел..." alt="" coords="5,119,261,559"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="88,5,179,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,85,136,119,131,119,131,85"/>
+<area shape="rect" id="Node000001" title="Строит и проводит экраны забега из UXML&#45;шаблонов, а стек, видимость и глушение геймплейного ввода дел..." alt="" coords="5,119,261,599"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="9,5,100,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="68,83,77,118,72,119,63,85"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence.html" title="Двор гильдии глазами того, кто его не рисует: открыт ли он и надо ли его открыть." alt="" coords="124,5,303,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="205,85,196,119,191,118,199,83"/>
 </map>

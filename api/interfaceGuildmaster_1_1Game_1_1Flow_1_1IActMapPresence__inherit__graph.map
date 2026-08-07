@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Flow.IActMapPresence" name="Guildmaster.Game.Flow.IActMapPresence">
-<area shape="rect" id="Node000001" title="Карта акта глазами того, кто её не рисует: показана ли она и надо ли её показать." alt="" coords="11,5,210,105"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html" title="ЕДИНЫЙ владелец показа карты акта в мире." alt="" coords="5,153,216,353"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,119,113,153,108,153,108,119"/>
+<area shape="rect" id="Node000001" title="Карта акта глазами того, кто её не рисует: показана ли она и надо ли её показать." alt="" coords="11,5,210,165"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html" title="ЕДИНЫЙ владелец показа карты акта в мире." alt="" coords="5,213,216,433"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,179,113,213,108,213,108,179"/>
 </map>

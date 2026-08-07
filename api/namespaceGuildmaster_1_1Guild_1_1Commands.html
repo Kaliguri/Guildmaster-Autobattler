@@ -129,6 +129,7 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Guild_1_1Commands.html#a23389335a81be52ef0362854f4a8cba5a101391afc2c0d5f640162e9f03f0cd04">RemoveRelic</a> = 4
 , <a class="el" href="namespaceGuildmaster_1_1Guild_1_1Commands.html#a23389335a81be52ef0362854f4a8cba5a6a9fe08d4fc1b26177ddcee4cf1452b0">AwardBattleReward</a> = 5
+, <a class="el" href="namespaceGuildmaster_1_1Guild_1_1Commands.html#a23389335a81be52ef0362854f4a8cba5a976b009c4e0b979a2f6f7b04fcd9f752">ChooseNode</a> = 6
 <br />
  }</td></tr>
 <tr class="memdesc:a23389335a81be52ef0362854f4a8cba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что команда делает с забегом.  <a href="namespaceGuildmaster_1_1Guild_1_1Commands.html#a23389335a81be52ef0362854f4a8cba5">More...</a><br /></td></tr>
@@ -160,6 +161,10 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a23389335a81be52ef0362854f4a8cba5a101391afc2c0d5f640162e9f03f0cd04" name="a23389335a81be52ef0362854f4a8cba5a101391afc2c0d5f640162e9f03f0cd04"></a>RemoveRelic&#160;</td><td class="fielddoc"><p>Убрать один экземпляр реликвии из запаса: <code>Text</code> — её id. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a23389335a81be52ef0362854f4a8cba5a6a9fe08d4fc1b26177ddcee4cf1452b0" name="a23389335a81be52ef0362854f4a8cba5a6a9fe08d4fc1b26177ddcee4cf1452b0"></a>AwardBattleReward&#160;</td><td class="fielddoc"><p>Начислить награду золотом за победу в бою; величина живёт в конфиге, не в команде. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a23389335a81be52ef0362854f4a8cba5a976b009c4e0b979a2f6f7b04fcd9f752" name="a23389335a81be52ef0362854f4a8cba5a976b009c4e0b979a2f6f7b04fcd9f752"></a>ChooseNode&#160;</td><td class="fielddoc"><p>Войти в узел карты: <code>Text</code> — его id. </p>
+<p>Достижимость проверяет применитель.</p>
+<p>Выбор узла — команда, а не отдельный сетевой канал (решение Макса 04.08.2026). Он и правда меняет durable-состояние: <code>MapState.EnteringNodeId</code> переживает выход из игры, а петля акта на него реагирует. Отсюда и то, ради чего это делалось: клик хозяина и клик напарника приходят одной дорогой, права однажды встанут одним фильтром в шине, а лог по-прежнему воспроизводит забег целиком. </p>
 </td></tr>
 </table>
 

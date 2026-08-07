@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1Components_1
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1UI_1_1Components_1_1PlateButton-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.UI.Components.PlateButton Class Reference</div></div>
@@ -104,12 +105,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1Components_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.UI.Components.PlateButton:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1PlateButton__inherit__graph.svg" width="212" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1PlateButton__inherit__graph.svg" width="212" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.Components.PlateButton:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1PlateButton__coll__graph.svg" width="212" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1PlateButton__coll__graph.svg" width="212" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -119,6 +120,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3e0812d660f74b16c9b3e64fb59af491"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6b3253edc16eb1df9bbcc141ffaf88f" id="r_ad6b3253edc16eb1df9bbcc141ffaf88f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1PlateButton.html#ad6b3253edc16eb1df9bbcc141ffaf88f">PlateButton</a> ()</td></tr>
 <tr class="separator:ad6b3253edc16eb1df9bbcc141ffaf88f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a52a0de9d2b1c4388a4a580e237ee1602" id="r_a52a0de9d2b1c4388a4a580e237ee1602"><td class="memItemLeft" align="right" valign="top">static Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1PlateButton.html#a52a0de9d2b1c4388a4a580e237ee1602">VertexColor</a> (Color c)</td></tr>
+<tr class="memdesc:a52a0de9d2b1c4388a4a580e237ee1602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цвет для ВЕРШИНЫ — отдаётся КАК ЕСТЬ, без ручного перевода в линейное пространство.  <br /></td></tr>
+<tr class="separator:a52a0de9d2b1c4388a4a580e237ee1602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -187,6 +194,38 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a52a0de9d2b1c4388a4a580e237ee1602" name="a52a0de9d2b1c4388a4a580e237ee1602"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52a0de9d2b1c4388a4a580e237ee1602">&#9670;&#160;</a></span>VertexColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Color Guildmaster.UI.Components.PlateButton.VertexColor </td>
+          <td>(</td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Цвет для ВЕРШИНЫ — отдаётся КАК ЕСТЬ, без ручного перевода в линейное пространство. </p>
+<p>Шейдер UI Toolkit конвертирует вершинный tint сам, как это делает Canvas у uGUI. Ручной <code>c.linear</code> поверх этого — вторая конверсия подряд, и она душит цвет примерно втрое: заданное <code>rgb(44,140,146)</code> приходило на экран как <code>rgb(6,62,69)</code>.</p>
+<p><b>Замер 05.08.2026</b> (пиксели кадра, не глаз): с ручной конверсией поле кнопки давало 6,62,69; при подаче предкомпенсированного <code>c.gamma</code> — 41,133,139, то есть ровно заданное. Отсюда вывод: конверсий должно быть ноль. Предыдущая правка (04.08) добавила <code>.linear</code> по впечатлению «кнопка светлее заданной» и как раз СОЗДАЛА жалобу «кнопки слишком тёмные», с которой начался разбор 05.08.</p>
+<p><b>Цвет проверяется замером пикселя, а не взглядом на скрин.</b> На тёмной гамме разница между «задано» и «нарисовано» читается как «дизайнерское решение», а не как дефект, и живёт месяцами.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="a1d8bb5f33470fd526a6f40418d2481cc" name="a1d8bb5f33470fd526a6f40418d2481cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1d8bb5f33470fd526a6f40418d2481cc">&#9670;&#160;</a></span>text</h2>
@@ -209,7 +248,8 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Подпись кнопки. </p>
-<p>Перенаправлена в дочерний Label — база остаётся с пустым текстом и ничего не рисует (см. «почему текст в ребёнке» в описании класса). </p>
+<p>Перенаправлена в дочерний Label — база остаётся с пустым текстом и ничего не рисует (см. «почему текст в ребёнке» в описании класса).</p>
+<p>Отдаёт ИСХОДНУЮ строку, а не показанную: регистр — это вид, задаваемый USS-свойством <code>&ndash;gm-text-case</code> (см. UiTextCase), и код, читающий подпись, должен получить то, что положил. Иначе сравнение вида <code>button.text == "Отмена"</code> ломалось бы от одной строчки в теме. </p>
 
 </div>
 </div>

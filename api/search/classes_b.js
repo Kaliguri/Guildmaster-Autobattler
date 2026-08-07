@@ -6,5 +6,6 @@ var searchData=
   ['localestartup_3',['LocaleStartup',['../classGuildmaster_1_1Game_1_1Services_1_1LocaleStartup.html',1,'Guildmaster::Game::Services']]],
   ['localizationservice_4',['LocalizationService',['../classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html',1,'Guildmaster::Game::Services']]],
   ['localjsonfilesaveservice_5',['LocalJsonFileSaveService',['../classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html',1,'Guildmaster::Game::Services']]],
-  ['loopbacknetwork_6',['LoopbackNetwork',['../classGuildmaster_1_1Net_1_1Transport_1_1LoopbackNetwork.html',1,'Guildmaster::Net::Transport']]]
+  ['loopbacklobby_6',['LoopbackLobby',['../classGuildmaster_1_1Net_1_1Session_1_1LoopbackLobby.html',1,'Guildmaster::Net::Session']]],
+  ['loopbacknetwork_7',['LoopbackNetwork',['../classGuildmaster_1_1Net_1_1Transport_1_1LoopbackNetwork.html',1,'Guildmaster::Net::Transport']]]
 ];

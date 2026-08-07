@@ -1,5 +1,7 @@
 <map id="Guildmaster.Net.Session.SteamLobbyService" name="Guildmaster.Net.Session.SteamLobbyService">
-<area shape="rect" id="Node000001" title="Лобби Steam: создать, позвать друга оверлеем, узнать, что нас позвали." alt="" coords="5,119,184,339"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="49,5,140,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,84,97,119,92,119,92,84"/>
+<area shape="rect" id="Node000001" title="Лобби Steam: создать, позвать друга оверлеем, узнать, что нас позвали." alt="" coords="79,199,257,419"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby.html" title="Откуда берутся напарники: комната, приглашение и ответ на чужое приглашение." alt="" coords="5,5,176,151"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,163,134,198,129,199,117,164"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="200,45,291,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="233,125,207,199,202,198,228,123"/>
 </map>

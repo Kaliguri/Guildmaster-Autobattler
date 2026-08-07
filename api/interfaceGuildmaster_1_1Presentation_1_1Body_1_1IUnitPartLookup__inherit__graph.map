@@ -1,5 +1,5 @@
 <map id="Guildmaster.Presentation.Body.IUnitPartLookup" name="Guildmaster.Presentation.Body.IUnitPartLookup">
 <area shape="rect" id="Node000001" title="Запрос к частям тела юнита: «что у тебя в правой руке», «дай щит», «дай голову», «дай правую ногу»,..." alt="" coords="5,5,188,165"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html" title="Реестр частей тела, выведенный ИЗ КОНВЕНЦИИ РИГА: кто чем является, читается из иерархии (RigNaming),..." alt="" coords="5,213,188,433"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html" title="Реестр частей тела, выведенный ИЗ КОНВЕНЦИИ РИГА: кто чем является, читается из иерархии (RigNaming),..." alt="" coords="5,213,188,413"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,179,99,213,94,213,94,179"/>
 </map>

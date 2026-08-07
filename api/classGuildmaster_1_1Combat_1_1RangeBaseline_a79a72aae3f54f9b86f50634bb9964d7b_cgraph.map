@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.RangeBaseline.Apply" name="Guildmaster.Combat.RangeBaseline.Apply">
+<area shape="rect" id="Node000001" title="Добавить дистанцию ступени отдельной группой." alt="" coords="5,37,207,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ae97b806719021d19ff582f3cc9aee131" title="Добавить группу модификаторов от source ." alt="" coords="263,5,461,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,42,249,37,250,42,207,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#a50426c767b4309084ff22e533b915db2" title="Дистанция ступени в мировых единицах." alt="" coords="255,69,469,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,67,241,72,241,77,206,73"/>
+</map>

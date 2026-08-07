@@ -108,16 +108,16 @@ Collaboration diagram for Guildmaster.Presentation.ShatterMesh:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a95e91979b68518905199d0111baf9df8" id="r_a95e91979b68518905199d0111baf9df8"><td class="memItemLeft" align="right" valign="top">static Mesh&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ShatterMesh.html#a95e91979b68518905199d0111baf9df8">Build</a> (Vector2 size, Rect uvRect, Vector2 regionPixels, int blockPixels)</td></tr>
-<tr class="memdesc:a95e91979b68518905199d0111baf9df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать блочный меш размером <em>size</em>  (лок.  <br /></td></tr>
-<tr class="separator:a95e91979b68518905199d0111baf9df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ad03ed761326c6478b36bd26d7d426d" id="r_a2ad03ed761326c6478b36bd26d7d426d"><td class="memItemLeft" align="right" valign="top">static Mesh&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ShatterMesh.html#a2ad03ed761326c6478b36bd26d7d426d">Build</a> (Vector2 size, Rect uvRect, Vector2 regionPixels, float shardSize)</td></tr>
+<tr class="memdesc:a2ad03ed761326c6478b36bd26d7d426d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать блочный меш размером <em>size</em>  (лок.  <br /></td></tr>
+<tr class="separator:a2ad03ed761326c6478b36bd26d7d426d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Строит меш «пиксельного» разлёта спрайта (DeathShatter): видимая область режется на БЛОЧНЫЕ куски-квады разных размеров, выровненные по пиксель-сетке исходного спрайта (границы блоков падают на границы исходных пикселей → чанки выглядят как настоящие куски пиксель-персонажа, а не вектор-слайсы). </p>
 <p>Каждый блок — жёсткий квад (4 вершины, все несут ОДИН центроид блока в uv2 и ОДИН набор случайных параметров в color), поэтому летит и вращается как единое целое. UV0 мапится на тесную область текстуры (<em>uvRect</em> ). Меш строится под смерть и уничтожается с эффектом. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a95e91979b68518905199d0111baf9df8" name="a95e91979b68518905199d0111baf9df8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95e91979b68518905199d0111baf9df8">&#9670;&#160;</a></span>Build()</h2>
+<a id="a2ad03ed761326c6478b36bd26d7d426d" name="a2ad03ed761326c6478b36bd26d7d426d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ad03ed761326c6478b36bd26d7d426d">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -146,8 +146,8 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>blockPixels</em>&#160;</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>shardSize</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -163,11 +163,12 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Собрать блочный меш размером <em>size</em>  (лок. </p>
-<p>ед., центр в 0), UV в области <em>uvRect</em> . <em>regionPixels</em>  — размер области в ИСХОДНЫХ пикселях (для снапа границ), <em>blockPixels</em>  — целевой размер чанка в пикселях. </p>
+<p>ед., центр в 0), UV в области <em>uvRect</em> . <em>regionPixels</em>  — размер области в ИСХОДНЫХ пикселях (границы чанков снапятся на его пиксель-сетку), <em>shardSize</em>  — целевой размер чанка В ТЕХ ЖЕ локальных единицах, что <em>size</em> .</p>
+<p>Размер чанка задаётся ДЛИНОЙ, а не числом исходных пикселей (2026-08-04). Пиксель исходника — не мера длины: у покадрового бестиария спрайт юнита целиком занимает 48 px, у частей скелетного «сторибука» одна кисть — 112 px при PPU 1000. Один и тот же «чанк в 6 px» давал там кусок в восьмую часть тела, а здесь — крошку в 0.006 мировых единиц, и шестнадцать частей рассыпались на десяток тысяч пылинок. Длина одинаково читается на любом разрешении арта. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1ShatterMesh_a95e91979b68518905199d0111baf9df8_icgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1ShatterMesh_a2ad03ed761326c6478b36bd26d7d426d_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

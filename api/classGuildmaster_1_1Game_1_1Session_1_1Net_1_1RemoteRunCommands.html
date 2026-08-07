@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Session_1_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Session.Net.RemoteRunCommands:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands__inherit__graph.svg" width="206" height="538"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands__inherit__graph.svg" width="206" height="578"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Session.Net.RemoteRunCommands:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands__coll__graph.svg" width="206" height="538"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands__coll__graph.svg" width="206" height="578"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -130,6 +130,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa9ed1ccf238be48fb5354fda3f2b5bd1" id="r_aa9ed1ccf238be48fb5354fda3f2b5bd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#aa9ed1ccf238be48fb5354fda3f2b5bd1">AwardBattleReward</a> ()</td></tr>
 <tr class="memdesc:aa9ed1ccf238be48fb5354fda3f2b5bd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начислить награду золотом за победу в бою (величина — из конфига).  <br /></td></tr>
 <tr class="separator:aa9ed1ccf238be48fb5354fda3f2b5bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73fba3ac639c61c58c00278ca84b4557" id="r_a73fba3ac639c61c58c00278ca84b4557"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#a73fba3ac639c61c58c00278ca84b4557">ChooseNode</a> (string nodeId)</td></tr>
+<tr class="memdesc:a73fba3ac639c61c58c00278ca84b4557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Войти в узел карты.  <br /></td></tr>
+<tr class="separator:a73fba3ac639c61c58c00278ca84b4557"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0c3a3a856db765ea7b749267c4946bc" id="r_ad0c3a3a856db765ea7b749267c4946bc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc">RequestSave</a> ()</td></tr>
 <tr class="memdesc:ad0c3a3a856db765ea7b749267c4946bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва.  <br /></td></tr>
 <tr class="separator:ad0c3a3a856db765ea7b749267c4946bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,6 +213,29 @@ Properties</h2></td></tr>
 <p>Начислить награду золотом за победу в бою (величина — из конфига). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#add483f1ba351d2329231ff1199187cd4">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
+
+</div>
+</div>
+<a id="a73fba3ac639c61c58c00278ca84b4557" name="a73fba3ac639c61c58c00278ca84b4557"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73fba3ac639c61c58c00278ca84b4557">&#9670;&#160;</a></span>ChooseNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Session.Net.RemoteRunCommands.ChooseNode </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>nodeId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Войти в узел карты. </p>
+<p>Достижимость проверяет применитель — по СВОЕЙ копии состояния, а не по той, что видел нажавший: у напарника карта могла отстать на снимок. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ab6732bfb2439b78bc09fd74c361e2b82">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
 
 </div>
 </div>

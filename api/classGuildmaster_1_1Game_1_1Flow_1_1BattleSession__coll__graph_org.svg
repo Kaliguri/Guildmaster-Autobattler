@@ -52,7 +52,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html" target="_top" xlink:title="Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (CombatLifetimeScope,...">
+<g id="a_Node000002"><a xlink:href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html" target="_top" xlink:title="Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (BattleScope,...">
 <polygon fill="white" stroke="transparent" points="142,-475 18,-475 18,-276 142,-276 142,-475"/>
 <text text-anchor="start" x="45" y="-462.5" font-family="Helvetica,sans-Serif" font-size="10.00">IBattleSession</text>
 <text text-anchor="start" x="22" y="-447.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>

@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Net_1_1Tape_1_1Tap
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#events">Events</a> &#124;
 <a href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Net.Tape.TapeStreamer Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -105,12 +106,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Net_1_1Tape_1_1Tap
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Net.Tape.TapeStreamer:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer__inherit__graph.svg" width="199" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer__inherit__graph.svg" width="199" height="444"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Net.Tape.TapeStreamer:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer__coll__graph.svg" width="199" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer__coll__graph.svg" width="199" height="444"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -123,18 +124,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a682ff41d07fb94e16aca03b6880af4f9" id="r_a682ff41d07fb94e16aca03b6880af4f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a682ff41d07fb94e16aca03b6880af4f9">Flush</a> (int readyThroughTick)</td></tr>
 <tr class="memdesc:a682ff41d07fb94e16aca03b6880af4f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Дослать хвост неполным чанком — конец боя и любой момент, после которого продолжения не будет.  <br /></td></tr>
 <tr class="separator:a682ff41d07fb94e16aca03b6880af4f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a444e68231450a6366e2134ecd56e6cb8" id="r_a444e68231450a6366e2134ecd56e6cb8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a444e68231450a6366e2134ecd56e6cb8">Resend</a> (int tick)</td></tr>
+<tr class="memdesc:a444e68231450a6366e2134ecd56e6cb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Переслать кадр покоя — состояние арены, пока симуляция стоит (расстановка, площадка).  <br /></td></tr>
+<tr class="separator:a444e68231450a6366e2134ecd56e6cb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dbb2edad219946e09f688d0733774d3" id="r_a3dbb2edad219946e09f688d0733774d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a3dbb2edad219946e09f688d0733774d3">Reset</a> ()</td></tr>
 <tr class="memdesc:a3dbb2edad219946e09f688d0733774d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Новый бой: нумерация тиков и чанков начинается заново, история сбрасывается.  <br /></td></tr>
 <tr class="separator:a3dbb2edad219946e09f688d0733774d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f15a56f7acd2551e84529df7c186cb3" id="r_a4f15a56f7acd2551e84529df7c186cb3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a4f15a56f7acd2551e84529df7c186cb3">Dispose</a> ()</td></tr>
 <tr class="memdesc:a4f15a56f7acd2551e84529df7c186cb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отписаться от транспорта. Зовётся вместе с концом сессии.  <br /></td></tr>
 <tr class="separator:a4f15a56f7acd2551e84529df7c186cb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5ec479764fb0a27e5ca8b5113901651" id="r_ad5ec479764fb0a27e5ca8b5113901651"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#ad5ec479764fb0a27e5ca8b5113901651">PumpBackfill</a> (int maxPerCall=<a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a784c090ad0d4f1a2215a10eef49e09b5">BackfillChunksPerCall</a>)</td></tr>
+<tr class="memdesc:ad5ec479764fb0a27e5ca8b5113901651"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отдать очередную порцию догрузки — бой с начала тому, кто подключился посреди него.  <br /></td></tr>
+<tr class="separator:ad5ec479764fb0a27e5ca8b5113901651"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:af9b75e72cade91433b042c7ab51f4246" id="r_af9b75e72cade91433b042c7ab51f4246"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#af9b75e72cade91433b042c7ab51f4246">DefaultHistoryChunks</a> = 32</td></tr>
+<tr class="memitem:af9b75e72cade91433b042c7ab51f4246" id="r_af9b75e72cade91433b042c7ab51f4246"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#af9b75e72cade91433b042c7ab51f4246">DefaultHistoryChunks</a> = <a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a915a0796b8e267c17bd8840817e23227">KeepWholeBattle</a></td></tr>
 <tr class="memdesc:af9b75e72cade91433b042c7ab51f4246"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько отправленных чанков держим на случай запроса повтора.  <br /></td></tr>
 <tr class="separator:af9b75e72cade91433b042c7ab51f4246"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a915a0796b8e267c17bd8840817e23227" id="r_a915a0796b8e267c17bd8840817e23227"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a915a0796b8e267c17bd8840817e23227">KeepWholeBattle</a> = int.MaxValue</td></tr>
+<tr class="memdesc:a915a0796b8e267c17bd8840817e23227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Не выбрасывать ничего: история равна бою целиком.  <br /></td></tr>
+<tr class="separator:a915a0796b8e267c17bd8840817e23227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a784c090ad0d4f1a2215a10eef49e09b5" id="r_a784c090ad0d4f1a2215a10eef49e09b5"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a784c090ad0d4f1a2215a10eef49e09b5">BackfillChunksPerCall</a> = 8</td></tr>
+<tr class="memdesc:a784c090ad0d4f1a2215a10eef49e09b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">За один вызов — столько чанков, то есть примерно восемь секунд боя за кадр.  <br /></td></tr>
+<tr class="separator:a784c090ad0d4f1a2215a10eef49e09b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -147,6 +160,15 @@ Properties</h2></td></tr>
 <tr class="memitem:a0bd76dec8e595f59778398dae69bf809" id="r_a0bd76dec8e595f59778398dae69bf809"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a0bd76dec8e595f59778398dae69bf809">ResentChunkCount</a><code> [get]</code></td></tr>
 <tr class="memdesc:a0bd76dec8e595f59778398dae69bf809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько повторов отдано по запросу — метрика качества канала, видна в dev-панели.  <br /></td></tr>
 <tr class="separator:a0bd76dec8e595f59778398dae69bf809"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a921bb87ce70bd44c30e65930e6df0c86" id="r_a921bb87ce70bd44c30e65930e6df0c86"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a921bb87ce70bd44c30e65930e6df0c86">BackfillRemaining</a><code> [get]</code></td></tr>
+<tr class="memdesc:a921bb87ce70bd44c30e65930e6df0c86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько чанков догрузки ещё не ушло — по нему видно, ждать ли гостя.  <br /></td></tr>
+<tr class="separator:a921bb87ce70bd44c30e65930e6df0c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
+Events</h2></td></tr>
+<tr class="memitem:a4fda274a4e3d5062c2a60ab93ef7e68e" id="r_a4fda274a4e3d5062c2a60ab93ef7e68e"><td class="memItemLeft" align="right" valign="top">Action&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a4fda274a4e3d5062c2a60ab93ef7e68e">WholeBattleRequested</a></td></tr>
+<tr class="memdesc:a4fda274a4e3d5062c2a60ab93ef7e68e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кто-то попросил бой с начала: его номер пира и сколько чанков ему предстоит получить.  <br /></td></tr>
+<tr class="separator:a4fda274a4e3d5062c2a60ab93ef7e68e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Хостовая раздача боевой ленты: режет готовые тики на чанки, шлёт их гостям и повторяет потерянные по запросу. </p>
@@ -232,9 +254,6 @@ Here is the call graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.Net.Tape.TapeStreamer.Flush </td>
@@ -244,20 +263,10 @@ Here is the call graph for this function:</div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Дослать хвост неполным чанком — конец боя и любой момент, после которого продолжения не будет. </p>
 <p>Без него последние тики боя (исход в их числе) остались бы у хоста. </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer_a682ff41d07fb94e16aca03b6880af4f9_cgraph.svg" width="451" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -266,15 +275,42 @@ Here is the call graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.Net.Tape.TapeStreamer.Pump </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>readyThroughTick</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Отправить всё, что уже досчитано целыми чанками. </p>
+<p>Хвост короче размера чанка остаётся ждать: неполный чанк уезжает только через Flush, иначе конец боя дробился бы на однотиковые посылки.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">readyThroughTick</td><td>Последний тик, который гостям уже можно видеть, включительно.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad5ec479764fb0a27e5ca8b5113901651" name="ad5ec479764fb0a27e5ca8b5113901651"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5ec479764fb0a27e5ca8b5113901651">&#9670;&#160;</a></span>PumpBackfill()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Net.Tape.TapeStreamer.PumpBackfill </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>maxPerCall</em> = <code><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a784c090ad0d4f1a2215a10eef49e09b5">BackfillChunksPerCall</a></code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -285,19 +321,34 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Отправить всё, что уже досчитано целыми чанками. </p>
-<p>Хвост короче _ticksPerChunk остаётся ждать: неполный чанк уезжает только через Flush, иначе конец боя дробился бы на однотиковые посылки.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">readyThroughTick</td><td>Последний тик, который гостям уже можно видеть, включительно.</td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Отдать очередную порцию догрузки — бой с начала тому, кто подключился посреди него. </p>
+<p><b>Порциями, а не залпом.</b> Бой на три минуты — это под две сотни надёжных сообщений, и высыпать их в очередь Steam одним кадром значит выбрать худший момент: ровно этот, когда соединение только поднялось. Отдаём по нескольку за кадр — показ у всех на паузе, спешить некуда. </p>
 <div class="dynheader">
-Here is the caller graph for this function:</div>
+Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer_adc39ea6a74ca9c0127923feb0a088a88_icgraph.svg" width="451" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer_ad5ec479764fb0a27e5ca8b5113901651_cgraph.svg" width="508" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a444e68231450a6366e2134ecd56e6cb8" name="a444e68231450a6366e2134ecd56e6cb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a444e68231450a6366e2134ecd56e6cb8">&#9670;&#160;</a></span>Resend()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Net.Tape.TapeStreamer.Resend </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tick</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Переслать кадр покоя — состояние арены, пока симуляция стоит (расстановка, площадка). </p>
+<p>Границу отправленного не двигает: см. TapeChunkPump.Resend. </p>
 
 </div>
 </div>
@@ -329,6 +380,30 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a784c090ad0d4f1a2215a10eef49e09b5" name="a784c090ad0d4f1a2215a10eef49e09b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a784c090ad0d4f1a2215a10eef49e09b5">&#9670;&#160;</a></span>BackfillChunksPerCall</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int Guildmaster.Net.Tape.TapeStreamer.BackfillChunksPerCall = 8</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>За один вызов — столько чанков, то есть примерно восемь секунд боя за кадр. </p>
+
+</div>
+</div>
 <a id="af9b75e72cade91433b042c7ab51f4246" name="af9b75e72cade91433b042c7ab51f4246"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9b75e72cade91433b042c7ab51f4246">&#9670;&#160;</a></span>DefaultHistoryChunks</h2>
 
@@ -339,7 +414,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const int Guildmaster.Net.Tape.TapeStreamer.DefaultHistoryChunks = 32</td>
+          <td class="memname">const int Guildmaster.Net.Tape.TapeStreamer.DefaultHistoryChunks = <a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a915a0796b8e267c17bd8840817e23227">KeepWholeBattle</a></td>
         </tr>
       </table>
   </td>
@@ -350,10 +425,61 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Сколько отправленных чанков держим на случай запроса повтора. </p>
+<p>Сколько чанков хост держит для повторной отправки. KeepWholeBattle — весь бой.</p>
+<p><b>По умолчанию хранится ВЕСЬ бой</b> (решение Макса 04.08.2026), а не хвост в тридцать две секунды. Причина не в потерях пакетов — тех и правда хватало, — а в подключении посреди боя: гость получает ленту с нуля и потому встаёт в общую нумерацию без дыр, может отмотать назад и имеет на руках полный бой. Отвергнута альтернатива «начинать отсчёт с первого полученного чанка»: дешевле в байтах, но лишает гостя ленты и перемотки. </p>
+<p>Цена — память: чанк это секунда боя, порядка трёх килобайт; бой на три минуты обходится в полмегабайта и живёт ровно до Reset, то есть до следующего боя.</p>
+
+</div>
+</div>
+<a id="a915a0796b8e267c17bd8840817e23227" name="a915a0796b8e267c17bd8840817e23227"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a915a0796b8e267c17bd8840817e23227">&#9670;&#160;</a></span>KeepWholeBattle</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int Guildmaster.Net.Tape.TapeStreamer.KeepWholeBattle = int.MaxValue</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Не выбрасывать ничего: история равна бою целиком. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a921bb87ce70bd44c30e65930e6df0c86" name="a921bb87ce70bd44c30e65930e6df0c86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a921bb87ce70bd44c30e65930e6df0c86">&#9670;&#160;</a></span>BackfillRemaining</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Net.Tape.TapeStreamer.BackfillRemaining</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько чанков догрузки ещё не ушло — по нему видно, ждать ли гостя. </p>
+
+</div>
+</div>
 <a id="aac0a3b7a16e6fe9f9d4560e1ab4a539d" name="aac0a3b7a16e6fe9f9d4560e1ab4a539d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac0a3b7a16e6fe9f9d4560e1ab4a539d">&#9670;&#160;</a></span>NextTick</h2>
 
@@ -423,6 +549,24 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Сколько чанков отправлено с начала боя (повторы не считаются). </p>
+
+</div>
+</div>
+<h2 class="groupheader">Event Documentation</h2>
+<a id="a4fda274a4e3d5062c2a60ab93ef7e68e" name="a4fda274a4e3d5062c2a60ab93ef7e68e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fda274a4e3d5062c2a60ab93ef7e68e">&#9670;&#160;</a></span>WholeBattleRequested</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;int, int&gt; Guildmaster.Net.Tape.TapeStreamer.WholeBattleRequested</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Кто-то попросил бой с начала: его номер пира и сколько чанков ему предстоит получить. </p>
+<p>Слушает тот, кто держит бой на паузе, пока гость догружается. </p>
 
 </div>
 </div>

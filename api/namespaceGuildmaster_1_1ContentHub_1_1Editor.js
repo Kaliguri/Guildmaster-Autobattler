@@ -1,6 +1,5 @@
 var namespaceGuildmaster_1_1ContentHub_1_1Editor =
 [
-    [ "ClipSpriteFrames", "classGuildmaster_1_1ContentHub_1_1Editor_1_1ClipSpriteFrames.html", "classGuildmaster_1_1ContentHub_1_1Editor_1_1ClipSpriteFrames" ],
     [ "ConfigDiff", "classGuildmaster_1_1ContentHub_1_1Editor_1_1ConfigDiff.html", "classGuildmaster_1_1ContentHub_1_1Editor_1_1ConfigDiff" ],
     [ "ContentEntry", "classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html", "classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry" ],
     [ "ContentHubWindow", "classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentHubWindow.html", "classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentHubWindow" ],

@@ -115,7 +115,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:add953939cb76a60ae2ff9ac0e21e7974"><td class="mdescLeft">&#160;</td><td class="mdescRight">Валидация одной записи (id, дубликаты по индексу, null-компоненты эффектов).  <br /></td></tr>
 <tr class="separator:add953939cb76a60ae2ff9ac0e21e7974"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d583eeb04b1416bfcf133a221d6f9f2" id="r_a5d583eeb04b1416bfcf133a221d6f9f2"><td class="memItemLeft" align="right" valign="top">static List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a5d583eeb04b1416bfcf133a221d6f9f2">ValidateUnitVisual</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> unit)</td></tr>
-<tr class="memdesc:a5d583eeb04b1416bfcf133a221d6f9f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Юнит обязан иметь тело: <code>UnitVisual</code> и <code>ViewPrefab</code>.  <br /></td></tr>
+<tr class="memdesc:a5d583eeb04b1416bfcf133a221d6f9f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Юнит обязан иметь тело: <code>AnimationArchetypeData</code> и <code>ViewPrefab</code>.  <br /></td></tr>
 <tr class="separator:a5d583eeb04b1416bfcf133a221d6f9f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c36ea089884779b8af2d682df2f8a27" id="r_a1c36ea089884779b8af2d682df2f8a27"><td class="memItemLeft" align="right" valign="top">static List&lt; <a class="el" href="classGuildmaster_1_1ContentHub_1_1Editor_1_1ValidationIssue.html">ValidationIssue</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a1c36ea089884779b8af2d682df2f8a27">ValidateAll</a> ()</td></tr>
 <tr class="memdesc:a1c36ea089884779b8af2d682df2f8a27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полный проход по индексу — основа Doctor (P4).  <br /></td></tr>
@@ -267,7 +267,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Юнит обязан иметь тело: <code>UnitVisual</code> и <code>ViewPrefab</code>. </p>
+<p>Юнит обязан иметь тело: <code>AnimationArchetypeData</code> и <code>ViewPrefab</code>. </p>
 <p>Пусто здесь — не «пока не нарисовали», а поломка на арене, и найтись она должна при авторинге, а не логом в бою.</p>
 <p>Оба поля когда-то обещали в тултипах молчаливый фолбэк («пусто = дефолтный вид презентера», «null = статичный фолбэк»), и ровно этот фолбэк прятал проблему: юнит выходил на арену чужим телом, неотличимым от соседа. Внутри нашего кода такой фолбэк считается багом разводки, а не поведением, — обещания из тултипов сняты вместе с заведением этой проверки. </p>
 <p>Правило живёт здесь, а не в <code>OnValidate</code> у SO: юнита проектируют раньше, чем ему рисуют тело, и запрет на сохранение заставил бы подсовывать заглушку ради обхода — то есть врать данным. Doctor показывает, тест роняет CI, автору при этом никто не мешает работать.</p>

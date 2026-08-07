@@ -122,7 +122,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Сегментированный бар ресурса (мана/ярость) на том же шейдере, что и HP-бар (<code>Guildmaster/UI/SegmentedHealthBar</code>), но БЕЗ щита: заливка ресурса + насечки фиксированного значения (_tickValue ресурса на минорную насечку, жирная каждые _majorTickValue). </p>
-<p>Нормировка простая — <code>scale = MaxResource</code> (ресурс не выходит за макс), поэтому частота насечек постоянна для юнита. Chip-дельта показывает свежую трату/добор.</p>
+<p>Нормировка простая — <code>scale = MaxResource</code> (ресурс не выходит за макс), поэтому частота насечек постоянна для юнита. Chip-дельты у ресурса нет: трату показывает ВСПЫШКА полосы, а не догоняющий хвост (см. PushResourceColor).</p>
 <p>Скрывается целиком для безресурсных юнитов (<code>MaxResource ≤ 0</code> — болванчики, безресурсные реликвии). Динамика гонится в per-instance материал по рендер-времени (НЕ по сим-тику).</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9b28d45168c109ec94f509cbf812bcb7" name="a9b28d45168c109ec94f509cbf812bcb7"></a>

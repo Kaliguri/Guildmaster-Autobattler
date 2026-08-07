@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Бэкенд ILocalSaveService — данные КОМПЬЮТЕРА, а не игрока: каталог persistentDataPath/Local,...">
+<g id="a_Node000001"><a xlink:title="Бэкенд ILocalSaveService — данные КОМПЬЮТЕРА, а не игрока: каталог Local под Core....">
 <polygon fill="#999999" stroke="transparent" points="222.5,-60 70.5,-60 70.5,0 222.5,0 222.5,-60"/>
 <text text-anchor="start" x="77" y="-48" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Services.</text>
 <text text-anchor="start" x="84.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">LocalJsonFileSaveService</text>

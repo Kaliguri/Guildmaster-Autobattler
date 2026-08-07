@@ -15,6 +15,7 @@ var classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect =
     [ "RescheduleTimer", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ad3b04ab7a3c2257e525f0ea361fde3b7", null ],
     [ "ScheduleTimer", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a2358489f5da163660568e554b1e89f89", null ],
     [ "SetDuration", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#abb7322a42443e8188834c4f60e9125dc", null ],
+    [ "SpendHeldShield", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ac5f0ebc85474ee0065269704ae7a0930", null ],
     [ "TickDownDuration", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a9a1539e04fd8ee40c455992319cf1c88", null ],
     [ "TickDownPortions", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a721a8e0d3e27463c8db550fbe5412cc9", null ],
     [ "TryConsumeCharge", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a10757a9d273ee11dc3acf911b5968aeb", null ],

@@ -108,7 +108,7 @@ Inheritance diagram for Guildmaster.Combat.ITickLedgerSink:</div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.ITickLedgerSink:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ITickLedgerSink__coll__graph.svg" width="194" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ITickLedgerSink__coll__graph.svg" width="194" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -119,6 +119,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a36c89e332a634da190acbeec6c99194f" id="r_a36c89e332a634da190acbeec6c99194f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ITickLedgerSink.html#a36c89e332a634da190acbeec6c99194f">OnDamageResolved</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html">DamageResult</a> result)</td></tr>
 <tr class="memdesc:a36c89e332a634da190acbeec6c99194f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Урон дошёл до цели: доля этого источника в общем ударе тика.  <br /></td></tr>
 <tr class="separator:a36c89e332a634da190acbeec6c99194f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab75dcecf6a352e230b6b5e36db71b888" id="r_ab75dcecf6a352e230b6b5e36db71b888"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ITickLedgerSink.html#ab75dcecf6a352e230b6b5e36db71b888">OnShieldAbsorbed</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, float absorbed)</td></tr>
+<tr class="memdesc:ab75dcecf6a352e230b6b5e36db71b888"><td class="mdescLeft">&#160;</td><td class="mdescRight">Щит цели поглотил часть урона этого тика.  <br /></td></tr>
+<tr class="separator:ab75dcecf6a352e230b6b5e36db71b888"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13524b288aed68fc61bca7c90857a368" id="r_a13524b288aed68fc61bca7c90857a368"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ITickLedgerSink.html#a13524b288aed68fc61bca7c90857a368">OnHealResolved</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, float applied)</td></tr>
 <tr class="memdesc:a13524b288aed68fc61bca7c90857a368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лечение дошло до цели: доля этого источника в фактически вылеченном (overheal не входит).  <br /></td></tr>
 <tr class="separator:a13524b288aed68fc61bca7c90857a368"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,6 +199,37 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Лечение дошло до цели: доля этого источника в фактически вылеченном (overheal не входит). </p>
+
+</div>
+</div>
+<a id="ab75dcecf6a352e230b6b5e36db71b888" name="ab75dcecf6a352e230b6b5e36db71b888"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab75dcecf6a352e230b6b5e36db71b888">&#9670;&#160;</a></span>OnShieldAbsorbed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.ITickLedgerSink.OnShieldAbsorbed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>absorbed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Щит цели поглотил часть урона этого тика. </p>
+<p>Реестр знает только величину — кто этот щит держал, видит сим, и разложить поглощённое по авторам он обязан здесь же, пока состав щитов не изменился. </p>
 
 </div>
 </div>

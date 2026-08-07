@@ -15,11 +15,13 @@
 <polygon fill="#999999" stroke="transparent" points="131,-60 0,-60 0,0 131,0 131,-60"/>
 <text text-anchor="start" x="5.5" y="-48" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Build.Editor.</text>
 <text text-anchor="start" x="33" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">PlayerBuilder</text>
-<text text-anchor="start" x="64" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="16" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="40.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Windows64()</text>
+<text text-anchor="start" x="13" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="34.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">DevToolsDefine</text>
+<text text-anchor="start" x="13" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="34.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Windows64()</text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-32 0.5,-32 131.5,-32 131.5,-32 0.5,-32"/>
-<polygon fill="#666666" stroke="#666666" points="0.5,-17 0.5,-17 131.5,-17 131.5,-17 0.5,-17"/>
+<polygon fill="#666666" stroke="#666666" points="0.5,-17 0.5,-17 32.5,-17 32.5,-17 0.5,-17"/>
+<polygon fill="#666666" stroke="#666666" points="32.5,-17 32.5,-17 131.5,-17 131.5,-17 32.5,-17"/>
 <polygon fill="none" stroke="#666666" points="0,0 0,-60 131,-60 131,0 0,0"/>
 </a>
 </g>

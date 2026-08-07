@@ -111,9 +111,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a3fe2b51eb34f26f2772dfeedeed40502" id="r_a3fe2b51eb34f26f2772dfeedeed40502"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory.html#a3fe2b51eb34f26f2772dfeedeed40502">ResolveKind</a> (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> type, bool ranged, out <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1caabb0a57eb911cd211aa9b39edca3e">HitFormKind</a> kind)</td></tr>
 <tr class="memdesc:a3fe2b51eb34f26f2772dfeedeed40502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Какой архетип формы несёт этот удар.  <br /></td></tr>
 <tr class="separator:a3fe2b51eb34f26f2772dfeedeed40502"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5aa372e75d898c6308dc5744b6645e78" id="r_a5aa372e75d898c6308dc5744b6645e78"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html">HitFormParams</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory.html#a5aa372e75d898c6308dc5744b6645e78">Build</a> (<a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">CombatFeelConfig</a> feel, <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1caabb0a57eb911cd211aa9b39edca3e">HitFormKind</a> kind, Vector3 from, Vector3 to, float hpDamageFrac, Color core, Color rim, uint seed, bool endsAtHit, float freezeSeconds)</td></tr>
-<tr class="memdesc:a5aa372e75d898c6308dc5744b6645e78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать параметры формы.  <br /></td></tr>
-<tr class="separator:a5aa372e75d898c6308dc5744b6645e78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe6336e7bc898956386f9763f923d2fb" id="r_abe6336e7bc898956386f9763f923d2fb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html">HitFormParams</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory.html#abe6336e7bc898956386f9763f923d2fb">Build</a> (<a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">CombatFeelConfig</a> feel, <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1caabb0a57eb911cd211aa9b39edca3e">HitFormKind</a> kind, Vector3 at, Vector2 dir, float hpDamageFrac, Color core, Color rim, uint seed, bool endsAtHit, float freezeSeconds)</td></tr>
+<tr class="memdesc:abe6336e7bc898956386f9763f923d2fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать параметры формы.  <br /></td></tr>
+<tr class="separator:abe6336e7bc898956386f9763f923d2fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76fc29a73d97d1c05fb72c8299ca82be" id="r_a76fc29a73d97d1c05fb72c8299ca82be"><td class="memItemLeft" align="right" valign="top">static uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory.html#a76fc29a73d97d1c05fb72c8299ca82be">SeedOf</a> (int sourceId, int targetId, Vector2 at, float damage)</td></tr>
 <tr class="memdesc:a76fc29a73d97d1c05fb72c8299ca82be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сид одного удара: одинаковый на всех клиентах, разный у соседних ударов.  <br /></td></tr>
 <tr class="separator:a76fc29a73d97d1c05fb72c8299ca82be"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,8 +122,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Сборка формы удара из канона: тип урона выбирает архетип, вес удара задаёт размер, сид разводит два одинаковых удара. </p>
 <p>Чистая функция — ничего не спавнит и ни на что не подписана, поэтому её правила можно проверить тестом, а не глазами в бою. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5aa372e75d898c6308dc5744b6645e78" name="a5aa372e75d898c6308dc5744b6645e78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5aa372e75d898c6308dc5744b6645e78">&#9670;&#160;</a></span>Build()</h2>
+<a id="abe6336e7bc898956386f9763f923d2fb" name="abe6336e7bc898956386f9763f923d2fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe6336e7bc898956386f9763f923d2fb">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -147,13 +147,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Vector3&#160;</td>
-          <td class="paramname"><em>from</em>, </td>
+          <td class="paramname"><em>at</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Vector3&#160;</td>
-          <td class="paramname"><em>to</em>, </td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>dir</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -210,8 +210,8 @@ Static Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">feel</td><td>Feel-конфиг: числа архетипов, жизнь формы, коридор размера.</td></tr>
     <tr><td class="paramname">kind</td><td>Архетип.</td></tr>
-    <tr><td class="paramname">from</td><td>Точка A — откуда пришёл удар.</td></tr>
-    <tr><td class="paramname">to</td><td>Точка B — точка попадания.</td></tr>
+    <tr><td class="paramname">at</td><td>Точка попадания.</td></tr>
+    <tr><td class="paramname">dir</td><td>Единичное направление удара — куда шёл клинок в момент касания.</td></tr>
     <tr><td class="paramname">hpDamageFrac</td><td>Доля максимального HP цели, снятая ударом, — вес удара.</td></tr>
     <tr><td class="paramname">core</td><td>Цвет пересвета ядра.</td></tr>
     <tr><td class="paramname">rim</td><td>Цвет каймы — палитра бьющего.</td></tr>
@@ -224,7 +224,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory_a5aa372e75d898c6308dc5744b6645e78_cgraph.svg" width="514" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory_abe6336e7bc898956386f9763f923d2fb_cgraph.svg" width="514" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

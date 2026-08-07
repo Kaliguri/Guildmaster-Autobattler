@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.HubScreenView.Build" name="Guildmaster.UI.HubScreenView.Build">
+<area shape="rect" id="Node000001" title=" " alt="" coords="259,5,452,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1MenuRouter.html#a1c6167d1befeb5233bceb45f04ec2ee9" title="Двор гильдии между выбором дома и забегом." alt="" coords="5,5,211,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,28,211,28,211,23,245,23"/>
+</map>

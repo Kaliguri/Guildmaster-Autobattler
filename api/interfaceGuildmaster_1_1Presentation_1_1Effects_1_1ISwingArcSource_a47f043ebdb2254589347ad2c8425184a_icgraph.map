@@ -1,5 +1,9 @@
 <map id="Guildmaster.Presentation.Effects.ISwingArcSource.TryGetSwingArc" name="Guildmaster.Presentation.Effects.ISwingArcSource.TryGetSwingArc">
-<area shape="rect" id="Node000001" title="Геометрия текущего взмаха: вокруг чего он идёт, где сейчас кончик оружия, насколько прошёл." alt="" coords="247,5,471,60"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html#a8ee7a3c1a1b5f8eb7567f885698bb93c" title="Начать дугу этого взмаха." alt="" coords="5,13,199,53"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="233,35,199,35,199,30,233,30"/>
+<area shape="rect" id="Node000001" title="Геометрия текущего взмаха: вокруг чего он идёт, где сейчас кончик оружия, насколько прошёл." alt="" coords="512,30,736,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html#ab3029be73aad3b173242a3c77a10b617" title="Начать дугу этого взмаха." alt="" coords="271,5,464,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="498,44,464,40,465,35,499,39"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html#a3b33d239dca04168c5bda52e3614e95e" title="Шаг жизни дуги: подтянуться за клинком либо догореть." alt="" coords="272,69,463,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="499,76,463,80,462,75,498,70"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcLaunch.html#aa2efcfe7c5c3000508cfc083e669efc8" title="Завести дугу этого взмаха." alt="" coords="5,5,223,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="257,28,223,28,223,23,257,23"/>
 </map>

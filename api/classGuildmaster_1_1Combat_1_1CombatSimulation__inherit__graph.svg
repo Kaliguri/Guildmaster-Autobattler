@@ -166,17 +166,19 @@ var sectionId = 'dynsection-0';
 <g id="Node000003" class="node">
 <title>Node3</title>
 <g id="a_Node000003"><a xlink:href="interfaceGuildmaster_1_1Combat_1_1IBattleView.html" target="_top" xlink:title="Read&#45;only срез боя для мозга (вики «13» §3.1).">
-<polygon fill="white" stroke="transparent" points="222,-550 144,-550 144,-486 222,-486 222,-550"/>
-<text text-anchor="start" x="154.5" y="-538" font-family="Helvetica,sans-Serif" font-size="10.00">IBattleView</text>
-<text text-anchor="start" x="148" y="-523" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="161" y="-523" font-family="Helvetica,sans-Serif" font-size="10.00">Units</text>
-<text text-anchor="start" x="148" y="-508" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="161" y="-508" font-family="Helvetica,sans-Serif" font-size="10.00">CurrentTick</text>
-<text text-anchor="start" x="181" y="-493" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="#666666" stroke="#666666" points="144,-533 144,-533 222,-533 222,-533 144,-533"/>
-<polygon fill="#666666" stroke="#666666" points="144,-503 144,-503 159,-503 159,-503 144,-503"/>
-<polygon fill="#666666" stroke="#666666" points="159,-503 159,-503 222,-503 222,-503 159,-503"/>
-<polygon fill="none" stroke="#666666" points="144,-486 144,-550 222,-550 222,-486 144,-486"/>
+<polygon fill="white" stroke="transparent" points="222,-557.5 144,-557.5 144,-478.5 222,-478.5 222,-557.5"/>
+<text text-anchor="start" x="154.5" y="-545" font-family="Helvetica,sans-Serif" font-size="10.00">IBattleView</text>
+<text text-anchor="start" x="148" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="161" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00">Units</text>
+<text text-anchor="start" x="148" y="-515" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="161" y="-515" font-family="Helvetica,sans-Serif" font-size="10.00">CurrentTick</text>
+<text text-anchor="start" x="148" y="-500" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="161" y="-500" font-family="Helvetica,sans-Serif" font-size="10.00">Tuning</text>
+<text text-anchor="start" x="181" y="-485" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<polygon fill="#666666" stroke="#666666" points="144,-540 144,-540 222,-540 222,-540 144,-540"/>
+<polygon fill="#666666" stroke="#666666" points="144,-495 144,-495 159,-495 159,-495 144,-495"/>
+<polygon fill="#666666" stroke="#666666" points="159,-495 159,-495 222,-495 222,-495 159,-495"/>
+<polygon fill="none" stroke="#666666" points="144,-478.5 144,-557.5 222,-557.5 222,-478.5 144,-478.5"/>
 </a>
 </g>
 </g>
@@ -184,8 +186,8 @@ var sectionId = 'dynsection-0';
 <g id="edge2_Node000001_Node000003" class="edge">
 <title>Node3&#45;&gt;Node1</title>
 <g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M183,-475.62C183,-445.87 183,-403.5 183,-360.13"/>
-<polygon fill="none" stroke="#63b8ff" points="179.5,-475.99 183,-485.99 186.5,-475.99 179.5,-475.99"/>
+<path fill="none" stroke="#63b8ff" d="M183,-468.19C183,-439.08 183,-400.12 183,-360.31"/>
+<polygon fill="none" stroke="#63b8ff" points="179.5,-468.46 183,-478.46 186.5,-468.46 179.5,-468.46"/>
 </a>
 </g>
 </g>
@@ -193,18 +195,20 @@ var sectionId = 'dynsection-0';
 <g id="Node000004" class="node">
 <title>Node4</title>
 <g id="a_Node000004"><a xlink:href="interfaceGuildmaster_1_1Combat_1_1ITickLedgerSink.html" target="_top" xlink:title="Куда реестр отдаёт разрешённые изменения: события наружу и внутренние события для реактивов.">
-<polygon fill="white" stroke="transparent" points="369.5,-557.5 240.5,-557.5 240.5,-478.5 369.5,-478.5 369.5,-557.5"/>
-<text text-anchor="start" x="266.5" y="-545" font-family="Helvetica,sans-Serif" font-size="10.00">ITickLedgerSink</text>
-<text text-anchor="start" x="303.5" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="245" y="-515" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="258" y="-515" font-family="Helvetica,sans-Serif" font-size="10.00">ResolveIncoming()</text>
-<text text-anchor="start" x="245" y="-500" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="258" y="-500" font-family="Helvetica,sans-Serif" font-size="10.00">OnDamageResolved()</text>
-<text text-anchor="start" x="245" y="-485" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="258" y="-485" font-family="Helvetica,sans-Serif" font-size="10.00">OnHealResolved()</text>
-<polygon fill="#666666" stroke="#666666" points="241,-540 241,-540 370,-540 370,-540 241,-540"/>
-<polygon fill="#666666" stroke="#666666" points="241,-525 241,-525 370,-525 370,-525 241,-525"/>
-<polygon fill="none" stroke="#666666" points="240.5,-478.5 240.5,-557.5 369.5,-557.5 369.5,-478.5 240.5,-478.5"/>
+<polygon fill="white" stroke="transparent" points="369.5,-565 240.5,-565 240.5,-471 369.5,-471 369.5,-565"/>
+<text text-anchor="start" x="266.5" y="-553" font-family="Helvetica,sans-Serif" font-size="10.00">ITickLedgerSink</text>
+<text text-anchor="start" x="303.5" y="-538" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="245" y="-523" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="258" y="-523" font-family="Helvetica,sans-Serif" font-size="10.00">ResolveIncoming()</text>
+<text text-anchor="start" x="245" y="-508" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="258" y="-508" font-family="Helvetica,sans-Serif" font-size="10.00">OnDamageResolved()</text>
+<text text-anchor="start" x="245" y="-493" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="258" y="-493" font-family="Helvetica,sans-Serif" font-size="10.00">OnShieldAbsorbed()</text>
+<text text-anchor="start" x="245" y="-478" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="258" y="-478" font-family="Helvetica,sans-Serif" font-size="10.00">OnHealResolved()</text>
+<polygon fill="#666666" stroke="#666666" points="241,-548 241,-548 370,-548 370,-548 241,-548"/>
+<polygon fill="#666666" stroke="#666666" points="241,-533 241,-533 370,-533 370,-533 241,-533"/>
+<polygon fill="none" stroke="#666666" points="240.5,-471 240.5,-565 369.5,-565 369.5,-471 240.5,-471"/>
 </a>
 </g>
 </g>
@@ -212,8 +216,8 @@ var sectionId = 'dynsection-0';
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node4&#45;&gt;Node1</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M287.56,-468.96C276.96,-439.76 262.69,-400.47 248.1,-360.31"/>
-<polygon fill="none" stroke="#63b8ff" points="284.3,-470.25 291.01,-478.46 290.88,-467.86 284.3,-470.25"/>
+<path fill="none" stroke="#63b8ff" d="M284.79,-461.34C274.54,-433.11 261.46,-397.08 248.11,-360.31"/>
+<polygon fill="none" stroke="#63b8ff" points="281.59,-462.78 288.29,-470.99 288.17,-460.39 281.59,-462.78"/>
 </a>
 </g>
 </g>

@@ -10,6 +10,7 @@ var classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback =
     [ "LookaheadTicks", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a84d073b342d11e9058a22285ef4dd543", null ],
     [ "Alpha", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a3b62e1bb039fa215bf0e506fd6dc3c12", null ],
     [ "AtWindowLimit", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a2024186b231e3467d5fd04ec39165b49", null ],
+    [ "CatchUpToLead", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a719db8abe0edf335dc370befc43a3ec4", null ],
     [ "HasFullLead", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a87b1bb53a28b0e3119e66f70cece5802", null ],
     [ "IsPlaying", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#aac4109908d195a11f2af2660958e856e", null ],
     [ "Lead", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a868fea7dc4f16b89e34154709ecf1b52", null ],

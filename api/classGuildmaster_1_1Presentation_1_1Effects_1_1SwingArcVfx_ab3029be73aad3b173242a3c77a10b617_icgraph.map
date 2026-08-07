@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Effects.SwingArcVfx.Begin" name="Guildmaster.Presentation.Effects.SwingArcVfx.Begin">
+<area shape="rect" id="Node000001" title="Начать дугу этого взмаха." alt="" coords="271,5,464,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcLaunch.html#aa2efcfe7c5c3000508cfc083e669efc8" title="Завести дугу этого взмаха." alt="" coords="5,5,223,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="257,28,223,28,223,23,257,23"/>
+</map>

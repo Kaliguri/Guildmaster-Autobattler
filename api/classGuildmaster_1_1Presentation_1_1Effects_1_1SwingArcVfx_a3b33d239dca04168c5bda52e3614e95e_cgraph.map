@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.Effects.SwingArcVfx.Tick" name="Guildmaster.Presentation.Effects.SwingArcVfx.Tick">
+<area shape="rect" id="Node000001" title="Шаг жизни дуги: подтянуться за клинком либо догореть." alt="" coords="5,41,196,81"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1PooledVfx.html#ad5973e2cadbbb878a0cd32ccad97239c" title="Прервать и вернуть в пул (battle reset)." alt="" coords="261,5,451,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,45,247,38,247,43,196,51"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource.html#a47f043ebdb2254589347ad2c8425184a" title="Геометрия текущего взмаха: вокруг чего он идёт, где сейчас кончик оружия, насколько прошёл." alt="" coords="244,70,468,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="196,72,231,77,230,82,196,77"/>
+</map>

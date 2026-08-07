@@ -52,11 +52,11 @@ var namespaceGuildmaster_1_1Combat_1_1Effects_1_1Components =
     [ "SplitAttackOnTagComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SplitAttackOnTagComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SplitAttackOnTagComponent" ],
     [ "StatModifierComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent" ],
     [ "StealthComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StealthComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StealthComponent" ],
-    [ "StoneTitheComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StoneTitheComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StoneTitheComponent" ],
     [ "SummonOnBattleStartComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SummonOnBattleStartComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SummonOnBattleStartComponent" ],
     [ "TaggedTargetDamageBonusComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TaggedTargetDamageBonusComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TaggedTargetDamageBonusComponent" ],
     [ "ThornsComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent" ],
     [ "ThrowAllyComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThrowAllyComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThrowAllyComponent" ],
+    [ "TitheComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TitheComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TitheComponent" ],
     [ "VortexEntryComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent" ],
     [ "WardOnEnemyCastComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WardOnEnemyCastComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WardOnEnemyCastComponent" ],
     [ "WhirlDashLandingComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WhirlDashLandingComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WhirlDashLandingComponent" ]

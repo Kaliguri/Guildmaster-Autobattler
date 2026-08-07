@@ -48,7 +48,7 @@
 <script type="application/ecmascript">
 var viewWidth = 574;
 var viewHeight = 86;
-var sectionId = 'dynsection-16';
+var sectionId = 'dynsection-14';
 </script>
 <script type="application/ecmascript" xlink:href="svg.min.js"/>
 <svg id="graph" class="graph">
@@ -57,7 +57,7 @@ var sectionId = 'dynsection-16';
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Замах из ДОЛИ свинга (0..1) — путь для юнитов, у которых нет покадрового клипа.">
+<g id="a_Node000001"><a xlink:title="Замах из ДОЛИ свинга (0..1) — единственный путь с 06.08.2026.">
 <polygon fill="#999999" stroke="#666666" points="566,-54 398,-54 398,-24 566,-24 566,-54"/>
 <text text-anchor="start" x="406" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Attack</text>
 <text text-anchor="middle" x="482" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">Timing.WindupTicksFromShare</text>
@@ -86,7 +86,7 @@ var sectionId = 'dynsection-16';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Combat_1_1AttackTiming.html#a8d6696d026a5780f7846fe236b4f52c4" target="_top" xlink:title="Тики ВСЕХ контактов свинга (от его старта), дописанные в result .">
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Combat_1_1AttackTiming.html#ad6c56a468dabeb2f97a2e3c6e463be80" target="_top" xlink:title="Тики ВСЕХ контактов свинга (от его старта), дописанные в result .">
 <polygon fill="white" stroke="#666666" points="163,-78 11,-78 11,-48 163,-48 163,-78"/>
 <text text-anchor="start" x="19" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Attack</text>
 <text text-anchor="middle" x="87" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Timing.ContactTicks</text>

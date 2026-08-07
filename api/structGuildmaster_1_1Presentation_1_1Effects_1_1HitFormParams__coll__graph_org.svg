@@ -16,9 +16,9 @@
 <text text-anchor="start" x="5.5" y="-198" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
 <text text-anchor="start" x="13" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">Effects.HitFormParams</text>
 <text text-anchor="start" x="12.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="33.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">From</text>
+<text text-anchor="start" x="33.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">At</text>
 <text text-anchor="start" x="12.5" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="33.5" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">To</text>
+<text text-anchor="start" x="33.5" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">Dir</text>
 <text text-anchor="start" x="12.5" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="33.5" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">Kind</text>
 <text text-anchor="start" x="12.5" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
@@ -28,14 +28,14 @@
 <text text-anchor="start" x="12.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="33.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">HalfThickness</text>
 <text text-anchor="start" x="12.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="33.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">Arc</text>
+<text text-anchor="start" x="33.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">LineWidth</text>
 <text text-anchor="start" x="12.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="33.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">Roughness</text>
+<text text-anchor="start" x="33.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">Softness</text>
 <text text-anchor="start" x="12.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="33.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">StarRadius</text>
+<text text-anchor="start" x="33.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">Arc</text>
 <text text-anchor="start" x="12.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="33.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">StarRays</text>
-<text text-anchor="start" x="33.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">and 8 more...</text>
+<text text-anchor="start" x="33.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">Roughness</text>
+<text text-anchor="start" x="33.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">and 10 more...</text>
 <text text-anchor="start" x="12.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="33.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">HitFormParams()</text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-182 0.5,-182 137.5,-182 137.5,-182 0.5,-182"/>

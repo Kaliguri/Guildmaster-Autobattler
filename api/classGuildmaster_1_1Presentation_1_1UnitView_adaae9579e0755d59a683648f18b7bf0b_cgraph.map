@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.UnitView.TryGetStrikeDirection" name="Guildmaster.Presentation.UnitView.TryGetStrikeDirection">
+<area shape="rect" id="Node000001" title="КУДА ДВИГАЛСЯ КОНЧИК ОРУЖИЯ на кадре контакта — направление, вдоль которого ложится форма." alt="" coords="5,5,228,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1VisualDefects.html#a7221e80ed1658d3ed950512669e074ba" title="Сказать о дефекте один раз." alt="" coords="276,5,467,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,23,262,23,262,28,228,28"/>
+</map>

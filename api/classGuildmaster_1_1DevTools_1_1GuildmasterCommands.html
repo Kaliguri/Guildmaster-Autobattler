@@ -161,9 +161,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5ed2767b35124958ca2a1965a52e1974" id="r_a5ed2767b35124958ca2a1965a52e1974"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a5ed2767b35124958ca2a1965a52e1974">ProvingGrounds</a> ()</td></tr>
 <tr class="memdesc:a5ed2767b35124958ca2a1965a52e1974"><td class="mdescLeft">&#160;</td><td class="mdescRight">Уйти на Ристалище из любого состояния игры (ГДД «Modes - Proving Grounds»): свернуть забег штатным возвратом в меню, затем послать тот же интент, что кнопка площадки.  <br /></td></tr>
 <tr class="separator:a5ed2767b35124958ca2a1965a52e1974"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4ec10b3c8cb40ff0c983b1fda86385f" id="r_ab4ec10b3c8cb40ff0c983b1fda86385f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab4ec10b3c8cb40ff0c983b1fda86385f">SpawnBoneDuel</a> ()</td></tr>
-<tr class="memdesc:ab4ec10b3c8cb40ff0c983b1fda86385f"><td class="mdescLeft">&#160;</td><td class="mdescRight">1×1 зеркально на дев-дуэлянте (<code>enemy.bone_dev</code>) — смотреть скелетный визуал в живом бою.  <br /></td></tr>
-<tr class="separator:ab4ec10b3c8cb40ff0c983b1fda86385f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79831515a9b710536e11989e7a29addd" id="r_a79831515a9b710536e11989e7a29addd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a79831515a9b710536e11989e7a29addd">SpawnBoneStorybookDuel</a> ()</td></tr>
+<tr class="memdesc:a79831515a9b710536e11989e7a29addd"><td class="mdescLeft">&#160;</td><td class="mdescRight">1×1 зеркально на дев-дуэлянте (<code>enemy.bone_storybook</code>) — смотреть скелетный визуал в живом бою.  <br /></td></tr>
+<tr class="separator:a79831515a9b710536e11989e7a29addd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -595,41 +595,23 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="ab4ec10b3c8cb40ff0c983b1fda86385f" name="ab4ec10b3c8cb40ff0c983b1fda86385f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4ec10b3c8cb40ff0c983b1fda86385f">&#9670;&#160;</a></span>SpawnBoneDuel()</h2>
+<a id="a79831515a9b710536e11989e7a29addd" name="a79831515a9b710536e11989e7a29addd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79831515a9b710536e11989e7a29addd">&#9670;&#160;</a></span>SpawnBoneStorybookDuel()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Guildmaster.DevTools.GuildmasterCommands.SpawnBoneDuel </td>
+          <td class="memname">void Guildmaster.DevTools.GuildmasterCommands.SpawnBoneStorybookDuel </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>1×1 зеркально на дев-дуэлянте (<code>enemy.bone_dev</code>) — смотреть скелетный визуал в живом бою. </p>
+<p>1×1 зеркально на дев-дуэлянте (<code>enemy.bone_storybook</code>) — смотреть скелетный визуал в живом бою. </p>
 <p>Кит у него ЗАЩИТНИКА (Оплот + «Решительный удар»): смотреть скелетную анимацию на бойце без активок было нечего — ни каста, ни телеграфа щита, ради которого поза блока и делается. Отличие от Защитника ровно одно: HP 800 вместо 3000, иначе дуэль двух танков идёт полторы минуты и до смерти с осколками дело не доходит. У него СВОЙ контент-ассет со ссылкой на костяной вид, поэтому команда работает всегда и ничего не подменяет в игровом контенте: раньше костяной вид приходилось руками вписывать в <code>relic.base</code>, и пока подмена стояла, костяным становился каждый бой базовой реликвии. Тот же вход на Ристалище, что у SpawnMirror. </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_ab4ec10b3c8cb40ff0c983b1fda86385f_cgraph.svg" width="100%" height="452"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_ab4ec10b3c8cb40ff0c983b1fda86385f_icgraph.svg" width="259" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

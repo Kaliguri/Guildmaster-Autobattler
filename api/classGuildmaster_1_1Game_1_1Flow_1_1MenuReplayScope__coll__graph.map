@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Flow.MenuReplayScope" name="Guildmaster.Game.Flow.MenuReplayScope">
+<area shape="rect" id="Node000001" title="Префаб боевого скоупа в режиме BattleScopeMode.Replay — из него директор фона меню поднимает воспроиз..." alt="" coords="23,263,233,343"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1CombatLifetimeScope.html" title="DI&#45;скоуп боевых систем: RNG боя, системы, симуляция, презентация." alt="" coords="5,120,251,200"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,200,131,246,125,246,125,200"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="75,5,181,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="131,84,131,120,125,120,125,84"/>
+</map>

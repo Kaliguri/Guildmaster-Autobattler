@@ -1,7 +1,7 @@
 <map id="Guildmaster.Game.Services.DisplayService" name="Guildmaster.Game.Services.DisplayService">
-<area shape="rect" id="Node000001" title="Реализация IDisplayService." alt="" coords="71,319,269,619"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Settings_1_1IDisplayService.html" title="Настройки дисплея за швом: разрешение, режим окна, частота обновления." alt="" coords="5,5,183,271"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,284,138,318,133,319,125,285"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="207,105,285,171"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="238,184,207,319,202,318,233,183"/>
+<area shape="rect" id="Node000001" title="Реализация IDisplayService." alt="" coords="71,379,269,739"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Settings_1_1IDisplayService.html" title="Настройки дисплея за швом: разрешение, режим окна, частота обновления." alt="" coords="5,5,183,331"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,344,138,378,132,379,126,345"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="207,135,285,201"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="240,215,208,379,202,378,235,214"/>
 </map>

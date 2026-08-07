@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.SummonLayout.Offset" name="Guildmaster.Combat.SummonLayout.Offset">
+<area shape="rect" id="Node000001" title="Смещение тела от призывателя: назад на пол&#45;шага, веером поперёк фронта." alt="" coords="5,5,224,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1FleeSteering.html#a66b7ac7b2fc51e9c7b4cb8193d0f74dd" title="Направление «к своему тылу» по команде: 0 (союзники, левая сторона) → влево, иначе вправо." alt="" coords="272,5,519,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,23,258,23,258,28,224,28"/>
+</map>

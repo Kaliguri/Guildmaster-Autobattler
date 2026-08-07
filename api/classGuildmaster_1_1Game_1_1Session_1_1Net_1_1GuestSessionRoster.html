@@ -114,8 +114,8 @@ Collaboration diagram for Guildmaster.Game.Session.Net.GuestSessionRoster:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae8d8cf5e23778f650e3693fa86ea503f" id="r_ae8d8cf5e23778f650e3693fa86ea503f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html#ae8d8cf5e23778f650e3693fa86ea503f">GuestSessionRoster</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, <a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html">Guildmaster.Net.Session.SteamBootstrap</a> steam)</td></tr>
-<tr class="separator:ae8d8cf5e23778f650e3693fa86ea503f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c9f51e59202281467e7c15f3ef43cf7" id="r_a4c9f51e59202281467e7c15f3ef43cf7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html#a4c9f51e59202281467e7c15f3ef43cf7">GuestSessionRoster</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1IPlatformIdentity.html">Guildmaster.Core.Players.IPlatformIdentity</a> platform, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">Guildmaster.Core.Persistence.IProfileService</a> profiles)</td></tr>
+<tr class="separator:a4c9f51e59202281467e7c15f3ef43cf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac93072711672935f35519c9bdf19b88a" id="r_ac93072711672935f35519c9bdf19b88a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html#ac93072711672935f35519c9bdf19b88a">Start</a> ()</td></tr>
 <tr class="separator:ac93072711672935f35519c9bdf19b88a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a172da3e8ac1908392a810731e6f2b2" id="r_a9a172da3e8ac1908392a810731e6f2b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html#a9a172da3e8ac1908392a810731e6f2b2">Dispose</a> ()</td></tr>
@@ -145,8 +145,8 @@ Properties</h2></td></tr>
 <p><b>Гость состав не ведёт.</b> Кто в сессии и кто за какую сторону играет, знает хост — здесь только последняя услышанная таблица. Своё мнение о составе означало бы, что в PvP каждый клиент решает сам, кто ему противник. </p>
 <p><b>Имя отправляется по подключению, а не в конструкторе:</b> в момент рождения объекта соединения может ещё не быть, и сообщение ушло бы в никуда — ровно тот класс ошибок, где «работает со второго раза».</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae8d8cf5e23778f650e3693fa86ea503f" name="ae8d8cf5e23778f650e3693fa86ea503f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8d8cf5e23778f650e3693fa86ea503f">&#9670;&#160;</a></span>GuestSessionRoster()</h2>
+<a id="a4c9f51e59202281467e7c15f3ef43cf7" name="a4c9f51e59202281467e7c15f3ef43cf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c9f51e59202281467e7c15f3ef43cf7">&#9670;&#160;</a></span>GuestSessionRoster()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -163,8 +163,14 @@ Properties</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html">Guildmaster::Net::Session::SteamBootstrap</a>&#160;</td>
-          <td class="paramname"><em>steam</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1IPlatformIdentity.html">Guildmaster::Core::Players::IPlatformIdentity</a>&#160;</td>
+          <td class="paramname"><em>platform</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">Guildmaster::Core::Persistence::IProfileService</a>&#160;</td>
+          <td class="paramname"><em>profiles</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

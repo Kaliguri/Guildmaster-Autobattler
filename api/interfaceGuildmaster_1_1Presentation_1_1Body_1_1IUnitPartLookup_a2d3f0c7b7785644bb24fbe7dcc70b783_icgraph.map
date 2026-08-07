@@ -1,5 +1,11 @@
 <map id="Guildmaster.Presentation.Body.IUnitPartLookup.TryGetStrikeSource" name="Guildmaster.Presentation.Body.IUnitPartLookup.TryGetStrikeSource">
-<area shape="rect" id="Node000001" title="Чем юнит исполняет приём ЭТОЙ рукой: предмет в её хвате, а если рука пуста — сама кисть (кулак)." alt="" coords="264,5,507,60"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1CastGlowMask.html#a5741b1d602012b8d0f56a64b35929350" title="Какие части зажечь." alt="" coords="5,13,216,53"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,35,216,35,216,30,250,30"/>
+<area shape="rect" id="Node000001" title="Чем юнит исполняет приём ЭТОЙ рукой: предмет в её хвате, а если рука пуста — сама кисть (кулак)." alt="" coords="321,106,564,161"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1CastGlowMask.html#a5741b1d602012b8d0f56a64b35929350" title="Какие части зажечь." alt="" coords="34,5,245,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="374,102,272,60,233,48,235,43,274,55,376,98"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcGeometry.html#aeea4c0299aaaa38444a700e7c2a605e1" title="Имя кости плеча для стороны бьющей руки — для сообщений о разводке." alt="" coords="12,70,267,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="307,120,267,115,267,110,308,115"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcGeometry.html#a8e2bd99334340d54d595449386e8a180" title="Плечо и остриё для тела в его ТЕКУЩЕЙ позе." alt="" coords="5,149,273,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="308,152,274,156,273,151,308,147"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcGeometry.html#ac018caf15895a897618329578a99b046" title="Место дуги В ПОРЯДКЕ ОТРИСОВКИ ТЕЛА: куда её положить и с каким порядком." alt="" coords="5,214,273,269"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="366,168,274,204,236,217,234,211,272,199,364,163"/>
 </map>

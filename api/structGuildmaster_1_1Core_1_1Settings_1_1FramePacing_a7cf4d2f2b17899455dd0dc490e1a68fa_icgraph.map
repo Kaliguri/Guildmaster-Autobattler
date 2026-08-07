@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.Settings.FramePacing.Resolve" name="Guildmaster.Core.Settings.FramePacing.Resolve">
+<area shape="rect" id="Node000001" title="Свести настройки игрока к тому, что применяется." alt="" coords="260,5,456,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1DisplayService.html#a8d1a4c18fc1a3991464f595f1cccaf6a" title="Записать выбор на диск. Применение происходит сразу, персист — по этому вызову." alt="" coords="5,5,212,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="246,28,212,28,212,23,246,23"/>
+</map>

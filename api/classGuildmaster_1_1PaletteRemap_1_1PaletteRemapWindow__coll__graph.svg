@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Alebardium Palette Remapper — перекрашивает растровые (пиксель&#45;арт) спрайты в нашу палитру методом gr...">
+<g id="a_Node000001"><a xlink:title="Alebardium Palette Remapper — перекрашивает растровые спрайты вендорных паков в нашу палитру методом ...">
 <polygon fill="#999999" stroke="transparent" points="144,-60 0,-60 0,0 144,0 144,-60"/>
 <text text-anchor="start" x="5" y="-48" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.PaletteRemap.</text>
 <text text-anchor="start" x="18" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">PaletteRemapWindow</text>

@@ -117,6 +117,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a299e1550d7ecf1fb9d8b11a71b56b6bb" id="r_a299e1550d7ecf1fb9d8b11a71b56b6bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1BattleRosterIntake.html#a299e1550d7ecf1fb9d8b11a71b56b6bb">BattleRosterIntake</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, <a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleUnitRegistry.html">BattleUnitRegistry</a> registry, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content)</td></tr>
 <tr class="separator:a299e1550d7ecf1fb9d8b11a71b56b6bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e08e78a643fd3f4803bc617b4b69899" id="r_a7e08e78a643fd3f4803bc617b4b69899"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1BattleRosterIntake.html#a7e08e78a643fd3f4803bc617b4b69899">Start</a> ()</td></tr>
+<tr class="memdesc:a7e08e78a643fd3f4803bc617b4b69899"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подписаться и спросить хоста, кто уже на арене.  <br /></td></tr>
 <tr class="separator:a7e08e78a643fd3f4803bc617b4b69899"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7964d9a7d4b7b6df6b7dff8c21f6038" id="r_ac7964d9a7d4b7b6df6b7dff8c21f6038"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1BattleRosterIntake.html#ac7964d9a7d4b7b6df6b7dff8c21f6038">Dispose</a> ()</td></tr>
 <tr class="separator:ac7964d9a7d4b7b6df6b7dff8c21f6038"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +203,9 @@ Here is the call graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.Net.Tape.BattleRosterIntake.Start </td>
@@ -210,7 +214,20 @@ Here is the call graph for this function:</div>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Подписаться и спросить хоста, кто уже на арене. </p>
+<p>Спрашиваем сами по той же причине, что и «где мы»: паспорта уходят событием спавна, а спавн случился до того, как мы подключились. Своего спавна у гостя нет, ждать нечего — надо просить. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1BattleRosterIntake_a7e08e78a643fd3f4803bc617b4b69899_cgraph.svg" width="518" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

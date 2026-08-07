@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Core_1_1DevConsole_1_1DevCommandResult.html" target="_top" xlink:title="Результат вызова: статус плюс готовая к печати строка (может быть пустой при DevCommandStatus....">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Core_1_1DevConsole_1_1DevArgs.html" target="_top" xlink:title="Аргументы вызова: слова строки после имени команды.">
 <polygon fill="white" stroke="#666666" points="166,-30 0,-30 0,0 166,0 166,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Core.DevConsole.</text>
-<text text-anchor="middle" x="83" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">DevCommandResult</text>
+<text text-anchor="middle" x="83" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">DevArgs</text>
 </a>
 </g>
 </g>

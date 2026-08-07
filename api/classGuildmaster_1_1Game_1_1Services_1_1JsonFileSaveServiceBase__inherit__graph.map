@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Общая механика файлового ISaveService: конверт со версией схемы, атомарная запись,..." alt="" coords="116,219,317,419"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html" title="Бэкенд ISaveService для данных ИГРОКА — наш собственный и единственный: JSON&#45;файлы под GameDataPath...." alt="" coords="5,467,204,547"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="152,432,130,468,126,465,147,430"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html" title="Бэкенд ILocalSaveService — данные КОМПЬЮТЕРА, а не игрока: каталог persistentDataPath/Local,..." alt="" coords="229,467,431,547"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html" title="Бэкенд ILocalSaveService — данные КОМПЬЮТЕРА, а не игрока: каталог Local под Core...." alt="" coords="229,467,431,547"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="287,429,309,465,304,468,282,432"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html" title="Шов персистентности (ТЗ [[save&#45;system]]): сохранение/загрузка сериализуемых DTO по строковому ключу." alt="" coords="153,5,280,171"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,184,219,218,214,218,214,184"/>

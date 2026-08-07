@@ -1,0 +1,15 @@
+<map id="Guildmaster.Net.Tape.ReplayFileWriter.ReplayFileWriter" name="Guildmaster.Net.Tape.ReplayFileWriter.ReplayFileWriter">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,69,216,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1Tape_1_1ReplayFile.html#a4944dec9d935b5355330b52b2eb6c45b" title="Записать заголовок в начало потока." alt="" coords="264,69,475,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,87,251,87,251,92,216,92"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#af256f1c6c9d97a315975b2a95fdbd8e1" title=" " alt="" coords="523,5,751,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="453,67,539,46,540,51,454,72"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a766f2eecb93cc1180c521ababf677c66" title="Восемь байт, младшая половина первой — тем же порядком, что и всё остальное." alt="" coords="523,69,751,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="475,87,509,87,509,92,475,92"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a783d9e388e2924706fd0549a4eeeca73" title="Строка как длина + UTF&#45;8." alt="" coords="523,133,751,173"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="454,107,540,128,539,133,453,112"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a17310f0432ca43b4cfdae9591b4a7c89" title=" " alt="" coords="799,69,1027,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="751,87,785,87,785,92,751,92"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#ab09035f497e2a2eaebc8991801f7f3bb" title=" " alt="" coords="799,133,1027,173"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="751,151,785,151,785,156,751,156"/>
+</map>

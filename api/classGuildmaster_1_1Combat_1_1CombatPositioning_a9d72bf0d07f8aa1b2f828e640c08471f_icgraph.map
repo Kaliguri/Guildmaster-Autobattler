@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.CombatPositioning.ReachCenter" name="Guildmaster.Combat.CombatPositioning.ReachCenter">
+<area shape="rect" id="Node000001" title="То же для ПРОИЗВОЛЬНОЙ дистанции: зазор между поверхностями плюс радиусы обоих тел." alt="" coords="264,5,475,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a694af2b8defdeb6f018d8eafa67cb57e" title="Цель в пределах заданной дистанции (дальность каста умения)." alt="" coords="5,5,216,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,28,216,28,216,23,250,23"/>
+</map>

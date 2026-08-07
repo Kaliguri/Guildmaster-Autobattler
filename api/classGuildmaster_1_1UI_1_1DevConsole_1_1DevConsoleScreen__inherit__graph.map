@@ -1,8 +1,8 @@
 <map id="Guildmaster.UI.DevConsole.DevConsoleScreen" name="Guildmaster.UI.DevConsole.DevConsoleScreen">
-<area shape="rect" id="Node000001" title="Экран dev&#45;консоли: полка сверху с выводом, палитрой совпадений и строкой ввода." alt="" coords="115,479,312,659"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1UiScreen.html" title="Базовый экран навигатора (см." alt="" coords="5,5,205,431"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,443,188,478,183,479,172,444"/>
-<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="218,167,228,188,232,218,225,256,217,269,207,279,204,275,213,266,220,254,227,218,223,190,213,170"/>
-<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1UI_1_1DevConsole_1_1IDevOverlayScreen.html" title="Маркер dev&#45;полки (командная консоль, лог, витрина боёв)." alt="" coords="253,185,392,251"/>
-<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="311,264,244,479,239,478,306,263"/>
+<area shape="rect" id="Node000001" title="Экран dev&#45;консоли: полка сверху с выводом, палитрой совпадений и строкой ввода." alt="" coords="115,499,312,679"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1UiScreen.html" title="Базовый экран навигатора (см." alt="" coords="5,5,205,451"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,463,189,498,184,499,174,465"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="218,176,228,197,232,228,225,267,217,281,207,291,204,287,213,278,220,265,227,228,223,199,213,178"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1UI_1_1DevConsole_1_1IDevOverlayScreen.html" title="Маркер dev&#45;полки (командная консоль, лог, витрина боёв)." alt="" coords="253,195,392,261"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="312,275,243,499,238,498,306,273"/>
 </map>

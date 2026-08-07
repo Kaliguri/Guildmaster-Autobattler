@@ -1,9 +1,9 @@
 <map id="Guildmaster.Guild.Commands.ISessionRunCommands" name="Guildmaster.Guild.Commands.ISessionRunCommands">
-<area shape="rect" id="Node000001" title="Команды забега ТЕКУЩЕГО СЕАНСА: то, что регистрирует в своём составе Сессия." alt="" coords="109,219,323,299"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html" title="Команды забега у гостя: тот же контракт, но вместо применения — отправка интента хосту." alt="" coords="5,367,200,567"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="190,312,159,368,155,365,186,310"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html" title="Локальная шина команд забега: нумерует, штампует временем, применяет и дописывает в лог." alt="" coords="224,347,437,587"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="247,310,267,345,262,348,242,312"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html" title="Глаголы изменения забега — то, что зовёт игра вместо прямых мутаторов RunStateService." alt="" coords="132,5,300,171"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,184,219,218,213,218,213,184"/>
+<area shape="rect" id="Node000001" title="Команды забега ТЕКУЩЕГО СЕАНСА: то, что регистрирует в своём составе Сессия." alt="" coords="109,239,323,319"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html" title="Команды забега у гостя: тот же контракт, но вместо применения — отправка интента хосту." alt="" coords="5,387,200,607"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="191,332,162,388,158,385,187,330"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html" title="Локальная шина команд забега: нумерует, штампует временем, применяет и дописывает в лог." alt="" coords="224,367,437,627"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="245,330,264,365,260,368,241,332"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html" title="Глаголы изменения забега — то, что зовёт игра вместо прямых мутаторов RunStateService." alt="" coords="132,5,300,191"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,205,219,238,213,238,213,205"/>
 </map>

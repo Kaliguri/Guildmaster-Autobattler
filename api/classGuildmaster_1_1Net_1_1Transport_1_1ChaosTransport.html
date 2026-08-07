@@ -105,18 +105,27 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Net_1_1Transport_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Net.Transport.ChaosTransport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport__inherit__graph.svg" width="216" height="544"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Net.Transport.ChaosTransport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport__coll__graph.svg" width="216" height="544"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:acb438c397c410a232103b648cd5b32bf" id="r_acb438c397c410a232103b648cd5b32bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#acb438c397c410a232103b648cd5b32bf">ChaosTransport</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> inner, <a class="el" href="structGuildmaster_1_1Net_1_1Transport_1_1ChaosProfile.html">ChaosProfile</a> profile, ulong seed)</td></tr>
 <tr class="separator:acb438c397c410a232103b648cd5b32bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d233c0152e6315ac88ae783030798f8" id="r_a7d233c0152e6315ac88ae783030798f8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a7d233c0152e6315ac88ae783030798f8">StartHost</a> ()</td></tr>
+<tr class="memdesc:a7d233c0152e6315ac88ae783030798f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поднять сессию у себя: дальше к нам подключаются.  <br /></td></tr>
+<tr class="separator:a7d233c0152e6315ac88ae783030798f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b80b964ba8ce0e38dd6de898b54baf6" id="r_a4b80b964ba8ce0e38dd6de898b54baf6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a4b80b964ba8ce0e38dd6de898b54baf6">Connect</a> (ulong hostAddress)</td></tr>
+<tr class="memdesc:a4b80b964ba8ce0e38dd6de898b54baf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подключиться к хозяину по адресу его платформы.  <br /></td></tr>
+<tr class="separator:a4b80b964ba8ce0e38dd6de898b54baf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0735222261ad70583ff53cf35ca6b03" id="r_ab0735222261ad70583ff53cf35ca6b03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#ab0735222261ad70583ff53cf35ca6b03">SetLocalPeerId</a> (int peerId)</td></tr>
+<tr class="memdesc:ab0735222261ad70583ff53cf35ca6b03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Принять номер, назначенный хозяином на рукопожатии.  <br /></td></tr>
+<tr class="separator:ab0735222261ad70583ff53cf35ca6b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a7a75d36d93279be3b2de555dad903d" id="r_a2a7a75d36d93279be3b2de555dad903d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a2a7a75d36d93279be3b2de555dad903d">Send</a> (int peerId, ArraySegment&lt; byte &gt; payload, <a class="el" href="namespaceGuildmaster_1_1Net_1_1Transport.html#a7cc795a3e314259e924548bdd6ff85a5">NetDelivery</a> delivery)</td></tr>
 <tr class="memdesc:a2a7a75d36d93279be3b2de555dad903d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отправить одному пиру.  <br /></td></tr>
 <tr class="separator:a2a7a75d36d93279be3b2de555dad903d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -211,6 +220,30 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4b80b964ba8ce0e38dd6de898b54baf6" name="a4b80b964ba8ce0e38dd6de898b54baf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b80b964ba8ce0e38dd6de898b54baf6">&#9670;&#160;</a></span>Connect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Net.Transport.ChaosTransport.Connect </td>
+          <td>(</td>
+          <td class="paramtype">ulong&#160;</td>
+          <td class="paramname"><em>hostAddress</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Подключиться к хозяину по адресу его платформы. </p>
+<p><code>false</code> — не вышло.</p>
+<p>Адрес — <code>ulong</code>, потому что у Steam это <code>SteamId</code>. Транспорты, у которых адреса нет (петля в своём процессе), его игнорируют: там хозяин ровно один, и выбирать не из чего. Абстрагировать адрес дальше — значит завести тип ради одного случая. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a14d88f37729dff4f24829af6e6857fca">Guildmaster.Net.Transport.INetTransport</a>.</p>
+
+</div>
+</div>
 <a id="aefcb5dccd8ff639a4d124919c5edeaf2" name="aefcb5dccd8ff639a4d124919c5edeaf2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aefcb5dccd8ff639a4d124919c5edeaf2">&#9670;&#160;</a></span>Poll()</h2>
 
@@ -311,6 +344,29 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="ab0735222261ad70583ff53cf35ca6b03" name="ab0735222261ad70583ff53cf35ca6b03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0735222261ad70583ff53cf35ca6b03">&#9670;&#160;</a></span>SetLocalPeerId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Net.Transport.ChaosTransport.SetLocalPeerId </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>peerId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Принять номер, назначенный хозяином на рукопожатии. </p>
+<p>Номер выдаёт протокол уровнем выше, а не транспорт: тот не знает ни версии сборки, ни отпечатка контента, по которым хозяин решает, пускать ли нас вообще. Транспортам, где номер известен с рождения (петля в своём процессе), звать это незачем — там раздача одна. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a3bea456e776ac8d0b0cb781207f68f98">Guildmaster.Net.Transport.INetTransport</a>.</p>
+
+</div>
+</div>
 <a id="a4c5a862fb2af213cc7a432a56ea36d33" name="a4c5a862fb2af213cc7a432a56ea36d33"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4c5a862fb2af213cc7a432a56ea36d33">&#9670;&#160;</a></span>Shutdown()</h2>
 
@@ -337,6 +393,29 @@ Additional Inherited Members</h2></td></tr>
 <p>Закрыть соединение и отписаться. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#aa4742da916223bde507428442d79ac0a">Guildmaster.Net.Transport.INetTransport</a>.</p>
+
+</div>
+</div>
+<a id="a7d233c0152e6315ac88ae783030798f8" name="a7d233c0152e6315ac88ae783030798f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d233c0152e6315ac88ae783030798f8">&#9670;&#160;</a></span>StartHost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Net.Transport.ChaosTransport.StartHost </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Поднять сессию у себя: дальше к нам подключаются. </p>
+<p><code>false</code> — не вышло, причина уже названа в логе.</p>
+<p><b>Живёт в шве, а не только у Steam-транспорта</b> (05.08.2026). Пока подъём сессии и вход к другу были методами конкретного <code>SteamNetTransport</code>, сеанс держал его конкретным типом — и всё, что связано с подключением и разрывом, проверялось только вживую на двух машинах: ни петля, ни хаос-слой к сеансу подключиться не могли. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a1f03d9b1f9f79afa58e46fa1b26147c4">Guildmaster.Net.Transport.INetTransport</a>.</p>
 
 </div>
 </div>

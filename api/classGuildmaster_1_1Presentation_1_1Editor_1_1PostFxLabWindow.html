@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Ed
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="classGuildmaster_1_1Presentation_1_1Editor_1_1PostFxLabWindow-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Presentation.Editor.PostFxLabWindow Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -113,8 +114,9 @@ Collaboration diagram for Guildmaster.Presentation.Editor.PostFxLabWindow:</div>
 <div class="textblock"><p>Стенд пост-обработки: показывает боевой профиль и профиль карты ЖИВЬЁМ — с bloom, виньеткой и всем прочим, — не заходя в play-mode. </p>
 <p>Слева кадр и ручки сцены, справа сам профиль.</p>
 <p>Заведён после того, как выяснилось, что оценивать свечение было не по чему: кадр из редактора без <code>renderPostProcessing</code> показывает арт почти без свечения, профиль пост-обработки лежал пустым и этого никто не видел, а единственным способом посмотреть правду был play-mode. </p>
-<p>Стенд ничего не оставляет за собой: камера, volume и субъект живут с HideFlags.HideAndDontSave, не попадают в иерархию и в сохранение сцены и уничтожаются вместе с окном. Именно поэтому он работает в любой открытой сцене, включая чужую. </p>
-<p>Свечение он подаёт ТЕМ ЖЕ путём, что бой: CastGlowMask переводит роль приёма в части тела, состояние уезжает в <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a9c30d9104a90ac92699ec6601a299322" title="Применить состояние кадра. Реализация сама решает, писать ли — повтор того же не пишется.">IUnitBodyVisual.Apply</a>. Поэтому стенд проверяет заодно и реестр частей — если приём светит не тем, это видно здесь, а не в бою. </p>
+<p><b>Что в кадре — выбирают тумблеры</b> (06.08.2026, слияние с отдельной «витриной блума»). Каждый светящийся эффект боя — своя ячейка: включил один, кадрировал крупно — смотришь деталь; включил все — смотришь, как они выглядят вместе и кто из них ярче кого. Вопрос «как выглядит эффект под постобработкой» один, и вход к нему обязан быть один: пока стендов было два, у одного факта было два владельца. </p>
+<p><b>Всё показывается статикой, без play-mode.</b> Каждый эффект умеет замереть на своей характерной фазе, потому что фаза у наших эффектов — параметр шейдера, а не состояние скрипта: у формы удара это <code>_Progress</code>, у дуги <code>_AngleTo</code>, у разлёта <code>_Shatter</code>, у частиц <code>ParticleSystem.Simulate</code>. </p>
+<p>Стенд ничего не оставляет за собой: камера, volume и ячейки живут с HideFlags.HideAndDontSave, не попадают в иерархию и в сохранение сцены и уничтожаются вместе с окном. Именно поэтому он работает в любой открытой сцене, включая чужую. Профиль-ассет при съёмке серии тоже не трогается: значения крутятся на временной копии (PostFxScratch). </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

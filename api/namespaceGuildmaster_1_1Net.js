@@ -20,6 +20,7 @@ var namespaceGuildmaster_1_1Net =
       [ "RunSnapshot", "namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809ad432ba67fb076ed69b509f6ecf16d451", null ],
       [ "ActivityState", "namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809affa5501393f9118b530186508d8ae6ea", null ],
       [ "ReadyGate", "namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809a94ae64bf4597d4bb43d65279e2cb6ed4", null ],
-      [ "SessionRoster", "namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809a012c6696b246f4fe5b3e2c8b7d6d0326", null ]
+      [ "SessionRoster", "namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809a012c6696b246f4fe5b3e2c8b7d6d0326", null ],
+      [ "DeploymentIntent", "namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809abd7ab48c5388920001cc9fa96a5caf00", null ]
     ] ]
 ];

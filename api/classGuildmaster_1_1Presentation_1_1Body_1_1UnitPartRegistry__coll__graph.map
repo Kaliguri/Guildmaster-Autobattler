@@ -1,9 +1,9 @@
 <map id="Guildmaster.Presentation.Body.UnitPartRegistry" name="Guildmaster.Presentation.Body.UnitPartRegistry">
-<area shape="rect" id="Node000001" title="Реестр частей тела, выведенный ИЗ КОНВЕНЦИИ РИГА: кто чем является, читается из иерархии (RigNaming),..." alt="" coords="5,463,188,663"/>
+<area shape="rect" id="Node000001" title="Реестр частей тела, выведенный ИЗ КОНВЕНЦИИ РИГА: кто чем является, читается из иерархии (RigNaming),..." alt="" coords="5,443,188,623"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitPartLookup.html" title="Запрос к частям тела юнита: «что у тебя в правой руке», «дай щит», «дай голову», «дай правую ногу»,..." alt="" coords="11,5,172,151"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,164,98,462,93,463,90,165"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html" title="Реестр частей тела, выведенный ИЗ КОНВЕНЦИИ РИГА: кто чем является, читается из иерархии (RigNaming),..." alt="" coords="113,200,296,400"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="137,162,156,198,151,201,132,165"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,401,146,449,141,447,161,399"/>
-<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="297,276,315,285,323,300,320,310,313,317,309,313,315,307,317,300,312,288,295,281"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,164,98,443,93,443,90,164"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html" title="Реестр частей тела, выведенный ИЗ КОНВЕНЦИИ РИГА: кто чем является, читается из иерархии (RigNaming),..." alt="" coords="113,200,296,380"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="139,162,159,198,154,201,134,164"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="167,381,146,429,141,426,162,379"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="297,268,315,275,323,290,320,299,313,306,309,302,315,297,317,290,312,279,295,273"/>
 </map>

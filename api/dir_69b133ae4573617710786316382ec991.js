@@ -8,7 +8,7 @@ var dir_69b133ae4573617710786316382ec991 =
     [ "PartMask.cs", "PartMask_8cs.html", "PartMask_8cs" ],
     [ "RigNaming.cs", "RigNaming_8cs.html", "RigNaming_8cs" ],
     [ "SkeletalBodyVisual.cs", "SkeletalBodyVisual_8cs.html", "SkeletalBodyVisual_8cs" ],
-    [ "SpriteBodyVisual.cs", "SpriteBodyVisual_8cs.html", "SpriteBodyVisual_8cs" ],
+    [ "StrikeDirectionMeasure.cs", "StrikeDirectionMeasure_8cs.html", "StrikeDirectionMeasure_8cs" ],
     [ "UnitHeldItem.cs", "UnitHeldItem_8cs.html", "UnitHeldItem_8cs" ],
     [ "UnitPart.cs", "UnitPart_8cs.html", "UnitPart_8cs" ],
     [ "UnitPartAxes.cs", "UnitPartAxes_8cs.html", "UnitPartAxes_8cs" ],

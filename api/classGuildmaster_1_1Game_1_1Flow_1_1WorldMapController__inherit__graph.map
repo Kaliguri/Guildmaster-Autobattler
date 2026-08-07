@@ -1,9 +1,9 @@
 <map id="Guildmaster.Game.Flow.WorldMapController" name="Guildmaster.Game.Flow.WorldMapController">
-<area shape="rect" id="Node000001" title="ЕДИНЫЙ владелец показа карты акта в мире." alt="" coords="90,139,301,339"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html" title="Карта акта глазами того, кто её не рисует: показана ли она и надо ли её показать." alt="" coords="5,5,132,91"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,101,131,137,126,140,102,104"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="157,15,234,81"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="198,94,198,138,193,138,193,94"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="258,15,349,81"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="281,94,254,140,250,137,276,91"/>
+<area shape="rect" id="Node000001" title="ЕДИНЫЙ владелец показа карты акта в мире." alt="" coords="90,199,301,419"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html" title="Карта акта глазами того, кто её не рисует: показана ли она и надо ли её показать." alt="" coords="5,5,132,151"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,161,137,197,133,200,113,164"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="157,45,234,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="198,125,198,199,193,199,193,125"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="258,45,349,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="285,124,249,200,244,197,280,122"/>
 </map>

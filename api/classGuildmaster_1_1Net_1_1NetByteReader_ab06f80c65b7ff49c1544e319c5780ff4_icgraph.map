@@ -1,11 +1,15 @@
 <map id="Guildmaster.Net.NetByteReader.ReadByte" name="Guildmaster.Net.NetByteReader.ReadByte">
-<area shape="rect" id="Node000001" title=" " alt="" coords="571,37,805,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#a148d4c23a2f5fbedb7c25355494b04d4" title=" " alt="" coords="288,5,523,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="557,45,523,41,523,36,557,40"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#a807d7bb7ec0ce80e03958f06154515d7" title=" " alt="" coords="288,69,523,109"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="557,75,523,79,523,73,557,69"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#ab771d1ed7d9dd61416d6bed5c3b98466" title=" " alt="" coords="5,5,240,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="274,28,240,28,240,23,274,23"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#a2a4fbc247140c3ed7ad4d8cec328ae5a" title=" " alt="" coords="5,69,240,109"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="274,92,240,92,240,87,274,87"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="829,63,1064,103"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#a148d4c23a2f5fbedb7c25355494b04d4" title=" " alt="" coords="547,5,781,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="833,62,763,48,764,43,834,57"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Net_1_1Tape_1_1ReplayFile.html#a44a77044cd6e0c90c909f646d4364ffe" title="Прочитать заголовок с начала потока." alt="" coords="5,63,216,103"/>
+<area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="815,85,216,85,216,80,815,80"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#a807d7bb7ec0ce80e03958f06154515d7" title=" " alt="" coords="547,120,781,160"/>
+<area shape="poly" id="edge4_Node000001_Node000006" title=" " alt="" coords="834,108,764,123,763,117,833,103"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#ab771d1ed7d9dd61416d6bed5c3b98466" title=" " alt="" coords="264,5,499,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="533,28,499,28,499,23,533,23"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="273,51,206,65,205,60,272,46"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Net_1_1NetByteReader.html#a2a4fbc247140c3ed7ad4d8cec328ae5a" title=" " alt="" coords="264,120,499,160"/>
+<area shape="poly" id="edge5_Node000006_Node000007" title=" " alt="" coords="533,143,499,143,499,137,533,137"/>
+<area shape="poly" id="edge6_Node000007_Node000004" title=" " alt="" coords="272,120,205,105,206,100,273,114"/>
 </map>

@@ -1,9 +1,9 @@
 <map id="Guildmaster.Combat.Tape.IStageFrameSource" name="Guildmaster.Combat.Tape.IStageFrameSource">
 <area shape="rect" id="Node000001" title="Кто поставляет показу кадр сцены: кто стоит на арене, где и в какой позе." alt="" coords="216,5,403,105"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html" title="Момент показа: сколько боя игрок уже увидел." alt="" coords="5,153,192,493"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="242,117,206,155,194,170,190,166,202,152,238,113"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Tape_1_1StageFrameRouter.html" title="Единственный вход показа за кадром сцены: пока идёт бой — лента, всё остальное время — тела мира." alt="" coords="216,193,403,453"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="312,120,312,193,307,193,307,120"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Tape_1_1WorldBodyStage.html" title="Тела на арене вне боя: кто стоит во дворе гильдии, на Ристалище и в строю между забегами." alt="" coords="427,233,613,413"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="380,113,417,152,473,232,469,235,413,155,377,117"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html" title="Момент показа: сколько боя игрок уже увидел." alt="" coords="5,153,192,513"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="242,117,206,155,194,170,190,167,202,152,238,113"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Tape_1_1StageFrameRouter.html" title="Единственный вход показа за кадром сцены: пока идёт бой — лента, всё остальное время — тела мира." alt="" coords="216,203,403,463"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="312,120,312,203,307,203,307,120"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Tape_1_1WorldBodyStage.html" title="Тела на арене вне боя: кто стоит во дворе гильдии, на Ристалище и в строю между забегами." alt="" coords="427,243,613,423"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="381,113,417,152,449,196,477,242,472,245,444,199,413,155,377,117"/>
 </map>

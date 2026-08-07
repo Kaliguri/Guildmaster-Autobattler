@@ -114,8 +114,8 @@ Collaboration diagram for Guildmaster.UI.Presence.CursorLayerView:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abc1b16061d6175917cfefc1e6248c8bf" id="r_abc1b16061d6175917cfefc1e6248c8bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Presence_1_1CursorLayerView.html#abc1b16061d6175917cfefc1e6248c8bf">CursorLayerView</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1IPresenceView.html">IPresenceView</a> presence, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html">ISessionRoster</a> roster, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html">ISettingsService</a> settings, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">IBattleClock</a> clock)</td></tr>
-<tr class="separator:abc1b16061d6175917cfefc1e6248c8bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac41d99eca072fe0d24d699d07674c0af" id="r_ac41d99eca072fe0d24d699d07674c0af"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Presence_1_1CursorLayerView.html#ac41d99eca072fe0d24d699d07674c0af">CursorLayerView</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1IPresenceView.html">IPresenceView</a> presence, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html">ISessionRoster</a> roster, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html">ISettingsService</a> settings, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">IBattleClock</a> clock, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1CursorSkinCatalog.html">CursorSkinCatalog</a> skins)</td></tr>
+<tr class="separator:ac41d99eca072fe0d24d699d07674c0af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0b0ac3ed6d5e93783259b927d8d5780" id="r_ae0b0ac3ed6d5e93783259b927d8d5780"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Presence_1_1CursorLayerView.html#ae0b0ac3ed6d5e93783259b927d8d5780">Attach</a> (VisualElement layer)</td></tr>
 <tr class="memdesc:ae0b0ac3ed6d5e93783259b927d8d5780"><td class="mdescLeft">&#160;</td><td class="mdescRight">Взять слой курсоров у корня UI. До этого рисовать некуда — и незачем.  <br /></td></tr>
 <tr class="separator:ae0b0ac3ed6d5e93783259b927d8d5780"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,8 +128,8 @@ Public Member Functions</h2></td></tr>
 <p><b>В бою курсор приглушается, а не гаснет</b> (решение Макса 03.08.2026, отменяет прежнее правило кооп-кластера): исчезнувшие курсоры читаются как «все разошлись», а яркие мешают смотреть драку. Подпись при этом убирается — имя в бою уже не нужно, оно есть в списке участников.</p>
 <p><b>Кого показывать, решено ДО нас.</b> Пакет присутствия режется по сторонам у хоста; здесь нет и не должно быть проверки «а не противник ли он» — вторая такая проверка стала бы вторым владельцем правила, и разошлись бы они молча.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abc1b16061d6175917cfefc1e6248c8bf" name="abc1b16061d6175917cfefc1e6248c8bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc1b16061d6175917cfefc1e6248c8bf">&#9670;&#160;</a></span>CursorLayerView()</h2>
+<a id="ac41d99eca072fe0d24d699d07674c0af" name="ac41d99eca072fe0d24d699d07674c0af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac41d99eca072fe0d24d699d07674c0af">&#9670;&#160;</a></span>CursorLayerView()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,7 +159,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html">IBattleClock</a>&#160;</td>
-          <td class="paramname"><em>clock</em>&#160;</td>
+          <td class="paramname"><em>clock</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1CursorSkinCatalog.html">CursorSkinCatalog</a>&#160;</td>
+          <td class="paramname"><em>skins</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

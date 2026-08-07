@@ -1,7 +1,7 @@
 <map id="Guildmaster.Presentation.Body.RigNaming.BoneNameOf" name="Guildmaster.Presentation.Body.RigNaming.BoneNameOf">
-<area shape="rect" id="Node000001" title="Имя кости, которую рисует этот рендерер (Arm_Down, Sword)." alt="" coords="5,5,225,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#aba5b69a7b9dafd83d7d530b52651bb47" title="Кость, которую рисует этот рендерер: узел НАД контейнером арта." alt="" coords="273,5,464,45"/>
+<area shape="rect" id="Node000001" title="Имя кости, которую рисует этот рендерер (LowerArm_R, Weapon_R)." alt="" coords="5,5,225,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#aba5b69a7b9dafd83d7d530b52651bb47" title="Кость, которую рисует этот рендерер: сам узел, если он не рисунок, иначе его родитель." alt="" coords="273,5,464,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="226,23,260,23,260,28,226,28"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ab6f941797e6277521b2969662459baf4" title=" " alt="" coords="512,5,719,45"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a596399180f27d9b51277770f9d0260a4" title="Узел рисунка — лист с суффиксом ArtSuffix." alt="" coords="512,5,703,45"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="464,23,498,23,498,28,464,28"/>
 </map>

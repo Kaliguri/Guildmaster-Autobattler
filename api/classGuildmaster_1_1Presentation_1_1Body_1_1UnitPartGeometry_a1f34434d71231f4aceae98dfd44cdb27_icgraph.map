@@ -1,0 +1,11 @@
+<map id="Guildmaster.Presentation.Body.UnitPartGeometry.TryMeasureTipFromMesh" name="Guildmaster.Presentation.Body.UnitPartGeometry.TryMeasureTipFromMesh">
+<area shape="rect" id="Node000001" title="ЧИСТЫЙ замер кончика по мешу спрайта, в локальных координатах рендерера: дальняя от точки крепления в..." alt="" coords="659,30,909,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitHeldItem.html#ab49718a2fa586b2591bdf10d1f986b13" title="Куда смотрит рабочая часть — единичный вектор в координатах хвата, снятый с САМОГО РИСУНКА." alt="" coords="321,5,611,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="645,46,610,43,611,37,645,41"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartGeometry.html#ace536a95ea64c25b9f3ba4ec08def315" title="Мировая точка кончика части: угол спрайта, самый дальний от точки крепления." alt="" coords="347,69,585,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="645,74,586,80,585,75,645,69"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitHeldItem.html#a345b19994b32cbbb93711e7bb43bf1b5" title="Мировая точка острия: от хвата НА ОБЪЯВЛЕННУЮ ДЛИНУ в ту сторону, КУДА НАРИСОВАНА рабочая часть." alt="" coords="5,5,273,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="307,28,274,28,274,23,307,23"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcGeometry.html#a8e2bd99334340d54d595449386e8a180" title="Плечо и остриё для тела в его ТЕКУЩЕЙ позе." alt="" coords="5,69,273,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="333,92,273,92,273,87,333,87"/>
+</map>

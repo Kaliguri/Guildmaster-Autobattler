@@ -106,12 +106,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Net_1_1Tape_1_1Tap
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Net.Tape.TapeIntake:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake__inherit__graph.svg" width="199" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake__inherit__graph.svg" width="199" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Net.Tape.TapeIntake:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake__coll__graph.svg" width="199" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake__coll__graph.svg" width="199" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -121,6 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4331c4c1fa396ecb36e4d330fa9352ea" id="r_a4331c4c1fa396ecb36e4d330fa9352ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake.html#a4331c4c1fa396ecb36e4d330fa9352ea">RequestMissing</a> (float now, float retrySeconds=<a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake.html#a8f014a53aee9b20cd57b5e208c60fb1c">DefaultRetrySeconds</a>)</td></tr>
 <tr class="memdesc:a4331c4c1fa396ecb36e4d330fa9352ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Попросить хоста повторить чанки, которых не хватает.  <br /></td></tr>
 <tr class="separator:a4331c4c1fa396ecb36e4d330fa9352ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac895f2e266f787c4db6ff794f8220646" id="r_ac895f2e266f787c4db6ff794f8220646"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake.html#ac895f2e266f787c4db6ff794f8220646">RequestWholeBattle</a> ()</td></tr>
+<tr class="memdesc:ac895f2e266f787c4db6ff794f8220646"><td class="mdescLeft">&#160;</td><td class="mdescRight">Попросить бой С НАЧАЛА.  <br /></td></tr>
+<tr class="separator:ac895f2e266f787c4db6ff794f8220646"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f92880b2723cf6bc586a8b363afcfc1" id="r_a4f92880b2723cf6bc586a8b363afcfc1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake.html#a4f92880b2723cf6bc586a8b363afcfc1">Reset</a> ()</td></tr>
 <tr class="memdesc:a4f92880b2723cf6bc586a8b363afcfc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Новый бой: чанки нумеруются заново, поэтому забываем всё, что видели.  <br /></td></tr>
 <tr class="separator:a4f92880b2723cf6bc586a8b363afcfc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -259,6 +262,41 @@ Here is the call graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake_a4331c4c1fa396ecb36e4d330fa9352ea_cgraph.svg" width="508" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ac895f2e266f787c4db6ff794f8220646" name="ac895f2e266f787c4db6ff794f8220646"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac895f2e266f787c4db6ff794f8220646">&#9670;&#160;</a></span>RequestWholeBattle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Net.Tape.TapeIntake.RequestWholeBattle </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Попросить бой С НАЧАЛА. </p>
+<p>Зовётся один раз, когда гость входит в уже идущий бой.</p>
+<p><b>Почему нельзя просто начать слушать с текущего места.</b> Лента адресуется номерами чанков, а недостающим здесь считается всё от нуля до наибольшего виденного: гость, подключившийся на пятисотом, объявил бы дырами пятьсот номеров и просил бы их вечно. Получив бой целиком, он видит нумерацию непрерывной — и заодно может отмотать назад (решение Макса 04.08.2026). </p>
+<p>Пустая нагрузка на канале повтора и означает «пришли всё, что есть»: номер чанка в просьбе — это «повтори вот этот», а его отсутствие — «повтори бой».</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake_ac895f2e266f787c4db6ff794f8220646_cgraph.svg" width="511" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

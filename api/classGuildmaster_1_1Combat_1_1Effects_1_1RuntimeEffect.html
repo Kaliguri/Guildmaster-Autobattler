@@ -148,6 +148,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9e59d021802d09cb87d01b16d2951da8" id="r_a9e59d021802d09cb87d01b16d2951da8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a9e59d021802d09cb87d01b16d2951da8">AddHeldShield</a> (float amount)</td></tr>
 <tr class="memdesc:a9e59d021802d09cb87d01b16d2951da8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Накопить щит сверх удерживаемого (сбор по ходу боя: «Стальной вихрь»).  <br /></td></tr>
 <tr class="separator:a9e59d021802d09cb87d01b16d2951da8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5f0ebc85474ee0065269704ae7a0930" id="r_ac5f0ebc85474ee0065269704ae7a0930"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ac5f0ebc85474ee0065269704ae7a0930">SpendHeldShield</a> (float amount)</td></tr>
+<tr class="memdesc:ac5f0ebc85474ee0065269704ae7a0930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Списать израсходованную уроном часть: щит поглотил <em>amount</em> , и удерживаемое на столько же уменьшилось.  <br /></td></tr>
+<tr class="separator:ac5f0ebc85474ee0065269704ae7a0930"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae222e6d654dbf058b6ed49d787010759" id="r_ae222e6d654dbf058b6ed49d787010759"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ae222e6d654dbf058b6ed49d787010759">ReleaseHeldShield</a> ()</td></tr>
 <tr class="memdesc:ae222e6d654dbf058b6ed49d787010759"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отпустить удерживаемое: вернуть величину и обнулить счёт.  <br /></td></tr>
 <tr class="separator:ae222e6d654dbf058b6ed49d787010759"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,7 +217,7 @@ Properties</h2></td></tr>
 <tr class="memitem:a241d031f0a2f8b12649fd51fef79b85f" id="r_a241d031f0a2f8b12649fd51fef79b85f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a241d031f0a2f8b12649fd51fef79b85f">Stacks</a> = 1<code> [get]</code></td></tr>
 <tr class="memdesc:a241d031f0a2f8b12649fd51fef79b85f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущее число стаков (≥ 0).  <br /></td></tr>
 <tr class="separator:a241d031f0a2f8b12649fd51fef79b85f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c985966e006b6ebbbad0c0de6f8db2d" id="r_a7c985966e006b6ebbbad0c0de6f8db2d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a7c985966e006b6ebbbad0c0de6f8db2d">StacksAtTickStart</a> = 1<code> [get]</code></td></tr>
+<tr class="memitem:a7c985966e006b6ebbbad0c0de6f8db2d" id="r_a7c985966e006b6ebbbad0c0de6f8db2d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a7c985966e006b6ebbbad0c0de6f8db2d">StacksAtTickStart</a><code> [get]</code></td></tr>
 <tr class="memdesc:a7c985966e006b6ebbbad0c0de6f8db2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Число стаков, с которым эффект ВОШЁЛ в текущий тик.  <br /></td></tr>
 <tr class="separator:a7c985966e006b6ebbbad0c0de6f8db2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbf2ec934c107c3e05e2a0b07505017c" id="r_acbf2ec934c107c3e05e2a0b07505017c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#acbf2ec934c107c3e05e2a0b07505017c">VisibleStacks</a><code> [get]</code></td></tr>
@@ -683,6 +686,35 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect_abb7322a42443e8188834c4f60e9125dc_icgraph.svg" width="475" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="ac5f0ebc85474ee0065269704ae7a0930" name="ac5f0ebc85474ee0065269704ae7a0930"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5f0ebc85474ee0065269704ae7a0930">&#9670;&#160;</a></span>SpendHeldShield()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.RuntimeEffect.SpendHeldShield </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>amount</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Списать израсходованную уроном часть: щит поглотил <em>amount</em> , и удерживаемое на столько же уменьшилось. </p>
+<p>Без этого счёта HeldShield помнил ВЫДАННОЕ, а не оставшееся, и истечение одного щита съедало пул соседнего: два щита по 600, поглощено 600 — при снятии первого из общего пула вычиталось 600, и второй исчезал целиком. Кламп в ноль прятал это от глаз. </p>
 
 </div>
 </div>
@@ -1161,7 +1193,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.StacksAtTickStart = 1</td>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.StacksAtTickStart</td>
         </tr>
       </table>
   </td>
@@ -1174,6 +1206,7 @@ Here is the caller graph for this function:</div>
 <p>Число стаков, с которым эффект ВОШЁЛ в текущий тик. </p>
 <p>Обновляется одним проходом в <code>EffectSystem.CommitPending</code> — больше нигде. </p>
 <p><b>Зачем:</b> закон видимости эффектов (см. <code>EffectSystem.CommitTickChanges</code>) до этого поля накрывал статы и маску тегов, но не стаки — а их правят посреди тика. Пойман зеркалом на тике 300: клинс союзного пастыря съедал 5 стаков «Углей» ЦЕНОЙ очищения, и у левой стороны свой пастырь успевал сделать это ДО хода вражеского мечника, а у правой — после. Мечники детонировали 18 и 13 стаков: 354 против 244,8 урона при одинаковом составе эффектов.</p>
+<p>Стартует НУЛЁМ, и это не «ноль стаков», а «снимка ещё нет»: ровно так его читает VisibleStacks. Пока здесь стояла единица, эффект, рождённый сразу с несколькими стаками (<code>StacksPerApplication</code> больше одного), влиял как один — до первой же границы тика, а стат-модификатор так и оставался немасштабированным: его <code>OnApply</code> зовётся один раз и второго вызова не будет. </p>
 
 </div>
 </div>

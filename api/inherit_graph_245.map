@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classGuildmaster_1_1Guild_1_1MapNode.html" title="Узел графа акта (сериализуемый DTO)." alt="" coords="5,5,211,31"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html" title="Шов загрузки сцен сессии (план 11 §2, вики «10» §8)." alt="" coords="5,5,212,45"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html" title="Загрузка сцен сессии." alt="" coords="260,5,467,45"/>
+<area shape="poly" id="edge350_Node000000_Node000001" title=" " alt="" coords="225,23,260,23,260,28,225,28"/>
 </map>

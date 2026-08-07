@@ -1,11 +1,12 @@
 <map id="Guildmaster.Presentation.Body.UnitPartRegistry.FromBody" name="Guildmaster.Presentation.Body.UnitPartRegistry.FromBody">
 <area shape="rect" id="Node000001" title="Собрать реестр по частям скелетного тела." alt="" coords="5,69,236,109"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#aba5b69a7b9dafd83d7d530b52651bb47" title="Кость, которую рисует этот рендерер: узел НАД контейнером арта." alt="" coords="284,5,475,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#aba5b69a7b9dafd83d7d530b52651bb47" title="Кость, которую рисует этот рендерер: сам узел, если он не рисунок, иначе его родитель." alt="" coords="284,5,475,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,67,284,46,286,51,203,72"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a7ac7662facfb5b5cad81cb55382b671a" title="Сустав&#45;хват — тот, чья метка равна GripLabel." alt="" coords="284,69,475,109"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a7ac7662facfb5b5cad81cb55382b671a" title="Кость&#45;хват: та, внутри которой висит предмет." alt="" coords="284,69,475,109"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="236,87,270,87,270,92,236,92"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a64015fa4fa0e0b64ecd9f9ba6b19321f" title="Сторона тела: берётся с конечности НАД узлом (Arm (Left)), поэтому сами суставы носят одно имя на обе..." alt="" coords="284,133,475,173"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a64015fa4fa0e0b64ecd9f9ba6b19321f" title="Сторона тела: читается из суффикса имени, своего или ближайшего предка до root ." alt="" coords="284,133,475,173"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="203,107,286,127,284,133,202,112"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#ab6f941797e6277521b2969662459baf4" title=" " alt="" coords="523,5,729,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="475,23,509,23,509,28,475,28"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a596399180f27d9b51277770f9d0260a4" title="Узел рисунка — лист с суффиксом ArtSuffix." alt="" coords="523,69,713,109"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="455,43,531,63,529,68,454,48"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="454,131,529,110,531,115,455,136"/>
 </map>

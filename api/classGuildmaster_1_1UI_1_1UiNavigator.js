@@ -12,6 +12,7 @@ var classGuildmaster_1_1UI_1_1UiNavigator =
     [ "SyncInput", "classGuildmaster_1_1UI_1_1UiNavigator.html#a1feefbc536943703b36817235b504dd4", null ],
     [ "ActiveCancelHooks", "classGuildmaster_1_1UI_1_1UiNavigator.html#a8d69c3f9826caf8cef3585c76ba381ee", null ],
     [ "ActiveModeTag", "classGuildmaster_1_1UI_1_1UiNavigator.html#a470d3d476c47934c3c1df189feb35292", null ],
+    [ "HasVisibleBackdropRequest", "classGuildmaster_1_1UI_1_1UiNavigator.html#a20227f114691b7e1cf469b899afdf966", null ],
     [ "HasVisiblePage", "classGuildmaster_1_1UI_1_1UiNavigator.html#a5c05d872599132114ed3dd1f1855d228", null ],
     [ "IsOpen", "classGuildmaster_1_1UI_1_1UiNavigator.html#a6bfc1400938e6489cff8224307c75c97", null ],
     [ "Top", "classGuildmaster_1_1UI_1_1UiNavigator.html#ad069ec8abf628a2286603a6f3a2923bc", null ],

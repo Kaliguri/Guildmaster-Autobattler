@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html" target="_top" xlink:title="Запрос показать экран награды после боя (публикует флоу забега, слушает UI).">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes.html" target="_top" xlink:title="Правила типа урона.">
 <polygon fill="white" stroke="#666666" points="161,-30 0,-30 0,0 161,0 161,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">OpenRewardRequest</text>
+<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">DamageTypes</text>
 </a>
 </g>
 </g>

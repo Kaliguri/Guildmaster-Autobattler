@@ -5,6 +5,7 @@ var searchData=
   ['windowmode_2',['WindowMode',['../classGuildmaster_1_1UI_1_1SettingsViewModel.html#a232e913deddd007effbfcd0d24249aa4',1,'Guildmaster::UI::SettingsViewModel']]],
   ['windowmodeindex_3',['WindowModeIndex',['../classGuildmaster_1_1UI_1_1SettingsViewModel.html#a245a09c0aef54e1c13066c45ce5a0de9',1,'Guildmaster::UI::SettingsViewModel']]],
   ['windowticks_4',['WindowTicks',['../classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a13672c98b5950910612529d3b28c3b66',1,'Guildmaster::Combat::Tape::BattleTape']]],
-  ['windupshare_5',['WindupShare',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#aaef7e9e53b8934efffd4906e89f0dc65',1,'Guildmaster::Data::Definitions::UnitData']]],
-  ['writtensegment_6',['WrittenSegment',['../classGuildmaster_1_1Net_1_1NetByteWriter.html#ab239f2d4bcad97fd6dad80d4363be223',1,'Guildmaster::Net::NetByteWriter']]]
+  ['windupshare_5',['windupshare',['../classGuildmaster_1_1Data_1_1Definitions_1_1AnimationArchetypeData.html#a19cf81986e785fd570a8e07e24220baf',1,'Guildmaster.Data.Definitions.AnimationArchetypeData.WindupShare'],['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#aaef7e9e53b8934efffd4906e89f0dc65',1,'Guildmaster.Data.Definitions.UnitData.WindupShare']]],
+  ['written_6',['Written',['../classGuildmaster_1_1Net_1_1Tape_1_1ReplayFileWriter.html#a4478ad6d3930c1fbcf8f291c4d036177',1,'Guildmaster::Net::Tape::ReplayFileWriter']]],
+  ['writtensegment_7',['WrittenSegment',['../classGuildmaster_1_1Net_1_1NetByteWriter.html#ab239f2d4bcad97fd6dad80d4363be223',1,'Guildmaster::Net::NetByteWriter']]]
 ];

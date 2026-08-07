@@ -1,8 +1,5 @@
 <map id="Guildmaster.Combat.CombatSimulation.EnqueueUnitSpawn" name="Guildmaster.Combat.CombatSimulation.EnqueueUnitSpawn">
-<area shape="rect" id="Node000001" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="301,61,524,101"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab4ec10b3c8cb40ff0c983b1fda86385f" title="1×1 зеркально на дев&#45;дуэлянте (enemy.bone_dev) — смотреть скелетный визуал в живом бою." alt="" coords="5,29,253,69"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,70,253,66,254,61,288,65"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a47196edf5856a85fcc69278b50704da0" title="Призвать тело в бой: собрать по киту и поставить в очередь спавна (см. ICombatContext)." alt="" coords="24,93,235,133"/>
-<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="288,98,235,104,235,99,288,93"/>
-<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="178,18,161,11,129,8,102,10,85,15,79,21,82,28,77,30,74,20,82,10,101,5,129,3,162,5,180,13"/>
+<area shape="rect" id="Node000001" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="264,5,487,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a47196edf5856a85fcc69278b50704da0" title="Призвать тело в бой: собрать по киту и поставить в очередь спавна (см. ICombatContext)." alt="" coords="5,5,216,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,28,216,28,216,23,250,23"/>
 </map>

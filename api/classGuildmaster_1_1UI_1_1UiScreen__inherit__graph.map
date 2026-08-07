@@ -1,11 +1,11 @@
 <map id="Guildmaster.UI.UiScreen&lt; TResult &gt;" name="Guildmaster.UI.UiScreen&lt; TResult &gt;">
-<area shape="rect" id="Node000001" title="Базовый экран навигатора (см." alt="" coords="230,119,430,559"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1DevBattleBrowserScreen.html" title="Витрина боёв (F3): поиск по всему, что можно запустить, — энкаунтеры и пресеты из контент&#45;БД плюс сре..." alt="" coords="5,617,207,777"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,512,158,618,154,615,220,509"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1DevConsole_1_1DevConsoleScreen.html" title="Экран dev&#45;консоли: полка сверху с выводом, палитрой совпадений и строкой ввода." alt="" coords="231,607,429,787"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="333,572,333,607,327,607,327,572"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1UI_1_1DevConsole_1_1DevLogScreen.html" title="Лог&#45;консоль (F2): хвост сообщений движка без строки ввода." alt="" coords="453,617,650,777"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="440,511,504,615,500,618,435,514"/>
+<area shape="rect" id="Node000001" title="Базовый экран навигатора (см." alt="" coords="230,119,430,579"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1DevBattleBrowserScreen.html" title="Витрина боёв (F3): поиск по всему, что можно запустить, — энкаунтеры и пресеты из контент&#45;БД плюс сре..." alt="" coords="5,637,207,797"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,526,157,638,152,635,220,524"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1DevConsole_1_1DevConsoleScreen.html" title="Экран dev&#45;консоли: полка сверху с выводом, палитрой совпадений и строкой ввода." alt="" coords="231,627,429,807"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="333,592,333,627,327,627,327,592"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1UI_1_1DevConsole_1_1DevLogScreen.html" title="Лог&#45;консоль (F2): хвост сообщений движка без строки ввода." alt="" coords="453,637,650,797"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="440,526,506,635,501,638,435,529"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="294,5,366,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="333,85,333,119,327,119,327,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="333,84,333,118,327,118,327,84"/>
 </map>

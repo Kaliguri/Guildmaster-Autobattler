@@ -110,14 +110,17 @@ Inheritance diagram for Guildmaster.Core.Persistence.IProfileService:</div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Persistence.IProfileService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService__coll__graph.svg" width="222" height="311"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService__coll__graph.svg" width="222" height="371"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a46e01677b15279e3a869bfcc0620cc73" id="r_a46e01677b15279e3a869bfcc0620cc73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html">ProfileSummary</a>?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#a46e01677b15279e3a869bfcc0620cc73">CreateProfile</a> (string name)</td></tr>
-<tr class="memdesc:a46e01677b15279e3a869bfcc0620cc73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создать профиль и сделать активным. Null, если достигнут лимит.  <br /></td></tr>
-<tr class="separator:a46e01677b15279e3a869bfcc0620cc73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0689f22bf3b8c128fa809aaa2652e273" id="r_a0689f22bf3b8c128fa809aaa2652e273"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html">ProfileSummary</a>?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#a0689f22bf3b8c128fa809aaa2652e273">CreateProfile</a> ()</td></tr>
+<tr class="memdesc:a0689f22bf3b8c128fa809aaa2652e273"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создать профиль в свободном слоте и сделать активным.  <br /></td></tr>
+<tr class="separator:a0689f22bf3b8c128fa809aaa2652e273"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a215a4bab2a0ca511f00862e4b1635010" id="r_a215a4bab2a0ca511f00862e4b1635010"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#a215a4bab2a0ca511f00862e4b1635010">SaveIdentity</a> (in <a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html">ProfileIdentity</a> identity)</td></tr>
+<tr class="memdesc:a215a4bab2a0ca511f00862e4b1635010"><td class="mdescLeft">&#160;</td><td class="mdescRight">Записать идентичность в активный профиль. false — профиля нет.  <br /></td></tr>
+<tr class="separator:a215a4bab2a0ca511f00862e4b1635010"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b7fe2af51453c1422e2c403923bbe8f" id="r_a9b7fe2af51453c1422e2c403923bbe8f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#a9b7fe2af51453c1422e2c403923bbe8f">SelectProfile</a> (string profileId)</td></tr>
 <tr class="memdesc:a9b7fe2af51453c1422e2c403923bbe8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Переключиться на профиль. false = профиля нет.  <br /></td></tr>
 <tr class="separator:a9b7fe2af51453c1422e2c403923bbe8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,6 +159,12 @@ Properties</h2></td></tr>
 <tr class="memitem:a0bc86fda29b295a99beb303f8a19030e" id="r_a0bc86fda29b295a99beb303f8a19030e"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#a0bc86fda29b295a99beb303f8a19030e">RunKey</a><code> [get]</code></td></tr>
 <tr class="memdesc:a0bc86fda29b295a99beb303f8a19030e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ключ сейва забега активной гильдии (<code>profiles/{p}/guilds/{g}/run</code>).  <br /></td></tr>
 <tr class="separator:a0bc86fda29b295a99beb303f8a19030e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3e2628fbcb51d6044bcf528a721457d" id="r_ad3e2628fbcb51d6044bcf528a721457d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#ad3e2628fbcb51d6044bcf528a721457d">HasActiveProfile</a><code> [get]</code></td></tr>
+<tr class="memdesc:ad3e2628fbcb51d6044bcf528a721457d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли профиль, в котором можно играть.  <br /></td></tr>
+<tr class="separator:ad3e2628fbcb51d6044bcf528a721457d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eca042840a4029c4a208216baad4688" id="r_a9eca042840a4029c4a208216baad4688"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html">ProfileIdentity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#a9eca042840a4029c4a208216baad4688">Identity</a><code> [get]</code></td></tr>
+<tr class="memdesc:a9eca042840a4029c4a208216baad4688"><td class="mdescLeft">&#160;</td><td class="mdescRight">Идентичность активного профиля.  <br /></td></tr>
+<tr class="separator:a9eca042840a4029c4a208216baad4688"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
@@ -190,8 +199,8 @@ Events</h2></td></tr>
 
 </div>
 </div>
-<a id="a46e01677b15279e3a869bfcc0620cc73" name="a46e01677b15279e3a869bfcc0620cc73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46e01677b15279e3a869bfcc0620cc73">&#9670;&#160;</a></span>CreateProfile()</h2>
+<a id="a0689f22bf3b8c128fa809aaa2652e273" name="a0689f22bf3b8c128fa809aaa2652e273"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0689f22bf3b8c128fa809aaa2652e273">&#9670;&#160;</a></span>CreateProfile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -199,16 +208,17 @@ Events</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html">ProfileSummary</a>? Guildmaster.Core.Persistence.IProfileService.CreateProfile </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Создать профиль и сделать активным. Null, если достигнут лимит. </p>
+<p>Создать профиль в свободном слоте и сделать активным. </p>
+<p>Null, если достигнут лимит.</p>
+<p><b>Имени профиль не получает — только номер слота</b> («Профиль 1», «Профиль 2»; решение Макса 03.08.2026). Именуемая сущность у игрока одна — дом: он и есть слот сохранения. Второе имя рядом с ним заставляло бы придумывать название тому, что игрок различает по счёту. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#aae84a01da73c110933033fda056956b8">Guildmaster.Game.Services.ProfileService</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a1ed9736804f98cee9f5a4f79cd25ba22">Guildmaster.Game.Services.ProfileService</a>.</p>
 
 </div>
 </div>
@@ -256,6 +266,28 @@ Events</h2></td></tr>
 
 </div>
 </div>
+<a id="a215a4bab2a0ca511f00862e4b1635010" name="a215a4bab2a0ca511f00862e4b1635010"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a215a4bab2a0ca511f00862e4b1635010">&#9670;&#160;</a></span>SaveIdentity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Core.Persistence.IProfileService.SaveIdentity </td>
+          <td>(</td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html">ProfileIdentity</a>&#160;</td>
+          <td class="paramname"><em>identity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Записать идентичность в активный профиль. false — профиля нет. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a42f68d65b4aa7d1d9b6098e247403c53">Guildmaster.Game.Services.ProfileService</a>.</p>
+
+</div>
+</div>
 <a id="a264887e32f19c52e3fc6bdfc8b627fdd" name="a264887e32f19c52e3fc6bdfc8b627fdd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a264887e32f19c52e3fc6bdfc8b627fdd">&#9670;&#160;</a></span>SelectGuild()</h2>
 
@@ -278,7 +310,7 @@ Events</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService_a264887e32f19c52e3fc6bdfc8b627fdd_icgraph.svg" width="512" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService_a264887e32f19c52e3fc6bdfc8b627fdd_icgraph.svg" width="475" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -407,6 +439,60 @@ Here is the caller graph for this function:</div>
 <p>Достигнут ли лимит гильдий в активном профиле (<code>GameConfig.MaxGuildsPerProfile</code>). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a13e6b88770d98f63e7a327e343ae97ed">Guildmaster.Game.Services.ProfileService</a>.</p>
+
+</div>
+</div>
+<a id="ad3e2628fbcb51d6044bcf528a721457d" name="ad3e2628fbcb51d6044bcf528a721457d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3e2628fbcb51d6044bcf528a721457d">&#9670;&#160;</a></span>HasActiveProfile</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Core.Persistence.IProfileService.HasActiveProfile</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Есть ли профиль, в котором можно играть. </p>
+<p><code>false</code> — игра обязана спросить игрока раньше, чем пустит его в меню: писать забег без профиля некуда. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#ade5f42c3fd4a1f0ff52f3af08fff36e5">Guildmaster.Game.Services.ProfileService</a>.</p>
+
+</div>
+</div>
+<a id="a9eca042840a4029c4a208216baad4688" name="a9eca042840a4029c4a208216baad4688"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9eca042840a4029c4a208216baad4688">&#9670;&#160;</a></span>Identity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html">ProfileIdentity</a> Guildmaster.Core.Persistence.IProfileService.Identity</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Идентичность активного профиля. </p>
+<p>Вне профиля — значения по умолчанию. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a37fd106ba3d4b752c1b72ee0862b4929">Guildmaster.Game.Services.ProfileService</a>.</p>
 
 </div>
 </div>

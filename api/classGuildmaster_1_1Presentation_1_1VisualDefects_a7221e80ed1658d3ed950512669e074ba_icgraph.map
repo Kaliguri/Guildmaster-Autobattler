@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.VisualDefects.Report" name="Guildmaster.Presentation.VisualDefects.Report">
+<area shape="rect" id="Node000001" title="Сказать о дефекте один раз." alt="" coords="276,37,467,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#adaae9579e0755d59a683648f18b7bf0b" title="КУДА ДВИГАЛСЯ КОНЧИК ОРУЖИЯ на кадре контакта — направление, вдоль которого ложится форма." alt="" coords="5,5,228,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,46,228,42,229,37,263,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a4d85b5b40fb1674777d31c39f219c31e" title="Геометрия текущего взмаха для дуги: вокруг чего он идёт (плечо бьющей руки), где сейчас кончик оружия..." alt="" coords="21,69,212,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="263,74,212,80,212,75,262,68"/>
+</map>

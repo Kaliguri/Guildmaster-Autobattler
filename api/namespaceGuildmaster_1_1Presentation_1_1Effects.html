@@ -109,8 +109,26 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormVfx.html">HitFormVfx</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Носитель формы удара: один quad, на котором шейдер <code>Guildmaster/Vfx/HitForm</code> рисует серп, веретено, звезду или линию-всполох.  <a href="classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormVfx.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneResult.html">ImpactZoneResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что решил солвер: куда пришёл удар, в какую зону и не пришлось ли выкручиваться.  <a href="structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSample.html">ImpactZoneSample</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Одна зона в запросе.  <a href="structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSample.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSolver.html">ImpactZoneSolver</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выбирает ТОЧКУ УДАРА на теле цели: сначала зону (заявленный вес, поправленный на досягаемость), затем место внутри неё.  <a href="classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSolver.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource.html">ISwingArcSource</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кто машет: источник геометрии взмаха для дуги за клинком.  <a href="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcGeometry.html">SwingArcGeometry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Геометрия взмаха: вокруг чего дуга вращается и где сейчас остриё.  <a href="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcGeometry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcLaunch.html">SwingArcLaunch</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">С ЧЕМ дуга за клинком выходит в кадр: тумблер, яркость, доли радиуса, затухание, стиль следа.  <a href="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcLaunch.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcStyle.html">SwingArcStyle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Как след ОКРАШЕН и какой он формы поперёк — в отличие от геометрии взмаха, которая приходит от источника каждый кадр.  <a href="structGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcStyle.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html">SwingArcVfx</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Дуга за клинком: сектор с центром в плече, заметающий УЖЕ пройденный угол.  <a href="classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html#details">More...</a><br /></td></tr>
@@ -131,6 +149,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a1caabb0a57eb911cd211aa9b39edca3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Архетип формы удара: правило, по которому она генерируется.  <a href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1caabb0a57eb911cd211aa9b39edca3e">More...</a><br /></td></tr>
 <tr class="separator:a1caabb0a57eb911cd211aa9b39edca3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f564969757c1e61a7fdab29953f9ea7" id="r_a1f564969757c1e61a7fdab29953f9ea7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1f564969757c1e61a7fdab29953f9ea7">ImpactZoneKind</a> { <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1f564969757c1e61a7fdab29953f9ea7a98921133d10fbdb0fb6dbb7b2648befe">Head</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1f564969757c1e61a7fdab29953f9ea7aac101b32dda4448cf13a93fe283dddd8">Body</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1f564969757c1e61a7fdab29953f9ea7a48423a9049b3065103ef1026a5fa08e5">Legs</a> = 2
+ }</td></tr>
+<tr class="memdesc:a1f564969757c1e61a7fdab29953f9ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Зона тела, куда пришёл удар. Порядок соответствует индексам в ImpactZoneSolver.  <a href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1f564969757c1e61a7fdab29953f9ea7">More...</a><br /></td></tr>
+<tr class="separator:a1f564969757c1e61a7fdab29953f9ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a1caabb0a57eb911cd211aa9b39edca3e" name="a1caabb0a57eb911cd211aa9b39edca3e"></a>
@@ -155,6 +179,30 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a1caabb0a57eb911cd211aa9b39edca3ea19e6b251524333b7263de8e110f28321" name="a1caabb0a57eb911cd211aa9b39edca3ea19e6b251524333b7263de8e110f28321"></a>Blunt&#160;</td><td class="fielddoc"><p>Дробящий: короткий след до точки хита плюс звезда в ней. Точка хита — КОНЕЦ. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a1caabb0a57eb911cd211aa9b39edca3ea8be027b1752f3fb1e134f888c952339a" name="a1caabb0a57eb911cd211aa9b39edca3ea8be027b1752f3fb1e134f888c952339a"></a>Bolt&#160;</td><td class="fielddoc"><p>Линия-всполох выстрела: тот же колющий с нулевым прогибом, по вектору снаряда. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a1f564969757c1e61a7fdab29953f9ea7" name="a1f564969757c1e61a7fdab29953f9ea7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f564969757c1e61a7fdab29953f9ea7">&#9670;&#160;</a></span>ImpactZoneKind</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Presentation_1_1Effects.html#a1f564969757c1e61a7fdab29953f9ea7">Guildmaster.Presentation.Effects.ImpactZoneKind</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Зона тела, куда пришёл удар. Порядок соответствует индексам в ImpactZoneSolver. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1f564969757c1e61a7fdab29953f9ea7a98921133d10fbdb0fb6dbb7b2648befe" name="a1f564969757c1e61a7fdab29953f9ea7a98921133d10fbdb0fb6dbb7b2648befe"></a>Head&#160;</td><td class="fielddoc"><p>Голова, шея, щека — редкое и заметное попадание. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a1f564969757c1e61a7fdab29953f9ea7aac101b32dda4448cf13a93fe283dddd8" name="a1f564969757c1e61a7fdab29953f9ea7aac101b32dda4448cf13a93fe283dddd8"></a>Body&#160;</td><td class="fielddoc"><p>Корпус — основная масса ударов. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a1f564969757c1e61a7fdab29953f9ea7a48423a9049b3065103ef1026a5fa08e5" name="a1f564969757c1e61a7fdab29953f9ea7a48423a9049b3065103ef1026a5fa08e5"></a>Legs&#160;</td><td class="fielddoc"><p>Верх ног, бёдра — низкие удары и всё, до чего дотягиваются снизу. </p>
 </td></tr>
 </table>
 

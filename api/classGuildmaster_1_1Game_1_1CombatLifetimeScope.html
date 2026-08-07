@@ -119,7 +119,7 @@ Protected Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>DI-скоуп боевых систем: RNG боя, системы, симуляция, презентация. </p>
 <p>Живёт в <code>CombatSystemsScene</code> и дочерний к WorldLifetimeScope — камера и арена резолвятся из предка, без дублей Main Camera/Brain (вики «Scenes», «16» §5).</p>
-<p>Вопреки имени, по одному бою НЕ пересоздаётся: сцена грузится один раз на буте и не выгружается, а бой начинается командой в живую симуляцию. Значит боевое состояние между узлами не чистится сносом скоупа — за возврат отвечает <code>BattleBootstrap.ResetToWorld</code>. </p>
+<p>Вопреки имени, по одному бою НЕ пересоздаётся: сцена грузится один раз на буте и не выгружается, а бой начинается командой в живую симуляцию. Значит боевое состояние между узлами не чистится сносом ЭТОГО скоупа — границей боя владеет Flow.BattleHost в мировом скоупе: <code>Open(preset)</code> рождает дочерний <code>BattleScope</code> из префаба, <code>Close()</code> его диспозит, и арена возвращается миру. Между боями скоупа боя попросту не существует. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0d31e1969671fe0afb03acc205e2e153" name="a0d31e1969671fe0afb03acc205e2e153"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d31e1969671fe0afb03acc205e2e153">&#9670;&#160;</a></span>Configure()</h2>

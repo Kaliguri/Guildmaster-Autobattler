@@ -114,8 +114,8 @@ Collaboration diagram for Guildmaster.Game.Session.Net.ActivityBroadcast:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a81c7663cc022bff731d24257e99f4711" id="r_a81c7663cc022bff731d24257e99f4711"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityBroadcast.html#a81c7663cc022bff731d24257e99f4711">ActivityBroadcast</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, <a class="el" href="classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost.html">ActivityHost</a> activities, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html">Flow.IActMapPresence</a> map)</td></tr>
-<tr class="separator:a81c7663cc022bff731d24257e99f4711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1e3bc07a6a771ca897e5a43d11c8b4c" id="r_ac1e3bc07a6a771ca897e5a43d11c8b4c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityBroadcast.html#ac1e3bc07a6a771ca897e5a43d11c8b4c">ActivityBroadcast</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, <a class="el" href="classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost.html">ActivityHost</a> activities, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html">Flow.IActMapPresence</a> map, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence.html">Core.Flow.IHubPresence</a> hub)</td></tr>
+<tr class="separator:ac1e3bc07a6a771ca897e5a43d11c8b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5de9f31951a6dc9def9be78674588de5" id="r_a5de9f31951a6dc9def9be78674588de5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityBroadcast.html#a5de9f31951a6dc9def9be78674588de5">Tick</a> ()</td></tr>
 <tr class="separator:a5de9f31951a6dc9def9be78674588de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5109d4d3f2b358af476abe8ceb19e753" id="r_a5109d4d3f2b358af476abe8ceb19e753"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityBroadcast.html#a5109d4d3f2b358af476abe8ceb19e753">Dispose</a> ()</td></tr>
@@ -132,8 +132,8 @@ Properties</h2></td></tr>
 <p><b>Спрашиваем состояние, а не слушаем события,</b> и это выбор, а не лень. Дверей к открытию боя несколько — узел забега, вход на Ристалище, дев-команда, — и подписаться на каждую значило бы заводить событие в каждой из них и не забыть ни одной. Состояние же одно, читается двумя свойствами, а лишняя работа сводится к сравнению пяти полей раз в кадр. </p>
 <p><b>Первое состояние гость просит сам</b>, а не получает на рукопожатии: его приёмник рождается позже — сеанс открывается, когда игрок уже принят, — и посланное навстречу ушло бы в пустоту. Без этого он до первой смены фазы простоял бы в пустом мире.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a81c7663cc022bff731d24257e99f4711" name="a81c7663cc022bff731d24257e99f4711"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81c7663cc022bff731d24257e99f4711">&#9670;&#160;</a></span>ActivityBroadcast()</h2>
+<a id="ac1e3bc07a6a771ca897e5a43d11c8b4c" name="ac1e3bc07a6a771ca897e5a43d11c8b4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1e3bc07a6a771ca897e5a43d11c8b4c">&#9670;&#160;</a></span>ActivityBroadcast()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,7 +157,13 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html">Flow::IActMapPresence</a>&#160;</td>
-          <td class="paramname"><em>map</em>&#160;</td>
+          <td class="paramname"><em>map</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence.html">Core::Flow::IHubPresence</a>&#160;</td>
+          <td class="paramname"><em>hub</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

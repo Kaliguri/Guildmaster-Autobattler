@@ -105,18 +105,19 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Net_1_1Session_1_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Net.Session.SteamBootstrap:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap__inherit__graph.svg" width="299" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap__inherit__graph.svg" width="403" height="299"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Net.Session.SteamBootstrap:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap__coll__graph.svg" width="299" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap__coll__graph.svg" width="403" height="299"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6e82975f4f10f42bb3cc01d5598fd59f" id="r_a6e82975f4f10f42bb3cc01d5598fd59f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html#a6e82975f4f10f42bb3cc01d5598fd59f">Start</a> ()</td></tr>
-<tr class="separator:a6e82975f4f10f42bb3cc01d5598fd59f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61b300748e826dd6dffd77fcbeaa1c63" id="r_a61b300748e826dd6dffd77fcbeaa1c63"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html#a61b300748e826dd6dffd77fcbeaa1c63">SteamBootstrap</a> ()</td></tr>
+<tr class="memdesc:a61b300748e826dd6dffd77fcbeaa1c63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поднимаем Steam В КОНСТРУКТОРЕ, а не на <code>Start</code>.  <br /></td></tr>
+<tr class="separator:a61b300748e826dd6dffd77fcbeaa1c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a374596d2a4d37dc504583402cfb28cc9" id="r_a374596d2a4d37dc504583402cfb28cc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html#a374596d2a4d37dc504583402cfb28cc9">Tick</a> ()</td></tr>
 <tr class="separator:a374596d2a4d37dc504583402cfb28cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a595d556dc2fc638e28df69775a8c79d0" id="r_a595d556dc2fc638e28df69775a8c79d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html#a595d556dc2fc638e28df69775a8c79d0">Dispose</a> ()</td></tr>
@@ -136,6 +137,7 @@ Properties</h2></td></tr>
 <tr class="memitem:ad9b554280d819b1b5473facc8ed304f9" id="r_ad9b554280d819b1b5473facc8ed304f9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html#ad9b554280d819b1b5473facc8ed304f9">IsReady</a><code> [get]</code></td></tr>
 <tr class="memdesc:ad9b554280d819b1b5473facc8ed304f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поднялся ли Steam. Спрашивают лобби и транспорт — им без него делать нечего.  <br /></td></tr>
 <tr class="separator:ad9b554280d819b1b5473facc8ed304f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Core_1_1Players_1_1IPlatformIdentity"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Core_1_1Players_1_1IPlatformIdentity')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1IPlatformIdentity.html">Guildmaster.Core.Players.IPlatformIdentity</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Поднимает Steam на старте игры и качает его колбэки. </p>
@@ -143,9 +145,9 @@ Properties</h2></td></tr>
 <p><b>Зачем отдельный класс и почему он появился поздно.</b> Инициализация жила в <code>FacepunchTransportBootstrap</code> и уехала 02.08.2026 вместе с высокоуровневым netcode — файл делал две работы, а удалялся за одну. Симптом был бы тихий и обидный: <code>SteamClient.IsValid</code> возвращает <code>false</code>, лобби «просто не создаётся», кнопка приглашения гаснет — то есть игра ведёт себя ровно так, как при незапущенном Steam, и искать это пришлось бы на живом тесте вдвоём. </p>
 <p><b>Колбэки качаем сами</b> (<code>asyncCallbacks: false</code>): фоновый поток Facepunch отдавал бы события лобби и приглашений не в главном потоке Unity, а трогают они наш UI и сеанс. Цена — один вызов в кадр.</p>
 <p><b>Steam не запущен — это внешний отказ, и он честный:</b> говорим вслух и живём дальше одиночной игрой. Подменять его нечем, а молчание читалось бы как «кооп сломан».</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a595d556dc2fc638e28df69775a8c79d0" name="a595d556dc2fc638e28df69775a8c79d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a595d556dc2fc638e28df69775a8c79d0">&#9670;&#160;</a></span>Dispose()</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a61b300748e826dd6dffd77fcbeaa1c63" name="a61b300748e826dd6dffd77fcbeaa1c63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61b300748e826dd6dffd77fcbeaa1c63">&#9670;&#160;</a></span>SteamBootstrap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -154,7 +156,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Guildmaster.Net.Session.SteamBootstrap.Dispose </td>
+          <td class="memname">Guildmaster.Net.Session.SteamBootstrap.SteamBootstrap </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -167,10 +169,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Поднимаем Steam В КОНСТРУКТОРЕ, а не на <code>Start</code>. </p>
+<p>Потому что от ответа «поднялся или нет» зависит СОСТАВ контейнера: транспорт выбирается по нему (см. <code>RootLifetimeScope</code>). Фаза <code>Start</code> идёт уже после того, как все объекты созданы, — спрашивать там значило бы выбирать транспорт до того, как ответ известен. </p>
+
 </div>
 </div>
-<a id="a6e82975f4f10f42bb3cc01d5598fd59f" name="a6e82975f4f10f42bb3cc01d5598fd59f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e82975f4f10f42bb3cc01d5598fd59f">&#9670;&#160;</a></span>Start()</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a595d556dc2fc638e28df69775a8c79d0" name="a595d556dc2fc638e28df69775a8c79d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a595d556dc2fc638e28df69775a8c79d0">&#9670;&#160;</a></span>Dispose()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -179,7 +185,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Guildmaster.Net.Session.SteamBootstrap.Start </td>
+          <td class="memname">void Guildmaster.Net.Session.SteamBootstrap.Dispose </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -294,6 +300,8 @@ Properties</h2></td></tr>
 <p>Как зовут игрока за этим клиентом. </p>
 <p>Steam не поднят — безымянное «Игрок». </p>
 <p>Живёт здесь, потому что здесь единственное место, где мы вообще говорим со Steam про личность. Спрашивать <code>SteamClient.Name</code> из игрового кода значило бы завести второй вход в Steam — и второе поведение на случай, когда Steam не запущен. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1IPlatformIdentity.html#aa9379862a7537670952a7c0fcfa317ef">Guildmaster.Core.Players.IPlatformIdentity</a>.</p>
 
 </div>
 </div>

@@ -9,6 +9,7 @@ var namespaceGuildmaster_1_1Combat_1_1Tape =
     [ "IUnitDirectory", "interfaceGuildmaster_1_1Combat_1_1Tape_1_1IUnitDirectory.html", "interfaceGuildmaster_1_1Combat_1_1Tape_1_1IUnitDirectory" ],
     [ "ProjectileSnapshot", "structGuildmaster_1_1Combat_1_1Tape_1_1ProjectileSnapshot.html", "structGuildmaster_1_1Combat_1_1Tape_1_1ProjectileSnapshot" ],
     [ "StageFrameRouter", "classGuildmaster_1_1Combat_1_1Tape_1_1StageFrameRouter.html", "classGuildmaster_1_1Combat_1_1Tape_1_1StageFrameRouter" ],
+    [ "TapeArenaUnits", "classGuildmaster_1_1Combat_1_1Tape_1_1TapeArenaUnits.html", "classGuildmaster_1_1Combat_1_1Tape_1_1TapeArenaUnits" ],
     [ "TapeDamage", "structGuildmaster_1_1Combat_1_1Tape_1_1TapeDamage.html", "structGuildmaster_1_1Combat_1_1Tape_1_1TapeDamage" ],
     [ "TapeEvent", "structGuildmaster_1_1Combat_1_1Tape_1_1TapeEvent.html", "structGuildmaster_1_1Combat_1_1Tape_1_1TapeEvent" ],
     [ "UnitIdentity", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitIdentity.html", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitIdentity" ],

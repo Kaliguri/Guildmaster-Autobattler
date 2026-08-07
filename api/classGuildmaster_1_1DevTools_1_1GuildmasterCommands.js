@@ -13,7 +13,7 @@ var classGuildmaster_1_1DevTools_1_1GuildmasterCommands =
     [ "SetLastBattle", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab565e7b0719ecbd4cf5289726e9ec43b", null ],
     [ "SetRngSeed", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a97c2560d6ac8662a17c250f67c67468a", null ],
     [ "SkipBattle", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ad2371ad3aa2e954271e07b2ac7622176", null ],
-    [ "SpawnBoneDuel", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab4ec10b3c8cb40ff0c983b1fda86385f", null ],
+    [ "SpawnBoneStorybookDuel", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a79831515a9b710536e11989e7a29addd", null ],
     [ "ToggleDebugDraw", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a38b9066022dfe44f572bd75a05b1be08", null ],
     [ "ToggleOverlaySource", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a3dc341c3b2857716e5423f17484f7055", null ],
     [ "ToggleStatusOverlay", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab36b53eec55cacb691a055d7d587954e", null ],

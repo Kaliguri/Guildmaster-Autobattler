@@ -1,4 +1,4 @@
 <map id="Guildmaster.Combat.AttackTiming.ContactSubTick" name="Guildmaster.Combat.AttackTiming.ContactSubTick">
-<area shape="rect" id="Node000001" title="Доля тика, в которую попадает кадр контакта, — остаток, который целочисленный WindupTicks отбрасывает..." alt="" coords="5,29,208,69"/>
+<area shape="rect" id="Node000001" title="Доля тика, в которую попадает момент контакта, — остаток, который целочисленный расчёт отбрасывает." alt="" coords="5,29,208,69"/>
 <area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="141,18,129,11,107,8,87,10,76,15,71,21,74,28,68,30,66,20,72,11,86,5,107,3,130,6,143,13"/>
 </map>

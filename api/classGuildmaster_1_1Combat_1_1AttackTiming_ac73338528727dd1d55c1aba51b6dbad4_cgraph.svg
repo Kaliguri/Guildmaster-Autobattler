@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Доля тика, в которую попадает кадр контакта, — остаток, который целочисленный WindupTicks отбрасывает...">
+<g id="a_Node000001"><a xlink:title="Доля тика, в которую попадает момент контакта, — остаток, который целочисленный расчёт отбрасывает.">
 <polygon fill="#999999" stroke="#666666" points="152,-51 0,-51 0,-21 152,-21 152,-51"/>
 <text text-anchor="start" x="8" y="-39" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Attack</text>
 <text text-anchor="middle" x="76" y="-28" font-family="Helvetica,sans-Serif" font-size="10.00">Timing.ContactSubTick</text>

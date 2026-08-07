@@ -3,6 +3,7 @@ var classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual =
     [ "Apply", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a22fdd9f564988e40a699bfc1271b9475", null ],
     [ "ApplyCuts", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a9c0eebb804944c583c96237aaff4cb1a", null ],
     [ "ApplyOrder", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a147511648de3180493057a7125833d04", null ],
+    [ "ApplyOutfit", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#aad12eb0d00623f6647b5772eb904f3dd", null ],
     [ "CaptureSilhouette", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a96004968e8c500627fab3b519911f004", null ],
     [ "CollectParts", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a2b730c95ff0f4fff06b07a88dc0f2af3", null ],
     [ "PlayShatter", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a060e337eafdcb25e62a2af83301a1b07", null ],
@@ -20,5 +21,6 @@ var classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual =
     [ "Renderers", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#ae3ff5f127b49e3d5fcaee00d6a851407", null ],
     [ "Root", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a4940b5833e0b8a3cb8c769b04a1a241c", null ],
     [ "SortingLayerId", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a57d02d449ba0491010e4ade20ef34dee", null ],
-    [ "SortingOrder", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a7c4cdacef13ef4b769c3dfdf6ecb32bd", null ]
+    [ "SortingOrder", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a7c4cdacef13ef4b769c3dfdf6ecb32bd", null ],
+    [ "SortingRoot", "classGuildmaster_1_1Presentation_1_1Body_1_1SkeletalBodyVisual.html#a482be0816869b3138495b1a79ae7077d", null ]
 ];

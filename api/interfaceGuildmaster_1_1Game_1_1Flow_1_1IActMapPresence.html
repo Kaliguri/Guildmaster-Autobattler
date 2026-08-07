@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Game_1_1Flow_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.IActMapPresence:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence__inherit__graph.svg" width="222" height="359"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence__inherit__graph.svg" width="222" height="439"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Flow.IActMapPresence:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence__coll__graph.svg" width="210" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence__coll__graph.svg" width="210" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -120,18 +120,88 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad968548d288bccd4f17b270baf956920" id="r_ad968548d288bccd4f17b270baf956920"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html#ad968548d288bccd4f17b270baf956920">Refresh</a> ()</td></tr>
 <tr class="memdesc:ad968548d288bccd4f17b270baf956920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Состояние забега изменилось — перерисовать карту, если её просили показать.  <br /></td></tr>
 <tr class="separator:ad968548d288bccd4f17b270baf956920"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac740f4a56867b467899c20a106c60cef" id="r_ac740f4a56867b467899c20a106c60cef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html#ac740f4a56867b467899c20a106c60cef">BeginChoose</a> (IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a> &gt; available, bool show=true)</td></tr>
+<tr class="memdesc:ac740f4a56867b467899c20a106c60cef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Зажечь эти узлы: по ним можно кликать.  <br /></td></tr>
+<tr class="separator:ac740f4a56867b467899c20a106c60cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28adaf0f5fb9dd774a4b977251d36bf1" id="r_a28adaf0f5fb9dd774a4b977251d36bf1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html#a28adaf0f5fb9dd774a4b977251d36bf1">EndChoose</a> ()</td></tr>
+<tr class="memdesc:a28adaf0f5fb9dd774a4b977251d36bf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узлы гаснут: выбирать больше нечего.  <br /></td></tr>
+<tr class="separator:a28adaf0f5fb9dd774a4b977251d36bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a19f7d2d51fd5609b49a7ffc6ee97ac29" id="r_a19f7d2d51fd5609b49a7ffc6ee97ac29"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html#a19f7d2d51fd5609b49a7ffc6ee97ac29">IsShown</a><code> [get]</code></td></tr>
 <tr class="memdesc:a19f7d2d51fd5609b49a7ffc6ee97ac29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показана ли карта прямо сейчас. Хост объявляет это гостю, чтобы тот шёл следом.  <br /></td></tr>
 <tr class="separator:a19f7d2d51fd5609b49a7ffc6ee97ac29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5140e5127d54993ae812544c939de813" id="r_a5140e5127d54993ae812544c939de813"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html#a5140e5127d54993ae812544c939de813">IsChoosing</a><code> [get]</code></td></tr>
+<tr class="memdesc:a5140e5127d54993ae812544c939de813"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ждём ли сейчас выбор узла.  <br /></td></tr>
+<tr class="separator:a5140e5127d54993ae812544c939de813"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Карта акта глазами того, кто её не рисует: показана ли она и надо ли её показать. </p>
 <p><b>Существует ради одного шва — сеть против показа мира.</b> Хост объявляет гостю, где идёт игра, и карта — часть этого ответа: её открывает петля акта, а петли у гостя нет (наход. Макса 03.08.2026). Но сеанс живёт в своём скоупе и о мире знать не обязан; прямая ссылка на WorldMapController тянула бы в сеанс весь показ карты вместе с презентацией и подписками — что и выяснилось сразу, как только состав сеанса захотели собрать в тесте. </p>
-<p>Трёх членов достаточно: спросить, объявить, перечитать. Всё остальное — выбор узла, подсветка доступных, камера — принадлежит петле забега, и сети там делать нечего.</p>
+<p><b>Подсветка приехала сюда 04.08.2026, а выбор — нет, и это разные вещи.</b> Здесь стояло «выбор узла, подсветка доступных и камера принадлежат петле забега, и сети там делать нечего» — верное, пока гость был зрителем. Решение Макса сделало игроков полноправными, но выбор от этого не стал сетевым: клик обеих сторон уходит КОМАНДОЙ в шину забега, а сюда попало только «какие узлы сейчас горят». Камера и раскладка узлов по-прежнему не здесь.</p>
+<p><b>Ни список достижимого, ни момент ожидания шов не переносит:</b> и то и другое выводится из состояния — <a class="el" href="classGuildmaster_1_1Guild_1_1MapTraversal.html#a3510b7b751fdc7ff9cdb94327905a5c6" title="Узлы, доступные для входа с текущей позиции: соседи по MapNode.Edges текущего узла,...">MapTraversal.AvailableNext</a> и «поле входа пусто». Обе стороны считают их сами, каждая по своему снимку карты; присланные, они стали бы вторым владельцем.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac740f4a56867b467899c20a106c60cef" name="ac740f4a56867b467899c20a106c60cef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac740f4a56867b467899c20a106c60cef">&#9670;&#160;</a></span>BeginChoose()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Flow.IActMapPresence.BeginChoose </td>
+          <td>(</td>
+          <td class="paramtype">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a> &gt;&#160;</td>
+          <td class="paramname"><em>available</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>show</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Зажечь эти узлы: по ним можно кликать. </p>
+<p>Клик уходит командой в шину — кому именно отвечать на него, карта не знает и знать не должна.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">show</td><td>Открыть карту заодно. <code>false</code> — не открывать: у гостя её открытость объявлена отдельным полем, и второй хозяин видимости спорил бы с первым. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html#a950df1bba84dcc11f04b7dc256d89ef8">Guildmaster.Game.Flow.WorldMapController</a>.</p>
+
+</div>
+</div>
+<a id="a28adaf0f5fb9dd774a4b977251d36bf1" name="a28adaf0f5fb9dd774a4b977251d36bf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28adaf0f5fb9dd774a4b977251d36bf1">&#9670;&#160;</a></span>EndChoose()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Flow.IActMapPresence.EndChoose </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Узлы гаснут: выбирать больше нечего. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html#a95301fe5e3804838bbd6cdf7f745051d">Guildmaster.Game.Flow.WorldMapController</a>.</p>
+
+</div>
+</div>
 <a id="ad968548d288bccd4f17b270baf956920" name="ad968548d288bccd4f17b270baf956920"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad968548d288bccd4f17b270baf956920">&#9670;&#160;</a></span>Refresh()</h2>
 
@@ -177,6 +247,33 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a5140e5127d54993ae812544c939de813" name="a5140e5127d54993ae812544c939de813"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5140e5127d54993ae812544c939de813">&#9670;&#160;</a></span>IsChoosing</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Flow.IActMapPresence.IsChoosing</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ждём ли сейчас выбор узла. </p>
+<p>Хост объявляет это гостю: узлы горят только в этот момент, а до него карту можно открыть, но гореть на ней нечему. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1WorldMapController.html#a02ab0dce208e65b65a0ad886b631916b">Guildmaster.Game.Flow.WorldMapController</a>.</p>
+
+</div>
+</div>
 <a id="a19f7d2d51fd5609b49a7ffc6ee97ac29" name="a19f7d2d51fd5609b49a7ffc6ee97ac29"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a19f7d2d51fd5609b49a7ffc6ee97ac29">&#9670;&#160;</a></span>IsShown</h2>
 

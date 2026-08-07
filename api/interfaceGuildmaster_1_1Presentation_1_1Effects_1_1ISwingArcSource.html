@@ -103,12 +103,12 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Presentation_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.Effects.ISwingArcSource:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource__inherit__graph.svg" width="202" height="599"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.Effects.ISwingArcSource:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource__coll__graph.svg" width="194" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource__coll__graph.svg" width="194" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -116,11 +116,48 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a47f043ebdb2254589347ad2c8425184a" id="r_a47f043ebdb2254589347ad2c8425184a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource.html#a47f043ebdb2254589347ad2c8425184a">TryGetSwingArc</a> (out Vector3 pivot, out Vector3 tip, out float progress)</td></tr>
 <tr class="memdesc:a47f043ebdb2254589347ad2c8425184a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Геометрия текущего взмаха: вокруг чего он идёт, где сейчас кончик оружия, насколько прошёл.  <br /></td></tr>
 <tr class="separator:a47f043ebdb2254589347ad2c8425184a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab258c456b48335fe37a43471ec4b3f24" id="r_ab258c456b48335fe37a43471ec4b3f24"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource.html#ab258c456b48335fe37a43471ec4b3f24">TryGetArcAnchor</a> (out Transform parent, out int sortingOrder)</td></tr>
+<tr class="memdesc:ab258c456b48335fe37a43471ec4b3f24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Куда положить дугу в порядке отрисовки: узел, внутри которого сортируется тело, и порядок относительно бьющей части.  <br /></td></tr>
+<tr class="separator:ab258c456b48335fe37a43471ec4b3f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Кто машет: источник геометрии взмаха для дуги за клинком. </p>
 <p>Шов существует ради того, что эффект живёт весь взмах и обязан следовать за плечом — а значит спрашивает состояние каждый кадр, в отличие от формы удара, которой хватает двух точек в момент рождения. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab258c456b48335fe37a43471ec4b3f24" name="ab258c456b48335fe37a43471ec4b3f24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab258c456b48335fe37a43471ec4b3f24">&#9670;&#160;</a></span>TryGetArcAnchor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Effects.ISwingArcSource.TryGetArcAnchor </td>
+          <td>(</td>
+          <td class="paramtype">out Transform&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out int&#160;</td>
+          <td class="paramname"><em>sortingOrder</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Куда положить дугу в порядке отрисовки: узел, внутри которого сортируется тело, и порядок относительно бьющей части. </p>
+<p>Спрашивается один раз при запуске.</p>
+<dl class="section return"><dt>Returns</dt><dd><code>false</code> — места внутри тела нет; дуга остаётся там, куда её положили данные.</dd></dl>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a51401085a70b3463bbdd4d9436e0bba5">Guildmaster.Presentation.UnitView</a>.</p>
+
+</div>
+</div>
 <a id="a47f043ebdb2254589347ad2c8425184a" name="a47f043ebdb2254589347ad2c8425184a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a47f043ebdb2254589347ad2c8425184a">&#9670;&#160;</a></span>TryGetSwingArc()</h2>
 
@@ -160,7 +197,7 @@ Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource_a47f043ebdb2254589347ad2c8425184a_icgraph.svg" width="476" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource_a47f043ebdb2254589347ad2c8425184a_icgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

@@ -93,7 +93,8 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Game.html','')
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Game Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -122,7 +123,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DI-скоуп боевых систем: RNG боя, системы, симуляция, презентация.  <a href="classGuildmaster_1_1Game_1_1CombatLifetimeScope.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1DeploymentController.html">DeploymentController</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оркестратор интерактивной фазы расстановки (план шаг 4).  <a href="classGuildmaster_1_1Game_1_1DeploymentController.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владелец МЕСТА и СОСТАВА расстановки: кто вышел на арену, откуда он там взялся и когда начинается бой.  <a href="classGuildmaster_1_1Game_1_1DeploymentController.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1DeploymentInteraction.html">DeploymentInteraction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Руки игрока на арене в фазе расстановки: круги-опоры под ногами, выбор бойца под курсором, перетаскивание фигурки и приём реликвии из инвентаря.  <a href="classGuildmaster_1_1Game_1_1DeploymentInteraction.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1GameBootstrap.html">GameBootstrap</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Точка старта: поднимает персистентный мир и запускает верхнюю петлю игры (главное меню → забег → меню).  <a href="classGuildmaster_1_1Game_1_1GameBootstrap.html#details">More...</a><br /></td></tr>
@@ -136,7 +140,38 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1WorldLifetimeScope.html">WorldLifetimeScope</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Персистентный DI-скоуп «мира»: живёт всю сессию (WorldScene грузится аддитивно на буте и не выгружается), дочерний к RootLifetimeScope.  <a href="classGuildmaster_1_1Game_1_1WorldLifetimeScope.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a57dfe357e262074e436421fba9f80b2c" id="r_a57dfe357e262074e436421fba9f80b2c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game.html#a57dfe357e262074e436421fba9f80b2c">BattleScopeMode</a> { <a class="el" href="namespaceGuildmaster_1_1Game.html#a57dfe357e262074e436421fba9f80b2ca06b9281e396db002010bde1de57262eb">Auto</a>
+, <a class="el" href="namespaceGuildmaster_1_1Game.html#a57dfe357e262074e436421fba9f80b2ca56e8fac7007de50d714790732d5acfb9">Replay</a>
+ }</td></tr>
+<tr class="memdesc:a57dfe357e262074e436421fba9f80b2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Как поднят боевой скоуп: обычный бой (роль владельца/гостя решает сессия) или воспроизведение повтора с диска — без сима-водителя, сессии и джуса времени.  <a href="namespaceGuildmaster_1_1Game.html#a57dfe357e262074e436421fba9f80b2c">More...</a><br /></td></tr>
+<tr class="separator:a57dfe357e262074e436421fba9f80b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a57dfe357e262074e436421fba9f80b2c" name="a57dfe357e262074e436421fba9f80b2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57dfe357e262074e436421fba9f80b2c">&#9670;&#160;</a></span>BattleScopeMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Game.html#a57dfe357e262074e436421fba9f80b2c">Guildmaster.Game.BattleScopeMode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Как поднят боевой скоуп: обычный бой (роль владельца/гостя решает сессия) или воспроизведение повтора с диска — без сима-водителя, сессии и джуса времени. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a57dfe357e262074e436421fba9f80b2ca06b9281e396db002010bde1de57262eb" name="a57dfe357e262074e436421fba9f80b2ca06b9281e396db002010bde1de57262eb"></a>Auto&#160;</td><td class="fielddoc"><p>Живой бой: владелец считает и раздаёт, гость принимает. Роль берётся у сессии. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a57dfe357e262074e436421fba9f80b2ca56e8fac7007de50d714790732d5acfb9" name="a57dfe357e262074e436421fba9f80b2ca56e8fac7007de50d714790732d5acfb9"></a>Replay&#160;</td><td class="fielddoc"><p>Повтор: лента приезжает из файла, симуляции нет. Фон меню и будущий «посмотреть бой». </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

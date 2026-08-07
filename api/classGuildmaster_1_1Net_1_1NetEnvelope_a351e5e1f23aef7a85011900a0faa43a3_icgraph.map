@@ -1,17 +1,17 @@
 <map id="Guildmaster.Net.NetEnvelope.TryUnwrap" name="Guildmaster.Net.NetEnvelope.TryUnwrap">
-<area shape="rect" id="Node000001" title="Разобрать конверт." alt="" coords="300,197,519,237"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityBroadcast.html#a5109d4d3f2b358af476abe8ceb19e753" title=" " alt="" coords="19,5,239,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="384,188,328,122,291,88,251,60,226,48,228,43,253,55,295,84,332,119,388,185"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html#ab5dd2be44d1963cd707c6a41c52bddec" title=" " alt="" coords="5,69,252,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="368,191,314,156,251,124,218,112,220,107,253,119,317,152,371,187"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae0bc2c49238e34dd2ffc27d9d95683f2" title=" " alt="" coords="27,133,230,173"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="307,197,216,176,217,171,308,192"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1BattleControlRelay.html#ad755e6c2fd1dfffdff468337c56bf634" title="Отписаться от транспорта." alt="" coords="19,197,238,237"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="286,220,238,220,238,215,286,215"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Net_1_1Session_1_1CoopHandshake.html#adb04786851201ac1c00c2d18f626e01a" title=" " alt="" coords="35,261,222,301"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="308,243,217,264,216,259,307,238"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Net_1_1Tape_1_1BattleRosterIntake.html#ac7964d9a7d4b7b6df6b7dff8c21f6038" title=" " alt="" coords="26,325,231,365"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="371,248,317,283,253,316,220,328,218,323,251,311,314,278,368,243"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake.html#ad3aeccd56be5f746d167142230d15a5b" title="Отписаться от транспорта." alt="" coords="31,389,227,429"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="388,250,332,316,295,350,253,380,228,392,226,387,251,375,291,346,328,312,384,247"/>
+<area shape="rect" id="Node000001" title="Разобрать конверт." alt="" coords="316,197,535,237"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityBroadcast.html#a5109d4d3f2b358af476abe8ceb19e753" title=" " alt="" coords="27,5,247,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="400,188,344,122,308,88,267,60,241,48,243,43,269,55,311,84,348,118,404,184"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html#a92f637d136827316efbce06d7055f9bb" title=" " alt="" coords="5,69,268,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="385,192,330,156,267,124,233,112,235,107,269,119,333,152,388,187"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae0bc2c49238e34dd2ffc27d9d95683f2" title=" " alt="" coords="35,133,238,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="320,197,227,176,228,171,321,192"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1BattleControlRelay.html#ad755e6c2fd1dfffdff468337c56bf634" title="Отписаться от транспорта." alt="" coords="27,197,246,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="302,220,246,220,246,215,302,215"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Net_1_1Session_1_1CoopHandshake.html#adb04786851201ac1c00c2d18f626e01a" title=" " alt="" coords="43,261,230,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="321,243,228,264,227,259,320,238"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Net_1_1Tape_1_1BattleRosterIntake.html#ac7964d9a7d4b7b6df6b7dff8c21f6038" title=" " alt="" coords="34,325,239,365"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="388,247,333,283,269,316,235,328,233,323,267,311,330,278,385,243"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake.html#ad3aeccd56be5f746d167142230d15a5b" title="Отписаться от транспорта." alt="" coords="39,389,235,429"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="404,250,348,316,311,351,269,380,236,394,234,390,267,375,308,346,344,313,400,247"/>
 </map>

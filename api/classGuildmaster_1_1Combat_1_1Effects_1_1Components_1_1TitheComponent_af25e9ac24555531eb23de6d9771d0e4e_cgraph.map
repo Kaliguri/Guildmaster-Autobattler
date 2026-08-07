@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Effects.Components.TitheComponent.OnTick" name="Guildmaster.Combat.Effects.Components.TitheComponent.OnTick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,271,75"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ae97b806719021d19ff582f3cc9aee131" title="Добавить группу модификаторов от source ." alt="" coords="330,5,527,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="270,39,316,34,317,39,271,44"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="319,70,539,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="271,65,306,68,305,73,270,70"/>
+</map>

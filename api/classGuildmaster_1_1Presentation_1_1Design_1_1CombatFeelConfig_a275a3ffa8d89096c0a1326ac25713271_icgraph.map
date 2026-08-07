@@ -1,5 +1,5 @@
 <map id="Guildmaster.Presentation.Design.CombatFeelConfig.EvaluateHitFormSize" name="Guildmaster.Presentation.Design.CombatFeelConfig.EvaluateHitFormSize">
 <area shape="rect" id="Node000001" title="Множитель РАЗМЕРА формы по доле снятого HP." alt="" coords="257,5,508,60"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory.html#a5aa372e75d898c6308dc5744b6645e78" title="Собрать параметры формы." alt="" coords="5,13,209,53"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory.html#abe6336e7bc898956386f9763f923d2fb" title="Собрать параметры формы." alt="" coords="5,13,209,53"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="244,35,210,35,210,30,244,30"/>
 </map>

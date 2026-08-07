@@ -44,18 +44,18 @@
 <text text-anchor="start" x="8.5" y="-249" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="25.5" y="-249" font-family="Helvetica,sans-Serif" font-size="10.00">AttackType</text>
 <text text-anchor="start" x="8.5" y="-234" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-234" font-family="Helvetica,sans-Serif" font-size="10.00">ResourceType</text>
+<text text-anchor="start" x="25.5" y="-234" font-family="Helvetica,sans-Serif" font-size="10.00">RangeBand</text>
 <text text-anchor="start" x="8.5" y="-219" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-219" font-family="Helvetica,sans-Serif" font-size="10.00">Visual</text>
+<text text-anchor="start" x="25.5" y="-219" font-family="Helvetica,sans-Serif" font-size="10.00">RangeAdjustPct</text>
 <text text-anchor="start" x="8.5" y="-204" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-204" font-family="Helvetica,sans-Serif" font-size="10.00">ViewPrefab</text>
+<text text-anchor="start" x="25.5" y="-204" font-family="Helvetica,sans-Serif" font-size="10.00">ResourceType</text>
 <text text-anchor="start" x="8.5" y="-189" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-189" font-family="Helvetica,sans-Serif" font-size="10.00">BodyShade</text>
+<text text-anchor="start" x="25.5" y="-189" font-family="Helvetica,sans-Serif" font-size="10.00">Archetype</text>
 <text text-anchor="start" x="8.5" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00">VfxTone</text>
+<text text-anchor="start" x="25.5" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00">Outfit</text>
 <text text-anchor="start" x="8.5" y="-159" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-159" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackShape</text>
-<text text-anchor="start" x="25.5" y="-144" font-family="Helvetica,sans-Serif" font-size="10.00">and 20 more...</text>
+<text text-anchor="start" x="25.5" y="-159" font-family="Helvetica,sans-Serif" font-size="10.00">ViewPrefab</text>
+<text text-anchor="start" x="25.5" y="-144" font-family="Helvetica,sans-Serif" font-size="10.00">and 22 more...</text>
 <text text-anchor="start" x="8.5" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="25.5" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00">HitDamageShare()</text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-304 0.5,-304 155.5,-304 155.5,-304 0.5,-304"/>

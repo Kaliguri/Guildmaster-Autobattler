@@ -12,6 +12,7 @@ var dir_9c4489f7376784a5a639cc520f6e7ee8 =
     [ "Tempo", "dir_7513001d5d11abbc84d42b758f2d4b4f.html", "dir_7513001d5d11abbc84d42b758f2d4b4f" ],
     [ "Transition", "dir_0ab2dcb204bc5bae2bc1d8c9c6676d65.html", "dir_0ab2dcb204bc5bae2bc1d8c9c6676d65" ],
     [ "AssemblyInfo.cs", "Presentation_2AssemblyInfo_8cs.html", null ],
+    [ "BattleStagePresence.cs", "BattleStagePresence_8cs.html", "BattleStagePresence_8cs" ],
     [ "BattleTelegraphPresenter.cs", "BattleTelegraphPresenter_8cs.html", "BattleTelegraphPresenter_8cs" ],
     [ "CombatAreaFlash.cs", "CombatAreaFlash_8cs.html", "CombatAreaFlash_8cs" ],
     [ "CombatDebugDraw.cs", "CombatDebugDraw_8cs.html", "CombatDebugDraw_8cs" ],
@@ -27,8 +28,11 @@ var dir_9c4489f7376784a5a639cc520f6e7ee8 =
     [ "ManaBarView.cs", "ManaBarView_8cs.html", "ManaBarView_8cs" ],
     [ "PooledVfx.cs", "PooledVfx_8cs.html", "PooledVfx_8cs" ],
     [ "ProjectileView.cs", "ProjectileView_8cs.html", "ProjectileView_8cs" ],
+    [ "ReplayFocusBinder.cs", "ReplayFocusBinder_8cs.html", "ReplayFocusBinder_8cs" ],
     [ "ShatterMesh.cs", "ShatterMesh_8cs.html", "ShatterMesh_8cs" ],
+    [ "TapeFocusPointSource.cs", "TapeFocusPointSource_8cs.html", "TapeFocusPointSource_8cs" ],
     [ "UnitAnimation.cs", "UnitAnimation_8cs.html", "UnitAnimation_8cs" ],
     [ "UnitSilhouette.cs", "UnitSilhouette_8cs.html", "UnitSilhouette_8cs" ],
-    [ "UnitView.cs", "UnitView_8cs.html", "UnitView_8cs" ]
+    [ "UnitView.cs", "UnitView_8cs.html", "UnitView_8cs" ],
+    [ "VisualDefects.cs", "VisualDefects_8cs.html", "VisualDefects_8cs" ]
 ];

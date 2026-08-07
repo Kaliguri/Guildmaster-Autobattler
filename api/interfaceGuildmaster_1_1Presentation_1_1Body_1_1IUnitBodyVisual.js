@@ -2,6 +2,7 @@ var interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual =
 [
     [ "Apply", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a9c30d9104a90ac92699ec6601a299322", null ],
     [ "ApplyCuts", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a6f2ee3f891e93cbc63f4be1277f0d020", null ],
+    [ "ApplyOutfit", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#afa87b61cae2ed09afe08bd6c41b54d1f", null ],
     [ "CaptureSilhouette", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a27249220cad375a9309c1e5e3c8eb5fc", null ],
     [ "PlayShatter", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#af6cc6cc75f6f8fba26c10e896532e3ef", null ],
     [ "Prime", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a782c4bde4441f3a4a2a3d0f39ecc2eac", null ],
@@ -15,5 +16,6 @@ var interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual =
     [ "Parts", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#af83b8bd43790f47fbdb64ccbd0417ff3", null ],
     [ "Root", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#ad4a088cb0844a7a7572a1570f0c5847d", null ],
     [ "SortingLayerId", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a400526625672d7e2c020e054ceb84dcd", null ],
-    [ "SortingOrder", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a2cd147dc96f78fbbb3e056f86b8dbf00", null ]
+    [ "SortingOrder", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a2cd147dc96f78fbbb3e056f86b8dbf00", null ],
+    [ "SortingRoot", "interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#aa816e23b7992870b803735072e2afb65", null ]
 ];

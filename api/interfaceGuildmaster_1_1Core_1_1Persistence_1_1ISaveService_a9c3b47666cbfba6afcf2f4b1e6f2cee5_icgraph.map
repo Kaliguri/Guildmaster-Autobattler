@@ -1,7 +1,7 @@
 <map id="Guildmaster.Core.Persistence.ISaveService.Exists" name="Guildmaster.Core.Persistence.ISaveService.Exists">
-<area shape="rect" id="Node000001" title="Есть ли файл под ключом. Дешёвая проверка наличия — о пригодности отвечает TryLoad&lt;T&gt;." alt="" coords="547,5,765,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunSaves.html#acaf686179bcb091c42a149da678e7d13" title="Есть ли автосейв забега на диске — вопрос меню про «Продолжить»." alt="" coords="288,5,499,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="533,28,499,28,499,23,533,23"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1NewGameScreenView.html#a946b422f75df454d0b5b271b0b4f49ad" title="Собрать список домов из профиля: имя плюс ответ на вопрос «идёт ли там забег»." alt="" coords="5,5,240,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="274,28,240,28,240,23,274,23"/>
+<area shape="rect" id="Node000001" title="Есть ли файл под ключом. Дешёвая проверка наличия — о пригодности отвечает TryLoad&lt;T&gt;." alt="" coords="509,5,728,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunSaves.html#acaf686179bcb091c42a149da678e7d13" title="Есть ли автосейв забега на диске — вопрос меню про «Продолжить»." alt="" coords="251,5,461,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="496,28,462,28,462,23,496,23"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1GuildSelectScreenView.html#a0d76027e54de01b808c456c771c789d9" title="Собрать список домов из профиля: имя плюс ответ на вопрос «идёт ли там забег»." alt="" coords="5,5,203,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="237,28,203,28,203,23,237,23"/>
 </map>
