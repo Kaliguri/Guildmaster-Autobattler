@@ -4,6 +4,7 @@ using Guildmaster.Game.Activity;
 using Guildmaster.Game.Flow;
 using Guildmaster.Net;
 using Guildmaster.Net.Transport;
+using MessagePipe; // ради расширения Subscribe(Action<T>): без него подписка требует IMessageHandler
 using UnityEngine;
 using VContainer.Unity;
 
@@ -37,6 +38,18 @@ namespace Guildmaster.Game.Session.Net
 
         private Action _toggleReady;
 
+        // Экран итога боя на площадке. Показывает его гость сам: по сети едет состояние, а не показ.
+        private readonly MessagePipe.IPublisher<Guildmaster.Guild.OpenOutcomeRequest> _outcomePub;
+        private readonly MessagePipe.ISubscriber<Guildmaster.Presentation.BattleEndedEvent> _endedSub;
+        // Уйти с чужой площадки значит выйти из чужой игры: своего забега, который можно было бы
+        // прервать, у гостя нет вовсе.
+        private readonly Guildmaster.Core.Net.ICoopSessionControl _coop;
+        // Своя сторона: по ней и только по ней читается, победа это или поражение.
+        private readonly Guildmaster.Core.Players.ILocalPlayer _localPlayer;
+
+        private IDisposable _endedSubscription;
+        private bool        _lastVictory;
+
         // Снимок забега: из него гость сам считает и какие узлы достижимы, и ждут ли вообще выбора.
         // По сети не едет ни то, ни другое — оба выводятся из состояния (см. IActMapPresence).
         private readonly GuestRunState _runs;
@@ -46,7 +59,11 @@ namespace Guildmaster.Game.Session.Net
 
         public GuestActivityFollower(INetTransport transport, ActivityHost activities,
                                      IActMapPresence map, Guildmaster.Core.Flow.IHubPresence hub,
-                                     Guildmaster.Core.Net.IReadyGate ready, GuestRunState runs)
+                                     Guildmaster.Core.Net.IReadyGate ready, GuestRunState runs,
+                                     MessagePipe.IPublisher<Guildmaster.Guild.OpenOutcomeRequest> outcomePub,
+                                     MessagePipe.ISubscriber<Guildmaster.Presentation.BattleEndedEvent> endedSub,
+                                     Guildmaster.Core.Net.ICoopSessionControl coop,
+                                     Guildmaster.Core.Players.ILocalPlayer localPlayer)
         {
             _transport  = transport  ?? throw new ArgumentNullException(nameof(transport));
             _activities = activities ?? throw new ArgumentNullException(nameof(activities));
@@ -54,6 +71,10 @@ namespace Guildmaster.Game.Session.Net
             _hub        = hub;
             _ready      = ready;
             _runs       = runs;
+            _outcomePub  = outcomePub;
+            _endedSub    = endedSub;
+            _coop        = coop;
+            _localPlayer = localPlayer;
         }
 
         /// <summary>Что применено последним — видно в dev-панели.</summary>
@@ -71,6 +92,12 @@ namespace Guildmaster.Game.Session.Net
             // это состояние забега, а оно приезжает именно снимком.
             if (_runs != null) _runs.SnapshotReceived += HandleSnapshot;
 
+            // Исход боя гость узнаёт ИЗ ЛЕНТЫ — тем же событием, что и хозяин из своей симуляции.
+            // Пересчитывать его по арене («остались ли враги») значило бы завести второго судью, и
+            // разошлись бы они на добивании: у гостя показ идёт с лагом.
+            _endedSubscription = _endedSub?.Subscribe(e =>
+                _lastVictory = e.Outcome.IsWinFor(_localPlayer?.Team ?? 0));
+
             if (!_transport.IsRunning) return;
 
             _transport.Send(NetPeer.HostPeerId,
@@ -82,6 +109,10 @@ namespace Guildmaster.Game.Session.Net
         {
             _transport.MessageReceived -= HandleMessage;
             if (_runs != null) _runs.SnapshotReceived -= HandleSnapshot;
+            _endedSubscription?.Dispose();
+            // Уходя, снимаем свой ключ: гейт живёт в сеансе и переживёт нас, а брошенный ключ показал бы
+            // счёт согласия там, где подтверждать уже нечего.
+            _ready?.Unbind(Guildmaster.Core.Net.ReadyKeys.BattleContinue);
         }
 
         private void HandleSnapshot(Guildmaster.Guild.RunState _) => RefreshNodeChoice();
@@ -114,6 +145,9 @@ namespace Guildmaster.Game.Session.Net
             ApplyActivity(in state);
             ApplyBattle(in state);
             ApplyPhase(in state);
+            // Итог боя — ПОСЛЕ фазы и ДО записи применённого: он сравнивает новое состояние с прежним,
+            // чтобы показать экран один раз, а не на каждое объявление.
+            ApplyOutcome(in state);
             ApplyMap(in state);
             ApplyHub(in state);
 
@@ -182,6 +216,49 @@ namespace Guildmaster.Game.Session.Net
             session.UnbindStart();
             Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
                 $"гость: фаза {phase} — ключ снят, кнопка отвязана");
+        }
+
+        /// <summary>
+        /// Итог боя на площадке: показать экран и взвести согласие на возврат к расстановке.
+        /// </summary>
+        /// <remarks>
+        /// <b>Второй ключ гейта у гостя не взводил никто</b> — и кнопки «Продолжить» у него не
+        /// появлялось вовсе (наход. Макса 07.08.2026). У хозяина ключ ставит расстановка
+        /// (<c>DeploymentController.ShowGroundsOutcome</c>), а её у гостя нет: бой приезжает ему
+        /// скоупом-приёмником. Ровно та же дыра, что закрывали для «Начать» 04.08.2026, — просто
+        /// вторая её половина.
+        /// <para><b>Момент — та же пара «место плюс фаза», по которой его берёт хозяин:</b> площадка
+        /// и <c>Interlude</c>. Заводить для показа отдельное сообщение по сети значило бы завести
+        /// второго владельца момента, который умеет разойтись с первым.</para>
+        /// <para><b>«Продолжить» — согласие, а не команда.</b> Кнопка шлёт «я готов», экран закрывает
+        /// признак срабатывания от гейта, а к расстановке всех возвращает хозяин: у гостя нет
+        /// расстановки, которую можно было бы вернуть.</para>
+        /// <para><b>«В меню» у гостя значит выйти из ЧУЖОЙ игры.</b> Прерывать нечего — своего забега
+        /// нет; уходя, гость покидает сеанс, и верхняя петля сама возвращает его в своё меню.</para>
+        /// </remarks>
+        private void ApplyOutcome(in ActivityState state)
+        {
+            bool showing = state.Kind == ActivityKind.ProvingGrounds && state.Phase == BattlePhase.Interlude;
+            bool wasShowing = _applied.Kind == ActivityKind.ProvingGrounds
+                              && _applied.Phase == BattlePhase.Interlude;
+            if (showing == wasShowing) return;
+
+            if (!showing)
+            {
+                _ready?.Unbind(Guildmaster.Core.Net.ReadyKeys.BattleContinue);
+                return;
+            }
+
+            // Действия у ключа нет намеренно: собранное согласие исполняет хозяин, а гостю приезжает
+            // признак срабатывания — по нему экран и закрывается.
+            _ready?.Bind(Guildmaster.Core.Net.ReadyKeys.BattleContinue, null);
+            Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
+                $"гость: итог боя — ключ «{Guildmaster.Core.Net.ReadyKeys.BattleContinue}» взведён, показываю экран (победа: {_lastVictory})");
+
+            _outcomePub?.Publish(new Guildmaster.Guild.OpenOutcomeRequest(
+                _lastVictory,
+                onToMenu:   () => _coop?.Leave(),
+                onContinue: () => _ready?.ToggleLocal()));
         }
 
         /// <summary>
