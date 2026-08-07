@@ -9,7 +9,7 @@ namespace Guildmaster.Net
     /// сломалось на нём: голос стал строкой варианта (07.08.2026), длины сравнялись, и хост принял бы
     /// собственное эхо за чужой голос. Признак отправителя обязан быть в сообщении, а не в его размере.
     /// </remarks>
-    public static class ReadyWire
+    public static class DecisionWire
     {
         /// <summary>Голос участника: гость → хост.</summary>
         public const byte Vote = 0;

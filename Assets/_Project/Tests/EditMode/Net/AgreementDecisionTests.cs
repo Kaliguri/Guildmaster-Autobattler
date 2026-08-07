@@ -14,13 +14,13 @@ namespace Guildmaster.Tests.EditMode.Net
     /// правятся они порознь. Отдельно закреплён уход игрока — кнопка, которую нельзя нажать, потому что
     /// ждут вышедшего, зависает молча и без видимой причины.
     /// </remarks>
-    public sealed class ReadyGateTests
+    public sealed class AgreementDecisionTests
     {
         [Test]
         public void Solo_FiresImmediately()
         {
             var net  = new LoopbackNetwork().CreateNode();
-            var gate = new HostReadyGate(net, null);
+            var gate = new HostSharedDecision(net, null);
             gate.Start();
 
             int fired = 0;
@@ -31,7 +31,7 @@ namespace Guildmaster.Tests.EditMode.Net
             gate.ToggleLocal();
 
             Assert.AreEqual(1, fired, "соло не должно ничего ждать");
-            Assert.AreEqual(0, gate.Ready, "после срабатывания счёт обнуляется");
+            Assert.AreEqual(0, gate.Voted, "после срабатывания счёт обнуляется");
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace Guildmaster.Tests.EditMode.Net
         {
             var host = new LoopbackNetwork();
             INetTransport hostNode = host.CreateNode();
-            var gate = new HostReadyGate(hostNode, null);
+            var gate = new HostSharedDecision(hostNode, null);
             gate.Start();
 
             host.CreateNode();  // второй игрок входит в сессию...
@@ -52,7 +52,7 @@ namespace Guildmaster.Tests.EditMode.Net
 
             gate.ToggleLocal();
             Assert.AreEqual(0, fired, "один из двоих — ждём второго");
-            Assert.AreEqual(1, gate.Ready);
+            Assert.AreEqual(1, gate.Voted);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace Guildmaster.Tests.EditMode.Net
         {
             var host = new LoopbackNetwork();
             INetTransport hostNode = host.CreateNode();
-            var gate = new HostReadyGate(hostNode, null);
+            var gate = new HostSharedDecision(hostNode, null);
             gate.Start();
             host.CreateNode();
             host.PollAll();
@@ -68,11 +68,11 @@ namespace Guildmaster.Tests.EditMode.Net
             gate.Bind("battle.start", () => { });
 
             gate.ToggleLocal();
-            Assert.IsTrue(gate.LocallyReady);
+            Assert.IsTrue(gate.HasLocalChoice);
 
             gate.ToggleLocal();
-            Assert.IsFalse(gate.LocallyReady, "второе нажатие снимает своё согласие");
-            Assert.AreEqual(0, gate.Ready);
+            Assert.IsFalse(gate.HasLocalChoice, "второе нажатие снимает своё согласие");
+            Assert.AreEqual(0, gate.Voted);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace Guildmaster.Tests.EditMode.Net
         {
             var host = new LoopbackNetwork();
             INetTransport hostNode = host.CreateNode();
-            var gate = new HostReadyGate(hostNode, null);
+            var gate = new HostSharedDecision(hostNode, null);
             gate.Start();
             host.CreateNode();
             host.PollAll();
@@ -90,7 +90,7 @@ namespace Guildmaster.Tests.EditMode.Net
 
             gate.Reset("расстановка изменилась");
 
-            Assert.AreEqual(0, gate.Ready, "подтверждали то, чего больше нет");
+            Assert.AreEqual(0, gate.Voted, "подтверждали то, чего больше нет");
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Guildmaster.Tests.EditMode.Net
         {
             var host = new LoopbackNetwork();
             INetTransport hostNode = host.CreateNode();
-            var gate = new HostReadyGate(hostNode, null);
+            var gate = new HostSharedDecision(hostNode, null);
             gate.Start();
             host.CreateNode();
             host.PollAll();
@@ -108,7 +108,7 @@ namespace Guildmaster.Tests.EditMode.Net
 
             gate.Bind("battle.continue", () => { });
 
-            Assert.AreEqual(0, gate.Ready, "согласие относилось к другому действию");
+            Assert.AreEqual(0, gate.Voted, "согласие относилось к другому действию");
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Guildmaster.Tests.EditMode.Net
             var host = new LoopbackNetwork();
             INetTransport hostNode = host.CreateNode();
             var heard = new ListPublisher();
-            var gate = new HostReadyGate(hostNode, heard);
+            var gate = new HostSharedDecision(hostNode, heard);
             gate.Start();
 
             gate.Bind("battle.continue", () => { });
@@ -138,7 +138,7 @@ namespace Guildmaster.Tests.EditMode.Net
             var pair = new LoopbackNetwork();
             INetTransport pairHost = pair.CreateNode();
             var heardPair = new ListPublisher();
-            var paired = new HostReadyGate(pairHost, heardPair);
+            var paired = new HostSharedDecision(pairHost, heardPair);
             paired.Start();
             pair.CreateNode();
             pair.PollAll();
@@ -153,11 +153,11 @@ namespace Guildmaster.Tests.EditMode.Net
                 "сброс — это не срабатывание, и путать их нельзя: экран закрылся бы от чужой правки");
         }
 
-        private sealed class ListPublisher : IPublisher<ReadyGateChangedEvent>
+        private sealed class ListPublisher : IPublisher<SharedDecisionChangedEvent>
         {
-            public readonly System.Collections.Generic.List<ReadyGateChangedEvent> Events = new();
+            public readonly System.Collections.Generic.List<SharedDecisionChangedEvent> Events = new();
 
-            public void Publish(ReadyGateChangedEvent message) => Events.Add(message);
+            public void Publish(SharedDecisionChangedEvent message) => Events.Add(message);
         }
     }
 }

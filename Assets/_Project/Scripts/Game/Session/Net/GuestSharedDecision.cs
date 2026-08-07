@@ -8,7 +8,7 @@ using VContainer.Unity;
 namespace Guildmaster.Game.Session.Net
 {
     /// <summary>
-    /// Гостевая половина общего согласия: отправляет своё «готов» и показывает счёт, присланный хостом.
+    /// Гостевая половина общего решения: отправляет свой голос и показывает счёт, присланный хостом.
     /// </summary>
     /// <remarks>
     /// <b>Гость не решает, все ли готовы.</b> Он и не может: кто в сессии, знает хост. Здесь только своё
@@ -17,10 +17,10 @@ namespace Guildmaster.Game.Session.Net
     /// сменит фазу, а не оттого, что гость сам себя запустил: второй путь к одному состоянию расходится.
     /// Поэтому <see cref="Bind"/> здесь запоминает только ключ — чтобы кнопка знала, чего ждут.</para>
     /// </remarks>
-    public sealed class GuestReadyGate : IReadyGate, IStartable, IDisposable
+    public sealed class GuestSharedDecision : ISharedDecision, IStartable, IDisposable
     {
         private readonly INetTransport _transport;
-        private readonly IPublisher<ReadyGateChangedEvent> _changedPub;
+        private readonly IPublisher<SharedDecisionChangedEvent> _changedPub;
 
         private readonly NetByteWriter _writer = new NetByteWriter(4);
         private byte[] _envelope;
@@ -32,17 +32,17 @@ namespace Guildmaster.Game.Session.Net
         private readonly System.Collections.Generic.List<PlayerChoice> _choices =
             new System.Collections.Generic.List<PlayerChoice>();
 
-        public GuestReadyGate(INetTransport transport, IPublisher<ReadyGateChangedEvent> changedPub)
+        public GuestSharedDecision(INetTransport transport, IPublisher<SharedDecisionChangedEvent> changedPub)
         {
             _transport  = transport ?? throw new ArgumentNullException(nameof(transport));
             _changedPub = changedPub;
         }
 
-        public int Ready { get; private set; }
+        public int Voted { get; private set; }
 
         public int Required { get; private set; } = 1;
 
-        public bool LocallyReady => _localChoice != DecisionOptions.None;
+        public bool HasLocalChoice => _localChoice != DecisionOptions.None;
 
         public string LocalChoice => _localChoice;
 
@@ -50,7 +50,7 @@ namespace Guildmaster.Game.Session.Net
 
         public void Dispose() => _transport.MessageReceived -= OnMessage;
 
-        public void Bind(string key, Action onAllReady) => Bind(key, (Action<string>)null);
+        public void Bind(string key, Action onAgreed) => Bind(key, (Action<string>)null);
 
         public void Bind(string key, Action<string> onAgreed)
         {
@@ -86,7 +86,7 @@ namespace Guildmaster.Game.Session.Net
         {
             // Счёт сбрасывает хост — он же его и объявит. Свой голос снимаем сами: он относился к
             // тому, чего больше нет.
-            if (!LocallyReady) return;
+            if (!HasLocalChoice) return;
 
             Guildmaster.Diagnostics.UiTrace.Log($"свой голос снят: {reason}");
             SetLocal(DecisionOptions.None);
@@ -103,23 +103,23 @@ namespace Guildmaster.Game.Session.Net
             if (!_transport.IsRunning) return;
 
             _writer.Reset();
-            _writer.WriteByte(ReadyWire.Vote);
+            _writer.WriteByte(DecisionWire.Vote);
             _writer.WriteString(_localChoice);
             _transport.Send(NetPeer.HostPeerId,
-                NetEnvelope.Wrap(NetChannel.ReadyGate, _writer.WrittenSegment, ref _envelope),
+                NetEnvelope.Wrap(NetChannel.Decision, _writer.WrittenSegment, ref _envelope),
                 NetDelivery.Reliable);
         }
 
         private void OnMessage(int from, ArraySegment<byte> message)
         {
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
-            if (channel != NetChannel.ReadyGate || payload.Count < 1) return;
+            if (channel != NetChannel.Decision || payload.Count < 1) return;
 
             // Счёт объявляет только хост: чужой счёт от другого гостя показал бы кнопке неправду.
             if (from != NetPeer.HostPeerId) return;
 
             var bytes = new NetByteReader(payload);
-            if (bytes.ReadByte() != ReadyWire.Tally) return; // голос другого гостя нам не адресован
+            if (bytes.ReadByte() != DecisionWire.Tally) return; // голос другого гостя нам не адресован
 
             bool fired;
             try
@@ -142,7 +142,7 @@ namespace Guildmaster.Game.Session.Net
                 return; // чужая версия объявления — прежний счёт честнее половины нового
             }
 
-            Ready = _choices.Count;
+            Voted = _choices.Count;
 
             // Свой голос берём из объявления, а не помним отдельно: хост мог сбросить всех, и вторая
             // память об этом молча разошлась бы с его счётом — кнопка осталась бы нажатой у того, кого
@@ -155,7 +155,7 @@ namespace Guildmaster.Game.Session.Net
         }
 
         private void Announce(bool fired = false) =>
-            _changedPub?.Publish(new ReadyGateChangedEvent(_key, Ready, Required, LocallyReady, fired,
+            _changedPub?.Publish(new SharedDecisionChangedEvent(_key, Voted, Required, HasLocalChoice, fired,
                                                            _localChoice, _choices));
     }
 }

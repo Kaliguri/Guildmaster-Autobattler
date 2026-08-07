@@ -22,7 +22,7 @@ namespace Guildmaster.Tests.EditMode.Net
     /// </remarks>
     public sealed class SharedDecisionTests
     {
-        private const string Key  = ReadyKeys.RewardPick;
+        private const string Key  = DecisionKeys.RewardPick;
         private const string Ruby = "relic.ruby";
         private const string Iron = "relic.iron";
 
@@ -30,7 +30,7 @@ namespace Guildmaster.Tests.EditMode.Net
         public void Solo_TakesWhatWasChosen()
         {
             INetTransport node = new LoopbackNetwork().CreateNode();
-            var decision = new HostReadyGate(node, null);
+            var decision = new HostSharedDecision(node, null);
             decision.Start();
 
             string taken = null;
@@ -39,7 +39,7 @@ namespace Guildmaster.Tests.EditMode.Net
             decision.Choose(Ruby);
 
             Assert.AreEqual(Ruby, taken, "в одиночку выбор исполняется сразу и именно тот, что сделали");
-            Assert.AreEqual(0, decision.Ready, "после срабатывания голоса гаснут");
+            Assert.AreEqual(0, decision.Voted, "после срабатывания голоса гаснут");
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace Guildmaster.Tests.EditMode.Net
         {
             var net = new LoopbackNetwork();
             INetTransport hostNode = net.CreateNode();
-            var decision = new HostReadyGate(hostNode, null);
+            var decision = new HostSharedDecision(hostNode, null);
             decision.Start();
 
             net.CreateNode(); // второй участник: иначе решение сработает на первом же голосе
@@ -60,7 +60,7 @@ namespace Guildmaster.Tests.EditMode.Net
 
             decision.Choose(Ruby);
             Assert.AreEqual(DecisionOptions.None, decision.LocalChoice, "повтор того же варианта — отказ от голоса");
-            Assert.AreEqual(0, decision.Ready);
+            Assert.AreEqual(0, decision.Voted);
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Guildmaster.Tests.EditMode.Net
         {
             var net = new LoopbackNetwork();
             INetTransport hostNode = net.CreateNode();
-            var decision = new HostReadyGate(hostNode, null);
+            var decision = new HostSharedDecision(hostNode, null);
             decision.Start();
 
             net.CreateNode();
@@ -80,7 +80,7 @@ namespace Guildmaster.Tests.EditMode.Net
             decision.Choose(Iron);
 
             Assert.AreEqual(Iron, decision.LocalChoice, "передумать можно одним нажатием, без промежуточного шага");
-            Assert.AreEqual(1, decision.Ready, "голос один, а не два");
+            Assert.AreEqual(1, decision.Voted, "голос один, а не два");
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace Guildmaster.Tests.EditMode.Net
             INetTransport guestNode = net.CreateNode();
             net.PollAll();
 
-            var decision = new HostReadyGate(hostNode, null);
+            var decision = new HostSharedDecision(hostNode, null);
             decision.Start();
 
             string taken = null;
@@ -114,7 +114,7 @@ namespace Guildmaster.Tests.EditMode.Net
             INetTransport guestNode = net.CreateNode();
             net.PollAll();
 
-            var decision = new HostReadyGate(hostNode, null);
+            var decision = new HostSharedDecision(hostNode, null);
             decision.Start();
 
             string taken = null;
@@ -125,7 +125,7 @@ namespace Guildmaster.Tests.EditMode.Net
             net.PollAll();
 
             Assert.IsNull(taken, "выбрали разное — решения нет, и большинство тут ничего не решает");
-            Assert.AreEqual(2, decision.Ready, "при этом высказались оба, и это видно");
+            Assert.AreEqual(2, decision.Voted, "при этом высказались оба, и это видно");
             Assert.AreEqual(2, decision.Required);
         }
 
@@ -137,11 +137,11 @@ namespace Guildmaster.Tests.EditMode.Net
             INetTransport guestNode = net.CreateNode();
             net.PollAll();
 
-            var decision = new HostReadyGate(hostNode, null);
+            var decision = new HostSharedDecision(hostNode, null);
             decision.Start();
 
             int fired = 0;
-            decision.Bind(ReadyKeys.BattleStart, () => fired++);
+            decision.Bind(DecisionKeys.BattleStart, () => fired++);
 
             decision.ToggleLocal();
             Assert.AreEqual(0, fired);
@@ -161,7 +161,7 @@ namespace Guildmaster.Tests.EditMode.Net
             INetTransport guestNode = net.CreateNode();
             net.PollAll();
 
-            var decision = new HostReadyGate(hostNode, null);
+            var decision = new HostSharedDecision(hostNode, null);
             decision.Start();
             decision.Bind(Key, _ => { });
 
@@ -170,10 +170,10 @@ namespace Guildmaster.Tests.EditMode.Net
             guestNode.MessageReceived += (from, message) =>
             {
                 if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out var payload)) return;
-                if (channel != NetChannel.ReadyGate) return;
+                if (channel != NetChannel.Decision) return;
 
                 var bytes = new NetByteReader(payload);
-                if (bytes.ReadByte() != ReadyWire.Tally) return;
+                if (bytes.ReadByte() != DecisionWire.Tally) return;
 
                 bytes.ReadByte();   // планка
                 bytes.ReadBool();   // сработало
@@ -193,16 +193,16 @@ namespace Guildmaster.Tests.EditMode.Net
             Assert.AreEqual(hostNode.LocalPeerId, seen[0].PlayerId);
         }
 
-        /// <summary>Голос гостя ровно в том виде, в каком его шлёт <c>GuestReadyGate</c>.</summary>
+        /// <summary>Голос гостя ровно в том виде, в каком его шлёт <c>GuestSharedDecision</c>.</summary>
         private static void SendVote(INetTransport guest, string option)
         {
             var writer = new NetByteWriter(16);
-            writer.WriteByte(ReadyWire.Vote);
+            writer.WriteByte(DecisionWire.Vote);
             writer.WriteString(option);
 
             byte[] envelope = null;
             guest.Send(NetPeer.HostPeerId,
-                NetEnvelope.Wrap(NetChannel.ReadyGate, writer.WrittenSegment, ref envelope),
+                NetEnvelope.Wrap(NetChannel.Decision, writer.WrittenSegment, ref envelope),
                 NetDelivery.Reliable);
         }
     }

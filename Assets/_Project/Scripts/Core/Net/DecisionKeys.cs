@@ -5,11 +5,11 @@ namespace Guildmaster.Core.Net
     /// </summary>
     /// <remarks>
     /// Ключ — это ДОГОВОР между тем, кто объявляет согласие, и тем, кто рисует счёт: по нему
-    /// подписчик отличает свой счёт от чужого (<see cref="ReadyGateChangedEvent.Key"/>). Пока ключи
+    /// подписчик отличает свой счёт от чужого (<see cref="SharedDecisionChangedEvent.Key"/>). Пока ключи
     /// жили литералами в трёх файлах, договор держался только на том, что все три строки совпадают, —
     /// и топбар, забывший сверить ключ, показывал на кнопке «Начать» счёт гейта возврата к расстановке.
     /// </remarks>
-    public static class ReadyKeys
+    public static class DecisionKeys
     {
         /// <summary>Согласие начать бой.</summary>
         public const string BattleStart = "battle.start";

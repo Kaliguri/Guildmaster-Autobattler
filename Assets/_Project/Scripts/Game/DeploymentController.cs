@@ -38,8 +38,8 @@ namespace Guildmaster.Game
     {
         // Что подтверждают все игроки: прежде чем бой начнётся — и прежде чем вернуться с итогов боя
         // обратно в расстановку. Ключи общие с теми, кто рисует счёт, поэтому живут одним владельцем.
-        private const string ReadyKeyStart    = Core.Net.ReadyKeys.BattleStart;
-        private const string ReadyKeyContinue = Core.Net.ReadyKeys.BattleContinue;
+        private const string ReadyKeyStart    = Core.Net.DecisionKeys.BattleStart;
+        private const string ReadyKeyContinue = Core.Net.DecisionKeys.BattleContinue;
 
         private readonly EncounterLoader  _loader;
         private readonly CombatSimulation _sim;
@@ -77,7 +77,7 @@ namespace Guildmaster.Game
         private readonly ProvingGroundsConfig _groundsConfig;
         // Общее согласие: «Начать» — это «я готов», а бой начинается, когда готовы все. В соло участник
         // один, и гейт пропускает в тот же кадр, поэтому ветки «а мы одни?» здесь нет.
-        private readonly Core.Net.IReadyGate _ready;
+        private readonly Core.Net.ISharedDecision _ready;
         // Исход боя и выход с площадки: экран «Продолжить / В меню» показывает тот же, кто площадкой и
         // владеет. Отдельного презентера нет намеренно — состав, с которым продолжают, живёт здесь.
         private readonly ISubscriber<BattleEndedEvent> _battleEndedSub;
@@ -175,7 +175,7 @@ namespace Guildmaster.Game
             Core.Audio.IAudioService audio,
             ActivitySetup activity,
             ProvingGroundsConfig groundsConfig,
-            Core.Net.IReadyGate ready,
+            Core.Net.ISharedDecision ready,
             Core.Players.ILocalPlayer localPlayer,
             Core.Players.ISessionRoster roster,
             ISubscriber<BattleEndedEvent> battleEndedSub,

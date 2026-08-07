@@ -155,7 +155,7 @@ namespace Guildmaster.Tests.PlayMode.Battle
 
             // Бой начался — расстановка кончилась. Намерение приходит с опозданием: так и бывает в
             // сети, где чужая арена отстаёт от нашей на задержку.
-            var gate = FindAnywhere<Guildmaster.Core.Net.IReadyGate>();
+            var gate = FindAnywhere<Guildmaster.Core.Net.ISharedDecision>();
             Assert.IsNotNull(gate, "нет общего согласия — бой не начать");
             gate.ToggleLocal();
             yield return WaitFrames(10);

@@ -26,16 +26,16 @@ namespace Guildmaster.Core.Net
     /// <para><b>В соло решение не мешает:</b> участник один, выбор свой, действие происходит в тот же
     /// кадр. Ветки «а мы одни?» в вызывающем коде быть не должно.</para>
     /// </remarks>
-    public interface IReadyGate
+    public interface ISharedDecision
     {
         /// <summary>Сколько игроков уже сделали свой выбор.</summary>
-        int Ready { get; }
+        int Voted { get; }
 
         /// <summary>Сколько нужно — столько же, сколько игроков в сессии. В соло единица.</summary>
         int Required { get; }
 
         /// <summary>Выбрали ли мы сами. По второму нажатию того же варианта выбор снимается.</summary>
-        bool LocallyReady { get; }
+        bool HasLocalChoice { get; }
 
         /// <summary>
         /// Наш вариант; <see cref="DecisionOptions.None"/> — не выбрали. Для решения-согласия это всегда
@@ -45,7 +45,7 @@ namespace Guildmaster.Core.Net
 
         // События здесь НЕТ намеренно: гейт живёт в скоупе сеанса, а кнопка — выше него и переживает
         // несколько сеансов. Подписка на объект, который умрёт раньше подписчика, — это либо утечка,
-        // либо отписка в чужой момент. Счёт вещается сообщением (ReadyGateChangedEvent) по шине, которая
+        // либо отписка в чужой момент. Счёт вещается сообщением (SharedDecisionChangedEvent) по шине, которая
         // живёт всегда.
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Guildmaster.Core.Net
         /// а случилось бы другое.
         /// </summary>
         /// <param name="key">Что решаем — «battle.start», «reward.pick». Ключ и есть смысл.</param>
-        void Bind(string key, Action onAllReady);
+        void Bind(string key, Action onAgreed);
 
         /// <summary>
         /// Связать решение с вариантами: действие получает то, на чём сошлись.

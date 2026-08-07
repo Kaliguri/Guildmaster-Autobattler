@@ -34,7 +34,7 @@ namespace Guildmaster.Game.Session.Net
         private readonly Guildmaster.Core.Flow.IHubPresence _hub;
         // Общее согласие. Гость его только отправляет — но отправить может лишь тогда, когда знает, ЧЕГО
         // ждут, а ключ ему выставить некому: у хоста это делает расстановка, которой у гостя нет.
-        private readonly Guildmaster.Core.Net.IReadyGate _ready;
+        private readonly Guildmaster.Core.Net.ISharedDecision _ready;
 
         private Action _toggleReady;
 
@@ -59,7 +59,7 @@ namespace Guildmaster.Game.Session.Net
 
         public GuestActivityFollower(INetTransport transport, ActivityHost activities,
                                      IActMapPresence map, Guildmaster.Core.Flow.IHubPresence hub,
-                                     Guildmaster.Core.Net.IReadyGate ready, GuestRunState runs,
+                                     Guildmaster.Core.Net.ISharedDecision ready, GuestRunState runs,
                                      MessagePipe.IPublisher<Guildmaster.Guild.OpenOutcomeRequest> outcomePub,
                                      MessagePipe.ISubscriber<Guildmaster.Presentation.BattleEndedEvent> endedSub,
                                      Guildmaster.Core.Net.ICoopSessionControl coop,
@@ -112,7 +112,7 @@ namespace Guildmaster.Game.Session.Net
             _endedSubscription?.Dispose();
             // Уходя, снимаем свой ключ: гейт живёт в сеансе и переживёт нас, а брошенный ключ показал бы
             // счёт согласия там, где подтверждать уже нечего.
-            _ready?.Unbind(Guildmaster.Core.Net.ReadyKeys.BattleContinue);
+            _ready?.Unbind(Guildmaster.Core.Net.DecisionKeys.BattleContinue);
         }
 
         private void HandleSnapshot(Guildmaster.Guild.RunState _) => RefreshNodeChoice();
@@ -205,14 +205,14 @@ namespace Guildmaster.Game.Session.Net
         {
             if (phase == BattlePhase.Deployment)
             {
-                _ready?.Bind(Guildmaster.Core.Net.ReadyKeys.BattleStart, (Action<string>)null);
+                _ready?.Bind(Guildmaster.Core.Net.DecisionKeys.BattleStart, (Action<string>)null);
                 session.BindStart(_toggleReady ??= () => _ready?.ToggleLocal());
                 Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
-                    $"гость: расстановка — ключ «{Guildmaster.Core.Net.ReadyKeys.BattleStart}» взведён, кнопка привязана (гейт {(_ready == null ? "ОТСУТСТВУЕТ" : "есть")})");
+                    $"гость: расстановка — ключ «{Guildmaster.Core.Net.DecisionKeys.BattleStart}» взведён, кнопка привязана (гейт {(_ready == null ? "ОТСУТСТВУЕТ" : "есть")})");
                 return;
             }
 
-            _ready?.Unbind(Guildmaster.Core.Net.ReadyKeys.BattleStart);
+            _ready?.Unbind(Guildmaster.Core.Net.DecisionKeys.BattleStart);
             session.UnbindStart();
             Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
                 $"гость: фаза {phase} — ключ снят, кнопка отвязана");
@@ -245,15 +245,15 @@ namespace Guildmaster.Game.Session.Net
 
             if (!showing)
             {
-                _ready?.Unbind(Guildmaster.Core.Net.ReadyKeys.BattleContinue);
+                _ready?.Unbind(Guildmaster.Core.Net.DecisionKeys.BattleContinue);
                 return;
             }
 
             // Действия у ключа нет намеренно: собранное согласие исполняет хозяин, а гостю приезжает
             // признак срабатывания — по нему экран и закрывается.
-            _ready?.Bind(Guildmaster.Core.Net.ReadyKeys.BattleContinue, (Action<string>)null);
+            _ready?.Bind(Guildmaster.Core.Net.DecisionKeys.BattleContinue, (Action<string>)null);
             Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
-                $"гость: итог боя — ключ «{Guildmaster.Core.Net.ReadyKeys.BattleContinue}» взведён, показываю экран (победа: {_lastVictory})");
+                $"гость: итог боя — ключ «{Guildmaster.Core.Net.DecisionKeys.BattleContinue}» взведён, показываю экран (победа: {_lastVictory})");
 
             _outcomePub?.Publish(new Guildmaster.Guild.OpenOutcomeRequest(
                 _lastVictory,

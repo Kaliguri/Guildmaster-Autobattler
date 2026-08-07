@@ -64,8 +64,8 @@ namespace Guildmaster.Game.Session
 
             // Общее согласие считает владелец — он единственный знает, кто в сессии. В соло участник один,
             // и гейт пропускает действие в тот же кадр: ветки «а мы одни?» у вызывающих нет.
-            builder.RegisterEntryPoint<Net.HostReadyGate>(Lifetime.Singleton)
-                   .AsSelf().As<Guildmaster.Core.Net.IReadyGate>();
+            builder.RegisterEntryPoint<Net.HostSharedDecision>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Net.ISharedDecision>();
 
             // Состав сеанса: кто играет и за какую сторону. Ведёт владелец по той же причине, что и
             // согласие, — участников знает соединение, а оно есть только у него.
@@ -104,8 +104,8 @@ namespace Guildmaster.Game.Session
 
             // Своё согласие гость отправляет, счёт получает. Решать, все ли готовы, ему нечем: кто в
             // сессии, знает хост.
-            builder.RegisterEntryPoint<Net.GuestReadyGate>(Lifetime.Singleton)
-                   .AsSelf().As<Guildmaster.Core.Net.IReadyGate>();
+            builder.RegisterEntryPoint<Net.GuestSharedDecision>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Net.ISharedDecision>();
 
             // Состав сеанса приходит таблицей — гость только представляется именем. Своё мнение о том,
             // кто ему союзник, в PvP означало бы, что стороны решает каждый клиент сам.

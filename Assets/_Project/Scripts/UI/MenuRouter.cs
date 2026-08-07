@@ -53,12 +53,12 @@ namespace Guildmaster.UI
         // Счёт общего согласия. Роутер ЗАПОМИНАЕТ последнее объявление, а не только слушает: гейт
         // объявляет счёт в момент привязки действия, то есть ДО того, как экран построен, и живая
         // подписка это объявление пропустила бы — кнопка открылась бы без «(N/M)».
-        private readonly ISubscriber<Core.Net.ReadyGateChangedEvent> _readySub;
+        private readonly ISubscriber<Core.Net.SharedDecisionChangedEvent> _readySub;
         private readonly IDisposable _readySubscription;
-        private Core.Net.ReadyGateChangedEvent _lastReady;
+        private Core.Net.SharedDecisionChangedEvent _lastReady;
         // Что делать со счётом, пока открыт экран, который его ждёт. null — таких экранов нет, и счёт
         // просто запоминается.
-        private Action<Core.Net.ReadyGateChangedEvent> _onReadyChanged;
+        private Action<Core.Net.SharedDecisionChangedEvent> _onReadyChanged;
 
         private VisualElement _root;
         private VisualElement _modalLayer;   // верхний слой — заслонка выхода ложится поверх и паузы
@@ -117,7 +117,7 @@ namespace Guildmaster.UI
                           GameConfig gameConfig,
                           Core.Players.IPlatformIdentity platform,
                           Core.Players.ICursorSkinControl cursors,
-                          ISubscriber<Core.Net.ReadyGateChangedEvent> readySub)
+                          ISubscriber<Core.Net.SharedDecisionChangedEvent> readySub)
         {
             _cursorSkins     = gameConfig?.CursorSkins;
             _profileSlotLimit = gameConfig != null ? gameConfig.MaxProfiles : 1;
@@ -1510,7 +1510,7 @@ namespace Guildmaster.UI
             _onReadyChanged = e =>
             {
                 ApplyReadyCount(built, e);
-                if (e.Key == Core.Net.ReadyKeys.BattleContinue && e.Fired) close?.Invoke(false); // согласились все
+                if (e.Key == Core.Net.DecisionKeys.BattleContinue && e.Fired) close?.Invoke(false); // согласились все
             };
 
             try
@@ -1521,11 +1521,11 @@ namespace Guildmaster.UI
             finally { _onReadyChanged = null; }
         }
 
-        private void ApplyReadyCount(VisualElement root, Core.Net.ReadyGateChangedEvent e)
+        private void ApplyReadyCount(VisualElement root, Core.Net.SharedDecisionChangedEvent e)
         {
-            if (root == null || e.Key != Core.Net.ReadyKeys.BattleContinue) return;
+            if (root == null || e.Key != Core.Net.DecisionKeys.BattleContinue) return;
             OutcomeScreenView.SetContinueCount(root, key => _loc?.GetString(key),
-                e.Ready, e.Required, e.LocallyReady);
+                e.Voted, e.Required, e.HasLocalChoice);
         }
 
         // Главное меню — на UXML (MainMenuScreen.uxml). «Создать игру» открывает выбор режима ПОВЕРХ

@@ -16,7 +16,7 @@ namespace Guildmaster.Game.Services
     /// <summary>
     /// Оркестратор макро-флоу игры (план 11 §2, §4). A2: умеет прогнать узел боя через <see cref="BattleFlow"/>
     /// (Prep→Combat→Outcome) поверх <see cref="RunState"/>. Полный флоу забега (MainMenu → карта → узлы →
-    /// награды) достраивается шагами A3/B/C; швы (<see cref="IReadyGate"/>, <see cref="IPlayerIntentSource"/>)
+    /// награды) достраивается шагами A3/B/C; швы (<see cref="ISharedDecision"/>, <see cref="IPlayerIntentSource"/>)
     /// заведены сейчас, соло-тела.
     /// </summary>
     /// <remarks>

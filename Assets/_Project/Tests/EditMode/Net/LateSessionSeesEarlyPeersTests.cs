@@ -46,7 +46,7 @@ namespace Guildmaster.Tests.EditMode.Net
             net.CreateNode();
             net.PollAll();
 
-            var gate = new HostReadyGate(host, null);
+            var gate = new HostSharedDecision(host, null);
             gate.Start();
 
             Assert.AreEqual(2, gate.Required,

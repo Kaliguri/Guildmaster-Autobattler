@@ -107,19 +107,19 @@ namespace Guildmaster.Tests.PlayMode.Battle
                 battleOpen: true, phase: BattlePhase.Deployment));
 
             // Ждём, пока фаза доедет и гейт получит ключ: до этого «готов» нажимать не на что.
-            IReadyGate gate = null;
-            yield return WaitUntil(() => (gate = FindInSession<IReadyGate>()) != null
+            ISharedDecision gate = null;
+            yield return WaitUntil(() => (gate = FindInSession<ISharedDecision>()) != null
                                          && LifetimeScope.Find<CombatLifetimeScope>() != null,
                                    host, seconds: 5f);
             Assert.IsNotNull(gate, "у гостя нет общего согласия — кнопке «Начать» не на чём стоять");
 
             gate.ToggleLocal();
 
-            yield return WaitUntil(() => heard.Got(NetChannel.ReadyGate), host, seconds: 3f);
+            yield return WaitUntil(() => heard.Got(NetChannel.Decision), host, seconds: 3f);
 
             // Кнопка, живая на вид и мёртвая на деле, у нас была дважды — поэтому проверяется не
             // локальный флаг, а факт: согласие ДОЕХАЛО до того, кто решает.
-            Assert.IsTrue(heard.Got(NetChannel.ReadyGate),
+            Assert.IsTrue(heard.Got(NetChannel.Decision),
                 "гость подтвердил готовность, а до хозяина это не доехало — кнопка мёртвая");
 
             sessions.Close();

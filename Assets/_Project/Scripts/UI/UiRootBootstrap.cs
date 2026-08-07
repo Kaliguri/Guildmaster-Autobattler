@@ -177,7 +177,7 @@ namespace Guildmaster.UI
         private IDisposable _mapSpaceSubscription;
         // Счёт согласившихся на «Начать». Приходит сообщением, а не подпиской на сам гейт: гейт живёт в
         // сеансе и умирает вместе с ним, а топбар переживает несколько сеансов подряд.
-        private ISubscriber<Core.Net.ReadyGateChangedEvent> _readySub;
+        private ISubscriber<Core.Net.SharedDecisionChangedEvent> _readySub;
         private IDisposable _readySubscription;
         private IPublisher<SetWorldMapRequest> _worldMapPub; // фаза D: радио-табы → показать/скрыть карту в мире
         private ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> _mainMenuVisSub; // за меню виден мировой стол
@@ -216,7 +216,7 @@ namespace Guildmaster.UI
             IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
             ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub,
-            ISubscriber<Core.Net.ReadyGateChangedEvent> readySub,
+            ISubscriber<Core.Net.SharedDecisionChangedEvent> readySub,
             ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> mainMenuVisSub,
             IPublisher<Core.Flow.ScreenBackdropChangedEvent> screenBackdropPub,
             ISubscriber<Core.Flow.ScreenFadeChangedEvent> screenFadeSub,
@@ -372,8 +372,8 @@ namespace Guildmaster.UI
             // переписывал подпись кнопки «Начать» счётом чужого согласия.
             _readySubscription = _readySub?.Subscribe(e =>
             {
-                if (e.Key != Core.Net.ReadyKeys.BattleStart) return;
-                _topBar?.SetReadyCount(e.Ready, e.Required, e.LocallyReady);
+                if (e.Key != Core.Net.DecisionKeys.BattleStart) return;
+                _topBar?.SetReadyCount(e.Voted, e.Required, e.HasLocalChoice);
             });
 
             // Шторка перехода (QA #47): плотность считает тот, кто ведёт переход (карта акта), UI её рисует.

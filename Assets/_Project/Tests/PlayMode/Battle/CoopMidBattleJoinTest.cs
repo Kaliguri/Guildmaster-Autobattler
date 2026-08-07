@@ -60,7 +60,7 @@ namespace Guildmaster.Tests.PlayMode.Battle
 
             // Начинаем бой тем же путём, что игрок: общим согласием. В соло участник один, и гейт
             // пропускает в тот же кадр.
-            IReadyGate gate = FindInSession<IReadyGate>();
+            ISharedDecision gate = FindInSession<ISharedDecision>();
             Assert.IsNotNull(gate, "на площадке нет общего согласия — бой не начать");
             gate.ToggleLocal();
 

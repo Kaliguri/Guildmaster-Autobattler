@@ -10,7 +10,7 @@ using VContainer.Unity;
 namespace Guildmaster.Game.Session.Net
 {
     /// <summary>
-    /// Владельческая половина общего согласия: считает подтвердивших и выполняет действие, когда согласны все.
+    /// Владельческая половина общего решения: считает голоса и выполняет то, на чём сошлись все.
     /// </summary>
     /// <remarks>
     /// <b>Кто «все» — знает транспорт, а не догадка.</b> Участники набираются по событиям подключения и
@@ -20,10 +20,10 @@ namespace Guildmaster.Game.Session.Net
     /// <para><b>Согласие снимается при любом изменении заказа.</b> Подтверждали конкретную расстановку;
     /// если её переставили, прежние «готов» относятся к тому, чего больше нет.</para>
     /// </remarks>
-    public sealed class HostReadyGate : IReadyGate, IStartable, IDisposable
+    public sealed class HostSharedDecision : ISharedDecision, IStartable, IDisposable
     {
         private readonly INetTransport _transport;
-        private readonly IPublisher<ReadyGateChangedEvent> _changedPub;
+        private readonly IPublisher<SharedDecisionChangedEvent> _changedPub;
 
         private readonly HashSet<int> _participants = new();
 
@@ -40,17 +40,17 @@ namespace Guildmaster.Game.Session.Net
         private string _key;
         private Action<string> _action;
 
-        public HostReadyGate(INetTransport transport, IPublisher<ReadyGateChangedEvent> changedPub)
+        public HostSharedDecision(INetTransport transport, IPublisher<SharedDecisionChangedEvent> changedPub)
         {
             _transport   = transport ?? throw new ArgumentNullException(nameof(transport));
             _changedPub  = changedPub;
         }
 
-        public int Ready => _votes.Count;
+        public int Voted => _votes.Count;
 
         public int Required => Mathf.Max(1, _participants.Count);
 
-        public bool LocallyReady => _votes.ContainsKey(LocalId);
+        public bool HasLocalChoice => _votes.ContainsKey(LocalId);
 
         public string LocalChoice =>
             _votes.TryGetValue(LocalId, out string mine) ? mine : DecisionOptions.None;
@@ -79,8 +79,8 @@ namespace Guildmaster.Game.Session.Net
             _transport.MessageReceived  -= OnMessage;
         }
 
-        public void Bind(string key, Action onAllReady) =>
-            Bind(key, onAllReady == null ? (Action<string>)null : _ => onAllReady());
+        public void Bind(string key, Action onAgreed) =>
+            Bind(key, onAgreed == null ? (Action<string>)null : _ => onAgreed());
 
         public void Bind(string key, Action<string> onAgreed)
         {
@@ -125,7 +125,7 @@ namespace Guildmaster.Game.Session.Net
         {
             if (_votes.Count == 0) return;
 
-            Guildmaster.Diagnostics.UiTrace.Log($"гейт готовности сброшен: {reason}");
+            Guildmaster.Diagnostics.UiTrace.Log($"общее решение сброшено: {reason}");
             ClearVotes();
             Announce();
         }
@@ -149,13 +149,13 @@ namespace Guildmaster.Game.Session.Net
         private void OnMessage(int from, ArraySegment<byte> message)
         {
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
-            if (channel != NetChannel.ReadyGate || payload.Count < 1) return;
+            if (channel != NetChannel.Decision || payload.Count < 1) return;
 
             // Первый байт говорит, чьё это сообщение. Раньше стороны различались по ДЛИНЕ («один байт —
             // голос гостя»), и такая развилка держалась ровно до первого изменения формата: голос стал
             // строкой варианта, и длины перестали быть разными.
             var bytes = new NetByteReader(payload);
-            if (bytes.ReadByte() != ReadyWire.Vote) return; // объявленный счёт — наше собственное эхо
+            if (bytes.ReadByte() != DecisionWire.Vote) return; // объявленный счёт — наше собственное эхо
 
             string option;
             try { option = bytes.ReadString(); }
@@ -221,13 +221,13 @@ namespace Guildmaster.Game.Session.Net
             foreach (KeyValuePair<int, string> vote in _votes)
                 _choices.Add(new PlayerChoice(vote.Key, vote.Value));
 
-            _changedPub?.Publish(new ReadyGateChangedEvent(_key, Ready, Required, LocallyReady, fired,
+            _changedPub?.Publish(new SharedDecisionChangedEvent(_key, Voted, Required, HasLocalChoice, fired,
                                                            LocalChoice, _choices));
 
             if (!_transport.IsRunning) return; // соло: объявлять некому
 
             _writer.Reset();
-            _writer.WriteByte(ReadyWire.Tally);
+            _writer.WriteByte(DecisionWire.Tally);
             _writer.WriteByte((byte)Mathf.Clamp(Required, 0, 255));
             _writer.WriteBool(fired);
             // Ключ едет строкой, а не номером: он же и есть смысл действия, а таблица номеров разошлась
@@ -244,7 +244,7 @@ namespace Guildmaster.Game.Session.Net
             }
 
             _transport.SendToAll(
-                NetEnvelope.Wrap(NetChannel.ReadyGate, _writer.WrittenSegment, ref _envelope),
+                NetEnvelope.Wrap(NetChannel.Decision, _writer.WrittenSegment, ref _envelope),
                 NetDelivery.Reliable);
         }
     }

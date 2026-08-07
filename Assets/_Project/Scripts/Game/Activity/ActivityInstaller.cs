@@ -64,7 +64,7 @@ namespace Guildmaster.Game.Activity
             // Готовность и авторитет. Гейт у гостя пока соло-тело: «ждём всех» появится вместе с
             // экранами подготовки, а до них ждать не на чем. Авторитет — нет: решения принимает хост,
             // и отвечать «да, я тут главный» гостю нельзя ни на секунду.
-            builder.Register<SoloReadyGate>(Lifetime.Singleton).As<IReadyGate>();
+            builder.Register<SoloReadyGate>(Lifetime.Singleton).As<ISharedDecision>();
 
             if (_role == Session.SessionRole.Owner)
                 builder.Register<SoloPlayerIntentSource>(Lifetime.Singleton).As<IPlayerIntentSource>();

@@ -25,9 +25,9 @@ namespace Guildmaster.Core.Net
     /// </summary>
     /// <remarks>
     /// Кнопка живёт выше сеанса и переживает несколько сеансов подряд, поэтому счёт приходит к ней
-    /// сообщением, а не подпиской на сам гейт — см. <see cref="IReadyGate"/>.
+    /// сообщением, а не подпиской на сам гейт — см. <see cref="ISharedDecision"/>.
     /// </remarks>
-    public readonly struct ReadyGateChangedEvent
+    public readonly struct SharedDecisionChangedEvent
     {
         /// <summary>
         /// Что подтверждают — «battle.start», «battle.continue». Без ключа экран не отличил бы свой счёт
@@ -35,9 +35,9 @@ namespace Guildmaster.Core.Net
         /// </summary>
         public readonly string Key;
 
-        public readonly int  Ready;
+        public readonly int  Voted;
         public readonly int  Required;
-        public readonly bool LocallyReady;
+        public readonly bool HasLocalChoice;
 
         /// <summary>
         /// Согласие собралось целиком и действие произошло.
@@ -60,14 +60,14 @@ namespace Guildmaster.Core.Net
 
         private static readonly PlayerChoice[] NoChoices = System.Array.Empty<PlayerChoice>();
 
-        public ReadyGateChangedEvent(string key, int ready, int required, bool locallyReady,
+        public SharedDecisionChangedEvent(string key, int ready, int required, bool locallyReady,
                                      bool fired = false, string localChoice = null,
                                      IReadOnlyList<PlayerChoice> choices = null)
         {
             Key          = key;
-            Ready        = ready;
+            Voted        = ready;
             Required     = required;
-            LocallyReady = locallyReady;
+            HasLocalChoice = locallyReady;
             Fired        = fired;
             LocalChoice  = localChoice ?? DecisionOptions.None;
             Choices      = choices ?? NoChoices;
