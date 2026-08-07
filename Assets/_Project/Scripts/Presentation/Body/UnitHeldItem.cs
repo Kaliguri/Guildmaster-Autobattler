@@ -45,12 +45,9 @@ namespace Guildmaster.Presentation.Body
                  "удара. 0 = не объявлено, длина замеряется по мешу (переходный режим).")]
         [SerializeField] private float _declaredLength;
 
-        [Tooltip("Направление рабочей части в градусах, в локальных координатах узла предмета: куда от " +
-                 "хвата смотрит остриё. Замеряется той же кнопкой, что и длина.")]
-        [SerializeField] private float _declaredAxisDeg = 90f;
-
         [Tooltip("Показывать гизмо объявленного вылета (жёлтая линия) рядом с замеренным по мешу (зелёная). " +
-                 "Разошлись — значит арт перерисовали, а число забыли обновить.")]
+                 "Разошлись по ДЛИНЕ — значит арт перерисовали, а число забыли обновить; направление у них " +
+                 "общее по построению.")]
         [SerializeField] private bool _showReachGizmo = true;
 
         /// <summary>Чем предмет является в бою.</summary>
@@ -72,24 +69,52 @@ namespace Guildmaster.Presentation.Body
         /// </summary>
         public float DeclaredLength => _declaredLength;
 
-        /// <summary>Направление рабочей части от хвата, градусы в локальных координатах узла предмета.</summary>
-        public float DeclaredAxisDeg => _declaredAxisDeg;
-
         /// <summary>Объявлен ли размер: <c>false</c> — работает переходный замер по мешу.</summary>
         public bool HasDeclaredReach => _declaredLength > 0f;
 
         /// <summary>
-        /// Мировая точка острия ПО ОБЪЯВЛЕННОМУ размеру: от узла предмета на <see cref="DeclaredLength"/>
-        /// вдоль объявленной оси. Масштаб узла учитывается — юнит другого размерного тира носит то же
-        /// оружие пропорционально своей фигуре.
+        /// Мировая точка острия: от хвата НА ОБЪЯВЛЕННУЮ ДЛИНУ в ту сторону, КУДА НАРИСОВАНА рабочая
+        /// часть. Масштаб узла учитывается — юнит другого размерного тира носит то же оружие
+        /// пропорционально своей фигуре.
         /// </summary>
+        /// <remarks>
+        /// Длина и направление приходят из РАЗНЫХ мест, и это не небрежность, а разделение двух разных
+        /// фактов. Длина — величина игровая: ей меряют размах и вылет, и перерисовка арта не должна её
+        /// двигать, поэтому она объявляется числом. Направление — факт чисто визуальный: куда смотрит
+        /// клинок, видно на картинке, и другого источника у него нет.
+        /// <para>
+        /// До 07.08.2026 направление тоже объявлялось числом (<c>_declaredAxisDeg</c>) — и разошлось с
+        /// рисунком на 33°: узел клинка повёрнут на 24.9°, сам рисунок внутри своего кадра идёт под
+        /// 40.1°, в мире это 65°, а объявлено было 32°. Дуга за клинком честно строила сектор к
+        /// объявленному острию и потому лежала мимо меча. Нашёл Макс глазами; гейт пропустил, потому что
+        /// сверял только длину — угол сверять было не с чем, у него было два владельца и ни одного
+        /// арбитра. Теперь владелец один, и разойтись стало не с чем.
+        /// </para>
+        /// </remarks>
         public bool TryGetDeclaredTip(out Vector3 world)
         {
             world = default;
             if (!HasDeclaredReach) return false;
+            if (!TryGetReachDirection(out Vector3 dirLocal)) return false;
 
-            Vector3 local = Quaternion.Euler(0f, 0f, _declaredAxisDeg) * (Vector3.right * _declaredLength);
-            world = transform.TransformPoint(local);
+            world = transform.TransformPoint(dirLocal * _declaredLength);
+            return true;
+        }
+
+        /// <summary>
+        /// Куда смотрит рабочая часть — единичный вектор в координатах хвата, снятый с САМОГО РИСУНКА.
+        /// </summary>
+        /// <returns><c>false</c> — рабочей части нет либо у неё пуст спрайт: направления взять неоткуда.</returns>
+        public bool TryGetReachDirection(out Vector3 localDir)
+        {
+            localDir = default;
+            if (_reachPart == null) return false;
+            if (!UnitPartGeometry.TryMeasureTipFromMesh(_reachPart, out Vector3 tipLocal)) return false;
+
+            Vector3 fromGrip = transform.InverseTransformPoint(_reachPart.transform.TransformPoint(tipLocal));
+            if (fromGrip.sqrMagnitude < 1e-8f) return false;
+
+            localDir = fromGrip.normalized;
             return true;
         }
 
@@ -120,12 +145,11 @@ namespace Guildmaster.Presentation.Body
             Vector3 fromGrip = transform.InverseTransformPoint(world);
 
             UnityEditor.Undo.RecordObject(this, "Замер вылета");
-            _declaredLength  = fromGrip.magnitude;
-            _declaredAxisDeg = Mathf.Atan2(fromGrip.y, fromGrip.x) * Mathf.Rad2Deg;
+            _declaredLength = fromGrip.magnitude;
             UnityEditor.EditorUtility.SetDirty(this);
 
-            Debug.Log($"[UnitHeldItem] {name}: вылет замерен — длина {_declaredLength:F4}, " +
-                      $"ось {_declaredAxisDeg:F2}°. Теперь он объявлен и от картинки не зависит.", this);
+            Debug.Log($"[UnitHeldItem] {name}: вылет замерен — длина {_declaredLength:F4}. Направление " +
+                      "числом не объявляется: его берут с рисунка, и разойтись им не с чем.", this);
         }
 
         /// <summary>

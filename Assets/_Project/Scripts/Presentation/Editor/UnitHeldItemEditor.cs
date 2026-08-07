@@ -33,8 +33,7 @@ namespace Guildmaster.Presentation.Editor
 
             serializedObject.Update();
             SerializedProperty lengthProp = serializedObject.FindProperty("_declaredLength");
-            SerializedProperty axisProp   = serializedObject.FindProperty("_declaredAxisDeg");
-            if (lengthProp == null || axisProp == null) return;
+            if (lengthProp == null) return;
 
             // Ноль означает «не объявлено» и работает переходный замер по мешу. Хэндл в этом режиме не
             // рисуем: он записал бы число молча, и переходный режим кончился бы незаметно для автора.
@@ -46,13 +45,20 @@ namespace Guildmaster.Presentation.Editor
                 return;
             }
 
-            Vector3 local = Quaternion.Euler(0f, 0f, axisProp.floatValue) * (Vector3.right * lengthProp.floatValue);
-            Vector3 tip   = grip.TransformPoint(local);
+            // Направление берётся с РИСУНКА, поэтому хэндл тянет только длину — вдоль клинка и никуда
+            // больше. Свобода увести остриё вбок была ровно тем, чем ею и воспользовались: ось уехала на
+            // 33° от нарисованного клинка и увела за собой дугу за клинком (07.08.2026).
+            if (!item.TryGetDeclaredTip(out Vector3 tip))
+            {
+                Handles.color = new Color(1f, 0.5f, 0.3f);
+                Handles.Label(grip.position + Vector3.up * 0.06f,
+                    "рабочая часть не разведена или у неё пуст спрайт — направление вылета брать неоткуда");
+                return;
+            }
 
             Handles.color = Color.yellow;
             Handles.DrawLine(grip.position, tip);
-            Handles.Label(tip + Vector3.up * 0.05f,
-                $"вылет {lengthProp.floatValue:0.###} м, ось {axisProp.floatValue:0.#}°");
+            Handles.Label(tip + Vector3.up * 0.05f, $"вылет {lengthProp.floatValue:0.###} м");
 
             EditorGUI.BeginChangeCheck();
             float size = HandleUtility.GetHandleSize(tip) * 0.09f;
@@ -60,15 +66,18 @@ namespace Guildmaster.Presentation.Editor
 
             if (!EditorGUI.EndChangeCheck()) return;
 
-            // Мышь двигает МИРОВОЕ остриё, а храним мы локальные длину и угол: пересчитываем обратно
-            // через узел-хват, поэтому поворот кости и масштаб фигуры учитываются сами.
+            // Мышь двигает МИРОВОЕ остриё, а храним мы длину: проецируем сдвиг на ось клинка, поэтому
+            // увести вылет вбок нельзя в принципе, а поворот кости и масштаб фигуры учитываются сами.
+            if (!item.TryGetReachDirection(out Vector3 dirLocal)) return;
+
             Vector3 fromGrip = grip.InverseTransformPoint(moved);
             fromGrip.z = 0f;
-            if (fromGrip.sqrMagnitude < 1e-8f) return;
+
+            float along = Vector3.Dot(fromGrip, dirLocal);
+            if (along <= 1e-4f) return;   // за хват вылет не заводим: это уже не длина, а зеркало
 
             Undo.RecordObject(item, "Вылет предмета");
-            lengthProp.floatValue = fromGrip.magnitude;
-            axisProp.floatValue   = Mathf.Atan2(fromGrip.y, fromGrip.x) * Mathf.Rad2Deg;
+            lengthProp.floatValue = along;
             serializedObject.ApplyModifiedProperties();
         }
     }
