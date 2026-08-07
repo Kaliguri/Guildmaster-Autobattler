@@ -28,7 +28,7 @@ var searchData=
   ['lightnessladder_25',['LightnessLadder',['../classGuildmaster_1_1DevTools_1_1UiContactSheetRunner.html#a6d76ba3290ac4d64d74785b2d757b146ad27424cd749c0e8049c5d632a52cda30',1,'Guildmaster::DevTools::UiContactSheetRunner']]],
   ['lightnessoutputpath_26',['LightnessOutputPath',['../classGuildmaster_1_1DevTools_1_1UiColourLadder.html#a6c4c1a0e73be93245d460b1526ecdc0e',1,'Guildmaster::DevTools::UiColourLadder']]],
   ['lightning_27',['Lightning',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3a457ba641340a812b28f949a26fca3e7b',1,'Guildmaster::Data::Definitions']]],
-  ['like_28',['Like',['../namespaceGuildmaster_1_1Net_1_1Presence.html#ad6d71bbd5a01524e4a3f5df877451b87a98b82c200a2e309b24cb481970f3fcc4',1,'Guildmaster::Net::Presence']]],
+  ['like_28',['Like',['../namespaceGuildmaster_1_1Core_1_1Players.html#ae9938a0845bd10fbb697cc0e83b1ec80a98b82c200a2e309b24cb481970f3fcc4',1,'Guildmaster::Core::Players']]],
   ['likeautoattack_29',['LikeAutoAttack',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fdaaffa9b001c0c3c19b73cdefa60fe2cbb',1,'Guildmaster::Data::Definitions']]],
   ['lime_30',['Lime',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ae6f84ac35804ce5b1502093c30f520d3afc1cebf02dc2ee68655f3e7bf1b84230',1,'Guildmaster::Data::Definitions']]],
   ['limit_31',['limit',['../classGuildmaster_1_1Presentation_1_1Body_1_1BodyCutLedger.html#a58bb88b5e68b24c40c240fa2de5798f0',1,'Guildmaster.Presentation.Body.BodyCutLedger.Limit'],['../classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipChain.html#a1ba54fc7a4ef5db9d9bc3607c092d6c3',1,'Guildmaster.UI.Tooltips.TooltipChain.Limit']]],

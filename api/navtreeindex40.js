@@ -1,5 +1,10 @@
 var NAVTREEINDEX40 =
 {
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fdafcbd772e48c4b07d7d3be13b37a82f5e":[0,0,0,6,0,79,1],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a47d79e60de086a94265b32b9833971e1":[0,0,0,6,0,105],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a47d79e60de086a94265b32b9833971e1a3289297424e01eda5b788c083bbf3147":[0,0,0,6,0,105,0],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a47d79e60de086a94265b32b9833971e1affb9356ff2b7da85c75c92fa7ea03b8b":[0,0,0,6,0,105,1],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438":[0,0,0,6,0,90],
 "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a11635778f116ce6922f6068638a39028":[0,0,0,6,0,90,11],
 "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a243924bfd56a682be235638b53961e09":[0,0,0,6,0,90,14],
 "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a250adeee118a0038bd8a4a34bacaaf89":[0,0,0,6,0,90,8],
@@ -244,10 +249,5 @@ var NAVTREEINDEX40 =
 "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aa975ee95467413b8434907de4d592960":[0,0,0,6,3,17,24],
 "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aacf956ece1e8110477cd8351ae2da7d0":[0,0,0,6,3,17,14],
 "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab08c69f0634666c90d66606b35a39e5c":[0,0,0,6,3,17,32],
-"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab368d16134fba69bdd208d3d0c7c7c5b":[0,0,0,6,3,17,9],
-"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab39aedf70f89324e3d7533599d3fdab0":[0,0,0,6,3,17,31],
-"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ac62b34ef590567826318ecd2d6caac70":[0,0,0,6,3,17,2],
-"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284acf93b2f799ec1e1047d697999f70f0ad":[0,0,0,6,3,17,15],
-"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ad1742c8675710f479dde6c0866b960f5":[0,0,0,6,3,17,11],
-"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284af68a53a3ca5bacdb91f4eda90883f5ee":[0,0,0,6,3,17,27]
+"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab368d16134fba69bdd208d3d0c7c7c5b":[0,0,0,6,3,17,9]
 };

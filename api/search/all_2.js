@@ -164,7 +164,7 @@ var searchData=
   ['cleared_161',['cleared',['../namespaceGuildmaster_1_1Presentation_1_1Map.html#a02cd984b78bf278e9462bb51c63fe096aa3b087a75730395ff9ff9d3dd307295e',1,'Guildmaster.Presentation.Map.Cleared'],['../classGuildmaster_1_1Core_1_1DevConsole_1_1DevConsoleLog.html#a9d78ce13410e3134f66daf6e7ea3dca1',1,'Guildmaster.Core.DevConsole.DevConsoleLog.Cleared'],['../classGuildmaster_1_1Guild_1_1MapNode.html#a5a3a029b257e978b85d6da836ebc33d2',1,'Guildmaster.Guild.MapNode.Cleared']]],
   ['clearlines_162',['ClearLines',['../classGuildmaster_1_1UI_1_1Components_1_1TooltipCard.html#acf4dea002a53367af8fb0d3173a41faf',1,'Guildmaster::UI::Components::TooltipCard']]],
   ['clienttimems_163',['ClientTimeMs',['../structGuildmaster_1_1Guild_1_1Commands_1_1RunCommand.html#a8bcf99c22c4a439f6896d83224ec01bc',1,'Guildmaster::Guild::Commands::RunCommand']]],
-  ['clink_164',['Clink',['../namespaceGuildmaster_1_1Net_1_1Presence.html#ad6d71bbd5a01524e4a3f5df877451b87a339c22f7707f69a4069ab72ac0c80156',1,'Guildmaster::Net::Presence']]],
+  ['clink_164',['Clink',['../namespaceGuildmaster_1_1Core_1_1Players.html#ae9938a0845bd10fbb697cc0e83b1ec80a339c22f7707f69a4069ab72ac0c80156',1,'Guildmaster::Core::Players']]],
   ['clip_165',['Clip',['../classGuildmaster_1_1Data_1_1Definitions_1_1AnimationArchetypeData.html#a3a2b192f346faa312a86d10d56fe48f3',1,'Guildmaster::Data::Definitions::AnimationArchetypeData']]],
   ['clipmarkers_166',['ClipMarkers',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html',1,'Guildmaster::Data::Definitions']]],
   ['clipmarkers_2ecs_167',['ClipMarkers.cs',['../ClipMarkers_8cs.html',1,'']]],

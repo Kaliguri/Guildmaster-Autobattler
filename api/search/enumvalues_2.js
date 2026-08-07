@@ -12,7 +12,7 @@ var searchData=
   ['circle_9',['Circle',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca30954d90085f6eaaf5817917fc5fecb3',1,'Guildmaster::Data::Definitions']]],
   ['cleanse_10',['Cleanse',['../namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5a193e273631e6be745d97374c41d5129c',1,'Guildmaster::Guild']]],
   ['cleared_11',['Cleared',['../namespaceGuildmaster_1_1Presentation_1_1Map.html#a02cd984b78bf278e9462bb51c63fe096aa3b087a75730395ff9ff9d3dd307295e',1,'Guildmaster::Presentation::Map']]],
-  ['clink_12',['Clink',['../namespaceGuildmaster_1_1Net_1_1Presence.html#ad6d71bbd5a01524e4a3f5df877451b87a339c22f7707f69a4069ab72ac0c80156',1,'Guildmaster::Net::Presence']]],
+  ['clink_12',['Clink',['../namespaceGuildmaster_1_1Core_1_1Players.html#ae9938a0845bd10fbb697cc0e83b1ec80a339c22f7707f69a4069ab72ac0c80156',1,'Guildmaster::Core::Players']]],
   ['colourladder_13',['ColourLadder',['../classGuildmaster_1_1DevTools_1_1UiContactSheetRunner.html#a6d76ba3290ac4d64d74785b2d757b146a6e0b67470c3ecf340640df2201d81320',1,'Guildmaster::DevTools::UiContactSheetRunner']]],
   ['combat_14',['Combat',['../namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8a30ad1054cf7ad7636a26844a6f782e1f',1,'Guildmaster::Core::Input']]],
   ['combatidle_15',['combatidle',['../namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fa64e24c0774ed782165eaea49569c3563',1,'Guildmaster.Combat.CombatIdle'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6a64e24c0774ed782165eaea49569c3563',1,'Guildmaster.Data.Definitions.CombatIdle']]],

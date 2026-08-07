@@ -1,5 +1,10 @@
 var NAVTREEINDEX41 =
 {
+"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab39aedf70f89324e3d7533599d3fdab0":[0,0,0,6,3,17,31],
+"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ac62b34ef590567826318ecd2d6caac70":[0,0,0,6,3,17,2],
+"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284acf93b2f799ec1e1047d697999f70f0ad":[0,0,0,6,3,17,15],
+"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ad1742c8675710f479dde6c0866b960f5":[0,0,0,6,3,17,11],
+"namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284af68a53a3ca5bacdb91f4eda90883f5ee":[0,0,0,6,3,17,27],
 "namespaceGuildmaster_1_1DevTools.html":[0,0,0,7],
 "namespaceGuildmaster_1_1Diagnostics.html":[0,0,0,8],
 "namespaceGuildmaster_1_1Game.html":[0,0,0,9],
@@ -81,10 +86,6 @@ var NAVTREEINDEX41 =
 "namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809aee2d512b827603820c4d74d26bd047df":[0,0,0,11,10,4],
 "namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809affa5501393f9118b530186508d8ae6ea":[0,0,0,11,10,8],
 "namespaceGuildmaster_1_1Net_1_1Presence.html":[0,0,0,11,0],
-"namespaceGuildmaster_1_1Net_1_1Presence.html#ad6d71bbd5a01524e4a3f5df877451b87":[0,0,0,11,0,4],
-"namespaceGuildmaster_1_1Net_1_1Presence.html#ad6d71bbd5a01524e4a3f5df877451b87a339c22f7707f69a4069ab72ac0c80156":[0,0,0,11,0,4,2],
-"namespaceGuildmaster_1_1Net_1_1Presence.html#ad6d71bbd5a01524e4a3f5df877451b87a6adf97f83acf6453d4a6a4b1070f3754":[0,0,0,11,0,4,0],
-"namespaceGuildmaster_1_1Net_1_1Presence.html#ad6d71bbd5a01524e4a3f5df877451b87a98b82c200a2e309b24cb481970f3fcc4":[0,0,0,11,0,4,1],
 "namespaceGuildmaster_1_1Net_1_1Session.html":[0,0,0,11,1],
 "namespaceGuildmaster_1_1Net_1_1Tape.html":[0,0,0,11,2],
 "namespaceGuildmaster_1_1Net_1_1Tape.html#a04d45969aca30b6f6f49a3d45c654bb6":[0,0,0,11,2,17],
@@ -241,13 +242,12 @@ var NAVTREEINDEX41 =
 "structGuildmaster_1_1Combat_1_1AreaHit.html":[1,0,0,3,4],
 "structGuildmaster_1_1Combat_1_1AreaHit.html#a06c034ffb43d10ab1ec5d15551a95c49":[0,0,0,3,4,7],
 "structGuildmaster_1_1Combat_1_1AreaHit.html#a06c034ffb43d10ab1ec5d15551a95c49":[1,0,0,3,4,7],
-"structGuildmaster_1_1Combat_1_1AreaHit.html#a15a7a980e4de57f44c223aa360a5bd2d":[0,0,0,3,4,0],
 "structGuildmaster_1_1Combat_1_1AreaHit.html#a15a7a980e4de57f44c223aa360a5bd2d":[1,0,0,3,4,0],
+"structGuildmaster_1_1Combat_1_1AreaHit.html#a15a7a980e4de57f44c223aa360a5bd2d":[0,0,0,3,4,0],
 "structGuildmaster_1_1Combat_1_1AreaHit.html#a2ee9fcb00fcc70878adaefa660f843c0":[1,0,0,3,4,1],
 "structGuildmaster_1_1Combat_1_1AreaHit.html#a2ee9fcb00fcc70878adaefa660f843c0":[0,0,0,3,4,1],
 "structGuildmaster_1_1Combat_1_1AreaHit.html#a37e952212c5640baf6283202e350258d":[0,0,0,3,4,5],
 "structGuildmaster_1_1Combat_1_1AreaHit.html#a37e952212c5640baf6283202e350258d":[1,0,0,3,4,5],
-"structGuildmaster_1_1Combat_1_1AreaHit.html#a4c95b2257a4c1b762f2dd17a65e3bd44":[1,0,0,3,4,2],
 "structGuildmaster_1_1Combat_1_1AreaHit.html#a4c95b2257a4c1b762f2dd17a65e3bd44":[0,0,0,3,4,2],
-"structGuildmaster_1_1Combat_1_1AreaHit.html#a55492ed72cf676e51b87cdf64cd3d2a1":[1,0,0,3,4,8]
+"structGuildmaster_1_1Combat_1_1AreaHit.html#a4c95b2257a4c1b762f2dd17a65e3bd44":[1,0,0,3,4,2]
 };

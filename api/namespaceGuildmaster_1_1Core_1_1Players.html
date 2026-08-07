@@ -124,6 +124,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:ae9938a0845bd10fbb697cc0e83b1ec80" id="r_ae9938a0845bd10fbb697cc0e83b1ec80"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#ae9938a0845bd10fbb697cc0e83b1ec80">PlayerGesture</a> : byte { <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#ae9938a0845bd10fbb697cc0e83b1ec80a6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#ae9938a0845bd10fbb697cc0e83b1ec80a98b82c200a2e309b24cb481970f3fcc4">Like</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#ae9938a0845bd10fbb697cc0e83b1ec80a339c22f7707f69a4069ab72ac0c80156">Clink</a> = 2
+ }</td></tr>
+<tr class="memdesc:ae9938a0845bd10fbb697cc0e83b1ec80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что игрок показывает жестом.  <a href="namespaceGuildmaster_1_1Core_1_1Players.html#ae9938a0845bd10fbb697cc0e83b1ec80">More...</a><br /></td></tr>
+<tr class="separator:ae9938a0845bd10fbb697cc0e83b1ec80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abab21bb793a5b19793966c01741b7379" id="r_abab21bb793a5b19793966c01741b7379"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379">PlayerWhere</a> : byte { <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379a88183b946cc5f0e8c96b2e66e1c74a7e">Unknown</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379a312dc56ea9c386a6bc913f988a233791">Away</a> = 1
@@ -139,6 +145,34 @@ Enumerations</h2></td></tr>
 <tr class="separator:abab21bb793a5b19793966c01741b7379"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ae9938a0845bd10fbb697cc0e83b1ec80" name="ae9938a0845bd10fbb697cc0e83b1ec80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9938a0845bd10fbb697cc0e83b1ec80">&#9670;&#160;</a></span>PlayerGesture</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#ae9938a0845bd10fbb697cc0e83b1ec80">Guildmaster.Core.Players.PlayerGesture</a> : byte</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Что игрок показывает жестом. </p>
+<p>Жест ничего не сообщает механике — только людям за столом.</p>
+<p><b>Живёт в Core, а не рядом с присутствием,</b> хотя едет именно им: жест показывает ввод, рисует интерфейс, а возит сеть — то есть его знают три слоя, и общий у них только Core. Положи его в сетевой слой, и на него сослался бы весь проект ради одного перечисления. </p>
+<p><b>Значения только ДОПИСЫВАЮТСЯ:</b> номер едет по проводу, и переставленный показал бы чужой жест вместо нужного. Словарь эмоций растёт за мелочь Гильдмастера (кооп-канон §Эмоции), на старте открыт единственный — «лайк» (решение Макса 30.07.2026).</p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae9938a0845bd10fbb697cc0e83b1ec80a6adf97f83acf6453d4a6a4b1070f3754" name="ae9938a0845bd10fbb697cc0e83b1ec80a6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>Ничего не показываем. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae9938a0845bd10fbb697cc0e83b1ec80a98b82c200a2e309b24cb481970f3fcc4" name="ae9938a0845bd10fbb697cc0e83b1ec80a98b82c200a2e309b24cb481970f3fcc4"></a>Like&#160;</td><td class="fielddoc"><p>Лайк — первая и пока единственная доступная эмоция. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae9938a0845bd10fbb697cc0e83b1ec80a339c22f7707f69a4069ab72ac0c80156" name="ae9938a0845bd10fbb697cc0e83b1ec80a339c22f7707f69a4069ab72ac0c80156"></a>Clink&#160;</td><td class="fielddoc"><p>Чокнуться: жест, который невозможно сделать в одиночку. </p>
+<p>Звенит, когда двое стукнулись курсорами одновременно. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="abab21bb793a5b19793966c01741b7379" name="abab21bb793a5b19793966c01741b7379"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abab21bb793a5b19793966c01741b7379">&#9670;&#160;</a></span>PlayerWhere</h2>
 

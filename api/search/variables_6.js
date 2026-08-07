@@ -3,7 +3,7 @@ var searchData=
   ['gameversion_0',['gameversion',['../structGuildmaster_1_1Net_1_1Tape_1_1ReplayFile_1_1Header.html#a96bc19851f03f34deee20b9e936e1b3b',1,'Guildmaster.Net.Tape.ReplayFile.Header.GameVersion'],['../structGuildmaster_1_1Data_1_1ContentFingerprint.html#a0ad70dd2df70a2e8ef3ad43925623bfe',1,'Guildmaster.Data.ContentFingerprint.GameVersion']]],
   ['gap_1',['Gap',['../classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipPlacement.html#a85f35bbb16e7941d966e89960978238c',1,'Guildmaster::UI::Tooltips::TooltipPlacement']]],
   ['genitivesuffix_2',['GenitiveSuffix',['../classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#ab46202fb6aa3c186403bb3ff4bed078c',1,'Guildmaster::Data::Definitions::ContentKeys']]],
-  ['gesture_3',['Gesture',['../structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a3dab122b90255ba787a797f0be415e6d',1,'Guildmaster::Net::Presence::PresenceState']]],
+  ['gesture_3',['Gesture',['../structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a13deea7508efe9fe90dc8e9e571a8890',1,'Guildmaster::Net::Presence::PresenceState']]],
   ['gestureholdseconds_4',['GestureHoldSeconds',['../classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#af48facb433878dd642e28ade09b0bf2b',1,'Guildmaster::Net::Presence::PresenceSender']]],
   ['globalsearchradius_5',['GlobalSearchRadius',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a4d3cfea1fe03b64dedba71506fa9c846',1,'Guildmaster::Core::Simulation::SimTuning']]],
   ['glow_6',['Glow',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#a9e0dac78c2515e0f11c7680d7652e720',1,'Guildmaster::Presentation::Body::BodyVisualState']]],

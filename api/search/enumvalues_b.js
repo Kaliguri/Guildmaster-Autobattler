@@ -7,7 +7,7 @@ var searchData=
   ['light_4',['light',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3a9914a0ce04a7b7b6a8e39bec55064b82',1,'Guildmaster.Data.Definitions.Light'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ae6f84ac35804ce5b1502093c30f520d3a9914a0ce04a7b7b6a8e39bec55064b82',1,'Guildmaster.Data.Definitions.Light']]],
   ['lightnessladder_5',['LightnessLadder',['../classGuildmaster_1_1DevTools_1_1UiContactSheetRunner.html#a6d76ba3290ac4d64d74785b2d757b146ad27424cd749c0e8049c5d632a52cda30',1,'Guildmaster::DevTools::UiContactSheetRunner']]],
   ['lightning_6',['Lightning',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3a457ba641340a812b28f949a26fca3e7b',1,'Guildmaster::Data::Definitions']]],
-  ['like_7',['Like',['../namespaceGuildmaster_1_1Net_1_1Presence.html#ad6d71bbd5a01524e4a3f5df877451b87a98b82c200a2e309b24cb481970f3fcc4',1,'Guildmaster::Net::Presence']]],
+  ['like_7',['Like',['../namespaceGuildmaster_1_1Core_1_1Players.html#ae9938a0845bd10fbb697cc0e83b1ec80a98b82c200a2e309b24cb481970f3fcc4',1,'Guildmaster::Core::Players']]],
   ['likeautoattack_8',['LikeAutoAttack',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fdaaffa9b001c0c3c19b73cdefa60fe2cbb',1,'Guildmaster::Data::Definitions']]],
   ['lime_9',['Lime',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ae6f84ac35804ce5b1502093c30f520d3afc1cebf02dc2ee68655f3e7bf1b84230',1,'Guildmaster::Data::Definitions']]],
   ['line_10',['Line',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca4803e6b9e63dabf04de980788d6a13c4',1,'Guildmaster::Data::Definitions']]],

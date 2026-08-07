@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"Slot_8cs.html":[2,0,0,0,0,10,0,11],
 "SpatialHash_8cs.html":[2,0,0,0,0,1,5,0],
 "SpeciesData_8cs.html":[2,0,0,0,0,3,0,51],
 "SplitAttackOnTagComponent_8cs.html":[2,0,0,0,0,1,3,0,49],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3a52258b9eda406898436077f22a2ed11f":[2,0,0,0,0,3,0,62,1,6],
 "UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3a9768feb3fdb1f267b06093bc572952dd":[2,0,0,0,0,3,0,62,1,1],
 "UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3a9914a0ce04a7b7b6a8e39bec55064b82":[2,0,0,0,0,3,0,62,1,2],
-"UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3aa699a3ea1fce47dd9988f5702a287609":[2,0,0,0,0,3,0,62,1,7],
-"UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3aaac9a63596f76a62bb9f61a5dd7c0d25":[2,0,0,0,0,3,0,62,1,4]
+"UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3aa699a3ea1fce47dd9988f5702a287609":[2,0,0,0,0,3,0,62,1,7]
 };

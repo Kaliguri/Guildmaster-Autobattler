@@ -1,9 +1,9 @@
 var structGuildmaster_1_1Net_1_1Presence_1_1PresenceState =
 [
-    [ "PresenceState", "structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a92390060699c4e2d12fcb6ad1ae5d5a2", null ],
+    [ "PresenceState", "structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#abc25a575d2890c26f89f6e8a93025c7a", null ],
     [ "ToString", "structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a8aeb4bcb341a3519ba316494db96fadd", null ],
     [ "Cursor", "structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a0273456adee8908f10fc19a9627ba96e", null ],
-    [ "Gesture", "structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a3dab122b90255ba787a797f0be415e6d", null ],
+    [ "Gesture", "structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a13deea7508efe9fe90dc8e9e571a8890", null ],
     [ "HeldId", "structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a9ccbed2c63f87e8d8adfb837db0aebc5", null ],
     [ "HoveredId", "structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a8fe6a4ce100b6bb20cd5c135dd5a461e", null ],
     [ "Nothing", "structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a5b8ed898cf51fb247621c4527d61ddd6", null ],
