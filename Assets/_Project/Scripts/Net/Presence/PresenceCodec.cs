@@ -55,6 +55,7 @@ namespace Guildmaster.Net.Presence
                 bytes.WriteShort(TapeQuantization.PackPosition(s.Velocity.y));
                 bytes.WriteShort((short)s.HoveredId);
                 bytes.WriteShort((short)s.HeldId);
+                bytes.WriteByte((byte)s.Gesture);
             }
         }
 
@@ -89,8 +90,9 @@ namespace Guildmaster.Net.Presence
 
                     int hovered = bytes.ReadShort();
                     int held    = bytes.ReadShort();
+                    var gesture = (Core.Players.PlayerGesture)bytes.ReadByte();
 
-                    into.Add(new PresenceState(playerId, sequence, cursor, velocity, hovered, held));
+                    into.Add(new PresenceState(playerId, sequence, cursor, velocity, hovered, held, gesture));
                 }
 
                 return true;

@@ -3,29 +3,6 @@ using UnityEngine;
 namespace Guildmaster.Net.Presence
 {
     /// <summary>
-    /// Что игрок показывает жестом. Жест ничего не сообщает механике — только людям за столом.
-    /// </summary>
-    /// <remarks>
-    /// <b>Значения только ДОПИСЫВАЮТСЯ:</b> номер едет по проводу, и переставленный показал бы чужой
-    /// жест вместо нужного. Словарь эмоций растёт за мелочь Гильдмастера (кооп-канон §Эмоции), на
-    /// старте открыт единственный — «лайк» (решение Макса 30.07.2026).
-    /// </remarks>
-    public enum PresenceGesture : byte
-    {
-        /// <summary>Ничего не показываем.</summary>
-        None = 0,
-
-        /// <summary>Лайк — первая и пока единственная доступная эмоция.</summary>
-        Like = 1,
-
-        /// <summary>
-        /// Чокнуться: жест, который невозможно сделать в одиночку. Звенит, когда двое стукнулись
-        /// курсорами одновременно.
-        /// </summary>
-        Clink = 2,
-    }
-
-    /// <summary>
     /// Что игрок делает прямо сейчас: где курсор, куда он движется, на что наведён и что держит.
     /// <para><b>HARD: присутствие эфемерно.</b> Оно не пишется в лог команд, не влияет на
     /// <c>RunState</c>, не сохраняется и не читается ни одной механикой. Как только от жеста начинает
@@ -61,7 +38,7 @@ namespace Guildmaster.Net.Presence
         public const int Nothing = -1;
 
         /// <summary>
-        /// Жест, который игрок показывает прямо сейчас: <see cref="PresenceGesture"/>.
+        /// Жест, который игрок показывает прямо сейчас: <see cref="Core.Players.PlayerGesture"/>.
         /// </summary>
         /// <remarks>
         /// <b>Живёт в присутствии, а не своим каналом,</b> и это следует из его природы: жест ничего не
@@ -71,10 +48,10 @@ namespace Guildmaster.Net.Presence
         /// <para>Держится отправителем несколько пакетов подряд: канал ненадёжный, и один-единственный
         /// пакет с жестом мог бы не доехать вовсе.</para>
         /// </remarks>
-        public readonly PresenceGesture Gesture;
+        public readonly Core.Players.PlayerGesture Gesture;
 
         public PresenceState(int playerId, ushort sequence, Vector2 cursor, Vector2 velocity,
-            int hoveredId = Nothing, int heldId = Nothing, PresenceGesture gesture = PresenceGesture.None)
+            int hoveredId = Nothing, int heldId = Nothing, Core.Players.PlayerGesture gesture = Core.Players.PlayerGesture.None)
         {
             PlayerId  = playerId;
             Sequence  = sequence;

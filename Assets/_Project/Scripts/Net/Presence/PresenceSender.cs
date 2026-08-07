@@ -41,7 +41,7 @@ namespace Guildmaster.Net.Presence
         /// <summary>Сколько времени жест едет в пакетах после запроса.</summary>
         public const float GestureHoldSeconds = 0.4f;
 
-        private PresenceGesture _gesture;
+        private Core.Players.PlayerGesture _gesture;
         private float           _gestureAt = float.NegativeInfinity;
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Guildmaster.Net.Presence
         /// Гасить его отдельным вызовом было бы вторым владельцем одного факта: жест мгновенный, и
         /// «сколько он живёт» — свойство самого жеста, а не того, кто его показал.
         /// </remarks>
-        public void Show(PresenceGesture gesture, float now)
+        public void Show(Core.Players.PlayerGesture gesture, float now)
         {
             _gesture   = gesture;
             _gestureAt = now;
@@ -75,7 +75,9 @@ namespace Guildmaster.Net.Presence
 
             // Жест держится несколько пакетов: канал ненадёжный, и один-единственный пакет с ним мог бы
             // не доехать вовсе — а жест, которого не увидели, не жест.
-            PresenceGesture gesture = now - _gestureAt <= GestureHoldSeconds ? _gesture : PresenceGesture.None;
+            Core.Players.PlayerGesture gesture = now - _gestureAt <= GestureHoldSeconds
+                ? _gesture
+                : Core.Players.PlayerGesture.None;
 
             bool changed = !_hasSample
                            || (cursor - _lastCursor).sqrMagnitude > MoveEpsilon * MoveEpsilon
