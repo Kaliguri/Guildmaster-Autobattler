@@ -57,6 +57,9 @@ namespace Guildmaster.Game
         private readonly Core.Players.ISessionRoster _roster;
         private readonly ActivitySetup      _activity;
         private readonly Core.Audio.IAudioService  _audio;
+        // Чужие курсоры и цвет их владельцев: наведение публично, и видно его прямо на бойце.
+        private readonly Core.Players.IPresenceView _presence;
+        private readonly GuildmasterPalette         _palette;
 
         private readonly ISubscriber<RelicDragEvent>     _relicDragSub;
         private readonly IPublisher<UnitMoveIntent>      _movePub;
@@ -82,7 +85,7 @@ namespace Guildmaster.Game
 
         private RelicData _relicDrag; // тащим реликвию из инвентаря (null = нет)
 
-        private readonly List<(Vector2 center, float radius, DeploymentView.RingState state)> _ringBuffer = new();
+        private readonly List<(Vector2 center, float radius, DeploymentView.RingState state, Color? tint)> _ringBuffer = new();
 
         public DeploymentInteraction(
             IArenaUnits arena,
@@ -98,6 +101,8 @@ namespace Guildmaster.Game
             Core.Players.ISessionRoster roster,
             ActivitySetup activity,
             Core.Audio.IAudioService audio,
+            Core.Players.IPresenceView presence,
+            GuildmasterPalette palette,
             ISubscriber<RelicDragEvent> relicDragSub,
             IPublisher<UnitMoveIntent> movePub,
             IPublisher<OpenLoadoutIntent> loadoutPub,
@@ -116,6 +121,8 @@ namespace Guildmaster.Game
             _roster      = roster;
             _activity    = activity;
             _audio       = audio;
+            _presence    = presence;
+            _palette     = palette;
             _relicDragSub = relicDragSub;
             _movePub      = movePub;
             _loadoutPub   = loadoutPub;
@@ -228,14 +235,56 @@ namespace Guildmaster.Game
                 DeploymentView.RingState st = isDragged || u.Id == hoverId
                     ? DeploymentView.RingState.Hover
                     : DeploymentView.RingState.Normal;
-                _ringBuffer.Add((FeetOf(u), BodyRadius(u), st)); // у ног визуальных, не в центре фигуры
+
+                // Чужое наведение публично: пока напарник держит курсор на бойце, у нас этот боец горит
+                // ЕГО мейн-цветом. Своё наведение цветом не красим — оно и так ярче остальных.
+                Color? tint = TintOfForeignHover(u.Id);
+                if (tint != null) st = DeploymentView.RingState.Hover;
+
+                _ringBuffer.Add((FeetOf(u), BodyRadius(u), st, tint)); // у ног визуальных, не в центре фигуры
 
                 if (isDragged) // + целевой круг у ног призрака (следует за курсором)
                     _ringBuffer.Add((dragFeet, BodyRadius(u),
-                                     dragValid ? DeploymentView.RingState.DragValid : DeploymentView.RingState.DragInvalid));
+                                     dragValid ? DeploymentView.RingState.DragValid : DeploymentView.RingState.DragInvalid,
+                                     null));
             }
             _view.SetUnitRings(_ringBuffer);
         }
+
+        /// <summary>
+        /// Мейн-цвет того, кто держит курсор на этом бойце, или <c>null</c> — никто не держит.
+        /// </summary>
+        /// <remarks>
+        /// «Пинг без клика»: половина голосового трафика в коопе — это «да вон тот, лучник… нет, другой
+        /// лучник» (принято 30.07.2026, кооп-канон §Правила слоя). Данные ехали по проводу с самого
+        /// начала — не хватало только показа.
+        /// <para>Чей курсор нам вообще видно, решено ДО нас: пакет режется по сторонам у хозяина.
+        /// Второй проверки «а не противник ли он» здесь нет и быть не должно.</para>
+        /// </remarks>
+        private Color? TintOfForeignHover(int unitId)
+        {
+            if (_presence == null || _roster == null) return null;
+
+            for (int i = 0; i < _presence.Count; i++)
+            {
+                Core.Players.RemoteCursor cursor = _presence[i];
+                if (cursor.HoveredId != unitId) continue;
+                if (!_roster.TryGet(cursor.PlayerId, out Core.Players.SessionPlayer player)) continue;
+
+                return PlayerColor(player.ColorIndex);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Мейн-цвет игрока из палитры. Токен тот же, что у курсора и кружков голосов в интерфейсе:
+        /// палитра — единственный владелец цвета, и мир читает её снимок по имени токена.
+        /// </summary>
+        private Color? PlayerColor(int colorIndex) =>
+            _palette != null && _palette.TryGet($"--gm-color-player-{(colorIndex % 4) + 1}", out Color c)
+                ? c
+                : (Color?)null;
 
         // Куда встанет перетаскиваемый боец, если отпустить курсор в точке world. Не «центром под
         // курсор», а со смещением, снятым в момент захвата: взял за левый край — ведёшь за левый край.

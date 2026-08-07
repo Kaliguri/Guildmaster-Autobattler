@@ -14,11 +14,27 @@ namespace Guildmaster.Core.Players
         /// <summary>Держит ли игрок что-то в руке: вид курсора меняется, это видно всем.</summary>
         public readonly bool IsHolding;
 
-        public RemoteCursor(int playerId, Vector2 position, bool isHolding)
+        /// <summary>
+        /// На что он навёл курсор, или <see cref="Nothing"/>. Наведение публично: пока напарник держит
+        /// курсор на бойце, у остальных этот боец подсвечен его мейн-цветом.
+        /// </summary>
+        /// <remarks>
+        /// «Пинг без клика» и самый дешёвый способ убрать половину голосового трафика («да вон тот,
+        /// лучник… нет, другой лучник») — принято 30.07.2026, <c>gdd/50-modes-ux/coop/presence</c>
+        /// §Правила слоя. Ехало по проводу с самого начала, но наружу не отдавалось и потому не
+        /// рисовалось.
+        /// </remarks>
+        public readonly int HoveredId;
+
+        /// <summary>«Ни на что» — то же значение, что у присутствия на проводе.</summary>
+        public const int Nothing = -1;
+
+        public RemoteCursor(int playerId, Vector2 position, bool isHolding, int hoveredId = Nothing)
         {
             PlayerId  = playerId;
             Position  = position;
             IsHolding = isHolding;
+            HoveredId = hoveredId;
         }
     }
 

@@ -70,7 +70,7 @@ namespace Guildmaster.Game.Session.Net
                 if (!_interpolator.TrySample(playerId, now, out PresenceState state, out Vector2 position))
                     continue;
 
-                _visible.Add(new RemoteCursor(playerId, position, state.IsHolding));
+                _visible.Add(new RemoteCursor(playerId, position, state.IsHolding, state.HoveredId));
             }
         }
     }
