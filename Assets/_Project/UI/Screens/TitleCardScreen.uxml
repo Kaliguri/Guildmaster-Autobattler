@@ -20,18 +20,18 @@
                 <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--unity" picking-mode="Ignore" />
                 <ui:Label text="·" class="gm-boot__attrib-sep" />
                 <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--fmod" picking-mode="Ignore" />
-
-                <!-- «Загрузка» стоит В ТОМ ЖЕ РЯДУ, что логотипы (правка Макса 07.08.2026: «слишком
-                     мелкая и не выровненная с другими элементами нижними по одной строке»). Прежде
-                     она была прибита абсолютом к низу экрана — а низ у блока атрибуций это СТРОКА
-                     ПРАВ, потому что он колонка; вот «Загрузка» и садилась на её уровень, а не на
-                     уровень логотипов. Общий ряд выравнивает их сам, без подгонки чисел. -->
-                <ui:VisualElement name="boot-loading" class="gm-boot__loading" picking-mode="Ignore">
-                    <ui:Label name="boot-loading-label" text="" class="gm-boot__loading-label" />
-                    <ui:VisualElement name="boot-spinner" class="gm-boot__spinner" />
-                </ui:VisualElement>
             </ui:VisualElement>
             <ui:Label name="boot-legal" text="" class="gm-boot__legal" />
+
+            <!-- «Загрузка» — В ПРАВОМ УГЛУ, на линии САМОЙ НИЖНЕЙ надписи (уточнение Макса
+                 07.08.2026). Лежит внутри блока атрибуций, а не на корне экрана: у блока свой низ,
+                 и привязка к нему держит индикатор на линии строки прав при любом её размере.
+                 Прежняя привязка к низу КАДРА этого не давала — она считала от кромки экрана и
+                 зависела от того, насколько высок сам блок. -->
+            <ui:VisualElement name="boot-loading" class="gm-boot__loading" picking-mode="Ignore">
+                <ui:Label name="boot-loading-label" text="" class="gm-boot__loading-label" />
+                <ui:VisualElement name="boot-spinner" class="gm-boot__spinner" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
