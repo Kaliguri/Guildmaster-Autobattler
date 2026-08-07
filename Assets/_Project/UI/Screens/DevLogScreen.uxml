@@ -11,7 +11,9 @@
 
         <ui:VisualElement class="gm-console__footer">
             <!-- Полка каналов диагностики: кнопки строятся кодом по самому перечислению, иначе список
-                 здесь и список в DiagChannel разъехались бы на первом же новом канале. -->
+                 здесь и список в DiagChannel разъехались бы на первом же новом канале.
+                 Подпись стоит РЯДОМ, а не внутри полки: полку код очищает целиком при постройке. -->
+            <ui:Label text="писать логи:" class="gm-console__footer-caption" picking-mode="Ignore" />
             <ui:VisualElement name="devlog-channels" class="gm-console__footer-buttons" />
             <ui:VisualElement class="gm-console__footer-buttons">
                 <ui:Button name="devlog-save" text="сохранить в файл" class="gm-console__tool" />

@@ -177,6 +177,7 @@ namespace Guildmaster.UI.DevConsole
             {
                 Core.Diagnostics.Diag.Set(channel, !Core.Diagnostics.Diag.IsOn(channel));
                 RefreshChannelToggles();
+                UpdateStatus(); // строка состояния держит тот же ответ, что и подсветка
                 _log?.Append(DevLogKind.Reply, $"диагностика: {Core.Diagnostics.Diag.Enabled}");
             };
 
@@ -247,7 +248,15 @@ namespace Guildmaster.UI.DevConsole
             if (_status == null) return;
 
             int count = _log?.Count ?? 0;
-            _status.text = $"{count} из {DevConsoleLog.Capacity} строк\n" +
+
+            // Состояние диагностики видно ЗДЕСЬ, а не только по подсветке кнопок: подсветку легко
+            // проглядеть, а вопрос «а логи-то пишутся?» возникает раньше, чем взгляд доходит до полки.
+            // Набор переживает перезапуск (DiagChannelStore), поэтому «включено со вчера» — рабочий случай.
+            string diag = Core.Diagnostics.Diag.Enabled == Core.Diagnostics.DiagChannel.None
+                ? "логи не пишутся — включи кнопкой слева"
+                : $"пишутся: {Core.Diagnostics.Diag.Enabled}";
+
+            _status.text = $"{count} из {DevConsoleLog.Capacity} строк · {diag}\n" +
                            "хвост копится, пока лог открыт · старые строки вытесняются\n" +
                            "F1 команды · F3 бои · F2 закрывает";
         }
