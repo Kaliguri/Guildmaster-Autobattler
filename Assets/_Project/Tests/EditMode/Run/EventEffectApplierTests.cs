@@ -1,11 +1,13 @@
 using System;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Flow;
 using Guildmaster.Guild;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Guildmaster.Tests.EditMode.Run
 {
@@ -34,13 +36,54 @@ namespace Guildmaster.Tests.EditMode.Run
         }
 
         [Test]
-        public void Gold_AddsAndClampsAtZero()
+        public void Gold_AddsReward()
         {
             _applier.Apply(new[] { Effect(EventEffectKind.Gold, amount: 50) });
             Assert.AreEqual(50, _run.Current.Gold);
+        }
 
-            _applier.Apply(new[] { Effect(EventEffectKind.Gold, amount: -100) });
-            Assert.AreEqual(0, _run.Current.Gold, "золото не должно уходить в минус");
+        /// <summary>
+        /// Не хватает на вариант — не применяется НИЧЕГО, включая награду из того же списка.
+        /// </summary>
+        /// <remarks>
+        /// Прежний тест закреплял ровно обратное («золото не должно уходить в минус», ждал ноль): цена
+        /// уходила односторонней записью, <c>AddGold</c> клампил остаток в ноль, и выбор «купить за 50»
+        /// с десятью золотыми списывал десять и всё равно выдавал награду. Это был эксплойт экономики,
+        /// а не защита от минуса. Механика изменена по решению Макса 2026-08-07 (вариант не по карману
+        /// гасится на экране), тест следует за ней.
+        /// </remarks>
+        [Test]
+        public void Gold_WhenNotEnough_AppliesNothing()
+        {
+            _run.Current.Gold = 10;
+            LogAssert.Expect(LogType.Error, new Regex("вариант стоит 50 золота"));
+
+            bool applied = _applier.Apply(new[]
+            {
+                Effect(EventEffectKind.Gold, amount: -50),
+                Effect(EventEffectKind.GrantRelic, contentId: "relic.paid"),
+            });
+
+            Assert.IsFalse(applied, "Applier обязан отказать целиком");
+            Assert.AreEqual(10, _run.Current.Gold, "золото не тронуто");
+            CollectionAssert.DoesNotContain(_run.Current.RelicInventory, "relic.paid",
+                "награда не выдаётся, если за неё не заплачено");
+        }
+
+        /// <summary>
+        /// Цена варианта — НЕТТО его золота, а не расходная часть: «дам сотню, возьму тридцать» доступно
+        /// и с пустым кошельком.
+        /// </summary>
+        [Test]
+        public void ChoiceGoldCost_IsNet_NotSpending()
+        {
+            EventChoice profitable = Choice(
+                Effect(EventEffectKind.Gold, amount: 100),
+                Effect(EventEffectKind.Gold, amount: -30));
+            EventChoice paid = Choice(Effect(EventEffectKind.Gold, amount: -50));
+
+            Assert.AreEqual(0,  profitable.GoldCost, "выбор, приносящий в сумме, ничего не стоит");
+            Assert.AreEqual(50, paid.GoldCost);
         }
 
         [Test]
@@ -112,6 +155,14 @@ namespace Guildmaster.Tests.EditMode.Run
 
         private static void SetField(object target, string field, object value) =>
             typeof(EventEffect).GetField(field, BindingFlags.NonPublic | BindingFlags.Instance).SetValue(target, value);
+
+        private static EventChoice Choice(params EventEffect[] effects)
+        {
+            var c = new EventChoice();
+            typeof(EventChoice).GetField("_effects", BindingFlags.NonPublic | BindingFlags.Instance)
+                               .SetValue(c, effects);
+            return c;
+        }
 
     }
 }

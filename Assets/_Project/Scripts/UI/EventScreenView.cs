@@ -21,11 +21,16 @@ namespace Guildmaster.UI
         /// Построить экран-оверлей ивента. <paramref name="localize"/> — строка по ключу (null/пусто →
         /// RU-фолбэк). У варианта без написанного исхода показывается общий текст-прощание.
         /// </summary>
+        /// <param name="gold">
+        /// Золото забега: вариант дороже него показывается погашенным. Цена написана в тексте самого
+        /// варианта — автор пишет её один раз там же, где задаёт последствия.
+        /// </param>
         public static VisualElement Build(
             VisualTreeAsset uxml,
             TextEventData ev,
             Func<string, string> localize,
-            Action<int> onChosen)
+            Action<int> onChosen,
+            int gold = int.MaxValue)
         {
             string L(string key, string fallback)
             {
@@ -71,6 +76,11 @@ namespace Guildmaster.UI
                 string result = L(ev.ChoiceResultKey(i), string.Empty);
                 var btn = new PlateButton(() => { onChosen?.Invoke(index); ShowResult(result); }) { text = label };
                 btn.AddToClassList("gm-button");
+
+                // Не по карману — вариант виден, но не нажимается: игрок должен видеть, что упускает.
+                // Пропустить его нажатие нельзя — цена списывается транзакцией, и applier откажет вслух.
+                if (choices[i].GoldCost > gold) btn.SetEnabled(false);
+
                 choicesBox?.Add(btn);
             }
 

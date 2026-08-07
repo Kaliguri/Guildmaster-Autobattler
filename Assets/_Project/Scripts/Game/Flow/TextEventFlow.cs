@@ -43,7 +43,8 @@ namespace Guildmaster.Game.Flow
             // висит всю передышку — гаснет, когда игрок вошёл в следующий узел. Отмена забега тоже снимает
             // его (узловой токен связан с забеговым).
             var tcs = new UniTaskCompletionSource<int>();
-            _openPub.Publish(new OpenTextEventRequest(_event, i => tcs.TrySetResult(i), ctx.NodeCancellation));
+            _openPub.Publish(new OpenTextEventRequest(_event, i => tcs.TrySetResult(i), _applier.Gold,
+                                                      ctx.NodeCancellation));
             int index = await tcs.Task.AttachExternalCancellation(ctx.Cancellation);
 
             if (index < 0 || index >= choices.Count)

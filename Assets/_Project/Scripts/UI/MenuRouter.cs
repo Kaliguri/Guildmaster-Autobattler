@@ -1287,7 +1287,8 @@ namespace Guildmaster.UI
                 _eventUxml,
                 req.Event,
                 key => _loc?.GetString(key),
-                Resolve);
+                Resolve,
+                req.Gold);
 
             // Страховка: закрытие без выбора (ESC/PopAll) = пропуск (-1), чтобы флоу не завис.
             screen.RegisterCallback<DetachFromPanelEvent>(_ =>
