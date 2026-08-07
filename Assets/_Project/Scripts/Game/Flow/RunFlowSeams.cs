@@ -6,13 +6,13 @@ namespace Guildmaster.Game.Flow
     /// Гейт готовности игроков (вики «7» §10, план 11 §2): переходы, ждущие всех. Соло-тело возвращается
     /// мгновенно; NGO-тело (Фаза 6) ждёт всех через сеть. Шов есть — реализации нет.
     /// </summary>
-    public interface ISharedDecision
+    public interface IReadyGate
     {
         UniTask WhenAllReady();
     }
 
     /// <summary>Соло: готовность — мгновенно (один локальный игрок).</summary>
-    public sealed class SoloReadyGate : ISharedDecision
+    public sealed class SoloReadyGate : IReadyGate
     {
         public UniTask WhenAllReady() => UniTask.CompletedTask;
     }

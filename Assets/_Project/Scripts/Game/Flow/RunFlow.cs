@@ -42,7 +42,7 @@ namespace Guildmaster.Game.Flow
     {
         public RunState            RunState  { get; }
         public IRngService         Rng       { get; }
-        public ISharedDecision          ReadyGate { get; }
+        public IReadyGate               ReadyGate { get; }
         public IPlayerIntentSource Intents   { get; }
 
         /// <summary>Токен отмены забега (QA #18 «В главное меню»): взводится <c>GameFlow</c>, прерывает
@@ -57,7 +57,7 @@ namespace Guildmaster.Game.Flow
         /// </summary>
         public CancellationToken   NodeCancellation { get; }
 
-        public RunContext(RunState runState, IRngService rng, ISharedDecision readyGate, IPlayerIntentSource intents,
+        public RunContext(RunState runState, IRngService rng, IReadyGate readyGate, IPlayerIntentSource intents,
                           CancellationToken cancellation = default, CancellationToken? nodeCancellation = null)
         {
             RunState         = runState;
