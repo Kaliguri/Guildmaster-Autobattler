@@ -138,7 +138,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.addressables": {
-      "version": "2.3.16",
+      "version": "2.6.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -148,7 +148,7 @@
         "com.unity.modules.jsonserialize": "1.0.0",
         "com.unity.modules.imageconversion": "1.0.0",
         "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.scriptablebuildpipeline": "2.2.11",
+        "com.unity.scriptablebuildpipeline": "2.4.0",
         "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
       },
       "url": "https://packages.unity.com"
