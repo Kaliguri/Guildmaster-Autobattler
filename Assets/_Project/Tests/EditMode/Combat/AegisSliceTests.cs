@@ -129,7 +129,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         /// <summary>Щит с фильтром по школе — те же поля, что в ассете ArcaneWard (60 арканы, вся школа).</summary>
         private static EffectData ArcaneWard() =>
             TestEffect.Make(
-                baseDuration: 6f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff | EffectTag.Shield,
+                baseDuration: 6f, polarity: EffectPolarity.Buff, tags: EffectTag.Shield,
                 stacking: StackRule.Stack, maxStacks: 10,
                 components: new SchoolShieldComponent()
                     .With("_amount", new ScalableValue(WardAmount))

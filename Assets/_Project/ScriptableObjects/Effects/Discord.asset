@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.discord
   _polarity: 1
-  _tags: 2
+  _tags: 0
   _baseDuration: 6
   _stacking: 3
   _maxStacks: 999

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -203,7 +203,6 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData ramp = TestEffect.Make(
                 baseDuration: -1f,
                 polarity: EffectPolarity.Buff,
-                tags: EffectTag.Buff,
                 stacking: StackRule.Stack,
                 maxStacks: 20,
                 components: new StatModifierComponent().With("_modifiers",
@@ -260,7 +259,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             EffectData spores = TestEffect.Make(
                 baseDuration: 4f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Debuff | EffectTag.DoT | EffectTag.Poison,
+                tags: EffectTag.DoT | EffectTag.Poison,
                 stacking: StackRule.Refresh, maxStacks: 1);
 
             var units = new List<RuntimeUnit> { druid, poisoned1, poisoned2, clean };
@@ -310,9 +309,9 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             // ДВА РАЗНЫХ яда (разные Def) + один из них наложен дважды (стак). Уников должно быть 2, не 3.
             EffectData poisonA = TestEffect.Make(baseDuration: 4f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Debuff | EffectTag.Poison, stacking: StackRule.Stack, maxStacks: 5);
+                tags: EffectTag.Poison, stacking: StackRule.Stack, maxStacks: 5);
             EffectData poisonB = TestEffect.Make(baseDuration: 4f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Debuff | EffectTag.Poison, stacking: StackRule.Stack, maxStacks: 5);
+                tags: EffectTag.Poison, stacking: StackRule.Stack, maxStacks: 5);
 
             var units = new List<RuntimeUnit> { druid, ally, enemy };
             ctx.UnitsInWorld.AddRange(units);
@@ -420,7 +419,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static EffectData EmberEffect() => TestEffect.Make(
             baseDuration: -1f, polarity: EffectPolarity.Debuff,
-            tags: EffectTag.Debuff | EffectTag.Ember,
+            tags: EffectTag.Ember,
             stacking: StackRule.Stack, maxStacks: 999,
             components: new EmberComponent().With("_fireDamagePerStack", 0.01f));
     }

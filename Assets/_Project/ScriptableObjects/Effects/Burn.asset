@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.burn
   _polarity: 1
-  _tags: 4106
+  _tags: 4104
   _baseDuration: 5
   _stacking: 2
   _maxStacks: 1

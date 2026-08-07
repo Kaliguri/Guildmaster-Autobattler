@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -256,10 +256,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             shepherd.CurrentResource = 30f;
 
             EffectData basic = TestEffect.Make(
-                baseDuration: 5f, polarity: EffectPolarity.Debuff, tags: EffectTag.Debuff, cleanseTier: 1);
+                baseDuration: 5f, polarity: EffectPolarity.Debuff, cleanseTier: 1);
             EffectData hardControl = TestEffect.Make(
                 baseDuration: 5f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Debuff | EffectTag.Control, cleanseTier: 2);
+                tags: EffectTag.Control, cleanseTier: 2);
 
             effects.Apply(ally, basic, shepherd, ctx);
             effects.Apply(ally, hardControl, shepherd, ctx);
@@ -272,7 +272,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             // Нагрузка «Длани»: мгновенный эффект с диспелом силы 1.
             EffectData cleanse = TestEffect.Make(
-                baseDuration: 0f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
+                baseDuration: 0f, polarity: EffectPolarity.Buff, 
                 components: new DispelComponent()
                     .With("_targetPolarity", DispelTargetPolarity.Debuff)
                     .With("_dispelPower", 1)
@@ -297,7 +297,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var ally     = TestUnit.Make();
 
             EffectData stacking = TestEffect.Make(
-                baseDuration: 5f, polarity: EffectPolarity.Debuff, tags: EffectTag.Debuff,
+                baseDuration: 5f, polarity: EffectPolarity.Debuff, 
                 stacking: StackRule.Stack, maxStacks: 10, cleanseTier: 1,
                 cleanseStacksFlat: 3, cleanseStacksPct: 0f);
 
@@ -309,7 +309,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             ctx.AdvanceTick();
 
             EffectData cleanse = TestEffect.Make(
-                baseDuration: 0f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
+                baseDuration: 0f, polarity: EffectPolarity.Buff, 
                 components: new DispelComponent()
                     .With("_targetPolarity", DispelTargetPolarity.Debuff)
                     .With("_dispelPower", 1)

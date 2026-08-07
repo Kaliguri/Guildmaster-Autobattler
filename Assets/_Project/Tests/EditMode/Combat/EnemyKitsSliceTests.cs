@@ -170,7 +170,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                     new StatModifier(StatType.HealShieldTakenEff, ModifierOp.PercentMult, pct),
                 });
             return TestEffect.Make(baseDuration: 4f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Debuff, components: comp);
+                components: comp);
         }
 
         private static CombatSimulation BuildSim() =>

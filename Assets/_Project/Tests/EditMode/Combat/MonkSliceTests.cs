@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
@@ -309,7 +309,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         /// <summary>Микро-стан захода: полный вывод из строя на заданные секунды (как VortexMicroStun в ассетах).</summary>
         private static EffectData MicroStun(float seconds) =>
             EffectData.CreateRuntime(
-                "test.vortex_micro_stun", EffectPolarity.Debuff, EffectTag.Debuff | EffectTag.Control,
+                "test.vortex_micro_stun", EffectPolarity.Debuff, EffectTag.Control,
                 seconds, unremovable: false,
                 new ControlComponent(preventAct: true, preventMove: true, preventCast: true));
 

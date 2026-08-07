@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.rising_strike_charge
   _polarity: 0
-  _tags: 16385
+  _tags: 16384
   _baseDuration: -1
   _stacking: 2
   _maxStacks: 1

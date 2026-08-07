@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
@@ -105,7 +105,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             var comp = new BlindComponent().With("_periodAtOneStack", 4);
             return TestEffect.Make(baseDuration: 60f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Debuff, stacking: StackRule.Portions, maxStacks: 4, components: comp);
+                stacking: StackRule.Portions, maxStacks: 4, components: comp);
         }
 
         private static CombatSimulation BuildSim() =>

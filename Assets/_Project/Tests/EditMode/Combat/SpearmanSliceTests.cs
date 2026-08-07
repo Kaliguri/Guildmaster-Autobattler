@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -276,7 +276,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var spearman = TestUnit.Make();
             EffectData whirlShield = TestEffect.Make(
                 baseDuration: 3f, polarity: EffectPolarity.Buff,
-                tags: EffectTag.Buff | EffectTag.Shield, stacking: StackRule.Refresh,
+                tags: EffectTag.Shield, stacking: StackRule.Refresh,
                 components: new DamageToShieldComponent().With("_fraction", 0.2f));
 
             effects.Apply(spearman, whirlShield, spearman, ctx);
@@ -308,7 +308,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             });
 
             EffectData slow = TestEffect.Make(
-                baseDuration: 1f, polarity: EffectPolarity.Debuff, tags: EffectTag.Debuff,
+                baseDuration: 1f, polarity: EffectPolarity.Debuff, 
                 stacking: StackRule.Refresh,
                 components: new DecayingStatModifierComponent().With("_modifiers", new[]
                 {

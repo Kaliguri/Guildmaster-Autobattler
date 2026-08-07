@@ -61,7 +61,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var statMod = new StatModifierComponent()
                 .With("_modifiers", new[] { new StatModifier(StatType.MoveSpeed, ModifierOp.Flat, 7f) });
             EffectData passive = TestEffect.Make(
-                baseDuration: -1f, tags: EffectTag.Buff, components: statMod);
+                baseDuration: -1f, tags: EffectTag.Shield, components: statMod);
             RelicData relic = TestRelic.Make(grantedEffects: new[] { passive });
 
             RuntimeUnit unit = factory.Create(relic, null, team: 0, Vector2.zero);
@@ -69,7 +69,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(1, unit.ActiveEffects.Count, "Пассивка в активных эффектах");
             Assert.IsTrue(unit.ActiveEffects[0].IsPermanent, "Длительность постоянная (−1)");
             Assert.AreEqual(7f, unit.Stats.Get(StatType.MoveSpeed), 1e-4f, "Стат-мод пассивки применён");
-            Assert.AreNotEqual(EffectTag.None, unit.EffectTagMask & EffectTag.Buff, "Маска тегов обновлена");
+            Assert.AreNotEqual(EffectTag.None, unit.EffectTagMask & EffectTag.Shield, "Маска тегов обновлена");
         }
 
         [Test]

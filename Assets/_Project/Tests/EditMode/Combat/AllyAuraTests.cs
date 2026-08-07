@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects.Components;
@@ -36,10 +36,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             foreach (RuntimeUnit u in units) EffectSystem.CommitPending(u);
 
             Assert.IsTrue(cast, "Клич кастуется");
-            Assert.AreNotEqual(EffectTag.None, allyNear.EffectTagMask & EffectTag.Buff, "Союзник в радиусе получил баф");
-            Assert.AreNotEqual(EffectTag.None, caster.EffectTagMask   & EffectTag.Buff, "Кастующий бафает и себя");
-            Assert.AreEqual(EffectTag.None, allyFar.EffectTagMask & EffectTag.Buff, "Союзник вне радиуса не задет");
-            Assert.AreEqual(EffectTag.None, enemy.EffectTagMask   & EffectTag.Buff, "Враг в радиусе не задет — аура только по своим");
+            Assert.AreNotEqual(EffectTag.None, allyNear.EffectTagMask & EffectTag.Empowered, "Союзник в радиусе получил баф");
+            Assert.AreNotEqual(EffectTag.None, caster.EffectTagMask   & EffectTag.Empowered, "Кастующий бафает и себя");
+            Assert.AreEqual(EffectTag.None, allyFar.EffectTagMask & EffectTag.Empowered, "Союзник вне радиуса не задет");
+            Assert.AreEqual(EffectTag.None, enemy.EffectTagMask   & EffectTag.Empowered, "Враг в радиусе не задет — аура только по своим");
 
             Assert.AreEqual(60f, allyNear.Stats.Get(StatType.AutoAttackDamage), 1e-4f,
                 "Баф реально поднял урон союзника (+20% к 50)");
@@ -77,7 +77,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectSystem.CommitPending(caster);   // закон видимости: баф проявляется в конце тика
 
             Assert.IsTrue(cast, "Без союзников рядом клич всё равно кастуется — кастующий сам себе союзник");
-            Assert.AreNotEqual(EffectTag.None, caster.EffectTagMask & EffectTag.Buff, "И бафает себя");
+            Assert.AreNotEqual(EffectTag.None, caster.EffectTagMask & EffectTag.Empowered, "И бафает себя");
         }
 
         // ===================== Фабрики =====================
@@ -91,7 +91,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData rally = TestEffect.Make(
                 baseDuration: 6f,
                 polarity: EffectPolarity.Buff,
-                tags: EffectTag.Buff,
+                tags: EffectTag.Empowered,
                 components: buff);
 
             return TestAbility.Make(

@@ -92,7 +92,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var unit = TestUnit.Make();
 
             sys.Apply(unit, TestEffect.Make(baseDuration: 5f, polarity: EffectPolarity.Debuff, tags: EffectTag.DoT), unit, ctx);
-            sys.Apply(unit, TestEffect.Make(baseDuration: 5f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff), unit, ctx);
+            sys.Apply(unit, TestEffect.Make(baseDuration: 5f, polarity: EffectPolarity.Buff), unit, ctx);
             Assert.AreEqual(2, unit.ActiveEffects.Count);
 
             // Снятие судит по состоянию НАЧАЛА тика: наложенное в этом же тике неприкосновенно.
