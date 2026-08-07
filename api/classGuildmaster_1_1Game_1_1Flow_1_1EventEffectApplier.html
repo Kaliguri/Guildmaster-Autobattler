@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Ev
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Game.Flow.EventEffectApplier Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -110,9 +111,15 @@ Collaboration diagram for Guildmaster.Game.Flow.EventEffectApplier:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab4e4d4b2b578aed55bcb84b1d4bf1553" id="r_ab4e4d4b2b578aed55bcb84b1d4bf1553"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html#ab4e4d4b2b578aed55bcb84b1d4bf1553">EventEffectApplier</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a> runStates, <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html">Guildmaster.Guild.Commands.IRunCommands</a> commands)</td></tr>
 <tr class="separator:ab4e4d4b2b578aed55bcb84b1d4bf1553"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c37ee8fd3d5a48d414369a913080aae" id="r_a8c37ee8fd3d5a48d414369a913080aae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html#a8c37ee8fd3d5a48d414369a913080aae">Apply</a> (IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html">EventEffect</a> &gt; effects)</td></tr>
-<tr class="memdesc:a8c37ee8fd3d5a48d414369a913080aae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применить список последствий по порядку. Пишет автосейв, если что-то изменилось.  <br /></td></tr>
-<tr class="separator:a8c37ee8fd3d5a48d414369a913080aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a083a7946aca00453ee7c2fc7a7f1603d" id="r_a083a7946aca00453ee7c2fc7a7f1603d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html#a083a7946aca00453ee7c2fc7a7f1603d">Apply</a> (IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html">EventEffect</a> &gt; effects)</td></tr>
+<tr class="memdesc:a083a7946aca00453ee7c2fc7a7f1603d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применить последствия выбранного варианта.  <br /></td></tr>
+<tr class="separator:a083a7946aca00453ee7c2fc7a7f1603d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a8660dfcd93e03fa52ee1389ce6cc348c" id="r_a8660dfcd93e03fa52ee1389ce6cc348c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html#a8660dfcd93e03fa52ee1389ce6cc348c">Gold</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8660dfcd93e03fa52ee1389ce6cc348c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Золото забега сейчас — экран ивента гасит по нему варианты не по карману.  <br /></td></tr>
+<tr class="separator:a8660dfcd93e03fa52ee1389ce6cc348c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Применяет последствия выбора текстового ивента (EventEffect) к RunState через RunStateService — единый центр-switch (план 11 §5.1). </p>
@@ -155,8 +162,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8c37ee8fd3d5a48d414369a913080aae" name="a8c37ee8fd3d5a48d414369a913080aae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c37ee8fd3d5a48d414369a913080aae">&#9670;&#160;</a></span>Apply()</h2>
+<a id="a083a7946aca00453ee7c2fc7a7f1603d" name="a083a7946aca00453ee7c2fc7a7f1603d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a083a7946aca00453ee7c2fc7a7f1603d">&#9670;&#160;</a></span>Apply()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -165,7 +172,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Guildmaster.Game.Flow.EventEffectApplier.Apply </td>
+          <td class="memname">bool Guildmaster.Game.Flow.EventEffectApplier.Apply </td>
           <td>(</td>
           <td class="paramtype">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html">EventEffect</a> &gt;&#160;</td>
           <td class="paramname"><em>effects</em></td><td>)</td>
@@ -179,7 +186,36 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Применить список последствий по порядку. Пишет автосейв, если что-то изменилось. </p>
+<p>Применить последствия выбранного варианта. </p>
+<p>Золото проводится ОДНОЙ записью на нетто всех его последствий, до всего остального: не хватило — не применяется ничего.</p>
+<p>Раньше цена уходила той же односторонней записью, что и награда, а <code>RunStateService.AddGold</code> клампит результат в ноль — то есть выбор «купить за 50» с десятью золотыми списывал десять и всё равно выдавал награду.</p>
+<p><b>Почему нетто одной записью, а не по порядку.</b> Кламп в ноль ломает и сам порядок: «−30, потом +100» с пустым кошельком дало бы 100 вместо 70, потому что первое списание упёрлось в дно. Промежуточная сумма всё равно не видна нигде, кроме лога, а итог от порядка не зависит.</p>
+<p>Отказ громкий (<code>LogError</code>), потому что до applier дело доходит только через экран, а экран такой вариант уже погасил: сработавшая проверка означает разошедшийся гейт, а не поведение игрока.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a8660dfcd93e03fa52ee1389ce6cc348c" name="a8660dfcd93e03fa52ee1389ce6cc348c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8660dfcd93e03fa52ee1389ce6cc348c">&#9670;&#160;</a></span>Gold</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Game.Flow.EventEffectApplier.Gold</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Золото забега сейчас — экран ивента гасит по нему варианты не по карману. </p>
 
 </div>
 </div>

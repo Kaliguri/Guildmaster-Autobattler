@@ -1,8 +1,8 @@
 var dir_14f9ed21c537d28e16c1714a6784771a =
 [
+    [ "DecisionKeys.cs", "DecisionKeys_8cs.html", "DecisionKeys_8cs" ],
     [ "ICoopSessionControl.cs", "ICoopSessionControl_8cs.html", "ICoopSessionControl_8cs" ],
-    [ "IReadyGate.cs", "IReadyGate_8cs.html", "IReadyGate_8cs" ],
+    [ "ISharedDecision.cs", "ISharedDecision_8cs.html", "ISharedDecision_8cs" ],
     [ "PeerLostMessages.cs", "PeerLostMessages_8cs.html", "PeerLostMessages_8cs" ],
-    [ "ReadyGateMessages.cs", "ReadyGateMessages_8cs.html", "ReadyGateMessages_8cs" ],
-    [ "ReadyKeys.cs", "ReadyKeys_8cs.html", "ReadyKeys_8cs" ]
+    [ "SharedDecisionMessages.cs", "SharedDecisionMessages_8cs.html", "SharedDecisionMessages_8cs" ]
 ];

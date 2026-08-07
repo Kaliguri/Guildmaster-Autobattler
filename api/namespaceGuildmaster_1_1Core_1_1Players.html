@@ -92,7 +92,8 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Core_1_1Player
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Core.Players Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -120,7 +121,62 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html">SessionPlayer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Участник сеанса: кто он, за какую сторону играет и каким цветом подписан.  <a href="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:abab21bb793a5b19793966c01741b7379" id="r_abab21bb793a5b19793966c01741b7379"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379">PlayerWhere</a> : byte { <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379a88183b946cc5f0e8c96b2e66e1c74a7e">Unknown</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379a312dc56ea9c386a6bc913f988a233791">Away</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379ab61541208db7fa7dba42c85224405911">Menu</a> = 2
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379a46f3ea056caa3126b91f3f70beea068c">Map</a> = 4
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379a6fa3f3daa9f9a6282d58c913b73b8dc4">Arena</a> = 5
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379ad0889988168a441a08925dafe708330d">Loadout</a> = 6
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379a105b296a83f9c105355403f3332af50f">Pause</a> = 7
+<br />
+ }</td></tr>
+<tr class="memdesc:abab21bb793a5b19793966c01741b7379"><td class="mdescLeft">&#160;</td><td class="mdescRight">Где игрок находится прямо сейчас: строка списка участников отвечает на самый частый вопрос кооп-вечера — «ты где?».  <a href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379">More...</a><br /></td></tr>
+<tr class="separator:abab21bb793a5b19793966c01741b7379"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="abab21bb793a5b19793966c01741b7379" name="abab21bb793a5b19793966c01741b7379"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abab21bb793a5b19793966c01741b7379">&#9670;&#160;</a></span>PlayerWhere</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379">Guildmaster.Core.Players.PlayerWhere</a> : byte</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Где игрок находится прямо сейчас: строка списка участников отвечает на самый частый вопрос кооп-вечера — «ты где?». </p>
+<p><b>Заказ Макса 07.08.2026</b> и принятое решение кооп-канона: носитель постоянного состояния — список игроков со значком, а не только анимация уходящего курсора (<code>gdd/50-modes-ux/coop/presence</code> §Куда ушёл игрок). Анимация — это момент, заметный лишь тому, кто в ту секунду смотрел; список отвечает в любую. </p>
+<p><b>«Отошёл» — не место, а его отсутствие,</b> и стоит отдельно от переходов между экранами: свернувшего окно нельзя показывать «на карте», иначе к нему будут обращаться и ждать ответа. Требование записано там же.</p>
+<p><b>Значения только ДОПИСЫВАЮТСЯ:</b> номер едет по проводу, и переставленный показал бы напарника не там, где он есть, — молча, потому что обе стороны собираются порознь.</p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abab21bb793a5b19793966c01741b7379a88183b946cc5f0e8c96b2e66e1c74a7e" name="abab21bb793a5b19793966c01741b7379a88183b946cc5f0e8c96b2e66e1c74a7e"></a>Unknown&#160;</td><td class="fielddoc"><p>Неизвестно: участник только вошёл и ещё не сказал о себе. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="abab21bb793a5b19793966c01741b7379a312dc56ea9c386a6bc913f988a233791" name="abab21bb793a5b19793966c01741b7379a312dc56ea9c386a6bc913f988a233791"></a>Away&#160;</td><td class="fielddoc"><p>Отошёл: окно потеряло фокус ИЛИ минуту не было ввода. </p>
+<p>Не место, а его отсутствие.</p>
+<p>Минута — заказ Макса 07.08.2026 («афк 1 минута — отошел»). Свёрнутое окно ловится сразу, но его мало: человек отходит от компьютера, не сворачивая игру, и именно тогда его и ждут. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="abab21bb793a5b19793966c01741b7379ab61541208db7fa7dba42c85224405911" name="abab21bb793a5b19793966c01741b7379ab61541208db7fa7dba42c85224405911"></a>Menu&#160;</td><td class="fielddoc"><p>Меню игры и всё, что ДО забега: главное меню, выбор дома, двор гильдии. </p>
+<p>Двор своего места не получил намеренно (Макс, 07.08.2026): «Во дворе быть НЕ может, это стадия ДО забега». Игрок там ещё не в игре, и списку участников этого достаточно. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="abab21bb793a5b19793966c01741b7379a46f3ea056caa3126b91f3f70beea068c" name="abab21bb793a5b19793966c01741b7379a46f3ea056caa3126b91f3f70beea068c"></a>Map&#160;</td><td class="fielddoc"><p>Карта акта: выбирает путь. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="abab21bb793a5b19793966c01741b7379a6fa3f3daa9f9a6282d58c913b73b8dc4" name="abab21bb793a5b19793966c01741b7379a6fa3f3daa9f9a6282d58c913b73b8dc4"></a>Arena&#160;</td><td class="fielddoc"><p>Боевая арена: расстановка или бой. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="abab21bb793a5b19793966c01741b7379ad0889988168a441a08925dafe708330d" name="abab21bb793a5b19793966c01741b7379ad0889988168a441a08925dafe708330d"></a>Loadout&#160;</td><td class="fielddoc"><p>Снаряжение: инвентарь и лоадаут поверх любого места. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="abab21bb793a5b19793966c01741b7379a105b296a83f9c105355403f3332af50f" name="abab21bb793a5b19793966c01741b7379a105b296a83f9c105355403f3332af50f"></a>Pause&#160;</td><td class="fielddoc"><p>Системное меню по Esc — поверх игры, но игрок в неё сейчас не смотрит. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

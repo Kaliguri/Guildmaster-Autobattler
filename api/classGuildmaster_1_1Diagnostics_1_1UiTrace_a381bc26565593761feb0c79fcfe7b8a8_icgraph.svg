@@ -179,10 +179,10 @@ var sectionId = 'dynsection-1';
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestReadyGate.html#abb5274eb6c6e351f6a06f5b81dc809a2" target="_top" xlink:title="Сбросить согласие всех: то, под чем подписывались, изменилось (кто&#45;то переставил бойца).">
-<polygon fill="white" stroke="#666666" points="353,-222 201,-222 201,-192 353,-192 353,-222"/>
-<text text-anchor="start" x="209" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="277" y="-199" font-family="Helvetica,sans-Serif" font-size="10.00">Net.GuestReadyGate.Reset</text>
+<g id="a_Node000009"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSharedDecision.html#afbce6561a9e896d3d2294fec26fa6248" target="_top" xlink:title="Сбросить согласие всех: то, под чем подписывались, изменилось (кто&#45;то переставил бойца).">
+<polygon fill="white" stroke="#666666" points="363,-222 191,-222 191,-192 363,-192 363,-222"/>
+<text text-anchor="start" x="199" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
+<text text-anchor="middle" x="277" y="-199" font-family="Helvetica,sans-Serif" font-size="10.00">Net.GuestSharedDecision.Reset</text>
 </a>
 </g>
 </g>
@@ -198,10 +198,10 @@ var sectionId = 'dynsection-1';
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostReadyGate.html#a9fac48e335d47f13ad4826686b8d5b4b" target="_top" xlink:title="Сбросить согласие всех: то, под чем подписывались, изменилось (кто&#45;то переставил бойца).">
-<polygon fill="white" stroke="#666666" points="353,-174 201,-174 201,-144 353,-144 353,-174"/>
-<text text-anchor="start" x="209" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="277" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">Net.HostReadyGate.Reset</text>
+<g id="a_Node000010"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSharedDecision.html#a49468f0f3b0f81adf187ab399b54df75" target="_top" xlink:title="Сбросить согласие всех: то, под чем подписывались, изменилось (кто&#45;то переставил бойца).">
+<polygon fill="white" stroke="#666666" points="360,-174 194,-174 194,-144 360,-144 360,-174"/>
+<text text-anchor="start" x="202" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
+<text text-anchor="middle" x="277" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">Net.HostSharedDecision.Reset</text>
 </a>
 </g>
 </g>

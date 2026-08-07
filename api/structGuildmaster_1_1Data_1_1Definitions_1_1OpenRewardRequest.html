@@ -109,8 +109,8 @@ Collaboration diagram for Guildmaster.Data.Definitions.OpenRewardRequest:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aaa43a6e086843e3f334ed2b3d3253844" id="r_aaa43a6e086843e3f334ed2b3d3253844"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#aaa43a6e086843e3f334ed2b3d3253844">OpenRewardRequest</a> (IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; choices, bool inventoryFull, IReadOnlyList&lt; string &gt; currentInventory, Action&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html">RewardChoiceResult</a> &gt; onResolved, CancellationToken cancellation=default)</td></tr>
-<tr class="separator:aaa43a6e086843e3f334ed2b3d3253844"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c901c9c67ba59477968393852487b07" id="r_a1c901c9c67ba59477968393852487b07"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#a1c901c9c67ba59477968393852487b07">OpenRewardRequest</a> (IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; choices, bool inventoryFull, IReadOnlyList&lt; string &gt; currentInventory, Action&lt; string &gt; onVote, CancellationToken cancellation=default)</td></tr>
+<tr class="separator:a1c901c9c67ba59477968393852487b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -123,9 +123,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aa72610b75548a3d5be86fa9638c6c1f1" id="r_aa72610b75548a3d5be86fa9638c6c1f1"><td class="memItemLeft" align="right" valign="top">readonly IReadOnlyList&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#aa72610b75548a3d5be86fa9638c6c1f1">CurrentInventory</a></td></tr>
 <tr class="memdesc:aa72610b75548a3d5be86fa9638c6c1f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущий запас реликов (content id) — для выбора, что сбросить при полном инвентаре.  <br /></td></tr>
 <tr class="separator:aa72610b75548a3d5be86fa9638c6c1f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae27ad82170510e262f95d007ac36a5cb" id="r_ae27ad82170510e262f95d007ac36a5cb"><td class="memItemLeft" align="right" valign="top">readonly Action&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html">RewardChoiceResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#ae27ad82170510e262f95d007ac36a5cb">OnResolved</a></td></tr>
-<tr class="memdesc:ae27ad82170510e262f95d007ac36a5cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк результата выбора (ровно один вызов): взятый релик + опц. сброшенный, либо пропуск.  <br /></td></tr>
-<tr class="separator:ae27ad82170510e262f95d007ac36a5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22b1f73f219b6756b47d215f96ec5eef" id="r_a22b1f73f219b6756b47d215f96ec5eef"><td class="memItemLeft" align="right" valign="top">readonly Action&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#a22b1f73f219b6756b47d215f96ec5eef">OnVote</a></td></tr>
+<tr class="memdesc:a22b1f73f219b6756b47d215f96ec5eef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отдать свой голос: вариант из RewardOptions.  <br /></td></tr>
+<tr class="separator:a22b1f73f219b6756b47d215f96ec5eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a411269e683c49d2c3bd3d10b946b8049" id="r_a411269e683c49d2c3bd3d10b946b8049"><td class="memItemLeft" align="right" valign="top">readonly CancellationToken&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#a411269e683c49d2c3bd3d10b946b8049">Cancellation</a></td></tr>
 <tr class="memdesc:a411269e683c49d2c3bd3d10b946b8049"><td class="mdescLeft">&#160;</td><td class="mdescRight">Токен отмены забега (QA #37): отмена закрывает награду через навигатор.  <br /></td></tr>
 <tr class="separator:a411269e683c49d2c3bd3d10b946b8049"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,8 +134,8 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><p>Запрос показать экран награды после боя (публикует флоу забега, слушает UI). </p>
 <p>Несёт витрину реликов и OnResolved-колбэк выбора — так Data-слой не зависит от UniTask (флоу оборачивает колбэк в await сам). Тем же приёмом, что OpenLoadoutRequest: пейлоад — только Data-типы. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aaa43a6e086843e3f334ed2b3d3253844" name="aaa43a6e086843e3f334ed2b3d3253844"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa43a6e086843e3f334ed2b3d3253844">&#9670;&#160;</a></span>OpenRewardRequest()</h2>
+<a id="a1c901c9c67ba59477968393852487b07" name="a1c901c9c67ba59477968393852487b07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c901c9c67ba59477968393852487b07">&#9670;&#160;</a></span>OpenRewardRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,8 +164,8 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Action&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html">RewardChoiceResult</a> &gt;&#160;</td>
-          <td class="paramname"><em>onResolved</em>, </td>
+          <td class="paramtype">Action&lt; string &gt;&#160;</td>
+          <td class="paramname"><em>onVote</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -253,19 +253,21 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae27ad82170510e262f95d007ac36a5cb" name="ae27ad82170510e262f95d007ac36a5cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae27ad82170510e262f95d007ac36a5cb">&#9670;&#160;</a></span>OnResolved</h2>
+<a id="a22b1f73f219b6756b47d215f96ec5eef" name="a22b1f73f219b6756b47d215f96ec5eef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22b1f73f219b6756b47d215f96ec5eef">&#9670;&#160;</a></span>OnVote</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">readonly Action&lt;<a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html">RewardChoiceResult</a>&gt; Guildmaster.Data.Definitions.OpenRewardRequest.OnResolved</td>
+          <td class="memname">readonly Action&lt;string&gt; Guildmaster.Data.Definitions.OpenRewardRequest.OnVote</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Колбэк результата выбора (ровно один вызов): взятый релик + опц. сброшенный, либо пропуск. </p>
+<p>Отдать свой голос: вариант из RewardOptions. </p>
+<p>Зовётся столько раз, сколько игрок передумывает.</p>
+<p><b>Не «результат», а голос</b> (07.08.2026). Награда общая, поэтому берут её все вместе: экран закрывается не по клику, а когда сошлись все — признаком срабатывания от общего решения. Пока здесь был колбэк результата, первый нажавший забирал реликвию за группу, а остальные узнавали об этом по исчезнувшему экрану. </p>
 
 </div>
 </div>

@@ -110,7 +110,7 @@ Inheritance diagram for Guildmaster.Net.Transport.INetTransport:</div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Net.Transport.INetTransport:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport__coll__graph.svg" width="216" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport__coll__graph.svg" width="216" height="291"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -151,6 +151,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a49952a13615e34572e06343bbd69b904" id="r_a49952a13615e34572e06343bbd69b904"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a49952a13615e34572e06343bbd69b904">MaxReliableMessageBytes</a><code> [get]</code></td></tr>
 <tr class="memdesc:a49952a13615e34572e06343bbd69b904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Предел размера одного НАДЁЖНОГО сообщения, байт.  <br /></td></tr>
 <tr class="separator:a49952a13615e34572e06343bbd69b904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15a1e64b00496b0d95df3059429582ee" id="r_a15a1e64b00496b0d95df3059429582ee"><td class="memItemLeft" align="right" valign="top">System.Collections.Generic.IReadOnlyList&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a15a1e64b00496b0d95df3059429582ee">ConnectedPeers</a><code> [get]</code></td></tr>
+<tr class="memdesc:a15a1e64b00496b0d95df3059429582ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">С кем соединение уже стоит прямо сейчас, не считая себя.  <br /></td></tr>
+<tr class="separator:a15a1e64b00496b0d95df3059429582ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
@@ -353,6 +356,35 @@ Events</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a15a1e64b00496b0d95df3059429582ee" name="a15a1e64b00496b0d95df3059429582ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15a1e64b00496b0d95df3059429582ee">&#9670;&#160;</a></span>ConnectedPeers</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">System.Collections.Generic.IReadOnlyList&lt;int&gt; Guildmaster.Net.Transport.INetTransport.ConnectedPeers</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>С кем соединение уже стоит прямо сейчас, не считая себя. </p>
+<p>У хоста — подключённые гости, у гостя — хозяин (или пусто, пока соединение не поднялось).</p>
+<p><b>Спросить состав можно, а не только услышать о его смене</b> (07.08.2026). Транспорт поднимается на входе в игру, а всё, что ведёт список участников — состав сеанса, гейт готовности, — рождается позже, вместе с сеансом, и пересоздаётся на каждой смене режима. Пока существовали только события, эти списки были слепы к уже подключённому напарнику: он не появлялся ни в панели участников, ни в счёте «(N/M)», и хозяин узнавал о нём только когда тот отключался (наход. Макса на живом прогоне). </p>
+<p>Список — <b>ответ на момент вызова</b>; держать на него ссылку нельзя, реализация вправе переиспользовать буфер.</p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a2e705aa31c0ef2235eb1d93d746a4860">Guildmaster.Net.Transport.ChaosTransport</a>, and <a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#af4ec28427fa2a9826a66b0e347dca90e">Guildmaster.Net.Transport.SteamNetTransport</a>.</p>
+
+</div>
+</div>
 <a id="ad9a4df639f394393735b12b765306dd3" name="ad9a4df639f394393735b12b765306dd3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9a4df639f394393735b12b765306dd3">&#9670;&#160;</a></span>IsHost</h2>
 

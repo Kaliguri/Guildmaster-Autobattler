@@ -7,6 +7,7 @@ var interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport =
     [ "SetLocalPeerId", "interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a3bea456e776ac8d0b0cb781207f68f98", null ],
     [ "Shutdown", "interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#aa4742da916223bde507428442d79ac0a", null ],
     [ "StartHost", "interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a1f03d9b1f9f79afa58e46fa1b26147c4", null ],
+    [ "ConnectedPeers", "interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a15a1e64b00496b0d95df3059429582ee", null ],
     [ "IsHost", "interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#ad9a4df639f394393735b12b765306dd3", null ],
     [ "IsRunning", "interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a290d42eec4367f7045fb709bbfc96ea7", null ],
     [ "LocalPeerId", "interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a19ae749a7ab2b8bde805ffe29edd65e4", null ],

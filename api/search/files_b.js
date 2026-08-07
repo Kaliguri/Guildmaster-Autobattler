@@ -8,7 +8,8 @@ var searchData=
   ['localestartup_2ecs_5',['LocaleStartup.cs',['../LocaleStartup_8cs.html',1,'']]],
   ['localizationservice_2ecs_6',['LocalizationService.cs',['../LocalizationService_8cs.html',1,'']]],
   ['localjsonfilesaveservice_2ecs_7',['LocalJsonFileSaveService.cs',['../LocalJsonFileSaveService_8cs.html',1,'']]],
-  ['locomotionstridemeter_2ecs_8',['LocomotionStrideMeter.cs',['../LocomotionStrideMeter_8cs.html',1,'']]],
-  ['loopbacklobby_2ecs_9',['LoopbackLobby.cs',['../LoopbackLobby_8cs.html',1,'']]],
-  ['loopbacknetwork_2ecs_10',['LoopbackNetwork.cs',['../LoopbackNetwork_8cs.html',1,'']]]
+  ['localwhereabouts_2ecs_8',['LocalWhereabouts.cs',['../LocalWhereabouts_8cs.html',1,'']]],
+  ['locomotionstridemeter_2ecs_9',['LocomotionStrideMeter.cs',['../LocomotionStrideMeter_8cs.html',1,'']]],
+  ['loopbacklobby_2ecs_10',['LoopbackLobby.cs',['../LoopbackLobby_8cs.html',1,'']]],
+  ['loopbacknetwork_2ecs_11',['LoopbackNetwork.cs',['../LoopbackNetwork_8cs.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var classGuildmaster_1_1UI_1_1EventScreenView =
 [
-    [ "Build", "classGuildmaster_1_1UI_1_1EventScreenView.html#abf7d07071677f55887b63490537dcf72", null ]
+    [ "Build", "classGuildmaster_1_1UI_1_1EventScreenView.html#a01ee3334cd2e1bea7a31087b82b2caed", null ]
 ];

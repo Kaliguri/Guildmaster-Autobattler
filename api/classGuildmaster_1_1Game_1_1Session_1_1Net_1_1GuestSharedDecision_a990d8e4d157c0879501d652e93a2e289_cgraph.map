@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.Net.GuestSharedDecision.Bind" name="Guildmaster.Game.Session.Net.GuestSharedDecision.Bind">
+<area shape="rect" id="Node000001" title="Связать решение с вариантами: действие получает то, на чём сошлись." alt="" coords="5,5,227,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1Diagnostics_1_1Diag.html#a14ee1464b46b0cead0860580fe5d4bb6" title=" " alt="" coords="275,5,493,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,23,261,23,261,28,227,28"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Core_1_1Diagnostics_1_1Diag.html#a31a5c5c0757f9870e30f47b5a0bc939d" title=" " alt="" coords="541,5,760,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="493,23,527,23,527,28,493,28"/>
+</map>

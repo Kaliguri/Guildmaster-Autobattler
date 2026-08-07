@@ -1,0 +1,9 @@
+<map id="Guildmaster.Game.Session.Net.GuestSharedDecision" name="Guildmaster.Game.Session.Net.GuestSharedDecision">
+<area shape="rect" id="Node000001" title="Гостевая половина общего решения: отправляет свой голос и показывает счёт, присланный хостом." alt="" coords="103,279,298,579"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html" title="Общее решение группы: происходит то, что выбрали ВСЕ игроки сессии, и только когда выбрали одно и то ..." alt="" coords="5,5,137,231"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,242,141,278,136,280,121,244"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="162,85,239,151"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,165,203,279,198,279,198,165"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="263,85,354,151"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="296,165,255,279,250,278,291,163"/>
+</map>

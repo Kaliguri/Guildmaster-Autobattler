@@ -104,13 +104,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Data_1_1Definitio
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Definitions.OpenTextEventRequest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest__coll__graph.svg" width="218" height="563"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest__coll__graph.svg" width="218" height="583"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa07d79c61fa55f8d7e87121674b20fb9" id="r_aa07d79c61fa55f8d7e87121674b20fb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html#aa07d79c61fa55f8d7e87121674b20fb9">OpenTextEventRequest</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData.html">TextEventData</a> ev, Action&lt; int &gt; onChosen, CancellationToken cancellation=default)</td></tr>
-<tr class="separator:aa07d79c61fa55f8d7e87121674b20fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae123b4565d0790432ccc71c18220022d" id="r_ae123b4565d0790432ccc71c18220022d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html#ae123b4565d0790432ccc71c18220022d">OpenTextEventRequest</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData.html">TextEventData</a> ev, Action&lt; int &gt; onChosen, int gold=0, CancellationToken cancellation=default)</td></tr>
+<tr class="separator:ae123b4565d0790432ccc71c18220022d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -122,13 +122,16 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a0c6e83d196d35a92cb3f8c5dedee265f" id="r_a0c6e83d196d35a92cb3f8c5dedee265f"><td class="memItemLeft" align="right" valign="top">readonly CancellationToken&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html#a0c6e83d196d35a92cb3f8c5dedee265f">Cancellation</a></td></tr>
 <tr class="memdesc:a0c6e83d196d35a92cb3f8c5dedee265f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Токен отмены забега (QA #37): отмена закрывает ивент через навигатор.  <br /></td></tr>
 <tr class="separator:a0c6e83d196d35a92cb3f8c5dedee265f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e8ffd02592d699b3f0080d04eacb430" id="r_a2e8ffd02592d699b3f0080d04eacb430"><td class="memItemLeft" align="right" valign="top">readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html#a2e8ffd02592d699b3f0080d04eacb430">Gold</a></td></tr>
+<tr class="memdesc:a2e8ffd02592d699b3f0080d04eacb430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Золото забега на момент открытия — по нему экран гасит варианты, которые игроку не по карману.  <br /></td></tr>
+<tr class="separator:a2e8ffd02592d699b3f0080d04eacb430"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Запрос показать текстовый ивент (публикует флоу забега, слушает UI). </p>
 <p>Несёт данные ивента и OnChosen-колбэк с индексом выбранного варианта — так Data-слой не зависит от UniTask (флоу оборачивает колбэк в await). Тем же приёмом, что OpenRewardRequest. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa07d79c61fa55f8d7e87121674b20fb9" name="aa07d79c61fa55f8d7e87121674b20fb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa07d79c61fa55f8d7e87121674b20fb9">&#9670;&#160;</a></span>OpenTextEventRequest()</h2>
+<a id="ae123b4565d0790432ccc71c18220022d" name="ae123b4565d0790432ccc71c18220022d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae123b4565d0790432ccc71c18220022d">&#9670;&#160;</a></span>OpenTextEventRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -147,6 +150,12 @@ Public Attributes</h2></td></tr>
           <td></td>
           <td class="paramtype">Action&lt; int &gt;&#160;</td>
           <td class="paramname"><em>onChosen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>gold</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -197,6 +206,23 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2e8ffd02592d699b3f0080d04eacb430" name="a2e8ffd02592d699b3f0080d04eacb430"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e8ffd02592d699b3f0080d04eacb430">&#9670;&#160;</a></span>Gold</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly int Guildmaster.Data.Definitions.OpenTextEventRequest.Gold</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Золото забега на момент открытия — по нему экран гасит варианты, которые игроку не по карману. </p>
+<p>Приезжает числом в запросе, а не запрашивается экраном у забега: UI не знает про <code>RunState</code> и знать не должен, а ивент открыт ровно на один выбор — за это время золото измениться неоткуда. Настоящий гейт всё равно стоит в <code>EventEffectApplier</code>: здесь только то, что игрок видит. </p>
 
 </div>
 </div>

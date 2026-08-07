@@ -21,6 +21,7 @@ var searchData=
   ['visiblestacks_18',['VisibleStacks',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#acbf2ec934c107c3e05e2a0b07505017c',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
   ['visualradius_19',['VisualRadius',['../classGuildmaster_1_1Presentation_1_1Map_1_1MapNodeView.html#a35148210b25b028ead795450ba9b942d',1,'Guildmaster::Presentation::Map::MapNodeView']]],
   ['visualslot_20',['VisualSlot',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a411acc6f595da12fa057f0c2a38400bd',1,'Guildmaster::Data::Definitions::AbilityData']]],
-  ['vsync_21',['VSync',['../structGuildmaster_1_1Core_1_1Settings_1_1FramePacing.html#abd450439e11bdbab8ca6009756d15c2f',1,'Guildmaster::Core::Settings::FramePacing']]],
-  ['vulnerabilitybonus_22',['VulnerabilityBonus',['../structGuildmaster_1_1Combat_1_1DamageResult.html#a2f453e4adee69a4e2edeed95a4d8b109',1,'Guildmaster::Combat::DamageResult']]]
+  ['voted_21',['voted',['../interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html#a68512cda7551eb442deea89a9cd392f2',1,'Guildmaster.Core.Net.ISharedDecision.Voted'],['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSharedDecision.html#a5b7519bbf12bc8820967bcfde70b8f27',1,'Guildmaster.Game.Session.Net.GuestSharedDecision.Voted'],['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSharedDecision.html#a3f2c04ed3ea32d7a25699bece0c75598',1,'Guildmaster.Game.Session.Net.HostSharedDecision.Voted']]],
+  ['vsync_22',['VSync',['../structGuildmaster_1_1Core_1_1Settings_1_1FramePacing.html#abd450439e11bdbab8ca6009756d15c2f',1,'Guildmaster::Core::Settings::FramePacing']]],
+  ['vulnerabilitybonus_23',['VulnerabilityBonus',['../structGuildmaster_1_1Combat_1_1DamageResult.html#a2f453e4adee69a4e2edeed95a4d8b109',1,'Guildmaster::Combat::DamageResult']]]
 ];

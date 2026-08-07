@@ -125,7 +125,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa96484e1d3387bf952ea492277d1e460"><td class="mdescLeft">&#160;</td><td class="mdescRight">A2-разрез забега: сгенерировать карту акта (если нет) и прогнать петлю обхода через ActRunner (делегирование).  <br /></td></tr>
 <tr class="separator:aa96484e1d3387bf952ea492277d1e460"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac263a73e1651000fffcc1da857a7719f" id="r_ac263a73e1651000fffcc1da857a7719f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#ac263a73e1651000fffcc1da857a7719f">RequestReturnToMainMenu</a> ()</td></tr>
-<tr class="memdesc:ac263a73e1651000fffcc1da857a7719f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прервать текущий забег и вернуться в главное меню (сейв остаётся — можно продолжить).  <br /></td></tr>
+<tr class="memdesc:ac263a73e1651000fffcc1da857a7719f"><td class="mdescLeft">&#160;</td><td class="mdescRight">QA #18: управление забегом из системного меню (pause) через <code>IRunControl</code>.  <br /></td></tr>
 <tr class="separator:ac263a73e1651000fffcc1da857a7719f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19f129a2ad150728b507f70a2bce3e2c" id="r_a19f129a2ad150728b507f70a2bce3e2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#a19f129a2ad150728b507f70a2bce3e2c">RequestQuit</a> ()</td></tr>
 <tr class="memdesc:a19f129a2ad150728b507f70a2bce3e2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выйти из игры (в редакторе — остановить play).  <br /></td></tr>
@@ -304,7 +304,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Прервать текущий забег и вернуться в главное меню (сейв остаётся — можно продолжить). </p>
+<p>QA #18: управление забегом из системного меню (pause) через <code>IRunControl</code>. </p>
+<p><b>У гостя прерывать нечего</b> — своего забега у него нет, а токен мероприятия взводят те две петли, которых он не проходит вовсе (акт и площадка). Пока эта разница не учитывалась, кнопка «В главное меню» у гостя молча не делала НИЧЕГО: отменять было нечего, и он оставался в чужой игре (найдено 07.08.2026 при разборе живого прогона). </p>
+<p>Уйти из чужой игры значит покинуть сеанс — тогда гостевая петля кончается сама и возвращает игрока в его меню. Признак гостя берём у сеанса, а не у состояния сессии: роль назвали при входе, и это факт, а не догадка по признакам.</p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl.html#a5113507f0ab72ca85306918ab3cab21e">Guildmaster.Core.Flow.IRunControl</a>.</p>
 

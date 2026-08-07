@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Activity.ActivitySideAssignment" name="Guildmaster.Game.Activity.ActivitySideAssignment">
-<area shape="rect" id="Node000001" title="Заказывает составу сеанса раздачу сторон под открывшуюся площадку: одна сторона в кампании,..." alt="" coords="5,119,199,239"/>
+<area shape="rect" id="Node000001" title="Заказывает составу сеанса раздачу сторон под открывшуюся площадку: врозь в PvP, всех вместе в кампани..." alt="" coords="5,119,199,239"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="10,5,87,71"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="68,83,82,117,77,119,63,85"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="111,5,202,71"/>

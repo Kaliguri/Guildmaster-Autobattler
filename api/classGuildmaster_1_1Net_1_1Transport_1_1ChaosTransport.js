@@ -8,6 +8,7 @@ var classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport =
     [ "SetLocalPeerId", "classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#ab0735222261ad70583ff53cf35ca6b03", null ],
     [ "Shutdown", "classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a4c5a862fb2af213cc7a432a56ea36d33", null ],
     [ "StartHost", "classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a7d233c0152e6315ac88ae783030798f8", null ],
+    [ "ConnectedPeers", "classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a2e705aa31c0ef2235eb1d93d746a4860", null ],
     [ "InFlight", "classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#abc7fe398aa9f15417b7d66ef64548fe1", null ],
     [ "IsHost", "classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a7853e5f90b6fe1e7776d78682ffbbe42", null ],
     [ "IsRunning", "classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a399485100121b17e8199ae33976db00a", null ],

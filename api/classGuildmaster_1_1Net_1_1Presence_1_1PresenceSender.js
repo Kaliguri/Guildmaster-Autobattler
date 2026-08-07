@@ -1,7 +1,9 @@
 var classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender =
 [
     [ "Reset", "classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#a5a381cbcbb79b2a3ccb54b732c7dc98c", null ],
+    [ "Show", "classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#a900f7f8f1cfe7e0f022d3838722b0489", null ],
     [ "TrySample", "classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#a7408560dcc850a7ed7e2fb9fbbf9a78e", null ],
+    [ "GestureHoldSeconds", "classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#af48facb433878dd642e28ade09b0bf2b", null ],
     [ "MaxRateHz", "classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#a1c0b9d5e275979fd28ae7ea526ac7ce7", null ],
     [ "MoveEpsilon", "classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#a377cf088a1289d17d27c157b013a6bb9", null ],
     [ "Last", "classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#ac739a7f0260b1ce3f164beb2dcedd977", null ],

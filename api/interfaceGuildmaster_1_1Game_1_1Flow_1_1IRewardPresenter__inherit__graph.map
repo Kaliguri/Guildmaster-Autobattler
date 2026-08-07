@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Flow.IRewardPresenter" name="Guildmaster.Game.Flow.IRewardPresenter">
 <area shape="rect" id="Node000001" title="Показ экрана награды после узла (витрина 1&#45;из&#45;N → запись выбора в RunState)." alt="" coords="5,5,232,85"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1RewardPresenter.html" title="Презентер награды (план 11 §4 A3): катит витрину через RewardService, публикует запрос в UI (OpenRewa..." alt="" coords="7,133,230,233"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1RewardPresenter.html" title="Презентер награды: катит витрину через RewardService, показывает её ВСЕЙ группе и применяет к RunStat..." alt="" coords="7,133,230,233"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,99,121,133,116,133,116,99"/>
 </map>

@@ -1,9 +1,11 @@
 <map id="Guildmaster.Net.NetByteWriter.Reset" name="Guildmaster.Net.NetByteWriter.Reset">
-<area shape="rect" id="Node000001" title="Начать писать заново, сохранив выделенный буфер: чанки идут потоком, мусорить нельзя." alt="" coords="609,37,837,77"/>
+<area shape="rect" id="Node000001" title="Начать писать заново, сохранив выделенный буфер: чанки идут потоком, мусорить нельзя." alt="" coords="609,69,837,109"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html#ad48cbf94b213e783a3c278e2732634b9" title=" " alt="" coords="345,5,557,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="595,45,557,40,558,35,596,40"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="341,69,561,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="596,75,562,79,561,74,595,70"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,69,293,109"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="328,92,294,92,294,87,328,87"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="624,69,536,48,537,43,625,64"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html#a0056c274f5f9c1041a961fbd66453b89" title=" " alt="" coords="350,69,553,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="595,92,553,92,553,87,595,87"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="341,133,561,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="625,115,537,136,536,131,624,110"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,133,293,173"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="328,156,294,156,294,151,328,151"/>
 </map>

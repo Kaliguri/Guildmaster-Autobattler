@@ -122,9 +122,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a49a2b0cc5996c49f5e6253e2b50988d5" id="r_a49a2b0cc5996c49f5e6253e2b50988d5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a49a2b0cc5996c49f5e6253e2b50988d5">SharesTeamWithLocal</a> (int playerId)</td></tr>
 <tr class="memdesc:a49a2b0cc5996c49f5e6253e2b50988d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вне сеанса своим считается только сам игрок: показывать чужое присутствие некому, и ответ «да» здесь означал бы курсор от участника, которого не существует.  <br /></td></tr>
 <tr class="separator:a49a2b0cc5996c49f5e6253e2b50988d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c5c45ff35c7a968e87a37b2bfa4e723" id="r_a6c5c45ff35c7a968e87a37b2bfa4e723"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a6c5c45ff35c7a968e87a37b2bfa4e723">AssignSides</a> (int sides)</td></tr>
-<tr class="memdesc:a6c5c45ff35c7a968e87a37b2bfa4e723"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разложить участников по <em>sides</em>  сторонам.  <br /></td></tr>
-<tr class="separator:a6c5c45ff35c7a968e87a37b2bfa4e723"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a561ef8712d41ee0bb1a07319c0ae4138" id="r_a561ef8712d41ee0bb1a07319c0ae4138"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a561ef8712d41ee0bb1a07319c0ae4138">SplitBetweenSides</a> (bool split)</td></tr>
+<tr class="memdesc:a561ef8712d41ee0bb1a07319c0ae4138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разводить ли участников по разным сторонам (<code>true</code>) или посадить всех на одну.  <br /></td></tr>
+<tr class="separator:a561ef8712d41ee0bb1a07319c0ae4138"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -183,29 +183,6 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6c5c45ff35c7a968e87a37b2bfa4e723" name="a6c5c45ff35c7a968e87a37b2bfa4e723"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c5c45ff35c7a968e87a37b2bfa4e723">&#9670;&#160;</a></span>AssignSides()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Guildmaster.Game.Session.SessionPlayerRouter.AssignSides </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>sides</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Разложить участников по <em>sides</em>  сторонам. </p>
-<p>Заказывает мероприятие, которое одно и знает, сколько сторон у площадки: одна в кампании, две в PvP. Исполняет хост — у гостя вызов не делает ничего. </p>
-
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a343ed306a9ef8fb563e310d2e7c9042a">Guildmaster.Core.Players.ISessionRoster</a>.</p>
-
-</div>
-</div>
 <a id="a49a2b0cc5996c49f5e6253e2b50988d5" name="a49a2b0cc5996c49f5e6253e2b50988d5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a49a2b0cc5996c49f5e6253e2b50988d5">&#9670;&#160;</a></span>SharesTeamWithLocal()</h2>
 
@@ -238,6 +215,30 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter_a49a2b0cc5996c49f5e6253e2b50988d5_cgraph.svg" width="562" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a561ef8712d41ee0bb1a07319c0ae4138" name="a561ef8712d41ee0bb1a07319c0ae4138"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a561ef8712d41ee0bb1a07319c0ae4138">&#9670;&#160;</a></span>SplitBetweenSides()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Session.SessionPlayerRouter.SplitBetweenSides </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>split</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Разводить ли участников по разным сторонам (<code>true</code>) или посадить всех на одну. </p>
+<p>Заказывает мероприятие — оно одно знает, кому принадлежит вторая сторона арены. Исполняет хост: у гостя вызов не делает ничего, стороны ему приезжают таблицей.</p>
+<p>Спрашивается «делить ли», а не «сколько сторон», и это не косметика. Сторон у арены всегда две; число здесь было пересказом чужого факта, и пересказ разъехался с оригиналом ровно один раз — когда кампании понадобилось запретить трогать врагов, а участники от этого разъехались по разным сторонам (07.08.2026). </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a3436aab9bb849661a87aad7aa292db59">Guildmaster.Core.Players.ISessionRoster</a>.</p>
 
 </div>
 </div>

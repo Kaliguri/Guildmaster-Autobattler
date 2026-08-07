@@ -153,6 +153,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a9af3d1bad07b523a682543858cf10d42" id="r_a9af3d1bad07b523a682543858cf10d42"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a9af3d1bad07b523a682543858cf10d42">MaxReliableMessageBytes</a><code> [get]</code></td></tr>
 <tr class="memdesc:a9af3d1bad07b523a682543858cf10d42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Предел размера одного НАДЁЖНОГО сообщения, байт.  <br /></td></tr>
 <tr class="separator:a9af3d1bad07b523a682543858cf10d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e705aa31c0ef2235eb1d93d746a4860" id="r_a2e705aa31c0ef2235eb1d93d746a4860"><td class="memItemLeft" align="right" valign="top">System.Collections.Generic.IReadOnlyList&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a2e705aa31c0ef2235eb1d93d746a4860">ConnectedPeers</a><code> [get]</code></td></tr>
+<tr class="memdesc:a2e705aa31c0ef2235eb1d93d746a4860"><td class="mdescLeft">&#160;</td><td class="mdescRight">С кем соединение уже стоит прямо сейчас, не считая себя.  <br /></td></tr>
+<tr class="separator:a2e705aa31c0ef2235eb1d93d746a4860"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57f825db979ecb8c65d1032e63d23e20" id="r_a57f825db979ecb8c65d1032e63d23e20"><td class="memItemLeft" align="right" valign="top">Action&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html#a57f825db979ecb8c65d1032e63d23e20">PeerConnected</a></td></tr>
 <tr class="memdesc:a57f825db979ecb8c65d1032e63d23e20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пир подключился (у хоста — на каждого гостя, у гостя — на хоста).  <br /></td></tr>
 <tr class="separator:a57f825db979ecb8c65d1032e63d23e20"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -420,6 +423,35 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a2e705aa31c0ef2235eb1d93d746a4860" name="a2e705aa31c0ef2235eb1d93d746a4860"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e705aa31c0ef2235eb1d93d746a4860">&#9670;&#160;</a></span>ConnectedPeers</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">System.Collections.Generic.IReadOnlyList&lt;int&gt; Guildmaster.Net.Transport.ChaosTransport.ConnectedPeers</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>С кем соединение уже стоит прямо сейчас, не считая себя. </p>
+<p>У хоста — подключённые гости, у гостя — хозяин (или пусто, пока соединение не поднялось).</p>
+<p><b>Спросить состав можно, а не только услышать о его смене</b> (07.08.2026). Транспорт поднимается на входе в игру, а всё, что ведёт список участников — состав сеанса, гейт готовности, — рождается позже, вместе с сеансом, и пересоздаётся на каждой смене режима. Пока существовали только события, эти списки были слепы к уже подключённому напарнику: он не появлялся ни в панели участников, ни в счёте «(N/M)», и хозяин узнавал о нём только когда тот отключался (наход. Макса на живом прогоне). </p>
+<p>Список — <b>ответ на момент вызова</b>; держать на него ссылку нельзя, реализация вправе переиспользовать буфер.</p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a15a1e64b00496b0d95df3059429582ee">Guildmaster.Net.Transport.INetTransport</a>.</p>
+
+</div>
+</div>
 <a id="abc7fe398aa9f15417b7d66ef64548fe1" name="abc7fe398aa9f15417b7d66ef64548fe1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abc7fe398aa9f15417b7d66ef64548fe1">&#9670;&#160;</a></span>InFlight</h2>
 

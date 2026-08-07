@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Presentation_1_1Body_1_1BodyCutLedger.html" target="_top" xlink:title="Журнал ран одного тела: порезы в порядке нанесения, лимит и заживление.">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Presentation_1_1Audio_1_1AudioResolver.html" target="_top" xlink:title="Резолвит звуковой ключ (вики «13» §7): {contentId}.">
 <polygon fill="white" stroke="#666666" points="143,-30 0,-30 0,0 143,0 143,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
-<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Body.BodyCutLedger</text>
+<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Audio.AudioResolver</text>
 </a>
 </g>
 </g>

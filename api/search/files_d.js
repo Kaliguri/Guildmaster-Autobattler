@@ -7,5 +7,6 @@ var searchData=
   ['netpump_2ecs_4',['NetPump.cs',['../NetPump_8cs.html',1,'']]],
   ['newgamescreenview_2ecs_5',['NewGameScreenView.cs',['../NewGameScreenView_8cs.html',1,'']]],
   ['nodefarewellmessages_2ecs_6',['NodeFarewellMessages.cs',['../NodeFarewellMessages_8cs.html',1,'']]],
-  ['noderesolver_2ecs_7',['NodeResolver.cs',['../NodeResolver_8cs.html',1,'']]]
+  ['noderesolver_2ecs_7',['NodeResolver.cs',['../NodeResolver_8cs.html',1,'']]],
+  ['nodestagestate_2ecs_8',['NodeStageState.cs',['../NodeStageState_8cs.html',1,'']]]
 ];

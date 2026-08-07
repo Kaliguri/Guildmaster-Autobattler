@@ -10,7 +10,7 @@ var searchData=
   ['filebytes_7',['FileBytes',['../classGuildmaster_1_1Net_1_1Tape_1_1ReplayPlaybackRequest.html#adea388c7ea33ae21736f320381bffb66',1,'Guildmaster::Net::Tape::ReplayPlaybackRequest']]],
   ['final_8',['Final',['../structGuildmaster_1_1Data_1_1Stats_1_1StatValue.html#a3626c22499d3bd89d001b4bae80a2f1e',1,'Guildmaster::Data::Stats::StatValue']]],
   ['finishedutc_9',['FinishedUtc',['../classGuildmaster_1_1Guild_1_1RunRecord.html#a6d41c3c79c6e14fbc9b55d212032635d',1,'Guildmaster::Guild::RunRecord']]],
-  ['fired_10',['Fired',['../structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent.html#acb0c0c70f95b9545b03433ecc9bcda6c',1,'Guildmaster::Core::Net::ReadyGateChangedEvent']]],
+  ['fired_10',['Fired',['../structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent.html#acdecfeee28aa8a6f61c4330351692e3f',1,'Guildmaster::Core::Net::SharedDecisionChangedEvent']]],
   ['flags_11',['flags',['../structGuildmaster_1_1Combat_1_1Tape_1_1TapeEvent.html#a88d55722f98439edb30f6979f2644800',1,'Guildmaster.Combat.Tape.TapeEvent.Flags'],['../classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkFormat_1_1UnitField.html#a190d13a2dbb766e5b56ca9e9181e1fcf',1,'Guildmaster.Net.Tape.TapeChunkFormat.UnitField.Flags']]],
   ['flash_12',['Flash',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#a56656efc782a3a857cf568652a63ef58',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
   ['flashcolor_13',['FlashColor',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#a5b5e05699034b48cfdb0a6de51a959d2',1,'Guildmaster::Presentation::Body::BodyVisualState']]],

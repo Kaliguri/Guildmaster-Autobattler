@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Activity_1
 </div><!--header-->
 <div class="contents">
 
-<p>Заказывает составу сеанса раздачу сторон под открывшуюся площадку: одна сторона в кампании, две в PvP.  
+<p>Заказывает составу сеанса раздачу сторон под открывшуюся площадку: врозь в PvP, всех вместе в кампании и на Ристалище.  
  <a href="classGuildmaster_1_1Game_1_1Activity_1_1ActivitySideAssignment.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Activity.ActivitySideAssignment:</div>
@@ -121,8 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac62903586578dc4137411838cbce047c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Заказывает составу сеанса раздачу сторон под открывшуюся площадку: одна сторона в кампании, две в PvP. </p>
-<p><b>Заказывает мероприятие, а решает сеанс</b> — и это не лишнее звено. Сколько у площадки сторон, знает только она сама (<a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1ActivitySetup.html#ad8fc3853d3a95f0d25c703ea4bbeeec1" title="Расставлять можно только своих (PvP: чужой строй — не наше дело).">ActivitySetup.OwnUnitsOnly</a>); кто эти стороны займёт — только сеанс, потому что участников знает соединение. Спроси состав у площадки напрямую, и он полез бы вниз по скоупам за объектом, который умрёт раньше него. </p>
+<div class="textblock"><p>Заказывает составу сеанса раздачу сторон под открывшуюся площадку: врозь в PvP, всех вместе в кампании и на Ристалище. </p>
+<p><b>Заказывает мероприятие, а решает сеанс</b> — и это не лишнее звено. Кому принадлежит вторая сторона, знает только площадка (<a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1ActivitySetup.html#aeafce1e549dbd1b5af65c1beb20ee41f" title="Чья вторая сторона арены — из неё же следуют и раскладка, и права.">ActivitySetup.Opposition</a>); кто эти стороны займёт — только сеанс, потому что участников знает соединение. Спроси состав у площадки напрямую, и он полез бы вниз по скоупам за объектом, который умрёт раньше него. </p>
+<p><b>Делить участников надо ровно там, где вторая сторона игрокова.</b> Пока это выводилось из запрета трогать чужих, кампания разводила союзников по разным сторонам — и гость получал во владение монстров вместо своего отряда (наход. Макса 07.08.2026).</p>
 <p><b>Закрываясь, площадка возвращает всех в одну сторону.</b> Иначе после PvP-матча игроки разошлись бы по командам навсегда и перестали видеть курсоры друг друга во дворе — там, где противников нет вовсе.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a578b744f70bfefc1753c3d9b851cdfd3" name="a578b744f70bfefc1753c3d9b851cdfd3"></a>

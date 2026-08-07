@@ -105,11 +105,14 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Net_1_1Presence_1_
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Net.Presence.PresenceSender:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender__coll__graph.svg" width="198" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender__coll__graph.svg" width="198" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a900f7f8f1cfe7e0f022d3838722b0489" id="r_a900f7f8f1cfe7e0f022d3838722b0489"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#a900f7f8f1cfe7e0f022d3838722b0489">Show</a> (<a class="el" href="namespaceGuildmaster_1_1Net_1_1Presence.html#ad6d71bbd5a01524e4a3f5df877451b87">PresenceGesture</a> gesture, float now)</td></tr>
+<tr class="memdesc:a900f7f8f1cfe7e0f022d3838722b0489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать жест: он поедет в ближайших пакетах и погаснет сам.  <br /></td></tr>
+<tr class="separator:a900f7f8f1cfe7e0f022d3838722b0489"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7408560dcc850a7ed7e2fb9fbbf9a78e" id="r_a7408560dcc850a7ed7e2fb9fbbf9a78e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#a7408560dcc850a7ed7e2fb9fbbf9a78e">TrySample</a> (Vector2 cursor, int playerId, float now, out <a class="el" href="structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html">PresenceState</a> state, int hoveredId=<a class="el" href="structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a5b8ed898cf51fb247621c4527d61ddd6">PresenceState.Nothing</a>, int heldId=<a class="el" href="structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a5b8ed898cf51fb247621c4527d61ddd6">PresenceState.Nothing</a>)</td></tr>
 <tr class="memdesc:a7408560dcc850a7ed7e2fb9fbbf9a78e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Предложить текущее состояние курсора.  <br /></td></tr>
 <tr class="separator:a7408560dcc850a7ed7e2fb9fbbf9a78e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,6 +128,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a377cf088a1289d17d27c157b013a6bb9" id="r_a377cf088a1289d17d27c157b013a6bb9"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#a377cf088a1289d17d27c157b013a6bb9">MoveEpsilon</a> = 0.5f / <a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeQuantization.html#ad44657ac9d48de3932a964c51d1aaa80">Tape.TapeQuantization.PositionScale</a></td></tr>
 <tr class="memdesc:a377cf088a1289d17d27c157b013a6bb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Насколько курсор должен сдвинуться, чтобы это считалось движением.  <br /></td></tr>
 <tr class="separator:a377cf088a1289d17d27c157b013a6bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af48facb433878dd642e28ade09b0bf2b" id="r_af48facb433878dd642e28ade09b0bf2b"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html#af48facb433878dd642e28ade09b0bf2b">GestureHoldSeconds</a> = 0.4f</td></tr>
+<tr class="memdesc:af48facb433878dd642e28ade09b0bf2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько времени жест едет в пакетах после запроса.  <br /></td></tr>
+<tr class="separator:af48facb433878dd642e28ade09b0bf2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -165,6 +171,45 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Забыть историю (новая сессия): номера и позиция начинаются заново. </p>
+
+</div>
+</div>
+<a id="a900f7f8f1cfe7e0f022d3838722b0489" name="a900f7f8f1cfe7e0f022d3838722b0489"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a900f7f8f1cfe7e0f022d3838722b0489">&#9670;&#160;</a></span>Show()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Net.Presence.PresenceSender.Show </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Net_1_1Presence.html#ad6d71bbd5a01524e4a3f5df877451b87">PresenceGesture</a>&#160;</td>
+          <td class="paramname"><em>gesture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>now</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Показать жест: он поедет в ближайших пакетах и погаснет сам. </p>
+<p>Гасить его отдельным вызовом было бы вторым владельцем одного факта: жест мгновенный, и «сколько он живёт» — свойство самого жеста, а не того, кто его показал. </p>
 
 </div>
 </div>
@@ -238,6 +283,30 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="af48facb433878dd642e28ade09b0bf2b" name="af48facb433878dd642e28ade09b0bf2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af48facb433878dd642e28ade09b0bf2b">&#9670;&#160;</a></span>GestureHoldSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float Guildmaster.Net.Presence.PresenceSender.GestureHoldSeconds = 0.4f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько времени жест едет в пакетах после запроса. </p>
+
+</div>
+</div>
 <a id="a1c0b9d5e275979fd28ae7ea526ac7ce7" name="a1c0b9d5e275979fd28ae7ea526ac7ce7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c0b9d5e275979fd28ae7ea526ac7ce7">&#9670;&#160;</a></span>MaxRateHz</h2>
 

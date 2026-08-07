@@ -1,5 +1,5 @@
 <map id="Guildmaster.Net.Transport.ChaosTransport" name="Guildmaster.Net.Transport.ChaosTransport">
-<area shape="rect" id="Node000001" title="Обёртка над транспортом, портящая канал ПО СИДУ: задержка, разброс задержки (он же переупорядочивание..." alt="" coords="5,299,211,659"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html" title="Шов транспорта: отправить байты, получить байты, узнать о приходе и уходе пиров." alt="" coords="5,5,211,251"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,264,111,298,105,298,105,264"/>
+<area shape="rect" id="Node000001" title="Обёртка над транспортом, портящая канал ПО СИДУ: задержка, разброс задержки (он же переупорядочивание..." alt="" coords="5,319,211,699"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html" title="Шов транспорта: отправить байты, получить байты, узнать о приходе и уходе пиров." alt="" coords="5,5,211,271"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,285,111,318,105,318,105,285"/>
 </map>

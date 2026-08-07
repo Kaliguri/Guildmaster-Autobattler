@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.LocalWhereabouts" name="Guildmaster.Game.Session.LocalWhereabouts">
+<area shape="rect" id="Node000001" title="Считает своё место по тому, что УЖЕ знают показ и навигатор, а не по собственному флагу." alt="" coords="41,119,236,219"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Session_1_1ILocalWhereabouts.html" title="Где я сейчас — для строки списка участников у остальных." alt="" coords="5,5,144,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,82,117,117,112,120,94,84"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="168,5,240,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="184,84,166,120,161,117,179,82"/>
+</map>

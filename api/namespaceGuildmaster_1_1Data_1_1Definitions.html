@@ -262,6 +262,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html">RewardChoiceResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Результат экрана награды (план 11 §5.4): что взяли и что сбросили ради места.  <a href="structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RewardOptions.html">RewardOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Варианты решения о награде: что группа делает с витриной.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1RewardOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData.html">RunModifierData</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Модификатор забега (заготовка ascension/pact, вики «13» §3.2).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -336,6 +339,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a816021883ae27c6ed0bda6bfc181fed1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вид мероприятия — то, чем игрок сейчас занят.  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a816021883ae27c6ed0bda6bfc181fed1">More...</a><br /></td></tr>
 <tr class="separator:a816021883ae27c6ed0bda6bfc181fed1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a7584993f38887ac00f917e42b5aef3" id="r_a7a7584993f38887ac00f917e42b5aef3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a7a7584993f38887ac00f917e42b5aef3">OpposingSide</a> : byte { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a7a7584993f38887ac00f917e42b5aef3ad1e9f9f891de8f9a655739a01fbf68f0">Encounter</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a7a7584993f38887ac00f917e42b5aef3a636da1d35e805b00eae0fcd8333f9234">Player</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a7a7584993f38887ac00f917e42b5aef3ae0c8e96c49f3dd73abbf509040db57f0">Unclaimed</a> = 2
+ }</td></tr>
+<tr class="memdesc:a7a7584993f38887ac00f917e42b5aef3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кому принадлежит вторая сторона арены.  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a7a7584993f38887ac00f917e42b5aef3">More...</a><br /></td></tr>
+<tr class="separator:a7a7584993f38887ac00f917e42b5aef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a925836248f5be4ad63a124b9590397da" id="r_a925836248f5be4ad63a124b9590397da"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a925836248f5be4ad63a124b9590397da">AutoAttackMode</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a925836248f5be4ad63a124b9590397daab9f24e83531326204197015b2f43a93f">Damage</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a925836248f5be4ad63a124b9590397daaf357105e6becc3076a3da9b43465051a">Heal</a> = 1
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a925836248f5be4ad63a124b9590397daa6adf97f83acf6453d4a6a4b1070f3754">None</a> = 2
@@ -529,31 +538,29 @@ Enumerations</h2></td></tr>
 <tr class="separator:a5cce769078fcc3c898cb60f70d7d6ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e7ad4bd70e81312e11f8afc21650438" id="r_a4e7ad4bd70e81312e11f8afc21650438"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> { <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
-, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25">Buff</a> = 1 &lt;&lt; 0
-, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a941c9c4ecaa0bb3ab530f13b0078be01">Debuff</a> = 1 &lt;&lt; 1
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438aa1595abbb4c3a326636dd178757cd6c1">Control</a> = 1 &lt;&lt; 2
-, <br />
-&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438abc77fc33686f58682dfe0704c435c4a6">DoT</a> = 1 &lt;&lt; 3
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438abc77fc33686f58682dfe0704c435c4a6">DoT</a> = 1 &lt;&lt; 3
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438adcaa2fceac50ca9147bb817517df900f">HoT</a> = 1 &lt;&lt; 4
-, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438af357105e6becc3076a3da9b43465051a">Heal</a> = 1 &lt;&lt; 5
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438af357105e6becc3076a3da9b43465051a">Heal</a> = 1 &lt;&lt; 5
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4">Shield</a> = 1 &lt;&lt; 6
-, <br />
-&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a68abcc3d0869f8a52c2b286b3c511dd3">Frozen</a> = 1 &lt;&lt; 7
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a68abcc3d0869f8a52c2b286b3c511dd3">Frozen</a> = 1 &lt;&lt; 7
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438ab80c545ea15439f0b585c86a6aab3226">Marked</a> = 1 &lt;&lt; 8
-, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a250adeee118a0038bd8a4a34bacaaf89">KnockUp</a> = 1 &lt;&lt; 9
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a250adeee118a0038bd8a4a34bacaaf89">KnockUp</a> = 1 &lt;&lt; 9
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a899db408cba5858a0f1701a2caef2628">Stealth</a> = 1 &lt;&lt; 10
-, <br />
-&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a3a9d1818d0d7f5646e63465baf7d366f">Poison</a> = 1 &lt;&lt; 11
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a3a9d1818d0d7f5646e63465baf7d366f">Poison</a> = 1 &lt;&lt; 11
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a11635778f116ce6922f6068638a39028">Burn</a> = 1 &lt;&lt; 12
-, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438afcb94b14624bcdf327d65d191cd85035">Ember</a> = 1 &lt;&lt; 13
-, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a70084f9751a3e440262a1d3215bf5cf0">Empowered</a> = 1 &lt;&lt; 14
 , <br />
-&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a243924bfd56a682be235638b53961e09">Sleep</a> = 1 &lt;&lt; 15
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438afcb94b14624bcdf327d65d191cd85035">Ember</a> = 1 &lt;&lt; 13
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a70084f9751a3e440262a1d3215bf5cf0">Empowered</a> = 1 &lt;&lt; 14
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a243924bfd56a682be235638b53961e09">Sleep</a> = 1 &lt;&lt; 15
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a5d1801a70481550d3de71ee64068b62d">Frostbite</a> = 1 &lt;&lt; 16
-, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438aae789b866db2fac36cf644f4cdba1267">Wet</a> = 1 &lt;&lt; 17
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438aae789b866db2fac36cf644f4cdba1267">Wet</a> = 1 &lt;&lt; 17
 <br />
  }</td></tr>
-<tr class="memdesc:a4e7ad4bd70e81312e11f8afc21650438"><td class="mdescLeft">&#160;</td><td class="mdescRight">Категориальные теги эффекта: для диспела по категории, AI-фильтров и быстрой битовой маски активных эффектов на юните (вики «6» §5.3–§5.4, «12» §2.1).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">More...</a><br /></td></tr>
+<tr class="memdesc:a4e7ad4bd70e81312e11f8afc21650438"><td class="mdescLeft">&#160;</td><td class="mdescRight">Категориальные теги эффекта: для диспела по категории, AI-фильтров и быстрой битовой маски активных эффектов на юните.  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">More...</a><br /></td></tr>
 <tr class="separator:a4e7ad4bd70e81312e11f8afc21650438"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53b7072a3ed6220e7fa7b6d7049532fa" id="r_a53b7072a3ed6220e7fa7b6d7049532fa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532fa">EncounterTier</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532faad13bc5b68b2bd9e18f29777db17cc563">Common</a>
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532faab13082ea3fe2642f1fd1fb76de03058b">Elite</a>
@@ -1237,12 +1244,12 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Категориальные теги эффекта: для диспела по категории, AI-фильтров и быстрой битовой маски активных эффектов на юните (вики «6» §5.3–§5.4, «12» §2.1). </p>
-<p><code>[Flags]</code> — один эффект может нести несколько категорий (напр. Debuff | DoT). </p>
+<p>Категориальные теги эффекта: для диспела по категории, AI-фильтров и быстрой битовой маски активных эффектов на юните. </p>
+<p><code>[Flags]</code> — один эффект может нести несколько категорий (напр. DoT | Poison).</p>
+<p><b>Полярности здесь нет и быть не должно.</b> «Бафф это или дебафф» отвечает EffectPolarity на самом <code>EffectData</code> — единственный владелец. Биты <code>Buff</code>/<code>Debuff</code> жили тут до 2026-08-07 вторым владельцем: логика их не читала ни разу, авторинг заполнял оба поля, и три ассета из 108 уже разъехались (<code>BanditConceal</code>, <code>BanditParryShield</code>, <code>RiposteCharge</code>). Нужен фильтр по полярности — спрашивай <code>def.Polarity</code>, а не маску. </p>
+<p>Значения оставшихся тегов НЕ пересчитаны: биты 0 и 1 просто больше не заняты. Сдвиг переписал бы смысл каждого числа в уже сохранённых ассетах.</p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438a6adf97f83acf6453d4a6a4b1070f3754" name="a4e7ad4bd70e81312e11f8afc21650438a6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25" name="a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25"></a>Buff&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438a941c9c4ecaa0bb3ab530f13b0078be01" name="a4e7ad4bd70e81312e11f8afc21650438a941c9c4ecaa0bb3ab530f13b0078be01"></a>Debuff&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438aa1595abbb4c3a326636dd178757cd6c1" name="a4e7ad4bd70e81312e11f8afc21650438aa1595abbb4c3a326636dd178757cd6c1"></a>Control&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438abc77fc33686f58682dfe0704c435c4a6" name="a4e7ad4bd70e81312e11f8afc21650438abc77fc33686f58682dfe0704c435c4a6"></a>DoT&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438adcaa2fceac50ca9147bb817517df900f" name="a4e7ad4bd70e81312e11f8afc21650438adcaa2fceac50ca9147bb817517df900f"></a>HoT&#160;</td><td class="fielddoc"></td></tr>
@@ -1394,6 +1401,36 @@ Enumerations</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aee083e738438161de13eeb944ce80deaad13bc5b68b2bd9e18f29777db17cc563" name="aee083e738438161de13eeb944ce80deaad13bc5b68b2bd9e18f29777db17cc563"></a>Common&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aee083e738438161de13eeb944ce80deaa2a31072f729cf6c21db67a11c9e8f433" name="aee083e738438161de13eeb944ce80deaa2a31072f729cf6c21db67a11c9e8f433"></a>Cursed&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aee083e738438161de13eeb944ce80deaa178ccf18b360e8cff0fc1a4eb404def6" name="aee083e738438161de13eeb944ce80deaa178ccf18b360e8cff0fc1a4eb404def6"></a>Divine&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a7a7584993f38887ac00f917e42b5aef3" name="a7a7584993f38887ac00f917e42b5aef3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a7584993f38887ac00f917e42b5aef3">&#9670;&#160;</a></span>OpposingSide</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a7a7584993f38887ac00f917e42b5aef3">Guildmaster.Data.Definitions.OpposingSide</a> : byte</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Кому принадлежит вторая сторона арены. </p>
+<p>Сторон всегда две; вопрос только в том, чья вторая.</p>
+<p><b>Заведено вместо буля «только своих» 07.08.2026</b> — тот отвечал сразу на два вопроса, и на втором врал. Из «чужую сторону не трогать» выводилось ещё и число сторон, по которым сеанс раскладывает участников (<code>ActivitySideAssignment</code>); когда кампания получила этот флаг, гость уехал на сторону врага и стал двигать монстров вместо своего отряда (наход. Макса на живом прогоне). </p>
+<p>Здесь фактов два, и они разные: <b>кто владеет</b> второй стороной и <b>что из этого следует</b>. Раскладывать участников по сторонам нужно ровно тогда, когда вторая сторона принадлежит игроку; распоряжаться стороной можно, когда она своя или ничья. Оба следствия считаются здесь же и в одном месте — выводить их заново на стороне потребителя и значит заводить второго владельца.</p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7a7584993f38887ac00f917e42b5aef3ad1e9f9f891de8f9a655739a01fbf68f0" name="a7a7584993f38887ac00f917e42b5aef3ad1e9f9f891de8f9a655739a01fbf68f0"></a>Encounter&#160;</td><td class="fielddoc"><p>Энкаунтер: врагов приносит узел. </p>
+<p>Игрокам они не принадлежат ни в каком смысле, и все участники сидят на одной стороне — они союзники. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7a7584993f38887ac00f917e42b5aef3a636da1d35e805b00eae0fcd8333f9234" name="a7a7584993f38887ac00f917e42b5aef3a636da1d35e805b00eae0fcd8333f9234"></a>Player&#160;</td><td class="fielddoc"><p>Другой игрок: стороны делятся между участниками сеанса. </p>
+<p>Пока — по порядку входа; когда у PvP появится лобби с выбором команды (заявка Макса 07.08.2026), источник сменится, а смысл — нет. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7a7584993f38887ac00f917e42b5aef3ae0c8e96c49f3dd73abbf509040db57f0" name="a7a7584993f38887ac00f917e42b5aef3ae0c8e96c49f3dd73abbf509040db57f0"></a>Unclaimed&#160;</td><td class="fielddoc"><p>Ничья: хозяина у второй стороны нет вовсе. </p>
+<p>Отсюда и свобода Ристалища — там противник такие же киты игрока, и собирает их он сам. Это не поблажка площадке, а следствие того, что забирать сторону не у кого. </p>
+</td></tr>
 </table>
 
 </div>

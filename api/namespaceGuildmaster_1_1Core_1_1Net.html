@@ -100,11 +100,17 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Core_1_1Net.ht
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Net_1_1DecisionKeys.html">DecisionKeys</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ключи гейта готовности: что именно подтверждают участники.  <a href="classGuildmaster_1_1Core_1_1Net_1_1DecisionKeys.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Net_1_1DecisionOptions.html">DecisionOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Варианты решения, у которого выбор ровно один — «да».  <a href="classGuildmaster_1_1Core_1_1Net_1_1DecisionOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html">ICoopSessionControl</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что интерфейсу нужно знать и уметь про кооп-сессию: создать, позвать, выйти, показать состояние.  <a href="interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1IReadyGate.html">IReadyGate</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Общее согласие: действие происходит, когда его подтвердили ВСЕ игроки сессии.  <a href="interfaceGuildmaster_1_1Core_1_1Net_1_1IReadyGate.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">ISharedDecision</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Общее решение группы: происходит то, что выбрали ВСЕ игроки сессии, и только когда выбрали одно и то же.  <a href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption.html">PeerLostOption</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Один вариант ответа в диалоге разрыва: что написано на кнопке и что она делает.  <a href="structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption.html#details">More...</a><br /></td></tr>
@@ -112,11 +118,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html">PeerLostRequest</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Связь с напарником оборвалась — показать это игроку и дать выбор.  <a href="structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent.html">ReadyGateChangedEvent</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько игроков подтвердили действие и сколько нужно.  <a href="structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1PlayerChoice.html">PlayerChoice</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Чей голос и за что он отдан.  <a href="structGuildmaster_1_1Core_1_1Net_1_1PlayerChoice.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Net_1_1ReadyKeys.html">ReadyKeys</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ключи гейта готовности: что именно подтверждают участники.  <a href="classGuildmaster_1_1Core_1_1Net_1_1ReadyKeys.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent.html">SharedDecisionChangedEvent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько игроков сделали выбор, сколько нужно и кто за что.  <a href="structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>

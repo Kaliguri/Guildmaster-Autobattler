@@ -114,8 +114,8 @@ Collaboration diagram for Guildmaster.Game.Session.Net.GuestActivityFollower:</d
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae4756c67a61e1c55bf1a3a0ce600fece" id="r_ae4756c67a61e1c55bf1a3a0ce600fece"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html#ae4756c67a61e1c55bf1a3a0ce600fece">GuestActivityFollower</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, <a class="el" href="classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost.html">ActivityHost</a> activities, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html">IActMapPresence</a> map, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence.html">Guildmaster.Core.Flow.IHubPresence</a> hub, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1IReadyGate.html">Guildmaster.Core.Net.IReadyGate</a> ready, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html">GuestRunState</a> runs)</td></tr>
-<tr class="separator:ae4756c67a61e1c55bf1a3a0ce600fece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4065fc8bc4eb539d1263458565e1e91" id="r_af4065fc8bc4eb539d1263458565e1e91"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html#af4065fc8bc4eb539d1263458565e1e91">GuestActivityFollower</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, <a class="el" href="classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost.html">ActivityHost</a> activities, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IActMapPresence.html">IActMapPresence</a> map, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence.html">Guildmaster.Core.Flow.IHubPresence</a> hub, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">Guildmaster.Core.Net.ISharedDecision</a> ready, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html">GuestRunState</a> runs, MessagePipe.IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html">Guildmaster.Guild.OpenOutcomeRequest</a> &gt; outcomePub, MessagePipe.ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">Guildmaster.Presentation.BattleEndedEvent</a> &gt; endedSub, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html">Guildmaster.Core.Net.ICoopSessionControl</a> coop, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html">Guildmaster.Core.Players.ILocalPlayer</a> localPlayer)</td></tr>
+<tr class="separator:af4065fc8bc4eb539d1263458565e1e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf3b65fbc038301f9a271c23fa608ac1" id="r_abf3b65fbc038301f9a271c23fa608ac1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html#abf3b65fbc038301f9a271c23fa608ac1">Start</a> ()</td></tr>
 <tr class="memdesc:abf3b65fbc038301f9a271c23fa608ac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подписаться и спросить хоста, где идёт игра.  <br /></td></tr>
 <tr class="separator:abf3b65fbc038301f9a271c23fa608ac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,8 +134,8 @@ Properties</h2></td></tr>
 <p><b>Бой у гостя — это скоуп-приёмник.</b> Открылась арена у хоста — рождается своя, с приёмником чанков и составом; закрылась — умирает вместе со всем, что накопила. Отсюда же бесплатно закрылся долг «повторный бой у гостя не начинается»: сбрасывать номера чанков и реестр стало нечему, потому что новый бой — это новый скоуп.</p>
 <p><b>Порядок применения важен:</b> сперва мероприятие, потом арена. Арену открывает <code>BattleHost</code>, который живёт ВНУТРИ мероприятия, — до него его просто нет.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae4756c67a61e1c55bf1a3a0ce600fece" name="ae4756c67a61e1c55bf1a3a0ce600fece"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4756c67a61e1c55bf1a3a0ce600fece">&#9670;&#160;</a></span>GuestActivityFollower()</h2>
+<a id="af4065fc8bc4eb539d1263458565e1e91" name="af4065fc8bc4eb539d1263458565e1e91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4065fc8bc4eb539d1263458565e1e91">&#9670;&#160;</a></span>GuestActivityFollower()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -170,14 +170,38 @@ Properties</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1IReadyGate.html">Guildmaster::Core::Net::IReadyGate</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">Guildmaster::Core::Net::ISharedDecision</a>&#160;</td>
           <td class="paramname"><em>ready</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html">GuestRunState</a>&#160;</td>
-          <td class="paramname"><em>runs</em>&#160;</td>
+          <td class="paramname"><em>runs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">MessagePipe::IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html">Guildmaster::Guild::OpenOutcomeRequest</a> &gt;&#160;</td>
+          <td class="paramname"><em>outcomePub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">MessagePipe::ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">Guildmaster::Presentation::BattleEndedEvent</a> &gt;&#160;</td>
+          <td class="paramname"><em>endedSub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html">Guildmaster::Core::Net::ICoopSessionControl</a>&#160;</td>
+          <td class="paramname"><em>coop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html">Guildmaster::Core::Players::ILocalPlayer</a>&#160;</td>
+          <td class="paramname"><em>localPlayer</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

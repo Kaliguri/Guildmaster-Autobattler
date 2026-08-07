@@ -136,9 +136,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5bddd571ce3643d276bf263398efbede" id="r_a5bddd571ce3643d276bf263398efbede"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#a5bddd571ce3643d276bf263398efbede">SetGhost</a> (bool active, Vector2 feet, in <a class="el" href="structGuildmaster_1_1Presentation_1_1UnitSilhouette.html">UnitSilhouette</a> silhouette, bool valid)</td></tr>
 <tr class="memdesc:a5bddd571ce3643d276bf263398efbede"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ghost-призрак при drag (QA #9): полупрозрачная копия силуэта юнита, поставленная ногами в <em>feet</em> .  <br /></td></tr>
 <tr class="separator:a5bddd571ce3643d276bf263398efbede"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f7f8ec9d0398fc863ab32b10a6e31e6" id="r_a7f7f8ec9d0398fc863ab32b10a6e31e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#a7f7f8ec9d0398fc863ab32b10a6e31e6">SetUnitRings</a> (IReadOnlyList&lt;(Vector2 center, float radius, <a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408b">RingState</a> state)&gt; rings)</td></tr>
-<tr class="memdesc:a7f7f8ec9d0398fc863ab32b10a6e31e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Круги-опоры под ногами team-0 юнитов (QA #20/#3/#4): показывают «место» юнита на поле, видны ВСЕГДА (читаемость).  <br /></td></tr>
-<tr class="separator:a7f7f8ec9d0398fc863ab32b10a6e31e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1f14d88568089f1cfa522028246e369" id="r_ae1f14d88568089f1cfa522028246e369"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ae1f14d88568089f1cfa522028246e369">SetUnitRings</a> (IReadOnlyList&lt;(Vector2 center, float radius, <a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408b">RingState</a> state, Color? tint)&gt; rings)</td></tr>
+<tr class="memdesc:ae1f14d88568089f1cfa522028246e369"><td class="mdescLeft">&#160;</td><td class="mdescRight">Круги-опоры под ногами team-0 юнитов (QA #20/#3/#4): показывают «место» юнита на поле, видны ВСЕГДА (читаемость).  <br /></td></tr>
+<tr class="separator:ae1f14d88568089f1cfa522028246e369"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Рантайм-оверлей фазы расстановки (шаг 4) на Shapes + спрайт-призрак: рамки зон (свои зелёные, вражьи красные — QA #10), круги-опоры («footprint») под ногами КАЖДОГО юнита (QA #20/#3, всегда видны, ярче на наведении, ярко+валидность у ног призрака при drag — QA #4) и ghost-призрак — полупрозрачная копия силуэта юнита, следующая за курсором при drag (QA #9). </p>
@@ -304,8 +304,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a7f7f8ec9d0398fc863ab32b10a6e31e6" name="a7f7f8ec9d0398fc863ab32b10a6e31e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f7f8ec9d0398fc863ab32b10a6e31e6">&#9670;&#160;</a></span>SetUnitRings()</h2>
+<a id="ae1f14d88568089f1cfa522028246e369" name="ae1f14d88568089f1cfa522028246e369"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1f14d88568089f1cfa522028246e369">&#9670;&#160;</a></span>SetUnitRings()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -316,7 +316,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">void Guildmaster.Presentation.DeploymentView.SetUnitRings </td>
           <td>(</td>
-          <td class="paramtype">IReadOnlyList&lt;(Vector2 center, float radius, <a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408b">RingState</a> state)&gt;&#160;</td>
+          <td class="paramtype">IReadOnlyList&lt;(Vector2 center, float radius, <a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408b">RingState</a> state, Color? tint)&gt;&#160;</td>
           <td class="paramname"><em>rings</em></td><td>)</td>
           <td></td>
         </tr>
@@ -329,7 +329,9 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Круги-опоры под ногами team-0 юнитов (QA #20/#3/#4): показывают «место» юнита на поле, видны ВСЕГДА (читаемость). </p>
-<p>Наведённый — ярче/толще (реакция). Перетаскиваемый передаётся с состоянием DragValid/ DragInvalid и позицией у ног ПРИЗРАКА (следует за курсором) — так видно, кого тащишь и можно ли поставить. Пул переиспользуется покадрово, лишние круги гасятся. </p>
+<p>Наведённый — ярче/толще (реакция). Перетаскиваемый передаётся с состоянием DragValid/ DragInvalid и позицией у ног ПРИЗРАКА (следует за курсором) — так видно, кого тащишь и можно ли поставить. Пул переиспользуется покадрово, лишние круги гасятся.</p>
+<p>Круги-опоры под бойцами. <code>tint</code> перекрывает цвет состояния — им красится ЧУЖОЕ наведение мейн-цветом того, кто навёл.</p>
+<p>Цвет приходит снаружи, а не становится пятым состоянием: состояний у кольца четыре и все они про мою руку («навёл», «тащу», «сюда можно»), а мейн-цвет — про чужого человека и берётся из состава сеанса. Загони его в перечисление — и цвет игрока пришлось бы дублировать в показе. </p>
 
 </div>
 </div>

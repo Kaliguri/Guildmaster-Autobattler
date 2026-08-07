@@ -10,5 +10,5 @@ var classGuildmaster_1_1Presentation_1_1DeploymentView =
     [ "SetActive", "classGuildmaster_1_1Presentation_1_1DeploymentView.html#a6f1ef09cee0f9d35593249f3c19ca503", null ],
     [ "SetExtendedHighlight", "classGuildmaster_1_1Presentation_1_1DeploymentView.html#abe41165f809ba8236277924e5fa61f3d", null ],
     [ "SetGhost", "classGuildmaster_1_1Presentation_1_1DeploymentView.html#a5bddd571ce3643d276bf263398efbede", null ],
-    [ "SetUnitRings", "classGuildmaster_1_1Presentation_1_1DeploymentView.html#a7f7f8ec9d0398fc863ab32b10a6e31e6", null ]
+    [ "SetUnitRings", "classGuildmaster_1_1Presentation_1_1DeploymentView.html#ae1f14d88568089f1cfa522028246e369", null ]
 ];

@@ -1,5 +1,5 @@
 <map id="Guildmaster.Data.Definitions.ActivitySetup" name="Guildmaster.Data.Definitions.ActivitySetup">
-<area shape="rect" id="Node000001" title="С чем открыто мероприятие: вид плюс ограничения площадки." alt="" coords="18,208,225,428"/>
+<area shape="rect" id="Node000001" title="С чем открыто мероприятие: вид плюс ограничения площадки." alt="" coords="18,208,225,468"/>
 <area shape="rect" id="Node000002" href="$structGuildmaster_1_1Data_1_1Definitions_1_1ProvingGroundsSetupRequest.html" title="Заказ состава Ристалища: кто встаёт на площадку вместо расклада из ProvingGroundsConfig." alt="" coords="5,5,237,145"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,145,124,191,119,191,119,145"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,146,124,192,119,192,119,146"/>
 </map>

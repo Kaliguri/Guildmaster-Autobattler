@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Session.Net.NodeStageState" name="Guildmaster.Game.Session.Net.NodeStageState">
+<area shape="rect" id="Node000001" title="Шаг узла с содержимым: что на экране и из чего выбирают." alt="" coords="17,119,212,319"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,224,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,84,117,119,112,119,112,84"/>
+</map>

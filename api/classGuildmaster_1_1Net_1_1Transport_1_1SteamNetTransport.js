@@ -10,6 +10,7 @@ var classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport =
     [ "StartHost", "classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#af73214e84df78c6507dcf77cb0ab85c5", null ],
     [ "MaxMessageBytes", "classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#a38c294ef78ccd549f1197ee539b7a250", null ],
     [ "VirtualPort", "classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#a41122fa6762ce1877db86017c6395a81", null ],
+    [ "ConnectedPeers", "classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#af4ec28427fa2a9826a66b0e347dca90e", null ],
     [ "IsHost", "classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#a551a40a1100d170ffa048d08ce2d2fbf", null ],
     [ "IsRunning", "classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#aa28ddb78366751c502e29da28b53e73c", null ],
     [ "LocalPeerId", "classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#a915404ed7384ea3a8fc75e34e577227a", null ],

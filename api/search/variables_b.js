@@ -10,8 +10,8 @@ var searchData=
   ['linewidth_7',['LineWidth',['../structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html#a6cde610f92a7d3758ef89a0882134286',1,'Guildmaster::Presentation::Effects::HitFormParams']]],
   ['load_8',['Load',['../structGuildmaster_1_1Core_1_1Arena_1_1ArenaCellPhase.html#ad956e0762e71020ebda8ff55cea2f16f',1,'Guildmaster::Core::Arena::ArenaCellPhase']]],
   ['local_9',['local',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyCut.html#a045927829fb31563e79cdb50e5728919',1,'Guildmaster.Presentation.Body.BodyCut.Local'],['../structGuildmaster_1_1Presentation_1_1SilhouettePart.html#a3bb6a2dc13911f6e4725681cc124bebd',1,'Guildmaster.Presentation.SilhouettePart.Local']]],
-  ['localfolder_10',['LocalFolder',['../classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html#a8af81c18f6f5dbb7f0c0313746e90903',1,'Guildmaster::Game::Services::LocalJsonFileSaveService']]],
-  ['locallyready_11',['LocallyReady',['../structGuildmaster_1_1Core_1_1Net_1_1ReadyGateChangedEvent.html#aa6be39ec4a8dcd1ee37c3861cc520b8f',1,'Guildmaster::Core::Net::ReadyGateChangedEvent']]],
+  ['localchoice_10',['LocalChoice',['../structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent.html#ac6a1410a8480fb54de6f3a766bba5df8',1,'Guildmaster::Core::Net::SharedDecisionChangedEvent']]],
+  ['localfolder_11',['LocalFolder',['../classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html#a8af81c18f6f5dbb7f0c0313746e90903',1,'Guildmaster::Game::Services::LocalJsonFileSaveService']]],
   ['localplayerid_12',['LocalPlayerId',['../structGuildmaster_1_1Guild_1_1Commands_1_1RunCommand.html#ab7442b5c34e29201a8b280718190c9a0',1,'Guildmaster::Guild::Commands::RunCommand']]],
   ['lockey_13',['LocKey',['../structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption.html#abd79f5f90d459f385eb5f51e5d3fbdeb',1,'Guildmaster::Core::Net::PeerLostOption']]],
   ['lookaheadticks_14',['LookaheadTicks',['../classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a84d073b342d11e9058a22285ef4dd543',1,'Guildmaster::Combat::Tape::BattleTapePlayback']]]

@@ -103,13 +103,16 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Definitions.EventChoice:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice__coll__graph.svg" width="218" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice__coll__graph.svg" width="218" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a53145fd7d0109ee8eed0522b6d6decbb" id="r_a53145fd7d0109ee8eed0522b6d6decbb"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html">EventEffect</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice.html#a53145fd7d0109ee8eed0522b6d6decbb">Effects</a><code> [get]</code></td></tr>
 <tr class="separator:a53145fd7d0109ee8eed0522b6d6decbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87fdb070a5461b5ada6e751090fefb8f" id="r_a87fdb070a5461b5ada6e751090fefb8f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice.html#a87fdb070a5461b5ada6e751090fefb8f">GoldCost</a><code> [get]</code></td></tr>
+<tr class="memdesc:a87fdb070a5461b5ada6e751090fefb8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько золота вариант стоит игроку ИТОГО: НЕТТО всех последствий-золота, взятое со знаком «минус».  <br /></td></tr>
+<tr class="separator:a87fdb070a5461b5ada6e751090fefb8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Вариант ответа в текстовом ивенте: последствия выбора. Тексты — по ключам из id ивента. </p>
@@ -133,6 +136,33 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a87fdb070a5461b5ada6e751090fefb8f" name="a87fdb070a5461b5ada6e751090fefb8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87fdb070a5461b5ada6e751090fefb8f">&#9670;&#160;</a></span>GoldCost</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Data.Definitions.EventChoice.GoldCost</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько золота вариант стоит игроку ИТОГО: НЕТТО всех последствий-золота, взятое со знаком «минус». </p>
+<p>Ноль — вариант ничего не стоит или приносит прибыль.</p>
+<p>Считается из самих последствий, а не отдельным полем цены: объявленная дважды цена разъедется с тем, что реально списывается, и разъедется молча — автор поправит одно число из двух. Здесь автор пишет «−50» ровно один раз, а гейт доступности и транзакция читают его оба.</p>
+<p>Именно нетто, а не сумма расходов: вариант «получишь сотню, отдашь тридцать» доступен и с пустым кошельком, потому что в сумме он приносит. Считать по расходной части значило бы гасить выгодный выбор перед тем, кому он нужнее всего.</p>
 
 </div>
 </div>

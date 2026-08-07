@@ -158,6 +158,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a551a40a1100d170ffa048d08ce2d2fbf" id="r_a551a40a1100d170ffa048d08ce2d2fbf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#a551a40a1100d170ffa048d08ce2d2fbf">IsHost</a><code> [get]</code></td></tr>
 <tr class="memdesc:a551a40a1100d170ffa048d08ce2d2fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мы ли авторитет. Всё, что решает исход, считает хост.  <br /></td></tr>
 <tr class="separator:a551a40a1100d170ffa048d08ce2d2fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4ec28427fa2a9826a66b0e347dca90e" id="r_af4ec28427fa2a9826a66b0e347dca90e"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#af4ec28427fa2a9826a66b0e347dca90e">ConnectedPeers</a><code> [get]</code></td></tr>
+<tr class="memdesc:af4ec28427fa2a9826a66b0e347dca90e"><td class="mdescLeft">&#160;</td><td class="mdescRight">С кем соединение уже стоит прямо сейчас, не считая себя.  <br /></td></tr>
+<tr class="separator:af4ec28427fa2a9826a66b0e347dca90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a915404ed7384ea3a8fc75e34e577227a" id="r_a915404ed7384ea3a8fc75e34e577227a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#a915404ed7384ea3a8fc75e34e577227a">LocalPeerId</a> = <a class="el" href="classGuildmaster_1_1Net_1_1Transport_1_1NetPeer.html#abf9dee42e812c87bec8167c0754e2883">NetPeer.NoPeer</a><code> [get]</code></td></tr>
 <tr class="memdesc:a915404ed7384ea3a8fc75e34e577227a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Наш номер в сессии. У хоста — ноль; гостю его сообщает хост при рукопожатии.  <br /></td></tr>
 <tr class="separator:a915404ed7384ea3a8fc75e34e577227a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -488,6 +491,35 @@ Events</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="af4ec28427fa2a9826a66b0e347dca90e" name="af4ec28427fa2a9826a66b0e347dca90e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4ec28427fa2a9826a66b0e347dca90e">&#9670;&#160;</a></span>ConnectedPeers</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IReadOnlyList&lt;int&gt; Guildmaster.Net.Transport.SteamNetTransport.ConnectedPeers</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>С кем соединение уже стоит прямо сейчас, не считая себя. </p>
+<p>У хоста — подключённые гости, у гостя — хозяин (или пусто, пока соединение не поднялось).</p>
+<p><b>Спросить состав можно, а не только услышать о его смене</b> (07.08.2026). Транспорт поднимается на входе в игру, а всё, что ведёт список участников — состав сеанса, гейт готовности, — рождается позже, вместе с сеансом, и пересоздаётся на каждой смене режима. Пока существовали только события, эти списки были слепы к уже подключённому напарнику: он не появлялся ни в панели участников, ни в счёте «(N/M)», и хозяин узнавал о нём только когда тот отключался (наход. Макса на живом прогоне). </p>
+<p>Список — <b>ответ на момент вызова</b>; держать на него ссылку нельзя, реализация вправе переиспользовать буфер.</p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#a15a1e64b00496b0d95df3059429582ee">Guildmaster.Net.Transport.INetTransport</a>.</p>
+
+</div>
+</div>
 <a id="a551a40a1100d170ffa048d08ce2d2fbf" name="a551a40a1100d170ffa048d08ce2d2fbf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a551a40a1100d170ffa048d08ce2d2fbf">&#9670;&#160;</a></span>IsHost</h2>
 

@@ -1,6 +1,6 @@
 var classGuildmaster_1_1UI_1_1MenuRouter =
 [
-    [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html#a0816879dcbf446224c51b18146c17f65", null ],
+    [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html#a27e339406aff6b9fa9deaeb2721a493e", null ],
     [ "CloseDevOverlays", "classGuildmaster_1_1UI_1_1MenuRouter.html#ab91838df5c8feaef36370ecd72f0be98", null ],
     [ "ConfirmAsync", "classGuildmaster_1_1UI_1_1MenuRouter.html#ab054a900ca2a46bbdd48c0db22fce2a3", null ],
     [ "Dispose", "classGuildmaster_1_1UI_1_1MenuRouter.html#acec1b0172c30e27eac1f7992dd3dc04e", null ],

@@ -104,13 +104,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Core_1_1Players_1
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Players.SessionPlayer:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer__coll__graph.svg" width="194" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer__coll__graph.svg" width="194" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa8d240b08481efd352e41dba7bfb2c0b" id="r_aa8d240b08481efd352e41dba7bfb2c0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html#aa8d240b08481efd352e41dba7bfb2c0b">SessionPlayer</a> (int id, string name, int team, int colorIndex, string cursorSkinId=null)</td></tr>
-<tr class="separator:aa8d240b08481efd352e41dba7bfb2c0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71305b9f1daa7a470c61e6c85fa7702e" id="r_a71305b9f1daa7a470c61e6c85fa7702e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html#a71305b9f1daa7a470c61e6c85fa7702e">SessionPlayer</a> (int id, string name, int team, int colorIndex, string cursorSkinId=null, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379">PlayerWhere</a> where=<a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379a88183b946cc5f0e8c96b2e66e1c74a7e">PlayerWhere.Unknown</a>)</td></tr>
+<tr class="separator:a71305b9f1daa7a470c61e6c85fa7702e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96c68676224358716ee9dff1e55d0f5b" id="r_a96c68676224358716ee9dff1e55d0f5b"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html#a96c68676224358716ee9dff1e55d0f5b">ToString</a> ()</td></tr>
 <tr class="separator:a96c68676224358716ee9dff1e55d0f5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -131,13 +131,16 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a1af0290b91fc2190a67f4997ee4a1b49" id="r_a1af0290b91fc2190a67f4997ee4a1b49"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html#a1af0290b91fc2190a67f4997ee4a1b49">CursorSkinId</a></td></tr>
 <tr class="memdesc:a1af0290b91fc2190a67f4997ee4a1b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Скин курсора (<code>cursor. </code> <br /></td></tr>
 <tr class="separator:a1af0290b91fc2190a67f4997ee4a1b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a454ae4e9463eaa9e517274b02aa24dd0" id="r_a454ae4e9463eaa9e517274b02aa24dd0"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379">PlayerWhere</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html#a454ae4e9463eaa9e517274b02aa24dd0">Where</a></td></tr>
+<tr class="memdesc:a454ae4e9463eaa9e517274b02aa24dd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Где он сейчас — значок в списке участников.  <br /></td></tr>
+<tr class="separator:a454ae4e9463eaa9e517274b02aa24dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Участник сеанса: кто он, за какую сторону играет и каким цветом подписан. </p>
 <p><b>Цвет едет ИНДЕКСОМ, а не значением.</b> Единственный владелец цвета в проекте — палитра; сеанс раздаёт места в наборе игровых цветов, а какого они оттенка, решает палитра при отрисовке. Положи мы сюда <code>Color</code> — у цвета появился бы второй владелец, живущий по сети. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa8d240b08481efd352e41dba7bfb2c0b" name="aa8d240b08481efd352e41dba7bfb2c0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8d240b08481efd352e41dba7bfb2c0b">&#9670;&#160;</a></span>SessionPlayer()</h2>
+<a id="a71305b9f1daa7a470c61e6c85fa7702e" name="a71305b9f1daa7a470c61e6c85fa7702e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71305b9f1daa7a470c61e6c85fa7702e">&#9670;&#160;</a></span>SessionPlayer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,7 +176,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>cursorSkinId</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>cursorSkinId</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379">PlayerWhere</a>&#160;</td>
+          <td class="paramname"><em>where</em> = <code><a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379a88183b946cc5f0e8c96b2e66e1c74a7e">PlayerWhere::Unknown</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -288,6 +297,23 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>За какую сторону играет. В кампании у всех одна, в PvP — разные. </p>
+
+</div>
+</div>
+<a id="a454ae4e9463eaa9e517274b02aa24dd0" name="a454ae4e9463eaa9e517274b02aa24dd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a454ae4e9463eaa9e517274b02aa24dd0">&#9670;&#160;</a></span>Where</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly <a class="el" href="namespaceGuildmaster_1_1Core_1_1Players.html#abab21bb793a5b19793966c01741b7379">PlayerWhere</a> Guildmaster.Core.Players.SessionPlayer.Where</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Где он сейчас — значок в списке участников. </p>
+<p>Едет составом, а не присутствием: присутствие ненадёжно и шлётся по движению курсора, а стоящий в меню игрок курсором не двигает, и последнее известное место осталось бы врать. </p>
 
 </div>
 </div>
