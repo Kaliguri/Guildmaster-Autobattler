@@ -22,24 +22,7 @@ namespace Guildmaster.Tests.EditMode.Content
         public void SimTuningConfig_MatchesCodeDefaults()
         {
             SimTuningConfig cfg = LoadSingle<SimTuningConfig>();
-            SimTuning s = cfg.ToSnapshot();
-            SimTuning d = SimTuning.Default;
-
-            // Единый источник правды: правка баланса меняет и SimTuning.Default, и ассет вместе (иначе — дрейф).
-            Assert.AreEqual(d.BodyRadiusPerSize,         s.BodyRadiusPerSize,         1e-6f);
-            Assert.AreEqual(d.SeparationStrength,        s.SeparationStrength,        1e-6f);
-            Assert.AreEqual(d.SeparationIterations,      s.SeparationIterations);
-            Assert.AreEqual(d.SeparationSameTeamScale,   s.SeparationSameTeamScale,   1e-6f);
-            Assert.AreEqual(d.ProjectileHitRadiusFactor, s.ProjectileHitRadiusFactor, 1e-6f);
-            Assert.AreEqual(d.ProjectileDespawnMargin,   s.ProjectileDespawnMargin,   1e-6f);
-            Assert.AreEqual(d.KiteFleeFactor,            s.KiteFleeFactor,            1e-6f);
-            Assert.AreEqual(d.GlobalSearchRadius,        s.GlobalSearchRadius,        1e-6f);
-            Assert.AreEqual(d.FleeThreatWeight,          s.FleeThreatWeight,          1e-6f);
-            Assert.AreEqual(d.FleeHomeWeight,            s.FleeHomeWeight,            1e-6f);
-            Assert.AreEqual(d.FleeWallWeight,            s.FleeWallWeight,            1e-6f);
-            Assert.AreEqual(d.FleeWallMargin,            s.FleeWallMargin,            1e-6f);
-            Assert.AreEqual(d.FleeThreatRadius,          s.FleeThreatRadius,          1e-6f);
-            Assert.AreEqual(d.KiteStrafeWeight,          s.KiteStrafeWeight,          1e-6f);
+            AssertMatchesCodeDefaults(cfg.ToSnapshot(), "ассет");
         }
 
         /// <summary>
@@ -55,28 +38,48 @@ namespace Guildmaster.Tests.EditMode.Content
             var fresh = ScriptableObject.CreateInstance<SimTuningConfig>();
             try
             {
-                SimTuning s = fresh.ToSnapshot();
-                SimTuning d = SimTuning.Default;
-
-                Assert.AreEqual(d.BodyRadiusPerSize,         s.BodyRadiusPerSize,         1e-6f);
-                Assert.AreEqual(d.SeparationStrength,        s.SeparationStrength,        1e-6f);
-                Assert.AreEqual(d.SeparationIterations,      s.SeparationIterations);
-                Assert.AreEqual(d.SeparationSameTeamScale,   s.SeparationSameTeamScale,   1e-6f);
-                Assert.AreEqual(d.ProjectileHitRadiusFactor, s.ProjectileHitRadiusFactor, 1e-6f);
-                Assert.AreEqual(d.ProjectileDespawnMargin,   s.ProjectileDespawnMargin,   1e-6f);
-                Assert.AreEqual(d.KiteFleeFactor,            s.KiteFleeFactor,            1e-6f);
-                Assert.AreEqual(d.GlobalSearchRadius,        s.GlobalSearchRadius,        1e-6f);
-                Assert.AreEqual(d.FleeThreatWeight,          s.FleeThreatWeight,          1e-6f);
-                Assert.AreEqual(d.FleeHomeWeight,            s.FleeHomeWeight,            1e-6f);
-                Assert.AreEqual(d.FleeWallWeight,            s.FleeWallWeight,            1e-6f);
-                Assert.AreEqual(d.FleeWallMargin,            s.FleeWallMargin,            1e-6f);
-                Assert.AreEqual(d.FleeThreatRadius,          s.FleeThreatRadius,          1e-6f);
-                Assert.AreEqual(d.KiteStrafeWeight,          s.KiteStrafeWeight,          1e-6f);
+                AssertMatchesCodeDefaults(fresh.ToSnapshot(), "свежий SO");
             }
             finally
             {
                 Object.DestroyImmediate(fresh);
             }
+        }
+
+        /// <summary>
+        /// Сверяет снапшот с <see cref="SimTuning.Default"/> ПО ВСЕМ полям структуры, перечисляя их
+        /// рефлексией.
+        /// </summary>
+        /// <remarks>
+        /// Рукописный список полей — сам по себе второй владелец: он отстаёт от структуры молча, и ровно
+        /// это здесь и случилось. Проверялось 14 полей из 32 — восемнадцать позднейших (смещение,
+        /// овертайм, спринт, рекаст, маскировка, комбо, отступление) могли разъехаться между ассетом и
+        /// кодом, никого не потревожив, при том что стенд и зеркальные тесты гоняют бой на код-дефолтах.
+        /// Найдено панелью аудита 2026-08-07.
+        /// </remarks>
+        private static void AssertMatchesCodeDefaults(SimTuning actual, string what)
+        {
+            SimTuning expected = SimTuning.Default;
+            var drift = new System.Collections.Generic.List<string>();
+
+            System.Reflection.FieldInfo[] fields = typeof(SimTuning).GetFields(
+                System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            Assert.IsNotEmpty(fields, "Рефлексия не нашла полей SimTuning — страховка молчала бы всегда.");
+
+            foreach (System.Reflection.FieldInfo f in fields)
+            {
+                object a = f.GetValue(actual);
+                object e = f.GetValue(expected);
+                bool same = a is float af && e is float ef
+                    ? Mathf.Abs(af - ef) <= 1e-6f
+                    : Equals(a, e);
+
+                if (!same) drift.Add($"{f.Name}: {what} {a} против кода {e}");
+            }
+
+            Assert.IsEmpty(drift,
+                "Единый источник правды: правка баланса меняет и SimTuning.Default, и ассет вместе.\n  "
+                + string.Join("\n  ", drift));
         }
 
         /// <summary>
@@ -114,6 +117,50 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.IsEmpty(missing,
                 $"{type.Name}: этих полей нет в ассете, значит они приезжают из кода — " +
                 $"пересохрани ассет: {string.Join(", ", missing)}");
+        }
+
+        // --- Лестницы дальности: две штуки, связанные сдвигом ---
+
+        /// <summary>
+        /// <c>CastRangeBand</c> — та же лестница, что <c>AttackRangeBand</c>, плюс нулевой дефолт
+        /// «как у авто-атаки». Проверяем, что она и правда та же: имена, порядок и сдвиг ровно на единицу.
+        /// </summary>
+        /// <remarks>
+        /// Связь между двумя enum держит одна строка приведения в <c>RuntimeUnitFactory</c>
+        /// (<c>(AttackRangeBand)(ability.CastRange - 1)</c>). Добавь ступень в один список и забудь про
+        /// второй — и умения молча съедут на ступень: компилятор такого приведения не замечает, а в бою
+        /// это выглядит как «лучник почему-то кастует с дистанции метателя». Инвариант живёт между тремя
+        /// файлами, значит держать его может только тест (панель аудита 2026-08-07).
+        /// </remarks>
+        [Test]
+        public void RangeBands_CastLadderMirrorsAttackLadder()
+        {
+            string[] attack = System.Enum.GetNames(typeof(AttackRangeBand));
+            string[] cast   = System.Enum.GetNames(typeof(CastRangeBand));
+
+            Assert.AreEqual(nameof(CastRangeBand.LikeAutoAttack), cast[0],
+                "Нулевая ступень каста — дефолт «как у авто-атаки»; на нём стоит весь сдвиг.");
+            Assert.AreEqual(attack.Length + 1, cast.Length,
+                "У лестницы каста ровно на одну ступень больше — дефолт. Ступень добавили в один список, а не в оба.");
+
+            for (int i = 0; i < attack.Length; i++)
+            {
+                Assert.AreEqual(attack[i], cast[i + 1], $"Ступень {i}: имена лестниц разошлись.");
+
+                var castBand = (CastRangeBand)System.Enum.Parse(typeof(CastRangeBand), cast[i + 1]);
+                var attackBand = (AttackRangeBand)System.Enum.Parse(typeof(AttackRangeBand), attack[i]);
+                Assert.AreEqual((int)attackBand, (int)castBand - 1,
+                    $"Ступень {attack[i]}: приведение (AttackRangeBand)(CastRange - 1) даёт не её.");
+            }
+        }
+
+        /// <summary>Число за ступенью есть у КАЖДОЙ ступени: иначе <c>RangeOf</c> тихо отдаёт ближний бой.</summary>
+        [Test]
+        public void StatsConfig_CarriesADistanceForEveryRangeBand()
+        {
+            StatsConfig cfg = LoadSingle<StatsConfig>();
+            foreach (AttackRangeBand band in System.Enum.GetValues(typeof(AttackRangeBand)))
+                Assert.Greater(cfg.RangeOf(band), 0f, $"Ступень {band} осталась без дистанции в StatsConfig.");
         }
 
         // --- §8 правило 5: диапазоны ---

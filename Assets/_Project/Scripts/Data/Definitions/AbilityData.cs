@@ -211,17 +211,12 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private bool _areaAtTarget;
 
         [Header("Displacement (§9.9) — Монах")]
-        [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. На линии полёта — урон-ядро.")]
+        [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. " +
+                 "Урона на линии отбрасывания НЕ наносит: ядро — свойство рывка, и живёт на WhirlDashLandingComponent.")]
         [SerializeField] private bool _displaces;
 
         [Tooltip("Дистанция отбрасывания (фиксированная, мировые единицы).")]
         [SerializeField] private float _displaceDistance = 4f;
-
-        [Tooltip("Множитель урона-ядра от AutoAttackDamage кастующего (0 = без урона на линии).")]
-        [SerializeField] private float _displaceDamageMult = 1f;
-
-        [Tooltip("Ширина линии «ядра» (мировые единицы).")]
-        [SerializeField] private float _displaceWidth = 1f;
 
         [Header("Visual")]
         [Tooltip("Слот визуала каста: проигрывается клип AnimationArchetypeData.SkillClip(этот слот). По умолчанию Skill1.")]
@@ -430,8 +425,6 @@ namespace Guildmaster.Data.Definitions
 
         public bool Displaces => _displaces;
         public float DisplaceDistance => _displaceDistance;
-        public float DisplaceDamageMult => _displaceDamageMult;
-        public float DisplaceWidth => _displaceWidth;
         public TagData[] InfoTags => _infoTags;
 
         /// <summary>Слот визуала каста (клип из <see cref="AnimationArchetypeData.SkillClip"/>).</summary>

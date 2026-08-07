@@ -761,6 +761,8 @@ namespace Guildmaster.Combat
                     : Vector2.right);
 
             // Порядок аргументов — (кого двигаем, кто двигает): толкаемый здесь ЦЕЛЬ, а не кастующий.
+            // Ядра нет: голый толчок только двигает. Урон на линии умеет рывок, и он же им владеет
+            // (WhirlDashLandingComponent) — поля «урон-ядра» на AbilityData сняты 2026-08-07 как мёртвые.
             ctx.Displace(new DisplaceRequest(
                 target, caster, dir, data.DisplaceDistance,
                 cannonball: false, damage: 0f, damageType: DamageType.Pure, width: 0f));
