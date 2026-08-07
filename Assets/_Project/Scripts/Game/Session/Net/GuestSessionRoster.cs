@@ -75,7 +75,7 @@ namespace Guildmaster.Game.Session.Net
             them.Team == me.Team;
 
         /// <summary>Раздача сторон — работа хоста. У гостя вызов законен и не делает ничего.</summary>
-        public void AssignSides(int sides) { }
+        public void SplitBetweenSides(bool split) { }
 
         private void OnPeerConnected(int peerId)
         {

@@ -754,13 +754,17 @@ namespace Guildmaster.Game
 
         /// <summary>
         /// Распоряжается ли этот участник сеанса той стороной. Своя сторона у автора спрашивается в
-        /// составе сеанса — единственном владельце факта «кто за кого играет».
+        /// составе сеанса — единственном владельце факта «кто за кого играет»; само право — у
+        /// мероприятия, и то же самое, по которому руки игрока решают, кого вообще можно взять.
         /// </summary>
         private bool MayCommand(int playerId, int team)
         {
-            if (!_activity.OwnUnitsOnly) return true;                 // Ристалище: обе стороны наши
-            if (_roster != null && _roster.TryGet(playerId, out Core.Players.SessionPlayer p)) return p.Team == team;
-            return team == _localPlayer.Team;                          // соло: участник ровно один
+            // Автора нет в составе — значит соло: участник ровно один, и это мы.
+            int side = _roster != null && _roster.TryGet(playerId, out Core.Players.SessionPlayer p)
+                ? p.Team
+                : _localPlayer.Team;
+
+            return _activity.MayCommandSide(team, side);
         }
 
         private RuntimeUnit FindLive(int unitId)

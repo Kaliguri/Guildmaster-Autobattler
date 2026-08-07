@@ -1,4 +1,4 @@
-using Guildmaster.Data.Definitions;
+﻿using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Session.Net;
 using Guildmaster.Net;
 using NUnit.Framework;
@@ -19,13 +19,13 @@ namespace Guildmaster.Tests.EditMode.Net
         public void State_SurvivesTheRoundTrip()
         {
             var sent = new ActivityState(ActivityKind.ProvingGrounds, hideOpponent: true,
-                ownUnitsOnly: true, battleOpen: true, phase: BattlePhase.Fighting);
+                opposition: OpposingSide.Player, battleOpen: true, phase: BattlePhase.Fighting);
 
             var writer = new NetByteWriter(16);
             Assert.IsTrue(ActivityStateCodec.TryRead(ActivityStateCodec.Write(in sent, writer),
                 out ActivityState got));
 
-            Assert.AreEqual(sent, got, "Все пять полей пережили дорогу");
+            Assert.AreEqual(sent, got, "все поля пережили дорогу, включая владельца второй стороны");
         }
 
         /// <summary>
@@ -38,9 +38,31 @@ namespace Guildmaster.Tests.EditMode.Net
             var writer = new NetByteWriter(16);
             writer.WriteByte(200);        // вида с таким номером в этой сборке нет
             writer.WriteBool(false);
-            writer.WriteBool(false);
+            writer.WriteByte((byte)OpposingSide.Encounter);
             writer.WriteBool(true);
             writer.WriteByte((byte)BattlePhase.Fighting);
+            writer.WriteBool(false);
+            writer.WriteBool(false);
+
+            Assert.IsFalse(ActivityStateCodec.TryRead(writer.WrittenSegment, out _));
+        }
+
+        /// <summary>
+        /// Неизвестный владелец второй стороны — то же расхождение сборок, и цена ошибки выше вида
+        /// места: из владельца выводится право двигать бойцов, и «примерно так же» здесь значило бы
+        /// разные права у хоста и гостя на одной арене.
+        /// </summary>
+        [Test]
+        public void UnknownOpposingSide_IsRefused()
+        {
+            var writer = new NetByteWriter(16);
+            writer.WriteByte((byte)ActivityKind.ProvingGrounds);
+            writer.WriteBool(false);
+            writer.WriteByte(200);        // владельца с таким номером в этой сборке нет
+            writer.WriteBool(true);
+            writer.WriteByte((byte)BattlePhase.Deployment);
+            writer.WriteBool(false);
+            writer.WriteBool(false);
 
             Assert.IsFalse(ActivityStateCodec.TryRead(writer.WrittenSegment, out _));
         }
@@ -62,18 +84,19 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void EveryFieldCounts_WhenComparing()
         {
-            var baseline = new ActivityState(ActivityKind.Campaign, false, false, true, BattlePhase.Fighting);
+            var baseline = new ActivityState(ActivityKind.Campaign, false, OpposingSide.Encounter, true,
+                BattlePhase.Fighting);
 
-            Assert.AreNotEqual(baseline,
-                new ActivityState(ActivityKind.ProvingGrounds, false, false, true, BattlePhase.Fighting));
-            Assert.AreNotEqual(baseline,
-                new ActivityState(ActivityKind.Campaign, true, false, true, BattlePhase.Fighting));
-            Assert.AreNotEqual(baseline,
-                new ActivityState(ActivityKind.Campaign, false, true, true, BattlePhase.Fighting));
-            Assert.AreNotEqual(baseline,
-                new ActivityState(ActivityKind.Campaign, false, false, false, BattlePhase.Fighting));
-            Assert.AreNotEqual(baseline,
-                new ActivityState(ActivityKind.Campaign, false, false, true, BattlePhase.Deployment));
+            Assert.AreNotEqual(baseline, new ActivityState(ActivityKind.ProvingGrounds, false,
+                OpposingSide.Encounter, true, BattlePhase.Fighting));
+            Assert.AreNotEqual(baseline, new ActivityState(ActivityKind.Campaign, true,
+                OpposingSide.Encounter, true, BattlePhase.Fighting));
+            Assert.AreNotEqual(baseline, new ActivityState(ActivityKind.Campaign, false,
+                OpposingSide.Unclaimed, true, BattlePhase.Fighting));
+            Assert.AreNotEqual(baseline, new ActivityState(ActivityKind.Campaign, false,
+                OpposingSide.Encounter, false, BattlePhase.Fighting));
+            Assert.AreNotEqual(baseline, new ActivityState(ActivityKind.Campaign, false,
+                OpposingSide.Encounter, true, BattlePhase.Deployment));
         }
 
         [Test]

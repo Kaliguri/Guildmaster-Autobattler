@@ -35,11 +35,12 @@ namespace Guildmaster.Tests.EditMode.Run
         public void Pvp_IsTheGroundsWithTwoRestrictions()
         {
             Assert.AreEqual(ActivityKind.ProvingGrounds, ActivitySetup.Pvp.Kind);
-            Assert.IsTrue(ActivitySetup.Pvp.HideOpponent, "в матче чужой строй виден до начала боя");
-            Assert.IsTrue(ActivitySetup.Pvp.OwnUnitsOnly, "в матче можно двигать чужих бойцов");
+            Assert.IsTrue(ActivitySetup.Pvp.HideOpponent, "в матче чужой строй скрыт до начала боя");
+            Assert.AreEqual(OpposingSide.Player, ActivitySetup.Pvp.Opposition,
+                "в матче вторую сторону держит другой игрок");
 
             Assert.IsFalse(ActivitySetup.ProvingGrounds.HideOpponent);
-            Assert.IsFalse(ActivitySetup.ProvingGrounds.OwnUnitsOnly);
+            Assert.AreEqual(OpposingSide.Unclaimed, ActivitySetup.ProvingGrounds.Opposition);
             Assert.AreEqual(ActivityKind.Campaign, ActivitySetup.Campaign.Kind);
         }
     }

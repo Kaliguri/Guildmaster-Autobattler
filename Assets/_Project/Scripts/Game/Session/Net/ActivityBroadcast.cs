@@ -84,7 +84,7 @@ namespace Guildmaster.Game.Session.Net
             bool mapOpen        = _map?.IsShown ?? false;
             bool hubOpen        = _hub?.IsShown ?? false;
 
-            return new ActivityState(setup.Kind, setup.HideOpponent, setup.OwnUnitsOnly,
+            return new ActivityState(setup.Kind, setup.HideOpponent, setup.Opposition,
                                      battleOpen, phase, mapOpen, hubOpen);
         }
 

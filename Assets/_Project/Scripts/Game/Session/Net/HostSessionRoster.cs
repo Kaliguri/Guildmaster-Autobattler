@@ -33,8 +33,8 @@ namespace Guildmaster.Game.Session.Net
         private readonly NetByteWriter       _writer  = new NetByteWriter(128);
         private byte[] _envelope;
 
-        /// <summary>По скольким сторонам раскладываем. Одна — все свои; две — PvP.</summary>
-        private int _sides = 1;
+        /// <summary>Разводим ли участников по разным сторонам. Заказывает мероприятие; по умолчанию нет.</summary>
+        private bool _split;
 
         /// <summary>
         /// Какой цвет игрок хотел бы. Пожелание, а не назначение: в одной сессии цвета обязаны быть
@@ -101,12 +101,11 @@ namespace Guildmaster.Game.Session.Net
             TryGet(playerId, out SessionPlayer them) && TryGet(LocalId, out SessionPlayer me) &&
             them.Team == me.Team;
 
-        public void AssignSides(int sides)
+        public void SplitBetweenSides(bool split)
         {
-            int wanted = sides < 1 ? 1 : sides;
-            if (wanted == _sides) return;
+            if (split == _split) return;
 
-            _sides = wanted;
+            _split = split;
             Reseat();
         }
 
@@ -213,13 +212,18 @@ namespace Guildmaster.Game.Session.Net
         }
 
         /// <summary>
-        /// Какая сторона достаётся месту <paramref name="seat"/>. При одной стороне у хозяина остаётся
-        /// команда из конфига: это дев-ручка «за кого я играю», и кооп не повод её отменять.
+        /// Какая сторона достаётся месту <paramref name="seat"/>.
         /// </summary>
+        /// <remarks>
+        /// <b>Не делим — значит все на ОДНОЙ стороне, и это сторона хозяина.</b> Дев-ручка «за кого я
+        /// играю» (<c>GameConfig.LocalPlayerTeam</c>) остаётся в силе, но действует на всех: пока она
+        /// доставалась только месту ноль, поднятая ручка разводила хозяина и гостя по разным сторонам
+        /// в кампании — там, где они союзники по построению.
+        /// </remarks>
         private int TeamFor(int seat)
         {
-            if (_sides <= 1) return seat == 0 && _config != null ? _config.LocalPlayerTeam : 0;
-            return seat % _sides;
+            if (!_split) return _config != null ? _config.LocalPlayerTeam : 0;
+            return seat % 2;
         }
 
         private void Announce()

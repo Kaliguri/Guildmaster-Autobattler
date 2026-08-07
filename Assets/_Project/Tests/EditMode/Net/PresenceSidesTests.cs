@@ -36,7 +36,7 @@ namespace Guildmaster.Tests.EditMode.Net
             INetTransport allyNode = net.CreateNode(); // место 2 → сторона 0, как у хоста
             net.PollAll();
 
-            roster.AssignSides(2); // PvP: стороны чередуются по местам
+            roster.SplitBetweenSides(true); // PvP: стороны чередуются по местам
 
             Assert.AreEqual(1, TeamOf(roster, 1), "второй вошедший играет за другую сторону");
             Assert.AreEqual(0, TeamOf(roster, 2), "третий возвращается на сторону хоста");
@@ -68,7 +68,7 @@ namespace Guildmaster.Tests.EditMode.Net
             INetTransport second = net.CreateNode();
             net.PollAll();
 
-            roster.AssignSides(1); // кампания: сторона одна на всех
+            roster.SplitBetweenSides(false); // кампания: сторона одна на всех
 
             var presence = new HostPresence(hostNode, new FixedPointer(new Vector2(1f, 1f)), roster);
             presence.Start();
@@ -98,7 +98,7 @@ namespace Guildmaster.Tests.EditMode.Net
             INetTransport mate    = net.CreateNode(); // место 3 → сторона 1, вместе с говорящим
             net.PollAll();
 
-            roster.AssignSides(2);
+            roster.SplitBetweenSides(true);
 
             var presence = new HostPresence(hostNode, new FixedPointer(Vector2.zero, available: false), roster);
             presence.Start();
@@ -248,7 +248,7 @@ namespace Guildmaster.Tests.EditMode.Net
                 TryGet(playerId, out SessionPlayer them) && TryGet(LocalId, out SessionPlayer me) &&
                 them.Team == me.Team;
 
-            public void AssignSides(int sides) { }
+            public void SplitBetweenSides(bool split) { }
         }
     }
 }

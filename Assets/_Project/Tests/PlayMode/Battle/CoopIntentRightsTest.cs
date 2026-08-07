@@ -104,8 +104,10 @@ namespace Guildmaster.Tests.PlayMode.Battle
             sessions.Open(SessionRole.Owner);
             yield return WaitFrames(1);
 
-            // Место, где стороны РАЗДЕЛЕНЫ: на обычном Ристалище обе наши, и правило там не проверить.
-            activities.Open(new ActivitySetup(ActivityKind.ProvingGrounds, ownUnitsOnly: true));
+            // Место, где вторую сторону держит ИГРОК: на обычном Ристалище она ничья, и правило там
+            // не проверить — там любой вправе двигать кого угодно. Чужой строй при этом НЕ прячем
+            // (в отличие от полного пресета матча): тесту нужно найти на арене чужого бойца.
+            activities.Open(new ActivitySetup(ActivityKind.ProvingGrounds, OpposingSide.Player));
             yield return WaitFrames(8);
 
             IArenaUnits arena = FindAnywhere<IArenaUnits>();

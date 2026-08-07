@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Guildmaster.Combat;
@@ -65,7 +65,7 @@ namespace Guildmaster.Tests.PlayMode.Battle
             // «Где мы»: Ристалище с открытой ареной в расстановке — то самое сообщение, после которого
             // у гостя обязан подняться боевой скоуп.
             SendActivity(host, new ActivityState(
-                ActivityKind.ProvingGrounds, hideOpponent: false, ownUnitsOnly: false,
+                ActivityKind.ProvingGrounds, hideOpponent: false, opposition: OpposingSide.Unclaimed,
                 battleOpen: true, phase: BattlePhase.Deployment));
 
             LifetimeScope combat = null;
@@ -103,7 +103,7 @@ namespace Guildmaster.Tests.PlayMode.Battle
             yield return WaitFrames(2);
 
             SendActivity(host, new ActivityState(
-                ActivityKind.ProvingGrounds, hideOpponent: false, ownUnitsOnly: false,
+                ActivityKind.ProvingGrounds, hideOpponent: false, opposition: OpposingSide.Unclaimed,
                 battleOpen: true, phase: BattlePhase.Deployment));
 
             // Ждём, пока фаза доедет и гейт получит ключ: до этого «готов» нажимать не на что.

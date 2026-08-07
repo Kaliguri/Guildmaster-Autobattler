@@ -65,6 +65,6 @@ namespace Guildmaster.Game.Session
             return roster != null ? roster.SharesTeamWithLocal(playerId) : playerId == LocalId;
         }
 
-        public void AssignSides(int sides) => _sessions?.Roster?.AssignSides(sides);
+        public void SplitBetweenSides(bool split) => _sessions?.Roster?.SplitBetweenSides(split);
     }
 }
