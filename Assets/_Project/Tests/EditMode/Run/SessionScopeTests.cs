@@ -192,6 +192,11 @@ namespace Guildmaster.Tests.EditMode.Run
             builder.RegisterInstance<Guildmaster.Core.Net.ICoopSessionControl>(new SilentCoop());
             builder.RegisterInstance<Guildmaster.Core.Players.ILocalPlayer>(new TestLocalPlayer());
 
+            // Реестр контента: гость собирает витрину награды из присланных id. Пустой — тест смотрит
+            // на состав сеанса, а не на то, что в базе лежит.
+            builder.RegisterInstance<IContentDatabase>(new EmptyContent());
+            builder.RegisterInstance<MessagePipe.IPublisher<OpenRewardRequest>>(new SilentRewardPublisher());
+
             // Шина корня. Заглушкой, а не настоящим MessagePipe: сеанс только ПУБЛИКУЕТ «забег
             // начался», и поднимать ради этого весь брокер значило бы проверять не состав сеанса.
             builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>>(
@@ -278,6 +283,24 @@ namespace Guildmaster.Tests.EditMode.Run
         private sealed class TestLocalPlayer : Guildmaster.Core.Players.ILocalPlayer
         {
             public int Team => 0;
+        }
+
+        private sealed class SilentRewardPublisher : MessagePipe.IPublisher<OpenRewardRequest>
+        {
+            public void Publish(OpenRewardRequest message) { }
+        }
+
+        /// <summary>Реестр без контента: в этом тесте важно, КТО спрашивает базу, а не что в ней лежит.</summary>
+        private sealed class EmptyContent : IContentDatabase
+        {
+            public bool TryGet<T>(string id, out T def) where T : ContentDefinition
+            {
+                def = null;
+                return false;
+            }
+
+            public System.Collections.Generic.IReadOnlyList<T> All<T>() where T : ContentDefinition =>
+                System.Array.Empty<T>();
         }
 
         private sealed class SilentReadyPublisher

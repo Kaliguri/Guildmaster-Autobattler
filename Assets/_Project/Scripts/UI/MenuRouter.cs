@@ -1233,33 +1233,53 @@ namespace Guildmaster.UI
         // ровно один OnResolved, включая закрытие без выбора (= пропуск), чтобы флоу забега не завис (Ф3).
         public void OpenReward(OpenRewardRequest req)
         {
-            if (CannotShow("Награда (_rewardScreen)", _rewardUxml)) { req.OnResolved?.Invoke(RewardChoiceResult.Skip); return; }
+            if (CannotShow("Награда (_rewardScreen)", _rewardUxml)) { req.OnVote?.Invoke(RewardOptions.Skip); return; }
             ShowRewardAsync(req).Forget();
         }
 
+        /// <summary>
+        /// Витрина награды. «Взять» здесь — не команда, а голос: награда общая, и забирает её группа.
+        /// </summary>
+        /// <remarks>
+        /// Устроено ровно как экран итога боя, и по той же причине: закрывай экран по своему нажатию —
+        /// и подтвердивший первым остался бы смотреть в пустоту, пока остальные ещё выбирают. Поэтому
+        /// нажатие отправляет голос, а закрытие приходит признаком срабатывания от общего решения —
+        /// одинаково у хозяина и у гостя.
+        /// </remarks>
         private async UniTaskVoid ShowRewardAsync(OpenRewardRequest req)
         {
-            var screen = new RouterResultScreen<RewardChoiceResult>(ScreenKind.Page, RewardChoiceResult.Skip,
-                resolve => RewardScreenView.Build(
-                    _rewardUxml,
-                    req.Choices,
-                    req.InventoryFull,
-                    req.CurrentInventory,
-                    relic => _loadoutVm.Name(relic),
-                    key => _loc?.GetString(key),
-                    (chosen, dropId) =>
-                    {
-                        _audio?.Play("reward.take.stinger");
-                        resolve(dropId != null ? RewardChoiceResult.Swap(chosen, dropId) : RewardChoiceResult.Take(chosen));
-                    },
-                    () => { _audio?.Play("reward.skip.ui"); resolve(RewardChoiceResult.Skip); },
-                    // Хук выбора карточки был заведён в экране, но никогда не прокидывался — карточка
-                    // анимировалась молча.
-                    _ => _audio?.Play("reward.card_select.ui"),
-                    _palette));   // цвет ступени приглушения — тот же, что в бою
+            Action<bool> close = null;
 
-            RewardChoiceResult result = await _nav.ShowAsync(screen, req.Cancellation); // экран снят ДО колбэка (II.5); ct → закрыть при отмене (QA #37)
-            req.OnResolved?.Invoke(result);
+            var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
+                resolve =>
+                {
+                    close = resolve;
+                    return RewardScreenView.Build(
+                        _rewardUxml,
+                        req.Choices,
+                        req.InventoryFull,
+                        req.CurrentInventory,
+                        relic => _loadoutVm.Name(relic),
+                        key => _loc?.GetString(key),
+                        (chosen, dropId) =>
+                        {
+                            _audio?.Play("reward.take.stinger");
+                            req.OnVote?.Invoke(RewardOptions.Swap(chosen.Id, dropId));
+                        },
+                        () => { _audio?.Play("reward.skip.ui"); req.OnVote?.Invoke(RewardOptions.Skip); },
+                        // Хук выбора карточки был заведён в экране, но никогда не прокидывался — карточка
+                        // анимировалась молча.
+                        _ => _audio?.Play("reward.card_select.ui"),
+                        _palette);   // цвет ступени приглушения — тот же, что в бою
+                });
+
+            _onReadyChanged = e =>
+            {
+                if (e.Key == Core.Net.DecisionKeys.RewardPick && e.Fired) close?.Invoke(false); // сошлись все
+            };
+
+            try { await _nav.ShowAsync(screen, req.Cancellation); } // ct → закрыть при отмене (QA #37)
+            finally { _onReadyChanged = null; }
         }
 
         // Экран текстового ивента (StS-style) — на UXML (EventScreen.uxml) через общий EventScreenView.

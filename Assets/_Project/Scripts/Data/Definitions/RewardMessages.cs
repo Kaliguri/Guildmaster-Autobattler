@@ -20,21 +20,73 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Текущий запас реликов (content id) — для выбора, что сбросить при полном инвентаре.</summary>
         public readonly IReadOnlyList<string> CurrentInventory;
 
-        /// <summary>Колбэк результата выбора (ровно один вызов): взятый релик + опц. сброшенный, либо пропуск.</summary>
-        public readonly Action<RewardChoiceResult> OnResolved;
+        /// <summary>
+        /// Отдать свой голос: вариант из <see cref="RewardOptions"/>. Зовётся столько раз, сколько игрок
+        /// передумывает.
+        /// </summary>
+        /// <remarks>
+        /// <b>Не «результат», а голос</b> (07.08.2026). Награда общая, поэтому берут её все вместе:
+        /// экран закрывается не по клику, а когда сошлись все — признаком срабатывания от общего
+        /// решения. Пока здесь был колбэк результата, первый нажавший забирал реликвию за группу, а
+        /// остальные узнавали об этом по исчезнувшему экрану.
+        /// </remarks>
+        public readonly Action<string> OnVote;
 
         /// <summary>Токен отмены забега (QA #37): отмена закрывает награду через навигатор.</summary>
         public readonly CancellationToken Cancellation;
 
         public OpenRewardRequest(IReadOnlyList<RelicData> choices, bool inventoryFull,
-                                 IReadOnlyList<string> currentInventory, Action<RewardChoiceResult> onResolved,
+                                 IReadOnlyList<string> currentInventory, Action<string> onVote,
                                  CancellationToken cancellation = default)
         {
             Choices          = choices;
             InventoryFull    = inventoryFull;
             CurrentInventory = currentInventory;
-            OnResolved       = onResolved;
+            OnVote           = onVote;
             Cancellation     = cancellation;
+        }
+    }
+
+    /// <summary>
+    /// Варианты решения о награде: что группа делает с витриной.
+    /// </summary>
+    /// <remarks>
+    /// <b>Вариант — строка, потому что общее решение сравнивает голоса как строки</b> и ничего не знает
+    /// ни про реликвии, ни про инвентарь. Обмен поэтому едет ОДНИМ вариантом («взять это, выбросив то»),
+    /// а не двумя решениями подряд: имущество общее целиком, и согласиться группа должна на обе половины
+    /// сразу (решение Макса 07.08.2026). Разведи их по двум решениям — и между ними появится состояние
+    /// «награду взяли, а место ещё не освободили», которого в забеге быть не должно.
+    /// </remarks>
+    public static class RewardOptions
+    {
+        /// <summary>Ничего не берём. Пропуск — такой же общий выбор, как и взятие.</summary>
+        public const string Skip = "skip";
+
+        /// <summary>Разделитель половин обмена. В id контента не встречается: там только `domain.name`.</summary>
+        private const char SwapMark = '>';
+
+        /// <summary>Взять реликвию — место есть.</summary>
+        public static string Take(string relicId) => relicId;
+
+        /// <summary>Взять реликвию, выбросив другую: инвентарь полон.</summary>
+        public static string Swap(string relicId, string dropId) =>
+            string.IsNullOrEmpty(dropId) ? relicId : relicId + SwapMark + dropId;
+
+        /// <summary>
+        /// Разобрать вариант. <c>false</c> — это пропуск: брать нечего и выбрасывать нечего.
+        /// </summary>
+        public static bool TryParse(string option, out string relicId, out string dropId)
+        {
+            relicId = null;
+            dropId  = null;
+            if (string.IsNullOrEmpty(option) || option == Skip) return false;
+
+            int mark = option.IndexOf(SwapMark);
+            if (mark < 0) { relicId = option; return true; }
+
+            relicId = option.Substring(0, mark);
+            dropId  = option.Substring(mark + 1);
+            return true;
         }
     }
 

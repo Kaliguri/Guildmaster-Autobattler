@@ -50,6 +50,10 @@ namespace Guildmaster.Game.Session
             // что это обязанность роли — владелец объявляет, гость следует.
             builder.RegisterEntryPoint<Net.ActivityBroadcast>(Lifetime.Singleton).AsSelf();
 
+            // «Что на экране»: шаг узла с содержимым. Не entry point — его зовут те, кто ведёт узел
+            // (витрина награды), а сам он ничего не тикает.
+            builder.Register<Net.HostNodeStage>(Lifetime.Singleton).AsSelf();
+
             // Шина команд забега: снаружи сборки Guild в RunState пишут только через неё, и мутаторы
             // internal держат это компилятором. Лог append-only даёт реплей, аудит «кто передвинул» и
             // хвост для реконнекта; соло идёт этим же путём, иначе кооп нашёл бы обход первым же
@@ -101,6 +105,10 @@ namespace Guildmaster.Game.Session
             // Отряд на арене — вслед за снимком. Без этого гость видел бы пустое поле до самого первого
             // боя: тела кладёт петля акта, а её у гостя нет.
             builder.RegisterEntryPoint<Net.GuestPartyFollower>(Lifetime.Singleton).AsSelf();
+
+            // Витрина награды и прочие экраны узла — вслед за объявлением хозяина. Своей петли акта у
+            // гостя нет, поэтому показать их ему больше некому.
+            builder.RegisterEntryPoint<Net.GuestNodeStage>(Lifetime.Singleton).AsSelf();
 
             // Своё согласие гость отправляет, счёт получает. Решать, все ли готовы, ему нечем: кто в
             // сессии, знает хост.
