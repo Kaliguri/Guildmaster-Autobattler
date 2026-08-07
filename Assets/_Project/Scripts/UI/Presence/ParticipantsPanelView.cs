@@ -156,14 +156,13 @@ namespace Guildmaster.UI.Presence
         {
             switch (where)
             {
-                case PlayerWhere.Away:      return "отошёл";
-                case PlayerWhere.Menu:      return "в меню";
-                case PlayerWhere.Courtyard: return "во дворе";
-                case PlayerWhere.Map:       return "на карте";
-                case PlayerWhere.Arena:     return "на арене";
-                case PlayerWhere.Loadout:   return "в снаряжении";
-                case PlayerWhere.Pause:     return "в меню паузы";
-                default:                    return string.Empty; // ещё не сказал о себе — молчим
+                case PlayerWhere.Away:    return "отошёл";
+                case PlayerWhere.Menu:    return "в меню";
+                case PlayerWhere.Map:     return "на карте";
+                case PlayerWhere.Arena:   return "на арене";
+                case PlayerWhere.Loadout: return "в инвентаре";
+                case PlayerWhere.Pause:   return "в ESC меню";
+                default:                  return string.Empty; // ещё не сказал о себе — молчим
             }
         }
 
