@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Guildmaster.UI.Components;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine.UIElements;
 
 namespace Guildmaster.DevTools
@@ -326,8 +328,18 @@ namespace Guildmaster.DevTools
         /// вынимается из неё: состояния навешиваются на корень образца, и на контейнере они не
         /// сработали бы.
         /// </remarks>
+        /// <remarks>
+        /// <b>Шаблон грузится редакторным API, и потому весь метод под дефайном.</b> Фабрика живёт в
+        /// рантайм-сборке (её зовёт дев-панель в игре), а <c>AssetDatabase</c> в плеере не существует
+        /// вовсе — сборка на CI падала именно здесь, а в редакторе всё работало. Образец без редактора
+        /// показывает заглушку: контактный лист — редакторный инструмент, и в билде его никто не
+        /// открывает.
+        /// </remarks>
         private static VisualElement ArcanaCard()
         {
+#if !UNITY_EDITOR
+            return Box("gm-arcana-card");
+#else
             var asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(ArcanaCardUxml);
             if (asset == null)
             {
@@ -348,6 +360,7 @@ namespace Guildmaster.DevTools
             if (title != null) title.text = SampleName;
 
             return card;
+#endif
         }
 
         /// <summary>Строка настроек с выбором из вариантов.</summary>
