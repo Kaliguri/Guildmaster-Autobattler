@@ -69,8 +69,19 @@
 - [x] тег отправителя первым байтом вместо развилки по длине сообщения (`ReadyWire`)
 - [x] тесты: `SharedDecisionTests` (7) + прежние `ReadyGateTests` (6) — 13/13 зелёные
 
-**Долг фазы:** тип всё ещё зовётся `IReadyGate`, хотя решает не только готовность. Переименование —
-первым шагом фазы B, вместе с первым многовариантным экраном, на котором его видно.
+**Долг фазы закрыт** первым шагом фазы B (`99859eb1a`): `IReadyGate` → `ISharedDecision`,
+`Host/GuestReadyGate` → `Host/GuestSharedDecision`, `ReadyKeys` → `DecisionKeys`,
+`ReadyGateChangedEvent` → `SharedDecisionChangedEvent`, `ReadyWire` → `DecisionWire`,
+`NetChannel.ReadyGate` → `NetChannel.Decision` (номер прежний), `Ready` → `Voted`,
+`LocallyReady` → `HasLocalChoice`. Тест `ReadyGateTests` → `AgreementDecisionTests`.
+
+### B. Награда на общем решении — В РАБОТЕ
+
+- [x] переименование механизма (см. выше)
+- [ ] шаг узла объявляется гостю с содержимым (id реликвий)
+- [ ] витрина награды у гостя строится из состояния
+- [ ] выбор = голос; видно, кто что ткнул (мейн-цветом)
+- [ ] элитка (две награды подряд) не ломается
 
 ### B. Награда на общем решении
 
