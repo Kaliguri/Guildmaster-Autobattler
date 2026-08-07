@@ -17,7 +17,9 @@
 .gm-chip.unity-disabled,
 .gm-slot:disabled,
 .gm-slot.unity-disabled {
-    background-color: var(--gm-color-surface-panel);
+    /* Своя ступень, как у кнопки: чип нажимают, и на фоне панели он обязан читаться поднятым, а не
+       обведённым (07.08.2026 — тот же разбор, что у .gm-button). */
+    background-color: var(--gm-color-surface-raised);
     background-image: none;
     border-color: var(--gm-color-border-subtle);
     color: var(--gm-color-disabled-text);

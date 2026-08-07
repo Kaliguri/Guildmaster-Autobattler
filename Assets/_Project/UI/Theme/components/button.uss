@@ -11,9 +11,13 @@
    поэтому свойство своё, а применяет его PlateButton — см. UiTextCase. До этой строки капитель
    набирали сами буквы в разметке, и решением она не была: в дереве одновременно жили «ОТМЕНА» и
    «Отмена», «НАСТРОЙКИ» и «Настройки», «СОХРАНИТЬ» и «Сохранить». */
+/* ПОЛЕ КНОПКИ — СВОЯ СТУПЕНЬ, а не тот же токен, что у панели под ней (07.08.2026). Прежде здесь
+   стоял surface-panel, то есть кнопка и подложка красились одним цветом и различались только
+   каймой — «все сливается» на кадре Макса было ровно про это. Теперь raised: на восемь процентов
+   светлоты выше фона. Роль токена при этом стала честной — он и назывался «кнопки/поднятые блоки». */
 .gm-button {
     --gm-text-case: upper;
-    background-color: var(--gm-color-surface-panel);
+    background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-outline-width);
     border-color: var(--gm-color-border-frame);
     border-radius: var(--gm-radius-0);
@@ -93,7 +97,7 @@
 .unity-button.gm-button.unity-disabled,
 .unity-button.gm-button:disabled,
 .unity-button.gm-button--primary:disabled {
-    background-color: var(--gm-color-surface-raised);
+    background-color: var(--gm-color-surface-quiet);
     background-image: none;
     border-color: var(--gm-color-border-subtle);
     color: var(--gm-color-disabled-text);
