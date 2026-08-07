@@ -26,13 +26,19 @@ namespace Guildmaster.Game.Session.Net
         private readonly IPublisher<ReadyGateChangedEvent> _changedPub;
 
         private readonly HashSet<int> _participants = new();
-        private readonly HashSet<int> _ready        = new();
+
+        // Голос участника: кто → за какой вариант. У решения-согласия вариант один на всех, поэтому
+        // прежний «набор согласившихся» — это тот же словарь, просто с единственным значением.
+        private readonly Dictionary<int, string> _votes = new();
+
+        // Буфер объявления голосов: пересобирается на месте, наружу уходит в событии.
+        private readonly List<PlayerChoice> _choices = new();
 
         private readonly NetByteWriter _writer = new NetByteWriter(8);
         private byte[] _envelope;
 
         private string _key;
-        private Action _action;
+        private Action<string> _action;
 
         public HostReadyGate(INetTransport transport, IPublisher<ReadyGateChangedEvent> changedPub)
         {
@@ -40,11 +46,14 @@ namespace Guildmaster.Game.Session.Net
             _changedPub  = changedPub;
         }
 
-        public int Ready => _ready.Count;
+        public int Ready => _votes.Count;
 
         public int Required => Mathf.Max(1, _participants.Count);
 
-        public bool LocallyReady => _ready.Contains(LocalId);
+        public bool LocallyReady => _votes.ContainsKey(LocalId);
+
+        public string LocalChoice =>
+            _votes.TryGetValue(LocalId, out string mine) ? mine : DecisionOptions.None;
 
         private int LocalId => _transport.IsRunning ? _transport.LocalPeerId : NetPeer.HostPeerId;
 
@@ -70,13 +79,16 @@ namespace Guildmaster.Game.Session.Net
             _transport.MessageReceived  -= OnMessage;
         }
 
-        public void Bind(string key, Action onAllReady)
+        public void Bind(string key, Action onAllReady) =>
+            Bind(key, onAllReady == null ? (Action<string>)null : _ => onAllReady());
+
+        public void Bind(string key, Action<string> onAgreed)
         {
-            // Смена того, что подтверждаем, обнуляет счёт: согласие относилось к прежнему действию.
+            // Смена того, что решаем, обнуляет голоса: выбор относился к прежнему вопросу.
             if (_key != key) ClearVotes();
 
             _key    = key;
-            _action = onAllReady;
+            _action = onAgreed;
             Announce();
         }
 
@@ -90,17 +102,28 @@ namespace Guildmaster.Game.Session.Net
             Announce();
         }
 
-        public void ToggleLocal()
-        {
-            if (LocallyReady) _ready.Remove(LocalId);
-            else              _ready.Add(LocalId);
+        public void ToggleLocal() => Choose(DecisionOptions.Agree);
 
+        public void Choose(string optionId)
+        {
+            Vote(LocalId, optionId);
             Settle();
+        }
+
+        /// <summary>
+        /// Записать голос участника. Повтор того же варианта снимает голос, другой — заменяет.
+        /// </summary>
+        private void Vote(int playerId, string optionId)
+        {
+            bool had = _votes.TryGetValue(playerId, out string was);
+
+            if (string.IsNullOrEmpty(optionId) || (had && was == optionId)) _votes.Remove(playerId);
+            else                                                           _votes[playerId] = optionId;
         }
 
         public void Reset(string reason)
         {
-            if (_ready.Count == 0) return;
+            if (_votes.Count == 0) return;
 
             Guildmaster.Diagnostics.UiTrace.Log($"гейт готовности сброшен: {reason}");
             ClearVotes();
@@ -119,66 +142,107 @@ namespace Guildmaster.Game.Session.Net
         private void OnPeerDisconnected(int peerId)
         {
             _participants.Remove(peerId);
-            _ready.Remove(peerId);
+            _votes.Remove(peerId);
             Settle(); // оставшихся могло стать достаточно ровно в этот момент
         }
 
         private void OnMessage(int from, ArraySegment<byte> message)
         {
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
-            // Ровно один байт — это согласие гостя. Объявленный счёт длиннее (счёт, планка, признак
-            // срабатывания и ключ), то есть наше собственное эхо; спутать их значило бы принять свой
-            // счёт за чужой голос.
-            if (channel != NetChannel.ReadyGate || payload.Count != 1) return;
+            if (channel != NetChannel.ReadyGate || payload.Count < 1) return;
 
+            // Первый байт говорит, чьё это сообщение. Раньше стороны различались по ДЛИНЕ («один байт —
+            // голос гостя»), и такая развилка держалась ровно до первого изменения формата: голос стал
+            // строкой варианта, и длины перестали быть разными.
             var bytes = new NetByteReader(payload);
-            bool ready = bytes.ReadBool();
+            if (bytes.ReadByte() != ReadyWire.Vote) return; // объявленный счёт — наше собственное эхо
+
+            string option;
+            try { option = bytes.ReadString(); }
+            catch (InvalidOperationException) { return; } // чужая версия голоса — счёт не трогаем
 
             Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
-                $"хост: согласие от пира {from} = {ready} (ключ «{_key}», действие {(_action == null ? "НЕ ПРИВЯЗАНО" : "есть")})");
+                $"хост: голос пира {from} = «{option}» (ключ «{_key}», действие {(_action == null ? "НЕ ПРИВЯЗАНО" : "есть")})");
 
-            _participants.Add(from); // подтвердить может только тот, кто в сессии, — заодно и учтём его
-            if (ready) _ready.Add(from);
-            else       _ready.Remove(from);
+            _participants.Add(from); // голосовать может только тот, кто в сессии, — заодно и учтём его
+            Vote(from, option);
 
             Settle();
         }
 
-        /// <summary>Проверить, не собралось ли согласие целиком, и объявить счёт.</summary>
+        /// <summary>
+        /// Проверить, не сошлись ли все на одном, и объявить счёт.
+        /// </summary>
+        /// <remarks>
+        /// <b>Расхождение — это не сбой и не повод вмешаться.</b> Проголосовали все, но за разное —
+        /// решение просто не принято, счёт объявляется как есть, и игроки видят, кто что выбрал. Звать
+        /// арбитра игра не будет: спор — выбор игроков, а не диагноз (канон коопа, вердикт Макса
+        /// 30.07.2026).
+        /// </remarks>
         private void Settle()
         {
-            if (_ready.Count < Required || _action == null)
+            if (!TryReadAgreement(out string agreed) || _action == null)
             {
                 Announce();
                 return;
             }
 
-            // Порядок важен: сначала гасим согласие и объявляем, потом действуем. Действие меняет фазу и
+            // Порядок важен: сначала гасим голоса и объявляем, потом действуем. Действие меняет фазу и
             // может убить нас же вместе со скоупом — то, что стоит после него, не выполнится.
-            Action fire = _action;
+            Action<string> fire = _action;
             ClearVotes();
             Announce(fired: true);
-            fire();
+            fire(agreed);
+        }
+
+        /// <summary>Все ли высказались и сошлись на одном варианте.</summary>
+        private bool TryReadAgreement(out string option)
+        {
+            option = DecisionOptions.None;
+            if (_votes.Count < Required) return false;
+
+            foreach (KeyValuePair<int, string> vote in _votes)
+            {
+                if (option == DecisionOptions.None) { option = vote.Value; continue; }
+                if (vote.Value != option) { option = DecisionOptions.None; return false; }
+            }
+
+            return option != DecisionOptions.None;
         }
 
         private void ClearVotes()
         {
-            _ready.Clear();
+            _votes.Clear();
         }
 
         private void Announce(bool fired = false)
         {
-            _changedPub?.Publish(new ReadyGateChangedEvent(_key, Ready, Required, LocallyReady, fired));
+            _choices.Clear();
+            foreach (KeyValuePair<int, string> vote in _votes)
+                _choices.Add(new PlayerChoice(vote.Key, vote.Value));
+
+            _changedPub?.Publish(new ReadyGateChangedEvent(_key, Ready, Required, LocallyReady, fired,
+                                                           LocalChoice, _choices));
 
             if (!_transport.IsRunning) return; // соло: объявлять некому
 
             _writer.Reset();
-            _writer.WriteByte((byte)Mathf.Clamp(_ready.Count, 0, 255));
+            _writer.WriteByte(ReadyWire.Tally);
             _writer.WriteByte((byte)Mathf.Clamp(Required, 0, 255));
             _writer.WriteBool(fired);
             // Ключ едет строкой, а не номером: он же и есть смысл действия, а таблица номеров разошлась
             // бы между сборками ровно так, как расходятся все таблицы, которые ведут руками.
             _writer.WriteString(_key);
+
+            // Голоса едут поимённо, а не числом: счёт из них выводится, а обратно — нет, и показу нужно
+            // именно «кто за что». Один владелец факта вместо двух согласованных чисел.
+            _writer.WriteByte((byte)Mathf.Clamp(_choices.Count, 0, 255));
+            for (int i = 0; i < _choices.Count; i++)
+            {
+                _writer.WriteByte((byte)_choices[i].PlayerId);
+                _writer.WriteString(_choices[i].Option);
+            }
+
             _transport.SendToAll(
                 NetEnvelope.Wrap(NetChannel.ReadyGate, _writer.WrittenSegment, ref _envelope),
                 NetDelivery.Reliable);

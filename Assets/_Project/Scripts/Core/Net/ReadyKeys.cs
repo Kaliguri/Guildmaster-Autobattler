@@ -16,5 +16,30 @@ namespace Guildmaster.Core.Net
 
         /// <summary>Согласие уйти с экрана исхода обратно к расстановке.</summary>
         public const string BattleContinue = "battle.continue";
+
+        /// <summary>Какую из выпавших реликвий забирает группа. Вариант — id реликвии.</summary>
+        public const string RewardPick = "reward.pick";
+
+        /// <summary>Куда идём по карте акта. Вариант — id узла.</summary>
+        public const string MapNode = "map.node";
+    }
+
+    /// <summary>
+    /// Варианты решения, у которого выбор ровно один — «да».
+    /// </summary>
+    /// <remarks>
+    /// Кнопка «Начать» и «Продолжить» — это решение с ОДНИМ вариантом: соглашаешься или нет. Оно
+    /// частный случай общего, а не отдельный механизм, поэтому и голос у него обычный — просто всегда
+    /// один и тот же. Пока у согласия был свой булев путь рядом с выбором из нескольких, это были два
+    /// счётчика с одинаковой судьбой: разошлись бы они на первом же расхождении, а расхождение здесь
+    /// читается как зависшая кнопка.
+    /// </remarks>
+    public static class DecisionOptions
+    {
+        /// <summary>«Я за» — единственный вариант решения-согласия.</summary>
+        public const string Agree = "agree";
+
+        /// <summary>«Голоса нет»: не выбрал ещё или снял свой выбор.</summary>
+        public const string None = "";
     }
 }

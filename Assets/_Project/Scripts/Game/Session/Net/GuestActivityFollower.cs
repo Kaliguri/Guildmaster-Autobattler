@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Activity;
 using Guildmaster.Game.Flow;
@@ -205,7 +205,7 @@ namespace Guildmaster.Game.Session.Net
         {
             if (phase == BattlePhase.Deployment)
             {
-                _ready?.Bind(Guildmaster.Core.Net.ReadyKeys.BattleStart, null);
+                _ready?.Bind(Guildmaster.Core.Net.ReadyKeys.BattleStart, (Action<string>)null);
                 session.BindStart(_toggleReady ??= () => _ready?.ToggleLocal());
                 Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
                     $"гость: расстановка — ключ «{Guildmaster.Core.Net.ReadyKeys.BattleStart}» взведён, кнопка привязана (гейт {(_ready == null ? "ОТСУТСТВУЕТ" : "есть")})");
@@ -251,7 +251,7 @@ namespace Guildmaster.Game.Session.Net
 
             // Действия у ключа нет намеренно: собранное согласие исполняет хозяин, а гостю приезжает
             // признак срабатывания — по нему экран и закрывается.
-            _ready?.Bind(Guildmaster.Core.Net.ReadyKeys.BattleContinue, null);
+            _ready?.Bind(Guildmaster.Core.Net.ReadyKeys.BattleContinue, (Action<string>)null);
             Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
                 $"гость: итог боя — ключ «{Guildmaster.Core.Net.ReadyKeys.BattleContinue}» взведён, показываю экран (победа: {_lastVictory})");
 
