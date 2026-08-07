@@ -127,7 +127,7 @@ namespace Guildmaster.Combat.Effects.Components
             RuntimeUnit target = ctx.Target;
             if (target == null || target.IsDead) return;
 
-            int stacks = ctx.Effect.Stacks;
+            int stacks = ctx.Stacks;
 
             // Кап достигнут — цель обращается в лёд. Статуя сама снимет «Изморозь», когда отпустит.
             if (stacks >= _statueThreshold)
@@ -149,7 +149,7 @@ namespace Guildmaster.Combat.Effects.Components
 
             // Со второй ступени промороженная цель хуже держит сам лёд. Верхнюю ступень (и её +40%
             // под оглушением) считает статуя — там же, где живёт её оглушение.
-            if (ctx.Effect.Stacks >= _rootThreshold && _iceVulnMid > 0f)
+            if (ctx.Stacks >= _rootThreshold && _iceVulnMid > 0f)
                 result.AddMultiplier(1f + _iceVulnMid);
         }
 
