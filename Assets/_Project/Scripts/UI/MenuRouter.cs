@@ -55,6 +55,9 @@ namespace Guildmaster.UI
         // подписка это объявление пропустила бы — кнопка открылась бы без «(N/M)».
         private readonly ISubscriber<Core.Net.SharedDecisionChangedEvent> _readySub;
         private readonly IDisposable _readySubscription;
+        // Состав сеанса: по нему кружок голоса получает мейн-цвет своего игрока. Вне сеанса пуст, и
+        // рисовать кружки незачем — играет один.
+        private readonly Core.Players.ISessionRoster _roster;
         private Core.Net.SharedDecisionChangedEvent _lastReady;
         // Что делать со счётом, пока открыт экран, который его ждёт. null — таких экранов нет, и счёт
         // просто запоминается.
@@ -117,8 +120,10 @@ namespace Guildmaster.UI
                           GameConfig gameConfig,
                           Core.Players.IPlatformIdentity platform,
                           Core.Players.ICursorSkinControl cursors,
-                          ISubscriber<Core.Net.SharedDecisionChangedEvent> readySub)
+                          ISubscriber<Core.Net.SharedDecisionChangedEvent> readySub,
+                          Core.Players.ISessionRoster roster)
         {
+            _roster = roster;
             _cursorSkins     = gameConfig?.CursorSkins;
             _profileSlotLimit = gameConfig != null ? gameConfig.MaxProfiles : 1;
             _guildSlotLimit   = gameConfig != null ? gameConfig.MaxGuildsPerProfile : 1;
@@ -1249,12 +1254,13 @@ namespace Guildmaster.UI
         private async UniTaskVoid ShowRewardAsync(OpenRewardRequest req)
         {
             Action<bool> close = null;
+            VisualElement built = null;
 
             var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
                 resolve =>
                 {
                     close = resolve;
-                    return RewardScreenView.Build(
+                    return built = RewardScreenView.Build(
                         _rewardUxml,
                         req.Choices,
                         req.InventoryFull,
@@ -1275,8 +1281,14 @@ namespace Guildmaster.UI
 
             _onReadyChanged = e =>
             {
-                if (e.Key == Core.Net.DecisionKeys.RewardPick && e.Fired) close?.Invoke(false); // сошлись все
+                if (e.Key != Core.Net.DecisionKeys.RewardPick) return;
+
+                RewardScreenView.SetVotes(built, e.Choices, ColorOf, solo: e.Required <= 1);
+                if (e.Fired) close?.Invoke(false); // сошлись все
             };
+
+            // Счёт мог быть объявлен до постройки экрана — решение взводится раньше показа.
+            RewardScreenView.SetVotes(built, _lastReady.Choices, ColorOf, solo: _lastReady.Required <= 1);
 
             try { await _nav.ShowAsync(screen, req.Cancellation); } // ct → закрыть при отмене (QA #37)
             finally { _onReadyChanged = null; }
@@ -1541,6 +1553,12 @@ namespace Guildmaster.UI
             }
             finally { _onReadyChanged = null; }
         }
+
+        /// <summary>
+        /// Мейн-цвет участника по его номеру. Вне сеанса — первый: рисовать всё равно нечего.
+        /// </summary>
+        private int ColorOf(int playerId) =>
+            _roster != null && _roster.TryGet(playerId, out Core.Players.SessionPlayer p) ? p.ColorIndex : 0;
 
         private void ApplyReadyCount(VisualElement root, Core.Net.SharedDecisionChangedEvent e)
         {

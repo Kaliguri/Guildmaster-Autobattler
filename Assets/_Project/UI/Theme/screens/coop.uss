@@ -93,3 +93,34 @@
 .gm-participants__you {
     margin-left: var(--gm-space-0);
 }
+
+/* --- Кружки голосов: кто за какой вариант ---
+   Один приём на все совместные решения (решение Макса 07.08.2026): кружок мейн-цвета игрока под
+   карточкой награды, под узлом карты, под чем угодно следующим. Строка держит высоту всегда, иначе
+   витрина дёргалась бы вверх-вниз на каждый чужой голос. */
+.gm-reward-slot {
+    flex-direction: column;
+    align-items: center;
+}
+
+.gm-vote-row {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    min-height: 14px;
+    margin-top: var(--gm-space-0);
+}
+
+.gm-vote-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+    background-color: var(--gm-color-player-1);
+}
+
+.gm-vote-dot--p1 { background-color: var(--gm-color-player-1); }
+.gm-vote-dot--p2 { background-color: var(--gm-color-player-2); }
+.gm-vote-dot--p3 { background-color: var(--gm-color-player-3); }
+.gm-vote-dot--p4 { background-color: var(--gm-color-player-4); }

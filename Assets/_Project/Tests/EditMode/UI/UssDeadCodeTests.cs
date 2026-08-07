@@ -33,6 +33,7 @@ namespace Guildmaster.Tests.EditMode.UI
         private static readonly string[] BuiltAtRuntime =
         {
             "gm-cursor--p",            // gm-cursor--p{i}, номер игрока
+            "gm-vote-dot--p",          // кружок голоса красится мейн-цветом проголосовавшего
             "gm-profile__swatch--p",   // тот же приём для образцов цвета
             "gm-runbar__tab--",        // модификатор режима подставляется по id
             "gm-filter-tab--",         // фильтр инвентаря подставляет вид контента

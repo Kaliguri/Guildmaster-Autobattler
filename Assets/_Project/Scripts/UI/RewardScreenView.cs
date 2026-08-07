@@ -18,6 +18,62 @@ namespace Guildmaster.UI
     /// </summary>
     public static class RewardScreenView
     {
+        private const string SlotClass    = "gm-reward-slot";
+        private const string VoteRowClass = "gm-vote-row";
+        private const string VoteDotClass = "gm-vote-dot";
+
+        /// <summary>Строка под вариантом, куда лягут кружки проголосовавших за него.</summary>
+        private static VisualElement NewVoteRow(string optionId)
+        {
+            var row = new VisualElement { pickingMode = PickingMode.Ignore, userData = optionId ?? string.Empty };
+            row.AddToClassList(VoteRowClass);
+            return row;
+        }
+
+        /// <summary>
+        /// Показать, кто за что проголосовал: кружок мейн-цвета игрока под его вариантом.
+        /// </summary>
+        /// <remarks>
+        /// <b>Зовётся снаружи и на каждое объявление счёта</b>, а не строится один раз: голоса меняются,
+        /// пока экран открыт, и передумать можно до самого конца.
+        /// <para><b>Обмен считается голосом за ВЗЯТУЮ реликвию</b> — кружок встаёт под той карточкой,
+        /// которую человек хочет забрать. Что он при этом предлагает выбросить, видно в секции сброса,
+        /// и второй кружок там был бы про другой вопрос.</para>
+        /// <para><b>В одиночной игре не рисуем ничего</b> (решение Макса 07.08.2026): одному кружок
+        /// ничего не сообщает, а решение срабатывает в тот же кадр.</para>
+        /// </remarks>
+        public static void SetVotes(VisualElement root, IReadOnlyList<Core.Net.PlayerChoice> votes,
+                                    Func<int, int> colorOf, bool solo)
+        {
+            if (root == null) return;
+
+            root.Query<VisualElement>(className: VoteRowClass).ForEach(row =>
+            {
+                row.Clear();
+                if (solo || votes == null) return;
+
+                string option = row.userData as string;
+                for (int i = 0; i < votes.Count; i++)
+                {
+                    if (!SameOption(votes[i].Option, option)) continue;
+
+                    var dot = new VisualElement { pickingMode = PickingMode.Ignore };
+                    dot.AddToClassList(VoteDotClass);
+                    dot.AddToClassList($"{VoteDotClass}--p{(Mathf.Max(0, colorOf?.Invoke(votes[i].PlayerId) ?? 0) % 4) + 1}");
+                    row.Add(dot);
+                }
+            });
+        }
+
+        /// <summary>Голос относится к этому варианту: у обмена значима только взятая половина.</summary>
+        private static bool SameOption(string vote, string option)
+        {
+            if (string.IsNullOrEmpty(vote) || string.IsNullOrEmpty(option)) return false;
+            if (vote == option) return true;
+
+            return RewardOptions.TryParse(vote, out string takenId, out _) && takenId == option;
+        }
+
         /// <summary>
         /// Построить экран-оверлей награды. <paramref name="nameOf"/> — локализованное имя реликвии,
         /// <paramref name="localize"/> — строка по ключу (null/пусто → RU-фолбэк). <paramref name="onCardSelectSound"/>
@@ -112,9 +168,19 @@ namespace Guildmaster.UI
                     Refresh();
                 });
 
-                choicesBox?.Add(card);
+                // Карточка живёт в колонке вместе со строкой голосов: кружок цвета встаёт ПОД ней, а не
+                // поверх (решение Макса 07.08.2026 — «кружок под карточкой, под нодой и т.д.»).
+                var slot = new VisualElement();
+                slot.AddToClassList(SlotClass);
+                slot.Add(card);
+                slot.Add(NewVoteRow(relic?.Id));
+
+                choicesBox?.Add(slot);
                 choiceCards.Add((relic, card, rt));
             }
+
+            // Пропуск — такой же вариант решения, поэтому и у него есть место под кружки.
+            skipBtn?.parent?.Add(NewVoteRow(RewardOptions.Skip));
 
             // ── Секция сброса (только при полном запасе) ──
             if (inventoryFull && dropSection != null)

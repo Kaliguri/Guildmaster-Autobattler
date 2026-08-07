@@ -1,5 +1,6 @@
 using Guildmaster.Game.Session.Net;
 using Guildmaster.Net;
+using Guildmaster.Net.Transport;
 using NUnit.Framework;
 
 namespace Guildmaster.Tests.EditMode.Net
@@ -59,6 +60,42 @@ namespace Guildmaster.Tests.EditMode.Net
 
             Assert.IsFalse(NodeStageCodec.TryRead(writer.WrittenSegment, out _),
                 "оборванная витрина — это расхождение версий, а не повод показать один вариант из трёх");
+        }
+
+        /// <summary>
+        /// Элитка даёт две награды подряд, и вторая может выпасть тем же составом, что первая.
+        /// </summary>
+        /// <remarks>
+        /// Между наградами экран закрывается, и владелец объявляет <c>Idle</c>. Без него второе
+        /// объявление совпало бы с первым, было бы отброшено как повтор — и гость остался бы без второй
+        /// витрины, потому что свою он уже закрыл по срабатыванию решения.
+        /// </remarks>
+        [Test]
+        public void SameShelfTwice_IsAnnouncedAgainBecauseOfTheIdleBetween()
+        {
+            var net = new LoopbackNetwork();
+            INetTransport hostNode  = net.CreateNode();
+            INetTransport guestNode = net.CreateNode();
+            net.PollAll();
+
+            int announcements = 0;
+            guestNode.MessageReceived += (from, message) =>
+            {
+                if (NetEnvelope.TryUnwrap(message, out NetChannel channel, out _) &&
+                    channel == NetChannel.NodeStage) announcements++;
+            };
+
+            var stage = new HostNodeStage(hostNode);
+            var shelf = new NodeStageState(NodeStageKind.Reward, new[] { "relic.ruby", "relic.iron" });
+
+            stage.Announce(shelf);   // первая награда элитки
+            stage.Clear();           // экран закрылся
+            stage.Announce(shelf);   // вторая выпала тем же составом
+            net.PollAll();
+
+            Assert.AreEqual(3, announcements,
+                "витрина, закрытие и вторая витрина — три объявления; без Idle между ними вторая " +
+                "потерялась бы как повтор, и гость остался бы без экрана");
         }
 
         [Test]
