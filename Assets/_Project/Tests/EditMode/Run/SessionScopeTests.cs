@@ -180,6 +180,17 @@ namespace Guildmaster.Tests.EditMode.Run
             // сценой мира, то есть состав сеанса нельзя было бы проверить в EditMode вовсе.
             builder.RegisterInstance<Guildmaster.Game.Flow.IPartyStage>(new SilentStage());
             builder.RegisterInstance<Guildmaster.Game.Flow.IActMapPresence>(new SilentMap());
+            builder.RegisterInstance<Guildmaster.Core.Flow.IHubPresence>(new SilentHub());
+
+            // Гостевая половина ещё и ПОКАЗЫВАЕТ итог боя, поэтому просит паблишер экрана, ленту боя,
+            // свою сторону и выход из чужой сессии. Всё это приходит из предков и здесь заглушается: тест
+            // проверяет СОСТАВ сеанса по роли, а не показ.
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenOutcomeRequest>>(
+                new SilentOutcomePublisher());
+            builder.RegisterInstance<MessagePipe.ISubscriber<Guildmaster.Presentation.BattleEndedEvent>>(
+                new SilentBattleEnded());
+            builder.RegisterInstance<Guildmaster.Core.Net.ICoopSessionControl>(new SilentCoop());
+            builder.RegisterInstance<Guildmaster.Core.Players.ILocalPlayer>(new TestLocalPlayer());
 
             // Шина корня. Заглушкой, а не настоящим MessagePipe: сеанс только ПУБЛИКУЕТ «забег
             // начался», и поднимать ради этого весь брокер значило бы проверять не состав сеанса.
@@ -209,9 +220,64 @@ namespace Guildmaster.Tests.EditMode.Run
             public void EndChoose() { }
         }
 
+        private sealed class SilentHub : Guildmaster.Core.Flow.IHubPresence
+        {
+            public bool IsShown => false;
+            public void SetVisible(bool visible) { }
+        }
+
         private sealed class SilentPublisher : MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>
         {
             public void Publish(Guildmaster.Game.Flow.RunPartyReadyEvent message) { }
+        }
+
+        private sealed class SilentOutcomePublisher
+            : MessagePipe.IPublisher<Guildmaster.Guild.OpenOutcomeRequest>
+        {
+            public void Publish(Guildmaster.Guild.OpenOutcomeRequest message) { }
+        }
+
+        /// <summary>Лента боя, по которой никто не бьётся: подписаться можно, событий не будет.</summary>
+        private sealed class SilentBattleEnded
+            : MessagePipe.ISubscriber<Guildmaster.Presentation.BattleEndedEvent>
+        {
+            public System.IDisposable Subscribe(
+                MessagePipe.IMessageHandler<Guildmaster.Presentation.BattleEndedEvent> handler,
+                params MessagePipe.MessageHandlerFilter<Guildmaster.Presentation.BattleEndedEvent>[] filters) =>
+                new NoSubscription();
+
+            private sealed class NoSubscription : System.IDisposable
+            {
+                public void Dispose() { }
+            }
+        }
+
+        /// <summary>Сессии нет: сеанс проверяется в отрыве от сети, и уходить неоткуда.</summary>
+        private sealed class SilentCoop : Guildmaster.Core.Net.ICoopSessionControl
+        {
+            public Guildmaster.Core.Net.CoopSessionState State => Guildmaster.Core.Net.CoopSessionState.Offline;
+            public Guildmaster.Core.Net.CoopEndReason EndReason => Guildmaster.Core.Net.CoopEndReason.None;
+            public string EndMessage => string.Empty;
+            public bool CanInvite    => false;
+            public bool IsSteamReady => false;
+
+            public event System.Action<Guildmaster.Core.Net.CoopSessionState> StateChanged;
+            public event System.Action<int> PeerLeft;
+
+            public bool StartHost() => false;
+            public void InviteFriend() { }
+            public void BrowseFriends() { }
+            public void Leave()
+            {
+                StateChanged?.Invoke(State);
+                PeerLeft?.Invoke(0);
+            }
+        }
+
+        /// <summary>Своя сторона вне сеанса — первая: сторон в EditMode-тесте всё равно одна.</summary>
+        private sealed class TestLocalPlayer : Guildmaster.Core.Players.ILocalPlayer
+        {
+            public int Team => 0;
         }
 
         private sealed class SilentReadyPublisher
