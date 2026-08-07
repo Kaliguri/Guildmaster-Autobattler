@@ -109,6 +109,18 @@ namespace Guildmaster.Net.Transport
             for (int i = 0; i < snapshot.Count; i++) snapshot[i].Poll();
         }
 
+        /// <summary>Кто в петле, кроме указанного узла. Ответ на момент вызова — буфер общий.</summary>
+        private readonly List<int> _peersBuffer = new List<int>(4);
+
+        private IReadOnlyList<int> PeersExcept(int self)
+        {
+            _peersBuffer.Clear();
+            foreach (KeyValuePair<int, Node> pair in _nodes)
+                if (pair.Key != self) _peersBuffer.Add(pair.Key);
+
+            return _peersBuffer;
+        }
+
         private void Deliver(int from, int to, byte[] payload)
         {
             if (_nodes.TryGetValue(to, out Node node)) node.EnqueueMessage(from, payload);
@@ -163,6 +175,18 @@ namespace Guildmaster.Net.Transport
             public bool IsRunning  => _running;
             public int  LocalPeerId { get; private set; }
             public bool IsHost      { get; private set; }
+
+            /// <summary>
+            /// Кто в петле, кроме нас. Выключенный узел не знает никого — как закрытый сокет.
+            /// </summary>
+            /// <remarks>
+            /// Отвечаем по СОСТАВУ сети, а не по разобранной очереди: то же делает и настоящий
+            /// транспорт — соединение уже стоит, даже если событие о нём ещё не прокачано. Иначе шов
+            /// обещал бы одно, а в игре вёл себя иначе, и проверка «догнали ли мы уже подключённого»
+            /// в петле проходила бы всегда.
+            /// </remarks>
+            public IReadOnlyList<int> ConnectedPeers =>
+                _running ? _net.PeersExcept(LocalPeerId) : System.Array.Empty<int>();
 
             /// <summary>
             /// Переехать на другой номер: пришедший хозяин забрал наш. Так же выглядит и настоящая

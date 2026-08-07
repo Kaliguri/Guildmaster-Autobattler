@@ -71,6 +71,13 @@ namespace Guildmaster.Game.Session.Net
         {
             Add(LocalId, MyName);
 
+            // Кто-то мог подключиться ДО нас: транспорт поднимается на входе в игру, а сеанс рождается
+            // позже и пересоздаётся на каждой смене режима. Пока состав набирался только по событиям,
+            // уже пришедший напарник не появлялся в списке НИКОГДА — и хозяин узнавал о нём лишь тогда,
+            // когда тот отключался (наход. Макса 07.08.2026).
+            IReadOnlyList<int> already = _transport.ConnectedPeers;
+            for (int i = 0; i < already.Count; i++) Add(already[i], $"Игрок {already[i] + 1}");
+
             _transport.PeerConnected    += OnPeerConnected;
             _transport.PeerDisconnected += OnPeerDisconnected;
             _transport.MessageReceived  += OnMessage;

@@ -62,6 +62,33 @@ namespace Guildmaster.Net.Transport
         public bool IsRunning => _socket != null || _client != null;
         public bool IsHost    => _socket != null;
 
+        // Соединение гостя подтверждено хостом. Само наличие _client значит лишь «мы постучались»:
+        // Steam ведёт соединение через relay, и между ConnectRelay и OnConnected проходит время.
+        private bool _clientConnected;
+
+        // Буфер ответа на «кто уже подключён»: пересобирается на месте, наружу отдаётся только
+        // для чтения — список участников спрашивают на старте сеанса, а не в тике.
+        private readonly List<int> _peers = new List<int>(4);
+
+        public IReadOnlyList<int> ConnectedPeers
+        {
+            get
+            {
+                _peers.Clear();
+
+                if (IsHost)
+                {
+                    foreach (KeyValuePair<int, Connection> pair in _connectionByPeer) _peers.Add(pair.Key);
+                }
+                else if (_clientConnected)
+                {
+                    _peers.Add(NetPeer.HostPeerId);
+                }
+
+                return _peers;
+            }
+        }
+
         /// <summary>Наш номер в сессии. У хоста — ноль; гостю его сообщает хост при рукопожатии.</summary>
         public int LocalPeerId { get; private set; } = NetPeer.NoPeer;
 
@@ -195,8 +222,9 @@ namespace Guildmaster.Net.Transport
             _peerByConnection.Clear();
             _connectionByPeer.Clear();
             _inbox.Clear();
-            _nextPeerId = NetPeer.HostPeerId + 1;
-            LocalPeerId = NetPeer.NoPeer;
+            _nextPeerId      = NetPeer.HostPeerId + 1;
+            LocalPeerId      = NetPeer.NoPeer;
+            _clientConnected = false;
         }
 
         public void Dispose() => Shutdown();
@@ -233,11 +261,17 @@ namespace Guildmaster.Net.Transport
             _inbox.Enqueue(new Incoming(peerId, null, connected: false));
         }
 
-        private void HandleHostConnected() =>
+        private void HandleHostConnected()
+        {
+            _clientConnected = true;
             _inbox.Enqueue(new Incoming(NetPeer.HostPeerId, null, connected: true));
+        }
 
-        private void HandleHostDisconnected() =>
+        private void HandleHostDisconnected()
+        {
+            _clientConnected = false;
             _inbox.Enqueue(new Incoming(NetPeer.HostPeerId, null, connected: false));
+        }
 
         // Буфер Steam живёт только внутри колбэка, поэтому копируем: без копии подписчик прочитал бы
         // уже перезаписанную память — баг, который выглядит как порча данных в сети.

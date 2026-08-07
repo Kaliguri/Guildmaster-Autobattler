@@ -276,6 +276,7 @@ namespace Guildmaster.Tests.EditMode.Net
             public void SetLocalPeerId(int peerId) => _inner.SetLocalPeerId(peerId);
 
             public bool IsRunning               => _inner.IsRunning;
+            public System.Collections.Generic.IReadOnlyList<int> ConnectedPeers => _inner.ConnectedPeers;
             public int  LocalPeerId             => _inner.LocalPeerId;
             public bool IsHost                  => _inner.IsHost;
             public int  MaxReliableMessageBytes => _inner.MaxReliableMessageBytes;

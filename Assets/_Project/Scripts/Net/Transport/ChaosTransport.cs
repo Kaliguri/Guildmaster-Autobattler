@@ -89,6 +89,10 @@ namespace Guildmaster.Net.Transport
         public bool IsHost                 => _inner.IsHost;
         public int  MaxReliableMessageBytes => _inner.MaxReliableMessageBytes;
 
+        // Состав соединений хаос не портит намеренно: он моделирует ПОРЧУ КАНАЛА, а «кто подключён» —
+        // это состояние платформы. Врать здесь значило бы получить тест, падающий по двум причинам.
+        public System.Collections.Generic.IReadOnlyList<int> ConnectedPeers => _inner.ConnectedPeers;
+
         public event Action<int> PeerConnected
         {
             add    => _inner.PeerConnected += value;

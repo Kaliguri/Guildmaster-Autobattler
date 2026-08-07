@@ -52,6 +52,12 @@ namespace Guildmaster.Game.Session.Net
         {
             _participants.Add(LocalId);
 
+            // Подключившиеся ДО рождения гейта — та же слепота, что была у состава сеанса: планка «(N/M)»
+            // считала бы одного там, где играют двое, и действие срабатывало бы по согласию хозяина,
+            // пока напарник ещё смотрит на поле.
+            System.Collections.Generic.IReadOnlyList<int> already = _transport.ConnectedPeers;
+            for (int i = 0; i < already.Count; i++) _participants.Add(already[i]);
+
             _transport.PeerConnected    += OnPeerConnected;
             _transport.PeerDisconnected += OnPeerDisconnected;
             _transport.MessageReceived  += OnMessage;
