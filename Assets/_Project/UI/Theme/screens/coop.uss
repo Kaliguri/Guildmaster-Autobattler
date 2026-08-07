@@ -124,3 +124,8 @@
 .gm-vote-dot--p2 { background-color: var(--gm-color-player-2); }
 .gm-vote-dot--p3 { background-color: var(--gm-color-player-3); }
 .gm-vote-dot--p4 { background-color: var(--gm-color-player-4); }
+
+/* Где игрок сейчас: подпись справа от ника, тише имени — она вспомогательная. */
+.gm-participants__where {
+    margin-left: var(--gm-space-1);
+}

@@ -223,6 +223,11 @@ namespace Guildmaster.Game
             builder.Register<Session.SessionPlayerRouter>(Lifetime.Singleton)
                    .As<ILocalPlayer>().As<Guildmaster.Core.Players.ISessionRoster>();
 
+            // Где мы сейчас — для строки списка участников у остальных. Живёт в корне, потому что
+            // спрашивают его из сеанса, а сеансы сменяются: место считается по показу и навигатору,
+            // которые сеанс переживают.
+            builder.Register<Session.LocalWhereabouts>(Lifetime.Singleton).As<Session.ILocalWhereabouts>();
+
             // Чужие курсоры — тем же роутером-приёмом: живут они в сеансе, а рисует их мир, который
             // сеансы переживает.
             builder.Register<Session.SessionPresenceRouter>(Lifetime.Singleton)

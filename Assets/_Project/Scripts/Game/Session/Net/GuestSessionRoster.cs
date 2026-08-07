@@ -18,11 +18,16 @@ namespace Guildmaster.Game.Session.Net
     /// соединения может ещё не быть, и сообщение ушло бы в никуда — ровно тот класс ошибок, где «работает
     /// со второго раза».</para>
     /// </remarks>
-    public sealed class GuestSessionRoster : ISessionRoster, IStartable, IDisposable
+    public sealed class GuestSessionRoster : ISessionRoster, IStartable, ITickable, IDisposable
     {
         private readonly INetTransport _transport;
         private readonly Guildmaster.Core.Players.IPlatformIdentity _platform;
         private readonly Guildmaster.Core.Persistence.IProfileService _profiles;
+        // Где мы сейчас. Спрашивается каждый кадр, отправляется только на смену: место меняется редко,
+        // а таблица состава идёт надёжным каналом и стоит дороже пакета присутствия.
+        private readonly ILocalWhereabouts _where;
+
+        private PlayerWhere _lastSaid = PlayerWhere.Unknown;
 
         private readonly List<SessionPlayer> _players  = new List<SessionPlayer>(4);
         private readonly List<SessionPlayer> _incoming = new List<SessionPlayer>(4);
@@ -31,11 +36,25 @@ namespace Guildmaster.Game.Session.Net
 
         public GuestSessionRoster(INetTransport transport,
                                   Guildmaster.Core.Players.IPlatformIdentity platform,
-                                  Guildmaster.Core.Persistence.IProfileService profiles)
+                                  Guildmaster.Core.Persistence.IProfileService profiles,
+                                  ILocalWhereabouts where = null)
         {
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
             _platform  = platform;
             _profiles  = profiles;
+            _where     = where;
+        }
+
+        /// <summary>Сменили место — сказать об этом. Молчание оставило бы нас там, где нас уже нет.</summary>
+        public void Tick()
+        {
+            if (!_transport.IsRunning) return;
+
+            PlayerWhere now = _where?.Current ?? PlayerWhere.Unknown;
+            if (now == _lastSaid) return;
+
+            _lastSaid = now;
+            SayName();
         }
 
         public IReadOnlyList<SessionPlayer> Players => _players;
@@ -47,7 +66,10 @@ namespace Guildmaster.Game.Session.Net
             _transport.MessageReceived += OnMessage;
             _transport.PeerConnected   += OnPeerConnected;
 
-            if (_transport.IsRunning) SayName();
+            if (!_transport.IsRunning) return;
+
+            _lastSaid = _where?.Current ?? PlayerWhere.Unknown;
+            SayName();
         }
 
         public void Dispose()

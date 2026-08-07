@@ -197,6 +197,9 @@ namespace Guildmaster.Tests.EditMode.Run
             builder.RegisterInstance<IContentDatabase>(new EmptyContent());
             builder.RegisterInstance<MessagePipe.IPublisher<OpenRewardRequest>>(new SilentRewardPublisher());
 
+            // Где мы сейчас: состав сеанса возит место каждого участника. В EditMode мест нет вовсе.
+            builder.RegisterInstance<ILocalWhereabouts>(new NowhereInParticular());
+
             // Шина корня. Заглушкой, а не настоящим MessagePipe: сеанс только ПУБЛИКУЕТ «забег
             // начался», и поднимать ради этого весь брокер значило бы проверять не состав сеанса.
             builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>>(
@@ -283,6 +286,13 @@ namespace Guildmaster.Tests.EditMode.Run
         private sealed class TestLocalPlayer : Guildmaster.Core.Players.ILocalPlayer
         {
             public int Team => 0;
+        }
+
+        /// <summary>Мест в EditMode нет: ни экранов, ни карты, ни арены — и это честный ответ.</summary>
+        private sealed class NowhereInParticular : ILocalWhereabouts
+        {
+            public Guildmaster.Core.Players.PlayerWhere Current =>
+                Guildmaster.Core.Players.PlayerWhere.Unknown;
         }
 
         private sealed class SilentRewardPublisher : MessagePipe.IPublisher<OpenRewardRequest>

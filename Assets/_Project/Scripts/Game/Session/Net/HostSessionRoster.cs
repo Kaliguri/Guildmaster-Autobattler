@@ -22,12 +22,16 @@ namespace Guildmaster.Game.Session.Net
     /// <para><b>Имя гостя приходит от него самого.</b> Steam знает ник по SteamId, но транспорт наружу
     /// личности не отдаёт, и учить его этому ради подписи у курсора дороже, чем одно сообщение при входе.</para>
     /// </remarks>
-    public sealed class HostSessionRoster : ISessionRoster, IStartable, IDisposable
+    public sealed class HostSessionRoster : ISessionRoster, IStartable, ITickable, IDisposable
     {
         private readonly INetTransport  _transport;
         private readonly Guildmaster.Core.Players.IPlatformIdentity _platform;
         private readonly Guildmaster.Core.Persistence.IProfileService _profiles;
         private readonly GameConfig     _config;
+
+        // Где мы сами. Спрашивается каждый кадр, объявляется только на смену — как и у гостя.
+        private readonly ILocalWhereabouts _where;
+        private PlayerWhere _myWhere = PlayerWhere.Unknown;
 
         private readonly List<SessionPlayer> _players = new List<SessionPlayer>(4);
         private readonly NetByteWriter       _writer  = new NetByteWriter(128);
@@ -45,12 +49,31 @@ namespace Guildmaster.Game.Session.Net
         public HostSessionRoster(INetTransport transport,
                                  Guildmaster.Core.Players.IPlatformIdentity platform,
                                  Guildmaster.Core.Persistence.IProfileService profiles,
-                                 GameConfig config)
+                                 GameConfig config,
+                                 ILocalWhereabouts where = null)
         {
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
             _platform  = platform;
             _profiles  = profiles;
             _config    = config;
+            _where     = where;
+        }
+
+        /// <summary>
+        /// Своё место тоже видно остальным: хозяин — такой же участник списка.
+        /// </summary>
+        /// <remarks>
+        /// Спрашиваем каждый кадр, объявляем только на смену. Место меняется редко, а таблица состава
+        /// идёт надёжным каналом и стоит дороже пакета присутствия — слать её покадрово значило бы
+        /// платить за факт, который не менялся.
+        /// </remarks>
+        public void Tick()
+        {
+            PlayerWhere now = _where?.Current ?? PlayerWhere.Unknown;
+            if (now == _myWhere) return;
+
+            _myWhere = now;
+            Reseat(); // место лежит в таблице, а её объявляет пересадка
         }
 
         /// <summary>
@@ -150,11 +173,13 @@ namespace Guildmaster.Game.Session.Net
             string name;
             int    wantedColor;
             string skin;
+            PlayerWhere where;
             try
             {
                 name        = bytes.ReadString();
                 wantedColor = bytes.ReadByte();
                 skin        = bytes.ReadString();
+                where       = (PlayerWhere)bytes.ReadByte();
             }
             catch (InvalidOperationException)
             {
@@ -169,7 +194,7 @@ namespace Guildmaster.Game.Session.Net
 
                 SessionPlayer was = _players[i];
                 _wanted[from] = wantedColor;
-                _players[i] = new SessionPlayer(was.Id, name, was.Team, was.ColorIndex, skin);
+                _players[i] = new SessionPlayer(was.Id, name, was.Team, was.ColorIndex, skin, where);
                 Reseat(); // цвет мог освободиться или, наоборот, столкнуться с чужим пожеланием
                 return;
             }
@@ -206,7 +231,8 @@ namespace Guildmaster.Game.Session.Net
                 int colour = taken.Contains(wanted) ? FirstFree(taken) : wanted;
                 taken.Add(colour);
 
-                _players[i] = new SessionPlayer(was.Id, was.Name, TeamFor(i), colour, was.CursorSkinId);
+                _players[i] = new SessionPlayer(was.Id, was.Name, TeamFor(i), colour, was.CursorSkinId,
+                                                was.Id == LocalId ? _myWhere : was.Where);
             }
 
             Announce();
@@ -248,6 +274,7 @@ namespace Guildmaster.Game.Session.Net
                 _writer.WriteByte((byte)player.ColorIndex);
                 _writer.WriteString(player.Name);
                 _writer.WriteString(player.CursorSkinId);
+                _writer.WriteByte((byte)player.Where);
             }
 
             _transport.SendToAll(

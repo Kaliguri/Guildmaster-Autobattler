@@ -33,16 +33,25 @@ namespace Guildmaster.Core.Players
         /// </remarks>
         public readonly string CursorSkinId;
 
-        public SessionPlayer(int id, string name, int team, int colorIndex, string cursorSkinId = null)
+        /// <summary>
+        /// Где он сейчас — значок в списке участников. Едет составом, а не присутствием: присутствие
+        /// ненадёжно и шлётся по движению курсора, а стоящий в меню игрок курсором не двигает, и
+        /// последнее известное место осталось бы врать.
+        /// </summary>
+        public readonly PlayerWhere Where;
+
+        public SessionPlayer(int id, string name, int team, int colorIndex, string cursorSkinId = null,
+                             PlayerWhere where = PlayerWhere.Unknown)
         {
             Id           = id;
             Name         = name;
             Team         = team;
             ColorIndex   = colorIndex;
             CursorSkinId = cursorSkinId ?? string.Empty;
+            Where        = where;
         }
 
-        public override string ToString() => $"#{Id} {Name} (сторона {Team}, цвет {ColorIndex})";
+        public override string ToString() => $"#{Id} {Name} (сторона {Team}, цвет {ColorIndex}, {Where})";
     }
 
     /// <summary>

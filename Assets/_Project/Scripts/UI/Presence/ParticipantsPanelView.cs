@@ -125,6 +125,17 @@ namespace Guildmaster.UI.Presence
             row.Add(dot);
             row.Add(name);
 
+            // Где он сейчас — ответ на самый частый вопрос кооп-вечера, и потому он в строке, а не
+            // всплывает моментом. Своё место не подписываем: игрок и так знает, где он.
+            if (!isLocal)
+            {
+                var where = new Label(WhereLabel(player.Where)) { pickingMode = PickingMode.Ignore };
+                where.AddToClassList("gm-text-label");
+                where.AddToClassList("gm-text--muted");
+                where.AddToClassList("gm-participants__where");
+                row.Add(where);
+            }
+
             if (isLocal)
             {
                 var you = new Label("вы") { pickingMode = PickingMode.Ignore };
@@ -135,6 +146,25 @@ namespace Guildmaster.UI.Presence
             }
 
             return row;
+        }
+
+        /// <summary>
+        /// Подпись места. Словом, а не иконкой: значков на восемь состояний пришлось бы рисовать восемь,
+        /// а читаются они хуже короткого слова — и это ещё до того, как их начнут путать между собой.
+        /// </summary>
+        private static string WhereLabel(PlayerWhere where)
+        {
+            switch (where)
+            {
+                case PlayerWhere.Away:      return "отошёл";
+                case PlayerWhere.Menu:      return "в меню";
+                case PlayerWhere.Courtyard: return "во дворе";
+                case PlayerWhere.Map:       return "на карте";
+                case PlayerWhere.Arena:     return "на арене";
+                case PlayerWhere.Loadout:   return "в снаряжении";
+                case PlayerWhere.Pause:     return "в меню паузы";
+                default:                    return string.Empty; // ещё не сказал о себе — молчим
+            }
         }
 
         /// <summary>
@@ -152,6 +182,7 @@ namespace Guildmaster.UI.Presence
                 hash = hash * 31 + player.Id;
                 hash = hash * 31 + player.ColorIndex;
                 hash = hash * 31 + player.Team;
+                hash = hash * 31 + (int)player.Where; // без этого смена места не перерисовала бы строку
                 hash = hash * 31 + (player.Name?.GetHashCode() ?? 0);
             }
             return hash;
