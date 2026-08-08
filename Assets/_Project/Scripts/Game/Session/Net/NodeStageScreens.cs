@@ -34,6 +34,9 @@ namespace Guildmaster.Game.Session.Net
         private readonly IPublisher<OpenNodeFarewellRequest> _farewellPub;
         private readonly IPublisher<OpenChestRequest>        _chestPub;
         private readonly IPublisher<OpenTextEventRequest>    _eventPub;
+        private readonly IPublisher<OpenOutcomeRequest>      _outcomePub;
+        // «В меню» — тот же путь, что из паузы: у владельца отменяет забег, у гостя уводит из сеанса.
+        private readonly Core.Flow.IRunControl _runControl;
         // Реестр контента: по проводу едут id, а витрине нужны определения. Реестры сторон совпадают —
         // это проверено рукопожатием, поэтому промах по id здесь означает поломку, а не редкий случай.
         private readonly IContentDatabase _content;
@@ -53,6 +56,8 @@ namespace Guildmaster.Game.Session.Net
                                 IPublisher<OpenNodeFarewellRequest> farewellPub,
                                 IPublisher<OpenChestRequest> chestPub,
                                 IPublisher<OpenTextEventRequest> eventPub,
+                                IPublisher<OpenOutcomeRequest> outcomePub,
+                                Core.Flow.IRunControl runControl,
                                 IContentDatabase content,
                                 ISessionRunState runs,
                                 Core.Net.ISharedDecision decision)
@@ -64,6 +69,8 @@ namespace Guildmaster.Game.Session.Net
             _farewellPub = farewellPub;
             _chestPub    = chestPub;
             _eventPub    = eventPub;
+            _outcomePub  = outcomePub;
+            _runControl  = runControl;
             _content     = content;
             _runs        = runs;
             _decision    = decision;
@@ -104,6 +111,7 @@ namespace Guildmaster.Game.Session.Net
                 case NodeStageKind.Reward:    ShowReward(in state);          break;
                 case NodeStageKind.TextEvent: ShowTextEvent(in state, alive); break;
                 case NodeStageKind.Chest:     ShowChest(alive);              break;
+                case NodeStageKind.Outcome:   ShowOutcome(in state);         break;
             }
 
             if (state.Rest.Ended) ShowNodeEnd(in state, alive);
@@ -134,6 +142,25 @@ namespace Guildmaster.Game.Session.Net
                 labelKey:    null,
                 onContinue:  () => _modePub?.Publish(new GoToModeRequest(RunMode.Map)),
                 onFormation: () => _modePub?.Publish(new GoToModeRequest(RunMode.Battle))));
+        }
+
+        /// <summary>
+        /// Исход забега: победа или поражение, и три выхода с экрана.
+        /// </summary>
+        /// <remarks>
+        /// «Заново» и «во двор» — голоса за варианты одного решения; «в меню» уводит того, кто нажал,
+        /// и зовёт для этого тот же <c>IRunControl</c>, что и пауза (вердикт Макса 08.08.2026).
+        /// </remarks>
+        private void ShowOutcome(in NodeStageState state)
+        {
+            if (!state.TryOpenOutcome(out OutcomeStage outcome)) return;
+
+            _outcomePub?.Publish(new OpenOutcomeRequest(
+                outcome.Victory,
+                onToMenu:  () => _runControl?.RequestReturnToMainMenu(),
+                onContinue: null,   // акт кончился: продолжать нечем
+                onRestart: () => _decision?.Choose(Core.Net.RunAfterOptions.Restart),
+                onToGuild: () => _decision?.Choose(Core.Net.RunAfterOptions.Guild)));
         }
 
         /// <summary>Закрытый сундук: клик по крышке — голос, крышку открывает вся группа.</summary>

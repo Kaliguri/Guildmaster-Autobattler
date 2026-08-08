@@ -455,6 +455,14 @@ MonoBehaviour:
     m_Key: ui.mainmenu.profile
     m_Metadata:
       m_Items: []
+  - m_Id: 10339908864696320
+    m_Key: ui.outcome.restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10339908986331136
+    m_Key: ui.outcome.to_guild
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

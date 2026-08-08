@@ -1531,7 +1531,9 @@ namespace Guildmaster.UI
                     close = resolve;
                     built = OutcomeScreenView.Build(_outcomeUxml, req.Victory, key => _loc?.GetString(key),
                         onToMenu: () => resolve(true),
-                        onContinue: req.OnContinue);
+                        onContinue: req.OnContinue,
+                        onRestart:  req.OnRestart,
+                        onToGuild:  req.OnToGuild);
                     // Счёт, объявленный ДО постройки экрана, уже лежит в поле: гейт объявляет его в момент
                     // привязки действия, то есть раньше, чем этот экран вообще заказан.
                     ApplyReadyCount(built, _lastReady);
@@ -1543,7 +1545,12 @@ namespace Guildmaster.UI
             _onReadyChanged = e =>
             {
                 ApplyReadyCount(built, e);
-                if (e.Key == Core.Net.DecisionKeys.BattleContinue && e.Fired) close?.Invoke(false); // согласились все
+
+                // Экран уходит по срабатыванию своего решения: на площадке это «продолжить», после
+                // забега — «заново»/«во двор». Оба закрывают одинаково у хоста и у гостя.
+                bool mine = e.Key == Core.Net.DecisionKeys.BattleContinue ||
+                            e.Key == Core.Net.DecisionKeys.RunAfter;
+                if (mine && e.Fired) close?.Invoke(false);
             };
 
             try
@@ -1560,11 +1567,43 @@ namespace Guildmaster.UI
         private int ColorOf(int playerId) =>
             _roster != null && _roster.TryGet(playerId, out Core.Players.SessionPlayer p) ? p.ColorIndex : 0;
 
+        /// <summary>
+        /// Обновить счёт на общих кнопках экрана исхода.
+        /// </summary>
+        /// <remarks>
+        /// После забега общих кнопок ДВЕ, и счёт у каждой свой — сколько выбрали ИМЕННО ЕЁ. Общий счёт
+        /// решения на обеих означал бы, что напарник согласился с тобой, когда он выбрал соседнюю.
+        /// </remarks>
         private void ApplyReadyCount(VisualElement root, Core.Net.SharedDecisionChangedEvent e)
         {
-            if (root == null || e.Key != Core.Net.DecisionKeys.BattleContinue) return;
-            OutcomeScreenView.SetContinueCount(root, key => _loc?.GetString(key),
-                e.Voted, e.Required, e.HasLocalChoice);
+            if (root == null) return;
+
+            if (e.Key == Core.Net.DecisionKeys.BattleContinue)
+            {
+                OutcomeScreenView.SetSharedCount(root, "btn-continue", "ui.outcome.continue", "Продолжить",
+                    key => _loc?.GetString(key), e.Voted, e.Required, e.HasLocalChoice);
+                return;
+            }
+
+            if (e.Key != Core.Net.DecisionKeys.RunAfter) return;
+
+            OutcomeScreenView.SetSharedCount(root, "btn-restart", "ui.outcome.restart", "Начать заново",
+                key => _loc?.GetString(key), VotesFor(e, Core.Net.RunAfterOptions.Restart), e.Required,
+                e.LocalChoice == Core.Net.RunAfterOptions.Restart);
+
+            OutcomeScreenView.SetSharedCount(root, "btn-guild", "ui.outcome.to_guild", "Во двор гильдии",
+                key => _loc?.GetString(key), VotesFor(e, Core.Net.RunAfterOptions.Guild), e.Required,
+                e.LocalChoice == Core.Net.RunAfterOptions.Guild);
+        }
+
+        /// <summary>Сколько участников выбрали именно этот вариант.</summary>
+        private static int VotesFor(Core.Net.SharedDecisionChangedEvent e, string option)
+        {
+            int count = 0;
+            for (int i = 0; i < e.Choices.Count; i++)
+                if (e.Choices[i].Option == option) count++;
+
+            return count;
         }
 
         // Главное меню — на UXML (MainMenuScreen.uxml). «Создать игру» открывает выбор режима ПОВЕРХ

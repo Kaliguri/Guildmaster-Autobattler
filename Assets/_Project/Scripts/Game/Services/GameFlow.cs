@@ -274,17 +274,32 @@ namespace Guildmaster.Game.Services
             // не внутри RunActAsync: акт — это уже дорога, а двор — то, откуда на неё выходят, и всё
             // междузабежное (ростер, найм, лавка) будет жить тут же. Пока заглушка (ГДД
             // [[guild-hub-courtyard]]).
-            if (_hubPresenter != null) await _hubPresenter.ShowAsync();
-
-            // QA #18: «В главное меню» из системного меню отменяет забег → OperationCanceledException
-            // всплывает из петли акта; ловим и уходим на новый виток while (показ главного меню). Сейв
-            // остаётся (autosave по ходу) — забег можно продолжить.
-            try { await RunActAsync(); } // BeginAct + петля + экран исхода + чистка сейва
-            catch (OperationCanceledException)
+            bool throughCourtyard = true;
+            while (true)
             {
-                Debug.Log("[GameFlow] - забег прерван из меню → возврат в главное меню");
+                if (throughCourtyard && _hubPresenter != null) await _hubPresenter.ShowAsync();
+
+                // QA #18: «В главное меню» отменяет забег → OperationCanceledException всплывает из
+                // петли акта; ловим и уходим на новый виток while снаружи (показ главного меню). Сейв
+                // остаётся (autosave по ходу) — забег можно продолжить.
+                RunOutcomeChoice next;
+                try { next = await RunActAsync(); } // BeginAct + петля + экран исхода + чистка сейва
+                catch (OperationCanceledException)
+                {
+                    Debug.Log("[GameFlow] - забег прерван из меню → возврат в главное меню");
+                    return true;
+                }
+
+                if (next == RunOutcomeChoice.ToMenu) return true;
+
+                // Забег кончился, а дом остался: сейв старого забега уже стёрт, заводим новый прямо
+                // здесь. Двор проходим только по пути «во двор» — «заново» тем и быстрый, что мимо.
+                runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
+                throughCourtyard = next == RunOutcomeChoice.ToGuild;
+
+                Debug.Log($"[GameFlow] - с экрана исхода: {next} → новый забег" +
+                          (throughCourtyard ? " через двор" : " сразу"));
             }
-            return true;
         }
 
         /// <summary>
@@ -430,13 +445,16 @@ namespace Guildmaster.Game.Services
 
         /// <summary>
         /// A2-разрез забега: сгенерировать карту акта (если нет) и прогнать петлю обхода через <see cref="ActRunner"/>
-        /// (делегирование). Заводит забег, если его ещё нет (dev-запуск «начать акт»). Возвращает итог акта:
-        /// <c>Completed</c> — босс пройден; <c>PlayerDefeated</c> — поражение; <c>Aborted</c> — сбой.
+        /// (делегирование). Заводит забег, если его ещё нет (dev-запуск «начать акт»).
         /// </summary>
-        public async UniTask<EventResult> RunActAsync()
+        /// <returns>
+        /// Куда игрок ушёл с экрана исхода. Сбой акта и путь, на котором экрана не было, читаются как
+        /// <see cref="RunOutcomeChoice.ToMenu"/>: продолжать нечего.
+        /// </returns>
+        public async UniTask<RunOutcomeChoice> RunActAsync()
         {
             RunStateService runStates = RequireRun();
-            if (runStates == null) return EventResult.Aborted;
+            if (runStates == null) return RunOutcomeChoice.ToMenu;
 
             RunState run = runStates.Current
                            ?? runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
@@ -460,12 +478,17 @@ namespace Guildmaster.Game.Services
                 Debug.Log($"[GameFlow] - акт завершён: {result.Outcome}");
 
                 // Экран исхода (C2): победа (босс) / поражение (пул перезапусков пуст). Забег окончен — чистим сейв.
-                if (result.Outcome == EventOutcome.Completed || result.Outcome == EventOutcome.PlayerDefeated)
-                {
-                    await _outcomePresenter.ShowAsync(result.Outcome == EventOutcome.Completed);
-                    runStates.DeleteSave();
-                }
-                return result;
+                if (result.Outcome != EventOutcome.Completed && result.Outcome != EventOutcome.PlayerDefeated)
+                    return RunOutcomeChoice.ToMenu;
+
+                // Токен забега сюда передаётся не для порядка: «В меню» на этом экране — тот же путь,
+                // что и из паузы, то есть отмена. Без токена ожидание общего выбора пережило бы её и
+                // держало бы игрока на экране, с которого он уже ушёл.
+                RunOutcomeChoice choice = await _outcomePresenter.ShowAsync(
+                    result.Outcome == EventOutcome.Completed, _activityCts.Token);
+
+                runStates.DeleteSave();
+                return choice;
             }
             finally
             {

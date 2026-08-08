@@ -319,6 +319,14 @@ MonoBehaviour:
     m_Localized: PROFILE
     m_Metadata:
       m_Items: []
+  - m_Id: 10339908864696320
+    m_Localized: Run Again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10339908986331136
+    m_Localized: To the Courtyard
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

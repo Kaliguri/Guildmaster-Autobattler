@@ -209,6 +209,11 @@ namespace Guildmaster.Tests.EditMode.Run
                 new Silent<Guildmaster.Guild.OpenChestRequest>());
             builder.RegisterInstance<MessagePipe.IPublisher<OpenTextEventRequest>>(
                 new Silent<OpenTextEventRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenOutcomeRequest>>(
+                new Silent<Guildmaster.Guild.OpenOutcomeRequest>());
+
+            // «В меню» с экрана исхода — тот же путь, что из паузы, и он общий для обеих ролей.
+            builder.RegisterInstance<Guildmaster.Core.Flow.IRunControl>(new SilentRunControl());
 
             // Где мы сейчас: состав сеанса возит место каждого участника. В EditMode мест нет вовсе.
             builder.RegisterInstance<ILocalWhereabouts>(new NowhereInParticular());
@@ -306,6 +311,12 @@ namespace Guildmaster.Tests.EditMode.Run
         {
             public Guildmaster.Core.Players.PlayerWhere Current =>
                 Guildmaster.Core.Players.PlayerWhere.Unknown;
+        }
+
+        private sealed class SilentRunControl : Guildmaster.Core.Flow.IRunControl
+        {
+            public void RequestReturnToMainMenu() { }
+            public void RequestQuit() { }
         }
 
         /// <summary>Публикатор, которому некуда публиковать: экраны в этом тесте не проверяются.</summary>

@@ -35,6 +35,29 @@ namespace Guildmaster.Core.Net
         /// игроков с разным языком.
         /// </remarks>
         public const string EventChoice = "event.choice";
+
+        /// <summary>
+        /// Куда группа идёт с экрана исхода забега. Варианты — <see cref="RunAfterOptions"/>.
+        /// </summary>
+        /// <remarks>
+        /// <b>Одно решение с двумя вариантами, а не два решения.</b> Механизм держит один заказ за раз,
+        /// и второй <c>Bind</c> обнулил бы голоса первого — на экране с двумя общими кнопками это
+        /// выглядело бы как «нажал, а счёт пропал». Заодно оно честнее: один хочет заново, другой во
+        /// двор — голоса не сходятся, и обоим видно, кто что выбрал.
+        /// <para><b>«В главное меню» сюда НЕ входит</b> — эта кнопка личная (вердикт Макса 08.08.2026):
+        /// уйти к себе можно, не спрашивая напарника.</para>
+        /// </remarks>
+        public const string RunAfter = "run.after";
+    }
+
+    /// <summary>Куда группа идёт после забега.</summary>
+    public static class RunAfterOptions
+    {
+        /// <summary>Новый забег тем же домом, мимо двора.</summary>
+        public const string Restart = "restart";
+
+        /// <summary>Во двор гильдии: забег окончен, дом остаётся.</summary>
+        public const string Guild = "guild";
     }
 
     /// <summary>

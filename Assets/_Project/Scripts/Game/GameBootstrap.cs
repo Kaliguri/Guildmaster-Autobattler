@@ -110,8 +110,8 @@ namespace Guildmaster.Game
 
             if (_runActOnBoot)
             {
-                Flow.EventResult act = await _gameFlow.RunActAsync();
-                Debug.Log($"[GameBootstrap] - забег (акт) завершён: {act.Outcome}");
+                Guildmaster.Guild.RunOutcomeChoice act = await _gameFlow.RunActAsync();
+                Debug.Log($"[GameBootstrap] - забег (акт) завершён, с экрана исхода ушли в «{act}»");
                 return;
             }
 
