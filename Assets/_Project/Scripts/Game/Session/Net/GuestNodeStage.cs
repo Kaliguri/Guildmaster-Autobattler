@@ -1,49 +1,31 @@
 using System;
-using System.Collections.Generic;
-using Guildmaster.Data.Definitions;
 using Guildmaster.Net;
 using Guildmaster.Net.Transport;
-using MessagePipe;
 using UnityEngine;
 using VContainer.Unity;
 
 namespace Guildmaster.Game.Session.Net
 {
     /// <summary>
-    /// Гостевая половина «что на экране»: показывает витрину, объявленную хозяином, и отправляет голос.
+    /// Гостевая половина «что на экране»: принимает объявленный хозяином шаг узла и держит его у себя.
     /// </summary>
     /// <remarks>
-    /// <b>Витрину гость не катит.</b> Ему приезжают id того, что уже выпало, и он собирает из них ТУ ЖЕ
-    /// витрину через реестр контента — совпадение реестров проверено рукопожатием. Свой раскат дал бы
-    /// другие три реликвии, и группа выбирала бы из разного.
-    /// <para><b>Экран закрывается признаком срабатывания</b> от общего решения, как и у хозяина, а не
-    /// по объявлению <c>Idle</c>: два пути к одному закрытию разошлись бы, и у кого-то экран остался бы
-    /// висеть после того, как награду уже взяли.</para>
-    /// <para><b>Применить выбор гость не может</b> и не должен: реликвия ложится в чужой забег, которым
-    /// владеет хозяин. Отсюда и роль этого класса — показать и передать голос.</para>
+    /// <b>Показывать — не его дело.</b> Экраны узла открывает общий для обеих ролей потребитель
+    /// (<see cref="NodeStageScreens"/>), а этот класс — только гостевой конец провода: принять, разобрать
+    /// и поднять событие. Пока показ жил здесь, у витрины награды было ДВА пути — этот и хозяйская
+    /// петля, — и во втором признак «запас полон» был зашит в <c>false</c> (HARD «равные игроки»).
+    /// <para><b>Витрину гость не катит.</b> Ему приезжают id того, что уже выпало: свой раскат дал бы
+    /// другие три реликвии, и группа выбирала бы из разного.</para>
     /// </remarks>
     public sealed class GuestNodeStage : INodeStageView, IStartable, IDisposable
     {
-        private readonly INetTransport   _transport;
-        private readonly IContentDatabase _content;
-        private readonly IPublisher<OpenRewardRequest> _openRewardPub;
-        private readonly Core.Net.ISharedDecision _decision;
-        // Инвентарь забега: витрина показывает, что придётся выбросить, если места нет.
-        private readonly GuestRunState _runs;
+        private readonly INetTransport _transport;
 
         private NodeStageState _applied = NodeStageState.Idle;
         private byte[] _envelope;
 
-        public GuestNodeStage(INetTransport transport, IContentDatabase content,
-                              IPublisher<OpenRewardRequest> openRewardPub,
-                              Core.Net.ISharedDecision decision, GuestRunState runs)
-        {
-            _transport     = transport ?? throw new ArgumentNullException(nameof(transport));
-            _content       = content;
-            _openRewardPub = openRewardPub;
-            _decision      = decision;
-            _runs          = runs;
-        }
+        public GuestNodeStage(INetTransport transport) =>
+            _transport = transport ?? throw new ArgumentNullException(nameof(transport));
 
         /// <summary>Что применено последним — видно в dev-панели.</summary>
         public NodeStageState Applied => _applied;
@@ -99,34 +81,6 @@ namespace Guildmaster.Game.Session.Net
 
             _applied = state;
             Changed?.Invoke(state);
-
-            if (state.Kind != NodeStageKind.Reward) return;
-
-            ShowReward(state.Options);
-        }
-
-        /// <summary>Собрать витрину из объявленных id и открыть её.</summary>
-        private void ShowReward(IReadOnlyList<string> ids)
-        {
-            var choices = new List<RelicData>(ids.Count);
-            for (int i = 0; i < ids.Count; i++)
-            {
-                if (_content != null && _content.TryGet(ids[i], out RelicData relic)) choices.Add(relic);
-                else Debug.LogError($"[GuestNodeStage] - реликвии '{ids[i]}' нет в реестре: " +
-                                    "контент разъехался, хотя рукопожатие это проверяло.");
-            }
-
-            if (choices.Count == 0) return;
-
-            IReadOnlyList<string> inventory = _runs?.Current?.RelicInventory ?? Array.Empty<string>();
-
-            _openRewardPub?.Publish(new OpenRewardRequest(
-                choices,
-                // Место считает хозяин: у него правило вместимости, и второе мнение о нём разошлось бы
-                // ровно тогда, когда правило поменяют. Гостю показываем витрину, а не приговор.
-                inventoryFull: false,
-                inventory,
-                option => _decision?.Choose(option)));
         }
     }
 }

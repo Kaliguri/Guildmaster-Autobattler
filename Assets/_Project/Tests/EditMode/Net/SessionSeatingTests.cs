@@ -109,8 +109,10 @@ namespace Guildmaster.Tests.EditMode.Net
             net.CreateNode();   // на освободившееся место входит другой человек
             net.PollAll();
 
-            if (!roster.TryGet(1, out SessionPlayer newcomer)) Assert.Pass("место осталось пустым");
-            Assert.AreEqual(0, newcomer.Team, "новичок садится по умолчанию, а не по чужому назначению");
+            // Номер мог и не переиспользоваться — это транспорту решать. Проверяем не «кто вошёл», а
+            // что чужого назначения на этом номере не осталось: досталось бы оно молча.
+            bool inherited = roster.TryGet(1, out SessionPlayer newcomer) && newcomer.Team != 0;
+            Assert.IsFalse(inherited, "новичок садится по умолчанию, а не по чужому назначению");
         }
 
         /// <summary>Сажать некого — не повод падать: команда консоли зовётся вслепую.</summary>

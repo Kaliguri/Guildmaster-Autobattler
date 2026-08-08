@@ -3,7 +3,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
-using MessagePipe;
 using UnityEngine;
 
 namespace Guildmaster.Game.Flow
@@ -27,8 +26,9 @@ namespace Guildmaster.Game.Flow
     /// <para><b>Витрину катит хозяин и раздаёт результат раската</b> — гость собирает из id ту же
     /// витрину. Второй раскат у него дал бы другие три реликвии: бросок случаен.</para>
     /// <para><b>В соло ничего не меняется:</b> участник один, решение срабатывает в тот же кадр.</para>
-    /// <para>Требует слушателя <see cref="OpenRewardRequest"/> (UiRootBootstrap в CoreScene) — иначе
-    /// витрины не будет видно, и группе нечего будет выбирать.</para>
+    /// <para><b>Витрину показывает не он.</b> Презентер объявляет шаг узла, а экран открывает общий для
+    /// обеих ролей потребитель (<c>NodeStageScreens</c>). Пока показ жил здесь, к витрине вело два пути
+    /// — этот и гостевой, — и во втором признак «запас полон» был зашит в <c>false</c>.</para>
     /// </remarks>
     public sealed class RewardPresenter : IRewardPresenter
     {
@@ -37,23 +37,20 @@ namespace Guildmaster.Game.Flow
         // Сброс реликвии ради места — односторонняя запись, идёт через шину и попадает в лог. Взятие
         // награды осталось прямым: оно спрашивает «влезло ли» синхронно, то есть транзакция.
         private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
-        private readonly IPublisher<OpenRewardRequest> _openRewardPub;
         private readonly Core.Net.ISharedDecision _decision;
-        // Объявление витрины гостям: у них нет ни генератора, ни забега, из которого её собрать.
+        // Объявление витрины: и гостям, у которых нет ни генератора, ни забега, и своему же показу.
         private readonly Session.Net.HostNodeStage _stage;
 
         public RewardPresenter(RewardService rewards, RunStateService runStates,
                                Guildmaster.Guild.Commands.IRunCommands commands,
-                               IPublisher<OpenRewardRequest> openRewardPub,
                                Core.Net.ISharedDecision decision,
                                Session.Net.HostNodeStage stage)
         {
-            _rewards       = rewards;
-            _runStates     = runStates;
-            _commands      = commands;
-            _openRewardPub = openRewardPub;
-            _decision      = decision;
-            _stage         = stage;
+            _rewards   = rewards;
+            _runStates = runStates;
+            _commands  = commands;
+            _decision  = decision;
+            _stage     = stage;
         }
 
         public async UniTask PresentAsync(RewardTier tier, CancellationToken ct = default)
@@ -73,13 +70,12 @@ namespace Guildmaster.Game.Flow
             // Ключ взводим ДО показа: гость получит витрину и счёт одним разом, а не «сначала карточки,
             // потом откуда-то счёт».
             _decision?.Bind(Core.Net.DecisionKeys.RewardPick, option => chosen.TrySetResult(option));
-            _stage?.Announce(new Session.Net.NodeStageState(
-                Session.Net.NodeStageKind.Reward, IdsOf(choices)));
 
-            _openRewardPub.Publish(new OpenRewardRequest(
-                choices, full, run.RelicInventory,
-                option => _decision?.Choose(option),
-                ct)); // ct → закрыть экран при отмене (QA #37)
+            // Витрину не показываем сами: объявляем шаг узла, а экран открывает общий для обеих ролей
+            // потребитель (NodeStageScreens). Пока показ жил здесь, у витрины было ДВА пути — этот и
+            // гостевой, — и во втором признак «запас полон» был зашит в false (HARD «равные игроки»).
+            _stage?.Announce(new Session.Net.NodeStageState(
+                Session.Net.NodeStageKind.Reward, IdsOf(choices), full));
 
             try
             {

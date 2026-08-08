@@ -40,11 +40,32 @@ namespace Guildmaster.Tests.EditMode.Net
             Assert.IsEmpty(got.Options);
         }
 
+        /// <summary>
+        /// Признак «запас полон» едет вместе с витриной, а не считается на каждой стороне сама.
+        /// </summary>
+        /// <remarks>
+        /// От него зависит текст ГОЛОСА («взять» против «взять взамен того-то»), а согласие сравнивает
+        /// голоса побайтово. Пока гость считал его сам и всегда получал <c>false</c>, при полном запасе
+        /// у владельца голоса не сходились никогда — витрина не закрывалась ни у кого, и забег вставал.
+        /// </remarks>
+        [Test]
+        public void InventoryFull_TravelsWithTheShelf()
+        {
+            var sent = new NodeStageState(NodeStageKind.Reward, new[] { "relic.ruby" }, inventoryFull: true);
+
+            var writer = new NetByteWriter(64);
+            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
+
+            Assert.IsTrue(got.InventoryFull, "запас полон — витрина предложит обмен, а не простое «взять»");
+            Assert.AreEqual(sent, got, "шаги с разным признаком места — разные шаги");
+        }
+
         [Test]
         public void UnknownKind_IsRefused()
         {
             var writer = new NetByteWriter(16);
             writer.WriteByte(200); // вида шага с таким номером в этой сборке нет
+            writer.WriteBool(false);
             writer.WriteByte(0);
 
             Assert.IsFalse(NodeStageCodec.TryRead(writer.WrittenSegment, out _));
@@ -55,6 +76,7 @@ namespace Guildmaster.Tests.EditMode.Net
         {
             var writer = new NetByteWriter(16);
             writer.WriteByte((byte)NodeStageKind.Reward);
+            writer.WriteBool(false);
             writer.WriteByte(3);            // обещали три варианта...
             writer.WriteString("relic.ruby"); // ...а прислали один
 

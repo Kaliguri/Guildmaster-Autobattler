@@ -64,12 +64,26 @@ namespace Guildmaster.Game.Session.Net
         /// <summary>Из чего выбирают. Для награды — id выпавших реликвий, по порядку витрины.</summary>
         public readonly IReadOnlyList<string> Options;
 
+        /// <summary>
+        /// Запас реликвий полон — витрина предложит обмен вместо простого «взять».
+        /// </summary>
+        /// <remarks>
+        /// <b>Едет по проводу, потому что от него зависит ГОЛОС.</b> При полном запасе вариант выглядит
+        /// как «взять взамен того-то», при неполном — просто «взять», а согласие требует побайтово
+        /// одинаковой строки у всех. Пока признак считался на каждой стороне сам, у гостя он был зашит
+        /// в <c>false</c>: при полном запасе у хозяина голоса не сходились НИКОГДА, и витрина не
+        /// закрывалась ни у кого — забег вставал (08.08.2026).
+        /// </remarks>
+        public readonly bool InventoryFull;
+
         private static readonly string[] Nothing = Array.Empty<string>();
 
-        public NodeStageState(NodeStageKind kind, IReadOnlyList<string> options = null)
+        public NodeStageState(NodeStageKind kind, IReadOnlyList<string> options = null,
+                              bool inventoryFull = false)
         {
-            Kind    = kind;
-            Options = options ?? Nothing;
+            Kind          = kind;
+            Options       = options ?? Nothing;
+            InventoryFull = inventoryFull;
         }
 
         /// <summary>Экрана нет — узел идёт своим ходом.</summary>
@@ -77,7 +91,8 @@ namespace Guildmaster.Game.Session.Net
 
         public bool Equals(NodeStageState other)
         {
-            if (Kind != other.Kind || Options.Count != other.Options.Count) return false;
+            if (Kind != other.Kind || InventoryFull != other.InventoryFull ||
+                Options.Count != other.Options.Count) return false;
 
             for (int i = 0; i < Options.Count; i++)
                 if (Options[i] != other.Options[i]) return false;
@@ -89,12 +104,13 @@ namespace Guildmaster.Game.Session.Net
 
         public override int GetHashCode()
         {
-            int hash = (int)Kind * 397;
+            int hash = (int)Kind * 397 ^ (InventoryFull ? 8191 : 0);
             for (int i = 0; i < Options.Count; i++) hash = (hash * 31) ^ Options[i].GetHashCode();
             return hash;
         }
 
-        public override string ToString() => $"{Kind}({string.Join(", ", Options)})";
+        public override string ToString() =>
+            $"{Kind}({string.Join(", ", Options)}){(InventoryFull ? " [запас полон]" : string.Empty)}";
     }
 
     /// <summary>Шаг узла в байтах и обратно.</summary>
@@ -104,6 +120,7 @@ namespace Guildmaster.Game.Session.Net
         {
             writer.Reset();
             writer.WriteByte((byte)state.Kind);
+            writer.WriteBool(state.InventoryFull);
             writer.WriteByte((byte)(state.Options.Count > 255 ? 255 : state.Options.Count));
 
             for (int i = 0; i < state.Options.Count && i < 255; i++) writer.WriteString(state.Options[i]);
@@ -118,15 +135,17 @@ namespace Guildmaster.Game.Session.Net
         public static bool TryRead(ArraySegment<byte> payload, out NodeStageState state)
         {
             state = NodeStageState.Idle;
-            if (payload.Count < 2) return false;
+            if (payload.Count < 3) return false;
 
             var bytes = new NetByteReader(payload);
 
             byte kind;
+            bool full;
             var options = new List<string>(3);
             try
             {
                 kind = bytes.ReadByte();
+                full = bytes.ReadBool();
                 int count = bytes.ReadByte();
                 for (int i = 0; i < count; i++) options.Add(bytes.ReadString());
             }
@@ -137,7 +156,7 @@ namespace Guildmaster.Game.Session.Net
 
             if (!Enum.IsDefined(typeof(NodeStageKind), kind)) return false;
 
-            state = new NodeStageState((NodeStageKind)kind, options);
+            state = new NodeStageState((NodeStageKind)kind, options, full);
             return true;
         }
     }
