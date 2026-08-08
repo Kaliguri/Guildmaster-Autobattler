@@ -45,6 +45,27 @@ namespace Guildmaster.Net.Transport
         private GuestConnection _client;   // мы гость
         private int             _nextPeerId = NetPeer.HostPeerId + 1;
 
+        /// <summary>
+        /// Номер живого подключения. Растёт на каждом <see cref="Shutdown"/>, и каждый сокет запоминает
+        /// тот, при котором родился.
+        /// </summary>
+        /// <remarks>
+        /// <b>Steam досказывает за закрытым соединением.</b> Колбэки приходят не тогда, когда мы закрыли
+        /// сокет, а на ближайшем <c>RunCallbacks</c> — то есть уже после того, как на его месте подняли
+        /// новое. Без поколения такой хвост неотличим от настоящего события: он попадает в очередь и
+        /// выходит наружу как факт про ЖИВУЮ сессию.
+        /// <para>Стоило это двух симптомов сразу (прогон вдвоём 08.08.2026). Гость, поднявший свой
+        /// хостинг, получал «пир 0 отключился» от прошлого соединения — а ноль в новой роли означает его
+        /// самого, и состав сеанса вычёркивал хозяина: «нас нет в составе сеанса (наш номер 0,
+        /// участников 1)». Второй раз тот же хвост убивал подключение к чужому лобби: <c>CoopSession</c>
+        /// видел разрыв в состоянии <c>Connecting</c> и валил новую сессию с текстом «Хост не ответил»,
+        /// хотя хост отвечал исправно.</para>
+        /// <para><b>Почему не хватило снять <c>Owner</c></b> у закрываемого сокета: это лечит только тот
+        /// случай, когда объект соединения новый. Поколение отвечает на вопрос «из какой сессии это
+        /// событие», а он и есть настоящий, — и отвечает одинаково для всех трёх видов событий.</para>
+        /// </remarks>
+        private int _generation;
+
         private readonly struct Incoming
         {
             public readonly int    From;
@@ -122,8 +143,9 @@ namespace Guildmaster.Net.Transport
                 return false;
             }
 
-            _socket.Owner = this;
-            LocalPeerId   = NetPeer.HostPeerId;
+            _socket.Owner      = this;
+            _socket.Generation = _generation;
+            LocalPeerId        = NetPeer.HostPeerId;
             return true;
         }
 
@@ -146,7 +168,8 @@ namespace Guildmaster.Net.Transport
                 return false;
             }
 
-            _client.Owner = this;
+            _client.Owner      = this;
+            _client.Generation = _generation;
             return true;
         }
 
@@ -214,6 +237,10 @@ namespace Guildmaster.Net.Transport
 
         public void Shutdown()
         {
+            // Поколение растёт ПЕРВЫМ: Steam может дёрнуть OnDisconnected прямо из Close, и событие о
+            // закрытии уже не должно считаться событием живой сессии.
+            _generation++;
+
             _socket?.Close();
             _client?.Close();
             _socket = null;
@@ -244,16 +271,25 @@ namespace Guildmaster.Net.Transport
 
         // ── события сокета ───────────────────────────────────────────────────────
 
-        private void HandleGuestConnected(Connection connection)
+        /// <summary>
+        /// Событие пришло от той сессии, что живёт сейчас? Хвост закрытого сокета сюда доезжает
+        /// исправно — см. <see cref="_generation"/>.
+        /// </summary>
+        private bool IsStale(int generation) => generation != _generation;
+
+        private void HandleGuestConnected(int generation, Connection connection)
         {
+            if (IsStale(generation)) return;
+
             int peerId = _nextPeerId++;
             _peerByConnection[connection.Id] = peerId;
             _connectionByPeer[peerId]        = connection;
             _inbox.Enqueue(new Incoming(peerId, null, connected: true));
         }
 
-        private void HandleGuestDisconnected(Connection connection)
+        private void HandleGuestDisconnected(int generation, Connection connection)
         {
+            if (IsStale(generation)) return;
             if (!_peerByConnection.TryGetValue(connection.Id, out int peerId)) return;
 
             _peerByConnection.Remove(connection.Id);
@@ -261,22 +297,27 @@ namespace Guildmaster.Net.Transport
             _inbox.Enqueue(new Incoming(peerId, null, connected: false));
         }
 
-        private void HandleHostConnected()
+        private void HandleHostConnected(int generation)
         {
+            if (IsStale(generation)) return;
+
             _clientConnected = true;
             _inbox.Enqueue(new Incoming(NetPeer.HostPeerId, null, connected: true));
         }
 
-        private void HandleHostDisconnected()
+        private void HandleHostDisconnected(int generation)
         {
+            if (IsStale(generation)) return;
+
             _clientConnected = false;
             _inbox.Enqueue(new Incoming(NetPeer.HostPeerId, null, connected: false));
         }
 
         // Буфер Steam живёт только внутри колбэка, поэтому копируем: без копии подписчик прочитал бы
         // уже перезаписанную память — баг, который выглядит как порча данных в сети.
-        private void HandleMessage(int from, IntPtr data, int size)
+        private void HandleMessage(int generation, int from, IntPtr data, int size)
         {
+            if (IsStale(generation)) return;
             if (size <= 0) return;
 
             var bytes = new byte[size];
@@ -292,6 +333,9 @@ namespace Guildmaster.Net.Transport
         {
             public SteamNetTransport Owner;
 
+            /// <summary>Поколение, при котором сокет подняли. Хвост от прошлого сюда и приходит.</summary>
+            public int Generation;
+
             // Принимаем всех: кто здесь чужой, решает рукопожатие уровнем выше — оно знает про версию
             // сборки и отпечаток контента, а сокет про них не знает ничего.
             public override void OnConnecting(Connection connection, ConnectionInfo info)
@@ -303,13 +347,13 @@ namespace Guildmaster.Net.Transport
             public override void OnConnected(Connection connection, ConnectionInfo info)
             {
                 base.OnConnected(connection, info);
-                Owner?.HandleGuestConnected(connection);
+                Owner?.HandleGuestConnected(Generation, connection);
             }
 
             public override void OnDisconnected(Connection connection, ConnectionInfo info)
             {
                 base.OnDisconnected(connection, info);
-                Owner?.HandleGuestDisconnected(connection);
+                Owner?.HandleGuestDisconnected(Generation, connection);
             }
 
             public override void OnMessage(Connection connection, NetIdentity identity, IntPtr data, int size,
@@ -319,7 +363,7 @@ namespace Guildmaster.Net.Transport
                 if (Owner == null) return;
 
                 int peerId = Owner.PeerOf(connection);
-                if (peerId != NetPeer.NoPeer) Owner.HandleMessage(peerId, data, size);
+                if (peerId != NetPeer.NoPeer) Owner.HandleMessage(Generation, peerId, data, size);
             }
         }
 
@@ -328,22 +372,25 @@ namespace Guildmaster.Net.Transport
         {
             public SteamNetTransport Owner;
 
+            /// <summary>Поколение, при котором соединение открыли. См. <see cref="_generation"/>.</summary>
+            public int Generation;
+
             public override void OnConnected(ConnectionInfo info)
             {
                 base.OnConnected(info);
-                Owner?.HandleHostConnected();
+                Owner?.HandleHostConnected(Generation);
             }
 
             public override void OnDisconnected(ConnectionInfo info)
             {
                 base.OnDisconnected(info);
-                Owner?.HandleHostDisconnected();
+                Owner?.HandleHostDisconnected(Generation);
             }
 
             public override void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel)
             {
                 base.OnMessage(data, size, messageNum, recvTime, channel);
-                Owner?.HandleMessage(NetPeer.HostPeerId, data, size);
+                Owner?.HandleMessage(Generation, NetPeer.HostPeerId, data, size);
             }
         }
     }
