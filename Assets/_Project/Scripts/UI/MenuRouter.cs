@@ -136,6 +136,7 @@ namespace Guildmaster.UI
             _readySubscription = readySub?.Subscribe(e =>
             {
                 _lastReady = e;
+                _onHubReadyChanged?.Invoke(e);
                 _onReadyChanged?.Invoke(e);
             });
             _profiles = profiles;
@@ -784,27 +785,54 @@ namespace Guildmaster.UI
         /// <summary>
         /// Двор гильдии между выбором дома и забегом. Пока заглушка с единственной дверью наружу.
         /// </summary>
-        public void OpenHub(OpenHubRequest req) => OpenHub(req, canStartRun: true);
-
-        private void OpenHub(OpenHubRequest req, bool canStartRun)
+        public void OpenHub(OpenHubRequest req)
         {
             // Отказ здесь ЗАВЕРШАЕТ шаг: без двора игрок остался бы стоять между домом и актом, и
-            // забег не начался бы никогда. Экран пропущен — забег идёт, но ошибка красная.
+            // забег не начался бы никогда. Экран пропущен — голосуем за выход сами, но ошибка красная.
             if (CannotShow("Двор гильдии (_hubScreen)", _hubUxml)) { req.OnStartRun?.Invoke(); return; }
 
+            VisualElement built = null;
             var screen = new RouterResultScreen<bool>(ScreenKind.Page, true,
-                resolve => HubScreenView.Build(_hubUxml, req.GuildName, key => _loc?.GetString(key),
-                                               onStartRun: () => resolve(true), canStartRun: canStartRun));
+                _ =>
+                {
+                    // Кнопка НЕ закрывает двор — она отправляет голос. Закрытие приходит объявлением, и
+                    // потому одинаково у обеих ролей: раньше клик закрывал двор нажавшему, и дать эту
+                    // кнопку гостю было нельзя — напарник остался бы стоять один.
+                    built = HubScreenView.Build(_hubUxml, req.GuildName, key => _loc?.GetString(key),
+                                                onStartRun: () => req.OnStartRun?.Invoke(),
+                                                canStartRun: req.OnStartRun != null);
+                    ApplyHubCount(built, _lastReady);
+                    return built;
+                });
 
             _hubScreen = screen; // «двор открыт» — это ссылка на его экран, и другого владельца у факта нет
-            ShowHubAsync(screen, req).Forget();
+            ShowHubAsync(screen, req, () => built).Forget();
         }
 
-        private async UniTaskVoid ShowHubAsync(RouterResultScreen<bool> screen, OpenHubRequest req)
+        private async UniTaskVoid ShowHubAsync(RouterResultScreen<bool> screen, OpenHubRequest req,
+                                               Func<VisualElement> built)
         {
-            await _nav.ShowAsync(screen);
-            if (ReferenceEquals(_hubScreen, screen)) _hubScreen = null;
-            req.OnStartRun?.Invoke();
+            // Пока двор открыт, счёт на кнопке ведёт он: напарник соглашается уже после того, как ты
+            // нажал, и молчащая кнопка выглядела бы как зависшая.
+            Action<Core.Net.SharedDecisionChangedEvent> before = _onHubReadyChanged;
+            _onHubReadyChanged = e => ApplyHubCount(built(), e);
+
+            try { await _nav.ShowAsync(screen, req.Cancellation); }
+            finally
+            {
+                _onHubReadyChanged = before;
+                if (ReferenceEquals(_hubScreen, screen)) _hubScreen = null;
+            }
+        }
+
+        private Action<Core.Net.SharedDecisionChangedEvent> _onHubReadyChanged;
+
+        private void ApplyHubCount(VisualElement root, Core.Net.SharedDecisionChangedEvent e)
+        {
+            if (root == null || e.Key != Core.Net.DecisionKeys.RunStart) return;
+
+            HubScreenView.SetStartCount(root, key => _loc?.GetString(key),
+                e.Voted, e.Required, e.HasLocalChoice);
         }
 
         // ── Двор глазами сеанса (IHubPresence) ───────────────────────────────
@@ -825,14 +853,14 @@ namespace Guildmaster.UI
         /// своим каналом. <c>OnStartRun</c> тоже пуст — забег начинает владелец, и гостевой экран,
         /// закрывшись сам, не должен никого никуда отправлять.
         /// </remarks>
-        void Core.Flow.IHubPresence.SetVisible(bool visible)
+        void Core.Flow.IHubPresence.SetVisible(bool visible, Action onStartRun)
         {
             if (visible == (_hubScreen != null)) return; // применяется целиком и каждый раз — повтор штатен
 
-            // Кнопка «Начать забег» гостю НЕ даётся: из двора выходит петля владельца, а гостевой клик
-            // закрыл бы двор ему одному — напарник остался бы стоять во дворе (наход. Макса 04.08.2026).
-            // Двор у гостя кончится сам, объявлением: хост вышел — HubOpen стал false.
-            if (visible) { OpenHub(new OpenHubRequest(null, null), canStartRun: false); return; }
+            // Кнопка «Начать забег» есть и у гостя: она шлёт ГОЛОС, а не закрывает двор, и уходят все
+            // вместе (вердикт Макса 08.08.2026). Пока клик закрывал двор нажавшему, давать её было
+            // нельзя — напарник остался бы стоять один (наход. Макса 04.08.2026).
+            if (visible) { OpenHub(new OpenHubRequest(null, onStartRun)); return; }
 
             RouterResultScreen<bool> screen = _hubScreen;
             _hubScreen = null;

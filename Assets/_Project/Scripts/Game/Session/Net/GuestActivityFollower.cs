@@ -288,7 +288,8 @@ namespace Guildmaster.Game.Session.Net
         /// </remarks>
         private void ApplyHub(in ActivityState state)
         {
-            _hub?.SetVisible(state.HubOpen);
+            // Голос за выход в забег: кнопка двора есть у обеих ролей и делает у обеих одно и то же.
+            _hub?.SetVisible(state.HubOpen, () => _ready?.ToggleLocal());
         }
 
         /// <summary>

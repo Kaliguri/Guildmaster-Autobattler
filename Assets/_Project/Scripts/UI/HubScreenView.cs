@@ -15,10 +15,10 @@ namespace Guildmaster.UI
     public static class HubScreenView
     {
         /// <param name="canStartRun">
-        /// Может ли ЭТОТ игрок увести отряд в забег. У гостя — нет: из двора выходит петля владельца, и
-        /// его кнопка закрывала бы двор только ему одному, оставляя напарника стоять (наход. Макса
-        /// 04.08.2026, второй прогон вдвоём). Кнопка при этом остаётся на месте и гаснет: пропавшая
-        /// читается как «экран не догрузился», погашенная — как «ход не мой».
+        /// Есть ли чем голосовать за выход в забег. <b>У обеих ролей — да</b> (вердикт Макса
+        /// 08.08.2026): кнопка отправляет голос, а уходит группа, когда сошлись все. Гасим её только
+        /// там, где голосовать физически некуда. Кнопка при этом остаётся на месте: пропавшая читается
+        /// как «экран не догрузился», погашенная — как «сейчас нельзя».
         /// </param>
         public static VisualElement Build(
             VisualTreeAsset uxml,
@@ -58,6 +58,28 @@ namespace Guildmaster.UI
             }
 
             return root;
+        }
+
+        /// <summary>
+        /// Показать на кнопке, скольких ещё ждём. В одиночку счёт не рисуется: «(1/1)» не сообщает
+        /// ничего, а место на кнопке занимает.
+        /// </summary>
+        /// <remarks>
+        /// Отдельный метод, а не параметр сборки: счёт меняется, пока двор открыт, — напарник
+        /// соглашается уже после того, как ты нажал. Молчащая кнопка выглядела бы как зависшая, а это
+        /// худший вид зависания: причина не видна на экране.
+        /// </remarks>
+        public static void SetStartCount(VisualElement root, Func<string, string> localize,
+                                         int ready, int required, bool locallyReady)
+        {
+            var button = root?.Q<Button>("btn-start-run");
+            if (button == null) return;
+
+            string label = localize?.Invoke("ui.hub.start_run");
+            if (string.IsNullOrEmpty(label)) label = "Начать забег";
+
+            button.text = required > 1 ? $"{label} ({ready}/{required})" : label;
+            button.EnableInClassList("gm-btn--pending", required > 1 && locallyReady);
         }
     }
 }

@@ -249,7 +249,7 @@ namespace Guildmaster.Tests.EditMode.Run
         private sealed class SilentHub : Guildmaster.Core.Flow.IHubPresence
         {
             public bool IsShown => false;
-            public void SetVisible(bool visible) { }
+            public void SetVisible(bool visible, System.Action onStartRun = null) { }
         }
 
         private sealed class SilentPublisher : MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>
