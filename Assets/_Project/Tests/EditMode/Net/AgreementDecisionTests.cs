@@ -55,6 +55,42 @@ namespace Guildmaster.Tests.EditMode.Net
             Assert.AreEqual(1, gate.Voted);
         }
 
+        /// <summary>
+        /// Игрок отвалился посреди голосования — решение не принимается само собой.
+        /// </summary>
+        /// <remarks>
+        /// Оставшийся уже нажал и ждал напарника. С его уходом планка опускается ровно до набранного —
+        /// и выбор случился бы, пока игрок смотрит на «ждём второго». Гасим голоса всех: нажать второй
+        /// раз дёшево, отменить сделанный выбор — нет (вердикт Макса 08.08.2026).
+        /// </remarks>
+        [Test]
+        public void LeavingMidVote_DoesNotDecideForThoseWhoStayed()
+        {
+            var host = new LoopbackNetwork();
+            INetTransport hostNode = host.CreateNode();
+            var gate = new HostSharedDecision(hostNode, null);
+            gate.Start();
+
+            INetTransport guest = host.CreateNode();
+            host.PollAll();
+
+            int fired = 0;
+            gate.Bind(DecisionKeys.RewardPick, _ => fired++);
+
+            gate.Choose("relic.ruby");   // нажали и ждём напарника
+            Assert.AreEqual(0, fired);
+
+            guest.Shutdown();            // ...а напарник отвалился
+            host.PollAll();
+
+            Assert.AreEqual(0, fired, "выбор не делается за того, кто ждал");
+            Assert.AreEqual(0, gate.Voted, "голоса погашены — нажимать заново, уже видя, что остался один");
+            Assert.AreEqual(1, gate.Required, "но кнопка не подвисла: ждать больше некого");
+
+            gate.Choose("relic.ruby");
+            Assert.AreEqual(1, fired, "повторное нажатие срабатывает сразу");
+        }
+
         [Test]
         public void SecondPress_TakesTheVoteBack()
         {
