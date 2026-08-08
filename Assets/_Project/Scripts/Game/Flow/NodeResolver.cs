@@ -38,7 +38,8 @@ namespace Guildmaster.Game.Flow
         private readonly IPublisher<OpenShopRequest>      _openShopPub;
         private readonly IPublisher<OpenChestRequest>     _openChestPub;
         private readonly IPublisher<OpenCampRequest>      _openCampPub;
-        private readonly IPublisher<OpenNodeFarewellRequest> _farewellPub; // кадр-прощание узла (QA #48/#49)
+        // Объявление шага узла: кадр-прощание и кнопки «дальше» едут одним шагом обеим ролям.
+        private readonly Session.Net.HostNodeStage _stage;
 
         public NodeResolver(IContentDatabase content, IBattleSession session,
                             ILocalPlayer localPlayer, EventEffectApplier eventEffects, ShopController shop,
@@ -47,10 +48,10 @@ namespace Guildmaster.Game.Flow
                             IContinuePresenter continuePresenter,
                             IPublisher<OpenTextEventRequest> openEventPub, IPublisher<OpenShopRequest> openShopPub,
                             IPublisher<OpenChestRequest> openChestPub, IPublisher<OpenCampRequest> openCampPub,
-                            IPublisher<OpenNodeFarewellRequest> farewellPub)
+                            Session.Net.HostNodeStage stage)
         {
             _openCampPub  = openCampPub;
-            _farewellPub  = farewellPub;
+            _stage        = stage;
             _content      = content;
             _session      = session;
             _localPlayer  = localPlayer;
@@ -122,13 +123,13 @@ namespace Guildmaster.Game.Flow
                 }
 
                 case MapNodeType.Shop:
-                    return new ShopFlow(_shop, _openShopPub, _farewellPub);
+                    return new ShopFlow(_shop, _openShopPub, _stage);
 
                 case MapNodeType.Chest:
-                    return new ChestFlow(_openChestPub, _reward, _farewellPub);
+                    return new ChestFlow(_openChestPub, _reward, _stage);
 
                 case MapNodeType.Camp:
-                    return new CampFlow(_openCampPub, _farewellPub);
+                    return new CampFlow(_openCampPub, _stage);
 
                 // «?»: тип роллится на входе, делегируем себе же (B4).
                 case MapNodeType.Unknown:

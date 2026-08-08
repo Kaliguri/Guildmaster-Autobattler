@@ -13,14 +13,14 @@ namespace Guildmaster.Game.Flow
     {
         private readonly ShopController _shop;
         private readonly IPublisher<OpenShopRequest> _openShopPub;
-        private readonly IPublisher<OpenNodeFarewellRequest> _farewellPub;
+        private readonly Session.Net.HostNodeStage _stage;
 
         public ShopFlow(ShopController shop, IPublisher<OpenShopRequest> openShopPub,
-                        IPublisher<OpenNodeFarewellRequest> farewellPub = null)
+                        Session.Net.HostNodeStage stage = null)
         {
-            _shop         = shop;
-            _openShopPub  = openShopPub;
-            _farewellPub  = farewellPub;
+            _shop        = shop;
+            _openShopPub = openShopPub;
+            _stage       = stage;
         }
 
         public async UniTask<EventResult> Run(RunContext ctx)
@@ -33,8 +33,8 @@ namespace Guildmaster.Game.Flow
 
             // Единый ритм конца узла: витрина закрылась не в мир, а в кадр-прощание, который держит экран,
             // пока игрок не пошёл дальше (QA #48/#49). Уводят с него кнопки бита поверх.
-            _farewellPub?.Publish(new OpenNodeFarewellRequest(
-                "ui.node.shop.title", "ui.node.shop.farewell", ctx.NodeCancellation));
+            _stage?.Announce(Session.Net.NodeStageState.Interlude(
+                "ui.node.shop.title", "ui.node.shop.farewell"));
 
             return EventResult.Completed;
         }

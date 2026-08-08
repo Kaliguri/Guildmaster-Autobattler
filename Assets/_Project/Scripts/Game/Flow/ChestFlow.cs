@@ -13,14 +13,14 @@ namespace Guildmaster.Game.Flow
     {
         private readonly IPublisher<OpenChestRequest> _openChestPub;
         private readonly IRewardPresenter _reward;
-        private readonly IPublisher<OpenNodeFarewellRequest> _farewellPub;
+        private readonly Session.Net.HostNodeStage _stage;
 
         public ChestFlow(IPublisher<OpenChestRequest> openChestPub, IRewardPresenter reward,
-                         IPublisher<OpenNodeFarewellRequest> farewellPub = null)
+                         Session.Net.HostNodeStage stage = null)
         {
             _openChestPub = openChestPub;
             _reward       = reward;
-            _farewellPub  = farewellPub;
+            _stage        = stage;
         }
 
         public async UniTask<EventResult> Run(RunContext ctx)
@@ -31,9 +31,11 @@ namespace Guildmaster.Game.Flow
 
             await _reward.PresentAsync(RewardTier.Battle, ctx.Cancellation); // 1-из-3 реликвий
 
-            // Единый ритм конца узла (QA #48/#49): награда выдана → кадр-прощание держит экран до следующего узла.
-            _farewellPub?.Publish(new OpenNodeFarewellRequest(
-                "ui.node.chest.title", "ui.node.chest.farewell", ctx.NodeCancellation));
+            // Единый ритм конца узла (QA #48/#49): награда выдана → кадр-прощание держит экран до
+            // следующего узла. Объявляем шаг, а не публикуем экран: показывает его общий для обеих
+            // ролей потребитель, и кнопки «дальше» приходят тем же шагом.
+            _stage?.Announce(Session.Net.NodeStageState.Interlude(
+                "ui.node.chest.title", "ui.node.chest.farewell"));
 
             return EventResult.Completed;
         }

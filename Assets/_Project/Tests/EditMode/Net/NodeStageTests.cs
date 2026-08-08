@@ -18,15 +18,16 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void Stage_SurvivesTheRoundTrip()
         {
-            var sent = new NodeStageState(NodeStageKind.Reward,
-                new[] { "relic.ruby", "relic.iron", "relic.ash" });
+            NodeStageState sent = NodeStageState.Reward(
+                new[] { "relic.ruby", "relic.iron", "relic.ash" }, inventoryFull: false);
 
             var writer = new NetByteWriter(64);
             Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
 
             Assert.AreEqual(sent, got, "витрина пережила дорогу целиком и в том же порядке");
-            Assert.AreEqual(3, got.Options.Count);
-            Assert.AreEqual("relic.iron", got.Options[1], "порядок вариантов — это порядок карточек");
+            Assert.IsTrue(got.TryOpenReward(out RewardStage shelf));
+            Assert.AreEqual(3, shelf.Options.Count);
+            Assert.AreEqual("relic.iron", shelf.Options[1], "порядок вариантов — это порядок карточек");
         }
 
         [Test]
@@ -37,7 +38,7 @@ namespace Guildmaster.Tests.EditMode.Net
                 NodeStageCodec.Write(NodeStageState.Idle, writer), out NodeStageState got));
 
             Assert.AreEqual(NodeStageKind.None, got.Kind);
-            Assert.IsEmpty(got.Options);
+            Assert.IsFalse(got.TryOpenReward(out _), "на пустом шаге витрины нет");
         }
 
         /// <summary>
@@ -51,12 +52,13 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void InventoryFull_TravelsWithTheShelf()
         {
-            var sent = new NodeStageState(NodeStageKind.Reward, new[] { "relic.ruby" }, inventoryFull: true);
+            NodeStageState sent = NodeStageState.Reward(new[] { "relic.ruby" }, inventoryFull: true);
 
             var writer = new NetByteWriter(64);
             Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
 
-            Assert.IsTrue(got.InventoryFull, "запас полон — витрина предложит обмен, а не простое «взять»");
+            Assert.IsTrue(got.TryOpenReward(out RewardStage shelf));
+            Assert.IsTrue(shelf.InventoryFull, "запас полон — витрина предложит обмен, а не простое «взять»");
             Assert.AreEqual(sent, got, "шаги с разным признаком места — разные шаги");
         }
 
@@ -108,7 +110,7 @@ namespace Guildmaster.Tests.EditMode.Net
             };
 
             var stage = new HostNodeStage(hostNode);
-            var shelf = new NodeStageState(NodeStageKind.Reward, new[] { "relic.ruby", "relic.iron" });
+            NodeStageState shelf = NodeStageState.Reward(new[] { "relic.ruby", "relic.iron" }, inventoryFull: false);
 
             stage.Announce(shelf);   // первая награда элитки
             stage.Clear();           // экран закрылся
@@ -123,11 +125,96 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void DifferentOptions_AreDifferentStages()
         {
-            var first  = new NodeStageState(NodeStageKind.Reward, new[] { "relic.ruby" });
-            var second = new NodeStageState(NodeStageKind.Reward, new[] { "relic.iron" });
+            NodeStageState first  = NodeStageState.Reward(new[] { "relic.ruby" }, inventoryFull: false);
+            NodeStageState second = NodeStageState.Reward(new[] { "relic.iron" }, inventoryFull: false);
 
             Assert.AreNotEqual(first, second,
                 "сравнение по одному виду шага скрыло бы смену витрины — гость остался бы на прежней");
+        }
+
+        [Test]
+        public void Interlude_CarriesTheFarewellOfTheNodeThatEnded()
+        {
+            NodeStageState sent = NodeStageState.Interlude("ui.node.chest.title", "ui.node.chest.farewell");
+
+            var writer = new NetByteWriter(64);
+            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
+            Assert.IsTrue(got.TryOpenInterlude(out InterludeStage rest));
+
+            Assert.AreEqual("ui.node.chest.title",    rest.TitleKey);
+            Assert.AreEqual("ui.node.chest.farewell", rest.BodyKey, "второй ключ — тело, а не заголовок");
+            Assert.IsTrue(rest.HasFarewell);
+        }
+
+        /// <summary>
+        /// Бой кончается без кадра-прощания, и это не «пустая строка вместо ключа», а отдельный случай.
+        /// </summary>
+        [Test]
+        public void InterludeWithoutKeys_IsJustTheButtons()
+        {
+            NodeStageState sent = NodeStageState.Interlude();
+
+            var writer = new NetByteWriter(64);
+            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
+            Assert.IsTrue(got.TryOpenInterlude(out InterludeStage rest));
+
+            Assert.IsFalse(rest.HasFarewell, "провожать нечего — исход боя показан своим экраном");
+            Assert.AreNotEqual(sent, NodeStageState.Interlude("ui.a", "ui.b"),
+                "передышка с кадром и без — разные шаги, иначе кадр молча не доехал бы");
+        }
+
+        [Test]
+        public void TextEvent_CarriesGoldAlongWithTheEvent()
+        {
+            NodeStageState sent = NodeStageState.TextEvent("event.crossroads", gold: 137);
+
+            var writer = new NetByteWriter(64);
+            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
+            Assert.IsTrue(got.TryOpenTextEvent(out TextEventStage ev));
+
+            Assert.AreEqual("event.crossroads", ev.EventId);
+            Assert.AreEqual(137, ev.Gold, "от золота зависит, какие варианты ответа живые");
+        }
+
+        [Test]
+        public void Outcome_SurvivesTheRoundTrip()
+        {
+            var writer = new NetByteWriter(16);
+            NodeStageState win = NodeStageState.Outcome(victory: true);
+
+            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in win, writer), out NodeStageState got));
+            Assert.IsTrue(got.TryOpenOutcome(out OutcomeStage outcome));
+            Assert.IsTrue(outcome.Victory);
+
+            Assert.AreNotEqual(win, NodeStageState.Outcome(victory: false), "победа и поражение — разные шаги");
+        }
+
+        /// <summary>
+        /// Коробку чужого вида не открыть: показ обязан упереться в вид, а не разобрать байты наугад.
+        /// </summary>
+        /// <remarks>
+        /// Ровно этим и опасен общий мешок полей: у прощания и у события там лежали бы две строки, и
+        /// «заголовок с телом» разобрались бы как «id события с чем-то» без единой жалобы.
+        /// </remarks>
+        [Test]
+        public void BoxOfAnotherKind_DoesNotOpen()
+        {
+            NodeStageState rest = NodeStageState.Interlude("ui.a", "ui.b");
+
+            Assert.IsFalse(rest.TryOpenTextEvent(out _), "конец узла — не текстовое событие");
+            Assert.IsFalse(rest.TryOpenReward(out _),    "конец узла — не витрина");
+            Assert.IsTrue(rest.TryOpenInterlude(out _));
+        }
+
+        /// <summary>Вид без коробки приехал с хвостом — это чужая версия, а не «лишние байты».</summary>
+        [Test]
+        public void EmptyKindWithPayload_IsRefused()
+        {
+            var writer = new NetByteWriter(16);
+            writer.WriteByte((byte)NodeStageKind.Chest);
+            writer.WriteString("а тут вдруг что-то лежит");
+
+            Assert.IsFalse(NodeStageCodec.TryRead(writer.WrittenSegment, out _));
         }
     }
 }

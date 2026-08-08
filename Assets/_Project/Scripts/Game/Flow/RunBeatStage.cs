@@ -57,7 +57,10 @@ namespace Guildmaster.Game.Flow
             _session.RequestReset();                        // мир возвращается (сейчас — мгновенно)
             _session.SetPhase(BattlePhase.Interlude);       // мир на экране → задник UI запрещён
 
-            _stage?.Announce(new Session.Net.NodeStageState(Session.Net.NodeStageKind.Interlude));
+            // Узел мог проводить себя сам — кадром-прощанием со своими ключами. Он объявлен тем же шагом
+            // «конец узла», и голые кнопки поверх него означали бы, что кадр молча стёрли.
+            if (_stage != null && _stage.Current.Kind != Session.Net.NodeStageKind.Interlude)
+                _stage.Announce(Session.Net.NodeStageState.Interlude());
 
             // Узел выбран (или забег отменён) — снимаем шаг у ВСЕХ: подключившийся следом иначе
             // увидел бы передышку, которой уже нет.

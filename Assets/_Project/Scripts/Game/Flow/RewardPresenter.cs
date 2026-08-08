@@ -74,8 +74,7 @@ namespace Guildmaster.Game.Flow
             // Витрину не показываем сами: объявляем шаг узла, а экран открывает общий для обеих ролей
             // потребитель (NodeStageScreens). Пока показ жил здесь, у витрины было ДВА пути — этот и
             // гостевой, — и во втором признак «запас полон» был зашит в false (HARD «равные игроки»).
-            _stage?.Announce(new Session.Net.NodeStageState(
-                Session.Net.NodeStageKind.Reward, IdsOf(choices), full));
+            _stage?.Announce(Session.Net.NodeStageState.Reward(IdsOf(choices), full));
 
             try
             {

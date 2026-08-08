@@ -8,24 +8,41 @@ namespace Guildmaster.Game.Session.Net
     /// <remarks>
     /// <b>Перечисление только ДОПИСЫВАЕТСЯ.</b> Номер едет по проводу, и переставленный номер увёл бы
     /// гостя не на тот экран — молча, потому что оба конца собираются порознь.
+    /// <para><b>У каждого вида своя коробка с содержимым</b> (<see cref="RewardStage"/> и соседи), и вид
+    /// решает, какую из них разбирать. Общего мешка полей здесь нет намеренно: пока содержимое ехало
+    /// безымянным списком строк, «что лежит в позиции 1» знали только два места на разных концах
+    /// провода — ровно тот способ разъехаться, ради запрета которого экраны и свели в один шов.</para>
     /// </remarks>
     public enum NodeStageKind : byte
     {
         /// <summary>Ничего не показываем: узел идёт своим ходом.</summary>
         None = 0,
 
-        /// <summary>Витрина награды: варианты — id реликвий.</summary>
+        /// <summary>Витрина награды. Коробка — <see cref="RewardStage"/>.</summary>
         Reward = 1,
 
         /// <summary>
-        /// Передышка между узлами: две кнопки-шортката, «Продолжить» (на карту) и «К построению».
+        /// Узел кончился: кадр-прощание внизу и две кнопки-шортката поверх — «Продолжить» (на карту) и
+        /// «К построению». Коробка — <see cref="InterludeStage"/>.
         /// </summary>
         /// <remarks>
         /// <b>Решения тут нет — это навигация</b> (вердикт Макса 08.08.2026: «Каждый нажимает отдельно
         /// чисто для себя»). Кнопки ведут туда же, куда табы, и жмут их порознь: ждать напарника,
         /// чтобы посмотреть свой строй, незачем.
+        /// <para><b>Прощание и кнопки — ОДИН шаг, а не два.</b> На экране они живут вместе: кадр узла
+        /// снизу, кнопки поверх. Разведи их по двум шагам — и второй молча затрёт первый, потому что
+        /// шаг узла отвечает на «что сейчас», а не «что добавить».</para>
         /// </remarks>
         Interlude = 2,
+
+        /// <summary>Закрытый сундук: ждём, пока группа согласится его открыть. Коробки нет.</summary>
+        Chest = 4,
+
+        /// <summary>Текстовое событие. Коробка — <see cref="TextEventStage"/>.</summary>
+        TextEvent = 5,
+
+        /// <summary>Исход забега — победа или поражение. Коробка — <see cref="OutcomeStage"/>.</summary>
+        Outcome = 6,
     }
 
     /// <summary>
@@ -46,22 +63,10 @@ namespace Guildmaster.Game.Session.Net
         event Action<NodeStageState> Changed;
     }
 
-    /// <summary>
-    /// Шаг узла с содержимым: что на экране и из чего выбирают.
-    /// </summary>
-    /// <remarks>
-    /// <b>Состояние, а не приказ «покажи».</b> Гость подключается в любой момент и переживает потери,
-    /// поэтому ему нужен ответ на «что сейчас», а не история того, как к этому пришли. Применение
-    /// идемпотентно: повтор того же шага ничего не открывает заново.
-    /// <para><b>Содержимое — строковые id</b>, а не сериализованные определения: лента возит ссылки
-    /// на ассеты тем же способом, и совпадение реестров уже проверено рукопожатием. Неизвестный id
-    /// поэтому невозможен, а не «маловероятен».</para>
-    /// </remarks>
-    public readonly struct NodeStageState : IEquatable<NodeStageState>
+    /// <summary>Витрина награды: из чего выбирают и есть ли куда положить.</summary>
+    public readonly struct RewardStage
     {
-        public readonly NodeStageKind Kind;
-
-        /// <summary>Из чего выбирают. Для награды — id выпавших реликвий, по порядку витрины.</summary>
+        /// <summary>Id выпавших реликвий, по порядку карточек.</summary>
         public readonly IReadOnlyList<string> Options;
 
         /// <summary>
@@ -76,26 +81,243 @@ namespace Guildmaster.Game.Session.Net
         /// </remarks>
         public readonly bool InventoryFull;
 
-        private static readonly string[] Nothing = Array.Empty<string>();
-
-        public NodeStageState(NodeStageKind kind, IReadOnlyList<string> options = null,
-                              bool inventoryFull = false)
+        public RewardStage(IReadOnlyList<string> options, bool inventoryFull)
         {
-            Kind          = kind;
-            Options       = options ?? Nothing;
+            Options       = options ?? Array.Empty<string>();
             InventoryFull = inventoryFull;
         }
+    }
+
+    /// <summary>
+    /// Конец узла: чем его проводить и кнопки «дальше».
+    /// </summary>
+    /// <remarks>
+    /// <b>Ключи могут быть пустыми</b> — тогда кадра-прощания нет, только кнопки. Так кончается бой:
+    /// провожать там нечего, исход уже показан своим экраном.
+    /// </remarks>
+    public readonly struct InterludeStage
+    {
+        /// <summary>Заголовок кадра-прощания; пусто — кадра нет.</summary>
+        public readonly string TitleKey;
+
+        /// <summary>Тело кадра-прощания; пусто — кадра нет.</summary>
+        public readonly string BodyKey;
+
+        public InterludeStage(string titleKey, string bodyKey)
+        {
+            TitleKey = titleKey ?? string.Empty;
+            BodyKey  = bodyKey  ?? string.Empty;
+        }
+
+        /// <summary>Есть ли чем проводить узел.</summary>
+        public bool HasFarewell => !string.IsNullOrEmpty(TitleKey) || !string.IsNullOrEmpty(BodyKey);
+    }
+
+    /// <summary>Текстовое событие: какое показать и сколько золота у группы на руках.</summary>
+    /// <remarks>
+    /// <b>Золото едет вместе с событием</b>, потому что от него зависит, какие варианты ответа доступны.
+    /// Считай его гость по своему снимку — он мог бы разойтись с хозяйским на кадр, и вариант «заплатить»
+    /// оказался бы у одного живым, у другого серым.
+    /// </remarks>
+    public readonly struct TextEventStage
+    {
+        public readonly string EventId;
+        public readonly int    Gold;
+
+        public TextEventStage(string eventId, int gold)
+        {
+            EventId = eventId ?? string.Empty;
+            Gold    = gold;
+        }
+    }
+
+    /// <summary>Исход забега: дошли или нет.</summary>
+    public readonly struct OutcomeStage
+    {
+        public readonly bool Victory;
+
+        public OutcomeStage(bool victory) => Victory = victory;
+    }
+
+    /// <summary>
+    /// Шаг узла: что на экране и коробка с содержимым этого экрана.
+    /// </summary>
+    /// <remarks>
+    /// <b>Состояние, а не приказ «покажи».</b> Гость подключается в любой момент и переживает потери,
+    /// поэтому ему нужен ответ на «что сейчас», а не история того, как к этому пришли. Применение
+    /// идемпотентно: повтор того же шага ничего не открывает заново.
+    /// <para><b>Коробка хранится упакованной</b>, а распаковывается по виду (<c>TryOpenReward</c> и
+    /// соседи). Так у владельца и у гостя один и тот же путь к экрану целиком, вместе с разбором:
+    /// собери владелец свою коробку в обход провода — и разошлись бы они ровно там, где никто не
+    /// смотрит.</para>
+    /// <para><b>Содержимое — строковые id</b>, а не сериализованные определения: лента возит ссылки на
+    /// ассеты тем же способом, и совпадение реестров уже проверено рукопожатием.</para>
+    /// </remarks>
+    public readonly struct NodeStageState : IEquatable<NodeStageState>
+    {
+        public readonly NodeStageKind Kind;
+
+        private readonly byte[] _payload;
+
+        private static readonly byte[] Empty = Array.Empty<byte>();
+
+        internal NodeStageState(NodeStageKind kind, byte[] payload)
+        {
+            Kind     = kind;
+            _payload = payload ?? Empty;
+        }
+
+        /// <summary>Упакованная коробка вида. Пусто — у видов, которым нечего нести.</summary>
+        internal ArraySegment<byte> Payload => new ArraySegment<byte>(_payload);
 
         /// <summary>Экрана нет — узел идёт своим ходом.</summary>
-        public static NodeStageState Idle => new NodeStageState(NodeStageKind.None);
+        public static NodeStageState Idle => new NodeStageState(NodeStageKind.None, Empty);
 
+        /// <summary>Закрытый сундук.</summary>
+        public static NodeStageState Chest => new NodeStageState(NodeStageKind.Chest, Empty);
+
+        /// <summary>
+        /// Узел кончился. Ключи задаёт тот, кто вёл узел; без них будут только кнопки «дальше».
+        /// </summary>
+        public static NodeStageState Interlude(string titleKey = null, string bodyKey = null)
+        {
+            var writer = new NetByteWriter(64);
+            writer.WriteString(titleKey ?? string.Empty);
+            writer.WriteString(bodyKey  ?? string.Empty);
+
+            return new NodeStageState(NodeStageKind.Interlude, Pack(writer));
+        }
+
+        public static NodeStageState Reward(IReadOnlyList<string> options, bool inventoryFull)
+        {
+            var writer = new NetByteWriter(64);
+            writer.WriteBool(inventoryFull);
+            writer.WriteByte((byte)(options.Count > 255 ? 255 : options.Count));
+            for (int i = 0; i < options.Count && i < 255; i++) writer.WriteString(options[i]);
+
+            return new NodeStageState(NodeStageKind.Reward, Pack(writer));
+        }
+
+        public static NodeStageState TextEvent(string eventId, int gold)
+        {
+            var writer = new NetByteWriter(64);
+            writer.WriteString(eventId ?? string.Empty);
+            writer.WriteInt(gold);
+
+            return new NodeStageState(NodeStageKind.TextEvent, Pack(writer));
+        }
+
+        public static NodeStageState Outcome(bool victory)
+        {
+            var writer = new NetByteWriter(16);
+            writer.WriteBool(victory);
+
+            return new NodeStageState(NodeStageKind.Outcome, Pack(writer));
+        }
+
+        /// <summary>Разобрать витрину. <c>false</c> — сейчас на экране не она.</summary>
+        public bool TryOpenReward(out RewardStage box)
+        {
+            box = default;
+            if (Kind != NodeStageKind.Reward) return false;
+
+            var bytes = new NetByteReader(Payload);
+            try
+            {
+                bool full  = bytes.ReadBool();
+                int  count = bytes.ReadByte();
+                var options = new List<string>(count);
+                for (int i = 0; i < count; i++) options.Add(bytes.ReadString());
+
+                box = new RewardStage(options, full);
+                return true;
+            }
+            catch (InvalidOperationException) { return false; }
+        }
+
+        /// <summary>Разобрать конец узла. <c>false</c> — сейчас на экране не он.</summary>
+        public bool TryOpenInterlude(out InterludeStage box)
+        {
+            box = default;
+            if (Kind != NodeStageKind.Interlude) return false;
+
+            var bytes = new NetByteReader(Payload);
+            try
+            {
+                box = new InterludeStage(bytes.ReadString(), bytes.ReadString());
+                return true;
+            }
+            catch (InvalidOperationException) { return false; }
+        }
+
+        /// <summary>Разобрать текстовое событие. <c>false</c> — сейчас на экране не оно.</summary>
+        public bool TryOpenTextEvent(out TextEventStage box)
+        {
+            box = default;
+            if (Kind != NodeStageKind.TextEvent) return false;
+
+            var bytes = new NetByteReader(Payload);
+            try
+            {
+                box = new TextEventStage(bytes.ReadString(), bytes.ReadInt());
+                return true;
+            }
+            catch (InvalidOperationException) { return false; }
+        }
+
+        /// <summary>Разобрать исход забега. <c>false</c> — сейчас на экране не он.</summary>
+        public bool TryOpenOutcome(out OutcomeStage box)
+        {
+            box = default;
+            if (Kind != NodeStageKind.Outcome) return false;
+
+            var bytes = new NetByteReader(Payload);
+            try
+            {
+                box = new OutcomeStage(bytes.ReadBool());
+                return true;
+            }
+            catch (InvalidOperationException) { return false; }
+        }
+
+        /// <summary>
+        /// Разбирается ли коробка этого вида. Спрашивает приёмник, а не показ: расхождение версий надо
+        /// поймать на входе, пока ещё можно оставить экран прежним.
+        /// </summary>
+        internal bool IsWellFormed() => Kind switch
+        {
+            NodeStageKind.Reward    => TryOpenReward(out _),
+            NodeStageKind.Interlude => TryOpenInterlude(out _),
+            NodeStageKind.TextEvent => TryOpenTextEvent(out _),
+            NodeStageKind.Outcome   => TryOpenOutcome(out _),
+            _                       => _payload.Length == 0, // видам без коробки нести нечего
+        };
+
+        private static byte[] Pack(NetByteWriter writer)
+        {
+            ArraySegment<byte> written = writer.WrittenSegment;
+            var packed = new byte[written.Count];
+            Array.Copy(written.Array, written.Offset, packed, 0, written.Count);
+            return packed;
+        }
+
+        /// <summary>
+        /// Тот же шаг — это тот же вид с той же коробкой, байт в байт.
+        /// </summary>
+        /// <remarks>
+        /// Сравнение упакованного, а не полей: смысл равенства здесь — «гостю нечего перерисовывать»,
+        /// а гость видит ровно эти байты. Заведи мы сравнение по полям — оно разошлось бы с тем, что
+        /// реально едет, на первом же поле, которое забыли учесть.
+        /// </remarks>
         public bool Equals(NodeStageState other)
         {
-            if (Kind != other.Kind || InventoryFull != other.InventoryFull ||
-                Options.Count != other.Options.Count) return false;
+            if (Kind != other.Kind) return false;
 
-            for (int i = 0; i < Options.Count; i++)
-                if (Options[i] != other.Options[i]) return false;
+            byte[] mine = _payload ?? Empty, theirs = other._payload ?? Empty;
+            if (mine.Length != theirs.Length) return false;
+
+            for (int i = 0; i < mine.Length; i++)
+                if (mine[i] != theirs[i]) return false;
 
             return true;
         }
@@ -104,13 +326,29 @@ namespace Guildmaster.Game.Session.Net
 
         public override int GetHashCode()
         {
-            int hash = (int)Kind * 397 ^ (InventoryFull ? 8191 : 0);
-            for (int i = 0; i < Options.Count; i++) hash = (hash * 31) ^ Options[i].GetHashCode();
+            int hash = (int)Kind * 397;
+            byte[] mine = _payload ?? Empty;
+            for (int i = 0; i < mine.Length; i++) hash = (hash * 31) ^ mine[i];
             return hash;
         }
 
-        public override string ToString() =>
-            $"{Kind}({string.Join(", ", Options)}){(InventoryFull ? " [запас полон]" : string.Empty)}";
+        public override string ToString()
+        {
+            switch (Kind)
+            {
+                case NodeStageKind.Reward when TryOpenReward(out RewardStage shelf):
+                    return $"Reward({string.Join(", ", shelf.Options)})" +
+                           (shelf.InventoryFull ? " [запас полон]" : string.Empty);
+                case NodeStageKind.Interlude when TryOpenInterlude(out InterludeStage rest):
+                    return rest.HasFarewell ? $"Interlude({rest.TitleKey})" : "Interlude(без кадра)";
+                case NodeStageKind.TextEvent when TryOpenTextEvent(out TextEventStage ev):
+                    return $"TextEvent({ev.EventId}, золота {ev.Gold})";
+                case NodeStageKind.Outcome when TryOpenOutcome(out OutcomeStage outcome):
+                    return outcome.Victory ? "Outcome(победа)" : "Outcome(поражение)";
+                default:
+                    return Kind.ToString();
+            }
+        }
     }
 
     /// <summary>Шаг узла в байтах и обратно.</summary>
@@ -120,43 +358,32 @@ namespace Guildmaster.Game.Session.Net
         {
             writer.Reset();
             writer.WriteByte((byte)state.Kind);
-            writer.WriteBool(state.InventoryFull);
-            writer.WriteByte((byte)(state.Options.Count > 255 ? 255 : state.Options.Count));
 
-            for (int i = 0; i < state.Options.Count && i < 255; i++) writer.WriteString(state.Options[i]);
+            ArraySegment<byte> box = state.Payload;
+            for (int i = 0; i < box.Count; i++) writer.WriteByte(box.Array[box.Offset + i]);
 
             return writer.WrittenSegment;
         }
 
         /// <summary>
-        /// Разобрать шаг. <c>false</c> — вид шага неизвестен этой сборке или пакет оборван: это
-        /// расхождение версий, и показывать «примерно то же» нельзя.
+        /// Разобрать шаг. <c>false</c> — вид шага неизвестен этой сборке или коробка не разбирается:
+        /// это расхождение версий, и показывать «примерно то же» нельзя.
         /// </summary>
         public static bool TryRead(ArraySegment<byte> payload, out NodeStageState state)
         {
             state = NodeStageState.Idle;
-            if (payload.Count < 3) return false;
+            if (payload.Count < 1) return false;
 
-            var bytes = new NetByteReader(payload);
-
-            byte kind;
-            bool full;
-            var options = new List<string>(3);
-            try
-            {
-                kind = bytes.ReadByte();
-                full = bytes.ReadBool();
-                int count = bytes.ReadByte();
-                for (int i = 0; i < count; i++) options.Add(bytes.ReadString());
-            }
-            catch (InvalidOperationException)
-            {
-                return false;
-            }
-
+            byte kind = payload.Array[payload.Offset];
             if (!Enum.IsDefined(typeof(NodeStageKind), kind)) return false;
 
-            state = new NodeStageState((NodeStageKind)kind, options, full);
+            var box = new byte[payload.Count - 1];
+            Array.Copy(payload.Array, payload.Offset + 1, box, 0, box.Length);
+
+            var read = new NodeStageState((NodeStageKind)kind, box);
+            if (!read.IsWellFormed()) return false;
+
+            state = read;
             return true;
         }
     }
