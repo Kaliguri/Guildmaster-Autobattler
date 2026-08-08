@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Presentation_1_1ShatterMesh.html" target="_top" xlink:title="Строит меш «пиксельного» разлёта спрайта (DeathShatter): видимая область режется на БЛОЧНЫЕ куски&#45;ква...">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Presentation_1_1Map_1_1MapIntroTiming.html" target="_top" xlink:title="Когда какая часть карты прорастает на интро: фронт выходит из стартового узла и идёт ПО ДОРОЖКАМ,...">
 <polygon fill="white" stroke="#666666" points="143,-30 0,-30 0,0 143,0 143,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
-<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ShatterMesh</text>
+<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Map.MapIntroTiming</text>
 </a>
 </g>
 </g>

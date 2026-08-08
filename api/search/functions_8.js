@@ -28,8 +28,10 @@ var searchData=
   ['ispoison_25',['IsPoison',['../classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes.html#ab2f016382008a98fe852c914be2fe7a3',1,'Guildmaster::Data::Definitions::DamageTypes']]],
   ['isrearattack_26',['IsRearAttack',['../classGuildmaster_1_1Combat_1_1CombatPositioning.html#abba2779e25e6946004a97395883b64d6',1,'Guildmaster::Combat::CombatPositioning']]],
   ['isselected_27',['IsSelected',['../classGuildmaster_1_1UI_1_1LoadoutViewModel.html#ad92c98295ce7ec1f91d90964baff4e9a',1,'Guildmaster::UI::LoadoutViewModel']]],
-  ['istimerdue_28',['IsTimerDue',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#aac05d7d23fb5a0653c64d151277f4b5f',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
-  ['istrue_29',['IsTrue',['../classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes.html#a285558aacc593c7312d3b80483d9a2bc',1,'Guildmaster::Data::Definitions::DamageTypes']]],
-  ['isvalidid_30',['IsValidId',['../classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#a2d27c69a78f21c9ce7cedd37d2a5a524',1,'Guildmaster::Data::Definitions::ContentDomains']]],
-  ['iswinfor_31',['IsWinFor',['../structGuildmaster_1_1Combat_1_1BattleOutcome.html#a79ed0b179e780ba2b7682db5872f9473',1,'Guildmaster::Combat::BattleOutcome']]]
+  ['istally_28',['IsTally',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html#a531e1572e965dde0cf683e05c9fb6127',1,'Guildmaster::Game::Session::Net::DecisionCodec']]],
+  ['istimerdue_29',['IsTimerDue',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#aac05d7d23fb5a0653c64d151277f4b5f',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
+  ['istrue_30',['IsTrue',['../classGuildmaster_1_1Data_1_1Definitions_1_1DamageTypes.html#a285558aacc593c7312d3b80483d9a2bc',1,'Guildmaster::Data::Definitions::DamageTypes']]],
+  ['isvalidid_31',['IsValidId',['../classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#a2d27c69a78f21c9ce7cedd37d2a5a524',1,'Guildmaster::Data::Definitions::ContentDomains']]],
+  ['isvote_32',['IsVote',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html#aafddb4cce61db683acffa2d8fe57d0cc',1,'Guildmaster::Game::Session::Net::DecisionCodec']]],
+  ['iswinfor_33',['IsWinFor',['../structGuildmaster_1_1Combat_1_1BattleOutcome.html#a79ed0b179e780ba2b7682db5872f9473',1,'Guildmaster::Combat::BattleOutcome']]]
 ];

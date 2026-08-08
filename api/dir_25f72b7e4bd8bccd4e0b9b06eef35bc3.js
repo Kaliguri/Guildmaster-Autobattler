@@ -9,6 +9,7 @@ var dir_25f72b7e4bd8bccd4e0b9b06eef35bc3 =
     [ "DiagCommands.cs", "DiagCommands_8cs.html", "DiagCommands_8cs" ],
     [ "GuildmasterCommands.cs", "GuildmasterCommands_8cs.html", "GuildmasterCommands_8cs" ],
     [ "MapDevCommands.cs", "MapDevCommands_8cs.html", "MapDevCommands_8cs" ],
+    [ "SessionDevCommands.cs", "SessionDevCommands_8cs.html", "SessionDevCommands_8cs" ],
     [ "UiColourLadder.cs", "UiColourLadder_8cs.html", "UiColourLadder_8cs" ],
     [ "UiContactSheet.cs", "UiContactSheet_8cs.html", "UiContactSheet_8cs" ],
     [ "UiContactSheetRunner.cs", "UiContactSheetRunner_8cs.html", "UiContactSheetRunner_8cs" ],

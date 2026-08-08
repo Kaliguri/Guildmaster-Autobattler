@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Core_1_1Player
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Core.Players.ISessionRoster:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster__inherit__graph.svg" width="643" height="459"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster__inherit__graph.svg" width="643" height="499"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Players.ISessionRoster:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster__coll__graph.svg" width="194" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster__coll__graph.svg" width="194" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -121,8 +121,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7d7f493753e437bdde13c0796069c27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Играет ли этот участник за нашу сторону.  <br /></td></tr>
 <tr class="separator:a7d7f493753e437bdde13c0796069c27a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3436aab9bb849661a87aad7aa292db59" id="r_a3436aab9bb849661a87aad7aa292db59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a3436aab9bb849661a87aad7aa292db59">SplitBetweenSides</a> (bool split)</td></tr>
-<tr class="memdesc:a3436aab9bb849661a87aad7aa292db59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разводить ли участников по разным сторонам (<code>true</code>) или посадить всех на одну.  <br /></td></tr>
+<tr class="memdesc:a3436aab9bb849661a87aad7aa292db59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разводить ли участников по разным сторонам (<code>true</code>) или посадить всех на одну — это НАЧАЛЬНАЯ рассадка, а не закон.  <br /></td></tr>
 <tr class="separator:a3436aab9bb849661a87aad7aa292db59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ef546c2b1aa6825035b392a2ad0404d" id="r_a3ef546c2b1aa6825035b392a2ad0404d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a3ef546c2b1aa6825035b392a2ad0404d">Seat</a> (int playerId, int team)</td></tr>
+<tr class="memdesc:a3ef546c2b1aa6825035b392a2ad0404d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Посадить участника на сторону явно.  <br /></td></tr>
+<tr class="separator:a3ef546c2b1aa6825035b392a2ad0404d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -139,6 +142,46 @@ Properties</h2></td></tr>
 <p><b>Дом — сеанс, а не мероприятие.</b> Режим выбирается на входе в игру и внутри сеанса не меняется: в кампании я всегда за одну сторону, в PvP-матче — за свою до конца матча. Мероприятия же сменяют друг друга по ходу забега (карта, лавка, бой), и стороны, живущие в них, пришлось бы назначать заново на каждом узле.</p>
 <p><b>ILocalPlayer — производная отсюда, а не второе мнение.</b> «Моя команда» это моя строка в этой таблице; спрашивать их врозь значило бы завести два ответа на один вопрос.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3ef546c2b1aa6825035b392a2ad0404d" name="a3ef546c2b1aa6825035b392a2ad0404d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ef546c2b1aa6825035b392a2ad0404d">&#9670;&#160;</a></span>Seat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Players.ISessionRoster.Seat </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>playerId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>team</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Посадить участника на сторону явно. </p>
+<p>Назначение переживает вход и выход других участников.</p>
+<p><b>Сторона — назначение, а не вывод из режима</b> (решение Макса 08.08.2026: «Мб в компаниях игрок сможет вставать на другую сторону. Или еще что. Это не должно быть прям ПРИВЯЗАНО к режиму или начальным параметром»). До этого сторона считалась от места входа и пересчитывалась при каждой пересадке — то есть поменять её было нечем, а посаженного затирал бы следующий подключившийся. </p>
+<p>Исполняет хост: состав ведёт он. У гостя вызов не делает ничего — как и рассадка.</p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html#a32a5556066ef741f74659f74b0eed5b3">Guildmaster.Game.Session.Net.GuestSessionRoster</a>, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#a8b6f5b73dc7ea5cb233f2ecb36dc0b8a">Guildmaster.Game.Session.Net.HostSessionRoster</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a8142e84827c8905459b2725c6d4663b3">Guildmaster.Game.Session.SessionPlayerRouter</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster_a3ef546c2b1aa6825035b392a2ad0404d_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
 <a id="a7d7f493753e437bdde13c0796069c27a" name="a7d7f493753e437bdde13c0796069c27a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7d7f493753e437bdde13c0796069c27a">&#9670;&#160;</a></span>SharesTeamWithLocal()</h2>
 
@@ -183,9 +226,10 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Разводить ли участников по разным сторонам (<code>true</code>) или посадить всех на одну. </p>
-<p>Заказывает мероприятие — оно одно знает, кому принадлежит вторая сторона арены. Исполняет хост: у гостя вызов не делает ничего, стороны ему приезжают таблицей.</p>
+<p>Разводить ли участников по разным сторонам (<code>true</code>) или посадить всех на одну — это НАЧАЛЬНАЯ рассадка, а не закон. </p>
+<p>Заказывает мероприятие; исполняет хост, у гостя вызов не делает ничего — стороны ему приезжают таблицей.</p>
 <p>Спрашивается «делить ли», а не «сколько сторон», и это не косметика. Сторон у арены всегда две; число здесь было пересказом чужого факта, и пересказ разъехался с оригиналом ровно один раз — когда кампании понадобилось запретить трогать врагов, а участники от этого разъехались по разным сторонам (07.08.2026). </p>
+<p><b>Рассадка действует на тех, кого не сажали руками</b> (Seat). Смена рассадки сбрасывает ручные назначения: мероприятие сменилось целиком, и посаженный в PvP на вторую сторону остался бы в кампании противником собственной группе.</p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html#ab720d544dcbc95b9b58b6a6325c41e4a">Guildmaster.Game.Session.Net.GuestSessionRoster</a>, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#a14d8f9acfd2e057c0ec940cd1d812ab0">Guildmaster.Game.Session.Net.HostSessionRoster</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a561ef8712d41ee0bb1a07319c0ae4138">Guildmaster.Game.Session.SessionPlayerRouter</a>.</p>
 
@@ -223,7 +267,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster_ab4a6e26e0af60e371233276ab904fcfd_icgraph.svg" width="452" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster_ab4a6e26e0af60e371233276ab904fcfd_icgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

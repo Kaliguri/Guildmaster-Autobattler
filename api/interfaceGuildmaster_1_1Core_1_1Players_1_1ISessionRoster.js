@@ -1,5 +1,6 @@
 var interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster =
 [
+    [ "Seat", "interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a3ef546c2b1aa6825035b392a2ad0404d", null ],
     [ "SharesTeamWithLocal", "interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a7d7f493753e437bdde13c0796069c27a", null ],
     [ "SplitBetweenSides", "interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a3436aab9bb849661a87aad7aa292db59", null ],
     [ "TryGet", "interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#ab4a6e26e0af60e371233276ab904fcfd", null ],

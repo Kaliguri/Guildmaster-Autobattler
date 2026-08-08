@@ -1,6 +1,7 @@
 var classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter =
 [
-    [ "SessionPlayerRouter", "classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a1c6a2a9a84020296fd85dc1f6e085062", null ],
+    [ "SessionPlayerRouter", "classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#ac7312bfda55ae106ce8ad59dc3b6aa7a", null ],
+    [ "Seat", "classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a8142e84827c8905459b2725c6d4663b3", null ],
     [ "SharesTeamWithLocal", "classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a49a2b0cc5996c49f5e6253e2b50988d5", null ],
     [ "SplitBetweenSides", "classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a561ef8712d41ee0bb1a07319c0ae4138", null ],
     [ "TryGet", "classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a1f9dd2865a755bc20d3896c3f21efb6b", null ],

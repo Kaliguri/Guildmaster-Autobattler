@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IReadyGate.html" title="Гейт готовности игроков (вики «7» §10, план 11 §2): переходы, ждущие всех." alt="" coords="5,13,264,38"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Flow_1_1SoloReadyGate.html" title="Соло: готовность — мгновенно (один локальный игрок)." alt="" coords="312,5,523,45"/>
-<area shape="poly" id="edge353_Node000000_Node000001" title=" " alt="" coords="278,23,312,23,312,28,278,28"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IProfilePresenter.html" title="Показ экрана профиля и ожидание, пока игрок его закроет." alt="" coords="5,5,232,45"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Flow_1_1ProfilePresenter.html" title="Презентер профиля — тем же образцом, что MainMenuPresenter: публикует запрос и ждёт ответа UI." alt="" coords="280,5,503,45"/>
+<area shape="poly" id="edge352_Node000000_Node000001" title=" " alt="" coords="246,23,280,23,280,28,246,28"/>
 </map>

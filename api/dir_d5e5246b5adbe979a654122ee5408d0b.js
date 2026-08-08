@@ -3,6 +3,7 @@ var dir_d5e5246b5adbe979a654122ee5408d0b =
     [ "ActivityBroadcast.cs", "ActivityBroadcast_8cs.html", "ActivityBroadcast_8cs" ],
     [ "ActivityState.cs", "ActivityState_8cs.html", "ActivityState_8cs" ],
     [ "CoopGuestEntry.cs", "CoopGuestEntry_8cs.html", "CoopGuestEntry_8cs" ],
+    [ "DecisionCodec.cs", "DecisionCodec_8cs.html", "DecisionCodec_8cs" ],
     [ "DeploymentIntentRelay.cs", "DeploymentIntentRelay_8cs.html", "DeploymentIntentRelay_8cs" ],
     [ "GuestActivityFollower.cs", "GuestActivityFollower_8cs.html", "GuestActivityFollower_8cs" ],
     [ "GuestNodeStage.cs", "GuestNodeStage_8cs.html", "GuestNodeStage_8cs" ],
@@ -20,5 +21,6 @@ var dir_d5e5246b5adbe979a654122ee5408d0b =
     [ "RemoteRunCommands.cs", "RemoteRunCommands_8cs.html", "RemoteRunCommands_8cs" ],
     [ "RunCommandCodec.cs", "RunCommandCodec_8cs.html", "RunCommandCodec_8cs" ],
     [ "RunSnapshotCodec.cs", "RunSnapshotCodec_8cs.html", "RunSnapshotCodec_8cs" ],
-    [ "RunStateBroadcast.cs", "RunStateBroadcast_8cs.html", "RunStateBroadcast_8cs" ]
+    [ "RunStateBroadcast.cs", "RunStateBroadcast_8cs.html", "RunStateBroadcast_8cs" ],
+    [ "SessionRosterCodec.cs", "SessionRosterCodec_8cs.html", "SessionRosterCodec_8cs" ]
 ];

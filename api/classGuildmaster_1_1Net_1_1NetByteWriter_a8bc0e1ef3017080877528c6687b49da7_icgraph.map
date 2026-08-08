@@ -1,7 +1,11 @@
 <map id="Guildmaster.Net.NetByteWriter.WriteFloat" name="Guildmaster.Net.NetByteWriter.WriteFloat">
-<area shape="rect" id="Node000001" title=" " alt="" coords="609,5,837,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="341,5,561,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="595,28,562,28,562,23,595,23"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="636,37,864,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="355,5,575,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="622,46,575,40,575,35,622,40"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#a5f265d0cc2037029644444d31e4c7b73" title=" " alt="" coords="341,69,588,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="623,74,588,78,588,73,622,69"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,5,293,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="328,28,294,28,294,23,328,23"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="341,28,294,28,294,23,341,23"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html#af8241facbde87ae55829b9eb008b3dc8" title=" " alt="" coords="16,69,283,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="328,92,283,92,283,87,328,87"/>
 </map>

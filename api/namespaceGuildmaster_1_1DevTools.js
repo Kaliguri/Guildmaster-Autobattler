@@ -8,6 +8,7 @@ var namespaceGuildmaster_1_1DevTools =
     [ "DiagCommands", "classGuildmaster_1_1DevTools_1_1DiagCommands.html", "classGuildmaster_1_1DevTools_1_1DiagCommands" ],
     [ "GuildmasterCommands", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands" ],
     [ "MapDevCommands", "classGuildmaster_1_1DevTools_1_1MapDevCommands.html", "classGuildmaster_1_1DevTools_1_1MapDevCommands" ],
+    [ "SessionDevCommands", "classGuildmaster_1_1DevTools_1_1SessionDevCommands.html", "classGuildmaster_1_1DevTools_1_1SessionDevCommands" ],
     [ "UiColourLadder", "classGuildmaster_1_1DevTools_1_1UiColourLadder.html", "classGuildmaster_1_1DevTools_1_1UiColourLadder" ],
     [ "UiContactSheet", "classGuildmaster_1_1DevTools_1_1UiContactSheet.html", "classGuildmaster_1_1DevTools_1_1UiContactSheet" ],
     [ "UiContactSheetRunner", "classGuildmaster_1_1DevTools_1_1UiContactSheetRunner.html", "classGuildmaster_1_1DevTools_1_1UiContactSheetRunner" ],

@@ -1,5 +1,5 @@
 <map id="Guildmaster.Core.Players.ILocalPlayer" name="Guildmaster.Core.Players.ILocalPlayer">
 <area shape="rect" id="Node000001" title="За какую команду играет ЭТОТ клиент." alt="" coords="11,5,194,85"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html" title="Ответ на вопросы «кто с нами играет» и «за какую сторону играю я» для тех, кто переживает сеансы: кор..." alt="" coords="5,133,200,313"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html" title="Ответ на вопросы «кто с нами играет» и «за какую сторону играю я» для тех, кто переживает сеансы: кор..." alt="" coords="5,133,200,333"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,99,105,133,100,133,100,99"/>
 </map>

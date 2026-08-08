@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"SlantedPanel_8cs.html":[2,0,0,0,0,10,0,9],
+"SleepComponent_8cs.html":[2,0,0,0,0,1,3,0,48],
+"SliderRow_8cs.html":[2,0,0,0,0,10,0,10],
 "Slot_8cs.html":[2,0,0,0,0,10,0,11],
 "SpatialHash_8cs.html":[2,0,0,0,0,1,5,0],
 "SpeciesData_8cs.html":[2,0,0,0,0,3,0,51],
@@ -174,7 +177,7 @@ var NAVTREEINDEX4 =
 "TooltipSystem_8cs.html":[2,0,0,0,0,10,4,9],
 "TraceBench_8cs.html":[2,0,0,0,0,0,0,1,7],
 "TraitData_8cs.html":[2,0,0,0,0,3,0,59],
-"UiColourLadder_8cs.html":[2,0,0,0,0,4,9],
+"UiColourLadder_8cs.html":[2,0,0,0,0,4,10],
 "UiComponentRegistry_8cs.html":[2,0,0,0,0,10,0,14],
 "UiComponentRegistry_8cs.html#a40024d8e3e6267abfe69e1a3863108a7":[2,0,0,0,0,10,0,14,2],
 "UiComponentRegistry_8cs.html#a40024d8e3e6267abfe69e1a3863108a7a2b607f7f96df895be4c806b4874580c3":[2,0,0,0,0,10,0,14,2,5],
@@ -202,14 +205,14 @@ var NAVTREEINDEX4 =
 "UiComponentRegistry_8cs.html#adc0a5df621270a6818e95117a516f5f3ae24ee2487879116dcab772c0ac4fe341":[2,0,0,0,0,10,0,14,3,3],
 "UiComponentRegistry_8cs.html#adc0a5df621270a6818e95117a516f5f3aeee0168be69b854c20621fc6f01cc3fc":[2,0,0,0,0,10,0,14,3,1],
 "UiContactSheetMenu_8cs.html":[2,0,0,0,0,5,5,1],
-"UiContactSheetRunner_8cs.html":[2,0,0,0,0,4,11],
-"UiContactSheet_8cs.html":[2,0,0,0,0,4,10],
+"UiContactSheetRunner_8cs.html":[2,0,0,0,0,4,12],
+"UiContactSheet_8cs.html":[2,0,0,0,0,4,11],
 "UiNavigator_8cs.html":[2,0,0,0,0,10,2,1],
-"UiPreviewCatalog_8cs.html":[2,0,0,0,0,4,12],
-"UiPreviewHost_8cs.html":[2,0,0,0,0,4,13],
-"UiPreviewMenu_8cs.html":[2,0,0,0,0,4,14],
+"UiPreviewCatalog_8cs.html":[2,0,0,0,0,4,13],
+"UiPreviewHost_8cs.html":[2,0,0,0,0,4,14],
+"UiPreviewMenu_8cs.html":[2,0,0,0,0,4,15],
 "UiRootBootstrap_8cs.html":[2,0,0,0,0,10,24],
-"UiSampleFactory_8cs.html":[2,0,0,0,0,4,15],
+"UiSampleFactory_8cs.html":[2,0,0,0,0,4,16],
 "UiScreenContext_8cs.html":[2,0,0,0,0,10,2,3],
 "UiScreen_8cs.html":[2,0,0,0,0,10,2,2],
 "UiSoundSystem_8cs.html":[2,0,0,0,0,10,25],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3a3004eeec88268ab0afc3ea24abc5937c":[2,0,0,0,0,3,0,62,1,14],
 "UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3a3f39588bb19e28051d9aedfbb170025c":[2,0,0,0,0,3,0,62,1,9],
 "UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3a4668112d7c5f80a73a826dd8150989df":[2,0,0,0,0,3,0,62,1,8],
-"UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3a52258b9eda406898436077f22a2ed11f":[2,0,0,0,0,3,0,62,1,6],
-"UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3a9768feb3fdb1f267b06093bc572952dd":[2,0,0,0,0,3,0,62,1,1],
-"UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3a9914a0ce04a7b7b6a8e39bec55064b82":[2,0,0,0,0,3,0,62,1,2],
-"UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3aa699a3ea1fce47dd9988f5702a287609":[2,0,0,0,0,3,0,62,1,7]
+"UnitColorRoles_8cs.html#ae6f84ac35804ce5b1502093c30f520d3a52258b9eda406898436077f22a2ed11f":[2,0,0,0,0,3,0,62,1,6]
 };

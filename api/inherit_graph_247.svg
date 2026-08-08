@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment.html" target="_top" xlink:title="Одна ступень режиссёрской cinematic&#45;секвенции (TimeScaleService.PlayCinematicSequence).">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Game_1_1Services_1_1ActRunner.html" target="_top" xlink:title="Петля обхода акта (план [[act&#45;map&#45;run&#45;loop]] §3.2, шаг A2).">
 <polygon fill="white" stroke="#666666" points="155,-30 0,-30 0,0 155,0 155,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Services.</text>
-<text text-anchor="middle" x="77.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">CinematicSegment</text>
+<text text-anchor="middle" x="77.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ActRunner</text>
 </a>
 </g>
 </g>

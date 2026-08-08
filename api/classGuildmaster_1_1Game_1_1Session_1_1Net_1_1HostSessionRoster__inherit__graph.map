@@ -1,11 +1,11 @@
 <map id="Guildmaster.Game.Session.Net.HostSessionRoster" name="Guildmaster.Game.Session.Net.HostSessionRoster">
-<area shape="rect" id="Node000001" title="Владельческая половина состава сеанса: ведёт список участников, раздаёт стороны и цвета,..." alt="" coords="201,179,396,439"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html" title="Кто в сеансе и за какую сторону играет — единственный источник правды об этом." alt="" coords="5,5,187,131"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,140,203,191,199,194,156,143"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="211,35,288,101"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="261,114,275,178,269,179,256,115"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="312,35,384,101"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="341,115,328,179,323,178,336,114"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="408,35,499,101"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="428,114,385,180,380,177,423,111"/>
+<area shape="rect" id="Node000001" title="Владельческая половина состава сеанса: ведёт список участников, раздаёт стороны и цвета,..." alt="" coords="201,199,396,479"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html" title="Кто в сеансе и за какую сторону играет — единственный источник правды об этом." alt="" coords="5,5,187,151"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,160,203,212,199,215,158,163"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="211,45,288,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="261,124,275,198,269,199,255,125"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="312,45,384,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="342,125,328,199,323,198,337,124"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="408,45,499,111"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="430,124,384,199,380,197,425,121"/>
 </map>

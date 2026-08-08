@@ -8,7 +8,6 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig =
     [ "DefaultMusicVolume", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ace78569fefe75af6daab76e8ebfa3a8b", null ],
     [ "DefaultSfxVolume", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a229a933687c3a48a5c2ffddc4e92d638", null ],
     [ "GuildSize", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a68b847c118e0a2b943a3d354653330a1", null ],
-    [ "LocalPlayerTeam", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a49e22d89c51d9560d46fdc0042bf0472", null ],
     [ "MaxGuildsPerProfile", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a32e2aa96c37bbff9b28e6aa27f8e9cb3", null ],
     [ "MaxProfiles", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a27f1813965d3a96f9af84c15baf2f226", null ],
     [ "MaxRosterCapacity", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a5971d919724780c308563eb0ebbdbf35", null ],

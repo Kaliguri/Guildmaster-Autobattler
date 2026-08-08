@@ -1,0 +1,11 @@
+<map id="Guildmaster.Game.Session.Net.SessionRosterCodec.WriteTable" name="Guildmaster.Game.Session.Net.SessionRosterCodec.WriteTable">
+<area shape="rect" id="Node000001" title="Объявить таблицу: хозяин → все." alt="" coords="5,69,260,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#abac66cddf5479c1c88169b155b0851fe" title="Начать писать заново, сохранив выделенный буфер: чанки идут потоком, мусорить нельзя." alt="" coords="308,5,536,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,67,317,46,318,51,224,72"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#af256f1c6c9d97a315975b2a95fdbd8e1" title=" " alt="" coords="308,69,536,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="260,87,295,87,295,92,260,92"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a783d9e388e2924706fd0549a4eeeca73" title="Строка как длина + UTF&#45;8." alt="" coords="308,133,536,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="224,107,318,128,317,133,223,112"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#ab09035f497e2a2eaebc8991801f7f3bb" title=" " alt="" coords="584,133,812,173"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="536,151,570,151,570,156,536,156"/>
+</map>

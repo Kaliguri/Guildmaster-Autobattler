@@ -417,6 +417,7 @@ var annotated_dup =
         [ "DiagCommands", "classGuildmaster_1_1DevTools_1_1DiagCommands.html", "classGuildmaster_1_1DevTools_1_1DiagCommands" ],
         [ "GuildmasterCommands", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands" ],
         [ "MapDevCommands", "classGuildmaster_1_1DevTools_1_1MapDevCommands.html", "classGuildmaster_1_1DevTools_1_1MapDevCommands" ],
+        [ "SessionDevCommands", "classGuildmaster_1_1DevTools_1_1SessionDevCommands.html", "classGuildmaster_1_1DevTools_1_1SessionDevCommands" ],
         [ "UiColourLadder", "classGuildmaster_1_1DevTools_1_1UiColourLadder.html", "classGuildmaster_1_1DevTools_1_1UiColourLadder" ],
         [ "UiContactSheet", "classGuildmaster_1_1DevTools_1_1UiContactSheet.html", "classGuildmaster_1_1DevTools_1_1UiContactSheet" ],
         [ "UiContactSheetRunner", "classGuildmaster_1_1DevTools_1_1UiContactSheetRunner.html", "classGuildmaster_1_1DevTools_1_1UiContactSheetRunner" ],
@@ -535,6 +536,8 @@ var annotated_dup =
             [ "ActivityState", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState" ],
             [ "ActivityStateCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec" ],
             [ "CoopGuestEntry", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry" ],
+            [ "DecisionCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec" ],
+            [ "DeploymentIntentCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec" ],
             [ "DeploymentIntentIntake", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake" ],
             [ "DeploymentIntentSender", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender" ],
             [ "GuestActivityFollower", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower" ],
@@ -554,7 +557,9 @@ var annotated_dup =
             [ "RemoteRunCommands", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands" ],
             [ "RunCommandCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec" ],
             [ "RunSnapshotCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunSnapshotCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunSnapshotCodec" ],
-            [ "RunStateBroadcast", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunStateBroadcast.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunStateBroadcast" ]
+            [ "RunStateBroadcast", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunStateBroadcast.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunStateBroadcast" ],
+            [ "SessionIntro", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionIntro.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionIntro" ],
+            [ "SessionRosterCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec" ]
           ] ],
           [ "CoopDisconnectPresenter", "classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter.html", "classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter" ],
           [ "CoopJoinInterrupt", "classGuildmaster_1_1Game_1_1Session_1_1CoopJoinInterrupt.html", "classGuildmaster_1_1Game_1_1Session_1_1CoopJoinInterrupt" ],

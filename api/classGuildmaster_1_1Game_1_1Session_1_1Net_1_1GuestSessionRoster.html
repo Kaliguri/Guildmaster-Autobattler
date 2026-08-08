@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Session_1_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Session.Net.GuestSessionRoster:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster__inherit__graph.svg" width="504" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster__inherit__graph.svg" width="504" height="444"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Session.Net.GuestSessionRoster:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster__coll__graph.svg" width="504" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster__coll__graph.svg" width="504" height="444"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -132,6 +132,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab720d544dcbc95b9b58b6a6325c41e4a" id="r_ab720d544dcbc95b9b58b6a6325c41e4a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html#ab720d544dcbc95b9b58b6a6325c41e4a">SplitBetweenSides</a> (bool split)</td></tr>
 <tr class="memdesc:ab720d544dcbc95b9b58b6a6325c41e4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Раздача сторон — работа хоста. У гостя вызов законен и не делает ничего.  <br /></td></tr>
 <tr class="separator:ab720d544dcbc95b9b58b6a6325c41e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32a5556066ef741f74659f74b0eed5b3" id="r_a32a5556066ef741f74659f74b0eed5b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html#a32a5556066ef741f74659f74b0eed5b3">Seat</a> (int playerId, int team)</td></tr>
+<tr class="memdesc:a32a5556066ef741f74659f74b0eed5b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Посадка — тоже работа хоста: состав ведёт он, а нам стороны приезжают таблицей.  <br /></td></tr>
+<tr class="separator:a32a5556066ef741f74659f74b0eed5b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -219,6 +222,47 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a32a5556066ef741f74659f74b0eed5b3" name="a32a5556066ef741f74659f74b0eed5b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32a5556066ef741f74659f74b0eed5b3">&#9670;&#160;</a></span>Seat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Session.Net.GuestSessionRoster.Seat </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>playerId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>team</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Посадка — тоже работа хоста: состав ведёт он, а нам стороны приезжают таблицей. </p>
+<p>Вызов законен и не делает ничего; посадить себя сам гость не может, иначе в PvP каждый решал бы, за кого играет. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a3ef546c2b1aa6825035b392a2ad0404d">Guildmaster.Core.Players.ISessionRoster</a>.</p>
 
 </div>
 </div>

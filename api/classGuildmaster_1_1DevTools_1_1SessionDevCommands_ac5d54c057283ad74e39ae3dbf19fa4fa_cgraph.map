@@ -1,0 +1,7 @@
+<map id="Guildmaster.DevTools.SessionDevCommands.Seat" name="Guildmaster.DevTools.SessionDevCommands.Seat">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,224,77"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a3ef546c2b1aa6825035b392a2ad0404d" title="Посадить участника на сторону явно." alt="" coords="272,5,463,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,41,258,36,259,42,225,46"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#ab4a6e26e0af60e371233276ab904fcfd" title="Найти участника по номеру." alt="" coords="272,69,463,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,69,259,73,258,78,224,74"/>
+</map>

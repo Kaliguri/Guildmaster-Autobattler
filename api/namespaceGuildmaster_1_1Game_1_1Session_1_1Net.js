@@ -4,6 +4,8 @@ var namespaceGuildmaster_1_1Game_1_1Session_1_1Net =
     [ "ActivityState", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState" ],
     [ "ActivityStateCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec" ],
     [ "CoopGuestEntry", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry" ],
+    [ "DecisionCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec" ],
+    [ "DeploymentIntentCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec" ],
     [ "DeploymentIntentIntake", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake" ],
     [ "DeploymentIntentSender", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender" ],
     [ "GuestActivityFollower", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower" ],
@@ -24,6 +26,8 @@ var namespaceGuildmaster_1_1Game_1_1Session_1_1Net =
     [ "RunCommandCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec" ],
     [ "RunSnapshotCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunSnapshotCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunSnapshotCodec" ],
     [ "RunStateBroadcast", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunStateBroadcast.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunStateBroadcast" ],
+    [ "SessionIntro", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionIntro.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionIntro" ],
+    [ "SessionRosterCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec" ],
     [ "NodeStageKind", "namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629f", [
       [ "None", "namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629fa6adf97f83acf6453d4a6a4b1070f3754", null ],
       [ "Reward", "namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629fa35281ac0e8d77e142fdcd41c07ce47dd", null ]

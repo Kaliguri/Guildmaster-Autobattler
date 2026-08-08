@@ -1,0 +1,11 @@
+<map id="Guildmaster.DevTools.SessionDevCommands.Register" name="Guildmaster.DevTools.SessionDevCommands.Register">
+<area shape="rect" id="Node000001" title="Положить команды состава в набор модуля (снимаются вместе с ним)." alt="" coords="5,37,224,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1SessionDevCommands.html#a1582b4692b51b013be8782d4f6ee2715" title=" " alt="" coords="272,5,491,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,42,258,37,259,43,224,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1SessionDevCommands.html#ac5d54c057283ad74e39ae3dbf19fa4fa" title=" " alt="" coords="272,69,491,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="224,68,259,72,258,77,224,73"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a3ef546c2b1aa6825035b392a2ad0404d" title="Посадить участника на сторону явно." alt="" coords="539,37,729,77"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="491,73,525,68,526,74,491,78"/>
+<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#ab4a6e26e0af60e371233276ab904fcfd" title="Найти участника по номеру." alt="" coords="539,101,729,141"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="491,101,526,105,525,110,491,106"/>
+</map>

@@ -1,5 +1,9 @@
 <map id="Guildmaster.Core.Players.ISessionRoster.TryGet" name="Guildmaster.Core.Players.ISessionRoster.TryGet">
-<area shape="rect" id="Node000001" title="Найти участника по номеру." alt="" coords="256,5,447,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a1f9dd2865a755bc20d3896c3f21efb6b" title="Найти участника по номеру." alt="" coords="5,5,208,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="242,28,208,28,208,23,242,23"/>
+<area shape="rect" id="Node000001" title="Найти участника по номеру." alt="" coords="539,37,729,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1SessionDevCommands.html#ac5d54c057283ad74e39ae3dbf19fa4fa" title=" " alt="" coords="272,5,491,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="525,46,491,42,491,37,525,41"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a1f9dd2865a755bc20d3896c3f21efb6b" title="Найти участника по номеру." alt="" coords="280,69,483,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="526,74,483,79,483,74,525,68"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1SessionDevCommands.html#ae75f2a2dfb4ba18095b2de52f32a2927" title="Положить команды состава в набор модуля (снимаются вместе с ним)." alt="" coords="5,5,224,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="258,28,224,28,224,23,258,23"/>
 </map>

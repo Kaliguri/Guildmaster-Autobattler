@@ -1,9 +1,9 @@
 <map id="Guildmaster.Core.Players.ISessionRoster" name="Guildmaster.Core.Players.ISessionRoster">
-<area shape="rect" id="Node000001" title="Кто в сеансе и за какую сторону играет — единственный источник правды об этом." alt="" coords="230,5,413,145"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html" title="Гостевая половина состава сеанса: представляется именем и показывает таблицу, присланную хостом." alt="" coords="5,213,200,433"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,158,214,195,196,215,192,211,210,192,244,154"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html" title="Владельческая половина состава сеанса: ведёт список участников, раздаёт стороны и цвета,..." alt="" coords="224,193,419,453"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="324,159,324,193,319,193,319,159"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html" title="Ответ на вопросы «кто с нами играет» и «за какую сторону играю я» для тех, кто переживает сеансы: кор..." alt="" coords="443,233,637,413"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="398,154,433,192,468,232,464,235,429,195,394,158"/>
+<area shape="rect" id="Node000001" title="Кто в сеансе и за какую сторону играет — единственный источник правды об этом." alt="" coords="230,5,413,165"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html" title="Гостевая половина состава сеанса: представляется именем и показывает таблицу, присланную хостом." alt="" coords="5,233,200,473"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,178,214,215,198,235,194,232,210,212,241,174"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html" title="Владельческая половина состава сеанса: ведёт список участников, раздаёт стороны и цвета,..." alt="" coords="224,213,419,493"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="324,179,324,213,319,213,319,179"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html" title="Ответ на вопросы «кто с нами играет» и «за какую сторону играю я» для тех, кто переживает сеансы: кор..." alt="" coords="443,253,637,453"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="401,174,433,212,465,251,461,255,429,215,397,178"/>
 </map>

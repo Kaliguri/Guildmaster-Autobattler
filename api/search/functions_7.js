@@ -29,7 +29,7 @@ var searchData=
   ['homedir_26',['HomeDir',['../classGuildmaster_1_1Combat_1_1FleeSteering.html#a66b7ac7b2fc51e9c7b4cb8193d0f74dd',1,'Guildmaster::Combat::FleeSteering']]],
   ['hostnodestage_27',['HostNodeStage',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html#afe99a69f71515f90fcafc1f3522a4c6d',1,'Guildmaster::Game::Session::Net::HostNodeStage']]],
   ['hostpresence_28',['HostPresence',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostPresence.html#ad12319c0633bffa2a1f274ded54fba68',1,'Guildmaster::Game::Session::Net::HostPresence']]],
-  ['hostsessionroster_29',['HostSessionRoster',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#a49e231dcf4bafba86e81f8ec403ef538',1,'Guildmaster::Game::Session::Net::HostSessionRoster']]],
+  ['hostsessionroster_29',['HostSessionRoster',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#ae0bfd102b50a2e2b2651274b49e20d82',1,'Guildmaster::Game::Session::Net::HostSessionRoster']]],
   ['hostshareddecision_30',['HostSharedDecision',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSharedDecision.html#ac654bd22a1965b28fdf92ec6ed99c9b9',1,'Guildmaster::Game::Session::Net::HostSharedDecision']]],
   ['hubpresenter_31',['HubPresenter',['../classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#a3efee766a82975bc481bab79e287967c',1,'Guildmaster::Game::Flow::HubPresenter']]],
   ['hubtoasts_32',['HubToasts',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a2175aa94ab0a522b9afccd08ea3e117b',1,'Guildmaster::ContentHub::Editor::HubToasts']]]

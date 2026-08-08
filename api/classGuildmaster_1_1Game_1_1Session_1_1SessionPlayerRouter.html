@@ -104,18 +104,18 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Session_1_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Session.SessionPlayerRouter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter__inherit__graph.svg" width="310" height="364"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter__inherit__graph.svg" width="310" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Session.SessionPlayerRouter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter__coll__graph.svg" width="310" height="364"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter__coll__graph.svg" width="310" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1c6a2a9a84020296fd85dc1f6e085062" id="r_a1c6a2a9a84020296fd85dc1f6e085062"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a1c6a2a9a84020296fd85dc1f6e085062">SessionPlayerRouter</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html">SessionHost</a> sessions, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a> config)</td></tr>
-<tr class="separator:a1c6a2a9a84020296fd85dc1f6e085062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7312bfda55ae106ce8ad59dc3b6aa7a" id="r_ac7312bfda55ae106ce8ad59dc3b6aa7a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#ac7312bfda55ae106ce8ad59dc3b6aa7a">SessionPlayerRouter</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html">SessionHost</a> sessions)</td></tr>
+<tr class="separator:ac7312bfda55ae106ce8ad59dc3b6aa7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f9dd2865a755bc20d3896c3f21efb6b" id="r_a1f9dd2865a755bc20d3896c3f21efb6b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a1f9dd2865a755bc20d3896c3f21efb6b">TryGet</a> (int playerId, out <a class="el" href="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html">SessionPlayer</a> player)</td></tr>
 <tr class="memdesc:a1f9dd2865a755bc20d3896c3f21efb6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Найти участника по номеру.  <br /></td></tr>
 <tr class="separator:a1f9dd2865a755bc20d3896c3f21efb6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,13 +123,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a49a2b0cc5996c49f5e6253e2b50988d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вне сеанса своим считается только сам игрок: показывать чужое присутствие некому, и ответ «да» здесь означал бы курсор от участника, которого не существует.  <br /></td></tr>
 <tr class="separator:a49a2b0cc5996c49f5e6253e2b50988d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a561ef8712d41ee0bb1a07319c0ae4138" id="r_a561ef8712d41ee0bb1a07319c0ae4138"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a561ef8712d41ee0bb1a07319c0ae4138">SplitBetweenSides</a> (bool split)</td></tr>
-<tr class="memdesc:a561ef8712d41ee0bb1a07319c0ae4138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разводить ли участников по разным сторонам (<code>true</code>) или посадить всех на одну.  <br /></td></tr>
+<tr class="memdesc:a561ef8712d41ee0bb1a07319c0ae4138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разводить ли участников по разным сторонам (<code>true</code>) или посадить всех на одну — это НАЧАЛЬНАЯ рассадка, а не закон.  <br /></td></tr>
 <tr class="separator:a561ef8712d41ee0bb1a07319c0ae4138"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8142e84827c8905459b2725c6d4663b3" id="r_a8142e84827c8905459b2725c6d4663b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a8142e84827c8905459b2725c6d4663b3">Seat</a> (int playerId, int team)</td></tr>
+<tr class="memdesc:a8142e84827c8905459b2725c6d4663b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Посадить участника на сторону явно.Назначение переживает вход и выход других участников.<b>Сторона — назначение, а не вывод из режима</b> (решение Макса 08.08.2026: «Мб в компаниях игрок сможет вставать на другую сторону. Или еще что. Это не должно быть прям ПРИВЯЗАНО к режиму или начальным параметром»). До этого сторона считалась от места входа и пересчитывалась при каждой пересадке — то есть поменять её было нечем, а посаженного затирал бы следующий подключившийся. Исполняет хост: состав ведёт он. У гостя вызов не делает ничего — как и рассадка.  <br /></td></tr>
+<tr class="separator:a8142e84827c8905459b2725c6d4663b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a25fc769ca4887ab90a2252d4160d1bc6" id="r_a25fc769ca4887ab90a2252d4160d1bc6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a25fc769ca4887ab90a2252d4160d1bc6">Team</a><code> [get]</code></td></tr>
-<tr class="memdesc:a25fc769ca4887ab90a2252d4160d1bc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сторона локального игрока. Вне сеанса — дев-ручка из конфига.  <br /></td></tr>
+<tr class="memdesc:a25fc769ca4887ab90a2252d4160d1bc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сторона локального игрока — это его строка в составе сеанса, и других источников у неё нет.  <br /></td></tr>
 <tr class="separator:a25fc769ca4887ab90a2252d4160d1bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d1ca86fd863d914ed8586404f441b3e" id="r_a3d1ca86fd863d914ed8586404f441b3e"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html">SessionPlayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html#a3d1ca86fd863d914ed8586404f441b3e">Players</a><code> [get]</code></td></tr>
 <tr class="memdesc:a3d1ca86fd863d914ed8586404f441b3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все участники сеанса, включая нас. Вне сеанса — пусто.  <br /></td></tr>
@@ -146,8 +149,8 @@ Properties</h2></td></tr>
 <p>Того же образца роутер, что SessionRunRouter и <code>ActivityClockRouter</code>, и по той же причине: долгожитель не может держать прямую ссылку на объект из уехавшего вниз скоупа — она пережила бы своего владельца и отвечала бы про сеанс, который давно кончился. </p>
 <p><b>Одна дверь к двум фактам.</b> «Моя команда» — это моя строка в составе сеанса, а не второе мнение рядом с ним. Пока их было два (<code>SoloLocalPlayer</code> из конфига и захардкоженный ноль в расстановке), они и расходились: в PvP оба игрока считали своей одну и ту же сторону.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1c6a2a9a84020296fd85dc1f6e085062" name="a1c6a2a9a84020296fd85dc1f6e085062"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c6a2a9a84020296fd85dc1f6e085062">&#9670;&#160;</a></span>SessionPlayerRouter()</h2>
+<a id="ac7312bfda55ae106ce8ad59dc3b6aa7a" name="ac7312bfda55ae106ce8ad59dc3b6aa7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7312bfda55ae106ce8ad59dc3b6aa7a">&#9670;&#160;</a></span>SessionPlayerRouter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,18 +162,8 @@ Properties</h2></td></tr>
           <td class="memname">Guildmaster.Game.Session.SessionPlayerRouter.SessionPlayerRouter </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html">SessionHost</a>&#160;</td>
-          <td class="paramname"><em>sessions</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>sessions</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a>&#160;</td>
-          <td class="paramname"><em>config</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -183,6 +176,38 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8142e84827c8905459b2725c6d4663b3" name="a8142e84827c8905459b2725c6d4663b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8142e84827c8905459b2725c6d4663b3">&#9670;&#160;</a></span>Seat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Session.SessionPlayerRouter.Seat </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>playerId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>team</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Посадить участника на сторону явно.Назначение переживает вход и выход других участников.<b>Сторона — назначение, а не вывод из режима</b> (решение Макса 08.08.2026: «Мб в компаниях игрок сможет вставать на другую сторону. Или еще что. Это не должно быть прям ПРИВЯЗАНО к режиму или начальным параметром»). До этого сторона считалась от места входа и пересчитывалась при каждой пересадке — то есть поменять её было нечем, а посаженного затирал бы следующий подключившийся. Исполняет хост: состав ведёт он. У гостя вызов не делает ничего — как и рассадка. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a3ef546c2b1aa6825035b392a2ad0404d">Guildmaster.Core.Players.ISessionRoster</a>.</p>
+
+</div>
+</div>
 <a id="a49a2b0cc5996c49f5e6253e2b50988d5" name="a49a2b0cc5996c49f5e6253e2b50988d5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a49a2b0cc5996c49f5e6253e2b50988d5">&#9670;&#160;</a></span>SharesTeamWithLocal()</h2>
 
@@ -234,9 +259,10 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Разводить ли участников по разным сторонам (<code>true</code>) или посадить всех на одну. </p>
-<p>Заказывает мероприятие — оно одно знает, кому принадлежит вторая сторона арены. Исполняет хост: у гостя вызов не делает ничего, стороны ему приезжают таблицей.</p>
+<p>Разводить ли участников по разным сторонам (<code>true</code>) или посадить всех на одну — это НАЧАЛЬНАЯ рассадка, а не закон. </p>
+<p>Заказывает мероприятие; исполняет хост, у гостя вызов не делает ничего — стороны ему приезжают таблицей.</p>
 <p>Спрашивается «делить ли», а не «сколько сторон», и это не косметика. Сторон у арены всегда две; число здесь было пересказом чужого факта, и пересказ разъехался с оригиналом ровно один раз — когда кампании понадобилось запретить трогать врагов, а участники от этого разъехались по разным сторонам (07.08.2026). </p>
+<p><b>Рассадка действует на тех, кого не сажали руками</b> (Seat). Смена рассадки сбрасывает ручные назначения: мероприятие сменилось целиком, и посаженный в PvP на вторую сторону остался бы в кампании противником собственной группе.</p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html#a3436aab9bb849661a87aad7aa292db59">Guildmaster.Core.Players.ISessionRoster</a>.</p>
 
@@ -360,7 +386,9 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Сторона локального игрока. Вне сеанса — дев-ручка из конфига. </p>
+<p>Сторона локального игрока — это его строка в составе сеанса, и других источников у неё нет. </p>
+<p><b>Фолбэка здесь больше нет</b> (снят 08.08.2026 по решению Макса: «Никакого фолбэка. Все явно»). Прежний отвечал дев-ручкой <code>GameConfig.LocalPlayerTeam</code> и предназначался для «вне сеанса», но срабатывал и ВНУТРИ — когда состав не доехал из-за разъехавшегося формата. Гость получал сторону хозяина, тащил его бойцов, а хозяин молча отбивал намерения: поломка разводки выглядела как дефект прав. Тихая подмена внутри своего кода — это баг, а не устойчивость; наружу отказ обязан быть слышен. </p>
+<p>Ноль вне сеанса — не подмена, а отсутствие сеанса: спрашивать «за кого я играю», когда игры нет, незачем, и ответ здесь ничего не решает. Внутри сеанса тот же ноль означал бы поломку, поэтому он и записан в лог.</p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html#ad1c579bc028fc9e7270fbd1bd7d9a9d8">Guildmaster.Core.Players.ILocalPlayer</a>.</p>
 

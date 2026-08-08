@@ -1,7 +1,8 @@
 var classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster =
 [
-    [ "HostSessionRoster", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#a49e231dcf4bafba86e81f8ec403ef538", null ],
+    [ "HostSessionRoster", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#ae0bfd102b50a2e2b2651274b49e20d82", null ],
     [ "Dispose", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#a2819ca63506d2f5b38c8c5cfbac9359b", null ],
+    [ "Seat", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#a8b6f5b73dc7ea5cb233f2ecb36dc0b8a", null ],
     [ "SharesTeamWithLocal", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#a1b0fbf2f2b3aea53734491ccb9aefffe", null ],
     [ "SplitBetweenSides", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#a14d8f9acfd2e057c0ec940cd1d812ab0", null ],
     [ "Start", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#a27c09bf539a54b56279cd10fcccf7a0b", null ],
