@@ -55,7 +55,6 @@ namespace Guildmaster.Game.Services
         private readonly IRngService         _rng;
         private readonly ILocalPlayer        _localPlayer;
         private readonly IScreenTransition   _transition;
-        private readonly IPublisher<OpenTextEventRequest> _openEventPub;
         private readonly IPublisher<RunPartyReadyEvent>   _partyReadyPub;
 
         // Ристалище: интент входа и состояние площадки — цикл открывает её и ждёт, пока игрок не выйдет.
@@ -78,7 +77,6 @@ namespace Guildmaster.Game.Services
             IRngService         rng,
             ILocalPlayer        localPlayer,
             IScreenTransition   transition,
-            IPublisher<OpenTextEventRequest> openEventPub,
             IPublisher<RunPartyReadyEvent>   partyReadyPub,
             ISubscriber<Data.Definitions.TestZoneChangedEvent> provingGroundsChangedSub)
         {
@@ -96,7 +94,6 @@ namespace Guildmaster.Game.Services
             _rng             = rng;
             _localPlayer     = localPlayer;
             _transition      = transition;
-            _openEventPub    = openEventPub;
             _partyReadyPub   = partyReadyPub;
         }
 
@@ -532,7 +529,8 @@ namespace Guildmaster.Game.Services
             try
             {
                 var ctx  = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents);
-                var flow = new TextEventFlow(ev, _openEventPub, _activities.EventEffects);
+                var flow = new TextEventFlow(ev, _activities.EventEffects,
+                                             _sessions.Decision, _sessions.NodeStage);
                 return await flow.Run(ctx);
             }
             finally

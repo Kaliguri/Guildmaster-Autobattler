@@ -66,9 +66,9 @@ namespace Guildmaster.Tests.EditMode.Net
         public void UnknownKind_IsRefused()
         {
             var writer = new NetByteWriter(16);
-            writer.WriteByte(200); // вида шага с таким номером в этой сборке нет
+            writer.WriteByte(200); // вида экрана с таким номером в этой сборке нет
+            writer.WriteUShort(0); // коробки нет
             writer.WriteBool(false);
-            writer.WriteByte(0);
 
             Assert.IsFalse(NodeStageCodec.TryRead(writer.WrittenSegment, out _));
         }
@@ -76,11 +76,16 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void TruncatedOptions_AreRefused()
         {
-            var writer = new NetByteWriter(16);
+            var box = new NetByteWriter(64);
+            box.WriteBool(false);
+            box.WriteByte(3);              // обещали три варианта...
+            box.WriteString("relic.ruby"); // ...а прислали один
+
+            var writer = new NetByteWriter(64);
             writer.WriteByte((byte)NodeStageKind.Reward);
+            writer.WriteUShort((ushort)box.Length);
+            for (int i = 0; i < box.Length; i++) writer.WriteByte(box.WrittenSegment.Array[i]);
             writer.WriteBool(false);
-            writer.WriteByte(3);            // обещали три варианта...
-            writer.WriteString("relic.ruby"); // ...а прислали один
 
             Assert.IsFalse(NodeStageCodec.TryRead(writer.WrittenSegment, out _),
                 "оборванная витрина — это расхождение версий, а не повод показать один вариант из трёх");
@@ -133,34 +138,56 @@ namespace Guildmaster.Tests.EditMode.Net
         }
 
         [Test]
-        public void Interlude_CarriesTheFarewellOfTheNodeThatEnded()
+        public void NodeEnd_CarriesTheFarewellOfTheNodeThatRanIt()
         {
-            NodeStageState sent = NodeStageState.Interlude("ui.node.chest.title", "ui.node.chest.farewell");
+            NodeStageState sent = NodeStageState.Idle.EndingNode(
+                "ui.node.chest.title", "ui.node.chest.farewell");
 
             var writer = new NetByteWriter(64);
             Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
-            Assert.IsTrue(got.TryOpenInterlude(out InterludeStage rest));
 
-            Assert.AreEqual("ui.node.chest.title",    rest.TitleKey);
-            Assert.AreEqual("ui.node.chest.farewell", rest.BodyKey, "второй ключ — тело, а не заголовок");
-            Assert.IsTrue(rest.HasFarewell);
+            Assert.IsTrue(got.Rest.Ended);
+            Assert.AreEqual("ui.node.chest.title",    got.Rest.TitleKey);
+            Assert.AreEqual("ui.node.chest.farewell", got.Rest.BodyKey, "второй ключ — тело, а не заголовок");
+            Assert.IsTrue(got.Rest.HasFarewell);
         }
 
         /// <summary>
         /// Бой кончается без кадра-прощания, и это не «пустая строка вместо ключа», а отдельный случай.
         /// </summary>
         [Test]
-        public void InterludeWithoutKeys_IsJustTheButtons()
+        public void NodeEndWithoutKeys_IsJustTheButtons()
         {
-            NodeStageState sent = NodeStageState.Interlude();
+            NodeStageState sent = NodeStageState.Idle.EndingNode();
 
             var writer = new NetByteWriter(64);
             Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
-            Assert.IsTrue(got.TryOpenInterlude(out InterludeStage rest));
 
-            Assert.IsFalse(rest.HasFarewell, "провожать нечего — исход боя показан своим экраном");
-            Assert.AreNotEqual(sent, NodeStageState.Interlude("ui.a", "ui.b"),
-                "передышка с кадром и без — разные шаги, иначе кадр молча не доехал бы");
+            Assert.IsTrue(got.Rest.Ended);
+            Assert.IsFalse(got.Rest.HasFarewell, "провожать нечего — исход боя показан своим экраном");
+            Assert.AreNotEqual(sent, NodeStageState.Idle.EndingNode("ui.a", "ui.b"),
+                "конец узла с кадром и без — разные шаги, иначе кадр молча не доехал бы");
+        }
+
+        /// <summary>
+        /// Кнопки «дальше» ложатся ПОВЕРХ экрана узла, а не вместо него.
+        /// </summary>
+        /// <remarks>
+        /// У текстового события под ними остаётся само событие с текстом результата (QA #49). Пока конец
+        /// узла был отдельным видом экрана, он этот текст стирал.
+        /// </remarks>
+        [Test]
+        public void NodeEnd_KeepsTheScreenUnderneath()
+        {
+            NodeStageState sent = NodeStageState.TextEvent("event.crossroads", gold: 40).EndingNode();
+
+            var writer = new NetByteWriter(64);
+            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
+
+            Assert.IsTrue(got.Rest.Ended, "узел пройден — кнопки на месте");
+            Assert.IsTrue(got.TryOpenTextEvent(out TextEventStage ev), "и событие под ними тоже");
+            Assert.AreEqual("event.crossroads", ev.EventId);
+            Assert.AreEqual(40, ev.Gold);
         }
 
         [Test]
@@ -199,20 +226,25 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void BoxOfAnotherKind_DoesNotOpen()
         {
-            NodeStageState rest = NodeStageState.Interlude("ui.a", "ui.b");
+            NodeStageState outcome = NodeStageState.Outcome(victory: true);
 
-            Assert.IsFalse(rest.TryOpenTextEvent(out _), "конец узла — не текстовое событие");
-            Assert.IsFalse(rest.TryOpenReward(out _),    "конец узла — не витрина");
-            Assert.IsTrue(rest.TryOpenInterlude(out _));
+            Assert.IsFalse(outcome.TryOpenTextEvent(out _), "исход — не текстовое событие");
+            Assert.IsFalse(outcome.TryOpenReward(out _),    "исход — не витрина");
+            Assert.IsTrue(outcome.TryOpenOutcome(out _));
         }
 
         /// <summary>Вид без коробки приехал с хвостом — это чужая версия, а не «лишние байты».</summary>
         [Test]
         public void EmptyKindWithPayload_IsRefused()
         {
-            var writer = new NetByteWriter(16);
+            var box = new NetByteWriter(64);
+            box.WriteString("а тут вдруг что-то лежит");
+
+            var writer = new NetByteWriter(64);
             writer.WriteByte((byte)NodeStageKind.Chest);
-            writer.WriteString("а тут вдруг что-то лежит");
+            writer.WriteUShort((ushort)box.Length);
+            for (int i = 0; i < box.Length; i++) writer.WriteByte(box.WrittenSegment.Array[i]);
+            writer.WriteBool(false);
 
             Assert.IsFalse(NodeStageCodec.TryRead(writer.WrittenSegment, out _));
         }

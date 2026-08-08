@@ -29,11 +29,11 @@ namespace Guildmaster.Tests.EditMode.Net
             var stage = new HostNodeStage(net.CreateNode());
             var beat  = new RunBeatStage(new SilentSession(), stage);
 
-            stage.Announce(NodeStageState.Interlude("ui.node.chest.title", "ui.node.chest.farewell"));
+            stage.Announce(NodeStageState.Idle.EndingNode("ui.node.chest.title", "ui.node.chest.farewell"));
             beat.EnterRestBeat(CancellationToken.None);
 
-            Assert.IsTrue(stage.Current.TryOpenInterlude(out InterludeStage rest));
-            Assert.AreEqual("ui.node.chest.title", rest.TitleKey,
+            Assert.IsTrue(stage.Current.Rest.Ended);
+            Assert.AreEqual("ui.node.chest.title", stage.Current.Rest.TitleKey,
                 "петля объявила бы кнопки без кадра — и прощание сундука исчезло бы у обоих игроков");
         }
 
@@ -47,8 +47,8 @@ namespace Guildmaster.Tests.EditMode.Net
 
             beat.EnterRestBeat(CancellationToken.None);
 
-            Assert.IsTrue(stage.Current.TryOpenInterlude(out InterludeStage rest));
-            Assert.IsFalse(rest.HasFarewell);
+            Assert.IsTrue(stage.Current.Rest.Ended);
+            Assert.IsFalse(stage.Current.Rest.HasFarewell);
         }
 
         /// <summary>Вход в следующий узел снимает конец предыдущего — у всех сразу.</summary>
@@ -59,10 +59,11 @@ namespace Guildmaster.Tests.EditMode.Net
             var stage = new HostNodeStage(net.CreateNode());
             var beat  = new RunBeatStage(new SilentSession(), stage);
 
-            stage.Announce(NodeStageState.Interlude("ui.node.camp.title", "ui.node.camp.farewell"));
+            stage.Announce(NodeStageState.Idle.EndingNode("ui.node.camp.title", "ui.node.camp.farewell"));
             beat.EnterNode();
 
             Assert.AreEqual(NodeStageKind.None, stage.Current.Kind);
+            Assert.IsFalse(stage.Current.Rest.Ended, "кнопки прошлого узла исчезают вместе с ним");
         }
 
         /// <summary>

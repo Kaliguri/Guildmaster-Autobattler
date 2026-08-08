@@ -34,10 +34,10 @@ namespace Guildmaster.Game.Flow
         // Передаётся боевому узлу: награду за победу он пишет в забег через шину команд.
         private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
         private readonly IContinuePresenter _continue;
-        private readonly IPublisher<OpenTextEventRequest> _openEventPub;
-        private readonly IPublisher<OpenShopRequest>      _openShopPub;
-        private readonly IPublisher<OpenChestRequest>     _openChestPub;
-        private readonly IPublisher<OpenCampRequest>      _openCampPub;
+        private readonly IPublisher<OpenShopRequest> _openShopPub;
+        private readonly IPublisher<OpenCampRequest> _openCampPub;
+        // Общее согласие: сундук открывают все вместе, ответ на событие тоже выбирают все.
+        private readonly Core.Net.ISharedDecision _decision;
         // Объявление шага узла: кадр-прощание и кнопки «дальше» едут одним шагом обеим ролям.
         private readonly Session.Net.HostNodeStage _stage;
 
@@ -46,11 +46,11 @@ namespace Guildmaster.Game.Flow
                             IRewardPresenter reward, RunStateService runStates,
                             Guildmaster.Guild.Commands.IRunCommands commands,
                             IContinuePresenter continuePresenter,
-                            IPublisher<OpenTextEventRequest> openEventPub, IPublisher<OpenShopRequest> openShopPub,
-                            IPublisher<OpenChestRequest> openChestPub, IPublisher<OpenCampRequest> openCampPub,
-                            Session.Net.HostNodeStage stage)
+                            IPublisher<OpenShopRequest> openShopPub, IPublisher<OpenCampRequest> openCampPub,
+                            Core.Net.ISharedDecision decision, Session.Net.HostNodeStage stage)
         {
             _openCampPub  = openCampPub;
+            _decision     = decision;
             _stage        = stage;
             _content      = content;
             _session      = session;
@@ -61,9 +61,7 @@ namespace Guildmaster.Game.Flow
             _runStates    = runStates;
             _commands     = commands;
             _continue     = continuePresenter;
-            _openEventPub = openEventPub;
             _openShopPub  = openShopPub;
-            _openChestPub = openChestPub;
         }
 
         public IEventFlow Resolve(MapNode node, RunContext ctx)
@@ -119,14 +117,14 @@ namespace Guildmaster.Game.Flow
                         Debug.LogWarning($"[NodeResolver] - нет TextEventData в контент-БД для '{node.Id}' → заглушка");
                         return new CompletedStubFlow(node.Type);
                     }
-                    return new TextEventFlow(ev, _openEventPub, _eventEffects);
+                    return new TextEventFlow(ev, _eventEffects, _decision, _stage);
                 }
 
                 case MapNodeType.Shop:
                     return new ShopFlow(_shop, _openShopPub, _stage);
 
                 case MapNodeType.Chest:
-                    return new ChestFlow(_openChestPub, _reward, _stage);
+                    return new ChestFlow(_reward, _decision, _stage);
 
                 case MapNodeType.Camp:
                     return new CampFlow(_openCampPub, _stage);

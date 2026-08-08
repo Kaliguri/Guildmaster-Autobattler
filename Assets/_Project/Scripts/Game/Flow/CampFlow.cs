@@ -32,7 +32,7 @@ namespace Guildmaster.Game.Flow
             await tcs.Task.AttachExternalCancellation(ctx.Cancellation); // игрок ушёл с привала
 
             // Единый ритм конца узла (QA #48/#49): привал сворачивается в кадр-прощание до следующего узла.
-            _stage?.Announce(Session.Net.NodeStageState.Interlude(
+            _stage?.Announce(Session.Net.NodeStageState.Idle.EndingNode(
                 "ui.node.camp.title", "ui.node.camp.farewell"));
 
             return EventResult.Completed;

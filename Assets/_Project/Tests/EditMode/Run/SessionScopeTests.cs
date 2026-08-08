@@ -195,7 +195,20 @@ namespace Guildmaster.Tests.EditMode.Run
             // Реестр контента: гость собирает витрину награды из присланных id. Пустой — тест смотрит
             // на состав сеанса, а не на то, что в базе лежит.
             builder.RegisterInstance<IContentDatabase>(new EmptyContent());
-            builder.RegisterInstance<MessagePipe.IPublisher<OpenRewardRequest>>(new SilentRewardPublisher());
+
+            // Экраны узла публикует общий потребитель, один на обе роли, — поэтому заглушки нужны и
+            // владельцу, и гостю. Сам показ здесь не проверяется: тест смотрит на состав сеанса.
+            builder.RegisterInstance<MessagePipe.IPublisher<OpenRewardRequest>>(new Silent<OpenRewardRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenContinueRequest>>(
+                new Silent<Guildmaster.Guild.OpenContinueRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Core.Flow.GoToModeRequest>>(
+                new Silent<Guildmaster.Core.Flow.GoToModeRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenNodeFarewellRequest>>(
+                new Silent<Guildmaster.Guild.OpenNodeFarewellRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenChestRequest>>(
+                new Silent<Guildmaster.Guild.OpenChestRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<OpenTextEventRequest>>(
+                new Silent<OpenTextEventRequest>());
 
             // Где мы сейчас: состав сеанса возит место каждого участника. В EditMode мест нет вовсе.
             builder.RegisterInstance<ILocalWhereabouts>(new NowhereInParticular());
@@ -295,9 +308,10 @@ namespace Guildmaster.Tests.EditMode.Run
                 Guildmaster.Core.Players.PlayerWhere.Unknown;
         }
 
-        private sealed class SilentRewardPublisher : MessagePipe.IPublisher<OpenRewardRequest>
+        /// <summary>Публикатор, которому некуда публиковать: экраны в этом тесте не проверяются.</summary>
+        private sealed class Silent<T> : MessagePipe.IPublisher<T>
         {
-            public void Publish(OpenRewardRequest message) { }
+            public void Publish(T message) { }
         }
 
         /// <summary>Реестр без контента: в этом тесте важно, КТО спрашивает базу, а не что в ней лежит.</summary>

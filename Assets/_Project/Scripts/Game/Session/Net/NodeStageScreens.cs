@@ -32,6 +32,8 @@ namespace Guildmaster.Game.Session.Net
         private readonly IPublisher<GoToModeRequest>     _modePub;
         private readonly IPublisher<OpenRewardRequest>   _rewardPub;
         private readonly IPublisher<OpenNodeFarewellRequest> _farewellPub;
+        private readonly IPublisher<OpenChestRequest>        _chestPub;
+        private readonly IPublisher<OpenTextEventRequest>    _eventPub;
         // Реестр контента: по проводу едут id, а витрине нужны определения. Реестры сторон совпадают —
         // это проверено рукопожатием, поэтому промах по id здесь означает поломку, а не редкий случай.
         private readonly IContentDatabase _content;
@@ -49,6 +51,8 @@ namespace Guildmaster.Game.Session.Net
                                 IPublisher<GoToModeRequest> modePub,
                                 IPublisher<OpenRewardRequest> rewardPub,
                                 IPublisher<OpenNodeFarewellRequest> farewellPub,
+                                IPublisher<OpenChestRequest> chestPub,
+                                IPublisher<OpenTextEventRequest> eventPub,
                                 IContentDatabase content,
                                 ISessionRunState runs,
                                 Core.Net.ISharedDecision decision)
@@ -58,6 +62,8 @@ namespace Guildmaster.Game.Session.Net
             _modePub     = modePub;
             _rewardPub   = rewardPub;
             _farewellPub = farewellPub;
+            _chestPub    = chestPub;
+            _eventPub    = eventPub;
             _content     = content;
             _runs        = runs;
             _decision    = decision;
@@ -90,11 +96,17 @@ namespace Guildmaster.Game.Session.Net
             _life = new CancellationTokenSource();
             CancellationToken alive = _life.Token;
 
+            // Сначала экран узла, потом хвост: кнопки «дальше» ложатся ПОВЕРХ него, а не вместо. У
+            // текстового события под ними остаётся само событие с текстом результата, у сундука —
+            // кадр-прощание, у боя — арена.
             switch (state.Kind)
             {
-                case NodeStageKind.Interlude: ShowInterlude(in state, alive); break;
-                case NodeStageKind.Reward:    ShowReward(in state);           break;
+                case NodeStageKind.Reward:    ShowReward(in state);          break;
+                case NodeStageKind.TextEvent: ShowTextEvent(in state, alive); break;
+                case NodeStageKind.Chest:     ShowChest(alive);              break;
             }
+
+            if (state.Rest.Ended) ShowNodeEnd(in state, alive);
         }
 
         private void EndPreviousStage()
@@ -107,21 +119,49 @@ namespace Guildmaster.Game.Session.Net
         }
 
         /// <summary>
-        /// Узел кончился: кадр-прощание внизу (если узел его оставил) и кнопки «дальше» поверх.
+        /// Узел пройден: кадр-прощание (если узел его оставил) и кнопки «дальше» поверх всего.
         /// </summary>
         /// <remarks>
-        /// Кадр публикуем ПЕРВЫМ: он задник, и придя вторым, лёг бы поверх кнопок. Порядок держится
-        /// здесь, а не у того, кто узел вёл, — потому и свели их в один шаг.
+        /// Кадр публикуем ПЕРВЫМ: он задник, и придя вторым, лёг бы поверх кнопок.
         /// </remarks>
-        private void ShowInterlude(in NodeStageState state, CancellationToken alive)
+        private void ShowNodeEnd(in NodeStageState state, CancellationToken alive)
         {
-            if (state.TryOpenInterlude(out InterludeStage rest) && rest.HasFarewell)
-                _farewellPub?.Publish(new OpenNodeFarewellRequest(rest.TitleKey, rest.BodyKey, alive));
+            if (state.Rest.HasFarewell)
+                _farewellPub?.Publish(new OpenNodeFarewellRequest(
+                    state.Rest.TitleKey, state.Rest.BodyKey, alive));
 
             _continuePub?.Publish(new OpenContinueRequest(
                 labelKey:    null,
                 onContinue:  () => _modePub?.Publish(new GoToModeRequest(RunMode.Map)),
                 onFormation: () => _modePub?.Publish(new GoToModeRequest(RunMode.Battle))));
+        }
+
+        /// <summary>Закрытый сундук: клик по крышке — голос, крышку открывает вся группа.</summary>
+        private void ShowChest(CancellationToken alive) =>
+            _chestPub?.Publish(new OpenChestRequest(
+                () => _decision?.Choose(Core.Net.DecisionOptions.Agree), alive));
+
+        /// <summary>Текстовое событие: собрать из id и отдать выбор общему решению.</summary>
+        /// <remarks>
+        /// Голосуем НОМЕРОМ строки, а не её текстом: текст переводится, и у игроков с разным языком
+        /// голоса за один и тот же ответ не сошлись бы никогда.
+        /// </remarks>
+        private void ShowTextEvent(in NodeStageState state, CancellationToken alive)
+        {
+            if (!state.TryOpenTextEvent(out TextEventStage box)) return;
+
+            if (_content == null || !_content.TryGet(box.EventId, out TextEventData data))
+            {
+                Debug.LogError($"[NodeStageScreens] - события '{box.EventId}' нет в реестре: " +
+                               "контент разъехался, хотя рукопожатие это проверяло.");
+                return;
+            }
+
+            _eventPub?.Publish(new OpenTextEventRequest(
+                data,
+                index => _decision?.Choose(index.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+                box.Gold,
+                alive));
         }
 
         /// <summary>Собрать витрину из объявленных id и открыть её.</summary>

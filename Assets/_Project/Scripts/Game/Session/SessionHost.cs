@@ -56,6 +56,18 @@ namespace Guildmaster.Game.Session
             => Resolve<Guildmaster.Core.Players.IPresenceView>();
 
         /// <summary>
+        /// Общее согласие текущего сеанса; вне сессии — <c>null</c>. У владельца счёт ведётся, у гостя
+        /// голос отправляется — спрашивающему разница не видна.
+        /// </summary>
+        public Guildmaster.Core.Net.ISharedDecision Decision
+            => Resolve<Guildmaster.Core.Net.ISharedDecision>();
+
+        /// <summary>
+        /// Объявление экранов узла; <c>null</c> вне сессии И у гостя — объявляет тот, кто ведёт узел.
+        /// </summary>
+        public Net.HostNodeStage NodeStage => Resolve<Net.HostNodeStage>();
+
+        /// <summary>
         /// Команды забега текущего сеанса; вне сессии — <c>null</c>. У владельца это локальная шина, у
         /// гостя — отправка интента хосту; спрашивающему разница не видна и не нужна.
         /// </summary>

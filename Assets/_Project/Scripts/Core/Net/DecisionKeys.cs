@@ -22,6 +22,19 @@ namespace Guildmaster.Core.Net
 
         /// <summary>Куда идём по карте акта. Вариант — id узла.</summary>
         public const string MapNode = "map.node";
+
+        /// <summary>Согласие открыть сундук. За крышкой общая награда, значит и крышка общая.</summary>
+        public const string ChestOpen = "chest.open";
+
+        /// <summary>
+        /// Какой ответ на текстовое событие берёт группа. Вариант — НОМЕР строки в списке ответов.
+        /// </summary>
+        /// <remarks>
+        /// Номер, а не текст ответа: варианты приходят из одного и того же ассета события, а вот его
+        /// строки переводятся и правятся. Сравнивай мы переведённый текст — голоса разошлись бы у
+        /// игроков с разным языком.
+        /// </remarks>
+        public const string EventChoice = "event.choice";
     }
 
     /// <summary>

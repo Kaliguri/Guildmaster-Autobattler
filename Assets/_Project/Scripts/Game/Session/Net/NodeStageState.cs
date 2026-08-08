@@ -4,7 +4,7 @@ using Guildmaster.Net;
 
 namespace Guildmaster.Game.Session.Net
 {
-    /// <summary>Что группа решает прямо сейчас внутри узла.</summary>
+    /// <summary>Какой экран узла сейчас перед группой.</summary>
     /// <remarks>
     /// <b>Перечисление только ДОПИСЫВАЕТСЯ.</b> Номер едет по проводу, и переставленный номер увёл бы
     /// гостя не на тот экран — молча, потому что оба конца собираются порознь.
@@ -15,25 +15,11 @@ namespace Guildmaster.Game.Session.Net
     /// </remarks>
     public enum NodeStageKind : byte
     {
-        /// <summary>Ничего не показываем: узел идёт своим ходом.</summary>
+        /// <summary>Своего экрана у узла сейчас нет.</summary>
         None = 0,
 
         /// <summary>Витрина награды. Коробка — <see cref="RewardStage"/>.</summary>
         Reward = 1,
-
-        /// <summary>
-        /// Узел кончился: кадр-прощание внизу и две кнопки-шортката поверх — «Продолжить» (на карту) и
-        /// «К построению». Коробка — <see cref="InterludeStage"/>.
-        /// </summary>
-        /// <remarks>
-        /// <b>Решения тут нет — это навигация</b> (вердикт Макса 08.08.2026: «Каждый нажимает отдельно
-        /// чисто для себя»). Кнопки ведут туда же, куда табы, и жмут их порознь: ждать напарника,
-        /// чтобы посмотреть свой строй, незачем.
-        /// <para><b>Прощание и кнопки — ОДИН шаг, а не два.</b> На экране они живут вместе: кадр узла
-        /// снизу, кнопки поверх. Разведи их по двум шагам — и второй молча затрёт первый, потому что
-        /// шаг узла отвечает на «что сейчас», а не «что добавить».</para>
-        /// </remarks>
-        Interlude = 2,
 
         /// <summary>Закрытый сундук: ждём, пока группа согласится его открыть. Коробки нет.</summary>
         Chest = 4,
@@ -88,31 +74,6 @@ namespace Guildmaster.Game.Session.Net
         }
     }
 
-    /// <summary>
-    /// Конец узла: чем его проводить и кнопки «дальше».
-    /// </summary>
-    /// <remarks>
-    /// <b>Ключи могут быть пустыми</b> — тогда кадра-прощания нет, только кнопки. Так кончается бой:
-    /// провожать там нечего, исход уже показан своим экраном.
-    /// </remarks>
-    public readonly struct InterludeStage
-    {
-        /// <summary>Заголовок кадра-прощания; пусто — кадра нет.</summary>
-        public readonly string TitleKey;
-
-        /// <summary>Тело кадра-прощания; пусто — кадра нет.</summary>
-        public readonly string BodyKey;
-
-        public InterludeStage(string titleKey, string bodyKey)
-        {
-            TitleKey = titleKey ?? string.Empty;
-            BodyKey  = bodyKey  ?? string.Empty;
-        }
-
-        /// <summary>Есть ли чем проводить узел.</summary>
-        public bool HasFarewell => !string.IsNullOrEmpty(TitleKey) || !string.IsNullOrEmpty(BodyKey);
-    }
-
     /// <summary>Текстовое событие: какое показать и сколько золота у группы на руках.</summary>
     /// <remarks>
     /// <b>Золото едет вместе с событием</b>, потому что от него зависит, какие варианты ответа доступны.
@@ -140,7 +101,42 @@ namespace Guildmaster.Game.Session.Net
     }
 
     /// <summary>
-    /// Шаг узла: что на экране и коробка с содержимым этого экрана.
+    /// Хвост узла: узел пройден, дальше — кнопки «Продолжить» и «К построению», а под ними, если узел
+    /// оставил, кадр-прощание.
+    /// </summary>
+    /// <remarks>
+    /// <b>Это ХВОСТ, а не отдельный экран</b>, и в этом всё дело. Кнопки ложатся ПОВЕРХ того, что уже
+    /// на экране: у сундука под ними кадр-прощание, у текстового события — само событие с текстом
+    /// результата, у боя — арена. Сделай мы конец узла ещё одним видом экрана, он молча стирал бы то,
+    /// поверх чего должен лечь.
+    /// <para><b>Решения тут нет — это навигация</b> (вердикт Макса 08.08.2026: «Каждый нажимает отдельно
+    /// чисто для себя»). Кнопки ведут туда же, куда табы, и жмут их порознь: ждать напарника, чтобы
+    /// посмотреть свой строй, незачем.</para>
+    /// </remarks>
+    public readonly struct NodeRest
+    {
+        /// <summary>Узел пройден: показываем кнопки «дальше».</summary>
+        public readonly bool Ended;
+
+        /// <summary>Заголовок кадра-прощания; пусто — кадра нет.</summary>
+        public readonly string TitleKey;
+
+        /// <summary>Тело кадра-прощания; пусто — кадра нет.</summary>
+        public readonly string BodyKey;
+
+        public NodeRest(bool ended, string titleKey, string bodyKey)
+        {
+            Ended    = ended;
+            TitleKey = titleKey ?? string.Empty;
+            BodyKey  = bodyKey  ?? string.Empty;
+        }
+
+        /// <summary>Есть ли чем проводить узел. Бой не оставляет ничего — исход показан своим экраном.</summary>
+        public bool HasFarewell => Ended && (TitleKey.Length > 0 || BodyKey.Length > 0);
+    }
+
+    /// <summary>
+    /// Шаг узла: какой экран перед группой, что на нём и пройден ли узел.
     /// </summary>
     /// <remarks>
     /// <b>Состояние, а не приказ «покажи».</b> Гость подключается в любой момент и переживает потери,
@@ -150,43 +146,35 @@ namespace Guildmaster.Game.Session.Net
     /// соседи). Так у владельца и у гостя один и тот же путь к экрану целиком, вместе с разбором:
     /// собери владелец свою коробку в обход провода — и разошлись бы они ровно там, где никто не
     /// смотрит.</para>
-    /// <para><b>Содержимое — строковые id</b>, а не сериализованные определения: лента возит ссылки на
-    /// ассеты тем же способом, и совпадение реестров уже проверено рукопожатием.</para>
+    /// <para><b>Экран и хвост — два разных факта</b>, потому что на экране они и живут вместе. Поэтому
+    /// хвост навешивается на текущий шаг (<see cref="EndingNode"/>), а не подменяет его.</para>
     /// </remarks>
     public readonly struct NodeStageState : IEquatable<NodeStageState>
     {
         public readonly NodeStageKind Kind;
 
+        /// <summary>Пройден ли узел и чем его проводить.</summary>
+        public readonly NodeRest Rest;
+
         private readonly byte[] _payload;
 
         private static readonly byte[] Empty = Array.Empty<byte>();
 
-        internal NodeStageState(NodeStageKind kind, byte[] payload)
+        internal NodeStageState(NodeStageKind kind, byte[] payload, NodeRest rest = default)
         {
             Kind     = kind;
             _payload = payload ?? Empty;
+            Rest     = rest;
         }
 
         /// <summary>Упакованная коробка вида. Пусто — у видов, которым нечего нести.</summary>
         internal ArraySegment<byte> Payload => new ArraySegment<byte>(_payload);
 
-        /// <summary>Экрана нет — узел идёт своим ходом.</summary>
+        /// <summary>Экрана нет и узел идёт своим ходом.</summary>
         public static NodeStageState Idle => new NodeStageState(NodeStageKind.None, Empty);
 
         /// <summary>Закрытый сундук.</summary>
         public static NodeStageState Chest => new NodeStageState(NodeStageKind.Chest, Empty);
-
-        /// <summary>
-        /// Узел кончился. Ключи задаёт тот, кто вёл узел; без них будут только кнопки «дальше».
-        /// </summary>
-        public static NodeStageState Interlude(string titleKey = null, string bodyKey = null)
-        {
-            var writer = new NetByteWriter(64);
-            writer.WriteString(titleKey ?? string.Empty);
-            writer.WriteString(bodyKey  ?? string.Empty);
-
-            return new NodeStageState(NodeStageKind.Interlude, Pack(writer));
-        }
 
         public static NodeStageState Reward(IReadOnlyList<string> options, bool inventoryFull)
         {
@@ -215,6 +203,22 @@ namespace Guildmaster.Game.Session.Net
             return new NodeStageState(NodeStageKind.Outcome, Pack(writer));
         }
 
+        /// <summary>
+        /// Тот же экран, но узел пройден: сверху кнопки «дальше», снизу — кадр-прощание, если узел его
+        /// оставил.
+        /// </summary>
+        /// <remarks>
+        /// Петля зовёт это на ТЕКУЩЕМ шаге, а не объявляет свой: экран под кнопками принадлежит узлу, и
+        /// петля про него ничего не знает. Ключи задаёт тот, кто узел вёл.
+        /// <para><b><c>null</c> — «оставить как есть», а не «стереть».</b> Петля вешает кнопки без
+        /// аргументов, и узел к этому моменту мог уже положить свой кадр-прощание. Затирай мы его
+        /// пустыми строками — кадр сундука исчезал бы ровно в тот момент, когда петля добавляет
+        /// кнопки.</para>
+        /// </remarks>
+        public NodeStageState EndingNode(string titleKey = null, string bodyKey = null) =>
+            new NodeStageState(Kind, _payload,
+                new NodeRest(true, titleKey ?? Rest.TitleKey, bodyKey ?? Rest.BodyKey));
+
         /// <summary>Разобрать витрину. <c>false</c> — сейчас на экране не она.</summary>
         public bool TryOpenReward(out RewardStage box)
         {
@@ -230,21 +234,6 @@ namespace Guildmaster.Game.Session.Net
                 for (int i = 0; i < count; i++) options.Add(bytes.ReadString());
 
                 box = new RewardStage(options, full);
-                return true;
-            }
-            catch (InvalidOperationException) { return false; }
-        }
-
-        /// <summary>Разобрать конец узла. <c>false</c> — сейчас на экране не он.</summary>
-        public bool TryOpenInterlude(out InterludeStage box)
-        {
-            box = default;
-            if (Kind != NodeStageKind.Interlude) return false;
-
-            var bytes = new NetByteReader(Payload);
-            try
-            {
-                box = new InterludeStage(bytes.ReadString(), bytes.ReadString());
                 return true;
             }
             catch (InvalidOperationException) { return false; }
@@ -287,7 +276,6 @@ namespace Guildmaster.Game.Session.Net
         internal bool IsWellFormed() => Kind switch
         {
             NodeStageKind.Reward    => TryOpenReward(out _),
-            NodeStageKind.Interlude => TryOpenInterlude(out _),
             NodeStageKind.TextEvent => TryOpenTextEvent(out _),
             NodeStageKind.Outcome   => TryOpenOutcome(out _),
             _                       => _payload.Length == 0, // видам без коробки нести нечего
@@ -302,7 +290,7 @@ namespace Guildmaster.Game.Session.Net
         }
 
         /// <summary>
-        /// Тот же шаг — это тот же вид с той же коробкой, байт в байт.
+        /// Тот же шаг — это тот же экран с той же коробкой, байт в байт, и тот же хвост.
         /// </summary>
         /// <remarks>
         /// Сравнение упакованного, а не полей: смысл равенства здесь — «гостю нечего перерисовывать»,
@@ -312,6 +300,8 @@ namespace Guildmaster.Game.Session.Net
         public bool Equals(NodeStageState other)
         {
             if (Kind != other.Kind) return false;
+            if (Rest.Ended != other.Rest.Ended || Rest.TitleKey != other.Rest.TitleKey ||
+                Rest.BodyKey != other.Rest.BodyKey) return false;
 
             byte[] mine = _payload ?? Empty, theirs = other._payload ?? Empty;
             if (mine.Length != theirs.Length) return false;
@@ -326,28 +316,36 @@ namespace Guildmaster.Game.Session.Net
 
         public override int GetHashCode()
         {
-            int hash = (int)Kind * 397;
+            int hash = (int)Kind * 397 ^ (Rest.Ended ? 8191 : 0);
             byte[] mine = _payload ?? Empty;
             for (int i = 0; i < mine.Length; i++) hash = (hash * 31) ^ mine[i];
+            if (Rest.TitleKey.Length > 0) hash = (hash * 31) ^ Rest.TitleKey.GetHashCode();
             return hash;
         }
 
         public override string ToString()
         {
+            string screen;
             switch (Kind)
             {
                 case NodeStageKind.Reward when TryOpenReward(out RewardStage shelf):
-                    return $"Reward({string.Join(", ", shelf.Options)})" +
-                           (shelf.InventoryFull ? " [запас полон]" : string.Empty);
-                case NodeStageKind.Interlude when TryOpenInterlude(out InterludeStage rest):
-                    return rest.HasFarewell ? $"Interlude({rest.TitleKey})" : "Interlude(без кадра)";
+                    screen = $"Reward({string.Join(", ", shelf.Options)})" +
+                             (shelf.InventoryFull ? " [запас полон]" : string.Empty);
+                    break;
                 case NodeStageKind.TextEvent when TryOpenTextEvent(out TextEventStage ev):
-                    return $"TextEvent({ev.EventId}, золота {ev.Gold})";
+                    screen = $"TextEvent({ev.EventId}, золота {ev.Gold})";
+                    break;
                 case NodeStageKind.Outcome when TryOpenOutcome(out OutcomeStage outcome):
-                    return outcome.Victory ? "Outcome(победа)" : "Outcome(поражение)";
+                    screen = outcome.Victory ? "Outcome(победа)" : "Outcome(поражение)";
+                    break;
                 default:
-                    return Kind.ToString();
+                    screen = Kind.ToString();
+                    break;
             }
+
+            if (!Rest.Ended) return screen;
+
+            return Rest.HasFarewell ? $"{screen} + конец узла ({Rest.TitleKey})" : $"{screen} + конец узла";
         }
     }
 
@@ -359,28 +357,53 @@ namespace Guildmaster.Game.Session.Net
             writer.Reset();
             writer.WriteByte((byte)state.Kind);
 
+            // Длина коробки нужна потому, что за ней едет хвост узла: без неё разбор не знал бы, где
+            // кончается экран и начинается «узел пройден».
             ArraySegment<byte> box = state.Payload;
+            writer.WriteUShort((ushort)box.Count);
             for (int i = 0; i < box.Count; i++) writer.WriteByte(box.Array[box.Offset + i]);
+
+            writer.WriteBool(state.Rest.Ended);
+            if (state.Rest.Ended)
+            {
+                writer.WriteString(state.Rest.TitleKey);
+                writer.WriteString(state.Rest.BodyKey);
+            }
 
             return writer.WrittenSegment;
         }
 
         /// <summary>
-        /// Разобрать шаг. <c>false</c> — вид шага неизвестен этой сборке или коробка не разбирается:
+        /// Разобрать шаг. <c>false</c> — вид экрана неизвестен этой сборке или коробка не разбирается:
         /// это расхождение версий, и показывать «примерно то же» нельзя.
         /// </summary>
         public static bool TryRead(ArraySegment<byte> payload, out NodeStageState state)
         {
             state = NodeStageState.Idle;
-            if (payload.Count < 1) return false;
 
-            byte kind = payload.Array[payload.Offset];
+            var bytes = new NetByteReader(payload);
+            byte kind;
+            byte[] box;
+            var rest = default(NodeRest);
+            try
+            {
+                kind = bytes.ReadByte();
+                int size = bytes.ReadUShort();
+
+                ArraySegment<byte> raw = bytes.ReadBytes(size);
+                box = new byte[size];
+                if (size > 0) Array.Copy(raw.Array, raw.Offset, box, 0, size);
+
+                if (bytes.ReadBool()) rest = new NodeRest(true, bytes.ReadString(), bytes.ReadString());
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+
             if (!Enum.IsDefined(typeof(NodeStageKind), kind)) return false;
 
-            var box = new byte[payload.Count - 1];
-            Array.Copy(payload.Array, payload.Offset + 1, box, 0, box.Length);
-
-            var read = new NodeStageState((NodeStageKind)kind, box);
+            var read = new NodeStageState((NodeStageKind)kind, box, rest);
             if (!read.IsWellFormed()) return false;
 
             state = read;

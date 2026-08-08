@@ -33,7 +33,7 @@ namespace Guildmaster.Game.Flow
 
             // Единый ритм конца узла: витрина закрылась не в мир, а в кадр-прощание, который держит экран,
             // пока игрок не пошёл дальше (QA #48/#49). Уводят с него кнопки бита поверх.
-            _stage?.Announce(Session.Net.NodeStageState.Interlude(
+            _stage?.Announce(Session.Net.NodeStageState.Idle.EndingNode(
                 "ui.node.shop.title", "ui.node.shop.farewell"));
 
             return EventResult.Completed;
