@@ -1,15 +1,17 @@
 <map id="Guildmaster.Core.Diagnostics.Diag.IsOn" name="Guildmaster.Core.Diagnostics.Diag.IsOn">
-<area shape="rect" id="Node000001" title=" " alt="" coords="559,69,777,109"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1Diagnostics_1_1Diag.html#a58b001a7c09a0798b6285caf20906f5c" title="Для сообщений, которые дорого собирать." alt="" coords="292,37,511,77"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="545,77,511,73,511,68,546,72"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Core_1_1Diagnostics_1_1Diag.html#a14ee1464b46b0cead0860580fe5d4bb6" title=" " alt="" coords="292,101,511,141"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="546,107,511,111,511,106,545,101"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSharedDecision.html#a990d8e4d157c0879501d652e93a2e289" title="Связать решение с вариантами: действие получает то, на чём сошлись." alt="" coords="14,5,235,45"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="308,99,291,92,267,75,243,60,212,48,214,43,245,55,270,71,293,87,310,94"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#a3796d26cd063277fa40aebb75f0e46c7" title=" " alt="" coords="17,69,232,109"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="278,110,232,104,232,99,279,104"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Activity_1_1ActivityClockRouter.html#a6857da04b11a9eae6fea36fc25ee9ec4" title="UI → бой: начать бой из фазы расстановки (кнопка «Начать»). No&#45;op, если некому." alt="" coords="5,133,244,173"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="278,138,245,142,244,137,278,133"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a1996312ca2f53a29871e9b904c586793" title="UI → бой: начать бой из фазы расстановки (кнопка «Начать»). No&#45;op, если некому." alt="" coords="14,197,235,237"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="344,149,245,188,207,200,205,195,243,183,342,144"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="583,101,801,141"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1Diagnostics_1_1Diag.html#a58b001a7c09a0798b6285caf20906f5c" title="Для сообщений, которые дорого собирать." alt="" coords="316,69,535,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="569,109,535,105,535,100,570,104"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Core_1_1Diagnostics_1_1Diag.html#a14ee1464b46b0cead0860580fe5d4bb6" title=" " alt="" coords="316,133,535,173"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="570,139,535,143,535,138,569,133"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSharedDecision.html#a990d8e4d157c0879501d652e93a2e289" title="Связать решение с вариантами: действие получает то, на чём сошлись." alt="" coords="26,5,247,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="324,129,314,123,298,107,290,90,282,74,266,59,244,48,247,43,270,55,286,71,295,88,303,104,318,119,326,125"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html#a92f637d136827316efbce06d7055f9bb" title=" " alt="" coords="5,69,268,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="320,133,227,112,228,107,321,128"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#a3796d26cd063277fa40aebb75f0e46c7" title=" " alt="" coords="29,133,244,173"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="302,156,244,156,244,151,302,151"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Game_1_1Activity_1_1ActivityClockRouter.html#a6857da04b11a9eae6fea36fc25ee9ec4" title="UI → бой: начать бой из фазы расстановки (кнопка «Начать»). No&#45;op, если некому." alt="" coords="17,197,256,237"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="321,179,228,200,227,195,320,174"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a1996312ca2f53a29871e9b904c586793" title="UI → бой: начать бой из фазы расстановки (кнопка «Начать»). No&#45;op, если некому." alt="" coords="26,261,247,301"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="388,183,333,219,269,252,235,264,233,259,267,247,330,214,385,179"/>
 </map>

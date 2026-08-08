@@ -231,6 +231,7 @@ var annotated_dup =
           [ "SessionLogArchive", "classGuildmaster_1_1Core_1_1Diagnostics_1_1SessionLogArchive.html", "classGuildmaster_1_1Core_1_1Diagnostics_1_1SessionLogArchive" ]
         ] ],
         [ "Flow", "namespaceGuildmaster_1_1Core_1_1Flow.html", [
+          [ "GoToModeRequest", "structGuildmaster_1_1Core_1_1Flow_1_1GoToModeRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1GoToModeRequest" ],
           [ "IHubPresence", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence" ],
           [ "IRunControl", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl" ],
           [ "IScreenTransition", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IScreenTransition.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IScreenTransition" ],
@@ -256,6 +257,7 @@ var annotated_dup =
           [ "PeerLostOption", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption.html", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption" ],
           [ "PeerLostRequest", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest" ],
           [ "PlayerChoice", "structGuildmaster_1_1Core_1_1Net_1_1PlayerChoice.html", "structGuildmaster_1_1Core_1_1Net_1_1PlayerChoice" ],
+          [ "RunAfterOptions", "classGuildmaster_1_1Core_1_1Net_1_1RunAfterOptions.html", "classGuildmaster_1_1Core_1_1Net_1_1RunAfterOptions" ],
           [ "SharedDecisionChangedEvent", "structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent.html", "structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent" ]
         ] ],
         [ "Persistence", "namespaceGuildmaster_1_1Core_1_1Persistence.html", [
@@ -537,6 +539,7 @@ var annotated_dup =
             [ "ActivityStateCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec" ],
             [ "CoopGuestEntry", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry" ],
             [ "DecisionCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec" ],
+            [ "DeploymentIntent", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntent.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntent" ],
             [ "DeploymentIntentCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec" ],
             [ "DeploymentIntentIntake", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake" ],
             [ "DeploymentIntentSender", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender" ],
@@ -551,15 +554,21 @@ var annotated_dup =
             [ "HostPresence", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostPresence.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostPresence" ],
             [ "HostSessionRoster", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster" ],
             [ "HostSharedDecision", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSharedDecision.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSharedDecision" ],
+            [ "INodeStageView", "interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html", "interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView" ],
+            [ "NodeRest", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeRest.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeRest" ],
             [ "NodeStageCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec" ],
+            [ "NodeStageScreens", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageScreens.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageScreens" ],
             [ "NodeStageState", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState" ],
+            [ "OutcomeStage", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1OutcomeStage.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1OutcomeStage" ],
             [ "PresenceCursors", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1PresenceCursors.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1PresenceCursors" ],
             [ "RemoteRunCommands", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands" ],
+            [ "RewardStage", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1RewardStage.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1RewardStage" ],
             [ "RunCommandCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec" ],
             [ "RunSnapshotCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunSnapshotCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunSnapshotCodec" ],
             [ "RunStateBroadcast", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunStateBroadcast.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunStateBroadcast" ],
             [ "SessionIntro", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionIntro.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionIntro" ],
-            [ "SessionRosterCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec" ]
+            [ "SessionRosterCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec" ],
+            [ "TextEventStage", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1TextEventStage.html", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1TextEventStage" ]
           ] ],
           [ "CoopDisconnectPresenter", "classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter.html", "classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter" ],
           [ "CoopJoinInterrupt", "classGuildmaster_1_1Game_1_1Session_1_1CoopJoinInterrupt.html", "classGuildmaster_1_1Game_1_1Session_1_1CoopJoinInterrupt" ],

@@ -1,0 +1,9 @@
+<map id="Guildmaster.Game.Flow.HubPresenter.ShowAsync" name="Guildmaster.Game.Flow.HubPresenter.ShowAsync">
+<area shape="rect" id="Node000001" title="Открыть двор выбранного дома. Возвращается, когда в забег согласились ВСЕ." alt="" coords="5,69,213,109"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html#abf06119dec64e99d4f4c0e8a695feba9" title="Связать действие, которого ждём." alt="" coords="261,5,476,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,67,273,46,275,51,192,72"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html#a015de1d5e28262edd5ad691cd839789f" title="Переключить собственное согласие — то же, что Choose с единственным вариантом." alt="" coords="261,69,476,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="214,87,247,87,247,92,214,92"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html#aae35e474a25dc6046243ec4a02fb79ac" title="Снять связанное действие: экран, который его заказывал, уходит." alt="" coords="261,133,476,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="192,107,275,127,273,133,191,112"/>
+</map>

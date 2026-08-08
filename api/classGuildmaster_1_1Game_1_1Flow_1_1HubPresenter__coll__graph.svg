@@ -39,7 +39,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IHubPresenter.html" target="_top" xlink:title="Показ Двора гильдии и ожидание, пока игрок не уйдёт в забег.">
+<g id="a_Node000002"><a xlink:href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IHubPresenter.html" target="_top" xlink:title="Показ Двора гильдии и ожидание, пока группа не сойдётся идти в забег.">
 <polygon fill="white" stroke="transparent" points="117.5,-160 32.5,-160 32.5,-111 117.5,-111 117.5,-160"/>
 <text text-anchor="start" x="40.5" y="-147.5" font-family="Helvetica,sans-Serif" font-size="10.00">IHubPresenter</text>
 <text text-anchor="start" x="73.5" y="-132.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>

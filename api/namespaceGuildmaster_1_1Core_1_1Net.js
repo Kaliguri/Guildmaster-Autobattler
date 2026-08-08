@@ -7,6 +7,7 @@ var namespaceGuildmaster_1_1Core_1_1Net =
     [ "PeerLostOption", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption.html", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption" ],
     [ "PeerLostRequest", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest" ],
     [ "PlayerChoice", "structGuildmaster_1_1Core_1_1Net_1_1PlayerChoice.html", "structGuildmaster_1_1Core_1_1Net_1_1PlayerChoice" ],
+    [ "RunAfterOptions", "classGuildmaster_1_1Core_1_1Net_1_1RunAfterOptions.html", "classGuildmaster_1_1Core_1_1Net_1_1RunAfterOptions" ],
     [ "SharedDecisionChangedEvent", "structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent.html", "structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent" ],
     [ "CoopEndReason", "namespaceGuildmaster_1_1Core_1_1Net.html#a73fd84c1a070f14364cf84c2197a2d4e", [
       [ "None", "namespaceGuildmaster_1_1Core_1_1Net.html#a73fd84c1a070f14364cf84c2197a2d4ea6adf97f83acf6453d4a6a4b1070f3754", null ],

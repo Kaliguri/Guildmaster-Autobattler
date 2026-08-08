@@ -11,14 +11,14 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Сборка экрана исхода (план [[act&#45;map&#45;run&#45;loop]] §4 C2): заголовок Победа/Поражение и выход.">
+<g id="a_Node000001"><a xlink:title="Сборка экрана исхода (план [[act&#45;map&#45;run&#45;loop]] §4 C2): заголовок Победа/Поражение и выходы.">
 <polygon fill="#999999" stroke="transparent" points="188,-64 0,-64 0,0 188,0 188,-64"/>
 <text text-anchor="start" x="5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.UI.OutcomeScreenView</text>
 <text text-anchor="start" x="92" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="21.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="52" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">Build()</text>
-<text text-anchor="start" x="21.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="52" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">SetContinueCount()</text>
+<text text-anchor="start" x="24" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="57" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">Build()</text>
+<text text-anchor="start" x="24" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="57" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">SetSharedCount()</text>
 <polygon fill="#666666" stroke="#666666" points="0,-47 0,-47 188,-47 188,-47 0,-47"/>
 <polygon fill="#666666" stroke="#666666" points="0,-32 0,-32 188,-32 188,-32 0,-32"/>
 <polygon fill="none" stroke="#666666" points="0,0 0,-64 188,-64 188,0 0,0"/>

@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Game_1_1Flow_1
 </div><!--header-->
 <div class="contents">
 
-<p>Показ экрана исхода забега (победа/поражение) и ожидание «В меню» (план C2).  
+<p>Показ экрана исхода забега (победа/поражение) и ожидание, куда группа пойдёт (план C2).  
  <a href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IOutcomePresenter.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.IOutcomePresenter:</div>
@@ -113,29 +113,43 @@ Collaboration diagram for Guildmaster.Game.Flow.IOutcomePresenter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3459c924b49761e4e83e873527b10074" id="r_a3459c924b49761e4e83e873527b10074"><td class="memItemLeft" align="right" valign="top">UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IOutcomePresenter.html#a3459c924b49761e4e83e873527b10074">ShowAsync</a> (bool victory)</td></tr>
-<tr class="separator:a3459c924b49761e4e83e873527b10074"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8200922f87c1fd2ef2d355f83b8157c" id="r_ac8200922f87c1fd2ef2d355f83b8157c"><td class="memItemLeft" align="right" valign="top">UniTask&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58">RunOutcomeChoice</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IOutcomePresenter.html#ac8200922f87c1fd2ef2d355f83b8157c">ShowAsync</a> (bool victory, System.Threading.CancellationToken ct=default)</td></tr>
+<tr class="memdesc:ac8200922f87c1fd2ef2d355f83b8157c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать исход и дождаться общего выхода: во двор или новый забег.  <br /></td></tr>
+<tr class="separator:ac8200922f87c1fd2ef2d355f83b8157c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Показ экрана исхода забега (победа/поражение) и ожидание «В меню» (план C2). </p>
+<div class="textblock"><p>Показ экрана исхода забега (победа/поражение) и ожидание, куда группа пойдёт (план C2). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3459c924b49761e4e83e873527b10074" name="a3459c924b49761e4e83e873527b10074"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3459c924b49761e4e83e873527b10074">&#9670;&#160;</a></span>ShowAsync()</h2>
+<a id="ac8200922f87c1fd2ef2d355f83b8157c" name="ac8200922f87c1fd2ef2d355f83b8157c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8200922f87c1fd2ef2d355f83b8157c">&#9670;&#160;</a></span>ShowAsync()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">UniTask Guildmaster.Game.Flow.IOutcomePresenter.ShowAsync </td>
+          <td class="memname">UniTask&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58">RunOutcomeChoice</a> &gt; Guildmaster.Game.Flow.IOutcomePresenter.ShowAsync </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>victory</em></td><td>)</td>
+          <td class="paramname"><em>victory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">System.Threading.CancellationToken&#160;</td>
+          <td class="paramname"><em>ct</em> = <code>default</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#afe4cb0f4e59abfca61f2603ba162adfc">Guildmaster.Game.Flow.OutcomePresenter</a>.</p>
+<p>Показать исход и дождаться общего выхода: во двор или новый забег. </p>
+<p><em>ct</em>  — токен забега: «В меню» отменяет его тем же путём, что и пауза, и ожидание кончается System.OperationCanceledException. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#a1f0826571f7ad41449dc676fab2cdff6">Guildmaster.Game.Flow.OutcomePresenter</a>.</p>
 
 </div>
 </div>

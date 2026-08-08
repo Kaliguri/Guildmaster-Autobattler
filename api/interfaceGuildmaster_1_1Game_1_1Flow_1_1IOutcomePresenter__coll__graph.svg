@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Показ экрана исхода забега (победа/поражение) и ожидание «В меню» (план C2).">
+<g id="a_Node000001"><a xlink:title="Показ экрана исхода забега (победа/поражение) и ожидание, куда группа пойдёт (план C2).">
 <polygon fill="#999999" stroke="transparent" points="178,-60 0,-60 0,0 178,0 178,-60"/>
 <text text-anchor="start" x="5" y="-48" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.IOutcome</text>
 <text text-anchor="start" x="65.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">Presenter</text>

@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,45,141,70"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Presentation_1_1Editor_1_1SkeletalBodyVisualEditor.html" title="Инспектор составного тела: список частей сверху вниз, как слои в графическом редакторе (верхний рисуе..." alt="" coords="189,5,416,45"/>
+<area shape="poly" id="edge433_Node000000_Node000001" title=" " alt="" coords="154,43,189,39,189,44,155,49"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Editor_1_1UnitHeldItemEditor.html" title="Редактор предмета в руке: объявленный вылет тянется МЫШЬЮ за остриё, а не набивается двумя числами." alt="" coords="207,69,398,109"/>
+<area shape="poly" id="edge434_Node000000_Node000002" title=" " alt="" coords="155,66,208,73,207,79,154,71"/>
+</map>

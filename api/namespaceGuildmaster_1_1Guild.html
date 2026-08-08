@@ -170,7 +170,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать кнопки «бита» между узлами (план [[act-map-run-loop]] §4 A4).  <a href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html">OpenHubRequest</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать Двор гильдии — дом, из которого игрок уходит в забег.  <a href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать Двор гильдии — дом, из которого группа уходит в забег.  <a href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html">OpenMainMenuRequest</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать главное меню: «Создать игру» / «Присоединиться» / «Настройки» / «Выход».  <a href="structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html#details">More...</a><br /></td></tr>
@@ -179,7 +179,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать ПРОЩАНИЕ узла: последний кадр пройденного узла, который держит экран, пока игрок не пошёл дальше.  <a href="structGuildmaster_1_1Guild_1_1OpenNodeFarewellRequest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html">OpenOutcomeRequest</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать экран исхода забега (план [[act-map-run-loop]] §4 C2): победа (босс пройден) или поражение (пул перезапусков пуст).  <a href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать экран исхода (план [[act-map-run-loop]] §4 C2): победа (босс пройден) или поражение (пул перезапусков пуст).  <a href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenProfileRequest.html">OpenProfileRequest</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать экран профиля: слоты и идентичность (ник, цвет, курсор).  <a href="structGuildmaster_1_1Guild_1_1OpenProfileRequest.html#details">More...</a><br /></td></tr>
@@ -252,6 +252,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a4a1eebf8d11d1dc26e1abd53f5a525dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Чем кончился показ главного меню.  <a href="namespaceGuildmaster_1_1Guild.html#a4a1eebf8d11d1dc26e1abd53f5a525dd">More...</a><br /></td></tr>
 <tr class="separator:a4a1eebf8d11d1dc26e1abd53f5a525dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a560c996dd1569ac8899802f6b67b8c58" id="r_a560c996dd1569ac8899802f6b67b8c58"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58">RunOutcomeChoice</a> { <a class="el" href="namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58a5d0da9f685613e39848046c42dc91d31">ToMenu</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58afbc6d6fbc9a17e0f605a02c6d93b97d6">ToGuild</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58a51cfbcff36da74a9fc47f3a5140f99f2">Restart</a> = 2
+ }</td></tr>
+<tr class="memdesc:a560c996dd1569ac8899802f6b67b8c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Куда игрок уходит с экрана исхода забега.  <a href="namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58">More...</a><br /></td></tr>
+<tr class="separator:a560c996dd1569ac8899802f6b67b8c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8140c69a5f32631737e488f345f16625" id="r_a8140c69a5f32631737e488f345f16625"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625">MapNodeType</a> { <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625aa6122a65eaa676f700ae68d393054a37">Start</a>
 , <a class="el" href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a747d99f92ee9c080ba26108ac5d26488">Battle</a>
@@ -375,6 +381,30 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a8140c69a5f32631737e488f345f16625a080a546abcbea74459f27ba33313993d" name="a8140c69a5f32631737e488f345f16625a080a546abcbea74459f27ba33313993d"></a>Chest&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a8140c69a5f32631737e488f345f16625a88183b946cc5f0e8c96b2e66e1c74a7e" name="a8140c69a5f32631737e488f345f16625a88183b946cc5f0e8c96b2e66e1c74a7e"></a>Unknown&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a8140c69a5f32631737e488f345f16625aa32c011e43f79a0b7b9337bc183c2dd1" name="a8140c69a5f32631737e488f345f16625aa32c011e43f79a0b7b9337bc183c2dd1"></a>Camp&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a560c996dd1569ac8899802f6b67b8c58" name="a560c996dd1569ac8899802f6b67b8c58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a560c996dd1569ac8899802f6b67b8c58">&#9670;&#160;</a></span>RunOutcomeChoice</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58">Guildmaster.Guild.RunOutcomeChoice</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Куда игрок уходит с экрана исхода забега. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a560c996dd1569ac8899802f6b67b8c58a5d0da9f685613e39848046c42dc91d31" name="a560c996dd1569ac8899802f6b67b8c58a5d0da9f685613e39848046c42dc91d31"></a>ToMenu&#160;</td><td class="fielddoc"><p>В главное меню. Личный выбор: уйти к себе можно, не спрашивая напарника. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a560c996dd1569ac8899802f6b67b8c58afbc6d6fbc9a17e0f605a02c6d93b97d6" name="a560c996dd1569ac8899802f6b67b8c58afbc6d6fbc9a17e0f605a02c6d93b97d6"></a>ToGuild&#160;</td><td class="fielddoc"><p>Во двор гильдии: забег окончен, дом остаётся. Общий выбор. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a560c996dd1569ac8899802f6b67b8c58a51cfbcff36da74a9fc47f3a5140f99f2" name="a560c996dd1569ac8899802f6b67b8c58a51cfbcff36da74a9fc47f3a5140f99f2"></a>Restart&#160;</td><td class="fielddoc"><p>Новый забег тем же домом, мимо двора. Общий выбор. </p>
+</td></tr>
 </table>
 
 </div>

@@ -99,18 +99,18 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Guild_1_1OpenOutc
 </div><!--header-->
 <div class="contents">
 
-<p>Запрос показать экран исхода забега (план [[act-map-run-loop]] §4 C2): победа (босс пройден) или поражение (пул перезапусков пуст).  
+<p>Запрос показать экран исхода (план [[act-map-run-loop]] §4 C2): победа (босс пройден) или поражение (пул перезапусков пуст).  
  <a href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.OpenOutcomeRequest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest__coll__graph.svg" width="239" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest__coll__graph.svg" width="239" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a74db60377ac304a191ceb62105a2f094" id="r_a74db60377ac304a191ceb62105a2f094"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#a74db60377ac304a191ceb62105a2f094">OpenOutcomeRequest</a> (bool victory, Action onToMenu, Action onContinue=null)</td></tr>
-<tr class="separator:a74db60377ac304a191ceb62105a2f094"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cef63a9c66311ee52f8546857638ae9" id="r_a6cef63a9c66311ee52f8546857638ae9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#a6cef63a9c66311ee52f8546857638ae9">OpenOutcomeRequest</a> (bool victory, Action onToMenu, Action onContinue=null, Action onRestart=null, Action onToGuild=null)</td></tr>
+<tr class="separator:a6cef63a9c66311ee52f8546857638ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -118,18 +118,26 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a9b2bc44d58074bc4b19b9aa0af057edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">true = победа, false = поражение.  <br /></td></tr>
 <tr class="separator:a9b2bc44d58074bc4b19b9aa0af057edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c40bca1b23c4c91882a2bd7e0baa0ca" id="r_a9c40bca1b23c4c91882a2bd7e0baa0ca"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#a9c40bca1b23c4c91882a2bd7e0baa0ca">OnToMenu</a></td></tr>
-<tr class="memdesc:a9c40bca1b23c4c91882a2bd7e0baa0ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк «В меню» (ровно один вызов).  <br /></td></tr>
+<tr class="memdesc:a9c40bca1b23c4c91882a2bd7e0baa0ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк «В меню» (ровно один вызов). Личный: голосовать не за что.  <br /></td></tr>
 <tr class="separator:a9c40bca1b23c4c91882a2bd7e0baa0ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa266ba600c5818484ea022a0974e07c4" id="r_aa266ba600c5818484ea022a0974e07c4"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#aa266ba600c5818484ea022a0974e07c4">OnContinue</a></td></tr>
 <tr class="memdesc:aa266ba600c5818484ea022a0974e07c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк «Продолжить»; <code>null</code> — продолжать нечем, и кнопки не будет.  <br /></td></tr>
 <tr class="separator:aa266ba600c5818484ea022a0974e07c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2b2ad9f6233c23679272e21e3505aef" id="r_aa2b2ad9f6233c23679272e21e3505aef"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#aa2b2ad9f6233c23679272e21e3505aef">OnRestart</a></td></tr>
+<tr class="memdesc:aa2b2ad9f6233c23679272e21e3505aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Голос за «Начать забег заново»; <code>null</code> — кнопки нет.  <br /></td></tr>
+<tr class="separator:aa2b2ad9f6233c23679272e21e3505aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce80b20940fe66042681bc5cb6019e7" id="r_afce80b20940fe66042681bc5cb6019e7"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#afce80b20940fe66042681bc5cb6019e7">OnToGuild</a></td></tr>
+<tr class="memdesc:afce80b20940fe66042681bc5cb6019e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Голос за «Во двор гильдии»; <code>null</code> — кнопки нет.  <br /></td></tr>
+<tr class="separator:afce80b20940fe66042681bc5cb6019e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Запрос показать экран исхода забега (план [[act-map-run-loop]] §4 C2): победа (босс пройден) или поражение (пул перезапусков пуст). </p>
-<p>Публикует <code>GameFlow</code> после акта, слушает UI. Ровно один вызов OnToMenu. </p>
+<div class="textblock"><p>Запрос показать экран исхода (план [[act-map-run-loop]] §4 C2): победа (босс пройден) или поражение (пул перезапусков пуст). </p>
+<p>Экран объявляется шагом узла, показывают его обе роли.</p>
+<p><b>Экран один, а кнопок на нём разное число.</b> После забега это «заново», «во двор» и «в меню»; на площадке — «продолжить» и «в меню». Разницу задаёт вызывающий, передавая <code>null</code> вместо действия: кнопки тогда не будет вовсе, а не будет погашенной, обещающей возможность. </p>
+<p><b>«В меню» — личная кнопка, остальные общие</b> (вердикт Макса 08.08.2026). Общие ходят одним решением с вариантами — см. <code>DecisionKeys.RunAfter</code>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a74db60377ac304a191ceb62105a2f094" name="a74db60377ac304a191ceb62105a2f094"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74db60377ac304a191ceb62105a2f094">&#9670;&#160;</a></span>OpenOutcomeRequest()</h2>
+<a id="a6cef63a9c66311ee52f8546857638ae9" name="a6cef63a9c66311ee52f8546857638ae9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cef63a9c66311ee52f8546857638ae9">&#9670;&#160;</a></span>OpenOutcomeRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -153,7 +161,19 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onContinue</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>onContinue</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onRestart</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onToGuild</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -188,6 +208,38 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="aa2b2ad9f6233c23679272e21e3505aef" name="aa2b2ad9f6233c23679272e21e3505aef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2b2ad9f6233c23679272e21e3505aef">&#9670;&#160;</a></span>OnRestart</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly Action Guildmaster.Guild.OpenOutcomeRequest.OnRestart</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Голос за «Начать забег заново»; <code>null</code> — кнопки нет. </p>
+
+</div>
+</div>
+<a id="afce80b20940fe66042681bc5cb6019e7" name="afce80b20940fe66042681bc5cb6019e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afce80b20940fe66042681bc5cb6019e7">&#9670;&#160;</a></span>OnToGuild</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly Action Guildmaster.Guild.OpenOutcomeRequest.OnToGuild</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Голос за «Во двор гильдии»; <code>null</code> — кнопки нет. </p>
+
+</div>
+</div>
 <a id="a9c40bca1b23c4c91882a2bd7e0baa0ca" name="a9c40bca1b23c4c91882a2bd7e0baa0ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c40bca1b23c4c91882a2bd7e0baa0ca">&#9670;&#160;</a></span>OnToMenu</h2>
 
@@ -200,7 +252,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Колбэк «В меню» (ровно один вызов). </p>
+<p>Колбэк «В меню» (ровно один вызов). Личный: голосовать не за что. </p>
 
 </div>
 </div>

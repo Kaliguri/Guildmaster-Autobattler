@@ -86,7 +86,7 @@ var sectionId = 'dynsection-8';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#aa96484e1d3387bf952ea492277d1e460" target="_top" xlink:title="A2&#45;разрез забега: сгенерировать карту акта (если нет) и прогнать петлю обхода через ActRunner (делеги...">
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#a346a83cc8047395a2a3e8551da9c1c9b" target="_top" xlink:title="A2&#45;разрез забега: сгенерировать карту акта (если нет) и прогнать петлю обхода через ActRunner (делеги...">
 <polygon fill="white" stroke="#666666" points="167,-126 12,-126 12,-96 167,-96 167,-126"/>
 <text text-anchor="start" x="20" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Services.</text>
 <text text-anchor="middle" x="89.5" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">GameFlow.RunActAsync</text>

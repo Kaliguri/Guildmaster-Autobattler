@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Hu
 </div><!--header-->
 <div class="contents">
 
-<p>Презентер Двора — тем же образцом, что MainMenuPresenter и ProfilePresenter: публикует запрос и ждёт ответа UI.  
+<p>Презентер Двора — тем же образцом, что MainMenuPresenter и ProfilePresenter: публикует запрос и ждёт ответа.  
  <a href="classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.HubPresenter:</div>
@@ -113,18 +113,20 @@ Collaboration diagram for Guildmaster.Game.Flow.HubPresenter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3efee766a82975bc481bab79e287967c" id="r_a3efee766a82975bc481bab79e287967c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#a3efee766a82975bc481bab79e287967c">HubPresenter</a> (IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html">OpenHubRequest</a> &gt; pub, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a> profiles)</td></tr>
-<tr class="separator:a3efee766a82975bc481bab79e287967c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4064f5b38399a9ac73e4d9e82ddd741f" id="r_a4064f5b38399a9ac73e4d9e82ddd741f"><td class="memItemLeft" align="right" valign="top">UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#a4064f5b38399a9ac73e4d9e82ddd741f">ShowAsync</a> ()</td></tr>
-<tr class="memdesc:a4064f5b38399a9ac73e4d9e82ddd741f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть двор выбранного дома. Возвращается, когда игрок нажал «Начать забег».  <br /></td></tr>
-<tr class="separator:a4064f5b38399a9ac73e4d9e82ddd741f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3ec7e010b8cf3051d298be78ad58569" id="r_ac3ec7e010b8cf3051d298be78ad58569"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#ac3ec7e010b8cf3051d298be78ad58569">HubPresenter</a> (IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html">OpenHubRequest</a> &gt; pub, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a> profiles, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html">Session.SessionHost</a> sessions)</td></tr>
+<tr class="separator:ac3ec7e010b8cf3051d298be78ad58569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58e2c35b9a5063a701ff55cebcca1cb8" id="r_a58e2c35b9a5063a701ff55cebcca1cb8"><td class="memItemLeft" align="right" valign="top">async UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#a58e2c35b9a5063a701ff55cebcca1cb8">ShowAsync</a> ()</td></tr>
+<tr class="memdesc:a58e2c35b9a5063a701ff55cebcca1cb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть двор выбранного дома. Возвращается, когда в забег согласились ВСЕ.  <br /></td></tr>
+<tr class="separator:a58e2c35b9a5063a701ff55cebcca1cb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Презентер Двора — тем же образцом, что MainMenuPresenter и ProfilePresenter: публикует запрос и ждёт ответа UI. </p>
+<div class="textblock"><p>Презентер Двора — тем же образцом, что MainMenuPresenter и ProfilePresenter: публикует запрос и ждёт ответа. </p>
 <p>Имя дома берётся у службы профилей здесь, а не в UI: экран — разметка, а не владелец правил, и спрашивать про активную гильдию ему нечем. </p>
+<p><b>В забег выходят вместе</b> (вердикт Макса 08.08.2026: «Надо вообще его сделать когда кликают оба, как с готовностью»). Кнопка не закрывает двор, а отправляет голос; закрывается двор объявлением — тем же самым у хозяина и у гостя. Пока кнопка закрывала экран сама, дать её гостю было нельзя: он ушёл бы со двора один, оставив напарника стоять.</p>
+<p><b>В соло не меняется ничего</b>: участник один, согласие срабатывает в тот же кадр.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3efee766a82975bc481bab79e287967c" name="a3efee766a82975bc481bab79e287967c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3efee766a82975bc481bab79e287967c">&#9670;&#160;</a></span>HubPresenter()</h2>
+<a id="ac3ec7e010b8cf3051d298be78ad58569" name="ac3ec7e010b8cf3051d298be78ad58569"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3ec7e010b8cf3051d298be78ad58569">&#9670;&#160;</a></span>HubPresenter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,7 +144,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a>&#160;</td>
-          <td class="paramname"><em>profiles</em>&#160;</td>
+          <td class="paramname"><em>profiles</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html">Session::SessionHost</a>&#160;</td>
+          <td class="paramname"><em>sessions</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -160,8 +168,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4064f5b38399a9ac73e4d9e82ddd741f" name="a4064f5b38399a9ac73e4d9e82ddd741f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4064f5b38399a9ac73e4d9e82ddd741f">&#9670;&#160;</a></span>ShowAsync()</h2>
+<a id="a58e2c35b9a5063a701ff55cebcca1cb8" name="a58e2c35b9a5063a701ff55cebcca1cb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58e2c35b9a5063a701ff55cebcca1cb8">&#9670;&#160;</a></span>ShowAsync()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -170,7 +178,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">UniTask Guildmaster.Game.Flow.HubPresenter.ShowAsync </td>
+          <td class="memname">async UniTask Guildmaster.Game.Flow.HubPresenter.ShowAsync </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -183,9 +191,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Открыть двор выбранного дома. Возвращается, когда игрок нажал «Начать забег». </p>
+<p>Открыть двор выбранного дома. Возвращается, когда в забег согласились ВСЕ. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IHubPresenter.html#a486f0ac23e8c209847d09b86de183aed">Guildmaster.Game.Flow.IHubPresenter</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter_a58e2c35b9a5063a701ff55cebcca1cb8_cgraph.svg" width="482" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

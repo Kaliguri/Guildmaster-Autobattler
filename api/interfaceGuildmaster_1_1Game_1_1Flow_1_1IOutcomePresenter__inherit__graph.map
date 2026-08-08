@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Flow.IOutcomePresenter" name="Guildmaster.Game.Flow.IOutcomePresenter">
-<area shape="rect" id="Node000001" title="Показ экрана исхода забега (победа/поражение) и ожидание «В меню» (план C2)." alt="" coords="5,5,243,85"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html" title="Презентер исхода забега (план [[act&#45;map&#45;run&#45;loop]] §4 C2): публикует OpenOutcomeRequest и ждёт «В мен..." alt="" coords="7,133,241,233"/>
+<area shape="rect" id="Node000001" title="Показ экрана исхода забега (победа/поражение) и ожидание, куда группа пойдёт (план C2)." alt="" coords="5,5,243,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html" title="Презентер исхода забега: объявляет шаг узла и ждёт, куда группа пойдёт дальше." alt="" coords="7,133,241,233"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,99,127,133,121,133,121,99"/>
 </map>

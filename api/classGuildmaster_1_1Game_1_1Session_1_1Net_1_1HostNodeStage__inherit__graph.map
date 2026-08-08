@@ -1,5 +1,7 @@
 <map id="Guildmaster.Game.Session.Net.HostNodeStage" name="Guildmaster.Game.Session.Net.HostNodeStage">
-<area shape="rect" id="Node000001" title="Владельческая половина «что на экране»: объявляет гостям шаг узла и его содержимое." alt="" coords="5,119,200,259"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="57,5,148,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,84,105,118,100,118,100,84"/>
+<area shape="rect" id="Node000001" title="Владельческая половина «что на экране»: объявляет гостям шаг узла и его содержимое." alt="" coords="34,119,229,259"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html" title="Что сейчас на экране у группы — для тех, кто это ПОКАЗЫВАЕТ, независимо от роли." alt="" coords="5,5,127,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,82,103,117,98,119,83,84"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="151,5,242,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="180,84,164,119,159,117,175,82"/>
 </map>

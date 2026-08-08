@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.Net.DeploymentIntentCodec.TryRead" name="Guildmaster.Game.Session.Net.DeploymentIntentCodec.TryRead">
+<area shape="rect" id="Node000001" title="Разобрать намерение." alt="" coords="5,37,268,77"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntent.html#a5628e93344470474f2afac2c93bb24a5" title=" " alt="" coords="316,5,539,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="268,40,302,36,303,42,268,46"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntent.html#a7c5782c0a854d4bbde4a65d800734f3a" title=" " alt="" coords="316,69,539,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="268,69,303,73,302,78,268,74"/>
+</map>

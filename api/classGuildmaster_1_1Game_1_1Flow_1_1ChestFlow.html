@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Ch
 </div><!--header-->
 <div class="contents">
 
-<p>Узел забега «сундук» (план [[act-map-run-loop]] §4 B3): показывает фасад сундука, ждёт клик по крышке, затем катит награду 1-из-3 через IRewardPresenter (переиспользуем витрину).  
+<p>Узел забега «сундук» (план [[act-map-run-loop]] §4 B3): показывает фасад сундука, ждёт, пока группа сойдётся его открыть, затем катит награду 1-из-3 через IRewardPresenter (переиспользуем витрину).  
  <a href="classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.ChestFlow:</div>
@@ -113,17 +113,18 @@ Collaboration diagram for Guildmaster.Game.Flow.ChestFlow:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af35f96fe46c47a18449792da663d1abb" id="r_af35f96fe46c47a18449792da663d1abb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html#af35f96fe46c47a18449792da663d1abb">ChestFlow</a> (IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html">OpenChestRequest</a> &gt; openChestPub, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter.html">IRewardPresenter</a> reward, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenNodeFarewellRequest.html">OpenNodeFarewellRequest</a> &gt; farewellPub=null)</td></tr>
-<tr class="separator:af35f96fe46c47a18449792da663d1abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48e8785c51b0fee460e3a66233aefb3d" id="r_a48e8785c51b0fee460e3a66233aefb3d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html#a48e8785c51b0fee460e3a66233aefb3d">ChestFlow</a> (<a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter.html">IRewardPresenter</a> reward, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">Core.Net.ISharedDecision</a> decision, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html">Session.Net.HostNodeStage</a> stage=null)</td></tr>
+<tr class="separator:a48e8785c51b0fee460e3a66233aefb3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0640ac9308de95ed145c458f74ab89a6" id="r_a0640ac9308de95ed145c458f74ab89a6"><td class="memItemLeft" align="right" valign="top">async UniTask&lt; <a class="el" href="structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html">EventResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html#a0640ac9308de95ed145c458f74ab89a6">Run</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html">RunContext</a> ctx)</td></tr>
 <tr class="separator:a0640ac9308de95ed145c458f74ab89a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Узел забега «сундук» (план [[act-map-run-loop]] §4 B3): показывает фасад сундука, ждёт клик по крышке, затем катит награду 1-из-3 через IRewardPresenter (переиспользуем витрину). </p>
-<p>Возвращает EventResult.Completed. Единая кнопка «Продолжить» после — от петли акта (A4). </p>
+<div class="textblock"><p>Узел забега «сундук» (план [[act-map-run-loop]] §4 B3): показывает фасад сундука, ждёт, пока группа сойдётся его открыть, затем катит награду 1-из-3 через IRewardPresenter (переиспользуем витрину). </p>
+<p>Возвращает EventResult.Completed.</p>
+<p><b>Крышку открывают все вместе</b>, потому что за ней общая награда: разреши мы первому нажавшему — он решал бы за группу, когда ей смотреть витрину. Механизм тот же, что у самой награды, и цена та же: в соло участник один, и согласие срабатывает в тот же кадр. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af35f96fe46c47a18449792da663d1abb" name="af35f96fe46c47a18449792da663d1abb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af35f96fe46c47a18449792da663d1abb">&#9670;&#160;</a></span>ChestFlow()</h2>
+<a id="a48e8785c51b0fee460e3a66233aefb3d" name="a48e8785c51b0fee460e3a66233aefb3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48e8785c51b0fee460e3a66233aefb3d">&#9670;&#160;</a></span>ChestFlow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -134,20 +135,20 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">Guildmaster.Game.Flow.ChestFlow.ChestFlow </td>
           <td>(</td>
-          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html">OpenChestRequest</a> &gt;&#160;</td>
-          <td class="paramname"><em>openChestPub</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter.html">IRewardPresenter</a>&#160;</td>
           <td class="paramname"><em>reward</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenNodeFarewellRequest.html">OpenNodeFarewellRequest</a> &gt;&#160;</td>
-          <td class="paramname"><em>farewellPub</em> = <code>null</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">Core::Net::ISharedDecision</a>&#160;</td>
+          <td class="paramname"><em>decision</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html">Session::Net::HostNodeStage</a>&#160;</td>
+          <td class="paramname"><em>stage</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

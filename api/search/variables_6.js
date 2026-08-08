@@ -10,13 +10,13 @@ var searchData=
   ['glowcolor_7',['GlowColor',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#ae4a7c1f3f008ae292e4d64af3481eb2c',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
   ['glowflatness_8',['GlowFlatness',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#a5d92d4f63bf72ebf81743dad68e85faa',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
   ['glowparts_9',['GlowParts',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#ad789f6e0df13bb39e87f9509560a7a94',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
-  ['gold_10',['gold',['../structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html#a2e8ffd02592d699b3f0080d04eacb430',1,'Guildmaster.Data.Definitions.OpenTextEventRequest.Gold'],['../classGuildmaster_1_1Guild_1_1RunState.html#a3db2b15652b5026ffa1820256081924e',1,'Guildmaster.Guild.RunState.Gold']]],
+  ['gold_10',['gold',['../structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html#a2e8ffd02592d699b3f0080d04eacb430',1,'Guildmaster.Data.Definitions.OpenTextEventRequest.Gold'],['../classGuildmaster_1_1Guild_1_1RunState.html#a3db2b15652b5026ffa1820256081924e',1,'Guildmaster.Guild.RunState.Gold'],['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1TextEventStage.html#a698e8a56b398408c9ebe694d6791d480',1,'Guildmaster.Game.Session.Net.TextEventStage.Gold']]],
   ['gripprefix_11',['GripPrefix',['../classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html#a178a9bdfdaeae1618a0fd53b5c9bb74f',1,'Guildmaster::Presentation::Body::RigNaming']]],
   ['growshare_12',['GrowShare',['../structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html#a809c1e667207870d4cd4fae8b8148630',1,'Guildmaster::Presentation::Effects::HitFormParams']]],
   ['guarddownfunction_13',['GuardDownFunction',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a682de6a8678ef1d4dd098ea66c2bdbca',1,'Guildmaster::Data::Definitions::ClipMarkers']]],
   ['guardupfunction_14',['GuardUpFunction',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a17d5af5444e85da4a78820c35ca0a5a5',1,'Guildmaster::Data::Definitions::ClipMarkers']]],
   ['guestofguildname_15',['GuestOfGuildName',['../classGuildmaster_1_1Guild_1_1RunRecord.html#a26ea1c1a631c084c6ec70c47d6f2d64d',1,'Guildmaster::Guild::RunRecord']]],
-  ['guild_16',['Guild',['../classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844',1,'Guildmaster::Guild::RunState']]],
+  ['guild_16',['guild',['../classGuildmaster_1_1Core_1_1Net_1_1RunAfterOptions.html#afe42deeede5bd5694e040fcaa4aafc5d',1,'Guildmaster.Core.Net.RunAfterOptions.Guild'],['../classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844',1,'Guildmaster.Guild.RunState.Guild']]],
   ['guildid_17',['GuildId',['../structGuildmaster_1_1Guild_1_1GameStartRequest.html#ac726073026b381fd61ae4185d7630748',1,'Guildmaster::Guild::GameStartRequest']]],
   ['guildname_18',['GuildName',['../structGuildmaster_1_1Guild_1_1OpenHubRequest.html#a19b217a31808d9b393dc044cb120f6be',1,'Guildmaster::Guild::OpenHubRequest']]]
 ];

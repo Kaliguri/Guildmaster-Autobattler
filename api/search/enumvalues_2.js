@@ -7,7 +7,7 @@ var searchData=
   ['castseconds_4',['CastSeconds',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#afe80c9145386df4d9fac1fd87c017c8eac87b04506c3e9f99efa8f55d82c9f9ce',1,'Guildmaster::Data::Definitions']]],
   ['channel_5',['Channel',['../namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fa781dc97dc62331eec3ea9ec4373a3ca8',1,'Guildmaster::Combat']]],
   ['checked_6',['Checked',['../namespaceGuildmaster_1_1UI_1_1Components.html#adc0a5df621270a6818e95117a516f5f3a2627637e263ef687fa978b576580b8b1',1,'Guildmaster::UI::Components']]],
-  ['chest_7',['Chest',['../namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a080a546abcbea74459f27ba33313993d',1,'Guildmaster::Guild']]],
+  ['chest_7',['chest',['../namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629fa080a546abcbea74459f27ba33313993d',1,'Guildmaster.Game.Session.Net.Chest'],['../namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a080a546abcbea74459f27ba33313993d',1,'Guildmaster.Guild.Chest']]],
   ['choosenode_8',['ChooseNode',['../namespaceGuildmaster_1_1Guild_1_1Commands.html#a23389335a81be52ef0362854f4a8cba5a976b009c4e0b979a2f6f7b04fcd9f752',1,'Guildmaster::Guild::Commands']]],
   ['circle_9',['Circle',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca30954d90085f6eaaf5817917fc5fecb3',1,'Guildmaster::Data::Definitions']]],
   ['cleanse_10',['Cleanse',['../namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5a193e273631e6be745d97374c41d5129c',1,'Guildmaster::Guild']]],

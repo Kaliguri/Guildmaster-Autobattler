@@ -1,7 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,45,141,70"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Presentation_1_1Editor_1_1SkeletalBodyVisualEditor.html" title="Инспектор составного тела: список частей сверху вниз, как слои в графическом редакторе (верхний рисуе..." alt="" coords="189,5,416,45"/>
-<area shape="poly" id="edge429_Node000000_Node000001" title=" " alt="" coords="154,43,189,39,189,44,155,49"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Editor_1_1UnitHeldItemEditor.html" title="Редактор предмета в руке: объявленный вылет тянется МЫШЬЮ за остриё, а не набивается двумя числами." alt="" coords="207,69,398,109"/>
-<area shape="poly" id="edge430_Node000000_Node000002" title=" " alt="" coords="155,66,208,73,207,79,154,71"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,77,96,102"/>
+<area shape="rect" id="Node000001" href="$structGuildmaster_1_1Combat_1_1BattleOutcome.html" title="Итог боя: «победила команда N», а не «победил игрок»." alt="" coords="146,5,345,45"/>
+<area shape="poly" id="edge419_Node000000_Node000001" title=" " alt="" coords="100,70,143,55,180,43,181,48,145,60,102,75"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState.html" title="Где идёт игра прямо сейчас: вид мероприятия, его ограничения, открыт ли бой и в какой он фазе." alt="" coords="144,69,347,109"/>
+<area shape="poly" id="edge420_Node000000_Node000002" title=" " alt="" coords="109,87,144,87,144,92,109,92"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html" title="Шаг узла: какой экран перед группой, что на нём и пройден ли узел." alt="" coords="144,133,347,173"/>
+<area shape="poly" id="edge421_Node000000_Node000003" title=" " alt="" coords="102,104,145,119,181,131,180,136,143,124,100,109"/>
 </map>

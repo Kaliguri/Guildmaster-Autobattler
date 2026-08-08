@@ -1,7 +1,9 @@
 <map id="Guildmaster.Game.Session.Net.GuestNodeStage" name="Guildmaster.Game.Session.Net.GuestNodeStage">
-<area shape="rect" id="Node000001" title="Гостевая половина «что на экране»: показывает витрину, объявленную хозяином, и отправляет голос." alt="" coords="5,119,200,239"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="11,5,88,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,83,82,117,77,119,64,85"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="112,5,203,71"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="142,84,129,119,124,117,137,82"/>
+<area shape="rect" id="Node000001" title="Гостевая половина «что на экране»: принимает объявленный хозяином шаг узла и держит его у себя." alt="" coords="93,119,287,259"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html" title="Что сейчас на экране у группы — для тех, кто это ПОКАЗЫВАЕТ, независимо от роли." alt="" coords="5,5,127,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,79,134,117,130,120,99,83"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="151,5,229,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,84,193,118,187,118,187,84"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="253,5,343,71"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="269,83,243,120,238,117,265,80"/>
 </map>

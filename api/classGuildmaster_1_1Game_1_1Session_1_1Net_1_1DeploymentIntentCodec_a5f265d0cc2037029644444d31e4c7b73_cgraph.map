@@ -1,7 +1,0 @@
-<map id="Guildmaster.Game.Session.Net.DeploymentIntentCodec.Write" name="Guildmaster.Game.Session.Net.DeploymentIntentCodec.Write">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,252,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a8bc0e1ef3017080877528c6687b49da7" title=" " alt="" coords="300,5,528,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,41,286,37,287,42,253,46"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a95cc428a4b10b22230fd106a7e22635d" title=" " alt="" coords="300,69,528,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="253,69,287,72,286,78,252,74"/>
-</map>

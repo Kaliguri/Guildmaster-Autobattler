@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Te
 </div><!--header-->
 <div class="contents">
 
-<p>Узел забега «текстовый ивент» (план 11 §3.4, §5.1) в стиле Slay the Spire: показывает TextEventData (заголовок/тело/картинка/варианты), ждёт выбор игрока и применяет последствия выбранного варианта к RunState через EventEffectApplier.  
+<p>Узел забега «текстовый ивент» (план 11 §3.4, §5.1) в стиле Slay the Spire: показывает TextEventData (заголовок/тело/картинка/варианты), ждёт выбор группы и применяет последствия выбранного варианта к <a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html" title="Durable-состояние забега (план 11 §3.1, вики «7» §4): единственный источник истины забега,...">Guildmaster.Guild.RunState</a> через EventEffectApplier.  
  <a href="classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.TextEventFlow:</div>
@@ -113,17 +113,19 @@ Collaboration diagram for Guildmaster.Game.Flow.TextEventFlow:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8032ca673e3995ccf64dfe4cde49af7f" id="r_a8032ca673e3995ccf64dfe4cde49af7f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow.html#a8032ca673e3995ccf64dfe4cde49af7f">TextEventFlow</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData.html">TextEventData</a> ev, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html">OpenTextEventRequest</a> &gt; openPub, <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html">EventEffectApplier</a> applier)</td></tr>
-<tr class="separator:a8032ca673e3995ccf64dfe4cde49af7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28852e9050a228ac8fdb18bb45cc2d1e" id="r_a28852e9050a228ac8fdb18bb45cc2d1e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow.html#a28852e9050a228ac8fdb18bb45cc2d1e">TextEventFlow</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData.html">TextEventData</a> ev, <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html">EventEffectApplier</a> applier, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">Core.Net.ISharedDecision</a> decision, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html">Session.Net.HostNodeStage</a> stage=null)</td></tr>
+<tr class="separator:a28852e9050a228ac8fdb18bb45cc2d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b6b482bbac831804171504d717ff886" id="r_a8b6b482bbac831804171504d717ff886"><td class="memItemLeft" align="right" valign="top">async UniTask&lt; <a class="el" href="structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html">EventResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow.html#a8b6b482bbac831804171504d717ff886">Run</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html">RunContext</a> ctx)</td></tr>
 <tr class="separator:a8b6b482bbac831804171504d717ff886"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Узел забега «текстовый ивент» (план 11 §3.4, §5.1) в стиле Slay the Spire: показывает TextEventData (заголовок/тело/картинка/варианты), ждёт выбор игрока и применяет последствия выбранного варианта к RunState через EventEffectApplier. </p>
-<p>Полиморфен через IEventFlow — новый ивент = новый ассет, центральный switch не трогаем. </p>
+<div class="textblock"><p>Узел забега «текстовый ивент» (план 11 §3.4, §5.1) в стиле Slay the Spire: показывает TextEventData (заголовок/тело/картинка/варианты), ждёт выбор группы и применяет последствия выбранного варианта к <a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html" title="Durable-состояние забега (план 11 §3.1, вики «7» §4): единственный источник истины забега,...">Guildmaster.Guild.RunState</a> через EventEffectApplier. </p>
+<p>Полиморфен через IEventFlow — новый ивент = новый ассет, центральный switch не трогаем.</p>
+<p><b>Ответ выбирают все вместе</b>: последствия ложатся в общий забег, и первый нажавший решал бы за группу. Голосуют номером строки — см. Core.Net.DecisionKeys.EventChoice. </p>
+<p><b>Экран объявляется, а не публикуется отсюда</b>: показывает его общий для обеих ролей потребитель (<code>NodeStageScreens</code>). Пока показ жил здесь, гость экрана не видел вовсе — петля акта собирается только владельцу.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8032ca673e3995ccf64dfe4cde49af7f" name="a8032ca673e3995ccf64dfe4cde49af7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8032ca673e3995ccf64dfe4cde49af7f">&#9670;&#160;</a></span>TextEventFlow()</h2>
+<a id="a28852e9050a228ac8fdb18bb45cc2d1e" name="a28852e9050a228ac8fdb18bb45cc2d1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28852e9050a228ac8fdb18bb45cc2d1e">&#9670;&#160;</a></span>TextEventFlow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -140,14 +142,20 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html">OpenTextEventRequest</a> &gt;&#160;</td>
-          <td class="paramname"><em>openPub</em>, </td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html">EventEffectApplier</a>&#160;</td>
+          <td class="paramname"><em>applier</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html">EventEffectApplier</a>&#160;</td>
-          <td class="paramname"><em>applier</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">Core::Net::ISharedDecision</a>&#160;</td>
+          <td class="paramname"><em>decision</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html">Session::Net::HostNodeStage</a>&#160;</td>
+          <td class="paramname"><em>stage</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

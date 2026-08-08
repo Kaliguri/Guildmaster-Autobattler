@@ -69,6 +69,11 @@ var namespaceGuildmaster_1_1Guild =
       [ "Unknown", "namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a88183b946cc5f0e8c96b2e66e1c74a7e", null ],
       [ "Camp", "namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625aa32c011e43f79a0b7b9337bc183c2dd1", null ]
     ] ],
+    [ "RunOutcomeChoice", "namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58", [
+      [ "ToMenu", "namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58a5d0da9f685613e39848046c42dc91d31", null ],
+      [ "ToGuild", "namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58afbc6d6fbc9a17e0f605a02c6d93b97d6", null ],
+      [ "Restart", "namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58a51cfbcff36da74a9fc47f3a5140f99f2", null ]
+    ] ],
     [ "ShopBuyOutcome", "namespaceGuildmaster_1_1Guild.html#afcea6b7c65659bfd1d6925299e6e0f09", [
       [ "Bought", "namespaceGuildmaster_1_1Guild.html#afcea6b7c65659bfd1d6925299e6e0f09afe5a7fc9d9c907efdf6a384a71cd53fc", null ],
       [ "NotEnoughGold", "namespaceGuildmaster_1_1Guild.html#afcea6b7c65659bfd1d6925299e6e0f09a386db817f2654b1891d02619c5337fac", null ],

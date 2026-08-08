@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Показ экрана исхода забега (победа/поражение) и ожидание «В меню» (план C2).">
+<g id="a_Node000001"><a xlink:title="Показ экрана исхода забега (победа/поражение) и ожидание, куда группа пойдёт (план C2).">
 <polygon fill="#999999" stroke="transparent" points="178,-171 0,-171 0,-111 178,-111 178,-171"/>
 <text text-anchor="start" x="5" y="-159" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.IOutcome</text>
 <text text-anchor="start" x="65.5" y="-148" font-family="Helvetica,sans-Serif" font-size="10.00">Presenter</text>
@@ -27,7 +27,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html" target="_top" xlink:title="Презентер исхода забега (план [[act&#45;map&#45;run&#45;loop]] §4 C2): публикует OpenOutcomeRequest и ждёт «В мен...">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html" target="_top" xlink:title="Презентер исхода забега: объявляет шаг узла и ждёт, куда группа пойдёт дальше.">
 <polygon fill="white" stroke="transparent" points="176.5,-75 1.5,-75 1.5,0 176.5,0 176.5,-75"/>
 <text text-anchor="start" x="7" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.Outcome</text>
 <text text-anchor="start" x="66" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">Presenter</text>

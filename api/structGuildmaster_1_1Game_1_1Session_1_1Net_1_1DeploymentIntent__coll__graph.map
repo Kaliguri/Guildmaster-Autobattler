@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Session.Net.DeploymentIntent" name="Guildmaster.Game.Session.Net.DeploymentIntent">
+<area shape="rect" id="Node000001" title="Разобранное намерение расстановки: либо «поставь бойца сюда», либо «надень на него реликвию»." alt="" coords="8,188,203,328"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html" title="«Поставь этого бойца сюда» — то, что игрок сделал руками, ещё не будучи применённым." alt="" coords="5,5,205,125"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,126,108,172,103,172,103,126"/>
+</map>

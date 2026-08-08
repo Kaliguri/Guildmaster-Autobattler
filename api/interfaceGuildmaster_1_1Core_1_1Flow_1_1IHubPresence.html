@@ -114,9 +114,9 @@ Collaboration diagram for Guildmaster.Core.Flow.IHubPresence:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9ee940cfaba7926d50ed0bcfbb0317c3" id="r_a9ee940cfaba7926d50ed0bcfbb0317c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence.html#a9ee940cfaba7926d50ed0bcfbb0317c3">SetVisible</a> (bool visible)</td></tr>
-<tr class="memdesc:a9ee940cfaba7926d50ed0bcfbb0317c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть или закрыть двор.  <br /></td></tr>
-<tr class="separator:a9ee940cfaba7926d50ed0bcfbb0317c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade0171d417c1ea66853c0016390fed5b" id="r_ade0171d417c1ea66853c0016390fed5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence.html#ade0171d417c1ea66853c0016390fed5b">SetVisible</a> (bool visible, System.Action onStartRun=null)</td></tr>
+<tr class="memdesc:ade0171d417c1ea66853c0016390fed5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть или закрыть двор.  <br /></td></tr>
+<tr class="separator:ade0171d417c1ea66853c0016390fed5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -130,8 +130,8 @@ Properties</h2></td></tr>
 <p><b>Живёт в Core, а не рядом с картой,</b> потому что реализует его показ интерфейса (<code>MenuRouter</code>, сборка UI), а спрашивает сеанс (сборка Game). Ссылка идёт Game → UI, и общий дом у них один.</p>
 <p>Двух членов достаточно: спросить и объявить. Что игрок во дворе делает — наём, ростер, лавка — принадлежит самому двору, и сети там делать нечего.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9ee940cfaba7926d50ed0bcfbb0317c3" name="a9ee940cfaba7926d50ed0bcfbb0317c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ee940cfaba7926d50ed0bcfbb0317c3">&#9670;&#160;</a></span>SetVisible()</h2>
+<a id="ade0171d417c1ea66853c0016390fed5b" name="ade0171d417c1ea66853c0016390fed5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade0171d417c1ea66853c0016390fed5b">&#9670;&#160;</a></span>SetVisible()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -140,14 +140,30 @@ Properties</h2></td></tr>
           <td class="memname">void Guildmaster.Core.Flow.IHubPresence.SetVisible </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>visible</em></td><td>)</td>
+          <td class="paramname"><em>visible</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">System.Action&#160;</td>
+          <td class="paramname"><em>onStartRun</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Открыть или закрыть двор. </p>
-<p>Повтор того же состояния — no-op: гость применяет объявление целиком и каждый раз, а не только на изменение. </p>
+<p>Повтор того же состояния — no-op: гость применяет объявление целиком и каждый раз, а не только на изменение.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">onStartRun</td><td>Чем голосовать за выход в забег. <b>Кнопка есть у обеих ролей</b> (вердикт Макса 08.08.2026): раньше её не давали гостю, потому что клик закрывал двор ему одному — теперь он отправляет голос, и уходят все вместе. <code>null</code> — голосовать нечем (двор закрывают). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

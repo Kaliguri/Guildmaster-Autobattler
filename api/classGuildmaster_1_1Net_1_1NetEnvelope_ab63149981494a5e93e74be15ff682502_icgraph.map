@@ -1,25 +1,23 @@
 <map id="Guildmaster.Net.NetEnvelope.Wrap" name="Guildmaster.Net.NetEnvelope.Wrap">
-<area shape="rect" id="Node000001" title="Уложить нагрузку в конверт." alt="" coords="341,333,595,358"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html#af8241facbde87ae55829b9eb008b3dc8" title=" " alt="" coords="16,5,283,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="456,320,436,265,402,194,380,157,354,121,325,88,292,60,271,48,274,43,295,55,329,84,359,117,385,154,407,191,441,263,461,319"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a4f15a56f7acd2551e84529df7c186cb3" title="Отписаться от транспорта. Зовётся вместе с концом сессии." alt="" coords="51,69,247,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="452,321,428,277,393,224,347,169,320,145,292,124,246,104,249,99,295,119,324,140,351,165,397,220,433,275,457,319"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#ad5ec479764fb0a27e5ca8b5113901651" title="Отдать очередную порцию догрузки — бой с начала тому, кто подключился посреди него." alt="" coords="51,133,247,173"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="446,324,383,255,340,218,292,188,247,170,248,165,295,183,343,214,387,251,450,320"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake.html#a4331c4c1fa396ecb36e4d330fa9352ea" title="Попросить хоста повторить чанки, которых не хватает." alt="" coords="51,197,247,237"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="435,327,371,289,292,252,247,238,248,233,294,247,373,284,438,323"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,261,293,301"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="390,333,249,304,250,299,391,327"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake.html#ac895f2e266f787c4db6ff794f8220646" title="Попросить бой С НАЧАЛА." alt="" coords="50,325,249,365"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="328,348,249,348,249,343,328,343"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html#abf3b65fbc038301f9a271c23fa608ac1" title="Подписаться и спросить хоста, где идёт игра." alt="" coords="36,389,263,429"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="391,363,250,392,249,387,390,358"/>
-<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#aed518c2339e13c5ee06cb35f2cb286c9" title="Подписаться и спросить, что сейчас на экране." alt="" coords="48,453,251,493"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="438,368,373,406,294,444,252,457,250,452,292,439,371,402,435,363"/>
-<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae59f3e2c122eef83ec3563ba28522957" title="Попросить хоста прислать забег." alt="" coords="48,517,251,557"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="450,371,387,439,343,476,295,508,252,524,250,519,292,503,340,472,383,435,446,367"/>
-<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Net_1_1Tape_1_1BattleRosterIntake.html#a7e08e78a643fd3f4803bc617b4b69899" title="Подписаться и спросить хоста, кто уже на арене." alt="" coords="47,581,252,621"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="457,372,433,416,397,470,351,525,324,550,295,572,253,590,251,585,292,567,320,546,347,522,393,467,428,413,452,370"/>
-<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence.html#a74860d3eced4220a551ca57cd6c19fe7" title=" " alt="" coords="48,645,251,685"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="461,372,441,428,407,499,385,537,359,573,329,607,295,636,274,648,252,656,250,651,272,643,292,631,325,603,354,570,380,534,402,497,436,426,456,370"/>
+<area shape="rect" id="Node000001" title="Уложить нагрузку в конверт." alt="" coords="341,301,595,326"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a4f15a56f7acd2551e84529df7c186cb3" title="Отписаться от транспорта. Зовётся вместе с концом сессии." alt="" coords="51,5,247,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="454,289,432,239,398,176,351,113,323,84,292,60,270,48,247,39,249,34,273,43,295,55,326,80,355,109,402,174,437,237,459,286"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#ad5ec479764fb0a27e5ca8b5113901651" title="Отдать очередную порцию догрузки — бой с начала тому, кто подключился посреди него." alt="" coords="51,69,247,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="450,291,424,253,388,208,344,162,292,124,246,105,248,100,295,119,347,158,392,204,429,250,454,288"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake.html#a4331c4c1fa396ecb36e4d330fa9352ea" title="Попросить хоста повторить чанки, которых не хватает." alt="" coords="51,133,247,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="442,293,377,240,336,212,292,188,247,172,248,167,294,183,339,207,381,236,445,289"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,197,293,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="422,298,293,252,248,240,249,235,294,247,424,293"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Net_1_1Tape_1_1TapeIntake.html#ac895f2e266f787c4db6ff794f8220646" title="Попросить бой С НАЧАЛА." alt="" coords="50,261,249,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="328,302,249,294,249,289,328,297"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html#abf3b65fbc038301f9a271c23fa608ac1" title="Подписаться и спросить хоста, где идёт игра." alt="" coords="36,325,263,365"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="328,330,263,337,263,331,328,325"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#aed518c2339e13c5ee06cb35f2cb286c9" title="Подписаться и спросить, что сейчас на экране." alt="" coords="48,389,251,429"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="424,334,294,380,249,392,248,387,293,375,422,329"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae59f3e2c122eef83ec3563ba28522957" title="Попросить хоста прислать забег." alt="" coords="48,453,251,493"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="445,337,381,391,339,420,294,444,252,459,250,454,292,439,336,415,377,387,442,333"/>
+<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Net_1_1Tape_1_1BattleRosterIntake.html#a7e08e78a643fd3f4803bc617b4b69899" title="Подписаться и спросить хоста, кто уже на арене." alt="" coords="47,517,252,557"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="454,339,429,377,392,423,347,469,295,508,253,525,251,520,292,503,344,465,388,419,424,374,450,336"/>
+<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence.html#a74860d3eced4220a551ca57cd6c19fe7" title=" " alt="" coords="48,581,251,621"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="459,340,437,390,402,453,355,517,326,547,295,572,252,591,250,587,292,567,323,543,351,514,398,450,432,388,454,338"/>
 </map>

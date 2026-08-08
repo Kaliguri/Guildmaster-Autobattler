@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Session_1_
 </div><!--header-->
 <div class="contents">
 
-<p>Намерение гостя, отправленное владельцу арены: «поставь этого бойца сюда».  
+<p>Намерения гостя, отправленные владельцу арены: «поставь этого бойца сюда» и «надень на него эту реликвию».  
  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Session.Net.DeploymentIntentSender:</div>
@@ -113,20 +113,21 @@ Collaboration diagram for Guildmaster.Game.Session.Net.DeploymentIntentSender:</
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac73e68ad5972fdb1eaed5f66e5b64495" id="r_ac73e68ad5972fdb1eaed5f66e5b64495"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html#ac73e68ad5972fdb1eaed5f66e5b64495">DeploymentIntentSender</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html">UnitMoveIntent</a> &gt; moveSub)</td></tr>
-<tr class="separator:ac73e68ad5972fdb1eaed5f66e5b64495"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30c6e42fbd93104065ee7a01da040424" id="r_a30c6e42fbd93104065ee7a01da040424"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html#a30c6e42fbd93104065ee7a01da040424">DeploymentIntentSender</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html">UnitMoveIntent</a> &gt; moveSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html">Guildmaster.Data.Definitions.EquipRelicRequest</a> &gt; equipSub)</td></tr>
+<tr class="separator:a30c6e42fbd93104065ee7a01da040424"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae006cdc49b714ba117f29c48cd96a067" id="r_ae006cdc49b714ba117f29c48cd96a067"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html#ae006cdc49b714ba117f29c48cd96a067">Start</a> ()</td></tr>
 <tr class="separator:ae006cdc49b714ba117f29c48cd96a067"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8241facbde87ae55829b9eb008b3dc8" id="r_af8241facbde87ae55829b9eb008b3dc8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html#af8241facbde87ae55829b9eb008b3dc8">Dispose</a> ()</td></tr>
 <tr class="separator:af8241facbde87ae55829b9eb008b3dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Намерение гостя, отправленное владельцу арены: «поставь этого бойца сюда». </p>
+<div class="textblock"><p>Намерения гостя, отправленные владельцу арены: «поставь этого бойца сюда» и «надень на него эту реликвию». </p>
 <p><b>Мост, а не логика.</b> Руки игрока не знают, кто их владелец, и публикуют намерение одинаково в соло, у хозяина и у гостя; этот класс существует ровно затем, чтобы у гостя оно доехало до того, кто вправе его исполнить. Собирается только у гостя — у хозяина отправлять некому и незачем, он исполняет своё намерение сам. </p>
 <p><b>Надёжной доставки достаточно, номеров нет.</b> Намерение не идемпотентно по смыслу: повтор «поставь сюда» даёт тот же результат, а его потеря видна игроку сразу — боец не переехал, и рука тянется снова. Городить нумерацию, как у команд забега, значило бы платить за защиту от того, что и так безвредно.</p>
+<p><b>Реликвия поехала тем же каналом 08.08.2026.</b> До этого возилось только перемещение, а <code>EquipRelicRequest</code> у гостя публиковался в шину, где подписчика нет: исполнитель (<code>DeploymentController</code>) собирается только владельцу. Локальная публикация без адресата не бросает и не логирует, поэтому жест проходил, звук успеха играл, и не происходило ничего — ни у кого (наход. Макса в прогоне вдвоём).</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac73e68ad5972fdb1eaed5f66e5b64495" name="ac73e68ad5972fdb1eaed5f66e5b64495"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac73e68ad5972fdb1eaed5f66e5b64495">&#9670;&#160;</a></span>DeploymentIntentSender()</h2>
+<a id="a30c6e42fbd93104065ee7a01da040424" name="a30c6e42fbd93104065ee7a01da040424"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30c6e42fbd93104065ee7a01da040424">&#9670;&#160;</a></span>DeploymentIntentSender()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +145,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html">UnitMoveIntent</a> &gt;&#160;</td>
-          <td class="paramname"><em>moveSub</em>&#160;</td>
+          <td class="paramname"><em>moveSub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html">Guildmaster::Data::Definitions::EquipRelicRequest</a> &gt;&#160;</td>
+          <td class="paramname"><em>equipSub</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -167,6 +174,9 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.Game.Session.Net.DeploymentIntentSender.Dispose </td>
@@ -175,12 +185,12 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender_af8241facbde87ae55829b9eb008b3dc8_cgraph.svg" width="100%" height="400"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
 
 </div>
 </div>
@@ -189,6 +199,9 @@ Here is the call graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.Game.Session.Net.DeploymentIntentSender.Start </td>
@@ -197,6 +210,11 @@ Here is the call graph for this function:</div>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

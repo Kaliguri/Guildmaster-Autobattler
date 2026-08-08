@@ -46,7 +46,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 652;
+var viewWidth = 679;
 var viewHeight = 86;
 var sectionId = 'dynsection-4';
 </script>
@@ -58,9 +58,9 @@ var sectionId = 'dynsection-4';
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title=" ">
-<polygon fill="#999999" stroke="#666666" points="644,-54 473,-54 473,-24 644,-24 644,-54"/>
-<text text-anchor="start" x="481" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Net.NetByteWriter.</text>
-<text text-anchor="middle" x="558.5" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">WriteFloat</text>
+<polygon fill="#999999" stroke="#666666" points="671,-54 500,-54 500,-24 671,-24 671,-54"/>
+<text text-anchor="start" x="508" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Net.NetByteWriter.</text>
+<text text-anchor="middle" x="585.5" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">WriteFloat</text>
 </a>
 </g>
 </g>
@@ -68,9 +68,9 @@ var sectionId = 'dynsection-4';
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" target="_top" xlink:title="Уложить команду в буфер. Возвращает готовый к отправке отрезок.">
-<polygon fill="white" stroke="#666666" points="427,-78 262,-78 262,-48 427,-48 427,-78"/>
-<text text-anchor="start" x="270" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="344.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Net.RunCommandCodec.Write</text>
+<polygon fill="white" stroke="#666666" points="440.5,-78 275.5,-78 275.5,-48 440.5,-48 440.5,-78"/>
+<text text-anchor="start" x="283.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
+<text text-anchor="middle" x="358" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Net.RunCommandCodec.Write</text>
 </a>
 </g>
 </g>
@@ -78,18 +78,18 @@ var sectionId = 'dynsection-4';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M462.53,-49.75C450.78,-51.08 438.84,-52.43 427.31,-53.74"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="463.26,-53.19 472.8,-48.59 462.47,-46.24 463.26,-53.19"/>
+<path fill="none" stroke="#63b8ff" d="M489.81,-49.08C473.49,-50.81 456.66,-52.61 440.72,-54.3"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="490.32,-52.54 499.89,-48 489.58,-45.58 490.32,-52.54"/>
 </a>
 </g>
 </g>
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#a5f265d0cc2037029644444d31e4c7b73" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="437,-30 252,-30 252,0 437,0 437,-30"/>
+<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#aaabc62fc0321fdf1bc1a88709ab6be62" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="464,-30 252,-30 252,0 464,0 464,-30"/>
 <text text-anchor="start" x="260" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="344.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Net.DeploymentIntentCodec.Write</text>
+<text text-anchor="middle" x="358" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Net.DeploymentIntentCodec.WriteMove</text>
 </a>
 </g>
 </g>
@@ -97,8 +97,8 @@ var sectionId = 'dynsection-4';
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M462.8,-28.28C454.23,-27.31 445.56,-26.33 437.02,-25.36"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="462.47,-31.76 472.8,-29.41 463.26,-24.81 462.47,-31.76"/>
+<path fill="none" stroke="#63b8ff" d="M489.72,-28.91C481.31,-28.02 472.77,-27.11 464.28,-26.21"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="489.58,-32.42 499.89,-30 490.32,-25.46 489.58,-32.42"/>
 </a>
 </g>
 </g>
@@ -116,27 +116,8 @@ var sectionId = 'dynsection-4';
 <g id="edge2_Node000002_Node000003" class="edge">
 <title>Node2&#45;&gt;Node3</title>
 <g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M251.73,-63C240.13,-63 228.19,-63 216.38,-63"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="251.81,-66.5 261.81,-63 251.81,-59.5 251.81,-66.5"/>
-</a>
-</g>
-</g>
-<!-- Node5 -->
-<g id="Node000005" class="node">
-<title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html#af8241facbde87ae55829b9eb008b3dc8" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="208,-30 8,-30 8,0 208,0 208,-30"/>
-<text text-anchor="start" x="16" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="108" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Net.DeploymentIntentSender.Dispose</text>
-</a>
-</g>
-</g>
-<!-- Node4&#45;&gt;Node5 -->
-<g id="edge4_Node000004_Node000005" class="edge">
-<title>Node4&#45;&gt;Node5</title>
-<g id="a_edge4_Node000004_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M241.73,-15C230.66,-15 219.4,-15 208.36,-15"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="241.83,-18.5 251.83,-15 241.83,-11.5 241.83,-18.5"/>
+<path fill="none" stroke="#63b8ff" d="M265.12,-63C249.22,-63 232.55,-63 216.28,-63"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="265.45,-66.5 275.45,-63 265.45,-59.5 265.45,-66.5"/>
 </a>
 </g>
 </g>

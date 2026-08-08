@@ -6,8 +6,9 @@ var searchData=
   ['ongoing_3',['Ongoing',['../namespaceGuildmaster_1_1Combat.html#ab2f687afcbfbed06c2eae345b78bfa0ca7ee7defde6dc3a1d4a4a891b3894e790',1,'Guildmaster::Combat']]],
   ['onhitabovepctmaxhp_4',['OnHitAbovePctMaxHp',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612adc8d14d412fc6562b2323f42bab05a43',1,'Guildmaster::Data::Definitions']]],
   ['other_5',['Other',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a177af21f5d79527b64dbb4c7f20492f2a6311ae17c1ee52b36e68aaf4ad066387',1,'Guildmaster::Data::Definitions']]],
-  ['overlays_6',['Overlays',['../namespaceGuildmaster_1_1UI_1_1Components.html#a40024d8e3e6267abfe69e1a3863108a7a2b607f7f96df895be4c806b4874580c3',1,'Guildmaster::UI::Components']]],
-  ['override_7',['Override',['../namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea6da8e67225fdcfa78c3ea5dc3154b849',1,'Guildmaster::Data::Stats']]],
-  ['overview_8',['Overview',['../namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a3b878279a04dc47d60932cb294d96259',1,'Guildmaster::Presentation']]],
-  ['owner_9',['Owner',['../namespaceGuildmaster_1_1Game_1_1Session.html#aeb0df3b3f72d808a084000a0fa36d14aab6f4a2ec6356bbd56d49f2096bf9d3d3',1,'Guildmaster::Game::Session']]]
+  ['outcome_6',['Outcome',['../namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629facf73bd583f5ed553b755364fdbb932ce',1,'Guildmaster::Game::Session::Net']]],
+  ['overlays_7',['Overlays',['../namespaceGuildmaster_1_1UI_1_1Components.html#a40024d8e3e6267abfe69e1a3863108a7a2b607f7f96df895be4c806b4874580c3',1,'Guildmaster::UI::Components']]],
+  ['override_8',['Override',['../namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea6da8e67225fdcfa78c3ea5dc3154b849',1,'Guildmaster::Data::Stats']]],
+  ['overview_9',['Overview',['../namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a3b878279a04dc47d60932cb294d96259',1,'Guildmaster::Presentation']]],
+  ['owner_10',['Owner',['../namespaceGuildmaster_1_1Game_1_1Session.html#aeb0df3b3f72d808a084000a0fa36d14aab6f4a2ec6356bbd56d49f2096bf9d3d3',1,'Guildmaster::Game::Session']]]
 ];

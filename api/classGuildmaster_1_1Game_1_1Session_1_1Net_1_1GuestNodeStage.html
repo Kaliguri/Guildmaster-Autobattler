@@ -94,28 +94,29 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Session_1_
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#events">Events</a> &#124;
 <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Game.Session.Net.GuestNodeStage Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Гостевая половина «что на экране»: показывает витрину, объявленную хозяином, и отправляет голос.  
+<p>Гостевая половина «что на экране»: принимает объявленный хозяином шаг узла и держит его у себя.  
  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Session.Net.GuestNodeStage:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage__inherit__graph.svg" width="208" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage__inherit__graph.svg" width="350" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Session.Net.GuestNodeStage:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage__coll__graph.svg" width="208" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage__coll__graph.svg" width="350" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4d2393d226e255301846ce60397ac883" id="r_a4d2393d226e255301846ce60397ac883"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#a4d2393d226e255301846ce60397ac883">GuestNodeStage</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html">OpenRewardRequest</a> &gt; openRewardPub, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">Core.Net.ISharedDecision</a> decision, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html">GuestRunState</a> runs)</td></tr>
-<tr class="separator:a4d2393d226e255301846ce60397ac883"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb85a2617f01e03d7a126f7f860b250f" id="r_adb85a2617f01e03d7a126f7f860b250f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#adb85a2617f01e03d7a126f7f860b250f">GuestNodeStage</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport)</td></tr>
+<tr class="separator:adb85a2617f01e03d7a126f7f860b250f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed518c2339e13c5ee06cb35f2cb286c9" id="r_aed518c2339e13c5ee06cb35f2cb286c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#aed518c2339e13c5ee06cb35f2cb286c9">Start</a> ()</td></tr>
 <tr class="memdesc:aed518c2339e13c5ee06cb35f2cb286c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подписаться и спросить, что сейчас на экране.  <br /></td></tr>
 <tr class="separator:aed518c2339e13c5ee06cb35f2cb286c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,63 +128,39 @@ Properties</h2></td></tr>
 <tr class="memitem:ae7bf5b3525a749c0a03006e7b2c51a11" id="r_ae7bf5b3525a749c0a03006e7b2c51a11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#ae7bf5b3525a749c0a03006e7b2c51a11">Applied</a><code> [get]</code></td></tr>
 <tr class="memdesc:ae7bf5b3525a749c0a03006e7b2c51a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что применено последним — видно в dev-панели.  <br /></td></tr>
 <tr class="separator:ae7bf5b3525a749c0a03006e7b2c51a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac50f49a2a7335895f83b8c4bf4cce6e" id="r_aac50f49a2a7335895f83b8c4bf4cce6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#aac50f49a2a7335895f83b8c4bf4cce6e">Current</a><code> [get]</code></td></tr>
+<tr class="memdesc:aac50f49a2a7335895f83b8c4bf4cce6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что объявлено сейчас.  <br /></td></tr>
+<tr class="separator:aac50f49a2a7335895f83b8c4bf4cce6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html">Guildmaster.Game.Session.Net.INodeStageView</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
+Events</h2></td></tr>
+<tr class="memitem:a4929d9980665cd78876940ba6d225444" id="r_a4929d9980665cd78876940ba6d225444"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#a4929d9980665cd78876940ba6d225444">Changed</a></td></tr>
+<tr class="separator:a4929d9980665cd78876940ba6d225444"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header events_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView"><td colspan="2" onclick="javascript:toggleInherit('events_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView')"><img src="closed.png" alt="-"/>&#160;Events inherited from <a class="el" href="interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html">Guildmaster.Game.Session.Net.INodeStageView</a></td></tr>
+<tr class="memitem:a9fb03ccdbc75a1b76a15acf42dce55ab inherit events_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView" id="r_a9fb03ccdbc75a1b76a15acf42dce55ab"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html#a9fb03ccdbc75a1b76a15acf42dce55ab">Changed</a></td></tr>
+<tr class="memdesc:a9fb03ccdbc75a1b76a15acf42dce55ab inherit events_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаг сменился. Повтор того же шага события не поднимает.  <br /></td></tr>
+<tr class="separator:a9fb03ccdbc75a1b76a15acf42dce55ab inherit events_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Гостевая половина «что на экране»: показывает витрину, объявленную хозяином, и отправляет голос. </p>
-<p><b>Витрину гость не катит.</b> Ему приезжают id того, что уже выпало, и он собирает из них ТУ ЖЕ витрину через реестр контента — совпадение реестров проверено рукопожатием. Свой раскат дал бы другие три реликвии, и группа выбирала бы из разного. </p>
-<p><b>Экран закрывается признаком срабатывания</b> от общего решения, как и у хозяина, а не по объявлению <code>Idle</code>: два пути к одному закрытию разошлись бы, и у кого-то экран остался бы висеть после того, как награду уже взяли.</p>
-<p><b>Применить выбор гость не может</b> и не должен: реликвия ложится в чужой забег, которым владеет хозяин. Отсюда и роль этого класса — показать и передать голос.</p>
+<div class="textblock"><p>Гостевая половина «что на экране»: принимает объявленный хозяином шаг узла и держит его у себя. </p>
+<p><b>Показывать — не его дело.</b> Экраны узла открывает общий для обеих ролей потребитель (NodeStageScreens), а этот класс — только гостевой конец провода: принять, разобрать и поднять событие. Пока показ жил здесь, у витрины награды было ДВА пути — этот и хозяйская петля, — и во втором признак «запас полон» был зашит в <code>false</code> (HARD «равные игроки»). </p>
+<p><b>Витрину гость не катит.</b> Ему приезжают id того, что уже выпало: свой раскат дал бы другие три реликвии, и группа выбирала бы из разного.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a4d2393d226e255301846ce60397ac883" name="a4d2393d226e255301846ce60397ac883"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d2393d226e255301846ce60397ac883">&#9670;&#160;</a></span>GuestNodeStage()</h2>
+<a id="adb85a2617f01e03d7a126f7f860b250f" name="adb85a2617f01e03d7a126f7f860b250f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb85a2617f01e03d7a126f7f860b250f">&#9670;&#160;</a></span>GuestNodeStage()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Guildmaster.Game.Session.Net.GuestNodeStage.GuestNodeStage </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a>&#160;</td>
-          <td class="paramname"><em>transport</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>transport</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a>&#160;</td>
-          <td class="paramname"><em>content</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html">OpenRewardRequest</a> &gt;&#160;</td>
-          <td class="paramname"><em>openRewardPub</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">Core::Net::ISharedDecision</a>&#160;</td>
-          <td class="paramname"><em>decision</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html">GuestRunState</a>&#160;</td>
-          <td class="paramname"><em>runs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -266,6 +243,49 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Что применено последним — видно в dev-панели. </p>
+
+</div>
+</div>
+<a id="aac50f49a2a7335895f83b8c4bf4cce6e" name="aac50f49a2a7335895f83b8c4bf4cce6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac50f49a2a7335895f83b8c4bf4cce6e">&#9670;&#160;</a></span>Current</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a> Guildmaster.Game.Session.Net.GuestNodeStage.Current</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Что объявлено сейчас. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html#ab3fedb453dda3dc84a9719acbaa1f26d">Guildmaster.Game.Session.Net.INodeStageView</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Event Documentation</h2>
+<a id="a4929d9980665cd78876940ba6d225444" name="a4929d9980665cd78876940ba6d225444"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4929d9980665cd78876940ba6d225444">&#9670;&#160;</a></span>Changed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;<a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a>&gt; Guildmaster.Game.Session.Net.GuestNodeStage.Changed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p></p>
 
 </div>
 </div>

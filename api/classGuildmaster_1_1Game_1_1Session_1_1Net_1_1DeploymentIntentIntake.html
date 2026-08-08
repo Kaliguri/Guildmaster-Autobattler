@@ -113,8 +113,8 @@ Collaboration diagram for Guildmaster.Game.Session.Net.DeploymentIntentIntake:</
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a45755e846e1f69b1d872006efa618f24" id="r_a45755e846e1f69b1d872006efa618f24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html#a45755e846e1f69b1d872006efa618f24">DeploymentIntentIntake</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html">UnitMoveIntent</a> &gt; movePub)</td></tr>
-<tr class="separator:a45755e846e1f69b1d872006efa618f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c9138e52f95166201d357517cc6506a" id="r_a9c9138e52f95166201d357517cc6506a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html#a9c9138e52f95166201d357517cc6506a">DeploymentIntentIntake</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html">UnitMoveIntent</a> &gt; movePub, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html">Guildmaster.Data.Definitions.EquipRelicRequest</a> &gt; equipPub, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">Guildmaster.Data.Definitions.IContentDatabase</a> content)</td></tr>
+<tr class="separator:a9c9138e52f95166201d357517cc6506a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc4b2ff6332bff89dbbe162701cd055a" id="r_adc4b2ff6332bff89dbbe162701cd055a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html#adc4b2ff6332bff89dbbe162701cd055a">Start</a> ()</td></tr>
 <tr class="separator:adc4b2ff6332bff89dbbe162701cd055a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92f637d136827316efbce06d7055f9bb" id="r_a92f637d136827316efbce06d7055f9bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html#a92f637d136827316efbce06d7055f9bb">Dispose</a> ()</td></tr>
@@ -125,8 +125,8 @@ Public Member Functions</h2></td></tr>
 <p>Дальше их путь ничем не отличается от пути собственного клика — тем же намерением, к тому же исполнителю, с той же перепроверкой права и зоны. Разных дорог к одному результату быть не должно: вторая разъехалась бы с первой ровно там, где это труднее всего заметить. </p>
 <p><b>Автора берём ИЗ ПАКЕТА, а не из номера пира</b>, потому что право проверяется по участнику сеанса, а не по соединению. Подмена тут возможна и сегодня ничем не карается — это осознанно: кооп у нас доверительный, играют по приглашению из друзей Steam.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a45755e846e1f69b1d872006efa618f24" name="a45755e846e1f69b1d872006efa618f24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45755e846e1f69b1d872006efa618f24">&#9670;&#160;</a></span>DeploymentIntentIntake()</h2>
+<a id="a9c9138e52f95166201d357517cc6506a" name="a9c9138e52f95166201d357517cc6506a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c9138e52f95166201d357517cc6506a">&#9670;&#160;</a></span>DeploymentIntentIntake()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +144,19 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html">UnitMoveIntent</a> &gt;&#160;</td>
-          <td class="paramname"><em>movePub</em>&#160;</td>
+          <td class="paramname"><em>movePub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html">Guildmaster::Data::Definitions::EquipRelicRequest</a> &gt;&#160;</td>
+          <td class="paramname"><em>equipPub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">Guildmaster::Data::Definitions::IContentDatabase</a>&#160;</td>
+          <td class="paramname"><em>content</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -179,7 +191,7 @@ Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake_a92f637d136827316efbce06d7055f9bb_cgraph.svg" width="100%" height="410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake_a92f637d136827316efbce06d7055f9bb_cgraph.svg" width="100%" height="434"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

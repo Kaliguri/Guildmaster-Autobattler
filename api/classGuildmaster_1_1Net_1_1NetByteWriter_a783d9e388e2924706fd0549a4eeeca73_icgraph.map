@@ -1,21 +1,23 @@
 <map id="Guildmaster.Net.NetByteWriter.WriteString" name="Guildmaster.Net.NetByteWriter.WriteString">
-<area shape="rect" id="Node000001" title="Строка как длина + UTF&#45;8." alt="" coords="644,197,872,237"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html#a0056c274f5f9c1041a961fbd66453b89" title=" " alt="" coords="367,5,570,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="732,188,674,122,636,88,595,60,569,48,571,43,597,55,640,84,678,119,736,184"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="359,69,579,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="716,191,660,156,595,124,561,112,563,107,597,119,662,152,718,187"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1Tape_1_1ReplayFile.html#a4944dec9d935b5355330b52b2eb6c45b" title="Записать заголовок в начало потока." alt="" coords="363,133,574,173"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="653,197,559,176,560,171,654,192"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html#a2c53a1da0a02f054ae8fb2c0e339d3e7" title="Представиться хозяину: участник → хозяин." alt="" coords="343,197,594,237"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="630,220,594,220,594,215,630,215"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html#a1b7daba54f6df226a4e2218e2ee59b36" title="Объявить таблицу: хозяин → все." alt="" coords="341,261,596,301"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="654,243,560,264,559,259,653,238"/>
-<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html#ad3b0177e3e15f85a87b3475f2f3db152" title="Объявить счёт: хозяин → всем." alt="" coords="361,325,576,365"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="718,248,662,283,597,316,563,328,561,323,595,311,660,278,716,243"/>
-<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html#a6d025b8ee99ae756b98fba69e5357166" title="Отдать свой голос: участник → хозяин." alt="" coords="362,389,575,429"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="736,250,678,316,640,351,597,380,571,392,569,387,595,375,636,346,674,312,732,247"/>
+<area shape="rect" id="Node000001" title="Строка как длина + UTF&#45;8." alt="" coords="672,229,900,269"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html#a0056c274f5f9c1041a961fbd66453b89" title=" " alt="" coords="381,5,584,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="765,218,741,181,708,138,669,95,623,60,583,42,585,37,625,55,672,91,712,134,745,178,769,215"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="373,69,593,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="754,221,696,171,661,145,623,124,592,112,594,107,625,119,663,141,699,167,757,217"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#aedf291b262afef2af56a6d2b1be74b8b" title=" " alt="" coords="341,133,624,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="726,226,623,188,580,176,581,171,625,183,728,221"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Net_1_1Tape_1_1ReplayFile.html#a4944dec9d935b5355330b52b2eb6c45b" title="Записать заголовок в начало потока." alt="" coords="377,197,588,237"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="658,239,588,231,588,226,658,233"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html#a2c53a1da0a02f054ae8fb2c0e339d3e7" title="Представиться хозяину: участник → хозяин." alt="" coords="357,261,608,301"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="659,265,608,271,608,265,658,260"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html#a1b7daba54f6df226a4e2218e2ee59b36" title="Объявить таблицу: хозяин → все." alt="" coords="355,325,610,365"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="728,277,625,316,581,328,580,323,623,311,726,272"/>
+<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html#ad3b0177e3e15f85a87b3475f2f3db152" title="Объявить счёт: хозяин → всем." alt="" coords="375,389,590,429"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="757,281,699,332,663,358,625,380,591,393,589,388,623,375,661,353,696,328,754,277"/>
+<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html#a6d025b8ee99ae756b98fba69e5357166" title="Отдать свой голос: участник → хозяин." alt="" coords="376,453,589,493"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="769,283,745,321,712,364,672,408,625,444,591,460,588,455,623,439,669,404,708,361,741,318,765,280"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,69,293,109"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="345,92,293,92,293,87,345,87"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Net_1_1Tape_1_1ReplayFileWriter.html#abdd3803a8d440e84626855124b952cd6" title=" " alt="" coords="44,133,255,173"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="350,156,255,156,255,151,350,151"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="359,92,294,92,294,87,359,87"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Net_1_1Tape_1_1ReplayFileWriter.html#abdd3803a8d440e84626855124b952cd6" title=" " alt="" coords="44,197,255,237"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="364,220,255,220,255,215,364,215"/>
 </map>

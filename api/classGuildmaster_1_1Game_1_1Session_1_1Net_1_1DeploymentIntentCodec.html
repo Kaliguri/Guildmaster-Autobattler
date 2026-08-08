@@ -103,23 +103,27 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Session_1_
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Session.Net.DeploymentIntentCodec:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec__coll__graph.svg" width="210" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec__coll__graph.svg" width="210" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a5f265d0cc2037029644444d31e4c7b73" id="r_a5f265d0cc2037029644444d31e4c7b73"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#a5f265d0cc2037029644444d31e4c7b73">Write</a> (<a class="el" href="classGuildmaster_1_1Net_1_1NetByteWriter.html">NetByteWriter</a> writer, in <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html">UnitMoveIntent</a> intent)</td></tr>
-<tr class="separator:a5f265d0cc2037029644444d31e4c7b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fd11a003aacfe4d3ded8af28659e3ad" id="r_a0fd11a003aacfe4d3ded8af28659e3ad"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html">UnitMoveIntent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#a0fd11a003aacfe4d3ded8af28659e3ad">Read</a> (<a class="el" href="classGuildmaster_1_1Net_1_1NetByteReader.html">NetByteReader</a> reader)</td></tr>
-<tr class="separator:a0fd11a003aacfe4d3ded8af28659e3ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaabc62fc0321fdf1bc1a88709ab6be62" id="r_aaabc62fc0321fdf1bc1a88709ab6be62"><td class="memItemLeft" align="right" valign="top">static ArraySegment&lt; byte &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#aaabc62fc0321fdf1bc1a88709ab6be62">WriteMove</a> (<a class="el" href="classGuildmaster_1_1Net_1_1NetByteWriter.html">NetByteWriter</a> writer, in <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html">UnitMoveIntent</a> intent)</td></tr>
+<tr class="separator:aaabc62fc0321fdf1bc1a88709ab6be62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedf291b262afef2af56a6d2b1be74b8b" id="r_aedf291b262afef2af56a6d2b1be74b8b"><td class="memItemLeft" align="right" valign="top">static ArraySegment&lt; byte &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#aedf291b262afef2af56a6d2b1be74b8b">WriteEquip</a> (<a class="el" href="classGuildmaster_1_1Net_1_1NetByteWriter.html">NetByteWriter</a> writer, int unitId, string relicId)</td></tr>
+<tr class="separator:aedf291b262afef2af56a6d2b1be74b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb34554f2a150aaa8a93932789cdcabc" id="r_abb34554f2a150aaa8a93932789cdcabc"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#abb34554f2a150aaa8a93932789cdcabc">TryRead</a> (ArraySegment&lt; byte &gt; payload, out <a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntent.html">DeploymentIntent</a> intent)</td></tr>
+<tr class="memdesc:abb34554f2a150aaa8a93932789cdcabc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разобрать намерение.  <br /></td></tr>
+<tr class="separator:abb34554f2a150aaa8a93932789cdcabc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Как намерение выглядит на проводе. </p>
 <p>Единственный владелец этого формата.</p>
 <p>Открыт наружу 08.08.2026 не ради вызывающих, а ради прогона туда-обратно: пока кодек был <code>internal</code>, тест до него не дотягивался, и формат канала держался внимательностью. Соседний канал с таким же положением дел (состав сеанса) в тот день и разъехался. </p>
+<p><b>Вид намерения объявляет первый байт.</b> Различать их по длине пакета нельзя: так уже сделали на канале решений, и развилка держалась ровно до первого изменения формата.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0fd11a003aacfe4d3ded8af28659e3ad" name="a0fd11a003aacfe4d3ded8af28659e3ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fd11a003aacfe4d3ded8af28659e3ad">&#9670;&#160;</a></span>Read()</h2>
+<a id="abb34554f2a150aaa8a93932789cdcabc" name="abb34554f2a150aaa8a93932789cdcabc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb34554f2a150aaa8a93932789cdcabc">&#9670;&#160;</a></span>TryRead()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -128,11 +132,76 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html">UnitMoveIntent</a> Guildmaster.Game.Session.Net.DeploymentIntentCodec.Read </td>
+          <td class="memname">static bool Guildmaster.Game.Session.Net.DeploymentIntentCodec.TryRead </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Net_1_1NetByteReader.html">NetByteReader</a>&#160;</td>
-          <td class="paramname"><em>reader</em></td><td>)</td>
+          <td class="paramtype">ArraySegment&lt; byte &gt;&#160;</td>
+          <td class="paramname"><em>payload</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">out <a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntent.html">DeploymentIntent</a>&#160;</td>
+          <td class="paramname"><em>intent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Разобрать намерение. </p>
+<p><code>false</code> — пакет не разобрался целиком; исполнять половину нельзя. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec_abb34554f2a150aaa8a93932789cdcabc_cgraph.svg" width="544" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec_abb34554f2a150aaa8a93932789cdcabc_icgraph.svg" width="584" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aedf291b262afef2af56a6d2b1be74b8b" name="aedf291b262afef2af56a6d2b1be74b8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedf291b262afef2af56a6d2b1be74b8b">&#9670;&#160;</a></span>WriteEquip()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static ArraySegment&lt; byte &gt; Guildmaster.Game.Session.Net.DeploymentIntentCodec.WriteEquip </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Net_1_1NetByteWriter.html">NetByteWriter</a>&#160;</td>
+          <td class="paramname"><em>writer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>unitId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>relicId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -144,18 +213,13 @@ Static Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec_a0fd11a003aacfe4d3ded8af28659e3ad_cgraph.svg" width="538" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec_a0fd11a003aacfe4d3ded8af28659e3ad_icgraph.svg" width="566" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec_aedf291b262afef2af56a6d2b1be74b8b_cgraph.svg" width="100%" height="482"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
 </div>
-<a id="a5f265d0cc2037029644444d31e4c7b73" name="a5f265d0cc2037029644444d31e4c7b73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f265d0cc2037029644444d31e4c7b73">&#9670;&#160;</a></span>Write()</h2>
+<a id="aaabc62fc0321fdf1bc1a88709ab6be62" name="aaabc62fc0321fdf1bc1a88709ab6be62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaabc62fc0321fdf1bc1a88709ab6be62">&#9670;&#160;</a></span>WriteMove()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,7 +228,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void Guildmaster.Game.Session.Net.DeploymentIntentCodec.Write </td>
+          <td class="memname">static ArraySegment&lt; byte &gt; Guildmaster.Game.Session.Net.DeploymentIntentCodec.WriteMove </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Net_1_1NetByteWriter.html">NetByteWriter</a>&#160;</td>
           <td class="paramname"><em>writer</em>, </td>
@@ -190,12 +254,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec_a5f265d0cc2037029644444d31e4c7b73_cgraph.svg" width="534" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec_a5f265d0cc2037029644444d31e4c7b73_icgraph.svg" width="572" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec_aaabc62fc0321fdf1bc1a88709ab6be62_cgraph.svg" width="570" height="243"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

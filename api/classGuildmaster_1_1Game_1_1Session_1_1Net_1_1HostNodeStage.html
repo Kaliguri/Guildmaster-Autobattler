@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Session_1_
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#events">Events</a> &#124;
 <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Game.Session.Net.HostNodeStage Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -104,12 +105,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Session_1_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Session.Net.HostNodeStage:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage__inherit__graph.svg" width="206" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage__inherit__graph.svg" width="248" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Session.Net.HostNodeStage:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage__coll__graph.svg" width="206" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage__coll__graph.svg" width="248" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -117,7 +118,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afe99a69f71515f90fcafc1f3522a4c6d" id="r_afe99a69f71515f90fcafc1f3522a4c6d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html#afe99a69f71515f90fcafc1f3522a4c6d">HostNodeStage</a> (<a class="el" href="interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html">INetTransport</a> transport)</td></tr>
 <tr class="separator:afe99a69f71515f90fcafc1f3522a4c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4471b9d140e79c11bebdd5f01d7929d0" id="r_a4471b9d140e79c11bebdd5f01d7929d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html#a4471b9d140e79c11bebdd5f01d7929d0">Announce</a> (in <a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a> state)</td></tr>
-<tr class="memdesc:a4471b9d140e79c11bebdd5f01d7929d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Объявить шаг узла. Повтор того же — молчим: применение у гостя идемпотентно.  <br /></td></tr>
+<tr class="memdesc:a4471b9d140e79c11bebdd5f01d7929d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Объявить шаг узла.  <br /></td></tr>
 <tr class="separator:a4471b9d140e79c11bebdd5f01d7929d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a804477a7a62d096ac1549b511678805b" id="r_a804477a7a62d096ac1549b511678805b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html#a804477a7a62d096ac1549b511678805b">Clear</a> ()</td></tr>
 <tr class="memdesc:a804477a7a62d096ac1549b511678805b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Экран закрылся. Отдельным именем, потому что зовут это из finally.  <br /></td></tr>
@@ -130,6 +131,16 @@ Properties</h2></td></tr>
 <tr class="memitem:aba4cf1c7fa234b6af24fabe1b87b44f7" id="r_aba4cf1c7fa234b6af24fabe1b87b44f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html#aba4cf1c7fa234b6af24fabe1b87b44f7">Current</a><code> [get]</code></td></tr>
 <tr class="memdesc:aba4cf1c7fa234b6af24fabe1b87b44f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что объявлено сейчас — видно в dev-панели.  <br /></td></tr>
 <tr class="separator:aba4cf1c7fa234b6af24fabe1b87b44f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html">Guildmaster.Game.Session.Net.INodeStageView</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
+Events</h2></td></tr>
+<tr class="memitem:a3ed399789c981369fd2444bd5356e16b" id="r_a3ed399789c981369fd2444bd5356e16b"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html#a3ed399789c981369fd2444bd5356e16b">Changed</a></td></tr>
+<tr class="separator:a3ed399789c981369fd2444bd5356e16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header events_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView"><td colspan="2" onclick="javascript:toggleInherit('events_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView')"><img src="closed.png" alt="-"/>&#160;Events inherited from <a class="el" href="interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html">Guildmaster.Game.Session.Net.INodeStageView</a></td></tr>
+<tr class="memitem:a9fb03ccdbc75a1b76a15acf42dce55ab inherit events_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView" id="r_a9fb03ccdbc75a1b76a15acf42dce55ab"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html#a9fb03ccdbc75a1b76a15acf42dce55ab">Changed</a></td></tr>
+<tr class="memdesc:a9fb03ccdbc75a1b76a15acf42dce55ab inherit events_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаг сменился. Повтор того же шага события не поднимает.  <br /></td></tr>
+<tr class="separator:a9fb03ccdbc75a1b76a15acf42dce55ab inherit events_interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Владельческая половина «что на экране»: объявляет гостям шаг узла и его содержимое. </p>
@@ -188,7 +199,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Объявить шаг узла. Повтор того же — молчим: применение у гостя идемпотентно. </p>
+<p>Объявить шаг узла. </p>
+<p>Повтор того же — молчим: применение у гостя идемпотентно. </p>
+<p><b>Своих слушателей извещаем ДО отправки.</b> Экран у хозяина открывает тот же общий потребитель, что и у гостя (INodeStageView), — иначе к одному экрану снова вело бы два пути, а именно так и разъехалась витрина награды. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage_a4471b9d140e79c11bebdd5f01d7929d0_icgraph.svg" width="519" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -208,6 +226,11 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Экран закрылся. Отдельным именем, потому что зовут это из finally. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage_a804477a7a62d096ac1549b511678805b_icgraph.svg" width="503" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -255,6 +278,25 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Что объявлено сейчас — видно в dev-панели. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html#ab3fedb453dda3dc84a9719acbaa1f26d">Guildmaster.Game.Session.Net.INodeStageView</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Event Documentation</h2>
+<a id="a3ed399789c981369fd2444bd5356e16b" name="a3ed399789c981369fd2444bd5356e16b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ed399789c981369fd2444bd5356e16b">&#9670;&#160;</a></span>Changed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;<a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a>&gt; Guildmaster.Game.Session.Net.HostNodeStage.Changed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p></p>
 
 </div>
 </div>

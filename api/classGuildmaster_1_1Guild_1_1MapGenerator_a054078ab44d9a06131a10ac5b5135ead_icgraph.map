@@ -2,6 +2,6 @@
 <area shape="rect" id="Node000001" title="Строит карту акта из rng &#160;по параметрам config ." alt="" coords="511,5,749,45"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#ade85486b137b5ce32d7773fc078ac12a" title="Сгенерировать карту текущего акта, если её ещё нет (план [[act&#45;map&#45;run&#45;loop]] §3.1)." alt="" coords="260,5,463,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="497,28,463,28,463,23,497,23"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#aa96484e1d3387bf952ea492277d1e460" title="A2&#45;разрез забега: сгенерировать карту акта (если нет) и прогнать петлю обхода через ActRunner (делеги..." alt="" coords="5,5,212,45"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#a346a83cc8047395a2a3e8551da9c1c9b" title="A2&#45;разрез забега: сгенерировать карту акта (если нет) и прогнать петлю обхода через ActRunner (делеги..." alt="" coords="5,5,212,45"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="246,28,212,28,212,23,246,23"/>
 </map>

@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Ou
 </div><!--header-->
 <div class="contents">
 
-<p>Презентер исхода забега (план [[act-map-run-loop]] §4 C2): публикует OpenOutcomeRequest и ждёт «В меню».  
+<p>Презентер исхода забега: объявляет шаг узла и ждёт, куда группа пойдёт дальше.  
  <a href="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.OutcomePresenter:</div>
@@ -113,18 +113,20 @@ Collaboration diagram for Guildmaster.Game.Flow.OutcomePresenter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa1b746e211d064115e9311a28b93ee5b" id="r_aa1b746e211d064115e9311a28b93ee5b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#aa1b746e211d064115e9311a28b93ee5b">OutcomePresenter</a> (IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html">OpenOutcomeRequest</a> &gt; pub)</td></tr>
-<tr class="separator:aa1b746e211d064115e9311a28b93ee5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe4cb0f4e59abfca61f2603ba162adfc" id="r_afe4cb0f4e59abfca61f2603ba162adfc"><td class="memItemLeft" align="right" valign="top">async UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#afe4cb0f4e59abfca61f2603ba162adfc">ShowAsync</a> (bool victory)</td></tr>
-<tr class="separator:afe4cb0f4e59abfca61f2603ba162adfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a996080846b20527e58d047b8bf971e09" id="r_a996080846b20527e58d047b8bf971e09"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#a996080846b20527e58d047b8bf971e09">OutcomePresenter</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html">Session.SessionHost</a> sessions)</td></tr>
+<tr class="separator:a996080846b20527e58d047b8bf971e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f0826571f7ad41449dc676fab2cdff6" id="r_a1f0826571f7ad41449dc676fab2cdff6"><td class="memItemLeft" align="right" valign="top">async UniTask&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58">RunOutcomeChoice</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#a1f0826571f7ad41449dc676fab2cdff6">ShowAsync</a> (bool victory, System.Threading.CancellationToken ct=default)</td></tr>
+<tr class="memdesc:a1f0826571f7ad41449dc676fab2cdff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать исход и дождаться общего выхода: во двор или новый забег.  <br /></td></tr>
+<tr class="separator:a1f0826571f7ad41449dc676fab2cdff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Презентер исхода забега (план [[act-map-run-loop]] §4 C2): публикует OpenOutcomeRequest и ждёт «В меню». </p>
-<p>Тот же publish/await-паттерн, что награда. </p>
-<p><b>Слушатель UI обязателен</b> — см. разбор у MainMenuPresenter.</p>
+<div class="textblock"><p>Презентер исхода забега: объявляет шаг узла и ждёт, куда группа пойдёт дальше. </p>
+<p><b>Экран показывает не он</b>, а общий для обеих ролей потребитель (<code>NodeStageScreens</code>). Пока презентер публиковал экран сам, гость исхода забега не видел вовсе: петля акта собирается только владельцу (HARD-правило «равные игроки», 08.08.2026). </p>
+<p><b>«Заново» и «во двор» — общий выбор, «в меню» — личный</b> (вердикт Макса 08.08.2026). Общие ходят ОДНИМ решением с вариантами: механизм держит один заказ за раз, и два решения подряд гасили бы голоса друг друга.</p>
+<p><b>«В меню» не заводит своего пути</b>: кнопка зовёт <code>IRunControl</code> — ровно то же, что «В главное меню» из паузы. У владельца это отменяет забег, у гостя — уводит из чужого сеанса; вызов один и тот же, а разница живёт там, где ей и место, — в сетевой части. Здесь ожидание кончается по токену, а не по третьему варианту решения.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa1b746e211d064115e9311a28b93ee5b" name="aa1b746e211d064115e9311a28b93ee5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1b746e211d064115e9311a28b93ee5b">&#9670;&#160;</a></span>OutcomePresenter()</h2>
+<a id="a996080846b20527e58d047b8bf971e09" name="a996080846b20527e58d047b8bf971e09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a996080846b20527e58d047b8bf971e09">&#9670;&#160;</a></span>OutcomePresenter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -132,8 +134,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">Guildmaster.Game.Flow.OutcomePresenter.OutcomePresenter </td>
           <td>(</td>
-          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html">OpenOutcomeRequest</a> &gt;&#160;</td>
-          <td class="paramname"><em>pub</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html">Session.SessionHost</a>&#160;</td>
+          <td class="paramname"><em>sessions</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -142,8 +144,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="afe4cb0f4e59abfca61f2603ba162adfc" name="afe4cb0f4e59abfca61f2603ba162adfc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe4cb0f4e59abfca61f2603ba162adfc">&#9670;&#160;</a></span>ShowAsync()</h2>
+<a id="a1f0826571f7ad41449dc676fab2cdff6" name="a1f0826571f7ad41449dc676fab2cdff6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f0826571f7ad41449dc676fab2cdff6">&#9670;&#160;</a></span>ShowAsync()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -152,11 +154,21 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">async UniTask Guildmaster.Game.Flow.OutcomePresenter.ShowAsync </td>
+          <td class="memname">async UniTask&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58">RunOutcomeChoice</a> &gt; Guildmaster.Game.Flow.OutcomePresenter.ShowAsync </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>victory</em></td><td>)</td>
+          <td class="paramname"><em>victory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">System.Threading.CancellationToken&#160;</td>
+          <td class="paramname"><em>ct</em> = <code>default</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -166,7 +178,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IOutcomePresenter.html#a3459c924b49761e4e83e873527b10074">Guildmaster.Game.Flow.IOutcomePresenter</a>.</p>
+<p>Показать исход и дождаться общего выхода: во двор или новый забег. </p>
+<p><em>ct</em>  — токен забега: «В меню» отменяет его тем же путём, что и пауза, и ожидание кончается System.OperationCanceledException. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IOutcomePresenter.html#ac8200922f87c1fd2ef2d355f83b8157c">Guildmaster.Game.Flow.IOutcomePresenter</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter_a1f0826571f7ad41449dc676fab2cdff6_cgraph.svg" width="519" height="243"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

@@ -113,8 +113,8 @@ Collaboration diagram for Guildmaster.Game.Flow.RewardPresenter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9cb2402e5d7bef6f93c09347472e9c60" id="r_a9cb2402e5d7bef6f93c09347472e9c60"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardPresenter.html#a9cb2402e5d7bef6f93c09347472e9c60">RewardPresenter</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html">RewardService</a> rewards, <a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a> runStates, <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html">Guildmaster.Guild.Commands.IRunCommands</a> commands, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html">OpenRewardRequest</a> &gt; openRewardPub, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">Core.Net.ISharedDecision</a> decision, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html">Session.Net.HostNodeStage</a> stage)</td></tr>
-<tr class="separator:a9cb2402e5d7bef6f93c09347472e9c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9752c08cb966fad16b94bacac37f8469" id="r_a9752c08cb966fad16b94bacac37f8469"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardPresenter.html#a9752c08cb966fad16b94bacac37f8469">RewardPresenter</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html">RewardService</a> rewards, <a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a> runStates, <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html">Guildmaster.Guild.Commands.IRunCommands</a> commands, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">Core.Net.ISharedDecision</a> decision, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html">Session.Net.HostNodeStage</a> stage)</td></tr>
+<tr class="separator:a9752c08cb966fad16b94bacac37f8469"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadd344adc9869066f3289ee051d79141" id="r_aadd344adc9869066f3289ee051d79141"><td class="memItemLeft" align="right" valign="top">async UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardPresenter.html#aadd344adc9869066f3289ee051d79141">PresentAsync</a> (<a class="el" href="namespaceGuildmaster_1_1Game_1_1Flow.html#a74c941f3354c00f52e95f5a61b2725f1">RewardTier</a> tier, CancellationToken ct=default)</td></tr>
 <tr class="memdesc:aadd344adc9869066f3289ee051d79141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Скатать витрину тира, показать её, дождаться выбора и применить к RunState.  <br /></td></tr>
 <tr class="separator:aadd344adc9869066f3289ee051d79141"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,10 +124,10 @@ Public Member Functions</h2></td></tr>
 <p><b>Награду берут все вместе</b> (заказ Макса 07.08.2026: «должны тыкнуть все обязательно»). Клик по карточке — голос, а не взятие; экран закрывается признаком срабатывания от общего решения. Пока выбор был локальным, первый нажавший забирал реликвию за группу. </p>
 <p><b>Витрину катит хозяин и раздаёт результат раската</b> — гость собирает из id ту же витрину. Второй раскат у него дал бы другие три реликвии: бросок случаен.</p>
 <p><b>В соло ничего не меняется:</b> участник один, решение срабатывает в тот же кадр.</p>
-<p>Требует слушателя OpenRewardRequest (UiRootBootstrap в CoreScene) — иначе витрины не будет видно, и группе нечего будет выбирать.</p>
+<p><b>Витрину показывает не он.</b> Презентер объявляет шаг узла, а экран открывает общий для обеих ролей потребитель (<code>NodeStageScreens</code>). Пока показ жил здесь, к витрине вело два пути — этот и гостевой, — и во втором признак «запас полон» был зашит в <code>false</code>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9cb2402e5d7bef6f93c09347472e9c60" name="a9cb2402e5d7bef6f93c09347472e9c60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9cb2402e5d7bef6f93c09347472e9c60">&#9670;&#160;</a></span>RewardPresenter()</h2>
+<a id="a9752c08cb966fad16b94bacac37f8469" name="a9752c08cb966fad16b94bacac37f8469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9752c08cb966fad16b94bacac37f8469">&#9670;&#160;</a></span>RewardPresenter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -152,12 +152,6 @@ Public Member Functions</h2></td></tr>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html">Guildmaster::Guild::Commands::IRunCommands</a>&#160;</td>
           <td class="paramname"><em>commands</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html">OpenRewardRequest</a> &gt;&#160;</td>
-          <td class="paramname"><em>openRewardPub</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

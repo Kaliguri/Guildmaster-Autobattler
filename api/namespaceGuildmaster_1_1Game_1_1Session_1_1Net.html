@@ -115,6 +115,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html">DecisionCodec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Общее согласие в байтах и обратно: голос участника и объявленный счёт.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntent.html">DeploymentIntent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разобранное намерение расстановки: либо «поставь бойца сюда», либо «надень на него реликвию».  <a href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html">DeploymentIntentCodec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Как намерение выглядит на проводе.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,13 +125,13 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владельческая половина: принимает намерения гостей и публикует их у себя как свои.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html">DeploymentIntentSender</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Намерение гостя, отправленное владельцу арены: «поставь этого бойца сюда».  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Намерения гостя, отправленные владельцу арены: «поставь этого бойца сюда» и «надень на него эту реликвию».  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html">GuestActivityFollower</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гостевая половина «где мы»: открывает и закрывает мероприятие и арену вслед за хостом.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html">GuestNodeStage</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гостевая половина «что на экране»: показывает витрину, объявленную хозяином, и отправляет голос.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гостевая половина «что на экране»: принимает объявленный хозяином шаг узла и держит его у себя.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPartyFollower.html">GuestPartyFollower</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гостевая половина показа отряда: ставит бойцов на арену вслед за снимком забега.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPartyFollower.html#details">More...</a><br /></td></tr>
@@ -157,17 +160,32 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSharedDecision.html">HostSharedDecision</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владельческая половина общего решения: считает голоса и выполняет то, на чём сошлись все.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSharedDecision.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html">INodeStageView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что сейчас на экране у группы — для тех, кто это ПОКАЗЫВАЕТ, независимо от роли.  <a href="interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeRest.html">NodeRest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Хвост узла: узел пройден, дальше — кнопки «Продолжить» и «К построению», а под ними, если узел оставил, кадр-прощание.  <a href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeRest.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html">NodeStageCodec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаг узла в байтах и обратно.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageScreens.html">NodeStageScreens</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Экраны узла — ОДИН код на обе роли: слушает объявленный шаг узла и показывает то, что на нём.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageScreens.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html">NodeStageState</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаг узла с содержимым: что на экране и из чего выбирают.  <a href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шаг узла: какой экран перед группой, что на нём и пройден ли узел.  <a href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1OutcomeStage.html">OutcomeStage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Исход забега: дошли или нет.  <a href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1OutcomeStage.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1PresenceCursors.html">PresenceCursors</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Общая для обеих ролей половина присутствия: держит принятые чужие курсоры и выдаёт их отрисовке сглаженными.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1PresenceCursors.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html">RemoteRunCommands</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Команды забега у гостя: тот же контракт, но вместо применения — отправка интента хосту.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1RewardStage.html">RewardStage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Витрина награды: из чего выбирают и есть ли куда положить.  <a href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1RewardStage.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html">RunCommandCodec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Команда забега в байтах и обратно.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#details">More...</a><br /></td></tr>
@@ -184,13 +202,22 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html">SessionRosterCodec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Состав сеанса в байтах и обратно: таблица от хозяина и представление от участника.  <a href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1TextEventStage.html">TextEventStage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текстовое событие: какое показать и сколько золота у группы на руках.  <a href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1TextEventStage.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a6d3b4882480006d7d8aef8f5a8b5629f" id="r_a6d3b4882480006d7d8aef8f5a8b5629f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629f">NodeStageKind</a> : byte { <a class="el" href="namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629fa6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
+<tr class="memitem:a6d3b4882480006d7d8aef8f5a8b5629f" id="r_a6d3b4882480006d7d8aef8f5a8b5629f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629f">NodeStageKind</a> : byte { <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629fa6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629fa35281ac0e8d77e142fdcd41c07ce47dd">Reward</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629fa080a546abcbea74459f27ba33313993d">Chest</a> = 4
+, <a class="el" href="namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629fab7c26a94f35cfb5f53e21d5b94b98937">TextEvent</a> = 5
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629facf73bd583f5ed553b755364fdbb932ce">Outcome</a> = 6
+<br />
  }</td></tr>
-<tr class="memdesc:a6d3b4882480006d7d8aef8f5a8b5629f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что группа решает прямо сейчас внутри узла.  <a href="namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629f">More...</a><br /></td></tr>
+<tr class="memdesc:a6d3b4882480006d7d8aef8f5a8b5629f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Какой экран узла сейчас перед группой.  <a href="namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629f">More...</a><br /></td></tr>
 <tr class="separator:a6d3b4882480006d7d8aef8f5a8b5629f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
@@ -206,12 +233,19 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Что группа решает прямо сейчас внутри узла. </p>
+<p>Какой экран узла сейчас перед группой. </p>
 <p><b>Перечисление только ДОПИСЫВАЕТСЯ.</b> Номер едет по проводу, и переставленный номер увёл бы гостя не на тот экран — молча, потому что оба конца собираются порознь. </p>
+<p><b>У каждого вида своя коробка с содержимым</b> (RewardStage и соседи), и вид решает, какую из них разбирать. Общего мешка полей здесь нет намеренно: пока содержимое ехало безымянным списком строк, «что лежит в позиции 1» знали только два места на разных концах провода — ровно тот способ разъехаться, ради запрета которого экраны и свели в один шов.</p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6d3b4882480006d7d8aef8f5a8b5629fa6adf97f83acf6453d4a6a4b1070f3754" name="a6d3b4882480006d7d8aef8f5a8b5629fa6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>Ничего не показываем: узел идёт своим ходом. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6d3b4882480006d7d8aef8f5a8b5629fa6adf97f83acf6453d4a6a4b1070f3754" name="a6d3b4882480006d7d8aef8f5a8b5629fa6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>Своего экрана у узла сейчас нет. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6d3b4882480006d7d8aef8f5a8b5629fa35281ac0e8d77e142fdcd41c07ce47dd" name="a6d3b4882480006d7d8aef8f5a8b5629fa35281ac0e8d77e142fdcd41c07ce47dd"></a>Reward&#160;</td><td class="fielddoc"><p>Витрина награды: варианты — id реликвий. </p>
+<tr><td class="fieldname"><a id="a6d3b4882480006d7d8aef8f5a8b5629fa35281ac0e8d77e142fdcd41c07ce47dd" name="a6d3b4882480006d7d8aef8f5a8b5629fa35281ac0e8d77e142fdcd41c07ce47dd"></a>Reward&#160;</td><td class="fielddoc"><p>Витрина награды. Коробка — RewardStage. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6d3b4882480006d7d8aef8f5a8b5629fa080a546abcbea74459f27ba33313993d" name="a6d3b4882480006d7d8aef8f5a8b5629fa080a546abcbea74459f27ba33313993d"></a>Chest&#160;</td><td class="fielddoc"><p>Закрытый сундук: ждём, пока группа согласится его открыть. Коробки нет. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6d3b4882480006d7d8aef8f5a8b5629fab7c26a94f35cfb5f53e21d5b94b98937" name="a6d3b4882480006d7d8aef8f5a8b5629fab7c26a94f35cfb5f53e21d5b94b98937"></a>TextEvent&#160;</td><td class="fielddoc"><p>Текстовое событие. Коробка — TextEventStage. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6d3b4882480006d7d8aef8f5a8b5629facf73bd583f5ed553b755364fdbb932ce" name="a6d3b4882480006d7d8aef8f5a8b5629facf73bd583f5ed553b755364fdbb932ce"></a>Outcome&#160;</td><td class="fielddoc"><p>Исход забега — победа или поражение. Коробка — OutcomeStage. </p>
 </td></tr>
 </table>
 

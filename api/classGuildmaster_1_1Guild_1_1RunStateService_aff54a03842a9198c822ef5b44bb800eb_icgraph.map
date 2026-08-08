@@ -1,6 +1,6 @@
 <map id="Guildmaster.Guild.RunStateService.NewDefaultRun" name="Guildmaster.Guild.RunStateService.NewDefaultRun">
 <area shape="rect" id="Node000001" title="Начать новый забег со СТАНДАРТНОЙ стартовой гильдией (уточн." alt="" coords="292,69,495,109"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#aa96484e1d3387bf952ea492277d1e460" title="A2&#45;разрез забега: сгенерировать карту акта (если нет) и прогнать петлю обхода через ActRunner (делеги..." alt="" coords="21,5,228,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#a346a83cc8047395a2a3e8551da9c1c9b" title="A2&#45;разрез забега: сгенерировать карту акта (если нет) и прогнать петлю обхода через ActRunner (делеги..." alt="" coords="21,5,228,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="295,69,209,48,210,43,296,63"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#a6afff00417921d3bd80d9eb46d4aa888" title="A2&#45;разрез: прогнать один бой как узел забега — запустить его в живой симуляции, дождаться исхода (с р..." alt="" coords="5,69,244,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="278,92,244,92,244,87,278,87"/>

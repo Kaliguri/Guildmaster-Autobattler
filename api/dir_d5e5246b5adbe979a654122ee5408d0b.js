@@ -16,6 +16,7 @@ var dir_d5e5246b5adbe979a654122ee5408d0b =
     [ "HostPresence.cs", "HostPresence_8cs.html", "HostPresence_8cs" ],
     [ "HostSessionRoster.cs", "HostSessionRoster_8cs.html", "HostSessionRoster_8cs" ],
     [ "HostSharedDecision.cs", "HostSharedDecision_8cs.html", "HostSharedDecision_8cs" ],
+    [ "NodeStageScreens.cs", "NodeStageScreens_8cs.html", "NodeStageScreens_8cs" ],
     [ "NodeStageState.cs", "NodeStageState_8cs.html", "NodeStageState_8cs" ],
     [ "PresenceCursors.cs", "PresenceCursors_8cs.html", "PresenceCursors_8cs" ],
     [ "RemoteRunCommands.cs", "RemoteRunCommands_8cs.html", "RemoteRunCommands_8cs" ],

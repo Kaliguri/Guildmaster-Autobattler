@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1HubScreenVie
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.HubScreenView:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1HubScreenView__coll__graph.svg" width="228" height="76"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1HubScreenView__coll__graph.svg" width="228" height="96"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -111,12 +111,15 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aec0b009269f536be2e6f4e38a1022de5" id="r_aec0b009269f536be2e6f4e38a1022de5"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1HubScreenView.html#aec0b009269f536be2e6f4e38a1022de5">Build</a> (VisualTreeAsset uxml, string guildName, Func&lt; string, string &gt; localize, Action onStartRun, bool canStartRun=true)</td></tr>
 <tr class="memdesc:aec0b009269f536be2e6f4e38a1022de5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">canStartRun</td><td>Может ли ЭТОТ игрок увести отряд в забег. </td></tr>
+    <tr><td class="paramname">canStartRun</td><td>Есть ли чем голосовать за выход в забег. </td></tr>
   </table>
   </dd>
 </dl>
  <br /></td></tr>
 <tr class="separator:aec0b009269f536be2e6f4e38a1022de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fd605ea7847298e39b8d2ae0043ee3f" id="r_a8fd605ea7847298e39b8d2ae0043ee3f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1HubScreenView.html#a8fd605ea7847298e39b8d2ae0043ee3f">SetStartCount</a> (VisualElement root, Func&lt; string, string &gt; localize, int ready, int required, bool locallyReady)</td></tr>
+<tr class="memdesc:a8fd605ea7847298e39b8d2ae0043ee3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать на кнопке, скольких ещё ждём.  <br /></td></tr>
+<tr class="separator:a8fd605ea7847298e39b8d2ae0043ee3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Двор гильдии — дом, из которого уходят в забег. </p>
@@ -177,17 +180,70 @@ Static Public Member Functions</h2></td></tr>
 
 <p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">canStartRun</td><td>Может ли ЭТОТ игрок увести отряд в забег. </td></tr>
+    <tr><td class="paramname">canStartRun</td><td>Есть ли чем голосовать за выход в забег. </td></tr>
   </table>
   </dd>
 </dl>
 </p>
-<p>У гостя — нет: из двора выходит петля владельца, и его кнопка закрывала бы двор только ему одному, оставляя напарника стоять (наход. Макса 04.08.2026, второй прогон вдвоём). Кнопка при этом остаётся на месте и гаснет: пропавшая читается как «экран не догрузился», погашенная — как «ход не мой». </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1HubScreenView_aec0b009269f536be2e6f4e38a1022de5_icgraph.svg" width="458" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<p><b>У обеих ролей — да</b> (вердикт Макса 08.08.2026): кнопка отправляет голос, а уходит группа, когда сошлись все. Гасим её только там, где голосовать физически некуда. Кнопка при этом остаётся на месте: пропавшая читается как «экран не догрузился», погашенная — как «сейчас нельзя». </p>
+
 </div>
+</div>
+<a id="a8fd605ea7847298e39b8d2ae0043ee3f" name="a8fd605ea7847298e39b8d2ae0043ee3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fd605ea7847298e39b8d2ae0043ee3f">&#9670;&#160;</a></span>SetStartCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Guildmaster.UI.HubScreenView.SetStartCount </td>
+          <td>(</td>
+          <td class="paramtype">VisualElement&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Func&lt; string, string &gt;&#160;</td>
+          <td class="paramname"><em>localize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ready</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>required</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>locallyReady</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Показать на кнопке, скольких ещё ждём. </p>
+<p>В одиночку счёт не рисуется: «(1/1)» не сообщает ничего, а место на кнопке занимает.</p>
+<p>Отдельный метод, а не параметр сборки: счёт меняется, пока двор открыт, — напарник соглашается уже после того, как ты нажал. Молчащая кнопка выглядела бы как зависшая, а это худший вид зависания: причина не видна на экране. </p>
 
 </div>
 </div>

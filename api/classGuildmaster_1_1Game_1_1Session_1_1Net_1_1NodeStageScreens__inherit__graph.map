@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.Net.NodeStageScreens" name="Guildmaster.Game.Session.Net.NodeStageScreens">
+<area shape="rect" id="Node000001" title="Экраны узла — ОДИН код на обе роли: слушает объявленный шаг узла и показывает то, что на нём." alt="" coords="5,119,200,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="11,5,88,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,83,82,117,77,119,64,85"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="112,5,203,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="142,84,129,119,124,117,137,82"/>
+</map>

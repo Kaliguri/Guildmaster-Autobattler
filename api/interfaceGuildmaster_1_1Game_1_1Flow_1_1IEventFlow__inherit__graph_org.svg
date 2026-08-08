@@ -107,7 +107,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html" target="_top" xlink:title="Узел забега «сундук» (план [[act&#45;map&#45;run&#45;loop]] §4 B3): показывает фасад сундука, ждёт клик по крышке...">
+<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html" target="_top" xlink:title="Узел забега «сундук» (план [[act&#45;map&#45;run&#45;loop]] §4 B3): показывает фасад сундука, ждёт,...">
 <polygon fill="white" stroke="transparent" points="761.5,-77 579.5,-77 579.5,-13 761.5,-13 761.5,-77"/>
 <text text-anchor="start" x="584.5" y="-65" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.ChestFlow</text>
 <text text-anchor="start" x="668.5" y="-50" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
