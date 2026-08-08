@@ -27,7 +27,6 @@ namespace Guildmaster.Game.Session.Net
         private readonly INetTransport  _transport;
         private readonly Guildmaster.Core.Players.IPlatformIdentity _platform;
         private readonly Guildmaster.Core.Persistence.IProfileService _profiles;
-        private readonly GameConfig     _config;
 
         // Где мы сами. Спрашивается каждый кадр, объявляется только на смену — как и у гостя.
         private readonly ILocalWhereabouts _where;
@@ -46,16 +45,20 @@ namespace Guildmaster.Game.Session.Net
         /// </summary>
         private readonly Dictionary<int, int> _wanted = new Dictionary<int, int>(4);
 
+        /// <summary>
+        /// Кого посадили на сторону явно. Это назначение, а не вывод из режима: оно переживает вход и
+        /// выход других участников, потому что пересадка иначе затирала бы его чужим порядком входа.
+        /// </summary>
+        private readonly Dictionary<int, int> _seated = new Dictionary<int, int>(4);
+
         public HostSessionRoster(INetTransport transport,
                                  Guildmaster.Core.Players.IPlatformIdentity platform,
                                  Guildmaster.Core.Persistence.IProfileService profiles,
-                                 GameConfig config,
                                  ILocalWhereabouts where = null)
         {
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
             _platform  = platform;
             _profiles  = profiles;
-            _config    = config;
             _where     = where;
         }
 
@@ -136,6 +139,19 @@ namespace Guildmaster.Game.Session.Net
             if (split == _split) return;
 
             _split = split;
+
+            // Мероприятие сменилось целиком, значит прежние ручные посадки к нему не относятся:
+            // посаженный в PvP на вторую сторону остался бы в кампании противником своей же группе.
+            _seated.Clear();
+            Reseat();
+        }
+
+        /// <inheritdoc />
+        public void Seat(int playerId, int team)
+        {
+            if (!TryGet(playerId, out _)) return; // сажать некого: такого участника в сеансе нет
+
+            _seated[playerId] = team;
             Reseat();
         }
 
@@ -155,6 +171,11 @@ namespace Guildmaster.Game.Session.Net
                 _players.RemoveAt(i);
                 break;
             }
+
+            // Назначение уходит вместе с участником: вернувшись, он получит тот же номер пира, и старая
+            // посадка досталась бы ему молча — как чужое наследство.
+            _seated.Remove(peerId);
+            _wanted.Remove(peerId);
 
             // Стороны и цвета пересчитываются от порядка в списке, а ушедший его сдвинул. Оставить как
             // есть значило бы дыру в цветах и, в PvP на троих, две стороны против одной.
@@ -199,7 +220,8 @@ namespace Guildmaster.Game.Session.Net
             string skin = peerId == LocalId ? MyIdentity.CursorSkinId : string.Empty;
             if (peerId == LocalId) _wanted[peerId] = MyIdentity.ColorIndex;
 
-            _players.Add(new SessionPlayer(peerId, name, TeamFor(_players.Count), _players.Count, skin));
+            _players.Add(new SessionPlayer(peerId, name, StartingTeamFor(_players.Count),
+                                           _players.Count, skin));
             Reseat();
         }
 
@@ -223,7 +245,10 @@ namespace Guildmaster.Game.Session.Net
                 int colour = taken.Contains(wanted) ? FirstFree(taken) : wanted;
                 taken.Add(colour);
 
-                _players[i] = new SessionPlayer(was.Id, was.Name, TeamFor(i), colour, was.CursorSkinId,
+                // Посаженного руками не трогаем: начальная рассадка — умолчание для тех, кого не сажали.
+                int team = _seated.TryGetValue(was.Id, out int seated) ? seated : StartingTeamFor(i);
+
+                _players[i] = new SessionPlayer(was.Id, was.Name, team, colour, was.CursorSkinId,
                                                 was.Id == LocalId ? _myWhere : was.Where);
             }
 
@@ -237,19 +262,17 @@ namespace Guildmaster.Game.Session.Net
         }
 
         /// <summary>
-        /// Какая сторона достаётся месту <paramref name="seat"/>.
+        /// Какая сторона достаётся месту <paramref name="seat"/> ПО УМОЛЧАНИЮ — до того, как кого-то
+        /// посадили руками (<see cref="Seat"/>).
         /// </summary>
         /// <remarks>
-        /// <b>Не делим — значит все на ОДНОЙ стороне, и это сторона хозяина.</b> Дев-ручка «за кого я
-        /// играю» (<c>GameConfig.LocalPlayerTeam</c>) остаётся в силе, но действует на всех: пока она
-        /// доставалась только месту ноль, поднятая ручка разводила хозяина и гостя по разным сторонам
-        /// в кампании — там, где они союзники по построению.
+        /// <b>Не делим — значит все на ОДНОЙ стороне, нулевой.</b> Дев-ручка «за кого я играю»
+        /// (<c>GameConfig.LocalPlayerTeam</c>) отсюда снята 08.08.2026 вместе с самим полем: сторона
+        /// перестала быть настройкой и стала назначением, у которого один владелец — этот состав.
+        /// Пока ручка была, она успела дважды солгать — сперва разводила хозяина и гостя по разным
+        /// сторонам в кампании, потом подменяла собой пустой состав у гостя.
         /// </remarks>
-        private int TeamFor(int seat)
-        {
-            if (!_split) return _config != null ? _config.LocalPlayerTeam : 0;
-            return seat % 2;
-        }
+        private int StartingTeamFor(int seat) => _split ? seat % 2 : 0;
 
         private void Announce()
         {

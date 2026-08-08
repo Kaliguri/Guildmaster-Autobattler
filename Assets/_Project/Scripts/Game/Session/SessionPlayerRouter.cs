@@ -22,23 +22,39 @@ namespace Guildmaster.Game.Session
         private static readonly IReadOnlyList<SessionPlayer> Nobody = Array.Empty<SessionPlayer>();
 
         private readonly SessionHost _sessions;
-        private readonly GameConfig  _config;
 
-        public SessionPlayerRouter(SessionHost sessions, GameConfig config)
+        public SessionPlayerRouter(SessionHost sessions)
         {
             _sessions = sessions;
-            _config   = config;
         }
 
-        /// <summary>Сторона локального игрока. Вне сеанса — дев-ручка из конфига.</summary>
+        /// <summary>
+        /// Сторона локального игрока — это его строка в составе сеанса, и других источников у неё нет.
+        /// </summary>
+        /// <remarks>
+        /// <b>Фолбэка здесь больше нет</b> (снят 08.08.2026 по решению Макса: «Никакого фолбэка. Все
+        /// явно»). Прежний отвечал дев-ручкой <c>GameConfig.LocalPlayerTeam</c> и предназначался для
+        /// «вне сеанса», но срабатывал и ВНУТРИ — когда состав не доехал из-за разъехавшегося формата.
+        /// Гость получал сторону хозяина, тащил его бойцов, а хозяин молча отбивал намерения: поломка
+        /// разводки выглядела как дефект прав. Тихая подмена внутри своего кода — это баг, а не
+        /// устойчивость; наружу отказ обязан быть слышен.
+        /// <para>Ноль вне сеанса — не подмена, а отсутствие сеанса: спрашивать «за кого я играю», когда
+        /// игры нет, незачем, и ответ здесь ничего не решает. Внутри сеанса тот же ноль означал бы
+        /// поломку, поэтому он и записан в лог.</para>
+        /// </remarks>
         public int Team
         {
             get
             {
                 ISessionRoster roster = _sessions?.Roster;
-                if (roster != null && roster.TryGet(roster.LocalId, out SessionPlayer me)) return me.Team;
+                if (roster == null) return 0; // сеанса нет — стороне неоткуда взяться и некому мешать
 
-                return _config != null ? _config.LocalPlayerTeam : 0;
+                if (roster.TryGet(roster.LocalId, out SessionPlayer me)) return me.Team;
+
+                Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Session,
+                    () => $"нас нет в составе сеанса (наш номер {roster.LocalId}, участников " +
+                          $"{roster.Players.Count}) — сторона неизвестна, это поломка разводки");
+                return 0;
             }
         }
 
@@ -66,5 +82,8 @@ namespace Guildmaster.Game.Session
         }
 
         public void SplitBetweenSides(bool split) => _sessions?.Roster?.SplitBetweenSides(split);
+
+        /// <inheritdoc />
+        public void Seat(int playerId, int team) => _sessions?.Roster?.Seat(playerId, team);
     }
 }

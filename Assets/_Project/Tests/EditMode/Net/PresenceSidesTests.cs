@@ -249,6 +249,9 @@ namespace Guildmaster.Tests.EditMode.Net
                 them.Team == me.Team;
 
             public void SplitBetweenSides(bool split) { }
+
+            /// <summary>Посадка здесь и есть <see cref="Set"/> — заглушка правится напрямую.</summary>
+            public void Seat(int playerId, int team) => Set(playerId, team);
         }
     }
 }

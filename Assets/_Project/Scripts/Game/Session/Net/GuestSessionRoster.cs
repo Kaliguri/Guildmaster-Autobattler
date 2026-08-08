@@ -99,6 +99,13 @@ namespace Guildmaster.Game.Session.Net
         /// <summary>Раздача сторон — работа хоста. У гостя вызов законен и не делает ничего.</summary>
         public void SplitBetweenSides(bool split) { }
 
+        /// <summary>
+        /// Посадка — тоже работа хоста: состав ведёт он, а нам стороны приезжают таблицей. Вызов
+        /// законен и не делает ничего; посадить себя сам гость не может, иначе в PvP каждый решал бы,
+        /// за кого играет.
+        /// </summary>
+        public void Seat(int playerId, int team) { }
+
         private void OnPeerConnected(int peerId)
         {
             if (peerId == NetPeer.HostPeerId) SayName();

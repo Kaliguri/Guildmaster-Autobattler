@@ -218,6 +218,7 @@ namespace Guildmaster.DevTools
                 MapDevCommands.Register(_commands);
                 VisualFxCommands.Register(_commands);
                 DiagCommands.Register(_commands);
+                SessionDevCommands.Register(_commands);
             }
         }
 
