@@ -106,17 +106,19 @@ namespace Guildmaster.Game.Session.Net
 
         private void SayName()
         {
-            _writer.Reset();
             // Ник из профиля: игрок мог выбрать свой вместо Steam-имени, и хост обязан увидеть тот же.
             // Цвет едет ПОЖЕЛАНИЕМ: занять его может кто-то раньше нас, и решает это хост — иначе двое
             // пришли бы одним цветом, а весь смысл мейн-цвета в том, что «чей это» читается мгновенно.
             Guildmaster.Core.Persistence.ProfileIdentity identity = _profiles?.Identity ?? default;
-            _writer.WriteString(identity.ResolveName(_platform != null ? _platform.PlayerName : "Игрок"));
-            _writer.WriteByte((byte)Math.Clamp(identity.ColorIndex, 0, 255));
-            _writer.WriteString(identity.CursorSkinId);
+            var intro = new SessionIntro(
+                identity.ResolveName(_platform != null ? _platform.PlayerName : "Игрок"),
+                identity.ColorIndex,
+                identity.CursorSkinId,
+                _lastSaid);
 
             _transport.Send(NetPeer.HostPeerId,
-                NetEnvelope.Wrap(NetChannel.SessionRoster, _writer.WrittenSegment, ref _envelope),
+                NetEnvelope.Wrap(NetChannel.SessionRoster,
+                                 SessionRosterCodec.WriteIntro(intro, _writer), ref _envelope),
                 NetDelivery.Reliable);
         }
 
@@ -128,30 +130,16 @@ namespace Guildmaster.Game.Session.Net
             // Состав объявляет только хост: таблица от другого гостя показала бы нам чужую выдумку.
             if (from != NetPeer.HostPeerId) return;
 
-            var bytes = new NetByteReader(payload);
-
-            // Разбираем в сторону и подменяем только целиком. Битая таблица — расхождение версий, и
-            // половина состава хуже прежней целой: по половине мы решили бы, что кто-то вышел, и
-            // перестали бы показывать его курсор.
-            _incoming.Clear();
-
-            try
+            // Разбираем в сторону и подменяем только целиком — это делает кодек. Половина состава хуже
+            // прежней целой: по половине мы решили бы, что кто-то вышел, и перестали бы показывать его
+            // курсор.
+            if (!SessionRosterCodec.TryReadTable(payload, _incoming))
             {
-                int count = bytes.ReadByte();
-
-                for (int i = 0; i < count; i++)
-                {
-                    int id    = bytes.ReadByte();
-                    int team  = bytes.ReadByte();
-                    int color = bytes.ReadByte();
-                    string name = bytes.ReadString();
-                    string skin = bytes.ReadString();
-
-                    _incoming.Add(new SessionPlayer(id, name, team, color, skin));
-                }
-            }
-            catch (InvalidOperationException)
-            {
+                // Версия и отпечаток контента сверены рукопожатием, поэтому нечитаемая таблица — это
+                // НАША поломка формата, а не «чужая сборка». Ровно на этом молчании состав однажды
+                // перестал доезжать вовсе.
+                Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Session,
+                    "гость: таблица состава не разобралась — формат канала состава разъехался");
                 return;
             }
 

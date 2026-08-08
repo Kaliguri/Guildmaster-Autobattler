@@ -154,12 +154,16 @@ namespace Guildmaster.Game.Session.Net
             // Первый байт говорит, чьё это сообщение. Раньше стороны различались по ДЛИНЕ («один байт —
             // голос гостя»), и такая развилка держалась ровно до первого изменения формата: голос стал
             // строкой варианта, и длины перестали быть разными.
-            var bytes = new NetByteReader(payload);
-            if (bytes.ReadByte() != DecisionWire.Vote) return; // объявленный счёт — наше собственное эхо
+            if (!DecisionCodec.IsVote(payload)) return; // объявленный счёт — наше собственное эхо
 
-            string option;
-            try { option = bytes.ReadString(); }
-            catch (InvalidOperationException) { return; } // чужая версия голоса — счёт не трогаем
+            if (!DecisionCodec.TryReadVote(payload, out string option))
+            {
+                // Версия сверена рукопожатием: нечитаемый голос — наша поломка формата, а не чужая
+                // сборка. Молча пропустить его значит потерять согласие и не узнать почему.
+                Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
+                    $"хозяин: голос пира {from} не разобрался — формат канала решений разъехался");
+                return;
+            }
 
             Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
                 $"хост: голос пира {from} = «{option}» (ключ «{_key}», действие {(_action == null ? "НЕ ПРИВЯЗАНО" : "есть")})");
@@ -226,25 +230,10 @@ namespace Guildmaster.Game.Session.Net
 
             if (!_transport.IsRunning) return; // соло: объявлять некому
 
-            _writer.Reset();
-            _writer.WriteByte(DecisionWire.Tally);
-            _writer.WriteByte((byte)Mathf.Clamp(Required, 0, 255));
-            _writer.WriteBool(fired);
-            // Ключ едет строкой, а не номером: он же и есть смысл действия, а таблица номеров разошлась
-            // бы между сборками ровно так, как расходятся все таблицы, которые ведут руками.
-            _writer.WriteString(_key);
-
-            // Голоса едут поимённо, а не числом: счёт из них выводится, а обратно — нет, и показу нужно
-            // именно «кто за что». Один владелец факта вместо двух согласованных чисел.
-            _writer.WriteByte((byte)Mathf.Clamp(_choices.Count, 0, 255));
-            for (int i = 0; i < _choices.Count; i++)
-            {
-                _writer.WriteByte((byte)_choices[i].PlayerId);
-                _writer.WriteString(_choices[i].Option);
-            }
-
             _transport.SendToAll(
-                NetEnvelope.Wrap(NetChannel.Decision, _writer.WrittenSegment, ref _envelope),
+                NetEnvelope.Wrap(NetChannel.Decision,
+                                 DecisionCodec.WriteTally(_key, Required, fired, _choices, _writer),
+                                 ref _envelope),
                 NetDelivery.Reliable);
         }
     }

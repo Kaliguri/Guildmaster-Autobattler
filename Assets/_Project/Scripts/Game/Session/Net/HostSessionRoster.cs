@@ -168,33 +168,25 @@ namespace Guildmaster.Game.Session.Net
 
             // На этом канале гость говорит ровно одно: как его зовут. Объявленную таблицу шлём только мы,
             // и прилететь она к нам не может — принимать её тут значило бы верить чужому составу.
-            var bytes = new NetByteReader(payload);
-
-            string name;
-            int    wantedColor;
-            string skin;
-            PlayerWhere where;
-            try
+            if (!SessionRosterCodec.TryReadIntro(payload, out SessionIntro intro))
             {
-                name        = bytes.ReadString();
-                wantedColor = bytes.ReadByte();
-                skin        = bytes.ReadString();
-                where       = (PlayerWhere)bytes.ReadByte();
-            }
-            catch (InvalidOperationException)
-            {
-                return; // чужая версия представления — состав не трогаем
+                // Версия и отпечаток контента сверены рукопожатием, поэтому нечитаемое представление —
+                // это НАША поломка формата, а не «чужая сборка». Молчание тут уже стоило целого состава.
+                Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Session,
+                    $"хозяин: представление пира {from} не разобралось — формат канала состава разъехался");
+                return;
             }
 
-            if (string.IsNullOrWhiteSpace(name)) return;
+            if (string.IsNullOrWhiteSpace(intro.Name)) return;
 
             for (int i = 0; i < _players.Count; i++)
             {
                 if (_players[i].Id != from) continue;
 
                 SessionPlayer was = _players[i];
-                _wanted[from] = wantedColor;
-                _players[i] = new SessionPlayer(was.Id, name, was.Team, was.ColorIndex, skin, where);
+                _wanted[from] = intro.WantedColorIndex;
+                _players[i] = new SessionPlayer(was.Id, intro.Name, was.Team, was.ColorIndex,
+                                                intro.CursorSkinId, intro.Where);
                 Reseat(); // цвет мог освободиться или, наоборот, столкнуться с чужим пожеланием
                 return;
             }
@@ -263,22 +255,9 @@ namespace Guildmaster.Game.Session.Net
         {
             if (!_transport.IsRunning) return; // соло: объявлять некому
 
-            _writer.Reset();
-            _writer.WriteByte((byte)_players.Count);
-
-            for (int i = 0; i < _players.Count; i++)
-            {
-                SessionPlayer player = _players[i];
-                _writer.WriteByte((byte)player.Id);
-                _writer.WriteByte((byte)player.Team);
-                _writer.WriteByte((byte)player.ColorIndex);
-                _writer.WriteString(player.Name);
-                _writer.WriteString(player.CursorSkinId);
-                _writer.WriteByte((byte)player.Where);
-            }
-
             _transport.SendToAll(
-                NetEnvelope.Wrap(NetChannel.SessionRoster, _writer.WrittenSegment, ref _envelope),
+                NetEnvelope.Wrap(NetChannel.SessionRoster,
+                                 SessionRosterCodec.WriteTable(_players, _writer), ref _envelope),
                 NetDelivery.Reliable);
         }
     }

@@ -87,8 +87,15 @@ namespace Guildmaster.Game.Session.Net
         }
     }
 
-    /// <summary>Как намерение выглядит на проводе. Единственный владелец этого формата.</summary>
-    internal static class DeploymentIntentCodec
+    /// <summary>
+    /// Как намерение выглядит на проводе. Единственный владелец этого формата.
+    /// </summary>
+    /// <remarks>
+    /// Открыт наружу 08.08.2026 не ради вызывающих, а ради прогона туда-обратно: пока кодек был
+    /// <c>internal</c>, тест до него не дотягивался, и формат канала держался внимательностью. Соседний
+    /// канал с таким же положением дел (состав сеанса) в тот день и разъехался.
+    /// </remarks>
+    public static class DeploymentIntentCodec
     {
         public static void Write(NetByteWriter writer, in UnitMoveIntent intent)
         {

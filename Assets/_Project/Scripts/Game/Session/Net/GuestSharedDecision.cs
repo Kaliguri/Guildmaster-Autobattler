@@ -102,11 +102,9 @@ namespace Guildmaster.Game.Session.Net
 
             if (!_transport.IsRunning) return;
 
-            _writer.Reset();
-            _writer.WriteByte(DecisionWire.Vote);
-            _writer.WriteString(_localChoice);
             _transport.Send(NetPeer.HostPeerId,
-                NetEnvelope.Wrap(NetChannel.Decision, _writer.WrittenSegment, ref _envelope),
+                NetEnvelope.Wrap(NetChannel.Decision,
+                                 DecisionCodec.WriteVote(_localChoice, _writer), ref _envelope),
                 NetDelivery.Reliable);
         }
 
@@ -118,31 +116,20 @@ namespace Guildmaster.Game.Session.Net
             // Счёт объявляет только хост: чужой счёт от другого гостя показал бы кнопке неправду.
             if (from != NetPeer.HostPeerId) return;
 
-            var bytes = new NetByteReader(payload);
-            if (bytes.ReadByte() != DecisionWire.Tally) return; // голос другого гостя нам не адресован
+            if (!DecisionCodec.IsTally(payload)) return; // голос другого гостя нам не адресован
 
-            bool fired;
-            try
+            // Прежний счёт честнее половины нового, поэтому подменяем только целиком — это делает кодек.
+            if (!DecisionCodec.TryReadTally(payload, _choices, out string key, out int required, out bool fired))
             {
-                Required = bytes.ReadByte();
-                fired    = bytes.ReadBool();
-                _key     = bytes.ReadString();
-
-                int count = bytes.ReadByte();
-                _choices.Clear();
-                for (int i = 0; i < count; i++)
-                {
-                    int    voter  = bytes.ReadByte();
-                    string option = bytes.ReadString();
-                    _choices.Add(new PlayerChoice(voter, option));
-                }
-            }
-            catch (InvalidOperationException)
-            {
-                return; // чужая версия объявления — прежний счёт честнее половины нового
+                // Версия сверена рукопожатием: нечитаемое объявление — наша поломка формата.
+                Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
+                    "гость: объявленный счёт не разобрался — формат канала решений разъехался");
+                return;
             }
 
-            Voted = _choices.Count;
+            Required = required;
+            _key     = key;
+            Voted    = _choices.Count;
 
             // Свой голос берём из объявления, а не помним отдельно: хост мог сбросить всех, и вторая
             // память об этом молча разошлась бы с его счётом — кнопка осталась бы нажатой у того, кого
