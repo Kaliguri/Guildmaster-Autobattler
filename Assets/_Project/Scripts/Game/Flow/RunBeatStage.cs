@@ -32,30 +32,42 @@ namespace Guildmaster.Game.Flow
     /// </summary>
     public sealed class RunBeatStage : IRunBeatStage
     {
-        private readonly IBattleSession     _session;
-        private readonly IContinuePresenter _continue;
-        private readonly IPublisher<SetWorldMapRequest>  _mapPub;
-        private readonly IPublisher<SetFormationRequest> _formationPub;
+        private readonly IBattleSession _session;
+        private readonly Session.Net.HostNodeStage _stage;
 
-        public RunBeatStage(IBattleSession session, IContinuePresenter continuePresenter,
-                            IPublisher<SetWorldMapRequest> mapPub, IPublisher<SetFormationRequest> formationPub)
+        public RunBeatStage(IBattleSession session, Session.Net.HostNodeStage stage)
         {
-            _session      = session;
-            _continue     = continuePresenter;
-            _mapPub       = mapPub;
-            _formationPub = formationPub;
+            _session = session;
+            _stage   = stage;
         }
 
+        /// <summary>
+        /// Передышка ОБЪЯВЛЯЕТСЯ, а не показывается отсюда.
+        /// </summary>
+        /// <remarks>
+        /// Раньше петля публиковала экран напрямую — и он существовал только у владельца, потому что
+        /// петля собирается только ему. Теперь шаг узла объявлен обоим, а показывает его общий
+        /// потребитель (<c>NodeStageScreens</c>), одинаково у хозяина и гостя (HARD-правило «равные
+        /// игроки», 08.08.2026).
+        /// <para>Кнопки при этом остались тем же, чем были, — шорткатами к табам: петля их не ждёт,
+        /// узел уже засчитан, и каждый жмёт свою для себя.</para>
+        /// </remarks>
         public void EnterRestBeat(CancellationToken ct)
         {
             _session.RequestReset();                        // мир возвращается (сейчас — мгновенно)
             _session.SetPhase(BattlePhase.Interlude);       // мир на экране → задник UI запрещён
-            _continue.ShowRestBeat(
-                onContinue:  () => _mapPub?.Publish(new SetWorldMapRequest(true)),
-                onFormation: () => _formationPub?.Publish(new SetFormationRequest(true)),
-                ct: ct);
+
+            _stage?.Announce(new Session.Net.NodeStageState(Session.Net.NodeStageKind.Interlude));
+
+            // Узел выбран (или забег отменён) — снимаем шаг у ВСЕХ: подключившийся следом иначе
+            // увидел бы передышку, которой уже нет.
+            if (ct.CanBeCanceled) ct.Register(() => _stage?.Clear());
         }
 
-        public void EnterNode() => _session.SetPhase(BattlePhase.None);
+        public void EnterNode()
+        {
+            _stage?.Clear();
+            _session.SetPhase(BattlePhase.None);
+        }
     }
 }

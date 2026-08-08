@@ -16,7 +16,7 @@ namespace Guildmaster.Game.Session.Net
     /// <para><b>Шаг живёт, пока идёт экран.</b> Закрылся — объявляем <see cref="NodeStageState.Idle"/>,
     /// иначе подключившийся следом увидел бы витрину, которой уже нет.</para>
     /// </remarks>
-    public sealed class HostNodeStage : IDisposable
+    public sealed class HostNodeStage : INodeStageView, IDisposable
     {
         private readonly INetTransport _transport;
 
@@ -34,12 +34,22 @@ namespace Guildmaster.Game.Session.Net
         /// <summary>Что объявлено сейчас — видно в dev-панели.</summary>
         public NodeStageState Current => _current;
 
+        /// <inheritdoc />
+        public event Action<NodeStageState> Changed;
+
         /// <summary>Объявить шаг узла. Повтор того же — молчим: применение у гостя идемпотентно.</summary>
+        /// <remarks>
+        /// <b>Своих слушателей извещаем ДО отправки.</b> Экран у хозяина открывает тот же общий
+        /// потребитель, что и у гостя (<see cref="INodeStageView"/>), — иначе к одному экрану снова
+        /// вело бы два пути, а именно так и разъехалась витрина награды.
+        /// </remarks>
         public void Announce(in NodeStageState state)
         {
             if (state.Equals(_current)) return;
 
             _current = state;
+            Changed?.Invoke(state);
+
             if (!_transport.IsRunning) return; // соло: объявлять некому, но состояние помним
 
             Send(NetPeer.NoPeer, in state);

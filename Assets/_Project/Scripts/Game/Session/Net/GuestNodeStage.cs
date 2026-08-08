@@ -22,7 +22,7 @@ namespace Guildmaster.Game.Session.Net
     /// <para><b>Применить выбор гость не может</b> и не должен: реликвия ложится в чужой забег, которым
     /// владеет хозяин. Отсюда и роль этого класса — показать и передать голос.</para>
     /// </remarks>
-    public sealed class GuestNodeStage : IStartable, IDisposable
+    public sealed class GuestNodeStage : INodeStageView, IStartable, IDisposable
     {
         private readonly INetTransport   _transport;
         private readonly IContentDatabase _content;
@@ -87,11 +87,19 @@ namespace Guildmaster.Game.Session.Net
             Apply(in state);
         }
 
+        /// <summary>Что объявлено сейчас.</summary>
+        public NodeStageState Current => _applied;
+
+        /// <inheritdoc />
+        public event Action<NodeStageState> Changed;
+
         private void Apply(in NodeStageState state)
         {
             if (state.Equals(_applied)) return; // повтор того же — штатно, применение идемпотентно
 
             _applied = state;
+            Changed?.Invoke(state);
+
             if (state.Kind != NodeStageKind.Reward) return;
 
             ShowReward(state.Options);

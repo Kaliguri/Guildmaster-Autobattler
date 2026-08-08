@@ -122,6 +122,10 @@ namespace Guildmaster.UI
         private ISubscriber<OpenRewardRequest> _openRewardSub;
         private ISubscriber<OpenTextEventRequest> _openEventSub;
         private ISubscriber<OpenContinueRequest> _openContinueSub;
+        // «Переведи меня в режим» — то же, что нажать таб. Кнопки передышки шлют именно это, чтобы у
+        // них и у табов был ОДИН обработчик (иначе у гостя «К строю» не делала бы ничего).
+        private ISubscriber<Core.Flow.GoToModeRequest> _goToModeSub;
+        private IDisposable _goToModeSubscription;
         private ISubscriber<OpenShopRequest> _openShopSub;
         private ISubscriber<OpenChestRequest> _openChestSub;
         private ISubscriber<OpenCampRequest> _openCampSub;
@@ -207,6 +211,7 @@ namespace Guildmaster.UI
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
             ISubscriber<OpenTextEventRequest> openEventSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
+            ISubscriber<Core.Flow.GoToModeRequest> goToModeSub,
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
             ISubscriber<OpenMainMenuRequest> openMainMenuSub,
             ISubscriber<OpenProfileRequest> openProfileSub,
@@ -257,6 +262,7 @@ namespace Guildmaster.UI
             _openRewardSub = openRewardSub;
             _openEventSub = openEventSub;
             _openContinueSub = openContinueSub;
+            _goToModeSub = goToModeSub;
             _openShopSub = openShopSub;
             _openChestSub = openChestSub;
             _openOutcomeSub = openOutcomeSub;
@@ -315,6 +321,17 @@ namespace Guildmaster.UI
             _openEventSubscription = _openEventSub?.Subscribe(req => _router.OpenTextEvent(req));
             // Единая кнопка «Продолжить» — запрос из петли акта (ContinuePresenter).
             _openContinueSubscription = _openContinueSub?.Subscribe(req => _router.ShowContinue(req));
+            // Смена режима запросом — ровно те же методы, что и у табов. Второго пути к режиму быть не
+            // должно: он разошёлся бы с первым в порядке «убрать карту, закрыть инвентарь, войти в бой».
+            _goToModeSubscription = _goToModeSub?.Subscribe(req =>
+            {
+                switch (req.Mode)
+                {
+                    case Core.Flow.RunMode.Map:       GoToMap();       break;
+                    case Core.Flow.RunMode.Battle:    GoToBattle();    break;
+                    case Core.Flow.RunMode.Inventory: GoToInventory(); break;
+                }
+            });
             // Магазин — запрос из узла магазина (ShopFlow).
             _openShopSubscription = _openShopSub?.Subscribe(req => _router.OpenShop(req));
             // Сундук — запрос из узла сундука (ChestFlow).
@@ -805,6 +822,7 @@ namespace Guildmaster.UI
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();
             _openContinueSubscription?.Dispose();
+            _goToModeSubscription?.Dispose();
             _openShopSubscription?.Dispose();
             _openChestSubscription?.Dispose();
             _openCampSubscription?.Dispose();
