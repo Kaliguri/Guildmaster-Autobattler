@@ -31,7 +31,6 @@ namespace Guildmaster.Game.Session
         private readonly ICoopSessionControl _coop;
         private readonly ISessionRoster      _roster;
         private readonly Core.Flow.IRunControl _runControl;
-        private readonly IPublisher<PeerLostRequest> _pub;
         private readonly IPublisher<Core.Flow.NoticeRequest> _notice;
         private readonly IPublisher<Core.Flow.BusyRequest>   _busy;
 
@@ -42,14 +41,12 @@ namespace Guildmaster.Game.Session
 
         public CoopSessionPresenter(ICoopSessionControl coop, ISessionRoster roster,
                                        Core.Flow.IRunControl runControl,
-                                       IPublisher<PeerLostRequest> pub,
                                        IPublisher<Core.Flow.NoticeRequest> notice,
                                        IPublisher<Core.Flow.BusyRequest> busy)
         {
             _coop       = coop;
             _roster     = roster;
             _runControl = runControl;
-            _pub        = pub;
             _notice     = notice;
             _busy       = busy;
         }
@@ -61,6 +58,7 @@ namespace Guildmaster.Game.Session
             _lastState = _coop.State;
             _coop.StateChanged += OnStateChanged;
             _coop.PeerLeft     += OnPeerLeft;
+            _coop.Invited      += OnInvited;
         }
 
         public void Dispose()
@@ -74,6 +72,38 @@ namespace Guildmaster.Game.Session
 
             _coop.StateChanged -= OnStateChanged;
             _coop.PeerLeft     -= OnPeerLeft;
+            _coop.Invited      -= OnInvited;
+        }
+
+        /// <summary>
+        /// Нас зовут в чужую игру, и мы в этот момент играем: спрашиваем прямо в игре.
+        /// </summary>
+        /// <remarks>
+        /// <b>Вопрос, а не действие</b> (заказ Макса 09.08.2026): «Хей, Х зовет тебя в Y,
+        /// присоединиться?». Уводить по чужому клику нельзя — человек может быть посреди своего боя.
+        /// <para><b>Steam покажет и своё уведомление</b>, отключить его нельзя. Наше окно не заменяет
+        /// системное: оно даёт ответить не отрываясь от игры и не искать всплывашку в углу.</para>
+        /// <para>Согласие уводит из текущей сессии — вход в чужую игру рвёт свою (это делает
+        /// <c>AcceptInvite</c>), поэтому вопрос честно называет цену.</para>
+        /// </remarks>
+        private void OnInvited(string fromName, ulong fromSteamId)
+        {
+            string who = string.IsNullOrWhiteSpace(fromName) ? "Напарник" : fromName;
+
+            _notice?.Publish(new Core.Flow.NoticeRequest(
+                Core.Flow.NoticeKind.Info,
+                titleKey: null, titleFallback: $"{who} зовёт в свою игру",
+                bodyKey: "ui.coop.invite.body",
+                bodyFallback: "Присоединиться к нему?",
+                consequence: _coop.State == CoopSessionState.Offline
+                    ? null
+                    : "Текущая игра при этом закончится.",
+                options: new List<Core.Flow.NoticeOption>
+                {
+                    new Core.Flow.NoticeOption("ui.coop.invite.accept", "Присоединиться",
+                                               () => _coop.AcceptInvite(fromSteamId), primary: true),
+                    new Core.Flow.NoticeOption("ui.coop.invite.decline", "Не сейчас", null),
+                }));
         }
 
         /// <summary>У хоста ушёл напарник. Игра продолжается — вопрос только в том, чего хочет хозяин.</summary>
@@ -81,16 +111,17 @@ namespace Guildmaster.Game.Session
         {
             string name = NameOf(peerId);
 
-            _pub?.Publish(new PeerLostRequest(
-                title: $"{name} отключился",
-                body: "Напарник потерял связь или вышел из игры.",
+            _notice?.Publish(new Core.Flow.NoticeRequest(
+                Core.Flow.NoticeKind.Warning,
+                titleKey: null, titleFallback: $"{name} отключился",
+                bodyKey: "ui.coop.lost.body", bodyFallback: "Напарник потерял связь или вышел из игры.",
                 consequence: "Забег продолжается — прогресс сохранён.",
-                options: new List<PeerLostOption>
+                options: new List<Core.Flow.NoticeOption>
                 {
-                    new PeerLostOption("ui.coop.lost.continue", "Продолжить", null, primary: true),
-                    new PeerLostOption("ui.coop.lost.invite",   "Пригласить", () => _coop.InviteFriend()),
-                    new PeerLostOption("ui.coop.lost.to_menu",  "В главное меню",
-                                       () => _runControl?.RequestReturnToMainMenu()),
+                    new Core.Flow.NoticeOption("ui.coop.lost.continue", "Продолжить", null, primary: true),
+                    new Core.Flow.NoticeOption("ui.coop.lost.invite",   "Пригласить", () => _coop.InviteFriend()),
+                    new Core.Flow.NoticeOption("ui.coop.lost.to_menu",  "В главное меню",
+                                               () => _runControl?.RequestReturnToMainMenu()),
                 }));
         }
 
@@ -126,14 +157,16 @@ namespace Guildmaster.Game.Session
 
             string host = NameOf(NetPeerIds.Host);
 
-            _pub?.Publish(new PeerLostRequest(
-                title: $"{host} (хост) отключился",
-                body: "Игра, к которой вы присоединились, закончилась.",
+            _notice?.Publish(new Core.Flow.NoticeRequest(
+                Core.Flow.NoticeKind.Warning,
+                titleKey: null, titleFallback: $"{host} (хост) отключился",
+                bodyKey: "ui.coop.lost.host_body",
+                bodyFallback: "Игра, к которой вы присоединились, закончилась.",
                 consequence: "Ваша гильдия цела — она хранится у вас, а не у хоста.",
-                options: new List<PeerLostOption>
+                options: new List<Core.Flow.NoticeOption>
                 {
-                    new PeerLostOption("ui.coop.lost.to_menu", "В главное меню", null, primary: true),
-                    new PeerLostOption("ui.coop.lost.join",    "Присоединиться", () => _coop.BrowseFriends()),
+                    new Core.Flow.NoticeOption("ui.coop.lost.to_menu", "В главное меню", null, primary: true),
+                    new Core.Flow.NoticeOption("ui.coop.lost.join",    "Присоединиться", () => _coop.BrowseFriends()),
                 }));
         }
 

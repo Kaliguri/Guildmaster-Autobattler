@@ -483,6 +483,26 @@ MonoBehaviour:
     m_Key: ui.coop.join_rejected
     m_Metadata:
       m_Items: []
+  - m_Id: 10729317896282112
+    m_Key: ui.coop.lost.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10729317896282113
+    m_Key: ui.coop.lost.host_body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10729317896282114
+    m_Key: ui.coop.invite.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10729317896282115
+    m_Key: ui.coop.invite.accept
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10729317896282116
+    m_Key: ui.coop.invite.decline
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

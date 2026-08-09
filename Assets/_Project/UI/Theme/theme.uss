@@ -50,7 +50,6 @@
 @import url("screens/runbar.uss");
 @import url("screens/coop.uss");
 @import url("screens/profile.uss");
-@import url("screens/confirm.uss");
 @import url("screens/dev.uss");
 
 /* --- Утилиты. ПОСЛЕДНИЙ ярус: метка обязана перебивать и компонент, и экран. --- */

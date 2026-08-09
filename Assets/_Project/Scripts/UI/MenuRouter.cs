@@ -86,8 +86,6 @@ namespace Guildmaster.UI
         private VisualTreeAsset _guildSelectUxml;
         private VisualTreeAsset _hubUxml;
         private VisualTreeAsset _profileUxml;
-        private VisualTreeAsset _confirmUxml;
-        private VisualTreeAsset _peerLostUxml;
 
         // Профиль: набор скинов, число слотов, имя из Steam и применение выбранного курсора. Роутер
         // держит их функциями, а не тянет сервисы вглубь экрана: экран — разметка, а не владелец правил.
@@ -252,16 +250,12 @@ namespace Guildmaster.UI
             VisualTreeAsset titleCardUxml = null,
             VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null,
             VisualTreeAsset newGameUxml = null, VisualTreeAsset profileUxml = null,
-            VisualTreeAsset confirmUxml = null,
-            VisualTreeAsset guildSelectUxml = null, VisualTreeAsset hubUxml = null,
-            VisualTreeAsset peerLostUxml = null)
+            VisualTreeAsset guildSelectUxml = null, VisualTreeAsset hubUxml = null)
         {
-            _peerLostUxml = peerLostUxml;
             _newGameUxml = newGameUxml;
             _guildSelectUxml = guildSelectUxml;
             _hubUxml = hubUxml;
             _profileUxml = profileUxml;
-            _confirmUxml = confirmUxml;
             _devConsoleUxml = devConsoleUxml;
             _devLogUxml = devLogUxml;
             _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
@@ -845,34 +839,16 @@ namespace Guildmaster.UI
         private RouterResultScreen<bool> _hubScreen;
 
         /// <summary>
-        /// Показать разрыв связи: кого потеряли и что можно сделать.
-        /// </summary>
-        /// <remarks>
-        /// <b>Модалка, а не страница:</b> под ней остаётся то место, где игрока застало, — он видит, что
-        /// именно прервалось. И она не закрывается «мимо кнопок»: у разрыва нет безопасного умолчания,
-        /// каждый вариант уводит игру в своё состояние.
-        /// </remarks>
-        public void ShowPeerLost(in Core.Net.PeerLostRequest request)
-        {
-            if (CannotShow("Разрыв связи (_peerLostDialog)", _peerLostUxml)) return;
-
-            Core.Net.PeerLostRequest captured = request;
-            RouterScreen screen = null;
-            screen = new RouterScreen(ScreenKind.Modal,
-                () => PeerLostDialogView.Build(_peerLostUxml, in captured, key => _loc?.GetString(key),
-                                               closed: () => { if (screen != null) _nav.Remove(screen); }));
-
-            _nav.Push(screen);
-        }
-
-        /// <summary>
         /// Показать сообщение игроку: что случилось, почему и что сказала система.
         /// </summary>
         /// <remarks>
-        /// <b>Модалка поверх места события,</b> как и разрыв связи: сообщение всегда про то, что игрок
-        /// сейчас делал, и убирать это из-под него незачем. Ассета не требует — вид собирается кодом
-        /// (см. <see cref="NoticeDialogView"/>), поэтому отказ показать здесь невозможен, и молчание
-        /// игроку больше не грозит.
+        /// <b>Модалка поверх места события:</b> сообщение всегда про то, что игрок сейчас делал, и
+        /// убирать это из-под него незачем. Ассета не требует — вид собирается кодом (см.
+        /// <see cref="NoticeDialogView"/>), поэтому отказ показать здесь невозможен, и молчание игроку
+        /// больше не грозит.
+        /// <para><b>Единственное окно на всю игру</b> (решение Макса 09.08.2026): ошибка, приглашение,
+        /// разрыв связи и подтверждение — один код с разным списком ответов. Раньше их было три,
+        /// каждое со своим UXML и своей разметкой.</para>
         /// </remarks>
         public void ShowNotice(in Core.Flow.NoticeRequest request)
         {
@@ -912,52 +888,33 @@ namespace Guildmaster.UI
         /// Спросить подтверждение необратимого действия. <c>true</c> — игрок согласился.
         /// </summary>
         /// <remarks>
-        /// <b>Модалка поверх текущего экрана, а не вместо него.</b> Вопрос всегда про то, что игрок
-        /// сейчас видит («удалить ЭТОТ слот»), и убрать контекст из-под вопроса значит заставить его
-        /// вспоминать, о чём речь.
-        /// <para><b>Умолчание — отказ:</b> снятие экрана мимо кнопок (Esc, отмена сверху) читается как
-        /// «нет». У необратимого действия любая неясность обязана падать в безопасную сторону.</para>
+        /// <b>То же окно, что у сообщений и разрыва связи</b> (решение Макса 09.08.2026): вопрос — это
+        /// уведомление с двумя ответами, и отдельного экрана ему не нужно. Раньше он жил своим UXML и
+        /// своей разметкой, третьим почти одинаковым диалогом рядом с двумя другими.
+        /// <para><b>Отказ — это НАЖАТЬ «Отмена»</b>, а не закрыть окно мимо кнопок: закрыть его нечем
+        /// («Пока все требует кнопки»). Прежнее умолчание «снятие = нет» держало безопасную сторону при
+        /// Esc, которого у модалки нет.</para>
         /// </remarks>
-        public async UniTask<bool> ConfirmAsync(string title, string body, string consequence, string confirmText)
+        public UniTask<bool> ConfirmAsync(string title, string body, string consequence, string confirmText)
         {
-            if (CannotShow("Подтверждение (_confirmDialog)", _confirmUxml)) return false;
+            var answered = new UniTaskCompletionSource<bool>();
 
-            var screen = new RouterResultScreen<bool>(ScreenKind.Modal, false, resolve =>
-            {
-                VisualElement root = FillRoot(_confirmUxml.CloneTree());
-
-                var titleLabel = root.Q<Label>("confirm-title");
-                var bodyLabel  = root.Q<Label>("confirm-body");
-                var consLabel  = root.Q<Label>("confirm-consequence");
-                var cancel     = root.Q<Button>("btn-cancel");
-                var confirm    = root.Q<Button>("btn-confirm");
-
-                if (titleLabel != null) titleLabel.text = title;
-                if (bodyLabel  != null) bodyLabel.text  = body;
-
-                if (consLabel != null)
+            ShowNotice(new Core.Flow.NoticeRequest(
+                Core.Flow.NoticeKind.Warning,
+                titleKey: null, titleFallback: title,
+                bodyKey: null, bodyFallback: body,
+                consequence: consequence,
+                options: new System.Collections.Generic.List<Core.Flow.NoticeOption>
                 {
-                    consLabel.text = consequence ?? string.Empty;
-                    if (string.IsNullOrEmpty(consequence)) consLabel.style.display = DisplayStyle.None;
-                }
+                    new Core.Flow.NoticeOption("ui.confirm.cancel", "Отмена",
+                                               () => answered.TrySetResult(false), primary: true),
+                    new Core.Flow.NoticeOption(null, confirmText, () => answered.TrySetResult(true)),
+                }));
 
-                if (cancel != null)
-                {
-                    cancel.text = _loc?.GetString("ui.confirm.cancel") is { Length: > 0 } c ? c : "Отмена";
-                    cancel.clicked += () => resolve(false);
-                }
-
-                if (confirm != null)
-                {
-                    confirm.text = confirmText;
-                    confirm.clicked += () => resolve(true);
-                }
-
-                return root;
-            });
-
-            return await _nav.ShowAsync(screen);
+            return answered.Task;
         }
+
+
 
         /// <summary>
         /// Показать профиль. <paramref name="required"/> — профиля нет вовсе: экран открывается без

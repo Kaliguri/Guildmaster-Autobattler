@@ -22,6 +22,10 @@ namespace Guildmaster.Net.Session
         public bool HasLobby { get; private set; }
 
         public event Action<ulong, ulong> JoinRequested;
+
+        /// <inheritdoc />
+        /// <remarks>В петле приглашений не бывает: звать сюда некого, все узлы свои.</remarks>
+        public event Action<string, ulong, ulong> Invited;
         public event Action LobbyChanged;
 
         public void CreateLobby()

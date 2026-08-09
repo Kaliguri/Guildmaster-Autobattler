@@ -72,16 +72,9 @@ namespace Guildmaster.UI
         [Tooltip("UXML Двора гильдии: дом, из которого уходят в забег. Пока заглушка с одной кнопкой.")]
         [SerializeField] private VisualTreeAsset _hubScreen;
 
-        [Tooltip("Диалог разрыва связи (Screens/PeerLostDialog.uxml). Пусто = разрыв снова станет " +
-                 "молчаливым: игра сменит экран, не сказав, что напарник вышел.")]
-        [SerializeField] private VisualTreeAsset _peerLostDialog;
-
         [Tooltip("UXML экрана профиля: слоты, ник, цвет, курсор. Открывается из меню и обязательно на " +
                  "чистой установке — без профиля забегу некуда писаться.")]
         [SerializeField] private VisualTreeAsset _profileScreen;
-
-        [Tooltip("UXML диалога подтверждения необратимого действия (снос профиля, дома). Умолчание — отказ.")]
-        [SerializeField] private VisualTreeAsset _confirmDialog;
 
 
         [Tooltip("UXML boot title card (Happy Guildmasters) до главного меню.")]
@@ -135,8 +128,6 @@ namespace Guildmaster.UI
         private ISubscriber<OpenMainMenuRequest> _openMainMenuSub;
         private ISubscriber<OpenProfileRequest>  _openProfileSub;
         private ISubscriber<OpenHubRequest>      _openHubSub;
-        private ISubscriber<Core.Net.PeerLostRequest> _peerLostSub;
-        private IDisposable _peerLostSubscription;
         private ISubscriber<Core.Flow.NoticeRequest> _noticeSub;
         private IDisposable _noticeSubscription;
         private ISubscriber<Core.Flow.BusyRequest> _busySub;
@@ -220,7 +211,6 @@ namespace Guildmaster.UI
             ISubscriber<OpenMainMenuRequest> openMainMenuSub,
             ISubscriber<OpenProfileRequest> openProfileSub,
             ISubscriber<OpenHubRequest> openHubSub,
-            ISubscriber<Core.Net.PeerLostRequest> peerLostSub,
             ISubscriber<Core.Flow.NoticeRequest> noticeSub,
             ISubscriber<Core.Flow.BusyRequest> busySub,
             ISubscriber<Core.Flow.OpenProvingGroundsRequest> openProvingGroundsSub,
@@ -275,7 +265,6 @@ namespace Guildmaster.UI
             _openMainMenuSub = openMainMenuSub;
             _openProfileSub  = openProfileSub;
             _openHubSub      = openHubSub;
-            _peerLostSub     = peerLostSub;
             _noticeSub       = noticeSub;
             _busySub         = busySub;
             _openProvingGroundsSub = openProvingGroundsSub;
@@ -311,7 +300,7 @@ namespace Guildmaster.UI
             // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
             // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
             _uiSound?.Attach(_doc.rootVisualElement);
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _devConsoleScreen, _devLogScreen, _newGameScreen, _profileScreen, _confirmDialog, _guildSelectScreen, _hubScreen, _peerLostDialog);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _devConsoleScreen, _devLogScreen, _newGameScreen, _profileScreen, _guildSelectScreen, _hubScreen);
             _input.MenuToggleRequested += OnMenuToggle;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD || GM_DEVTOOLS
@@ -355,8 +344,6 @@ namespace Guildmaster.UI
             _openProfileSubscription = _openProfileSub?.Subscribe(req => _router.OpenProfile(req));
             // Двор гильдии — запрос из GameFlow между выбором дома и актом.
             _openHubSubscription = _openHubSub?.Subscribe(req => _router.OpenHub(req));
-            // Разрыв связи: модалка поверх того места, где игрока застало.
-            _peerLostSubscription = _peerLostSub?.Subscribe(req => _router.ShowPeerLost(in req));
             // Сообщение игроку и экран ожидания — общий шов на всю игру: и ошибки связи, и
             // предупреждения по ходу боя идут одной дорогой, а не заводят себе по экрану.
             _noticeSubscription = _noticeSub?.Subscribe(req => _router.ShowNotice(in req));
@@ -842,7 +829,6 @@ namespace Guildmaster.UI
             _openMainMenuSubscription?.Dispose();
             _openProfileSubscription?.Dispose();
             _openHubSubscription?.Dispose();
-            _peerLostSubscription?.Dispose();
             _noticeSubscription?.Dispose();
             _busySubscription?.Dispose();
             _openProvingGroundsSubscription?.Dispose();

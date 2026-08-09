@@ -15,6 +15,30 @@ namespace Guildmaster.Core.Flow
         Error = 2,
     }
 
+    /// <summary>Один ответ в окне: что написано на кнопке и что она делает.</summary>
+    public readonly struct NoticeOption
+    {
+        /// <summary>Ключ локализации подписи.</summary>
+        public readonly string LocKey;
+
+        /// <summary>Подпись, пока ключа нет в таблице.</summary>
+        public readonly string Fallback;
+
+        /// <summary>Что произойдёт по нажатию. <c>null</c> — просто закрыть окно.</summary>
+        public readonly System.Action Act;
+
+        /// <summary>Выделить как основной ответ.</summary>
+        public readonly bool Primary;
+
+        public NoticeOption(string locKey, string fallback, System.Action act, bool primary = false)
+        {
+            LocKey   = locKey;
+            Fallback = fallback;
+            Act      = act;
+            Primary  = primary;
+        }
+    }
+
     /// <summary>
     /// Сказать игроку то, что он обязан узнать, — одним окном на всю игру.
     /// </summary>
@@ -30,6 +54,14 @@ namespace Guildmaster.Core.Flow
     /// система (причина отказа Steam, код ошибки), и оно НЕ локализуется: перевести чужую диагностику
     /// нельзя, а потерять — значит снова оставить игрока без ответа «почему». Локализуются заголовок
     /// и объяснение, у них ключи.</para>
+    /// <para><b>Число кнопок — это параметр, а не вид окна</b> (решение Макса 09.08.2026: «Это ведь
+    /// тоже "окно-уведомление" и все. Просто вариация с двумя кнопками»). Ошибка, приглашение в игру,
+    /// разрыв связи и подтверждение сноса — одно устройство с разным списком ответов. Пока их было
+    /// три отдельных экрана, они жили ровно той формой, из-за которой у нас разъезжались экраны узла:
+    /// правка текста или отступа попадала в один и минула два.</para>
+    /// <para><b>Закрывается только кнопкой</b> (там же: «Пока все требует кнопки»). Поэтому поля «можно
+    /// ли отклонить» здесь нет: у окна всегда есть хотя бы один ответ, и снятие мимо него не
+    /// предусмотрено ничем.</para>
     /// </remarks>
     public readonly struct NoticeRequest
     {
@@ -48,19 +80,39 @@ namespace Guildmaster.Core.Flow
         public readonly string BodyFallback;
 
         /// <summary>
+        /// Что это значит для игры: «забег продолжается», «три дома вместе с забегами». Пусто — строки
+        /// не будет.
+        /// </summary>
+        /// <remarks>
+        /// Отдельно от <see cref="BodyFallback"/>, потому что отвечает на другой вопрос: тело говорит
+        /// ЧТО случилось, последствие — чем это обернётся. Слитые в один абзац, они читаются хуже
+        /// обоих.
+        /// </remarks>
+        public readonly string Consequence;
+
+        /// <summary>
         /// Что сказала система — как есть, без перевода. Пусто — строки не будет.
         /// </summary>
         public readonly string Details;
 
+        /// <summary>
+        /// Чем игроку ответить, слева направо. Пусто — одна кнопка «Понятно», которая просто закрывает.
+        /// </summary>
+        public readonly System.Collections.Generic.IReadOnlyList<NoticeOption> Options;
+
         public NoticeRequest(NoticeKind kind, string titleKey, string titleFallback,
-                             string bodyKey, string bodyFallback, string details = null)
+                             string bodyKey, string bodyFallback, string details = null,
+                             System.Collections.Generic.IReadOnlyList<NoticeOption> options = null,
+                             string consequence = null)
         {
             Kind          = kind;
             TitleKey      = titleKey;
             TitleFallback = titleFallback;
             BodyKey       = bodyKey;
             BodyFallback  = bodyFallback;
+            Consequence   = consequence;
             Details       = details;
+            Options       = options;
         }
     }
 

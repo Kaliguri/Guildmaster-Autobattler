@@ -33,6 +33,7 @@ namespace Guildmaster.Net.Session
             SteamMatchmaking.OnLobbyCreated       += HandleLobbyCreated;
             SteamMatchmaking.OnLobbyEntered       += HandleLobbyEntered;
             SteamFriends.OnGameLobbyJoinRequested += HandleJoinRequested;
+            SteamMatchmaking.OnLobbyInvite         += HandleInvited;
         }
 
         /// <summary>Steam на связи: клиент запущен и инициализирован.</summary>
@@ -43,6 +44,9 @@ namespace Guildmaster.Net.Session
 
         /// <summary>Нас позвали в чужое лобби — id лобби и хозяин. Ведёт в сессию.</summary>
         public event Action<ulong, ulong> JoinRequested;
+
+        /// <inheritdoc />
+        public event Action<string, ulong, ulong> Invited;
 
         /// <summary>
         /// Лобби появилось или исчезло, то есть <see cref="HasLobby"/> сменилось.
@@ -132,6 +136,7 @@ namespace Guildmaster.Net.Session
             SteamMatchmaking.OnLobbyCreated       -= HandleLobbyCreated;
             SteamMatchmaking.OnLobbyEntered       -= HandleLobbyEntered;
             SteamFriends.OnGameLobbyJoinRequested -= HandleJoinRequested;
+            SteamMatchmaking.OnLobbyInvite         -= HandleInvited;
         }
 
         private void HandleLobbyCreated(Result result, Lobby lobby)
@@ -156,5 +161,16 @@ namespace Guildmaster.Net.Session
 
         private void HandleJoinRequested(Lobby lobby, SteamId host) =>
             JoinRequested?.Invoke(lobby.Id, host.Value);
+
+        /// <summary>
+        /// Друг зовёт нас в свою игру, и мы в этот момент играем.
+        /// </summary>
+        /// <remarks>
+        /// <b>Адрес берём у пригласившего, а не у лобби.</b> <c>Lobby.Owner</c> читается из данных
+        /// комнаты, а до входа в неё этих данных у нас нет — вернулся бы ноль. Пригласить же может
+        /// только тот, кто в комнате сидит, и для соединения по релею нам нужен именно его SteamId.
+        /// </remarks>
+        private void HandleInvited(Friend from, Lobby lobby) =>
+            Invited?.Invoke(from.Name, from.Id.Value, lobby.Id);
     }
 }

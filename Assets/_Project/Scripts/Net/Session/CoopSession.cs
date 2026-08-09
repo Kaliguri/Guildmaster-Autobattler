@@ -57,6 +57,7 @@ namespace Guildmaster.Net.Session
             if (_lobby != null)
             {
                 _lobby.JoinRequested += HandleJoinRequested;
+                _lobby.Invited       += HandleInvited;
                 _lobby.LobbyChanged  += HandleLobbyChanged;
             }
         }
@@ -105,6 +106,26 @@ namespace Guildmaster.Net.Session
         /// <summary>Открыть список друзей — оттуда входят в чужую игру.</summary>
         public void BrowseFriends() => _lobby?.OpenFriendsOverlay();
 
+        /// <inheritdoc />
+        public event Action<string, ulong> Invited;
+
+        /// <summary>
+        /// Пришло приглашение. Сами по нему НЕ идём — спрашиваем игрока.
+        /// </summary>
+        /// <remarks>
+        /// Подключиться прямо здесь означало бы, что чужой клик вырывает человека из его забега без
+        /// спроса. Поэтому приглашение поднимается наружу вопросом, а входит в игру уже
+        /// <see cref="AcceptInvite"/>.
+        /// </remarks>
+        private void HandleInvited(string fromName, ulong fromSteamId, ulong lobbyId)
+        {
+            Log($"нас зовут: {fromName} ({fromSteamId}), лобби {lobbyId}; наше состояние {State}");
+            Invited?.Invoke(fromName, fromSteamId);
+        }
+
+        /// <inheritdoc />
+        public void AcceptInvite(ulong hostSteamId) => HandleJoinRequested(0, hostSteamId);
+
         /// <summary>Выйти. У хоста это конец сессии для всех.</summary>
         public void Leave()
         {
@@ -131,6 +152,7 @@ namespace Guildmaster.Net.Session
             if (_lobby != null)
             {
                 _lobby.JoinRequested -= HandleJoinRequested;
+                _lobby.Invited       -= HandleInvited;
                 _lobby.LobbyChanged  -= HandleLobbyChanged;
             }
         }

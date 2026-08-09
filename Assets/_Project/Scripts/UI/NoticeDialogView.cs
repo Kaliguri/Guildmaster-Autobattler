@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Guildmaster.Core.Flow;
 using UnityEngine.UIElements;
 
@@ -38,8 +39,16 @@ namespace Guildmaster.UI
             body.AddToClassList("gm-text-body");
             root.Add(body);
 
-            // Что сказала система — как есть. Пустой строки быть не должно: зазор под телом читается
-            // как недогруженный экран (та же готча, что в диалоге разрыва).
+            // Последствие — отдельной строкой и только если оно есть: пустая строка оставляет зазор,
+            // который читается как недогруженный экран (та же готча, что была в диалоге разрыва).
+            if (!string.IsNullOrWhiteSpace(request.Consequence))
+            {
+                var consequence = new Label(request.Consequence);
+                consequence.AddToClassList("gm-text-caption");
+                root.Add(consequence);
+            }
+
+            // Что сказала система — как есть, без перевода.
             if (!string.IsNullOrWhiteSpace(request.Details))
             {
                 var details = new Label(request.Details);
@@ -47,14 +56,52 @@ namespace Guildmaster.UI
                 root.Add(details);
             }
 
-            var ok = new Button(() => close?.Invoke())
-            {
-                text = Text(localize, "ui.notice.ok", "Понятно", "Понятно"),
-            };
-            ok.AddToClassList("gm-button");
-            root.Add(ok);
-
+            root.Add(BuildAnswers(in request, localize, close));
             return root;
+        }
+
+        /// <summary>
+        /// Ряд ответов. Пустой список — одна кнопка «Понятно»: <b>у окна всегда есть чем ответить</b>,
+        /// потому что закрыть его иначе нельзя (решение Макса 09.08.2026: «Пока все требует кнопки»).
+        /// </summary>
+        /// <remarks>
+        /// Действие варианта выполняется ДО снятия окна, а закрывается оно всегда: вариант, забывший
+        /// закрыть за собой, оставил бы игрока с висящей модалкой — и это была бы ошибка, которую
+        /// каждый заказчик окна допускал бы по-своему.
+        /// </remarks>
+        private static VisualElement BuildAnswers(in NoticeRequest request,
+                                                  Func<string, string> localize, Action close)
+        {
+            var row = new VisualElement();
+            row.AddToClassList("gm-notice__answers");
+
+            IReadOnlyList<NoticeOption> options = request.Options;
+
+            if (options == null || options.Count == 0)
+            {
+                var ok = new Button(() => close?.Invoke())
+                {
+                    text = Text(localize, "ui.notice.ok", "Понятно", "Понятно"),
+                };
+                ok.AddToClassList("gm-button");
+                row.Add(ok);
+                return row;
+            }
+
+            for (int i = 0; i < options.Count; i++)
+            {
+                NoticeOption option = options[i];
+                var button = new Button(() => { option.Act?.Invoke(); close?.Invoke(); })
+                {
+                    text = Text(localize, option.LocKey, option.Fallback, "…"),
+                };
+
+                button.AddToClassList("gm-button");
+                if (option.Primary) button.AddToClassList("gm-button--primary");
+                row.Add(button);
+            }
+
+            return row;
         }
 
         /// <summary>Модификатор панели по виду: подача разная, устройство одно.</summary>

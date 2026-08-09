@@ -285,9 +285,11 @@ namespace Guildmaster.Tests.EditMode.Run
 
             public event System.Action<Guildmaster.Core.Net.CoopSessionState> StateChanged;
             public event System.Action<int> PeerLeft;
+            public event System.Action<string, ulong> Invited;
 
             public bool StartHost() => false;
             public void InviteFriend() { }
+            public void AcceptInvite(ulong hostSteamId) { }
             public void BrowseFriends() { }
             public void Leave()
             {
