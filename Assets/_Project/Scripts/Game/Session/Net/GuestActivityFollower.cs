@@ -31,7 +31,6 @@ namespace Guildmaster.Game.Session.Net
         // Карта живёт в мире, а не в мероприятии, но для гостя это часть одного ответа «где мы».
         private readonly IActMapPresence _map;
         // Двор — на тех же правах: место вне мероприятия, в которое гость обязан попасть вместе с хостом.
-        private readonly Guildmaster.Core.Flow.IHubPresence _hub;
         // Общее согласие. Гость его только отправляет — но отправить может лишь тогда, когда знает, ЧЕГО
         // ждут, а ключ ему выставить некому: у хоста это делает расстановка, которой у гостя нет.
         private readonly Guildmaster.Core.Net.ISharedDecision _ready;
@@ -58,7 +57,7 @@ namespace Guildmaster.Game.Session.Net
         private byte[]        _envelope;
 
         public GuestActivityFollower(INetTransport transport, ActivityHost activities,
-                                     IActMapPresence map, Guildmaster.Core.Flow.IHubPresence hub,
+                                     IActMapPresence map,
                                      Guildmaster.Core.Net.ISharedDecision ready, GuestRunState runs,
                                      MessagePipe.IPublisher<Guildmaster.Guild.OpenOutcomeRequest> outcomePub,
                                      MessagePipe.ISubscriber<Guildmaster.Presentation.BattleEndedEvent> endedSub,
@@ -68,7 +67,6 @@ namespace Guildmaster.Game.Session.Net
             _transport  = transport  ?? throw new ArgumentNullException(nameof(transport));
             _activities = activities ?? throw new ArgumentNullException(nameof(activities));
             _map        = map;
-            _hub        = hub;
             _ready      = ready;
             _runs       = runs;
             _outcomePub  = outcomePub;
@@ -149,7 +147,6 @@ namespace Guildmaster.Game.Session.Net
             // чтобы показать экран один раз, а не на каждое объявление.
             ApplyOutcome(in state);
             ApplyMap(in state);
-            ApplyHub(in state);
 
             _applied = state;
         }
@@ -274,22 +271,6 @@ namespace Guildmaster.Game.Session.Net
         private void ApplyMap(in ActivityState state)
         {
             _map?.SetVisible(state.MapOpen);
-        }
-
-        /// <summary>
-        /// Открыть или закрыть двор вслед за хостом.
-        /// </summary>
-        /// <remarks>
-        /// Двор открывает петля игры между выбором дома и забегом, а петли у гостя нет: он оставался в
-        /// том месте, где его застало подключение, — на боевой камере посреди пустого мира, пока хост
-        /// стоял во дворе (наход. Макса 04.08.2026).
-        /// <para>Имя дома гость не получает и не должен: двор здесь — МЕСТО, а чей он и что в нём
-        /// лежит, приезжает состоянием забега своим каналом.</para>
-        /// </remarks>
-        private void ApplyHub(in ActivityState state)
-        {
-            // Голос за выход в забег: кнопка двора есть у обеих ролей и делает у обеих одно и то же.
-            _hub?.SetVisible(state.HubOpen, () => _ready?.ToggleLocal());
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace Guildmaster.UI
     /// прежней ручной синхронизации (<c>_menuModeActive</c>/<c>_prevContext</c>/CSS-классов-флагов).
     /// Настройки применяются живьём; Cancel/Save — на кнопках, ESC = навигация назад.
     /// </summary>
-    public sealed class MenuRouter : IDisposable, Core.Flow.IHubPresence
+    public sealed class MenuRouter : IDisposable
     {
         private readonly IInputService _input;
         private readonly UiNavigator _nav;
@@ -835,37 +835,14 @@ namespace Guildmaster.UI
                 e.Voted, e.Required, e.HasLocalChoice);
         }
 
-        // ── Двор глазами сеанса (IHubPresence) ───────────────────────────────
-        // Хост объявляет гостю «где мы», и двор — часть этого ответа. Открывает его петля игры, а петли
-        // у гостя нет: без этого шва он оставался там, где его застало подключение (наход. Макса
-        // 04.08.2026, прогон вдвоём).
-
-        /// <summary>Экран двора, пока он на стеке. Он же ответ на вопрос «открыт ли двор».</summary>
-        private RouterResultScreen<bool> _hubScreen;
-
-        bool Core.Flow.IHubPresence.IsShown => _hubScreen != null;
-
-        /// <summary>
-        /// Открыть или закрыть двор по объявлению хоста.
-        /// </summary>
+        /// <summary>Экран двора, пока он на стеке.</summary>
         /// <remarks>
-        /// Имени дома у гостя нет и не будет: двор здесь — МЕСТО, а чей он, приезжает состоянием забега
-        /// своим каналом. <c>OnStartRun</c> тоже пуст — забег начинает владелец, и гостевой экран,
-        /// закрывшись сам, не должен никого никуда отправлять.
+        /// <b>Второго пути к нему больше нет</b> (09.08.2026): двор объявляется шагом сеанса, как и
+        /// прочие общие экраны, и приходит сюда одним запросом у обеих ролей. Прежде рядом жил шов
+        /// <c>IHubPresence</c> — хост объявлял «двор открыт», гость поднимал экран сам, — и это была
+        /// ровно та форма, из-за которой экраны узла разъезжались между ролями.
         /// </remarks>
-        void Core.Flow.IHubPresence.SetVisible(bool visible, Action onStartRun)
-        {
-            if (visible == (_hubScreen != null)) return; // применяется целиком и каждый раз — повтор штатен
-
-            // Кнопка «Начать забег» есть и у гостя: она шлёт ГОЛОС, а не закрывает двор, и уходят все
-            // вместе (вердикт Макса 08.08.2026). Пока клик закрывал двор нажавшему, давать её было
-            // нельзя — напарник остался бы стоять один (наход. Макса 04.08.2026).
-            if (visible) { OpenHub(new OpenHubRequest(null, onStartRun)); return; }
-
-            RouterResultScreen<bool> screen = _hubScreen;
-            _hubScreen = null;
-            _nav.Remove(screen);
-        }
+        private RouterResultScreen<bool> _hubScreen;
 
         /// <summary>
         /// Показать разрыв связи: кого потеряли и что можно сделать.

@@ -35,6 +35,7 @@ namespace Guildmaster.Game.Session.Net
         private readonly IPublisher<OpenChestRequest>        _chestPub;
         private readonly IPublisher<OpenTextEventRequest>    _eventPub;
         private readonly IPublisher<OpenOutcomeRequest>      _outcomePub;
+        private readonly IPublisher<OpenHubRequest>          _hubPub;
         // «В меню» — тот же путь, что из паузы: у владельца отменяет забег, у гостя уводит из сеанса.
         private readonly Core.Flow.IRunControl _runControl;
         // Реестр контента: по проводу едут id, а витрине нужны определения. Реестры сторон совпадают —
@@ -57,6 +58,7 @@ namespace Guildmaster.Game.Session.Net
                                 IPublisher<OpenChestRequest> chestPub,
                                 IPublisher<OpenTextEventRequest> eventPub,
                                 IPublisher<OpenOutcomeRequest> outcomePub,
+                                IPublisher<OpenHubRequest> hubPub,
                                 Core.Flow.IRunControl runControl,
                                 IContentDatabase content,
                                 ISessionRunState runs,
@@ -70,6 +72,7 @@ namespace Guildmaster.Game.Session.Net
             _chestPub    = chestPub;
             _eventPub    = eventPub;
             _outcomePub  = outcomePub;
+            _hubPub      = hubPub;
             _runControl  = runControl;
             _content     = content;
             _runs        = runs;
@@ -112,6 +115,7 @@ namespace Guildmaster.Game.Session.Net
                 case SessionStageKind.TextEvent: ShowTextEvent(in state, alive); break;
                 case SessionStageKind.Chest:     ShowChest(alive);              break;
                 case SessionStageKind.Outcome:   ShowOutcome(in state);         break;
+                case SessionStageKind.Hub:       ShowHub(in state, alive);      break;
             }
 
             if (state.Rest.Ended) ShowNodeEnd(in state, alive);
@@ -161,6 +165,27 @@ namespace Guildmaster.Game.Session.Net
                 onContinue: null,   // акт кончился: продолжать нечем
                 onRestart: () => _decision?.Choose(Core.Net.RunAfterOptions.Restart),
                 onToGuild: () => _decision?.Choose(Core.Net.RunAfterOptions.Guild)));
+        }
+
+        /// <summary>
+        /// Двор гильдии: дом, из которого уходят в забег — одинаково у обеих ролей.
+        /// </summary>
+        /// <remarks>
+        /// <b>Кнопка шлёт ГОЛОС, а не закрывает экран</b> (вердикт Макса 08.08.2026). Двор снимается
+        /// сменой шага — тем же способом, что и остальные экраны, и потому одновременно у всех.
+        /// <para>Переехал сюда 09.08.2026 последним из экранов: до этого он показывался ДВУМЯ путями —
+        /// петлёй владельца и объявлением <c>ActivityState.HubOpen</c> у гостя. Ровно та форма, из-за
+        /// которой разъезжались экраны узла; заодно у гостя появилось имя дома, которого он не видел
+        /// вовсе.</para>
+        /// </remarks>
+        private void ShowHub(in SessionStageState state, CancellationToken alive)
+        {
+            if (!state.TryOpenHub(out HubStage hub)) return;
+
+            _hubPub?.Publish(new OpenHubRequest(
+                hub.GuildName,
+                () => _decision?.ToggleLocal(),
+                alive));
         }
 
         /// <summary>Закрытый сундук: клик по крышке — голос, крышку открывает вся группа.</summary>

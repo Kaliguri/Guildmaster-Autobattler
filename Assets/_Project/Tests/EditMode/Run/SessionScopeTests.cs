@@ -180,7 +180,6 @@ namespace Guildmaster.Tests.EditMode.Run
             // сценой мира, то есть состав сеанса нельзя было бы проверить в EditMode вовсе.
             builder.RegisterInstance<Guildmaster.Game.Flow.IPartyStage>(new SilentStage());
             builder.RegisterInstance<Guildmaster.Game.Flow.IActMapPresence>(new SilentMap());
-            builder.RegisterInstance<Guildmaster.Core.Flow.IHubPresence>(new SilentHub());
 
             // Гостевая половина ещё и ПОКАЗЫВАЕТ итог боя, поэтому просит паблишер экрана, ленту боя,
             // свою сторону и выход из чужой сессии. Всё это приходит из предков и здесь заглушается: тест
@@ -211,6 +210,9 @@ namespace Guildmaster.Tests.EditMode.Run
                 new Silent<OpenTextEventRequest>());
             builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenOutcomeRequest>>(
                 new Silent<Guildmaster.Guild.OpenOutcomeRequest>());
+            // Двор переехал на общий шов 09.08.2026 и стал таким же экраном шага, как витрина и сундук.
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenHubRequest>>(
+                new Silent<Guildmaster.Guild.OpenHubRequest>());
 
             // «В меню» с экрана исхода — тот же путь, что из паузы, и он общий для обеих ролей.
             builder.RegisterInstance<Guildmaster.Core.Flow.IRunControl>(new SilentRunControl());
@@ -244,12 +246,6 @@ namespace Guildmaster.Tests.EditMode.Run
                 System.Collections.Generic.IReadOnlyList<Guildmaster.Guild.MapNode> available,
                 bool show = true) { }
             public void EndChoose() { }
-        }
-
-        private sealed class SilentHub : Guildmaster.Core.Flow.IHubPresence
-        {
-            public bool IsShown => false;
-            public void SetVisible(bool visible, System.Action onStartRun = null) { }
         }
 
         private sealed class SilentPublisher : MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>

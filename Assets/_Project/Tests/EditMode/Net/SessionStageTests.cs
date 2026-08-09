@@ -217,6 +217,37 @@ namespace Guildmaster.Tests.EditMode.Net
         }
 
         /// <summary>
+        /// Двор едет тем же каналом, что и экраны узла, и несёт имя дома.
+        /// </summary>
+        /// <remarks>
+        /// <b>Инвариант между ролями, поэтому он в тесте.</b> Двор был последним экраном с ДВУМЯ
+        /// дорогами показа: петля владельца публиковала запрос напрямую, а гость поднимал экран по
+        /// <c>ActivityState.HubOpen</c> — и имени дома при этом не получал вовсе, потому что второй
+        /// путь его не вёз. Ровно та форма, из-за которой разъезжались экраны узла (09.08.2026).
+        /// </remarks>
+        [Test]
+        public void Hub_SurvivesTheRoundTripWithItsName()
+        {
+            var writer = new NetByteWriter(64);
+            SessionStageState hub = SessionStageState.Hub("Дом Алебардиум");
+
+            Assert.IsTrue(SessionStageCodec.TryRead(SessionStageCodec.Write(in hub, writer),
+                                                    out SessionStageState got));
+            Assert.IsTrue(got.TryOpenHub(out HubStage box), "двор не разобрался обратно");
+            Assert.AreEqual("Дом Алебардиум", box.GuildName,
+                "имя дома не доехало — у гостя на экране снова будет пустое место");
+        }
+
+        /// <summary>Коробку двора не открыть на чужом виде: вид решает, что разбирать.</summary>
+        [Test]
+        public void Hub_DoesNotOpenOnAnotherKind()
+        {
+            SessionStageState outcome = SessionStageState.Outcome(victory: true);
+
+            Assert.IsFalse(outcome.TryOpenHub(out _), "исход забега разобрался как двор");
+        }
+
+        /// <summary>
         /// Коробку чужого вида не открыть: показ обязан упереться в вид, а не разобрать байты наугад.
         /// </summary>
         /// <remarks>

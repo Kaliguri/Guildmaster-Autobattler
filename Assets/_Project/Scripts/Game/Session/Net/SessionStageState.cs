@@ -29,6 +29,17 @@ namespace Guildmaster.Game.Session.Net
 
         /// <summary>Исход забега — победа или поражение. Коробка — <see cref="OutcomeStage"/>.</summary>
         Outcome = 6,
+
+        /// <summary>
+        /// Двор гильдии: дом, из которого группа уходит в забег. Коробка — <see cref="HubStage"/>.
+        /// </summary>
+        /// <remarks>
+        /// Узлом двор не является, и в этом всё дело: шаг здесь — «что сейчас перед группой», а не
+        /// «где мы на карте». Пока двор ехал своим путём (<c>ActivityState.HubOpen</c> плюс петля
+        /// владельца), он был последним экраном с двумя дорогами показа — той самой формой, из-за
+        /// которой разъезжались экраны узла.
+        /// </remarks>
+        Hub = 7,
     }
 
     /// <summary>
@@ -101,6 +112,20 @@ namespace Guildmaster.Game.Session.Net
         public readonly bool Victory;
 
         public OutcomeStage(bool victory) => Victory = victory;
+    }
+
+    /// <summary>Двор гильдии: чей дом перед группой.</summary>
+    /// <remarks>
+    /// <b>Имя дома едет по проводу</b>, и это не украшение: пока двор показывался гостю отдельным
+    /// путём, имени у него не было вовсе — <c>OpenHubRequest(null, ...)</c>. Хозяин видел «Дом
+    /// Алебардиум», гость — пустое место на том же экране, и разницу эту никто не заказывал.
+    /// </remarks>
+    public readonly struct HubStage
+    {
+        /// <summary>Имя дома, из которого уходят в забег.</summary>
+        public readonly string GuildName;
+
+        public HubStage(string guildName) => GuildName = guildName;
     }
 
     /// <summary>
@@ -206,6 +231,15 @@ namespace Guildmaster.Game.Session.Net
             return new SessionStageState(SessionStageKind.Outcome, Pack(writer));
         }
 
+        /// <summary>Двор гильдии перед группой: дом, из которого уходят вместе.</summary>
+        public static SessionStageState Hub(string guildName)
+        {
+            var writer = new NetByteWriter(64);
+            writer.WriteString(guildName ?? string.Empty);
+
+            return new SessionStageState(SessionStageKind.Hub, Pack(writer));
+        }
+
         /// <summary>
         /// Тот же экран, но узел пройден: сверху кнопки «дальше», снизу — кадр-прощание, если узел его
         /// оставил.
@@ -272,6 +306,21 @@ namespace Guildmaster.Game.Session.Net
             catch (InvalidOperationException) { return false; }
         }
 
+        /// <summary>Разобрать двор. <c>false</c> — сейчас на экране не он.</summary>
+        public bool TryOpenHub(out HubStage box)
+        {
+            box = default;
+            if (Kind != SessionStageKind.Hub) return false;
+
+            var bytes = new NetByteReader(Payload);
+            try
+            {
+                box = new HubStage(bytes.ReadString());
+                return true;
+            }
+            catch (InvalidOperationException) { return false; }
+        }
+
         /// <summary>
         /// Разбирается ли коробка этого вида. Спрашивает приёмник, а не показ: расхождение версий надо
         /// поймать на входе, пока ещё можно оставить экран прежним.
@@ -281,6 +330,7 @@ namespace Guildmaster.Game.Session.Net
             SessionStageKind.Reward    => TryOpenReward(out _),
             SessionStageKind.TextEvent => TryOpenTextEvent(out _),
             SessionStageKind.Outcome   => TryOpenOutcome(out _),
+            SessionStageKind.Hub       => TryOpenHub(out _),
             _                       => _payload.Length == 0, // видам без коробки нести нечего
         };
 
@@ -340,6 +390,9 @@ namespace Guildmaster.Game.Session.Net
                     break;
                 case SessionStageKind.Outcome when TryOpenOutcome(out OutcomeStage outcome):
                     screen = outcome.Victory ? "Outcome(победа)" : "Outcome(поражение)";
+                    break;
+                case SessionStageKind.Hub when TryOpenHub(out HubStage hub):
+                    screen = $"Hub({hub.GuildName})";
                     break;
                 default:
                     screen = Kind.ToString();

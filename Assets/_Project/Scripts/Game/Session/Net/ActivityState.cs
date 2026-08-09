@@ -46,16 +46,8 @@ namespace Guildmaster.Game.Session.Net
         /// <summary>
         /// Открыт ли двор гильдии. Гость открывает и закрывает его вслед за хостом.
         /// </summary>
-        /// <remarks>
-        /// Двор — такое же «где мы», как карта, и попал сюда по той же причине: открывает его петля
-        /// игры, а петли у гостя нет. Пока поля не было, хост уходил во двор, а гость оставался в
-        /// предыдущем месте — на боевой камере в пустом мире (наход. Макса 04.08.2026).
-        /// </remarks>
-        public readonly bool HubOpen;
-
         public ActivityState(ActivityKind kind, bool hideOpponent, OpposingSide opposition,
-                             bool battleOpen, BattlePhase phase, bool mapOpen = false,
-                             bool hubOpen = false)
+                             bool battleOpen, BattlePhase phase, bool mapOpen = false)
         {
             Kind         = kind;
             HideOpponent = hideOpponent;
@@ -63,7 +55,6 @@ namespace Guildmaster.Game.Session.Net
             BattleOpen   = battleOpen;
             Phase        = phase;
             MapOpen      = mapOpen;
-            HubOpen      = hubOpen;
         }
 
         /// <summary>Как это выглядит у того, кто нигде: ни мероприятия, ни арены.</summary>
@@ -76,17 +67,17 @@ namespace Guildmaster.Game.Session.Net
         public bool Equals(ActivityState other) =>
             Kind == other.Kind && HideOpponent == other.HideOpponent &&
             Opposition == other.Opposition && BattleOpen == other.BattleOpen &&
-            Phase == other.Phase && MapOpen == other.MapOpen && HubOpen == other.HubOpen;
+            Phase == other.Phase && MapOpen == other.MapOpen;
 
         public override bool Equals(object obj) => obj is ActivityState other && Equals(other);
 
         public override int GetHashCode() =>
             ((int)Kind << 8) ^ ((int)Phase << 3) ^ ((int)Opposition << 5) ^
-            (HideOpponent ? 1 : 0) ^ (BattleOpen ? 4 : 0) ^ (MapOpen ? 8 : 0) ^ (HubOpen ? 16 : 0);
+            (HideOpponent ? 1 : 0) ^ (BattleOpen ? 4 : 0) ^ (MapOpen ? 8 : 0);
 
         public override string ToString() =>
             $"{Kind}(бой {(BattleOpen ? "открыт" : "закрыт")}, фаза {Phase}, " +
-            $"карта {(MapOpen ? "открыта" : "закрыта")}, двор {(HubOpen ? "открыт" : "закрыт")})";
+            $"карта {(MapOpen ? "открыта" : "закрыта")})";
     }
 
     /// <summary>Состояние мероприятия в байтах и обратно. Семь полей, все примитивные.</summary>
@@ -96,7 +87,7 @@ namespace Guildmaster.Game.Session.Net
         /// Сколько байт занимает состояние. Разбор сверяется с этим числом, а не с «хватило бы»:
         /// пакет короче — это сборка постарше, и вставать «примерно там же» нельзя.
         /// </summary>
-        private const int Size = 7;
+        private const int Size = 6;
 
         public static ArraySegment<byte> Write(in ActivityState state, NetByteWriter writer)
         {
@@ -107,7 +98,6 @@ namespace Guildmaster.Game.Session.Net
             writer.WriteBool(state.BattleOpen);
             writer.WriteByte((byte)state.Phase);
             writer.WriteBool(state.MapOpen);
-            writer.WriteBool(state.HubOpen);
             return writer.WrittenSegment;
         }
 
@@ -128,7 +118,6 @@ namespace Guildmaster.Game.Session.Net
             bool open  = bytes.ReadBool();
             byte phase = bytes.ReadByte();
             bool map   = bytes.ReadBool();
-            bool hub   = bytes.ReadBool();
 
             // Приводим к ОСНОВЕ перечисления, а не к типу поля в пакете: Enum.IsDefined сверяет типы
             // строго и бросает на несовпадении. Эти два перечисления целочисленные, хотя по проводу
@@ -139,7 +128,7 @@ namespace Guildmaster.Game.Session.Net
             if (!Enum.IsDefined(typeof(OpposingSide), side))      return false;
 
             state = new ActivityState((ActivityKind)kind, hide, (OpposingSide)side, open,
-                                      (BattlePhase)phase, map, hub);
+                                      (BattlePhase)phase, map);
             return true;
         }
     }

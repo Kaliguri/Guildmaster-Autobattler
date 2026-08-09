@@ -164,7 +164,7 @@ namespace Guildmaster.Game
             builder.Register<DevConsoleLog>(Lifetime.Singleton);
 
             // Роутер отвечает и на вопрос сеанса «открыт ли двор»: экран его, значит и факт его.
-            builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf().As<Core.Flow.IHubPresence>();
+            builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf();
             // Навигатор экранов (UI-реворк Ф1): единый владелец видимости/ввода. Пока СОЗДАётся, но не
             // подключён к роутеру — переезд MenuRouter на него в Ф2. Зависимости (IInputService, IBattleClock)
             // резолвятся ниже в этом же скоупе.
