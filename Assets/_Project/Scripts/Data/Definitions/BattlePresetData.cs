@@ -67,10 +67,28 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Баннеры боя (Party-скоуп предметы): действуют на всю команду team 0 (D1). Опц.")]
         [SerializeField] private ItemData[] _partyItems;
 
+        [Tooltip("ОБОЛОЧКА, а не бой: враги и ростер приходят снаружи, поэтому пустыми они и должны быть. " +
+                 "Такой пресет — носитель настроек для чужого сценария (бои за главным меню задаёт " +
+                 "MenuBattleConfig). Обычному пресету НЕ ставить: он обязан нести свой состав.")]
+        [SerializeField] private bool _isCarrier;
+
         public EncounterData            Encounter      => _encounter;
         public IReadOnlyList<PlayerSlot> Roster        => _roster;
         public DeploymentMode           DeploymentMode => _deploymentMode;
         public IReadOnlyList<ItemData>  PartyItems     => _partyItems;
+
+        /// <summary>
+        /// Пресет-оболочка: состав ему задают снаружи, поэтому энкаунтер и ростер у него пусты законно.
+        /// </summary>
+        /// <remarks>
+        /// Роль объявлена ПОЛЕМ, а не выведена из пустоты полей и не опознана валидатором по обратной
+        /// ссылке. Причина ровно одна и она про людей: пустой пресет выглядит недоделанным. Валидатор
+        /// требовал у него энкаунтер, тест краснел, и первым побуждением — проверено на себе 2026-08-08 —
+        /// было «дозаполнить ассет», что сломало бы механику: составы боёв за меню живут в
+        /// <see cref="MenuBattleConfig"/>, а не здесь. Флаг в инспекторе отвечает на этот вопрос до того,
+        /// как его зададут.
+        /// </remarks>
+        public bool IsCarrier => _isCarrier;
 
         /// <summary>
         /// Сложность боя. Владелец один — энкаунтер: сложность есть свойство вражеского состава, а не

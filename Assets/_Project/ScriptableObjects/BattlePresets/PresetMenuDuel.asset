@@ -17,3 +17,4 @@ MonoBehaviour:
   _roster: []
   _deploymentMode: 0
   _partyItems: []
+  _isCarrier: 1
