@@ -26,10 +26,10 @@ namespace Guildmaster.Tests.EditMode.Net
         public void FarewellOfTheNode_SurvivesTheRestBeat()
         {
             var net   = new LoopbackNetwork();
-            var stage = new HostNodeStage(net.CreateNode());
+            var stage = new HostSessionStage(net.CreateNode());
             var beat  = new RunBeatStage(new SilentSession(), stage);
 
-            stage.Announce(NodeStageState.Idle.EndingNode("ui.node.chest.title", "ui.node.chest.farewell"));
+            stage.Announce(SessionStageState.Idle.EndingNode("ui.node.chest.title", "ui.node.chest.farewell"));
             beat.EnterRestBeat(CancellationToken.None);
 
             Assert.IsTrue(stage.Current.Rest.Ended);
@@ -42,7 +42,7 @@ namespace Guildmaster.Tests.EditMode.Net
         public void BattleEnds_WithButtonsAndNoFarewell()
         {
             var net   = new LoopbackNetwork();
-            var stage = new HostNodeStage(net.CreateNode());
+            var stage = new HostSessionStage(net.CreateNode());
             var beat  = new RunBeatStage(new SilentSession(), stage);
 
             beat.EnterRestBeat(CancellationToken.None);
@@ -56,13 +56,13 @@ namespace Guildmaster.Tests.EditMode.Net
         public void EnteringTheNextNode_ClearsTheStage()
         {
             var net   = new LoopbackNetwork();
-            var stage = new HostNodeStage(net.CreateNode());
+            var stage = new HostSessionStage(net.CreateNode());
             var beat  = new RunBeatStage(new SilentSession(), stage);
 
-            stage.Announce(NodeStageState.Idle.EndingNode("ui.node.camp.title", "ui.node.camp.farewell"));
+            stage.Announce(SessionStageState.Idle.EndingNode("ui.node.camp.title", "ui.node.camp.farewell"));
             beat.EnterNode();
 
-            Assert.AreEqual(NodeStageKind.None, stage.Current.Kind);
+            Assert.AreEqual(SessionStageKind.None, stage.Current.Kind);
             Assert.IsFalse(stage.Current.Rest.Ended, "кнопки прошлого узла исчезают вместе с ним");
         }
 

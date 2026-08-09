@@ -8,13 +8,17 @@ using VContainer.Unity;
 namespace Guildmaster.Game.Session
 {
     /// <summary>
-    /// Разрыв связи глазами игрока: кто пропал, что это значит и что делать дальше.
+    /// Сеанс глазами игрока: подключение, отказ, разрыв — всё, о чём кооп обязан сказать вслух.
     /// </summary>
     /// <remarks>
-    /// <b>До этого разрыв был молчаливым с обеих сторон.</b> Гостя уводило в главное меню без единого
+    /// <b>Имя изменилось 09.08.2026 вместе с обязанностями.</b> Класс родился как показ разрыва
+    /// (<c>CoopDisconnectPresenter</c>), но сюда же приходит и вход в чужую игру: состояние и причина
+    /// уже здесь, а заводить второго слушателя того же события значило бы развести один факт по двум
+    /// головам.
+    /// <para><b>До этого разрыв был молчаливым с обеих сторон.</b> Гостя уводило в главное меню без единого
     /// слова — экран просто менялся, и «хост вышел» было не отличить от собственного сбоя. Хост же не
     /// узнавал об уходе напарника вовсе: он оставался в игре и понимал это по замершему курсору
-    /// (наход. Макса 04.08.2026).
+    /// (наход. Макса 04.08.2026).</para>
     /// <para><b>Варианты разные, потому что разные роли.</b> Хосту игра остаётся: он продолжает один,
     /// зовёт заново или уходит. Гостю игры больше нет — его забег чужой; он либо уходит в меню, либо
     /// ищет, к кому пойти.</para>
@@ -22,7 +26,7 @@ namespace Guildmaster.Game.Session
     /// через <see cref="ICoopSessionControl"/>. Второй способ позвать друга разошёлся бы с первым ровно
     /// в тот день, когда у приглашения появится своё правило.</para>
     /// </remarks>
-    public sealed class CoopDisconnectPresenter : IStartable, IDisposable
+    public sealed class CoopSessionPresenter : IStartable, IDisposable
     {
         private readonly ICoopSessionControl _coop;
         private readonly ISessionRoster      _roster;
@@ -36,7 +40,7 @@ namespace Guildmaster.Game.Session
         /// <summary>Живёт, пока идёт подключение: его отмена и снимает экран ожидания.</summary>
         private System.Threading.CancellationTokenSource _waiting;
 
-        public CoopDisconnectPresenter(ICoopSessionControl coop, ISessionRoster roster,
+        public CoopSessionPresenter(ICoopSessionControl coop, ISessionRoster roster,
                                        Core.Flow.IRunControl runControl,
                                        IPublisher<PeerLostRequest> pub,
                                        IPublisher<Core.Flow.NoticeRequest> notice,

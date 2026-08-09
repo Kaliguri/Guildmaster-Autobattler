@@ -14,10 +14,10 @@ namespace Guildmaster.Game.Flow
     public sealed class CampFlow : IEventFlow
     {
         private readonly IPublisher<OpenCampRequest> _openCampPub;
-        private readonly Session.Net.HostNodeStage _stage;
+        private readonly Session.Net.HostSessionStage _stage;
 
         public CampFlow(IPublisher<OpenCampRequest> openCampPub,
-                        Session.Net.HostNodeStage stage = null)
+                        Session.Net.HostSessionStage stage = null)
         {
             _openCampPub = openCampPub;
             _stage       = stage;
@@ -32,7 +32,7 @@ namespace Guildmaster.Game.Flow
             await tcs.Task.AttachExternalCancellation(ctx.Cancellation); // игрок ушёл с привала
 
             // Единый ритм конца узла (QA #48/#49): привал сворачивается в кадр-прощание до следующего узла.
-            _stage?.Announce(Session.Net.NodeStageState.Idle.EndingNode(
+            _stage?.Announce(Session.Net.SessionStageState.Idle.EndingNode(
                 "ui.node.camp.title", "ui.node.camp.farewell"));
 
             return EventResult.Completed;

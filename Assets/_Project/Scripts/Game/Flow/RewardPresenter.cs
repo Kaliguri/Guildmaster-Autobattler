@@ -27,7 +27,7 @@ namespace Guildmaster.Game.Flow
     /// витрину. Второй раскат у него дал бы другие три реликвии: бросок случаен.</para>
     /// <para><b>В соло ничего не меняется:</b> участник один, решение срабатывает в тот же кадр.</para>
     /// <para><b>Витрину показывает не он.</b> Презентер объявляет шаг узла, а экран открывает общий для
-    /// обеих ролей потребитель (<c>NodeStageScreens</c>). Пока показ жил здесь, к витрине вело два пути
+    /// обеих ролей потребитель (<c>SessionStageScreens</c>). Пока показ жил здесь, к витрине вело два пути
     /// — этот и гостевой, — и во втором признак «запас полон» был зашит в <c>false</c>.</para>
     /// </remarks>
     public sealed class RewardPresenter : IRewardPresenter
@@ -39,12 +39,12 @@ namespace Guildmaster.Game.Flow
         private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
         private readonly Core.Net.ISharedDecision _decision;
         // Объявление витрины: и гостям, у которых нет ни генератора, ни забега, и своему же показу.
-        private readonly Session.Net.HostNodeStage _stage;
+        private readonly Session.Net.HostSessionStage _stage;
 
         public RewardPresenter(RewardService rewards, RunStateService runStates,
                                Guildmaster.Guild.Commands.IRunCommands commands,
                                Core.Net.ISharedDecision decision,
-                               Session.Net.HostNodeStage stage)
+                               Session.Net.HostSessionStage stage)
         {
             _rewards   = rewards;
             _runStates = runStates;
@@ -72,9 +72,9 @@ namespace Guildmaster.Game.Flow
             _decision?.Bind(Core.Net.DecisionKeys.RewardPick, option => chosen.TrySetResult(option));
 
             // Витрину не показываем сами: объявляем шаг узла, а экран открывает общий для обеих ролей
-            // потребитель (NodeStageScreens). Пока показ жил здесь, у витрины было ДВА пути — этот и
+            // потребитель (SessionStageScreens). Пока показ жил здесь, у витрины было ДВА пути — этот и
             // гостевой, — и во втором признак «запас полон» был зашит в false (HARD «равные игроки»).
-            _stage?.Announce(Session.Net.NodeStageState.Reward(IdsOf(choices), full));
+            _stage?.Announce(Session.Net.SessionStageState.Reward(IdsOf(choices), full));
 
             try
             {

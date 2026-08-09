@@ -19,7 +19,7 @@ namespace Guildmaster.Game.Flow
     /// Презентер исхода забега: объявляет шаг узла и ждёт, куда группа пойдёт дальше.
     /// </summary>
     /// <remarks>
-    /// <b>Экран показывает не он</b>, а общий для обеих ролей потребитель (<c>NodeStageScreens</c>).
+    /// <b>Экран показывает не он</b>, а общий для обеих ролей потребитель (<c>SessionStageScreens</c>).
     /// Пока презентер публиковал экран сам, гость исхода забега не видел вовсе: петля акта собирается
     /// только владельцу (HARD-правило «равные игроки», 08.08.2026).
     /// <para><b>«Заново» и «во двор» — общий выбор, «в меню» — личный</b> (вердикт Макса 08.08.2026).
@@ -42,14 +42,14 @@ namespace Guildmaster.Game.Flow
             var chosen = new UniTaskCompletionSource<RunOutcomeChoice>();
 
             ISharedDecision decision = _sessions?.Decision;
-            Session.Net.HostNodeStage stage = _sessions?.NodeStage;
+            Session.Net.HostSessionStage stage = _sessions?.SessionStage;
 
             // Ключ взводим ДО объявления: гость получит экран и счёт одним разом, а не «сначала
             // кнопки, потом откуда-то счёт».
             decision?.Bind(DecisionKeys.RunAfter, option => chosen.TrySetResult(
                 option == RunAfterOptions.Restart ? RunOutcomeChoice.Restart : RunOutcomeChoice.ToGuild));
 
-            stage?.Announce(Session.Net.NodeStageState.Outcome(victory));
+            stage?.Announce(Session.Net.SessionStageState.Outcome(victory));
 
             try
             {

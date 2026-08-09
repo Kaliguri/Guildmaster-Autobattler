@@ -25,9 +25,9 @@ namespace Guildmaster.Game.Session.Net
     /// для себя»). Поэтому кнопки не голосуют и ничего не ждут: они публикуют тот же запрос смены
     /// режима, что и табы верхней панели.</para>
     /// </remarks>
-    public sealed class NodeStageScreens : IStartable, IDisposable
+    public sealed class SessionStageScreens : IStartable, IDisposable
     {
-        private readonly INodeStageView _stage;
+        private readonly ISessionStageView _stage;
         private readonly IPublisher<OpenContinueRequest> _continuePub;
         private readonly IPublisher<GoToModeRequest>     _modePub;
         private readonly IPublisher<OpenRewardRequest>   _rewardPub;
@@ -49,7 +49,7 @@ namespace Guildmaster.Game.Session.Net
         // роли, потому что и открывает их обеим один и тот же код.
         private CancellationTokenSource _life;
 
-        public NodeStageScreens(INodeStageView stage,
+        public SessionStageScreens(ISessionStageView stage,
                                 IPublisher<OpenContinueRequest> continuePub,
                                 IPublisher<GoToModeRequest> modePub,
                                 IPublisher<OpenRewardRequest> rewardPub,
@@ -94,7 +94,7 @@ namespace Guildmaster.Game.Session.Net
             EndPreviousStage();
         }
 
-        private void OnStageChanged(NodeStageState state)
+        private void OnStageChanged(SessionStageState state)
         {
             // Прежний экран снимаем ВСЕГДА, даже если новый вид ничего не показывает: объявленный шаг
             // и есть срок жизни экрана. Без этого прощание с прошлым узлом висело бы поверх нового.
@@ -108,10 +108,10 @@ namespace Guildmaster.Game.Session.Net
             // кадр-прощание, у боя — арена.
             switch (state.Kind)
             {
-                case NodeStageKind.Reward:    ShowReward(in state);          break;
-                case NodeStageKind.TextEvent: ShowTextEvent(in state, alive); break;
-                case NodeStageKind.Chest:     ShowChest(alive);              break;
-                case NodeStageKind.Outcome:   ShowOutcome(in state);         break;
+                case SessionStageKind.Reward:    ShowReward(in state);          break;
+                case SessionStageKind.TextEvent: ShowTextEvent(in state, alive); break;
+                case SessionStageKind.Chest:     ShowChest(alive);              break;
+                case SessionStageKind.Outcome:   ShowOutcome(in state);         break;
             }
 
             if (state.Rest.Ended) ShowNodeEnd(in state, alive);
@@ -132,7 +132,7 @@ namespace Guildmaster.Game.Session.Net
         /// <remarks>
         /// Кадр публикуем ПЕРВЫМ: он задник, и придя вторым, лёг бы поверх кнопок.
         /// </remarks>
-        private void ShowNodeEnd(in NodeStageState state, CancellationToken alive)
+        private void ShowNodeEnd(in SessionStageState state, CancellationToken alive)
         {
             if (state.Rest.HasFarewell)
                 _farewellPub?.Publish(new OpenNodeFarewellRequest(
@@ -151,7 +151,7 @@ namespace Guildmaster.Game.Session.Net
         /// «Заново» и «во двор» — голоса за варианты одного решения; «в меню» уводит того, кто нажал,
         /// и зовёт для этого тот же <c>IRunControl</c>, что и пауза (вердикт Макса 08.08.2026).
         /// </remarks>
-        private void ShowOutcome(in NodeStageState state)
+        private void ShowOutcome(in SessionStageState state)
         {
             if (!state.TryOpenOutcome(out OutcomeStage outcome)) return;
 
@@ -173,13 +173,13 @@ namespace Guildmaster.Game.Session.Net
         /// Голосуем НОМЕРОМ строки, а не её текстом: текст переводится, и у игроков с разным языком
         /// голоса за один и тот же ответ не сошлись бы никогда.
         /// </remarks>
-        private void ShowTextEvent(in NodeStageState state, CancellationToken alive)
+        private void ShowTextEvent(in SessionStageState state, CancellationToken alive)
         {
             if (!state.TryOpenTextEvent(out TextEventStage box)) return;
 
             if (_content == null || !_content.TryGet(box.EventId, out TextEventData data))
             {
-                Debug.LogError($"[NodeStageScreens] - события '{box.EventId}' нет в реестре: " +
+                Debug.LogError($"[SessionStageScreens] - события '{box.EventId}' нет в реестре: " +
                                "контент разъехался, хотя рукопожатие это проверяло.");
                 return;
             }
@@ -194,11 +194,11 @@ namespace Guildmaster.Game.Session.Net
         /// <summary>Собрать витрину из объявленных id и открыть её.</summary>
         /// <remarks>
         /// <b>Клик — голос, а не взятие</b>: награда общая. Экран закрывается признаком срабатывания от
-        /// общего решения, а не по клику и не по объявлению <see cref="NodeStageState.Idle"/> — два пути
+        /// общего решения, а не по клику и не по объявлению <see cref="SessionStageState.Idle"/> — два пути
         /// к одному закрытию разошлись бы, и у кого-то витрина осталась бы висеть после того, как
         /// награду уже взяли.
         /// </remarks>
-        private void ShowReward(in NodeStageState state)
+        private void ShowReward(in SessionStageState state)
         {
             if (!state.TryOpenReward(out RewardStage shelf)) return;
 
@@ -208,7 +208,7 @@ namespace Guildmaster.Game.Session.Net
             for (int i = 0; i < ids.Count; i++)
             {
                 if (_content != null && _content.TryGet(ids[i], out RelicData relic)) choices.Add(relic);
-                else Debug.LogError($"[NodeStageScreens] - реликвии '{ids[i]}' нет в реестре: " +
+                else Debug.LogError($"[SessionStageScreens] - реликвии '{ids[i]}' нет в реестре: " +
                                     "контент разъехался, хотя рукопожатие это проверяло.");
             }
 

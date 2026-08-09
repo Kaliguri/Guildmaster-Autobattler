@@ -13,16 +13,16 @@ namespace Guildmaster.Tests.EditMode.Net
     /// живут в тесте. Особенно важен отказ на неизвестном виде шага: показать «примерно то же» значит
     /// увести гостя на другой экран и получить голос за вариант, которого он не видел.
     /// </remarks>
-    public sealed class NodeStageTests
+    public sealed class SessionStageTests
     {
         [Test]
         public void Stage_SurvivesTheRoundTrip()
         {
-            NodeStageState sent = NodeStageState.Reward(
+            SessionStageState sent = SessionStageState.Reward(
                 new[] { "relic.ruby", "relic.iron", "relic.ash" }, inventoryFull: false);
 
             var writer = new NetByteWriter(64);
-            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
+            Assert.IsTrue(SessionStageCodec.TryRead(SessionStageCodec.Write(in sent, writer), out SessionStageState got));
 
             Assert.AreEqual(sent, got, "витрина пережила дорогу целиком и в том же порядке");
             Assert.IsTrue(got.TryOpenReward(out RewardStage shelf));
@@ -34,10 +34,10 @@ namespace Guildmaster.Tests.EditMode.Net
         public void Idle_MeansNoScreen()
         {
             var writer = new NetByteWriter(16);
-            Assert.IsTrue(NodeStageCodec.TryRead(
-                NodeStageCodec.Write(NodeStageState.Idle, writer), out NodeStageState got));
+            Assert.IsTrue(SessionStageCodec.TryRead(
+                SessionStageCodec.Write(SessionStageState.Idle, writer), out SessionStageState got));
 
-            Assert.AreEqual(NodeStageKind.None, got.Kind);
+            Assert.AreEqual(SessionStageKind.None, got.Kind);
             Assert.IsFalse(got.TryOpenReward(out _), "на пустом шаге витрины нет");
         }
 
@@ -52,10 +52,10 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void InventoryFull_TravelsWithTheShelf()
         {
-            NodeStageState sent = NodeStageState.Reward(new[] { "relic.ruby" }, inventoryFull: true);
+            SessionStageState sent = SessionStageState.Reward(new[] { "relic.ruby" }, inventoryFull: true);
 
             var writer = new NetByteWriter(64);
-            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
+            Assert.IsTrue(SessionStageCodec.TryRead(SessionStageCodec.Write(in sent, writer), out SessionStageState got));
 
             Assert.IsTrue(got.TryOpenReward(out RewardStage shelf));
             Assert.IsTrue(shelf.InventoryFull, "запас полон — витрина предложит обмен, а не простое «взять»");
@@ -70,7 +70,7 @@ namespace Guildmaster.Tests.EditMode.Net
             writer.WriteUShort(0); // коробки нет
             writer.WriteBool(false);
 
-            Assert.IsFalse(NodeStageCodec.TryRead(writer.WrittenSegment, out _));
+            Assert.IsFalse(SessionStageCodec.TryRead(writer.WrittenSegment, out _));
         }
 
         [Test]
@@ -82,12 +82,12 @@ namespace Guildmaster.Tests.EditMode.Net
             box.WriteString("relic.ruby"); // ...а прислали один
 
             var writer = new NetByteWriter(64);
-            writer.WriteByte((byte)NodeStageKind.Reward);
+            writer.WriteByte((byte)SessionStageKind.Reward);
             writer.WriteUShort((ushort)box.Length);
             for (int i = 0; i < box.Length; i++) writer.WriteByte(box.WrittenSegment.Array[i]);
             writer.WriteBool(false);
 
-            Assert.IsFalse(NodeStageCodec.TryRead(writer.WrittenSegment, out _),
+            Assert.IsFalse(SessionStageCodec.TryRead(writer.WrittenSegment, out _),
                 "оборванная витрина — это расхождение версий, а не повод показать один вариант из трёх");
         }
 
@@ -111,11 +111,11 @@ namespace Guildmaster.Tests.EditMode.Net
             guestNode.MessageReceived += (from, message) =>
             {
                 if (NetEnvelope.TryUnwrap(message, out NetChannel channel, out _) &&
-                    channel == NetChannel.NodeStage) announcements++;
+                    channel == NetChannel.SessionStage) announcements++;
             };
 
-            var stage = new HostNodeStage(hostNode);
-            NodeStageState shelf = NodeStageState.Reward(new[] { "relic.ruby", "relic.iron" }, inventoryFull: false);
+            var stage = new HostSessionStage(hostNode);
+            SessionStageState shelf = SessionStageState.Reward(new[] { "relic.ruby", "relic.iron" }, inventoryFull: false);
 
             stage.Announce(shelf);   // первая награда элитки
             stage.Clear();           // экран закрылся
@@ -130,8 +130,8 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void DifferentOptions_AreDifferentStages()
         {
-            NodeStageState first  = NodeStageState.Reward(new[] { "relic.ruby" }, inventoryFull: false);
-            NodeStageState second = NodeStageState.Reward(new[] { "relic.iron" }, inventoryFull: false);
+            SessionStageState first  = SessionStageState.Reward(new[] { "relic.ruby" }, inventoryFull: false);
+            SessionStageState second = SessionStageState.Reward(new[] { "relic.iron" }, inventoryFull: false);
 
             Assert.AreNotEqual(first, second,
                 "сравнение по одному виду шага скрыло бы смену витрины — гость остался бы на прежней");
@@ -140,11 +140,11 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void NodeEnd_CarriesTheFarewellOfTheNodeThatRanIt()
         {
-            NodeStageState sent = NodeStageState.Idle.EndingNode(
+            SessionStageState sent = SessionStageState.Idle.EndingNode(
                 "ui.node.chest.title", "ui.node.chest.farewell");
 
             var writer = new NetByteWriter(64);
-            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
+            Assert.IsTrue(SessionStageCodec.TryRead(SessionStageCodec.Write(in sent, writer), out SessionStageState got));
 
             Assert.IsTrue(got.Rest.Ended);
             Assert.AreEqual("ui.node.chest.title",    got.Rest.TitleKey);
@@ -158,14 +158,14 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void NodeEndWithoutKeys_IsJustTheButtons()
         {
-            NodeStageState sent = NodeStageState.Idle.EndingNode();
+            SessionStageState sent = SessionStageState.Idle.EndingNode();
 
             var writer = new NetByteWriter(64);
-            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
+            Assert.IsTrue(SessionStageCodec.TryRead(SessionStageCodec.Write(in sent, writer), out SessionStageState got));
 
             Assert.IsTrue(got.Rest.Ended);
             Assert.IsFalse(got.Rest.HasFarewell, "провожать нечего — исход боя показан своим экраном");
-            Assert.AreNotEqual(sent, NodeStageState.Idle.EndingNode("ui.a", "ui.b"),
+            Assert.AreNotEqual(sent, SessionStageState.Idle.EndingNode("ui.a", "ui.b"),
                 "конец узла с кадром и без — разные шаги, иначе кадр молча не доехал бы");
         }
 
@@ -179,10 +179,10 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void NodeEnd_KeepsTheScreenUnderneath()
         {
-            NodeStageState sent = NodeStageState.TextEvent("event.crossroads", gold: 40).EndingNode();
+            SessionStageState sent = SessionStageState.TextEvent("event.crossroads", gold: 40).EndingNode();
 
             var writer = new NetByteWriter(64);
-            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
+            Assert.IsTrue(SessionStageCodec.TryRead(SessionStageCodec.Write(in sent, writer), out SessionStageState got));
 
             Assert.IsTrue(got.Rest.Ended, "узел пройден — кнопки на месте");
             Assert.IsTrue(got.TryOpenTextEvent(out TextEventStage ev), "и событие под ними тоже");
@@ -193,10 +193,10 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void TextEvent_CarriesGoldAlongWithTheEvent()
         {
-            NodeStageState sent = NodeStageState.TextEvent("event.crossroads", gold: 137);
+            SessionStageState sent = SessionStageState.TextEvent("event.crossroads", gold: 137);
 
             var writer = new NetByteWriter(64);
-            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in sent, writer), out NodeStageState got));
+            Assert.IsTrue(SessionStageCodec.TryRead(SessionStageCodec.Write(in sent, writer), out SessionStageState got));
             Assert.IsTrue(got.TryOpenTextEvent(out TextEventStage ev));
 
             Assert.AreEqual("event.crossroads", ev.EventId);
@@ -207,13 +207,13 @@ namespace Guildmaster.Tests.EditMode.Net
         public void Outcome_SurvivesTheRoundTrip()
         {
             var writer = new NetByteWriter(16);
-            NodeStageState win = NodeStageState.Outcome(victory: true);
+            SessionStageState win = SessionStageState.Outcome(victory: true);
 
-            Assert.IsTrue(NodeStageCodec.TryRead(NodeStageCodec.Write(in win, writer), out NodeStageState got));
+            Assert.IsTrue(SessionStageCodec.TryRead(SessionStageCodec.Write(in win, writer), out SessionStageState got));
             Assert.IsTrue(got.TryOpenOutcome(out OutcomeStage outcome));
             Assert.IsTrue(outcome.Victory);
 
-            Assert.AreNotEqual(win, NodeStageState.Outcome(victory: false), "победа и поражение — разные шаги");
+            Assert.AreNotEqual(win, SessionStageState.Outcome(victory: false), "победа и поражение — разные шаги");
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Guildmaster.Tests.EditMode.Net
         [Test]
         public void BoxOfAnotherKind_DoesNotOpen()
         {
-            NodeStageState outcome = NodeStageState.Outcome(victory: true);
+            SessionStageState outcome = SessionStageState.Outcome(victory: true);
 
             Assert.IsFalse(outcome.TryOpenTextEvent(out _), "исход — не текстовое событие");
             Assert.IsFalse(outcome.TryOpenReward(out _),    "исход — не витрина");
@@ -241,12 +241,12 @@ namespace Guildmaster.Tests.EditMode.Net
             box.WriteString("а тут вдруг что-то лежит");
 
             var writer = new NetByteWriter(64);
-            writer.WriteByte((byte)NodeStageKind.Chest);
+            writer.WriteByte((byte)SessionStageKind.Chest);
             writer.WriteUShort((ushort)box.Length);
             for (int i = 0; i < box.Length; i++) writer.WriteByte(box.WrittenSegment.Array[i]);
             writer.WriteBool(false);
 
-            Assert.IsFalse(NodeStageCodec.TryRead(writer.WrittenSegment, out _));
+            Assert.IsFalse(SessionStageCodec.TryRead(writer.WrittenSegment, out _));
         }
     }
 }

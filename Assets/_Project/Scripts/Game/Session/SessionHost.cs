@@ -65,7 +65,7 @@ namespace Guildmaster.Game.Session
         /// <summary>
         /// Объявление экранов узла; <c>null</c> вне сессии И у гостя — объявляет тот, кто ведёт узел.
         /// </summary>
-        public Net.HostNodeStage NodeStage => Resolve<Net.HostNodeStage>();
+        public Net.HostSessionStage SessionStage => Resolve<Net.HostSessionStage>();
 
         /// <summary>
         /// Команды забега текущего сеанса; вне сессии — <c>null</c>. У владельца это локальная шина, у

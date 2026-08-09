@@ -13,7 +13,7 @@ namespace Guildmaster.Game.Session.Net
     /// безымянным списком строк, «что лежит в позиции 1» знали только два места на разных концах
     /// провода — ровно тот способ разъехаться, ради запрета которого экраны и свели в один шов.</para>
     /// </remarks>
-    public enum NodeStageKind : byte
+    public enum SessionStageKind : byte
     {
         /// <summary>Своего экрана у узла сейчас нет.</summary>
         None = 0,
@@ -39,14 +39,17 @@ namespace Guildmaster.Game.Session.Net
     /// публиковала петля акта, а она собирается только владельцу: из восьми экранов узла гость видел
     /// один. Показ переехал сюда, к общему для обеих ролей потребителю, а роли остались там, где им
     /// и место, — в том, кто ОБЪЯВЛЯЕТ шаг.
+    /// <para><b>Назывался <c>NodeStage</c> и был переименован 09.08.2026:</b> имя врало. Канал живёт
+    /// в сеансе, а не в узле, и несёт в том числе то, что узлом не является, — исход забега, а следом
+    /// за ним и двор. Шаг здесь — это «что сейчас перед группой», без привязки к месту на карте.</para>
     /// </remarks>
-    public interface INodeStageView
+    public interface ISessionStageView
     {
         /// <summary>Что объявлено сейчас.</summary>
-        NodeStageState Current { get; }
+        SessionStageState Current { get; }
 
         /// <summary>Шаг сменился. Повтор того же шага события не поднимает.</summary>
-        event Action<NodeStageState> Changed;
+        event Action<SessionStageState> Changed;
     }
 
     /// <summary>Витрина награды: из чего выбирают и есть ли куда положить.</summary>
@@ -149,9 +152,9 @@ namespace Guildmaster.Game.Session.Net
     /// <para><b>Экран и хвост — два разных факта</b>, потому что на экране они и живут вместе. Поэтому
     /// хвост навешивается на текущий шаг (<see cref="EndingNode"/>), а не подменяет его.</para>
     /// </remarks>
-    public readonly struct NodeStageState : IEquatable<NodeStageState>
+    public readonly struct SessionStageState : IEquatable<SessionStageState>
     {
-        public readonly NodeStageKind Kind;
+        public readonly SessionStageKind Kind;
 
         /// <summary>Пройден ли узел и чем его проводить.</summary>
         public readonly NodeRest Rest;
@@ -160,7 +163,7 @@ namespace Guildmaster.Game.Session.Net
 
         private static readonly byte[] Empty = Array.Empty<byte>();
 
-        internal NodeStageState(NodeStageKind kind, byte[] payload, NodeRest rest = default)
+        internal SessionStageState(SessionStageKind kind, byte[] payload, NodeRest rest = default)
         {
             Kind     = kind;
             _payload = payload ?? Empty;
@@ -171,36 +174,36 @@ namespace Guildmaster.Game.Session.Net
         internal ArraySegment<byte> Payload => new ArraySegment<byte>(_payload);
 
         /// <summary>Экрана нет и узел идёт своим ходом.</summary>
-        public static NodeStageState Idle => new NodeStageState(NodeStageKind.None, Empty);
+        public static SessionStageState Idle => new SessionStageState(SessionStageKind.None, Empty);
 
         /// <summary>Закрытый сундук.</summary>
-        public static NodeStageState Chest => new NodeStageState(NodeStageKind.Chest, Empty);
+        public static SessionStageState Chest => new SessionStageState(SessionStageKind.Chest, Empty);
 
-        public static NodeStageState Reward(IReadOnlyList<string> options, bool inventoryFull)
+        public static SessionStageState Reward(IReadOnlyList<string> options, bool inventoryFull)
         {
             var writer = new NetByteWriter(64);
             writer.WriteBool(inventoryFull);
             writer.WriteByte((byte)(options.Count > 255 ? 255 : options.Count));
             for (int i = 0; i < options.Count && i < 255; i++) writer.WriteString(options[i]);
 
-            return new NodeStageState(NodeStageKind.Reward, Pack(writer));
+            return new SessionStageState(SessionStageKind.Reward, Pack(writer));
         }
 
-        public static NodeStageState TextEvent(string eventId, int gold)
+        public static SessionStageState TextEvent(string eventId, int gold)
         {
             var writer = new NetByteWriter(64);
             writer.WriteString(eventId ?? string.Empty);
             writer.WriteInt(gold);
 
-            return new NodeStageState(NodeStageKind.TextEvent, Pack(writer));
+            return new SessionStageState(SessionStageKind.TextEvent, Pack(writer));
         }
 
-        public static NodeStageState Outcome(bool victory)
+        public static SessionStageState Outcome(bool victory)
         {
             var writer = new NetByteWriter(16);
             writer.WriteBool(victory);
 
-            return new NodeStageState(NodeStageKind.Outcome, Pack(writer));
+            return new SessionStageState(SessionStageKind.Outcome, Pack(writer));
         }
 
         /// <summary>
@@ -215,15 +218,15 @@ namespace Guildmaster.Game.Session.Net
         /// пустыми строками — кадр сундука исчезал бы ровно в тот момент, когда петля добавляет
         /// кнопки.</para>
         /// </remarks>
-        public NodeStageState EndingNode(string titleKey = null, string bodyKey = null) =>
-            new NodeStageState(Kind, _payload,
+        public SessionStageState EndingNode(string titleKey = null, string bodyKey = null) =>
+            new SessionStageState(Kind, _payload,
                 new NodeRest(true, titleKey ?? Rest.TitleKey, bodyKey ?? Rest.BodyKey));
 
         /// <summary>Разобрать витрину. <c>false</c> — сейчас на экране не она.</summary>
         public bool TryOpenReward(out RewardStage box)
         {
             box = default;
-            if (Kind != NodeStageKind.Reward) return false;
+            if (Kind != SessionStageKind.Reward) return false;
 
             var bytes = new NetByteReader(Payload);
             try
@@ -243,7 +246,7 @@ namespace Guildmaster.Game.Session.Net
         public bool TryOpenTextEvent(out TextEventStage box)
         {
             box = default;
-            if (Kind != NodeStageKind.TextEvent) return false;
+            if (Kind != SessionStageKind.TextEvent) return false;
 
             var bytes = new NetByteReader(Payload);
             try
@@ -258,7 +261,7 @@ namespace Guildmaster.Game.Session.Net
         public bool TryOpenOutcome(out OutcomeStage box)
         {
             box = default;
-            if (Kind != NodeStageKind.Outcome) return false;
+            if (Kind != SessionStageKind.Outcome) return false;
 
             var bytes = new NetByteReader(Payload);
             try
@@ -275,9 +278,9 @@ namespace Guildmaster.Game.Session.Net
         /// </summary>
         internal bool IsWellFormed() => Kind switch
         {
-            NodeStageKind.Reward    => TryOpenReward(out _),
-            NodeStageKind.TextEvent => TryOpenTextEvent(out _),
-            NodeStageKind.Outcome   => TryOpenOutcome(out _),
+            SessionStageKind.Reward    => TryOpenReward(out _),
+            SessionStageKind.TextEvent => TryOpenTextEvent(out _),
+            SessionStageKind.Outcome   => TryOpenOutcome(out _),
             _                       => _payload.Length == 0, // видам без коробки нести нечего
         };
 
@@ -297,7 +300,7 @@ namespace Guildmaster.Game.Session.Net
         /// а гость видит ровно эти байты. Заведи мы сравнение по полям — оно разошлось бы с тем, что
         /// реально едет, на первом же поле, которое забыли учесть.
         /// </remarks>
-        public bool Equals(NodeStageState other)
+        public bool Equals(SessionStageState other)
         {
             if (Kind != other.Kind) return false;
             if (Rest.Ended != other.Rest.Ended || Rest.TitleKey != other.Rest.TitleKey ||
@@ -312,7 +315,7 @@ namespace Guildmaster.Game.Session.Net
             return true;
         }
 
-        public override bool Equals(object obj) => obj is NodeStageState other && Equals(other);
+        public override bool Equals(object obj) => obj is SessionStageState other && Equals(other);
 
         public override int GetHashCode()
         {
@@ -328,14 +331,14 @@ namespace Guildmaster.Game.Session.Net
             string screen;
             switch (Kind)
             {
-                case NodeStageKind.Reward when TryOpenReward(out RewardStage shelf):
+                case SessionStageKind.Reward when TryOpenReward(out RewardStage shelf):
                     screen = $"Reward({string.Join(", ", shelf.Options)})" +
                              (shelf.InventoryFull ? " [запас полон]" : string.Empty);
                     break;
-                case NodeStageKind.TextEvent when TryOpenTextEvent(out TextEventStage ev):
+                case SessionStageKind.TextEvent when TryOpenTextEvent(out TextEventStage ev):
                     screen = $"TextEvent({ev.EventId}, золота {ev.Gold})";
                     break;
-                case NodeStageKind.Outcome when TryOpenOutcome(out OutcomeStage outcome):
+                case SessionStageKind.Outcome when TryOpenOutcome(out OutcomeStage outcome):
                     screen = outcome.Victory ? "Outcome(победа)" : "Outcome(поражение)";
                     break;
                 default:
@@ -350,9 +353,9 @@ namespace Guildmaster.Game.Session.Net
     }
 
     /// <summary>Шаг узла в байтах и обратно.</summary>
-    public static class NodeStageCodec
+    public static class SessionStageCodec
     {
-        public static ArraySegment<byte> Write(in NodeStageState state, NetByteWriter writer)
+        public static ArraySegment<byte> Write(in SessionStageState state, NetByteWriter writer)
         {
             writer.Reset();
             writer.WriteByte((byte)state.Kind);
@@ -377,9 +380,9 @@ namespace Guildmaster.Game.Session.Net
         /// Разобрать шаг. <c>false</c> — вид экрана неизвестен этой сборке или коробка не разбирается:
         /// это расхождение версий, и показывать «примерно то же» нельзя.
         /// </summary>
-        public static bool TryRead(ArraySegment<byte> payload, out NodeStageState state)
+        public static bool TryRead(ArraySegment<byte> payload, out SessionStageState state)
         {
-            state = NodeStageState.Idle;
+            state = SessionStageState.Idle;
 
             var bytes = new NetByteReader(payload);
             byte kind;
@@ -401,9 +404,9 @@ namespace Guildmaster.Game.Session.Net
                 return false;
             }
 
-            if (!Enum.IsDefined(typeof(NodeStageKind), kind)) return false;
+            if (!Enum.IsDefined(typeof(SessionStageKind), kind)) return false;
 
-            var read = new NodeStageState((NodeStageKind)kind, box, rest);
+            var read = new SessionStageState((SessionStageKind)kind, box, rest);
             if (!read.IsWellFormed()) return false;
 
             state = read;

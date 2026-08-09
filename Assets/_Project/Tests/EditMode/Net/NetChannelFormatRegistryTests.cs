@@ -87,8 +87,8 @@ namespace Guildmaster.Tests.EditMode.Net
                 [NetChannel.DeploymentIntent] = new FormatOwner(
                     "Guildmaster.Game.Session.Net.DeploymentIntentCodec", true, "DeploymentIntentCodecTests"),
 
-                [NetChannel.NodeStage] = new FormatOwner(
-                    "Guildmaster.Game.Session.Net.NodeStageCodec", true, "NodeStageTests"),
+                [NetChannel.SessionStage] = new FormatOwner(
+                    "Guildmaster.Game.Session.Net.SessionStageCodec", true, "SessionStageTests"),
             };
 
         /// <summary>

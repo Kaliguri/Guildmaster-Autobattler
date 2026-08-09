@@ -39,7 +39,7 @@ namespace Guildmaster.Game.Flow
         // Общее согласие: сундук открывают все вместе, ответ на событие тоже выбирают все.
         private readonly Core.Net.ISharedDecision _decision;
         // Объявление шага узла: кадр-прощание и кнопки «дальше» едут одним шагом обеим ролям.
-        private readonly Session.Net.HostNodeStage _stage;
+        private readonly Session.Net.HostSessionStage _stage;
 
         public NodeResolver(IContentDatabase content, IBattleSession session,
                             ILocalPlayer localPlayer, EventEffectApplier eventEffects, ShopController shop,
@@ -47,7 +47,7 @@ namespace Guildmaster.Game.Flow
                             Guildmaster.Guild.Commands.IRunCommands commands,
                             IContinuePresenter continuePresenter,
                             IPublisher<OpenShopRequest> openShopPub, IPublisher<OpenCampRequest> openCampPub,
-                            Core.Net.ISharedDecision decision, Session.Net.HostNodeStage stage)
+                            Core.Net.ISharedDecision decision, Session.Net.HostSessionStage stage)
         {
             _openCampPub  = openCampPub;
             _decision     = decision;

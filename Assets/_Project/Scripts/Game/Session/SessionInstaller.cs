@@ -34,7 +34,7 @@ namespace Guildmaster.Game.Session
 
             // Экраны узла — ОДИН код на обе роли (HARD-правило «равные игроки», 08.08.2026). Роль
             // решает, кто ОБЪЯВЛЯЕТ шаг узла; кто его показывает, от роли не зависит — смотрят оба.
-            builder.RegisterEntryPoint<Net.NodeStageScreens>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<Net.SessionStageScreens>(Lifetime.Singleton);
         }
 
         /// <summary>Владелец сейва: держит забег сам, сам его пишет и сам раздаёт гостям.</summary>
@@ -56,7 +56,7 @@ namespace Guildmaster.Game.Session
 
             // «Что на экране»: шаг узла с содержимым. Не entry point — его зовут те, кто ведёт узел
             // (витрина награды), а сам он ничего не тикает.
-            builder.Register<Net.HostNodeStage>(Lifetime.Singleton).AsSelf().As<Net.INodeStageView>();
+            builder.Register<Net.HostSessionStage>(Lifetime.Singleton).AsSelf().As<Net.ISessionStageView>();
 
             // Шина команд забега: снаружи сборки Guild в RunState пишут только через неё, и мутаторы
             // internal держат это компилятором. Лог append-only даёт реплей, аудит «кто передвинул» и
@@ -112,8 +112,8 @@ namespace Guildmaster.Game.Session
 
             // Витрина награды и прочие экраны узла — вслед за объявлением хозяина. Своей петли акта у
             // гостя нет, поэтому показать их ему больше некому.
-            builder.RegisterEntryPoint<Net.GuestNodeStage>(Lifetime.Singleton)
-                   .AsSelf().As<Net.INodeStageView>();
+            builder.RegisterEntryPoint<Net.GuestSessionStage>(Lifetime.Singleton)
+                   .AsSelf().As<Net.ISessionStageView>();
 
             // Своё согласие гость отправляет, счёт получает. Решать, все ли готовы, ему нечем: кто в
             // сессии, знает хост.

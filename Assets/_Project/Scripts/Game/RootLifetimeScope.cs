@@ -388,7 +388,7 @@ namespace Guildmaster.Game
 
             // Разрыв связи глазами игрока: кто пропал и что делать. Живёт в корне, потому что переживает
             // и сеанс, и мероприятие — терять напарника можно в любом из них.
-            builder.RegisterEntryPoint<Session.CoopDisconnectPresenter>(Lifetime.Singleton).AsSelf();
+            builder.RegisterEntryPoint<Session.CoopSessionPresenter>(Lifetime.Singleton).AsSelf();
 
             // Приглашение, принятое посреди своей игры: рвём то, что играли. Уводит в чужую игру уже
             // цикл — он видит, что сессия стала гостевой.

@@ -553,7 +553,7 @@ namespace Guildmaster.Game.Services
             {
                 var ctx  = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents);
                 var flow = new TextEventFlow(ev, _activities.EventEffects,
-                                             _sessions.Decision, _sessions.NodeStage);
+                                             _sessions.Decision, _sessions.SessionStage);
                 return await flow.Run(ctx);
             }
             finally

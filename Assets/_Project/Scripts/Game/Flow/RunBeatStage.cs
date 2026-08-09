@@ -33,9 +33,9 @@ namespace Guildmaster.Game.Flow
     public sealed class RunBeatStage : IRunBeatStage
     {
         private readonly IBattleSession _session;
-        private readonly Session.Net.HostNodeStage _stage;
+        private readonly Session.Net.HostSessionStage _stage;
 
-        public RunBeatStage(IBattleSession session, Session.Net.HostNodeStage stage)
+        public RunBeatStage(IBattleSession session, Session.Net.HostSessionStage stage)
         {
             _session = session;
             _stage   = stage;
@@ -47,7 +47,7 @@ namespace Guildmaster.Game.Flow
         /// <remarks>
         /// Раньше петля публиковала экран напрямую — и он существовал только у владельца, потому что
         /// петля собирается только ему. Теперь шаг узла объявлен обоим, а показывает его общий
-        /// потребитель (<c>NodeStageScreens</c>), одинаково у хозяина и гостя (HARD-правило «равные
+        /// потребитель (<c>SessionStageScreens</c>), одинаково у хозяина и гостя (HARD-правило «равные
         /// игроки», 08.08.2026).
         /// <para>Кнопки при этом остались тем же, чем были, — шорткатами к табам: петля их не ждёт,
         /// узел уже засчитан, и каждый жмёт свою для себя.</para>

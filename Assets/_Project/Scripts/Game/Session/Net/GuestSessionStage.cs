@@ -11,24 +11,24 @@ namespace Guildmaster.Game.Session.Net
     /// </summary>
     /// <remarks>
     /// <b>Показывать — не его дело.</b> Экраны узла открывает общий для обеих ролей потребитель
-    /// (<see cref="NodeStageScreens"/>), а этот класс — только гостевой конец провода: принять, разобрать
+    /// (<see cref="SessionStageScreens"/>), а этот класс — только гостевой конец провода: принять, разобрать
     /// и поднять событие. Пока показ жил здесь, у витрины награды было ДВА пути — этот и хозяйская
     /// петля, — и во втором признак «запас полон» был зашит в <c>false</c> (HARD «равные игроки»).
     /// <para><b>Витрину гость не катит.</b> Ему приезжают id того, что уже выпало: свой раскат дал бы
     /// другие три реликвии, и группа выбирала бы из разного.</para>
     /// </remarks>
-    public sealed class GuestNodeStage : INodeStageView, IStartable, IDisposable
+    public sealed class GuestSessionStage : ISessionStageView, IStartable, IDisposable
     {
         private readonly INetTransport _transport;
 
-        private NodeStageState _applied = NodeStageState.Idle;
+        private SessionStageState _applied = SessionStageState.Idle;
         private byte[] _envelope;
 
-        public GuestNodeStage(INetTransport transport) =>
+        public GuestSessionStage(INetTransport transport) =>
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
 
         /// <summary>Что применено последним — видно в dev-панели.</summary>
-        public NodeStageState Applied => _applied;
+        public SessionStageState Applied => _applied;
 
         /// <summary>
         /// Подписаться и спросить, что сейчас на экране. Спрашиваем сами: объявление, посланное до
@@ -41,7 +41,7 @@ namespace Guildmaster.Game.Session.Net
             if (!_transport.IsRunning) return;
 
             _transport.Send(NetPeer.HostPeerId,
-                NetEnvelope.Wrap(NetChannel.NodeStage, default, ref _envelope),
+                NetEnvelope.Wrap(NetChannel.SessionStage, default, ref _envelope),
                 NetDelivery.Reliable);
         }
 
@@ -50,15 +50,15 @@ namespace Guildmaster.Game.Session.Net
         private void HandleMessage(int from, ArraySegment<byte> message)
         {
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
-            if (channel != NetChannel.NodeStage || payload.Count == 0) return;
+            if (channel != NetChannel.SessionStage || payload.Count == 0) return;
 
             // Что на экране, объявляет только хозяин: чужое объявление увело бы нас на экран, которого
             // у группы нет.
             if (from != NetPeer.HostPeerId) return;
 
-            if (!NodeStageCodec.TryRead(payload, out NodeStageState state))
+            if (!SessionStageCodec.TryRead(payload, out SessionStageState state))
             {
-                Debug.LogError("[GuestNodeStage] - шаг узла не разобран: у вас разные версии сборки. " +
+                Debug.LogError("[GuestSessionStage] - шаг узла не разобран: у вас разные версии сборки. " +
                                "Экран остался прежним.");
                 return;
             }
@@ -70,12 +70,12 @@ namespace Guildmaster.Game.Session.Net
         }
 
         /// <summary>Что объявлено сейчас.</summary>
-        public NodeStageState Current => _applied;
+        public SessionStageState Current => _applied;
 
         /// <inheritdoc />
-        public event Action<NodeStageState> Changed;
+        public event Action<SessionStageState> Changed;
 
-        private void Apply(in NodeStageState state)
+        private void Apply(in SessionStageState state)
         {
             if (state.Equals(_applied)) return; // повтор того же — штатно, применение идемпотентно
 

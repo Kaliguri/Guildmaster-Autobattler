@@ -17,10 +17,10 @@ namespace Guildmaster.Game.Flow
     {
         private readonly IRewardPresenter _reward;
         private readonly Core.Net.ISharedDecision _decision;
-        private readonly Session.Net.HostNodeStage _stage;
+        private readonly Session.Net.HostSessionStage _stage;
 
         public ChestFlow(IRewardPresenter reward, Core.Net.ISharedDecision decision,
-                         Session.Net.HostNodeStage stage = null)
+                         Session.Net.HostSessionStage stage = null)
         {
             _reward   = reward;
             _decision = decision;
@@ -34,7 +34,7 @@ namespace Guildmaster.Game.Flow
             // Ключ взводим ДО объявления: гость получит сундук и счёт одним разом, а не «сначала
             // крышка, потом откуда-то счёт».
             _decision?.Bind(Core.Net.DecisionKeys.ChestOpen, () => opened.TrySetResult());
-            _stage?.Announce(Session.Net.NodeStageState.Chest);
+            _stage?.Announce(Session.Net.SessionStageState.Chest);
 
             try
             {
@@ -49,7 +49,7 @@ namespace Guildmaster.Game.Flow
 
             // Единый ритм конца узла (QA #48/#49): награда выдана → кадр-прощание держит экран до
             // следующего узла. Кнопки «дальше» приходят тем же шагом.
-            _stage?.Announce(Session.Net.NodeStageState.Idle.EndingNode(
+            _stage?.Announce(Session.Net.SessionStageState.Idle.EndingNode(
                 "ui.node.chest.title", "ui.node.chest.farewell"));
 
             return EventResult.Completed;

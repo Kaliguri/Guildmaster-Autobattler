@@ -15,7 +15,7 @@ namespace Guildmaster.Game.Flow
     /// <b>Ответ выбирают все вместе</b>: последствия ложатся в общий забег, и первый нажавший решал бы
     /// за группу. Голосуют номером строки — см. <see cref="Core.Net.DecisionKeys.EventChoice"/>.
     /// <para><b>Экран объявляется, а не публикуется отсюда</b>: показывает его общий для обеих ролей
-    /// потребитель (<c>NodeStageScreens</c>). Пока показ жил здесь, гость экрана не видел вовсе — петля
+    /// потребитель (<c>SessionStageScreens</c>). Пока показ жил здесь, гость экрана не видел вовсе — петля
     /// акта собирается только владельцу.</para>
     /// </remarks>
     public sealed class TextEventFlow : IEventFlow
@@ -23,10 +23,10 @@ namespace Guildmaster.Game.Flow
         private readonly TextEventData _event;
         private readonly EventEffectApplier _applier;
         private readonly Core.Net.ISharedDecision _decision;
-        private readonly Session.Net.HostNodeStage _stage;
+        private readonly Session.Net.HostSessionStage _stage;
 
         public TextEventFlow(TextEventData ev, EventEffectApplier applier,
-                             Core.Net.ISharedDecision decision, Session.Net.HostNodeStage stage = null)
+                             Core.Net.ISharedDecision decision, Session.Net.HostSessionStage stage = null)
         {
             _event    = ev;
             _applier  = applier;
@@ -52,7 +52,7 @@ namespace Guildmaster.Game.Flow
             var chosen = new UniTaskCompletionSource<string>();
 
             _decision?.Bind(Core.Net.DecisionKeys.EventChoice, option => chosen.TrySetResult(option));
-            _stage?.Announce(Session.Net.NodeStageState.TextEvent(_event.Id, _applier.Gold));
+            _stage?.Announce(Session.Net.SessionStageState.TextEvent(_event.Id, _applier.Gold));
 
             string option;
             try
