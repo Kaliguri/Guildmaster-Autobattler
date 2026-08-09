@@ -206,3 +206,34 @@
 .gm-panel--confirm {
     max-width: 520px;
 }
+
+/* === Сообщение игроку и ожидание ============================================
+   ВРЕМЕННЫЙ вид (заказ Макса 09.08.2026: «Система окон-предупреждений + ВРЕМЕННЫЙ дизайн»). Шов
+   нужен раньше, чем его облик: до него об ошибке игрок не узнавал вообще ничего.
+
+   Вид сообщения меняет ровно одно — цвет рамки. Заливку и стекло держит .gm-panel--dialog: три
+   разных фона превратили бы одно окно в три экрана, а именно этого мы и избегали. */
+.gm-panel--notice-info {
+    max-width: 520px;
+    border-left-color: var(--gm-color-info);
+    border-left-width: 3px;
+}
+
+.gm-panel--notice-warning {
+    max-width: 520px;
+    border-left-color: var(--gm-color-warning);
+    border-left-width: 3px;
+}
+
+.gm-panel--notice-error {
+    max-width: 520px;
+    border-left-color: var(--gm-color-danger);
+    border-left-width: 3px;
+}
+
+/* Ожидание: кнопок нет, и ширина у него по содержимому — окно висит ровно столько, сколько идёт
+   ожидание, и мерить его нечем. */
+.gm-panel--busy {
+    max-width: 420px;
+    align-items: center;
+}

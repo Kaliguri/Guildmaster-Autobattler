@@ -182,8 +182,14 @@ namespace Guildmaster.Net.Session
             if (_transport.IsHost) { PeerLeft?.Invoke(peerId); return; }
             if (peerId != NetPeer.HostPeerId) return;
 
-            if (State == CoopSessionState.Connecting) Fail(CoopEndReason.ConnectionFailed, "Хост не ответил");
-            else                                      Fail(CoopEndReason.HostLeft, "Хост завершил игру");
+            // Текст описывает НАБЛЮДАЕМОЕ, а не догадку о чужой стороне. «Хост не ответил» здесь стояло
+            // до 09.08.2026 и врало: разрыв на этапе подключения приходил и тогда, когда хост отвечал
+            // исправно — например, эхом закрытого соединения прошлой сессии. Диагноз назначался по
+            // состоянию, а игрок читал его как факт (разбор прогона 08.08.2026).
+            if (State == CoopSessionState.Connecting)
+                Fail(CoopEndReason.ConnectionFailed, "Соединение закрылось, не дойдя до рукопожатия");
+            else
+                Fail(CoopEndReason.HostLeft, "Соединение с хозяином игры закрыто");
         }
 
         private void HandleApproved(int myPeerId)

@@ -137,6 +137,10 @@ namespace Guildmaster.UI
         private ISubscriber<OpenHubRequest>      _openHubSub;
         private ISubscriber<Core.Net.PeerLostRequest> _peerLostSub;
         private IDisposable _peerLostSubscription;
+        private ISubscriber<Core.Flow.NoticeRequest> _noticeSub;
+        private IDisposable _noticeSubscription;
+        private ISubscriber<Core.Flow.BusyRequest> _busySub;
+        private IDisposable _busySubscription;
         private ISubscriber<OpenTitleCardRequest> _openTitleCardSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
@@ -217,6 +221,8 @@ namespace Guildmaster.UI
             ISubscriber<OpenProfileRequest> openProfileSub,
             ISubscriber<OpenHubRequest> openHubSub,
             ISubscriber<Core.Net.PeerLostRequest> peerLostSub,
+            ISubscriber<Core.Flow.NoticeRequest> noticeSub,
+            ISubscriber<Core.Flow.BusyRequest> busySub,
             ISubscriber<Core.Flow.OpenProvingGroundsRequest> openProvingGroundsSub,
             IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
@@ -270,6 +276,8 @@ namespace Guildmaster.UI
             _openProfileSub  = openProfileSub;
             _openHubSub      = openHubSub;
             _peerLostSub     = peerLostSub;
+            _noticeSub       = noticeSub;
+            _busySub         = busySub;
             _openProvingGroundsSub = openProvingGroundsSub;
         }
 
@@ -349,6 +357,10 @@ namespace Guildmaster.UI
             _openHubSubscription = _openHubSub?.Subscribe(req => _router.OpenHub(req));
             // Разрыв связи: модалка поверх того места, где игрока застало.
             _peerLostSubscription = _peerLostSub?.Subscribe(req => _router.ShowPeerLost(in req));
+            // Сообщение игроку и экран ожидания — общий шов на всю игру: и ошибки связи, и
+            // предупреждения по ходу боя идут одной дорогой, а не заводят себе по экрану.
+            _noticeSubscription = _noticeSub?.Subscribe(req => _router.ShowNotice(in req));
+            _busySubscription   = _busySub?.Subscribe(req => _router.ShowBusy(in req));
 
             // Запрос Ристалища закрывает главное меню тем же путём, что кнопка: резолв экрана через
             // навигатор гасит и панель, и стол под ней. Если меню не показано — здесь no-op, решение
@@ -831,6 +843,8 @@ namespace Guildmaster.UI
             _openProfileSubscription?.Dispose();
             _openHubSubscription?.Dispose();
             _peerLostSubscription?.Dispose();
+            _noticeSubscription?.Dispose();
+            _busySubscription?.Dispose();
             _openProvingGroundsSubscription?.Dispose();
             _openTitleCardSubscription?.Dispose();
 

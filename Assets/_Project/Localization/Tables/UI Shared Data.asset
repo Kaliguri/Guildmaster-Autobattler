@@ -463,6 +463,26 @@ MonoBehaviour:
     m_Key: ui.outcome.to_guild
     m_Metadata:
       m_Items: []
+  - m_Id: 10672321578917888
+    m_Key: ui.notice.ok
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10672321633443840
+    m_Key: ui.coop.connecting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10672321633443841
+    m_Key: ui.coop.join_failed_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10672321633443842
+    m_Key: ui.coop.join_failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10672321633443843
+    m_Key: ui.coop.join_rejected
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

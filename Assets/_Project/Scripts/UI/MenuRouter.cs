@@ -889,6 +889,49 @@ namespace Guildmaster.UI
         }
 
         /// <summary>
+        /// Показать сообщение игроку: что случилось, почему и что сказала система.
+        /// </summary>
+        /// <remarks>
+        /// <b>Модалка поверх места события,</b> как и разрыв связи: сообщение всегда про то, что игрок
+        /// сейчас делал, и убирать это из-под него незачем. Ассета не требует — вид собирается кодом
+        /// (см. <see cref="NoticeDialogView"/>), поэтому отказ показать здесь невозможен, и молчание
+        /// игроку больше не грозит.
+        /// </remarks>
+        public void ShowNotice(in Core.Flow.NoticeRequest request)
+        {
+            Core.Flow.NoticeRequest captured = request;
+            RouterScreen screen = null;
+            screen = new RouterScreen(ScreenKind.Modal,
+                () => NoticeDialogView.Build(in captured, key => _loc?.GetString(key),
+                                             close: () => { if (screen != null) _nav.Remove(screen); }));
+
+            _nav.Push(screen);
+        }
+
+        /// <summary>
+        /// Показать ожидание, пока живёт токен заказчика.
+        /// </summary>
+        /// <remarks>
+        /// <b>Снимает экран отмена, а не игрок.</b> Кнопки «закрыть» у ожидания нет: закрытое окно
+        /// означало бы, что ждать перестали, — а ждать не перестали. Уже отменённый токен не показывает
+        /// ничего: ожидание кончилось раньше, чем успело начаться, и мигать им незачем.
+        /// </remarks>
+        public void ShowBusy(in Core.Flow.BusyRequest request)
+        {
+            if (request.Until.IsCancellationRequested) return;
+
+            Core.Flow.BusyRequest captured = request;
+            var screen = new RouterScreen(ScreenKind.Modal,
+                () => BusyOverlayView.Build(in captured, key => _loc?.GetString(key)));
+
+            _nav.Push(screen);
+
+            // Регистрация переживает сам показ: токен может отмениться в любой момент, в том числе
+            // прямо сейчас — тогда экран снимется следующим кадром, не успев моргнуть.
+            captured.Until.Register(() => _nav.Remove(screen));
+        }
+
+        /// <summary>
         /// Спросить подтверждение необратимого действия. <c>true</c> — игрок согласился.
         /// </summary>
         /// <remarks>
