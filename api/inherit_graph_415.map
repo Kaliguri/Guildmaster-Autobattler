@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,45,96,70"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDefinitionEditor.html" title="Odin&#45;инспектор для всех ContentDefinition&#45;наследников: id&#45;drawer (read&#45;only + Edit Id,..." alt="" coords="156,5,337,45"/>
-<area shape="poly" id="edge429_Node000000_Node000001" title=" " alt="" coords="109,45,155,38,156,43,110,50"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor.html" title="Редактор арены: тянем границы поля и зоны расстановки прямо в Scene&#45;вью за грани (BoxBoundsHandle),..." alt="" coords="144,69,349,109"/>
-<area shape="poly" id="edge430_Node000000_Node000002" title=" " alt="" coords="110,64,144,70,143,75,109,69"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,45,84,70"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Activity_1_1ActivityInstaller.html" title="Состав Занятия — конечного мероприятия со своим состоянием и выходом в хаб: забег,..." alt="" coords="133,5,333,45"/>
+<area shape="poly" id="edge422_Node000000_Node000001" title=" " alt="" coords="97,46,133,40,134,45,98,51"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionInstaller.html" title="Состав Сессии — сеанса владения состоянием игры." alt="" coords="132,69,335,109"/>
+<area shape="poly" id="edge423_Node000000_Node000002" title=" " alt="" coords="98,64,132,69,131,75,97,69"/>
 </map>

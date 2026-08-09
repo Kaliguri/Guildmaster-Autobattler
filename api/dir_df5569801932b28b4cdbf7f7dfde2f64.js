@@ -16,6 +16,7 @@ var dir_df5569801932b28b4cdbf7f7dfde2f64 =
     [ "MainMenuScreenView.cs", "MainMenuScreenView_8cs.html", "MainMenuScreenView_8cs" ],
     [ "MenuRouter.cs", "MenuRouter_8cs.html", "MenuRouter_8cs" ],
     [ "NewGameScreenView.cs", "NewGameScreenView_8cs.html", "NewGameScreenView_8cs" ],
+    [ "NoticeDialogView.cs", "NoticeDialogView_8cs.html", "NoticeDialogView_8cs" ],
     [ "OutcomeScreenView.cs", "OutcomeScreenView_8cs.html", "OutcomeScreenView_8cs" ],
     [ "PeerLostDialogView.cs", "PeerLostDialogView_8cs.html", "PeerLostDialogView_8cs" ],
     [ "ProfileScreenView.cs", "ProfileScreenView_8cs.html", "ProfileScreenView_8cs" ],

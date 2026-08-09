@@ -14,5 +14,7 @@ var searchData=
   ['nodestagecodec_11',['NodeStageCodec',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html',1,'Guildmaster::Game::Session::Net']]],
   ['nodestagescreens_12',['NodeStageScreens',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageScreens.html',1,'Guildmaster::Game::Session::Net']]],
   ['nodestagestate_13',['NodeStageState',['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html',1,'Guildmaster::Game::Session::Net']]],
-  ['nodetypeweight_14',['NodeTypeWeight',['../structGuildmaster_1_1Guild_1_1NodeTypeWeight.html',1,'Guildmaster::Guild']]]
+  ['nodetypeweight_14',['NodeTypeWeight',['../structGuildmaster_1_1Guild_1_1NodeTypeWeight.html',1,'Guildmaster::Guild']]],
+  ['noticedialogview_15',['NoticeDialogView',['../classGuildmaster_1_1UI_1_1NoticeDialogView.html',1,'Guildmaster::UI']]],
+  ['noticerequest_16',['NoticeRequest',['../structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html',1,'Guildmaster::Core::Flow']]]
 ];

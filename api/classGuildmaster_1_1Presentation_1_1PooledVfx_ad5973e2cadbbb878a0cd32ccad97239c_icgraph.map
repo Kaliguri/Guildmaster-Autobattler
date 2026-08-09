@@ -1,7 +1,9 @@
 <map id="Guildmaster.Presentation.PooledVfx.Cancel" name="Guildmaster.Presentation.PooledVfx.Cancel">
-<area shape="rect" id="Node000001" title="Прервать и вернуть в пул (battle reset)." alt="" coords="244,37,435,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1CombatVfx.html#ad13f0ec7a05342ef18f55aac1bb0e916" title="Погасить всё летящее (battle reset) и вернуть в пулы." alt="" coords="5,5,196,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,45,196,41,196,35,231,40"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html#a3b33d239dca04168c5bda52e3614e95e" title="Шаг жизни дуги: подтянуться за клинком либо догореть." alt="" coords="5,69,196,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="231,75,196,79,196,74,230,69"/>
+<area shape="rect" id="Node000001" title="Прервать и вернуть в пул (battle reset)." alt="" coords="260,69,451,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1CombatVfx.html#ad13f0ec7a05342ef18f55aac1bb0e916" title="Погасить всё летящее (battle reset) и вернуть в пулы." alt="" coords="13,5,204,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="264,68,186,48,187,43,265,63"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1CombatVfx.html#aed41b098f8d65d3c680e0f235f41c10c" title="Подобрать эффекты, которые выключили ЧУЖОЙ рукой: вернуть их в пул, раз тика у них больше не будет." alt="" coords="5,69,212,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="246,92,212,92,212,87,246,87"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html#a3b33d239dca04168c5bda52e3614e95e" title="Шаг жизни дуги: подтянуться за клинком либо догореть." alt="" coords="13,133,204,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="265,115,187,136,186,131,264,110"/>
 </map>

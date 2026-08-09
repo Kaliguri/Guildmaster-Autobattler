@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent.html" target="_top" xlink:title="СОСТОЯНИЕ фонового боя за меню: идёт он или нет.">
+<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Core_1_1Flow_1_1MainMenuVisibilityChangedEvent.html" target="_top" xlink:title="СОСТОЯНИЕ главного меню: открыто оно или нет.">
 <polygon fill="white" stroke="#666666" points="157,-30 0,-30 0,0 157,0 157,-30"/>
-<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Core.Flow.Menu</text>
-<text text-anchor="middle" x="78.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">BattleChangedEvent</text>
+<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Core.Flow.Main</text>
+<text text-anchor="middle" x="78.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">MenuVisibilityChangedEvent</text>
 </a>
 </g>
 </g>

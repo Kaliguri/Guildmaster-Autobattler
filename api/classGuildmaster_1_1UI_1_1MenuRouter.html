@@ -169,6 +169,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af2efe2e3ffaab37399563f255237864a" id="r_af2efe2e3ffaab37399563f255237864a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#af2efe2e3ffaab37399563f255237864a">ShowPeerLost</a> (in <a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html">Core.Net.PeerLostRequest</a> request)</td></tr>
 <tr class="memdesc:af2efe2e3ffaab37399563f255237864a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать разрыв связи: кого потеряли и что можно сделать.  <br /></td></tr>
 <tr class="separator:af2efe2e3ffaab37399563f255237864a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69c8d4386b741102f1b6e2fbe38408c4" id="r_a69c8d4386b741102f1b6e2fbe38408c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a69c8d4386b741102f1b6e2fbe38408c4">ShowNotice</a> (in <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html">Core.Flow.NoticeRequest</a> request)</td></tr>
+<tr class="memdesc:a69c8d4386b741102f1b6e2fbe38408c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать сообщение игроку: что случилось, почему и что сказала система.  <br /></td></tr>
+<tr class="separator:a69c8d4386b741102f1b6e2fbe38408c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3462b80761f33c45ab5679982dc80f23" id="r_a3462b80761f33c45ab5679982dc80f23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a3462b80761f33c45ab5679982dc80f23">ShowBusy</a> (in <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html">Core.Flow.BusyRequest</a> request)</td></tr>
+<tr class="memdesc:a3462b80761f33c45ab5679982dc80f23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать ожидание, пока живёт токен заказчика.  <br /></td></tr>
+<tr class="separator:a3462b80761f33c45ab5679982dc80f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab054a900ca2a46bbdd48c0db22fce2a3" id="r_ab054a900ca2a46bbdd48c0db22fce2a3"><td class="memItemLeft" align="right" valign="top">async UniTask&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ab054a900ca2a46bbdd48c0db22fce2a3">ConfirmAsync</a> (string title, string body, string consequence, string confirmText)</td></tr>
 <tr class="memdesc:ab054a900ca2a46bbdd48c0db22fce2a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Спросить подтверждение необратимого действия.  <br /></td></tr>
 <tr class="separator:ab054a900ca2a46bbdd48c0db22fce2a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1000,6 +1006,40 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a3462b80761f33c45ab5679982dc80f23" name="a3462b80761f33c45ab5679982dc80f23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3462b80761f33c45ab5679982dc80f23">&#9670;&#160;</a></span>ShowBusy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.ShowBusy </td>
+          <td>(</td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html">Core::Flow::BusyRequest</a>&#160;</td>
+          <td class="paramname"><em>request</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Показать ожидание, пока живёт токен заказчика. </p>
+<p><b>Снимает экран отмена, а не игрок.</b> Кнопки «закрыть» у ожидания нет: закрытое окно означало бы, что ждать перестали, — а ждать не перестали. Уже отменённый токен не показывает ничего: ожидание кончилось раньше, чем успело начаться, и мигать им незачем. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_a3462b80761f33c45ab5679982dc80f23_cgraph.svg" width="471" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a942c0180c336aab815549a6de6b0f664" name="a942c0180c336aab815549a6de6b0f664"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a942c0180c336aab815549a6de6b0f664">&#9670;&#160;</a></span>ShowContinue()</h2>
 
@@ -1124,6 +1164,40 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a69c8d4386b741102f1b6e2fbe38408c4" name="a69c8d4386b741102f1b6e2fbe38408c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69c8d4386b741102f1b6e2fbe38408c4">&#9670;&#160;</a></span>ShowNotice()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.ShowNotice </td>
+          <td>(</td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html">Core::Flow::NoticeRequest</a>&#160;</td>
+          <td class="paramname"><em>request</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Показать сообщение игроку: что случилось, почему и что сказала система. </p>
+<p><b>Модалка поверх места события,</b> как и разрыв связи: сообщение всегда про то, что игрок сейчас делал, и убирать это из-под него незачем. Ассета не требует — вид собирается кодом (см. NoticeDialogView), поэтому отказ показать здесь невозможен, и молчание игроку больше не грозит. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_a69c8d4386b741102f1b6e2fbe38408c4_cgraph.svg" width="471" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

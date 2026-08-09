@@ -102,25 +102,27 @@ var sectionId = 'dynsection-0';
 <g id="Node000004" class="node">
 <title>Node4</title>
 <g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html" target="_top" xlink:title="Готовый бой (план шаг 3): вражеская сторона (EncounterData) + player&#45;ростер (PlayerSlot[]) + режим ра...">
-<polygon fill="white" stroke="transparent" points="328,-358.5 173,-358.5 173,-238.5 328,-238.5 328,-358.5"/>
-<text text-anchor="start" x="178.5" y="-346.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="start" x="209" y="-335.5" font-family="Helvetica,sans-Serif" font-size="10.00">BattlePresetData</text>
-<text text-anchor="start" x="189" y="-320.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-320.5" font-family="Helvetica,sans-Serif" font-size="10.00">Encounter</text>
-<text text-anchor="start" x="189" y="-305.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-305.5" font-family="Helvetica,sans-Serif" font-size="10.00">Roster</text>
-<text text-anchor="start" x="189" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">DeploymentMode</text>
-<text text-anchor="start" x="189" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">PartyItems</text>
-<text text-anchor="start" x="189" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tier</text>
-<text text-anchor="start" x="189" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">CreateRuntime()</text>
-<polygon fill="#666666" stroke="#666666" points="173.5,-330.5 173.5,-330.5 328.5,-330.5 328.5,-330.5 173.5,-330.5"/>
-<polygon fill="#666666" stroke="#666666" points="173.5,-255.5 173.5,-255.5 211.5,-255.5 211.5,-255.5 173.5,-255.5"/>
-<polygon fill="#666666" stroke="#666666" points="211.5,-255.5 211.5,-255.5 328.5,-255.5 328.5,-255.5 211.5,-255.5"/>
-<polygon fill="none" stroke="#666666" points="173,-238.5 173,-358.5 328,-358.5 328,-238.5 173,-238.5"/>
+<polygon fill="white" stroke="transparent" points="328,-366 173,-366 173,-231 328,-231 328,-366"/>
+<text text-anchor="start" x="178.5" y="-353.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
+<text text-anchor="start" x="209" y="-342.5" font-family="Helvetica,sans-Serif" font-size="10.00">BattlePresetData</text>
+<text text-anchor="start" x="189" y="-327.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-327.5" font-family="Helvetica,sans-Serif" font-size="10.00">Encounter</text>
+<text text-anchor="start" x="189" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">Roster</text>
+<text text-anchor="start" x="189" y="-297.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-297.5" font-family="Helvetica,sans-Serif" font-size="10.00">DeploymentMode</text>
+<text text-anchor="start" x="189" y="-282.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-282.5" font-family="Helvetica,sans-Serif" font-size="10.00">PartyItems</text>
+<text text-anchor="start" x="189" y="-267.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-267.5" font-family="Helvetica,sans-Serif" font-size="10.00">IsCarrier</text>
+<text text-anchor="start" x="189" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tier</text>
+<text text-anchor="start" x="189" y="-237.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-237.5" font-family="Helvetica,sans-Serif" font-size="10.00">CreateRuntime()</text>
+<polygon fill="#666666" stroke="#666666" points="173.5,-337.5 173.5,-337.5 328.5,-337.5 328.5,-337.5 173.5,-337.5"/>
+<polygon fill="#666666" stroke="#666666" points="173.5,-247.5 173.5,-247.5 211.5,-247.5 211.5,-247.5 173.5,-247.5"/>
+<polygon fill="#666666" stroke="#666666" points="211.5,-247.5 211.5,-247.5 328.5,-247.5 328.5,-247.5 211.5,-247.5"/>
+<polygon fill="none" stroke="#666666" points="173,-231 173,-366 328,-366 328,-231 173,-231"/>
 </a>
 </g>
 </g>
@@ -128,7 +130,7 @@ var sectionId = 'dynsection-0';
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1459.42,-490.75C1197.14,-489.39 433.48,-480.72 336.5,-426 309.9,-410.99 289.85,-383.94 275.82,-358.7"/>
+<path fill="none" stroke="#63b8ff" d="M1459.42,-490.75C1197.14,-489.39 433.48,-480.72 336.5,-426 312.56,-412.49 293.92,-389.23 280.21,-366.31"/>
 <polygon fill="none" stroke="#63b8ff" points="1459.64,-494.25 1469.66,-490.8 1459.67,-487.25 1459.64,-494.25"/>
 </a>
 </g>

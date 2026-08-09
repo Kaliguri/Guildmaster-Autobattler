@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.MenuRouter.ShowBusy" name="Guildmaster.UI.MenuRouter.ShowBusy">
+<area shape="rect" id="Node000001" title="Показать ожидание, пока живёт токен заказчика." alt="" coords="5,5,211,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1BusyOverlayView.html#af6db93c9adf02f6de021d7a0549b2e79" title=" " alt="" coords="259,5,465,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,23,245,23,245,28,211,28"/>
+</map>

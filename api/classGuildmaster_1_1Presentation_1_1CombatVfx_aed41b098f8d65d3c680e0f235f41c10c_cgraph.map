@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.CombatVfx.ReclaimOrphans" name="Guildmaster.Presentation.CombatVfx.ReclaimOrphans">
+<area shape="rect" id="Node000001" title="Подобрать эффекты, которые выключили ЧУЖОЙ рукой: вернуть их в пул, раз тика у них больше не будет." alt="" coords="5,5,212,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1PooledVfx.html#ad5973e2cadbbb878a0cd32ccad97239c" title="Прервать и вернуть в пул (battle reset)." alt="" coords="260,5,451,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,23,246,23,246,28,212,28"/>
+</map>

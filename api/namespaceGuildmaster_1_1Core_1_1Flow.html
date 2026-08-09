@@ -100,6 +100,9 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Core_1_1Flow.h
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html">BusyRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Игра занята — показать это, пока идёт ожидание.  <a href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1GoToModeRequest.html">GoToModeRequest</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">«Переведи меня в этот режим» — ровно то, что делает нажатие таба.  <a href="structGuildmaster_1_1Core_1_1Flow_1_1GoToModeRequest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,6 +120,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent.html">MenuBattleChangedEvent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">СОСТОЯНИЕ фонового боя за меню: идёт он или нет.  <a href="structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html">NoticeRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сказать игроку то, что он обязан узнать, — одним окном на всю игру.  <a href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1OpenProvingGroundsRequest.html">OpenProvingGroundsRequest</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ИНТЕНТ «уйти на Ристалище» — площадку вне забега (ГДД «Modes - Proving Grounds»).  <a href="structGuildmaster_1_1Core_1_1Flow_1_1OpenProvingGroundsRequest.html#details">More...</a><br /></td></tr>
@@ -139,8 +145,38 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a0cdcc2aadbac96b1bb243da32b844b8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Режим верхней панели: то же, что табы «Карта», «Бой», «Инвентарь».  <a href="namespaceGuildmaster_1_1Core_1_1Flow.html#a0cdcc2aadbac96b1bb243da32b844b8e">More...</a><br /></td></tr>
 <tr class="separator:a0cdcc2aadbac96b1bb243da32b844b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc3d09b0f7d57f1b9c1cb1d1328986b4" id="r_afc3d09b0f7d57f1b9c1cb1d1328986b4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Flow.html#afc3d09b0f7d57f1b9c1cb1d1328986b4">NoticeKind</a> : byte { <a class="el" href="namespaceGuildmaster_1_1Core_1_1Flow.html#afc3d09b0f7d57f1b9c1cb1d1328986b4a4059b0251f66a18cb56f544728796875">Info</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Flow.html#afc3d09b0f7d57f1b9c1cb1d1328986b4a0eaadb4fcb48a0a0ed7bc9868be9fbaa">Warning</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Core_1_1Flow.html#afc3d09b0f7d57f1b9c1cb1d1328986b4a902b0d55fddef6f8d651fe1035b7d4bd">Error</a> = 2
+ }</td></tr>
+<tr class="memdesc:afc3d09b0f7d57f1b9c1cb1d1328986b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">О чём речь: от «к сведению» до «не получилось». Решает подачу — цвет и заголовок.  <a href="namespaceGuildmaster_1_1Core_1_1Flow.html#afc3d09b0f7d57f1b9c1cb1d1328986b4">More...</a><br /></td></tr>
+<tr class="separator:afc3d09b0f7d57f1b9c1cb1d1328986b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="afc3d09b0f7d57f1b9c1cb1d1328986b4" name="afc3d09b0f7d57f1b9c1cb1d1328986b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc3d09b0f7d57f1b9c1cb1d1328986b4">&#9670;&#160;</a></span>NoticeKind</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Core_1_1Flow.html#afc3d09b0f7d57f1b9c1cb1d1328986b4">Guildmaster.Core.Flow.NoticeKind</a> : byte</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>О чём речь: от «к сведению» до «не получилось». Решает подачу — цвет и заголовок. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afc3d09b0f7d57f1b9c1cb1d1328986b4a4059b0251f66a18cb56f544728796875" name="afc3d09b0f7d57f1b9c1cb1d1328986b4a4059b0251f66a18cb56f544728796875"></a>Info&#160;</td><td class="fielddoc"><p>Просто новость: что-то случилось, делать ничего не надо. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="afc3d09b0f7d57f1b9c1cb1d1328986b4a0eaadb4fcb48a0a0ed7bc9868be9fbaa" name="afc3d09b0f7d57f1b9c1cb1d1328986b4a0eaadb4fcb48a0a0ed7bc9868be9fbaa"></a>Warning&#160;</td><td class="fielddoc"><p>Предупреждение: игра идёт дальше, но не так, как игрок рассчитывал. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="afc3d09b0f7d57f1b9c1cb1d1328986b4a902b0d55fddef6f8d651fe1035b7d4bd" name="afc3d09b0f7d57f1b9c1cb1d1328986b4a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"><p>Не получилось: задуманное действие не состоялось. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="a0cdcc2aadbac96b1bb243da32b844b8e" name="a0cdcc2aadbac96b1bb243da32b844b8e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0cdcc2aadbac96b1bb243da32b844b8e">&#9670;&#160;</a></span>RunMode</h2>
 

@@ -37,5 +37,7 @@ var searchData=
   ['bodycutledger_34',['BodyCutLedger',['../classGuildmaster_1_1Presentation_1_1Body_1_1BodyCutLedger.html',1,'Guildmaster::Presentation::Body']]],
   ['bodyvisualstate_35',['BodyVisualState',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html',1,'Guildmaster::Presentation::Body']]],
   ['bonecollectorcomponent_36',['BoneCollectorComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BoneCollectorComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
-  ['brainsystem_37',['BrainSystem',['../classGuildmaster_1_1Combat_1_1BrainSystem.html',1,'Guildmaster::Combat']]]
+  ['brainsystem_37',['BrainSystem',['../classGuildmaster_1_1Combat_1_1BrainSystem.html',1,'Guildmaster::Combat']]],
+  ['busyoverlayview_38',['BusyOverlayView',['../classGuildmaster_1_1UI_1_1BusyOverlayView.html',1,'Guildmaster::UI']]],
+  ['busyrequest_39',['BusyRequest',['../structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html',1,'Guildmaster::Core::Flow']]]
 ];

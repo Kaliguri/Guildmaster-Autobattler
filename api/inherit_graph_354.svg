@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html" target="_top" xlink:title="Заказ на одну форму удара.">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Presentation_1_1Editor_1_1PostFxScratch.html" target="_top" xlink:title="Временная копия профиля пост&#45;обработки — то, на чём стенды крутят настройки, чтобы не трогать сам асс...">
 <polygon fill="white" stroke="#666666" points="143,-30 0,-30 0,0 143,0 143,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
-<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Effects.HitFormParams</text>
+<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Editor.PostFxScratch</text>
 </a>
 </g>
 </g>

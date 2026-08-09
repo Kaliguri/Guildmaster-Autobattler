@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Data.Definitions.BattlePresetData:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData__inherit__graph.svg" width="218" height="398"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData__inherit__graph.svg" width="218" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Definitions.BattlePresetData:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData__coll__graph.svg" width="218" height="398"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData__coll__graph.svg" width="218" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -128,6 +128,9 @@ Properties</h2></td></tr>
 <tr class="separator:a22d49d86e5ee209ac29342d708c95a3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef15560ff3e8ca2d12ce295be4a4b1b4" id="r_aef15560ff3e8ca2d12ce295be4a4b1b4"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html#aef15560ff3e8ca2d12ce295be4a4b1b4">PartyItems</a><code> [get]</code></td></tr>
 <tr class="separator:aef15560ff3e8ca2d12ce295be4a4b1b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4eee975b880b3c83977d008e85a87a07" id="r_a4eee975b880b3c83977d008e85a87a07"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html#a4eee975b880b3c83977d008e85a87a07">IsCarrier</a><code> [get]</code></td></tr>
+<tr class="memdesc:a4eee975b880b3c83977d008e85a87a07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пресет-оболочка: состав ему задают снаружи, поэтому энкаунтер и ростер у него пусты законно.  <br /></td></tr>
+<tr class="separator:a4eee975b880b3c83977d008e85a87a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99d87de46b30bc1efdf50ab33db4a267" id="r_a99d87de46b30bc1efdf50ab33db4a267"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532fa">EncounterTier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html#a99d87de46b30bc1efdf50ab33db4a267">Tier</a><code> [get]</code></td></tr>
 <tr class="memdesc:a99d87de46b30bc1efdf50ab33db4a267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сложность боя.  <br /></td></tr>
 <tr class="separator:a99d87de46b30bc1efdf50ab33db4a267"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -251,6 +254,31 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4eee975b880b3c83977d008e85a87a07" name="a4eee975b880b3c83977d008e85a87a07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4eee975b880b3c83977d008e85a87a07">&#9670;&#160;</a></span>IsCarrier</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Data.Definitions.BattlePresetData.IsCarrier</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Пресет-оболочка: состав ему задают снаружи, поэтому энкаунтер и ростер у него пусты законно. </p>
+<p>Роль объявлена ПОЛЕМ, а не выведена из пустоты полей и не опознана валидатором по обратной ссылке. Причина ровно одна и она про людей: пустой пресет выглядит недоделанным. Валидатор требовал у него энкаунтер, тест краснел, и первым побуждением — проверено на себе 2026-08-08 — было «дозаполнить ассет», что сломало бы механику: составы боёв за меню живут в MenuBattleConfig, а не здесь. Флаг в инспекторе отвечает на этот вопрос до того, как его зададут. </p>
 
 </div>
 </div>

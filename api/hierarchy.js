@@ -45,6 +45,8 @@ var hierarchy =
     [ "Guildmaster.Presentation.Body.BodyCut", "structGuildmaster_1_1Presentation_1_1Body_1_1BodyCut.html", null ],
     [ "Guildmaster.Presentation.Body.BodyCutLedger", "classGuildmaster_1_1Presentation_1_1Body_1_1BodyCutLedger.html", null ],
     [ "Guildmaster.Combat.BrainSystem", "classGuildmaster_1_1Combat_1_1BrainSystem.html", null ],
+    [ "Guildmaster.UI.BusyOverlayView", "classGuildmaster_1_1UI_1_1BusyOverlayView.html", null ],
+    [ "Guildmaster.Core.Flow.BusyRequest", "structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html", null ],
     [ "Button", null, [
       [ "Guildmaster.UI.Components.PlateButton", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton.html", null ]
     ] ],
@@ -778,6 +780,8 @@ var hierarchy =
     [ "Guildmaster.Game.Session.Net.NodeRest", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeRest.html", null ],
     [ "Guildmaster.Game.Session.Net.NodeStageCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html", null ],
     [ "Guildmaster.Guild.NodeTypeWeight", "structGuildmaster_1_1Guild_1_1NodeTypeWeight.html", null ],
+    [ "Guildmaster.UI.NoticeDialogView", "classGuildmaster_1_1UI_1_1NoticeDialogView.html", null ],
+    [ "Guildmaster.Core.Flow.NoticeRequest", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html", null ],
     [ "OdinEditor", null, [
       [ "Guildmaster.Data.Editor.ContentDefinitionEditor", "classGuildmaster_1_1Data_1_1Editor_1_1ContentDefinitionEditor.html", null ],
       [ "Guildmaster.Game.Editor.ArenaLayoutAuthoringEditor", "classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor.html", null ]

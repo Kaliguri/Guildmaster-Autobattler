@@ -1,5 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Data_1_1Descriptions_1_1IDescriptionService.html" title="Сборка player&#45;facing текста и чисел (план UI&#45;реворка §II.10.1–II.10.4)." alt="" coords="5,5,231,45"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Data_1_1Descriptions_1_1DescriptionService.html" title="Реализация IDescriptionService поверх локализации и разбора статов." alt="" coords="279,5,504,45"/>
-<area shape="poly" id="edge334_Node000000_Node000001" title=" " alt="" coords="244,23,279,23,279,28,244,28"/>
+<area shape="rect" id="Node000000" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitColorRoles.html" title="Мост между ролью в данных и цветом в палитре." alt="" coords="5,5,220,45"/>
 </map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.NoticeDialogView.Build" name="Guildmaster.UI.NoticeDialogView.Build">
+<area shape="rect" id="Node000001" title=" " alt="" coords="259,5,465,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1MenuRouter.html#a69c8d4386b741102f1b6e2fbe38408c4" title="Показать сообщение игроку: что случилось, почему и что сказала система." alt="" coords="5,5,211,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,28,211,28,211,23,245,23"/>
+</map>

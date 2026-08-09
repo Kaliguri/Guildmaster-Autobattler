@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Data_1_1Stats_1_1StatValue.html" target="_top" xlink:title="Разложенное значение стата: во что оно собралось и из чего.">
+<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html" target="_top" xlink:title="Один стат&#45;модификатор: что меняем, как и на сколько.">
 <polygon fill="white" stroke="#666666" points="152,-30 0,-30 0,0 152,0 152,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Stats.Stat</text>
-<text text-anchor="middle" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Value</text>
+<text text-anchor="middle" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Modifier</text>
 </a>
 </g>
 </g>

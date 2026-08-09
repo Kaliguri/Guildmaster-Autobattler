@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html" target="_top" xlink:title="Команда забега в байтах и обратно.">
+<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1OutcomeStage.html" target="_top" xlink:title="Исход забега: дошли или нет.">
 <polygon fill="white" stroke="#666666" points="152,-30 0,-30 0,0 152,0 152,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Net.RunCommandCodec</text>
+<text text-anchor="middle" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Net.OutcomeStage</text>
 </a>
 </g>
 </g>

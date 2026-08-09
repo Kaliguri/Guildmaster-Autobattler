@@ -113,8 +113,8 @@ Collaboration diagram for Guildmaster.Game.Session.CoopDisconnectPresenter:</div
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7897c44c4ea9fe9d59d02f55cc8f27fb" id="r_a7897c44c4ea9fe9d59d02f55cc8f27fb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter.html#a7897c44c4ea9fe9d59d02f55cc8f27fb">CoopDisconnectPresenter</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html">ICoopSessionControl</a> coop, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html">ISessionRoster</a> roster, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl.html">Core.Flow.IRunControl</a> runControl, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html">PeerLostRequest</a> &gt; pub)</td></tr>
-<tr class="separator:a7897c44c4ea9fe9d59d02f55cc8f27fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36b9371efb9f887cba83bd8fc8617ec3" id="r_a36b9371efb9f887cba83bd8fc8617ec3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter.html#a36b9371efb9f887cba83bd8fc8617ec3">CoopDisconnectPresenter</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html">ICoopSessionControl</a> coop, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html">ISessionRoster</a> roster, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl.html">Core.Flow.IRunControl</a> runControl, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html">PeerLostRequest</a> &gt; pub, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html">Core.Flow.NoticeRequest</a> &gt; notice, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html">Core.Flow.BusyRequest</a> &gt; busy)</td></tr>
+<tr class="separator:a36b9371efb9f887cba83bd8fc8617ec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f19c90971176e51f28a8b335081d9d3" id="r_a3f19c90971176e51f28a8b335081d9d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter.html#a3f19c90971176e51f28a8b335081d9d3">Start</a> ()</td></tr>
 <tr class="separator:a3f19c90971176e51f28a8b335081d9d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7800beadb9ec9446edaade149a89cdd" id="r_ad7800beadb9ec9446edaade149a89cdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter.html#ad7800beadb9ec9446edaade149a89cdd">Dispose</a> ()</td></tr>
@@ -126,8 +126,8 @@ Public Member Functions</h2></td></tr>
 <p><b>Варианты разные, потому что разные роли.</b> Хосту игра остаётся: он продолжает один, зовёт заново или уходит. Гостю игры больше нет — его забег чужой; он либо уходит в меню, либо ищет, к кому пойти.</p>
 <p><b>«Пригласить» и «Присоединиться» ведут в тот же оверлей Steam, что и кнопки меню</b> — через ICoopSessionControl. Второй способ позвать друга разошёлся бы с первым ровно в тот день, когда у приглашения появится своё правило.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7897c44c4ea9fe9d59d02f55cc8f27fb" name="a7897c44c4ea9fe9d59d02f55cc8f27fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7897c44c4ea9fe9d59d02f55cc8f27fb">&#9670;&#160;</a></span>CoopDisconnectPresenter()</h2>
+<a id="a36b9371efb9f887cba83bd8fc8617ec3" name="a36b9371efb9f887cba83bd8fc8617ec3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36b9371efb9f887cba83bd8fc8617ec3">&#9670;&#160;</a></span>CoopDisconnectPresenter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,7 +157,19 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html">PeerLostRequest</a> &gt;&#160;</td>
-          <td class="paramname"><em>pub</em>&#160;</td>
+          <td class="paramname"><em>pub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html">Core::Flow::NoticeRequest</a> &gt;&#160;</td>
+          <td class="paramname"><em>notice</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html">Core::Flow::BusyRequest</a> &gt;&#160;</td>
+          <td class="paramname"><em>busy</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

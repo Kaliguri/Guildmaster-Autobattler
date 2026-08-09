@@ -103,12 +103,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Co
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.CombatVfx:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1CombatVfx__inherit__graph.svg" width="194" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1CombatVfx__inherit__graph.svg" width="194" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.CombatVfx:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1CombatVfx__coll__graph.svg" width="194" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1CombatVfx__coll__graph.svg" width="194" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -122,6 +122,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3060914044750b92f9d0ee44e20d0470" id="r_a3060914044750b92f9d0ee44e20d0470"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatVfx.html#a3060914044750b92f9d0ee44e20d0470">SpawnArc</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html">VfxData</a> data, <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Effects_1_1ISwingArcSource.html">Effects.ISwingArcSource</a> source, <a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">Design.CombatFeelConfig</a> feel, Color unitGlow, string slot=null)</td></tr>
 <tr class="memdesc:a3060914044750b92f9d0ee44e20d0470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заспавнить ДУГУ ЗА КЛИНКОМ — эффект, живущий весь взмах и следящий за плечом бьющего.  <br /></td></tr>
 <tr class="separator:a3060914044750b92f9d0ee44e20d0470"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed41b098f8d65d3c680e0f235f41c10c" id="r_aed41b098f8d65d3c680e0f235f41c10c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatVfx.html#aed41b098f8d65d3c680e0f235f41c10c">ReclaimOrphans</a> ()</td></tr>
+<tr class="memdesc:aed41b098f8d65d3c680e0f235f41c10c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подобрать эффекты, которые выключили ЧУЖОЙ рукой: вернуть их в пул, раз тика у них больше не будет.  <br /></td></tr>
+<tr class="separator:aed41b098f8d65d3c680e0f235f41c10c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad13f0ec7a05342ef18f55aac1bb0e916" id="r_ad13f0ec7a05342ef18f55aac1bb0e916"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatVfx.html#ad13f0ec7a05342ef18f55aac1bb0e916">DespawnAll</a> ()</td></tr>
 <tr class="memdesc:ad13f0ec7a05342ef18f55aac1bb0e916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Погасить всё летящее (battle reset) и вернуть в пулы.  <br /></td></tr>
 <tr class="separator:ad13f0ec7a05342ef18f55aac1bb0e916"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,6 +161,42 @@ Public Member Functions</h2></td></tr>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1CombatVfx_ad13f0ec7a05342ef18f55aac1bb0e916_cgraph.svg" width="440" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aed41b098f8d65d3c680e0f235f41c10c" name="aed41b098f8d65d3c680e0f235f41c10c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed41b098f8d65d3c680e0f235f41c10c">&#9670;&#160;</a></span>ReclaimOrphans()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Presentation.CombatVfx.ReclaimOrphans </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Подобрать эффекты, которые выключили ЧУЖОЙ рукой: вернуть их в пул, раз тика у них больше не будет. </p>
+<p><b>Страховка по сроку живёт в <code>Update</code> самого эффекта, а выключенный объект не тикает</b> — вместе с тиком замирает и она. Эффект остаётся «играющим» навсегда: пул его не получил, показывать некому, а при следующем включении он оживает с прежним состоянием. </p>
+<p>Ловится это на дуге за клинком: она переезжает ВНУТРЬ тела бьющего (см. родителя в SpawnArc), а вид юнита уходит в свой пул вместе со смертью. Дуга гаснет ребёнком, срок стоит — а когда вид переиспользуют под нового бойца, застрявший росчерк появляется снова, и у каждого игрока свой: смерти на машинах разные (наход. Макса 08.08.2026, «остается просто видеть и не исчезает ... это не сихронизировано»).</p>
+<p><b>Сторожит владелец пула, а не сам эффект.</b> Возврат по <code>OnDisable</code> выглядел короче, но опирался бы на чужую руку — на того, кто выключил родителя. Пул живёт всегда, и спросить «а этот ещё играет?» может только он. Заодно это проверяемо тестом: в EditMode вне Play Mode <code>OnDisable</code> ребёнку при выключении родителя не приходит вовсе.</p>
+<p>Идём с конца: возврат в пул снимает эффект с этого же списка.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1CombatVfx_aed41b098f8d65d3c680e0f235f41c10c_cgraph.svg" width="456" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Po
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Presentation_1_1PooledVfx-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Presentation.PooledVfx Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -119,6 +120,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad5973e2cadbbb878a0cd32ccad97239c" id="r_ad5973e2cadbbb878a0cd32ccad97239c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1PooledVfx.html#ad5973e2cadbbb878a0cd32ccad97239c">Cancel</a> ()</td></tr>
 <tr class="memdesc:ad5973e2cadbbb878a0cd32ccad97239c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прервать и вернуть в пул (battle reset).  <br /></td></tr>
 <tr class="separator:ad5973e2cadbbb878a0cd32ccad97239c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a13cb2e78102253714831717aef5f93f9" id="r_a13cb2e78102253714831717aef5f93f9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1PooledVfx.html#a13cb2e78102253714831717aef5f93f9">IsPlaying</a><code> [get]</code></td></tr>
+<tr class="memdesc:a13cb2e78102253714831717aef5f93f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Играет ли прямо сейчас — то есть должен ли когда-нибудь вернуться в пул.  <br /></td></tr>
+<tr class="separator:a13cb2e78102253714831717aef5f93f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Корневой компонент VFX-префаба: Play в мировой точке → авто-возврат в пул по окончании. </p>
@@ -151,7 +158,7 @@ Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1PooledVfx_ad5973e2cadbbb878a0cd32ccad97239c_icgraph.svg" width="440" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1PooledVfx_ad5973e2cadbbb878a0cd32ccad97239c_icgraph.svg" width="456" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -253,6 +260,32 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1PooledVfx_a6eeeff84a09776d2bb92e32357a7c594_icgraph.svg" width="440" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a13cb2e78102253714831717aef5f93f9" name="a13cb2e78102253714831717aef5f93f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13cb2e78102253714831717aef5f93f9">&#9670;&#160;</a></span>IsPlaying</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.PooledVfx.IsPlaying</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Играет ли прямо сейчас — то есть должен ли когда-нибудь вернуться в пул. </p>
+<p>Спрашивает владелец пула, подбирая эффекты, которые выключили чужой рукой: срок жизни считается в Update, а выключенный объект не тикает. См. <code>CombatVfx.ReclaimOrphans</code>. </p>
 
 </div>
 </div>

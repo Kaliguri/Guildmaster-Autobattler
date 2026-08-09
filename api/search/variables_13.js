@@ -11,8 +11,9 @@ var searchData=
   ['unlockedfateids_8',['UnlockedFateIds',['../classGuildmaster_1_1Guild_1_1ProfileState.html#aa19eb5ae5714489124a1b5869e01c9db',1,'Guildmaster::Guild::ProfileState']]],
   ['unlockedpregenids_9',['UnlockedPregenIds',['../classGuildmaster_1_1Guild_1_1ProfileState.html#a83a9af1381b14342680fcfe7cc72e0b8',1,'Guildmaster::Guild::ProfileState']]],
   ['unreliablelosschance_10',['UnreliableLossChance',['../structGuildmaster_1_1Net_1_1Transport_1_1ChaosProfile.html#aa9d82b0167771f3002ecd4625f9e9801',1,'Guildmaster::Net::Transport::ChaosProfile']]],
-  ['upgrades_11',['Upgrades',['../classGuildmaster_1_1Guild_1_1GuildState.html#a46b4eeeee61fbbb5861ac0bc5147f8e8',1,'Guildmaster::Guild::GuildState']]],
-  ['usedby_12',['UsedBy',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#ad5f3756fc838fd374530d3cee5fef0c3',1,'Guildmaster::ContentHub::Editor::ContentEntry']]],
-  ['uses_13',['Uses',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#a1ecdfcfda7e1890ea5fdfce879603a02',1,'Guildmaster::ContentHub::Editor::ContentEntry']]],
-  ['usesteamname_14',['UseSteamName',['../classGuildmaster_1_1Guild_1_1ProfileState.html#a6858f974a61cc4df85f84e0375ebb031',1,'Guildmaster::Guild::ProfileState']]]
+  ['until_11',['Until',['../structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#ac51dfeb57bf7f43a59a1fd11e043533f',1,'Guildmaster::Core::Flow::BusyRequest']]],
+  ['upgrades_12',['Upgrades',['../classGuildmaster_1_1Guild_1_1GuildState.html#a46b4eeeee61fbbb5861ac0bc5147f8e8',1,'Guildmaster::Guild::GuildState']]],
+  ['usedby_13',['UsedBy',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#ad5f3756fc838fd374530d3cee5fef0c3',1,'Guildmaster::ContentHub::Editor::ContentEntry']]],
+  ['uses_14',['Uses',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#a1ecdfcfda7e1890ea5fdfce879603a02',1,'Guildmaster::ContentHub::Editor::ContentEntry']]],
+  ['usesteamname_15',['UseSteamName',['../classGuildmaster_1_1Guild_1_1ProfileState.html#a6858f974a61cc4df85f84e0375ebb031',1,'Guildmaster::Guild::ProfileState']]]
 ];

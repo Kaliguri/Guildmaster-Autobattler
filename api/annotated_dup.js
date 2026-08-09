@@ -231,12 +231,14 @@ var annotated_dup =
           [ "SessionLogArchive", "classGuildmaster_1_1Core_1_1Diagnostics_1_1SessionLogArchive.html", "classGuildmaster_1_1Core_1_1Diagnostics_1_1SessionLogArchive" ]
         ] ],
         [ "Flow", "namespaceGuildmaster_1_1Core_1_1Flow.html", [
+          [ "BusyRequest", "structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest" ],
           [ "GoToModeRequest", "structGuildmaster_1_1Core_1_1Flow_1_1GoToModeRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1GoToModeRequest" ],
           [ "IHubPresence", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence" ],
           [ "IRunControl", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl" ],
           [ "IScreenTransition", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IScreenTransition.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IScreenTransition" ],
           [ "MainMenuVisibilityChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1MainMenuVisibilityChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1MainMenuVisibilityChangedEvent" ],
           [ "MenuBattleChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent" ],
+          [ "NoticeRequest", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest" ],
           [ "OpenProvingGroundsRequest", "structGuildmaster_1_1Core_1_1Flow_1_1OpenProvingGroundsRequest.html", null ],
           [ "ScreenBackdropChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent" ],
           [ "ScreenFadeChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenFadeChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenFadeChangedEvent" ],
@@ -850,6 +852,7 @@ var annotated_dup =
           [ "TooltipShowEvent", "classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipShowEvent.html", "classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipShowEvent" ],
           [ "TooltipSystem", "classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipSystem.html", "classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipSystem" ]
         ] ],
+        [ "BusyOverlayView", "classGuildmaster_1_1UI_1_1BusyOverlayView.html", "classGuildmaster_1_1UI_1_1BusyOverlayView" ],
         [ "CampScreenView", "classGuildmaster_1_1UI_1_1CampScreenView.html", "classGuildmaster_1_1UI_1_1CampScreenView" ],
         [ "ChestScreenView", "classGuildmaster_1_1UI_1_1ChestScreenView.html", "classGuildmaster_1_1UI_1_1ChestScreenView" ],
         [ "ContentTitle", "classGuildmaster_1_1UI_1_1ContentTitle.html", "classGuildmaster_1_1UI_1_1ContentTitle" ],
@@ -861,6 +864,7 @@ var annotated_dup =
         [ "MainMenuScreenView", "classGuildmaster_1_1UI_1_1MainMenuScreenView.html", "classGuildmaster_1_1UI_1_1MainMenuScreenView" ],
         [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html", "classGuildmaster_1_1UI_1_1MenuRouter" ],
         [ "NewGameScreenView", "classGuildmaster_1_1UI_1_1NewGameScreenView.html", "classGuildmaster_1_1UI_1_1NewGameScreenView" ],
+        [ "NoticeDialogView", "classGuildmaster_1_1UI_1_1NoticeDialogView.html", "classGuildmaster_1_1UI_1_1NoticeDialogView" ],
         [ "OutcomeScreenView", "classGuildmaster_1_1UI_1_1OutcomeScreenView.html", "classGuildmaster_1_1UI_1_1OutcomeScreenView" ],
         [ "PeerLostDialogView", "classGuildmaster_1_1UI_1_1PeerLostDialogView.html", "classGuildmaster_1_1UI_1_1PeerLostDialogView" ],
         [ "ProfileScreenView", "classGuildmaster_1_1UI_1_1ProfileScreenView.html", "classGuildmaster_1_1UI_1_1ProfileScreenView" ],
