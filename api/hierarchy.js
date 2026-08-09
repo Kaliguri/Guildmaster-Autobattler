@@ -778,6 +778,7 @@ var hierarchy =
     [ "Guildmaster.Game.Session.Net.NodeRest", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeRest.html", null ],
     [ "Guildmaster.Guild.NodeTypeWeight", "structGuildmaster_1_1Guild_1_1NodeTypeWeight.html", null ],
     [ "Guildmaster.UI.NoticeDialogView", "classGuildmaster_1_1UI_1_1NoticeDialogView.html", null ],
+    [ "Guildmaster.Core.Flow.NoticeOption", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html", null ],
     [ "Guildmaster.Core.Flow.NoticeRequest", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html", null ],
     [ "OdinEditor", null, [
       [ "Guildmaster.Data.Editor.ContentDefinitionEditor", "classGuildmaster_1_1Data_1_1Editor_1_1ContentDefinitionEditor.html", null ],
@@ -804,9 +805,6 @@ var hierarchy =
     [ "Guildmaster.Data.Definitions.OutfitPiece", "structGuildmaster_1_1Data_1_1Definitions_1_1OutfitPiece.html", null ],
     [ "Guildmaster.Balance.Editor.PairSynergyBench", "classGuildmaster_1_1Balance_1_1Editor_1_1PairSynergyBench.html", null ],
     [ "Guildmaster.Data.Editor.PaletteSnapshotBuilder", "classGuildmaster_1_1Data_1_1Editor_1_1PaletteSnapshotBuilder.html", null ],
-    [ "Guildmaster.UI.PeerLostDialogView", "classGuildmaster_1_1UI_1_1PeerLostDialogView.html", null ],
-    [ "Guildmaster.Core.Net.PeerLostOption", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption.html", null ],
-    [ "Guildmaster.Core.Net.PeerLostRequest", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html", null ],
     [ "Guildmaster.Build.Editor.PlayerBuilder", "classGuildmaster_1_1Build_1_1Editor_1_1PlayerBuilder.html", null ],
     [ "Guildmaster.Core.Net.PlayerChoice", "structGuildmaster_1_1Core_1_1Net_1_1PlayerChoice.html", null ],
     [ "Guildmaster.Data.Definitions.PlayerSlot", "structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html", null ],

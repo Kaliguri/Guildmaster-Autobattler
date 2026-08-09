@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Net_1_1Presence_1_1PresenceCodec.html" target="_top" xlink:title="Упаковка присутствия: все курсоры — ОДНИМ склеенным пакетом, ненадёжным каналом.">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Net_1_1Presence_1_1PresenceInterpolator.html" target="_top" xlink:title="Чужие курсоры на экране: держит короткий буфер приходящих состояний и выдаёт положение на заданный мо...">
 <polygon fill="white" stroke="#666666" points="146,-30 0,-30 0,0 146,0 146,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Net.Presence.</text>
-<text text-anchor="middle" x="73" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">PresenceCodec</text>
+<text text-anchor="middle" x="73" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">PresenceInterpolator</text>
 </a>
 </g>
 </g>

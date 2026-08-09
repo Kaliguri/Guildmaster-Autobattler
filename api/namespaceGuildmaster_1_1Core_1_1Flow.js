@@ -6,6 +6,7 @@ var namespaceGuildmaster_1_1Core_1_1Flow =
     [ "IScreenTransition", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IScreenTransition.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IScreenTransition" ],
     [ "MainMenuVisibilityChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1MainMenuVisibilityChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1MainMenuVisibilityChangedEvent" ],
     [ "MenuBattleChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent" ],
+    [ "NoticeOption", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption" ],
     [ "NoticeRequest", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest" ],
     [ "OpenProvingGroundsRequest", "structGuildmaster_1_1Core_1_1Flow_1_1OpenProvingGroundsRequest.html", null ],
     [ "ScreenBackdropChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent" ],

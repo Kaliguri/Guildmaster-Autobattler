@@ -154,6 +154,8 @@ Events</h2></td></tr>
 <tr class="memitem:a7eab48b8c694f19e72f3d375067cdab1" id="r_a7eab48b8c694f19e72f3d375067cdab1"><td class="memItemLeft" align="right" valign="top">Action&lt; ulong, ulong &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamLobbyService.html#a7eab48b8c694f19e72f3d375067cdab1">JoinRequested</a></td></tr>
 <tr class="memdesc:a7eab48b8c694f19e72f3d375067cdab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Нас позвали в чужое лобби — id лобби и хозяин. Ведёт в сессию.  <br /></td></tr>
 <tr class="separator:a7eab48b8c694f19e72f3d375067cdab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7f30ea284bb4518d206495d3f562f90" id="r_af7f30ea284bb4518d206495d3f562f90"><td class="memItemLeft" align="right" valign="top">Action&lt; string, ulong, ulong &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamLobbyService.html#af7f30ea284bb4518d206495d3f562f90">Invited</a></td></tr>
+<tr class="separator:af7f30ea284bb4518d206495d3f562f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af78803b6f885a60b9f13d53aadcd5463" id="r_af78803b6f885a60b9f13d53aadcd5463"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Session_1_1SteamLobbyService.html#af78803b6f885a60b9f13d53aadcd5463">LobbyChanged</a></td></tr>
 <tr class="memdesc:af78803b6f885a60b9f13d53aadcd5463"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лобби появилось или исчезло, то есть HasLobby сменилось.  <br /></td></tr>
 <tr class="separator:af78803b6f885a60b9f13d53aadcd5463"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,6 +163,9 @@ Events</h2></td></tr>
 <tr class="memitem:ae9d46163b4df01388154bbd9894f4a68 inherit events_interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby" id="r_ae9d46163b4df01388154bbd9894f4a68"><td class="memItemLeft" align="right" valign="top">Action&lt; ulong, ulong &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby.html#ae9d46163b4df01388154bbd9894f4a68">JoinRequested</a></td></tr>
 <tr class="memdesc:ae9d46163b4df01388154bbd9894f4a68 inherit events_interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby"><td class="mdescLeft">&#160;</td><td class="mdescRight">Нас позвали: комната и адрес хозяина.  <br /></td></tr>
 <tr class="separator:ae9d46163b4df01388154bbd9894f4a68 inherit events_interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab3691b07755757ab4000bec8d5cbb9f inherit events_interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby" id="r_aab3691b07755757ab4000bec8d5cbb9f"><td class="memItemLeft" align="right" valign="top">Action&lt; string, ulong, ulong &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby.html#aab3691b07755757ab4000bec8d5cbb9f">Invited</a></td></tr>
+<tr class="memdesc:aab3691b07755757ab4000bec8d5cbb9f inherit events_interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby"><td class="mdescLeft">&#160;</td><td class="mdescRight">Нас ПОЗВАЛИ, но мы ещё не ответили: кто зовёт (имя), его адрес и комната.  <br /></td></tr>
+<tr class="separator:aab3691b07755757ab4000bec8d5cbb9f inherit events_interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80447b9d1304e344fd585eaf4ebae06a inherit events_interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby" id="r_a80447b9d1304e344fd585eaf4ebae06a"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby.html#a80447b9d1304e344fd585eaf4ebae06a">LobbyChanged</a></td></tr>
 <tr class="memdesc:a80447b9d1304e344fd585eaf4ebae06a inherit events_interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby"><td class="mdescLeft">&#160;</td><td class="mdescRight">Комната изменилась — состав, состояние, что угодно видимое экрану.  <br /></td></tr>
 <tr class="separator:a80447b9d1304e344fd585eaf4ebae06a inherit events_interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -431,6 +436,22 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Event Documentation</h2>
+<a id="af7f30ea284bb4518d206495d3f562f90" name="af7f30ea284bb4518d206495d3f562f90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7f30ea284bb4518d206495d3f562f90">&#9670;&#160;</a></span>Invited</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;string, ulong, ulong&gt; Guildmaster.Net.Session.SteamLobbyService.Invited</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p></p>
+
+</div>
+</div>
 <a id="a7eab48b8c694f19e72f3d375067cdab1" name="a7eab48b8c694f19e72f3d375067cdab1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7eab48b8c694f19e72f3d375067cdab1">&#9670;&#160;</a></span>JoinRequested</h2>
 

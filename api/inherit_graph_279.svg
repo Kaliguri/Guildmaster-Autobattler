@@ -11,9 +11,9 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Guild_1_1GuildBook.html" target="_top" xlink:title="Книга гильдии — вся память дома: Летопись (подвиги людей), Хроника (лента забегов) и Мемориал (павшие...">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Guild_1_1GuildState.html" target="_top" xlink:title="Гильдия — дом игрока и одновременно слот сохранения (ТЗ [[save&#45;system]] §3): отдельной сущности «слот...">
 <polygon fill="white" stroke="#666666" points="158,-19 0,-19 0,0 158,0 158,-19"/>
-<text text-anchor="middle" x="79" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.GuildBook</text>
+<text text-anchor="middle" x="79" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.GuildState</text>
 </a>
 </g>
 </g>

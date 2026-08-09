@@ -11,9 +11,9 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Guild_1_1MapNode.html" target="_top" xlink:title="Узел графа акта (сериализуемый DTO).">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Guild_1_1MapState.html" target="_top" xlink:title="Состояние карты акта в RunState: граф узлов + где игрок сейчас.">
 <polygon fill="white" stroke="#666666" points="154,-19 0,-19 0,0 154,0 154,-19"/>
-<text text-anchor="middle" x="77" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.MapNode</text>
+<text text-anchor="middle" x="77" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.MapState</text>
 </a>
 </g>
 </g>

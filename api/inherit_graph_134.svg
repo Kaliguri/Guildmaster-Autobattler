@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html" target="_top" xlink:title="Кем игрок выглядит для остальных: имя, цвет и курсор.">
+<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html" target="_top" xlink:title="Профиль в списке выбора: то, что нужно показать, без загрузки его содержимого.">
 <polygon fill="white" stroke="#666666" points="164,-30 0,-30 0,0 164,0 164,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Core.Persistence.</text>
-<text text-anchor="middle" x="82" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ProfileIdentity</text>
+<text text-anchor="middle" x="82" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ProfileSummary</text>
 </a>
 </g>
 </g>

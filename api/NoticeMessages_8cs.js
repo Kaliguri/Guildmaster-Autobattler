@@ -1,5 +1,6 @@
 var NoticeMessages_8cs =
 [
+    [ "Guildmaster.Core.Flow.NoticeOption", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption" ],
     [ "Guildmaster.Core.Flow.NoticeRequest", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest" ],
     [ "Guildmaster.Core.Flow.BusyRequest", "structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest" ],
     [ "NoticeKind", "NoticeMessages_8cs.html#afc3d09b0f7d57f1b9c1cb1d1328986b4", [

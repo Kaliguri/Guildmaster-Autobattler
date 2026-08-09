@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html" target="_top" xlink:title="Общее согласие в байтах и обратно: голос участника и объявленный счёт.">
+<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntent.html" target="_top" xlink:title="Разобранное намерение расстановки: либо «поставь бойца сюда», либо «надень на него реликвию».">
 <polygon fill="white" stroke="#666666" points="152,-30 0,-30 0,0 152,0 152,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Net.DecisionCodec</text>
+<text text-anchor="middle" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Net.DeploymentIntent</text>
 </a>
 </g>
 </g>

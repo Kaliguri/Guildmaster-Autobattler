@@ -13,5 +13,6 @@ var searchData=
   ['noderest_10',['NodeRest',['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeRest.html',1,'Guildmaster::Game::Session::Net']]],
   ['nodetypeweight_11',['NodeTypeWeight',['../structGuildmaster_1_1Guild_1_1NodeTypeWeight.html',1,'Guildmaster::Guild']]],
   ['noticedialogview_12',['NoticeDialogView',['../classGuildmaster_1_1UI_1_1NoticeDialogView.html',1,'Guildmaster::UI']]],
-  ['noticerequest_13',['NoticeRequest',['../structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html',1,'Guildmaster::Core::Flow']]]
+  ['noticeoption_13',['NoticeOption',['../structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html',1,'Guildmaster::Core::Flow']]],
+  ['noticerequest_14',['NoticeRequest',['../structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html',1,'Guildmaster::Core::Flow']]]
 ];

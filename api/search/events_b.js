@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['nodeclicked_0',['nodeclicked',['../interfaceGuildmaster_1_1Presentation_1_1Map_1_1IWorldMapView.html#ada44b196f0a2d3da94f4f31286fe6ff9',1,'Guildmaster.Presentation.Map.IWorldMapView.NodeClicked'],['../classGuildmaster_1_1Presentation_1_1Map_1_1WorldMapView.html#af7cc2474e90b0ccbc93acc45c484e6eb',1,'Guildmaster.Presentation.Map.WorldMapView.NodeClicked'],['../classGuildmaster_1_1Presentation_1_1Map_1_1WorldMapViewLink.html#a8cf0ad58b9c721545ab8bd1b80141eb6',1,'Guildmaster.Presentation.Map.WorldMapViewLink.NodeClicked']]]
+  ['menutogglerequested_0',['menutogglerequested',['../interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#abbfc977da2284efc84481963d7ade147',1,'Guildmaster.Core.Input.IInputService.MenuToggleRequested'],['../classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a91cf2a4139d93192f56bf176e40d89f7',1,'Guildmaster.Game.Input.InputService.MenuToggleRequested']]],
+  ['messagereceived_1',['messagereceived',['../interfaceGuildmaster_1_1Net_1_1Transport_1_1INetTransport.html#afb88b63f251f161516f5f46df3351441',1,'Guildmaster.Net.Transport.INetTransport.MessageReceived'],['../classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html#a183b9e961b49d00775573fa72f7a8e4e',1,'Guildmaster.Net.Transport.SteamNetTransport.MessageReceived']]]
 ];

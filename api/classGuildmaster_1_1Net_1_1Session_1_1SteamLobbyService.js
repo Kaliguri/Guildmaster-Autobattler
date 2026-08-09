@@ -9,6 +9,7 @@ var classGuildmaster_1_1Net_1_1Session_1_1SteamLobbyService =
     [ "MaxMembers", "classGuildmaster_1_1Net_1_1Session_1_1SteamLobbyService.html#af6b5e51045e88e71e9b5212ed70fae7f", null ],
     [ "HasLobby", "classGuildmaster_1_1Net_1_1Session_1_1SteamLobbyService.html#a0d6d1857fbda3f6079b03a03b754d3fe", null ],
     [ "IsSteamReady", "classGuildmaster_1_1Net_1_1Session_1_1SteamLobbyService.html#a50f738ad0cc5943d6fe0492e2015943d", null ],
+    [ "Invited", "classGuildmaster_1_1Net_1_1Session_1_1SteamLobbyService.html#af7f30ea284bb4518d206495d3f562f90", null ],
     [ "JoinRequested", "classGuildmaster_1_1Net_1_1Session_1_1SteamLobbyService.html#a7eab48b8c694f19e72f3d375067cdab1", null ],
     [ "LobbyChanged", "classGuildmaster_1_1Net_1_1Session_1_1SteamLobbyService.html#af78803b6f885a60b9f13d53aadcd5463", null ]
 ];

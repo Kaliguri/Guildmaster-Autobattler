@@ -1,5 +1,11 @@
 var NAVTREEINDEX41 =
 {
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4":[0,0,0,6,0,82],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4a400419f1b352e7a735a9b391387e8e80":[0,0,0,6,0,82,1],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4a47deba8478555be8eecd4256caa21c7b":[0,0,0,6,0,82,0],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1":[0,0,0,6,0,75],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1a8bbf55183f7d11e74da28d738216036a":[0,0,0,6,0,75,2],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1a94eb18b9ccde1a738aa52a4576bcf84e":[0,0,0,6,0,75,3],
 "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1ac2f329a17c18a701dbe1e96e03858728":[0,0,0,6,0,75,1],
 "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1afcbd772e48c4b07d7d3be13b37a82f5e":[0,0,0,6,0,75,0],
 "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46d15226b8b51f5b785efccd01e4e3f":[0,0,0,6,0,74],
@@ -243,11 +249,5 @@ var NAVTREEINDEX41 =
 "namespaceGuildmaster_1_1Presentation.html":[0,0,0,13],
 "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319":[0,0,0,13,44],
 "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53":[0,0,0,13,44,0],
-"namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a3b878279a04dc47d60932cb294d96259":[0,0,0,13,44,1],
-"namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a46f3ea056caa3126b91f3f70beea068c":[0,0,0,13,44,3],
-"namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a55f37d1fd483f6a85379640fe51aafa8":[0,0,0,13,44,2],
-"namespaceGuildmaster_1_1Presentation.html#afa8883774f1d063bb0a3409202ff0539":[0,0,0,13,45],
-"namespaceGuildmaster_1_1Presentation.html#afa8883774f1d063bb0a3409202ff0539a4f502b57d2835715eaa382c7d4c32e94":[0,0,0,13,45,1],
-"namespaceGuildmaster_1_1Presentation.html#afa8883774f1d063bb0a3409202ff0539ac7bc3fddddb62d5b656adc30cea77a55":[0,0,0,13,45,0],
-"namespaceGuildmaster_1_1Presentation_1_1Arena.html":[0,0,0,13,0]
+"namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a3b878279a04dc47d60932cb294d96259":[0,0,0,13,44,1]
 };

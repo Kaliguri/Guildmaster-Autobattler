@@ -13,6 +13,6 @@ var searchData=
   ['localchoice_10',['LocalChoice',['../structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent.html#ac6a1410a8480fb54de6f3a766bba5df8',1,'Guildmaster::Core::Net::SharedDecisionChangedEvent']]],
   ['localfolder_11',['LocalFolder',['../classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html#a8af81c18f6f5dbb7f0c0313746e90903',1,'Guildmaster::Game::Services::LocalJsonFileSaveService']]],
   ['localplayerid_12',['LocalPlayerId',['../structGuildmaster_1_1Guild_1_1Commands_1_1RunCommand.html#ab7442b5c34e29201a8b280718190c9a0',1,'Guildmaster::Guild::Commands::RunCommand']]],
-  ['lockey_13',['LocKey',['../structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption.html#abd79f5f90d459f385eb5f51e5d3fbdeb',1,'Guildmaster::Core::Net::PeerLostOption']]],
+  ['lockey_13',['LocKey',['../structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html#a77a3f0554927e35fad6c3116ce80ac25',1,'Guildmaster::Core::Flow::NoticeOption']]],
   ['lookaheadticks_14',['LookaheadTicks',['../classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapePlayback.html#a84d073b342d11e9058a22285ef4dd543',1,'Guildmaster::Combat::Tape::BattleTapePlayback']]]
 ];

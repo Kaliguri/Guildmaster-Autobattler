@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkPump.html" target="_top" xlink:title="Нарезчик боевой ленты на чанки: единый владелец правила «сколько тиков в чанк и что делать,...">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkReader.html" target="_top" xlink:title="Разбирает чанки в свою BattleTape.">
 <polygon fill="white" stroke="#666666" points="147,-30 0,-30 0,0 147,0 147,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Net.Tape.Tape</text>
-<text text-anchor="middle" x="73.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ChunkPump</text>
+<text text-anchor="middle" x="73.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ChunkReader</text>
 </a>
 </g>
 </g>

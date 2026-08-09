@@ -1,5 +1,0 @@
-<map id="Guildmaster.UI.MenuRouter.ShowPeerLost" name="Guildmaster.UI.MenuRouter.ShowPeerLost">
-<area shape="rect" id="Node000001" title="Показать разрыв связи: кого потеряли и что можно сделать." alt="" coords="5,5,211,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1PeerLostDialogView.html#a45682bc8d9b17239a5d7222c865b5743" title=" " alt="" coords="259,5,480,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,23,245,23,245,28,211,28"/>
-</map>

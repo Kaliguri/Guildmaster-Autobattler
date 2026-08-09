@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Data_1_1Definitions_1_1ProvingGroundsSpawn.html" target="_top" xlink:title="Один боец в заказанном составе площадки: кто и где стоит.">
+<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Data_1_1Definitions_1_1RelicDragEvent.html" target="_top" xlink:title="Перетаскивание карточки реликвии из грида инвентаря на юнита в мире (QA #5).">
 <polygon fill="white" stroke="#666666" points="161,-30 0,-30 0,0 161,0 161,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ProvingGroundsSpawn</text>
+<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">RelicDragEvent</text>
 </a>
 </g>
 </g>

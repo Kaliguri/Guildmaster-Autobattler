@@ -7,6 +7,7 @@ var classGuildmaster_1_1Net_1_1Session_1_1LoopbackLobby =
     [ "SimulateInvite", "classGuildmaster_1_1Net_1_1Session_1_1LoopbackLobby.html#a9f27866b0d169cbdf4e228cd8915495e", null ],
     [ "HasLobby", "classGuildmaster_1_1Net_1_1Session_1_1LoopbackLobby.html#a2045c28fc1d642d3b3c7824ce9404e9c", null ],
     [ "IsSteamReady", "classGuildmaster_1_1Net_1_1Session_1_1LoopbackLobby.html#aed33f6d23f75d6bb99b0c9a46b205680", null ],
+    [ "Invited", "classGuildmaster_1_1Net_1_1Session_1_1LoopbackLobby.html#a7a03cc5091d105e637e7fc25f9e61a95", null ],
     [ "JoinRequested", "classGuildmaster_1_1Net_1_1Session_1_1LoopbackLobby.html#a2a1c22ef574c21c87b9b3292f3e03a26", null ],
     [ "LobbyChanged", "classGuildmaster_1_1Net_1_1Session_1_1LoopbackLobby.html#a1d481c62945178d7373d8ff12fb5de19", null ]
 ];

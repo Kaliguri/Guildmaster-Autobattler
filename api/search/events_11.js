@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['wholebattlerequested_0',['WholeBattleRequested',['../classGuildmaster_1_1Net_1_1Tape_1_1TapeStreamer.html#a4fda274a4e3d5062c2a60ab93ef7e68e',1,'Guildmaster::Net::Tape::TapeStreamer']]]
+  ['unitdied_0',['UnitDied',['../classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#a7ca619bbb27dc0917ba69bb195431f54',1,'Guildmaster::Combat::Tape::BattleTapeDispatcher']]],
+  ['unitspawned_1',['UnitSpawned',['../classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#adebe03fc839889124b6123ee2cd5e71e',1,'Guildmaster::Combat::Tape::BattleTapeDispatcher']]]
 ];

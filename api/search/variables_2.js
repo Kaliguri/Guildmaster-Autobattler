@@ -60,7 +60,7 @@ var searchData=
   ['concealstrongradius_57',['ConcealStrongRadius',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a59a76fd7cd6a422f68a0f5c859abcfaa',1,'Guildmaster::Core::Simulation::SimTuning']]],
   ['concealtier_58',['ConcealTier',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a8075af09a11d4ac6d340717712aeb2c8',1,'Guildmaster::Combat::RuntimeUnit']]],
   ['concealweakradius_59',['ConcealWeakRadius',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#af56ac63a795b03c01e06c6aff91293ae',1,'Guildmaster::Core::Simulation::SimTuning']]],
-  ['consequence_60',['Consequence',['../structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html#abf992f437c7b506a1c4e7b6f15f14f2b',1,'Guildmaster::Core::Net::PeerLostRequest']]],
+  ['consequence_60',['Consequence',['../structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html#a75798253b873637e23ad82aeb5539d3d',1,'Guildmaster::Core::Flow::NoticeRequest']]],
   ['consumesowntrigger_61',['ConsumesOwnTrigger',['../structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#aa7278ebd6992a06f2704d901f5fab6d5',1,'Guildmaster::Combat::Effects::DispelRequest']]],
   ['contactsubtick_62',['ContactSubTick',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ac0e4b006cefb27c53fea46e5d4f9bb87',1,'Guildmaster::Combat::RuntimeUnit']]],
   ['contentcount_63',['ContentCount',['../structGuildmaster_1_1Data_1_1ContentFingerprint.html#a44940c66f257e2659320217bfa2108b0',1,'Guildmaster::Data::ContentFingerprint']]],

@@ -4,8 +4,6 @@ var namespaceGuildmaster_1_1Core_1_1Net =
     [ "DecisionOptions", "classGuildmaster_1_1Core_1_1Net_1_1DecisionOptions.html", "classGuildmaster_1_1Core_1_1Net_1_1DecisionOptions" ],
     [ "ICoopSessionControl", "interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl.html", "interfaceGuildmaster_1_1Core_1_1Net_1_1ICoopSessionControl" ],
     [ "ISharedDecision", "interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html", "interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision" ],
-    [ "PeerLostOption", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption.html", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostOption" ],
-    [ "PeerLostRequest", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest.html", "structGuildmaster_1_1Core_1_1Net_1_1PeerLostRequest" ],
     [ "PlayerChoice", "structGuildmaster_1_1Core_1_1Net_1_1PlayerChoice.html", "structGuildmaster_1_1Core_1_1Net_1_1PlayerChoice" ],
     [ "RunAfterOptions", "classGuildmaster_1_1Core_1_1Net_1_1RunAfterOptions.html", "classGuildmaster_1_1Core_1_1Net_1_1RunAfterOptions" ],
     [ "SharedDecisionChangedEvent", "structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent.html", "structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent" ],

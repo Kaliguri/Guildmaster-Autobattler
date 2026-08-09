@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Game_1_1Flow_1_1RunPartyReadyEvent.html" target="_top" xlink:title="Сигнал «отряд забега готов встать на арену» (persist&#45;мир, план 12 Ф2).">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Game_1_1Services_1_1ActRunner.html" target="_top" xlink:title="Петля обхода акта (план [[act&#45;map&#45;run&#45;loop]] §3.2, шаг A2).">
 <polygon fill="white" stroke="#666666" points="155,-30 0,-30 0,0 155,0 155,-30"/>
-<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.Run</text>
-<text text-anchor="middle" x="77.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">PartyReadyEvent</text>
+<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Services.</text>
+<text text-anchor="middle" x="77.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ActRunner</text>
 </a>
 </g>
 </g>
