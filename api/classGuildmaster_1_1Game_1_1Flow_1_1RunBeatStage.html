@@ -113,8 +113,8 @@ Collaboration diagram for Guildmaster.Game.Flow.RunBeatStage:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3eadabfac14b746c21575f30d776a228" id="r_a3eadabfac14b746c21575f30d776a228"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunBeatStage.html#a3eadabfac14b746c21575f30d776a228">RunBeatStage</a> (<a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html">IBattleSession</a> session, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html">Session.Net.HostNodeStage</a> stage)</td></tr>
-<tr class="separator:a3eadabfac14b746c21575f30d776a228"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3232a88a4df9c19de72d515ce711b4c4" id="r_a3232a88a4df9c19de72d515ce711b4c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunBeatStage.html#a3232a88a4df9c19de72d515ce711b4c4">RunBeatStage</a> (<a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html">IBattleSession</a> session, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html">Session.Net.HostSessionStage</a> stage)</td></tr>
+<tr class="separator:a3232a88a4df9c19de72d515ce711b4c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d7594f282b900edab15b4228bae8c00" id="r_a8d7594f282b900edab15b4228bae8c00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunBeatStage.html#a8d7594f282b900edab15b4228bae8c00">EnterRestBeat</a> (CancellationToken ct)</td></tr>
 <tr class="memdesc:a8d7594f282b900edab15b4228bae8c00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Передышка ОБЪЯВЛЯЕТСЯ, а не показывается отсюда.  <br /></td></tr>
 <tr class="separator:a8d7594f282b900edab15b4228bae8c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,8 +126,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Соло-реализация: возврат мира — команда в живой боевой скоуп (IBattleSession.RequestReset), кнопки — через IContinuePresenter, а сами кнопки лишь публикуют интенты, которые и так висят на табах: «Продолжить» = открыть карту, «К построению» = встать в расстановку на боевой арене. </p>
 <p>Возврат мира сегодня мгновенный. По замыслу (Макс, 2026-07-26) это анимация — трупы тают, отряд возвращается на места, а «К построению» проигрывает её ×3; шов под скорость появится вместе с ней.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3eadabfac14b746c21575f30d776a228" name="a3eadabfac14b746c21575f30d776a228"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3eadabfac14b746c21575f30d776a228">&#9670;&#160;</a></span>RunBeatStage()</h2>
+<a id="a3232a88a4df9c19de72d515ce711b4c4" name="a3232a88a4df9c19de72d515ce711b4c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3232a88a4df9c19de72d515ce711b4c4">&#9670;&#160;</a></span>RunBeatStage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +144,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html">Session::Net::HostNodeStage</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html">Session::Net::HostSessionStage</a>&#160;</td>
           <td class="paramname"><em>stage</em>&#160;</td>
         </tr>
         <tr>
@@ -217,7 +217,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Передышка ОБЪЯВЛЯЕТСЯ, а не показывается отсюда. </p>
-<p>Раньше петля публиковала экран напрямую — и он существовал только у владельца, потому что петля собирается только ему. Теперь шаг узла объявлен обоим, а показывает его общий потребитель (<code>NodeStageScreens</code>), одинаково у хозяина и гостя (HARD-правило «равные игроки», 08.08.2026). </p>
+<p>Раньше петля публиковала экран напрямую — и он существовал только у владельца, потому что петля собирается только ему. Теперь шаг узла объявлен обоим, а показывает его общий потребитель (<code>SessionStageScreens</code>), одинаково у хозяина и гостя (HARD-правило «равные игроки», 08.08.2026). </p>
 <p>Кнопки при этом остались тем же, чем были, — шорткатами к табам: петля их не ждёт, узел уже засчитан, и каждый жмёт свою для себя.</p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IRunBeatStage.html#a8b1f4aa73e4392fc8c854da482062002">Guildmaster.Game.Flow.IRunBeatStage</a>.</p>

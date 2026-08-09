@@ -15,35 +15,35 @@
 <polygon fill="#999999" stroke="transparent" points="146,-225 0,-225 0,0 146,0 146,-225"/>
 <text text-anchor="start" x="5" y="-212.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
 <text text-anchor="start" x="42.5" y="-201.5" font-family="Helvetica,sans-Serif" font-size="10.00">SessionHost</text>
-<text text-anchor="start" x="19" y="-186.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-186.5" font-family="Helvetica,sans-Serif" font-size="10.00">IsOpen</text>
-<text text-anchor="start" x="19" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00">Context</text>
-<text text-anchor="start" x="19" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00">Run</text>
-<text text-anchor="start" x="19" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">RunView</text>
-<text text-anchor="start" x="19" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">Roster</text>
-<text text-anchor="start" x="19" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Presence</text>
-<text text-anchor="start" x="19" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">Decision</text>
-<text text-anchor="start" x="19" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">NodeStage</text>
-<text text-anchor="start" x="19" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">Commands</text>
-<text text-anchor="start" x="19" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">Open()</text>
-<text text-anchor="start" x="19" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">Close()</text>
-<text text-anchor="start" x="19" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">Dispose()</text>
-<text text-anchor="start" x="19" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="47" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">CreateChild()</text>
+<text text-anchor="start" x="18.5" y="-186.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-186.5" font-family="Helvetica,sans-Serif" font-size="10.00">IsOpen</text>
+<text text-anchor="start" x="18.5" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00">Context</text>
+<text text-anchor="start" x="18.5" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00">Run</text>
+<text text-anchor="start" x="18.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">RunView</text>
+<text text-anchor="start" x="18.5" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">Roster</text>
+<text text-anchor="start" x="18.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Presence</text>
+<text text-anchor="start" x="18.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">Decision</text>
+<text text-anchor="start" x="18.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">SessionStage</text>
+<text text-anchor="start" x="18.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">Commands</text>
+<text text-anchor="start" x="18.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">Open()</text>
+<text text-anchor="start" x="18.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">Close()</text>
+<text text-anchor="start" x="18.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">Dispose()</text>
+<text text-anchor="start" x="18.5" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="46" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">CreateChild()</text>
 <polygon fill="#666666" stroke="#666666" points="0,-196.5 0,-196.5 146,-196.5 146,-196.5 0,-196.5"/>
-<polygon fill="#666666" stroke="#666666" points="0,-61.5 0,-61.5 45,-61.5 45,-61.5 0,-61.5"/>
-<polygon fill="#666666" stroke="#666666" points="45,-61.5 45,-61.5 146,-61.5 146,-61.5 45,-61.5"/>
+<polygon fill="#666666" stroke="#666666" points="0,-61.5 0,-61.5 44,-61.5 44,-61.5 0,-61.5"/>
+<polygon fill="#666666" stroke="#666666" points="44,-61.5 44,-61.5 146,-61.5 146,-61.5 44,-61.5"/>
 <polygon fill="none" stroke="#666666" points="0,0 0,-225 146,-225 146,0 0,0"/>
 </a>
 </g>

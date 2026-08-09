@@ -1,9 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,77,120,102"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1CombatLifetimeScope.html" title="DI&#45;скоуп боевых систем: RNG боя, системы, симуляция, презентация." alt="" coords="168,5,421,45"/>
-<area shape="poly" id="edge425_Node000000_Node000001" title=" " alt="" coords="116,70,167,55,212,43,213,48,169,60,118,75"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1RootLifetimeScope.html" title="Корневой DI&#45;скоуп, живёт всю сессию вместе с CoreScene." alt="" coords="179,69,411,109"/>
-<area shape="poly" id="edge426_Node000000_Node000002" title=" " alt="" coords="134,87,179,87,179,92,134,92"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1WorldLifetimeScope.html" title="Персистентный DI&#45;скоуп «мира»: живёт всю сессию (WorldScene грузится аддитивно на буте и не выгружает..." alt="" coords="175,133,414,173"/>
-<area shape="poly" id="edge427_Node000000_Node000003" title=" " alt="" coords="118,104,169,119,213,131,212,136,167,124,116,109"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,119,38"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Services_1_1Vector2JsonConverter.html" title="Сериализация Vector2 как {&quot;x&quot;:…,&quot;y&quot;:…}." alt="" coords="167,5,373,45"/>
+<area shape="poly" id="edge423_Node000000_Node000001" title=" " alt="" coords="132,23,166,23,166,28,132,28"/>
 </map>

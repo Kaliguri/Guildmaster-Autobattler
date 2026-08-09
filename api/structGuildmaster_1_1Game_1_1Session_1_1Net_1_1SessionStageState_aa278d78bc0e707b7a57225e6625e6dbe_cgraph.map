@@ -1,0 +1,11 @@
+<map id="Guildmaster.Game.Session.Net.SessionStageState.ToString" name="Guildmaster.Game.Session.Net.SessionStageState.ToString">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,101,232,141"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#a7c8a936f24a82ae04b5ba6efed7648e4" title="Разобрать двор. false — сейчас на экране не он." alt="" coords="299,5,552,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,99,218,76,279,55,310,46,311,51,281,60,220,81,165,104"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#aaeb1b5ef3b30ee2ae6fe39b765aeec19" title="Разобрать исход забега. false — сейчас на экране не он." alt="" coords="282,69,569,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="232,107,268,103,268,108,233,112"/>
+<area shape="rect" id="Node000004" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#a07f33857d0ccb6958761feb3cf3f953e" title="Разобрать витрину. false — сейчас на экране не она." alt="" coords="287,133,563,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="233,131,274,135,273,140,232,136"/>
+<area shape="rect" id="Node000005" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#a75f0ec8ca1b955a7b64683a0a75479e8" title="Разобрать текстовое событие. false — сейчас на экране не оно." alt="" coords="280,197,571,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="165,139,220,161,281,183,311,191,310,197,279,188,218,166,163,144"/>
+</map>

@@ -27,7 +27,7 @@ var searchData=
   ['resourcegainedinwindow_24',['ResourceGainedInWindow',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4c7552cf137b487ab8270bbe09caedd7',1,'Guildmaster::Combat::RuntimeUnit']]],
   ['resourcepersecond_25',['ResourcePerSecond',['../classGuildmaster_1_1Combat_1_1RegenSystem.html#a15e2d47e94e176383518bdca6e09e442',1,'Guildmaster::Combat::RegenSystem']]],
   ['resourcewindowstarttick_26',['ResourceWindowStartTick',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa289c791c263d8cdcb1c552dd1b7e9b1',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['rest_27',['Rest',['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html#a7627a7f815e3baa205cbc6208127e72f',1,'Guildmaster::Game::Session::Net::NodeStageState']]],
+  ['rest_27',['Rest',['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#abe70225f4eb9588ef84f705be8a1fa82',1,'Guildmaster::Game::Session::Net::SessionStageState']]],
   ['restart_28',['Restart',['../classGuildmaster_1_1Core_1_1Net_1_1RunAfterOptions.html#abb8925856c0ea4fd12459eb6a4eef81f',1,'Guildmaster::Core::Net::RunAfterOptions']]],
   ['restartsremaining_29',['RestartsRemaining',['../classGuildmaster_1_1Guild_1_1RunState.html#ac4f715eb4cb11ae69a11d653a9ea7333',1,'Guildmaster::Guild::RunState']]],
   ['restore_30',['Restore',['../structGuildmaster_1_1Core_1_1Arena_1_1ArenaCellPhase.html#a4171b5bd24b77f8cae1ea01e6a8d1502',1,'Guildmaster::Core::Arena::ArenaCellPhase']]],

@@ -1,7 +1,0 @@
-<map id="Guildmaster.Game.Session.Net.NodeStageState" name="Guildmaster.Game.Session.Net.NodeStageState">
-<area shape="rect" id="Node000001" title="Шаг узла: какой экран перед группой, что на нём и пройден ли узел." alt="" coords="132,208,327,588"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,43,224,108"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,121,164,207,159,209,128,122"/>
-<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeRest.html" title="Хвост узла: узел пройден, дальше — кнопки «Продолжить» и «К построению», а под ними,..." alt="" coords="248,5,443,145"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="323,147,306,193,301,191,318,145"/>
-</map>

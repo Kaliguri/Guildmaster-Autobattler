@@ -12,10 +12,10 @@
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="328,302,249,294,249,289,328,297"/>
 <area shape="rect" id="Node000007" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html#abf3b65fbc038301f9a271c23fa608ac1" title="Подписаться и спросить хоста, где идёт игра." alt="" coords="36,325,263,365"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="328,330,263,337,263,331,328,325"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#aed518c2339e13c5ee06cb35f2cb286c9" title="Подписаться и спросить, что сейчас на экране." alt="" coords="48,389,251,429"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae59f3e2c122eef83ec3563ba28522957" title="Попросить хоста прислать забег." alt="" coords="48,389,251,429"/>
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="424,334,294,380,249,392,248,387,293,375,422,329"/>
-<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae59f3e2c122eef83ec3563ba28522957" title="Попросить хоста прислать забег." alt="" coords="48,453,251,493"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="445,337,381,391,339,420,294,444,252,459,250,454,292,439,336,415,377,387,442,333"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionStage.html#aa7968f03472b8d94277c680cbd6af602" title="Подписаться и спросить, что сейчас на экране." alt="" coords="45,453,254,493"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="445,337,381,391,339,420,294,444,255,458,253,453,292,439,336,415,377,387,442,333"/>
 <area shape="rect" id="Node000010" href="$classGuildmaster_1_1Net_1_1Tape_1_1BattleRosterIntake.html#a7e08e78a643fd3f4803bc617b4b69899" title="Подписаться и спросить хоста, кто уже на арене." alt="" coords="47,517,252,557"/>
 <area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="454,339,429,377,392,423,347,469,295,508,253,525,251,520,292,503,344,465,388,419,424,374,450,336"/>
 <area shape="rect" id="Node000011" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence.html#a74860d3eced4220a551ca57cd6c19fe7" title=" " alt="" coords="48,581,251,621"/>

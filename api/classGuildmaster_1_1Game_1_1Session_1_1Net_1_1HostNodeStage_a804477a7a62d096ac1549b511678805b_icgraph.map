@@ -1,5 +1,0 @@
-<map id="Guildmaster.Game.Session.Net.HostNodeStage.Clear" name="Guildmaster.Game.Session.Net.HostNodeStage.Clear">
-<area shape="rect" id="Node000001" title="Экран закрылся. Отдельным именем, потому что зовут это из finally." alt="" coords="295,5,497,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#a1f0826571f7ad41449dc676fab2cdff6" title="Показать исход и дождаться общего выхода: во двор или новый забег." alt="" coords="5,5,247,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="281,28,247,28,247,23,281,23"/>
-</map>

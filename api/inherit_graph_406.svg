@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipChain.html" target="_top" xlink:title="Цепочка открытых подсказок (план §II.10.5, sticky&#45;режим): переходя по терминам, игрок открывает окна ...">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1UI_1_1Tooltips_1_1KeywordLinks.html" target="_top" xlink:title="Ключевые слова в тексте: наведение на подчёркнутый термин открывает подсказку&#45;статью (план §II....">
 <polygon fill="white" stroke="#666666" points="133,-30 0,-30 0,0 133,0 133,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.UI.Tooltips.</text>
-<text text-anchor="middle" x="66.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">TooltipChain&lt; T &gt;</text>
+<text text-anchor="middle" x="66.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">KeywordLinks</text>
 </a>
 </g>
 </g>

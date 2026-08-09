@@ -1,0 +1,9 @@
+<map id="Guildmaster.Game.Session.Net.GuestSessionStage" name="Guildmaster.Game.Session.Net.GuestSessionStage">
+<area shape="rect" id="Node000001" title="Гостевая половина «что на экране»: принимает объявленный хозяином шаг узла и держит его у себя." alt="" coords="109,119,303,259"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1ISessionStageView.html" title="Что сейчас на экране у группы — для тех, кто это ПОКАЗЫВАЕТ, независимо от роли." alt="" coords="5,5,143,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,79,146,116,142,120,109,83"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="167,5,245,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="209,84,209,118,203,118,203,84"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="269,5,359,71"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="285,83,259,120,254,117,281,80"/>
+</map>

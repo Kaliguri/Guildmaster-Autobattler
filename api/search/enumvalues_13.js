@@ -8,7 +8,7 @@ var searchData=
   ['taperesend_5',['TapeResend',['../namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809a783da05b8b575778877a062ac4b4921d',1,'Guildmaster::Net']]],
   ['teamwin_6',['TeamWin',['../namespaceGuildmaster_1_1Combat.html#ab2f687afcbfbed06c2eae345b78bfa0cad7b0f13957c1d0c7c944c45c3cc1e725',1,'Guildmaster::Combat']]],
   ['text_7',['Text',['../namespaceGuildmaster_1_1UI_1_1Tooltips.html#a2af700031fcd64dad786348484ce4dcba9dffbf69ffba8bc38bc4e01abf4b1675',1,'Guildmaster::UI::Tooltips']]],
-  ['textevent_8',['textevent',['../namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625ab7c26a94f35cfb5f53e21d5b94b98937',1,'Guildmaster.Guild.TextEvent'],['../namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#a6d3b4882480006d7d8aef8f5a8b5629fab7c26a94f35cfb5f53e21d5b94b98937',1,'Guildmaster.Game.Session.Net.TextEvent']]],
+  ['textevent_8',['textevent',['../namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625ab7c26a94f35cfb5f53e21d5b94b98937',1,'Guildmaster.Guild.TextEvent'],['../namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#ad48cf9bd500a0db744673252068664e7ab7c26a94f35cfb5f53e21d5b94b98937',1,'Guildmaster.Game.Session.Net.TextEvent']]],
   ['tick_9',['Tick',['../namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1a0b3516a5bbb77566f904f9d3877f4710',1,'Guildmaster::Presentation::Audio']]],
   ['toguild_10',['ToGuild',['../namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58afbc6d6fbc9a17e0f605a02c6d93b97d6',1,'Guildmaster::Guild']]],
   ['tomenu_11',['ToMenu',['../namespaceGuildmaster_1_1Guild.html#a560c996dd1569ac8899802f6b67b8c58a5d0da9f685613e39848046c42dc91d31',1,'Guildmaster::Guild']]],

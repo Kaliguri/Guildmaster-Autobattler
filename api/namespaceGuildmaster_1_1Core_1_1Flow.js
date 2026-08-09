@@ -2,7 +2,6 @@ var namespaceGuildmaster_1_1Core_1_1Flow =
 [
     [ "BusyRequest", "structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest" ],
     [ "GoToModeRequest", "structGuildmaster_1_1Core_1_1Flow_1_1GoToModeRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1GoToModeRequest" ],
-    [ "IHubPresence", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence" ],
     [ "IRunControl", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl" ],
     [ "IScreenTransition", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IScreenTransition.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IScreenTransition" ],
     [ "MainMenuVisibilityChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1MainMenuVisibilityChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1MainMenuVisibilityChangedEvent" ],

@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Презентер Двора — тем же образцом, что MainMenuPresenter и ProfilePresenter: публикует запрос и ждёт ...">
+<g id="a_Node000001"><a xlink:title="Презентер Двора: объявляет шаг «двор» и ждёт, пока группа сойдётся идти в забег.">
 <polygon fill="#999999" stroke="transparent" points="150,-75 0,-75 0,0 150,0 150,-75"/>
 <text text-anchor="start" x="5" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.Hub</text>
 <text text-anchor="start" x="51.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">Presenter</text>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Session.Net.SessionStageState.TryOpenOutcome" name="Guildmaster.Game.Session.Net.SessionStageState.TryOpenOutcome">
+<area shape="rect" id="Node000001" title="Разобрать исход забега. false — сейчас на экране не он." alt="" coords="280,5,567,45"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#aa278d78bc0e707b7a57225e6625e6dbe" title=" " alt="" coords="5,5,232,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="266,28,232,28,232,23,266,23"/>
+</map>

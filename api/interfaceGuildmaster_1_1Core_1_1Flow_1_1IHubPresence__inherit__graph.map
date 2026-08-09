@@ -1,5 +1,0 @@
-<map id="Guildmaster.Core.Flow.IHubPresence" name="Guildmaster.Core.Flow.IHubPresence">
-<area shape="rect" id="Node000001" title="Двор гильдии глазами того, кто его не рисует: открыт ли он и надо ли его открыть." alt="" coords="36,5,231,85"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1MenuRouter.html" title="Строит и проводит экраны забега из UXML&#45;шаблонов, а стек, видимость и глушение геймплейного ввода дел..." alt="" coords="5,133,261,613"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,99,136,133,131,133,131,99"/>
-</map>

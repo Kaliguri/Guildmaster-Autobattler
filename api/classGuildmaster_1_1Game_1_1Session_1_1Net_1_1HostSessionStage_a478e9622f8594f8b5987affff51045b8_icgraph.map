@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Session.Net.HostSessionStage.Clear" name="Guildmaster.Game.Session.Net.HostSessionStage.Clear">
+<area shape="rect" id="Node000001" title="Экран закрылся. Отдельным именем, потому что зовут это из finally." alt="" coords="295,37,499,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#a58e2c35b9a5063a701ff55cebcca1cb8" title="Открыть двор выбранного дома. Возвращается, когда в забег согласились ВСЕ." alt="" coords="22,5,230,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="281,46,230,40,231,35,281,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#a1f0826571f7ad41449dc676fab2cdff6" title="Показать исход и дождаться общего выхода: во двор или новый забег." alt="" coords="5,69,247,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="281,74,247,78,247,72,281,68"/>
+</map>

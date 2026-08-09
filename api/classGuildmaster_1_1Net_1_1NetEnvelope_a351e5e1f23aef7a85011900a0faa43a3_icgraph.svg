@@ -69,10 +69,10 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#a3796d26cd063277fa40aebb75f0e46c7" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="179,-318 18,-318 18,-288 179,-288 179,-318"/>
-<text text-anchor="start" x="26" y="-306" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="98.5" y="-295" font-family="Helvetica,sans-Serif" font-size="10.00">Net.GuestNodeStage.Dispose</text>
+<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae0bc2c49238e34dd2ffc27d9d95683f2" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="174.5,-318 22.5,-318 22.5,-288 174.5,-288 174.5,-318"/>
+<text text-anchor="start" x="30.5" y="-306" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
+<text text-anchor="middle" x="98.5" y="-295" font-family="Helvetica,sans-Serif" font-size="10.00">Net.GuestRunState.Dispose</text>
 </a>
 </g>
 </g>
@@ -88,10 +88,10 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae0bc2c49238e34dd2ffc27d9d95683f2" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="174.5,-270 22.5,-270 22.5,-240 174.5,-240 174.5,-270"/>
-<text text-anchor="start" x="30.5" y="-258" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="98.5" y="-247" font-family="Helvetica,sans-Serif" font-size="10.00">Net.GuestRunState.Dispose</text>
+<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionStage.html#a0e17c39f85c8c88e981ac405a947f5e0" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="185,-270 12,-270 12,-240 185,-240 185,-270"/>
+<text text-anchor="start" x="20" y="-258" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
+<text text-anchor="middle" x="98.5" y="-247" font-family="Helvetica,sans-Serif" font-size="10.00">Net.GuestSessionStage.Dispose</text>
 </a>
 </g>
 </g>
@@ -107,10 +107,10 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html#a688ed2462077418248102fcbe46e86f9" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="176,-222 21,-222 21,-192 176,-192 176,-222"/>
-<text text-anchor="start" x="29" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="98.5" y="-199" font-family="Helvetica,sans-Serif" font-size="10.00">Net.HostNodeStage.Dispose</text>
+<g id="a_Node000006"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html#aa14e80bb209180dff8043a5a826f30a3" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="182,-222 15,-222 15,-192 182,-192 182,-222"/>
+<text text-anchor="start" x="23" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
+<text text-anchor="middle" x="98.5" y="-199" font-family="Helvetica,sans-Serif" font-size="10.00">Net.HostSessionStage.Dispose</text>
 </a>
 </g>
 </g>
@@ -118,7 +118,7 @@
 <g id="edge5_Node000001_Node000006" class="edge">
 <title>Node1&#45;&gt;Node6</title>
 <g id="a_edge5_Node000001_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M222.77,-207C207.23,-207 191.22,-207 176.1,-207"/>
+<path fill="none" stroke="#63b8ff" d="M222.69,-207C209.22,-207 195.41,-207 182.13,-207"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="222.91,-210.5 232.91,-207 222.91,-203.5 222.91,-210.5"/>
 </a>
 </g>

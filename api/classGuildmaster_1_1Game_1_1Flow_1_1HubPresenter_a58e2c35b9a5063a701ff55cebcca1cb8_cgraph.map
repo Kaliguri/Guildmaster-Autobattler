@@ -1,9 +1,11 @@
 <map id="Guildmaster.Game.Flow.HubPresenter.ShowAsync" name="Guildmaster.Game.Flow.HubPresenter.ShowAsync">
-<area shape="rect" id="Node000001" title="Открыть двор выбранного дома. Возвращается, когда в забег согласились ВСЕ." alt="" coords="5,69,213,109"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html#abf06119dec64e99d4f4c0e8a695feba9" title="Связать действие, которого ждём." alt="" coords="261,5,476,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,67,273,46,275,51,192,72"/>
-<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html#a015de1d5e28262edd5ad691cd839789f" title="Переключить собственное согласие — то же, что Choose с единственным вариантом." alt="" coords="261,69,476,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="214,87,247,87,247,92,214,92"/>
-<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html#aae35e474a25dc6046243ec4a02fb79ac" title="Снять связанное действие: экран, который его заказывал, уходит." alt="" coords="261,133,476,173"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="192,107,275,127,273,133,191,112"/>
+<area shape="rect" id="Node000001" title="Открыть двор выбранного дома. Возвращается, когда в забег согласились ВСЕ." alt="" coords="5,101,213,141"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html#ae563666310d626b5c7a5d629ea53b078" title="Объявить шаг узла." alt="" coords="261,5,496,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,99,260,55,285,47,287,52,262,60,155,104"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html#abf06119dec64e99d4f4c0e8a695feba9" title="Связать действие, которого ждём." alt="" coords="271,69,486,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="213,106,257,101,258,106,214,112"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html#a478e9622f8594f8b5987affff51045b8" title="Экран закрылся. Отдельным именем, потому что зовут это из finally." alt="" coords="277,133,481,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="214,131,263,137,262,142,213,136"/>
+<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html#aae35e474a25dc6046243ec4a02fb79ac" title="Снять связанное действие: экран, который его заказывал, уходит." alt="" coords="271,197,486,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="155,139,262,183,287,191,285,196,260,188,153,144"/>
 </map>

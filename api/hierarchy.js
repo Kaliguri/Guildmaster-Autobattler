@@ -179,6 +179,7 @@ var hierarchy =
     [ "Guildmaster.Presentation.Effects.HitFormFactory", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory.html", null ],
     [ "Guildmaster.Presentation.Effects.HitFormParams", "structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html", null ],
     [ "Guildmaster.UI.HubScreenView", "classGuildmaster_1_1UI_1_1HubScreenView.html", null ],
+    [ "Guildmaster.Game.Session.Net.HubStage", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1HubStage.html", null ],
     [ "Guildmaster.ContentHub.Editor.HubToasts", "classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html", null ],
     [ "Guildmaster.Data.Definitions.IActivityView", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IActivityView.html", [
       [ "Guildmaster.Game.Activity.ActivityHost", "classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost.html", null ]
@@ -268,25 +269,25 @@ var hierarchy =
       [ "Guildmaster.Game.Services.NetPauseBridge", "classGuildmaster_1_1Game_1_1Services_1_1NetPauseBridge.html", null ],
       [ "Guildmaster.Game.Services.RunAudioPresenter", "classGuildmaster_1_1Game_1_1Services_1_1RunAudioPresenter.html", null ],
       [ "Guildmaster.Game.Services.TimeScaleService", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html", null ],
-      [ "Guildmaster.Game.Session.CoopDisconnectPresenter", "classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter.html", null ],
       [ "Guildmaster.Game.Session.CoopJoinInterrupt", "classGuildmaster_1_1Game_1_1Session_1_1CoopJoinInterrupt.html", null ],
+      [ "Guildmaster.Game.Session.CoopSessionPresenter", "classGuildmaster_1_1Game_1_1Session_1_1CoopSessionPresenter.html", null ],
       [ "Guildmaster.Game.Session.Net.ActivityBroadcast", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityBroadcast.html", null ],
       [ "Guildmaster.Game.Session.Net.CoopGuestEntry", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry.html", null ],
       [ "Guildmaster.Game.Session.Net.DeploymentIntentIntake", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html", null ],
       [ "Guildmaster.Game.Session.Net.DeploymentIntentSender", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestActivityFollower", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html", null ],
-      [ "Guildmaster.Game.Session.Net.GuestNodeStage", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestPartyFollower", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPartyFollower.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestPresence", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestRunState", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestSessionRoster", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html", null ],
+      [ "Guildmaster.Game.Session.Net.GuestSessionStage", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionStage.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestSharedDecision", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSharedDecision.html", null ],
-      [ "Guildmaster.Game.Session.Net.HostNodeStage", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html", null ],
       [ "Guildmaster.Game.Session.Net.HostPresence", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostPresence.html", null ],
       [ "Guildmaster.Game.Session.Net.HostSessionRoster", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html", null ],
+      [ "Guildmaster.Game.Session.Net.HostSessionStage", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html", null ],
       [ "Guildmaster.Game.Session.Net.HostSharedDecision", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSharedDecision.html", null ],
-      [ "Guildmaster.Game.Session.Net.NodeStageScreens", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageScreens.html", null ],
       [ "Guildmaster.Game.Session.Net.RunStateBroadcast", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunStateBroadcast.html", null ],
+      [ "Guildmaster.Game.Session.Net.SessionStageScreens", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageScreens.html", null ],
       [ "Guildmaster.Game.Session.SessionHost", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html", null ],
       [ "Guildmaster.Net.Session.CoopSession", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html", null ],
       [ "Guildmaster.Net.Session.SteamBootstrap", "classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html", null ],
@@ -412,7 +413,7 @@ var hierarchy =
     [ "IEquatable", null, [
       [ "Guildmaster.Combat.BattleOutcome", "structGuildmaster_1_1Combat_1_1BattleOutcome.html", null ],
       [ "Guildmaster.Game.Session.Net.ActivityState", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState.html", null ],
-      [ "Guildmaster.Game.Session.Net.NodeStageState", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html", null ]
+      [ "Guildmaster.Game.Session.Net.SessionStageState", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html", null ]
     ] ],
     [ "System.IEquatable", null, [
       [ "Guildmaster.Presentation.Body.BodyVisualState", "structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html", null ],
@@ -432,9 +433,6 @@ var hierarchy =
       [ "Guildmaster.Presentation.CombatFocusPointSource", "classGuildmaster_1_1Presentation_1_1CombatFocusPointSource.html", null ],
       [ "Guildmaster.Presentation.EmptyFocusPointSource", "classGuildmaster_1_1Presentation_1_1EmptyFocusPointSource.html", null ],
       [ "Guildmaster.Presentation.TapeFocusPointSource", "classGuildmaster_1_1Presentation_1_1TapeFocusPointSource.html", null ]
-    ] ],
-    [ "Guildmaster.Core.Flow.IHubPresence", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IHubPresence.html", [
-      [ "Guildmaster.UI.MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html", null ]
     ] ],
     [ "Guildmaster.Game.Flow.IHubPresenter", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IHubPresenter.html", [
       [ "Guildmaster.Game.Flow.HubPresenter", "classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html", null ]
@@ -477,10 +475,6 @@ var hierarchy =
     ] ],
     [ "Guildmaster.Game.Flow.INodeResolver", "interfaceGuildmaster_1_1Game_1_1Flow_1_1INodeResolver.html", [
       [ "Guildmaster.Game.Flow.NodeResolver", "classGuildmaster_1_1Game_1_1Flow_1_1NodeResolver.html", null ]
-    ] ],
-    [ "Guildmaster.Game.Session.Net.INodeStageView", "interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1INodeStageView.html", [
-      [ "Guildmaster.Game.Session.Net.GuestNodeStage", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html", null ],
-      [ "Guildmaster.Game.Session.Net.HostNodeStage", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html", null ]
     ] ],
     [ "Guildmaster.Game.Flow.IOutcomePresenter", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IOutcomePresenter.html", [
       [ "Guildmaster.Game.Flow.OutcomePresenter", "classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html", null ]
@@ -568,6 +562,10 @@ var hierarchy =
       [ "Guildmaster.Game.Session.Net.HostSessionRoster", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html", null ],
       [ "Guildmaster.Game.Session.SessionPlayerRouter", "classGuildmaster_1_1Game_1_1Session_1_1SessionPlayerRouter.html", null ]
     ] ],
+    [ "Guildmaster.Game.Session.Net.ISessionStageView", "interfaceGuildmaster_1_1Game_1_1Session_1_1Net_1_1ISessionStageView.html", [
+      [ "Guildmaster.Game.Session.Net.GuestSessionStage", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionStage.html", null ],
+      [ "Guildmaster.Game.Session.Net.HostSessionStage", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html", null ]
+    ] ],
     [ "Guildmaster.Core.Settings.ISettingsService", "interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html", [
       [ "Guildmaster.Game.Services.SettingsService", "classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html", null ]
     ] ],
@@ -605,22 +603,22 @@ var hierarchy =
       [ "Guildmaster.Game.Services.ProfileService", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html", null ],
       [ "Guildmaster.Game.Services.RunAudioPresenter", "classGuildmaster_1_1Game_1_1Services_1_1RunAudioPresenter.html", null ],
       [ "Guildmaster.Game.Services.SettingsService", "classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html", null ],
-      [ "Guildmaster.Game.Session.CoopDisconnectPresenter", "classGuildmaster_1_1Game_1_1Session_1_1CoopDisconnectPresenter.html", null ],
       [ "Guildmaster.Game.Session.CoopJoinInterrupt", "classGuildmaster_1_1Game_1_1Session_1_1CoopJoinInterrupt.html", null ],
+      [ "Guildmaster.Game.Session.CoopSessionPresenter", "classGuildmaster_1_1Game_1_1Session_1_1CoopSessionPresenter.html", null ],
       [ "Guildmaster.Game.Session.Net.CoopGuestEntry", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1CoopGuestEntry.html", null ],
       [ "Guildmaster.Game.Session.Net.DeploymentIntentIntake", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html", null ],
       [ "Guildmaster.Game.Session.Net.DeploymentIntentSender", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentSender.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestActivityFollower", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestActivityFollower.html", null ],
-      [ "Guildmaster.Game.Session.Net.GuestNodeStage", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestPartyFollower", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPartyFollower.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestPresence", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestRunState", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestSessionRoster", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionRoster.html", null ],
+      [ "Guildmaster.Game.Session.Net.GuestSessionStage", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionStage.html", null ],
       [ "Guildmaster.Game.Session.Net.GuestSharedDecision", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSharedDecision.html", null ],
       [ "Guildmaster.Game.Session.Net.HostPresence", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostPresence.html", null ],
       [ "Guildmaster.Game.Session.Net.HostSessionRoster", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html", null ],
       [ "Guildmaster.Game.Session.Net.HostSharedDecision", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSharedDecision.html", null ],
-      [ "Guildmaster.Game.Session.Net.NodeStageScreens", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageScreens.html", null ],
+      [ "Guildmaster.Game.Session.Net.SessionStageScreens", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageScreens.html", null ],
       [ "Guildmaster.Net.Tape.BattleRosterAnnouncer", "classGuildmaster_1_1Net_1_1Tape_1_1BattleRosterAnnouncer.html", null ],
       [ "Guildmaster.Net.Tape.BattleRosterIntake", "classGuildmaster_1_1Net_1_1Tape_1_1BattleRosterIntake.html", null ],
       [ "Guildmaster.Net.Tape.TapeIntakePump", "classGuildmaster_1_1Net_1_1Tape_1_1TapeIntakePump.html", null ],
@@ -778,7 +776,6 @@ var hierarchy =
     [ "Guildmaster.Net.Transport.NetPeer", "classGuildmaster_1_1Net_1_1Transport_1_1NetPeer.html", null ],
     [ "Guildmaster.UI.NewGameScreenView", "classGuildmaster_1_1UI_1_1NewGameScreenView.html", null ],
     [ "Guildmaster.Game.Session.Net.NodeRest", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeRest.html", null ],
-    [ "Guildmaster.Game.Session.Net.NodeStageCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html", null ],
     [ "Guildmaster.Guild.NodeTypeWeight", "structGuildmaster_1_1Guild_1_1NodeTypeWeight.html", null ],
     [ "Guildmaster.UI.NoticeDialogView", "classGuildmaster_1_1UI_1_1NoticeDialogView.html", null ],
     [ "Guildmaster.Core.Flow.NoticeRequest", "structGuildmaster_1_1Core_1_1Flow_1_1NoticeRequest.html", null ],
@@ -921,6 +918,7 @@ var hierarchy =
     [ "Guildmaster.Core.Diagnostics.SessionLogArchive", "classGuildmaster_1_1Core_1_1Diagnostics_1_1SessionLogArchive.html", null ],
     [ "Guildmaster.Core.Players.SessionPlayer", "structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html", null ],
     [ "Guildmaster.Game.Session.Net.SessionRosterCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html", null ],
+    [ "Guildmaster.Game.Session.Net.SessionStageCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageCodec.html", null ],
     [ "Guildmaster.Data.Definitions.SetFormationRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1SetFormationRequest.html", null ],
     [ "Guildmaster.Data.Definitions.SetTestZoneRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1SetTestZoneRequest.html", null ],
     [ "Guildmaster.UI.SettingsViewModel", "classGuildmaster_1_1UI_1_1SettingsViewModel.html", null ],

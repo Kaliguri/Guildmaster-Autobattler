@@ -149,9 +149,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a167fbabba498b104bf842511e2480aca" id="r_a167fbabba498b104bf842511e2480aca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Net_1_1ISharedDecision.html">Guildmaster.Core.Net.ISharedDecision</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#a167fbabba498b104bf842511e2480aca">Decision</a><code> [get]</code></td></tr>
 <tr class="memdesc:a167fbabba498b104bf842511e2480aca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Общее согласие текущего сеанса; вне сессии — <code>null</code>.  <br /></td></tr>
 <tr class="separator:a167fbabba498b104bf842511e2480aca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05f3c7204992e2846e86b1969928ee47" id="r_a05f3c7204992e2846e86b1969928ee47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html">Net.HostNodeStage</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#a05f3c7204992e2846e86b1969928ee47">NodeStage</a><code> [get]</code></td></tr>
-<tr class="memdesc:a05f3c7204992e2846e86b1969928ee47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Объявление экранов узла; <code>null</code> вне сессии И у гостя — объявляет тот, кто ведёт узел.  <br /></td></tr>
-<tr class="separator:a05f3c7204992e2846e86b1969928ee47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fbf1fdeb2d7fdf3979e82ff3374a600" id="r_a0fbf1fdeb2d7fdf3979e82ff3374a600"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html">Net.HostSessionStage</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#a0fbf1fdeb2d7fdf3979e82ff3374a600">SessionStage</a><code> [get]</code></td></tr>
+<tr class="memdesc:a0fbf1fdeb2d7fdf3979e82ff3374a600"><td class="mdescLeft">&#160;</td><td class="mdescRight">Объявление экранов узла; <code>null</code> вне сессии И у гостя — объявляет тот, кто ведёт узел.  <br /></td></tr>
+<tr class="separator:a0fbf1fdeb2d7fdf3979e82ff3374a600"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8ae95970cdc89cd5c381caee6272919" id="r_ae8ae95970cdc89cd5c381caee6272919"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1ISessionRunCommands.html">Guildmaster.Guild.Commands.ISessionRunCommands</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#ae8ae95970cdc89cd5c381caee6272919">Commands</a><code> [get]</code></td></tr>
 <tr class="memdesc:ae8ae95970cdc89cd5c381caee6272919"><td class="mdescLeft">&#160;</td><td class="mdescRight">Команды забега текущего сеанса; вне сессии — <code>null</code>.  <br /></td></tr>
 <tr class="separator:ae8ae95970cdc89cd5c381caee6272919"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -387,30 +387,6 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a05f3c7204992e2846e86b1969928ee47" name="a05f3c7204992e2846e86b1969928ee47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05f3c7204992e2846e86b1969928ee47">&#9670;&#160;</a></span>NodeStage</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html">Net.HostNodeStage</a> Guildmaster.Game.Session.SessionHost.NodeStage</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Объявление экранов узла; <code>null</code> вне сессии И у гостя — объявляет тот, кто ведёт узел. </p>
-
-</div>
-</div>
 <a id="a998e34b6371a6cd6ffef638d6ba5bed1" name="a998e34b6371a6cd6ffef638d6ba5bed1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a998e34b6371a6cd6ffef638d6ba5bed1">&#9670;&#160;</a></span>Presence</h2>
 
@@ -507,6 +483,30 @@ Here is the call graph for this function:</div>
 
 <p>Что в забеге сейчас — у обеих ролей. </p>
 <p>У владельца отвечает держатель, у гостя — приёмник снимков; спрашивающему разница не видна. </p>
+
+</div>
+</div>
+<a id="a0fbf1fdeb2d7fdf3979e82ff3374a600" name="a0fbf1fdeb2d7fdf3979e82ff3374a600"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fbf1fdeb2d7fdf3979e82ff3374a600">&#9670;&#160;</a></span>SessionStage</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html">Net.HostSessionStage</a> Guildmaster.Game.Session.SessionHost.SessionStage</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Объявление экранов узла; <code>null</code> вне сессии И у гостя — объявляет тот, кто ведёт узел. </p>
 
 </div>
 </div>

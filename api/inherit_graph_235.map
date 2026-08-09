@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IHubPresenter.html" title="Показ Двора гильдии и ожидание, пока группа не сойдётся идти в забег." alt="" coords="5,5,217,45"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html" title="Презентер Двора — тем же образцом, что MainMenuPresenter и ProfilePresenter: публикует запрос и ждёт ..." alt="" coords="265,5,473,45"/>
-<area shape="poly" id="edge349_Node000000_Node000001" title=" " alt="" coords="231,23,265,23,265,28,231,28"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html" title="Презентер Двора: объявляет шаг «двор» и ждёт, пока группа сойдётся идти в забег." alt="" coords="265,5,473,45"/>
+<area shape="poly" id="edge348_Node000000_Node000001" title=" " alt="" coords="231,23,265,23,265,28,231,28"/>
 </map>

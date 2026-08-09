@@ -68,7 +68,7 @@ var searchData=
   ['opponentat_65',['OpponentAt',['../classGuildmaster_1_1Data_1_1Definitions_1_1ProvingGroundsConfig.html#a1397079be3787bd69e69eb8204ea9bbe',1,'Guildmaster::Data::Definitions::ProvingGroundsConfig']]],
   ['opponentpositionat_66',['OpponentPositionAt',['../classGuildmaster_1_1Data_1_1Definitions_1_1ProvingGroundsConfig.html#a3f18438c6f7467eb27f77f9fe6d2ddb5',1,'Guildmaster::Data::Definitions::ProvingGroundsConfig']]],
   ['ordergroundsroster_67',['OrderGroundsRoster',['../classGuildmaster_1_1Game_1_1Activity_1_1ActivityHost.html#a9f504d17835ab3d7fd9bb4cf3be924ac',1,'Guildmaster::Game::Activity::ActivityHost']]],
-  ['outcome_68',['Outcome',['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageState.html#a9d15021bd38dd6a7252ea4c3b9b8d00e',1,'Guildmaster::Game::Session::Net::NodeStageState']]],
+  ['outcome_68',['Outcome',['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#a6b7a36b55ab6932b5cc3b74ace906e2e',1,'Guildmaster::Game::Session::Net::SessionStageState']]],
   ['outcomepresenter_69',['OutcomePresenter',['../classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#a996080846b20527e58d047b8bf971e09',1,'Guildmaster::Game::Flow::OutcomePresenter']]],
   ['outcomestage_70',['OutcomeStage',['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1OutcomeStage.html#a2ba6d504a76038bf51a0d9508cdbece5',1,'Guildmaster::Game::Session::Net::OutcomeStage']]],
   ['overtimedamagemultiplier_71',['OvertimeDamageMultiplier',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#af616872f7b83d575195ac7b14039c6cf',1,'Guildmaster::Core::Simulation::SimTuning']]]

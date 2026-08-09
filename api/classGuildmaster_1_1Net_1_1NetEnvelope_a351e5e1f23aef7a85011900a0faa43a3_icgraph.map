@@ -4,12 +4,12 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="408,250,386,206,355,154,315,103,266,60,245,48,248,43,270,55,319,99,360,151,391,203,413,247"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentIntake.html#a92f637d136827316efbce06d7055f9bb" title=" " alt="" coords="5,69,268,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="400,252,344,186,308,152,267,124,241,112,243,107,269,119,311,148,348,182,404,248"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#a3796d26cd063277fa40aebb75f0e46c7" title=" " alt="" coords="29,133,244,173"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae0bc2c49238e34dd2ffc27d9d95683f2" title=" " alt="" coords="35,133,238,173"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="385,256,330,220,267,188,233,176,235,171,269,183,333,216,388,251"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae0bc2c49238e34dd2ffc27d9d95683f2" title=" " alt="" coords="35,197,238,237"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionStage.html#a0e17c39f85c8c88e981ac405a947f5e0" title=" " alt="" coords="21,197,252,237"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="320,261,227,240,228,235,321,256"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html#a688ed2462077418248102fcbe46e86f9" title=" " alt="" coords="33,261,240,301"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="302,284,240,284,240,279,302,279"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html#aa14e80bb209180dff8043a5a826f30a3" title=" " alt="" coords="25,261,248,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="302,284,248,284,248,279,302,279"/>
 <area shape="rect" id="Node000007" href="$classGuildmaster_1_1Net_1_1BattleControlRelay.html#ad755e6c2fd1dfffdff468337c56bf634" title="Отписаться от транспорта." alt="" coords="27,325,246,365"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="321,307,228,328,227,323,320,302"/>
 <area shape="rect" id="Node000008" href="$classGuildmaster_1_1Net_1_1Session_1_1CoopHandshake.html#adb04786851201ac1c00c2d18f626e01a" title=" " alt="" coords="43,389,230,429"/>

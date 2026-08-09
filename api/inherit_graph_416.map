@@ -1,5 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,119,38"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Services_1_1Vector2JsonConverter.html" title="Сериализация Vector2 как {&quot;x&quot;:…,&quot;y&quot;:…}." alt="" coords="167,5,373,45"/>
-<area shape="poly" id="edge424_Node000000_Node000001" title=" " alt="" coords="132,23,166,23,166,28,132,28"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,45,84,70"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Activity_1_1ActivityInstaller.html" title="Состав Занятия — конечного мероприятия со своим состоянием и выходом в хаб: забег,..." alt="" coords="133,5,333,45"/>
+<area shape="poly" id="edge421_Node000000_Node000001" title=" " alt="" coords="97,46,133,40,134,45,98,51"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionInstaller.html" title="Состав Сессии — сеанса владения состоянием игры." alt="" coords="132,69,335,109"/>
+<area shape="poly" id="edge422_Node000000_Node000002" title=" " alt="" coords="98,64,132,69,131,75,97,69"/>
 </map>

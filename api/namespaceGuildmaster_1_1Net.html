@@ -149,7 +149,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809a012c6696b246f4fe5b3e2c8b7d6d0326">SessionRoster</a> = 11
 , <a class="el" href="namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809abd7ab48c5388920001cc9fa96a5caf00">DeploymentIntent</a> = 12
 , <br />
-&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809a339f4d5f1f13ded4dc539a0cbbd1a9f9">NodeStage</a> = 13
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809a9e49cf13210b655a3601cba0d5b68c65">SessionStage</a> = 13
 <br />
  }</td></tr>
 <tr class="memdesc:ad606a1b8f063f8707073aabe329e9809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кто говорит в сообщении.  <a href="namespaceGuildmaster_1_1Net.html#ad606a1b8f063f8707073aabe329e9809">More...</a><br /></td></tr>
@@ -198,7 +198,7 @@ Enumerations</h2></td></tr>
 <p>Гость → хост.</p>
 <p><b>Не команда забега, и потому свой канал.</b> Команда меняет durable-состояние и обязана пережить сессию в логе; намерение же эфемерно — оно адресует бойца на арене, которого через минуту не будет. Durable-след появляется уже у владельца, когда тот исполнит намерение и переведёт его в позицию слота гильдии. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ad606a1b8f063f8707073aabe329e9809a339f4d5f1f13ded4dc539a0cbbd1a9f9" name="ad606a1b8f063f8707073aabe329e9809a339f4d5f1f13ded4dc539a0cbbd1a9f9"></a>NodeStage&#160;</td><td class="fielddoc"><p>Шаг узла и его содержимое: что сейчас на экране у группы. </p>
+<tr><td class="fieldname"><a id="ad606a1b8f063f8707073aabe329e9809a9e49cf13210b655a3601cba0d5b68c65" name="ad606a1b8f063f8707073aabe329e9809a9e49cf13210b655a3601cba0d5b68c65"></a>SessionStage&#160;</td><td class="fielddoc"><p>Шаг узла и его содержимое: что сейчас на экране у группы. </p>
 <p>Хост → гости.</p>
 <p><b>Не «где мы», и потому свой канал.</b> ActivityState отвечает на вопрос про МЕСТО — мероприятие, арена, карта, двор, — и переживает любой экран внутри него. Шаг узла живёт короче места и несёт содержимое (какие три реликвии выпали), поэтому сравнивать его целиком вместе с местом значило бы гонять состав награды на каждое движение фазы боя. </p>
 <p><b>Содержимое едет строковыми id</b> — как чанк ленты. Гость собирает витрину из своего реестра контента, а совпадение реестров уже проверено рукопожатием.</p>

@@ -14,6 +14,6 @@ var NetEnvelope_8cs =
       [ "Decision", "NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809a5d30f54fc5f12894fd1afbf4d41c5969", null ],
       [ "SessionRoster", "NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809a012c6696b246f4fe5b3e2c8b7d6d0326", null ],
       [ "DeploymentIntent", "NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809abd7ab48c5388920001cc9fa96a5caf00", null ],
-      [ "NodeStage", "NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809a339f4d5f1f13ded4dc539a0cbbd1a9f9", null ]
+      [ "SessionStage", "NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809a9e49cf13210b655a3601cba0d5b68c65", null ]
     ] ]
 ];

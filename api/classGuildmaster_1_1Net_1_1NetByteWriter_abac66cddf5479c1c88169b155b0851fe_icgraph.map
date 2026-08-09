@@ -2,10 +2,10 @@
 <area shape="rect" id="Node000001" title="Начать писать заново, сохранив выделенный буфер: чанки идут потоком, мусорить нельзя." alt="" coords="672,261,900,301"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html#ad48cbf94b213e783a3c278e2732634b9" title=" " alt="" coords="377,5,589,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="768,250,746,206,714,154,672,102,648,79,623,60,588,43,590,38,625,55,652,75,676,99,718,151,750,203,773,247"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html#a0056c274f5f9c1041a961fbd66453b89" title=" " alt="" coords="381,69,584,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="760,252,703,186,665,152,623,124,583,107,585,102,625,119,668,148,706,182,764,248"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="373,133,593,173"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="744,256,688,220,623,188,587,176,589,171,625,183,691,216,747,251"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="373,69,593,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="760,252,703,186,665,152,623,124,592,110,594,105,625,119,668,148,706,182,764,248"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageCodec.html#ad5a26d8c33748483f4bb072922781182" title=" " alt="" coords="375,133,590,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="744,256,688,220,623,188,587,176,589,171,625,183,691,216,747,251"/>
 <area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#aedf291b262afef2af56a6d2b1be74b8b" title=" " alt="" coords="341,197,624,237"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="677,261,577,240,579,235,678,256"/>
 <area shape="rect" id="Node000007" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionRosterCodec.html#a2c53a1da0a02f054ae8fb2c0e339d3e7" title="Представиться хозяину: участник → хозяин." alt="" coords="357,261,608,301"/>
@@ -18,6 +18,6 @@
 <area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="764,314,706,381,668,415,625,444,591,458,589,453,623,439,665,411,703,377,760,311"/>
 <area shape="rect" id="Node000011" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html#a6d025b8ee99ae756b98fba69e5357166" title="Отдать свой голос: участник → хозяин." alt="" coords="376,517,589,557"/>
 <area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="773,315,750,360,718,412,676,464,652,487,625,508,591,524,588,520,623,503,648,483,672,460,714,409,746,357,768,313"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,133,293,173"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="359,156,294,156,294,151,359,151"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,69,293,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="359,92,294,92,294,87,359,87"/>
 </map>

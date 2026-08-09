@@ -40,10 +40,10 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html#a0056c274f5f9c1041a961fbd66453b89" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="156.5,-78 4.5,-78 4.5,-48 156.5,-48 156.5,-78"/>
-<text text-anchor="start" x="12.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="80.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Net.NodeStageCodec.Write</text>
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageCodec.html#ad5a26d8c33748483f4bb072922781182" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="161,-78 0,-78 0,-48 161,-48 161,-78"/>
+<text text-anchor="start" x="8" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
+<text text-anchor="middle" x="80.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Net.SessionStageCodec.Write</text>
 </a>
 </g>
 </g>
@@ -51,7 +51,7 @@
 <g id="edge2_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
 <g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M186.84,-63C176.67,-63 166.43,-63 156.53,-63"/>
+<path fill="none" stroke="#63b8ff" d="M186.93,-63C178.35,-63 169.71,-63 161.27,-63"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="186.97,-66.5 196.97,-63 186.97,-59.5 186.97,-66.5"/>
 </a>
 </g>

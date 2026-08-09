@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Session.Net.SessionStageState" name="Guildmaster.Game.Session.Net.SessionStageState">
+<area shape="rect" id="Node000001" title="Шаг узла: какой экран перед группой, что на нём и пройден ли узел." alt="" coords="5,133,200,573"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="10,5,195,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,99,105,133,100,133,100,99"/>
+</map>

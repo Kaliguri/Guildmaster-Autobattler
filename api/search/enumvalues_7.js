@@ -16,5 +16,6 @@ var searchData=
   ['hot_13',['HoT',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438adcaa2fceac50ca9147bb817517df900f',1,'Guildmaster::Data::Definitions']]],
   ['hover_14',['hover',['../classGuildmaster_1_1Presentation_1_1DeploymentView.html#ac521cccdf0b96138986f29f9b6ac408baeee0168be69b854c20621fc6f01cc3fc',1,'Guildmaster.Presentation.DeploymentView.Hover'],['../namespaceGuildmaster_1_1UI_1_1Components.html#adc0a5df621270a6818e95117a516f5f3aeee0168be69b854c20621fc6f01cc3fc',1,'Guildmaster.UI.Components.Hover']]],
   ['hpregenflat_15',['HpRegenFlat',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a35881155d4e7c3d6a18cd465fb28b7ac',1,'Guildmaster::Data::Stats']]],
-  ['hpregenpct_16',['HpRegenPct',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ac62b34ef590567826318ecd2d6caac70',1,'Guildmaster::Data::Stats']]]
+  ['hpregenpct_16',['HpRegenPct',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ac62b34ef590567826318ecd2d6caac70',1,'Guildmaster::Data::Stats']]],
+  ['hub_17',['Hub',['../namespaceGuildmaster_1_1Game_1_1Session_1_1Net.html#ad48cf9bd500a0db744673252068664e7a2e4b7e66cd3715235c82aa017ee1192e',1,'Guildmaster::Game::Session::Net']]]
 ];

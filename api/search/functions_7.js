@@ -27,10 +27,12 @@ var searchData=
   ['holdhitframe_24',['HoldHitFrame',['../classGuildmaster_1_1Presentation_1_1UnitView.html#a5b2d3bede969465f8b6577ab3fbf2356',1,'Guildmaster::Presentation::UnitView']]],
   ['holdshield_25',['HoldShield',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a0af352edc7d0a78a5ebac8ee7d0d532a',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
   ['homedir_26',['HomeDir',['../classGuildmaster_1_1Combat_1_1FleeSteering.html#a66b7ac7b2fc51e9c7b4cb8193d0f74dd',1,'Guildmaster::Combat::FleeSteering']]],
-  ['hostnodestage_27',['HostNodeStage',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostNodeStage.html#afe99a69f71515f90fcafc1f3522a4c6d',1,'Guildmaster::Game::Session::Net::HostNodeStage']]],
-  ['hostpresence_28',['HostPresence',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostPresence.html#ad12319c0633bffa2a1f274ded54fba68',1,'Guildmaster::Game::Session::Net::HostPresence']]],
-  ['hostsessionroster_29',['HostSessionRoster',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#ae0bfd102b50a2e2b2651274b49e20d82',1,'Guildmaster::Game::Session::Net::HostSessionRoster']]],
+  ['hostpresence_27',['HostPresence',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostPresence.html#ad12319c0633bffa2a1f274ded54fba68',1,'Guildmaster::Game::Session::Net::HostPresence']]],
+  ['hostsessionroster_28',['HostSessionRoster',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionRoster.html#ae0bfd102b50a2e2b2651274b49e20d82',1,'Guildmaster::Game::Session::Net::HostSessionRoster']]],
+  ['hostsessionstage_29',['HostSessionStage',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html#ad75d4c5ddf6860048a5762828c021ad9',1,'Guildmaster::Game::Session::Net::HostSessionStage']]],
   ['hostshareddecision_30',['HostSharedDecision',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSharedDecision.html#ac654bd22a1965b28fdf92ec6ed99c9b9',1,'Guildmaster::Game::Session::Net::HostSharedDecision']]],
-  ['hubpresenter_31',['HubPresenter',['../classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#ac3ec7e010b8cf3051d298be78ad58569',1,'Guildmaster::Game::Flow::HubPresenter']]],
-  ['hubtoasts_32',['HubToasts',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a2175aa94ab0a522b9afccd08ea3e117b',1,'Guildmaster::ContentHub::Editor::HubToasts']]]
+  ['hub_31',['Hub',['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#af3bebe29dd00a176614f31a5af231bb0',1,'Guildmaster::Game::Session::Net::SessionStageState']]],
+  ['hubpresenter_32',['HubPresenter',['../classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#abd89951cddbab8890f1f422bcf700bfc',1,'Guildmaster::Game::Flow::HubPresenter']]],
+  ['hubstage_33',['HubStage',['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1HubStage.html#a76375166328b1ff6c3eec997d4cdc200',1,'Guildmaster::Game::Session::Net::HubStage']]],
+  ['hubtoasts_34',['HubToasts',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a2175aa94ab0a522b9afccd08ea3e117b',1,'Guildmaster::ContentHub::Editor::HubToasts']]]
 ];

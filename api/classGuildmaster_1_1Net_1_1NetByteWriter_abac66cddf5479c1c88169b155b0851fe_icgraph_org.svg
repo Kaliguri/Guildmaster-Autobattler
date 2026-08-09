@@ -40,10 +40,10 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html#a0056c274f5f9c1041a961fbd66453b89" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="434,-366 282,-366 282,-336 434,-336 434,-366"/>
-<text text-anchor="start" x="290" y="-354" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="358" y="-343" font-family="Helvetica,sans-Serif" font-size="10.00">Net.NodeStageCodec.Write</text>
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" target="_top" xlink:title="Уложить команду в буфер. Возвращает готовый к отправке отрезок.">
+<polygon fill="white" stroke="#666666" points="440.5,-366 275.5,-366 275.5,-336 440.5,-336 440.5,-366"/>
+<text text-anchor="start" x="283.5" y="-354" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
+<text text-anchor="middle" x="358" y="-343" font-family="Helvetica,sans-Serif" font-size="10.00">Net.RunCommandCodec.Write</text>
 </a>
 </g>
 </g>
@@ -51,25 +51,25 @@
 <g id="edge2_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
 <g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M567.59,-230.5C546.5,-257.99 507.86,-302.81 464,-327 454.75,-332.1 444.47,-336.12 434.06,-339.29"/>
+<path fill="none" stroke="#63b8ff" d="M567.59,-230.5C546.5,-257.99 507.86,-302.81 464,-327 456.71,-331.02 448.79,-334.37 440.66,-337.15"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="570.59,-232.33 573.8,-222.23 564.99,-228.12 570.59,-232.33"/>
 </a>
 </g>
 </g>
-<!-- Node4 -->
-<g id="Node000004" class="node">
-<title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" target="_top" xlink:title="Уложить команду в буфер. Возвращает готовый к отправке отрезок.">
-<polygon fill="white" stroke="#666666" points="440.5,-318 275.5,-318 275.5,-288 440.5,-288 440.5,-318"/>
-<text text-anchor="start" x="283.5" y="-306" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="358" y="-295" font-family="Helvetica,sans-Serif" font-size="10.00">Net.RunCommandCodec.Write</text>
+<!-- Node5 -->
+<g id="Node000005" class="node">
+<title>Node5</title>
+<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageCodec.html#ad5a26d8c33748483f4bb072922781182" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="438.5,-318 277.5,-318 277.5,-288 438.5,-288 438.5,-318"/>
+<text text-anchor="start" x="285.5" y="-306" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
+<text text-anchor="middle" x="358" y="-295" font-family="Helvetica,sans-Serif" font-size="10.00">Net.SessionStageCodec.Write</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node4 -->
-<g id="edge3_Node000001_Node000004" class="edge">
-<title>Node1&#45;&gt;Node4</title>
-<g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
+<!-- Node1&#45;&gt;Node5 -->
+<g id="edge4_Node000001_Node000005" class="edge">
+<title>Node1&#45;&gt;Node5</title>
+<g id="a_edge4_Node000001_Node000005"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M555.31,-228.01C531.72,-244.1 497.09,-265.72 464,-279 455.5,-282.41 446.4,-285.4 437.25,-288"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="557.56,-230.72 563.79,-222.15 553.58,-224.96 557.56,-230.72"/>
 </a>
@@ -189,22 +189,22 @@
 </a>
 </g>
 </g>
-<!-- Node5 -->
-<g id="Node000005" class="node">
-<title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" target="_top" xlink:title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва.">
-<polygon fill="white" stroke="#666666" points="216,-318 0,-318 0,-288 216,-288 216,-318"/>
-<text text-anchor="start" x="8" y="-306" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="108" y="-295" font-family="Helvetica,sans-Serif" font-size="10.00">Net.RemoteRunCommands.RequestSave</text>
+<!-- Node4 -->
+<g id="Node000004" class="node">
+<title>Node4</title>
+<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" target="_top" xlink:title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва.">
+<polygon fill="white" stroke="#666666" points="216,-366 0,-366 0,-336 216,-336 216,-366"/>
+<text text-anchor="start" x="8" y="-354" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
+<text text-anchor="middle" x="108" y="-343" font-family="Helvetica,sans-Serif" font-size="10.00">Net.RemoteRunCommands.RequestSave</text>
 </a>
 </g>
 </g>
-<!-- Node4&#45;&gt;Node5 -->
-<g id="edge4_Node000004_Node000005" class="edge">
-<title>Node4&#45;&gt;Node5</title>
-<g id="a_edge4_Node000004_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M265.12,-303C249.22,-303 232.55,-303 216.28,-303"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="265.45,-306.5 275.45,-303 265.45,-299.5 265.45,-306.5"/>
+<!-- Node3&#45;&gt;Node4 -->
+<g id="edge3_Node000003_Node000004" class="edge">
+<title>Node3&#45;&gt;Node4</title>
+<g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M265.12,-351C249.22,-351 232.55,-351 216.28,-351"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="265.45,-354.5 275.45,-351 265.45,-347.5 265.45,-354.5"/>
 </a>
 </g>
 </g>

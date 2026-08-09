@@ -8,9 +8,9 @@ var classGuildmaster_1_1Game_1_1Session_1_1SessionHost =
     [ "Context", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#a748ea5c267f94d94cfd5cd6ff6a72f74", null ],
     [ "Decision", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#a167fbabba498b104bf842511e2480aca", null ],
     [ "IsOpen", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#ada5d39eb4982513d79c43a9dd59097d8", null ],
-    [ "NodeStage", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#a05f3c7204992e2846e86b1969928ee47", null ],
     [ "Presence", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#a998e34b6371a6cd6ffef638d6ba5bed1", null ],
     [ "Roster", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#a435f7e99b763a12303f37fe322460745", null ],
     [ "Run", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#a20a5d9ca910cfa7f9ae3edf52940d295", null ],
-    [ "RunView", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#ab8cc306155360dbce0bae7b2510225e6", null ]
+    [ "RunView", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#ab8cc306155360dbce0bae7b2510225e6", null ],
+    [ "SessionStage", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html#a0fbf1fdeb2d7fdf3979e82ff3374a600", null ]
 ];

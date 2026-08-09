@@ -180,10 +180,10 @@ var sectionId = 'dynsection-2';
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestNodeStage.html#aed518c2339e13c5ee06cb35f2cb286c9" target="_top" xlink:title="Подписаться и спросить, что сейчас на экране.">
+<g id="a_Node000008"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae59f3e2c122eef83ec3563ba28522957" target="_top" xlink:title="Попросить хоста прислать забег.">
 <polygon fill="white" stroke="#666666" points="184,-174 32,-174 32,-144 184,-144 184,-174"/>
 <text text-anchor="start" x="40" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="108" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">Net.GuestNodeStage.Start</text>
+<text text-anchor="middle" x="108" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">Net.GuestRunState.Start</text>
 </a>
 </g>
 </g>
@@ -199,10 +199,10 @@ var sectionId = 'dynsection-2';
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html#ae59f3e2c122eef83ec3563ba28522957" target="_top" xlink:title="Попросить хоста прислать забег.">
-<polygon fill="white" stroke="#666666" points="184,-126 32,-126 32,-96 184,-96 184,-126"/>
-<text text-anchor="start" x="40" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="108" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">Net.GuestRunState.Start</text>
+<g id="a_Node000009"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionStage.html#aa7968f03472b8d94277c680cbd6af602" target="_top" xlink:title="Подписаться и спросить, что сейчас на экране.">
+<polygon fill="white" stroke="#666666" points="186.5,-126 29.5,-126 29.5,-96 186.5,-96 186.5,-126"/>
+<text text-anchor="start" x="37.5" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
+<text text-anchor="middle" x="108" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">Net.GuestSessionStage.Start</text>
 </a>
 </g>
 </g>
@@ -210,7 +210,7 @@ var sectionId = 'dynsection-2';
 <g id="edge8_Node000001_Node000009" class="edge">
 <title>Node1&#45;&gt;Node9</title>
 <g id="a_edge8_Node000001_Node000009"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M328.74,-214.5C305.18,-192.91 260.75,-155.43 216,-135 206.04,-130.45 195.16,-126.74 184.27,-123.71"/>
+<path fill="none" stroke="#63b8ff" d="M328.74,-214.5C305.18,-192.91 260.75,-155.43 216,-135 206.73,-130.77 196.67,-127.26 186.54,-124.35"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="326.46,-217.16 336.17,-221.42 331.24,-212.04 326.46,-217.16"/>
 </a>
 </g>

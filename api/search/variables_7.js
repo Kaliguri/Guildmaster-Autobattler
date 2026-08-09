@@ -24,6 +24,5 @@ var searchData=
   ['hoveredid_21',['hoveredid',['../structGuildmaster_1_1Core_1_1Players_1_1RemoteCursor.html#af05a932f6683bc2d661826276f1478bb',1,'Guildmaster.Core.Players.RemoteCursor.HoveredId'],['../structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a8fe6a4ce100b6bb20cd5c135dd5a461e',1,'Guildmaster.Net.Presence.PresenceState.HoveredId']]],
   ['hp_22',['hp',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html#aac7e036ce2e42aacb11e6aebdbe2c68e',1,'Guildmaster::Data::Definitions::ClassBalanceConfig']]],
   ['hpdamage_23',['HpDamage',['../structGuildmaster_1_1Combat_1_1DamageResult.html#a1c38e37d8555f62ede39114c7523c2ca',1,'Guildmaster::Combat::DamageResult']]],
-  ['hpmult_24',['HpMult',['../structGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig_1_1ClassProfile.html#a931282c28341dbb6b1691996ba993545',1,'Guildmaster::Data::Definitions::ClassBalanceConfig::ClassProfile']]],
-  ['hubopen_25',['HubOpen',['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState.html#a4308fc15d1059c5280600503564bd9db',1,'Guildmaster::Game::Session::Net::ActivityState']]]
+  ['hpmult_24',['HpMult',['../structGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig_1_1ClassProfile.html#a931282c28341dbb6b1691996ba993545',1,'Guildmaster::Data::Definitions::ClassBalanceConfig::ClassProfile']]]
 ];

@@ -2,8 +2,8 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="268,69,496,109"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityStateCodec.html#ad48cbf94b213e783a3c278e2732634b9" title=" " alt="" coords="7,5,219,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="283,69,197,48,198,43,284,63"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html#a0056c274f5f9c1041a961fbd66453b89" title=" " alt="" coords="11,69,214,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,92,214,92,214,87,254,87"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageCodec.html#ad5a26d8c33748483f4bb072922781182" title=" " alt="" coords="5,69,220,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="255,92,220,92,220,87,255,87"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html#ad3b0177e3e15f85a87b3475f2f3db152" title="Объявить счёт: хозяин → всем." alt="" coords="5,133,220,173"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="284,115,198,136,197,131,283,110"/>
 </map>

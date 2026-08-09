@@ -1,16 +1,16 @@
 <map id="Guildmaster.Net.NetByteWriter.WriteUShort" name="Guildmaster.Net.NetByteWriter.WriteUShort">
 <area shape="rect" id="Node000001" title=" " alt="" coords="948,69,1176,109"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1NodeStageCodec.html#a0056c274f5f9c1041a961fbd66453b89" title=" " alt="" coords="381,69,584,109"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="934,92,584,92,584,87,934,87"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageCodec.html#ad5a26d8c33748483f4bb072922781182" title=" " alt="" coords="375,69,590,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="934,92,590,92,590,87,934,87"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1Presence_1_1PresenceCodec.html#a04306e7ce91e932b8113a1dad8f06e7a" title=" " alt="" coords="689,9,883,49"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="956,69,878,52,879,47,957,64"/>
 <area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1NetByteWriter.html#a783d9e388e2924706fd0549a4eeeca73" title="Строка как длина + UTF&#45;8." alt="" coords="672,261,900,301"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1022,120,818,263,815,259,1019,115"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestPresence.html#a74860d3eced4220a551ca57cd6c19fe7" title=" " alt="" coords="381,5,584,45"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="675,31,584,29,585,24,675,25"/>
-<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="760,252,703,186,665,152,623,124,583,107,585,102,625,119,668,148,706,182,764,248"/>
+<area shape="poly" id="edge7_Node000005_Node000002" title=" " alt="" coords="760,252,703,186,665,152,623,124,589,109,591,104,625,119,668,148,706,182,764,248"/>
 <area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html#acc3de083c3fc68d87c201d78d9a5a9e0" title="Уложить команду в буфер. Возвращает готовый к отправке отрезок." alt="" coords="373,261,593,301"/>
-<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="658,284,593,284,593,279,658,279"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="658,284,593,284,593,279,658,279"/>
 <area shape="rect" id="Node000008" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html#aedf291b262afef2af56a6d2b1be74b8b" title=" " alt="" coords="341,325,624,365"/>
 <area shape="poly" id="edge8_Node000005_Node000008" title=" " alt="" coords="678,307,579,328,577,323,677,302"/>
 <area shape="rect" id="Node000009" href="$classGuildmaster_1_1Net_1_1Tape_1_1ReplayFile.html#a4944dec9d935b5355330b52b2eb6c45b" title="Записать заголовок в начало потока." alt="" coords="377,389,588,429"/>
@@ -24,7 +24,7 @@
 <area shape="rect" id="Node000014" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DecisionCodec.html#a6d025b8ee99ae756b98fba69e5357166" title="Отдать свой голос: участник → хозяин." alt="" coords="376,197,589,237"/>
 <area shape="poly" id="edge14_Node000005_Node000014" title=" " alt="" coords="677,261,577,240,579,235,678,256"/>
 <area shape="rect" id="Node000007" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc" title="Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва." alt="" coords="5,261,293,301"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="359,284,294,284,294,279,359,279"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="359,284,294,284,294,279,359,279"/>
 <area shape="rect" id="Node000010" href="$classGuildmaster_1_1Net_1_1Tape_1_1ReplayFileWriter.html#abdd3803a8d440e84626855124b952cd6" title=" " alt="" coords="44,389,255,429"/>
 <area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="364,412,255,412,255,407,364,407"/>
 </map>

@@ -1,0 +1,11 @@
+<map id="Guildmaster.Game.Session.Net.GuestSessionStage.Dispose" name="Guildmaster.Game.Session.Net.GuestSessionStage.Dispose">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,69,236,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1Diagnostics_1_1Diag.html#a14ee1464b46b0cead0860580fe5d4bb6" title=" " alt="" coords="291,5,509,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,67,298,46,299,51,209,72"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageCodec.html#a8fffc902c006693a54dbc8ce35cde7b1" title="Разобрать шаг." alt="" coords="284,69,516,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="236,87,271,87,271,92,236,92"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1NetEnvelope.html#a351e5e1f23aef7a85011900a0faa43a3" title="Разобрать конверт." alt="" coords="291,133,509,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="209,107,299,128,298,133,208,112"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Core_1_1Diagnostics_1_1Diag.html#a31a5c5c0757f9870e30f47b5a0bc939d" title=" " alt="" coords="564,5,783,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="509,23,550,23,550,28,509,28"/>
+</map>
