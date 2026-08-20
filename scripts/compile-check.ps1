@@ -16,6 +16,10 @@
 #   ./scripts/compile-check.ps1 -Meta                # заодно завести .meta новым .cs
 #   ./scripts/compile-check.ps1 -All -ShowWarnings   # плюс сводка предупреждений по кодам
 #   ./scripts/compile-check.ps1 -All -WarningCode CS0649   # тексты предупреждений одного кода
+#
+# Поля, которые заполняет инспектор, считаются отдельно: в строке сборки они идут как
+# «[полей инспектора: N]» и предупреждениями не числятся. CS0649, который инспектором не
+# объясняется, печатается в конце отдельным списком — это настоящая находка.
 
 param(
     # Явный список сборок. Пусто = определить по изменённым файлам, либо все при -All.
@@ -336,6 +340,55 @@ function Invoke-AssemblyCompile {
 }
 
 # ---------------------------------------------------------------------------------------------
+# CS0649: шум инспектора против настоящей находки
+# ---------------------------------------------------------------------------------------------
+# Компилятор не знает про сериализатор Unity и ругается на КАЖДОЕ поле, которое заполняет инспектор,
+# а не код, — у нас таких больше трёхсот. Глушить код целиком нельзя: в этом же CS0649 приходит
+# единственный случай, когда предупреждение говорит правду, — приватное поле без [SerializeField]
+# в обычном классе, которое навсегда останется нулём. Поэтому предупреждение не глушится, а
+# разбирается: поле пишет сериализатор, если у него есть [SerializeField]/[SerializeReference] либо
+# оно public в типе, который сериализует Unity. Всё остальное CS0649 — находка, и её видно.
+
+$script:SourceCache = @{}
+
+function Get-SourceLines([string]$Path) {
+    if (-not $script:SourceCache.ContainsKey($Path)) {
+        $full = if ([IO.Path]::IsPathRooted($Path)) { $Path } else { Join-Path $ProjectPath $Path }
+        $script:SourceCache[$Path] = if (Test-Path -LiteralPath $full) { @(Get-Content -LiteralPath $full) } else { @() }
+    }
+    return $script:SourceCache[$Path]
+}
+
+# Пишет ли это поле сериализатор Unity. Текст предупреждения выглядит так:
+#   Assets\...\File.cs(45,40): warning CS0649: Полю "Class._field" нигде не присваивается ...
+function Test-WrittenBySerializer([string]$Text) {
+    if ($Text -notmatch '^(.+?)\((\d+),\d+\): warning CS0649: [^"]*"([^"]+)"') { return $false }
+    $path   = $Matches[1]
+    $lineNo = [int]$Matches[2]
+    $parts  = $Matches[3] -split '\.'
+    if ($parts.Count -lt 2) { return $false }
+    $owner  = $parts[$parts.Count - 2]
+
+    $lines = Get-SourceLines $path
+    if ($lines.Count -lt $lineNo) { return $false }
+
+    # Атрибут может стоять и на своей строке выше — у нас так принято ради Tooltip и Range.
+    $above = ($lines[[math]::Max(0, $lineNo - 5)..($lineNo - 1)]) -join "`n"
+    if ($above -match 'SerializeField|SerializeReference') { return $true }
+
+    # Приватное поле без атрибута сериализатор не пишет, каким бы ни был тип-хозяин.
+    if ($lines[$lineNo - 1] -notmatch '\bpublic\b') { return $false }
+
+    for ($i = $lineNo - 1; $i -ge 0; $i--) {
+        if ($lines[$i] -notmatch "\b(class|struct)\s+$([regex]::Escape($owner))\b") { continue }
+        $head = ($lines[[math]::Max(0, $i - 8)..$i]) -join "`n"   # окно шире докстринга над типом
+        if ($head -match '\[(System\.)?Serializable\]') { return $true }
+        return ($lines[$i] -match ':[^/]*\b(MonoBehaviour|ScriptableObject)\b')
+    }
+    return $false
+}
+
+# ---------------------------------------------------------------------------------------------
 # .meta для новых скриптов
 # ---------------------------------------------------------------------------------------------
 
@@ -453,14 +506,21 @@ foreach ($name in $order) {
     }
     else {
         $rebuilt.Add($name)
-        $warn = if ($result.Warnings.Count -gt 0) { " (предупреждений: $($result.Warnings.Count))" } else { "" }
-        Write-Host "  OK $name — $($result.Seconds) с$warn" -ForegroundColor Green
 
+        $realCount = 0
+        $noiseCount = 0
         foreach ($w in $result.Warnings) {
             $text = [string]$w
             $code = if ($text -match '\): warning ([A-Z]+\d+)') { $Matches[1] } else { "?" }
-            $allWarnings.Add([pscustomobject]@{ Assembly = $name; Code = $code; Text = $text })
+            $noise = ($code -eq "CS0649") -and (Test-WrittenBySerializer $text)
+            if ($noise) { $noiseCount++ } else { $realCount++ }
+            $allWarnings.Add([pscustomobject]@{ Assembly = $name; Code = $code; Text = $text; Noise = $noise })
         }
+
+        $warn = ""
+        if ($realCount -gt 0)  { $warn += " (предупреждений: $realCount)" }
+        if ($noiseCount -gt 0) { $warn += " [полей инспектора: $noiseCount]" }
+        Write-Host "  OK $name — $($result.Seconds) с$warn" -ForegroundColor Green
     }
 }
 
@@ -477,9 +537,19 @@ if ($ShowWarnings -and $allWarnings.Count -gt 0) {
     $allWarnings | Group-Object Code | Sort-Object Count -Descending | ForEach-Object {
         $where = ($_.Group | Group-Object Assembly | Sort-Object Count -Descending |
             ForEach-Object { "$($_.Name -replace '^Guildmaster\.', '') x$($_.Count)" }) -join ', '
-        Write-Host ("  {0,-8} {1,4}  {2}" -f $_.Name, $_.Count, $where)
+        $noise = @($_.Group | Where-Object { $_.Noise }).Count
+        $tail = if ($noise -gt 0) { "  [полей инспектора: $noise]" } else { "" }
+        Write-Host ("  {0,-8} {1,4}  {2}{3}" -f $_.Name, $_.Count, $where, $tail)
     }
     Write-Host "Тексты одного кода: -WarningCode <код>" -ForegroundColor DarkGray
+}
+
+# Настоящий CS0649 показываем всегда: он тонул в трёхстах ложных и стал бы невидим молча.
+$suspect = @($allWarnings | Where-Object { $_.Code -eq "CS0649" -and -not $_.Noise })
+if ($suspect.Count -gt 0) {
+    Write-Host ""
+    Write-Host "CS0649 не от инспектора — $($suspect.Count) шт. (поле никто не пишет, останется нулём):" -ForegroundColor Yellow
+    foreach ($w in $suspect) { Write-Host "  $($w.Text)" -ForegroundColor DarkYellow }
 }
 
 Write-Host ""
