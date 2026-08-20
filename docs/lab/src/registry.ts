@@ -372,6 +372,30 @@ export const PAGES: PageDef[] = [
     load: () => import("./sections/ui-guilds.js"),
     icon: "▥"
   },
+  {
+    id: "ui-notice",
+    area: "ui",
+    title: "Сообщения игроку",
+    blurb: "Одна модель, два облика: лента для того, что не спрашивает, модалка для того, что ждёт ответа.",
+    load: () => import("./sections/ui-notice.js"),
+    icon: "!"
+  },
+  {
+    id: "ui-log",
+    area: "ui",
+    title: "Журнал событий",
+    blurb: "Кто кого убил и кто куда ушёл: угол HUD с угасанием, окно по клавише, оба режима сразу.",
+    load: () => import("./sections/ui-log.js"),
+    icon: "≡"
+  },
+  {
+    id: "ui-players",
+    area: "ui",
+    title: "Список игроков",
+    blurb: "Строка человека: цвет, ник, хозяин, пинг числом, где он сейчас. Плюс две отклонённые раскладки.",
+    load: () => import("./sections/ui-players.js"),
+    icon: "☰"
+  },
 
   {
     id: "gdd",
