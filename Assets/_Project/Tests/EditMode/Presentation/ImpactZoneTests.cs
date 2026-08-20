@@ -1,3 +1,4 @@
+﻿using Guildmaster.Data.Definitions;
 using Guildmaster.Presentation.Effects;
 using NUnit.Framework;
 using UnityEngine;
@@ -284,6 +285,59 @@ namespace Guildmaster.Tests.EditMode.Presentation
 
             Assert.That(seen.Count, Is.GreaterThan(100),
                 "точки удара сбились в кучу — разброс внутри зоны потерялся");
+        }
+
+        // --- Круг показа равен кругу боя ------------------------------------------------------------
+
+        /// <summary>
+        /// Одиночная авто-атака достаёт ровно на свой круг: <see cref="ImpactReach"/> обязан вернуть его
+        /// нетронутым, иначе показ начнёт спорить с боем на самом частом ударе в игре.
+        /// </summary>
+        [Test]
+        public void SingleAutoAttack_KeepsSimulationReach()
+        {
+            Assert.That(ImpactReach.ForAutoAttack(2.6f, AreaShape.None, lengthMult: 2f, width: 2.25f),
+                Is.EqualTo(2.6f).Within(1e-4f),
+                "форма None — обычный удар: множитель длины к нему не относится вовсе");
+        }
+
+        /// <summary>
+        /// Копейщик: бой бьёт полосой <c>Reach * AutoAttackLengthMult</c> и задевает в ней всех, поэтому
+        /// круг показа обязан дотянуться до дальнего УГЛА полосы — до цели, стоящей у её края.
+        /// </summary>
+        /// <remarks>
+        /// Инвариант шва: до этого теста показ считал круг только по <c>AttackRange</c> и объявлял
+        /// второго задетого недосягаемым — <c>VisualDefects</c> орал на штатном ударе (2026-08-20).
+        /// Числа взяты с живого кита: круг 2.6, длина ×2, ширина 2.25.
+        /// </remarks>
+        [Test]
+        public void LineAutoAttack_ReachesFarCornerOfTheStrip()
+        {
+            float reach = ImpactReach.ForAutoAttack(2.6f, AreaShape.Line, lengthMult: 2f, width: 2.25f);
+
+            float length = 2.6f * 2f, halfWidth = 2.25f * 0.5f;
+            Assert.That(reach, Is.EqualTo(Mathf.Sqrt(length * length + halfWidth * halfWidth)).Within(1e-4f),
+                "круг обязан накрывать угол полосы: вбок от оси бой пускает цель на полуширину");
+            Assert.That(reach, Is.GreaterThan(length),
+                "цель у края полосы дальше её конца — круг ровно в length оставил бы её недосягаемой");
+        }
+
+        /// <summary>
+        /// И главное, ради чего всё: цель, задетая СЕРЕДИНОЙ полосы, для показа достижима — вырожденного
+        /// случая на ней нет, а значит нет и ложного дефекта.
+        /// </summary>
+        [Test]
+        public void TargetInsideStrip_IsNotDegenerate()
+        {
+            // Второй враг в полосе стоит в 3.6 — дальше круга выбора цели (2.6), но внутри полосы (5.2).
+            var zones = HumanZones(x: 3.6f);
+            var at = AttackerAt(0f);
+            float reach = ImpactReach.ForAutoAttack(2.6f, AreaShape.Line, lengthMult: 2f, width: 2.25f);
+
+            var solved = ImpactZoneSolver.Solve(at, at, new Vector2(3.6f, 0f), reach, zones, Sharpness, 0.6f, 11u);
+
+            Assert.That(solved.Degenerate, Is.False,
+                "бой засчитал удар полосой — показ обязан найти зону, а не выкручиваться заплаткой");
         }
     }
 }

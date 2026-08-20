@@ -770,7 +770,7 @@ namespace Guildmaster.Presentation
             // одном пикселе. Сид тот же, что у формы удара, поэтому знак, искры, порез и цифра приходят В
             // ОДНО место. Все входы берутся ИЗ ЛЕНТЫ — см. ImpactPointFor.
             uint    impactSeed = Effects.HitFormFactory.SeedOf(sourceId, targetId, target.Position, result.HpDamage);
-            Vector3 anchor     = ImpactPointFor(targetId, target.Position, hasSource, source, sourceId, impactSeed);
+            Vector3 anchor     = ImpactPointFor(targetId, target.Position, hasSource, source, sourceId, impactSeed, result.SourceKind);
             float   hpScale    = _feel.EvaluateNumberScale(frac);   // кривая живёт в feel-конфиге, не здесь
 
             // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе. Только прямое попадание:
@@ -1041,9 +1041,10 @@ namespace Guildmaster.Presentation
         /// <param name="source">Снимок автора удара — из него берутся позиция, дальность и размер.</param>
         /// <param name="sourceId">Id автора: нужен, чтобы ругаться по КИТУ, а не по экземпляру.</param>
         /// <param name="seed">Сид этого удара — тот же, что у формы: они обязаны совпасть местом.</param>
+        /// <param name="sourceKind">Чем нанесён урон: круг авто-атаки знает про полосу, тик яда — нет.</param>
         private Vector3 ImpactPointFor(
             int targetId, Vector2 shownPosition, bool hasSource,
-            in Combat.Tape.UnitSnapshot source, int sourceId, uint seed)
+            in Combat.Tape.UnitSnapshot source, int sourceId, uint seed, DamageSourceKind sourceKind)
         {
             if (!_views.TryGetValue(targetId, out var view) || view == null)
                 return (Vector3)shownPosition + Vector3.up * 0.4f;
@@ -1064,6 +1065,14 @@ namespace Guildmaster.Presentation
                 float rSelf   = BodyRadiusOf(source.Size);
                 float rTarget = _frameIndex.TryGetValue(targetId, out var t) ? BodyRadiusOf(t.Size) : 0f;
                 reach = source.AttackRange + rSelf + rTarget;
+
+                // Линейная авто-атака («Размашистый выпад» Копейщика) бьёт ПОЛОСОЙ длиннее этого круга
+                // и задевает всех врагов в ней, а не только выбранную цель. Круг, не знающий про
+                // полосу, объявлял второго задетого недосягаемым — и дефект орал на штатном ударе.
+                UnitData sourceDef = sourceKind == DamageSourceKind.AutoAttack ? DefinitionOf(sourceId) : null;
+                if (sourceDef != null)
+                    reach = Effects.ImpactReach.ForAutoAttack(
+                        reach, sourceDef.AutoAttackShape, sourceDef.AutoAttackLengthMult, sourceDef.AutoAttackWidth);
 
                 // Круг идёт от КОРПУСА атакующего, а не от его позиции: позиция в симе стоит у ног, а зоны
                 // цели висят на высоте фигуры. Круг от ступней не дотянулся бы до чужой груди никогда, и
@@ -1122,6 +1131,10 @@ namespace Guildmaster.Presentation
             snapshot = default;
             return false;
         }
+
+        /// <summary>Паспортное определение юнита; <c>null</c> — юнита в паспорте уже нет.</summary>
+        private UnitData DefinitionOf(int unitId) =>
+            _stage.TryGet(unitId, out Combat.Tape.UnitIdentity id) ? id.Definition : null;
 
         /// <summary>Кит, а не экземпляр: дефект показа принадлежит определению, и говорится о нём один раз.</summary>
         private string DefectKeyOf(int unitId) =>
